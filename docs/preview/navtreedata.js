@@ -56,19 +56,19 @@ var NAVTREEINDEX =
 "class_item.html#a6e35aa31ca611fa855542433cc7adbc8",
 "class_item_loader.html#a76135a35e07002d77e9a66a4e553235b",
 "class_member_jit_attribute.html",
-"class_mod_item.html#a23122128caeed03d25204a4fb4c2078b",
-"class_mod_palm_tree.html#a29a7c39ce27ac4ef0cbabda1fa1654cb",
-"class_mod_shapes_1_1_inner_outline.html",
-"class_moonlord_death_drama_1_1_moonlord_piece.html",
-"class_n_p_c_definition.html",
-"class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f",
-"class_proj_a_i_style_i_d.html#a17454a9051fa92f85f8818f32ad6dca3",
-"class_projectile_i_d_1_1_sets.html#aaba86d4c655f38cb9623fd11df144204",
-"class_surface_background_i_d.html",
-"class_u_i_image_with_border.html",
-"functions_func_u.html",
-"struct_final_fractal_helper.html",
-"struct_steamed_wraps_1_1_item_install_info.html"
+"class_mod_item.html#a20ec23ea02f6acf3a68fa63aabb14917",
+"class_mod_palm_tree.html#a1b1291285799ba4e17891435c6672b71",
+"class_mod_shapes_1_1_all.html",
+"class_moonlord_death_drama_1_1_moonlord_explosion.html",
+"class_n_p_c_debuff_immunity_data.html#ae8dcac94d27dcef250f549ad877f3717",
+"class_player.html#a8fa613dc1c49ba21d6589c0f81eea9cd",
+"class_proj_a_i_style_i_d.html#a15308aabff3753ed4ede582e370dc490",
+"class_projectile_i_d_1_1_sets.html#aab31733abf774f4ff20b82e655bc4590",
+"class_supported_workshop_tags.html",
+"class_u_i_image_framed.html",
+"functions_func_t.html",
+"struct_filtered_span_enumerator.html",
+"struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

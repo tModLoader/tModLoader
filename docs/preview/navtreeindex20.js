@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"struct_filtered_span_enumerator.html":[3,0,359],
 "struct_final_fractal_helper.html":[3,0,363],
 "struct_final_fractal_helper_1_1_final_fractal_profile.html":[3,0,363,0],
 "struct_fishing_attempt.html":[3,0,365],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091":[3,0,1117,6],
 "struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5":[3,0,1117,4],
 "struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602":[3,0,1117,7],
-"struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b":[3,0,1117,5],
-"struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f":[3,0,1117,3]
+"struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b":[3,0,1117,5]
 };

@@ -113,6 +113,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MidUpdate</b>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_dust.html">Dust</a> dust)</td></tr>
 <tr class="memdesc:a3fe601c3400bd33e34ac382229b60d8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify a dust's fields when it is created. <br /></td></tr>
 <tr class="separator:a3fe601c3400bd33e34ac382229b60d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f73834392bdaa7bcef4ead8e01ed1b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_dust.html#a45f73834392bdaa7bcef4ead8e01ed1b">PreDraw</a> (<a class="el" href="class_dust.html">Dust</a> dust)</td></tr>
+<tr class="memdesc:a45f73834392bdaa7bcef4ead8e01ed1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows drawing behind this dust, such as a trail, or modifying the way it is drawn. Return false to stop the normal dust drawing code (useful if you're manually drawing the dust itself). Returns true by default.  <a href="class_mod_dust.html#a45f73834392bdaa7bcef4ead8e01ed1b">More...</a><br /></td></tr>
+<tr class="separator:a45f73834392bdaa7bcef4ead8e01ed1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00aec0541b532d216d56672b1403280f"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_dust.html#a00aec0541b532d216d56672b1403280f">SetStaticDefaults</a> ()</td></tr>
 <tr class="memdesc:a00aec0541b532d216d56672b1403280f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the properties after initial loading has completed. This is where you would update <a class="el" href="class_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a>'s UpdateType property and modify the Terraria.GameContent.ChildSafety.SafeDust array.  <a href="class_mod_dust.html#a00aec0541b532d216d56672b1403280f">More...</a><br /></td></tr>
 <tr class="separator:a00aec0541b532d216d56672b1403280f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -300,6 +303,35 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
  The Basic <a class="el" href="class_dust.html">Dust</a> Guide</p>
 <p >teaches the basics of making modded dust. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a45f73834392bdaa7bcef4ead8e01ed1b" name="a45f73834392bdaa7bcef4ead8e01ed1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f73834392bdaa7bcef4ead8e01ed1b">&#9670;&nbsp;</a></span>PreDraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ModDust.PreDraw </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_dust.html">Dust</a>&#160;</td>
+          <td class="paramname"><em>dust</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows drawing behind this dust, such as a trail, or modifying the way it is drawn. Return false to stop the normal dust drawing code (useful if you're manually drawing the dust itself). Returns true by default. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a3e8882ef26a2a33d3731d1da1a1b6d24" name="a3e8882ef26a2a33d3731d1da1a1b6d24"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3e8882ef26a2a33d3731d1da1a1b6d24">&#9670;&nbsp;</a></span>Register()</h2>
 

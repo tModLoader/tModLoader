@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"functions_func_t.html":[3,3,1,19],
 "functions_func_u.html":[3,3,1,20],
 "functions_func_v.html":[3,3,1,21],
 "functions_func_w.html":[3,3,1,22],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_extra_bestiary_info_page_information.html":[3,0,337],
 "struct_extra_seat_info.html":[3,0,338],
 "struct_fast_random.html":[3,0,347],
-"struct_filtered_array_enumerator.html":[3,0,358],
-"struct_filtered_span_enumerator.html":[3,0,359]
+"struct_filtered_array_enumerator.html":[3,0,358]
 };

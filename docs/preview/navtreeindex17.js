@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_supported_workshop_tags.html":[3,0,1129],
 "class_surface_background_i_d.html":[3,0,1130],
 "class_surface_background_styles_loader.html":[3,0,1131],
 "class_surface_biome_shader.html":[3,0,1132],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_horizontal_separator.html":[3,0,1273],
 "class_u_i_icon_text_button.html":[3,0,1274],
 "class_u_i_image.html":[3,0,1275],
-"class_u_i_image_button.html":[3,0,1276],
-"class_u_i_image_framed.html":[3,0,1277]
+"class_u_i_image_button.html":[3,0,1276]
 };
