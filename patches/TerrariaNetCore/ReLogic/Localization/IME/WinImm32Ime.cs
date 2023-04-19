@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using ReLogic.Localization.IME.WinImm32;
@@ -137,13 +136,13 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public bool PreFilterMessage(ref Message message)
 	{
-		if (message.msg == Msg.WM_KILLFOCUS) {
+		if (message.Msg == Msg.WM_KILLFOCUS) {
 			SetEnabled(bEnable: false);
 			_isFocused = false;
 			return true;
 		}
 
-		if (message.msg == Msg.WM_SETFOCUS) {
+		if (message.Msg == Msg.WM_SETFOCUS) {
 			if (base.IsEnabled)
 				SetEnabled(bEnable: true);
 
@@ -152,15 +151,15 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		}
 
 		// Hides the system IME. Should always be called on application startup.
-		if (message.msg == Msg.WM_IME_SETCONTEXT) {
-			message.lparam = IntPtr.Zero;
+		if (message.Msg == Msg.WM_IME_SETCONTEXT) {
+			message.LParam = IntPtr.Zero;
 			return false;
 		}
 
 		if (!base.IsEnabled)
 			return false;
 
-		switch (message.msg) {
+		switch (message.Msg) {
 			case Msg.WM_INPUTLANGCHANGE:
 				return true;
 
@@ -178,7 +177,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				break;
 
 			case Msg.WM_IME_NOTIFY:
-				switch (message.wparam.ToInt32()) {
+				switch (message.WParam.ToInt32()) {
 					case Imm.IMN_OPENCANDIDATE:
 					case Imm.IMN_CHANGECANDIDATE:
 					case Imm.IMN_CLOSECANDIDATE:
@@ -189,7 +188,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				return true;
 
 			case Msg.WM_CHAR:
-				OnKeyPress((char)message.wparam.ToInt32());
+				OnKeyPress((char)message.WParam.ToInt32());
 				break;
 		}
 

@@ -1,9 +1,8 @@
 --- src/Terraria/ReLogic/OS/Windows/NativeMethods.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/NativeMethods.cs
-@@ -1,6 +_,9 @@
+@@ -1,6 +_,8 @@
  using System;
  using System.Runtime.InteropServices;
-+using System.Text;
 +#if !NETCORE
  using System.Windows.Forms;
 +#endif
@@ -20,7 +19,7 @@
  	private struct SHFILEOPSTRUCT
  	{
  		public IntPtr hwnd;
-@@ -115,14 +_,24 @@
+@@ -115,11 +_,19 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
@@ -34,14 +33,9 @@
  
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
- 
 +
 +	[DllImport("user32.dll")]
 +	public static extern IntPtr GetDC(IntPtr hWnd);
-+
+ 
  	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
  	public static extern bool TranslateMessage(ref Message message);
-+
- 
- 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
- 	public static extern IntPtr GetForegroundWindow();
