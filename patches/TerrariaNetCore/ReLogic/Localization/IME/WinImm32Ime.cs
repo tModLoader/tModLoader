@@ -91,18 +91,16 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			Span<byte> buf = stackalloc byte[size];
 			NativeMethods.ImmGetCandidateList(hImc, 0, ref MemoryMarshal.GetReference(buf), size);
 
-			CandidateList candList = MemoryMarshal.Cast<byte, CandidateList>(buf)[0];
+			ref CandidateList candList = ref MemoryMarshal.AsRef<CandidateList>(buf);
+			var offsets = MemoryMarshal.CreateReadOnlySpan(ref candList.dwOffset, (int)candList.dwCount);
 
-			int offsetLen = (int)(sizeof(uint) * candList.dwCount);
-			Span<uint> offsetSpan = MemoryMarshal.Cast<byte, uint>(buf.Slice(Marshal.SizeOf<CandidateList>(), offsetLen));
-			uint[] offsets = offsetSpan.ToArray().Append(candList.dwSize).ToArray();
-
-			byte[] byteBuf = buf.ToArray();
 			string[] candStrList = new string[candList.dwCount];
-			
-			for (int i = 0; i < candList.dwCount; i++) {
-				int strLen = (int)(offsets[i + 1] - offsets[i] - 2);
-				candStrList[i] = Encoding.Unicode.GetString(byteBuf, (int)offsets[i], strLen);
+			int next = buf.Length;
+			for (int i = (int)candList.dwCount-1; i >= 0; i--) {
+				int start = (int)offsets[i];
+				// Assume all strings are fully packed, with 2 byte null char at the end
+				candStrList[i] = Encoding.Unicode.GetString(buf[start..(next-2)]);
+				next = start;
 			}
 
 			_candList = candStrList;
