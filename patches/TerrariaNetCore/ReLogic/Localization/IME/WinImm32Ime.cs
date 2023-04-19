@@ -176,7 +176,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 		// Hides the system IME. Should always be called on application startup.
 		if (message.msg == Msg.WM_IME_SETCONTEXT) {
-			message.lParam = IntPtr.Zero;
+			message.lparam = IntPtr.Zero;
 			return false;
 		}
 
@@ -200,7 +200,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				break;
 
 			case Msg.WM_IME_NOTIFY:
-				switch (message.wParam.ToInt32()) {
+				switch (message.wparam.ToInt32()) {
 					case Imm.IMN_OPENCANDIDATE:
 					case Imm.IMN_CHANGECANDIDATE:
 						_candList = GetCandidateList();
@@ -216,7 +216,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				return true;
 
 			case Msg.WM_CHAR:
-				OnKeyPress((char)message.wParam.ToInt32());
+				OnKeyPress((char)message.wparam.ToInt32());
 				break;
 		}
 

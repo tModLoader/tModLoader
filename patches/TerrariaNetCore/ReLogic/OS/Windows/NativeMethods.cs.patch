@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/OS/Windows/NativeMethods.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/NativeMethods.cs
-@@ -1,12 +_,16 @@
+@@ -1,6 +_,9 @@
  using System;
  using System.Runtime.InteropServices;
 +using System.Text;
@@ -10,13 +10,6 @@
  
  namespace ReLogic.OS.Windows;
  
- internal static class NativeMethods
- {
- 	public delegate IntPtr WndProcCallback(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
-+	public delegate bool EnumWindowsProcCallback(IntPtr hWnd, IntPtr lParam);
- 
- 	public enum StdHandleType
- 	{
 @@ -97,7 +_,8 @@
  		FO_RENAME
  	}
@@ -27,23 +20,7 @@
  	private struct SHFILEOPSTRUCT
  	{
  		public IntPtr hwnd;
-@@ -112,17 +_,40 @@
- 		public string lpszProgressTitle;
- 	}
- 
-+	[DllImport("kernel32.dll")]
-+	public static extern int GetCurrentProcessId();
-+
-+	[DllImport("user32.dll")]
-+	[return: MarshalAs(UnmanagedType.Bool)]
-+	public static extern bool EnumWindows(EnumWindowsProcCallback lpEnumFunc, IntPtr lParam);
-+
-+	[DllImport("user32.dll")]
-+	public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
-+
-+	[DllImport("user32.dll")]
-+	public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-+
+@@ -115,14 +_,24 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  

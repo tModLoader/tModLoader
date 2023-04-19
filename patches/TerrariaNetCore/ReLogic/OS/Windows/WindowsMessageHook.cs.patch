@@ -30,26 +30,16 @@
  	}
  
  	public void AddMessageFilter(IMessageFilter filter)
-@@ -36,13 +_,23 @@
- 
- 	private IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam)
+@@ -38,11 +_,14 @@
  	{
--		Message message = Message.Create(hWnd, msg, wParam, lParam);
-+		// Message message = Message.Create(hWnd, msg, wParam, lParam);
-+		Message message = new Message {
-+			hWnd = hWnd,
-+			msg = msg,
-+			wParam = wParam,
-+			lParam = lParam,
-+			result = IntPtr.Zero
-+		};
+ 		Message message = Message.Create(hWnd, msg, wParam, lParam);
  		if (InternalWndProc(ref message))
 -			return message.Result;
 +			return message.result;
  
 -		return NativeMethods.CallWindowProc(_previousWndProc, message.HWnd, message.Msg, message.WParam, message.LParam);
-+		IntPtr result = NativeMethods.CallWindowProc(_previousWndProc, message.hWnd, message.msg, message.wParam,
-+			message.lParam);
++		IntPtr result = NativeMethods.CallWindowProc(_previousWndProc, message.hWnd, message.msg, message.wparam,
++			message.lparam);
 +		return result;
  	}
  
