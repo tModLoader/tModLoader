@@ -83,6 +83,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");

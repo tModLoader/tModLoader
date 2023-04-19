@@ -1598,21 +1598,34 @@ public static class ItemLoader
 		return b;
 	}
 
-	// TODO: PreReforge marked obsolete until v0.11
-	private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.PreReforge);
+	private static HookList HookCanReforge = AddHook<Func<Item, bool>>(g => g.CanReforge);
+
+	/// <summary>
+	/// Calls ModItem.CanReforge, then all GlobalItem.CanReforge hooks. If any return false then false is returned.
+	/// </summary>
+	public static bool CanReforge(Item item)
+	{
+		bool b = item.ModItem?.CanReforge() ?? true;
+
+		foreach (var g in HookCanReforge.Enumerate(item)) {
+			b &= g.CanReforge(item);
+		}
+
+		return b;
+	}
+
+	private static HookList HookPreReforge = AddHook<Action<Item>>(g => g.PreReforge);
 
 	/// <summary>
 	/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.
 	/// </summary>
-	public static bool PreReforge(Item item)
+	public static void PreReforge(Item item)
 	{
-		bool b = item.ModItem?.PreReforge() ?? true;
+		item.ModItem?.PreReforge();
 
 		foreach (var g in HookPreReforge.Enumerate(item)) {
-			b &= g.PreReforge(item);
+			g.PreReforge(item);
 		}
-
-		return b;
 	}
 
 	private static HookList HookPostReforge = AddHook<Action<Item>>(g => g.PostReforge);

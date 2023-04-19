@@ -4166,7 +4166,7 @@
  					string text2 = "";
  					int num59 = 0;
  					int num60 = 0;
-@@ -33431,11 +_,20 @@
+@@ -33431,11 +_,21 @@
  
  						mouseReforge = true;
  						player[myPlayer].mouseInterface = true;
@@ -4174,8 +4174,9 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && player[myPlayer].BuyItem(num58)) {
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanBuyItem(num58) && ItemLoader.PreReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num58) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num58);
++							ItemLoader.PreReforge(reforgeItem); // After BuyItem just in case
 +
  							reforgeItem.ResetPrefix();
  							reforgeItem.Prefix(-2);
