@@ -16,17 +16,19 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	private WindowsMessageHook _wndProcHook;
 	private bool _disposedValue;
 	private string _compString;
-	private string[] _candList;
+	private string[] _candList = Array.Empty<string>();
 	private uint _candSelection;
-	private uint _candCount;
+	private uint _candPageSize;
+
+	public uint SelectedPage => _candSelection/_candPageSize;
 
 	public override string CompositionString => _compString;
 
 	public override bool IsCandidateListVisible => CandidateCount > 0;
 
-	public override uint SelectedCandidate => _candSelection;
+	public override uint SelectedCandidate => _candSelection % _candPageSize;
 
-	public override uint CandidateCount => _candCount;
+	public override uint CandidateCount => Math.Min((uint)_candList.Length - SelectedPage * _candPageSize, _candPageSize);
 
 	public WinImm32Ime(WindowsMessageHook wndProcHook, IntPtr hWnd)
 	{
@@ -83,7 +85,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			int size = NativeMethods.ImmGetCandidateList(hImc, 0, ref MemoryMarshal.GetReference(Span<byte>.Empty), 0);
 			if (size == 0) {
 				_candList = Array.Empty<string>();
-				_candCount = 0;
+				_candPageSize = 0;
 				_candSelection = 0;
 				return;
 			}
@@ -104,7 +106,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			}
 
 			_candList = candStrList;
-			_candCount = candList.dwPageSize;
+			_candPageSize = candList.dwPageSize;
 			_candSelection = candList.dwSelection;
 		}
 		finally {
@@ -115,7 +117,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	public override string GetCandidate(uint index)
 	{
 		if (index < CandidateCount) {
-			return _candList[index];
+			return _candList[index + SelectedPage * _candPageSize];
 		}
 
 		return "";
