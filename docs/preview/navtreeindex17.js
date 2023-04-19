@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"class_surface_background_i_d.html":[3,0,1130],
+"class_surface_background_styles_loader.html":[3,0,1131],
 "class_surface_biome_shader.html":[3,0,1132],
 "class_surface_map.html":[3,0,1133],
 "class_synchronization_context.html":[3,0,1134],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_icon_text_button.html":[3,0,1274],
 "class_u_i_image.html":[3,0,1275],
 "class_u_i_image_button.html":[3,0,1276],
-"class_u_i_image_framed.html":[3,0,1277],
-"class_u_i_image_with_border.html":[3,0,1278],
-"class_u_i_item_icon.html":[3,0,1279]
+"class_u_i_image_framed.html":[3,0,1277]
 };

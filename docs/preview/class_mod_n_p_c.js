@@ -10,6 +10,7 @@ var class_mod_n_p_c =
     [ "BossLoot", "class_mod_n_p_c.html#a527fc50bcfa60dc62d776c34bae8d04e", null ],
     [ "CanBeCaughtBy", "class_mod_n_p_c.html#a793385bf4916047912f89eb1c7fba755", null ],
     [ "CanBeHitByItem", "class_mod_n_p_c.html#a1ce9c287a1aa4575a2827b12c657f799", null ],
+    [ "CanBeHitByNPC", "class_mod_n_p_c.html#a5f9de6f5c24db99ecfc96af4d0866581", null ],
     [ "CanBeHitByProjectile", "class_mod_n_p_c.html#a25ee13b4254494b405a82e8f65477165", null ],
     [ "CanChat", "class_mod_n_p_c.html#a7dd7637bcf7c81a6c969d3351e51831c", null ],
     [ "CanCollideWithPlayerMeleeAttack", "class_mod_n_p_c.html#ac701e166a9ad38fe6d8ac1b1167590a5", null ],

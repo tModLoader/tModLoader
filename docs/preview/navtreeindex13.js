@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"class_n_p_c_definition.html":[3,0,849],
+"class_n_p_c_follow_state.html":[3,0,850],
 "class_n_p_c_head_draw_render_target_content.html":[3,0,852],
 "class_n_p_c_head_i_d.html":[3,0,853],
 "class_n_p_c_head_i_d_1_1_sets.html":[3,0,853,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "class_player.html#a8c424aeb9f574a1a293ee8cdcf839f7b":[3,0,919,127],
 "class_player.html#a8cec04cc5be51d4f2a194081cc2962fd":[3,0,919,44],
 "class_player.html#a8d27319306da3d545130e171fc62bbf7":[3,0,919,84],
-"class_player.html#a8fa613dc1c49ba21d6589c0f81eea9cd":[3,0,919,42],
-"class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f":[3,0,919,61],
-"class_player.html#a8fef443273ca334f9b1cc6b7e341824c":[3,0,919,26]
+"class_player.html#a8fa613dc1c49ba21d6589c0f81eea9cd":[3,0,919,42]
 };

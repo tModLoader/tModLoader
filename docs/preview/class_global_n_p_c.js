@@ -8,6 +8,7 @@ var class_global_n_p_c =
     [ "BuffTownNPC", "class_global_n_p_c.html#a9a2c4748629a5ab96841d881cd59b0af", null ],
     [ "CanBeCaughtBy", "class_global_n_p_c.html#a194e835eb133064af83b2fd0a61feb4c", null ],
     [ "CanBeHitByItem", "class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5", null ],
+    [ "CanBeHitByNPC", "class_global_n_p_c.html#af674122e46a51277c14d22d1f92fd7ff", null ],
     [ "CanBeHitByProjectile", "class_global_n_p_c.html#ae895bfd6332e1d2fadeab187867730dc", null ],
     [ "CanChat", "class_global_n_p_c.html#a6a7ca2ff222fff84f88a66d94e6237d1", null ],
     [ "CanCollideWithPlayerMeleeAttack", "class_global_n_p_c.html#a2fefb51cb5c3821a6da020c0d685f8e2", null ],

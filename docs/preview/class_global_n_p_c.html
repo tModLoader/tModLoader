@@ -136,6 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aef6c246b055e01e0bc1d3afe570343a5"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5">CanBeHitByItem</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:aef6c246b055e01e0bc1d3afe570343a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be hit by the given melee weapon when swung. Return true to allow hitting the <a class="el" href="class_n_p_c.html">NPC</a>, return false to block hitting the <a class="el" href="class_n_p_c.html">NPC</a>, and return null to use the vanilla code for whether the <a class="el" href="class_n_p_c.html">NPC</a> can be hit. Returns null by default.  <a href="class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5">More...</a><br /></td></tr>
 <tr class="separator:aef6c246b055e01e0bc1d3afe570343a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af674122e46a51277c14d22d1f92fd7ff"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#af674122e46a51277c14d22d1f92fd7ff">CanBeHitByNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_n_p_c.html">NPC</a> attacker)</td></tr>
+<tr class="memdesc:af674122e46a51277c14d22d1f92fd7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a friendly <a class="el" href="class_n_p_c.html">NPC</a> can be hit by an <a class="el" href="class_n_p_c.html">NPC</a>. Return false to block the attacker from hitting the <a class="el" href="class_n_p_c.html">NPC</a>, and return true to use the vanilla code for whether the target can be hit. Returns true by default.  <a href="class_global_n_p_c.html#af674122e46a51277c14d22d1f92fd7ff">More...</a><br /></td></tr>
+<tr class="separator:af674122e46a51277c14d22d1f92fd7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae895bfd6332e1d2fadeab187867730dc"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#ae895bfd6332e1d2fadeab187867730dc">CanBeHitByProjectile</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
 <tr class="memdesc:ae895bfd6332e1d2fadeab187867730dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether an <a class="el" href="class_n_p_c.html">NPC</a> can be hit by the given projectile. Return true to allow hitting the <a class="el" href="class_n_p_c.html">NPC</a>, return false to block hitting the <a class="el" href="class_n_p_c.html">NPC</a>, and return null to use the vanilla code for whether the <a class="el" href="class_n_p_c.html">NPC</a> can be hit. Returns null by default.  <a href="class_global_n_p_c.html#ae895bfd6332e1d2fadeab187867730dc">More...</a><br /></td></tr>
 <tr class="separator:ae895bfd6332e1d2fadeab187867730dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -850,6 +853,52 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
     <tr><td class="paramname">npc</td><td></td></tr>
     <tr><td class="paramname">player</td><td></td></tr>
     <tr><td class="paramname">item</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="af674122e46a51277c14d22d1f92fd7ff" name="af674122e46a51277c14d22d1f92fd7ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af674122e46a51277c14d22d1f92fd7ff">&#9670;&nbsp;</a></span>CanBeHitByNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool GlobalNPC.CanBeHitByNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>attacker</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether a friendly <a class="el" href="class_n_p_c.html">NPC</a> can be hit by an <a class="el" href="class_n_p_c.html">NPC</a>. Return false to block the attacker from hitting the <a class="el" href="class_n_p_c.html">NPC</a>, and return true to use the vanilla code for whether the target can be hit. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+    <tr><td class="paramname">attacker</td><td></td></tr>
   </table>
   </dd>
 </dl>

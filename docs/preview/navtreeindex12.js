@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"class_moonlord_death_drama_1_1_moonlord_piece.html":[3,0,790,1],
+"class_mount.html":[3,0,796],
 "class_mount_1_1_mount_data.html":[3,0,796,0],
 "class_mount_1_1_mount_delegates_data.html":[3,0,796,1],
 "class_mount_i_d.html":[3,0,797],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "class_n_p_c_debuff_immunity_data.html#a09c62858d2383537df08de4da51bed9b":[3,0,848,1],
 "class_n_p_c_debuff_immunity_data.html#a164ab7150ef00bc2a2786c38a8da1afa":[3,0,848,2],
 "class_n_p_c_debuff_immunity_data.html#a52610200cee3fe8d9f11f17b4e02b407":[3,0,848,0],
-"class_n_p_c_debuff_immunity_data.html#ae8dcac94d27dcef250f549ad877f3717":[3,0,848,3],
-"class_n_p_c_definition.html":[3,0,849],
-"class_n_p_c_follow_state.html":[3,0,850]
+"class_n_p_c_debuff_immunity_data.html#ae8dcac94d27dcef250f549ad877f3717":[3,0,848,3]
 };
