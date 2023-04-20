@@ -746,6 +746,15 @@ Mods: {
 				DisplayName: Shimmer Showcase Conditions
 			}
 
+			ExampleCustomSwingSword: {
+				DisplayName: Example Custom Swing Sword
+				Tooltip:
+					'''
+					This is a sword with a custom swinging animation made with projectiles
+					Use more than once to cycle through attacks
+					'''
+			}
+
 			ExampleDresser: {
 				DisplayName: Example Dresser
 				Tooltip: This is a modded dresser.
@@ -820,6 +829,7 @@ Mods: {
 			MinionBossEye.DisplayName: Minion Boss Eye
 			ExampleSimpleMinion.DisplayName: Example Minion
 			SparklingBall.DisplayName: Sparkling Ball
+			ExampleCustomSwingProjectile.DisplayName: Example Custom Swing Projectile
 			ExampleDrillProjectile.DisplayName: Example Drill Projectile
 			ExampleExplosive.DisplayName: Example Explosive
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
