@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -110,6 +111,15 @@ namespace ExampleMod.Content.Projectiles
 
 				InitialAngle = targetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection; // Otherwise, we calculate the angle
 			}
+		}
+
+		public override void SendExtraAI(BinaryWriter writer) {
+			// Projectile.spriteDirection for this projectile is derived from the mouse position of the owner in OnSpawn, as such it needs to be synced. spriteDirection is not one of the fields automatically synced over the network. All Projectile.ai slots are used already, so we will sync it manually. 
+			writer.Write((sbyte)Projectile.spriteDirection);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader) {
+			Projectile.spriteDirection = reader.ReadSByte(); 
 		}
 
 		public override void AI() {

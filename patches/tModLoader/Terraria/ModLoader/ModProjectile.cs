@@ -77,7 +77,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Gets called when your projectiles spawns in world
+	/// Gets called when your projectiles spawns in world.<br/>
+	/// Called on the client or server spawning the projectile via Projectile.NewProjectile.<br/>
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source)
 	{

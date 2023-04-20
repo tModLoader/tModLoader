@@ -29,7 +29,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public Item Item => Entity;
 
 	/// <summary>
-	/// Shorthand for Item.type;
+	/// Shorthand for <c>Item.type</c>.
 	/// </summary>
 	public int Type => Item.type;
 
