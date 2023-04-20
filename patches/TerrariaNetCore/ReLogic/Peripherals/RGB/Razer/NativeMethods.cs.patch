@@ -1,0 +1,52 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Razer/NativeMethods.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Razer/NativeMethods.cs
+@@ -167,35 +_,39 @@
+ 		}
+ 	}
+ 
++	// Razer Chroma SDK Windows x64 fix
++	/*
+ 	public const string DLL_NAME = "RzChromaSDK.dll";
++	*/
++	public const string DLL_NAME = "RzChromaSDK64.dll";
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult Init();
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult UnInit();
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult CreateKeyboardEffect(KeyboardEffectType effect, ref CustomKeyboardEffect effectData, ref Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult CreateMouseEffect(MouseEffectType effect, ref CustomMouseEffect effectData, ref Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult CreateHeadsetEffect(HeadsetEffectType effect, ref CustomHeadsetEffect effectData, ref Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult CreateMousepadEffect(MousepadEffectType effect, ref CustomMousepadEffect effectData, ref Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult CreateKeypadEffect(KeypadEffectType effect, ref CustomKeypadEffect effectData, ref Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult CreateChromaLinkEffect(ChromaLinkEffectType effect, ref CustomChromaLinkEffect effectData, ref Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult DeleteEffect(Guid effectId);
+ 
+-	[DllImport("RzChromaSDK.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+ 	public static extern RzResult SetEffect(Guid effectId);
+ }

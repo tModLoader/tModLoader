@@ -1,0 +1,152 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/FancyClassicPlayerResourcesDisplaySet.cs
+@@ -3,11 +_,20 @@
+ using ReLogic.Content;
+ using ReLogic.Graphics;
+ using Terraria.DataStructures;
++using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.ResourceSets;
+ 
+ public class FancyClassicPlayerResourcesDisplaySet : IPlayerResourcesDisplaySet, IConfigKeyHolder
+ {
++	// Added by TML: [[
++	private PlayerStatsSnapshot preparedSnapshot;
++	private ResourceDrawSettings defaultResourceDrawSettings; // Replace uses of 'default' with this.
++
++	public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
++	// ]]
++
+ 	private float _currentPlayerLife;
+ 	private float _lifePerHeart;
+ 	private int _playerLifeFruitCount;
+@@ -74,14 +_,20 @@
+ 
+ 	private void DrawLifeBar(SpriteBatch spriteBatch)
+ 	{
++		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
++		if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, true, ref color, out bool drawText))
++			goto SkipDrawing;
++
+ 		Vector2 vector = new Vector2(Main.screenWidth - 300 + 4, 15f);
++		// Extra patch context.
+ 		if (_drawText) {
+ 			vector.Y += 6f;
+ 			DrawLifeBarText(spriteBatch, vector + new Vector2(-4f, 3f));
+ 		}
+ 
+ 		bool isHovered = false;
+-		ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
++
++		ResourceDrawSettings resourceDrawSettings = defaultResourceDrawSettings;
+ 		resourceDrawSettings.ElementCount = _heartCountRow1;
+ 		resourceDrawSettings.ElementIndexOffset = 0;
+ 		resourceDrawSettings.TopLeftAnchor = vector;
+@@ -91,7 +_,7 @@
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-		resourceDrawSettings = default(ResourceDrawSettings);
++		resourceDrawSettings = defaultResourceDrawSettings;
+ 		resourceDrawSettings.ElementCount = _heartCountRow2;
+ 		resourceDrawSettings.ElementIndexOffset = 10;
+ 		resourceDrawSettings.TopLeftAnchor = vector + new Vector2(0f, 28f);
+@@ -101,7 +_,7 @@
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-		resourceDrawSettings = default(ResourceDrawSettings);
++		resourceDrawSettings = defaultResourceDrawSettings;
+ 		resourceDrawSettings.ElementCount = _heartCountRow1;
+ 		resourceDrawSettings.ElementIndexOffset = 0;
+ 		resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 15f);
+@@ -111,7 +_,7 @@
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-		resourceDrawSettings = default(ResourceDrawSettings);
++		resourceDrawSettings = defaultResourceDrawSettings;
+ 		resourceDrawSettings.ElementCount = _heartCountRow2;
+ 		resourceDrawSettings.ElementIndexOffset = 10;
+ 		resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 15f) + new Vector2(0f, 28f);
+@@ -121,7 +_,10 @@
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-		_hoverLife = isHovered;
++		_hoverLife = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, true);
++
++		SkipDrawing:
++		ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, true, color, drawText);
+ 	}
+ 
+ 	private static void DrawLifeBarText(SpriteBatch spriteBatch, Vector2 topLeftAnchor)
+@@ -137,10 +_,14 @@
+ 
+ 	private void DrawManaBar(SpriteBatch spriteBatch)
+ 	{
++		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
++		if (!ResourceOverlayLoader.PreDrawResourceDisplay(preparedSnapshot, this, false, ref color, out bool drawText))
++			goto SkipDrawing;
++
+ 		Vector2 vector = new Vector2(Main.screenWidth - 40, 22f);
+ 		_ = _starCount;
+ 		bool isHovered = false;
+-		ResourceDrawSettings resourceDrawSettings = default(ResourceDrawSettings);
++		ResourceDrawSettings resourceDrawSettings = defaultResourceDrawSettings;
+ 		resourceDrawSettings.ElementCount = _starCount;
+ 		resourceDrawSettings.ElementIndexOffset = 0;
+ 		resourceDrawSettings.TopLeftAnchor = vector;
+@@ -150,7 +_,7 @@
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = Vector2.Zero;
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-		resourceDrawSettings = default(ResourceDrawSettings);
++		resourceDrawSettings = defaultResourceDrawSettings;
+ 		resourceDrawSettings.ElementCount = _starCount;
+ 		resourceDrawSettings.ElementIndexOffset = 0;
+ 		resourceDrawSettings.TopLeftAnchor = vector + new Vector2(15f, 16f);
+@@ -160,7 +_,10 @@
+ 		resourceDrawSettings.OffsetSpriteAnchor = Vector2.Zero;
+ 		resourceDrawSettings.OffsetSpriteAnchorByTexturePercentile = new Vector2(0.5f, 0.5f);
+ 		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
+-		_hoverMana = isHovered;
++		_hoverMana = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, false);
++
++		SkipDrawing:
++		ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, false, color, drawText);
+ 	}
+ 
+ 	private static void DrawManaText(SpriteBatch spriteBatch)
+@@ -246,14 +_,30 @@
+ 		_lifePerHeart = playerStatsSnapshot.LifePerSegment;
+ 		_currentPlayerLife = playerStatsSnapshot.Life;
+ 		_manaPerStar = playerStatsSnapshot.ManaPerSegment;
++
++		/*
+ 		_heartCountRow1 = Utils.Clamp((int)((float)playerStatsSnapshot.LifeMax / _lifePerHeart), 0, 10);
+ 		_heartCountRow2 = Utils.Clamp((int)((float)(playerStatsSnapshot.LifeMax - 200) / _lifePerHeart), 0, 10);
++		*/
++		_heartCountRow1 = Utils.Clamp(playerStatsSnapshot.AmountOfLifeHearts, 0, 10);
++		_heartCountRow2 = Utils.Clamp(playerStatsSnapshot.AmountOfLifeHearts - 10, 0, 10);
+ 		int lastHeartFillingIndex = (int)((float)playerStatsSnapshot.Life / _lifePerHeart);
+ 		_lastHeartFillingIndex = lastHeartFillingIndex;
+ 		_lastHeartPanelIndex = _heartCountRow1 + _heartCountRow2 - 1;
++
++		/*
+ 		_starCount = (int)((float)playerStatsSnapshot.ManaMax / _manaPerStar);
++		*/
++		_starCount = playerStatsSnapshot.AmountOfManaStars;
+ 		_currentPlayerMana = playerStatsSnapshot.Mana;
+ 		_lastStarFillingIndex = (int)(_currentPlayerMana / _manaPerStar);
++
++		preparedSnapshot = playerStatsSnapshot;
++
++		// Create a cached override for usages of 'default' to avoid copypasting.
++		defaultResourceDrawSettings = default;
++		defaultResourceDrawSettings.StatsSnapshot = preparedSnapshot;
++		defaultResourceDrawSettings.DisplaySet = this;
+ 	}
+ 
+ 	public void TryToHover()

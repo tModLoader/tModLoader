@@ -1,34 +1,171 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,10 +_,11 @@
+@@ -1,11 +_,12 @@
+ using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
- namespace Terraria.ID
- {
--	public class TileID
-+	public partial class TileID
- 	{
--		public static class Sets
-+		public static partial class Sets
- 		{
- 			public static class Conversion
- 			{
-@@ -91,7 +_,7 @@
- 				};
- 			}
+ namespace Terraria.ID;
  
--			public static SetFactory Factory = new SetFactory(625);
-+			public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
- 			public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
- 			public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
- 			public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616);
-@@ -186,7 +_,7 @@
- 			public static int[] TouchDamageVines = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10);
- 			public static int[] TouchDamageSands = Factory.CreateIntSet(0, 53, 15, 112, 15, 116, 15, 123, 15, 224, 15, 234, 15, 57, 15, 69, 15);
- 			public static int[] TouchDamageHot = Factory.CreateIntSet(0, 37, 20, 58, 20, 76, 20);
--			public static int[] TouchDamageOther = Factory.CreateIntSet(0, 48, 40, 232, 60);
-+			public static int[] TouchDamageOther = Factory.CreateIntSet(0, 48, 60, 232, 80);
- 			public static bool[] Falling = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495);
- 			public static bool[] BlockMergesWithMergeAllBlock = Factory.CreateBoolSet();
- 			public static bool[] OreMergesWithMud = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223);
+-public class TileID
++public partial class TileID
+ {
+-	public static class Sets
++	public static partial class Sets
+ 	{
+ 		public static class Conversion
+ 		{
+@@ -106,19 +_,75 @@
+ 			};
+ 		}
+ 
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then players will slip on that tile.
++		/// <br/> If players have Ice Skates (<see cref="Player.iceSkate"/>) equipped, however, they will be much faster on this tile.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IceSkateSlippery = Factory.CreateBoolSet(161, 162, 127, 163, 164, 200, 659);
++		/// <summary>
++		/// Set to true to prevent this tile from drawing with more detailed lighting, if the user is using a detailed lighting mode. If true, a single lighting value will be used to draw this tile instead of drawing the tile in 9 sections with different interpolated lighting values. <see cref="Traps"/> and <see cref="Boulder"/> are examples of tiles that use this. This is only relevant for tiles set as <see cref="Main.tileSolid"/>.
++		/// </summary>
+ 		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631);
++
++		// TML: Why would someone want to set this? Maybe it's for 1x1 tile entities?
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be compressed when syncing or saving the world.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// </summary>
+ 		public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a Gem Tree.
++		/// <br/> Vanilla only uses this for displaying a special message when using Lucy the Axe.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a tree trunk.
++		/// <br/> Tree trunks are a type of tile anchor (<see cref="Enums.AnchorType.Tree"/>), targettable by axes, and are replanted when using the <see cref="ItemID.AcornAxe"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be shaken on hit.
++		/// <br/> <strong>This set only applies to trees.</strong>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
++
+ 		public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
++		/// <summary>
++		/// Prevents a tile immediately below a tile of this type from being mineable.
++		/// <br/> Use <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/> or <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
++		/// <br/> To affect tile replace behavior in a similar manner, see <see cref="PreventsTileReplaceIfOnTopOfIt"/>
++		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
++		/// </summary>
+ 		public static bool[] PreventsTileRemovalIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634);
++		/// <summary>
++		/// Prevents a tile immediately below a tile of this type from being replaceable via the block swap feature.
++		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
++		/// <br/> To affect tile mining behavior in a similar manner, see <see cref="PreventsTileRemovalIfOnTopOfIt"/>
++		/// <br/> Used mostly by trees tiles.
++		/// </summary>
+ 		public static bool[] PreventsTileReplaceIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
+ 		public static bool[] CommonSapling = Factory.CreateBoolSet(false, 20, 590, 595, 615);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile has smooth borders and is drawn differently when hammered to be a half-block.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] AllBlocksWithSmoothBordersToResolveHalfBlockIssue = Factory.CreateBoolSet(false, 321, 157, 208, 159, 190, 80, 251, 202, 229, 56, 38, 39, 152, 118, 151, 148, 206, 119, 175, 46, 176, 45, 140, 347, 370, 121, 122, 680, 681, 682, 685, 686, 346, 687, 688, 689, 690, 691, 692, 160, 226, 54, 156, 155, 153, 154, 150, 250, 198, 273, 274, 325, 284, 348, 385, 327, 326, 345, 328, 329, 357, 369, 268, 261, 262, 255, 267, 260, 265, 258, 266, 259, 264, 257, 263, 256, 311, 431, 426, 433, 430, 434, 432, 272, 145, 146, 350, 127, 472, 473, 477, 478, 479, 492, 496, 507, 508, 563, 618);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be mined using a shovel.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633);
+ 		public static bool[] NonSolidSaveSlopes = Factory.CreateBoolSet(false, 131, 351);
+ 		public static bool[] ResetsHalfBrickPlacementAttempt = Factory.CreateBoolSet(true, 2, 23, 661, 60, 70, 199, 662, 109, 477, 492, 179, 512, 180, 513, 181, 514, 182, 515, 183, 516, 381, 517, 534, 535, 536, 537, 539, 540, 625, 626, 627, 628, 633);
+@@ -148,7 +_,15 @@
+ 			(ushort)579,
+ 			true
+ 		});
++		/// <summary>
++		/// Indicates that this tile can't replace another tile via the block swap feature.
++		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
++		/// </summary>
+ 		public static bool[] DoesntPlaceWithTileReplacement = Factory.CreateBoolSet(2, 60, 70, 109, 199, 23, 661, 662, 633);
++		/// <summary>
++		/// Indicates that this tile can't be replaced with another tile via the block swap feature.
++		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
++		/// </summary>
+ 		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
+ 		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
+ 		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
+@@ -159,14 +_,26 @@
+ 		public static bool[] DrawsWalls = Factory.CreateBoolSet(10, 54, 138, 664, 484, 388, 191, 137, 328, 162, 387, 48, 232, 127, 459, 541, 546);
+ 		public static ushort[] GemsparkFramingTypes = Factory.CreateUshortSet(0, 265, 265, 258, 258, 264, 264, 257, 257, 267, 267, 260, 260, 266, 266, 259, 259, 263, 263, 256, 256, 262, 262, 255, 255, 268, 268, 261, 261, 385, 385, 446, 446, 447, 447, 448, 448);
+ 		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
++
++		/// <summary>
++		/// If <c>!= 0</c> for a given tile type (<see cref="Tile.TileType"/>), then that tile functions as a conveyor belt.
++		/// <br/> A positive value pushes entities to the right, and a negative value to the left. The actual value does not matter, only the sign.
++		/// <br/> Defaults to <c>0</c>.
++		/// </summary>
+ 		public static int[] ConveyorDirection = Factory.CreateIntSet(0, 421, 1, 422, -1);
+ 		public static bool[] VineThreads = Factory.CreateBoolSet(382, 62, 115, 205, 52, 528, 636, 638);
+ 		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
+ 		public static bool[] HasSlopeFrames = Factory.CreateBoolSet(421, 422);
+ 		public static bool[] TileInteractRead = Factory.CreateBoolSet(55, 85, 425, 573);
++		/// <summary>
++		/// Set to true to prevent this tile from being drawn slightly warped to fit with nearby half bricks. Tiles such as <see cref="Traps"/> and <see cref="PlanterBox"/> use this. This is only relevant for tiles set as <see cref="Main.tileSolid"/> and not <see cref="Sets.NotReallySolid"/>. 
++		/// </summary>
+ 		public static bool[] IgnoresNearbyHalfbricksWhenDrawn = Factory.CreateBoolSet(380, 476, 235, 138, 664, 137, 484, 421, 422);
+ 		public static bool[] SwaysInWindBasic = Factory.CreateBoolSet(3, 20, 24, 61, 71, 73, 74, 83, 84, 110, 113, 201, 227, 529, 590, 595, 615, 624, 656, 637);
+ 		public static int[] DrawFlipMode = Factory.CreateIntSet(0, 3, 1, 13, 1, 20, 1, 24, 1, 49, 1, 372, 1, 646, 1, 50, 1, 52, 1, 61, 1, 62, 1, 71, 1, 73, 1, 74, 1, 81, 1, 82, 1, 83, 1, 84, 1, 91, 1, 92, 1, 93, 1, 110, 1, 113, 1, 115, 1, 135, 1, 141, 1, 165, 1, 174, 1, 201, 1, 205, 1, 227, 1, 270, 1, 271, 1, 382, 1, 184, 2, 185, 3, 528, 1, 529, 1, 590, 1, 595, 1, 615, 1, 624, 1, 638, 1, 636, 1, 656, 1);
++		/// <summary>
++		/// Indicates that this tile has an outline texture to be drawn to indicate that it is interactable. If set to true for a modded tile, <see cref="ModTile.HighlightTexture"/> will be used to autoload the highlight texture and must exist for the mod to load.
++		/// </summary>
+ 		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
+ 		public static bool[] AllTiles = Factory.CreateBoolSet(true);
+ 		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
+@@ -243,13 +_,33 @@
+ 		public static bool[] HousingWalls = Factory.CreateBoolSet(11, 389, 386);
+ 		public static bool[] BreakableWhenPlacing = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624);
+ 		public static bool[] TouchDamageDestroyTile = Factory.CreateBoolSet(32, 69, 352, 655);
++		/// <summary>
++		/// If true, the tile will apply the <see cref="BuffID.Suffocation"/> buff if the player is overlapping the tiles. Used by sand tiles.
++		/// </summary>
+ 		public static bool[] Suffocate = Factory.CreateBoolSet(53, 112, 116, 123, 224, 234);
++		/// <summary>
++		/// Applies the <see cref="BuffID.Burning"/> buff to any player touching the tile without <see cref="Player.fireWalk"/>. Used by <see cref="TileID.Meteorite"/>, <see cref="TileID.Hellstone"/>, <see cref="TileID.HellstoneBrick"/>, <see cref="TileID.CrispyHoneyBlock"/>, and <see cref="TileID.AncientHellstoneBrick"/>
++		/// </summary>
+ 		public static bool[] TouchDamageHot = Factory.CreateBoolSet(37, 58, 76, 684, 230);
++		/// <summary>
++		/// Applies the <see cref="BuffID.Bleeding"/> buff to any player touching the tile. The duration is random from 4 to 10 seconds. Used by <see cref="TileID.Spikes"/> and <see cref="TileID.WoodenSpikes"/>. Used in conjunction with <see cref="TouchDamageImmediate"/> to deal damage on contact.
++		/// </summary>
+ 		public static bool[] TouchDamageBleeding = Factory.CreateBoolSet(48, 232);
++		/// <summary>
++		/// Deals the provided amount of damage to any player in contact with the tile. Used by cactus, thorn, and spike tiles.
++		/// </summary>
+ 		public static int[] TouchDamageImmediate = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25);
+ 		public static bool[] Falling = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495);
++		// Conditions taken from Main.SetupTileMerge
++		/// <summary>
++		/// Set to true automatically for all tiles that are <see cref="Main.tileSolid"/> and not <see cref="Main.tileSolidTop"/>. These tiles will merge with other tiles that are <see cref="Main.tileBlendAll"/>.
++		/// <br/>You can force a value to be assigned using <see cref="BlockMergesWithMergeAllBlockOverride"/> in <see cref="ModType.SetStaticDefaults"/>, as this is set is populated afterwards, ignoring edits to it.
++		/// </summary>
+ 		public static bool[] BlockMergesWithMergeAllBlock = Factory.CreateBoolSet();
+ 		public static bool[] OreMergesWithMud = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223);
++		/// <summary>
++		/// Indicates that the tile is an ore. Used in worldgen code for various purposes and by Fairies.
++		/// </summary>
+ 		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
+ 		public static bool[] IsAContainer = Factory.CreateBoolSet(21, 467, 88);
+ 		public static bool[] IsAMechanism = Factory.CreateBoolSet(137, 443, 105, 349, 141, 142, 143, 42, 34, 130, 131, 506, 546, 557, 593, 594);

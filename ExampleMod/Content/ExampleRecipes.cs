@@ -91,13 +91,13 @@ namespace ExampleMod.Content
 				.AddTile(Mod, "ExampleWorkbench")
 
 				// Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
-				.AddCondition(Recipe.Condition.InDesert)
-				.AddCondition(Recipe.Condition.NearWater)
-				.AddCondition(Recipe.Condition.TimeNight)
+				.AddCondition(Condition.InDesert)
+				.AddCondition(Condition.NearWater)
+				.AddCondition(Condition.TimeNight)
 				// Adds a custom condition, that the player must be at <1/2 health for the recipe to work.
-				// The first argument is a NetworkText instance, i.e. localized text. The key used here is defined in 'Localization/*.hjson' files.
-				// The second argument uses a lambda expression to create a delegate, you can learn more about both in Google.
-				.AddCondition(NetworkText.FromKey("RecipeConditions.LowHealth"), r => Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax / 2)
+				// The key used here is defined in 'Localization/*.hjson' files.
+				// The second argument uses a lambda expression to create a delegate, you can learn more about lambdas in Google.
+				.AddCondition(Language.GetOrRegister("Mods.ExampleMod.Conditions.LowHealth"), () => Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax / 2)
 
 				// When you're done, call this to register the recipe. Note that there's a semicolon at the end of the chain.
 				.Register();
@@ -115,8 +115,8 @@ namespace ExampleMod.Content
 			Recipe baseRecipe = Recipe.Create(ModContent.ItemType<Items.ExampleItem>(), 10);
 			baseRecipe.AddIngredient(ItemID.Wood, 10)
 				.AddIngredient(ItemID.CopperCoin)
-				.AddCondition(Recipe.Condition.InBeach)
-				.AddCondition(Recipe.Condition.TimeDay)
+				.AddCondition(Condition.InBeach)
+				.AddCondition(Condition.TimeDay)
 				.Register();
 
 			// Start a new Recipe by cloning another recipe.
@@ -127,7 +127,7 @@ namespace ExampleMod.Content
 
 			// We can also remove properties from recipes like specific ingredients or conditions.
 			clonedRecipe.RemoveIngredient(ItemID.CopperCoin);
-			clonedRecipe.RemoveCondition(Recipe.Condition.InBeach);
+			clonedRecipe.RemoveCondition(Condition.InBeach);
 
 			// When you're done, call this to register the recipe.
 			clonedRecipe.Register();

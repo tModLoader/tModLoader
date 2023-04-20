@@ -1,93 +1,105 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,21 @@
+@@ -1,14 +_,25 @@
  using Microsoft.Xna.Framework;
+ using Terraria.ID;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using System;
 +using Terraria.DataStructures;
  
- namespace Terraria.GameContent.ItemDropRules
+ namespace Terraria.GameContent.ItemDropRules;
+ 
+ public static class CommonCode
  {
- 	public static class CommonCode
++	[Obsolete("Use DropItem(DropAttemptInfo, ...)", true)]
+ 	public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false)
  	{
-+		[Obsolete("Use DropItem(DropAttemptInfo, ...)", true)]
- 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
-+			_DropItemFromNPC(npc, itemId, stack, scattered);
-+		}
++		_DropItemFromNPC(npc, itemId, stack, scattered);
++	}
 +
-+		private static void _DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
--			if (itemId > 0 && itemId < 5125) {
-+			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
-+				/*
- 				int x = (int)npc.position.X + npc.width / 2;
- 				int y = (int)npc.position.Y + npc.height / 2;
- 				if (scattered) {
-@@ -15,12 +_,40 @@
- 				}
- 
- 				int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
-+				*/
-+				int itemIndex = DropItem(npc.Hitbox, npc.GetItemSource_Loot(), itemId, stack, scattered);
- 				ModifyItemDropFromNPC(npc, itemIndex);
++	// Split from the above method.
++	private static void _DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false)
++	{
+-		if (itemId > 0 && itemId < ItemID.Count) {
++		if (itemId > 0 && itemId < ItemLoader.ItemCount) {
++			/*
+ 			int x = (int)npc.position.X + npc.width / 2;
+ 			int y = (int)npc.position.Y + npc.height / 2;
+ 			if (scattered) {
+@@ -17,13 +_,47 @@
  			}
+ 
+ 			int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
++			*/
++			int itemIndex = DropItem(npc.Hitbox, npc.GetItemSource_Loot(), itemId, stack, scattered);
+ 			ModifyItemDropFromNPC(npc, itemIndex);
+ 		}
+ 	}
+ 
++	// Added by TML.
++	public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false)
++	{
++		if (info.npc != null) {
++			_DropItemFromNPC(info.npc, item, stack, scattered);
++		}
++		else {
++			DropItem(info.player.Hitbox, info.player.GetItemSource_OpenItem(info.item), item, stack, scattered);
++		}
++	}
++
++	// Added by TML.
++	public static int DropItem(Rectangle rectangle, IEntitySource entitySource, int itemId, int stack, bool scattered)
++	{
++		Vector2 pos = scattered ?
++			new Vector2(rectangle.X + Main.rand.Next(rectangle.Width + 1), rectangle.Y + Main.rand.Next(rectangle.Height + 1)) :
++			new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f);
++
++		return DropItem(pos, entitySource, itemId, stack);
++	}
++
++	// Added by TML.
++	public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack)
++	{
++		int number = Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);
++
++		if (Main.netMode == 1)
++			NetMessage.SendData(21, -1, -1, null, number, 1f);
++
++		return number;
++	}
++
+ 	public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true)
+ 	{
+-		if (itemId <= 0 || itemId >= ItemID.Count)
++		if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
+ 			return;
+ 
+ 		if (Main.netMode == 2) {
+@@ -37,7 +_,7 @@
+ 			Main.item[num].active = false;
+ 		}
+ 		else {
+-			DropItemFromNPC(npc, itemId, stack);
++			_DropItemFromNPC(npc, itemId, stack);
  		}
  
-+		public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false) {
-+			if (info.npc != null) {
-+				_DropItemFromNPC(info.npc, item, stack, scattered);
-+			}
-+			else {
-+				DropItem(info.player.Hitbox, info.player.GetItemSource_OpenItem(info.item), item, stack, scattered);
-+			}
-+		}
-+
-+		public static int DropItem(Rectangle rectangle, IEntitySource entitySource, int itemId, int stack, bool scattered) {
-+			Vector2 pos = scattered ?
-+				new Vector2(rectangle.X + Main.rand.Next(rectangle.Width + 1), rectangle.Y + Main.rand.Next(rectangle.Height + 1)) :
-+				new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f);
-+
-+			return DropItem(pos, entitySource, itemId, stack);
-+		}
-+
-+		public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack) {
-+			int number = Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);
-+
-+			if (Main.netMode == 1)
-+				NetMessage.SendData(21, -1, -1, null, number, 1f);
-+
-+			return number;
-+		}
-+
- 		public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true) {
--			if (itemId <= 0 || itemId >= 5125)
-+			if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
- 				return;
+ 		npc.value = 0f;
+@@ -45,7 +_,7 @@
  
- 			if (Main.netMode == 2) {
-@@ -34,14 +_,14 @@
- 				Main.item[num].active = false;
- 			}
- 			else {
--				DropItemFromNPC(npc, itemId, stack);
-+				_DropItemFromNPC(npc, itemId, stack);
- 			}
+ 	public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true)
+ 	{
+-		if (itemId <= 0 || itemId >= ItemID.Count)
++		if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
+ 			return;
  
- 			npc.value = 0f;
+ 		if (Main.netMode == 2) {
+@@ -58,7 +_,7 @@
+ 			}
+ 		}
+ 		else if (rng.Next(chanceDenominator) < chanceNumerator) {
+-			DropItemFromNPC(npc, itemId, stack);
++			_DropItemFromNPC(npc, itemId, stack);
  		}
  
- 		public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true) {
--			if (itemId <= 0 || itemId >= 5125)
-+			if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
- 				return;
- 
- 			if (Main.netMode == 2) {
-@@ -54,7 +_,7 @@
- 				}
- 			}
- 			else if (rng.Next(chanceDenominator) < chanceNumerator) {
--				DropItemFromNPC(npc, itemId, stack);
-+				_DropItemFromNPC(npc, itemId, stack);
- 			}
- 
- 			npc.value = 0f;
+ 		npc.value = 0f;

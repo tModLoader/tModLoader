@@ -1,0 +1,56 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsDisplay.cs
++++ src/tModLoader/Terraria/GameContent/UI/GameTipsDisplay.cs
+@@ -4,11 +_,12 @@
+ using ReLogic.Graphics;
+ using Terraria.GameInput;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI.Chat;
+ 
+ namespace Terraria.GameContent.UI;
+ 
+-public class GameTipsDisplay
++public partial class GameTipsDisplay
+ {
+ 	private class GameTip
+ 	{
+@@ -71,6 +_,8 @@
+ 		_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad."));
+ 		_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard."));
+ 		_lastTip = null;
++
++		Initialize();
+ 	}
+ 
+ 	public void Update()
+@@ -147,6 +_,7 @@
+ 	private void AddNewTip(double currentTime)
+ 	{
+ 		string textKey = "UI.Back";
++		/*
+ 		List<LocalizedText> list = new List<LocalizedText>();
+ 		list.AddRange(_tipsDefault);
+ 		if (PlayerInput.UsingGamepad)
+@@ -156,8 +_,21 @@
+ 
+ 		if (_lastTip != null)
+ 			list.Remove(_lastTip);
++		*/
++
++		var list = new List<GameTipData>(allTips);
++
++		if (PlayerInput.UsingGamepad)
++			list.RemoveAll(tip => tip.Mod is null && tip.TipText.Key.StartsWith("LoadingTips_Keyboard"));
++		else
++			list.RemoveAll(tip => tip.Mod is null && tip.TipText.Key.StartsWith("LoadingTips_GamePad"));
++
++		if (_lastTip != null)
++			list.RemoveAll(tip => tip.TipText == _lastTip);
++
++		list.RemoveAll(tip => !tip.isVisible);
+ 
+-		string key = (_lastTip = ((list.Count != 0) ? list[Main.rand.Next(list.Count)] : LocalizedText.Empty)).Key;
++		string key = (_lastTip = ((list.Count != 0) ? list[Main.rand.Next(list.Count)].TipText : LocalizedText.Empty)).Key;
+ 		if (Language.Exists(key))
+ 			textKey = key;
+ 

@@ -62,6 +62,15 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public List<Pair> ListOfPair2 = new List<Pair>();
 		public Pair pairExample2 = new Pair();
 
+		// In this example, the list defaults to collapse.
+		[Expand(false)]
+		public List<string> collapsedList = new List<string>() { "1", "2", "3", "4", "5" };
+
+		// This example collapses the list elements as well as the list itself.
+		[Expand(false, false)]
+		public List<Pair> collapsedListOfCollapsedObjects = new List<Pair>() { new Pair() { enabled = true, boost = 3 }, new Pair { enabled = true, boost = 6 } };
+
+		[Expand(false)]
 		public SimpleData simpleDataExample; // you can also initialize in the constructor, see initialization in public ModConfigShowcaseMisc() below.
 
 		// This annotation allows the UI to null out this class. You need to make sure to initialize fields without the NullAllowed annotation in constructor or initializer or you might have issues. Of course, if you allow nulls, you'll need to make sure the rest of your mod will handle them correctly. Try to avoid null unless you have a good reason to use them, as null objects will only complicate the rest of your code.

@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -27,16 +28,16 @@ namespace ExampleMod.Content.Tiles
 	/// </remarks>
 	public class ExamplePylonTileAdvanced : ModPylon
 	{
-		public const int CrystalHorizontalFrameCount = 2;
 		public const int CrystalVerticalFrameCount = 8;
-		public const int CrystalFrameHeight = 64;
 
 		public Asset<Texture2D> crystalTexture;
+		public Asset<Texture2D> crystalHighlightTexture;
 		public Asset<Texture2D> mapIcon;
 
 		public override void Load() {
 			// We'll still use the other Example Pylon's sprites, but we need to adjust the texture values first to do so.
 			crystalTexture = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_Crystal");
+			crystalHighlightTexture = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_CrystalHighlight");
 			mapIcon = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_MapIcon");
 		}
 
@@ -63,13 +64,13 @@ namespace ExampleMod.Content.Tiles
 
 			AddToArray(ref TileID.Sets.CountsAsPylon);
 
-			ModTranslation pylonName = CreateMapEntryName();
+			LocalizedText pylonName = CreateMapEntryName();
 			AddMapEntry(Color.Black, pylonName);
 		}
 
-		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+		public override NPCShop.Entry GetNPCShopEntry() {
 			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
-			return ModContent.ItemType<ExamplePylonItemAdvanced>();
+			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
@@ -89,8 +90,6 @@ namespace ExampleMod.Content.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			ModContent.GetInstance<AdvancedPylonTileEntity>().Kill(i, j);
-
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}
 
 		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
@@ -125,19 +124,32 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
+		public override void ModifyTeleportationPosition(TeleportPylonInfo destinationPylonInfo, ref Vector2 teleportationPosition) {
+			// Now, for the fun of it and for the showcase of this hook, let's put a player a bit into the air above the pylon when they teleport.
+			teleportationPosition = destinationPylonInfo.PositionInTiles.ToWorldCoordinates(8f, -32f);
+		}
+
+		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
+			// Same as the basic example, but our light will be the disco color like the crystal
+			r = Main.DiscoColor.R / 255f * 0.75f;
+			g = Main.DiscoColor.G / 255f * 0.75f;
+			b = Main.DiscoColor.B / 255f * 0.75f;
+		}
+
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			// This time, we'll ONLY draw the crystal if the pylon is active
 			// We need to check the framing here in order to guarantee we that we are trying to grab the TE ONLY when in the top left corner, where it is
 			// located. If we don't do this check, we will be attempting to grab the TE in position where it doesn't exist, throwing errors and causing
 			// loads of visual bugs.
-			if (drawData.tileFrameX % 36 == 0 && drawData.tileFrameY == 0 && TileEntity.ByPosition[new Point16(i, j)] is AdvancedPylonTileEntity { isActive: true }) {
+			if (drawData.tileFrameX % 36 == 0 && drawData.tileFrameY == 0 && TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity entity) && entity is AdvancedPylonTileEntity { isActive: true }) {
 				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 			}
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Main.DiscoColor, CrystalFrameHeight, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
+			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead
+			// Also, since we want the pylon crystal to be drawn at the same height as vanilla (since our tile is one tile smaller), we have to move up the crystal accordingly with the crystalOffset parameter
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalHighlightTexture, new Vector2(0f, -18f), Main.DiscoColor * 0.1f, Main.DiscoColor, 1, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
@@ -150,7 +162,7 @@ namespace ExampleMod.Content.Tiles
 			// otherwise, it acts as normal.
 			drawColor = !entity.isActive ? Color.Gray * 0.5f : drawColor;
 			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1, 1.5f), drawColor, deselectedScale, selectedScale);
-			DefaultMapClickHandle(mouseOver, pylonInfo, "Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced", ref mouseOverText);
+			DefaultMapClickHandle(mouseOver, pylonInfo, ModContent.GetInstance<ExamplePylonItemAdvanced>().DisplayName.Key, ref mouseOverText);
 		}
 	}
 }

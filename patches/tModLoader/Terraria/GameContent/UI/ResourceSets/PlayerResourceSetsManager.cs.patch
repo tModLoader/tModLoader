@@ -1,0 +1,59 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/PlayerResourceSetsManager.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/PlayerResourceSetsManager.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.ResourceSets;
+ 
+-public class PlayerResourceSetsManager
++public partial class PlayerResourceSetsManager
+ {
+ 	private Dictionary<string, IPlayerResourcesDisplaySet> _sets = new Dictionary<string, IPlayerResourcesDisplaySet>();
+ 	private IPlayerResourcesDisplaySet _activeSet;
+@@ -23,6 +_,10 @@
+ 	private void Configuration_OnLoad(Preferences obj)
+ 	{
+ 		_activeSetConfigKey = obj.Get("PlayerResourcesSet", "New");
++
++		// Store original resource set value.
++		_activeSetConfigKeyOriginal = _activeSetConfigKey;
++
+ 		if (_loadedContent)
+ 			SetActiveFromLoadedConfigKey();
+ 	}
+@@ -51,11 +_,19 @@
+ 
+ 	private void SetActive(string name)
+ 	{
++		/*
+ 		IPlayerResourcesDisplaySet playerResourcesDisplaySet = _sets.FirstOrDefault((KeyValuePair<string, IPlayerResourcesDisplaySet> pair) => pair.Key == name).Value;
+ 		if (playerResourcesDisplaySet == null)
+ 			playerResourcesDisplaySet = _sets.Values.First();
+ 
+ 		SetActiveFrame(playerResourcesDisplaySet);
++		*/
++
++		int index = accessKeys.FindIndex(s => s == name);
++		if (index < 0)
++			index = 0;
++
++		SetActiveFrameFromIndex(index);
+ 	}
+ 
+ 	private void SetActiveFrame(IPlayerResourcesDisplaySet set)
+@@ -77,6 +_,7 @@
+ 
+ 	public void CycleResourceSet()
+ 	{
++		/*
+ 		IPlayerResourcesDisplaySet lastFrame = null;
+ 		_sets.Values.FirstOrDefault(delegate (IPlayerResourcesDisplaySet frame) {
+ 			if (frame == _activeSet)
+@@ -90,5 +_,8 @@
+ 			lastFrame = _sets.Values.Last();
+ 
+ 		SetActiveFrame(lastFrame);
++		*/
++
++		SetActiveFrameFromIndex(++selectedSet % accessKeys.Count);
+ 	}
+ }

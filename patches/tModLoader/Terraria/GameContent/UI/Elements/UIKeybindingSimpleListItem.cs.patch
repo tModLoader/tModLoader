@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIKeybindingSimpleListItem.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIKeybindingSimpleListItem.cs
+@@ -34,6 +_,14 @@
+ 		position.Y += 2f + num;
+ 		string text = _GetTextFunction();
+ 		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale);
++
++		//TML: Scale text to fit since Lang.menu[86]/"Reset to Default" is too long in some languages.
++		if (stringSize.X > dimensions.Width) {
++			float scaleToFit = dimensions.Width / stringSize.X;
++			stringSize.X *= scaleToFit;
++			baseScale.X *= scaleToFit;
++		}
++
+ 		position.X = dimensions.X + dimensions.Width / 2f - stringSize.X / 2f;
+ 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text, position, value, 0f, Vector2.Zero, baseScale, num2);
+ 	}

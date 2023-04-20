@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,9 @@ public class tModPorter
 	}
 
 	public async Task ProcessProject(string projectPath, Action<ProgressUpdate>? updateProgress = null) {
+
+		Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
 		MakeBackups ??= !IsUnderGit(projectPath);
 		updateProgress ??= _ => { };
 		var start = DateTime.Now;
@@ -45,7 +49,7 @@ public class tModPorter
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
 		workspace.WorkspaceFailed += (o, e) => {
-			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure)
+			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.ToString().Contains("This mismatch may cause runtime failures"))
 				throw new Exception(e.Diagnostic.ToString());
 
 			updateProgress(new Warning(e.Diagnostic.ToString()));

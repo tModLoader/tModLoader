@@ -1,13 +1,12 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using ExampleMod.Content.Items.Armor.Vanity;
 using ExampleMod.Content.NPCs.MinionBoss;
-using ExampleMod.Content.Items.Armor.Vanity;
-using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -15,17 +14,14 @@ namespace ExampleMod.Content.Items.Consumables
 	public class MinionBossBag : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Treasure Bag");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
-
 			ItemID.Sets.BossBag[Type] = true; // This set is one that every boss bag should have, it, for example, lets our boss bag drop dev armor..
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			Item.ResearchUnlockCount = 3;
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;
@@ -38,7 +34,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
+			// We have to replicate the expert drops from MinionBossBody here
 
 			itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<MinionBossMask>(), 7));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1, 12, 16));

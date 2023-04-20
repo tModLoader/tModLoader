@@ -1,0 +1,126 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/ItemVariants.cs
++++ src/tModLoader/Terraria/GameContent/Items/ItemVariants.cs
+@@ -2,9 +_,13 @@
+ using System.Linq;
+ using Terraria.ID;
+ using Terraria.Localization;
++using ItemVariantCondition = Terraria.Condition;
+ 
+ namespace Terraria.GameContent.Items;
+ 
++/// <summary>
++/// Handles conditional variants for <see cref="Item"/>s, commonly used for secret seeds.
++/// </summary>
+ public static class ItemVariants
+ {
+ 	public class VariantEntry
+@@ -28,15 +_,42 @@
+ 	}
+ 
+ 	private static List<VariantEntry>[] _variants;
++
++	/// <summary>
++	/// Represents the stronger variant of items used on the Remix seed.
++	/// </summary>
+ 	public static ItemVariant StrongerVariant;
++
++	/// <summary>
++	/// Represents the weaker variant of items used on the Remix seed.
++	/// </summary>
+ 	public static ItemVariant WeakerVariant;
++
++	/// <summary>
++	/// Represents the rebalanced variant of items used on the "For the Worthy" seed.
++	/// </summary>
+ 	public static ItemVariant RebalancedVariant;
++
++	/// <summary>
++	/// Represents a variant of an item that is conditionally enabled.
++	/// </summary>
+ 	public static ItemVariant EnabledVariant;
++
++	/// <summary>
++	/// Represents a variant of a boss summoning item that is conditionally disabled.
++	/// </summary>
+ 	public static ItemVariant DisabledBossSummonVariant;
++
++	// Made private and changed to reference standard tML conditions
+-	public static ItemVariantCondition RemixWorld;
++	private static ItemVariantCondition RemixWorld;
+-	public static ItemVariantCondition GetGoodWorld;
++	private static ItemVariantCondition GetGoodWorld;
+-	public static ItemVariantCondition EverythingWorld;
++	private static ItemVariantCondition EverythingWorld;
+ 
++	/// <summary>
++	/// Gets all of the <see cref="ItemVariant"/>s associated with <paramref name="itemId"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to get <see cref="ItemVariant"/>s for.</param>
++	/// <returns>A list of all registered <see cref="ItemVariant"/>s for <paramref name="itemId"/>.</returns>
+ 	public static IEnumerable<VariantEntry> GetVariants(int itemId)
+ 	{
+ 		if (!_variants.IndexInRange(itemId))
+@@ -48,6 +_,12 @@
+ 
+ 	private static VariantEntry GetEntry(int itemId, ItemVariant variant) => GetVariants(itemId).SingleOrDefault((VariantEntry v) => v.Variant == variant);
+ 
++	/// <summary>
++	/// Registers an <see cref="ItemVariant"/> for the given <see cref="Item.type"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to register the <see cref="ItemVariant"/> for.</param>
++	/// <param name="variant">The <see cref="ItemVariant"/> to register to <paramref name="itemId"/>.</param>
++	/// <param name="conditions">The conditions under which <see cref="Item"/>s of type <paramref name="itemId"/> will have <paramref name="variant"/> applied. (<see cref="SelectVariant(int)"/>)</param>
+ 	public static void AddVariant(int itemId, ItemVariant variant, params ItemVariantCondition[] conditions)
+ 	{
+ 		VariantEntry variantEntry = GetEntry(itemId, variant);
+@@ -62,8 +_,20 @@
+ 		variantEntry.AddConditions(conditions);
+ 	}
+ 
++	/// <summary>
++	/// Determines if an <see cref="Item.type"/> has a particular <see cref="ItemVariant"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to check.</param>
++	/// <param name="variant">The <see cref="ItemVariant"/> to check for.</param>
++	/// <returns><see langword="true"/> if <paramref name="itemId"/> has a registered <see cref="ItemVariant"/> of type <paramref name="variant"/>, <see langword="false"/> otherwise.</returns>
++	/// <remarks>This method only checks if the given <see cref="ItemVariant"/> exists, not if it will be applied.</remarks>
+ 	public static bool HasVariant(int itemId, ItemVariant variant) => GetEntry(itemId, variant) != null;
+ 
++	/// <summary>
++	/// Determines which <see cref="ItemVariant"/> should be applied to an item of type <paramref name="itemId"/>.
++	/// </summary>
++	/// <param name="itemId">The <see cref="Item.type"/> to check.</param>
++	/// <returns>The <see cref="ItemVariant"/> to use under the current conditions, or <see langword="null"/> if no appropriate <see cref="ItemVariant"/> exists.</returns>
+ 	public static ItemVariant SelectVariant(int itemId)
+ 	{
+ 		if (!_variants.IndexInRange(itemId))
+@@ -84,14 +_,21 @@
+ 	static ItemVariants()
+ 	{
+ 		_variants = new List<VariantEntry>[ItemID.Count];
+-		StrongerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Stronger"));
++		StrongerVariant = new ItemVariant(Language.GetText("ItemVariant.Stronger"));
+-		WeakerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Weaker"));
++		WeakerVariant = new ItemVariant(Language.GetText("ItemVariant.Weaker"));
+-		RebalancedVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Rebalanced"));
++		RebalancedVariant = new ItemVariant(Language.GetText("ItemVariant.Rebalanced"));
+-		EnabledVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Enabled"));
++		EnabledVariant = new ItemVariant(Language.GetText("ItemVariant.Enabled"));
+-		DisabledBossSummonVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.DisabledBossSummon"));
++		DisabledBossSummonVariant = new ItemVariant(Language.GetText("ItemVariant.DisabledBossSummon"));
++
++		/*
+-		RemixWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
++		RemixWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
+-		GetGoodWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
++		GetGoodWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
+-		EverythingWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
++		EverythingWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
++		*/
++		RemixWorld = Condition.RemixWorld;
++		GetGoodWorld = Condition.ForTheWorthyWorld;
++		EverythingWorld = Condition.ZenithWorld;
++
+ 		AddVariant(112, StrongerVariant, RemixWorld);
+ 		AddVariant(157, StrongerVariant, RemixWorld);
+ 		AddVariant(1319, StrongerVariant, RemixWorld);

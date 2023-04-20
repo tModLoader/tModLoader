@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Content.DamageClasses;
 using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,10 +9,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleCustomDamageWeapon : ModItem
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword"; //TODO: remove when sprite is made for this
-
-		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.DamageType = ModContent.GetInstance<ExampleDamageClass>(); // Makes our item use our custom damage type.

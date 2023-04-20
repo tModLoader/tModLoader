@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Map/PingMapLayer.cs
 +++ src/tModLoader/Terraria/Map/PingMapLayer.cs
-@@ -10,6 +_,8 @@
+@@ -10,6 +_,9 @@
+ 
+ public class PingMapLayer : IMapLayer
  {
- 	public class PingMapLayer : IMapLayer
- 	{
-+		public bool Visible { get; set; } = true;
++	// Added by TML.
++	public bool Visible { get; set; } = true;
 +
- 		private struct Ping
- 		{
- 			public readonly Vector2 Position;
+ 	private struct Ping
+ 	{
+ 		public readonly Vector2 Position;

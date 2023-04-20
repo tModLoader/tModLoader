@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/ScreenShaderData.cs
++++ src/tModLoader/Terraria/Graphics/Shaders/ScreenShaderData.cs
+@@ -103,6 +_,14 @@
+ 		return this;
+ 	}
+ 
++	public ScreenShaderData UseImage(Asset<Texture2D> image, int index = 0, SamplerState samplerState = null)
++	{
++		_samplerStates[index] = samplerState;
++		_uAssetImages[index] = image;
++		_uCustomImages[index] = null;
++		return this;
++	}
++
+ 	public ScreenShaderData UseImage(Texture2D image, int index = 0, SamplerState samplerState = null)
+ 	{
+ 		_samplerStates[index] = samplerState;

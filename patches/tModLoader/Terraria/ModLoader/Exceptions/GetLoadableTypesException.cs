@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
-namespace Terraria.ModLoader.Exceptions
+namespace Terraria.ModLoader.Exceptions;
+
+class GetLoadableTypesException : Exception
 {
-	class GetLoadableTypesException : Exception
-	{
-		public override string HelpLink => "https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content#extendsfrommod";
+	public override string HelpLink => "https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content#extendsfrommod";
 
-		public GetLoadableTypesException(string message, Exception innerException) : base(message, innerException) {
-		}
+	public GetLoadableTypesException(string message, Exception innerException) : base(message, innerException)
+	{
 	}
 }

@@ -1,0 +1,40 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
+@@ -1,5 +_,7 @@
+ using System;
+ using System.Collections.Generic;
++using System.Reflection;
++using System.Runtime.InteropServices;
+ 
+ namespace ReLogic.Peripherals.RGB.Razer;
+ 
+@@ -8,6 +_,9 @@
+ 	private readonly List<RgbDevice> _devices = new List<RgbDevice>();
+ 	private bool _isInitialized;
+ 	private readonly VendorColorProfile _colorProfiles;
++#if NETCORE
++	private bool _initializationFailed;
++#endif
+ 
+ 	public RazerDeviceGroup(VendorColorProfile colorProfiles)
+ 	{
+@@ -18,6 +_,19 @@
+ 	{
+ 		if (_isInitialized)
+ 			return;
++
++#if NETCORE
++		if (_initializationFailed)
++			return;
++
++		// Part of Razer Chroma SDK Windows x64 fix in NativeMethods.cs
++		// Try to find dll in SafeDirectories
++		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
++			_initializationFailed = true;
++
++			return;
++		}
++#endif
+ 
+ 		try {
+ 			RzResult rzResult = NativeMethods.Init();

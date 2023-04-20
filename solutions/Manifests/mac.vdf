@@ -8,4 +8,5 @@
     "DepotPath" "."
     "recursive" "1"
   }
+  "FileExclusion" "*-win-x64.zip"
 }

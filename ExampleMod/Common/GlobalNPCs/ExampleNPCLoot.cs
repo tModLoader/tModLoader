@@ -4,6 +4,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.Items;
 using ExampleMod.Common.ItemDropRules.DropConditions;
+using System.Linq;
+using ExampleMod.Content.Items.Weapons;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
@@ -21,17 +23,8 @@ namespace ExampleMod.Common.GlobalNPCs
 				// Make it drop ExampleItem.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1));
 
-				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a fractional chance specified.
-				// The chanceDenominator int is used for the denominator part of the fractional chance of dropping this item.
-
-				// Drop an ExampleResearchPresent in journey mode with 2/7ths base chance.
-				IItemDropRule presentDropRule = new LeadingConditionRule(new ExampleJourneyModeDropCondition());
-
-				// ItemDropRule.Common(...) does not let you specify the numerator, so you can use new CommonDrop(...) instead.
-				// (1 by default if using ItemDropRule.Common)
-				// For example, if you had a chanceDenominator as 7 and a chanceNumerator as 2, then the chance the item would drop is 2/7 or about 28%.
-				presentDropRule.OnSuccess(new CommonDrop(ModContent.ItemType<ExampleResearchPresent>(), chanceDenominator: 7, chanceNumerator: 2));
-				npcLoot.Add(presentDropRule);
+				// Drop an ExampleResearchPresent in journey mode with 2/7ths base chance, but only in journey mode
+				npcLoot.Add(ItemDropRule.ByCondition(new ExampleJourneyModeDropCondition(), ModContent.ItemType<ExampleResearchPresent>(), chanceDenominator: 7, chanceNumerator: 2));
 			}
 
 			// We will now use the Guide to explain many of the other types of drop rules.
@@ -73,24 +66,28 @@ namespace ExampleMod.Common.GlobalNPCs
 				npcLoot.Add(ItemDropRule.NormalvsExpert(4269, 6, 1));
 				*/
 			}
+			// Editing an existing drop rule, but for a boss
+			// In addition to this code, we also do similar code in Common/GlobalItems/BossBagLoot.cs to edit the boss bag loot. Remember to do both if your edits should affect boss bags as well.
+			if (npc.type == NPCID.QueenBee) {
+				foreach (var rule in npcLoot.Get()) {
+					if (rule is DropBasedOnExpertMode dropBasedOnExpertMode && dropBasedOnExpertMode.ruleForNormalMode is OneFromOptionsNotScaledWithLuckDropRule oneFromOptionsDrop && oneFromOptionsDrop.dropIds.Contains(ItemID.BeeGun)) {
+						var original = oneFromOptionsDrop.dropIds.ToList();
+						original.Add(ModContent.ItemType<Content.Items.Accessories.WaspNest>());
+						oneFromOptionsDrop.dropIds = original.ToArray();
+					}
+				}
+			}
 
 			if (npc.type == NPCID.Crimera || npc.type == NPCID.Corruptor) {
 				// Here we make use of our own special rule we created: drop during daytime
-				ExampleDropCondition exampleDropCondition = new ExampleDropCondition();
-				IItemDropRule conditionalRule = new LeadingConditionRule(exampleDropCondition);
+				// Drop an item from the other evil with 33% chance
+				int itemType = npc.type == NPCID.Crimera ? ItemID.RottenChunk : ItemID.Vertebrae;
+				npcLoot.Add(ItemDropRule.ByCondition(new ExampleDropCondition(), itemType, chanceDenominator: 3));
+			}
 
-				int itemType = ItemID.Vertebrae;
-				if (npc.type == NPCID.Crimera) {
-					itemType = ItemID.RottenChunk;
-				}
-				// 33% chance to drop other corresponding item in addition
-				IItemDropRule rule = ItemDropRule.Common(itemType, chanceDenominator: 3);
-
-				// Apply our item drop rule to the conditional rule
-				conditionalRule.OnSuccess(rule);
-				// Add the rule
-				npcLoot.Add(conditionalRule);
-				// It will result in the drop being shown in the bestiary, but only drop if the condition is true.
+			// A simple example of using a 'standard' condition
+			if (npc.aiStyle == NPCAIStyleID.Slime) {
+				npcLoot.Add(ItemDropRule.ByCondition(Condition.TimeDay.ToDropCondition(ShowItemDropInUI.Always), ModContent.ItemType<ExampleSword>()));
 			}
 
 			//TODO: Add the rest of the vanilla drop rules!!

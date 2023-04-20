@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/Utilities/UnifiedRandom.cs
++++ src/tModLoader/Terraria/Utilities/UnifiedRandom.cs
+@@ -90,6 +_,13 @@
+ 		return ((double)num + 2147483646.0) / 4294967293.0;
+ 	}
+ 
++	/// <summary>
++	/// Generates a random value between <paramref name="minValue"/> (inclusive) and <paramref name="maxValue"/> (exclusive). <br/>For example <c>Next(4, 8)</c> can return 4, 5, 6, or 7. It will not return 8.
++	/// </summary>
++	/// <param name="minValue"></param>
++	/// <param name="maxValue"></param>
++	/// <returns></returns>
++	/// <exception cref="ArgumentOutOfRangeException"></exception>
+ 	public virtual int Next(int minValue, int maxValue)
+ 	{
+ 		if (minValue > maxValue)
+@@ -102,6 +_,12 @@
+ 		return (int)((long)(GetSampleForLargeRange() * (double)num) + minValue);
+ 	}
+ 
++	/// <summary>
++	/// Generates a random value between 0 (inclusive) and <paramref name="maxValue"/> (exclusive). <br/>For example <c>Next(4)</c> can return one of 4 values: 0, 1, 2, or 3. It will not return 4.
++	/// </summary>
++	/// <param name="maxValue"></param>
++	/// <returns></returns>
++	/// <exception cref="ArgumentOutOfRangeException"></exception>
+ 	public virtual int Next(int maxValue)
+ 	{
+ 		if (maxValue < 0)

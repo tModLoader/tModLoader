@@ -1,0 +1,43 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/ResourceDrawSettings.cs
++++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/ResourceDrawSettings.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI.ResourceSets;
+ 
+@@ -17,6 +_,12 @@
+ 	public Vector2 OffsetSpriteAnchor;
+ 	public Vector2 OffsetSpriteAnchorByTexturePercentile;
+ 
++	// Added by TML: [[
++	public PlayerStatsSnapshot StatsSnapshot;
++	public IPlayerResourcesDisplaySet DisplaySet;
++	public int ResourceIndexOffset;
++	// ]]
++
+ 	public void Draw(SpriteBatch spriteBatch, ref bool isHovered)
+ 	{
+ 		int elementCount = ElementCount;
+@@ -37,7 +_,19 @@
+ 			if (rectangle2.Contains(value))
+ 				isHovered = true;
+ 
++			ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(StatsSnapshot, DisplaySet, elementIndex + ResourceIndexOffset, texture) {
++				position = position,
++				source = rectangle,
++				origin = origin,
++				scale = new Vector2(drawScale),
++				SpriteBatch = spriteBatch
++			};
++
++			ResourceOverlayLoader.DrawResource(drawContext);
++
++			/*
+ 			spriteBatch.Draw(texture.Value, position, rectangle, Color.White, 0f, origin, drawScale, SpriteEffects.None, 0f);
++			*/
+ 			topLeftAnchor += OffsetPerDraw + rectangle.Size() * OffsetPerDrawByTexturePercentile;
+ 		}
+ 	}

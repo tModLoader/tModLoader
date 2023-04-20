@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonDropWithRerolls.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDropWithRerolls.cs
-@@ -19,7 +_,7 @@
+@@ -21,7 +_,7 @@
  
- 			ItemDropAttemptResult result;
- 			if (flag) {
--				CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
-+				CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
- 				result = default(ItemDropAttemptResult);
- 				result.State = ItemDropAttemptResultState.Success;
- 				return result;
+ 		ItemDropAttemptResult result;
+ 		if (flag) {
+-			CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
++			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
+ 			result = default(ItemDropAttemptResult);
+ 			result.State = ItemDropAttemptResultState.Success;
+ 			return result;

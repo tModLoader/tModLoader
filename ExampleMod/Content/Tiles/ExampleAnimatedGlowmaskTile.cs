@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -38,10 +37,6 @@ namespace ExampleMod.Content.Tiles
 			// The height of a group of animation frames for this tile
 			// Defaults to 0, which disables animations
 			AnimationFrameHeight = 56;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>());
 		}
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
@@ -86,10 +81,6 @@ namespace ExampleMod.Content.Tiles
 
 	internal class ExampleAnimatedGlowmaskTileItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.VoidMonolith);
 			Item.createTile = ModContent.TileType<ExampleAnimatedGlowmaskTile>();

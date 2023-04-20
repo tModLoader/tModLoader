@@ -5,26 +5,29 @@
 +
 +#nullable enable
 +
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
++//TML: Made internal in favor of string contexts on every entity source.
+-public static class ItemSourceID
++internal static class ItemSourceID
  {
-+	//TML: Internalized in favor of string contexts on every entity source.
--	public static class ItemSourceID
-+	internal static class ItemSourceID
- 	{
- 		public const int None = 0;
- 		public const int SetBonus_Nebula = 1;
-@@ -10,5 +_,14 @@
- 		public const int GrandDesignOrMultiColorWrench = 5;
- 		public const int TorchGod = 6;
- 		public const int Count = 7;
+ 	public const int None = 0;
+ 	public const int SetBonus_Nebula = 1;
+@@ -13,4 +_,17 @@
+ 	public const int Shimmer = 8;
+ 	public const int Digesting = 9;
+ 	public static readonly int Count = 10;
 +
-+		public static string? ToContextString(int itemSourceId) => itemSourceId switch {
-+			SetBonus_Nebula => nameof(SetBonus_Nebula),
-+			LuckyCoin => nameof(LuckyCoin),
-+			PlayerDropItemCheck => nameof(PlayerDropItemCheck),
-+			GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
-+			PlayerDeath or TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_(Death and TorchGod)' being added.
-+			_ => null,
-+		};
- 	}
++	public static string? ToContextString(int itemSourceId) => itemSourceId switch {
++		SetBonus_Nebula => nameof(SetBonus_Nebula),
++		LuckyCoin => nameof(LuckyCoin),
++		PlayerDropItemCheck => nameof(PlayerDropItemCheck),
++		GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
++		SortingWithNoSpace => nameof(SortingWithNoSpace),
++		Shimmer => nameof(Shimmer),
++		Digesting => nameof(Digesting),
++
++		PlayerDeath or TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_(Death and TorchGod)' being added.
++		_ => null,
++	};
  }

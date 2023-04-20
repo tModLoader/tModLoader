@@ -2,26 +2,29 @@
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/Conditions.cs
 @@ -2,7 +_,7 @@
  
- namespace Terraria.GameContent.ItemDropRules
- {
--	public class Conditions
-+	public partial class Conditions
- 	{
- 		public class NeverTrue : IItemDropRuleCondition, IProvideItemConditionDescription
- 		{
-@@ -659,12 +_,15 @@
- 				return false;
+ namespace Terraria.GameContent.ItemDropRules;
  
- 			switch (info.npc.type) {
-+				case int _ when ID.NPCID.Sets.CannotDropSouls[info.npc.type]:
-+				/*
- 				case 1:
- 				case 13:
- 				case 14:
- 				case 15:
- 				case 121:
- 				case 535:
-+				*/
- 					return false;
- 				default:
- 					if (!Main.hardMode || info.npc.lifeMax <= 1 || info.npc.friendly || (double)info.npc.position.Y <= Main.rockLayer * 16.0 || info.npc.value < 1f)
+-public class Conditions
++public partial class Conditions
+ {
+ 	public class NeverTrue : IItemDropRuleCondition, IProvideItemConditionDescription
+ 	{
+@@ -807,14 +_,18 @@
+ 			return false;
+ 
+ 		switch (info.npc.type) {
++			case int _ when ID.NPCID.Sets.CannotDropSouls[info.npc.type]:
++			/*
+ 			case 1:
+ 			case 13:
+ 			case 14:
+ 			case 15:
+ 			case 121:
+ 			case 535:
++			*/
+ 				return false;
+ 			default:
++				// Extra patch context.
+ 				if (Main.remixWorld) {
+ 					if (!Main.hardMode || info.npc.lifeMax <= 1 || info.npc.friendly || info.npc.value < 1f)
+ 						return false;

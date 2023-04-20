@@ -1,0 +1,52 @@
+--- src/TerrariaNetCore/Terraria/UI/FancyErrorPrinter.cs
++++ src/tModLoader/Terraria/UI/FancyErrorPrinter.cs
+@@ -5,6 +_,7 @@
+ using System.Windows.Forms;
+ using ReLogic.Content;
+ using ReLogic.OS;
++using Terraria.ModLoader.Engine;
+ 
+ namespace Terraria.UI;
+ 
+@@ -38,8 +_,7 @@
+ 			AppendSuggestions(stringBuilder, suggestions);
+ 			stringBuilder.AppendLine();
+ 			IncludeOriginalMessage(stringBuilder, exception);
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(stringBuilder.ToString());
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
+ 		}
+ 	}
+ 
+@@ -72,8 +_,7 @@
+ 			AppendSuggestions(stringBuilder, list);
+ 			stringBuilder.AppendLine();
+ 			IncludeOriginalMessage(stringBuilder, exception);
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(stringBuilder.ToString());
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
+ 		}
+ 	}
+ 
+@@ -106,8 +_,7 @@
+ 			AppendSuggestions(stringBuilder, list);
+ 			stringBuilder.AppendLine();
+ 			IncludeOriginalMessage(stringBuilder, exception);
+-			ShowTheBox(stringBuilder.ToString());
+-			Console.WriteLine(exception);
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
+ 		}
+ 	}
+ 
+@@ -125,9 +_,11 @@
+ 		}
+ 	}
+ 
++	/* Use ErrorReporting.MessageBoxShow instead
+ 	private static void ShowTheBox(string preparedMessage)
+ 	{
+ 		if (Platform.IsWindows && !Main.dedServ)
+ 			MessageBox.Show(preparedMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+ 	}
++	*/
+ }

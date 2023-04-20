@@ -1,15 +1,34 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIKeybindingListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIKeybindingListItem.cs
-@@ -104,6 +_,12 @@
- 					return Lang.menu[162].Value;
- 				case "MouseRight":
- 					return Lang.menu[163].Value;
-+				case "MouseMiddle":
-+					return Language.GetTextValue("tModLoader.MouseMiddle");
-+				case "MouseXButton1":
-+					return Language.GetTextValue("tModLoader.MouseXButton1");
-+				case "MouseXButton2":
-+					return Language.GetTextValue("tModLoader.MouseXButton2");
- 				case "Up":
- 					return Lang.menu[148].Value;
- 				case "Down":
+@@ -4,6 +_,7 @@
+ using Terraria.GameContent.UI.Chat;
+ using Terraria.GameInput;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ 
+@@ -104,11 +_,23 @@
+ 	{
+ 		switch (_keybind) {
+ 			default:
++				// Handle mod keybinds.
++				if (KeybindLoader.modKeybinds.TryGetValue(_keybind, out var modKeybind))
++					return modKeybind.DisplayName.Value;
++			
+ 				return _keybind;
+ 			case "MouseLeft":
+ 				return Lang.menu[162].Value;
+ 			case "MouseRight":
+ 				return Lang.menu[163].Value;
++			// Support for extra mouse buttons: [[
++			case TriggerNames.MouseMiddle:
++				return Language.GetTextValue($"tModLoader.{TriggerNames.MouseMiddle}");
++			case TriggerNames.MouseXButton1:
++				return Language.GetTextValue($"tModLoader.{TriggerNames.MouseXButton1}");
++			case TriggerNames.MouseXButton2:
++				return Language.GetTextValue($"tModLoader.{TriggerNames.MouseXButton2}");
++			// ]]
+ 			case "Up":
+ 				return Lang.menu[148].Value;
+ 			case "Down":

@@ -6,67 +6,67 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.Graphics.Renderers
- {
-@@ -30,6 +_,7 @@
- 		}
+ namespace Terraria.Graphics.Renderers;
  
- 		public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color)) {
-+			/*
- 			if (!drawPlayer.ShouldNotDraw) {
- 				_drawData.Clear();
- 				_dust.Clear();
-@@ -48,6 +_,9 @@
- 				CreateOutlines(alpha, scale, borderColor);
- 				PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
- 			}
-+			*/
-+
-+			DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, alpha: alpha, scale: scale, headOnly: true);
- 		}
+@@ -32,6 +_,7 @@
  
- 		private void CreateOutlines(float alpha, float scale, Color borderColor) {
-@@ -110,6 +_,10 @@
- 		}
- 
- 		public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f) {
-+			DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
-+		}
-+
-+		private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float alpha = 1f, float scale = 1f, bool headOnly = false) {
- 			if (drawPlayer.ShouldNotDraw)
- 				return;
- 
-@@ -117,7 +_,15 @@
+ 	public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color))
+ 	{
++		/*
+ 		if (!drawPlayer.ShouldNotDraw) {
  			_drawData.Clear();
  			_dust.Clear();
- 			_gore.Clear();
+@@ -50,6 +_,9 @@
+ 			CreateOutlines(alpha, scale, borderColor);
+ 			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
+ 		}
++		*/
 +
-+			if (headOnly) {
-+				drawinfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
++		DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, alpha: alpha, scale: scale, headOnly: true);
+ 	}
+ 
+ 	private void CreateOutlines(float alpha, float scale, Color borderColor)
+@@ -114,6 +_,12 @@
+ 
+ 	public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f)
+ 	{
++		DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
++	}
++
++	// A split to add some not publicly exposed parameters.
++	private void DrawPlayerInternal(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float alpha = 1f, float scale = 1f, bool headOnly = false)
++	{
+ 		if (drawPlayer.ShouldNotDraw)
+ 			return;
+ 
+@@ -121,8 +_,30 @@
+ 		_drawData.Clear();
+ 		_dust.Clear();
+ 		_gore.Clear();
++
++		if (headOnly) {
++			drawInfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
++			goto SkipBoringSetup;
++		}
++		
+ 		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
++		SkipBoringSetup:
++
++		/*
+ 		DrawPlayer_UseNormalLayers(ref drawInfo);
++		*/
++
++		PlayerLoader.ModifyDrawInfo(ref drawInfo);
++
++		foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawInfo)) {
++			if (!headOnly || layer.IsHeadLayer) {
++				layer.DrawWithTransformationAndChildren(ref drawInfo);
 +			}
-+			else {
--			drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
-+				drawinfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
-+			}
++		}
 +
-+			/*
- 			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
-@@ -198,6 +_,15 @@
- 			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_38_EyebrellaCloud(ref drawinfo);
-+			*/
-+			PlayerLoader.ModifyDrawInfo(ref drawinfo);
++		//TML: Copied from UseNormalLayers
++		PlayerDrawLayers.DrawPlayer_MakeIntoFirstFractalAfterImage(ref drawInfo);
 +
-+			foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawinfo)) {
-+				if (!headOnly || layer.IsHeadLayer) {
-+					layer.DrawWithTransformationAndChildren(ref drawinfo);
-+				}
-+			}
-+
- 			PlayerDrawLayers.DrawPlayer_MakeIntoFirstFractalAfterImage(ref drawinfo);
- 			PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawinfo);
- 			if (scale != 1f)
+ 		PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawInfo);
+ 		if (scale != 1f)
+ 			PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, scale);

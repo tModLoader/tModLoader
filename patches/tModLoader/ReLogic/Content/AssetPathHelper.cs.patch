@@ -1,0 +1,58 @@
+--- src/TerrariaNetCore/ReLogic/Content/AssetPathHelper.cs
++++ src/tModLoader/ReLogic/Content/AssetPathHelper.cs
+@@ -1,30 +_,32 @@
+ using System;
++using System.Diagnostics;
+ using System.IO;
+ 
+ namespace ReLogic.Content;
+ 
++//TML: 'StringComparison.Ordinal' added everywhere.	
+ public static class AssetPathHelper
+ {
+ 	public static string CleanPath(string path)
+ 	{
+-		path = path.Replace('/', '\\');
+-		path = path.Replace("\\.\\", "\\");
+-		while (path.StartsWith(".\\")) {
++		path = path.Replace("/", "\\", StringComparison.Ordinal);
++		path = path.Replace("\\.\\", "\\", StringComparison.Ordinal);
++		while (path.StartsWith(".\\", StringComparison.Ordinal)) {
+ 			path = path.Substring(".\\".Length);
+ 		}
+ 
+-		while (path.EndsWith("\\.")) {
++		while (path.EndsWith("\\.", StringComparison.Ordinal)) {
+ 			path = ((path.Length <= "\\.".Length) ? "\\" : path.Substring(0, path.Length - "\\.".Length));
+ 		}
+ 
+ 		int num;
+ 		for (num = 1; num < path.Length; num = CollapseParentDirectory(ref path, num, "\\..\\".Length)) {
+-			num = path.IndexOf("\\..\\", num);
++			num = path.IndexOf("\\..\\", num, StringComparison.Ordinal);
+ 			if (num < 0)
+ 				break;
+ 		}
+ 
+-		if (path.EndsWith("\\..")) {
++		if (path.EndsWith("\\..", StringComparison.Ordinal)) {
+ 			int num2 = path.Length - "\\..".Length;
+ 			if (num2 > 0)
+ 				CollapseParentDirectory(ref path, num2, "\\..".Length);
+@@ -34,14 +_,13 @@
+ 			path = string.Empty;
+ 
+ 		if (Path.DirectorySeparatorChar != '\\')
+-			path = path.Replace('\\', Path.DirectorySeparatorChar);
+-
++			path = path.Replace("\\", Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+ 		return path;
+ 	}
+ 
+ 	private static int CollapseParentDirectory(ref string path, int position, int removeLength)
+ 	{
+-		int num = path.LastIndexOf('\\', position - 1) + 1;
++		int num = path.LastIndexOf("\\", position - 1, StringComparison.Ordinal) + 1;
+ 		path = path.Remove(num, position - num + removeLength);
+ 		return Math.Max(num - 1, 1);
+ 	}

@@ -1,18 +1,44 @@
 --- src/TerrariaNetCore/Terraria/ID/GoreID.cs
 +++ src/tModLoader/Terraria/ID/GoreID.cs
-@@ -1,10 +_,12 @@
+@@ -1,12 +_,38 @@
 +using Terraria.ModLoader;
 +
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
+-public static class GoreID
++public static partial class GoreID
  {
--	public static class GoreID
-+	public static partial class GoreID
+-	public static class Sets
++	public static partial class Sets
  	{
--		public static class Sets
-+		public static partial class Sets
- 		{
--			public static SetFactory Factory = new SetFactory(1275);
-+			public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount);
- 			public static int[] SpecialAI = Factory.CreateIntSet(0, 860, 1, 892, 1, 893, 1, 825, 2, 826, 2, 827, 2, 1014, 1, 1015, 1, 1016, 1, 910, 3, 911, 3, 912, 3, 913, 3, 914, 3, 915, 3, 916, 3, 917, 3, 918, 3, 919, 3, 920, 3, 921, 3, 922, 3, 923, 3, 924, 3, 925, 3, 1113, 3, 1114, 3, 1115, 3, 1116, 3, 1117, 3, 1118, 3, 1119, 3, 1120, 3, 1121, 3, 1248, 3, 1249, 3, 1250, 3, 1251, 3, 1252, 3, 1253, 3, 1254, 3, 1255, 3, 1257, 3, 1007, 3, 1008, 3, 1087, 4, 1088, 4, 1089, 4, 1090, 4, 1091, 5, 1092, 5, 1093, 5, 1202, 6, 1203, 6, 1204, 6, 1225, 7);
- 			public static int[] DisappearSpeed = Factory.CreateIntSet(1, 1007, 3, 1008, 10, 1024, 7, 1025, 7, 1026, 7);
- 			public static int[] DisappearSpeedAlpha = Factory.CreateIntSet(1, 1007, 3, 1008, 10, 1024, 7, 1025, 7, 1026, 7, 1218, 3);
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount);
++
++		/// <summary>
++		/// If non-zero for a given gore type (<see cref="Gore.type"/>), that gore will follow special AI rules.
++		/// <br/> For <c>1</c>, this gore will act like a piece of sail, such as the ones dropped by a Flying Dutchman.
++		/// <br/> For <c>2</c>, this gore will act like chimney smoke. This is used by the smoke particles created by the <see cref="TileID.Chimney"/>.
++		/// <br/> For <c>3</c>, this gore will act like a falling leaf. This is used for all vanilla tree leaves.
++		/// <br/> For <c>4</c>, this gore will float along the ground. This is used by grounded graveyard fog.
++		/// <br/> For <c>5</c>, this gore will float in the air. This is used by airborne graveyard fog.
++		/// <br/> For <c>6</c>, this gore will slowly diffuse into open air. This is used by the fog created by the <see cref="TileID.FogMachine"/>.
++		/// <br/> For <c>7</c>, this gore will quickly fade out. This is used by the spark particles created by the <see cref="ProjectileID.VoltBunny"/>.
++		/// <br/> Defaults to <c>0</c>.
++		/// </summary>
+ 		public static int[] SpecialAI = Factory.CreateIntSet(0, 860, 1, 892, 1, 893, 1, 825, 2, 826, 2, 827, 2, 1014, 1, 1015, 1, 1016, 1, 910, 3, 911, 3, 912, 3, 913, 3, 914, 3, 915, 3, 916, 3, 917, 3, 918, 3, 919, 3, 920, 3, 921, 3, 922, 3, 923, 3, 924, 3, 925, 3, 1113, 3, 1114, 3, 1115, 3, 1116, 3, 1117, 3, 1118, 3, 1119, 3, 1120, 3, 1121, 3, 1248, 3, 1249, 3, 1250, 3, 1251, 3, 1252, 3, 1253, 3, 1254, 3, 1255, 3, 1257, 3, 1278, 3, 1007, 3, 1008, 3, 1087, 4, 1088, 4, 1089, 4, 1090, 4, 1091, 5, 1092, 5, 1093, 5, 1202, 6, 1203, 6, 1204, 6, 1225, 7);
++
++		/// <summary>
++		/// The value subtracted from <see cref="Gore.timeLeft"/> every tick for a given gore type (<see cref="Gore.type"/>).
++		/// <br/> When <see cref="Gore.timeLeft"/> hits <c>0</c>, it will begin to fade away according to the value in <see cref="DisappearSpeedAlpha"/>.
++		/// <br/> Defaults to <c>1</c>.
++		/// </summary>
+ 		public static int[] DisappearSpeed = Factory.CreateIntSet(1, 1007, 3, 1008, 10, 1024, 7, 1025, 7, 1026, 7);
++
++		/// <summary>
++		/// The value added to <see cref="Gore.alpha"/> every tick after <see cref="Gore.timeLeft"/> hits <c>0</c> for a given gore type (<see cref="Gore.type"/>).
++		/// <br/> When <see cref="Gore.alpha"/> hits <c>255</c>, it will become inactive.
++		/// <br/> Defaults to <c>1</c>.
++		/// </summary>
+ 		public static int[] DisappearSpeedAlpha = Factory.CreateIntSet(1, 1007, 3, 1008, 10, 1024, 7, 1025, 7, 1026, 7, 1218, 3);
+ 	}
+ 

@@ -1,15 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorkshopSelectResourcePackToPublish.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopSelectResourcePackToPublish.cs
 @@ -25,6 +_,12 @@
- 		private List<ResourcePack> _entries = new List<ResourcePack>();
- 		private bool skipDraw;
+ 	private List<ResourcePack> _entries = new List<ResourcePack>();
+ 	private bool skipDraw;
  
-+		// Added by TML.
-+		public UIState PreviousUIState {
-+			get => _menuToGoBackTo;
-+			set => _menuToGoBackTo = value;
-+		}
++	// Added by TML.
++	public UIState PreviousUIState {
++		get => _menuToGoBackTo;
++		set => _menuToGoBackTo = value;
++	}
 +
- 		public UIWorkshopSelectResourcePackToPublish(UIState menuToGoBackTo) {
- 			_menuToGoBackTo = menuToGoBackTo;
- 		}
+ 	public UIWorkshopSelectResourcePackToPublish(UIState menuToGoBackTo)
+ 	{
+ 		_menuToGoBackTo = menuToGoBackTo;

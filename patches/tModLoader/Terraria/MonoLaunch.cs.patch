@@ -1,41 +1,47 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,9 @@
+@@ -6,7 +_,10 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
 +using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Engine;
  
- internal static class MonoLaunch
- {
-@@ -14,6 +_,12 @@
- 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+ namespace Terraria;
  
- 	private static void Main(string[] args) {
-+		if (args.Length > 0 && args[0] == "-tModPorter") {
-+			tModPorter.Program.Main(args.Skip(1).ToArray()).GetAwaiter().GetResult();
+@@ -16,7 +_,16 @@
+ 
+ 	private static void Main(string[] args)
+ 	{
++		// Launch tModPorter instead if it needed.
++		if (Array.IndexOf(args, "-tModPorter") is int i && i >= 0) {
++			tModPorter.Program.Main(args.Skip(i + 1).ToArray()).GetAwaiter().GetResult();
 +			return;
 +		}
 +
 +		Thread.CurrentThread.Name = "Entry Thread";
- 		/*
++
+ #if NETCORE
++		NativeLibraries.SetNativeLibraryPath(NativesDir);
+ 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
+ #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
- 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
-@@ -34,7 +_,22 @@
+@@ -34,6 +_,28 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
++
 +		// Spawn a thread to use configured default stack size instead of the one reported in the binary
 +		// https://social.msdn.microsoft.com/Forums/office/en-US/7132b30d-9792-4bf3-87ec-7198052e4ed3/main-thread-stack-size?forum=csharpgeneral
 +		// post processing the binary with `editbin /stack:400000 tModLoader.dll` should do it for the main thread but it's annoying
 +		// and duplicates the size defined in the runtimeconfig
 +		// @TODO: Temporary change, make it cross platform, linux crashes if FNA loop is not in the REAL Main thread
 +		//        Atm linux and mac use for main also the env variable so it works
-+		var LocalLaunchGame = () => {
- 		Program.LaunchGame(args, monoArgs: true);
-+		};
++
++		var LocalLaunchGame = () => Main_End(args);
++
 +		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 +			new Thread(new ThreadStart(LocalLaunchGame)).Start();
 +			// Move the dummy entry thread to background
@@ -43,27 +49,33 @@
 +		} else {
 +			LocalLaunchGame();
 +		}
++	}
++
++	// A split to avoid adding indentation.
++	private static void Main_End(string[] args)
++	{
+ 		Program.LaunchGame(args, monoArgs: true);
  	}
  
- #if NETCORE
-@@ -49,7 +_,7 @@
- 					return handle;
- 				}
+@@ -57,17 +_,17 @@
+ 			if (assemblies.TryGetValue(name, out var handle))
+ 				return handle;
  
--				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
-+				Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
+-			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
++			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
  
- 				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
- 				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
-@@ -59,9 +_,9 @@
- 					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
- 				}
- 
--				Console.WriteLine($"\tattempting load {match}");
-+				Logging.tML.Debug($"\tattempting load {match}");
- 				handle = NativeLibrary.Load(match);
--				Console.WriteLine("\tsuccess");
-+				Logging.tML.Debug("\tsuccess");
- 				return assemblies[name] = handle;
+ 			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
+ 			if (files.FirstOrDefault() is not string path) {
+-				Console.WriteLine("\tnot found");
++				Logging.tML.Debug("\tnot found");
+ 				return IntPtr.Zero;
  			}
- 			catch (DirectoryNotFoundException e) {
+ 
+-			Console.WriteLine($"\tattempting load {path}");
++			Logging.tML.Debug($"\tattempting load {path}");
+ 			handle = NativeLibrary.Load(path);
+-			Console.WriteLine("\tsuccess");
++			Logging.tML.Debug("\tsuccess");
+ 			return assemblies[name] = handle;
+ 		}
+ 	}

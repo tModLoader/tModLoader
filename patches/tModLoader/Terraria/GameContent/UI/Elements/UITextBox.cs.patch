@@ -2,10 +2,10 @@
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UITextBox.cs
 @@ -5,7 +_,7 @@
  
- namespace Terraria.GameContent.UI.Elements
+ namespace Terraria.GameContent.UI.Elements;
+ 
+-internal class UITextBox : UITextPanel<string>
++public class UITextBox : UITextPanel<string>
  {
--	internal class UITextBox : UITextPanel<string>
-+	public class UITextBox : UITextPanel<string>
- 	{
- 		private int _cursor;
- 		private int _frameCount;
+ 	private int _cursor;
+ 	private int _frameCount;

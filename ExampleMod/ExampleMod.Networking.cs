@@ -1,7 +1,8 @@
-using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Common.Players;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 
 namespace ExampleMod
 {
@@ -10,8 +11,9 @@ namespace ExampleMod
 	{
 		internal enum MessageType : byte
 		{
-			ExamplePlayerSyncPlayer,
-			ExampleTeleportToStatue
+			ExampleStatIncreasePlayerSync,
+			ExampleTeleportToStatue,
+			ExampleDodge
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -20,18 +22,25 @@ namespace ExampleMod
 			MessageType msgType = (MessageType)reader.ReadByte();
 
 			switch (msgType) {
-				// This message syncs ExamplePlayer.exampleLifeFruits
-				case MessageType.ExamplePlayerSyncPlayer:
+				// This message syncs ExampleStatIncreasePlayer.exampleLifeFruits and ExampleStatIncreasePlayer.exampleManaCrystals
+				case MessageType.ExampleStatIncreasePlayerSync:
 					byte playernumber = reader.ReadByte();
-					ExampleLifeFruitPlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleLifeFruitPlayer>();
-					examplePlayer.exampleLifeFruits = reader.ReadInt32();
-					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
+					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
+					examplePlayer.ReceivePlayerSync(reader);
+
+					if (Main.netMode == NetmodeID.Server) {
+						// Forward the changes to the other clients
+						examplePlayer.SyncPlayer(-1, whoAmI, false);
+					}
 					break;
 				case MessageType.ExampleTeleportToStatue:
 					if (Main.npc[reader.ReadByte()].ModNPC is ExamplePerson person && person.NPC.active) {
 						person.StatueTeleport();
 					}
 
+					break;
+				case MessageType.ExampleDodge:
+					ExampleDamageModificationPlayer.HandleExampleDodgeMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

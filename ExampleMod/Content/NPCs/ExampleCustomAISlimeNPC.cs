@@ -41,8 +41,9 @@ namespace ExampleMod.Content.NPCs
 		public ref float AI_FlutterTime => ref NPC.ai[2];
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Flutter Slime"); // Automatic from localization files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
+
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
 
 			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
@@ -234,6 +235,23 @@ namespace ExampleMod.Content.NPCs
 				AI_State = (float)ActionState.Fall;
 				AI_Timer = 0;
 			}
+		}
+
+		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) {
+			// We can use ModifyCollisionData to customize collision damage.
+			// Here we double damage when this npc is in the falling state and the victim is almost directly below the npc
+			if (AI_State == (float)ActionState.Fall) {
+				// We can modify npcHitbox directly to implement a dynamic hitbox, but in this example we make a new hitbox to apply bonus damage
+				// This math creates a hitbox focused on the bottom center of the original 36x36 hitbox:
+				// --> ☐☐☐
+				//     ☐☒☐
+				Rectangle extraDamageHitbox = new Rectangle(npcHitbox.X + 12, npcHitbox.Y + 18, npcHitbox.Width - 24, npcHitbox.Height - 18);
+				if (victimHitbox.Intersects(extraDamageHitbox)) {
+					damageMultiplier *= 2f;
+					Main.NewText("You got stomped");
+				}
+			}
+			return true;
 		}
 	}
 }
