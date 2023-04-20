@@ -19,7 +19,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	private uint _candSelection;
 	private uint _candPageSize;
 
-	public uint SelectedPage => _candSelection/_candPageSize;
+	public uint SelectedPage => _candPageSize == 0 ? 0 : _candSelection / _candPageSize;
 
 	public override string CompositionString => _compString;
 
