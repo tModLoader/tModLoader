@@ -336,30 +336,6 @@
  			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceFlower].Value, vector + drawinfo.helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceFlower;
  			drawinfo.DrawDataCache.Add(item);
-@@ -2175,6 +_,23 @@
- 			}
- 		}
-
-+		public static void Hack_DrawPlayer_27_HeldItem(ref PlayerDrawSet drawInfo) {
-+			// Adds more fine control of drawing with PreDrawHeldItem and PostDrawHeldItem hooks
-+			// Retain the reference to the current draw data.
-+			// We replace the the list with an empty one to collect the data for just the held item, to be passed to the mod item.
-+			List<DrawData> heldItemDrawData = new List<DrawData>();
-+			List<DrawData> retainedDrawData = drawInfo.DrawDataCache;
-+			drawInfo.DrawDataCache = heldItemDrawData;
-+
-+			// Sets up draw data, only adds vanilla data if the (mod)item decides to draw
-+			DrawPlayer_27_HeldItem(ref drawInfo);
-+
-+			// Restore original draw data and merge new (+vanilla) held item data
-+			drawInfo.DrawDataCache = retainedDrawData;
-+			ItemLoader.PostDrawHeldItem(drawInfo.heldItem, ref drawInfo, heldItemDrawData);
-+			drawInfo.DrawDataCache.AddRange(heldItemDrawData);
-+		}
-+
- 		public static void DrawPlayer_27_HeldItem(ref PlayerDrawSet drawinfo) {
- 			if (drawinfo.drawPlayer.JustDroppedAnItem)
- 				return;
 @@ -2165,7 +_,7 @@
  
  	public static void DrawPlayer_25_Shield(ref PlayerDrawSet drawinfo)
@@ -369,17 +345,41 @@
  			return;
  
  		Vector2 zero = Vector2.Zero;
-@@ -2228,6 +_,10 @@
- 			if (drawinfo.shadow != 0f || drawinfo.drawPlayer.frozen || !(flag || flag2) || num <= 0 || drawinfo.drawPlayer.dead || heldItem.noUseGraphic || (drawinfo.drawPlayer.wet && heldItem.noWet) || (drawinfo.drawPlayer.happyFunTorchTime && drawinfo.drawPlayer.inventory[drawinfo.drawPlayer.selectedItem].createTile == 4 && drawinfo.drawPlayer.itemAnimation == 0))
- 				return;
-
-+			if (!ItemLoader.PreDrawHeldItem(drawinfo.heldItem, ref drawinfo)) {
-+				return;
-+			}
+@@ -2245,6 +_,23 @@
+ 		}
+ 	}
+ 
++	public static void Hack_DrawPlayer_27_HeldItem(ref PlayerDrawSet drawInfo) {
++		// Adds more fine control of drawing with PreDrawHeldItem and PostDrawHeldItem hooks
++		// Retain the reference to the current draw data.
++		// We replace the the list with an empty one to collect the data for just the held item, to be passed to the mod item.
++		List<DrawData> heldItemDrawData = new List<DrawData>();
++		List<DrawData> retainedDrawData = drawInfo.DrawDataCache;
++		drawInfo.DrawDataCache = heldItemDrawData;
 +
- 			_ = drawinfo.drawPlayer.name;
- 			Color color = new Color(250, 250, 250, heldItem.alpha);
- 			Vector2 vector = Vector2.Zero;
++		// Sets up draw data, only adds vanilla data if the (mod)item decides to draw
++		DrawPlayer_27_HeldItem(ref drawInfo);
++
++		// Restore original draw data and merge new (+vanilla) held item data
++		drawInfo.DrawDataCache = retainedDrawData;
++		ItemLoader.PostDrawHeldItem(drawInfo.heldItem, ref drawInfo, heldItemDrawData);
++		drawInfo.DrawDataCache.AddRange(heldItemDrawData);
++	}
++
+ 	public static void DrawPlayer_27_HeldItem(ref PlayerDrawSet drawinfo)
+ 	{
+ 		if (drawinfo.drawPlayer.JustDroppedAnItem)
+@@ -2301,6 +_,10 @@
+ 		if (drawinfo.shadow != 0f || drawinfo.drawPlayer.frozen || !(flag || flag2) || num <= 0 || drawinfo.drawPlayer.dead || heldItem.noUseGraphic || (drawinfo.drawPlayer.wet && heldItem.noWet) || (drawinfo.drawPlayer.happyFunTorchTime && drawinfo.drawPlayer.inventory[drawinfo.drawPlayer.selectedItem].createTile == 4 && drawinfo.drawPlayer.itemAnimation == 0))
+ 			return;
+ 
++		if (!ItemLoader.PreDrawHeldItem(drawinfo.heldItem, ref drawinfo)) {
++			return;
++		}
++
+ 		_ = drawinfo.drawPlayer.name;
+ 		Color color = new Color(250, 250, 250, heldItem.alpha);
+ 		Vector2 vector = Vector2.Zero;
 @@ -2468,12 +_,16 @@
  						origin5 = Vector2.Zero;
  					}

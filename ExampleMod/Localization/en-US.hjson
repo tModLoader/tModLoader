@@ -799,6 +799,11 @@ Mods: {
 				DisplayName: Active Sound Showcase
 				Tooltip: ""
 			}
+
+			ExampleCustomDrawnSword: {
+				DisplayName: Example Custom Drawn Sword
+				Tooltip: This is a modded sword with a changing color and custom use and hold styles.
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

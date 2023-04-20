@@ -1897,7 +1897,7 @@ public static class ItemLoader
 	public static bool PreDrawHeldItem(Item item, ref PlayerDrawSet drawInfo) {
 		bool doDraw = item.ModItem?.PreDrawHeldItem(ref drawInfo) ?? true;
 
-		foreach (GlobalItem g in HookPreDrawHeldItem.Enumerate(item.globalItems))
+		foreach (var g in HookPreDrawHeldItem.Enumerate(item))
 		{
 			doDraw &= g.PreDrawHeldItem(item, ref drawInfo);
 		}
@@ -1911,7 +1911,7 @@ public static class ItemLoader
 	public static void PostDrawHeldItem(Item item, ref PlayerDrawSet drawSet, List<DrawData> holdItemDrawData) {
 		item.ModItem?.PostDrawHeldItem(ref drawSet, holdItemDrawData);
 
-		foreach (GlobalItem g in HookPostDrawHeldItem.Enumerate(item.globalItems))
+		foreach (var g in HookPostDrawHeldItem.Enumerate(item))
 		{
 			g.PostDrawHeldItem(item, ref drawSet, holdItemDrawData);
 		}

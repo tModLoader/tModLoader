@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,17 +12,9 @@ namespace ExampleMod.Content.Items.Weapons;
 
 public class ExampleCustomDrawnSword : ModItem
 {
-
 	/*
 	 * Does not take into account gravity direction nor a velocity limit.
 	 */
-
-	public override void SetStaticDefaults() {
-		DisplayName.SetDefault("Custom Drawn Sword");
-		Tooltip.SetDefault("This is a modded sword with a changing color and custom use and hold styles."); // The (English) text shown below your weapon's name.
-
-		CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-	}
 
 	public override void SetDefaults() {
 		Item.width = 40;
@@ -61,7 +52,7 @@ public class ExampleCustomDrawnSword : ModItem
 		pos += player.direction == 1f ? new Vector2(player.width, 0) : new Vector2(-size.X, 0); // Adjust for direction
 		pos += new Vector2(0, 10); // Add some offset
 
-		hitbox = new Rectangle((int)(pos.X), (int)(pos.Y), (int)size.X, (int)size.Y);
+		hitbox = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 	}
 
 	public override bool PreDrawHeldItem(ref PlayerDrawSet drawInfo) {
@@ -85,6 +76,7 @@ public class ExampleCustomDrawnSword : ModItem
 		              new Vector2(player.width * 0.5f, 0); // Top Center of player
 
 		pos += new Vector2(20 * player.direction, 20); // Some offset
+		pos = new Vector2((int)pos.X, (int)pos.Y); // cast to int to avoid subpixel movement.
 
 		SpriteEffects effect = player.direction == 1f
 			? SpriteEffects.None
@@ -112,7 +104,8 @@ public class ExampleCustomDrawnSword : ModItem
 	private void DrawHold(ref PlayerDrawSet drawInfo) {
 		Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
-		Vector2 pos = drawInfo.drawPlayer.position - Main.screenPosition + new Vector2(10, 0);
+		// Casting to int here is important, it prevents a visual bug from subpixel movement.
+		Vector2 pos = new Vector2((int)(drawInfo.drawPlayer.position.X - Main.screenPosition.X + 10), (int)(drawInfo.drawPlayer.position.Y - Main.screenPosition.Y));
 
 		DrawData drawData = new DrawData(
 			texture,
