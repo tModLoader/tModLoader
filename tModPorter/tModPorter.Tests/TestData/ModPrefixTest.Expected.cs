@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 public class ModPrefixTest : ModPrefix
 {
 #if COMPILE_ERROR
-	public override void AutoStaticDefaults()/* tModPorter Note: Removed. Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization */ { /* Empty */ }
+	public override void AutoStaticDefaults()/* tModPorter Note: Removed. Nothing to override anymore. Use hjson files to adjust localization */ { /* Empty */ }
 #endif
 
 	public override SetStaticDefaults() => return; // DisplayName.SetDefault("Test");
