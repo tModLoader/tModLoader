@@ -5,25 +5,24 @@ using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.DataStructures;
-using static Terraria.Player;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ExampleMod.Content.Projectiles
 {
-	// Example CustomSwingSword is an example of a sword with a custom swing using a held projectile
+	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
 	// This is great if you want to make melee weapons with complex swing behaviour
 	// Note that this projectile only covers 2 relatively simple swings, everything else is up to you
+	// Aside from the custom animation, the custom collision code in Colliding is very important to this weapon
 	public class ExampleCustomSwingProjectile : ModProjectile
 	{
 		// We define some constants that determine the swing range of the sword
-		// Not that we use multipliers a here since that simplifies the amount of tweaks for these interactions
+		// Not that we use multipliers here since that simplifies the amount of tweaks for these interactions
 		// You could change the values or even replace them entirely, but they are tweaked with looks in mind
 		private const float SWINGRANGE = 1.67f * (float)Math.PI; // The angle a swing attack covers (300 deg)
 		private const float FIRSTHALFSWING = 0.45f; // How much of the swing happens before it reaches the target angle (in relation to swingRange)
-		private const float SPINRANGE = 3.5f * (float)Math.PI; // The angle a spin attack covers (540 degrees)
+		private const float SPINRANGE = 3.5f * (float)Math.PI; // The angle a spin attack covers (630 degrees)
 		private const float WINDUP = 0.15f; // How far back the player's hand goes when winding their attack (in relation to swingRange)
 		private const float UNWIND = 0.4f; // When should the sword start disappearing
-
 		private const float SPINTIME = 2.5f; // How much longer a spin is than a swing
 
 		private enum AttackType // Which attack is being performed
@@ -65,12 +64,16 @@ namespace ExampleMod.Content.Projectiles
 
 		// We define timing functions for each stage, taking into account melee attack speed
 		// Note that you can change this to suit the need of your projectile
-		private float prepTime => 12f / Owner.GetTotalAttackSpeed<MeleeDamageClass>();
-		private float execTime => 12f / Owner.GetTotalAttackSpeed<MeleeDamageClass>();
-		private float hideTime => 12f / Owner.GetTotalAttackSpeed<MeleeDamageClass>();
+		private float prepTime => 12f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+		private float execTime => 12f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+		private float hideTime => 12f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
 
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleCustomSwingSword"; // Use texture of item as projectile texture
 		private Player Owner => Main.player[Projectile.owner];
+
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+		}
 
 		public override void SetDefaults() {
 			Projectile.width = 46; // Hitbox width of projectile
@@ -175,7 +178,7 @@ namespace ExampleMod.Content.Projectiles
 		// Do a similar collision check for tiles
 		public override void CutTiles() {
 			Vector2 start = Owner.MountedCenter;
-			Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
+			Vector2 end = start + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 			Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
 		}
 
@@ -200,11 +203,10 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.rotation = InitialAngle + Projectile.spriteDirection * Progress; // Set projectile rotation
 
 			// Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-			Owner.SetCompositeArmFront(true, CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-			Vector2 armPosition = Owner.GetFrontHandPosition(CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
+			Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+			Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
-			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. This should be removed once the vanilla bug is fixed.
-			armPosition.Y -= Owner.gfxOffY;
+			armPosition.Y += Owner.gfxOffY;
 			Projectile.Center = armPosition; // Set projectile to arm position
 			Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers
 

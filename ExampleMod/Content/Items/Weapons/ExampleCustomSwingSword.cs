@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -9,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
-	// Example CustomSwingSword is an example of a sword with a custom swing using a held projectile
+	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
 	// This is great if you want to make melee weapons with complex swing behaviour
 	public class ExampleCustomSwingSword : ModItem
 	{
@@ -18,15 +16,16 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 			// Common Properties
-			Item.width = 46; // Hitbox width of item
-			Item.height = 48; // Hitbox height of item
+			Item.width = 46;
+			Item.height = 48;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
 			Item.rare = ItemRarityID.Green;
 
 			// Use Properties
-			// Note that this is not as important since we will be overriding it in the projectile
-			// This is because each attack takes a different amount of time to execute
+			// Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that. 
+			// Each attack takes a different amount of time to execute
 			// Conforming to the item useTime and useAnimation makes it much harder to design
+			// It does, however, affect the item tooltip, so don't leave it out.
 			Item.useTime = 40;
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot;
@@ -45,7 +44,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
-			int proj = Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
 			attackType = (attackType + 1) % 2; // Increment attackType to make sure next swing is different
 			comboExpireTimer = 0; // Every time the weapon is used, we reset this so the combo does not expire
 			return false; // return false to prevent original projectile from being shot
