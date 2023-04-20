@@ -19,7 +19,7 @@
  	private struct SHFILEOPSTRUCT
  	{
  		public IntPtr hwnd;
-@@ -115,11 +_,19 @@
+@@ -115,11 +_,21 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
@@ -34,8 +34,10 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 +
++#if NETCORE
 +	[DllImport("user32.dll")]
 +	public static extern IntPtr GetDC(IntPtr hWnd);
++#endif
  
  	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
  	public static extern bool TranslateMessage(ref Message message);
