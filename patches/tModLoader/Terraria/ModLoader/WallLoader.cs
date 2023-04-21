@@ -270,7 +270,7 @@ public static class WallLoader
 		ModWall modWall = GetWall(type);
 
 		if (modWall != null) {
-			if(!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
+			if (!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
 				return false;
 		}
 

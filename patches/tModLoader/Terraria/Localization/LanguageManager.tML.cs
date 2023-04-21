@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ReLogic.Content.Sources;
 
 namespace Terraria.Localization;
@@ -111,7 +109,7 @@ public partial class LanguageManager
 				hash.Add(arg);
 
 			return hash.ToHashCode();
-}
+		}
 	}
 
 	private Dictionary<TextBinding, LocalizedText> boundTextCache = new();

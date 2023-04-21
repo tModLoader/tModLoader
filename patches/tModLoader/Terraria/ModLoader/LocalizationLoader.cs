@@ -193,7 +193,7 @@ public static class LocalizationLoader
 				}
 
 				// Parse HJSON and convert to standard JSON
-  				string jsonString;
+				string jsonString;
 				try {
 					jsonString = HjsonValue.Parse(translationFileContents).ToString();
 				}
@@ -301,7 +301,7 @@ public static class LocalizationLoader
 
 		DateTime modLastModified = File.GetLastWriteTime(mod.File.path);
 
-		if(mod.TranslationForMods != null) {
+		if (mod.TranslationForMods != null) {
 			foreach (var translatedMod in mod.TranslationForMods) {
 				ModLoader.TryGetMod(translatedMod, out Mod otherMod);
 				if (otherMod == null) {
@@ -335,16 +335,14 @@ public static class LocalizationLoader
 				string translationFileContents = streamReader.ReadToEnd();
 				(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 				string fixedFileName = translationFile.Name;
-				if(culture == GameCulture.DefaultCulture && !fixedFileName.Contains("en-US"))
-				{
+				if (culture == GameCulture.DefaultCulture && !fixedFileName.Contains("en-US")) {
 					fixedFileName = Path.Combine(Path.GetDirectoryName(fixedFileName), "en-US.hjson").Replace("\\", "/");
 				}
 
 				if (!localizationFilesByCulture.TryGetValue(culture, out var fileList))
 					localizationFilesByCulture[culture] = fileList = new();
 
-				if (inputMod == mod)
-				{
+				if (inputMod == mod) {
 					desiredCultures.Add(culture);
 
 					// Check translationFile.Name instead of fixedFileName since this is used for modified and file cleanup.
@@ -360,11 +358,12 @@ public static class LocalizationLoader
 				catch (Exception e) {
 					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
 				}
-				
+
 				// Language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
-				if (!fileList.Any(x => x.path == fixedFileName))
+				if (!fileList.Any(x => x.path == fixedFileName)) {
 					fileList.Add(new(fixedFileName, prefix, entries));
+				}
 				else {
 					// If file exists, then we are merging.
 					// Resulting entries will have new entries added
@@ -410,8 +409,7 @@ public static class LocalizationLoader
 		foreach (var culture in targetCultures) {
 			IEnumerable<LocalizationEntry> localizationEntriesForCulture = localizationFilesByCulture[culture].SelectMany(f => f.Entries);
 			Dictionary<string, string> localizationsForCulture = new();
-			foreach (var localizationEntry in localizationEntriesForCulture)
-			{
+			foreach (var localizationEntry in localizationEntriesForCulture) {
 				if (localizationEntry.value != null) {
 					string key = localizationEntry.key;
 					if (key.EndsWith(".$parentVal")) {
@@ -445,7 +443,7 @@ public static class LocalizationLoader
 			string originalPath = Path.Combine(sourceFolder, name);
 			string newPath = originalPath + ".legacy";
 
-			if(File.Exists(originalPath)) // File might have already been deleted
+			if (File.Exists(originalPath)) // File might have already been deleted
 				File.Move(originalPath, newPath);
 		}
 	}
@@ -473,7 +471,7 @@ public static class LocalizationLoader
 
 		for (int i = baseFile.Entries.Count - 1; i >= 0; i--) {
 			var entry = baseFile.Entries[i];
-			if(entry.type == JsonType.Object) {
+			if (entry.type == JsonType.Object) {
 				string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
 				if (prefixCounts.TryGetValue(key, out var count) && count <= minimumNumberOfEntriesInObject) {
 					// Remove objects with too few children. Should this be ignored if comments exist?
@@ -567,7 +565,8 @@ public static class LocalizationLoader
 		RecurseThrough(jsonObjectEng, prefix);
 		return existingKeys;
 
-		void RecurseThrough(WscJsonObject original, string prefix) {
+		void RecurseThrough(WscJsonObject original, string prefix)
+		{
 			int index = 0;
 			foreach (var item in original) {
 				if (item.Value.JsonType == JsonType.Object) {

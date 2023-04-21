@@ -179,7 +179,7 @@ public static class NPCLoader
 	private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
 	public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 	{
-		if(IsModNPC(npc)) {
+		if (IsModNPC(npc)) {
 			bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
 			foreach (var type in npc.ModNPC.SpawnModBiomes) {
 				bestiaryEntry.Info.Add(LoaderManager.Get<BiomeLoader>().Get(type).ModBiomeBestiaryInfoElement);
@@ -1073,7 +1073,7 @@ public static class NPCLoader
 			if (g.CanChat(npc) is bool canChat) {
 				if (!canChat)
 					return false;
-				
+
 				ret = true;
 			}
 		}
@@ -1148,7 +1148,8 @@ public static class NPCLoader
 		}
 	}
 
-	public static void AddShops(int type) {
+	public static void AddShops(int type)
+	{
 		GetNPC(type)?.AddShops();
 	}
 
@@ -1193,7 +1194,7 @@ public static class NPCLoader
 			if (g.CanGoToStatue(npc, toKingStatue) is bool canGo) {
 				if (!canGo)
 					return false;
-				
+
 				ret = true;
 			}
 		}

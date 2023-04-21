@@ -136,7 +136,7 @@ public static class ProjectileLoader
 			g.OnSpawn(projectile, source);
 		}
 	}
-	
+
 	//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 	public static void ProjectileAI(Projectile projectile)
 	{

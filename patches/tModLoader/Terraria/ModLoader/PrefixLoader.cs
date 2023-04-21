@@ -111,7 +111,8 @@ public static class PrefixLoader
 		prefix = 0;
 		var wr = new WeightedRandom<int>(unifiedRandom);
 
-		void AddCategory(PrefixCategory category) {
+		void AddCategory(PrefixCategory category)
+		{
 			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
 				wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 			}
@@ -131,7 +132,7 @@ public static class PrefixLoader
 			AddCategory(PrefixCategory.AnyWeapon);
 
 		// try 50 times
-		for (int i = 0; i < 50; i ++) {
+		for (int i = 0; i < 50; i++) {
 			prefix = wr.Get();
 			if (ItemLoader.AllowPrefix(item, prefix))
 				return true;

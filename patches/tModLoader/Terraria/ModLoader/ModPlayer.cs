@@ -28,7 +28,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public override ModPlayer NewInstance(Player entity)
 	{
 		var inst = base.NewInstance(entity);
-		
+
 		inst.Index = Index;
 
 		return inst;
@@ -42,7 +42,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	protected override void ValidateType()
 	{
 		base.ValidateType();
-		
+
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}

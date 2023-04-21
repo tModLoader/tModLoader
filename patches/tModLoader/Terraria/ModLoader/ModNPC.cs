@@ -72,7 +72,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	//TODO: Find a better solution in the future.
 	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
-	
+
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
 	public bool TownNPCStayingHomeless { get; set; }
 

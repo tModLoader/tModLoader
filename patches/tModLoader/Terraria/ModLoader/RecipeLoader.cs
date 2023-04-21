@@ -127,7 +127,8 @@ public static class RecipeLoader
 
 		// define sort function
 		int i = 0;
-		void Sort(Recipe r) {
+		void Sort(Recipe r)
+		{
 			if (sortBefore.TryGetValue(r, out var before))
 				foreach (var c in before)
 					Sort(c);
