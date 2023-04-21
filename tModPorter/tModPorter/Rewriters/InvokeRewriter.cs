@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
@@ -247,6 +247,8 @@ public partial class InvokeRewriter : BaseRewriter
 		// So instead, we just chuck some line comment trivia in front of this and hope no-one else gets too confused
 		if (invoke.Parent is StatementSyntax stmt)
 			rw.RegisterAction(stmt, CommentOutNode);
+		else if (invoke.Parent is ArrowExpressionClauseSyntax arrowExpr)
+			rw.RegisterAction(arrowExpr.Parent, CommentOutNode); // whole method is now redundant
 
 		return invoke;
 	};

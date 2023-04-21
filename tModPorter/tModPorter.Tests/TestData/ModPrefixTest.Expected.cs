@@ -7,7 +7,7 @@ public class ModPrefixTest : ModPrefix
 	public override void AutoStaticDefaults()/* tModPorter Note: Removed. Nothing to override anymore. Use hjson files to adjust localization */ { /* Empty */ }
 #endif
 
-	public override SetStaticDefaults() => return; // DisplayName.SetDefault("Test");
+	// public override SetStaticDefaults() => DisplayName.SetDefault("Test");
 
 	void Method() {
 		ModPrefix modPrefix = PrefixLoader.GetPrefix(Type);

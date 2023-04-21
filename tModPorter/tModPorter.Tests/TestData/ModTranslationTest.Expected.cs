@@ -35,7 +35,7 @@ Line 2"); */
 	}
 
 	LocalizedText t2;
-	void ExpressionBodyTest() => return; // t2.SetDefault("Test");
+	// void ExpressionBodyTest() => t2.SetDefault("Test");
 
 	void NonExpressionBodyTest()
 	{
