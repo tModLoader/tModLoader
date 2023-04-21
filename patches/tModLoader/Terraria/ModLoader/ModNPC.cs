@@ -72,7 +72,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	//TODO: Find a better solution in the future.
 	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
-	
+
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
 	public bool TownNPCStayingHomeless { get; set; }
 
@@ -81,8 +81,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModNPC>.Register(this);
-		NPC.type = NPCLoader.ReserveNPCID();
-		NPCLoader.npcs.Add(this);
+		NPC.type = NPCLoader.Register(this);
 
 		Type type = GetType();
 		var autoloadHead = type.GetAttribute<AutoloadHead>();
@@ -97,10 +96,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
-		NPCLoader.SetDefaults(NPC, false);
+		NPCLoader.SetDefaults(NPC, createModNPC: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		NPCID.Search.Add(FullName, Type);
 	}
 
@@ -254,10 +252,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
-	/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. <br/> 
+	/// Called on local, server and remote clients. <br/> 
+	/// Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (NPC.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
 	/// </summary>
-	public virtual void HitEffect(int hitDirection, double damage)
+	public virtual void HitEffect(NPC.HitInfo hit)
 	{
 	}
 
@@ -378,22 +377,22 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this NPC does to a player.
+	/// Allows you to modify the damage, etc., that this NPC does to a player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs).
+	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs). <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -408,24 +407,32 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC.
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC attacker)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
+	/// Runs in single player or on the server. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a friendly NPC.
+	/// Allows you to create special effects when this NPC hits a friendly NPC. <br/>
+	/// Runs in single player or on the server. <br/>
 	/// </summary>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit)
 	{
 	}
 
@@ -441,26 +448,40 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon.
+	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung. <br/>
+	/// Use <see cref="CanBeHitByItem(Player, Item)"/> instead for Guide Voodoo Doll-type effects.
+	/// </summary>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <returns>
+	/// Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the NPC, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanCollideWithPlayerMeleeAttack(Player player, Item item, Rectangle meleeAttackHitbox)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC is hit by a melee weapon.
+	/// Allows you to create special effects when this NPC is hit by a melee weapon. <br/>
+	/// Runs on the client or server doing the damage. <br/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -478,11 +499,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -490,25 +508,18 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to create special effects when this NPC is hit by a projectile.
 	/// </summary>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.
+	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// </summary>
-	/// <param name="damage"></param>
-	/// <param name="defense"></param>
-	/// <param name="knockback"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <returns></returns>
-	public virtual bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
 	{
-		return true;
 	}
 
 	/// <summary>
@@ -692,20 +703,30 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shop parameter to true to open this NPC's shop.
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this NPC's shop.
 	/// </summary>
 	/// <param name="firstButton"></param>
-	/// <param name="shop"></param>
-	public virtual void OnChatButtonClicked(bool firstButton, ref bool shop)
+	/// <param name="shopName"></param>
+	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to add items to this NPC's shop. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item.
+	/// Allows you to add shops to this NPC, similar to adding recipes for items. <br/>
+	/// Make a new <see cref="NPCShop"/>, and items to it, and call <see cref="AbstractNPCShop.Register"/>
 	/// </summary>
-	/// <param name="shop"></param>
-	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(Chest shop, ref int nextSlot)
+	public virtual void AddShops()
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
+	/// To create a shop, use <see cref="AddShops"/> <br/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// </summary>
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
+	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
+	public virtual void ModifyActiveShop(string shopName, Item[] items)
 	{
 	}
 
@@ -790,23 +811,27 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and hori<paramref name="horizontalHoldoutOffset"/>zontalHoldoutOffset is how far away the item should be drawn from the NPC.<br/>
+	/// To use an actual item sprite, use <code>Main.GetItemDrawFrame(itemTypeHere, out item, out itemFrame);
+	/// horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - someOffsetHere</code>
 	/// </summary>
-	/// <param name="scale"></param>
 	/// <param name="item"></param>
-	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(ref float scale, ref int item, ref int closeness)
+	/// <param name="itemFrame"></param>
+	/// <param name="scale"></param>
+	/// <param name="horizontalHoldoutOffset"></param>
+	public virtual void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type of 3). Item is the Texture2D instance of the item to be drawn (use Main.itemTexture[id of item]), itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position.
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type of 3). <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, <paramref name="itemSize"/> is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), <paramref name="scale"/> is the multiplier for the item's drawing size, and <paramref name="offset"/> is the offset from which to draw the item from its normal position. The item texture can be any texture, but if it is an item texture you can use  <see cref="Main.GetItemDrawFrame(int, out Texture2D, out Rectangle)"/> to set <paramref name="item"/> and <paramref name="itemFrame"/> easily.
 	/// </summary>
 	/// <param name="item"></param>
+	/// <param name="itemFrame"></param>
 	/// <param name="itemSize"></param>
 	/// <param name="scale"></param>
 	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
+	public virtual void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 
@@ -818,7 +843,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="damageMultiplier"></param>
 	/// <param name="npcHitbox"></param>
 	/// <returns></returns>
-	public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
+	public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
 	{
 		return true;
 	}

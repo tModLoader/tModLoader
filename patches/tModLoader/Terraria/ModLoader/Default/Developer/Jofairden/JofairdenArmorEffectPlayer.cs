@@ -8,7 +8,6 @@ internal sealed class JofairdenArmorEffectPlayer : ModPlayer
 	public float LayerStrength;
 	public float ShaderStrength;
 
-	private int _lastLife = -1;
 	private int _auraTime;
 
 	public bool HasAura => _auraTime > 0;
@@ -59,18 +58,10 @@ internal sealed class JofairdenArmorEffectPlayer : ModPlayer
 		}
 	}
 
-	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+	public override void PostHurt(Player.HurtInfo info)
 	{
-		if (_lastLife <= -1) {
-			_lastLife = Player.statLife;
+		if (info.Damage >= 0.1f * Player.statLifeMax2) {
+			_auraTime = (int)(300 + info.Damage);
 		}
-
-		int diff = _lastLife - Player.statLife;
-
-		if (diff >= 0.1f * Player.statLifeMax2) {
-			_auraTime = 300 + diff;
-		}
-
-		_lastLife = Player.statLife;
 	}
 }

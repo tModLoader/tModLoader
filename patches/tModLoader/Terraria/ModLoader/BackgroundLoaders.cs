@@ -108,7 +108,8 @@ public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroun
 
 	public override void ChooseStyle(out int style, out SceneEffectPriority priority)
 	{
-		priority = SceneEffectPriority.None; style = -1;
+		priority = SceneEffectPriority.None;
+		style = -1;
 
 		if (!GlobalBackgroundStyleLoader.loaded) {
 			return;
@@ -161,7 +162,8 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 
 	public override void ChooseStyle(out int style, out SceneEffectPriority priority)
 	{
-		priority = SceneEffectPriority.None; style = -1;
+		priority = SceneEffectPriority.None;
+		style = -1;
 
 		if (!loaded || !GlobalBackgroundStyleLoader.loaded) {
 			return;

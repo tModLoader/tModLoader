@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// See comments at the beginning of the class
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// 3a: target.immune[Projectile.owner] = 20;
 			// 3b: target.immune[Projectile.owner] = 5;
 		}
@@ -67,10 +67,6 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExamplePiercingProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
-
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);

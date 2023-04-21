@@ -41,7 +41,9 @@ public class ModItemTest : ModItem
 
 	public override ModItem Clone(Item newEntity) { return null; }
 
-	public override bool PreReforge() { return false; /* comment */ }
+#if COMPILE_ERROR
+	public override void PreReforge()/* tModPorter Note: Use CanReforge instead for logic determining if a reforge can happen. */ { return false; /* comment */ }
+#endif
 
 	public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */ { return true; /* comment */ }
 
@@ -96,4 +98,9 @@ public class ModItemTest : ModItem
 #endif
 
 	public override void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack) { /* Empty */ }
+
+	public override void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) { }
 }

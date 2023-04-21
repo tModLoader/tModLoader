@@ -45,16 +45,18 @@
  	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
  	{
  		LoadFilesForCulture(culture);
-@@ -122,6 +_,23 @@
+@@ -122,6 +_,25 @@
  
  		ChatInitializer.PrepareAliases();
  	}
 +	*/
 +
 +	// Added by tML, replacement for commented code above
-+	internal void ReloadLanguage()
++	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
 +	{
-+		SetAllTextValuesToKeys();
++		if (resetValuesToKeysFirst)
++			SetAllTextValuesToKeys();
++
 +		LoadFilesForCulture(_fallbackCulture);
 +		if (ActiveCulture != _fallbackCulture)
 +			LoadFilesForCulture(ActiveCulture);

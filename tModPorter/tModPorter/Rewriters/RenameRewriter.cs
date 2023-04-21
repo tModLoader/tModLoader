@@ -107,7 +107,22 @@ public class RenameRewriter : BaseRewriter {
 			return nameToken.WithText(entry.to);
 		}
 
+		if (!refactoringMethod)
+			RefactorInnerType(nameToken, instType);
+
 		return nameToken;
+	}
+
+	private void RefactorInnerType(SyntaxToken nameToken, ITypeSymbol instType)
+	{
+		if (nameToken.Parent.Parent is not MemberAccessExpressionSyntax memberAccess)
+			return;
+
+		var fullname = $"{instType}.{nameToken.Text}";
+		if (typeRenames.SingleOrDefault(e => e.from == fullname) is not (_, string to))
+			return;
+
+		RegisterAction(memberAccess, node => UseType(to));
 	}
 
 	private IdentifierNameSyntax RefactorSpeculative(IdentifierNameSyntax nameSyntax) {

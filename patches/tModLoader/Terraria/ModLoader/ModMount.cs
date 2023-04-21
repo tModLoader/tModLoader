@@ -44,7 +44,7 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 		foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
 			string extraTexture = GetExtraTexture(textureType);
 
-			if(string.IsNullOrEmpty(extraTexture) || !ModContent.RequestIfExists<Texture2D>(extraTexture, out var textureAsset)) {
+			if (string.IsNullOrEmpty(extraTexture) || !ModContent.RequestIfExists<Texture2D>(extraTexture, out var textureAsset)) {
 				continue;
 			}
 

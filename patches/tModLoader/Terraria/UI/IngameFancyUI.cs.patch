@@ -17,7 +17,7 @@
 +
 +				// Handle mod container names.
 +				if (tile.type >= TileID.Count && (TileID.Sets.BasicChest[tile.type] || TileID.Sets.BasicDresser[tile.type]))
-+					Main.defaultChestName = TileLoader.ContainerName(tile.type, tile.TileFrameX, tile.TileFrameY);
++					Main.defaultChestName = TileLoader.DefaultContainerName(tile.type, tile.TileFrameX, tile.TileFrameY);
  
  				if (Main.npcChatText == "")
  					Main.npcChatText = Main.defaultChestName;

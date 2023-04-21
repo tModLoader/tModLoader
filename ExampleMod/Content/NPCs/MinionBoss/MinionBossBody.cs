@@ -13,6 +13,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -267,7 +268,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// If the NPC dies, spawn gore and play a sound
 			if (Main.netMode == NetmodeID.Server) {
 				// We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
@@ -287,6 +288,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
+
+				// This adds a screen shake similar to Deerclops
+				PunchCameraModifier modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
+				Main.instance.CameraModifiers.Add(modifier);
 			}
 		}
 

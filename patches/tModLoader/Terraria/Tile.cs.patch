@@ -76,7 +76,7 @@
  		type = from.type;
  		wall = from.wall;
  		liquid = from.liquid;
-@@ -133,10 +_,32 @@
+@@ -133,10 +_,35 @@
  		bTileHeader3 = from.bTileHeader3;
  		frameX = from.frameX;
  		frameY = from.frameY;
@@ -94,6 +94,9 @@
 +			return false;
 +
 +		if (liquid > 0 && LiquidType != compTile.LiquidType)
++			return false;
++
++		if (Get<TileWallBrightnessInvisibilityData>().Data != compTile.Get<TileWallBrightnessInvisibilityData>().Data)
 +			return false;
 +
 +		if (HasTile) {
@@ -152,7 +155,7 @@
  		liquid = 0;
  		sTileHeader = 32;
  		bTileHeader = 0;
-@@ -221,10 +_,15 @@
+@@ -221,10 +_,16 @@
  		frameX = 0;
  		frameY = 0;
  		this.type = type;
@@ -163,6 +166,7 @@
  	{
 +		Get<LiquidData>() = default;
 +		Get<TileWallWireStateData>() = default;
++		Get<TileWallBrightnessInvisibilityData>() = default;
 +
 +		/*
  		liquid = 0;

@@ -26,13 +26,4 @@ public class UnloadedPlayer : ModPlayer
 		PlayerIO.LoadModData(Player, tag.GetList<TagCompound>("list"));
 		PlayerIO.LoadResearch(Player, tag.GetList<TagCompound>("unloadedResearch"));
 	}
-
-	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
-	{
-		if (AprilFools.CheckAprilFools()) {
-			return new List<Item> { new Item(ModContent.ItemType<AprilFools>()) };
-		}
-
-		return Enumerable.Empty<Item>();
-	}
 }

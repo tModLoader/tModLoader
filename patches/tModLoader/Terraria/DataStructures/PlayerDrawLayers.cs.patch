@@ -127,7 +127,8 @@
 -	public static bool ShouldOverrideLegs_CheckShoes(ref PlayerDrawSet drawinfo)
 +	private static bool ShouldOverrideLegs_CheckShoes(ref PlayerDrawSet drawinfo)
  	{
- 		sbyte shoe = drawinfo.drawPlayer.shoe;
+-		sbyte shoe = drawinfo.drawPlayer.shoe;
++		int shoe = drawinfo.drawPlayer.shoe;
 +
 +		return shoe > 0 && ArmorIDs.Shoe.Sets.OverridesLegs[shoe];
 +
@@ -303,6 +304,15 @@
  			Vector2 faceHeadOffsetFromHelmet = drawinfo.drawPlayer.GetFaceHeadOffsetFromHelmet();
  			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceHead].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + faceHeadOffsetFromHelmet, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceHead;
+@@ -1923,7 +_,7 @@
+ 
+ 			float num = 0f;
+ 			if (drawinfo.drawPlayer.face == 5) {
+-				sbyte faceHead = drawinfo.drawPlayer.faceHead;
++				int faceHead = drawinfo.drawPlayer.faceHead;
+ 				if ((uint)(faceHead - 10) <= 3u)
+ 					num = 2 * drawinfo.drawPlayer.direction;
+ 			}
 @@ -1986,11 +_,12 @@
  	public static void DrawPlayer_22_FaceAcc(ref PlayerDrawSet drawinfo)
  	{

@@ -8,10 +8,6 @@ namespace ExampleMod.Content.Items.Tools
 {
 	public class ExamplePickaxe : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.damage = 20;
 			Item.DamageType = DamageClass.Melee;
@@ -31,7 +27,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) {
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<ExampleCustomDrawDust>());
 			}
 		}
 

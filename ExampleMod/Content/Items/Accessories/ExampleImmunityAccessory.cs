@@ -6,10 +6,6 @@ namespace ExampleMod.Content.Items.Accessories
 {
 	public class ExampleImmunityAccessory : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 26;
 			Item.height = 32;

@@ -8,7 +8,6 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
-using System;
 
 namespace Terraria.ModLoader;
 
@@ -30,23 +29,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<GlobalItem>.Register(this);
-
-		Index = (ushort)ItemLoader.globalItems.Count;
-
-		ItemLoader.globalItems.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalItem Instance(Item item) => Instance(item.globalItems, Index);
-
-	/// <summary>
-	/// Allows you to set the properties of any and every item that gets created.
-	/// </summary>
-	public virtual void SetDefaults(Item item)
-	{
-	}
 
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
@@ -487,16 +473,33 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
+	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
+	/// Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
 	/// </summary>
-	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="target">The target npc.</param>
+	/// <returns>
+	/// Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// </summary>
+	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	public virtual void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
+	public virtual void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -511,14 +514,15 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
 	/// </summary>
-	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
+	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a melee weapon hits a player.
+	/// Allows you to create special effects when a melee weapon hits a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
-	public virtual void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
+	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -571,11 +575,18 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when an item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	public virtual void UpdateInventory(Item item, Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	public virtual void UpdateInfoAccessory(Item item, Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to armors and accessories, such as increased damage.
@@ -785,12 +796,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool PreReforge(Item item)
+	public virtual bool CanReforge(Item item)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// </summary>
+	public virtual void PreReforge(Item item)
+	{
 	}
 
 	/// <summary>
@@ -1033,7 +1051,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// This is essentially the same as Mod.AddRecipes or ModItem.AddRecipes. Use whichever method makes organizational sense for your mod.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
 	/// </summary>
 	public virtual void AddRecipes()
 	{

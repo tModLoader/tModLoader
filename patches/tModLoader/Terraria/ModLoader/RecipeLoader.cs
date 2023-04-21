@@ -113,7 +113,7 @@ public static class RecipeLoader
 
 					before.Add(r);
 					break;
-				case (var target, true): // sortBefore
+				case (var target, true): // sortAfter
 					if (!sortAfter.TryGetValue(target, out var after))
 						after = sortAfter[target] = new();
 
@@ -127,7 +127,8 @@ public static class RecipeLoader
 
 		// define sort function
 		int i = 0;
-		void Sort(Recipe r) {
+		void Sort(Recipe r)
+		{
 			if (sortBefore.TryGetValue(r, out var before))
 				foreach (var c in before)
 					Sort(c);
@@ -156,7 +157,7 @@ public static class RecipeLoader
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
 	public static bool RecipeAvailable(Recipe recipe)
 	{
-		return recipe.Conditions.All(c => c.RecipeAvailable(recipe));
+		return recipe.Conditions.All(c => c.IsMet());
 	}
 
 	/// <summary>
@@ -166,7 +167,7 @@ public static class RecipeLoader
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
 	public static bool DecraftAvailable(Recipe recipe)
 	{
-		return recipe.DecraftConditions.All(c => c.RecipeAvailable(recipe));
+		return recipe.DecraftConditions.All(c => c.IsMet());
 	}
 
 	/// <summary>
