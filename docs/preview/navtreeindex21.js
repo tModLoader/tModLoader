@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40":[3,0,1117,0],
 "struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091":[3,0,1117,6],
 "struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5":[3,0,1117,4],
 "struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602":[3,0,1117,7],

@@ -65,10 +65,10 @@ var NAVTREEINDEX =
 "class_proj_a_i_style_i_d.html#a0f6f47e7c4be7b94aa5a55c894098ef9",
 "class_projectile_i_d_1_1_sets.html#a920c94eec033dd963675c0a5079a7a96",
 "class_summon_melee_speed_damage_class.html",
-"class_u_i_horizontal_separator.html",
-"functions_func_p.html",
-"struct_extra_bestiary_info_page_information.html",
-"struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091"
+"class_u_i_header.html",
+"functions_func_o.html",
+"struct_extension_filter.html",
+"struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

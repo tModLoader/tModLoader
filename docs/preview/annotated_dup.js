@@ -1256,7 +1256,7 @@ var annotated_dup =
     [ "UIColoredImageButton", "class_u_i_colored_image_button.html", null ],
     [ "UIColoredSlider", "class_u_i_colored_slider.html", null ],
     [ "UIColoredSliderSimple", "class_u_i_colored_slider_simple.html", null ],
-    [ "UICommon", "class_u_i_common.html", null ],
+    [ "UICommon", "class_u_i_common.html", "class_u_i_common" ],
     [ "UICreateMod", "class_u_i_create_mod.html", null ],
     [ "UICreativeInfiniteItemsDisplay", "class_u_i_creative_infinite_items_display.html", null ],
     [ "UICreativeItemsInfiniteFilteringOptions", "class_u_i_creative_items_infinite_filtering_options.html", null ],

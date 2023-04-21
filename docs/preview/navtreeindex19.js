@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"functions_func_o.html":[3,3,1,14],
 "functions_func_p.html":[3,3,1,15],
 "functions_func_q.html":[3,3,1,16],
 "functions_func_r.html":[3,3,1,17],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_empress_blade_drawer.html":[3,0,288],
 "struct_entity_globals_enumerator.html":[3,0,295],
 "struct_entity_shadow_info.html":[3,0,296],
-"struct_entry_icon_draw_settings.html":[3,0,327],
-"struct_extension_filter.html":[3,0,336]
+"struct_entry_icon_draw_settings.html":[3,0,327]
 };

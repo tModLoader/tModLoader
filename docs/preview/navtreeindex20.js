@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"struct_extension_filter.html":[3,0,336],
 "struct_extra_bestiary_info_page_information.html":[3,0,337],
 "struct_extra_seat_info.html":[3,0,338],
 "struct_fast_random.html":[3,0,347],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_stat_inheritance_data.html":[3,0,1116],
 "struct_stat_modifier.html":[3,0,1117],
 "struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b":[3,0,1117,2],
-"struct_stat_modifier.html#a2c77880e64ec8b1147e27abeb524a5ad":[3,0,1117,1],
-"struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40":[3,0,1117,0]
+"struct_stat_modifier.html#a2c77880e64ec8b1147e27abeb524a5ad":[3,0,1117,1]
 };
