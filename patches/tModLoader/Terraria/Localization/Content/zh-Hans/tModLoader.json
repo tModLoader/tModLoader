@@ -36,6 +36,7 @@
 		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
 		"HowToAccessLegacytModLoaderButton": "使用tModLoader 1.3版本",
 		"SteamFamilyShareWarning": "检测到Terraria为Steam家庭共享。\n由于Steam不支持家庭共享tModLoader，因此启用试验性方案。\n以下功能无法使用：\n - 游戏内 Steam 界面\n - Steam 多人",
+
 		// Mods Menu
 		"ModsModsList": "模组列表",
 		"ModsEnableAll": "启用全部",
@@ -88,6 +89,7 @@
 		"ModsNotFoundServer": "在\"{0}\"里没有找到任何模组。\n如果你在开启一个模组服务器，你可以使用'modpath'命令行参数或配置项来设置加载的模组的路径。\n",
 		"AskForModIndex": "输入模组序号以启用/禁用模组",
 		"AskForCommand": "请输入命令: ",
+
 		//Mod Config
 		"ModConfigFilterOptions": "筛选选项",
 		"ModConfigNotification": "通知：",
@@ -98,9 +100,11 @@
 		"ModConfigRestoreDefaults": "重设为默认",
 		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "由于需要重载模组而无法保存改动（请从主菜单进入模组列表以调整配置）",
+
 		// Interface
 		"BossBarStyle": "Boss血条样式: {0}",
 		"BossBarStyleNoOptions": "无",
+
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意tModLoader的服务条款",
 		"SteamPublishingLimit": "只有Steam版的tModLoader才可以在游戏里上传内容到Steam创意工坊。",
@@ -117,6 +121,7 @@
 		"PublishItem": "尝试发布模组 {0}",
 		"SteamDownloader": "正在使用 Steam 下载管理器排队下载...",
 		"DownloadProgress": "下载完成 {0}%",
+
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
 		"LoadErrorDisabled": "该模组已被自动禁用.",
@@ -166,6 +171,7 @@
 		"Retry": "重试",
 		"Exit": "退出",
 		"ExitAndDisableAll": "退出并禁用全部模组",
+
 		// Mod Info
 		"ModInfoHeader": "模组信息: ",
 		"ModInfoVisitHomepage": "访问模组主页查看更多信息",
@@ -177,6 +183,7 @@
 		"ModInfoExtractLocalization": "提取本地化文件",
 		"ModInfoExtracted": "已提取",
 		"ModInfoEnableModToExtractLocalizationFiles": "启用模组以提取其本地化文件",
+
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",
 		"ModPacksSaveEnabledAsNewPack": "将已启用的模组生成为新的整合包",
@@ -208,6 +215,7 @@
 		"InstallPackLocal": "加载整合包 (本地)",
 		"InstallPackLocalDesc": "禁用所有模组且启用整合包里的所有模组（按整合包里指定的版本）",
 		"ModPackMismatch": "上次使用的模组包: {0}",
+
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
 		"MPServerModsCantDownload": "下列模组已在服务器中安装,但无法下载",
@@ -220,6 +228,7 @@
 		"MPErrorModNotSigned": "模组未在模组浏览器中签名认证",
 		"MPErrorModDownloadError": "下载时发生错误 {0}",
 		"MPPacketTooLarge": "数据包太大 {0} > {1}",
+
 		// Mod Browser
 		"MBDownload": "下载",
 		"MBDownloadAll": "下载全部",
@@ -274,6 +283,7 @@
 		"XYearsAgo": "{0} {^0:年}前",
 		"MBServerReturnToMenu": "返回至世界菜单",
 		"MBServerAskForModName": "输入要下载的模组完整全名：",
+		
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "请输入你的密码",
 		"MBPublishVisitWebsiteForPassphrase": "访问网站以生成密码",
@@ -284,6 +294,7 @@
 		"EnterSteamID": "请输入你的SteamID",
 		"PasteSteamID": "粘贴SteamID (Ctrl+V)",
 		"MBServerResponse": "模组浏览器服务器响应:\n\n{0}",
+
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
 		"DownloadFromServersNo": "从服务器下载模组：关闭",
@@ -319,6 +330,7 @@
 		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
+
 		// Player and World Select
 		"MigratePlayersMessage": "你没有人物存档.\n如果你想将你的人物存档从原版转移到tModLoader,\n请将它们从“/Terraria/Players”复制到“/Terraria/{0}/Players”.\n复制[.plr]文件及同名文件夹.\n点击[这里]打开这些文件夹.\n复制完你所需的人物存档后,按[返回].",
 		"MigratePlayersText": "点击[这里]转移人物存档...",
@@ -339,6 +351,7 @@
 		"PlayerCustomDataFail": "加载人物自定义数据时遇到问题",
 		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
 		"CloudWarning": "云存档剩余空间不足, 无法保存至云端",
+
 		// Mod Sources
 		"MSBuild": "生成",
 		"MSBuildReload": "生成并重新加载",
@@ -361,6 +374,7 @@
 		"MSPortToLatest": "运行tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "使用Visual Studio制作tModLoader模组现在需要安装.NET 6.0的SDK. 对此最简单的方案是安装Visual Studio 2022.\n\nGitHub上有教程（The Migration Guide）描述了关于将模组升级到1.4的必要变更, 也有关于如何使用tModPorter来自动完成很大一部分的变动.",
 		"DownloadNetSDK": "下载.NET软件开发工具包",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
 		"DMModCompileUpdate": "[ModCompile]运行库版本不匹配. tModLoader的版本为{0}, 而ModCompile的版本为{1}",
@@ -380,18 +394,21 @@
 		"DMUpdateScripts": "更新脚本",
 		"DMScriptsRequireRestart": "启动脚本已更新,需重新启动tModLoader.",
 		"DMUpdateMonoToDownloadModCompile": "运行最新版本的Mono时,可以从GitHub上下载额外库.",
+
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
 		"ExtractHideCodeMessage": "该模组的作者选择对[tModReader]隐藏其源代码.",
 		"ExtractNoSourceCodeMessage": "该模组的作者选择不包含模组源代码.",
 		"ExtractHideResourcesMessage": "该模组的作者选择对[tModReader]隐藏其资源文件(如图像、音效等)。",
 		"ExtractFileListing": "文件:",
+
 		// Mod Commands
 		"CommandModListDescription": "显示已加载模组的列表.",
 		"CommandModListServerMods": "服务器模组:",
 		"CommandModListSyncedMods": "已同步模组:",
 		"CommandModListClientMods": "客户端模组:",
 		"CommandModListModlist": "模组列表:",
+
 		// Mod Building
 		"Building": "生成中: {0}",
 		"ReadingProperties": "读取中: {0}",
@@ -410,15 +427,18 @@
 		"MSUnloading": "卸载中: {0}",
 		"MSFinishingResourceLoading": "资源加载完成",
 		"MSAddingRecipes": "添加合成配方...",
+
 		// Default Unimplemented
 		"DefaultTownNPCName": "无名氏",
 		"DefaultTownNPCChat": "模组作者忘了给我一个聊天信息。",
 		"DefaultNurseCantHealChat": "我也不知道为什么我无法治疗你，模组作者忘了给我一个聊天信息。",
+
 		// Tooltip lines
 		"NoAttackSpeedScaling": "攻击频率不受攻击速度加成影响",
 		"SpecialAttackSpeedScaling": "受到全局攻速加成的效果为原有的{0}%",
 		"ModifiedByModsHoldSHIFT": "基础属性已被模组修改 (按住[SHIFT]键以了解详细信息)",
 		"ModifiedByMods": "基础属性已被以下模组修改：",
+
 		// Memory bar
 		"LastLoadRamUsage": "上次加载时的内存占用: {0}",
 		"AvailableMemory": "可用内存: {0}",
@@ -428,13 +448,16 @@
 		"SoundMemory": "声音: {0}",
 		"TextureMemory": "材质: {0}",
 		"TotalMemory": "总占用: {0}",
+
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",
 		"MouseXButton1": "鼠标#4",
 		"MouseXButton2": "鼠标#5",
+
 		// In Game UI additions
 		"slotStack": "平铺式",
 		"slotScroll": "滚动式",
+
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
@@ -444,6 +467,7 @@
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题.",
 		"ServerCrash": "服务器崩溃: {0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support",
 		"WatchLocalizationFileMessage": "以下本地化文件被修改并重新加载了：{0}",
+		
 		// MessageBox
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
 		"GraphicsEngineFailure": "图形引擎崩溃",
