@@ -295,7 +295,7 @@ public static class ModContent
 
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
-		LanguageManager.Instance.ReloadLanguage();
+		LanguageManager.Instance.ReloadLanguage(resetValuesToKeysFirst: false); // Don't reset values to keys in case any new translations were registered during Load. All mod translations were wiped in Unload anyway
 		LoadModContent(token, mod => {
 			mod.SetupContent();
 		});
