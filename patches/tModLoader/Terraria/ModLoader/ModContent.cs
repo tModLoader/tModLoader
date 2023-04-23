@@ -274,6 +274,7 @@ public static class ModContent
 		CacheVanillaState();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+		ConversionDatabase.conversions.Clear();
 		LoadModContent(token, mod => {
 			if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 			ContentInstance.Register(mod);
@@ -285,6 +286,7 @@ public static class ModContent
 			SystemLoader.OnModLoad(mod);
 			mod.loading = false;
 		});
+		ConversionDatabase.Load();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -292,7 +294,6 @@ public static class ModContent
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
-
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 		LanguageManager.Instance.ReloadLanguage(resetValuesToKeysFirst: false); // Don't reset values to keys in case any new translations were registered during Load. All mod translations were wiped in Unload anyway
@@ -339,6 +340,7 @@ public static class ModContent
 		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
 		NPCShopDatabase.FinishSetup();
+		ConversionHandler.FillData();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();

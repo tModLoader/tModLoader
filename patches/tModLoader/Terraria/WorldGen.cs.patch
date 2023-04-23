@@ -1671,7 +1671,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,6 +_,28 @@
+@@ -39342,8 +_,32 @@
  		return true;
  	}
  
@@ -1699,7 +1699,11 @@
 +	*/
  	public static void Convert(int i, int j, int conversionType, int size = 4)
  	{
++		ConversionHandler.Convert(conversionType, i, j, size);
++		/*
  		for (int k = i - size; k <= i + size; k++) {
+ 			for (int l = j - size; l <= j + size; l++) {
+ 				if (!InWorld(k, l, 1) || Math.Abs(k - i) + Math.Abs(l - j) >= 6)
 @@ -39354,7 +_,7 @@
  				int wall = tile.wall;
  				switch (conversionType) {
@@ -1754,6 +1758,14 @@
  							continue;
  						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 1) {
  							tile.wall = 1;
+@@ -39916,6 +_,7 @@
+ 				}
+ 			}
+ 		}
++		*/
+ 	}
+ 
+ 	public static void CactusFrame(int i, int j)
 @@ -40114,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
