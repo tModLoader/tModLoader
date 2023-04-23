@@ -29,15 +29,16 @@ public static class ConversionDatabase
 
 		for (int wall = 1; wall < WallLoader.WallCount; wall++) {
 			if (wall == 69 || wall == 70 || wall == 81) {
-				conv.ConvertWall(wall, 64).PreConversion((tile, k, l, netSpam) => {
+				conv.ConvertWall(wall, 64).PreConversion((tile, k, l, settings) => {
 					if (l < Main.worldSurface) {
 						if (WorldGen.genRand.Next(10) == 0)
 							tile.wall = 65;
 						else
 							tile.wall = 63;
 
-						WorldGen.SquareWallFrame(k, l);
-						if (netSpam)
+						if (settings.SquareWallFrame)
+							WorldGen.SquareWallFrame(k, l);
+						if (settings.NetSpam)
 							NetMessage.SendTileSquare(-1, k, l);
 						return ConversionRunCodeValues.DontRun;
 					}
@@ -66,11 +67,13 @@ public static class ConversionDatabase
 				conv.ConvertWall(wall, 215);
 			}
 			else if (wall == 80) {
-				conv.ConvertWall(wall, 64).PreConversion((tile, k, l, netSpam) => {
+				conv.ConvertWall(wall, 64).PreConversion((tile, k, l, settings) => {
 					if (l < Main.worldSurface + 4.0 + WorldGen.genRand.Next(3) || l > (Main.maxTilesY + Main.rockLayer) / 2.0 - 3.0 + WorldGen.genRand.Next(3)) {
 						tile.wall = 15;
-						WorldGen.SquareWallFrame(k, l);
-						if (netSpam)
+
+						if (settings.SquareWallFrame)
+							WorldGen.SquareWallFrame(k, l);
+						if (settings.NetSpam)
 							NetMessage.SendTileSquare(-1, k, l);
 						return ConversionRunCodeValues.DontRun;
 					}
@@ -297,7 +300,7 @@ public static class ConversionDatabase
 				conv.ConvertTile(type, ConversionHandler.Break);
 			}
 			if (type == 59/* && (Main.tile[k - 1, l].type == 109 || Main.tile[k + 1, l].type == 109 || Main.tile[k, l - 1].type == 109 || Main.tile[k, l + 1].type == 109)*/) {
-				conv.ConvertTile(type, 0).PreConversion((tile, k, l, netSpam) => {
+				conv.ConvertTile(type, 0).PreConversion((tile, k, l, settings) => {
 					if (Main.tile[k - 1, l].type == 109 || Main.tile[k + 1, l].type == 109 || Main.tile[k, l - 1].type == 109 || Main.tile[k, l + 1].type == 109) {
 						return ConversionRunCodeValues.Run;
 					}
@@ -343,11 +346,13 @@ public static class ConversionDatabase
 		for (int type = 0; type < TileLoader.TileCount; type++) {
 
 			if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 53) {
-				conv.ConvertTile(type, 53).PreConversion((tile, k, l, netSpam) => {
+				conv.ConvertTile(type, 53).PreConversion((tile, k, l, settings) => {
 					if (WorldGen.BlockBelowMakesSandConvertIntoHardenedSand(k, l)) {
 						tile.TileType = 397;
-						WorldGen.SquareTileFrame(k, l);
-						if (netSpam)
+
+						if (settings.SquareTileFrame)
+							WorldGen.SquareTileFrame(k, l);
+						if (settings.NetSpam)
 							NetMessage.SendTileSquare(-1, k, l);
 						return ConversionRunCodeValues.DontRun;
 					}
@@ -430,11 +435,13 @@ public static class ConversionDatabase
 				conv.ConvertTile(type, 2).OnConversion(TryKillingTreesAboveIfTheyWouldBecomeInvalid);
 			}
 			else if ((TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 0) {
-				conv.ConvertTile(type, 0).PreConversion((tile, k, l, netSpam) => {
+				conv.ConvertTile(type, 0).PreConversion((tile, k, l, settings) => {
 					if (WorldGen.TileIsExposedToAir(k, l)) {
 						tile.TileType = 2;
-						WorldGen.SquareTileFrame(k, l);
-						if (netSpam)
+
+						if (settings.SquareTileFrame)
+							WorldGen.SquareTileFrame(k, l);
+						if (settings.NetSpam)
 							NetMessage.SendTileSquare(-1, k, l);
 						return ConversionRunCodeValues.DontRun;
 					}
@@ -449,8 +456,8 @@ public static class ConversionDatabase
 		conv.Register();
 	}
 
-	private static void TryKillingTreesAboveIfTheyWouldBecomeInvalid(Tile tile, int oldTileType, int i, int j, bool netSpam)
+	private static void TryKillingTreesAboveIfTheyWouldBecomeInvalid(Tile tile, int oldTileType, int i, int j, ConversionHandler.ConversionSettings settings)
 	{
-		WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, tile.TileType, netSpam);
+		WorldGen.TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, tile.TileType, settings);
 	}
 }
