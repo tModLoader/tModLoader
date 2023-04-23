@@ -1668,7 +1668,7 @@
  
 -	public static bool TryKillingTreesAboveIfTheyWouldBecomeInvalid(int i, int j, int newFloorType)
 +	// TML: settings parameter
-+	public static bool TryKillingTreesAboveIfTheyWouldBecomeInvalid(int i, int j, int newFloorType, ConversionHandler.ConversionSettings settings = true)
++	public static bool TryKillingTreesAboveIfTheyWouldBecomeInvalid(int i, int j, int newFloorType, ConversionHandler.ConversionSettings settings = new())
  	{
 -		if (newFloorType < 0 || newFloorType >= TileID.Count)
 +		if (newFloorType < 0)

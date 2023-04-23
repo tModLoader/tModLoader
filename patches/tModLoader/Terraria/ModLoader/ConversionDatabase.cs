@@ -13,6 +13,9 @@ public static class ConversionDatabase
 
 	internal static void Load()
 	{
+		if (conversions.Count > 0)
+			throw new System.Exception("Some mod added an conversion before vanilla conversion were added to the list! Please move your conversion into something alike PostSetupContent.");
+
 		GreenSolution();
 		PurpleSolution();
 		LightBlueSolution();
