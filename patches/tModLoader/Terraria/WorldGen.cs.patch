@@ -2477,10 +2477,11 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
-@@ -55301,6 +_,7 @@
+@@ -55300,7 +_,7 @@
+ 				for (int n = num7; n < num8; n++) {
  					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
- 
+-
 +					/*
  					if (good) {
  						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
@@ -2500,7 +2501,7 @@
 +					else {
 +						id = BiomeConversionID.Corruption;
 +					}
-+					ConversionHandler.Convert(id, m, lastMaxTilesX, new(true, false, false));
++					ConversionHandler.Convert(id, m, n, new(true, false, false));
  				}
  			}
  
