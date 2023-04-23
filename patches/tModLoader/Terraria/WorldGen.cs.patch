@@ -1662,16 +1662,28 @@
  		if (num4 != 2 && num4 != type && ((Main.tile[i, j].frameX == 0 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 22 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 44 && Main.tile[i, j].frameY <= 130)))
  			KillTile(i, j);
  
-@@ -39303,7 +_,7 @@
+@@ -39301,9 +_,10 @@
+ 		return false;
+ 	}
  
- 	public static bool TryKillingTreesAboveIfTheyWouldBecomeInvalid(int i, int j, int newFloorType)
+-	public static bool TryKillingTreesAboveIfTheyWouldBecomeInvalid(int i, int j, int newFloorType)
++	// TML: netSpam parameter
++	public static bool TryKillingTreesAboveIfTheyWouldBecomeInvalid(int i, int j, int newFloorType, bool netSpam = true)
  	{
 -		if (newFloorType < 0 || newFloorType >= TileID.Count)
 +		if (newFloorType < 0)
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,8 +_,32 @@
+@@ -39335,15 +_,39 @@
+ 
+ 		if (!flag) {
+ 			KillTile(i, j - 1);
+-			if (Main.netMode == 1)
++			if (netSpam && Main.netMode == 1)
+ 				NetMessage.SendData(17, -1, -1, null, 0, i, j - 1);
+ 		}
+ 
  		return true;
  	}
  
@@ -2465,6 +2477,47 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -55302,6 +_,8 @@
+ 						continue;
+ 
+ 					if (good) {
++						ConversionHandler.Convert(BiomeConversionID.Hallow, m, n, false);
++						/*
+ 						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
+ 							Main.tile[m, n].wall = 70;
+ 						else if (Main.tile[m, n].wall == 216)
+@@ -55351,8 +_,11 @@
+ 							Main.tile[m, n].type = 402;
+ 							SquareTileFrame(m, n);
+ 						}
++						*/
+ 					}
+ 					else if (crimson) {
++						ConversionHandler.Convert(BiomeConversionID.Crimson, m, n, false);
++						/*
+ 						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
+ 							Main.tile[m, n].wall = 81;
+ 						else if (Main.tile[m, n].wall == 216)
+@@ -55396,8 +_,11 @@
+ 							Main.tile[m, n].type = 399;
+ 							SquareTileFrame(m, n);
+ 						}
++						*/
+ 					}
+ 					else {
++						ConversionHandler.Convert(BiomeConversionID.Corruption, m, n, false);
++						/*
+ 						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
+ 							Main.tile[m, n].wall = 69;
+ 						else if (Main.tile[m, n].wall == 216)
+@@ -55441,6 +_,7 @@
+ 							Main.tile[m, n].type = 398;
+ 							SquareTileFrame(m, n);
+ 						}
++						*/
+ 					}
+ 				}
+ 			}
 @@ -58764,6 +_,7 @@
  				}
  				if (Main.tile[x, y - 1].active()) {

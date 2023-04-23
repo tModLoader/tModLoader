@@ -6,8 +6,8 @@ public sealed class Conversion
 {
 	public sealed record class BlockConversion(int From, int To, bool IsTile)
 	{
-		public delegate ConversionRunCodeValues PreConversionDelegate(Tile tile, int i, int j);
-		public delegate void OnConversionDelegate(Tile tile, int oldTileType, int i, int j);
+		public delegate ConversionRunCodeValues PreConversionDelegate(Tile tile, int i, int j, bool netSpam);
+		public delegate void OnConversionDelegate(Tile tile, int oldTileType, int i, int j, bool netSpam);
 
 		public LinkedList<PreConversionDelegate> PreConversionHooks;
 		public OnConversionDelegate OnConversionHook;
