@@ -6,11 +6,11 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
-public enum ConversionRunCodeValues
+public enum ConversionRunCodeValues : sbyte
 {
-	Break,
-	Run,
-	DontRun,
+	DontRun = -2,
+	Run = 0,
+	Break = 1,
 }
 
 public sealed class Conversion
@@ -20,24 +20,12 @@ public sealed class Conversion
 		public delegate ConversionRunCodeValues PreConversionDelegate(Tile tile, int i, int j);
 		public delegate void OnConversionDelegate(Tile tile, int oldTileType, int i, int j);
 
-		public PreConversionDelegate PreConversionHook;
+		public LinkedList<PreConversionDelegate> PreConversionHooks;
 		public OnConversionDelegate OnConversionHook;
 
 		public BlockConversion PreConversion(PreConversionDelegate preConversionHook)
 		{
-			if (PreConversionHook != null) {
-				var hook = PreConversionHook;
-				preConversionHook = (Tile tile, int i, int j) => {
-					var result = hook(tile, i, j);
-					if (result != ConversionRunCodeValues.Run) {
-						return result;
-					}
-					return preConversionHook(tile, i, j);
-				};
-			}
-			else {
-				PreConversionHook = preConversionHook;
-			}
+			PreConversionHooks.AddLast(preConversionHook);
 			return this;
 		}
 
@@ -142,14 +130,12 @@ public sealed class ConversionHandler
 		// TODO: Use pointers here somehow to maybe optimize this much more (mostly delegates)
 		// because they're ahhhhh slow :(
 
-		const int wallOffset = 4;
-
-		const int wasCalled = 0;
-		const int breakTile = 1;
-		const int replacedTile = 2;
-		const int wasCalledW = wasCalled + wallOffset;
-		const int breakTileW = breakTile + wallOffset;
-		const int replacedTileW = replacedTile + wallOffset;
+		const int wasCalled =		0b0000_0001;
+		const int breakTile =		0b0000_0010;
+		const int replacedTile =	0b0000_0100;
+		const int wasCalledW =		0b0001_0000;
+		const int breakTileW =		0b0010_0000;
+		const int replacedTileW =	0b0100_0000;
 
 		var tile = Main.tile[i, j];
 		ushort oldTile = tile.TileType;
@@ -157,53 +143,72 @@ public sealed class ConversionHandler
 		var convertedTile = Unsafe.Add(ref arrayDataReference, TileIndex(index, oldTile));
 		var convertedWall = Unsafe.Add(ref arrayDataReference, WallIndex(index, oldWall));
 
-		var transformations = new BitsByte();
+		byte transformations = 0;
 
-		//var preConvTileVal = convertedTile?.PreConversionHook?.Invoke(tile, i, j);
-		//var preConvWallVal = convertedWall?.PreConversionHook?.Invoke(tile, i, j);
 		var preConvTileVal = ConversionRunCodeValues.Run;
 		var preConvWallVal = ConversionRunCodeValues.Run;
-		transformations[breakTile] = preConvTileVal == ConversionRunCodeValues.Break;
-		transformations[breakTileW] = preConvWallVal == ConversionRunCodeValues.Break;
+		if (convertedTile?.PreConversionHooks != null) {
+			foreach (var hook in convertedTile?.PreConversionHooks) {
+				var hookValue = hook(tile, i, j);
+				if (hookValue != ConversionRunCodeValues.Run) {
+					preConvTileVal = hookValue;
+					break;
+				}
+			}
+		}
+		if (convertedWall?.PreConversionHooks != null) {
+			foreach (var hook in convertedWall?.PreConversionHooks) {
+				var hookValue = hook(tile, i, j);
+				if (hookValue != ConversionRunCodeValues.Run) {
+					preConvWallVal = hookValue;
+					break;
+				}
+			}
+		}
+
+		const ConversionRunCodeValues mask = ConversionRunCodeValues.Break;
+		// those match breakTile
+		transformations |= (byte)((int)(preConvTileVal & mask) << 1);
+		transformations |= (byte)((int)(preConvWallVal & mask) << 5);
 
 		if (convertedTile != null && preConvTileVal != ConversionRunCodeValues.DontRun) {
-			transformations[wasCalled] = true;
+			transformations |= wasCalled;
 
 			int conv = convertedTile.To;
 			if (conv == Break) {
-				transformations[breakTile] = true;
+				transformations |= breakTile;
 			}
 			else if (conv >= 0) {
 				tile.TileType = (ushort)conv;
-				//convertedTile.OnConversionHook?.Invoke(tile, oldWall, i, j);
-				transformations[replacedTile] = true;
+				convertedTile.OnConversionHook?.Invoke(tile, oldWall, i, j);
+				transformations |= replacedTile;
 			}
 		}
 
 		if (convertedWall != null && preConvWallVal != ConversionRunCodeValues.DontRun) {
-			transformations[wasCalledW] = true;
+			transformations |= wasCalledW;
 
 			int conv = convertedWall.To;
 			if (conv == Break) {
-				transformations[breakTileW] = true;
+				transformations |= breakTileW;
 			}
 			else if (conv >= 0) {
 				tile.WallType = (ushort)conv;
-				//convertedWall.OnConversionHook?.Invoke(tile, oldWall, i, j);
-				transformations[replacedTileW] = true;
+				convertedWall.OnConversionHook?.Invoke(tile, oldWall, i, j);
+				transformations |= replacedTileW;
 			}
 		}
 
-		if ((transformations[breakTile] || transformations[breakTileW]) && Main.netMode == NetmodeID.MultiplayerClient) {
-			if (transformations[breakTile]) {
+		if (Main.netMode == NetmodeID.MultiplayerClient && (transformations & (breakTile | breakTileW)) > 0) {
+			if ((transformations & breakTile) > 0) {
 				WorldGen.KillTile(i, j);
 			}
-			if (transformations[breakTileW]) {
+			if ((transformations & breakTileW) > 0) {
 				WorldGen.KillWall(i, j);
 			}
 			NetMessage.SendData(MessageID.TileManipulation, number: i, number2: j);
 		}
-		if (transformations[replacedTile] || transformations[replacedTileW]) {
+		if ((transformations & (replacedTile | replacedTileW)) > 0) {
 			WorldGen.SquareTileFrame(i, j);
 			NetMessage.SendTileSquare(-1, i, j);
 		}
