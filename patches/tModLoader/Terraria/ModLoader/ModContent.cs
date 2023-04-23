@@ -286,10 +286,10 @@ public static class ModContent
 			SystemLoader.OnModLoad(mod);
 			mod.loading = false;
 		});
-		ConversionDatabase.Load();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
+		ConversionDatabase.Load();
 		RecipeGroupHelper.CreateRecipeGroupLookups();
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
