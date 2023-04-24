@@ -545,7 +545,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Returns the default name for a chest or dresser with the provided FrameX and FrameY values. <br/>
 	/// A typical implementation of a tile with only a single name might return <c>CreateMapEntryName()</c> <br/>
-	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries.
+	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries. Another option is using <c>return Lang._mapLegendCache[MapHelper.TileToLookup(Type, option)];</c>, this will reuse the localizations used for the map entries.
 	/// </summary>
 	public virtual LocalizedText DefaultContainerName(int frameX, int frameY)
 	{
