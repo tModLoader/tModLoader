@@ -30,21 +30,8 @@ public abstract class ModWall : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-	/*public void AddMapEntry(Color color, ModTranslation name)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.wallEntries.Keys.Contains(Type)) {
-				MapLoader.wallEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.wallEntries[Type].Add(entry);
-		}
-	}*/
-
-	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
+	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
