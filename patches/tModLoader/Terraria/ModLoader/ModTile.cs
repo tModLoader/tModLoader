@@ -82,7 +82,7 @@ public abstract class ModTile : ModBlockType
 	/// This method can also be used to register the fallback item drop. The fallback item will drop for any tile with a style that does not have a manual or automatic item drop.<br/>
 	/// To register the fallback item, either pass in -1 as one of the tileStyles or omit the tileStyles parameter altogether.<br/><br/>
 	/// If a mod removes content, manually specifying a replacement item or a fallback item allows users to recover something from the tile.<br/>
-	/// If more control over tile item drops is required, use <see cref="GetItemDrops(int, int)"/>.<br/>
+	/// If more control over tile item drops is required, such as conditional drops, custom data on dropped items, or multiple item drops, use <see cref="GetItemDrops(int, int)"/>.<br/>
 	/// </summary>
 	/// <param name="itemType"></param>
 	/// <param name="tileStyles"></param>
