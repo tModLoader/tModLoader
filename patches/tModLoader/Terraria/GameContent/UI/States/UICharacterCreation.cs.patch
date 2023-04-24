@@ -8,6 +8,16 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -1054,6 +_,9 @@
+ 				break;
+ 		}
+ 
++		if (player.hair >= HairID.Count)
++		    player.Male = HairLoader.GetHair(player.hair).IsMale;
++
+ 		Click_CharClothStyle(null, null);
+ 		UpdateSelectedGender();
+ 		UpdateColorPickers();
 @@ -1117,8 +_,14 @@
  		int num = 0;
  		byte difficulty = _player.difficulty;

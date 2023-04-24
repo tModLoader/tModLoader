@@ -1,5 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/HairstyleUnlocksHelper.cs
 +++ src/tModLoader/Terraria/GameContent/HairstyleUnlocksHelper.cs
+@@ -1,4 +_,5 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent;
+ 
 @@ -33,7 +_,7 @@
  		_defeatedPlantera = flag3;
  		_isAtStylist = flag4;
@@ -9,3 +15,11 @@
  	}
  
  	private void RebuildList()
+@@ -102,5 +_,7 @@
+ 
+ 		if (_defeatedMartians && _defeatedMoonlord)
+ 			availableHairstyles.Add(133);
++		
++		HairLoader.UpdateUnlocks(this);
+ 	}
+ }
