@@ -512,6 +512,12 @@
 		"TagsLangDescription": "Dieser Mod unterstützt mehrere Sprachen",
 		"TagsGen": "Benutzerdefinierte Weltgeneration",
 		"TagsGenDescription": "Ändert, wie die Welt genertiert wird (z.B. Erze, neue Strukturen, usw.)"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Erhöht die Abwehr um {0}",

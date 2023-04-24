@@ -158,8 +158,10 @@
 		"LoadErrorEffectFailedToLoad": "在 {0} 的效果文件加载失败",
 		"LoadErrorUnknownXNBFileHint": "发现不明[xnb]文件 {0}.它可能应被放置于Fonts（字体）或Effects（效果）文件夹里",
 		"LoadErrorCannotLoadCompressedEffects": "无法加载已压缩的Effects（效果）.",
+
 		"LoadErrorNotLoading": "Mod.AddContent在加载时只能被调用一次",
 		"LoadErrorDuplicateName": "无法添加两个具有相同名称{1}的{0}。也许有两个类名相同但在不同的命名空间的类自动加载, 或者你手动调用AddContent添加了两次同名的{0}。",
+
 		"LoadErrorResourceNotFoundPathHint": "未找到预期的资源:\n    {0}\n很可能:(是否拼写或文件夹放置错误?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "静默捕获异常: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(请参阅 {0} 以获取完整调用堆栈)",
@@ -417,6 +419,7 @@
 		"LoadingPrecompiled": "从 {1} 加载预编译的 {0} ",
 		"EnabledEAC": "编辑并继续路径: {0}",
 		"Packaging": "合包中: {0}",
+		// There should be ModName after ':'
 		"MSFinding": "查找模组...",
 		"MSInstantiating": "初始化...",
 		"MSSandboxing": "加载程序集: {0}",
@@ -510,6 +513,12 @@
 		"TagsLangDescription": "这个模组支持多种语言",
 		"TagsGen": "地图生成",
 		"TagsGenDescription": "影响地图生成的方式, 例如添加了新的矿物、地形等"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "防御力增加{0}点",
