@@ -86,20 +86,22 @@ internal static class HjsonExtensions
 							NewLine(tw, 0);
 						}
 
+						if (!skipFirst)
+							NewLine(tw, level + (showBraces ? 1 : 0));
+						else
+							skipFirst = false;
+
 						if (!string.IsNullOrWhiteSpace(kwl)) {
 							// Keep empty lines, properly indent all comment lines
-							string indentation = isRootObject ? "" : new string('\t', level + (showBraces ? 1 : 0));
+							string indentation = new string('\t', level + (showBraces ? 1 : 0));
 							var lines = kwl.TrimStart().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.TrimEntries).Select(s => s.Trim()).ToArray();
-							kwl = (isRootObject ? "" : "\n") + indentation + string.Join("\n" + indentation, lines);
+							kwl = string.Join("\n" + indentation, lines);
+							tw.Write(kwl);
+							NewLine(tw, level + (showBraces ? 1 : 0));
 						}
 
 						lastJsonType = val.JsonType;
 						
-						tw.Write(kwl);
-
-						if (!isRootObject || !string.IsNullOrWhiteSpace(kwl))
-							NewLine(tw, level + (showBraces ? 1 : 0));
-
 						kwl = GetComments(commentedObject.Comments, key);
 
 						bool commentedOut = jObject is CommentedWscJsonObject commented && commented.CommentedOut.Contains(key);
