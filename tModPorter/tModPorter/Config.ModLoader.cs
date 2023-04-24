@@ -358,7 +358,6 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModItem", from: "SacrificeTotal", to: "Item.ResearchUnlockCount");
 
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		to: "ItemDrop");
-		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "ItemDropOverride", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",	to: "DustType");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "soundType",	to: "HitSound");
 

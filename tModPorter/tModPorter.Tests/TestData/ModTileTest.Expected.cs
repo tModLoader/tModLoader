@@ -13,7 +13,6 @@ public class ModTileTest : ModTile
 #if COMPILE_ERROR
 		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 1;
 		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 12;
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 8;
 #endif
 		DustType = 0;
 #if COMPILE_ERROR
