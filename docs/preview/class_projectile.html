@@ -498,6 +498,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
 <tr class="separator:abca5cdec0d37c34c2604d20e8721b890"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea7754bae8b733ff4cdcfb8e8f379777"><td class="memItemLeft" align="right" valign="top"><a id="aea7754bae8b733ff4cdcfb8e8f379777" name="aea7754bae8b733ff4cdcfb8e8f379777"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>appliesImmunityTimeOnSingleHits</b></td></tr>
+<tr class="memdesc:aea7754bae8b733ff4cdcfb8e8f379777"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this projectile will apply immunity to an npc despite having a <a class="el" href="class_projectile.html#a94391ca36fc93547aba841b6fc4af5a0" title="The remaining number of npc can this projectile hit before dying. (Or tile bounces)....">penetrate</a> value of 1. Used only for firework rockets in <a class="el" href="namespace_terraria.html">Terraria</a> content. <br /></td></tr>
 <tr class="separator:aea7754bae8b733ff4cdcfb8e8f379777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a216398584913137aec429a3778202f2f"><td class="memItemLeft" align="right" valign="top"><a id="a216398584913137aec429a3778202f2f" name="a216398584913137aec429a3778202f2f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>arrow</b></td></tr>
@@ -566,6 +567,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>identity</b></td></tr>
 <tr class="separator:a47336298d839fc71deb719dedadbe3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ee9622b0db5c7db6f884a650a92941d"><td class="memItemLeft" align="right" valign="top"><a id="a0ee9622b0db5c7db6f884a650a92941d" name="a0ee9622b0db5c7db6f884a650a92941d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>idStaticNPCHitCooldown</b> = -1</td></tr>
+<tr class="memdesc:a0ee9622b0db5c7db6f884a650a92941d"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with <a class="el" href="class_projectile.html#a32061f901e77c762155c2a927c1fd140" title="If true, all projectiles of this type share an immunity cooldown for each npc.  Use this rather than ...">usesIDStaticNPCImmunity</a>, determines how many ticks must pass before any projectile of the same type can deal damage again to the same npc. This must be assigned a suitable value if usesIDStaticNPCImmunity is true. <br /></td></tr>
 <tr class="separator:a0ee9622b0db5c7db6f884a650a92941d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f5ae5824573cdee738d6d68996d7612"><td class="memItemLeft" align="right" valign="top"><a id="a6f5ae5824573cdee738d6d68996d7612" name="a6f5ae5824573cdee738d6d68996d7612"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ignoreWater</b></td></tr>
@@ -592,6 +594,7 @@ float[]&#160;</td><td class="memItemRight" valign="bottom"><b>localAI</b> = new 
 <tr class="separator:a0d8c6c0caf918333ef24757dac3a1ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11de2b9189c985447fd5efeed001287b"><td class="memItemLeft" align="right" valign="top"><a id="a11de2b9189c985447fd5efeed001287b" name="a11de2b9189c985447fd5efeed001287b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>localNPCHitCooldown</b> = -2</td></tr>
+<tr class="memdesc:a11de2b9189c985447fd5efeed001287b"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with <a class="el" href="class_projectile.html#aac037d80bb3fc6a3a54c4fd8cc771197" title="If true, this projectile manages it&#39;s own immunity timers for each npc.  Use this rather than usesIDS...">usesLocalNPCImmunity</a>, determines how many ticks must pass before this projectile can deal damage again to the same npc. A value of -1 indicates that it can only hit a specific npc once. The default value of -2 has no effect, so this must be assigned if usesLocalNPCImmunity is true. <br /></td></tr>
 <tr class="separator:a11de2b9189c985447fd5efeed001287b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20cbed310f8067d94aadd1199050674a"><td class="memItemLeft" align="right" valign="top"><a id="a20cbed310f8067d94aadd1199050674a" name="a20cbed310f8067d94aadd1199050674a"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>localNPCImmunity</b> = new int[200]</td></tr>
@@ -757,9 +760,17 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="separator:a568b5b1fb741e559200eeb8b3ac8625c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32061f901e77c762155c2a927c1fd140"><td class="memItemLeft" align="right" valign="top"><a id="a32061f901e77c762155c2a927c1fd140" name="a32061f901e77c762155c2a927c1fd140"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>usesIDStaticNPCImmunity</b></td></tr>
+<tr class="memdesc:a32061f901e77c762155c2a927c1fd140"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, all projectiles of this type share an immunity cooldown for each npc.<br  />
+ Use this rather than <a class="el" href="class_projectile.html#aac037d80bb3fc6a3a54c4fd8cc771197" title="If true, this projectile manages it&#39;s own immunity timers for each npc.  Use this rather than usesIDS...">usesLocalNPCImmunity</a> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.<br  />
+ <a class="el" href="class_projectile.html#a0ee9622b0db5c7db6f884a650a92941d" title="When used in conjunction with usesIDStaticNPCImmunity, determines how many ticks must pass before any...">idStaticNPCHitCooldown</a> controls the cooldown timing and must be assigned a suitable value to work properly.<br  />
+ <br /></td></tr>
 <tr class="separator:a32061f901e77c762155c2a927c1fd140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac037d80bb3fc6a3a54c4fd8cc771197"><td class="memItemLeft" align="right" valign="top"><a id="aac037d80bb3fc6a3a54c4fd8cc771197" name="aac037d80bb3fc6a3a54c4fd8cc771197"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>usesLocalNPCImmunity</b></td></tr>
+<tr class="memdesc:aac037d80bb3fc6a3a54c4fd8cc771197"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this projectile manages it's own immunity timers for each npc.<br  />
+ Use this rather than <a class="el" href="class_projectile.html#a32061f901e77c762155c2a927c1fd140" title="If true, all projectiles of this type share an immunity cooldown for each npc.  Use this rather than ...">usesIDStaticNPCImmunity</a> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.<br  />
+ <a class="el" href="class_projectile.html#a11de2b9189c985447fd5efeed001287b" title="When used in conjunction with usesLocalNPCImmunity, determines how many ticks must pass before this p...">localNPCHitCooldown</a> controls the cooldown timing and must be assigned a suitable value to work properly.<br  />
+ <br /></td></tr>
 <tr class="separator:aac037d80bb3fc6a3a54c4fd8cc771197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a5d6358a8c2801c6bab19be5ac0a6b1"><td class="memItemLeft" align="right" valign="top"><a id="a3a5d6358a8c2801c6bab19be5ac0a6b1" name="a3a5d6358a8c2801c6bab19be5ac0a6b1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>usesOwnerMeleeHitCD</b></td></tr>

@@ -105,7 +105,6 @@ var hierarchy =
       [ "CustomModConfigItemAttribute", "class_custom_mod_config_item_attribute.html", null ],
       [ "DefaultDictionaryKeyValueAttribute", "class_default_dictionary_key_value_attribute.html", null ],
       [ "DefaultListValueAttribute", "class_default_list_value_attribute.html", null ],
-      [ "DefaultLocalizedValueAttribute", "class_default_localized_value_attribute.html", null ],
       [ "DrawTicksAttribute", "class_draw_ticks_attribute.html", null ],
       [ "ExpandAttribute", "class_expand_attribute.html", null ],
       [ "ExtendsFromModAttribute", "class_extends_from_mod_attribute.html", null ],

@@ -235,7 +235,6 @@ var annotated_dup =
     [ "DefaultDamageClass", "class_default_damage_class.html", "class_default_damage_class" ],
     [ "DefaultDictionaryKeyValueAttribute", "class_default_dictionary_key_value_attribute.html", null ],
     [ "DefaultListValueAttribute", "class_default_list_value_attribute.html", null ],
-    [ "DefaultLocalizedValueAttribute", "class_default_localized_value_attribute.html", null ],
     [ "DelegateMethods", "class_delegate_methods.html", "class_delegate_methods" ],
     [ "DepthMeterInfoDisplay", "class_depth_meter_info_display.html", "class_depth_meter_info_display" ],
     [ "DesertBiome", "class_desert_biome.html", null ],
