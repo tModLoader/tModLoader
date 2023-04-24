@@ -15,7 +15,7 @@ public static class HairLoader
 	internal static int Register(ModHair hair)
 	{
 		hairs.Add(hair);
-		return hairs.Count - 1;
+		return Count - 1;
 	}
 
 	public static ModHair GetHair(int type)
