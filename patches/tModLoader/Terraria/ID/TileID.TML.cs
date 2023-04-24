@@ -102,12 +102,12 @@ partial class TileID
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
 
 		/// <summary>
-		/// The ID of the tile that a given door transforms into when it is CLOSED. Defaults to -1, which means said tile isn't a door.
+		/// The ID of the tile that a given closed door transforms into when it becomes OPENED. Defaults to -1, which means said tile isn't a closed door.
 		/// </summary>
 		public static int[] OpenDoorID = Factory.CreateIntSet(-1);
 
 		/// <summary>
-		/// The ID of the tile that a given door transforms into when it is OPEN. Defaults to -1, which means said tile isn't a door.
+		/// The ID of the tile that a given open door transforms into when it becomes CLOSED. Defaults to -1, which means said tile isn't an open door.
 		/// </summary>
 		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
 
