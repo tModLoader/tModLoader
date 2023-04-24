@@ -19,7 +19,7 @@
  
  		if (_defeatedMartians && _defeatedMoonlord)
  			availableHairstyles.Add(133);
-+		
++
 +		HairLoader.UpdateUnlocks(this);
  	}
  }
