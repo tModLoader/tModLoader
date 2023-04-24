@@ -2495,13 +2495,13 @@
 +					if (good) {
 +						id = BiomeConversionID.Hallow;
 +					}
-+					else if (WorldGen.crimson) {
++					else if (crimson) {
 +						id = BiomeConversionID.Crimson;
 +					}
 +					else {
 +						id = BiomeConversionID.Corruption;
 +					}
-+					ConversionHandler.Convert(id, m, n, new(true, false, false));
++					ConversionHandler.Convert(id, m, n, new(false, false, false));
  				}
  			}
  
