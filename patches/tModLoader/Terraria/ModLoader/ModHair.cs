@@ -15,7 +15,7 @@ public abstract class ModHair : ModTexturedType
 	/// <summary>
 	/// The path to the alternative texture used for when the hair is covered by a hat.
 	/// </summary>
-	public virtual string AltTexture => Texture + "Alt";
+	public virtual string AltTexture => Texture + "_Alt";
 
 	/// <summary>
 	/// Determines whether this hairstyle is considered male, which influences what gender is picked when randomizing a character.
