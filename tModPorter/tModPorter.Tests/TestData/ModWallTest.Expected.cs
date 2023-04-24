@@ -4,8 +4,10 @@ using Terraria.ModLoader;
 public class ModWallTest : ModWall
 {
 	void Method() {
-		ItemDropOverride = 1;
-		ItemDropOverride = 12;
+#if COMPILE_ERROR
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 1;
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 12;
+#endif
 		DustType = 0;
 #if COMPILE_ERROR
 		// not-yet-implemented

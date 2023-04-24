@@ -58,18 +58,15 @@ public abstract class ModWall : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+	/// Manually registers the item to drop for this wall.<br/>
+	/// Only necessary if there is no item which places this wall, such as with unsafe walls dropping safe variants. Otherwise, the item placing this wall will be dropped automatically.<br/>
+	/// Use <see cref="ModWall.Drop(int, int, ref int)"/> to conditionally prevent or change drops.
 	/// </summary>
-	/*public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
+	/// <param name="itemType"></param>
+	public void RegisterItemDrop(int itemType)
 	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.wallEntries.Keys.Contains(Type)) {
-				MapLoader.wallEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.wallEntries[Type].Add(entry);
-		}
-	}*/
+		WallLoader.wallTypeToItemType[Type] = itemType;
+	}
 
 	protected override sealed void Register()
 	{

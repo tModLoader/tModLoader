@@ -78,16 +78,25 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Manually registers an item to drop for a given tile style. Use this for tile styles that don't have an item that places them, but could potentially exist. For example, open door tiles don't have any item that places them, but they can exist and should drop an item corresponding to their style when destroyed.<br/>
-	/// If -1 is provided for tileStyle, the corresponding item will be used as a fallback and will be dropped for any tile with a style that does not have a manual or automatic item drop determined.<br/>
+	/// Manually registers an item to drop for the provided tile styles. Use this for tile styles that don't have an item that places them, but could potentially exist. For example, open door tiles don't have any item that places them, but they can exist and should drop an item corresponding to their style when destroyed.<br/><br/>
+	/// This method can also be used to register the fallback item drop. The fallback item will drop for any tile with a style that does not have a manual or automatic item drop.<br/>
+	/// To register the fallback item, either pass in -1 as one of the tileStyles or omit the tileStyles parameter altogether.<br/><br/>
 	/// If a mod removes content, manually specifying a replacement item or a fallback item allows users to recover something from the tile.<br/>
 	/// If more control over tile item drops is required, use <see cref="GetItemDrops(int, int)"/>.<br/>
 	/// </summary>
-	/// <param name="tileStyle"></param>
 	/// <param name="itemType"></param>
-	public void RegisterItemDrop(int tileStyle, int itemType)	{
+	/// <param name="tileStyles"></param>
+	public void RegisterItemDrop(int itemType, params int[] tileStyles) {
 		// Runs before TileLoader.FinishSetup
-		TileLoader.tileTypeAndTileStyleToItemType[(Type, tileStyle)] = itemType;
+		if (tileStyles == null || tileStyles.Length == 0) {
+			TileLoader.tileTypeAndTileStyleToItemType[(Type, -1)] = itemType;
+		}
+		else {
+			foreach (var tileStyle in tileStyles) {
+				TileLoader.tileTypeAndTileStyleToItemType[(Type, tileStyle)] = itemType;
+			}
+		}
+
 	}
 
 	protected sealed override void Register()
@@ -203,14 +212,15 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize the items the tile at the given coordinates drops.
-	/// <br/> By default, this method will intelligently decide on a single item drop based on <see cref="ModBlockType.ItemDropOverride"/>, the tile style, and associated <see cref="TileObjectData"/> if it exists.
-	/// <br/> If <see cref="ModBlockType.ItemDropOverride"/> has a non-zero value, it will be used as the item to drop. If -1, no item will drop.
-	/// <br/> Otherwise, the dropped item will be the item type of the loaded item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of the Tile. (<see cref="ModTile.RegisterItemDrop(int, int)"/> can be used to manually register item drops for tile styles with no corresponding item.) If the specific <see cref="Item.placeStyle"/> is not found, the fallback item registered via <see cref="ModTile.RegisterItemDrop(int, int)"/> will drop, otherwise no item will drop.
-	/// <br/> Detecting the tile style is only reliable for tiles with an associated <see cref="TileObjectData"/>, so tiles using a manual tile style approach need to override this method. Once the style is calculated from the tile frame data, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop. 
-	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.
-	/// <br/> For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. 
-	/// <br/> Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.
+	/// Allows customization of the items the tile at the given coordinates drops.<br/>
+	/// By default, this method will intelligently decide on a single item drop.<br/><br/>
+	/// For tiles without an associated <see cref="TileObjectData"/>, the item with <see cref="Item.createTile"/> matching this tile type will be dropped.<br/>
+	/// For tiles with an associated <see cref="TileObjectData"/>, the item with <see cref="Item.createTile"/> matching this tile type and <see cref="Item.placeStyle"/> matching the tile style of this tile will be dropped.<br/>
+	/// <see cref="ModTile.RegisterItemDrop(int, int[])"/> can be used to manually register item drops for tile styles with no corresponding item. It can also be used to register a fallback item, which will be dropped if no suitable item is found.<br/><br/>
+	/// Detecting the tile style is only reliable for tiles with an associated <see cref="TileObjectData"/>, so tiles using a manual tile style approach need to override this method. Once the style is calculated from the tile frame data, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop.<br/><br/>
+	/// This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/> 
+	/// For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item.<br/><br/>
+	/// Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.<br/> 
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

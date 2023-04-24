@@ -10,8 +10,11 @@ using Microsoft.Xna.Framework.Graphics;
 public class ModTileTest : ModTile
 {
 	void Method() {
-		ItemDropOverride = 1;
-		ItemDropOverride = 12;
+#if COMPILE_ERROR
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 1;
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 12;
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 8;
+#endif
 		DustType = 0;
 #if COMPILE_ERROR
 		// not-yet-implemented
@@ -21,10 +24,12 @@ public class ModTileTest : ModTile
 		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 
-		ItemDropOverride = 0;
-		ItemDropOverride = 0;
-		ItemDropOverride = 2;
-		ItemDropOverride = 3;
+#if COMPILE_ERROR
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 0;
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 0;
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 2;
+		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 3;
+#endif
 		MinPick = 0;
 		MineResist = 0;
 		AnimationFrameHeight = 0;
