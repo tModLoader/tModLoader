@@ -4500,6 +4500,20 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
+@@ -35410,7 +_,12 @@
+ 			return;
+ 		}
+ 
++		if (!hairstylesUpdatedForThisInteraction)
++		{
++			hairstylesUpdatedForThisInteraction = true;
+-		Hairstyles.UpdateUnlocks();
++			Hairstyles.UpdateUnlocks();
++		}
++
+ 		int count = Hairstyles.AvailableHairstyles.Count;
+ 		int num = screenHeight / 2 + 60;
+ 		int num2 = screenWidth / 2 - TextureAssets.HairStyleBack.Width() / 2;
 @@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
@@ -4542,6 +4556,15 @@
  				num -= 140;
  				num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
  				_settingsButtonIsPushedToSide = true;
+@@ -37010,6 +_,8 @@
+ 	{
+ 		if (hairWindow)
+ 			DrawHairWindow();
++		else
++			hairstylesUpdatedForThisInteraction = false;
+ 	}
+ 
+ 	private static void DrawInterface_20_MultiplayerPlayerNames()
 @@ -37182,6 +_,11 @@
  
  	private static void DrawInterface_17_DiagnoseNet()

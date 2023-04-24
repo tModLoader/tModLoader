@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/HairstyleUnlocksHelper.cs
++++ src/tModLoader/Terraria/GameContent/HairstyleUnlocksHelper.cs
+@@ -33,7 +_,7 @@
+ 		_defeatedPlantera = flag3;
+ 		_isAtStylist = flag4;
+ 		_isAtCharacterCreation = gameMenu;
+-		return result;
++		return true; // TML: Return true instead of result, character creation only runs it during initialization, stylist window has been patched to only run it while opening as well.
+ 	}
+ 
+ 	private void RebuildList()
