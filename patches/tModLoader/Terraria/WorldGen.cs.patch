@@ -2501,7 +2501,7 @@
 +					else {
 +						id = BiomeConversionID.Corruption;
 +					}
-+					ConversionHandler.Convert(id, m, n, new(false, false, false));
++					ConversionHandler.Convert(id, m, n, new(true, false, false));
  				}
  			}
  

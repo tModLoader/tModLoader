@@ -58,14 +58,16 @@ public static class TileFrameCache
 	{
 		if (!TileFramer[x, y][0]) {
 			TileFramer[x, y][0] = true;
-			TileQueue.AddFirst(new Tuple<int, int, bool>(x, y, resetFrame));
+			Tuple<int, int, bool> data = new(x, y, resetFrame);
+			TileQueue.AddFirst(data);
 		}
 	}
 	public static void QueueWallFrame(int x, int y, bool resetFrame = false)
 	{
 		if (!TileFramer[x, y][1]) {
 			TileFramer[x, y][1] = true;
-			WallQueue.AddFirst(new Tuple<int, int, bool>(x, y, resetFrame));
+			Tuple<int, int, bool> data = new(x, y, resetFrame);
+			WallQueue.AddFirst(data);
 		}
 	}
 
@@ -78,13 +80,13 @@ public static class TileFrameCache
 			WorldGen.TileFrame(item.Item1, item.Item2, item.Item3);
 
 		}
-		TileQueue.Clear();
+		TileQueue = new();
 		for (LinkedListNode<Tuple<int, int, bool>> node = WallQueue.First; node != null; node = node.Next) {
 			item = node.Value;
 			TileFramer[item.Item1, item.Item2][1] = false;
 			Framing.WallFrame(item.Item1, item.Item2, item.Item3);
 		}
-		WallQueue.Clear();
+		WallQueue = new();
 	}
 }
 public sealed class ConversionHandler
