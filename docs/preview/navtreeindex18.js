@@ -1,5 +1,8 @@
 var NAVTREEINDEX18 =
 {
+"class_u_i_dynamic_item_collection.html":[3,0,1263],
+"class_u_i_element.html":[3,0,1264],
+"class_u_i_emotes_menu.html":[3,0,1265],
 "class_u_i_event.html":[3,0,1266],
 "class_u_i_gen_progress_bar.html":[3,0,1268],
 "class_u_i_grid.html":[3,0,1269],
@@ -246,8 +249,5 @@ var NAVTREEINDEX18 =
 "functions_func_d.html":[3,3,1,3],
 "functions_func_e.html":[3,3,1,4],
 "functions_func_f.html":[3,3,1,5],
-"functions_func_g.html":[3,3,1,6],
-"functions_func_h.html":[3,3,1,7],
-"functions_func_i.html":[3,3,1,8],
-"functions_func_j.html":[3,3,1,9]
+"functions_func_g.html":[3,3,1,6]
 };

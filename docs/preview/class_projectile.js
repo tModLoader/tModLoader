@@ -35,6 +35,7 @@ var class_projectile =
     [ "localNPCHitCooldown", "class_projectile.html#a11de2b9189c985447fd5efeed001287b", null ],
     [ "maxPenetrate", "class_projectile.html#a432ae7691265e76941334326f94a6101", null ],
     [ "minion", "class_projectile.html#a01ec793a8f23b86a7ac80513ad1d0949", null ],
+    [ "minionPos", "class_projectile.html#a4537da07fdd42668d33cd44359d66fe6", null ],
     [ "minionSlots", "class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53", null ],
     [ "netImportant", "class_projectile.html#a808116568ed122b5ce53870b1da44101", null ],
     [ "netUpdate", "class_projectile.html#acfedbe4036472a2e64e258e04242d095", null ],

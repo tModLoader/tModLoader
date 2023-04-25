@@ -61,14 +61,14 @@ var NAVTREEINDEX =
 "class_mod_scene_effect.html#aef10f88f98c97b891e9b7237b4458f74",
 "class_moon_shader.html",
 "class_n_p_c_debuff_immunity_data.html#a164ab7150ef00bc2a2786c38a8da1afa",
-"class_player.html#a8c424aeb9f574a1a293ee8cdcf839f7b",
-"class_proj_a_i_style_i_d.html#a119b862fde90bb78e35f39944f7fd7c4",
-"class_projectile_i_d_1_1_sets.html#a81c1283a0df3e4c56268f4a6696898bd",
-"class_stray_methods.html",
-"class_u_i_event.html",
-"functions_func_k.html",
-"struct_empress_blade_drawer.html",
-"struct_stat_inheritance_data.html"
+"class_player.html#a89b122befc9a1f21ab4e0543c8d5750f",
+"class_proj_a_i_style_i_d.html#a0cdc0aee93975b88b07be63080021a54",
+"class_projectile_i_d_1_1_sets.html#a6b764d3c8b5df10d5f100f707a4b5da0",
+"class_steamed_wraps.html",
+"class_u_i_dynamic_item_collection.html",
+"functions_func_h.html",
+"struct_drop_one_by_one_1_1_parameters.html",
+"struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

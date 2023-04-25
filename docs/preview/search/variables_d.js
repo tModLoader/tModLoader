@@ -29,7 +29,7 @@ var searchData=
   ['nomultiplayersmoothingbytype_26',['NoMultiplayerSmoothingByType',['../class_n_p_c_i_d_1_1_sets.html#a6ff0032f7de1978e59db9e356b31c901',1,'NPCID::Sets']]],
   ['noncolorfuldyeitems_27',['NonColorfulDyeItems',['../class_item_i_d_1_1_sets.html#af868278c5e77f39d0359397b14ef4d74',1,'ItemID::Sets']]],
   ['noncritdamage_28',['NonCritDamage',['../struct_n_p_c_1_1_hit_modifiers.html#a3fc834bc782b2655794b91d30067800d',1,'NPC::HitModifiers']]],
-  ['none_29',['None',['../class_item_hold_style_i_d.html#a8f63dc80c64d427691827955c62a5647',1,'ItemHoldStyleID.None()'],['../struct_item_i_d_1_1_banner_effect.html#a30bb345ffe13aaec5504742fbf4fb6c3',1,'ItemID.BannerEffect.None()']]],
+  ['none_29',['None',['../struct_item_i_d_1_1_banner_effect.html#a30bb345ffe13aaec5504742fbf4fb6c3',1,'ItemID.BannerEffect.None()'],['../class_item_hold_style_i_d.html#a8f63dc80c64d427691827955c62a5647',1,'ItemHoldStyleID.None()']]],
   ['normaldamagedealt_30',['NormalDamageDealt',['../struct_item_i_d_1_1_banner_effect.html#ac8df3f62630485565f41653383b29538',1,'ItemID::BannerEffect']]],
   ['normaldamagereceived_31',['NormalDamageReceived',['../struct_item_i_d_1_1_banner_effect.html#a6daf82ec4e7a15e9f65c5adf58137b57',1,'ItemID::BannerEffect']]],
   ['normalgoldcritterbestiarypriority_32',['NormalGoldCritterBestiaryPriority',['../class_n_p_c_i_d_1_1_sets.html#ac773eb314751d4675229da6e65b7d327',1,'NPCID::Sets']]],
@@ -53,7 +53,8 @@ var searchData=
   ['npcslots_50',['npcSlots',['../class_n_p_c.html#ae1c91873c3b58b70afca2cfe7ddc8355',1,'NPC']]],
   ['npcswillrespawn_51',['NPCsWillRespawn',['../class_game_tip_i_d.html#a13194f13c7330484824896799c624db7',1,'GameTipID']]],
   ['numactive_52',['numActive',['../class_popup_text.html#a6145919d220fe6cf3c804fa073d13d65',1,'PopupText']]],
-  ['nursecannotremovedebuff_53',['NurseCannotRemoveDebuff',['../class_buff_i_d_1_1_sets.html#ade6dfddb5663e4c8e601ad077dc8e1f0',1,'BuffID::Sets']]],
-  ['nurseneedslifecrystaltomovein_54',['NurseNeedsLifeCrystalToMoveIn',['../class_game_tip_i_d.html#a9e02292609bc3f21e0bc4b58dec0733d',1,'GameTipID']]],
-  ['nursesyringe_55',['NurseSyringe',['../class_proj_a_i_style_i_d.html#ae7a86ffadca584b906bc91b75dcb54d8',1,'ProjAIStyleID']]]
+  ['numminions_53',['numMinions',['../class_player.html#a11c3cde217cc9f8f8f0e7769d377b13b',1,'Player']]],
+  ['nursecannotremovedebuff_54',['NurseCannotRemoveDebuff',['../class_buff_i_d_1_1_sets.html#ade6dfddb5663e4c8e601ad077dc8e1f0',1,'BuffID::Sets']]],
+  ['nurseneedslifecrystaltomovein_55',['NurseNeedsLifeCrystalToMoveIn',['../class_game_tip_i_d.html#a9e02292609bc3f21e0bc4b58dec0733d',1,'GameTipID']]],
+  ['nursesyringe_56',['NurseSyringe',['../class_proj_a_i_style_i_d.html#ae7a86ffadca584b906bc91b75dcb54d8',1,'ProjAIStyleID']]]
 ];

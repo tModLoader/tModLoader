@@ -1,5 +1,8 @@
 var NAVTREEINDEX21 =
 {
+"struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994":[3,0,1098,2],
+"struct_sprite_frame.html":[3,0,1106],
+"struct_sprite_render_target_helper.html":[3,0,1107],
 "struct_stat_inheritance_data.html":[3,0,1115],
 "struct_stat_modifier.html":[3,0,1116],
 "struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b":[3,0,1116,2],

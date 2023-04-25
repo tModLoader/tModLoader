@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"functions_func_h.html":[3,3,1,7],
+"functions_func_i.html":[3,3,1,8],
+"functions_func_j.html":[3,3,1,9],
 "functions_func_k.html":[3,3,1,10],
 "functions_func_l.html":[3,3,1,11],
 "functions_func_m.html":[3,3,1,12],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "struct_creative_power_u_i_element_request_info.html":[3,0,197],
 "struct_draw_data.html":[3,0,253],
 "struct_drill_debug_draw.html":[3,0,255],
-"struct_drop_attempt_info.html":[3,0,258],
-"struct_drop_one_by_one_1_1_parameters.html":[3,0,264,0],
-"struct_drop_rate_info.html":[3,0,266],
-"struct_drop_rate_info_chain_feed.html":[3,0,267]
+"struct_drop_attempt_info.html":[3,0,258]
 };
