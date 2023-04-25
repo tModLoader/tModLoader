@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,304 @@
+@@ -66,76 +_,307 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -212,6 +212,9 @@
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;
++	/// <summary>
++	/// A number indicating the order of minions. Minion AI code typically uses this value to determine a suitable idle position that results in minions lining up neatly in relation to the player without bunching up.
++	/// </summary>
  	public int minionPos;
  	public int restrikeDelay;
 +

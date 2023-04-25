@@ -209,7 +209,7 @@
  	public bool resistCold;
  	public bool electrified;
  	public bool dryadWard;
-@@ -664,10 +_,19 @@
+@@ -664,12 +_,28 @@
  	public int fishingSkill;
  	public bool cratePotion;
  	public bool sonarPotion;
@@ -227,8 +227,17 @@
 +	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
 +	/// </summary>
  	public int maxMinions = 1;
++	/// <summary>
++	/// The current number of minions this player has summoned. Note that <see cref="slotsMinions"/> is how the minion limit is tracked, not this.
++	/// </summary>
  	public int numMinions;
++	/// <summary>
++	/// The current total value of minions this player has summoned. Used to limit active minions to <see cref="maxMinions"/>
++	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
++	/// </summary>
  	public float slotsMinions;
+ 	public bool pygmy;
+ 	public bool raven;
 @@ -731,6 +_,11 @@
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
