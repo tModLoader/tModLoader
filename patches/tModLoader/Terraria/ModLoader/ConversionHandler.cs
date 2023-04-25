@@ -16,8 +16,8 @@ public static class TileFrameCache
 {
 	internal static BitsByte[,] TileFramer;
 
-	internal static LinkedList<Tuple<int, int, bool>> TileQueue = new();
-	internal static LinkedList<Tuple<int, int, bool>> WallQueue = new();
+	internal static LinkedList<Tuple<int, int>> TileQueue = new();
+	internal static LinkedList<Tuple<int, int>> WallQueue = new();
 
 	internal static void InitializeTileFramer()
 	{
@@ -58,33 +58,42 @@ public static class TileFrameCache
 	{
 		if (!TileFramer[x, y][0]) {
 			TileFramer[x, y][0] = true;
-			Tuple<int, int, bool> data = new(x, y, resetFrame);
+			Tuple<int, int> data = new(x, y);
 			TileQueue.AddFirst(data);
 		}
+		if (resetFrame)
+			TileFramer[x, y][1] = true;
 	}
 	public static void QueueWallFrame(int x, int y, bool resetFrame = false)
 	{
-		if (!TileFramer[x, y][1]) {
-			TileFramer[x, y][1] = true;
-			Tuple<int, int, bool> data = new(x, y, resetFrame);
+		if (!TileFramer[x, y][2]) {
+			TileFramer[x, y][2] = true;
+			Tuple<int, int> data = new(x, y);
 			WallQueue.AddFirst(data);
 		}
+		if (resetFrame)
+			TileFramer[x, y][3] = true;
 	}
 
 	public static void ResolveFrame()
 	{
-		Tuple<int, int, bool> item;
-		for (LinkedListNode<Tuple<int, int, bool>> node = TileQueue.First; node != null; node = node.Next) {
+		Tuple<int, int> item;
+		BitsByte data;
+		for (LinkedListNode<Tuple<int, int>> node = TileQueue.First; node != null; node = node.Next) {
 			item = node.Value;
-			TileFramer[item.Item1, item.Item2][0] = false;
-			WorldGen.TileFrame(item.Item1, item.Item2, item.Item3);
+			data = TileFramer[item.Item1, item.Item2];
+			WorldGen.TileFrame(item.Item1, item.Item2, data[1]);
+			data[0] = false;
+			data[1] = false;
 
 		}
 		TileQueue = new();
-		for (LinkedListNode<Tuple<int, int, bool>> node = WallQueue.First; node != null; node = node.Next) {
+		for (LinkedListNode<Tuple<int, int>> node = WallQueue.First; node != null; node = node.Next) {
 			item = node.Value;
-			TileFramer[item.Item1, item.Item2][1] = false;
-			Framing.WallFrame(item.Item1, item.Item2, item.Item3);
+			data = TileFramer[item.Item1, item.Item2];
+			Framing.WallFrame(item.Item1, item.Item2, data[3]);
+			data[2] = false;
+			data[3] = false;
 		}
 		WallQueue = new();
 	}
