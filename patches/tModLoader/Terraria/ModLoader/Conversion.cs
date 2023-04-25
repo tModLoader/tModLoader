@@ -4,13 +4,13 @@ namespace Terraria.ModLoader;
 
 public sealed class Conversion
 {
-	public sealed record class BlockConversion(int From, int To, bool IsTile)
+	public record struct BlockConversion(int From, int To, bool IsTile)
 	{
 		public delegate ConversionRunCodeValues PreConversionDelegate(Tile tile, int i, int j, ConversionHandler.ConversionSettings settings);
 		public delegate void OnConversionDelegate(Tile tile, int oldTileType, int i, int j, ConversionHandler.ConversionSettings settings);
 
-		public LinkedList<PreConversionDelegate> PreConversionHooks;
-		public OnConversionDelegate OnConversionHook;
+		public LinkedList<PreConversionDelegate> PreConversionHooks = new();
+		public LinkedList<OnConversionDelegate> OnConversionHook = new();
 
 		public BlockConversion PreConversion(PreConversionDelegate preConversionHook)
 		{
@@ -21,7 +21,8 @@ public sealed class Conversion
 
 		public BlockConversion OnConversion(OnConversionDelegate onConversionHook)
 		{
-			OnConversionHook += onConversionHook;
+			OnConversionHook ??= new();
+			OnConversionHook.AddLast(onConversionHook);
 			return this;
 		}
 	}

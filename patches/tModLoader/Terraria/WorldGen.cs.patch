@@ -388,7 +388,7 @@
  		remixWorldGen = tempRemixWorldGen;
  		tenthAnniversaryWorldGen = tempTenthAnniversaryWorldGen;
  		drunkWorldGen = false;
-@@ -6030,10 +_,13 @@
+@@ -6030,14 +_,20 @@
  		}
  
  		Main.zenithWorld = everythingWorldGen;
@@ -403,6 +403,13 @@
  		_lastSeed = seed;
  		_generator = new WorldGenerator(seed, GenVars.configuration);
  		_genRand = new UnifiedRandom(seed);
+ 		Main.rand = new UnifiedRandom(seed);
++
++		TileFrameCache.InitializeTileFramer();
++
+ 		GenVars.structures = new StructureMap();
+ 		GenVars.desertHiveHigh = Main.maxTilesY;
+ 		GenVars.desertHiveLow = 0;
 @@ -6097,9 +_,18 @@
  		GenVars.logX = -1;
  		GenVars.logY = -1;
@@ -2501,7 +2508,7 @@
 +					else {
 +						id = BiomeConversionID.Corruption;
 +					}
-+					ConversionHandler.Convert(id, m, n, new(false, false, false));
++					ConversionHandler.Convert(id, m, n, new(true, false, false));
  				}
  			}
  

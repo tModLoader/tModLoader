@@ -1,12 +1,103 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Graphics;
 using Terraria.ID;
+using Terraria;
+using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Terraria.ModLoader;
+
+public static class TileFrameCache
+{
+	internal static BitsByte[,] TileFramer;
+
+	internal static LinkedList<Tuple<int, int>> TileQueue = new();
+	internal static LinkedList<Tuple<int, int>> WallQueue = new();
+
+	internal static void InitializeTileFramer()
+	{
+		TileFramer = new BitsByte[Main.maxTilesX, Main.maxTilesY];
+	}
+
+	public static void QueueSquareTileFrame(int x, int y, bool resetFrame = false)
+	{
+		if (x > 5 && y > 5 && x < Main.maxTilesX - 5 && y < Main.maxTilesY - 5 && Main.tile[x, y] != null) {
+
+			QueueTileFrame(x - 1, y - 1);
+			QueueTileFrame(x - 1, y);
+			QueueTileFrame(x - 1, y + 1);
+			QueueTileFrame(x, y - 1);
+			QueueTileFrame(x, y, resetFrame);
+			QueueTileFrame(x, y + 1);
+			QueueTileFrame(x + 1, y - 1);
+			QueueTileFrame(x + 1, y);
+			QueueTileFrame(x + 1, y + 1);
+		}
+	}
+	public static void QueueSquareWallFrame(int x, int y, bool resetFrame = false)
+	{
+		if (x > 5 && y > 5 && x < Main.maxTilesX - 5 && y < Main.maxTilesY - 5 && Main.tile[x, y] != null) {
+
+			QueueWallFrame(x - 1, y - 1);
+			QueueWallFrame(x - 1, y);
+			QueueWallFrame(x - 1, y + 1);
+			QueueWallFrame(x, y - 1);
+			QueueWallFrame(x, y, resetFrame);
+			QueueWallFrame(x, y + 1);
+			QueueWallFrame(x + 1, y - 1);
+			QueueWallFrame(x + 1, y);
+			QueueWallFrame(x + 1, y + 1);
+		}
+	}
+	public static void QueueTileFrame(int x, int y, bool resetFrame = false)
+	{
+		if (!TileFramer[x, y][0]) {
+			TileFramer[x, y][0] = true;
+			Tuple<int, int> data = new(x, y);
+			TileQueue.AddFirst(data);
+		}
+		if (resetFrame)
+			TileFramer[x, y][1] = true;
+	}
+	public static void QueueWallFrame(int x, int y, bool resetFrame = false)
+	{
+		if (!TileFramer[x, y][2]) {
+			TileFramer[x, y][2] = true;
+			Tuple<int, int> data = new(x, y);
+			WallQueue.AddFirst(data);
+		}
+		if (resetFrame)
+			TileFramer[x, y][3] = true;
+	}
+
+	public static void ResolveFrame()
+	{
+		Tuple<int, int> item;
+		BitsByte data;
+		for (LinkedListNode<Tuple<int, int>> node = TileQueue.First; node != null; node = node.Next) {
+			item = node.Value;
+			data = TileFramer[item.Item1, item.Item2];
+			WorldGen.TileFrame(item.Item1, item.Item2, data[1]);
+			data[0] = false;
+			data[1] = false;
+
+		}
+		TileQueue = new();
+		for (LinkedListNode<Tuple<int, int>> node = WallQueue.First; node != null; node = node.Next) {
+			item = node.Value;
+			data = TileFramer[item.Item1, item.Item2];
+			Framing.WallFrame(item.Item1, item.Item2, data[3]);
+			data[2] = false;
+			data[3] = false;
+		}
+		WallQueue = new();
+	}
+}
 public sealed class ConversionHandler
 {
 	public readonly record struct ConversionSettings(
@@ -20,8 +111,8 @@ public sealed class ConversionHandler
 	public const int Break = -2;
 
 	// Would be lovely to have a better way than this.
-	internal static int TileIndex(int index, int type) => (TileLoader.TileCount * index) + type;
-	internal static int WallIndex(int index, int type) => (TileLoader.TileCount * ConversionDatabase.conversions.Count) + (WallLoader.WallCount * index) + type;
+	internal static int TileIndex(int index, int type) => (TileLoader.TileCount + WallLoader.WallCount) * index + type;
+	internal static int WallIndex(int index, int type) => (TileLoader.TileCount + WallLoader.WallCount) * index + TileLoader.TileCount + type;
 
 	internal static void FillData()
 	{
@@ -29,6 +120,8 @@ public sealed class ConversionHandler
 			Array.Clear(data);
 		}
 		data = new Conversion.BlockConversion[(TileLoader.TileCount * ConversionDatabase.conversions.Count) + (TileLoader.TileCount * ConversionDatabase.conversions.Count)];
+		for(int x = 0; x < data.Length; x++) {
+		}
 		foreach (var conv in ConversionDatabase.conversions.Values) {
 			conv.Fill(data);
 		}
@@ -214,7 +307,7 @@ public sealed class ConversionHandler
 		}
 		if ((transformations & replacedTile) > 0) {
 			if (settings.Value.SquareTileFrame)
-				WorldGen.SquareTileFrame(i, j);
+				TileFrameCache.QueueSquareTileFrame(i, j);
 			if (settings.Value.NetSpam)
 				NetMessage.SendTileSquare(-1, i, j);
 		}
@@ -297,9 +390,9 @@ public sealed class ConversionHandler
 		}
 		if ((transformations & (replacedTile | replacedTileW)) > 0) {
 			if (settings.Value.SquareTileFrame && (transformations & replacedTile) > 0)
-				WorldGen.SquareTileFrame(i, j);
+				TileFrameCache.QueueSquareTileFrame(i, j);
 			if (settings.Value.SquareWallFrame && (transformations & replacedTileW) > 0)
-				WorldGen.SquareWallFrame(i, j);
+				TileFrameCache.QueueSquareWallFrame(i, j);
 			if (settings.Value.NetSpam)
 				NetMessage.SendTileSquare(-1, i, j);
 		}
@@ -326,7 +419,7 @@ public sealed class ConversionHandler
 		ref byte transformations, ConversionSettings settings,
 		byte wasCalled, byte breakBlock, byte replacedBlock)
 	{
-		if (block != null && value != ConversionRunCodeValues.DontRun) {
+		if (block.From != block.To && value != ConversionRunCodeValues.DontRun) {
 			transformations |= wasCalled;
 
 			int conv = block.To;
