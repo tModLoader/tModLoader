@@ -1,12 +1,92 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Graphics;
 using Terraria.ID;
+using Terraria;
+using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Terraria.ModLoader;
+
+public static class TileFrameCache
+{
+	internal static BitsByte[,] TileFramer;
+
+	internal static LinkedList<Tuple<int, int, bool>> TileQueue = new();
+	internal static LinkedList<Tuple<int, int, bool>> WallQueue = new();
+
+	internal static void InitializeTileFramer()
+	{
+		TileFramer = new BitsByte[Main.maxTilesX, Main.maxTilesY];
+	}
+
+	public static void QueueSquareTileFrame(int x, int y, bool resetFrame = false)
+	{
+		if (x > 5 && y > 5 && x < Main.maxTilesX - 5 && y < Main.maxTilesY - 5 && Main.tile[x, y] != null) {
+
+			QueueTileFrame(x - 1, y - 1);
+			QueueTileFrame(x - 1, y);
+			QueueTileFrame(x - 1, y + 1);
+			QueueTileFrame(x, y - 1);
+			QueueTileFrame(x, y, resetFrame);
+			QueueTileFrame(x, y + 1);
+			QueueTileFrame(x + 1, y - 1);
+			QueueTileFrame(x + 1, y);
+			QueueTileFrame(x + 1, y + 1);
+		}
+	}
+	public static void QueueSquareWallFrame(int x, int y, bool resetFrame = false)
+	{
+		if (x > 5 && y > 5 && x < Main.maxTilesX - 5 && y < Main.maxTilesY - 5 && Main.tile[x, y] != null) {
+
+			QueueWallFrame(x - 1, y - 1);
+			QueueWallFrame(x - 1, y);
+			QueueWallFrame(x - 1, y + 1);
+			QueueWallFrame(x, y - 1);
+			QueueWallFrame(x, y, resetFrame);
+			QueueWallFrame(x, y + 1);
+			QueueWallFrame(x + 1, y - 1);
+			QueueWallFrame(x + 1, y);
+			QueueWallFrame(x + 1, y + 1);
+		}
+	}
+	public static void QueueTileFrame(int x, int y, bool resetFrame = false)
+	{
+		if (!TileFramer[x, y][0]) {
+			TileFramer[x, y][0] = true;
+			TileQueue.AddFirst(new Tuple<int, int, bool>(x, y, resetFrame));
+		}
+	}
+	public static void QueueWallFrame(int x, int y, bool resetFrame = false)
+	{
+		if (!TileFramer[x, y][1]) {
+			TileFramer[x, y][1] = true;
+			WallQueue.AddFirst(new Tuple<int, int, bool>(x, y, resetFrame));
+		}
+	}
+
+	public static void ResolveFrame()
+	{
+		Tuple<int, int, bool> item;
+		for (LinkedListNode<Tuple<int, int, bool>> node = TileQueue.First; node != null; node = node.Next) {
+			item = node.Value;
+			TileFramer[item.Item1, item.Item2][0] = false;
+			WorldGen.TileFrame(item.Item1, item.Item2, item.Item3);
+
+		}
+		TileQueue.Clear();
+		for (LinkedListNode<Tuple<int, int, bool>> node = WallQueue.First; node != null; node = node.Next) {
+			item = node.Value;
+			TileFramer[item.Item1, item.Item2][1] = false;
+			Framing.WallFrame(item.Item1, item.Item2, item.Item3);
+		}
+		WallQueue.Clear();
+	}
+}
 public sealed class ConversionHandler
 {
 	public readonly record struct ConversionSettings(
@@ -214,7 +294,7 @@ public sealed class ConversionHandler
 		}
 		if ((transformations & replacedTile) > 0) {
 			if (settings.Value.SquareTileFrame)
-				WorldGen.SquareTileFrame(i, j);
+				TileFrameCache.QueueSquareTileFrame(i, j);
 			if (settings.Value.NetSpam)
 				NetMessage.SendTileSquare(-1, i, j);
 		}
@@ -297,9 +377,9 @@ public sealed class ConversionHandler
 		}
 		if ((transformations & (replacedTile | replacedTileW)) > 0) {
 			if (settings.Value.SquareTileFrame && (transformations & replacedTile) > 0)
-				WorldGen.SquareTileFrame(i, j);
+				TileFrameCache.QueueSquareTileFrame(i, j);
 			if (settings.Value.SquareWallFrame && (transformations & replacedTileW) > 0)
-				WorldGen.SquareWallFrame(i, j);
+				TileFrameCache.QueueSquareWallFrame(i, j);
 			if (settings.Value.NetSpam)
 				NetMessage.SendTileSquare(-1, i, j);
 		}
