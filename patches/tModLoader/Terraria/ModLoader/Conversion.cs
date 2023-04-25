@@ -4,7 +4,7 @@ namespace Terraria.ModLoader;
 
 public sealed class Conversion
 {
-	public record struct BlockConversion(int From, int To, bool IsTile)
+	public record class BlockConversion(int From, int To, bool IsTile)
 	{
 		public delegate ConversionRunCodeValues PreConversionDelegate(Tile tile, int i, int j, ConversionHandler.ConversionSettings settings);
 		public delegate void OnConversionDelegate(Tile tile, int oldTileType, int i, int j, ConversionHandler.ConversionSettings settings);
