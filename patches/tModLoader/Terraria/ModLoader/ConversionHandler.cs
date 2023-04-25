@@ -102,8 +102,8 @@ public sealed class ConversionHandler
 	public const int Break = -2;
 
 	// Would be lovely to have a better way than this.
-	internal static int TileIndex(int index, int type) => (TileLoader.TileCount * index) + type;
-	internal static int WallIndex(int index, int type) => (TileLoader.TileCount * ConversionDatabase.conversions.Count) + (WallLoader.WallCount * index) + type;
+	internal static int TileIndex(int index, int type) => (TileLoader.TileCount + WallLoader.WallCount) * index + type;
+	internal static int WallIndex(int index, int type) => (TileLoader.TileCount + WallLoader.WallCount) * index + TileLoader.TileCount + type;
 
 	internal static void FillData()
 	{
@@ -111,6 +111,8 @@ public sealed class ConversionHandler
 			Array.Clear(data);
 		}
 		data = new Conversion.BlockConversion[(TileLoader.TileCount * ConversionDatabase.conversions.Count) + (TileLoader.TileCount * ConversionDatabase.conversions.Count)];
+		for(int x = 0; x < data.Length; x++) {
+		}
 		foreach (var conv in ConversionDatabase.conversions.Values) {
 			conv.Fill(data);
 		}
@@ -408,7 +410,7 @@ public sealed class ConversionHandler
 		ref byte transformations, ConversionSettings settings,
 		byte wasCalled, byte breakBlock, byte replacedBlock)
 	{
-		if (block != null && value != ConversionRunCodeValues.DontRun) {
+		if (block.From != block.To && value != ConversionRunCodeValues.DontRun) {
 			transformations |= wasCalled;
 
 			int conv = block.To;
