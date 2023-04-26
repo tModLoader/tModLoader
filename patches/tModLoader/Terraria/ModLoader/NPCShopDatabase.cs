@@ -198,7 +198,7 @@ public static partial class NPCShopDatabase
 		});
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
-			
+
 		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
@@ -1142,7 +1142,8 @@ public class TravellingMerchantShop : AbstractNPCShop
 
 	public TravellingMerchantShop(int npcType) : base(npcType) { }
 
-	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions) {
+	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
+	{
 		_entries.Add(new Entry(item, conditions.ToList()));
 		return this;
 	}
@@ -1165,7 +1166,7 @@ public class TravellingMerchantShop : AbstractNPCShop
 		foreach (var itemId in Main.travelShop) {
 			if (itemId == 0)
 				continue;
-			
+
 			items[i++] = new Item(itemId);
 		}
 	}

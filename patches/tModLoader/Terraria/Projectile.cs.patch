@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,279 @@
+@@ -66,76 +_,307 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -139,8 +139,21 @@
  	public int penetrate = 1;
 -	private int[] localNPCImmunity = new int[200];
 +	public int[] localNPCImmunity = new int[200];
++	/// <summary>
++	/// If true, this projectile manages it's own immunity timers for each npc.<br/>
++	/// Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.<br/>
++	/// <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// </summary>
  	public bool usesLocalNPCImmunity;
++	/// <summary>
++	/// If true, all projectiles of this type share an immunity cooldown for each npc.<br/>
++	/// Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.<br/>
++	/// <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// </summary>
  	public bool usesIDStaticNPCImmunity;
++	/// <summary>
++	/// If true, this projectile will apply immunity to an npc despite having a <see cref="penetrate"/> value of 1. Used only for firework rockets in Terraria content.
++	/// </summary>
  	public bool appliesImmunityTimeOnSingleHits;
 +
 +	/// <summary>
@@ -199,6 +212,9 @@
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;
++	/// <summary>
++	/// A number indicating the order of minions. Minion AI code typically uses this value to determine a suitable idle position that results in minions lining up neatly in relation to the player without bunching up.
++	/// </summary>
  	public int minionPos;
  	public int restrikeDelay;
 +
@@ -302,6 +318,18 @@
  	public int frame;
  	public bool manualDirectionChange;
  	public int projUUID = -1;
+ 	public bool decidesManualFallThrough;
+ 	public bool shouldFallThrough;
++	/// <summary>
++	/// When used in conjunction with <see cref="usesLocalNPCImmunity"/>, determines how many ticks must pass before this projectile can deal damage again to the same npc. A value of -1 indicates that it can only hit a specific npc once. The default value of -2 has no effect, so this must be assigned if usesLocalNPCImmunity is true.
++	/// </summary>
+ 	public int localNPCHitCooldown = -2;
++	/// <summary>
++	/// When used in conjunction with <see cref="usesIDStaticNPCImmunity"/>, determines how many ticks must pass before any projectile of the same type can deal damage again to the same npc. This must be assigned a suitable value if usesIDStaticNPCImmunity is true.
++	/// </summary>
+ 	public int idStaticNPCHitCooldown = -1;
+ 	public int bannerIdToRespondTo;
+ 	private static Conditions.IsSolid _cachedConditions_solid = new Conditions.IsSolid();
 @@ -152,7 +_,14 @@
  	private static List<int> _ai156_blacklistedTargets = new List<int>();
  	private static float[] _CompanionCubeScreamCooldown = new float[255];

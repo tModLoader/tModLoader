@@ -209,7 +209,7 @@
  	public bool resistCold;
  	public bool electrified;
  	public bool dryadWard;
-@@ -664,10 +_,19 @@
+@@ -664,12 +_,28 @@
  	public int fishingSkill;
  	public bool cratePotion;
  	public bool sonarPotion;
@@ -227,8 +227,17 @@
 +	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
 +	/// </summary>
  	public int maxMinions = 1;
++	/// <summary>
++	/// The current number of minions this player has summoned. Note that <see cref="slotsMinions"/> is how the minion limit is tracked, not this.
++	/// </summary>
  	public int numMinions;
++	/// <summary>
++	/// The current total value of minions this player has summoned. Used to limit active minions to <see cref="maxMinions"/>
++	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
++	/// </summary>
  	public float slotsMinions;
+ 	public bool pygmy;
+ 	public bool raven;
 @@ -731,6 +_,11 @@
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
@@ -4063,6 +4072,49 @@
  		return num;
  	}
  
+@@ -27344,11 +_,26 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
++	/// Items will be taken from all of the player inventories and banks combined.<br/>
++	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
++	/// If the player has enough currency, the currency will be taken from the inventories.<br/>
++	/// </summary>
++	/// <param name="price"></param>
++	/// <param name="customCurrency"></param>
++	/// <returns>true if the player had enough currency to pay the price.</returns>
+ 	public bool BuyItem(long price, int customCurrency = -1)
+ 	{
+-		if (customCurrency != -1)
+-			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
++		if (CanAfford(price, customCurrency))
++			return PayCurrency(price, customCurrency);
++		return false;
++	}
+ 
++	public bool CanAfford(long price, int customCurrency = -1)
++	{
++		if (customCurrency != -1)
++			return CustomCurrencyManager.CanAfford(this, price, customCurrency);
+ 		bool overFlowing;
+ 		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
+ 		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
+@@ -27357,7 +_,13 @@
+ 		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
+ 		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
+ 			return false;
++		return true;
++	}
+ 
++	public bool PayCurrency(long price, int customCurrency = -1)
++	{
++		if (customCurrency != -1)
++			return CustomCurrencyManager.PayCurrency(this, price, customCurrency);
+ 		List<Item[]> list = new List<Item[]>();
+ 		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
+ 		List<Point> list2 = new List<Point>();
 @@ -27569,7 +_,7 @@
  			num2 += 4;
  		}

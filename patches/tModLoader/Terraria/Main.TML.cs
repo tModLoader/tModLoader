@@ -107,7 +107,7 @@ public partial class Main
 				}
 
 				if (!Main.mouseText) {
-					mouseText = (InfoDisplayLoader.ActivePages() != InfoDisplayLoader.InfoDisplayPage + 1) ? "Next Page" : "To First Page";
+					mouseText = (InfoDisplayLoader.ActivePages() != InfoDisplayLoader.InfoDisplayPage + 1) ? Language.GetTextValue("tModLoader.NextInfoAccPage") : Language.GetTextValue("tModLoader.FirstInfoAccPage");
 					Main.mouseText = true;
 				}
 			}
@@ -136,7 +136,7 @@ public partial class Main
 				}
 
 				if (!Main.mouseText) {
-					mouseText = (InfoDisplayLoader.InfoDisplayPage != 0) ? "Previous Page" : "To Last Page";
+					mouseText = (InfoDisplayLoader.InfoDisplayPage != 0) ? Language.GetTextValue("tModLoader.PreviousInfoAccPage") : Language.GetTextValue("tModLoader.LastInfoAccPage");
 					Main.mouseText = true;
 				}
 			}

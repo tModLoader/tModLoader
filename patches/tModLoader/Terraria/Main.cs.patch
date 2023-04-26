@@ -3591,14 +3591,19 @@
  				if (flag)
  					rain.Update();
  			}
-@@ -30999,6 +_,13 @@
+@@ -30999,6 +_,18 @@
  				if (dust.type == 213)
  					scale = 1f;
  
 +				ModDust modDust = DustLoader.GetDust(dust.type);
 +
 +				if (modDust != null) {
-+					modDust.Draw(dust, newColor, scale);
++					if(modDust.PreDraw(dust))
++						modDust.Draw(dust, newColor, scale);
++
++					if (newColor == Color.Black)
++						dust.active = false;
++
 +					continue;
 +				}
 +
@@ -4164,7 +4169,7 @@
  					string text2 = "";
  					int num59 = 0;
  					int num60 = 0;
-@@ -33431,11 +_,20 @@
+@@ -33431,11 +_,21 @@
  
  						mouseReforge = true;
  						player[myPlayer].mouseInterface = true;
@@ -4172,8 +4177,9 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && player[myPlayer].BuyItem(num58)) {
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanBuyItem(num58) && ItemLoader.PreReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num58) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num58);
++							ItemLoader.PreReforge(reforgeItem); // After BuyItem just in case
 +
  							reforgeItem.ResetPrefix();
  							reforgeItem.Prefix(-2);

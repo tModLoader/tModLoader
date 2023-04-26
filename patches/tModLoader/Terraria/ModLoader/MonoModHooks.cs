@@ -41,7 +41,13 @@ public static class MonoModHooks
 	}
 
 	private static Dictionary<Assembly, DetourList> assemblyDetours = new();
-	private static DetourList GetDetourList(Assembly asm) => assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+	private static DetourList GetDetourList(Assembly asm)
+	{
+		if (asm == typeof(Action).Assembly)
+			throw new ArgumentException("Cannot identify owning assembly of hook. Make sure there are no delegate type changing wrappers between the method/lambda and the Modify/Add/+= call. Eg `new ILContext.Manipulator(action)` is bad");
+
+		return assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+	}
 
 	[Obsolete("No longer required. NativeDetour is gone. Detour should not be used. Hook is safe to use", true)]
 	public static void RequestNativeAccess() { }
@@ -194,7 +200,7 @@ public static class MonoModHooks
 	{
 		string methodName = il.Method.FullName.Replace(':', '_');
 		if (methodName.Contains('?')) // MonoMod IL copies are created with mangled names like DMD<Terraria.Player::beeType>?38504011::Terraria.Player::beeType(Terraria.Player)
-			methodName = methodName[(methodName.LastIndexOf('?')+1)..];
+			methodName = methodName[(methodName.LastIndexOf('?') + 1)..];
 
 		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, methodName + ".txt");
 		string folderPath = Path.GetDirectoryName(filePath);
@@ -209,7 +215,8 @@ public static class MonoModHooks
 
 public class ILPatchFailureException : Exception
 {
-	public ILPatchFailureException(Mod mod, ILContext il, Exception innerException) : base($"Mod \"{mod.Name}\" failed to IL edit method \"{il.Method.FullName}\"", innerException) {
+	public ILPatchFailureException(Mod mod, ILContext il, Exception innerException) : base($"Mod \"{mod.Name}\" failed to IL edit method \"{il.Method.FullName}\"", innerException)
+	{
 		MonoModHooks.DumpIL(mod, il);
 	}
 }

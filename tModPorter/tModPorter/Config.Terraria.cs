@@ -117,6 +117,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
 
 		RefactorInstanceMethodCall("Terraria.Player", "VanillaUpdateEquip",	Removed("Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots)"));
+		RenameMethod("Terraria.Player", "CanBuyItem", "CanAfford");
 
 		RefactorInstanceMember("Terraria.Main", "fastForwardTime", Removed("Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk"));
 

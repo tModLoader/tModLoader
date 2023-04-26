@@ -24,7 +24,7 @@ public static class GlobalList<TGlobal> where TGlobal : GlobalType<TGlobal>
 			throw new Exception("Loading has finished. Cannot add more globals");
 
 		short index = (short)_globals.Count;
-		short perEntityIndex = (short)(global.SlotPerEntity ? SlotsPerEntity++ : - 1);
+		short perEntityIndex = (short)(global.SlotPerEntity ? SlotsPerEntity++ : -1);
 
 		_globals.Add(global);
 

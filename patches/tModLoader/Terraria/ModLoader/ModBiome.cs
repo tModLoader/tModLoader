@@ -55,7 +55,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	public sealed override void SetupContent()
 	{
 		SetStaticDefaults();
-		
+
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
 	}
 
@@ -88,7 +88,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	/// <summary>
 	/// Override this hook to make things happen when the player is in the biome.
 	/// </summary>
-	public virtual void OnInBiome(Player player) {}
+	public virtual void OnInBiome(Player player) { }
 
 	/// <summary>
 	/// Override this hook to make things happen when the player leaves the biome.

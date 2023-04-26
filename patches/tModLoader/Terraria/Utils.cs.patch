@@ -79,24 +79,30 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1383,6 +_,8 @@
+@@ -1383,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;
 +
-+		/*
++		TextSnippet[] snippets = ChatManager.ParseMessage(text, color).ToArray();
++		ChatManager.ConvertNormalSnippets(snippets);
++		Vector2 textSize = ChatManager.GetStringSize(value, snippets, Vector2.One);
++
  		for (int i = -1; i < 2; i++) {
  			for (int j = -1; j < 2; j++) {
++				/*
  				spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
-@@ -1391,6 +_,11 @@
++				*/
++				ChatManager.DrawColorCodedString(spriteBatch, value, snippets, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * textSize, new Vector2(scale), out var _, maxWidth: -1, ignoreColors: true);
+ 			}
+ 		}
  
++		/*
  		spriteBatch.DrawString(value, text, pos, color, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
  		return value.MeasureString(text) * scale;
 +		*/
-+
-+		Vector2 vector = ChatManager.GetStringSize(value, text, Vector2.One);
-+		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
-+		return vector * scale;
++		ChatManager.DrawColorCodedString(spriteBatch, value, snippets, pos, color, 0f, new Vector2(anchorx, anchory) * textSize, new Vector2(scale), out var _, maxWidth: -1);
++		return textSize * scale;
  	}
  
  	public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color))
