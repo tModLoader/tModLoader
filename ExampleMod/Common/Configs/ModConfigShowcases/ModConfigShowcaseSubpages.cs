@@ -47,7 +47,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 			public SubSubConfigExample SubA = new SubSubConfigExample();
 
 			[SeparatePage]
-			[LabelKey("$Mods.ExampleMod.Configs.Common.SubConfigExample.SubB.Label")]
 			public SubSubConfigExample SubB = new SubSubConfigExample();
 
 			public override string ToString() {

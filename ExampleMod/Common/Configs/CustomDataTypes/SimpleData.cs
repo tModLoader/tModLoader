@@ -8,12 +8,11 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 	[BackgroundColor(255, 7, 7)]
 	public class SimpleData
 	{
-		// These Headers annotate members in a non-ModConfig class, so their Header translation keys need to be manually specified and added to the localization files. 
-		[Header("$Mods.ExampleMod.Configs.Common.SimpleData.boost.Header")]
+		[Header("FirstHeader")]
 		public int boost;
 		public float percent;
 
-		[Header("$Mods.ExampleMod.Configs.Common.SimpleData.enabled.Header")]
+		[Header("SecondHeader")]
 		public bool enabled;
 
 		[DrawTicks]

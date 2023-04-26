@@ -11,24 +11,6 @@ Common: {
 	LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
 	LocalizedTooltip: This tooltip is from the localization files.
 	LocalizedHeader: Headers can help organize
-
-	Pair: {
-		Label: Pair
-		Tooltip: Pair is a simple class holding a bool and an int
-	}
-
-	SimpleData: {
-		boost.Header: Awesome
-		enabled.Header: enabled
-	}
-
-	Gradient: {
-		Tooltip: Represents a gradient from one color to another
-		start.Tooltip: The color the gradient starts at
-		end.Tooltip: The color the gradient ends at
-	}
-
-	SubConfigExample.SubB.Label: Even More Sub
 	LocalizedLabelDynamic: Localized Label Dynamic
 	InterpolatedLabel: Item: [i:{0}]. Number: {1} {^1:change;changes}. Text: {2}. Localized Text: {3}.
 	InterpolatedTooltip: "[c/{1}:Use to disable the] [c/{2}:{0}] [c/{1}:feature]"
@@ -472,4 +454,124 @@ ModConfigShowcaseSubpages: {
 	}
 
 	Headers.SeparatePageExamples: SeparatePage Examples
+}
+
+Pair: {
+	Label: Pair
+	Tooltip: Pair is a simple class holding a bool and an int
+
+	enabled: {
+		Label: enabled
+		Tooltip: ""
+	}
+
+	boost: {
+		Label: boost
+		Tooltip: ""
+	}
+}
+
+SimpleData: {
+	Label: Simple Data
+	Tooltip: ""
+
+	Headers: {
+		FirstHeader: Awesome
+		SecondHeader: Enabled
+	}
+
+	boost: {
+		Label: boost
+		Tooltip: ""
+	}
+
+	percent: {
+		Label: percent
+		Tooltip: ""
+	}
+
+	enabled: {
+		Label: enabled
+		Tooltip: ""
+	}
+
+	FavoritePokemon: {
+		Label: Favorite Pokemon
+		Tooltip: ""
+	}
+}
+
+Gradient: {
+	Label: Gradient
+	Tooltip: Represents a gradient from one color to another
+
+	start: {
+		Label: start
+		Tooltip: The color the gradient starts at
+	}
+
+	end: {
+		Label: end
+		Tooltip: The color the gradient ends at
+	}
+}
+
+ComplexData: {
+	Label: Complex Data
+	Tooltip: ""
+
+	ListOfInts: {
+		Label: List Of Ints
+		Tooltip: ""
+	}
+
+	nestedSimple: {
+		Label: nested Simple
+		Tooltip: ""
+	}
+
+	IncrementalFloat: {
+		Label: Incremental Float
+		Tooltip: ""
+	}
+}
+
+SubConfigExample: {
+	Label: Sub Config Example
+	Tooltip: ""
+
+	boost: {
+		Label: boost
+		Tooltip: ""
+	}
+
+	percent: {
+		Label: percent
+		Tooltip: ""
+	}
+
+	enabled: {
+		Label: enabled
+		Tooltip: ""
+	}
+
+	SubA: {
+		Label: Sub A
+		Tooltip: ""
+	}
+
+	SubB: {
+		Label: Even More Sub
+		Tooltip: ""
+	}
+}
+
+SubSubConfigExample: {
+	Label: Sub Sub Config Example
+	Tooltip: ""
+
+	whoa: {
+		Label: whoa
+		Tooltip: ""
+	}
 }
