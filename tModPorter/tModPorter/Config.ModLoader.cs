@@ -83,6 +83,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
@@ -314,7 +316,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
 		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
 
-		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization");
+		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files to adjust localization");
 		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
@@ -521,5 +523,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
+
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Add", to: "Add", newType: "Terraria.ModLoader.MonoModHooks");
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Modify", to: "Modify", newType: "Terraria.ModLoader.MonoModHooks");
 	}
 }

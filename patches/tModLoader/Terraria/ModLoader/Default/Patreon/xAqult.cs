@@ -4,12 +4,15 @@ using ReLogic.Content;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
 	[AutoloadEquip(EquipType.Head)]
 	internal class xAqult_Head : PatreonItem
     {
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
@@ -26,6 +29,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Body)]
 	internal class xAqult_Body : PatreonItem
 	{
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
@@ -42,6 +47,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Legs)]
 	internal class xAqult_Legs : PatreonItem
 	{
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		public override void SetDefaults() {
 			base.SetDefaults();
 
@@ -53,6 +60,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Head)]
 	internal class xAqult_Mask : PatreonItem
 	{
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		/*public override void Load() {
 			if (Main.netMode == NetmodeID.Server) {
 				return;
@@ -72,6 +81,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Face)]
 	internal class xAqult_Lens : PatreonItem
 	{
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		public override void Load() {
 			if (Main.netMode == NetmodeID.Server) {
 				return;
@@ -103,6 +114,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	[AutoloadEquip(EquipType.Wings)]
 	internal class xAqult_Wings : PatreonItem
 	{
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 

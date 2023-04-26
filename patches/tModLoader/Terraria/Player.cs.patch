@@ -209,7 +209,7 @@
  	public bool resistCold;
  	public bool electrified;
  	public bool dryadWard;
-@@ -664,10 +_,19 @@
+@@ -664,12 +_,28 @@
  	public int fishingSkill;
  	public bool cratePotion;
  	public bool sonarPotion;
@@ -227,8 +227,17 @@
 +	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
 +	/// </summary>
  	public int maxMinions = 1;
++	/// <summary>
++	/// The current number of minions this player has summoned. Note that <see cref="slotsMinions"/> is how the minion limit is tracked, not this.
++	/// </summary>
  	public int numMinions;
++	/// <summary>
++	/// The current total value of minions this player has summoned. Used to limit active minions to <see cref="maxMinions"/>
++	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
++	/// </summary>
  	public float slotsMinions;
+ 	public bool pygmy;
+ 	public bool raven;
 @@ -731,6 +_,11 @@
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
@@ -331,7 +340,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,16 +_,78 @@
+@@ -961,16 +_,89 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -342,7 +351,18 @@
 +	*/
 +	internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
 +
++	/// <summary>
++	/// The defense value of this player.<br/>
++	/// The <see href="https://terraria.wiki.gg/wiki/Defense#Players">Defense wiki page</see> teaches how player defense affects incoming damage alongside <see cref="DefenseEffectiveness"/>.<br/>
++	/// The value resets to 0 during <see cref="Player.ResetEffects"/> and is manipulated throughout <see cref="Player.Update(int)"/>.<br/>
++	/// If the final value is needed, <see cref="ModPlayer.PostUpdate"/> or anytime later is the best place. As such it is not recommended to manipulate the value during PostUpdate or at any time later for compatibility. Failure to follow this guideline will result in inconsistent behavior.<br/>
++	/// Due to this field being a <see cref="DefenseStat"/>, modders can freely add, subtract, multiply, and divide the value. The final result will properly account for all modifications applied.<br/>
++	/// </summary>
 +	public DefenseStat statDefense; // changed from int
++	/// <summary>
++	/// Determines how effective the player's <see cref="statDefense"/> is at reducing incoming damage.<br/>
++	/// The <see href="https://terraria.wiki.gg/wiki/Defense#Players">Defense wiki page</see> explains the effect, shown in the wiki as "factor".<br/>
++	/// </summary>
 +	public MultipliableFloat DefenseEffectiveness; // added by TML
 +
 +	/// <summary>
@@ -620,6 +640,19 @@
  	public Item honeyCombItem;
  	public int wireOperationsCooldown;
  	public int lastChest;
+@@ -1458,6 +_,12 @@
+ 	public int cMinion;
+ 	public int cLeinShampoo;
+ 	public int cFlameWaker;
++	/// <summary>
++	/// Provides efficient access to the number of projectiles of the specified type owned by this player currently active in the game world.<br/>
++	/// Can be used to prevent spawning additional projectiles when a limit is reached.<br/>
++	/// Updated each game update right before Player.UpdateBuffs.<br/>
++	/// For example, <c>return player.ownedProjectileCounts[Item.shoot] &lt; 1;</c> in <see cref="ModItem.CanUseItem"/> could prevent a player using the item if the projectile the item spawns is already in the game world for the player.
++	/// </summary>
+ 	public int[] ownedProjectileCounts = new int[ProjectileID.Count];
+ 	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
+ 	public int lastPortalColorIndex;
 @@ -1507,7 +_,7 @@
  	private int[] unlitTorchY = new int[maxTorchAttacks];
  	private static int[] _torchAttackPosX = new int[400];
@@ -1790,6 +1823,21 @@
  		}
  
  		UpdateHungerBuffs();
+@@ -8925,6 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// A helper method that handles code common to pet buffs. Can be used during the buff update code.<br/>
++	/// Sets the buff time to the value and spawns the corresponding pet projectile for the player if not yet spawned.<br/>
++	/// </summary>
++	/// <param name="buffIndex"></param>
++	/// <param name="petBool"></param>
++	/// <param name="petProjID"></param>
++	/// <param name="buffTimeToGive"></param>
+ 	public void BuffHandle_SpawnPetIfNeededAndSetTime(int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive = 18000)
+ 	{
+ 		buffTime[buffIndex] = buffTimeToGive;
 @@ -9226,23 +_,26 @@
  		accStopwatch = false;
  		accOreFinder = false;
@@ -4024,6 +4072,49 @@
  		return num;
  	}
  
+@@ -27344,11 +_,26 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
++	/// Items will be taken from all of the player inventories and banks combined.<br/>
++	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
++	/// If the player has enough currency, the currency will be taken from the inventories.<br/>
++	/// </summary>
++	/// <param name="price"></param>
++	/// <param name="customCurrency"></param>
++	/// <returns>true if the player had enough currency to pay the price.</returns>
+ 	public bool BuyItem(long price, int customCurrency = -1)
+ 	{
+-		if (customCurrency != -1)
+-			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
++		if (CanAfford(price, customCurrency))
++			return PayCurrency(price, customCurrency);
++		return false;
++	}
+ 
++	public bool CanAfford(long price, int customCurrency = -1)
++	{
++		if (customCurrency != -1)
++			return CustomCurrencyManager.CanAfford(this, price, customCurrency);
+ 		bool overFlowing;
+ 		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
+ 		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
+@@ -27357,7 +_,13 @@
+ 		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
+ 		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
+ 			return false;
++		return true;
++	}
+ 
++	public bool PayCurrency(long price, int customCurrency = -1)
++	{
++		if (customCurrency != -1)
++			return CustomCurrencyManager.PayCurrency(this, price, customCurrency);
+ 		List<Item[]> list = new List<Item[]>();
+ 		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
+ 		List<Point> list2 = new List<Point>();
 @@ -27569,7 +_,7 @@
  			num2 += 4;
  		}

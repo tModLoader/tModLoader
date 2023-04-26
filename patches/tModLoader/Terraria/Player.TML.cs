@@ -64,9 +64,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
-	public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
+	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
-	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);
+	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;
 
 	public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
@@ -495,21 +495,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
 		PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
 		return healValue > 0 ? healValue : 0;
-	}
-
-	public bool CanBuyItem(int price, int customCurrency = -1)
-	{
-		if (customCurrency != -1)
-			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-
-		long num = Utils.CoinsCount(out _, inventory, new[] { 58, 57, 56, 55, 54 });
-		long num2 = Utils.CoinsCount(out _, bank.item, Array.Empty<int>());
-		long num3 = Utils.CoinsCount(out _, bank2.item, Array.Empty<int>());
-		long num4 = Utils.CoinsCount(out _, bank3.item, Array.Empty<int>());
-
-		long num5 = Utils.CoinsCombineStacks(out _, new[] { num, num2, num3, num4 });
-
-		return num5 >= price;
 	}
 
 	/// <summary>

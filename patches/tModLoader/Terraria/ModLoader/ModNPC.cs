@@ -72,7 +72,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	//TODO: Find a better solution in the future.
 	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
-	
+
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
 	public bool TownNPCStayingHomeless { get; set; }
 
@@ -81,8 +81,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModNPC>.Register(this);
-		NPC.type = NPCLoader.ReserveNPCID();
-		NPCLoader.npcs.Add(this);
+		NPC.type = NPCLoader.Register(this);
 
 		Type type = GetType();
 		var autoloadHead = type.GetAttribute<AutoloadHead>();
@@ -97,10 +96,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
-		NPCLoader.SetDefaults(NPC, false);
+		NPCLoader.SetDefaults(NPC, createModNPC: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		NPCID.Search.Add(FullName, Type);
 	}
 
@@ -404,6 +402,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="target"></param>
 	/// <returns></returns>
 	public virtual bool CanHitNPC(NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC attacker)
 	{
 		return true;
 	}

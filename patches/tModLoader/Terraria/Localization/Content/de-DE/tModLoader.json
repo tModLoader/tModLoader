@@ -360,6 +360,8 @@
 		"MSBuildReloadAll": "Alle Erstellen + Neu laden",
 		"MSUpgradeCSProj": ".csproj-Datei aktualisieren",
 		"MSUpgradeLangFiles": ".lang Dateien in .hjson Dateien umwandeln (zerstörungsfrei)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Quellen öffnen",
 		"MSManagePublished": "Veröffentlichte verwalten",
 		"MSPublish": "Veröffentlichen",
@@ -510,6 +512,12 @@
 		"TagsLangDescription": "Dieser Mod unterstützt mehrere Sprachen",
 		"TagsGen": "Benutzerdefinierte Weltgeneration",
 		"TagsGenDescription": "Ändert, wie die Welt genertiert wird (z.B. Erze, neue Strukturen, usw.)"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Erhöht die Abwehr um {0}",

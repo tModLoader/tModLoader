@@ -360,6 +360,8 @@
 		"MSBuildReloadAll": "Construir + Recarregar Todos",
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
 		"MSUpgradeLangFiles": "Atualizar arquivos .lang para .hjson (não destrutivo)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Abrir Fontes",
 		"MSManagePublished": "Gerenciar Publicados",
 		"MSPublish": "Publicar",
@@ -510,6 +512,12 @@
 		"TagsLangDescription": "Este mod tem suporte para vários idiomas",
 		"TagsGen": "Geração de Mundo Personalizada",
 		"TagsGenDescription": "Altera a forma como o mundo é gerado (por exemplo, minérios, novas estruturas, etc.)"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Aumenta a defesa em {0}",

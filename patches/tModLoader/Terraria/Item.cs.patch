@@ -478,7 +478,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,238 @@
+@@ -121,49 +_,240 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -625,6 +625,7 @@
 +	/// The numerical ID of the special currency this item is bought using.<br/>
 +	/// To make an item bought using Defender Medals, set this to <see cref="CustomCurrencyID.DefenderMedals"/>.<br/>
 +	/// See <see href="https://github.com/tModLoader/tModLoader/search?q=ExampleCustomCurrencyId">ExampleCustomCurrencyId</see> for an example of creating and using a custom currency.<br/>
++	/// Must be used with <see cref="shopCustomPrice"/> assigning the price in terms of this custom currency.<br/>
 +	/// Defaults to -1, which means an item is bought using coins.<br/>
 +	/// </summary>
  	public int shopSpecialCurrency = -1;
@@ -632,6 +633,7 @@
 +	/// <summary>
 +	/// If not <see langword="null"/>, the custom value of the given item when being bought from a shop.<br/>
 +	/// Used for assigning a non-default price to an item in shops.<br/>
++	/// Can be used with <see cref="shopSpecialCurrency"/> to assign a price in terms of a custom currency instead of coins.<br/>
 +	/// To get the raw price of an item, use <see cref="GetStoreValue"/>.<br/>
 +	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.<br/>
 +	/// Defaults to <see langword="null"/>.<br/>
@@ -1740,14 +1742,14 @@
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModItem = ModItem;
-+		var originalGlobals = globalItems;
++		var originalGlobals = _globals;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		netID = originalNetID;
 +		ModItem = originalModItem;
-+		globalItems = originalGlobals;
++		_globals = originalGlobals;
 +	}
 +
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
@@ -1785,7 +1787,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,11 +_,14 @@
+@@ -47297,19 +_,27 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
@@ -1798,10 +1800,14 @@
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
 +		if (type > 0 && ItemID.Sets.Deprecated[type]) {
++			/*
  			netID = 0;
  			type = 0;
  			stack = 0;
-@@ -47310,6 +_,8 @@
++			*/
++			TurnToAir();
+ 		}
+ 	}
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1817,7 +1823,7 @@
 +
 +		// TML field initialization:
 +		ModItem = null;
-+		globalItems = new Instanced<GlobalItem>[0];
++		_globals = null;
 +		StatsModifiedBy = new();
 +		AllowReforgeForStackableItem = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
@@ -2094,7 +2100,7 @@
  
  					if (num2 > num3) {
  						num2 = num3;
-@@ -49266,10 +_,32 @@
+@@ -49266,10 +_,30 @@
  		}
  	}
  
@@ -2110,9 +2116,7 @@
 +		Item newItem = (Item)MemberwiseClone();
 +
 +		newItem.ModItem = ModItem?.Clone(newItem);
-+		newItem.globalItems = globalItems
-+			.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(this, newItem)))
-+			.ToArray();
++		newItem._globals = _globals?.Select(g => g?.Clone(this, newItem)).ToArray();
 +
 +		return newItem;
 +	}
@@ -2164,7 +2168,7 @@
  		mountType = -1;
 +
 +		ModItem = null;
-+		globalItems = new Instanced<GlobalItem>[0];
++		_globals = null;
  	}
  
  	public void OnPurchase(Item item)

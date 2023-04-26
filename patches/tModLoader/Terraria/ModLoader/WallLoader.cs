@@ -81,7 +81,7 @@ public static class WallLoader
 		Array.Resize(ref TextureAssets.Wall, nextWall);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(WallID), true);
+		LoaderUtils.ResetStaticMembers(typeof(WallID));
 
 		//Etc
 		Array.Resize(ref Main.wallHouse, nextWall);
@@ -270,7 +270,7 @@ public static class WallLoader
 		ModWall modWall = GetWall(type);
 
 		if (modWall != null) {
-			if(!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
+			if (!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
 				return false;
 		}
 

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
@@ -16,9 +17,33 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// </summary>
 	public ModProjectile ModProjectile { get; internal set; }
 
-	internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
+#region Globals
+	int IEntityWithGlobals<GlobalProjectile>.Type => type;
+	internal GlobalProjectile[] _globals;
+	public RefReadOnlyArray<GlobalProjectile> EntityGlobals => _globals;
+	public EntityGlobalsEnumerator<GlobalProjectile> Globals => new(this);
 
-	public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
+	/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="IndexOutOfRangeException"/>
+	public T GetGlobalProjectile<T>() where T : GlobalProjectile
+		=> GlobalProjectile.GetGlobal<T>(type, EntityGlobals);
+
+	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="NullReferenceException"/>
+	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
+		=> GlobalProjectile.GetGlobal(type, EntityGlobals, baseInstance);
+
+	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
+	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
+		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, out result);
+
+	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
+	/// <returns> Whether or not the requested instance has been found. </returns>
+	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
+		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
+#endregion
 
 	/// <summary>
 	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
@@ -121,27 +146,6 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 				NetMessage.SendData(21, -1, -1, null, num, 1f);
 		}
 	}
-
-	/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalProjectile<T>() where T : GlobalProjectile
-		=> GlobalType.GetGlobal<GlobalProjectile, T>(globalProjectiles);
-
-	/// <summary> Gets the local instance of the type of the specified GlobalProjectile instance. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="NullReferenceException"/>
-	public T GetGlobalProjectile<T>(T baseInstance) where T : GlobalProjectile
-		=> GlobalType.GetGlobal(globalProjectiles, baseInstance);
-
-	/// <summary> Gets the instance of the specified GlobalProjectile type. </summary>
-	public bool TryGetGlobalProjectile<T>(out T result) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal(globalProjectiles, out result);
-
-	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalProjectile instance. </summary>
-	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
-		=> GlobalType.TryGetGlobal(globalProjectiles, baseInstance, out result);
 
 	/// <inheritdoc cref="CountsAsClass(DamageClass)"/>
 	public bool CountsAsClass<T>() where T : DamageClass

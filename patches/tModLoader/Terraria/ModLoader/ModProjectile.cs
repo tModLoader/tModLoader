@@ -58,16 +58,14 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModProjectile>.Register(this);
-		Projectile.type = ProjectileLoader.ReserveProjectileID();
-		ProjectileLoader.projectiles.Add(this);
+		Projectile.type = ProjectileLoader.Register(this);
 	}
 
 	public sealed override void SetupContent()
 	{
-		ProjectileLoader.SetDefaults(Projectile, false);
+		ProjectileLoader.SetDefaults(Projectile, createModProjectile: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		ProjectileID.Search.Add(FullName, Type);
 	}
 
@@ -79,7 +77,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Gets called when your projectiles spawns in world
+	/// Gets called when your projectiles spawns in world.<br/>
+	/// Called on the client or server spawning the projectile via Projectile.NewProjectile.<br/>
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source)
 	{

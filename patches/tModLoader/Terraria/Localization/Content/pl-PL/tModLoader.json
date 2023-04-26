@@ -360,6 +360,8 @@
 		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
 		"MSUpgradeCSProj": "Uaktualnij plik .csproj",
 		"MSUpgradeLangFiles": "Aktualizuj pliki .lang do .hjson (niedestrukcyjnie)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Otwórz pliki źródłowe",
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
@@ -510,6 +512,12 @@
 		"TagsLangDescription": "Mod wspiera wiele wersji językowych gry",
 		"TagsGen": "Zmodyfikowany generator świata",
 		"TagsGenDescription": "Zmienia sposób generowania świata (np. surowce, nowe struktury, itd.)"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Zwiększ obronę o {0}",

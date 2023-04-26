@@ -1,0 +1,59 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowsMessageHook.cs
++++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsMessageHook.cs
+@@ -1,11 +_,11 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Runtime.InteropServices;
+-using System.Windows.Forms;
+ 
+ namespace ReLogic.OS.Windows;
+ 
++// IMessageFilter interface not needed for WinImm32Ime implementation
+-internal class WindowsMessageHook : IDisposable, IMessageFilter
++internal class WindowsMessageHook : IDisposable //, IMessageFilter
+ {
+ 	private delegate IntPtr WndProcCallback(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 
+@@ -19,9 +_,12 @@
+ 	public WindowsMessageHook(IntPtr windowHandle)
+ 	{
+ 		_windowHandle = windowHandle;
+-		Application.AddMessageFilter(this);
++		// Application.AddMessageFilter(this);
+ 		_wndProc = WndProc;
++
++		// SetWindowLong is for 32-bit applications, use SetWindowLongPtr for 64-bit
+-		_previousWndProc = (IntPtr)NativeMethods.SetWindowLong(_windowHandle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
++		// _previousWndProc = (IntPtr)NativeMethods.SetWindowLong(_windowHandle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
++		_previousWndProc = NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
+ 	}
+ 
+ 	public void AddMessageFilter(IMessageFilter filter)
+@@ -43,6 +_,7 @@
+ 		return NativeMethods.CallWindowProc(_previousWndProc, message.HWnd, message.Msg, message.WParam, message.LParam);
+ 	}
+ 
++	/*
+ 	public bool PreFilterMessage(ref Message message)
+ 	{
+ 		if (message.Msg == 258)
+@@ -50,6 +_,7 @@
+ 
+ 		return InternalWndProc(ref message);
+ 	}
++	*/
+ 
+ 	private bool InternalWndProc(ref Message message)
+ 	{
+@@ -64,8 +_,11 @@
+ 	protected virtual void Dispose(bool disposing)
+ 	{
+ 		if (!disposedValue) {
++			/*
+ 			Application.RemoveMessageFilter(this);
+ 			NativeMethods.SetWindowLong(_windowHandle, -4, (int)_previousWndProc);
++			*/
++			NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC, _previousWndProc);
+ 			disposedValue = true;
+ 		}
+ 	}

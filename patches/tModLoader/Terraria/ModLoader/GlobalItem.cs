@@ -8,7 +8,6 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
-using System;
 
 namespace Terraria.ModLoader;
 
@@ -30,23 +29,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<GlobalItem>.Register(this);
-
-		Index = (ushort)ItemLoader.globalItems.Count;
-
-		ItemLoader.globalItems.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalItem Instance(Item item) => Instance(item.globalItems, Index);
-
-	/// <summary>
-	/// Allows you to set the properties of any and every item that gets created.
-	/// </summary>
-	public virtual void SetDefaults(Item item)
-	{
-	}
 
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
@@ -810,12 +796,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool PreReforge(Item item)
+	public virtual bool CanReforge(Item item)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// </summary>
+	public virtual void PreReforge(Item item)
+	{
 	}
 
 	/// <summary>

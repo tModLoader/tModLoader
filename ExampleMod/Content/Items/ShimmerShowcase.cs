@@ -11,6 +11,10 @@ By default, Shimmer will tranform crafted items back into their original recipe 
 ShimmerShowcaseConditions showcases crimson and corruption specific shimmer decrafting results.
 
 ShimmerShowcaseCustomShimmerResult showcases both preventing a recipe from being decrafted and specifying a custom shimmer decrafting result.
+
+To use Shimmer to transform an item into another item instead of decrafting an item, simply set "ItemID.Sets.ShimmerTransformToItem[Type] = ItemType here;" in SetStaticDefaults. ExampleMusicBox and ExampleTorch show examples of this.
+
+Also note that critter items (Item.makeNPC > 0) will also not attempt to decraft, but will instead transform into the NPC that the Item.makeNPC transforms into. NPCID.Sets.ShimmerTransformToNPC sets which NPC an NPC will transform into, see PartyZombie and ExampleCustomAISlimeNPC for examples of this.
 */
 public class ShimmerShowcaseConditions : ModItem
 {

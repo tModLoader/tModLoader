@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -16,27 +17,20 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
+		LoaderUtils.MustOverrideTogether(this, g => g.SendExtraAI, g => g.ReceiveExtraAI);
+	}
+
 	protected sealed override void Register()
 	{
-		NPCLoader.VerifyGlobalNPC(this);
-
-		ModTypeLookup<GlobalNPC>.Register(this);
-
-		Index = (ushort)NPCLoader.globalNPCs.Count;
-
-		NPCLoader.globalNPCs.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, Index);
-
-	/// <summary>
-	/// Allows you to set the properties of any and every NPC that gets created.
-	/// </summary>
-	public virtual void SetDefaults(NPC npc)
-	{
-	}
 
 	/// <summary>
 	/// Gets called when any NPC spawns in world
@@ -175,9 +169,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/> 
-	/// Called on local, server and remote clients. <br/> 
-	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
+	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/>
 	/// </summary>
 	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
@@ -336,6 +330,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="target"></param>
 	/// <returns></returns>
 	public virtual bool CanHitNPC(NPC npc, NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC npc, NPC attacker)
 	{
 		return true;
 	}
