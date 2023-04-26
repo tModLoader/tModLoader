@@ -11,8 +11,8 @@ public class ModTileTest : ModTile
 {
 	void Method() {
 #if COMPILE_ERROR
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 1;
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 12;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 1;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 12;
 #endif
 		DustType = 0;
 #if COMPILE_ERROR
@@ -24,10 +24,10 @@ public class ModTileTest : ModTile
 #endif
 
 #if COMPILE_ERROR
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 0;
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 0;
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 2;
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 3;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 0;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 0;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 2;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 3;
 #endif
 		MinPick = 0;
 		MineResist = 0;

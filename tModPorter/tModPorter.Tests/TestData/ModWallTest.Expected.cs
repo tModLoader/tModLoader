@@ -5,8 +5,8 @@ public class ModWallTest : ModWall
 {
 	void Method() {
 #if COMPILE_ERROR
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 1;
-		ItemDrop/* tModPorter Note: Removed. No longer needed */ = 12;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 1;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 12;
 #endif
 		DustType = 0;
 #if COMPILE_ERROR
