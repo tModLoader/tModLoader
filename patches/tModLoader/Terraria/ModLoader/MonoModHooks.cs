@@ -41,7 +41,13 @@ public static class MonoModHooks
 	}
 
 	private static Dictionary<Assembly, DetourList> assemblyDetours = new();
-	private static DetourList GetDetourList(Assembly asm) => assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+	private static DetourList GetDetourList(Assembly asm)
+	{
+		if (asm == typeof(Action).Assembly)
+			throw new ArgumentException("Cannot identify owning assembly of hook. Make sure there are no delegate type changing wrappers between the method/lambda and the Modify/Add/+= call. Eg `new ILContext.Manipulator(action)` is bad");
+
+		return assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+	}
 
 	[Obsolete("No longer required. NativeDetour is gone. Detour should not be used. Hook is safe to use", true)]
 	public static void RequestNativeAccess() { }
