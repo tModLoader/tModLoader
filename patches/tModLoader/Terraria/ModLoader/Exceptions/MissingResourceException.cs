@@ -23,19 +23,24 @@ public class MissingResourceException : Exception
 	{
 	}
 
-	public MissingResourceException(string message, ICollection<string> keys) : this(ProcessMessage(message, keys))
+	public MissingResourceException(List<string> reasons, string assetPath, ICollection<string> keys) : this(ProcessMessage(reasons, assetPath, keys))
 	{
 	}
 
-	public static string ProcessMessage(string message, ICollection<string> keys)
+	public static string ProcessMessage(List<string> reasons, string assetPath, ICollection<string> keys)
 	{
-		string closestMatch = LevenshteinDistance.FolderAwareEditDistance(message, keys.ToArray());
+		if(reasons.Count > 0) {
+			reasons.Insert(0, $"Failed to load asset: \"{assetPath}\"");
+			return string.Join(Environment.NewLine, reasons);
+		}
+
+		string closestMatch = LevenshteinDistance.FolderAwareEditDistance(assetPath, keys.ToArray());
 		if (closestMatch != null && closestMatch != "") {
 			// TODO: UIMessageBox still doesn't display long sequences of colored text correct.
-			(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(message, closestMatch);
-			return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", message, closestMatch) + "\n" + a + "\n" + b + "\n";
+			(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(assetPath, closestMatch);
+			return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", assetPath, closestMatch) + "\n" + a + "\n" + b + "\n";
 		}
-		return message;
+		return assetPath;
 	}
 }
 
