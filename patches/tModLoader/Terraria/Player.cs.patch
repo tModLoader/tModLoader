@@ -296,6 +296,16 @@
  	public string setBonus = "";
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
+@@ -836,6 +_,9 @@
+ 	public int fartKartCloudDelay;
+ 	public const int fartKartCloudDelayMax = 20;
+ 	public int nonTorch = -1;
++	/// <summary>
++	/// An offset from the actual position of the player that will be added to the draw position. Used to fake the effect of the player smoothly traveling up single block obstacles.
++	/// </summary>
+ 	public float gfxOffY;
+ 	public float stepSpeed = 1f;
+ 	public static bool deadForGood = false;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
