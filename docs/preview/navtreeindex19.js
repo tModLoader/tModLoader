@@ -1,5 +1,14 @@
 var NAVTREEINDEX19 =
 {
+"functions_f.html":[3,3,0,5],
+"functions_func.html":[3,3,1,0],
+"functions_func.html":[3,3,1],
+"functions_func_b.html":[3,3,1,1],
+"functions_func_c.html":[3,3,1,2],
+"functions_func_d.html":[3,3,1,3],
+"functions_func_e.html":[3,3,1,4],
+"functions_func_f.html":[3,3,1,5],
+"functions_func_g.html":[3,3,1,6],
 "functions_func_h.html":[3,3,1,7],
 "functions_func_i.html":[3,3,1,8],
 "functions_func_j.html":[3,3,1,9],
@@ -240,14 +249,5 @@ var NAVTREEINDEX19 =
 "struct_buff_draw_params.html#a94dc35a5f9b9e8add7539b27946b26a6":[3,0,106,4],
 "struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4":[3,0,106,0],
 "struct_calculated_style.html":[3,0,113],
-"struct_camera_info.html":[3,0,115],
-"struct_chat_command_id.html":[3,0,128],
-"struct_chroma_initializer_1_1_event_localization.html":[3,0,141,0],
-"struct_collision_1_1_hurt_tile.html":[3,0,153,0],
-"struct_container_transfer_context.html":[3,0,180],
-"struct_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html":[3,0,184,2,0],
-"struct_creative_power_u_i_element_request_info.html":[3,0,197],
-"struct_draw_data.html":[3,0,253],
-"struct_drill_debug_draw.html":[3,0,255],
-"struct_drop_attempt_info.html":[3,0,258]
+"struct_camera_info.html":[3,0,115]
 };

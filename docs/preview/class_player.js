@@ -83,6 +83,7 @@ var class_player =
     [ "enabledSuperCart", "class_player.html#a6a421762fe1d363e2a5fa1550c1d26b6", null ],
     [ "endurance", "class_player.html#aad894b33700110f81b725f018c821685", null ],
     [ "extraFall", "class_player.html#a23faed31e665fce3f3e2c418374b1eb5", null ],
+    [ "gfxOffY", "class_player.html#a50056c148e9e99495fa90b3698bf0825", null ],
     [ "honeyCombItem", "class_player.html#a1b4a5e4d390abd02a6ef49e543afa46b", null ],
     [ "jumpSpeed", "class_player.html#acdf8e12ddf06f366c080f718a62899d7", null ],
     [ "jumpSpeedBoost", "class_player.html#a8d27319306da3d545130e171fc62bbf7", null ],

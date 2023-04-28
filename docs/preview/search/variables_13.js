@@ -73,6 +73,6 @@ var searchData=
   ['trueeyeofcthulhu_70',['TrueEyeOfCthulhu',['../class_n_p_c_a_i_style_i_d.html#afaf5f07937dedf82dade38b819d53a87',1,'NPCAIStyleID']]],
   ['turretfeature_71',['TurretFeature',['../class_projectile_i_d_1_1_sets.html#a9b198deaa42177d92c97866b91141149',1,'ProjectileID::Sets']]],
   ['twilightlance_72',['TwilightLance',['../class_proj_a_i_style_i_d.html#a9436129d4fb14a07f9067dc36899fa3b',1,'ProjAIStyleID']]],
-  ['type_73',['type',['../class_item.html#af79ba8b09813fd867fa3da24a4e31e51',1,'Item.type()'],['../class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c',1,'Projectile.type()']]],
+  ['type_73',['type',['../class_item.html#af79ba8b09813fd867fa3da24a4e31e51',1,'Item.type()'],['../class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b',1,'NPC.type()'],['../class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c',1,'Projectile.type()']]],
   ['typhoon_74',['Typhoon',['../class_proj_a_i_style_i_d.html#acad6c1ce7c05b42f374eae899d852ddb',1,'ProjAIStyleID']]]
 ];

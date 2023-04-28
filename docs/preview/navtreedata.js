@@ -60,15 +60,15 @@ var NAVTREEINDEX =
 "class_mod_palm_tree.html",
 "class_mod_scene_effect.html#aef10f88f98c97b891e9b7237b4458f74",
 "class_moon_shader.html",
-"class_n_p_c_debuff_immunity_data.html#a164ab7150ef00bc2a2786c38a8da1afa",
-"class_player.html#a89b122befc9a1f21ab4e0543c8d5750f",
-"class_proj_a_i_style_i_d.html#a0cdc0aee93975b88b07be63080021a54",
-"class_projectile_i_d_1_1_sets.html#a6b764d3c8b5df10d5f100f707a4b5da0",
-"class_steamed_wraps.html",
-"class_u_i_dynamic_item_collection.html",
-"functions_func_h.html",
-"struct_drop_one_by_one_1_1_parameters.html",
-"struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994"
+"class_n_p_c_a_i_style_i_d.html#afa692a0b5dd6e23680dc2363dd43d58b",
+"class_player.html#a8275f0a867c848e7b098427467379792",
+"class_proj_a_i_style_i_d.html#a05516dcd02b572cc179530a1edc995d7",
+"class_projectile_i_d_1_1_sets.html#a44796eba4422ea8bb91f1011f370b89a",
+"class_start_bag.html#a79b31f57a6533451cd7e8b137f946849",
+"class_u_i_common.html",
+"functions_f.html",
+"struct_chat_command_id.html",
+"struct_sound_style.html#a5202c2e6b1a467becfbd430387484c43"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

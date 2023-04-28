@@ -1,5 +1,14 @@
 var NAVTREEINDEX20 =
 {
+"struct_chat_command_id.html":[3,0,128],
+"struct_chroma_initializer_1_1_event_localization.html":[3,0,141,0],
+"struct_collision_1_1_hurt_tile.html":[3,0,153,0],
+"struct_container_transfer_context.html":[3,0,180],
+"struct_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html":[3,0,184,2,0],
+"struct_creative_power_u_i_element_request_info.html":[3,0,197],
+"struct_draw_data.html":[3,0,253],
+"struct_drill_debug_draw.html":[3,0,255],
+"struct_drop_attempt_info.html":[3,0,258],
 "struct_drop_one_by_one_1_1_parameters.html":[3,0,264,0],
 "struct_drop_rate_info.html":[3,0,266],
 "struct_drop_rate_info_chain_feed.html":[3,0,267],
@@ -240,14 +249,5 @@ var NAVTREEINDEX20 =
 "struct_sound_style.html":[3,0,1098],
 "struct_sound_style.html#a0505bc0358495ac3390eaad7966123a0":[3,0,1098,5],
 "struct_sound_style.html#a46cc0193d6bbabe2401fd4b45bbd6e8a":[3,0,1098,12],
-"struct_sound_style.html#a5075312e4a769fda0820fefd65473af2":[3,0,1098,0],
-"struct_sound_style.html#a5202c2e6b1a467becfbd430387484c43":[3,0,1098,11],
-"struct_sound_style.html#a5d342dfbf2d069e486c19e119bef9885":[3,0,1098,8],
-"struct_sound_style.html#a69d7ee6ec7278e9c00fb3051e9f2a225":[3,0,1098,1],
-"struct_sound_style.html#a80d0ec72d506be9b268f13d87dac01d2":[3,0,1098,4],
-"struct_sound_style.html#a87ddc4142df801a259b3c4e510d8f40d":[3,0,1098,7],
-"struct_sound_style.html#a89eebee91ea59d9c7caef248cd6a6522":[3,0,1098,9],
-"struct_sound_style.html#a962caebf253b04e394b5400150cb343a":[3,0,1098,6],
-"struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f":[3,0,1098,3],
-"struct_sound_style.html#ad12afc077a47e80bc201345e1c8a9871":[3,0,1098,10]
+"struct_sound_style.html#a5075312e4a769fda0820fefd65473af2":[3,0,1098,0]
 };

@@ -1,5 +1,14 @@
 var NAVTREEINDEX18 =
 {
+"class_u_i_common.html":[3,0,1255],
+"class_u_i_common.html#ae5d01f7b8213dfe546b0b210b19d446b":[3,0,1255,0],
+"class_u_i_create_mod.html":[3,0,1256],
+"class_u_i_creative_infinite_items_display.html":[3,0,1257],
+"class_u_i_creative_items_infinite_filtering_options.html":[3,0,1258],
+"class_u_i_creative_power_button.html":[3,0,1259],
+"class_u_i_creative_powers_menu.html":[3,0,1260],
+"class_u_i_cycle_image.html":[3,0,1261],
+"class_u_i_difficulty_button.html":[3,0,1262],
 "class_u_i_dynamic_item_collection.html":[3,0,1263],
 "class_u_i_element.html":[3,0,1264],
 "class_u_i_emotes_menu.html":[3,0,1265],
@@ -240,14 +249,5 @@ var NAVTREEINDEX18 =
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
 "functions_e.html":[3,3,0,4],
-"functions_evnt.html":[3,3,4],
-"functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1,0],
-"functions_func.html":[3,3,1],
-"functions_func_b.html":[3,3,1,1],
-"functions_func_c.html":[3,3,1,2],
-"functions_func_d.html":[3,3,1,3],
-"functions_func_e.html":[3,3,1,4],
-"functions_func_f.html":[3,3,1,5],
-"functions_func_g.html":[3,3,1,6]
+"functions_evnt.html":[3,3,4]
 };

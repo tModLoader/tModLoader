@@ -9,7 +9,7 @@ var searchData=
   ['activetime_6',['activeTime',['../class_popup_text.html#ae01be7d427f564691751b88e4c09357f',1,'PopupText']]],
   ['actsliketownnpc_7',['ActsLikeTownNPC',['../class_n_p_c_i_d_1_1_sets.html#a5ef43a2df24f7f513c6e607047d105df',1,'NPCID::Sets']]],
   ['affectionleveltopricemultiplier_8',['AffectionLevelToPriceMultiplier',['../struct_n_p_c_happiness.html#a561736ffe7f94e4f7b18efd48adf5b6d',1,'NPCHappiness']]],
-  ['ai_9',['ai',['../class_projectile.html#aece4c68ccff3998432020ffffb63cdfb',1,'Projectile']]],
+  ['ai_9',['ai',['../class_n_p_c.html#aa057189d345452f8afe82acb7a5dbec3',1,'NPC.ai()'],['../class_projectile.html#aece4c68ccff3998432020ffffb63cdfb',1,'Projectile.ai()']]],
   ['aistyle_10',['aiStyle',['../class_n_p_c.html#aaf900063a620a46f2408436b8ab1bbdb',1,'NPC.aiStyle()'],['../class_projectile.html#a0f5a8d3314bda6bb32403d60071451b1',1,'Projectile.aiStyle()']]],
   ['alchemy_11',['Alchemy',['../class_recipe_1_1_consumption_rules.html#aa41abac62905fc8fdc98b6c82a41ec0e',1,'Recipe::ConsumptionRules']]],
   ['allblockswithsmoothborderstoresolvehalfblockissue_12',['AllBlocksWithSmoothBordersToResolveHalfBlockIssue',['../class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c',1,'TileID::Sets']]],

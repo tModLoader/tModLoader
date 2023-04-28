@@ -334,7 +334,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetEffects<
 <b>NOTE:</b> The npc may be saved even if NeedSaving returns false and this is not a townNPC, if another mod returns true on NeedSaving.  <a href="class_mod_n_p_c.html#aff207f228cf852db45dd575591c4eb3b">More...</a><br /></td></tr>
 <tr class="separator:aff207f228cf852db45dd575591c4eb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab97269b1204781b8cbf396c31e604154"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ab97269b1204781b8cbf396c31e604154">SendExtraAI</a> (BinaryWriter writer)</td></tr>
-<tr class="memdesc:ab97269b1204781b8cbf396c31e604154"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_mod_n_p_c.html#abb7c4468cbdba533146c4e35f3299a69" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
+<tr class="memdesc:ab97269b1204781b8cbf396c31e604154"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you are storing AI information outside of the <a class="el" href="class_n_p_c.html#aa057189d345452f8afe82acb7a5dbec3" title="An array with 4 slots used for any sort of data storage, which is occasionally synced from the server...">NPC.ai</a> array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_mod_n_p_c.html#abb7c4468cbdba533146c4e35f3299a69" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
 Called whenever MessageID.SyncNPC is successfully sent, for example on <a class="el" href="class_n_p_c.html">NPC</a> creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick. <br  />
 Only called on the server.  <a href="class_mod_n_p_c.html#ab97269b1204781b8cbf396c31e604154">More...</a><br /></td></tr>
 <tr class="separator:ab97269b1204781b8cbf396c31e604154"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -520,7 +520,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TownNPCStayingHomeles
 <tr class="separator:afae30a515fd028d186975bdad2495c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a059a3450ea046edaccbae919ad402dd2"><td class="memItemLeft" align="right" valign="top"><a id="a059a3450ea046edaccbae919ad402dd2" name="a059a3450ea046edaccbae919ad402dd2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
-<tr class="memdesc:a059a3450ea046edaccbae919ad402dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for NPC.type; <br /></td></tr>
+<tr class="memdesc:a059a3450ea046edaccbae919ad402dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>; <br /></td></tr>
 <tr class="separator:a059a3450ea046edaccbae919ad402dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_type.html">ModType&lt; NPC, ModNPC &gt;</a></td></tr>
 <tr class="memitem:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a33a9306160c2e6230f83d052ad863a68" name="a33a9306160c2e6230f83d052ad863a68"></a>
@@ -2721,7 +2721,7 @@ Only called on the client. </p>
 </table>
 </div><div class="memdoc">
 
-<p>If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_mod_n_p_c.html#abb7c4468cbdba533146c4e35f3299a69" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
+<p>If you are storing AI information outside of the <a class="el" href="class_n_p_c.html#aa057189d345452f8afe82acb7a5dbec3" title="An array with 4 slots used for any sort of data storage, which is occasionally synced from the server...">NPC.ai</a> array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_mod_n_p_c.html#abb7c4468cbdba533146c4e35f3299a69" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
 Called whenever MessageID.SyncNPC is successfully sent, for example on <a class="el" href="class_n_p_c.html">NPC</a> creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick. <br  />
 Only called on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>

@@ -1,5 +1,14 @@
 var NAVTREEINDEX21 =
 {
+"struct_sound_style.html#a5202c2e6b1a467becfbd430387484c43":[3,0,1098,11],
+"struct_sound_style.html#a5d342dfbf2d069e486c19e119bef9885":[3,0,1098,8],
+"struct_sound_style.html#a69d7ee6ec7278e9c00fb3051e9f2a225":[3,0,1098,1],
+"struct_sound_style.html#a80d0ec72d506be9b268f13d87dac01d2":[3,0,1098,4],
+"struct_sound_style.html#a87ddc4142df801a259b3c4e510d8f40d":[3,0,1098,7],
+"struct_sound_style.html#a89eebee91ea59d9c7caef248cd6a6522":[3,0,1098,9],
+"struct_sound_style.html#a962caebf253b04e394b5400150cb343a":[3,0,1098,6],
+"struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f":[3,0,1098,3],
+"struct_sound_style.html#ad12afc077a47e80bc201345e1c8a9871":[3,0,1098,10],
 "struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994":[3,0,1098,2],
 "struct_sprite_frame.html":[3,0,1106],
 "struct_sprite_render_target_helper.html":[3,0,1107],

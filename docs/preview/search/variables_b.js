@@ -33,7 +33,7 @@ var searchData=
   ['lightred_30',['LightRed',['../class_item_rarity_i_d.html#a7656c54122194ccd61f4aee5baab43b6',1,'ItemRarityID']]],
   ['lihzahrd_31',['Lihzahrd',['../struct_n_p_c_spawn_info.html#a772a64f16b785d7abc7d272c20b8b265',1,'NPCSpawnInfo']]],
   ['lime_32',['Lime',['../class_item_rarity_i_d.html#a74c18cc850935a05492d369943b9f475',1,'ItemRarityID']]],
-  ['localai_33',['localAI',['../class_projectile.html#a0d8c6c0caf918333ef24757dac3a1ee1',1,'Projectile']]],
+  ['localai_33',['localAI',['../class_n_p_c.html#a2a66732c971715a4284207049382b1b9',1,'NPC.localAI()'],['../class_projectile.html#a0d8c6c0caf918333ef24757dac3a1ee1',1,'Projectile.localAI()']]],
   ['localnpchitcooldown_34',['localNPCHitCooldown',['../class_projectile.html#a11de2b9189c985447fd5efeed001287b',1,'Projectile']]],
   ['lockonaimabove_35',['LockOnAimAbove',['../class_item_i_d_1_1_sets.html#a3b33b96086201871af72f2b9b68c8b63',1,'ItemID::Sets']]],
   ['lockonaimcompensation_36',['LockOnAimCompensation',['../class_item_i_d_1_1_sets.html#aada0808c6933aa34b296823176479dea',1,'ItemID::Sets']]],
