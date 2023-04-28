@@ -273,7 +273,7 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,171 @@
+@@ -233,51 +_,172 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -285,8 +285,9 @@
  	public int directionY = 1;
 +	/// <summary>
 +	/// The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game. This will be equal to either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.AngryBones"/> or ModContent.NPCType&lt;MyModNPC&gt;(). To check if an NPC instance is a specific NPC, check <c>NPC.type == NPCID.VanillaNPCHere</c> or <c>NPC.type == ModContent.NPCType&lt;ModdedNPCHere&gt;()</c> in an <see langword="if"/> statement.
-+	/// <br/><br/><negativenote>There are a few NPC that share the same <see cref="type"/> number, usually slight variations of enemies. <see cref="NPCID.GreenSlime"/> and <see cref="NPCID.RedSlime"/> have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as <see cref="NPCID.BlueSlime"/>. If code logic requires differentiating between these variations, use <see cref="netID"/> instead.</negativenote>
++	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
 +	/// </summary>
++	/// <negativenote>There are a few NPC that share the same <see cref="type"/> number, usually slight variations of enemies. <see cref="NPCID.GreenSlime"/> and <see cref="NPCID.RedSlime"/> have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as <see cref="NPCID.BlueSlime"/>. If code logic requires differentiating between these variations, use <see cref="netID"/> instead.</negativenote>
  	public int type;
 +	/// <summary>
 +	/// An array with 4 slots used for any sort of data storage, which is occasionally synced from the server to clients. Each vanilla <see cref="NPCAIStyleID"/> uses these slots for different purposes. Call <see cref="netUpdate"/> to manually sync. The advantage of using these 4 floats is that they are synced automatically. Using fields in your <see cref="ModNPC"/> class will work just the same, but they might need to be synced via <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModNPC.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
@@ -442,7 +443,7 @@
  	private int catchableNPCTempImmunityCounter;
 +	/// <summary>
 +	/// Similar to <see cref="type"/>, but accounts for negative <see cref="NPCID"/> values. <br/>
-+	/// <br/><br/><inheritdoc cref="type" path="/summary/negativenote"/>
++	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
 +	/// </summary>
  	public int netID;
  	public int statsAreScaledForThisManyPlayers;
