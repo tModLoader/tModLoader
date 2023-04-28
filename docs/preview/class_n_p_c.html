@@ -1353,11 +1353,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>townNpcVariationIndex<
 <tr class="memitem:aeb75984a87d9f203154e0ed95569b662"><td class="memItemLeft" align="right" valign="top"><a id="aeb75984a87d9f203154e0ed95569b662" name="aeb75984a87d9f203154e0ed95569b662"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>trapImmune</b></td></tr>
 <tr class="separator:aeb75984a87d9f203154e0ed95569b662"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf886c9366b1f1ce9e2a278c21a9c78b"><td class="memItemLeft" align="right" valign="top"><a id="acf886c9366b1f1ce9e2a278c21a9c78b" name="acf886c9366b1f1ce9e2a278c21a9c78b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memitem:acf886c9366b1f1ce9e2a278c21a9c78b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a></td></tr>
 <tr class="memdesc:acf886c9366b1f1ce9e2a278c21a9c78b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_n_p_c.html">NPC</a> ID of this <a class="el" href="class_n_p_c.html">NPC</a>. The <a class="el" href="class_n_p_c.html">NPC</a> ID is a unique number assigned to each <a class="el" href="class_n_p_c.html">NPC</a> loaded into the game. This will be equal to either an <a class="el" href="class_n_p_c_i_d.html">NPCID</a> entry or <a class="el" href="class_mod_content.html#a8f04cb26f4f80f8ac4b12c9817a28848" title="Get the id (type) of a ModNPC by class. Assumes one instance per class.">ModContent.NPCType&lt;T&gt;</a>, for example NPCID.AngryBones or ModContent.NPCType&lt;MyModNPC&gt;(). To check if an <a class="el" href="class_n_p_c.html">NPC</a> instance is a specific <a class="el" href="class_n_p_c.html">NPC</a>, check <code><a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a> == NPCID.VanillaNPCHere</code> or <code><a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a> == ModContent.NPCType&lt;ModdedNPCHere&gt;()</code> in an <code>if</code> statement. <br  />
 <br  />
-&lt;negativenote&gt;There are a few <a class="el" href="class_n_p_c.html">NPC</a> that share the same <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">type</a> number, usually slight variations of enemies. NPCID.GreenSlime and NPCID.RedSlime have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as NPCID.BlueSlime. If code logic requires differentiating between these variations, use <a class="el" href="class_n_p_c.html#a7ee822e8438c4882685b54b4781bbebf" title="Similar to type, but accounts for negative NPCID values.">netID</a> instead.&lt;/negativenote&gt; <br /></td></tr>
+  <a href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">More...</a><br /></td></tr>
 <tr class="separator:acf886c9366b1f1ce9e2a278c21a9c78b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a561c4d93c6f0ece100ea64c264589e33"><td class="memItemLeft" align="right" valign="top"><a id="a561c4d93c6f0ece100ea64c264589e33" name="a561c4d93c6f0ece100ea64c264589e33"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
@@ -2985,6 +2984,25 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 <div class="line">        0</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="acf886c9366b1f1ce9e2a278c21a9c78b" name="acf886c9366b1f1ce9e2a278c21a9c78b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf886c9366b1f1ce9e2a278c21a9c78b">&#9670;&nbsp;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NPC.type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The <a class="el" href="class_n_p_c.html">NPC</a> ID of this <a class="el" href="class_n_p_c.html">NPC</a>. The <a class="el" href="class_n_p_c.html">NPC</a> ID is a unique number assigned to each <a class="el" href="class_n_p_c.html">NPC</a> loaded into the game. This will be equal to either an <a class="el" href="class_n_p_c_i_d.html">NPCID</a> entry or <a class="el" href="class_mod_content.html#a8f04cb26f4f80f8ac4b12c9817a28848" title="Get the id (type) of a ModNPC by class. Assumes one instance per class.">ModContent.NPCType&lt;T&gt;</a>, for example NPCID.AngryBones or ModContent.NPCType&lt;MyModNPC&gt;(). To check if an <a class="el" href="class_n_p_c.html">NPC</a> instance is a specific <a class="el" href="class_n_p_c.html">NPC</a>, check <code><a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a> == NPCID.VanillaNPCHere</code> or <code><a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a> == ModContent.NPCType&lt;ModdedNPCHere&gt;()</code> in an <code>if</code> statement. <br  />
+<br  />
+ </p>
+<p >&lt;negativenote&gt;There are a few <a class="el" href="class_n_p_c.html">NPC</a> that share the same <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">type</a> number, usually slight variations of enemies. NPCID.GreenSlime and NPCID.RedSlime have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as NPCID.BlueSlime. If code logic requires differentiating between these variations, use <a class="el" href="class_n_p_c.html#a7ee822e8438c4882685b54b4781bbebf" title="Similar to type, but accounts for negative NPCID values.">netID</a> instead.&lt;/negativenote&gt; </p>
+
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
