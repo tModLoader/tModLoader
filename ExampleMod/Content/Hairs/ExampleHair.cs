@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ExampleMod.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
