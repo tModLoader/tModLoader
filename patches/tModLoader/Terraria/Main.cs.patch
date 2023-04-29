@@ -4508,7 +4508,7 @@
 +		if (!hairstylesUpdatedForThisInteraction)
 +		{
 +			hairstylesUpdatedForThisInteraction = true;
-+			Hairstyles.UpdateUnlocks(HairVisibility.Stylist);
++			Hairstyles.UpdateUnlocks(true);
 +		}
 +
  		int count = Hairstyles.AvailableHairstyles.Count;

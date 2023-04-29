@@ -17,16 +17,18 @@ namespace ExampleMod.Content.Hairs
 		// This may be particularly useful if your hairstyle doesn't lean either way.
 		public override Gender RandomizedCharacterCreationGender => Gender.Female;
 
-		// By default, Visibility is set to Visibility.All, which allows this hairstyle appear in all UIs.
-		// We want our hairstyle to specifically appear in just the Stylist's UI, not both the Stylist UI and the Character Creation UI.
-		// This is because all modded hairstyles which may appear in the Character Creation UI entirely ignore GetUnlockConditions.
-		public override HairVisibility Visibility => HairVisibility.Stylist;
+		// This determines whether the hairstyle will appear in the character creation UI.
+		// You may run into cases where you want special cases for showing hairstyles here,
+		// or to outright disable showing it like in our case where we want it exclusively in-game.
+		public override bool AvailableDuringCharacterCreation => false;
 
 		public override void SetStaticDefaults() {
 			HairID.Sets.DrawBackHair[Type] = true;
 		}
 
-		// See the comment about Visibility for additional information.
+		// These conditions determine whether our hair is available in-game in the Stylist UI.
+		// These conditions are not used to determine if the hairstyle is available during character creation.
+		// See AvailableDuringCharacterCreation for that.
 		public override IEnumerable<Condition> GetUnlockConditions() {
 			yield return ExampleConditions.InExampleBiome;
 		}

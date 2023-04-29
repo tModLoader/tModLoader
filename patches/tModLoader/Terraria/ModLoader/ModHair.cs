@@ -25,9 +25,11 @@ public abstract class ModHair : ModTexturedType
 	public virtual Gender RandomizedCharacterCreationGender => Gender.Unspecified;
 
 	/// <summary>
-	/// Determines in what UIs this hairstyle is visible once unlocked.
+	/// Determines whether this hairstyle is available during character creation. <br />
+	/// This is distinctly different from <see cref="GetUnlockConditions" />, which determines whether the hairstyle
+	/// is available in-game in the Stylist UI.
 	/// </summary>
-	public virtual HairVisibility Visibility => HairVisibility.All;
+	public virtual bool AvailableDuringCharacterCreation => true;
 
 	protected sealed override void Register()
 	{
@@ -52,7 +54,7 @@ public abstract class ModHair : ModTexturedType
 
 	/// <summary>
 	/// Gets the unlock conditions for this hairstyle. No conditions by default. <br />
-	/// Ignored and not called if <see cref="Visibility"/> does includes <see cref="HairVisibility.CharacterCreation"/>.
+	/// These conditions are used exclusively for the Stylist UI in-game; see <see cref="AvailableDuringCharacterCreation" /> for character creation.
 	/// </summary>
 	public virtual IEnumerable<Condition> GetUnlockConditions()
 	{

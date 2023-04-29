@@ -11,11 +11,11 @@
  	private bool _isAtCharacterCreation;
  
 -	public void UpdateUnlocks()
-+	public void UpdateUnlocks(HairVisibility visibility)
++	public void UpdateUnlocks(bool runConditions)
  	{
  		if (ListWarrantsRemake())
 -			RebuildList();
-+			RebuildList(visibility);
++			RebuildList(runConditions);
  	}
  
  	private bool ListWarrantsRemake()
@@ -28,7 +28,7 @@
  	}
  
 -	private void RebuildList()
-+	private void RebuildList(HairVisibility visibility)
++	private void RebuildList(bool runConditions)
  	{
  		List<int> availableHairstyles = AvailableHairstyles;
  		availableHairstyles.Clear();
@@ -37,6 +37,6 @@
  		if (_defeatedMartians && _defeatedMoonlord)
  			availableHairstyles.Add(133);
 +
-+		HairLoader.UpdateUnlocks(this, visibility);
++		HairLoader.UpdateUnlocks(this, runConditions);
  	}
  }

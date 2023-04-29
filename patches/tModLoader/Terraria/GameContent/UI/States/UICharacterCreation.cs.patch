@@ -13,7 +13,7 @@
  	private void MakeHairsylesMenu(UIElement middleInnerPanel)
  	{
 -		Main.Hairstyles.UpdateUnlocks();
-+		Main.Hairstyles.UpdateUnlocks(HairVisibility.CharacterCreation);
++		Main.Hairstyles.UpdateUnlocks(false);
  		UIElement uIElement = new UIElement {
  			Width = StyleDimension.FromPixelsAndPercent(-10f, 1f),
  			Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
