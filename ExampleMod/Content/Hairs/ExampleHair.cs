@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Hairs
 	// Note that internal hair ids are 1 less than the texture filename
 	public class ExampleHair : ModHair
 	{
-		public override bool IsMale => false;
+		public override Gender RandomizedCharacterCreationGender => Gender.Female;
 		
 		public override void SetStaticDefaults() {
 			HairID.Sets.DrawBackHair[Type] = true;
