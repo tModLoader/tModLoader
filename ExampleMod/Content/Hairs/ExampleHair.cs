@@ -17,9 +17,7 @@ namespace ExampleMod.Content.Hairs
 		}
 
 		public override IEnumerable<Condition> GetUnlockConditions() {
-			return Enumerable.Empty<Condition>();
-			// TODO: throws exception on player creation menu, biome flags not available on player instance?
-			//yield return ExampleConditions.InExampleBiome;
+			yield return ExampleConditions.InExampleBiome;
 		}
 	}
 }
