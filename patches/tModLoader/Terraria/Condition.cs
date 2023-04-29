@@ -220,8 +220,6 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhases15 =				new("Conditions.MoonPhases15",				() => Main.moonPhase % 4 == 1);
 	public static readonly Condition MoonPhases26 =				new("Conditions.MoonPhases26",				() => Main.moonPhase % 4 == 2);
 	public static readonly Condition MoonPhases37 =				new("Conditions.MoonPhases37",				() => Main.moonPhase % 4 == 3);
-	// Hair style conditions (used specifically for hair styles in vanilla)
-	public static readonly Condition AtCharacterCreationOrStylist = new("Conditions.AtCharacterCreationOrStylist", () => Main.gameMenu || (Main.hairWindow && !Main.gameMenu));
 
 	// Parameters
 	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
