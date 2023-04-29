@@ -8,6 +8,15 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -163,7 +_,7 @@
+ 
+ 	private void MakeHairsylesMenu(UIElement middleInnerPanel)
+ 	{
+-		Main.Hairstyles.UpdateUnlocks();
++		Main.Hairstyles.UpdateUnlocks(HairVisibility.CharacterCreation);
+ 		UIElement uIElement = new UIElement {
+ 			Width = StyleDimension.FromPixelsAndPercent(-10f, 1f),
+ 			Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
 @@ -1054,6 +_,9 @@
  				break;
  		}

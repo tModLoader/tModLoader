@@ -4504,11 +4504,11 @@
  			return;
  		}
  
+-		Hairstyles.UpdateUnlocks();
 +		if (!hairstylesUpdatedForThisInteraction)
 +		{
 +			hairstylesUpdatedForThisInteraction = true;
--		Hairstyles.UpdateUnlocks();
-+			Hairstyles.UpdateUnlocks();
++			Hairstyles.UpdateUnlocks(HairVisibility.Stylist);
 +		}
 +
  		int count = Hairstyles.AvailableHairstyles.Count;

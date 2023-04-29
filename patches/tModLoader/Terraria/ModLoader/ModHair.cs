@@ -22,6 +22,11 @@ public abstract class ModHair : ModTexturedType
 	/// </summary>
 	public virtual bool IsMale => true;
 
+	/// <summary>
+	/// Determines in what UIs this hairstyle is visible once unlocked.
+	/// </summary>
+	public virtual HairVisibility Visibility => HairVisibility.All;
+
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModHair>.Register(this);
@@ -45,6 +50,8 @@ public abstract class ModHair : ModTexturedType
 
 	/// <summary>
 	/// Gets the unlock conditions for this hairstyle. No conditions by default.
+	/// <br />
+	/// Ignored and not called if <see cref="Visibility"/> does includes <see cref="HairVisibility.CharacterCreation"/>.
 	/// </summary>
 	public virtual IEnumerable<Condition> GetUnlockConditions()
 	{
