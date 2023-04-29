@@ -18,9 +18,11 @@ public abstract class ModHair : ModTexturedType
 	public virtual string AltTexture => Texture + "_Alt";
 
 	/// <summary>
-	/// Determines whether this hairstyle is considered male, which influences what gender is picked when randomizing a character.
+	/// Used to set the character gender based on hairstyle when randomizing a new character. <br />
+	/// If <see cref="Gender.Unspecified" />, the gender will be randomly rolled. <br />
+	/// Note that all hairstyles can be selected with either gender. THis is just a defualt for quick randomization.
 	/// </summary>
-	public virtual bool IsMale => true;
+	public virtual Gender RandomizedCharacterCreationGender => Gender.Unspecified;
 
 	/// <summary>
 	/// Determines in what UIs this hairstyle is visible once unlocked.
@@ -49,8 +51,7 @@ public abstract class ModHair : ModTexturedType
 	}
 
 	/// <summary>
-	/// Gets the unlock conditions for this hairstyle. No conditions by default.
-	/// <br />
+	/// Gets the unlock conditions for this hairstyle. No conditions by default. <br />
 	/// Ignored and not called if <see cref="Visibility"/> does includes <see cref="HairVisibility.CharacterCreation"/>.
 	/// </summary>
 	public virtual IEnumerable<Condition> GetUnlockConditions()
