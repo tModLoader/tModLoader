@@ -110,6 +110,7 @@ public static class NPCLoader
 
 		foreach (ModNPC npc in npcs) {
 			Lang._npcNameCache[npc.Type] = npc.DisplayName;
+			Main.ShopHelper.RegisterTownNPCMoodLocalizations(npc);
 		}
 	}
 

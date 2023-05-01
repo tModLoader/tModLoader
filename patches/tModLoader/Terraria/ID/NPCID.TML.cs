@@ -15,10 +15,15 @@ public partial class NPCID
 
 		//Default ID is the skeleton merchant
 		/// <summary>
-		/// Whether or not a given NPC will act like a town NPC in terms of AI, animations, and attacks, but not in other regards, such as having a happiness button or appearing
-		/// on the minimap, like the bone merchant in vanilla.
+		/// Whether or not a given NPC will act like a town NPC in terms of AI, animations, and attacks, but not in other regards, such as appearing on the minimap, like the bone merchant in vanilla.
 		/// </summary>
 		public static bool[] ActsLikeTownNPC = Factory.CreateBoolSet(453);
+
+		//Default ID is the skeleton merchant, traveling merchant, old man
+		/// <summary>
+		/// If true, the given NPC will not count towards town NPC happiness and won't have a happiness button.
+		/// </summary>
+		public static bool[] IsNotReallyTownNPC = Factory.CreateBoolSet(37, 368, 453);
 
 		//Default ID is the skeleton merchant
 		/// <summary>

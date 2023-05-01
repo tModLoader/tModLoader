@@ -182,14 +182,33 @@
  			if (aShoppingBiome.IsInBiome(player)) {
  				AddHappinessReportText("HateBiome", new {
  					BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
-@@ -341,7 +_,10 @@
+@@ -341,9 +_,29 @@
  	private bool IsNotReallyTownNPC(NPC npc)
  	{
  		int type = npc.type;
 +		/*
  		if (type == 37 || type == 368 || type == 453)
 +		*/
-+		if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
++		if (NPCID.Sets.IsNotReallyTownNPC[type])
  			return true;
  
  		return false;
++	}
++
++	internal void RegisterTownNPCMoodLocalizations(ModNPC npc)
++	{
++		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !Main.ShopHelper.IsNotReallyTownNPC(npc.NPC)) {
++
++			string prefix = $"Mods.{npc.Mod.Name}.TownNPCMood.{npc.Name}";
++			string[] keys = new string[] {
++				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC"
++			};
++			foreach (var key in keys) {
++				string fullKey = $"{prefix}.{key}";
++				string defaultValueKey = "TownNPCMood." + key;
++				Language.GetOrRegister(fullKey, () => Language.GetTextValue(defaultValueKey));
++				//Language.GetOrRegister(fullKey, () => $"Translation missing for {fullKey}");
++			}
++		}
+ 	}
+ }

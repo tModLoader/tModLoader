@@ -187,6 +187,7 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.AttackAverageChance[Type] = 1;
 			NPCID.Sets.HatOffsetY[Type] = 4;
 			NPCID.Sets.ShimmerTownTransform[Type] = true;
+			NPCID.Sets.IsNotReallyTownNPC[Type] = true; // Prevents the happiness button
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
