@@ -62,6 +62,18 @@ partial class ItemID
 		);
 
 		/// <summary>
+		/// Set for defining how much coin luck according to its stack this item gives to nearby players when thrown into shimmer (<see cref="Entity.shimmerWet"/>).<br/>
+		/// Includes the 4 vanilla coin types by default. The value represents the "price" of the currency in copper coins. For other items, default value is 0, which means it will not give coin luck.<br/>
+		/// </summary>
+		/// <remarks>Coin luck application takes precedence over other actions related to shimmer.</remarks>
+		public static int[] CoinLuckValue = Factory.CreateIntSet(0,
+			CopperCoin,   1,
+			SilverCoin,	  100,
+			GoldCoin,	  10000,
+			PlatinumCoin, 1000000
+		);
+
+		/// <summary>
 		/// Dictionary for defining what items will drop from a <see cref="ProjectileID.Geode"/> when broken. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive).
 		/// <br/>Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.
 		/// </summary>
