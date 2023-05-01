@@ -1011,6 +1011,11 @@ Mods: {
 			JourneyMode: Drops in Journey Mode
 			Example: Drops during daytime
 		}
+
+		TownNPCMoodBiomes: {
+			ExampleSurfaceBiome: the Example Surface Biome
+			ExampleUndergroundBiome: the Example Underground Biome
+		}
 	}
 }
 
