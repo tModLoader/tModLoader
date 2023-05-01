@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items
 
 			// This item is a custom currency (registered in ExampleMod), so you might want to make it give "coin luck" to the player when thrown into shimmer. See https://terraria.wiki.gg/wiki/Luck#Coins
 			// However, since this item is also used in other shimmer related examples, it's commented out to avoid the item disappearing
-			//ItemID.Sets.CoinLuckValue[Type] = 100 / 5;
+			//ItemID.Sets.CoinLuckValue[Type] = Item.value;
 		}
 
 		public override void SetDefaults() {
