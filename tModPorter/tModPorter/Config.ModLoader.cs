@@ -526,5 +526,7 @@ public static partial class Config
 
 		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Add", to: "Add", newType: "Terraria.ModLoader.MonoModHooks");
 		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Modify", to: "Modify", newType: "Terraria.ModLoader.MonoModHooks");
+
+		RenameStaticField("Terraria.ID.AmmoID.Sets", from: "IsRocket", to: "IsSpecialist");
 	}
 }

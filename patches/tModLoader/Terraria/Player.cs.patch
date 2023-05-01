@@ -518,7 +518,7 @@
 +	*/
 +	public StatModifier arrowDamage = StatModifier.Default;
 +	public StatModifier bulletDamage = StatModifier.Default;
-+	public StatModifier rocketDamage = StatModifier.Default;
++	public StatModifier rocketDamage = StatModifier.Default; // rename to specialistDamage?
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
 +	/*
@@ -6382,7 +6382,7 @@
 +		if (AmmoID.Sets.IsBullet[sItem.useAmmo])
 +			modifier = modifier.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[sItem.useAmmo])
++		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.Specialist[sItem.type])
 +			modifier = modifier.CombineWith(rocketDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
@@ -6547,7 +6547,7 @@
 +		if (AmmoID.Sets.IsBullet[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[item.ammo])
++		if (AmmoID.Sets.IsSpecialist[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(rocketDamage);
 +
 +		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
