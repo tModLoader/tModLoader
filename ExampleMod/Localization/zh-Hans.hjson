@@ -953,6 +953,7 @@ Mods: {
 				// LoveNPC: Do you think {NPCName} notices me?
 				// DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
 				// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+				// LikeNPC_Princess: TownNPCMood.LikeNPC_Princess
 			}
 		}
 

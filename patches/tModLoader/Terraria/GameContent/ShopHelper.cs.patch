@@ -182,7 +182,7 @@
  			if (aShoppingBiome.IsInBiome(player)) {
  				AddHappinessReportText("HateBiome", new {
  					BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
-@@ -341,9 +_,29 @@
+@@ -341,9 +_,31 @@
  	private bool IsNotReallyTownNPC(NPC npc)
  	{
  		int type = npc.type;
@@ -201,7 +201,7 @@
 +
 +			string prefix = $"Mods.{npc.Mod.Name}.TownNPCMood.{npc.Name}";
 +			string[] keys = new string[] {
-+				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC"
++				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess"
 +			};
 +			foreach (var key in keys) {
 +				string fullKey = $"{prefix}.{key}";
@@ -209,6 +209,8 @@
 +				Language.GetOrRegister(fullKey, () => Language.GetTextValue(defaultValueKey));
 +				//Language.GetOrRegister(fullKey, () => $"Translation missing for {fullKey}");
 +			}
++			// TODO: Won't show up automatically in corresponding hjson since no Mods.ModName
++			Language.GetOrRegister($"TownNPCMood_Princess.LoveNPC_{npc.FullName}", () => Language.GetTextValue("TownNPCMood_Princess.LoveNPC"));
 +		}
  	}
  }
