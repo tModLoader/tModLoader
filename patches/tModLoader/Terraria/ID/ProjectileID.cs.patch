@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,25 +_,79 @@
+@@ -1,25 +_,80 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -71,9 +71,10 @@
  		public static bool[] IsAnNPCAttachedExplosive = Factory.CreateBoolSet(636);
 +
 +		/// <summary>
++		/// Wind Physics is <b>completely disabled</b> and unfunctional in Terraria, but the presence of the code suggest that it might be enabled in a future update. There is no need to use WindPhysicsImmunity currently.<br/>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will always use wind physics.
 +		/// <br/> If <see langword="false"/> for a given projectile type, then that projectile will never use wind physics.
-+		/// <br/> If <see langword="true"/> for a given projectile type, then vanilla decides if that projectile will use wind physics.
++		/// <br/> If <see langword="null"/> for a given projectile type, then vanilla decides if that projectile will use wind physics by checking <see cref="Projectile.aiStyle"/>.
 +		/// <br/> Defaults to <see langword="null"/>.
 +		/// </summary>
 +		/// <remarks>
