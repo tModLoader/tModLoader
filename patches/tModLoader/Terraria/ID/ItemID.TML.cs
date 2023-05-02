@@ -63,9 +63,9 @@ partial class ItemID
 
 		/// <summary>
 		/// If true, the item counts as a specialist weapon.<br/>
-		/// Used for Shroomite Helmet damage buffs.<br/>
+		/// Used for Shroomite Helmet damage buffs (and other effects that will affect <see cref="Player.specialistDamage"/>).<br/>
 		/// </summary>
-		public static bool[] Specialist = Factory.CreateBoolSet(
+		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(
 			PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove
 		);
 

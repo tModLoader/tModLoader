@@ -6391,7 +6391,7 @@
 +		if (AmmoID.Sets.IsBullet[sItem.useAmmo])
 +			modifier = modifier.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.Specialist[sItem.type])
++		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.IsRangedSpecialistWeapon[sItem.type])
 +			modifier = modifier.CombineWith(specialistDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
