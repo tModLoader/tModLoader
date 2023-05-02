@@ -22,7 +22,7 @@ partial class AmmoID
 		/// </summary>
 		public static bool[] IsBullet = Factory.CreateBoolSet(false, Bullet, CandyCorn);
 		/// <summary>
-		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as specialist ammo for the purposes of <see cref="Player.rocketDamage"/>.
+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as specialist ammo for the purposes of <see cref="Player.specialistDamage"/>.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] IsSpecialist = Factory.CreateBoolSet(false, Rocket, StyngerBolt, JackOLantern, NailFriendly, Coin, Flare, Dart, Snowball, Sand, FallenStar, Gel);

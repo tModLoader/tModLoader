@@ -518,7 +518,7 @@
 +	*/
 +	public StatModifier arrowDamage = StatModifier.Default;
 +	public StatModifier bulletDamage = StatModifier.Default;
-+	public StatModifier rocketDamage = StatModifier.Default; // rename to specialistDamage?
++	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
 +	/*
@@ -2255,6 +2255,15 @@
  			moveSpeed += 0.05f;
  		}
  
+@@ -10139,7 +_,7 @@
+ 
+ 		if (armorPiece.type == 1548) {
+ 			rangedCrit += 5;
+-			rocketDamage *= 1.15f;
++			specialistDamage *= 1.15f;
+ 		}
+ 
+ 		if (armorPiece.type == 1549) {
 @@ -10365,14 +_,17 @@
  			minionDamage += 0.11f;
  		}
@@ -2836,7 +2845,7 @@
 +		*/
 +		arrowDamage = StatModifier.Default;
 +		bulletDamage = StatModifier.Default;
-+		rocketDamage = StatModifier.Default;
++		specialistDamage = StatModifier.Default;
 +
  		coolWhipBuff = false;
  		yoraiz0rEye = 0;
@@ -6383,7 +6392,7 @@
 +			modifier = modifier.CombineWith(bulletDamage);
 +
 +		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.Specialist[sItem.type])
-+			modifier = modifier.CombineWith(rocketDamage);
++			modifier = modifier.CombineWith(specialistDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +
@@ -6548,7 +6557,7 @@
 +			ammoDamage = ammoDamage.CombineWith(bulletDamage);
 +
 +		if (AmmoID.Sets.IsSpecialist[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(rocketDamage);
++			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
 +		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
 +		ammoDamage.Base = 0;
