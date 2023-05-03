@@ -279,7 +279,7 @@
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
 +
 +	/// <summary>
-+	/// This determines if an NPC can be hit by an item or projectile owned by a particular player (it is an array, each slot corresponds to different player's (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating and some special projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
++	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
 +	/// </summary>
  	public int[] immune = new int[256];
  	public int directionY = 1;
@@ -1876,7 +1876,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,159 @@
+@@ -64591,26 +_,163 @@
  
  		return armorPenetration / 2;
  	}
@@ -1937,7 +1937,11 @@
 +
 +		modifiers.FinalDamage *= takenDamageMultiplier;
 +
-+		modifiers.Defense.Base += defense;
++		if (defense >= 0)
++			modifiers.Defense.Base += defense;
++		else
++			modifiers.FlatBonusDamage += -defense;
++
 +		if (!ignoreArmorDebuffs) {
 +			if (ichor)
 +				modifiers.Defense.Flat -= 15;
