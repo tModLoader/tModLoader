@@ -127,7 +127,7 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
-@@ -73,7 +_,16 @@
+@@ -73,8 +_,18 @@
  			{ 56, 0 },
  			{ 101, 0 }
  		};
@@ -138,12 +138,15 @@
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
++		/// <b>Unused:</b> Replaced by <see cref="ImmuneToDebuffs"/>, <see cref="ImmuneToAllDebuffsByDefault"/>, and <see cref="ImmuneToWhipDebuffs"/><br/><br/>
 +		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
- 		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
+-		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
++		private static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
  			{ 0, null },
  			{
+ 				1,
 @@ -4756,6 +_,10 @@
  				}
  			}

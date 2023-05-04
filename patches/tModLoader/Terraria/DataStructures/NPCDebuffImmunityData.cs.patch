@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/NPCDebuffImmunityData.cs
 +++ src/tModLoader/Terraria/DataStructures/NPCDebuffImmunityData.cs
-@@ -1,17 +_,36 @@
+@@ -1,17 +_,37 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.DataStructures;
  
 +/// <summary>
++/// <b>Unused:</b> Replaced by <see cref="NPCID.Sets.ImmuneToDebuffs"/>, <see cref="NPCID.Sets.ImmuneToAllDebuffsByDefault"/>, and <see cref="NPCID.Sets.ImmuneToWhipDebuffs"/><br/><br/>
 +/// Determines the default debuff immunities of an <see cref="NPC"/>.
 +/// </summary>
  public class NPCDebuffImmunityData

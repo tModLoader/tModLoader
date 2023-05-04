@@ -774,12 +774,25 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -10793,13 +_,18 @@
+@@ -10792,14 +_,31 @@
+ 			DeathSound = SoundID.NPCDeath6;
  			catchItem = 2121;
  		}
- 
-+		NPCLoader.SetDefaults(this);
++		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.  
++		if (NPCID.Sets.ImmuneToAllDebuffsByDefault[type])
++			Array.Fill(buffImmune, true);
 +
++		foreach (var buffType in NPCID.Sets.ImmuneToDebuffs[type])
++			buffImmune[buffType] = true;
++
++		if (NPCID.Sets.ImmuneToWhipDebuffs[type] is bool whipBuffImmunityOverride)
++			for (int i = 0; i < buffImmune.Length; i++)
++				if (BuffID.Sets.IsAnNPCWhipDebuff[i])
++					buffImmune[i] = whipBuffImmunityOverride;
++
++		buffImmune[353] = NPCID.Sets.ShimmerImmunity[type];
++		NPCLoader.SetDefaults(this);
+ 
  		if (Main.dedServ)
  			frame = default(Rectangle);
 +		// Extra patch context.
@@ -793,6 +806,22 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
+@@ -10823,6 +_,7 @@
+ 		defDamage = damage;
+ 		defDefense = defense;
+ 		netID = type;
++		/*
+ 		if (NPCID.Sets.DebuffImmunitySets.TryGetValue(type, out var nPCDebuffImmunityData) && nPCDebuffImmunityData != null) {
+ 			nPCDebuffImmunityData.ApplyToNPC(this);
+ 		}
+@@ -10833,6 +_,7 @@
+ 		}
+ 
+ 		buffImmune[353] = NPCID.Sets.ShimmerImmunity[type];
++		*/
+ 		if (Main.zenithWorld)
+ 			getZenithSeedAdjustmentsBeforeEverything();
+ 
 @@ -10841,12 +_,13 @@
  		else if (Main.tenthAnniversaryWorld)
  			getTenthAnniversaryAdjustments();

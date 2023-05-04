@@ -15,11 +15,13 @@ namespace ExampleMod.Common.GlobalNPCs
 			exampleJavelinDebuff = false;
 		}
 
-		public override void SetDefaults(NPC npc) {
-			// TODO: This doesn't work currently. tModLoader needs to make a fix to allow changing buffImmune
-
-			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
-			npc.buffImmune[ModContent.BuffType<ExampleJavelinDebuff>()] = npc.buffImmune[BuffID.BoneJavelin];
+		public override void SetStaticDefaults() {
+			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin. SkeletronHead and SkeletronPrime, for example, are immune to BoneJavelin
+			for (int i = 0; i < NPCLoader.NPCCount; i++) {
+				if (NPCID.Sets.ImmuneToDebuffs[i].Contains(BuffID.BoneJavelin)) {
+					NPCID.Sets.ImmuneToDebuffs[i].Add(ModContent.BuffType<ExampleJavelinDebuff>());
+				}
+			}
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage) {

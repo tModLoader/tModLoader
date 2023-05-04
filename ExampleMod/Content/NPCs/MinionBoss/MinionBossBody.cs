@@ -114,15 +114,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.ImmuneToDebuffs[Type] = new() { BuffID.Poisoned, BuffID.Confused };
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -149,9 +142,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.boss = true;
 			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
-			// Don't set immunities like this as of 1.4:
-			// NPC.buffImmune[BuffID.Confused] = true;
-			// immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
+			// Default buff immunities should be set in SetStaticDefaults through the NPCID.Sets.ImmuneTo{X} arrays.
+			// To dynamically adjust immunities of an active NPC, NPC.buffImmune[] can be changed in AI: NPC.buffImmune[BuffID.OnFire] = true;
 
 			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
 			NPC.aiStyle = -1;

@@ -45,12 +45,9 @@ namespace ExampleMod.Content.NPCs
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
 
-			// Specify the debuffs it is immune to
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned // This NPC will be immune to the Poisoned debuff.
-				}
-			});
+			// Specify the debuffs it is immune to.
+			// This NPC will be immune to the Poisoned debuff.
+			NPCID.Sets.ImmuneToDebuffs[Type] = new() { BuffID.Poisoned };
 		}
 
 		public override void SetDefaults() {
