@@ -901,7 +901,7 @@
  
 +									// Essentially, the following block is moved to execute later on.
 +									goto VanillaOnHitEffectsWhipsEnd;
-+									VanillaOnHitEffectsWhipsStart: // Whip Multihit penalty and Crystal dart targetting are OnHit
++									VanillaOnHitEffectsWhipsStart: // Whip Multihit penalty and Crystal dart retargeting are OnHit effects
  									if (type == 294)
  										damage = (int)((double)damage * 0.9);
  
