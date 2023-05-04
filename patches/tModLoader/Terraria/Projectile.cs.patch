@@ -895,8 +895,22 @@
  										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10594,16 +_,20 @@
+@@ -10487,6 +_,9 @@
+ 									if (type == 981 && nPC.type == 104)
+ 										num19 *= 3;
+ 
++									// Essentially, the following block is moved to execute later on.
++									goto VanillaOnHitEffectsWhipsEnd;
++									VanillaOnHitEffectsWhipsStart: // Whip Multihit penalty and Crystal dart targetting are OnHit
+ 									if (type == 294)
+ 										damage = (int)((double)damage * 0.9);
+ 
+@@ -10592,18 +_,26 @@
+ 											netUpdate = true;
+ 										}
  									}
++									goto VanillaOnHitEffectsResume;
++									VanillaOnHitEffectsWhipsEnd:
  
  									if (type == 261 && velocity.Length() < 3.5f) {
 -										num19 /= 2;
@@ -915,6 +929,8 @@
 +									goto VanillaOnHitEffectsEnd;
 +
 +									VanillaOnHitEffectsStart:
++									goto VanillaOnHitEffectsWhipsStart;
++									VanillaOnHitEffectsResume:
  									StatusNPC(i);
  									if (flag && nPC.life > 5)
  										TryDoingOnHitEffects(nPC);
