@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tModLoader: ModTexturedType Class Reference</title>
+<title>tModLoader: ModHair Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('class_mod_textured_type.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('class_mod_hair.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,82 +85,33 @@ $(document).ready(function(){initNavTree('class_mod_textured_type.html',''); ini
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="class_mod_textured_type-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ModTexturedType Class Reference</div></div>
+<a href="class_mod_hair-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">ModHair Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>The base type for most modded things with textures.  
- <a href="class_mod_textured_type.html#details">More...</a></p>
+<p>This class allows you to define custom hair styles for a player, controlling the associated gender and unlock conditions.  
+ <a href="class_mod_hair.html#details">More...</a></p>
 
-<p>Inherits <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a>.</p>
-
-<p>Inherited by <a class="el" href="class_info_display.html">InfoDisplay</a>, <a class="el" href="class_mod_block_type.html">ModBlockType</a>, <a class="el" href="class_mod_boss_bar.html">ModBossBar</a>, <a class="el" href="class_mod_buff.html">ModBuff</a>, <a class="el" href="class_mod_dust.html">ModDust</a>, <a class="el" href="class_mod_gore.html">ModGore</a>, <a class="el" href="class_mod_hair.html">ModHair</a>, <a class="el" href="class_mod_water_style.html">ModWaterStyle</a>, and <a class="el" href="class_mod_waterfall_style.html">ModWaterfallStyle</a>.</p>
+<p>Inherits <a class="el" href="class_mod_textured_type.html">ModTexturedType</a>.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a8c707d7097758dddb1e1dec4c3d74ad1"><td class="memItemLeft" align="right" valign="top"><a id="a8c707d7097758dddb1e1dec4c3d74ad1" name="a8c707d7097758dddb1e1dec4c3d74ad1"></a>
-virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b><code> [get]</code></td></tr>
-<tr class="memdesc:a8c707d7097758dddb1e1dec4c3d74ad1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space. <br /></td></tr>
-<tr class="separator:a8c707d7097758dddb1e1dec4c3d74ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
-<tr class="memitem:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a33a9306160c2e6230f83d052ad863a68" name="a33a9306160c2e6230f83d052ad863a68"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloneNewInstances</b><code> [get]</code></td></tr>
-<tr class="memdesc:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone(TEntity)</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
-<tr class="separator:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="ae016c20882fd8fab01ead056f155e389" name="ae016c20882fd8fab01ead056f155e389"></a>
-TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
-<tr class="separator:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">FullName</a><code> [get]</code></td></tr>
-<tr class="memdesc:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">More...</a><br /></td></tr>
-<tr class="separator:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a26a0e922a37d6997b4913dd4af99130e" name="a26a0e922a37d6997b4913dd4af99130e"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</b><code> [get]</code></td></tr>
-<tr class="memdesc:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type is cloneable. <a class="el" href="class_cloning.html">Cloning</a> is supported if<br  />
- all reference typed fields in each sub-class which doesn't override Clone are marked with [<a class="el" href="class_clone_by_reference.html" title="Indicates that references to this object can be shared between clones. When applied to a class,...">CloneByReference</a>] <br /></td></tr>
-<tr class="separator:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">Mod</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">More...</a><br /></td></tr>
-<tr class="separator:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">Name</a><code> [get]</code></td></tr>
-<tr class="memdesc:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">More...</a><br /></td></tr>
-<tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_interface_i_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_mod_type.html">IModType</a></td></tr>
-<tr class="memitem:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">FullName</a><code> [get]</code></td></tr>
-<tr class="memdesc:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">=&gt; $"{Mod.Name}/{Name}"  <a href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">More...</a><br /></td></tr>
-<tr class="separator:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">Mod</a><code> [get]</code></td></tr>
-<tr class="memdesc:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">More...</a><br /></td></tr>
-<tr class="separator:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">Name</a><code> [get]</code></td></tr>
-<tr class="memdesc:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">More...</a><br /></td></tr>
-<tr class="separator:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity &gt;</a></td></tr>
-<tr class="memitem:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a33a9306160c2e6230f83d052ad863a68" name="a33a9306160c2e6230f83d052ad863a68"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloneNewInstances</b><code> [get]</code></td></tr>
-<tr class="memdesc:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone(TEntity)</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
-<tr class="separator:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="ae016c20882fd8fab01ead056f155e389" name="ae016c20882fd8fab01ead056f155e389"></a>
-TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
-<tr class="separator:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">FullName</a><code> [get]</code></td></tr>
-<tr class="memdesc:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">More...</a><br /></td></tr>
-<tr class="separator:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a26a0e922a37d6997b4913dd4af99130e" name="a26a0e922a37d6997b4913dd4af99130e"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</b><code> [get]</code></td></tr>
-<tr class="memdesc:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type is cloneable. <a class="el" href="class_cloning.html">Cloning</a> is supported if<br  />
- all reference typed fields in each sub-class which doesn't override Clone are marked with [<a class="el" href="class_clone_by_reference.html" title="Indicates that references to this object can be shared between clones. When applied to a class,...">CloneByReference</a>] <br /></td></tr>
-<tr class="separator:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">Mod</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">More...</a><br /></td></tr>
-<tr class="separator:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">Name</a><code> [get]</code></td></tr>
-<tr class="memdesc:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">More...</a><br /></td></tr>
-<tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a34c3d41aec409fe54b1f5e9f13c2d8f8"><td class="memItemLeft" align="right" valign="top"><a id="a34c3d41aec409fe54b1f5e9f13c2d8f8" name="a34c3d41aec409fe54b1f5e9f13c2d8f8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AutoStaticDefaults</b> ()</td></tr>
+<tr class="memdesc:a34c3d41aec409fe54b1f5e9f13c2d8f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically sets certain static defaults. Override this if you do not want the properties to be set for you. <br /></td></tr>
+<tr class="separator:a34c3d41aec409fe54b1f5e9f13c2d8f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53de804fb1691db9db7d551d1ba926a1"><td class="memItemLeft" align="right" valign="top"><a id="a53de804fb1691db9db7d551d1ba926a1" name="a53de804fb1691db9db7d551d1ba926a1"></a>
+virtual <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetUnlockConditions</b> ()</td></tr>
+<tr class="memdesc:a53de804fb1691db9db7d551d1ba926a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the unlock conditions for this hairstyle. No conditions by default. <br  />
+ These conditions are used exclusively for the Stylist UI in-game; see <a class="el" href="class_mod_hair.html#aae116dab2b3c375df543bd734aaa316c" title="Determines whether this hairstyle is available during character creation.   This is distinctly differ...">AvailableDuringCharacterCreation</a> for character creation. <br /></td></tr>
+<tr class="separator:a53de804fb1691db9db7d551d1ba926a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd0eef43640723884217054ae3309347"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_hair.html#abd0eef43640723884217054ae3309347">SetupContent</a> ()</td></tr>
+<tr class="memdesc:abd0eef43640723884217054ae3309347"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_mod_hair.html#abd0eef43640723884217054ae3309347">More...</a><br /></td></tr>
+<tr class="separator:abd0eef43640723884217054ae3309347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
 <tr class="memitem:a1f09f8efa3cca58e0fd122c14eaf666e inherit pub_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual TModType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">Clone</a> (TEntity newEntity)</td></tr>
 <tr class="memdesc:a1f09f8efa3cca58e0fd122c14eaf666e inherit pub_methods_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">More...</a><br /></td></tr>
@@ -220,6 +171,12 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>PrettyPrintName</b>
 <tr class="memitem:a6589c5d5241d186dab7591d5596d56ad inherit pub_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a6589c5d5241d186dab7591d5596d56ad">Unload</a> ()</td></tr>
 <tr class="memdesc:a6589c5d5241d186dab7591d5596d56ad inherit pub_methods_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to safely unload things you added in Load.  <a href="class_mod_type.html#a6589c5d5241d186dab7591d5596d56ad">More...</a><br /></td></tr>
 <tr class="separator:a6589c5d5241d186dab7591d5596d56ad inherit pub_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a763c2b0235036b084e8406d0213f4b53"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_hair.html#a763c2b0235036b084e8406d0213f4b53">Register</a> ()</td></tr>
+<tr class="memdesc:a763c2b0235036b084e8406d0213f4b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_mod_hair.html#a763c2b0235036b084e8406d0213f4b53">More...</a><br /></td></tr>
+<tr class="separator:a763c2b0235036b084e8406d0213f4b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
 <tr class="memitem:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">abstract TEntity&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#ad88e5eb64bf9e58f2051b1d95dc2f554">CreateTemplateEntity</a> ()</td></tr>
 <tr class="separator:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,15 +209,154 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 <tr class="memitem:a68ae9d7e81b3ef0a93b540db9fa62ae7 inherit pro_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a68ae9d7e81b3ef0a93b540db9fa62ae7">ValidateType</a> ()</td></tr>
 <tr class="memdesc:a68ae9d7e81b3ef0a93b540db9fa62ae7 inherit pro_methods_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for the correct overrides of different hook methods and fields and properties  <a href="class_mod_type.html#a68ae9d7e81b3ef0a93b540db9fa62ae7">More...</a><br /></td></tr>
 <tr class="separator:a68ae9d7e81b3ef0a93b540db9fa62ae7 inherit pro_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a3ac59a7eb81cb6643b0214fb93e97a89"><td class="memItemLeft" align="right" valign="top"><a id="a3ac59a7eb81cb6643b0214fb93e97a89" name="a3ac59a7eb81cb6643b0214fb93e97a89"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>AltTexture</b><code> [get]</code></td></tr>
+<tr class="memdesc:a3ac59a7eb81cb6643b0214fb93e97a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path to the alternative texture used for when the hair is covered by a hat. <br /></td></tr>
+<tr class="separator:a3ac59a7eb81cb6643b0214fb93e97a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae116dab2b3c375df543bd734aaa316c"><td class="memItemLeft" align="right" valign="top"><a id="aae116dab2b3c375df543bd734aaa316c" name="aae116dab2b3c375df543bd734aaa316c"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AvailableDuringCharacterCreation</b><code> [get]</code></td></tr>
+<tr class="memdesc:aae116dab2b3c375df543bd734aaa316c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether this hairstyle is available during character creation. <br  />
+ This is distinctly different from <a class="el" href="class_mod_hair.html#a53de804fb1691db9db7d551d1ba926a1" title="Gets the unlock conditions for this hairstyle. No conditions by default.   These conditions are used ...">GetUnlockConditions</a>, which determines whether the hairstyle is available in-game in the Stylist UI. <br /></td></tr>
+<tr class="separator:aae116dab2b3c375df543bd734aaa316c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5febf159388fba79bd053402a853751a"><td class="memItemLeft" align="right" valign="top"><a id="a5febf159388fba79bd053402a853751a" name="a5febf159388fba79bd053402a853751a"></a>
+virtual Gender&#160;</td><td class="memItemRight" valign="bottom"><b>RandomizedCharacterCreationGender</b><code> [get]</code></td></tr>
+<tr class="memdesc:a5febf159388fba79bd053402a853751a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to set the character gender based on hairstyle when randomizing a new character. <br  />
+ If Gender.Unspecified, the gender will be randomly rolled. <br  />
+ Note that all hairstyles can be selected with either gender. THis is just a defualt for quick randomization. <br /></td></tr>
+<tr class="separator:a5febf159388fba79bd053402a853751a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a150fb34f63b504cfbfbee997f4ce692c"><td class="memItemLeft" align="right" valign="top"><a id="a150fb34f63b504cfbfbee997f4ce692c" name="a150fb34f63b504cfbfbee997f4ce692c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get, set]</code></td></tr>
+<tr class="separator:a150fb34f63b504cfbfbee997f4ce692c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_mod_textured_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_textured_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_textured_type.html">ModTexturedType</a></td></tr>
+<tr class="memitem:a8c707d7097758dddb1e1dec4c3d74ad1 inherit properties_class_mod_textured_type"><td class="memItemLeft" align="right" valign="top"><a id="a8c707d7097758dddb1e1dec4c3d74ad1" name="a8c707d7097758dddb1e1dec4c3d74ad1"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b><code> [get]</code></td></tr>
+<tr class="memdesc:a8c707d7097758dddb1e1dec4c3d74ad1 inherit properties_class_mod_textured_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space. <br /></td></tr>
+<tr class="separator:a8c707d7097758dddb1e1dec4c3d74ad1 inherit properties_class_mod_textured_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
+<tr class="memitem:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a33a9306160c2e6230f83d052ad863a68" name="a33a9306160c2e6230f83d052ad863a68"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloneNewInstances</b><code> [get]</code></td></tr>
+<tr class="memdesc:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone(TEntity)</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
+<tr class="separator:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="ae016c20882fd8fab01ead056f155e389" name="ae016c20882fd8fab01ead056f155e389"></a>
+TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
+<tr class="separator:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">FullName</a><code> [get]</code></td></tr>
+<tr class="memdesc:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">More...</a><br /></td></tr>
+<tr class="separator:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a26a0e922a37d6997b4913dd4af99130e" name="a26a0e922a37d6997b4913dd4af99130e"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</b><code> [get]</code></td></tr>
+<tr class="memdesc:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type is cloneable. <a class="el" href="class_cloning.html">Cloning</a> is supported if<br  />
+ all reference typed fields in each sub-class which doesn't override Clone are marked with [<a class="el" href="class_clone_by_reference.html" title="Indicates that references to this object can be shared between clones. When applied to a class,...">CloneByReference</a>] <br /></td></tr>
+<tr class="separator:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">Mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">More...</a><br /></td></tr>
+<tr class="separator:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">Name</a><code> [get]</code></td></tr>
+<tr class="memdesc:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">More...</a><br /></td></tr>
+<tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_i_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_mod_type.html">IModType</a></td></tr>
+<tr class="memitem:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">FullName</a><code> [get]</code></td></tr>
+<tr class="memdesc:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">=&gt; $"{Mod.Name}/{Name}"  <a href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">More...</a><br /></td></tr>
+<tr class="separator:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">Mod</a><code> [get]</code></td></tr>
+<tr class="memdesc:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">More...</a><br /></td></tr>
+<tr class="separator:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">Name</a><code> [get]</code></td></tr>
+<tr class="memdesc:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">More...</a><br /></td></tr>
+<tr class="separator:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity &gt;</a></td></tr>
+<tr class="memitem:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a33a9306160c2e6230f83d052ad863a68" name="a33a9306160c2e6230f83d052ad863a68"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloneNewInstances</b><code> [get]</code></td></tr>
+<tr class="memdesc:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone(TEntity)</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
+<tr class="separator:a33a9306160c2e6230f83d052ad863a68 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="ae016c20882fd8fab01ead056f155e389" name="ae016c20882fd8fab01ead056f155e389"></a>
+TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
+<tr class="separator:ae016c20882fd8fab01ead056f155e389 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">FullName</a><code> [get]</code></td></tr>
+<tr class="memdesc:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_mod_type.html#acb89dc5bb9d2b392e8e32e5f36fbf625">More...</a><br /></td></tr>
+<tr class="separator:acb89dc5bb9d2b392e8e32e5f36fbf625 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="a26a0e922a37d6997b4913dd4af99130e" name="a26a0e922a37d6997b4913dd4af99130e"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</b><code> [get]</code></td></tr>
+<tr class="memdesc:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type is cloneable. <a class="el" href="class_cloning.html">Cloning</a> is supported if<br  />
+ all reference typed fields in each sub-class which doesn't override Clone are marked with [<a class="el" href="class_clone_by_reference.html" title="Indicates that references to this object can be shared between clones. When applied to a class,...">CloneByReference</a>] <br /></td></tr>
+<tr class="separator:a26a0e922a37d6997b4913dd4af99130e inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">Mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770">More...</a><br /></td></tr>
+<tr class="separator:a2044bf46ccf5c8ba4d8358f06c6d1770 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">Name</a><code> [get]</code></td></tr>
+<tr class="memdesc:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">More...</a><br /></td></tr>
+<tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >The base type for most modded things with textures. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p >This class allows you to define custom hair styles for a player, controlling the associated gender and unlock conditions. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a763c2b0235036b084e8406d0213f4b53" name="a763c2b0235036b084e8406d0213f4b53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a763c2b0235036b084e8406d0213f4b53">&#9670;&nbsp;</a></span>Register()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">sealed override void ModHair.Register </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override. </p>
+
+<p>Implements <a class="el" href="class_mod_type.html#ab0f9ad250e4d99c4830b609cc4db2881">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<a id="abd0eef43640723884217054ae3309347" name="abd0eef43640723884217054ae3309347"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd0eef43640723884217054ae3309347">&#9670;&nbsp;</a></span>SetupContent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">sealed override void ModHair.SetupContent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it. </p>
+
+<p>Reimplemented from <a class="el" href="class_mod_type.html#a9b37711592d855e0fbf38caff1dce343">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_mod_textured_type.html">ModTexturedType</a></li>
+    <li class="navelem"><a class="el" href="class_mod_hair.html">ModHair</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>

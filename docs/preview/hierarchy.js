@@ -655,6 +655,7 @@ var hierarchy =
     [ "WorldGen.GrowTreeSettings", "struct_world_gen_1_1_grow_tree_settings.html", null ],
     [ "Main.CurrentFrameFlags.Hacks", "class_main_1_1_current_frame_flags_1_1_hacks.html", null ],
     [ "HairID", "class_hair_i_d.html", null ],
+    [ "HairLoader", "class_hair_loader.html", null ],
     [ "HairShaderDataSet", "class_hair_shader_data_set.html", null ],
     [ "HairstyleUnlocksHelper", "class_hairstyle_unlocks_helper.html", null ],
     [ "Projectile.HallowBossPelletStormInfo", "struct_projectile_1_1_hallow_boss_pellet_storm_info.html", null ],
@@ -1425,6 +1426,7 @@ var hierarchy =
               [ "ModGore", "class_mod_gore.html", [
                 [ "SimpleModGore", "class_simple_mod_gore.html", null ]
               ] ],
+              [ "ModHair", "class_mod_hair.html", null ],
               [ "ModWaterStyle", "class_mod_water_style.html", null ],
               [ "ModWaterfallStyle", "class_mod_waterfall_style.html", null ]
             ] ],
