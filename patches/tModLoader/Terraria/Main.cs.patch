@@ -4500,16 +4500,16 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
-@@ -35410,7 +_,12 @@
+@@ -35410,7 +_,13 @@
  			return;
  		}
  
-+		if (!hairstylesUpdatedForThisInteraction)
-+		{
-+			hairstylesUpdatedForThisInteraction = true;
--		Hairstyles.UpdateUnlocks();
-+			Hairstyles.UpdateUnlocks();
-+		}
++		if (hairstylesUpdatedForThisInteraction)
++			goto SkipUpdateUnlocks;
++
++		hairstylesUpdatedForThisInteraction = true;
+ 		Hairstyles.UpdateUnlocks();
++		SkipUpdateUnlocks:;
 +
  		int count = Hairstyles.AvailableHairstyles.Count;
  		int num = screenHeight / 2 + 60;
