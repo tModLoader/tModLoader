@@ -51,6 +51,9 @@ public partial class Main
 	// Magic constant comes from default windows border settings: ~ 1377 / 1440 and 1033 / 1080.
 	private static int BorderedHeight(int height, bool state) => (int)(height * (state ? 1 : 0.95625));
 
+	// Tracks whether the Stylist has had her hairstyle list updated for the current interaction.
+	private static bool hairstylesUpdatedForThisInteraction; // TML: Track whether hairstyle cache needs refreshing for Stylist UI.
+
 	private static Player _currentPlayerOverride;
 
 	/// <summary>
