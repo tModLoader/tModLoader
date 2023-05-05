@@ -23,10 +23,10 @@ public static class HairLoader
 		return type >= HairID.Count && type < Count ? hairs[type - HairID.Count] : null;
 	}
 
-	public static void UpdateUnlocks(HairstyleUnlocksHelper unlocksHelper, bool runConditions)
+	public static void UpdateUnlocks(HairstyleUnlocksHelper unlocksHelper, bool inCharacterCreation)
 	{
 		foreach (ModHair hair in hairs) {
-			if ((runConditions && hair.GetUnlockConditions().All(x => x.IsMet())) || (!runConditions && hair.AvailableDuringCharacterCreation))
+			if (inCharacterCreation ? hair.AvailableDuringCharacterCreation : hair.GetUnlockConditions().All(x => x.IsMet()))
 				unlocksHelper.AvailableHairstyles.Add(hair.Type);
 		}
 	}

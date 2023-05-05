@@ -6,20 +6,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -11,10 +_,10 @@
- 	private bool _isAtStylist;
- 	private bool _isAtCharacterCreation;
- 
--	public void UpdateUnlocks()
-+	public void UpdateUnlocks(bool runConditions)
- 	{
- 		if (ListWarrantsRemake())
--			RebuildList();
-+			RebuildList(runConditions);
- 	}
- 
- 	private bool ListWarrantsRemake()
-@@ -33,10 +_,10 @@
+@@ -33,7 +_,7 @@
  		_defeatedPlantera = flag3;
  		_isAtStylist = flag4;
  		_isAtCharacterCreation = gameMenu;
@@ -27,16 +14,12 @@
 +		return true; // TML: Return true instead of result, character creation only runs it during initialization, stylist window has been patched to only run it while opening as well.
  	}
  
--	private void RebuildList()
-+	private void RebuildList(bool runConditions)
- 	{
- 		List<int> availableHairstyles = AvailableHairstyles;
- 		availableHairstyles.Clear();
+ 	private void RebuildList()
 @@ -102,5 +_,7 @@
  
  		if (_defeatedMartians && _defeatedMoonlord)
  			availableHairstyles.Add(133);
 +
-+		HairLoader.UpdateUnlocks(this, runConditions);
++		HairLoader.UpdateUnlocks(this, _isAtCharacterCreation);
  	}
  }
