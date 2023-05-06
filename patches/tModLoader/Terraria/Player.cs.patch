@@ -518,7 +518,7 @@
 +	*/
 +	public StatModifier arrowDamage = StatModifier.Default;
 +	public StatModifier bulletDamage = StatModifier.Default;
-+	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage
++	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage, Shroomite Helmet changed to use this.
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
 +	/*
@@ -2260,7 +2260,7 @@
  		if (armorPiece.type == 1548) {
  			rangedCrit += 5;
 -			rocketDamage *= 1.15f;
-+			specialistDamage *= 1.15f;
++			specialistDamage *= 1.15f; // rocketDamage renamed.
  		}
  
  		if (armorPiece.type == 1549) {
