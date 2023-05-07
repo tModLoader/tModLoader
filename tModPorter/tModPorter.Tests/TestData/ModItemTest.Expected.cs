@@ -29,6 +29,7 @@ public class ModItemTest : ModItem
 		/* Tooltip.SetDefault(
 			"This tooltip\n" +
 			"Has multiple lines"); */
+		Terraria.ID.AmmoID.Sets.IsSpecialist[Type] = true;
 	}
 
 #if COMPILE_ERROR
