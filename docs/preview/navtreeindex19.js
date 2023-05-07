@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_wsc_json_object.html":[3,0,1432],
 "classes.html":[3,1],
 "classnativefiledialog.html":[3,0,813],
 "functions.html":[3,3,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,101,7],
 "struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422":[3,0,101,4],
 "struct_boss_bar_draw_params.html#ad93c078b16e1f6f208430d05992d0036":[3,0,101,3],
-"struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7":[3,0,101,8],
-"struct_boss_bar_draw_params.html#af6e55f0ca5c415156d451126bbd0cf62":[3,0,101,6]
+"struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7":[3,0,101,8]
 };

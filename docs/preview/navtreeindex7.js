@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"class_item_loader.html#a6c0192d8bbc6f5b52eb648dcb28a18e9":[3,0,600,24],
 "class_item_loader.html#a707a1a9f2047897d335563936b8d0f49":[3,0,600,13],
 "class_item_loader.html#a76135a35e07002d77e9a66a4e553235b":[3,0,600,11],
 "class_item_loader.html#a77890141db188252b92a7bf7cfe81caa":[3,0,600,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "class_martian_saucer_big_progress_bar.html":[3,0,706],
 "class_martian_sky.html":[3,0,707],
 "class_mech_boss_spawners_drop_rule.html":[3,0,708],
-"class_melee_damage_class.html":[3,0,709],
-"class_melee_no_speed_damage_class.html":[3,0,710]
+"class_melee_damage_class.html":[3,0,709]
 };

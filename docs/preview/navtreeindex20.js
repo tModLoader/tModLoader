@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"struct_boss_bar_draw_params.html#af6e55f0ca5c415156d451126bbd0cf62":[3,0,101,6],
 "struct_buff_draw_params.html":[3,0,106],
 "struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033":[3,0,106,2],
 "struct_buff_draw_params.html#a23153311248df2a8b45a30c7b13b80b5":[3,0,106,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_resource_overlay_draw_context.html#af5cdc9b01085fb5c4d8c174e8d2c4ec4":[3,0,1018,2],
 "struct_resource_pack_version.html":[3,0,1023],
 "struct_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html":[3,0,1036,0,0],
-"struct_scene_metrics_scan_settings.html":[3,0,1038],
-"struct_segment_infor_report.html":[3,0,1046]
+"struct_scene_metrics_scan_settings.html":[3,0,1038]
 };

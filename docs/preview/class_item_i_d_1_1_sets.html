@@ -313,6 +313,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsPaintScrap
  Paint scrapers can scrape paint off of tiles and collect moss from TileID.LongMoss. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a8f8cfe18c1284b798eddefd95f46f29a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a297f9b0902b38844c6fa6f923e8244c8"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a297f9b0902b38844c6fa6f923e8244c8">IsRangedSpecialistWeapon</a></td></tr>
+<tr class="memdesc:a297f9b0902b38844c6fa6f923e8244c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the item counts as a specialist weapon.<br  />
+ Used for Shroomite Helmet damage buffs (and other effects that will affect Player.specialistDamage).<br  />
+  <a href="class_item_i_d_1_1_sets.html#a297f9b0902b38844c6fa6f923e8244c8">More...</a><br /></td></tr>
+<tr class="separator:a297f9b0902b38844c6fa6f923e8244c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a547a5c419e4317e4eb7d038f4d0bda72"><td class="memItemLeft" align="right" valign="top"><a id="a547a5c419e4317e4eb7d038f4d0bda72" name="a547a5c419e4317e4eb7d038f4d0bda72"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ItemIconPulse</b> = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581)</td></tr>
 <tr class="memdesc:a547a5c419e4317e4eb7d038f4d0bda72"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will visually pulse when drawn. <br  />
@@ -1029,6 +1034,35 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 <p>If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will not burn when dropped in lava, even if it has a <a class="el" href="class_item.html#a145323c0b871d18ceb4f44f657f9fdac" title="Indicates the rarity of an item. Assign to a ItemRarityID value. Vanilla values range from -1 to 13....">Item.rare</a> of <a class="el" href="class_item_rarity_i_d.html#a0512de49930d571a81d992af8b4a5aed" title="Zero (0)">ItemRarityID.White</a>. <br  />
  Defaults to <code>false</code>. </p>
 <p >This set does not affect GuideVoodooDoll, which will always burn when dropped into lava. </p>
+
+</div>
+</div>
+<a id="a297f9b0902b38844c6fa6f923e8244c8" name="a297f9b0902b38844c6fa6f923e8244c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a297f9b0902b38844c6fa6f923e8244c8">&#9670;&nbsp;</a></span>IsRangedSpecialistWeapon</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] ItemID.Sets.IsRangedSpecialistWeapon</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateBoolSet(</div>
+<div class="line">            PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove</div>
+<div class="line">        )</div>
+</div><!-- fragment -->
+<p>If true, the item counts as a specialist weapon.<br  />
+ Used for Shroomite Helmet damage buffs (and other effects that will affect Player.specialistDamage).<br  />
+ </p>
 
 </div>
 </div>

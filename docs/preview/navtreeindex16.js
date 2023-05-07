@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile_definition.html":[3,0,976],
 "class_projectile_i_d.html":[3,0,977],
 "class_projectile_i_d_1_1_sets.html":[3,0,977,0],
 "class_projectile_i_d_1_1_sets.html#a0582b37e0bc2b5a0fd1c96fbaabf075c":[3,0,977,0,30],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_spawn_condition_bestiary_overlay_info_element.html":[3,0,1103],
 "class_spawn_condition_decorative_overlay_info_element.html":[3,0,1104],
 "class_spawn_map_layer.html":[3,0,1105],
-"class_spelunker_projectile_helper.html":[3,0,1106],
-"class_sprite_draw_buffer.html":[3,0,1107]
+"class_spelunker_projectile_helper.html":[3,0,1106]
 };

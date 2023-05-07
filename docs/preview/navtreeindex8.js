@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_melee_no_speed_damage_class.html":[3,0,710],
 "class_melee_no_speed_damage_class.html#a46afc156bc357723bf64d95e465b7255":[3,0,710,1],
 "class_melee_no_speed_damage_class.html#ad55950418511c652bdd2f5ab4389eb7f":[3,0,710,0],
 "class_member_jit_attribute.html":[3,0,711],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_item.html#a119bbb1160e79491555445544b0744ff":[3,0,753,126],
 "class_mod_item.html#a11bcfb78762023a6f3279e976b4363f6":[3,0,753,25],
 "class_mod_item.html#a1210a73f18135d114a722c4a0e2f0f63":[3,0,753,98],
-"class_mod_item.html#a13498ecbb9546abaaf972616e9f4058d":[3,0,753,49],
-"class_mod_item.html#a145d9507c4258305d95f6f39a76070ae":[3,0,753,48]
+"class_mod_item.html#a13498ecbb9546abaaf972616e9f4058d":[3,0,753,49]
 };
