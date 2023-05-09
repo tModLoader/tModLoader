@@ -45,25 +45,26 @@ namespace ExampleMod.Content.Prefixes
 			//
 		}
 
-		// This prefix doesn't affect any non-standard stats, but if it did, these are some examples of how TooltipLines could be added:
-		/*
+		// This prefix doesn't affect any non-standard stats, so these additional tooltiplines aren't actually necessary, but this pattern can be followed for a prefix that does affect other stats.
 		public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-			// This uses the vanilla translation for defense, resulting in "-5 defense"
-			yield return new TooltipLine(Mod, "PrefixAccDefense", "-5" + Lang.tip[25].Value) {
-				IsModifier = true,
-				IsModifierBad = true,
-			};
+			// Due to inheritance, this code runs for ExamplePrefix and ExampleDerivedPrefix. We add 2 tooltip lines, the first is the typical prefix tooltip line showing the stats boost, while the other is just some additional flavor text.
+
 			// The localization key for Mods.ExampleMod.Prefixes.PowerTooltip uses a special format that will automatically prefix + or - to the value.
 			// This shared localization is formatted with the Power value, resulting in different text for ExamplePrefix and ExampleDerivedPrefix.
 			// This results in "+1 Power" for ExamplePrefix and "+2 Power" for ExampleDerivedPrefix.
 			// Power isn't an actual stat, the effects of Power are already shown in the "+X% damage" tooltip, so this example is purely educational.
 			yield return new TooltipLine(Mod, "PrefixWeaponAwesome", PowerTooltip.Format(Power)) {
-				IsModifier = true,
+				IsModifier = true, // Sets the color to the positive modifier color.
 			};
 			// This localization is not shared with the inherited classes. ExamplePrefix and ExampleDerivedPrefix have their own translations for this line.
 			yield return new TooltipLine(Mod, "PrefixWeaponAwesomeDescription", AdditionalTooltip.Value) {
 				IsModifier = true,
 			};
+			// If possible and suitable, try to reuse the name identifier and translation value of Terraria prefixes. For example, this code uses the vanilla translation for the word defense, resulting in "-5 defense". Note that IsModifierBad is used for this bad modifier.
+			/*yield return new TooltipLine(Mod, "PrefixAccDefense", "-5" + Lang.tip[25].Value) {
+				IsModifier = true,
+				IsModifierBad = true,
+			};*/
 		}
 
 		// PowerTooltip is shared between ExamplePrefix and ExampleDerivedPrefix. 
@@ -78,6 +79,5 @@ namespace ExampleMod.Content.Prefixes
 			// This seemingly useless code is required to properly register the key for AdditionalTooltip
 			_ = AdditionalTooltip;
 		}
-		*/
 	}
 }
