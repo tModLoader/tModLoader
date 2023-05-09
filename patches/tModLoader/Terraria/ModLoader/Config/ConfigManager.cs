@@ -104,7 +104,6 @@ public static class ConfigManager
 
 			try {
 				// TODO: Classes used in Generic types and Enums
-				// TODO: throw error after updating hjson somehow, so auto keys are populated?
 
 				// Register localization for classes added in this mod. This code handles the class itself, not the fields of the classes
 				if (variable.Type.IsClass && variable.Type.Assembly == type.Assembly) {
