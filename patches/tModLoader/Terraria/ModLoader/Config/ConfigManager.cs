@@ -111,22 +111,16 @@ public static class ConfigManager
 					var typeLabelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(LabelAttribute));
 #pragma warning restore CS0618 // Type or member is obsolete
 
-					var typeLabel = (LabelKeyAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(LabelKeyAttribute));
-					if (typeLabel != null) {
-						if (typeLabel.malformed)
-							throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
-					}
-					else { 
+					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type, throwErrors: true, errorOnType: true);
+					if(typeLabel == null)
+					{ 
 						string typeLabelKey = config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Label");
 						Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 					}
 
-					var typeTooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(TooltipKeyAttribute));
-					if (typeTooltip != null) {
-						if (typeTooltip.malformed)
-							throw new ValueNotTranslationKeyException($"{nameof(TooltipKeyAttribute)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
-					}
-					else {
+					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type, throwErrors: true, errorOnType: true);
+					if (typeTooltip == null)
+					{
 						string typeTooltipKey = config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Tooltip");
 						Language.GetOrRegister(typeTooltipKey, () => "");
 					}
@@ -480,21 +474,27 @@ public static class ConfigManager
 		return Language.GetText(key).Format(args);
 	}
 
+	private static T GetAndValidate<T>(MemberInfo memberInfo, bool throwErrors = true, bool errorOnType = false) where T : ConfigKeyAttribute
+	{
+		var configKeyAttribute = (T)Attribute.GetCustomAttribute(memberInfo, typeof(T));
+		if (configKeyAttribute != null) {
+			if (configKeyAttribute.malformed && throwErrors)
+				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
+		}
+		return configKeyAttribute;
+	}
+
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
 	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors, string dataName) where T : ConfigKeyAttribute
 	{
-		var label = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T));
-		if (label != null) {
-			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.");
-			return label.key;
+		var configKeyAttribute = GetAndValidate<T>(memberInfo.MemberInfo, throwErrors: throwErrors, errorOnType: false);
+		if (configKeyAttribute != null) {
+			return configKeyAttribute.key;
 		}
-		label = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T));
-		if (label != null) {
-			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
-			if (fallbackToClass) // FinishSetup will catch errors on Label annotations on classes
-				return label.key;
+		configKeyAttribute = GetAndValidate<T>(memberInfo.Type, throwErrors: throwErrors, errorOnType: true);
+		if (configKeyAttribute != null) {
+			if (fallbackToClass) // FinishSetup will catch errors on ConfigKey annotations on classes
+				return configKeyAttribute.key;
 		}
 
 		// Autokey: Determine key from the Type the member belongs to.
@@ -506,10 +506,9 @@ public static class ConfigManager
 		return $"Mods.{modName}.Configs.{className}.{memberInfo.Name}.{dataName}";
 	}
 
-	internal static string GetLocalizedLabel(PropertyFieldWrapper memberInfo)
+	internal static string GetLocalizedLabel(PropertyFieldWrapper memberInfo, ModConfig config)
 	{
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
-		var config = Interface.modConfig.pendingConfig;
 		var labelArgs = (LabelArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelArgsAttribute));
 		string labelKey = GetConfigKey<LabelKeyAttribute>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: "Label");
 		if (labelKey != null && Language.Exists(labelKey)) {
@@ -540,10 +539,9 @@ public static class ConfigManager
 		return memberInfo.Name;
 	}
 
-	internal static string GetLocalizedTooltip(PropertyFieldWrapper memberInfo)
+	internal static string GetLocalizedTooltip(PropertyFieldWrapper memberInfo, ModConfig config)
 	{
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> null
-		var config = Interface.modConfig.pendingConfig;
 		var tooltipArgs = (TooltipArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipArgsAttribute));
 		string tooltipKey = GetConfigKey<TooltipKeyAttribute>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: "Tooltip");
 		if (tooltipKey != null && Language.Exists(tooltipKey)) {
@@ -600,14 +598,8 @@ public static class ConfigManager
 	internal static string GetModConfigLabelKey(ModConfig config, bool throwErrors)
 	{
 		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
-		var label = (LabelKeyAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelKeyAttribute));
-		if (label != null) {
-			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
-
-			labelKey = label.key;
-		}
-		return labelKey;
+		var label = GetAndValidate<LabelKeyAttribute>(config.GetType(), throwErrors: throwErrors, errorOnType: true);
+		return label?.key ?? labelKey;
 	}
 
 	internal static string GetModConfigDisplayName(ModConfig config)
