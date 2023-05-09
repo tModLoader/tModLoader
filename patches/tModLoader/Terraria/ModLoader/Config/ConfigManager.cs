@@ -118,10 +118,7 @@ public static class ConfigManager
 					}
 					else { 
 						string typeLabelKey = config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Label");
-						string typeLabelValue = Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim();
-						if (typeLabelObsolete != null)
-							typeLabelValue = typeLabelObsolete.LocalizationEntry;
-						Language.GetOrRegister(typeLabelKey, () => typeLabelValue);
+						Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 					}
 
 					var typeTooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(TooltipKeyAttribute));
@@ -131,8 +128,7 @@ public static class ConfigManager
 					}
 					else {
 						string typeTooltipKey = config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Tooltip");
-						string typeTooltipValue = "";
-						Language.GetOrRegister(typeTooltipKey, () => typeTooltipValue);
+						Language.GetOrRegister(typeTooltipKey, () => "");
 					}
 					RegisterLocalizationKeysForMembers(config, variable.Type);
 				}
@@ -150,20 +146,14 @@ public static class ConfigManager
 					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 				}
 
-				string labelKey = GetLabelKey(variable, config, fallbackToClass: false, throwErrors: true);
+				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, config, fallbackToClass: false, throwErrors: true, dataName: "Label");
 				if (labelKey.StartsWith($"Mods.{config.Mod.Name}")) {
-					string labelValue = Regex.Replace(variable.Name, "([A-Z])", " $1").Trim();
-					if (labelObsolete != null)
-						labelValue = labelObsolete.LocalizationEntry;
-					Language.GetOrRegister(labelKey, () => labelValue);
+					Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 				}
 
-				string tooltipKey = GetTooltipKey(variable, config, fallbackToClass: false, throwErrors: true);
+				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, config, fallbackToClass: false, throwErrors: true, dataName: "Tooltip");
 				if (tooltipKey.StartsWith($"Mods.{config.Mod.Name}")) {
-					string tooltipValue = "";
-					if (tooltipObsolete != null)
-						tooltipValue = tooltipObsolete.LocalizationEntry;
-					Language.GetOrRegister(tooltipKey, () => tooltipValue);
+					Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 				}
 			}
 			catch (ValueNotTranslationKeyException e) when (!e.handled) {
@@ -491,47 +481,37 @@ public static class ConfigManager
 	}
 
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
-	internal static string GetLabelKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
+	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors, string dataName) where T : ConfigKeyAttribute
 	{
-		var label = (LabelKeyAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelKeyAttribute));
+		var label = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T));
 		if (label != null) {
 			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.");
+				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.");
 			return label.key;
 		}
-		label = (LabelKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelKeyAttribute));
+		label = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T));
 		if (label != null) {
 			if (label.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(LabelKeyAttribute)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
+				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
 			if (fallbackToClass) // FinishSetup will catch errors on Label annotations on classes
 				return label.key;
 		}
 
-		// Autokey. If member belongs to a Type from this mod...
-		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType;
-		if (typeMemberBelongsTo.Assembly == config.GetType().Assembly) { 
-			string keyName = config.Name;
-			// Use Type name if not ModConfig instance.
-			if (typeMemberBelongsTo != config.GetType())
-				keyName = typeMemberBelongsTo.Name;
-
-			return config.Mod.GetLocalizationKey($"Configs.{keyName}.{memberInfo.Name}.Label");
-		}
-		else {
-			// IsClass? IsValueType./ Ignore bool, int, etc...
-			string modName = typeMemberBelongsTo.Assembly.GetName().Name;
-			if (modName == "tModLoader" || modName == "FNA")
-				return $"Config.{typeMemberBelongsTo.Name}.{memberInfo.Name}.Label";
-			// Type is from some other mod.
-			return $"Mods.{modName}.Configs.{typeMemberBelongsTo.Name}.{memberInfo.Name}.Label";
-		}
+		// Autokey: Determine key from the Type the member belongs to.
+		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType; 
+		string modName = typeMemberBelongsTo.Assembly.GetName().Name;
+		string className = typeMemberBelongsTo == config.GetType() ? config.Name : typeMemberBelongsTo.Name;
+		if (modName == "tModLoader" || modName == "FNA") // tModLoader keys handle translations for existing classes
+			return $"Config.{className}.{memberInfo.Name}.{dataName}";
+		return $"Mods.{modName}.Configs.{className}.{memberInfo.Name}.{dataName}";
 	}
 
-	internal static string GetLocalizedLabel(LabelKeyAttribute labelAttribute, PropertyFieldWrapper memberInfo) {
+	internal static string GetLocalizedLabel(PropertyFieldWrapper memberInfo)
+	{
 		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
 		var config = Interface.modConfig.pendingConfig;
 		var labelArgs = (LabelArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelArgsAttribute));
-		string labelKey = GetLabelKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
+		string labelKey = GetConfigKey<LabelKeyAttribute>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: "Label");
 		if (labelKey != null && Language.Exists(labelKey)) {
 			string labelLocalization = Language.GetTextValue(labelKey);
 			if (!string.IsNullOrEmpty(labelLocalization))
@@ -560,50 +540,12 @@ public static class ConfigManager
 		return memberInfo.Name;
 	}
 
-	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
-	internal static string GetTooltipKey(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors)
-	{
-		// Since fallbackToClass always false, technically does Key on member, then auto key.
-		var tooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipKeyAttribute));
-		if (tooltip != null) {
-			if (tooltip.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(TooltipKeyAttribute)} only accepts localization keys for the 'key' parameter.");
-			return tooltip.key;
-		}
-		tooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipKeyAttribute));
-		if (tooltip != null) {
-			if (tooltip.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(TooltipKeyAttribute)} only accepts localization keys for the 'key' parameter.", errorOnType: true);
-			if (fallbackToClass) // FinishSetup will catch errors on Tooltip annotations on classes
-				return tooltip.key;
-		}
-
-		// Autokey. If member belongs to a Type from this mod...
-		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType;
-		if (typeMemberBelongsTo.Assembly == config.GetType().Assembly) {
-			string keyName = config.Name;
-			// Use Type name if not ModConfig instance.
-			if (typeMemberBelongsTo != config.GetType())
-				keyName = typeMemberBelongsTo.Name;
-
-			return config.Mod.GetLocalizationKey($"Configs.{keyName}.{memberInfo.Name}.Tooltip");
-		}
-		else {
-			// IsClass? IsValueType./ Ignore bool, int, etc...
-			string modName = typeMemberBelongsTo.Assembly.GetName().Name;
-			if (modName == "tModLoader" || modName == "FNA")
-				return $"Config.{typeMemberBelongsTo.Name}.{memberInfo.Name}.Tooltip";
-			// Type is from some other mod.
-			return $"Mods.{modName}.Configs.{typeMemberBelongsTo.Name}.{memberInfo.Name}.Tooltip";
-		}
-	}
-
-	internal static string GetLocalizedTooltip(TooltipKeyAttribute tooltipAttribute, PropertyFieldWrapper memberInfo)
+	internal static string GetLocalizedTooltip(PropertyFieldWrapper memberInfo)
 	{
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> null
 		var config = Interface.modConfig.pendingConfig;
 		var tooltipArgs = (TooltipArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipArgsAttribute));
-		string tooltipKey = GetTooltipKey(memberInfo, config, fallbackToClass: false, throwErrors: false);
+		string tooltipKey = GetConfigKey<TooltipKeyAttribute>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: "Tooltip");
 		if (tooltipKey != null && Language.Exists(tooltipKey)) {
 			string tooltipLocalization = Language.GetTextValue(tooltipKey);
 			if (!string.IsNullOrEmpty(tooltipLocalization))

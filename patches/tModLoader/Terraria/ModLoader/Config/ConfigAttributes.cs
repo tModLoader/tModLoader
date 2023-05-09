@@ -41,6 +41,27 @@ public class ReloadRequiredAttribute : Attribute
 {
 }
 
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class ConfigKeyAttribute : Attribute
+{
+	internal readonly string key;
+	internal readonly bool malformed;
+
+	public ConfigKeyAttribute(string key)
+	{
+		if (!key.StartsWith("$"))
+		{
+			malformed = true;
+			this.key = key;
+		}
+		else
+		{
+			this.key = key.Substring(1);
+		}
+	}
+}
+
+
 /// <summary>
 /// A label is the text shown to the user in the ModConfig UI. <br/>
 /// This attribute sets a custom localization key for the label of the annotated property, field, or class. <br/>
@@ -50,21 +71,10 @@ public class ReloadRequiredAttribute : Attribute
 /// If the translation value of a property or field that is an object is an empty string, the label of the class will be used instead. <br/>
 /// Values can be interpolated into the resulting label text using <see cref="LabelArgsAttribute"/>. <br/>
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-public class LabelKeyAttribute : Attribute
+public class LabelKeyAttribute : ConfigKeyAttribute
 {
-	internal readonly string key;
-	internal readonly bool malformed;
-
-	public LabelKeyAttribute(string key)
+	public LabelKeyAttribute(string key) : base(key)
 	{
-		if (!key.StartsWith("$")) {
-			malformed = true;
-			this.key = key;
-		}
-		else {
-			this.key = key.Substring(1);
-		}
 	}
 }
 
@@ -111,21 +121,10 @@ public class LabelArgsAttribute : Attribute
 /// Passing in just "$" will result in no tooltip entry being added to the localization files.<br/>
 /// Values can be interpolated into the resulting label text using <see cref="TooltipArgsAttribute"/>. <br/>
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-public class TooltipKeyAttribute : Attribute
+public class TooltipKeyAttribute : ConfigKeyAttribute
 {
-	internal readonly string key;
-	internal readonly bool malformed;
-
-	public TooltipKeyAttribute(string key)
+	public TooltipKeyAttribute(string key) : base(key)
 	{
-		if (!key.StartsWith("$")) {
-			malformed = true;
-			this.key = key;
-		}
-		else {
-			this.key = key.Substring(1);
-		}
 	}
 }
 
