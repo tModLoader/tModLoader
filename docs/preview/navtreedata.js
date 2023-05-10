@@ -58,17 +58,17 @@ var NAVTREEINDEX =
 "class_melee_no_speed_damage_class.html",
 "class_mod_item.html#a145d9507c4258305d95f6f39a76070ae",
 "class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc",
-"class_mod_scene_effect.html#a07514b30903f12946072d5e6fb5993f6",
-"class_mono_mod_hooks.html",
-"class_n_p_c_a_i_style_i_d.html#adce585325ac36659707c6e0c9007b829",
-"class_player.html#a6d60c82c9303000b6b36720705290b5a",
-"class_proj_a_i_style_i_d.html#a01b1adb58807eec1b713be8786434352",
-"class_projectile_definition.html",
-"class_sprite_draw_buffer.html",
-"class_u_i_bestiary_test.html",
-"class_wsc_json_object.html",
-"struct_boss_bar_draw_params.html#af6e55f0ca5c415156d451126bbd0cf62",
-"struct_segment_infor_report.html"
+"class_mod_scene_effect.html",
+"class_mods_menu_sort_modes_extensions.html",
+"class_n_p_c_a_i_style_i_d.html#adb16a6da63812b1fe53861605297c72c",
+"class_player.html#a6a421762fe1d363e2a5fa1550c1d26b6",
+"class_proj_a_i_style_i_d.html#a006329e3b348c6dd153f3853ed1f4836",
+"class_projectile_audio_tracker.html",
+"class_spelunker_projectile_helper.html",
+"class_u_i_bestiary_sorting_options_grid.html",
+"class_worm_shader.html",
+"struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7",
+"struct_scene_metrics_scan_settings.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

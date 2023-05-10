@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile_audio_tracker.html":[3,0,975],
 "class_projectile_definition.html":[3,0,976],
 "class_projectile_i_d.html":[3,0,977],
 "class_projectile_i_d_1_1_sets.html":[3,0,977,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_spawn_condition_bestiary_info_element.html":[3,0,1102],
 "class_spawn_condition_bestiary_overlay_info_element.html":[3,0,1103],
 "class_spawn_condition_decorative_overlay_info_element.html":[3,0,1104],
-"class_spawn_map_layer.html":[3,0,1105],
-"class_spelunker_projectile_helper.html":[3,0,1106]
+"class_spawn_map_layer.html":[3,0,1105]
 };

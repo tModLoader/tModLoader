@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_player.html#a6a421762fe1d363e2a5fa1550c1d26b6":[3,0,920,80],
 "class_player.html#a6d60c82c9303000b6b36720705290b5a":[3,0,920,111],
 "class_player.html#a6e30147feb0b6e19d26e518939c3381b":[3,0,920,97],
 "class_player.html#a7280d33428d5bd4e3c296cdd3c3ddd20":[3,0,920,132],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_profiles_1_1_variant_n_p_c_profile.html":[3,0,970,4],
 "class_program.html":[3,0,971],
 "class_progression_event_condition.html":[3,0,972],
-"class_proj_a_i_style_i_d.html":[3,0,973],
-"class_proj_a_i_style_i_d.html#a006329e3b348c6dd153f3853ed1f4836":[3,0,973,72]
+"class_proj_a_i_style_i_d.html":[3,0,973]
 };

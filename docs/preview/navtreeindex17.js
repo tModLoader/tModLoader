@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_spelunker_projectile_helper.html":[3,0,1106],
 "class_sprite_draw_buffer.html":[3,0,1107],
 "class_sprite_view_matrix.html":[3,0,1110],
 "class_stacked_condition_setter.html":[3,0,1111],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_bestiary_filtering_options_grid.html":[3,0,1242],
 "class_u_i_bestiary_info_item_line.html":[3,0,1243],
 "class_u_i_bestiary_info_line.html":[3,0,1244],
-"class_u_i_bestiary_n_p_c_entry_portrait.html":[3,0,1245],
-"class_u_i_bestiary_sorting_options_grid.html":[3,0,1246]
+"class_u_i_bestiary_n_p_c_entry_portrait.html":[3,0,1245]
 };

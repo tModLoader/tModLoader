@@ -112,6 +112,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Apply</b> (<a
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRoll</b> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
 <tr class="memdesc:aad54aa9109c293ee5d177f3d822ab6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if your <a class="el" href="class_mod_prefix.html">ModPrefix</a> can roll on the given item By default returns RollChance(item) &gt; 0 <br /></td></tr>
 <tr class="separator:aad54aa9109c293ee5d177f3d822ab6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c299a109fe33f0481c453ae7a27796f"><td class="memItemLeft" align="right" valign="top"><a id="a5c299a109fe33f0481c453ae7a27796f" name="a5c299a109fe33f0481c453ae7a27796f"></a>
+virtual <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_tooltip_line.html">TooltipLine</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetTooltipLines</b> (<a class="el" href="class_item.html">Item</a> <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280">item</a>)</td></tr>
+<tr class="memdesc:a5c299a109fe33f0481c453ae7a27796f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to add tooltips to any item with this prefix applied. Note that the stat bonuses applied via SetStats will automatically generate tooltips. (such as damage, use speed, crit chance, mana cost, scale, shoot speed, and knockback)<br  />
+ <br /></td></tr>
+<tr class="separator:a5c299a109fe33f0481c453ae7a27796f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa93bf31f8cb0638457f6082bd516115b"><td class="memItemLeft" align="right" valign="top"><a id="aa93bf31f8cb0638457f6082bd516115b" name="aa93bf31f8cb0638457f6082bd516115b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyValue</b> (ref float valueMult)</td></tr>
 <tr class="memdesc:aa93bf31f8cb0638457f6082bd516115b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the sell price of the item based on the prefix or changes in custom data stats. This also influences the item's rarity. <br /></td></tr>

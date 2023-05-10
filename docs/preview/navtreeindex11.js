@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"class_mod_scene_effect.html":[3,0,771],
 "class_mod_scene_effect.html#a07514b30903f12946072d5e6fb5993f6":[3,0,771,5],
 "class_mod_scene_effect.html#a3b2cb06be0bc076eb62db9ca310e7a8f":[3,0,771,3],
 "class_mod_scene_effect.html#a5bca5cee8c84401c79dbdbb8e2c74f46":[3,0,771,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "class_modifiers_1_1_rectangle_mask.html":[3,0,752,18],
 "class_modifiers_1_1_shape_scale.html":[3,0,752,19],
 "class_modifiers_1_1_skip_tiles.html":[3,0,752,20],
-"class_modifiers_1_1_skip_walls.html":[3,0,752,21],
-"class_mods_menu_sort_modes_extensions.html":[3,0,775]
+"class_modifiers_1_1_skip_walls.html":[3,0,752,21]
 };

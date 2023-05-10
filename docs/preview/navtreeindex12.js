@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_mods_menu_sort_modes_extensions.html":[3,0,775],
 "class_mono_mod_hooks.html":[3,0,790],
 "class_mono_mod_hooks.html#a6fbb8b0895665723ec2acf12f5b6594a":[3,0,790,0],
 "class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726":[3,0,790,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_n_p_c_a_i_style_i_d.html#ad71d50a273b9fce183c613e6e8de74d4":[3,0,848,26],
 "class_n_p_c_a_i_style_i_d.html#ad796a59e2694566c2b2c37d99697c853":[3,0,848,54],
 "class_n_p_c_a_i_style_i_d.html#ad927b67279a4655372aae6bb0c96e724":[3,0,848,57],
-"class_n_p_c_a_i_style_i_d.html#ad9925fba19735252518d27b563f3302d":[3,0,848,34],
-"class_n_p_c_a_i_style_i_d.html#adb16a6da63812b1fe53861605297c72c":[3,0,848,46]
+"class_n_p_c_a_i_style_i_d.html#ad9925fba19735252518d27b563f3302d":[3,0,848,34]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"class_u_i_bestiary_sorting_options_grid.html":[3,0,1246],
 "class_u_i_bestiary_test.html":[3,0,1247],
 "class_u_i_character.html":[3,0,1248],
 "class_u_i_character_creation.html":[3,0,1249],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "class_world_sections.html":[3,0,1427],
 "class_world_u_i_anchor.html":[3,0,1428],
 "class_world_utils.html":[3,0,1429],
-"class_world_workshop_entry.html":[3,0,1430],
-"class_worm_shader.html":[3,0,1431]
+"class_world_workshop_entry.html":[3,0,1430]
 };
