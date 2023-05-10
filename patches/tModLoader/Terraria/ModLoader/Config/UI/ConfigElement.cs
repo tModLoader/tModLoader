@@ -75,7 +75,7 @@ public abstract class ConfigElement : UIElement
 	{
 		LabelAttribute = ConfigManager.GetCustomAttribute<LabelKeyAttribute>(MemberInfo, Item, List);
 		Label = ConfigManager.GetLocalizedLabel(MemberInfo, Interface.modConfig.pendingConfig);
-		// TODO: Support interpolating value?
+		// Potential TODO if highly requested: Support interpolating value itself into label.
 		TextDisplayFunction = () => Label;
 
 		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipKeyAttribute>(MemberInfo, Item, List);
