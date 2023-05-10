@@ -464,14 +464,29 @@ public static class ConfigManager
 
 	internal static string FormatTextAttribute(string key, string localization, object[] args)
 	{
-		// TODO: support FindKeyInScope-type key shortening? 
 		if (args == null)
 			return localization;
 		for (int i = 0; i < args.Length; i++) {
 			if (args[i] is string s && s.StartsWith("$"))
-				args[i] = Language.GetTextValue(s.Substring(1));
+				args[i] = Language.GetTextValue(FindKeyInScope(s.Substring(1), key));
 		}
 		return Language.GetText(key).Format(args);
+
+		string FindKeyInScope(string key, string scope)
+		{
+			if (LanguageManager.Instance.Exists(key))
+				return key;
+
+			string[] splitKey = scope.Split(".");
+			for (int j = splitKey.Length - 1; j >= 0; j--) {
+				string partialKey = string.Join(".", splitKey.Take(j + 1));
+				string combinedKey = partialKey + "." + key;
+				if (LanguageManager.Instance.Exists(combinedKey))
+					return combinedKey;
+			}
+
+			return key;
+		}
 	}
 
 	private static T GetAndValidate<T>(MemberInfo memberInfo, bool throwErrors = true, bool errorOnType = false) where T : ConfigKeyAttribute

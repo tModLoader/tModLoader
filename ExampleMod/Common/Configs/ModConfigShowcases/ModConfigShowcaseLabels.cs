@@ -27,10 +27,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[TooltipKey("$Mods.ExampleMod.Configs.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
-		// TODO: Not working. Code missing from ExampleMod.cs
-		[LabelKey("$Mods.ExampleMod.Configs.Common.LocalizedLabelDynamic")]
-		public int LocalizedLabelDynamic;
-
 		// These 3 examples showcase the power of interpolating values into the translations.
 		// Note how all 3 are using the same label key, but are interpolating different values into the label translation, resulting in different text. The same is done for tooltips.
 		// Use this approach to reduce unnecessary duplication of text.
@@ -45,7 +41,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public bool InterpolatedTextA;
 
 		[LabelKey(InterpolatedLabel), TooltipKey(InterpolatedTooltip)]
-		[LabelArgs("ExampleMod/ExampleSword", 2, "=>", "$Mods.ExampleMod.Items.ExampleSword.DisplayName")]
+		[LabelArgs("ExampleMod/ExampleSword", 2, "=>", "$Items.ExampleSword.DisplayName")] // due to scope simplification, "Mods.ExampleMod." can be omitted. (https://github.com/tModLoader/tModLoader/wiki/Localization#scope-simplification)
 		[TooltipArgs("$Mods.ExampleMod.Items.ExampleSword.DisplayName", "77bd8e", "88AADD")]
 		public bool InterpolatedTextB;
 
