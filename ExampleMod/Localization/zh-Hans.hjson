@@ -932,8 +932,18 @@ Mods: {
 		}
 
 		Prefixes: {
-			// ExamplePrefix.DisplayName: Example Prefix
-			// ExampleDerivedPrefix.DisplayName: Example Derived Prefix
+			ExamplePrefix: {
+				// DisplayName: Example Prefix
+				// AdditionalTooltip: More Power
+			}
+
+			ExampleDerivedPrefix: {
+				// DisplayName: Example Derived Prefix
+				// AdditionalTooltip: Even More Power
+			}
+
+			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
+			// PowerTooltip: "{0:+0;-#} Power"
 		}
 
 		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
