@@ -506,70 +506,37 @@ public static class ConfigManager
 		return $"Mods.{modName}.Configs.{className}.{memberInfo.Name}.{dataName}";
 	}
 
-	internal static string GetLocalizedLabel(PropertyFieldWrapper memberInfo, ModConfig config)
+	internal static string GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, ModConfig config, string dataName, bool defaultToNull) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
 	{
-		// Priority: Provided/Auto Key on member -> Key on class if member translation is empty string -> member name
-		var labelArgs = (LabelArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(LabelArgsAttribute));
-		string labelKey = GetConfigKey<LabelKeyAttribute>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: "Label");
-		if (labelKey != null && Language.Exists(labelKey)) {
-			string labelLocalization = Language.GetTextValue(labelKey);
-			if (!string.IsNullOrEmpty(labelLocalization))
-				return FormatTextAttribute(labelKey, labelLocalization, labelArgs?.args);
+		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> member name or null
+		var args = (TArgs)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TArgs));
+		string configKey = GetConfigKey<T>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: dataName);
+		if (configKey != null && Language.Exists(configKey)) {
+			string configLocalization = Language.GetTextValue(configKey);
+			if (!string.IsNullOrEmpty(configLocalization))
+				return FormatTextAttribute(configKey, configLocalization, args?.args);
 		}
 
-		var typeLabel = (LabelKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(LabelKeyAttribute));
-		if (typeLabel != null && Language.Exists(typeLabel.key)) {
-			string labelLocalization = Language.GetTextValue(typeLabel.key);
-			if (!string.IsNullOrEmpty(labelLocalization))
-				return FormatTextAttribute(typeLabel.key, labelLocalization, labelArgs?.args);
+		var typeConfigKey = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T));
+		if (typeConfigKey != null && Language.Exists(typeConfigKey.key)) {
+			string typeConfigLocalization = Language.GetTextValue(typeConfigKey.key);
+			if (!string.IsNullOrEmpty(typeConfigLocalization))
+				return FormatTextAttribute(typeConfigKey.key, typeConfigLocalization, args?.args);
 		}
 		else if (memberInfo.Type.IsClass) {
 			// This might not be the actual mod name, need some way of accurately determining mod source for assembly.
 			string modName = memberInfo.Type.Assembly.GetName().Name;
-			var typeLabelKey = $"Mods.{modName}.Configs.{memberInfo.Type.Name}.Label";
+			var typeKey = $"Mods.{modName}.Configs.{memberInfo.Type.Name}.{dataName}";
 			if (modName == "tModLoader" || modName == "FNA")
-				typeLabelKey = $"Config.{memberInfo.Type.Name}.Label";
-			if (Language.Exists(typeLabelKey)) {
-				string labelLocalization = Language.GetTextValue(typeLabelKey);
-				if (!string.IsNullOrEmpty(labelLocalization))
-					return FormatTextAttribute(typeLabelKey, labelLocalization, labelArgs?.args);
+				typeKey = $"Config.{memberInfo.Type.Name}.{dataName}";
+			if (Language.Exists(typeKey)) {
+				string typeConfigLocalization = Language.GetTextValue(typeKey);
+				if (!string.IsNullOrEmpty(typeConfigLocalization))
+					return FormatTextAttribute(typeKey, typeConfigLocalization, args?.args);
 			}
 		}
 
-		return memberInfo.Name;
-	}
-
-	internal static string GetLocalizedTooltip(PropertyFieldWrapper memberInfo, ModConfig config)
-	{
-		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> null
-		var tooltipArgs = (TooltipArgsAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TooltipArgsAttribute));
-		string tooltipKey = GetConfigKey<TooltipKeyAttribute>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: "Tooltip");
-		if (tooltipKey != null && Language.Exists(tooltipKey)) {
-			string tooltipLocalization = Language.GetTextValue(tooltipKey);
-			if (!string.IsNullOrEmpty(tooltipLocalization))
-				return FormatTextAttribute(tooltipKey, tooltipLocalization, tooltipArgs?.args);
-		}
-
-		var typeTooltip = (TooltipKeyAttribute)Attribute.GetCustomAttribute(memberInfo.Type, typeof(TooltipKeyAttribute));
-		if (typeTooltip != null && Language.Exists(typeTooltip.key)) {
-			string tooltipLocalization = Language.GetTextValue(typeTooltip.key);
-			if (!string.IsNullOrEmpty(tooltipLocalization))
-				return FormatTextAttribute(typeTooltip.key, tooltipLocalization, tooltipArgs?.args);
-		}
-		else if(memberInfo.Type.IsClass) {
-			// This might not be the actual mod name, need some way of accurately determining mod source for assembly.
-			string modName = memberInfo.Type.Assembly.GetName().Name;
-			var typeTooltipKey = $"Mods.{modName}.Configs.{memberInfo.Type.Name}.Tooltip";
-			if (modName == "tModLoader" || modName == "FNA")
-				typeTooltipKey = $"Config.{memberInfo.Type.Name}.Tooltip";
-			if (Language.Exists(typeTooltipKey)) {
-				string tooltipLocalization = Language.GetTextValue(typeTooltipKey);
-				if (!string.IsNullOrEmpty(tooltipLocalization))
-					return FormatTextAttribute(typeTooltipKey, tooltipLocalization, tooltipArgs?.args);
-			}
-		}
-
-		return null;
+		return defaultToNull ? null : memberInfo.Name;
 	}
 
 	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo, ModConfig config, bool throwErrors)

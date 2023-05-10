@@ -61,6 +61,16 @@ public class ConfigKeyAttribute : Attribute
 	}
 }
 
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class ConfigArgsAttribute : Attribute
+{
+	internal readonly object[] args;
+
+	public ConfigArgsAttribute(params object[] args)
+	{
+		this.args = args;
+	}
+}
 
 /// <summary>
 /// A label is the text shown to the user in the ModConfig UI. <br/>
@@ -100,14 +110,10 @@ public class LabelAttribute : Attribute
 /// For example, if a mod provides toggles for several features, a common label could be used for each with only the provided value being different.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">string formatting section of the Localization wiki page</see> explains this concept further.<br/>
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class LabelArgsAttribute : Attribute
+public class LabelArgsAttribute : ConfigArgsAttribute
 {
-	internal readonly object[] args;
-
-	public LabelArgsAttribute(params object[] args)
+	public LabelArgsAttribute(params object[] args) : base(args)
 	{
-		this.args = args;
 	}
 }
 
@@ -150,14 +156,10 @@ public class TooltipAttribute : Attribute
 /// For example, if a mod provides toggles for several features, a common tooltip could be used for each with only the provided value being different.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">string formatting section of the Localization wiki page</see> explains this concept further.<br/>
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class TooltipArgsAttribute : Attribute
+public class TooltipArgsAttribute : ConfigArgsAttribute
 {
-	internal readonly object[] args;
-
-	public TooltipArgsAttribute(params object[] args)
+	public TooltipArgsAttribute(params object[] args) : base(args)
 	{
-		this.args = args;
 	}
 }
 

@@ -30,7 +30,7 @@ internal class EnumElement : RangeElement
 		for (int i = 0; i < valueStrings.Length; i++) {
 			var enumFieldFieldInfo = MemberInfo.Type.GetField(valueStrings[i]);
 			if (enumFieldFieldInfo != null) {
-				string name = ConfigManager.GetLocalizedLabel(new PropertyFieldWrapper(enumFieldFieldInfo), Interface.modConfig.pendingConfig);
+				string name = ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(new PropertyFieldWrapper(enumFieldFieldInfo), Interface.modConfig.pendingConfig, "Label", defaultToNull: false);
 				valueStrings[i] = name;
 			}
 		}

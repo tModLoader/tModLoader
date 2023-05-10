@@ -1,5 +1,5 @@
-# This file contains all the translations for ModConfig elements. 
-# This file shows off the feature of splitting localization files into multiple files. This file is named "{CultureCode}_Mods.ExampleMod.Configs", meaning that the "Mods.ExampleMod.Configs" prefix is assumed for all entries in this file. This can be useful for organization purposes. 
+# This file contains all the translations for ModConfig elements.
+# This file shows off the feature of splitting localization files into multiple files. This file is named "{CultureCode}_Mods.ExampleMod.Configs", meaning that the "Mods.ExampleMod.Configs" prefix is assumed for all entries in this file. This can be useful for organization purposes.
 # For more info on the multiple files and prefix features, see https://github.com/tModLoader/tModLoader/wiki/Localization#multiple-files and https://github.com/tModLoader/tModLoader/wiki/Localization#prefix
 
 Common: {
