@@ -112,16 +112,14 @@ public static class ConfigManager
 #pragma warning restore CS0618 // Type or member is obsolete
 
 					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type, throwErrors: true, errorOnType: true);
-					if(typeLabel == null)
-					{ 
-						string typeLabelKey = config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Label");
+					string typeLabelKey = typeLabel?.key ?? config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Label");
+					if (typeLabelKey.StartsWith($"Mods.{config.Mod.Name}")) {
 						Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 					}
 
 					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type, throwErrors: true, errorOnType: true);
-					if (typeTooltip == null)
-					{
-						string typeTooltipKey = config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Tooltip");
+					string typeTooltipKey = typeTooltip?.key ?? config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Tooltip");
+					if (typeLabelKey.StartsWith($"Mods.{config.Mod.Name}")) {
 						Language.GetOrRegister(typeTooltipKey, () => "");
 					}
 					RegisterLocalizationKeysForMembers(config, variable.Type);
