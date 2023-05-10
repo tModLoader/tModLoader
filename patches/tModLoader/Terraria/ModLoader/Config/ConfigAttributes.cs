@@ -42,7 +42,7 @@ public class ReloadRequiredAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-public class ConfigKeyAttribute : Attribute
+public abstract class ConfigKeyAttribute : Attribute
 {
 	internal readonly string key;
 	internal readonly bool malformed;
@@ -62,7 +62,7 @@ public class ConfigKeyAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class ConfigArgsAttribute : Attribute
+public abstract class ConfigArgsAttribute : Attribute
 {
 	internal readonly object[] args;
 
