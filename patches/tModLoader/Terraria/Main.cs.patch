@@ -1516,8 +1516,12 @@
  					switch (num2) {
  						case 1:
  							flag = true;
-@@ -9942,6 +_,8 @@
- 					break;
+@@ -9939,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1585,15 +1589,15 @@
  		else if (flag15) {
  			newMusic = 80;
  		}
-@@ -9995,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 81;
+@@ -10001,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 80;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 80;
+ 		else if (flag9) {
+ 			newMusic = 82;
  		}
 @@ -10009,6 +_,9 @@
  		}
@@ -1661,8 +1665,12 @@
  					switch (num3) {
  						case 1:
  							flag = true;
-@@ -10377,6 +_,8 @@
- 					break;
+@@ -10374,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1720,15 +1728,15 @@
  		else if (flag15) {
  			newMusic = 57;
  		}
-@@ -10466,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 25;
+@@ -10472,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 90;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 56;
+ 		else if (flag9) {
+ 			newMusic = 35;
  		}
 @@ -10481,6 +_,9 @@
  		else if (flag13) {
