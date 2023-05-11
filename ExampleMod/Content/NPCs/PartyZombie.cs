@@ -68,6 +68,10 @@ namespace ExampleMod.Content.NPCs
 			return SpawnCondition.OverworldNightMonster.Chance * 0.2f; // Spawn with 1/5th the chance of a regular zombie.
 		}
 
+		public override void AI() {
+			NPC.gravity *= NPC.direction == -1 ? 2 : 3 // Multiplies effective gravity by two if npc is facing left, by three if facing right.
+		}
+
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
