@@ -29,13 +29,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.OpenDoor };
-			// Tiles usually drop their corresponding item automatically, but ItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
-			ItemDrop = ModContent.ItemType<ExampleDoor>();
+			// Tiles usually drop their corresponding item automatically, but RegisterItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
+			RegisterItemDrop(ModContent.ItemType<ExampleDoor>(), 0);
 			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 
 			// Names
-			LocalizedText name = CreateMapEntryName();
-			AddMapEntry(new Color(200, 200, 200), name);
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Door"));
 
 			// Placement
 			TileObjectData.newTile.Width = 2;
