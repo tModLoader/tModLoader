@@ -212,14 +212,13 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows customization of the items the tile at the given coordinates drops.<br/>
-	/// By default, this method will intelligently decide on a single item drop, the item that places this tile.<br/><br/>
+	/// Allows customization of the items the tile at the given coordinates drops.<br/><br/>
 	/// The default item drop is determined by finding an item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of this tile. 
 	/// <see cref="ModTile.RegisterItemDrop(int, int[])"/> can be used to manually register item drops for tile styles with no corresponding item. It can also be used to register a fallback item, which will be dropped if no suitable item is found.<br/><br/>
-	/// This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/> 
-	/// For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item.<br/><br/>
-	/// Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.<br/><br/>
-	/// The style based drop logic is based on <see cref="TileObjectData"/>. If a tile has custom 'styles' but still wants to make use of <see cref="ModTile.RegisterItemDrop(int, int[])"/>, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop.
+	/// The default behavior should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/> 
+	/// When overriding, use <c>yield return new Item(ItemTypeHere);</c> for each spawned item.<br/>
+	/// The style based drop logic is based on <see cref="TileObjectData"/>. If a tile has custom 'styles' but still wants to make use of <see cref="ModTile.RegisterItemDrop(int, int[])"/>, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop.<br/><br/>
+	/// Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.<br/>
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
