@@ -344,7 +344,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,29 +_,64 @@
+@@ -829,29 +_,67 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -374,6 +374,9 @@
 +	/// If true, the tile will be drawn to be slightly more bright. 
 +	/// </summary>
  	public static bool[] tileShine2 = new bool[TileID.Count];
++	/// <summary>
++	/// If true, the wall is considered "safe" for enemy spawning purposes.
++	/// </summary>
  	public static bool[] wallHouse = new bool[WallID.Count];
  	public static bool[] wallDungeon = new bool[WallID.Count];
  	public static bool[] wallLight = new bool[WallID.Count];

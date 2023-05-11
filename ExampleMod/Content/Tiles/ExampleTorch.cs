@@ -51,8 +51,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addTile(Type);
 
 			// Etc
-			LocalizedText name = CreateMapEntryName();
-			AddMapEntry(new Color(200, 200, 200), name);
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("ItemName.Torch"));
 
 			// Assets
 			if (!Main.dedServ) {
