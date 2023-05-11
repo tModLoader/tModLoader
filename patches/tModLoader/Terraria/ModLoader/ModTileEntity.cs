@@ -202,7 +202,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 
 	public virtual bool IsLoadingEnabled(Mod mod) => true;
 
-	public virtual void Unload(){}
+	public virtual void Unload() { }
 
 	/// <summary>
 	/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.

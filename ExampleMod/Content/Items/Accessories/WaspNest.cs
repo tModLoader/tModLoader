@@ -60,6 +60,11 @@ namespace ExampleMod.Content.Items.Accessories
 			// Here we add an additional effect
 			player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade = true;
 		}
+
+		public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
+			// Don't allow Hive Pack and Wasp Nest to be equipped at the same time.
+			return incomingItem.type != ItemID.HiveBackpack;
+		}
 	}
 
 	public class WaspNestPlayer : ModPlayer

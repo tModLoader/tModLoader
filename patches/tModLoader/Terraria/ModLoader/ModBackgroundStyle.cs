@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
 
-public abstract class ModBackgroundStyle:ModType
+public abstract class ModBackgroundStyle : ModType
 {
 	/// <summary>
 	/// The ID of this underground background style.
@@ -13,7 +13,7 @@ public abstract class ModBackgroundStyle:ModType
 /// <summary>
 /// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
 /// </summary>
-public abstract class ModUndergroundBackgroundStyle:ModBackgroundStyle
+public abstract class ModUndergroundBackgroundStyle : ModBackgroundStyle
 {
 	protected override sealed void Register()
 	{
@@ -31,7 +31,7 @@ public abstract class ModUndergroundBackgroundStyle:ModBackgroundStyle
 /// <summary>
 /// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 /// </summary>
-public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
+public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 {
 	protected override sealed void Register()
 	{

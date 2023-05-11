@@ -19,6 +19,11 @@ internal static class PlayerIO
 		writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
 	}
 
+	internal static void WriteVanillaHair(int hair, BinaryWriter writer)
+	{
+		writer.Write(hair >= HairID.Count ? 0 : hair);
+	}
+
 	//make Terraria.Player.ENCRYPTION_KEY internal
 	//add to end of Terraria.Player.SavePlayer
 	internal static void Save(TagCompound tag, string path, bool isCloudSave)
@@ -59,7 +64,8 @@ internal static class PlayerIO
 			["modBuffs"] = SaveModBuffs(player),
 			["infoDisplays"] = SaveInfoDisplays(player),
 			["usedMods"] = SaveUsedMods(player),
-			["usedModPack"] = SaveUsedModPack(player)
+			["usedModPack"] = SaveUsedModPack(player),
+			["hair"] = SaveHair(player.hair)
 		};
 	}
 
@@ -84,6 +90,7 @@ internal static class PlayerIO
 		LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 		LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
+		LoadHair(player, tag.GetString("hair"));
 	}
 
 	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
@@ -192,6 +199,23 @@ internal static class PlayerIO
 		// no mystery hair dye at this stage
 		if (ModContent.TryFind<ModItem>(hairDyeItemName, out var modItem))
 			player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.Type);
+	}
+
+	public static string SaveHair(int hair)
+	{
+		if (hair < HairID.Count)
+			return "";
+		
+		return HairLoader.GetHair(hair).FullName;
+	}
+
+	public static void LoadHair(Player player, string hairName)
+	{
+		if (hairName == "")
+			return;
+		
+		if (ModContent.TryFind<ModHair>(hairName, out var modHair))
+			player.hair = modHair.Type;
 	}
 
 	internal static List<TagCompound> SaveModData(Player player)

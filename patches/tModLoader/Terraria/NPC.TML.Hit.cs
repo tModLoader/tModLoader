@@ -211,7 +211,7 @@ public partial class NPC
 			if (damageVariation && variationPercent > 0)
 				damage = Main.DamageVar(damage, variationPercent, luck);
 
-			float defense = Defense.ApplyTo(0);
+			float defense = Math.Max(Defense.ApplyTo(0), 0);
 			float armorPenetration = defense * Math.Clamp(ScalingArmorPenetration.Value, 0, 1) + ArmorPenetration.Value;
 			defense = Math.Max(defense - armorPenetration, 0);
 

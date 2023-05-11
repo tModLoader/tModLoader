@@ -180,7 +180,7 @@
 		"ModInfoNoDescriptionAvailable": "No description available",
 		"ModInfoProblemTryAgain": "There was a problem, try again",
 		"ModInfoDisableModToDelete": "Disable Mod to Delete",
-		"ModInfoVisitSteampage": "Steam Workshop page",
+		"ModInfoVisitSteampage": "Steam Workshop Page",
 		"ModInfoExtractLocalization": "Extract Localization",
 		"ModInfoExtracted": "Extracted",
 		"ModInfoEnableModToExtractLocalizationFiles": "Enable Mod to Extract Localization Files",
@@ -511,7 +511,13 @@
 		"TagsLang": "Localization Support",
 		"TagsLangDescription": "This mod supports multiple languages",
 		"TagsGen": "Custom World Gen",
-		"TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)"
+		"TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)",
+
+		// Info Display Pages
+		"NextInfoAccPage": "Next Page",
+		"PreviousInfoAccPage": "Previous Page",
+		"FirstInfoAccPage": "Go To First Page",
+		"LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Increases defense by {0}",

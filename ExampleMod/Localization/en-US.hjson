@@ -717,14 +717,13 @@ Mods: {
 				Tooltip: ""
 			}
 
-			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus". 
-			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file. 
+			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus".
+			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file.
 			OctopusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 			SarcophagusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
 
 			HoldStyleShowcase: {
 				DisplayName: Hold Style Showcase
-				# 
 				Tooltip:
 					'''
 					This item showcases each HoldStyle.
@@ -745,6 +744,15 @@ Mods: {
 			ShimmerShowcaseConditions: {
 				Tooltip: ""
 				DisplayName: Shimmer Showcase Conditions
+			}
+
+			ExampleCustomSwingSword: {
+				DisplayName: Example Custom Swing Sword
+				Tooltip:
+					'''
+					This is a sword with a custom swinging animation made with projectiles
+					Use more than once to cycle through attacks
+					'''
 			}
 
 			ExampleDresser: {
@@ -821,6 +829,7 @@ Mods: {
 			MinionBossEye.DisplayName: Minion Boss Eye
 			ExampleSimpleMinion.DisplayName: Example Minion
 			SparklingBall.DisplayName: Sparkling Ball
+			ExampleCustomSwingProjectile.DisplayName: Example Custom Swing Projectile
 			ExampleDrillProjectile.DisplayName: Example Drill Projectile
 			ExampleExplosive.DisplayName: Example Explosive
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
@@ -923,8 +932,18 @@ Mods: {
 		}
 
 		Prefixes: {
-			ExamplePrefix.DisplayName: Example Prefix
-			ExampleDerivedPrefix.DisplayName: Example Derived Prefix
+			ExamplePrefix: {
+				DisplayName: Example Prefix
+				AdditionalTooltip: More Power
+			}
+
+			ExampleDerivedPrefix: {
+				DisplayName: Example Derived Prefix
+				AdditionalTooltip: Even More Power
+			}
+
+			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
+			PowerTooltip: "{0:+0;-#} Power"
 		}
 
 		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
@@ -1003,5 +1022,6 @@ Mods: {
 		}
 	}
 }
+
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
 UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Journey world, silly.

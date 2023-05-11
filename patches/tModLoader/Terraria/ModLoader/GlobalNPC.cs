@@ -169,9 +169,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/> 
-	/// Called on local, server and remote clients. <br/> 
-	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
+	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/>
 	/// </summary>
 	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
@@ -330,6 +330,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="target"></param>
 	/// <returns></returns>
 	public virtual bool CanHitNPC(NPC npc, NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC npc, NPC attacker)
 	{
 		return true;
 	}
@@ -631,7 +642,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
-	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
 	/// </summary>
 	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
 	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>

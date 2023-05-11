@@ -1516,8 +1516,12 @@
  					switch (num2) {
  						case 1:
  							flag = true;
-@@ -9942,6 +_,8 @@
- 					break;
+@@ -9939,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1585,15 +1589,15 @@
  		else if (flag15) {
  			newMusic = 80;
  		}
-@@ -9995,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 81;
+@@ -10001,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 80;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 80;
+ 		else if (flag9) {
+ 			newMusic = 82;
  		}
 @@ -10009,6 +_,9 @@
  		}
@@ -1661,8 +1665,12 @@
  					switch (num3) {
  						case 1:
  							flag = true;
-@@ -10377,6 +_,8 @@
- 					break;
+@@ -10374,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1720,15 +1728,15 @@
  		else if (flag15) {
  			newMusic = 57;
  		}
-@@ -10466,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 25;
+@@ -10472,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 90;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 56;
+ 		else if (flag9) {
+ 			newMusic = 35;
  		}
 @@ -10481,6 +_,9 @@
  		else if (flag13) {
@@ -2309,7 +2317,7 @@
 +		string[] tooltipNames = new string[num2];
 +
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
-+		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames);
++		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames, out int prefixlineIndex);
  		float num3 = (float)(int)mouseTextColor / 255f;
  		float num4 = num3;
  		int a = mouseTextColor;
@@ -2342,7 +2350,7 @@
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor);
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
 +		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
 +
  		int num12 = 0;
@@ -2422,7 +2430,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,91 @@
+@@ -16311,47 +_,92 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2475,8 +2483,9 @@
  	}
  
 -	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine)
-+	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames)
++	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames, out int prefixlineIndex)
  	{
++		prefixlineIndex = -1;
  		toolTipLine[0] = item.HoverName;
 +		toolTipNames[0] = "ItemName";
  		if (item.favorited) {
@@ -2814,7 +2823,7 @@
  					numLines++;
  				}
  
-@@ -16739,137 +_,163 @@
+@@ -16739,137 +_,165 @@
  						badPreFixLine[numLines] = true;
  
  					preFixLine[numLines] = true;
@@ -2954,6 +2963,8 @@
 +					toolTipNames[numLines] = "PrefixAccMeleeSpeed";
  					numLines++;
  				}
++
++				prefixlineIndex = numLines;
  			}
  
  			if (item.wornArmor && player[myPlayer].setBonus != "") {
@@ -3588,14 +3599,19 @@
  				if (flag)
  					rain.Update();
  			}
-@@ -30999,6 +_,13 @@
+@@ -30999,6 +_,18 @@
  				if (dust.type == 213)
  					scale = 1f;
  
 +				ModDust modDust = DustLoader.GetDust(dust.type);
 +
 +				if (modDust != null) {
-+					modDust.Draw(dust, newColor, scale);
++					if(modDust.PreDraw(dust))
++						modDust.Draw(dust, newColor, scale);
++
++					if (newColor == Color.Black)
++						dust.active = false;
++
 +					continue;
 +				}
 +
@@ -4161,7 +4177,7 @@
  					string text2 = "";
  					int num59 = 0;
  					int num60 = 0;
-@@ -33431,11 +_,20 @@
+@@ -33431,11 +_,21 @@
  
  						mouseReforge = true;
  						player[myPlayer].mouseInterface = true;
@@ -4169,8 +4185,9 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && player[myPlayer].BuyItem(num58)) {
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanBuyItem(num58) && ItemLoader.PreReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num58) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num58);
++							ItemLoader.PreReforge(reforgeItem); // After BuyItem just in case
 +
  							reforgeItem.ResetPrefix();
  							reforgeItem.Prefix(-2);
@@ -4494,6 +4511,20 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
+@@ -35410,7 +_,13 @@
+ 			return;
+ 		}
+ 
++		if (hairstylesUpdatedForThisInteraction)
++			goto SkipUpdateUnlocks;
++
++		hairstylesUpdatedForThisInteraction = true;
+ 		Hairstyles.UpdateUnlocks();
++		SkipUpdateUnlocks:;
++
+ 		int count = Hairstyles.AvailableHairstyles.Count;
+ 		int num = screenHeight / 2 + 60;
+ 		int num2 = screenWidth / 2 - TextureAssets.HairStyleBack.Width() / 2;
 @@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
@@ -4536,6 +4567,15 @@
  				num -= 140;
  				num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
  				_settingsButtonIsPushedToSide = true;
+@@ -37010,6 +_,8 @@
+ 	{
+ 		if (hairWindow)
+ 			DrawHairWindow();
++		else
++			hairstylesUpdatedForThisInteraction = false;
+ 	}
+ 
+ 	private static void DrawInterface_20_MultiplayerPlayerNames()
 @@ -37182,6 +_,11 @@
  
  	private static void DrawInterface_17_DiagnoseNet()

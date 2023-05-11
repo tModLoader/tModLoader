@@ -29,7 +29,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public Item Item => Entity;
 
 	/// <summary>
-	/// Shorthand for Item.type;
+	/// Shorthand for <c>Item.type</c>.
 	/// </summary>
 	public int Type => Item.type;
 
@@ -914,12 +914,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+	/// Returns whether the reforge will take place. If false is returned by this or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool PreReforge()
+	public virtual bool CanReforge()
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// </summary>
+	public virtual void PreReforge()
+	{
 	}
 
 	/// <summary>

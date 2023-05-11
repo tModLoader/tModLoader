@@ -521,7 +521,7 @@ public static class TileLoader
 		if (Main.tileFrameImportant[type]) {
 			var tileData = TileObjectData.GetTileData(type, 0);
 			if (tileData != null) {
-				if(tileData.Width != 1 || tileData.Height != 1)
+				if (tileData.Width != 1 || tileData.Height != 1)
 					isLarge = true;
 			}
 			else if (TileID.Sets.IsMultitile[type])
@@ -599,7 +599,7 @@ public static class TileLoader
 	{
 		// Override
 		ModTile modTile = GetTile(type);
-		if (modTile?.ItemDrop > 0) 
+		if (modTile?.ItemDrop > 0)
 			return modTile.ItemDrop;
 		if (modTile?.ItemDrop == -1)
 			return 0;
@@ -1139,7 +1139,7 @@ public static class TileLoader
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 	}
-  
+
 	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
 	{
 		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;

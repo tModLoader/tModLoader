@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace ExampleMod.Common.UI.ExampleResourceUI
 {
+	// This custom UI will show whenever the player is holding the ExampleCustomResourceWeapon item and will display the player's custom resource amounts that are tracked in ExampleResourcePlayer
 	internal class ExampleResourceBar : UIState
 	{
 		// For this bar we'll be using a frame texture and then a gradient inside bar, as it's one of the more simpler approaches while still looking decent.
