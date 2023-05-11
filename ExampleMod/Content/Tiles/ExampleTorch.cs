@@ -35,19 +35,22 @@ namespace ExampleMod.Content.Tiles
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
 
 			// Placement
+			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Torches, 0));
+			/*  This is what is copied from the Torches tile
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newAlternate.AnchorLeft = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
-			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { 124 };
+			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { 124, 561, 574, 575, 576, 577, 578 };
 			TileObjectData.addAlternate(1);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newAlternate.AnchorRight = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
-			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { 124 };
+			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { 124, 561, 574, 575, 576, 577, 578 };
 			TileObjectData.addAlternate(2);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
 			TileObjectData.newAlternate.AnchorWall = true;
 			TileObjectData.addAlternate(0);
+			*/
 			TileObjectData.addTile(Type);
 
 			// Etc
