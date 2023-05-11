@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46":[3,0,974,58],
+"class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53":[3,0,974,37],
 "class_projectile_audio_tracker.html":[3,0,975],
 "class_projectile_definition.html":[3,0,976],
 "class_projectile_i_d.html":[3,0,977],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "class_sound_player.html#a1cb8b65823c0d9ecc9400e2ff8c24ca1":[3,0,1098,0],
 "class_spawn_condition.html":[3,0,1101],
 "class_spawn_condition_bestiary_info_element.html":[3,0,1102],
-"class_spawn_condition_bestiary_overlay_info_element.html":[3,0,1103],
-"class_spawn_condition_decorative_overlay_info_element.html":[3,0,1104],
-"class_spawn_map_layer.html":[3,0,1105]
+"class_spawn_condition_bestiary_overlay_info_element.html":[3,0,1103]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_melee_damage_class.html":[3,0,709],
 "class_melee_no_speed_damage_class.html":[3,0,710],
 "class_melee_no_speed_damage_class.html#a46afc156bc357723bf64d95e465b7255":[3,0,710,1],
 "class_melee_no_speed_damage_class.html#ad55950418511c652bdd2f5ab4389eb7f":[3,0,710,0],
@@ -98,13 +99,12 @@ var NAVTREEINDEX8 =
 "class_mod_biome_bestiary_info_element.html":[3,0,738],
 "class_mod_block_type.html":[3,0,739],
 "class_mod_block_type.html#a0882d4dd4a783cfa37fd1e2003e65aaa":[3,0,739,11],
-"class_mod_block_type.html#a1263f5a6ef3d7c7e477465c4acaa7674":[3,0,739,17],
+"class_mod_block_type.html#a1263f5a6ef3d7c7e477465c4acaa7674":[3,0,739,16],
 "class_mod_block_type.html#a1eb86bab3931fab99321128f768d6ef9":[3,0,739,4],
-"class_mod_block_type.html#a349d8595e8fdd60d75b2b3a72514850b":[3,0,739,15],
 "class_mod_block_type.html#a3fa9b012ea8d39910e0fa6ec31f828e3":[3,0,739,8],
 "class_mod_block_type.html#a55a313371b827791a7b8724cc2c698b4":[3,0,739,6],
 "class_mod_block_type.html#a610e14bb1f6b38d5879fa1913b90e24f":[3,0,739,7],
-"class_mod_block_type.html#a648adabb5df38e5fe4db10fc18694df7":[3,0,739,16],
+"class_mod_block_type.html#a648adabb5df38e5fe4db10fc18694df7":[3,0,739,15],
 "class_mod_block_type.html#a64aff3a9492ab53b1ece08f24e192407":[3,0,739,1],
 "class_mod_block_type.html#a73559de1d2215cf4c29b86544a833b60":[3,0,739,5],
 "class_mod_block_type.html#a963e7583cc1daae4829e39645f073a36":[3,0,739,2],

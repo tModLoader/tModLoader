@@ -102,8 +102,11 @@ $(document).ready(function(){initNavTree('class_mod_wall.html',''); initResizabl
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa25cbf1ec7671badf7113a5dc17141c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_wall.html#aa25cbf1ec7671badf7113a5dc17141c4">AddMapEntry</a> (Color color, <a class="el" href="class_localized_text.html">LocalizedText</a> <a class="el" href="class_chest.html#a36fff2ef1f14fb62a0776989eb387f47">name</a>, Func&lt; string, int, int, string &gt; nameFunc)</td></tr>
-<tr class="memdesc:aa25cbf1ec7671badf7113a5dc17141c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.  <a href="class_mod_wall.html#aa25cbf1ec7671badf7113a5dc17141c4">More...</a><br /></td></tr>
+<tr class="memitem:aa25cbf1ec7671badf7113a5dc17141c4"><td class="memItemLeft" align="right" valign="top"><a id="aa25cbf1ec7671badf7113a5dc17141c4" name="aa25cbf1ec7671badf7113a5dc17141c4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddMapEntry</b> (Color color, <a class="el" href="class_localized_text.html">LocalizedText</a> <a class="el" href="class_chest.html#a36fff2ef1f14fb62a0776989eb387f47">name</a>, Func&lt; string, int, int, string &gt; nameFunc)</td></tr>
+<tr class="memdesc:aa25cbf1ec7671badf7113a5dc17141c4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+ <b>Overload specific:</b> This overload has an additional <em>nameFunc</em>  parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. <br /></td></tr>
 <tr class="separator:aa25cbf1ec7671badf7113a5dc17141c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afed9a03c9d3af4ca6357b23427f1ef98"><td class="memItemLeft" align="right" valign="top"><a id="afed9a03c9d3af4ca6357b23427f1ef98" name="afed9a03c9d3af4ca6357b23427f1ef98"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddMapEntry</b> (Color color, <a class="el" href="class_localized_text.html">LocalizedText</a> <a class="el" href="class_chest.html#a36fff2ef1f14fb62a0776989eb387f47">name</a>=null)</td></tr>
@@ -116,12 +119,17 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimateWall</
 <tr class="memitem:a9f0546972f19658b7c7e55b557df2024"><td class="memItemLeft" align="right" valign="top"><a id="a9f0546972f19658b7c7e55b557df2024" name="a9f0546972f19658b7c7e55b557df2024"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, ref int type)</td></tr>
 <tr class="memdesc:a9f0546972f19658b7c7e55b557df2024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default. <br  />
- The <em>type</em>  passed in is the item type of the loaded item with <a class="el" href="class_item.html#a0a41a85414ebd1f86d648bea819b48aa" title="The ID of the wall this item places on use. Either a WallID entry or ModContent.WallType&lt;T&gt;,...">Item.createWall</a> matching the type of this Wall. If <a class="el" href="class_mod_block_type.html#a349d8595e8fdd60d75b2b3a72514850b" title="The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item sp...">ModBlockType.ItemDrop</a> is set, it will override that value. <br /></td></tr>
+ The <em>type</em>  passed in is the item type of the loaded item with <a class="el" href="class_item.html#a0a41a85414ebd1f86d648bea819b48aa" title="The ID of the wall this item places on use. Either a WallID entry or ModContent.WallType&lt;T&gt;,...">Item.createWall</a> matching the type of this Wall. If <a class="el" href="class_mod_wall.html#a09254fba94fd495dfaf6f8776f48360c" title="Manually registers the item to drop for this wall.  Only necessary if there is no item which places t...">RegisterItemDrop(int)</a> was used, that item will be passed in instead. <br /></td></tr>
 <tr class="separator:a9f0546972f19658b7c7e55b557df2024"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e89bd236628f42c90c6f09cb86563bf"><td class="memItemLeft" align="right" valign="top"><a id="a1e89bd236628f42c90c6f09cb86563bf" name="a1e89bd236628f42c90c6f09cb86563bf"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>KillWall</b> (int i, int j, ref bool fail)</td></tr>
 <tr class="memdesc:a1e89bd236628f42c90c6f09cb86563bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when the tile at the given coordinates is killed or hit with a hammer. Fail determines whether the tile is mined (whether it is killed). <br /></td></tr>
 <tr class="separator:a1e89bd236628f42c90c6f09cb86563bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09254fba94fd495dfaf6f8776f48360c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_wall.html#a09254fba94fd495dfaf6f8776f48360c">RegisterItemDrop</a> (int itemType)</td></tr>
+<tr class="memdesc:a09254fba94fd495dfaf6f8776f48360c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually registers the item to drop for this wall.<br  />
+ Only necessary if there is no item which places this wall, such as with unsafe walls dropping safe variants. Otherwise, the item placing this wall will be dropped automatically.<br  />
+ Use <a class="el" href="class_mod_wall.html#a9f0546972f19658b7c7e55b557df2024" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">ModWall.Drop(int, int, ref int)</a> to conditionally prevent or change drops.  <a href="class_mod_wall.html#a09254fba94fd495dfaf6f8776f48360c">More...</a><br /></td></tr>
+<tr class="separator:a09254fba94fd495dfaf6f8776f48360c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a252576fc96fc9f8a95c1e6ce7f4f9bf3"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_wall.html#a252576fc96fc9f8a95c1e6ce7f4f9bf3">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a252576fc96fc9f8a95c1e6ce7f4f9bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_mod_wall.html#a252576fc96fc9f8a95c1e6ce7f4f9bf3">More...</a><br /></td></tr>
 <tr class="separator:a252576fc96fc9f8a95c1e6ce7f4f9bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,7 +255,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>PrettyPrintName</b>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:aa446d7a2d33b4d021e40f7a1ab8bcccf"><td class="memItemLeft" align="right" valign="top">override sealed void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_wall.html#aa446d7a2d33b4d021e40f7a1ab8bcccf">Register</a> ()</td></tr>
-<tr class="memdesc:aa446d7a2d33b4d021e40f7a1ab8bcccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.  <a href="class_mod_wall.html#aa446d7a2d33b4d021e40f7a1ab8bcccf">More...</a><br /></td></tr>
+<tr class="memdesc:aa446d7a2d33b4d021e40f7a1ab8bcccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_mod_wall.html#aa446d7a2d33b4d021e40f7a1ab8bcccf">More...</a><br /></td></tr>
 <tr class="separator:aa446d7a2d33b4d021e40f7a1ab8bcccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
 <tr class="memitem:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">abstract TEntity&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#ad88e5eb64bf9e58f2051b1d95dc2f554">CreateTemplateEntity</a> ()</td></tr>
@@ -296,14 +304,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>DustType</b><code> [ge
 <tr class="memdesc:aaf6985e10e0ba2cc9e28729604013f0d inherit properties_class_mod_block_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default style of sound made when this tile/wall is hit.<br  />
  Defaults to SoundID.Dig, which is the sound used for tiles such as dirt and sand. <br /></td></tr>
 <tr class="separator:aaf6985e10e0ba2cc9e28729604013f0d inherit properties_class_mod_block_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a349d8595e8fdd60d75b2b3a72514850b inherit properties_class_mod_block_type"><td class="memItemLeft" align="right" valign="top"><a id="a349d8595e8fdd60d75b2b3a72514850b" name="a349d8595e8fdd60d75b2b3a72514850b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemDrop</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:a349d8595e8fdd60d75b2b3a72514850b inherit properties_class_mod_block_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item specified. <br  />
- Only necessary if there is no item which places this tile (or one of its styles). Otherwise, a matching placeable item will be dropped automatically <br  />
- If this tile/wall drops multiple items, set this to the default item. <br  />
- For <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>, use ModTile.GetItemDrops to customize which item drops depending on tile style or other conditions. <br  />
- Set to -1 to indicate that this tile/wall shouldn't drop items ever. Use <a class="el" href="class_mod_tile.html#a3a175f2697b58caf2e226fde00cbbca6" title="Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop...">ModTile.CanDrop(int, int)</a> or <a class="el" href="class_mod_wall.html#a9f0546972f19658b7c7e55b557df2024" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">ModWall.Drop(int, int, ref int)</a> to conditionally prevent drops. <br /></td></tr>
-<tr class="separator:a349d8595e8fdd60d75b2b3a72514850b inherit properties_class_mod_block_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22f06da30041acfeb85eb671ebc59497 inherit properties_class_mod_block_type"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_block_type.html#a22f06da30041acfeb85eb671ebc59497">LocalizationCategory</a><code> [get]</code></td></tr>
 <tr class="separator:a22f06da30041acfeb85eb671ebc59497 inherit properties_class_mod_block_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a648adabb5df38e5fe4db10fc18694df7 inherit properties_class_mod_block_type"><td class="memItemLeft" align="right" valign="top"><a id="a648adabb5df38e5fe4db10fc18694df7" name="a648adabb5df38e5fe4db10fc18694df7"></a>
@@ -381,43 +381,6 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa25cbf1ec7671badf7113a5dc17141c4" name="aa25cbf1ec7671badf7113a5dc17141c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa25cbf1ec7671badf7113a5dc17141c4">&#9670;&nbsp;</a></span>AddMapEntry()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ModWall.AddMapEntry </td>
-          <td>(</td>
-          <td class="paramtype">Color&#160;</td>
-          <td class="paramname"><em>color</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Func&lt; string, int, int, string &gt;&#160;</td>
-          <td class="paramname"><em>nameFunc</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults. </p>
-<p >Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults. </p>
-
-</div>
-</div>
 <a id="aa446d7a2d33b4d021e40f7a1ab8bcccf" name="aa446d7a2d33b4d021e40f7a1ab8bcccf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa446d7a2d33b4d021e40f7a1ab8bcccf">&#9670;&nbsp;</a></span>Register()</h2>
 
@@ -441,9 +404,37 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </table>
 </div><div class="memdoc">
 
-<p>Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults. </p>
+<p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override. </p>
 
 <p>Implements <a class="el" href="class_mod_type.html#ab0f9ad250e4d99c4830b609cc4db2881">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a09254fba94fd495dfaf6f8776f48360c" name="a09254fba94fd495dfaf6f8776f48360c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09254fba94fd495dfaf6f8776f48360c">&#9670;&nbsp;</a></span>RegisterItemDrop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ModWall.RegisterItemDrop </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>itemType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Manually registers the item to drop for this wall.<br  />
+ Only necessary if there is no item which places this wall, such as with unsafe walls dropping safe variants. Otherwise, the item placing this wall will be dropped automatically.<br  />
+ Use <a class="el" href="class_mod_wall.html#a9f0546972f19658b7c7e55b557df2024" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">ModWall.Drop(int, int, ref int)</a> to conditionally prevent or change drops. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">itemType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

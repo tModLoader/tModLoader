@@ -15,6 +15,5 @@ var searchData=
   ['itemanimationactive_12',['ItemAnimationActive',['../class_player.html#ac0d99ef77f3caa4cac5217ae7c0092ff',1,'Player']]],
   ['itemanimationendingorended_13',['ItemAnimationEndingOrEnded',['../class_player.html#a91d1ca1a2b97c5a540b448b5d86a3627',1,'Player']]],
   ['itemanimationjuststarted_14',['ItemAnimationJustStarted',['../class_player.html#ac479b8ca92fc8377275c5b4fcf4c025b',1,'Player']]],
-  ['itemdrop_15',['ItemDrop',['../class_mod_block_type.html#a349d8595e8fdd60d75b2b3a72514850b',1,'ModBlockType']]],
-  ['itemusesthisanimation_16',['ItemUsesThisAnimation',['../class_player.html#a841b107297d8f66873c10b711ddecafe',1,'Player']]]
+  ['itemusesthisanimation_15',['ItemUsesThisAnimation',['../class_player.html#a841b107297d8f66873c10b711ddecafe',1,'Player']]]
 ];

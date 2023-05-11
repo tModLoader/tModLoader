@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"class_world_utils.html":[3,0,1429],
+"class_world_workshop_entry.html":[3,0,1430],
 "class_worm_shader.html":[3,0,1431],
 "class_wsc_json_object.html":[3,0,1432],
 "classes.html":[3,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592":[3,0,101,2],
 "struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,101,1],
 "struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea":[3,0,101,11],
-"struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,101,7],
-"struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422":[3,0,101,4],
-"struct_boss_bar_draw_params.html#ad93c078b16e1f6f208430d05992d0036":[3,0,101,3]
+"struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,101,7]
 };

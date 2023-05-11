@@ -48,6 +48,7 @@ var class_main =
     [ "tileWaterDeath", "class_main.html#a224593043e88020b9290cc6065a8c1ba", null ],
     [ "time", "class_main.html#a286e04821e5e48abf3d683972a668976", null ],
     [ "vanityPet", "class_main.html#a610f0ef35769f577a8670ac04e86be9a", null ],
+    [ "wallHouse", "class_main.html#a8684a726071126bdac018dd16b555759", null ],
     [ "worldEventUpdates", "class_main.html#a2d12b04e725bec080a9b1e5158597e5d", null ],
     [ "worldSurface", "class_main.html#aa44e433e53a98400dacd5260313d7b2b", null ],
     [ "CurrentPlayer", "class_main.html#ab60656fb0e91b1cbec3a13882f999cae", null ],

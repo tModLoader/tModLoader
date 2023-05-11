@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_u_i_bestiary_info_line.html":[3,0,1244],
+"class_u_i_bestiary_n_p_c_entry_portrait.html":[3,0,1245],
 "class_u_i_bestiary_sorting_options_grid.html":[3,0,1246],
 "class_u_i_bestiary_test.html":[3,0,1247],
 "class_u_i_character.html":[3,0,1248],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "class_world_generator.html":[3,0,1424],
 "class_world_map.html":[3,0,1426],
 "class_world_sections.html":[3,0,1427],
-"class_world_u_i_anchor.html":[3,0,1428],
-"class_world_utils.html":[3,0,1429],
-"class_world_workshop_entry.html":[3,0,1430]
+"class_world_u_i_anchor.html":[3,0,1428]
 };

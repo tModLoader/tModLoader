@@ -55,20 +55,20 @@ var NAVTREEINDEX =
 "class_global_projectile.html#a3acb66c947f9aa8d1982ee67a996dedc",
 "class_item.html#a6d0580c12112603bee5cfa8a44126b85",
 "class_item_loader.html#a6c0192d8bbc6f5b52eb648dcb28a18e9",
-"class_melee_no_speed_damage_class.html",
+"class_melee_damage_class.html",
 "class_mod_item.html#a145d9507c4258305d95f6f39a76070ae",
 "class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc",
 "class_mod_scene_effect.html",
-"class_mods_menu_sort_modes_extensions.html",
-"class_n_p_c_a_i_style_i_d.html#adb16a6da63812b1fe53861605297c72c",
-"class_player.html#a6a421762fe1d363e2a5fa1550c1d26b6",
-"class_proj_a_i_style_i_d.html#a006329e3b348c6dd153f3853ed1f4836",
-"class_projectile_audio_tracker.html",
-"class_spelunker_projectile_helper.html",
-"class_u_i_bestiary_sorting_options_grid.html",
-"class_worm_shader.html",
-"struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7",
-"struct_scene_metrics_scan_settings.html"
+"class_modifiers_1_1_skip_tiles.html",
+"class_n_p_c_a_i_style_i_d.html#ad927b67279a4655372aae6bb0c96e724",
+"class_player.html#a5f4c568dba11277c2164aed64b8bae65",
+"class_progression_event_condition.html",
+"class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46",
+"class_spawn_condition_decorative_overlay_info_element.html",
+"class_u_i_bestiary_info_line.html",
+"class_world_utils.html",
+"struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422",
+"struct_resource_pack_version.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

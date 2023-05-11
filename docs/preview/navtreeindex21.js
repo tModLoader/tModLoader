@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"struct_resource_pack_version.html":[3,0,1023],
+"struct_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html":[3,0,1036,0,0],
 "struct_scene_metrics_scan_settings.html":[3,0,1038],
 "struct_segment_infor_report.html":[3,0,1046],
 "struct_segments_1_1_panning.html":[3,0,1047,5],
