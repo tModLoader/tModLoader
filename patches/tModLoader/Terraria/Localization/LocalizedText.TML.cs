@@ -7,7 +7,7 @@ public partial class LocalizedText
 {
 	private bool? _hasPlurals;
 
-	// https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
+	// https://www.unicode.org/cldr/charts/43/supplemental/language_plural_rules.html
 	// implementations extracted from build of https://github.com/xyzsd/cldr-plural-rules
 	// English, German, Italian, Spanish, Portugese, French
 	//   one, other
