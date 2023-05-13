@@ -28,3 +28,28 @@
  	}
  
  	public void ConnectToLobby(ulong lobbyId)
+@@ -134,6 +_,8 @@
+ 
+ 		string friendName = SteamFriends.GetFriendPersonaName(result.m_steamIDFriend);
+ 		Main.QueueMainThreadAction(delegate {
++			// If mods not loaded yet, this needs to run after mods load.
++			var joinAction = () =>
+ 			Main.OpenPlayerSelect(delegate (PlayerFileData playerData) {
+ 				Main.ServerSideCharacter = false;
+ 				playerData.SetAsActive();
+@@ -141,6 +_,15 @@
+ 				Main.statusText = Language.GetTextValue("Social.JoiningFriend", friendName);
+ 				_lobby.Join(result.m_steamIDLobby, OnLobbyEntered);
+ 			});
++
++			// TODO: Consider adding this logic to Main.OpenPlayerSelect as well. Also add checks for any other async task we don't want interrupted.
++			if (ModLoader.ModLoader.Mods.Length == 0 || Main.menuMode == ModLoader.UI.Interface.loadModsID /*|| ModLoader.ModLoader.isLoading*/) {
++				ModLoader.Logging.tML.Info("OnLobbyJoinRequest: Delay joinAction via OnSuccessfulLoad");
++				ModLoader.ModLoader.OnSuccessfulLoad += joinAction;
++				return;
++			}
++			ModLoader.Logging.tML.Info("OnLobbyJoinRequest: Running joinAction directly");
++			joinAction();
+ 		});
+ 	}
+ 

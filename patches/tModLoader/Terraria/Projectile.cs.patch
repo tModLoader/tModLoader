@@ -31,7 +31,7 @@
 +
 +	/// <summary>
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
-+	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> for an example of this logic.
++	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
 +	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <br/> Defaults to <see langword="false"/>.
@@ -60,7 +60,7 @@
 +
 +	/// <summary>
 +	/// How transparent to draw this projectile. 0 to 255. 255 is completely transparent.
-+	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
++	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
@@ -71,7 +71,7 @@
 +	/// <summary>
 +	/// The index of the player who owns this projectile. In Multiplayer, Clients "own" projectiles that they shoot, while the Server "owns" projectiles spawned by NPCs and the World.
 +	/// <br/> NPC <b>never</b> own projectiles, do not use owner to index into <see cref="Main.npc"/>. 
-+	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
++	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
 +	/// <br/> Defaults to the owner parameter of Projectile.NewProjectile, which should always be set to <see cref="Main.myPlayer"/> to correspond to the client that owns the projectile..
 +	/// </summary>
  	public int owner = 255;
@@ -98,7 +98,7 @@
  	public float stepSpeed = 1f;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai">Basic Projectile Guide</see> teaches how to use an existing aiStyle.
 +	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <br/> Defaults to 0.
@@ -139,7 +139,7 @@
  	public bool friendly;
 +
 +	/// <summary>
-+	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
++	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
 +	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
@@ -225,7 +225,7 @@
  	public int restrikeDelay;
 +
 +	/// <summary>
-+	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L38">ExampleBullet</see> shows how to implemtent bounce.
++	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implemtent bounce.
 +	/// <br/> Defaults to <see langword="true"/>.
 +	/// </summary>
  	public bool tileCollide;
@@ -895,8 +895,22 @@
  										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10594,16 +_,20 @@
+@@ -10487,6 +_,9 @@
+ 									if (type == 981 && nPC.type == 104)
+ 										num19 *= 3;
+ 
++									// Essentially, the following block is moved to execute later on.
++									goto VanillaOnHitEffectsWhipsEnd;
++									VanillaOnHitEffectsWhipsStart: // Whip Multihit penalty and Crystal dart retargeting are OnHit effects
+ 									if (type == 294)
+ 										damage = (int)((double)damage * 0.9);
+ 
+@@ -10592,18 +_,26 @@
+ 											netUpdate = true;
+ 										}
  									}
++									goto VanillaOnHitEffectsResume;
++									VanillaOnHitEffectsWhipsEnd:
  
  									if (type == 261 && velocity.Length() < 3.5f) {
 -										num19 /= 2;
@@ -915,6 +929,8 @@
 +									goto VanillaOnHitEffectsEnd;
 +
 +									VanillaOnHitEffectsStart:
++									goto VanillaOnHitEffectsWhipsStart;
++									VanillaOnHitEffectsResume:
  									StatusNPC(i);
  									if (flag && nPC.life > 5)
  										TryDoingOnHitEffects(nPC);

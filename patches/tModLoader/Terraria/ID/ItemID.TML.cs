@@ -74,6 +74,14 @@ partial class ItemID
 		);
 
 		/// <summary>
+		/// If true, the item counts as a specialist weapon.<br/>
+		/// Used for Shroomite Helmet damage buffs (and other effects that will affect <see cref="Player.specialistDamage"/>).<br/>
+		/// </summary>
+		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(
+			PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove
+		);
+
+		/// <summary>
 		/// Dictionary for defining what items will drop from a <see cref="ProjectileID.Geode"/> when broken. All items in this dictionary are equally likely to roll, and will drop with a stack size between minStack and maxStack (exclusive).
 		/// <br/>Stack sizes with less than 1 or where minStack is not strictly smaller than maxStack will lead to exceptions being thrown.
 		/// </summary>
