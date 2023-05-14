@@ -791,6 +791,11 @@ Mods: {
 				// DisplayName: Active Sound Showcase
 				// Tooltip: ""
 			}
+
+			ExampleMinecart: {
+				// DisplayName: Example Minecart
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -908,6 +913,8 @@ Mods: {
 				// DisplayName: Example Javelin Debuff
 				// Description: Losing life
 			}
+
+			ExampleMinecartBuff.DisplayName: "{$Items.ExampleMinecart.DisplayName}"
 		}
 
 		// RecipeConditions.Night: At Low Health
