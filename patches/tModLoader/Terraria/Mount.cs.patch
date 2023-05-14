@@ -81,6 +81,24 @@
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
+@@ -2013,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static void SetAsHorse(MountData newMount, int buff, Asset<Texture2D> texture)
++	public static void SetAsHorse(MountData newMount, int buff, Asset<Texture2D> texture)
+ 	{
+ 		newMount.spawnDust = 3;
+ 		newMount.buff = buff;
+@@ -2075,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static void SetAsMinecart(MountData newMount, int buffToLeft, int buffToRight, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
++	public static void SetAsMinecart(MountData newMount, int buffToLeft, int buffToRight, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
+ 	{
+ 		newMount.Minecart = true;
+ 		newMount.delegations = new MountDelegatesData();
 @@ -2131,13 +_,14 @@
  
  	public static int GetHeightBoost(int MountType)
