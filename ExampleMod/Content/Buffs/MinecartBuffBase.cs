@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Buffs
 	// Buffs inheriting from this class will generate two instances suffixed with _Left and _Right, use them accordingly with Mod.Find<ModBuff>(name).Type, ModContent.BuffType<name>() won't (!) work
 	// You only need the classes in this file once if you add more than one minecart
 	/// <summary>
-	/// The base class for all buffs used for minecarts. Requires 
+	/// The base class for all buffs used for minecarts. This is required to simplify the creation of Left/Right buffs
 	/// <br/>See <see cref="ExampleTrap"/> for a more in-depth explanation of manual loading
 	/// </summary>
 	//[Autoload(false)] // This and inheriting classes do not have a parameterless constructor so they won't be autoloaded anyway
