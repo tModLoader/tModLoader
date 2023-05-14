@@ -221,8 +221,8 @@ public partial class PlayerDrawLayers
 
 	internal static IReadOnlyList<PlayerDrawLayer> VanillaLayers = FixedVanillaLayers.Concat(new[] { FrontAccFront, HeldItem }).ToArray();
 
-	public static PlayerDrawLayer FirstVanillaLayer => VanillaLayers[0];
-	public static PlayerDrawLayer LastVanillaLayer => VanillaLayers[^1];
+	public static PlayerDrawLayer FirstVanillaLayer => FixedVanillaLayers[0];
+	public static PlayerDrawLayer LastVanillaLayer => FixedVanillaLayers[^1];
 
 	public static Between BeforeFirstVanillaLayer => new Between(null, FirstVanillaLayer);
 	public static Between AfterLastVanillaLayer => new Between(LastVanillaLayer, null);
