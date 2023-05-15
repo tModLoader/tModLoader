@@ -10,6 +10,7 @@ var class_item_i_d_1_1_sets =
     [ "CanFishInLava", "class_item_i_d_1_1_sets.html#a92d0958d69095c7e8974a20be2ffa939", null ],
     [ "CanGetPrefixes", "class_item_i_d_1_1_sets.html#ae4c4b63e82b4ab463a5edb2c0881dc11", null ],
     [ "CatchingTool", "class_item_i_d_1_1_sets.html#a3f5b831d2fa76372209dcaa20187098a", null ],
+    [ "CoinLuckValue", "class_item_i_d_1_1_sets.html#ab365e2fd036031975789b40f7d2e23e6", null ],
     [ "ColorfulDyeValues", "class_item_i_d_1_1_sets.html#a33cf98f308a08fed94189f83f008cfe5", null ],
     [ "CommonCoin", "class_item_i_d_1_1_sets.html#ab0266b89a1601891993c50c489cb9c96", null ],
     [ "CraftingRecipeIndices", "class_item_i_d_1_1_sets.html#a2292fa1f1cba386cc058689056163bcd", null ],

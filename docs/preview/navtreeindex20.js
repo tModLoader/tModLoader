@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,101,7],
 "struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422":[3,0,101,4],
 "struct_boss_bar_draw_params.html#ad93c078b16e1f6f208430d05992d0036":[3,0,101,3],
 "struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7":[3,0,101,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_resource_overlay_draw_context.html#a46493f40a782e875eefb93bb0a4c6221":[3,0,1018,3],
 "struct_resource_overlay_draw_context.html#ab6569d2846bd21cae368ad0a675329b6":[3,0,1018,4],
 "struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34":[3,0,1018,0],
-"struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651":[3,0,1018,1],
-"struct_resource_overlay_draw_context.html#af5cdc9b01085fb5c4d8c174e8d2c4ec4":[3,0,1018,2]
+"struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651":[3,0,1018,1]
 };

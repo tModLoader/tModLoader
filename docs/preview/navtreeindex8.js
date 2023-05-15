@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_mech_boss_spawners_drop_rule.html":[3,0,708],
 "class_melee_damage_class.html":[3,0,709],
 "class_melee_no_speed_damage_class.html":[3,0,710],
 "class_melee_no_speed_damage_class.html#a46afc156bc357723bf64d95e465b7255":[3,0,710,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_item.html#a10b52a61d301eca52d3b30c3c989d835":[3,0,753,102],
 "class_mod_item.html#a119bbb1160e79491555445544b0744ff":[3,0,753,126],
 "class_mod_item.html#a11bcfb78762023a6f3279e976b4363f6":[3,0,753,25],
-"class_mod_item.html#a1210a73f18135d114a722c4a0e2f0f63":[3,0,753,98],
-"class_mod_item.html#a13498ecbb9546abaaf972616e9f4058d":[3,0,753,49]
+"class_mod_item.html#a1210a73f18135d114a722c4a0e2f0f63":[3,0,753,98]
 };

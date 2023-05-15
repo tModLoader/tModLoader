@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_resource_overlay_draw_context.html#af5cdc9b01085fb5c4d8c174e8d2c4ec4":[3,0,1018,2],
 "struct_resource_pack_version.html":[3,0,1023],
 "struct_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html":[3,0,1036,0,0],
 "struct_scene_metrics_scan_settings.html":[3,0,1038],

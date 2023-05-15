@@ -144,13 +144,18 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanFishInLav
 <tr class="memdesc:a3f5b831d2fa76372209dcaa20187098a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set for catching tools (bug net-type items which can catch critters).<br  />
  If you want your catching tool to be able to catch the Underworld's lava critters, don't forget to use the <a class="el" href="class_item_i_d_1_1_sets.html#a03d3a12274ee07320bdf9a80d19025de" title="Set for catching tools which can catch the Underworld&#39;s lava critters.  Don&#39;t forget to use the Catch...">LavaproofCatchingTool</a> set in conjunction with this one.  <a href="class_item_i_d_1_1_sets.html#a3f5b831d2fa76372209dcaa20187098a">More...</a><br /></td></tr>
 <tr class="separator:a3f5b831d2fa76372209dcaa20187098a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab365e2fd036031975789b40f7d2e23e6"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#ab365e2fd036031975789b40f7d2e23e6">CoinLuckValue</a></td></tr>
+<tr class="memdesc:ab365e2fd036031975789b40f7d2e23e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set for defining how much coin luck according to its stack this item gives to nearby players when thrown into shimmer (Entity.shimmerWet).<br  />
+ Includes the 4 vanilla coin types by default. The value represents the "price" of the currency in copper coins. For other items, default value is 0, which means it will not give coin luck.<br  />
+  <a href="class_item_i_d_1_1_sets.html#ab365e2fd036031975789b40f7d2e23e6">More...</a><br /></td></tr>
+<tr class="separator:ab365e2fd036031975789b40f7d2e23e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33cf98f308a08fed94189f83f008cfe5"><td class="memItemLeft" align="right" valign="top"><a id="a33cf98f308a08fed94189f83f008cfe5" name="a33cf98f308a08fed94189f83f008cfe5"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ColorfulDyeValues</b> = new bool[0]</td></tr>
 <tr class="memdesc:a33cf98f308a08fed94189f83f008cfe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <b>shader id</b>, then that shader does not change the color of whatever it is applied to. <br  />
  <b>Do not manually add values to this set.</b> Values in this set are generated using the item types (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>) in <a class="el" href="class_item_i_d_1_1_sets.html#af868278c5e77f39d0359397b14ef4d74" title="The list of item types (Item.type) for non-colorful dye effects.   Non-colorful dyes do not change th...">NonColorfulDyeItems</a>. <br /></td></tr>
 <tr class="separator:a33cf98f308a08fed94189f83f008cfe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0266b89a1601891993c50c489cb9c96"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#ab0266b89a1601891993c50c489cb9c96">CommonCoin</a> = Factory.CreateBoolSet(71, 72, 73, 74)</td></tr>
-<tr class="memdesc:ab0266b89a1601891993c50c489cb9c96"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary and will add coin luck according to its stack when thrown into shimmer (Entity.shimmerWet). <br  />
+<tr class="memdesc:ab0266b89a1601891993c50c489cb9c96"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary. <br  />
  Defaults to <code>false</code>.  <a href="class_item_i_d_1_1_sets.html#ab0266b89a1601891993c50c489cb9c96">More...</a><br /></td></tr>
 <tr class="separator:ab0266b89a1601891993c50c489cb9c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2292fa1f1cba386cc058689056163bcd"><td class="memItemLeft" align="right" valign="top"><a id="a2292fa1f1cba386cc058689056163bcd" name="a2292fa1f1cba386cc058689056163bcd"></a>
@@ -679,6 +684,39 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidB
 
 </div>
 </div>
+<a id="ab365e2fd036031975789b40f7d2e23e6" name="ab365e2fd036031975789b40f7d2e23e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab365e2fd036031975789b40f7d2e23e6">&#9670;&nbsp;</a></span>CoinLuckValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] ItemID.Sets.CoinLuckValue</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateIntSet(0,</div>
+<div class="line">            CopperCoin,   1,</div>
+<div class="line">            SilverCoin,   100,</div>
+<div class="line">            GoldCoin,     10000,</div>
+<div class="line">            PlatinumCoin, 1000000</div>
+<div class="line">        )</div>
+</div><!-- fragment -->
+<p>Set for defining how much coin luck according to its stack this item gives to nearby players when thrown into shimmer (Entity.shimmerWet).<br  />
+ Includes the 4 vanilla coin types by default. The value represents the "price" of the currency in copper coins. For other items, default value is 0, which means it will not give coin luck.<br  />
+ </p>
+<p >Coin luck application takes precedence over other actions related to shimmer.</p>
+
+</div>
+</div>
 <a id="ab0266b89a1601891993c50c489cb9c96" name="ab0266b89a1601891993c50c489cb9c96"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab0266b89a1601891993c50c489cb9c96">&#9670;&nbsp;</a></span>CommonCoin</h2>
 
@@ -699,7 +737,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidB
 </table>
 </div><div class="memdoc">
 
-<p>If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary and will add coin luck according to its stack when thrown into shimmer (Entity.shimmerWet). <br  />
+<p>If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary. <br  />
  Defaults to <code>false</code>. </p>
 <p >This set does <b>not</b> make an item type act like a coin for most purposes. Items in this set cannot be used to buy items, will not go into the player's coin slots, etc. </p>
 

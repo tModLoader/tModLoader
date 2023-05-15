@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_spawn_condition_bestiary_overlay_info_element.html":[3,0,1103],
 "class_spawn_condition_decorative_overlay_info_element.html":[3,0,1104],
 "class_spawn_map_layer.html":[3,0,1105],
 "class_spelunker_projectile_helper.html":[3,0,1106],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_bestiary_entry_grid.html":[3,0,1239],
 "class_u_i_bestiary_entry_icon.html":[3,0,1240],
 "class_u_i_bestiary_entry_info_page.html":[3,0,1241],
-"class_u_i_bestiary_filtering_options_grid.html":[3,0,1242],
-"class_u_i_bestiary_info_item_line.html":[3,0,1243]
+"class_u_i_bestiary_filtering_options_grid.html":[3,0,1242]
 };
