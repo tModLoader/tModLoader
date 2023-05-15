@@ -695,7 +695,7 @@ internal class UIModConfig : UIState
 		uIPanel.Append(uIScrollbar);
 		separateList.SetScrollbar(uIScrollbar);
 
-		string name = ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(memberInfo, Interface.modConfig.pendingConfig, "Label", defaultToNull: false);
+		string name = ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(memberInfo, "Label", defaultToNull: false);
 		if (index != -1)
 			name = name + " #" + (index + 1);
 		Interface.modConfig.subPageStack.Push(name);
@@ -789,14 +789,13 @@ internal class UIModConfig : UIState
 		return uIPanel;
 	}
 
-	public static void HandleHeader(UIList separateList, ref int top, ref int order, PropertyFieldWrapper variable)
+	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
-		var config = Interface.modConfig.pendingConfig;
-		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable, config, throwErrors: false);
+		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable, throwErrors: false);
 
 		if (header != null) {
 			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-			WrapIt(separateList, ref top, wrapper, header, order++);
+			WrapIt(parent, ref top, wrapper, header, order++);
 		}
 	}
 

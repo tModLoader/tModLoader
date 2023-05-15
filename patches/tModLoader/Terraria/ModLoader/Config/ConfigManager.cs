@@ -50,6 +50,8 @@ public static class ConfigManager
 		//new ColorJsonConverter(),
 	};
 
+	private static readonly HashSet<Type> typesWithLocalizationRegistered = new HashSet<Type>();
+
 	public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "ModConfigs");
 	public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "ModConfigs", "Server");
 
@@ -76,6 +78,7 @@ public static class ConfigManager
 
 	internal static void FinishSetup()
 	{
+		typesWithLocalizationRegistered.Clear();
 		// Register localization for all fields and properties that should show
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var config in activeConfigs.Value) {
@@ -84,7 +87,7 @@ public static class ConfigManager
 					Language.GetOrRegister(modConfigLabelKey, () => Regex.Replace(config.Name, "([A-Z])", " $1").Trim());
 				}
 				catch (ValueNotTranslationKeyException e) {
-					e.additional = $"The ModConfig class '{config.Name}' caused this exception.";
+					e.additional = $"The ModConfig class '{config.GetType().Name}' caused this exception.";
 					e.Data["mod"] = config.Mod.Name;
 					throw;
 				}
@@ -96,6 +99,7 @@ public static class ConfigManager
 
 	private static void RegisterLocalizationKeysForMembers(ModConfig config, Type type)
 	{
+		string modsDotModName = $"Mods.{config.Mod.Name}";
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(type)) {
 #pragma warning disable CS0618
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute)) || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
@@ -106,20 +110,20 @@ public static class ConfigManager
 				// TODO: Classes used in Generic types and Enums
 
 				// Register localization for classes added in this mod. This code handles the class itself, not the fields of the classes
-				if (variable.Type.IsClass && variable.Type.Assembly == type.Assembly) {
+				if (variable.Type.IsClass && variable.Type.Assembly == type.Assembly && typesWithLocalizationRegistered.Add(variable.Type)) {
 #pragma warning disable CS0618 // Type or member is obsolete
 					var typeLabelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(LabelAttribute));
 #pragma warning restore CS0618 // Type or member is obsolete
 
 					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type, throwErrors: true);
-					string typeLabelKey = typeLabel?.key ?? config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Label");
-					if (typeLabelKey.StartsWith($"Mods.{config.Mod.Name}")) {
+					string typeLabelKey = typeLabel?.key ?? $"{modsDotModName}.Configs.{variable.Type.Name}.Label";
+					if (typeLabelKey.StartsWith(modsDotModName)) {
 						Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 					}
 
 					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type, throwErrors: true);
-					string typeTooltipKey = typeTooltip?.key ?? config.Mod.GetLocalizationKey($"Configs.{variable.Type.Name}.Tooltip");
-					if (typeLabelKey.StartsWith($"Mods.{config.Mod.Name}")) {
+					string typeTooltipKey = typeTooltip?.key ?? $"{modsDotModName}.Configs.{variable.Type.Name}.Tooltip");
+					if (typeLabelKey.StartsWith(modsDotModName)) {
 						Language.GetOrRegister(typeTooltipKey, () => "");
 					}
 					RegisterLocalizationKeysForMembers(config, variable.Type);
@@ -132,19 +136,19 @@ public static class ConfigManager
 #pragma warning restore CS0618 // Type or member is obsolete
 
 				// Label and Tooltip will always exist. Header is optional, need to be used to exist.
-				var header = GetLocalizedHeader(variable, config, throwErrors: true);
-				if (header != null) {
+				var header = GetLocalizedHeader(variable, throwErrors: true);
+				if (header != null && header.key.StartsWith(modsDotModName)) {
 					string identifier = header.IsIdentifier ? header.identifier : variable.Name;
 					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 				}
 
-				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, config, fallbackToClass: false, throwErrors: true, dataName: "Label");
-				if (labelKey.StartsWith($"Mods.{config.Mod.Name}")) {
+				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, fallbackToClass: false, throwErrors: true, dataName: "Label");
+				if (labelKey.StartsWith(modsDotModName)) {
 					Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 				}
 
-				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, config, fallbackToClass: false, throwErrors: true, dataName: "Tooltip");
-				if (tooltipKey.StartsWith($"Mods.{config.Mod.Name}")) {
+				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, fallbackToClass: false, throwErrors: true, dataName: "Tooltip");
+				if (tooltipKey.StartsWith(modsDotModName)) {
 					Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 				}
 			}
@@ -498,7 +502,7 @@ public static class ConfigManager
 	}
 
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
-	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, ModConfig config, bool fallbackToClass, bool throwErrors, string dataName) where T : ConfigKeyAttribute
+	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, bool fallbackToClass, bool throwErrors, string dataName) where T : ConfigKeyAttribute
 	{
 		var configKeyAttribute = GetAndValidate<T>(memberInfo.MemberInfo, throwErrors: throwErrors);
 		if (configKeyAttribute != null) {
@@ -513,17 +517,17 @@ public static class ConfigManager
 		// Autokey: Determine key from the Type the member belongs to.
 		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType; 
 		string modName = typeMemberBelongsTo.Assembly.GetName().Name;
-		string className = typeMemberBelongsTo == config.GetType() ? config.Name : typeMemberBelongsTo.Name;
+		string className = typeMemberBelongsTo.Name;
 		if (modName == "tModLoader" || modName == "FNA") // tModLoader keys handle translations for existing classes
 			return $"Config.{className}.{memberInfo.Name}.{dataName}";
 		return $"Mods.{modName}.Configs.{className}.{memberInfo.Name}.{dataName}";
 	}
 
-	internal static string GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, ModConfig config, string dataName, bool defaultToNull) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
+	internal static string GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, string dataName, bool defaultToNull) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
 	{
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> member name or null
 		var args = (TArgs)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TArgs));
-		string configKey = GetConfigKey<T>(memberInfo, config, fallbackToClass: false, throwErrors: false, dataName: dataName);
+		string configKey = GetConfigKey<T>(memberInfo, fallbackToClass: false, throwErrors: false, dataName: dataName);
 		if (configKey != null && Language.Exists(configKey)) {
 			string configLocalization = Language.GetTextValue(configKey);
 			if (!string.IsNullOrEmpty(configLocalization))
@@ -552,7 +556,7 @@ public static class ConfigManager
 		return defaultToNull ? null : memberInfo.Name;
 	}
 
-	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo, ModConfig config, bool throwErrors)
+	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo, bool throwErrors)
 	{
 		// Priority: Provided Key or key derived from identifier on member
 		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
@@ -564,10 +568,14 @@ public static class ConfigManager
 				header.identifier = memberInfo.Name;
 
 			if (header.IsIdentifier) {
-				string keyName = config.Name;
-				if (memberInfo.MemberInfo.DeclaringType != config.GetType())
-					keyName = memberInfo.MemberInfo.DeclaringType.Name;
-				header.key = config.Mod.GetLocalizationKey($"Configs.{keyName}.Headers.{header.identifier}");
+				string modName = memberInfo.MemberInfo.DeclaringType.Assembly.GetName().Name;
+				string className = memberInfo.MemberInfo.DeclaringType.Name;
+				if (modName == "tModLoader" || modName == "FNA") {  // tModLoader keys handle translations for existing classes
+					header.key = $"Config.{className}.Headers.{header.identifier}";
+				}
+				else {
+					header.key = $"Mods.{modName}.Configs.{className}.Headers.{header.identifier}";
+				}
 			}
 
 			return header;
@@ -577,7 +585,7 @@ public static class ConfigManager
 
 	internal static string GetModConfigLabelKey(ModConfig config, bool throwErrors)
 	{
-		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.Name}.DisplayName");
+		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.GetType().Name}.DisplayName");
 		var label = GetAndValidate<LabelKeyAttribute>(config.GetType(), throwErrors: throwErrors);
 		return label?.key ?? labelKey;
 	}
