@@ -51,6 +51,16 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newAlternate.AnchorWall = true;
 			TileObjectData.addAlternate(0);
 			*/
+
+			// This code adds style-specific properties to style 1. Style 1 is used by ExampleWaterTorch. This code allows the tile to be placed in liquids. More info can be found in the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#newsubtile-and-newalternate
+			TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
+			TileObjectData.newSubTile.LinkedAlternates = true;
+			TileObjectData.newSubTile.WaterDeath = false;
+			TileObjectData.newSubTile.LavaDeath = false;
+			TileObjectData.newSubTile.WaterPlacement = LiquidPlacement.Allowed;
+			TileObjectData.newSubTile.LavaPlacement = LiquidPlacement.Allowed;
+			TileObjectData.addSubTile(1);
+
 			TileObjectData.addTile(Type);
 
 			// Etc
@@ -96,10 +106,18 @@ namespace ExampleMod.Content.Tiles
 
 			// If the torch is on
 			if (tile.TileFrameX < 66) {
+				int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
 				// Make it emit the following light.
-				r = 0.9f;
-				g = 0.9f;
-				b = 0.9f;
+				if (style == 0) {
+					r = 0.9f;
+					g = 0.9f;
+					b = 0.9f;
+				}
+				else if (style == 1) {
+					r = 0.5f;
+					g = 1.5f;
+					b = 0.5f;
+				}
 			}
 		}
 
@@ -134,6 +152,11 @@ namespace ExampleMod.Content.Tiles
 			var tile = Main.tile[i, j];
 			int frameX = tile.TileFrameX;
 			int frameY = tile.TileFrameY;
+			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
+			if (style == 1) {
+				// ExampleWaterTorch should be a bit greener.
+				color.G = 255;
+			}
 
 			for (int k = 0; k < 7; k++) {
 				float xx = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;

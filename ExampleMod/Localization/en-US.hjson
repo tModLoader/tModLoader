@@ -791,6 +791,12 @@ Mods: {
 				DisplayName: Active Sound Showcase
 				Tooltip: ""
 			}
+
+			ExampleWaterTorch: {
+				DisplayName: Example Water Torch
+				# "Can be placed in water"
+				Tooltip: "{$ItemTooltip.IchorTorch}"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
