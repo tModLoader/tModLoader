@@ -99,7 +99,6 @@ public static class ConfigManager
 
 	private static void RegisterLocalizationKeysForMembers(ModConfig config, Type type)
 	{
-		string modsDotModName = $"Mods.{config.Mod.Name}";
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(type)) {
 #pragma warning disable CS0618
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute)) || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
@@ -116,16 +115,12 @@ public static class ConfigManager
 #pragma warning restore CS0618 // Type or member is obsolete
 
 					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type, throwErrors: true);
-					string typeLabelKey = typeLabel?.key ?? $"{modsDotModName}.Configs.{variable.Type.Name}.Label";
-					if (typeLabelKey.StartsWith(modsDotModName)) {
-						Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
-					}
+					string typeLabelKey = typeLabel?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Label";
+					Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 
 					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type, throwErrors: true);
-					string typeTooltipKey = typeTooltip?.key ?? $"{modsDotModName}.Configs.{variable.Type.Name}.Tooltip");
-					if (typeLabelKey.StartsWith(modsDotModName)) {
-						Language.GetOrRegister(typeTooltipKey, () => "");
-					}
+					string typeTooltipKey = typeTooltip?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Tooltip");
+					Language.GetOrRegister(typeTooltipKey, () => "");
 					RegisterLocalizationKeysForMembers(config, variable.Type);
 				}
 
@@ -137,20 +132,16 @@ public static class ConfigManager
 
 				// Label and Tooltip will always exist. Header is optional, need to be used to exist.
 				var header = GetLocalizedHeader(variable, throwErrors: true);
-				if (header != null && header.key.StartsWith(modsDotModName)) {
+				if (header != null) {
 					string identifier = header.IsIdentifier ? header.identifier : variable.Name;
 					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 				}
 
 				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, fallbackToClass: false, throwErrors: true, dataName: "Label");
-				if (labelKey.StartsWith(modsDotModName)) {
-					Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
-				}
+				Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
 				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, fallbackToClass: false, throwErrors: true, dataName: "Tooltip");
-				if (tooltipKey.StartsWith(modsDotModName)) {
-					Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
-				}
+				Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 			}
 			catch (ValueNotTranslationKeyException e) when (!e.handled) {
 				if (e.errorOnType) {
