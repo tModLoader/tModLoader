@@ -104,15 +104,11 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			// This code slightly lowers the draw position if there is a solid tile above, so the flame doesn't overlap that tile. Terraria torches do this.
+			// This code slightly lowers the draw position if there is a solid tile above, so the flame doesn't overlap that tile. Terraria torches do this same logic.
 			offsetY = 0;
 
 			if (WorldGen.SolidTile(i, j - 1)) {
-				offsetY = 2;
-
-				if (WorldGen.SolidTile(i - 1, j + 1) || WorldGen.SolidTile(i + 1, j + 1)) {
-					offsetY = 4;
-				}
+				offsetY = 4;
 			}
 		}
 
@@ -122,11 +118,7 @@ namespace ExampleMod.Content.Tiles
 			int offsetY = 0;
 
 			if (WorldGen.SolidTile(i, j - 1)) {
-				offsetY = 2;
-
-				if (WorldGen.SolidTile(i - 1, j + 1) || WorldGen.SolidTile(i + 1, j + 1)) {
-					offsetY = 4;
-				}
+				offsetY = 4;
 			}
 
 			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
