@@ -508,7 +508,7 @@ public static class ConfigManager
 		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType;
 		AssemblyManager.GetAssemblyOwner(typeMemberBelongsTo.Assembly, out var modName);
 		string className = typeMemberBelongsTo.Name;
-		if (modName == "tModLoader" || modName == "FNA") // tModLoader keys handle translations for existing classes
+		if (modName == null) // tModLoader keys handle translations for existing classes
 			return $"Config.{className}.{memberInfo.Name}.{dataName}";
 		return $"Mods.{modName}.Configs.{className}.{memberInfo.Name}.{dataName}";
 	}
@@ -533,7 +533,7 @@ public static class ConfigManager
 		else if (memberInfo.Type.IsClass) {
 			AssemblyManager.GetAssemblyOwner(memberInfo.Type.Assembly, out var modName);
 			var typeKey = $"Mods.{modName}.Configs.{memberInfo.Type.Name}.{dataName}";
-			if (modName == "tModLoader" || modName == "FNA")
+			if (modName == null)
 				typeKey = $"Config.{memberInfo.Type.Name}.{dataName}";
 			if (Language.Exists(typeKey)) {
 				string typeConfigLocalization = Language.GetTextValue(typeKey);
@@ -559,7 +559,7 @@ public static class ConfigManager
 			if (header.IsIdentifier) {
 				AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
 				string className = memberInfo.MemberInfo.DeclaringType.Name;
-				if (modName == "tModLoader" || modName == "FNA") {  // tModLoader keys handle translations for existing classes
+				if (modName == null) {  // tModLoader keys handle translations for existing classes
 					header.key = $"Config.{className}.Headers.{header.identifier}";
 				}
 				else {
