@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -92,13 +93,14 @@ public static class ConfigManager
 					throw;
 				}
 
-				RegisterLocalizationKeysForMembers(config, config.GetType());
+				RegisterLocalizationKeysForMembers(config.GetType());
 			}
 		}
 	}
 
-	private static void RegisterLocalizationKeysForMembers(ModConfig config, Type type)
+	private static void RegisterLocalizationKeysForMembers(Type type)
 	{
+		AssemblyManager.GetAssemblyOwner(type.Assembly, out var modName);
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(type)) {
 #pragma warning disable CS0618
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute)) || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
@@ -115,14 +117,14 @@ public static class ConfigManager
 #pragma warning restore CS0618 // Type or member is obsolete
 
 					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type);
-					string typeLabelKey = typeLabel?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Label";
+					string typeLabelKey = typeLabel?.key ?? $"Mods.{modName}.Configs.{variable.Type.Name}.Label";
 					Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 
 					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type);
-					string typeTooltipKey = typeTooltip?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Tooltip";
+					string typeTooltipKey = typeTooltip?.key ?? $"Mods.{modName}.Configs.{variable.Type.Name}.Tooltip";
 					Language.GetOrRegister(typeTooltipKey, () => "");
 
-					RegisterLocalizationKeysForMembers(config, variable.Type);
+					RegisterLocalizationKeysForMembers(variable.Type);
 				}
 
 				// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
@@ -151,7 +153,7 @@ public static class ConfigManager
 				else {
 					e.additional = $"The member '{variable.Name}' found in the '{variable.MemberInfo.DeclaringType}' class caused this exception.";
 				}
-				e.Data["mod"] = config.Mod.Name;
+				e.Data["mod"] = modName;
 				e.handled = true; // Recursion will cause this to be called higher in the stack, causing issues.
 				throw;
 			}
@@ -503,8 +505,8 @@ public static class ConfigManager
 		GetAndValidate<T>(memberInfo.Type); // Will catch errors on ConfigKey annotations on classes
 
 		// Autokey: Determine key from the Type the member belongs to.
-		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType; 
-		string modName = typeMemberBelongsTo.Assembly.GetName().Name;
+		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType;
+		AssemblyManager.GetAssemblyOwner(typeMemberBelongsTo.Assembly, out var modName);
 		string className = typeMemberBelongsTo.Name;
 		if (modName == "tModLoader" || modName == "FNA") // tModLoader keys handle translations for existing classes
 			return $"Config.{className}.{memberInfo.Name}.{dataName}";
@@ -529,8 +531,7 @@ public static class ConfigManager
 				return FormatTextAttribute(typeConfigKey.key, typeConfigLocalization, args?.args);
 		}
 		else if (memberInfo.Type.IsClass) {
-			// This might not be the actual mod name, need some way of accurately determining mod source for assembly.
-			string modName = memberInfo.Type.Assembly.GetName().Name;
+			AssemblyManager.GetAssemblyOwner(memberInfo.Type.Assembly, out var modName);
 			var typeKey = $"Mods.{modName}.Configs.{memberInfo.Type.Name}.{dataName}";
 			if (modName == "tModLoader" || modName == "FNA")
 				typeKey = $"Config.{memberInfo.Type.Name}.{dataName}";
@@ -556,7 +557,7 @@ public static class ConfigManager
 				header.identifier = memberInfo.Name;
 
 			if (header.IsIdentifier) {
-				string modName = memberInfo.MemberInfo.DeclaringType.Assembly.GetName().Name;
+				AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
 				string className = memberInfo.MemberInfo.DeclaringType.Name;
 				if (modName == "tModLoader" || modName == "FNA") {  // tModLoader keys handle translations for existing classes
 					header.key = $"Config.{className}.Headers.{header.identifier}";
