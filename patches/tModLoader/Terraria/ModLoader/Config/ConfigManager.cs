@@ -138,10 +138,10 @@ public static class ConfigManager
 					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 				}
 
-				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, fallbackToClass: false, dataName: "Label");
+				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, dataName: "Label");
 				Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, fallbackToClass: false, dataName: "Tooltip");
+				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, dataName: "Tooltip");
 				Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 			}
 			catch (ValueNotTranslationKeyException e) when (!e.handled) {
@@ -494,17 +494,13 @@ public static class ConfigManager
 	}
 
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
-	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, bool fallbackToClass, string dataName) where T : ConfigKeyAttribute
+	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, string dataName) where T : ConfigKeyAttribute
 	{
 		var configKeyAttribute = GetAndValidate<T>(memberInfo.MemberInfo);
 		if (configKeyAttribute != null) {
 			return configKeyAttribute.key;
 		}
-		configKeyAttribute = GetAndValidate<T>(memberInfo.Type);
-		if (configKeyAttribute != null) {
-			if (fallbackToClass) // FinishSetup will catch errors on ConfigKey annotations on classes
-				return configKeyAttribute.key;
-		}
+		GetAndValidate<T>(memberInfo.Type); // Will catch errors on ConfigKey annotations on classes
 
 		// Autokey: Determine key from the Type the member belongs to.
 		Type typeMemberBelongsTo = memberInfo.MemberInfo.DeclaringType; 
@@ -519,7 +515,7 @@ public static class ConfigManager
 	{
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> member name or null
 		var args = (TArgs)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TArgs));
-		string configKey = GetConfigKey<T>(memberInfo, fallbackToClass: false, dataName: dataName);
+		string configKey = GetConfigKey<T>(memberInfo, dataName: dataName);
 		if (configKey != null && Language.Exists(configKey)) {
 			string configLocalization = Language.GetTextValue(configKey);
 			if (!string.IsNullOrEmpty(configLocalization))
