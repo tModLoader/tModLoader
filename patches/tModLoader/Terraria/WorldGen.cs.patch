@@ -1825,9 +1825,14 @@
  
  		bool result = false;
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
-@@ -42239,7 +_,7 @@
+@@ -42238,8 +_,12 @@
+ 							if (style != 8 && style != 11 && style != 17)
  								return false;
  							break;
++						case int _ when TileID.Sets.Torch[num]:
++							if (TileObjectData.GetTileData(num, style).WaterPlacement != LiquidPlacement.Allowed)
++								return false;
++							break;
  						case 3:
 -						case 20:
 +						case int _ when TileID.Sets.TreeSapling[num]:
