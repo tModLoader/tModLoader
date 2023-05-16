@@ -83,7 +83,7 @@ public static class ConfigManager
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var config in activeConfigs.Value) {
 				try {
-					string modConfigLabelKey = GetModConfigLabelKey(config, throwErrors: true);
+					string modConfigLabelKey = GetModConfigLabelKey(config);
 					Language.GetOrRegister(modConfigLabelKey, () => Regex.Replace(config.Name, "([A-Z])", " $1").Trim());
 				}
 				catch (ValueNotTranslationKeyException e) {
@@ -114,13 +114,14 @@ public static class ConfigManager
 					var typeLabelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(LabelAttribute));
 #pragma warning restore CS0618 // Type or member is obsolete
 
-					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type, throwErrors: true);
+					var typeLabel = GetAndValidate<LabelKeyAttribute>(variable.Type);
 					string typeLabelKey = typeLabel?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Label";
 					Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
 
-					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type, throwErrors: true);
-					string typeTooltipKey = typeTooltip?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Tooltip");
+					var typeTooltip = GetAndValidate<TooltipKeyAttribute>(variable.Type);
+					string typeTooltipKey = typeTooltip?.key ?? $"Mods.{config.Mod.Name}.Configs.{variable.Type.Name}.Tooltip";
 					Language.GetOrRegister(typeTooltipKey, () => "");
+
 					RegisterLocalizationKeysForMembers(config, variable.Type);
 				}
 
@@ -137,10 +138,10 @@ public static class ConfigManager
 					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 				}
 
-				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, fallbackToClass: false, throwErrors: true, dataName: "Label");
+				string labelKey = GetConfigKey<LabelKeyAttribute>(variable, fallbackToClass: false, dataName: "Label");
 				Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, fallbackToClass: false, throwErrors: true, dataName: "Tooltip");
+				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable, fallbackToClass: false, dataName: "Tooltip");
 				Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 			}
 			catch (ValueNotTranslationKeyException e) when (!e.handled) {
@@ -482,24 +483,24 @@ public static class ConfigManager
 		}
 	}
 
-	private static T GetAndValidate<T>(MemberInfo memberInfo, bool throwErrors = true) where T : ConfigKeyAttribute
+	private static T GetAndValidate<T>(MemberInfo memberInfo) where T : ConfigKeyAttribute
 	{
 		var configKeyAttribute = (T)Attribute.GetCustomAttribute(memberInfo, typeof(T));
 		if (configKeyAttribute != null) {
-			if (configKeyAttribute.malformed && throwErrors)
+			if (configKeyAttribute.malformed)
 				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: memberInfo is Type);
 		}
 		return configKeyAttribute;
 	}
 
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
-	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, bool fallbackToClass, bool throwErrors, string dataName) where T : ConfigKeyAttribute
+	internal static string GetConfigKey<T>(PropertyFieldWrapper memberInfo, bool fallbackToClass, string dataName) where T : ConfigKeyAttribute
 	{
-		var configKeyAttribute = GetAndValidate<T>(memberInfo.MemberInfo, throwErrors: throwErrors);
+		var configKeyAttribute = GetAndValidate<T>(memberInfo.MemberInfo);
 		if (configKeyAttribute != null) {
 			return configKeyAttribute.key;
 		}
-		configKeyAttribute = GetAndValidate<T>(memberInfo.Type, throwErrors: throwErrors);
+		configKeyAttribute = GetAndValidate<T>(memberInfo.Type);
 		if (configKeyAttribute != null) {
 			if (fallbackToClass) // FinishSetup will catch errors on ConfigKey annotations on classes
 				return configKeyAttribute.key;
@@ -518,7 +519,7 @@ public static class ConfigManager
 	{
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string -> member name or null
 		var args = (TArgs)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TArgs));
-		string configKey = GetConfigKey<T>(memberInfo, fallbackToClass: false, throwErrors: false, dataName: dataName);
+		string configKey = GetConfigKey<T>(memberInfo, fallbackToClass: false, dataName: dataName);
 		if (configKey != null && Language.Exists(configKey)) {
 			string configLocalization = Language.GetTextValue(configKey);
 			if (!string.IsNullOrEmpty(configLocalization))
@@ -574,17 +575,17 @@ public static class ConfigManager
 		return null;
 	}
 
-	internal static string GetModConfigLabelKey(ModConfig config, bool throwErrors)
+	internal static string GetModConfigLabelKey(ModConfig config)
 	{
 		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.GetType().Name}.DisplayName");
-		var label = GetAndValidate<LabelKeyAttribute>(config.GetType(), throwErrors: throwErrors);
+		var label = GetAndValidate<LabelKeyAttribute>(config.GetType());
 		return label?.key ?? labelKey;
 	}
 
 	internal static string GetModConfigDisplayName(ModConfig config)
 	{
 		// Priority: Provided Localization Key -> Auto Localization Key -> InternalName (Type.Name)
-		string labelKey = GetModConfigLabelKey(config, throwErrors: false);
+		string labelKey = GetModConfigLabelKey(config);
 		if (Language.Exists(labelKey))
 			return Language.GetTextValue(labelKey);
 		
