@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.ResearchUnlockCount = 100;
 
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.ShimmerTorch;
+			ItemID.Sets.SingleUseInGamepad[Type] = true;
 			ItemID.Sets.Torches[Type] = true;
 		}
 

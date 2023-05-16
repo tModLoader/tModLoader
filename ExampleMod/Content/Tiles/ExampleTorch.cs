@@ -62,6 +62,16 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
+		public override void MouseOver(int i, int j) {
+			Player player = Main.LocalPlayer;
+			player.noThrow = 2;
+			player.cursorItemIconEnabled = true;
+
+			// We can determine the item to show on the cursor by getting the tile style and looking up the corresponding item drop.
+			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
+			player.cursorItemIconID = TileLoader.GetItemDropFromTypeAndStyle(Type, style);
+		}
+
 		public override float GetTorchLuck(Player player) {
 			// GetTorchLuck is called when there is an ExampleTorch nearby the client player
 			// In most use-cases you should return 1f for a good luck torch, or -1f for a bad luck torch.
@@ -94,6 +104,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+			// This code slightly lowers the draw position if there is a solid tile above, so the flame doesn't overlap that tile. Terraria torches do this.
 			offsetY = 0;
 
 			if (WorldGen.SolidTile(i, j - 1)) {
