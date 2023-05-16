@@ -32,7 +32,7 @@ partial class TileID
 		/// <summary> Whether or not this tile is a valid spawn point. </summary>
 		public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
 
-		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. </summary>
+		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <see cref="ItemID.Sets.Torches"/>.</summary>
 		public static bool[] Torch = Factory.CreateBoolSet(TileID.Torches);
 
 		/// <summary> Whether or not this tile is a clock. </summary>
