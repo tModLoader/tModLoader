@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.ResearchUnlockCount = 100;
 
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.ShimmerTorch;
+			ItemID.Sets.Torches[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -19,10 +20,6 @@ namespace ExampleMod.Content.Items.Placeable
 			// Of particular note to torches are Item.holdStyle, Item.flame, and Item.noWet. 
 			Item.DefaultToTorch(ModContent.TileType<Tiles.ExampleTorch>(), 0, false);
 			Item.value = 50;
-		}
-
-		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { // Overrides the default sorting method of this Item.
-			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; // Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be.
 		}
 
 		public override void HoldItem(Player player) {
