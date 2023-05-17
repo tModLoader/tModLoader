@@ -33,7 +33,7 @@ public static class ConfigManager
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 		ObjectCreationHandling = ObjectCreationHandling.Replace,
 		NullValueHandling = NullValueHandling.Ignore,
-		Converters = converters,
+		//Converters = converters,
 		ContractResolver = new ReferenceDefaultsPreservingResolver()
 	};
 
@@ -42,14 +42,16 @@ public static class ConfigManager
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 		ObjectCreationHandling = ObjectCreationHandling.Replace,
 		NullValueHandling = NullValueHandling.Ignore,
-		Converters = converters,
+		//Converters = converters,
 		ContractResolver = serializerSettings.ContractResolver
 	};
 
+	/* Wasn't working due to initialization order. Revist later.
 	private static readonly IList<JsonConverter> converters = new List<JsonConverter>() {
 		new Newtonsoft.Json.Converters.VersionConverter(),
 		//new ColorJsonConverter(),
 	};
+	*/
 
 	private static readonly HashSet<Type> typesWithLocalizationRegistered = new HashSet<Type>();
 
