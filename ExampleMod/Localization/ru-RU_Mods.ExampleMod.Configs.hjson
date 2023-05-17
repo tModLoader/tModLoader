@@ -3,11 +3,6 @@
 # For more info on the multiple files and prefix features, see https://github.com/tModLoader/tModLoader/wiki/Localization#multiple-files and https://github.com/tModLoader/tModLoader/wiki/Localization#prefix
 
 Common: {
-	SampleEnumLabels: {
-		// Peculiar: Very Peculiar
-		// Strange: Quite Strange
-	}
-
 	// LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
 	// LocalizedTooltip: This tooltip is from the localization files.
 	// LocalizedHeader: Headers can help organize
@@ -457,7 +452,6 @@ ModConfigShowcaseSubpages: {
 }
 
 Pair: {
-	// Label: Pair
 	// Tooltip: Pair is a simple class holding a bool and an int
 
 	enabled: {
@@ -472,7 +466,6 @@ Pair: {
 }
 
 SimpleData: {
-	// Label: Simple Data
 	// Tooltip: ""
 
 	Headers: {
@@ -502,7 +495,6 @@ SimpleData: {
 }
 
 Gradient: {
-	// Label: Gradient
 	// Tooltip: Represents a gradient from one color to another
 
 	start: {
@@ -517,7 +509,6 @@ Gradient: {
 }
 
 ComplexData: {
-	// Label: Complex Data
 	// Tooltip: ""
 
 	ListOfInts: {
@@ -537,7 +528,6 @@ ComplexData: {
 }
 
 SubConfigExample: {
-	// Label: Sub Config Example
 	// Tooltip: ""
 
 	boost: {
@@ -567,11 +557,40 @@ SubConfigExample: {
 }
 
 SubSubConfigExample: {
-	// Label: Sub Sub Config Example
 	// Tooltip: ""
 
 	whoa: {
 		// Label: whoa
+		// Tooltip: ""
+	}
+}
+
+SampleEnum: {
+	// Tooltip: ""
+	// Weird.Label: Weird
+	// Odd.Label: Odd
+	// Peculiar.Label: Very Peculiar
+	// Strange.Label: Quite Strange
+}
+
+Corner: {
+	// Tooltip: Anchor Position
+	// TopLeft.Label: Top Left
+	// TopRight.Label: Top Right
+	// BottomLeft.Label: Bottom Left
+	// BottomRight.Label: Bottom Right
+}
+
+ClassUsedAsKey: {
+	// Tooltip: ""
+
+	SomeBool: {
+		// Label: Some Bool
+		// Tooltip: ""
+	}
+
+	SomeNumber: {
+		// Label: Some Number
 		// Tooltip: ""
 	}
 }

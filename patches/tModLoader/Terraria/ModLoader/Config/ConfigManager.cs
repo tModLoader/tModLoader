@@ -110,21 +110,22 @@ public static class ConfigManager
 #pragma warning restore CS0618
 
 			try {
-				// TODO: Classes used in Generic types and Enums
+				List<Type> types = new List<Type>();
 
-				// Register localization for classes added in this mod. This code handles the class itself, not the fields of the classes
-				if (variable.Type.IsClass && variable.Type.Assembly == type.Assembly && typesWithLocalizationRegistered.Add(variable.Type)) {
-#pragma warning disable CS0618 // Type or member is obsolete
-					var typeLabelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.Type, typeof(LabelAttribute));
-#pragma warning restore CS0618 // Type or member is obsolete
+				if (variable.Type.IsGenericType)
+					types.AddRange(variable.Type.GetGenericArguments());
+				else
+					types.Add(variable.Type);
 
-					string typeLabelKey = GetConfigKey<TooltipKeyAttribute>(variable.Type, dataName: "Label");
-					Language.GetOrRegister(typeLabelKey, () => typeLabelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Type.Name, "([A-Z])", " $1").Trim());
+				foreach (var typeToRegister in types) {
+					// Register localization for classes added in this mod. This code handles the class itself and the fields of the classes
+					if ((typeToRegister.IsClass || typeToRegister.IsEnum) && typeToRegister.Assembly == type.Assembly && typesWithLocalizationRegistered.Add(variable.Type)) {
+						// Only tooltip is registered for the Type itself.
+						string typeTooltipKey = GetConfigKey<TooltipKeyAttribute>(typeToRegister, dataName: "Tooltip");
+						Language.GetOrRegister(typeTooltipKey, () => "");
 
-					string typeTooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.Type, dataName: "Tooltip");
-					Language.GetOrRegister(typeTooltipKey, () => "");
-
-					RegisterLocalizationKeysForMembers(variable.Type);
+						RegisterLocalizationKeysForMembers(typeToRegister);
+					}
 				}
 
 				// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
@@ -143,8 +144,10 @@ public static class ConfigManager
 				string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
 				Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
-				Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
+				if (!type.IsEnum) {
+					string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
+					Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
+				}
 			}
 			catch (ValueNotTranslationKeyException e) when (!e.handled) {
 				if (e.errorOnType) {
@@ -365,6 +368,9 @@ public static class ConfigManager
 
 	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(Type type)
 	{
+		if (type.IsEnum) {
+			return type.GetFields(BindingFlags.Public |	BindingFlags.Static).Select(x => new PropertyFieldWrapper(x));
+		}
 		PropertyInfo[] properties = type.GetProperties(
 			BindingFlags.Public |
 			BindingFlags.Instance);
@@ -532,7 +538,7 @@ public static class ConfigManager
 			if (!string.IsNullOrEmpty(typeConfigLocalization))
 				return FormatTextAttribute(typeConfigKey.key, typeConfigLocalization, args?.args);
 		}
-		else if (memberInfo.Type.IsClass) {
+		else if (memberInfo.Type.IsClass || memberInfo.Type.IsEnum) {
 			string typeKey = GetDefaultLocalizationKey(memberInfo.Type, dataName);
 			if (Language.Exists(typeKey)) {
 				string typeConfigLocalization = Language.GetTextValue(typeKey);

@@ -81,6 +81,7 @@ public abstract class ConfigArgsAttribute : Attribute
 /// If the translation value of a property or field that is an object is an empty string, the label of the class will be used instead. <br/>
 /// Values can be interpolated into the resulting label text using <see cref="LabelArgsAttribute"/>. <br/>
 /// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class LabelKeyAttribute : ConfigKeyAttribute
 {
 	public LabelKeyAttribute(string key) : base(key)
