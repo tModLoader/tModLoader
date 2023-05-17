@@ -15,6 +15,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -437,7 +438,7 @@ internal class UIModConfig : UIState
 
 		SetMessage("", Color.White);
 
-		string configDisplayName = ConfigManager.GetModConfigDisplayName(modConfig);
+		string configDisplayName = modConfig.DisplayName.Value;
 
 		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + ": " + configDisplayName);
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);

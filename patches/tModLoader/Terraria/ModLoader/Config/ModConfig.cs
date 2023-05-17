@@ -1,4 +1,6 @@
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -18,6 +20,12 @@ public abstract class ModConfig
 
 	[JsonIgnore]
 	public string Name { get; internal set; }
+
+	[JsonIgnore]
+	public string LocalizationCategory => "Configs";
+
+	[JsonIgnore]
+	public virtual LocalizedText DisplayName => Language.GetOrRegister($"Mods.{Mod.Name}.{LocalizationCategory}.{Name}.{nameof(DisplayName)}", () => Regex.Replace(Name, "([A-Z])", " $1").Trim());
 
 	[JsonIgnore]
 	public abstract ConfigScope Mode { get; }

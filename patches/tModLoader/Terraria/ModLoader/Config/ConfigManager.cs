@@ -87,15 +87,7 @@ public static class ConfigManager
 		// Register localization for all fields and properties that should show
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var config in activeConfigs.Value) {
-				try {
-					string modConfigLabelKey = GetModConfigLabelKey(config);
-					Language.GetOrRegister(modConfigLabelKey, () => Regex.Replace(config.Name, "([A-Z])", " $1").Trim());
-				}
-				catch (ValueNotTranslationKeyException e) {
-					e.additional = $"The ModConfig class '{config.GetType().Name}' caused this exception.";
-					e.Data["mod"] = config.Mod.Name;
-					throw;
-				}
+				_ = config.DisplayName;
 
 				RegisterLocalizationKeysForMembers(config.GetType());
 			}
@@ -577,23 +569,6 @@ public static class ConfigManager
 			return header;
 		}
 		return null;
-	}
-
-	internal static string GetModConfigLabelKey(ModConfig config)
-	{
-		string labelKey = config.Mod.GetLocalizationKey($"Configs.{config.GetType().Name}.DisplayName");
-		var label = GetAndValidate<LabelKeyAttribute>(config.GetType());
-		return label?.key ?? labelKey;
-	}
-
-	internal static string GetModConfigDisplayName(ModConfig config)
-	{
-		// Priority: Provided Localization Key -> Auto Localization Key -> InternalName (Type.Name)
-		string labelKey = GetModConfigLabelKey(config);
-		if (Language.Exists(labelKey))
-			return Language.GetTextValue(labelKey);
-		
-		return config.Name;
 	}
 }
 
