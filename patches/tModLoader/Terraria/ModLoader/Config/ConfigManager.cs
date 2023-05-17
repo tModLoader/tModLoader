@@ -33,6 +33,7 @@ public static class ConfigManager
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 		ObjectCreationHandling = ObjectCreationHandling.Replace,
 		NullValueHandling = NullValueHandling.Ignore,
+		//TypeNameHandling = TypeNameHandling.Auto, // We can support polymorphism for collections if requested. Could support an Add button per derived class in UI?
 		//Converters = converters,
 		ContractResolver = new ReferenceDefaultsPreservingResolver()
 	};
@@ -42,6 +43,7 @@ public static class ConfigManager
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 		ObjectCreationHandling = ObjectCreationHandling.Replace,
 		NullValueHandling = NullValueHandling.Ignore,
+		//TypeNameHandling = TypeNameHandling.Auto,
 		//Converters = converters,
 		ContractResolver = serializerSettings.ContractResolver
 	};
