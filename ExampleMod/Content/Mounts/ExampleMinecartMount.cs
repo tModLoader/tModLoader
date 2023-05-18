@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Mounts
 
 		public override void UpdateEffects(Player player)
 		{
-			//Visuals copied from Diamond Minecart
+			// Visuals copied from Diamond Minecart
 			if (Main.rand.NextBool(10))
 			{
 				Vector2 randomOffset = Main.rand.NextVector2Square(-1f, 1f) * new Vector2(22f, 10f);

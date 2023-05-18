@@ -1472,7 +1472,7 @@
 +	/// Specifically: <code>
 +	/// width = 36;
 +	/// height = 26;
-+	///	mountType = mount;
++	/// mountType = mount;
 +	/// </code>
 +	/// </summary>
 +	/// <param name="mount">The mount type</param>
