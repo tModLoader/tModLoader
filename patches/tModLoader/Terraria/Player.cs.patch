@@ -6291,15 +6291,26 @@
  		for (int i = 0; i < 1000; i++) {
  			Projectile projectile = Main.projectile[i];
  			if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
-@@ -38511,7 +_,7 @@
- 				num = num2 - 426;
+@@ -38475,6 +_,11 @@
+ 			float B = 0.8f;
+ 			int num = 0;
+ 			int num2 = BiomeTorchHoldStyle(sItem.type);
++			if (num2 >= ItemID.Count) {
++				// This could be a different hook, but then modders would have to move code. TorchID could be used, but it would be a lot of work managing another modded ID and would limit torch lighting and dust behavior to the vanilla pattern.
++				ContentSamples.ItemsByType[num2]?.ModItem?.HoldItem(this);
++				goto PostVanillaTorchLight;
++			}
+ 			if (num2 == 523)
+ 				num = 8;
+ 			else if (num2 == 974)
+@@ -38552,6 +_,7 @@
+ 				Lighting.AddLight(RotatedRelativePoint(new Vector2(itemLocation.X + 12f + velocity.X, itemLocation.Y - 14f + velocity.Y)), R, G, B);
+ 			}
+ 		}
++		PostVanillaTorchLight:
  
- 			num = (int)MathHelper.Clamp(num, 0f, TorchID.Count - 1);
--			TorchID.TorchColor(num, out R, out G, out B);
-+			TorchID.TorchColor(num, out R, out G, out B); // TODO: Modded torches won't use real holdstyle code here, such as light.
- 			int num3 = TorchID.Dust[num];
- 			int maxValue = 30;
- 			if (itemAnimation > 0)
+ 		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
+ 			int maxValue2 = 20;
 @@ -38777,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)
