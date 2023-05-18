@@ -34,6 +34,16 @@ public abstract partial class ModSceneEffect : ModType
 	public virtual int Music => -1;
 
 	/// <summary>
+	/// The torch item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeTorchItemType => -1;
+
+	/// <summary>
+	/// The campfire item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeCampfireItemType => -1;
+
+	/// <summary>
 	/// The path to the texture that will display behind the map. Should be 115x65.
 	/// </summary>
 	public virtual string MapBackground => null;

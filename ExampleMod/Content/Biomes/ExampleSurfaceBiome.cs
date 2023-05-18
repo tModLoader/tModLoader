@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.Systems;
+using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -17,6 +18,8 @@ namespace ExampleMod.Content.Biomes
 
 		// Select Music
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
+
+		public override int BiomeTorchItemType => ModContent.ItemType<ExampleTorch>();
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

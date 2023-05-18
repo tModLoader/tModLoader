@@ -5033,6 +5033,39 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
+@@ -30778,15 +_,15 @@
+ 			}
+ 
+ 			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
+-			ushort num3 = (ushort)HeldItem.createTile;
++			int num3 = HeldItem.createTile;
+ 			int num4 = HeldItem.placeStyle;
+ 			if (UsingBiomeTorches && num3 == 4)
+-				num4 = BiomeTorchPlaceStyle(num4);
++				BiomeTorchPlaceStyle(ref num3, ref num4);
+ 
+ 			if (UsingBiomeTorches && num3 == 215)
+-				num4 = BiomeCampfirePlaceStyle(num4);
++				BiomeCampfirePlaceStyle(ref num3, ref num4);
+ 
+-			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, num3, num4)) {
++			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, (ushort)num3, num4)) {
+ 				canUse = false;
+ 				NetMessage.SendData(17, -1, -1, null, 21, tileTargetX, tileTargetY, (int)num3, num4);
+ 				ApplyItemTime(HeldItem);
+@@ -30803,10 +_,10 @@
+ 		int createTile = HeldItem.createTile;
+ 		int num = HeldItem.placeStyle;
+ 		if (UsingBiomeTorches && createTile == 4)
+-			num = BiomeTorchPlaceStyle(num);
++			BiomeTorchPlaceStyle(ref createTile, ref num);
+ 
+ 		if (UsingBiomeTorches && createTile == 215)
+-			num = BiomeCampfirePlaceStyle(num);
++			BiomeCampfirePlaceStyle(ref createTile, ref num);
+ 
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
+ 		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
 @@ -30833,8 +_,17 @@
  		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
  			return tile.frameY != num * 18;
@@ -5051,6 +5084,15 @@
  
  		if (tile.type == 215 && tile.type == createTile)
  			return tile.frameX / 54 != num;
+@@ -30938,7 +_,7 @@
+ 		}
+ 		else {
+ 			if (UsingBiomeTorches && tileToCreate == 4 && num == 0)
+-				num = BiomeTorchPlaceStyle(num);
++				BiomeTorchPlaceStyle(ref tileToCreate, ref num);
+ 
+ 			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
+ 		}
 @@ -30964,8 +_,12 @@
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
@@ -5064,6 +5106,68 @@
  		}
  
  		return data;
+@@ -30981,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public int BiomeTorchPlaceStyle(int style)
++	public int BiomeTorchPlaceStyle(ref int type, ref int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 0)
+ 			return style;
+@@ -31011,6 +_,12 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 16;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeTorchItemType.value];
++			type = item.createTile;
++			style = item.placeStyle;
++		}
++
+ 		return style;
+ 	}
+ 
+@@ -31044,10 +_,14 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 4383;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			style = CurrentSceneEffect.biomeTorchItemType.value;
++		}
++
+ 		return style;
+ 	}
+ 
+-	public int BiomeCampfirePlaceStyle(int style)
++	public int BiomeCampfirePlaceStyle(ref int type, ref int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 0)
+ 			return style;
+@@ -31077,6 +_,12 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 8;
+ 
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeCampfireItemType.value];
++			type = item.createTile;
++			style = item.placeStyle;
++		}
++
+ 		return style;
+ 	}
+ 
+@@ -31110,6 +_,10 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			itemType = 4689;
+ 
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			itemType = CurrentSceneEffect.biomeCampfireItemType.value;
++		}
++
+ 		return itemType;
+ 	}
+ 
 @@ -31253,7 +_,9 @@
  				int num7 = FindItem(849);
  				if (num7 > -1 && WorldGen.PlaceActuator(num5, num6)) {
@@ -5534,6 +5638,15 @@
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
  		}
+@@ -33782,7 +_,7 @@
+ 		overrideCanPlace = null;
+ 		forcedRandom = null;
+ 		if (UsingBiomeTorches && tileToCreate == 215 && previewPlaceStyle == 0)
+-			previewPlaceStyle = BiomeCampfirePlaceStyle(previewPlaceStyle);
++			BiomeCampfirePlaceStyle(ref tileToCreate, ref previewPlaceStyle);
+ 
+ 		if (targetTile != null && targetTile.active()) {
+ 			ushort type = targetTile.type;
 @@ -33820,13 +_,18 @@
  			_spawnMuramasaCut = true;
  
@@ -6178,6 +6291,15 @@
  		for (int i = 0; i < 1000; i++) {
  			Projectile projectile = Main.projectile[i];
  			if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
+@@ -38511,7 +_,7 @@
+ 				num = num2 - 426;
+ 
+ 			num = (int)MathHelper.Clamp(num, 0f, TorchID.Count - 1);
+-			TorchID.TorchColor(num, out R, out G, out B);
++			TorchID.TorchColor(num, out R, out G, out B); // TODO: Modded torches won't use real holdstyle code here, such as light.
+ 			int num3 = TorchID.Dust[num];
+ 			int maxValue = 30;
+ 			if (itemAnimation > 0)
 @@ -38777,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)

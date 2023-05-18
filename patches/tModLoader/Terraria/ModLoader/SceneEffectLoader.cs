@@ -36,10 +36,12 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 		public PrioritizedPair music;
 		public string mapBackground;
 		public CaptureBiome.TileColorStyle tileColorStyle;
+		public PrioritizedPair biomeTorchItemType;
+		public PrioritizedPair biomeCampfireItemType;
 
 		public SceneEffectInstance()
 		{
-			waterStyle = undergroundBackground = surfaceBackground = music = PrioritizedPair.Default;
+			waterStyle = undergroundBackground = surfaceBackground = music = biomeTorchItemType = biomeCampfireItemType = PrioritizedPair.Default;
 			tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			mapBackground = null;
 		}
@@ -112,6 +114,18 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 			if (result.music.priority == 0 && sceneEffect.Music != -1) {
 				result.music.value = sceneEffect.Music;
 				result.music.priority = sceneEffect.Priority;
+				sceneEffectFields++;
+			}
+
+			if (result.biomeTorchItemType.priority == 0 && sceneEffect.BiomeTorchItemType != -1) {
+				result.biomeTorchItemType.value = sceneEffect.BiomeTorchItemType;
+				result.biomeTorchItemType.priority = sceneEffect.Priority;
+				sceneEffectFields++;
+			}
+
+			if (result.biomeCampfireItemType.priority == 0 && sceneEffect.BiomeCampfireItemType != -1) {
+				result.biomeCampfireItemType.value = sceneEffect.BiomeCampfireItemType;
+				result.biomeCampfireItemType.priority = sceneEffect.Priority;
 				sceneEffectFields++;
 			}
 
