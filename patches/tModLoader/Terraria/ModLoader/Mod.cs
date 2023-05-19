@@ -58,7 +58,7 @@ public partial class Mod
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
+	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
 	/// <summary>
@@ -96,14 +96,11 @@ public partial class Mod
 			return;
 
 		// TODO: Attribute to specify ordering of ModConfigs
-		foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName))
-		{
-			if (type.IsAbstract)
-			{
+		foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName)) {
+			if (type.IsAbstract) {
 				continue;
 			}
-			if (type.IsSubclassOf(typeof(ModConfig)))
-			{
+			if (type.IsSubclassOf(typeof(ModConfig))) {
 				var mc = (ModConfig)Activator.CreateInstance(type, true)!;
 				// Skip loading ClientSide on Main.dedServ?
 				if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
@@ -129,7 +126,7 @@ public partial class Mod
 
 	/// <summary> Call this to manually add a content instance of the specified type (with a parameterless constructor) to the game. </summary>
 	/// <returns> true if the instance was successfully added </returns>
-	public void AddContent<T>() where T:ILoadable, new() => AddContent(new T());
+	public bool AddContent<T>() where T : ILoadable, new() => AddContent(new T());
 
 	/// <summary> Call this to manually add the given content instance to the game. </summary>
 	/// <param name="instance"> The content instance to add </param>

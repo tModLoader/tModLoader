@@ -65,6 +65,9 @@ public class ModNPCTest : ModNPC
 	{
 	}
 
+	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
+	public override void ModifyActiveShop(string shopName, Item[] items) { }
+
 	public override void HitEffect(NPC.HitInfo hit) { }
 	public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) { }
 	public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) { }
@@ -79,6 +82,15 @@ public class ModNPCTest : ModNPC
 		return false;
 #endif
 	}
+	public void HitMemberRename(NPC npc) {
+		var hit = npc.CalculateHitInfo(0, 0);
+		hit.Knockback = 2;
+	}
 	public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) => false;
 	public override void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset) { }
+	public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)/* tModPorter Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type. */ {
+#if COMPILE_ERROR
+		closeness = 10;
+#endif
+	}
 }

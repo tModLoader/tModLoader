@@ -15,7 +15,7 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -65,8 +_,19 @@
+@@ -65,8 +_,22 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
  	public Vector2 netOffset = Vector2.Zero;
@@ -27,6 +27,9 @@
 +	/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
 +	/// </summary>
 +	public int catchItem; //TML: Changed from short to int for convenience and consistency purposes.
++	/// <summary>
++	/// Identifies the player who released this NPC into the world. Used mainly for released critters. Helps limit how many critters a player can release. Default to 255, indicating that the npc was not released by a player.
++	/// </summary>
  	public short releaseOwner = 255;
 +
 +	/// <summary>
@@ -36,6 +39,20 @@
  	public int rarity;
  	public static bool taxCollector = false;
  	public bool[] playerInteraction = new bool[256];
+@@ -75,7 +_,13 @@
+ 	public static bool freeCake = false;
+ 	private static int spawnSpaceX = 3;
+ 	private static int spawnSpaceY = 3;
++	/// <summary>
++	/// An offset from the actual position of the npc that will be added to the draw position. Used to fake the effect of NPC smoothly traveling up single block obstacles. 
++	/// </summary>
+ 	public float gfxOffY;
++	/// <summary>
++	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// </summary>
+ 	public float stepSpeed;
+ 	private static float gravity = 0.3f;
+ 	public bool teleporting;
 @@ -99,6 +_,13 @@
  	public static int deerclopsBoss = -1;
  	public int netSkip;
@@ -256,23 +273,37 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,47 +_,150 @@
+@@ -233,51 +_,172 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
 +
 +	/// <summary>
-+	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
++	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
 +	/// </summary>
  	public int[] immune = new int[256];
  	public int directionY = 1;
++	/// <summary>
++	/// The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game. This will be equal to either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.AngryBones"/> or ModContent.NPCType&lt;MyModNPC&gt;(). To check if an NPC instance is a specific NPC, check <c>NPC.type == NPCID.VanillaNPCHere</c> or <c>NPC.type == ModContent.NPCType&lt;ModdedNPCHere&gt;()</c> in an <see langword="if"/> statement.
++	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
++	/// </summary>
++	/// <negativenote>There are a few NPC that share the same <see cref="type"/> number, usually slight variations of enemies. <see cref="NPCID.GreenSlime"/> and <see cref="NPCID.RedSlime"/> have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as <see cref="NPCID.BlueSlime"/>. If code logic requires differentiating between these variations, use <see cref="netID"/> instead.</negativenote>
  	public int type;
++	/// <summary>
++	/// An array with 4 slots used for any sort of data storage, which is occasionally synced from the server to clients. Each vanilla <see cref="NPCAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true to manually sync. The advantage of using these 4 floats is that they are synced automatically. Using fields in your <see cref="ModNPC"/> class will work just the same, but they might need to be synced via <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModNPC.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
++	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleCustomAISlimeNPC.cs#L36">ExampleCustomAISlimeNPC.cs</see> can be used to reuse the ai array entries with readable names.
++	/// <br/> Defaults to the values passed into <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>, usually [0, 0, 0, 0].
++	/// </summary>
  	public float[] ai = new float[maxAI];
++	/// <summary>
++	/// Acts like <see cref="ai"/>, but does not sync to the server. Many vanilla <see cref="NPCAIStyleID"/> use these slots for various purposes.
++	/// <br/> Defaults to [0, 0, 0, 0]
++	/// </summary>
  	public float[] localAI = new float[maxAI];
  	public int aiAction;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <br/> If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic.
 +	/// <br/> Defaults to 0.
@@ -354,7 +385,7 @@
 +
 +	/// <summary>
 +	/// Indicates that this NPC is drawn at a specific layer in the render order. Must use in conjunction with <see cref="ModNPC.DrawBehind(int)"/>.
-+	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
 +	/// </summary>
  	public bool hide;
 +
@@ -398,7 +429,7 @@
 +
 +	/// <summary>
 +	/// Indicates that this NPC draws behind solid tiles.
-+	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
 +	/// </summary>
  	public bool behindTiles;
  	public bool lavaImmune;
@@ -409,6 +440,26 @@
  	public float value;
  	public int extraValue;
  	public bool dontTakeDamage;
+ 	private int catchableNPCTempImmunityCounter;
++	/// <summary>
++	/// Similar to <see cref="type"/>, but accounts for negative <see cref="NPCID"/> values. <br/>
++	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
++	/// </summary>
+ 	public int netID;
+ 	public int statsAreScaledForThisManyPlayers;
+ 	public float strengthMultiplier = 1f;
+@@ -290,6 +_,11 @@
+ 	public bool oldHomeless;
+ 	public int oldHomeTileX = -1;
+ 	public int oldHomeTileY = -1;
++	/// <summary>
++	/// Indicates that an NPC is friendly to players. If true, a player won't damage the NPC and the NPC won't deal contact damage to players, unless otherwise forced. <br/>
++	/// Mostly set to true for town npc and rescuable town npc. <br/>
++	/// Naturally spawned critter NPC that are <see cref="Main.npcCatchable"/> will automatically be friendly for 1.5 seconds after spawning. <br/>
++	/// </summary>
+ 	public bool friendly;
+ 	public bool closeDoor;
+ 	public int doorX;
 @@ -382,7 +_,9 @@
  	private static bool dayTimeHax;
  	private static bool rainingHax;
@@ -620,14 +671,14 @@
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModNPC = ModNPC;
-+		var originalGlobals = globalNPCs;
++		var originalGlobals = _globals;
 +
 +		SetDefaultsKeepPlayerInteraction(Type);
 +
 +		type = originalType;
 +		netID = originalNetID;
 +		ModNPC = originalModNPC;
-+		globalNPCs = originalGlobals;
++		_globals = originalGlobals;
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
@@ -639,7 +690,7 @@
 +		ShowNameOnHover = true;
 +		HideStrikeDamage = false;
 +		BossBar = null;
-+		globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
++		_globals = null;
 +
  		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  		honeyMovementSpeed = 0.25f;
@@ -663,6 +714,66 @@
  		setFrameSize = false;
  		netSkip = -2;
  		realLife = -1;
+@@ -6970,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2002;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 358) {
+ 			width = 12;
+@@ -7216,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2740;
+ 			npcSlots = 0.1f;
+ 		}
+@@ -7680,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2893;
+ 			npcSlots = 0.1f;
+ 			rarity = 3;
+@@ -7709,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2895;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			rarity = 3;
+ 		}
+ 		else if (type == 449) {
+@@ -7936,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = (short)(3191 + type - 484);
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 488) {
+ 			width = 18;
+@@ -9994,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 4363;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 607) {
+ 			noGravity = true;
 @@ -10793,13 +_,18 @@
  			catchItem = 2121;
  		}
@@ -682,13 +793,14 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
-@@ -10841,12 +_,12 @@
+@@ -10841,12 +_,13 @@
  		else if (Main.tenthAnniversaryWorld)
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
 +		if (type >= 0 && Main.npcCatchable[type]) {
  			catchableNPCTempImmunityCounter = 90;
++			catchableNPCOriginallyFriendly = friendly; 
  			friendly = true;
  		}
  
@@ -746,13 +858,12 @@
  		if (aiStyle == 0) {
  			if (Main.netMode != 1) {
  				for (int i = 0; i < 255; i++) {
-@@ -31736,7 +_,8 @@
+@@ -31736,7 +_,7 @@
  			timeLeft = 86400;
  		}
  
-+		//TODO: Replace this downcast.
 -		timeLeft -= Main.dayRate;
-+		timeLeft -= (int)Main.dayRate;
++		timeLeft -= Main.worldEventUpdates;
  		if (timeLeft < 0)
  			timeLeft = 0;
  
@@ -1765,7 +1876,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,120 @@
+@@ -64591,26 +_,163 @@
  
  		return armorPenetration / 2;
  	}
@@ -1794,11 +1905,8 @@
 +		HitInfo hit;
 +		if (Damage == 9999) {
 +			hit = new HitInfo {
-+				DamageType = DamageClass.Default,
-+				SourceDamage = Damage,
-+				Damage = 0,
 +				Crit = crit,
-+				KnockBack = knockBack,
++				Knockback = knockBack,
 +				HitDirection = hitDirection,
 +				InstantKill = true
 +			};
@@ -1812,6 +1920,13 @@
 +		return hit;
 +	}
 +
++	/// <summary>
++	/// Initializes a <see cref="HitModifiers"/> calculation with the properties of this NPC, including calling <see cref="NPCLoader.ModifyIncomingHit"/>
++	/// </summary>
++	/// <param name="damageType">The DamageType of the hit.</param>
++	/// <param name="hitDirection">The direction to apply knockback. If 0, no knockback will be applied.</param>
++	/// <param name="ignoreArmorDebuffs">Ignores <see cref="ichor"/> and <see cref="betsysCurse"/>. Only used for legacy vanilla codepaths.</param>
++	/// <returns></returns>
 +	public HitModifiers GetIncomingStrikeModifiers(DamageClass damageType, int hitDirection, bool ignoreArmorDebuffs = false)
 +	{
 +		var modifiers = new HitModifiers() with {
@@ -1822,7 +1937,11 @@
 +
 +		modifiers.FinalDamage *= takenDamageMultiplier;
 +
-+		modifiers.Defense.Base += defense;
++		if (defense >= 0)
++			modifiers.Defense.Base += defense;
++		else
++			modifiers.FlatBonusDamage += -defense;
++
 +		if (!ignoreArmorDebuffs) {
 +			if (ichor)
 +				modifiers.Defense.Flat -= 15;
@@ -1852,17 +1971,52 @@
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
-+	public HitInfo SimpleStrike(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
++	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
++	}
++
++	/// <summary>
++	/// Calls <see cref="CalculateHitInfo"/>, <see cref="StrikeNPC(HitInfo, bool, bool)"/> and then <see cref="NetMessage.SendStrikeNPC"/> (in multiplayer) <br/>
++	/// </summary>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Defaults to false</param>
++	/// <param name="knockBack">Defaults to 0</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
++	public int SimpleStrikeNPC(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0, bool noPlayerInteraction = false)
++	{
++		var hit = CalculateHitInfo(damage, hitDirection, crit, knockBack, damageType, damageVariation, luck);
++		int damageDone = StrikeNPC(hit, fromNet: false, noPlayerInteraction);
++		if (Main.netMode != NetmodeID.SinglePlayer)
++			NetMessage.SendStrikeNPC(this, hit);
++
++		return damageDone;
++	}
++
++	/// <summary>
++	/// Helper method for calling <see cref="StrikeNPC(HitInfo, bool, bool)"/> with a <see cref="HitInfo.InstantKill"/> strike. <br/>
++	/// Use to butcher your own NPCs. <br/>
++	/// Not recommended for use on multiplayer clients because the net packet will trigger <see cref="PlayerInteraction"/> on the server.
++	/// </summary>
++	public void StrikeInstantKill()
++	{
++		var hit = new NPC.HitInfo() { InstantKill = true };
++		StrikeNPC(hit, noPlayerInteraction: true);
++		if (Main.netMode != NetmodeID.SinglePlayer)
++			NetMessage.SendStrikeNPC(this, hit);
 +	}
 +
 +	/// <summary>
 +	/// Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the provided <see cref="HitInfo"/><br/>
 +	/// Calls <see cref="HitEffect(HitInfo)"/> and associated hooks after dealing damage.<br/>
 +	/// Calls <see cref="checkDead"/><br/>
-+	/// Does not automatically send packets. Use <see cref="NetMessage.SendStrikeNPC(NPC, in HitInfo, int)"/> to synchronize hits.
++	/// Does not automatically send packets. Use <see cref="NetMessage.SendStrikeNPC"/> to synchronize hits.
 +	/// </summary>
-+	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="SimpleStrike"/></param>
++	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="CalculateHitInfo"/></param>
 +	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
 +	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
 +	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
@@ -1911,8 +2065,8 @@
  				if (onFire2)
  					num3 *= 1.1f;
 +			*/
-+			if (hit.KnockBack > 0) {
-+				float num3 = hit.KnockBack;
++			if (hit.Knockback > 0) {
++				float num3 = hit.Knockback;
  
  				if (num3 > 8f) {
  					float num4 = num3 - 8f;
@@ -1954,11 +2108,11 @@
 +		instantKill ??= dmg == 9999;
 +		HitEffect(new HitInfo {
 +			DamageType = DamageClass.Default,
-+			SourceDamage = (int)dmg,
-+			Damage = instantKill.Value ? 0 : (int)dmg,
++			SourceDamage = instantKill.Value ? 1 : (int)dmg,
++			Damage = instantKill.Value ? 1 : (int)dmg,
 +			Crit = false,
 +			HitDirection = hitDirection,
-+			KnockBack = 0,
++			Knockback = 0,
 +			InstantKill = instantKill.Value
 +		});
 +	}
@@ -2110,15 +2264,31 @@
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
-@@ -72655,7 +_,7 @@
+@@ -72653,19 +_,21 @@
+ 		justHit = false;
+ 	}
  
++
  	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type]) {
++		// TML: changed logic to not assume npcCatchable npc should not be friendly after invulnerability period. Also only run code during period to prevent undoing intentional changes to friendly in AI code.
++		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter > 0) {
  			if (releaseOwner != 255 || SpawnedFromStatue)
  				catchableNPCTempImmunityCounter = 0;
  
+ 			bool num = friendly;
++			catchableNPCTempImmunityCounter--;
+ 			if (catchableNPCTempImmunityCounter > 0) {
+-				catchableNPCTempImmunityCounter--;
+ 				friendly = true;
+ 			}
+ 			else {
+-				friendly = false;
++				friendly = catchableNPCOriginallyFriendly;
+ 			}
+ 
+ 			if (num != friendly)
 @@ -72760,6 +_,8 @@
  		}
  	}

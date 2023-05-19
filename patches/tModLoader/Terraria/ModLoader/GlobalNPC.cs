@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -6,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -15,27 +17,20 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
+		LoaderUtils.MustOverrideTogether(this, g => g.SendExtraAI, g => g.ReceiveExtraAI);
+	}
+
 	protected sealed override void Register()
 	{
-		NPCLoader.VerifyGlobalNPC(this);
-
-		ModTypeLookup<GlobalNPC>.Register(this);
-
-		Index = (ushort)NPCLoader.globalNPCs.Count;
-
-		NPCLoader.globalNPCs.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, Index);
-
-	/// <summary>
-	/// Allows you to set the properties of any and every NPC that gets created.
-	/// </summary>
-	public virtual void SetDefaults(NPC npc)
-	{
-	}
 
 	/// <summary>
 	/// Gets called when any NPC spawns in world
@@ -174,9 +169,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/> 
-	/// Called on local, server and remote clients. <br/> 
-	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/> 
+	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/>
 	/// </summary>
 	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
@@ -335,6 +330,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="target"></param>
 	/// <returns></returns>
 	public virtual bool CanHitNPC(NPC npc, NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC npc, NPC attacker)
 	{
 		return true;
 	}
@@ -626,12 +632,23 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to add items to an NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
+	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
 	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="shop"></param>
-	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
+	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
+	public virtual void ModifyShop(NPCShop shop)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
+	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
+	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// </summary>
+	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
+	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
+	/// <summary>
+	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}
 
@@ -756,13 +773,14 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is shooting (the NPC must have an attack type of 1). Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
+	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is shooting (the NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="scale"></param>
 	/// <param name="item"></param>
-	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	/// <param name="itemFrame"></param>
+	/// <param name="scale"></param>
+	/// <param name="horizontalHoldoutOffset"></param>
+	public virtual void DrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 	{
 	}
 

@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
@@ -12,11 +13,35 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 {
 	internal readonly IEntitySource thisEntitySourceCache;
 
-	internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
-
 	public ModNPC ModNPC { get; internal set; }
 
-	public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
+#region Globals
+	int IEntityWithGlobals<GlobalNPC>.Type => type;
+	internal GlobalNPC[] _globals;
+	public RefReadOnlyArray<GlobalNPC> EntityGlobals => _globals;
+	public EntityGlobalsEnumerator<GlobalNPC> Globals => new(this);
+
+	/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="IndexOutOfRangeException"/>
+	public T GetGlobalNPC<T>() where T : GlobalNPC
+		=> GlobalNPC.GetGlobal<T>(type, EntityGlobals);
+
+	/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="NullReferenceException"/>
+	public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
+		=> GlobalNPC.GetGlobal(type, EntityGlobals, baseInstance);
+
+	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
+	public bool TryGetGlobalNPC<T>(out T result) where T : GlobalNPC
+		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, out result);
+
+	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
+	/// <returns> Whether or not the requested instance has been found. </returns>
+	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
+		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
+#endregion
 
 	/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
 	public NPCHappiness Happiness => NPCHappiness.Get(type);
@@ -46,6 +71,8 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// </summary>
 	public IBigProgressBar BossBar { get; set; }
 
+	private bool catchableNPCOriginallyFriendly; // TML: Fix #3299, Allow npcCatchable to work with friendly npc.
+
 	public NPC()
 	{
 		thisEntitySourceCache = new EntitySource_Parent(this);
@@ -57,29 +84,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <inheritdoc cref="HasBuff(int)" />
 	public bool HasBuff<T>() where T : ModBuff
 		=> HasBuff(ModContent.BuffType<T>());
-
-	// Get
-
-	/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalNPC<T>(bool exactType = true) where T : GlobalNPC
-		=> GlobalType.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, exactType);
-
-	/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="NullReferenceException"/>
-	public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
-		=> GlobalType.GetGlobal<NPC, GlobalNPC, T>(globalNPCs, baseInstance);
-
-	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
-	public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, exactType, out result);
-
-	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
-	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
 
 	/// <summary>
 	/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>

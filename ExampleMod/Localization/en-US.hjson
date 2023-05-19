@@ -59,27 +59,19 @@ Mods: {
 		}
 
 		Tiles: {
-			ExampleClock.MapEntry: Example Clock
-			ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
-			ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
+			ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItem.DisplayName}"
+			ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItemAdvanced.DisplayName}"
 			ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			ExampleFishingCrate.MapEntry: Crate
 			ExampleHerb.MapEntry: Example Herb
 			ExampleMusicBoxTile.MapEntry: Music Box
 			ExampleOre.MapEntry: ExampleOre
-			ExampleTorch.MapEntry: Torch
-			ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
 				MapEntry0: Example Chest
 				MapEntry1: Locked Example Chest
 			}
 
-			ExampleDoorClosed.MapEntry: Example Door
-			ExampleDoorOpen.MapEntry: Example Door
-			ExampleTable.MapEntry: Table
-			ExampleWorkbench.MapEntry: Work Bench
-			ExampleSapling.MapEntry: Example Sapling
 			ExampleDresser.MapEntry: Example Dresser
 		}
 
@@ -120,11 +112,6 @@ Mods: {
 			ExamplePylonItemAdvanced: {
 				DisplayName: Unstable Pylon
 				Tooltip: Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!
-			}
-
-			ExamplePet: {
-				DisplayName: Mods.ExampleMod.ItemName.ExamplePet
-				Tooltip: Mods.ExampleMod.ItemTooltip.ExamplePet
 			}
 
 			ExampleBeard: {
@@ -370,6 +357,12 @@ Mods: {
 				Tooltip: This summons a modded mount.
 			}
 
+			ExampleOnBuyItem: {
+				DisplayName: Volatile Explosive Device
+				Tooltip: Has a 50% chance to kill the player whenever bought from a shop
+				DeathMessage: "{0} tried and failed to handle a very volatile explosive device."
+			}
+
 			ExamplePaperAirplane: {
 				DisplayName: Example Paper Airplane
 				Tooltip: This is a modded paper airplane.
@@ -420,10 +413,7 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ExampleLamp: {
-				DisplayName: Example Lamp
-				Tooltip: ""
-			}
+			ExampleLamp.DisplayName: Example Lamp
 
 			ExampleMusicBox: {
 				DisplayName: Music Box (Marble Gallery)
@@ -581,7 +571,7 @@ Mods: {
 
 			ExampleCloneWeapon: {
 				DisplayName: Meowmere V2
-				Tooltip: ""
+				Tooltip: Similar to {$ItemName.Meowmere} [i:Meowmere]
 			}
 
 			ExampleCustomAmmoGun: {
@@ -719,14 +709,13 @@ Mods: {
 				Tooltip: ""
 			}
 
-			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus". 
-			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file. 
+			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus".
+			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file.
 			OctopusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 			SarcophagusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
 
 			HoldStyleShowcase: {
 				DisplayName: Hold Style Showcase
-				# 
 				Tooltip:
 					'''
 					This item showcases each HoldStyle.
@@ -747,6 +736,15 @@ Mods: {
 			ShimmerShowcaseConditions: {
 				Tooltip: ""
 				DisplayName: Shimmer Showcase Conditions
+			}
+
+			ExampleCustomSwingSword: {
+				DisplayName: Example Custom Swing Sword
+				Tooltip:
+					'''
+					This is a sword with a custom swinging animation made with projectiles
+					Use more than once to cycle through attacks
+					'''
 			}
 
 			ExampleDresser: {
@@ -788,6 +786,11 @@ Mods: {
 				DisplayName: Example Javelin
 				Tooltip: ""
 			}
+
+			ActiveSoundShowcase: {
+				DisplayName: Active Sound Showcase
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -818,20 +821,17 @@ Mods: {
 			MinionBossEye.DisplayName: Minion Boss Eye
 			ExampleSimpleMinion.DisplayName: Example Minion
 			SparklingBall.DisplayName: Sparkling Ball
+			ExampleCustomSwingProjectile.DisplayName: Example Custom Swing Projectile
 			ExampleDrillProjectile.DisplayName: Example Drill Projectile
 			ExampleExplosive.DisplayName: Example Explosive
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
+			ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 		}
 
 		Buffs: {
 			ExamplePetBuff: {
 				DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}"
 				Description: '''"Let this pet be an example to you!"'''
-			}
-
-			ExamplePet: {
-				DisplayName: Mods.ExampleMod.BuffName.ExamplePet
-				Description: Mods.ExampleMod.BuffDescription.ExamplePet
 			}
 
 			AnimatedBuff: {
@@ -924,8 +924,18 @@ Mods: {
 		}
 
 		Prefixes: {
-			ExamplePrefix.DisplayName: Example Prefix
-			ExampleDerivedPrefix.DisplayName: Example Derived Prefix
+			ExamplePrefix: {
+				DisplayName: Example Prefix
+				AdditionalTooltip: More Power
+			}
+
+			ExampleDerivedPrefix: {
+				DisplayName: Example Derived Prefix
+				AdditionalTooltip: Even More Power
+			}
+
+			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
+			PowerTooltip: "{0:+0;-#} Power"
 		}
 
 		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
@@ -989,7 +999,13 @@ Mods: {
 
 		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
 		ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
-		Conditions.LowHealth: When the player is below half HP
+
+		Conditions: {
+			LowHealth: When the player is below half HP
+			PlayerHasLifeforceBuff: When the player has the Lifeforce buff
+			InExampleBiome: In the Example biome
+			NotSellingExampleItem: When not selling Example Item
+		}
 
 		DropConditions: {
 			ExampleSoul: Drops in the Example Underground biome in hardmode
@@ -998,5 +1014,6 @@ Mods: {
 		}
 	}
 }
+
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
 UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Journey world, silly.

@@ -25,6 +25,7 @@ public class ModItemTest : ModItem
 		Tooltip.SetDefault(
 			"This tooltip\n" +
 			"Has multiple lines");
+		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
 	}
 
 	public override bool IgnoreDamageModifiers => false;

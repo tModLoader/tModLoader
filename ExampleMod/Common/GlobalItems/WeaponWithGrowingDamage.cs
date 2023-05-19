@@ -28,7 +28,7 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 			//Apply to weapons
-			return entity.damage > 0;
+			return lateInstantiation && entity.damage > 0;
 		}
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
@@ -148,18 +148,24 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 	}
-	public class SnowBallShop : GlobalNPC
+
+	public class DoubleXPSnowBallInExamplePersonShop : GlobalNPC
 	{
-		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type != ModContent.NPCType<ExamplePerson>()) {
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
+		}
+
+		public override void ModifyShop(NPCShop shop) {
+			if (shop.NpcType != ModContent.NPCType<ExamplePerson>()) {
 				return;
 			}
 
-			Item item = shop.item[nextSlot++];
-			item.SetDefaults(ItemID.Snowball);
-			if (item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
-				weapon.GainExperience(item, 2); // can buy snowballs with 2xp!
+			var snowball = new Item(ItemID.Snowball);
+			if (snowball.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
+				weapon.GainExperience(snowball, 2);
 			}
+			shop.Add(snowball);
 		}
 	}
 }

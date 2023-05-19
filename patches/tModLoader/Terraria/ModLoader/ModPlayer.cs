@@ -28,7 +28,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public override ModPlayer NewInstance(Player entity)
 	{
 		var inst = base.NewInstance(entity);
-		
+
 		inst.Index = Index;
 
 		return inst;
@@ -42,7 +42,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	protected override void ValidateType()
 	{
 		base.ValidateType();
-		
+
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
@@ -338,10 +338,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
 	/// If visual indication of the dodge is required on remote clients, you will need to send your own packet.
 	/// </summary>
-	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
-	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
 	/// <returns>True to completely ignore the hit</returns>
-	public virtual bool FreeDodge(PlayerDeathReason damageSource, int cooldownCounter)
+	public virtual bool FreeDodge(Player.HurtInfo info)
 	{
 		return false;
 	}
@@ -355,10 +353,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
 	/// You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
 	/// </summary>
-	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
-	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
 	/// <returns>True to completely ignore the hit</returns>
-	public virtual bool ConsumableDodge(PlayerDeathReason damageSource, int cooldownCounter)
+	public virtual bool ConsumableDodge(Player.HurtInfo info)
 	{
 		return false;
 	}
@@ -368,7 +364,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Called on local, server and remote clients. <br/>
 	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
 	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
-	/// The player will always take at least 1 damage. To prevent damage <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
 	/// </summary>
 	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
 	{

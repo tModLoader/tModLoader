@@ -76,6 +76,14 @@ public partial class Player
 		/// </summary>
 		public AddableFloat ScalingArmorPenetration = new();
 
+		private int _damageLimit = int.MaxValue;
+		/// <summary>
+		/// Sets an inclusive upper bound on the final damage of the hit. <br/>
+		/// Can be set by multiple mods, in which case the lowest limit will be used. <br/>
+		/// Cannot be set to less than 1
+		/// </summary>
+		public void SetMaxDamage(int limit) => _damageLimit = Math.Min(_damageLimit, Math.Max(limit, 1));
+
 		/// <summary>
 		/// Modifiers to apply to the knockback.
 		/// Add to <see cref="StatModifier.Base"/> to increase the knockback of the strike.
@@ -130,7 +138,7 @@ public partial class Player
 			float damageReduction = defense * defenseEffectiveness;
 			damage = Math.Max(damage - damageReduction, 1);
 
-			return Math.Max((int)FinalDamage.ApplyTo(damage), 1);
+			return Math.Clamp((int)FinalDamage.ApplyTo(damage), 1, _damageLimit);
 		}
 
 		public float GetKnockback(float baseKnockback, bool knockbackImmune)
@@ -153,6 +161,8 @@ public partial class Player
 				SourceDamage = (int)SourceDamage.ApplyTo(damage),
 				Damage = (int)GetDamage(damage, defense, defenseEffectiveness),
 				Knockback = GetKnockback(knockback, knockbackImmune),
+				DustDisabled = _dustDisabled,
+				SoundDisabled = _soundDisabled,
 			};
 
 

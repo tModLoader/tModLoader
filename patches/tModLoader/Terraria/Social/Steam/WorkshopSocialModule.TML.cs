@@ -97,7 +97,6 @@ public partial class WorkshopSocialModule
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
 		tagsList.Add(buildData["modside"]);
-		tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 		CalculateWorkshopDeps(ref buildData);
 		
@@ -112,6 +111,9 @@ public partial class WorkshopSocialModule
 
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(workshopFolderPath);
+
+			// Should be called after folder created & cleaned up
+			tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 

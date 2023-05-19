@@ -60,7 +60,7 @@ public static class BuffLoader
 		Array.Resize(ref TextureAssets.Buff, nextBuff);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(BuffID), true);
+		LoaderUtils.ResetStaticMembers(typeof(BuffID));
 
 		//Etc
 		Array.Resize(ref Main.pvpBuff, nextBuff);

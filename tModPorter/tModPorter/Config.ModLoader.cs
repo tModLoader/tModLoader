@@ -1,4 +1,4 @@
-﻿using static tModPorter.Rewriters.RenameRewriter;
+using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.HookRewriter;
@@ -83,6 +83,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
@@ -233,6 +235,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitByNPC");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyHitByProjectile");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"OnHitByProjectile");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"FreeDodge");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ConsumableDodge");
 
 		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "CanHitNPC",				to: "CanHitNPCWithItem");
 		RenameMethod("Terraria.ModLoader.ModPlayer",		from: "ModifyHitNPC",			to: "ModifyHitNPCWithItem");
@@ -243,6 +247,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalNPC",		from: "StrikeNPC",				to: "ModifyIncomingHit");
 		RenameMethod("Terraria.ModLoader.ModProjectile",	from: "ModifyDamageScaling",	to: "ModifyHitNPC");
 		RenameMethod("Terraria.ModLoader.GlobalProjectile",	from: "ModifyDamageScaling",	to: "ModifyHitNPC");
+		RenameMethod("Terraria.NPC",						from: "SimpleStrike",			to: "CalculateHitInfo");
+		RenameInstanceField("Terraria.NPC.HitInfo",			from: "KnockBack",				to: "Knockback");
 
 		HookRemoved("Terraria.ModLoader.ModPlayer",			"ModifyHitPvp",				"Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player");
 		HookRemoved("Terraria.ModLoader.ModPlayer",			"ModifyHitPvpWithProj",		"Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player");
@@ -310,7 +316,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
 		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
 
-		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization");
+		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files to adjust localization");
 		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
@@ -473,6 +479,7 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
 		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
 		RenameType(from: "Terraria.Recipe.Condition", to: "Terraria.Condition");
+		RenameStaticField("Terraria.Condition", from: "InGraveyardBiome", to: "InGraveyard");
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
@@ -495,6 +502,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
+		RefactorInstanceMember("Terraria.ModLoader.ModBlockType", "ItemDrop", Removed("Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary."));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
 		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
 		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
@@ -506,5 +514,20 @@ public static partial class Config
 
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "DrawTownAttackSwing");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "DrawTownAttackSwing");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "DrawTownAttackGun", "Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "DrawTownAttackGun", "Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type.");
+
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
+		RenameMethod("Terraria.ModLoader.ModPylon",		from: "IsPylonForSale", to: "GetNPCShopEntry").FollowBy(AddCommentToOverride("See ExamplePylonTile for an example. To register to specific NPC shops, use the new shop system directly in ModNPC.AddShop, GlobalNPC.ModifyShop or ModSystem.PostAddRecipes"));
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"OnChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
+		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
+
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Add", to: "Add", newType: "Terraria.ModLoader.MonoModHooks");
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Modify", to: "Modify", newType: "Terraria.ModLoader.MonoModHooks");
+
+		RenameStaticField("Terraria.ID.AmmoID.Sets", from: "IsRocket", to: "IsSpecialist");
 	}
 }

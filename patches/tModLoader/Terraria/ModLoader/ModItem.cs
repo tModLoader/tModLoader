@@ -29,7 +29,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public Item Item => Entity;
 
 	/// <summary>
-	/// Shorthand for Item.type;
+	/// Shorthand for <c>Item.type</c>.
 	/// </summary>
 	public int Type => Item.type;
 
@@ -66,10 +66,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 		ModTypeLookup<ModItem>.Register(this);
 
-		Item.ResetStats(ItemLoader.ReserveItemID());
+		Item.ResetStats(ItemLoader.Register(this));
 		Item.ModItem = this;
-
-		ItemLoader.items.Add(this);
 
 		var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 		if (autoloadEquip != null) {
@@ -83,7 +81,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
-		ItemLoader.SetDefaults(Item, false);
+		ItemLoader.SetDefaults(Item, createModItem: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
 		ItemID.Search.Add(FullName, Type);
@@ -916,12 +914,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+	/// Returns whether the reforge will take place. If false is returned by this or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool PreReforge()
+	public virtual bool CanReforge()
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// </summary>
+	public virtual void PreReforge()
+	{
 	}
 
 	/// <summary>
@@ -1260,7 +1265,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance of the overriding ModItem class that is added to the game. This allows you to avoid clutter in your overriding Mod class by adding recipes for which this item is the result.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// Do note that this will be called for every instance of the overriding ModItem class that is added to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
+	/// To create a recipe resulting in this item, use <see cref="CreateRecipe(int)"/>.<br/>
+	/// To create a recipe using this item as an ingredient, use <see cref="Recipe.Create(int, int)"/> and then pass in <c>this</c> or <c>Type</c> into <see cref="Recipe.AddIngredient(ModItem, int)"/> or <see cref="Recipe.AddIngredient(int, int)"/>
 	/// </summary>
 	public virtual void AddRecipes()
 	{
@@ -1322,5 +1331,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 	}
 
+	/// <summary>
+	/// Creates a recipe resulting this ModItem. The <paramref name="amount"/> dictates the resulting stack. This method only creates the recipe, it does not register it into the game. Call this at the very beginning when creating a new recipe.
+	/// </summary>
+	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
+	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 }

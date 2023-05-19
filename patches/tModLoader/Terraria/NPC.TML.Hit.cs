@@ -24,7 +24,7 @@ public partial class NPC
 
 		/// <summary>
 		/// If true, no amount of damage can get through the defense of this NPC, damage will be reduced to 1. <br/>
-		/// <see cref="CritDamage"/> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 10. <br/>
+		/// <see cref="CritDamage"/> will still apply, but only Additive and Multiplicative. Maximum crit damage will be capped at 4. <br/>
 		/// </summary>
 		public bool SuperArmor { get; init; } = false;
 
@@ -32,7 +32,7 @@ public partial class NPC
 		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
 		/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
-		/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
+		/// For effects which apply to all damage dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
 		/// <br/>
 		/// Used by vanilla for weapons with unique scaling such as jousting lance, ham bat, breaker blade. And for accessories which enhance a projectile (strong bees)
 		/// </summary>
@@ -91,7 +91,7 @@ public partial class NPC
 		/// Recommend only multiplication, no addition or subtraction. <br/>
 		/// Not recommended to for buffs/debuffs. Use for gamemode tweaks, or if an enemy revolves very heavily around armor penetration.
 		/// </summary>
-		public MultipliableFloat DefenseEffectiveness = new();
+		public MultipliableFloat DefenseEffectiveness = MultipliableFloat.One * 0.5f;
 
 		/// <summary>
 		/// Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (+100% damage). <br/>
@@ -102,6 +102,12 @@ public partial class NPC
 		/// Use of <see cref="StatModifier.Base"/> also not recommended. <br/>
 		/// </summary>
 		public StatModifier CritDamage = new(2f, 1f);
+
+		/// <summary>
+		/// Applied to damage after defense and before <see cref="FinalDamage"/> when the hit is _not_ a crit. <br/>
+		/// Effectively a compliment for <see cref="CritDamage"/>
+		/// </summary>
+		public StatModifier NonCritDamage = new();
 
 		/// <summary>
 		/// Applied to the final damage result. <br/>
@@ -121,6 +127,14 @@ public partial class NPC
 		/// Only affects hits where damage variation is enabled (which is most projectile/item/NPC damage)
 		/// </summary>
 		public MultipliableFloat DamageVariationScale = new();
+
+		private int _damageLimit = int.MaxValue;
+		/// <summary>
+		/// Sets an inclusive upper bound on the final damage of the hit. <br/>
+		/// Can be set by multiple mods, in which case the lowest limit will be used. <br/>
+		/// Cannot be set to less than 1
+		/// </summary>
+		public void SetMaxDamage(int limit) => _damageLimit = Math.Min(_damageLimit, Math.Max(limit, 1));
 
 		private bool? _critOverride = default;
 
@@ -180,12 +194,13 @@ public partial class NPC
 
 		public readonly int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 		{
+			crit = _critOverride ?? crit;
 			if (SuperArmor) {
 				float dmg = 1;
-				if (_critOverride ?? crit)
+				if (crit)
 					dmg *= CritDamage.Additive * CritDamage.Multiplicative;
 
-				return Math.Clamp((int)dmg, 1, 10);
+				return Math.Clamp((int)dmg, 1, Math.Min(_damageLimit, 4));
 			}
 
 			float damage = SourceDamage.ApplyTo(baseDamage);
@@ -196,17 +211,16 @@ public partial class NPC
 			if (damageVariation && variationPercent > 0)
 				damage = Main.DamageVar(damage, variationPercent, luck);
 
-			float defense = Defense.ApplyTo(0);
+			float defense = Math.Max(Defense.ApplyTo(0), 0);
 			float armorPenetration = defense * Math.Clamp(ScalingArmorPenetration.Value, 0, 1) + ArmorPenetration.Value;
 			defense = Math.Max(defense - armorPenetration, 0);
 
 			float damageReduction = defense * DefenseEffectiveness.Value;
 			damage = Math.Max(damage - damageReduction, 1);
 
-			if (_critOverride ?? crit)
-				damage = CritDamage.ApplyTo(damage);
+			damage = (crit ? CritDamage : NonCritDamage).ApplyTo(damage);
 
-			return Math.Max((int)FinalDamage.ApplyTo(damage), 1);
+			return Math.Clamp((int)FinalDamage.ApplyTo(damage), 1, _damageLimit);
 		}
 
 		public readonly float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
@@ -218,7 +232,7 @@ public partial class NPC
 				SourceDamage = Math.Max((int)SourceDamage.ApplyTo(baseDamage), 1),
 				Damage = _instantKill ? 1 : GetDamage(baseDamage, crit, damageVariation, luck),
 				Crit = _critOverride ?? crit,
-				KnockBack = GetKnockback(baseKnockback),
+				Knockback = GetKnockback(baseKnockback),
 				HitDirection = HitDirectionOverride ?? HitDirection,
 				InstantKill = _instantKill,
 				HideCombatText = _combatTextHidden
@@ -282,7 +296,7 @@ public partial class NPC
 		/// The amount of knockback to apply. Should always be >= 0. <br/>
 		/// Note that <see cref="NPC.StrikeNPC(HitInfo, bool, bool)"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
 		/// </summary>
-		public float KnockBack = 0;
+		public float Knockback = 0;
 
 		/// <summary>
 		/// If true, as much damage as necessary will be dealt, and damage number popups will not be shown for this hit. <br/>

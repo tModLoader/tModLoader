@@ -25,6 +25,7 @@ internal class UIModSourceItem : UIPanel
 	internal readonly string modName;
 	private readonly Asset<Texture2D> _dividerTexture;
 	private readonly UIText _modName;
+	private readonly UIAutoScaleTextTextPanel<string> needRebuildButton;
 	private readonly LocalMod _builtMod;
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
@@ -68,7 +69,15 @@ internal class UIModSourceItem : UIPanel
 		Append(buildReloadButton);
 
 		_builtMod = builtMod;
-		if (builtMod != null) {
+		if (builtMod != null && LocalizationLoader.changedMods.Contains(modName)) {
+			needRebuildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSRebuildRequired"));
+			needRebuildButton.CopyStyle(buildReloadButton);
+			needRebuildButton.Width.Pixels = 180;
+			needRebuildButton.Left.Pixels = 360;
+			needRebuildButton.BackgroundColor = Color.Red;
+			Append(needRebuildButton);
+		}
+		else if (builtMod != null) {
 			var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 			publishButton.CopyStyle(buildReloadButton);
 			publishButton.Width.Pixels = 100;
@@ -104,6 +113,14 @@ internal class UIModSourceItem : UIPanel
 			Append(openCSProjButton);
 
 			contextButtonsLeft -= 26;
+		}
+	}
+
+	protected override void DrawChildren(SpriteBatch spriteBatch)
+	{
+		base.DrawChildren(spriteBatch);
+		if (needRebuildButton?.IsMouseHovering == true) {
+			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MSLocalizationFilesChangedCantPublish"), GetOuterDimensions().ToRectangle());
 		}
 	}
 

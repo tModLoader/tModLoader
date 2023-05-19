@@ -31,7 +31,7 @@ partial class ArmorIDs
 
 			// Created based on 'drawsBackHairWithoutHeadgear' definition in 'Player.GetHairSettings'.
 			/// <summary>
-			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow back hair (<see cref="DrawBackHair"/>) to draw in full when equipped.
+			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow back hair (<see cref="HairID.Sets.DrawBackHair"/>) to draw in full when equipped.
 			/// <br/> Defaults to <see langword="false"/>.
 			/// </summary>
 			public static bool[] DrawsBackHairWithoutHeadgear = Factory.CreateBoolSet(0, 23, 259);

@@ -22,6 +22,9 @@ using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using System.Collections.Generic;
 using Terraria.ModLoader.IO;
+using ExampleMod.Common.Configs;
+using ExampleMod.Common;
+using ExampleMod.Content.Projectiles;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -29,6 +32,7 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
+		public const string ShopName = "Shop";
 		public int NumberOfTimesTalkedTo = 0;
 
 		private static int ShimmerHeadIndex;
@@ -251,7 +255,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
 				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
 
@@ -269,64 +273,55 @@ namespace ExampleMod.Content.NPCs
 					return;
 				}
 
-				shop = true;
+				shop = ShopName; // Name of the shop tab we want to open.
 			}
 		}
 
 		// Not completely finished, but below is what the NPC will sell
+		public override void AddShops() {
+			var npcShop = new NPCShop(Type, ShopName)
+				.Add<ExampleItem>()
+				//.Add<EquipMaterial>()
+				//.Add<BossItem>()
+				.Add(new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>()) { shopCustomPrice = Item.buyPrice(copper: 15) }) // This example sets a custom price, ExampleNPCShop.cs has more info on custom prices and currency. 
+				.Add<Items.Placeable.Furniture.ExampleChair>()
+				.Add<Items.Placeable.Furniture.ExampleDoor>()
+				.Add<Items.Placeable.Furniture.ExampleBed>()
+				.Add<Items.Placeable.Furniture.ExampleChest>()
+				.Add<Items.Tools.ExamplePickaxe>()
+				.Add<Items.Tools.ExampleHamaxe>()
+				.Add<Items.Consumables.ExampleHealingPotion>(new Condition("Mods.ExampleMod.Conditions.PlayerHasLifeforceBuff", () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
+				.Add<Items.Weapons.ExampleSword>(Condition.MoonPhasesQuarter0)
+				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
+				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
+				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<ExampleOnBuyItem>()
+				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
-		// public override void SetupShop(Chest shop, ref int nextSlot) {
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());
-		// 	// shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
-		// 	// nextSlot++;
-		// 	// shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
-		// 	// nextSlot++;
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChair>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleDoor>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleBed>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChest>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
-		//
-		// 	if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
-		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
-		// 	}
-		//
-		// 	// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
-		// 	// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	if (Main.moonPhase < 2) {
-		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
-		// 	}
-		// 	else if (Main.moonPhase < 4) {
-		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		// 		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		// 	}
-		// 	else if (Main.moonPhase < 6) {
-		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
+			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
+				npcShop.Add<ExampleWings>(ExampleConditions.InExampleBiome);
+			}
+
+			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
+		 	 	npcShop.Add(bloodTalisman.Type);
+		 	}
+			npcShop.Register(); // Name of this shop tab
+		}
+
+		public override void ModifyActiveShop(string shopName, Item[] items) {
+			foreach (Item item in items) {
+				// Skip 'air' items and null items.
+				if (item == null || item.type == ItemID.None) {
+					continue;
+				}
+
+				// If NPC is shimmered then reduce all prices by 50%.
+				if (NPC.IsShimmerVariant) {
+					int value = item.shopCustomPrice ?? item.value;
+					item.shopCustomPrice = value / 2;
+				}
+			}
+		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
@@ -373,15 +368,15 @@ namespace ExampleMod.Content.NPCs
 			randExtraCooldown = 30;
 		}
 
-		// todo: implement
-		// public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-		// 	projType = ProjectileType<SparklingBall>();
-		// 	attackDelay = 1;
-		// }
+		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
+			projType = ModContent.ProjectileType<SparklingBall>();
+			attackDelay = 1;
+		}
 
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
 			multiplier = 12f;
 			randomOffset = 2f;
+			// SparklingBall is not affected by gravity, so gravityCorrection is left alone.
 		}
 
 		public override void LoadData(TagCompound tag) {

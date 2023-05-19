@@ -137,7 +137,7 @@ public static class TileLoader
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(TileID), true);
+		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
 		Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
@@ -521,7 +521,7 @@ public static class TileLoader
 		if (Main.tileFrameImportant[type]) {
 			var tileData = TileObjectData.GetTileData(type, 0);
 			if (tileData != null) {
-				if(tileData.Width != 1 || tileData.Height != 1)
+				if (tileData.Width != 1 || tileData.Height != 1)
 					isLarge = true;
 			}
 			else if (TileID.Sets.IsMultitile[type])
@@ -589,7 +589,8 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, style 0 will be checked as a fallback.
+	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, a fallback item will be returned if one has been registered through <see cref="ModTile.RegisterItemDrop(int, int[])"/> usage.<br/>
+	/// Modders querying modded tile drops should use <see cref="ModTile.GetItemDrops(int, int)"/> directly rather that use this method so that custom drop logic is accounted for.
 	/// <br/> A return of 0 indicates that no item would drop from the tile.
 	/// </summary>
 	/// <param name="type"></param>
@@ -597,14 +598,7 @@ public static class TileLoader
 	/// <returns></returns>
 	public static int GetItemDropFromTypeAndStyle(int type, int style = 0)
 	{
-		// Override
-		ModTile modTile = GetTile(type);
-		if (modTile?.ItemDrop > 0) 
-			return modTile.ItemDrop;
-		if (modTile?.ItemDrop == -1)
-			return 0;
-
-		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out value))
+		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, -1), out value))
 			return value;
 
 		return 0;
@@ -1139,7 +1133,7 @@ public static class TileLoader
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 	}
-  
+
 	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
 	{
 		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;
@@ -1190,8 +1184,10 @@ public static class TileLoader
 		for (int k = 0; k < ItemLoader.ItemCount; k++) {
 			Item item = ContentSamples.ItemsByType[k];
 			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
-				if (item.createTile > -1)
-					tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
+				if (item.createTile > -1) {
+					// TryAdd won't override existing value if present. Existing ModTile.RegisterItemDrop entries take precedence
+					tileTypeAndTileStyleToItemType.TryAdd((item.createTile, item.placeStyle), item.type);
+				}
 			}
 		}
 	}
