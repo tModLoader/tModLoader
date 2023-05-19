@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_mod_tile_entity.html',''); initR
 <p><a class="el" href="struct_tile.html">Tile</a> Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.  
  <a href="class_mod_tile_entity.html#details">More...</a></p>
 
-<p>Inherits <a class="el" href="class_tile_entity.html">TileEntity</a>, and <a class="el" href="interface_i_mod_type.html">IModType</a>.</p>
+<p>Inherits <a class="el" href="class_tile_entity.html">TileEntity</a>, <a class="el" href="interface_i_mod_type.html">IModType</a>, and <a class="el" href="interface_i_loadable.html">ILoadable</a>.</p>
 
 <p>Inherited by <a class="el" href="class_t_e_modded_pylon.html">TEModdedPylon</a>, and <a class="el" href="class_unloaded_tile_entity.html">UnloadedTileEntity</a>.</p>
 <table class="memberdecls">
@@ -359,7 +359,7 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><a class="el" href="struct_tile.html">Tile</a> Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients. </p>
-<dl class="section see"><dt>See also</dt><dd>Terraria.DataStructures.TileEntity</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_tile_entity.html">TileEntity</a></dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a52cf39ea43ccd5c439addd1929ecf152" name="a52cf39ea43ccd5c439addd1929ecf152"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52cf39ea43ccd5c439addd1929ecf152">&#9670;&nbsp;</a></span>GenerateInstance()</h2>
@@ -842,7 +842,7 @@ Only called on the server. </p>
 <b>Initial value:</b><div class="fragment"><div class="line">= Assembly.GetExecutingAssembly()</div>
 <div class="line">        .GetTypes()</div>
 <div class="line">        .Count(t =&gt; !t.IsAbstract &amp;&amp; t.IsSubclassOf(typeof(<a class="code hl_class" href="class_tile_entity.html">TileEntity</a>)) &amp;&amp; !typeof(<a class="code hl_class" href="class_mod_tile_entity.html">ModTileEntity</a>).IsAssignableFrom(t))</div>
-<div class="ttc" id="aclass_mod_tile_entity_html"><div class="ttname"><a href="class_mod_tile_entity.html">ModTileEntity</a></div><div class="ttdoc">Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...</div><div class="ttdef"><b>Definition:</b> ModTileEntity.cs:17</div></div>
+<div class="ttc" id="aclass_mod_tile_entity_html"><div class="ttname"><a href="class_mod_tile_entity.html">ModTileEntity</a></div><div class="ttdoc">Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...</div><div class="ttdef"><b>Definition:</b> ModTileEntity.cs:14</div></div>
 <div class="ttc" id="aclass_tile_entity_html"><div class="ttname"><a href="class_tile_entity.html">TileEntity</a></div><div class="ttdef"><b>Definition:</b> TileEntity.cs:12</div></div>
 </div><!-- fragment -->
 </div>
