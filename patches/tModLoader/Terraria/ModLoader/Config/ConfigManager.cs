@@ -104,23 +104,7 @@ public static class ConfigManager
 #pragma warning restore CS0618
 
 			try {
-				List<Type> types = new List<Type>();
-
-				if (variable.Type.IsGenericType)
-					types.AddRange(variable.Type.GetGenericArguments());
-				else
-					types.Add(variable.Type);
-
-				foreach (var typeToRegister in types) {
-					// Register localization for classes added in this mod. This code handles the class itself and the fields of the classes
-					if ((typeToRegister.IsClass || typeToRegister.IsEnum) && typeToRegister.Assembly == type.Assembly && typesWithLocalizationRegistered.Add(variable.Type)) {
-						// Only tooltip is registered for the Type itself.
-						string typeTooltipKey = GetConfigKey<TooltipKeyAttribute>(typeToRegister, dataName: "Tooltip");
-						Language.GetOrRegister(typeTooltipKey, () => "");
-
-						RegisterLocalizationKeysForMembers(typeToRegister);
-					}
-				}
+				RegisterLocalizationKeysForMemberType(variable.Type, type.Assembly);
 
 				// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -154,6 +138,24 @@ public static class ConfigManager
 				e.handled = true; // Recursion will cause this to be called higher in the stack, causing issues.
 				throw;
 			}
+		}
+	}
+
+	private static void RegisterLocalizationKeysForMemberType(Type type, Assembly owningAssembly)
+	{
+		if (type.IsGenericType) {
+			// assume it's a collection.
+			foreach (var t in type.GetGenericArguments())
+				RegisterLocalizationKeysForMemberType(t, owningAssembly);
+		}
+
+		// Register localization for classes added in this mod. This code handles the class itself and the fields of the classes
+		if ((type.IsClass || type.IsEnum) && type.Assembly == owningAssembly && typesWithLocalizationRegistered.Add(variable.Type)) {
+			// Only tooltip is registered for the Type itself.
+			string typeTooltipKey = GetConfigKey<TooltipKeyAttribute>(type, dataName: "Tooltip");
+			Language.GetOrRegister(typeTooltipKey, () => "");
+
+			RegisterLocalizationKeysForMembers(type);
 		}
 	}
 
