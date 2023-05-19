@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Mounts
 		public override void SetStaticDefaults()
 		{
 			MountID.Sets.Cart[Type] = true;
+			MountID.Sets.FacePlayersVelocity[Type] = true;
 
 			// Helper method setting many common properties for a minecart
 			// Notice that minecarts require two buffs, one for each side. They are manually created, hence why we can't use ModContent.BuffType
