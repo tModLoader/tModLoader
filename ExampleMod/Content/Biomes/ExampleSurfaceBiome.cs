@@ -20,6 +20,7 @@ namespace ExampleMod.Content.Biomes
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
 
 		public override int BiomeTorchItemType => ModContent.ItemType<ExampleTorch>();
+		public override int BiomeCampfireItemType => ModContent.ItemType<ExampleCampfire>();
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

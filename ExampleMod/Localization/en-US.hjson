@@ -797,6 +797,11 @@ Mods: {
 				# "Can be placed in water"
 				Tooltip: "{$ItemTooltip.IchorTorch}"
 			}
+
+			ExampleCampfire: {
+				DisplayName: Example Campfire
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

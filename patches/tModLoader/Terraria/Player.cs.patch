@@ -5066,7 +5066,7 @@
  
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
  		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
-@@ -30833,8 +_,17 @@
+@@ -30833,11 +_,27 @@
  		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
  			return tile.frameY != num * 18;
  
@@ -5080,10 +5080,20 @@
 +		/*
  		if (tile.type == 4 && tile.type == createTile)
  			return tile.frameY != num * 22;
-+		*/
  
  		if (tile.type == 215 && tile.type == createTile)
  			return tile.frameX / 54 != num;
++		*/
++
++		if (TileID.Sets.Campfire[tile.type] && TileID.Sets.Campfire[createTile]) {
++			if (tile.frameX / 54 == num)
++				return tile.type != createTile;
++
++			return true;
++		}
+ 
+ 		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
+ 			if (tile.frameX / 36 == num)
 @@ -30938,7 +_,7 @@
  		}
  		else {
@@ -6324,6 +6334,15 @@
  		if (isPettingAnimal) {
  			int num = miscCounter % 14 / 7;
  			CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -38865,7 +_,7 @@
+ 					if (Main.tile[num5, num6] == null)
+ 						Main.tile[num5, num6] = new Tile();
+ 
+-					if (Main.tile[num5, num6].active() && Main.tile[num5, num6].type == 215 && Main.tile[num5, num6].frameY < 54) {
++					if (Main.tile[num5, num6].active() && TileID.Sets.Campfire[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameY < 54) {
+ 						miscTimer++;
+ 						if (Main.rand.Next(5) == 0)
+ 							miscTimer++;
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)

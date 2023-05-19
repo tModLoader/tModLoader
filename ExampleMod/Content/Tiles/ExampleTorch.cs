@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
@@ -13,6 +12,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles
 {
+	//// Torches are special tiles that support the block swap feature and the biome torch feature. ExampleSurfaceBiome shows how the biome torch is assigned.
 	public class ExampleTorch : ModTile
 	{
 		private Asset<Texture2D> flameTexture;
