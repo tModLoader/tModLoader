@@ -87,13 +87,31 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	// Query Items /////////////////////////
 
 	//TODO: Work In Progress
+	// START WIP
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
 		InstalledItems = GetInstalledMods();
 
-		await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
-			yield return item;
-		}
+		if (queryParams.updateStatusFilter == UpdateFilter.All)
+			await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token))
+				yield return item;
+
+		if (queryParams.updateStatusFilter == UpdateFilter.Available)
+			await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token))
+				if (!CachedInstalledModDownloadItems.Contains(item))
+					yield return item;
+
+		// Special code for checking all mods installed. Can't use 'Subscribed' API query because GoG
+		var items = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
+
+		if (queryParams.updateStatusFilter == UpdateFilter.UpdateOnly)
+			foreach (var item in items)
+				if (new ModDownloadItemInstallInfo(item).NeedUpdate)
+					yield return item;
+
+		if (queryParams.updateStatusFilter == UpdateFilter.InstalledOnly)
+			foreach (var item in items)
+				yield return item;
 	}
 
 	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
@@ -237,7 +255,7 @@ public static class SteamedWraps
 		if (side == ModSideFilter.All)
 			return;
 
-		FilterByTags(ref qHandle, new string[] { side.ToFriendlyString() });
+		FilterByTags(ref qHandle, new string[] { side.ToString() });
 	}
 
 	private static void FilterByTags(ref UGCQueryHandle_t qHandle, string[] tags)

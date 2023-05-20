@@ -58,7 +58,7 @@ public interface SocialBrowserModule
 	// Needed for ensuring that the 'Update All' button works correctly. Without caching the mod browser locks out on the update all button
 	internal ModDownloadItem[] CachedInstalledModDownloadItems { get; set; }
 
-	public ModDownloadItem[] DirectQueryInstalledMDItems() {
+	public ModDownloadItem[] DirectQueryInstalledMDItems(QueryParameters qParams = new QueryParameters()) {
 		var mods = GetInstalledMods();
 		var listIds = new List<ModPubId_t>();
 
@@ -67,7 +67,9 @@ public interface SocialBrowserModule
 				listIds.Add(id);
 		}
 
-		return DirectQueryItems(new QueryParameters { searchModIds = listIds.ToArray() });
+		qParams.searchModIds = listIds.ToArray();
+
+		return DirectQueryItems(qParams);
 	}
 
 	public ModDownloadItem[] GetInstalledModDownloadItems()

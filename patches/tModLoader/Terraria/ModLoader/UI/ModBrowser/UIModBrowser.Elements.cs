@@ -197,8 +197,6 @@ internal partial class UIModBrowser
 		};
 		_rootElement.Append(_browserStatus);
 
-		InitializeInteractions();
-
 		_rootElement.Append(_reloadButton);
 		_rootElement.Append(_backButton);
 
@@ -210,6 +208,8 @@ internal partial class UIModBrowser
 		_upperMenuContainer.Append(ModSideFilterToggle);
 		CategoryButtons.Add(SearchFilterToggle);
 		_upperMenuContainer.Append(SearchFilterToggle);
+
+		InitializeInteractions();
 
 		_upperMenuContainer.Append(_filterTextBoxBackground);
 		_upperMenuContainer.Append(FilterTextBox);

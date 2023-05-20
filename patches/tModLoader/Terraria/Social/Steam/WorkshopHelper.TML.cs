@@ -332,7 +332,11 @@ public partial class WorkshopHelper
 						yield return item;
 
 					ReleaseWorkshopQuery();
-				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
+
+					if (string.IsNullOrEmpty(_nextCursor))
+						break;
+
+				} while (TotalItemsQueried > Items.Count + IncompleteModCount + HiddenModCount);
 			}
 
 			private IEnumerable<ModDownloadItem> ProcessPageResult()

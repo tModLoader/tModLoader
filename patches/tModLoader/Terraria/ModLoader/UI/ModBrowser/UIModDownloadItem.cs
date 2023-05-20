@@ -167,10 +167,10 @@ internal class UIModDownloadItem : UIPanel
 				return base.CompareTo(obj);
 			case ModBrowserSortMode.DisplayNameAtoZ:
 				return string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
-			case ModBrowserSortMode.DisplayNameZtoA:
-				return -1 * string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
-			case ModBrowserSortMode.DownloadsAscending:
-				return ModDownload.Downloads.CompareTo(item?.ModDownload.Downloads);
+			//case ModBrowserSortMode.DisplayNameZtoA:
+				//return -1 * string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
+			//case ModBrowserSortMode.DownloadsAscending:
+				//return ModDownload.Downloads.CompareTo(item?.ModDownload.Downloads);
 			case ModBrowserSortMode.DownloadsDescending:
 				return -1 * ModDownload.Downloads.CompareTo(item?.ModDownload.Downloads);
 			case ModBrowserSortMode.RecentlyUpdated:
