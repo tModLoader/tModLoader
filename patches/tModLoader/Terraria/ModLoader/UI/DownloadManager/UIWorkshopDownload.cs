@@ -37,7 +37,7 @@ internal class UIWorkshopDownload : UIProgress
 		SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 	}
 
-	public void Leave(bool refreshBrowser)
+	public void Leave()
 	{
 		// Exit
 		ReturnToPreviousMenu();

@@ -27,6 +27,11 @@ public struct ModDownloadItemInstallInfo
 
 	public ModDownloadItemInstallInfo (ModDownloadItem item)
 	{
+		// Remember this constructor is blocking, it does network stuff...
+		// @TODO: This should probably be a method returning a Task so it can be awaited or
+		// run async so that it's clear it can stop execution and break lock instructions
+		// (not possible now since the functions used inside are not async atm...)
+
 		// Check against installed mods for updates.
 		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(item.ModName);
@@ -144,7 +149,7 @@ public interface SocialBrowserModule
 
 		ModOrganizer.LocalModsChanged(changedModsSlugs);
 
-		uiProgress?.Leave(refreshBrowser: true); // @TODO refreshBrowser is redundant!!!
+		uiProgress?.Leave();
 
 		if (reloadWhenDone)
 			ModLoader.Reload();

@@ -232,7 +232,7 @@
 
 		// UIAsyncList
 		"ALLoading": "Still loading...",
-		"ALEmpty": "Loading completed, but no entries found",
+		"ALNoEntries": "Loading completed, but no entries found",
 		"ALAborted": "Loading aborted, reload to see all data",
 
 		// Mod Browser

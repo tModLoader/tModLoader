@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,10 +44,12 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				}
 				else {
 					var uiItem = new UIModDownloadItem(item);
-					// @TODO: NO CONSTRUCTOR SHOULD BE LOCKING!!! make this a method returning a Task so it can be awaited or
-					// run async so that it's clear it can stop execution and break lock instructions
+					// @NOTE: LOCKING CONSTRUCTOR! must be outside the lock instruction
 					uiItem.UpdateInstallInfo(new ModDownloadItemInstallInfo(uiItem.ModDownload));
-					lock (_Data) { // @TODO: lock in batches?
+					lock (_Data) {
+						// @OPTIMIZATION: Could lock in batches instead of each item added, but
+						// can't really in this case because the constructor of ModDownloadItemInstallInfo
+						// is blocking
 						_Data.Add(uiItem);
 						HasNewData = true;
 					}
@@ -80,6 +84,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	AP_UIModDowloadItem _provider = null;
 
+	public const int DEBOUNCE_MS = 100;
+	private Stopwatch DebounceTimer = null;
 	internal bool UpdateNeeded;
 	public UIState PreviousUIState { get; set; }
 
@@ -166,12 +172,12 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		CheckIfAnyModUpdateIsAvailable();
 	}
 
-	private void ClearFilters(UIMouseEvent @event, UIElement element)
+	private void ClearTextFilters(UIMouseEvent @event, UIElement element)
 	{
-		// Already done in PopulateModBrowser???
-		SpecialModPackFilter = null;
-		SpecialModPackFilterTitle = null;
-		// @TODO: Should clear the other filters???
+		// These and already done in PopulateModBrowser
+		//SpecialModPackFilter = null;
+		//SpecialModPackFilterTitle = null;
+
 		PopulateModBrowser();
 		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
@@ -183,7 +189,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		// @TODO: Why this is on Draw??? (plus hard coded 101 :|)
+		// @TODO: Why this is done on Draw? (plus hard coded 101 :|)
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
 
 		base.Draw(spriteBatch);
@@ -271,13 +277,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		base.OnActivate();
 		Main.clrInput();
 		ModOrganizer.PostLocalModsChanged += CbLocalModsChanged;
-		if (_provider is null) { // @TODO: Will search and stuff remain in the state???
+		if (_provider is null) {
 			PopulateModBrowser();
 		}
 
 		// Check for mods to update
-		// @TODO: Is it ok to do it once on load?
+		// @NOTE: Now it's done only once on load
 		CheckIfAnyModUpdateIsAvailable();
+
+		DebounceTimer = null;
 	}
 
 	private void CbLocalModsChanged(HashSet<string> modSlugs)
@@ -290,6 +298,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public override void OnDeactivate()
 	{
+		DebounceTimer = null;
+
 		ModOrganizer.PostLocalModsChanged -= CbLocalModsChanged;
 		base.OnDeactivate();
 	}
@@ -320,19 +330,34 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			}
 		}
 
+		if (
+			(DebounceTimer is not null) &&
+			(DebounceTimer.ElapsedMilliseconds >= DEBOUNCE_MS)
+		) {
+			// No need to count more
+			DebounceTimer.Stop();
+			DebounceTimer = null;
+		}
+
 		if (UpdateNeeded) {
-			UpdateNeeded = false;
-			PopulateModBrowser();
+			// Debounce logic
+			if (DebounceTimer is null) {
+				UpdateNeeded = false;
+				PopulateModBrowser();
+				DebounceTimer = new();
+				DebounceTimer.Start();
+			}
 		}
 	}
 
 	internal void PopulateModBrowser()
 	{
-		// Initialize @TODO: is this correct?
+		// Only called if using mod browser and not for modpacks
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
 
-		SetHeading(Language.GetText("tModLoader.MenuModBrowser")); // @TODO: WHAT IS DOING THIS HERE???
+		// Since we could have used modpacks before fix the title if wrong
+		SetHeading(Language.GetText("tModLoader.MenuModBrowser"));
 
 		// Old data will be removed and old provider aborted when setting the new provider `ModList.SetProvider`
 
@@ -340,7 +365,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
 		QueryParameters qparams = FilterParameters;
 		_provider = new AP_UIModDowloadItem(SocialBackend, qparams);
-		ModList.SetProvider(_provider); // .Select(mdi => new UIModDownloadItem(mdi))
+		ModList.SetProvider(_provider);
 	}
 
 	/// <summary>

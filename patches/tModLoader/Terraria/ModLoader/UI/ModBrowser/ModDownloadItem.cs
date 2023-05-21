@@ -20,7 +20,6 @@ public class ModDownloadItem
 	public readonly string ModIconUrl;
 	public readonly DateTime TimeStamp;
 
-	// @TODO: Redundant
 	public readonly string ModReferencesBySlug;
 	public readonly ModPubId_t[] ModReferenceByModId;
 

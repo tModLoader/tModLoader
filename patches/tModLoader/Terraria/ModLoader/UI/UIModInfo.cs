@@ -270,6 +270,7 @@ internal class UIModInfo : UIState
 			_loading = true;
 			_ready = false;
 
+			// @TODO: Get description here??? (might be better to fetch description if in metadata during steam query)
 			if (string.IsNullOrWhiteSpace(_info)) {
 				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 			}

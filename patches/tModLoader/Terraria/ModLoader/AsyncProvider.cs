@@ -123,7 +123,15 @@ public abstract class AsyncProvider<T> : IAsyncProvider<T>
 		return copy;
 	}
 
-	public int Count => _Data.Count; // @TODO: Is this atomic or need lock?
+	public int Count {
+		get {
+			// https://stackoverflow.com/questions/24206623/is-listt-count-thread-safe
+			// Should not be a problem in current implementation, but lock for safety
+			lock (this) {
+				return _Data.Count;
+			}
+		}
+	}
 	public AsyncProvider.State State { get; protected set; } = AsyncProvider.State.NotStarted;
 	public bool HasNewData { get; protected set; } = false;
 }

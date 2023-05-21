@@ -289,7 +289,7 @@ internal class UIModSourceItem : UIPanel
 				Main.menuMode = Interface.reloadModsID;
 				ModLoader.OnSuccessfulLoad += () => {
 					Main.QueueMainThreadAction(() => {
-						// @TODO: ???
+						// Delay publishing to when the mod is completely reloaded in main thread
 						PublishMod(null, null);
 					});
 				};

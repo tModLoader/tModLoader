@@ -54,7 +54,7 @@ internal partial class UIModBrowser
 	{
 		_reloadButton.OnLeftClick += ReloadList;
 		_backButton.OnLeftClick += BackClick;
-		_clearButton.OnLeftClick += ClearFilters;
+		_clearButton.OnLeftClick += ClearTextFilters;
 		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
 		_updateAllButton.OnLeftClick += UpdateAllMods;
 		ModList.OnStateChanged += ModListStateChanged;
