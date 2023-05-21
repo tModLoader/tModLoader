@@ -18,6 +18,12 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
 		}
 
+		public override void SetStaticDefaults() {
+			// HidesHands defaults to true which we don't want.
+			// But, the set does not actually have an effect unless `ArmorIDs.Body.Sets.HidesArms[Item.bodySlot]` is also true.
+			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
+		}
+
 		public override void SetDefaults() {
 			Item.width = 18;
 			Item.height = 14;
