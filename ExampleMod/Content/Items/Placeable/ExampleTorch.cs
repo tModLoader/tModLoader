@@ -24,6 +24,8 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void HoldItem(Player player) {
+			// Note that due to biome select torch god's favour, the player may not actually have an ExampleTorch in their inventory when this hook is called, so no modifications should be made to the item instance.
+
 			// Randomly spawn sparkles when the torch is held. Twice bigger chance to spawn them when swinging the torch.
 			if (Main.rand.NextBool(player.itemAnimation > 0 ? 40 : 80)) {
 				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
