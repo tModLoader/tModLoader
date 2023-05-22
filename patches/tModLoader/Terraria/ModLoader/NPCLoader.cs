@@ -126,7 +126,7 @@ public static class NPCLoader
 		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !NPCID.Sets.NoTownNPCHappiness[npc.NPC.type]) {
 			string prefix = npc.GetLocalizationKey("TownNPCMood");
 			string[] keys = new string[] {
-				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess", "Princess_LoveNPC"
+				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess", "Princess_LovesNPC"
 			};
 			foreach (var key in keys) {
 				string fullKey = $"{prefix}.{key}";

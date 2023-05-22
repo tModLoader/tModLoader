@@ -5,7 +5,7 @@
  		"DislikeNPC": "I dislike {NPCName}.",
  		"HateNPC": "I hate {NPCName}.",
 +		"LikeNPC_Princess": "I like {NPCName}.",
-+		"Princess_LoveNPC": "I like {NPCName}.",
++		"Princess_LovesNPC": "I like {NPCName}.",
  	},
  	"TownNPCMood_Guide": {
  		"Content": "I'm feeling quite alright.",

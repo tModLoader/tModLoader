@@ -51,7 +51,7 @@ Mods: {
 			ExamplePerson: {
 				DisplayName: Example Person
 
-				#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
+				# This is what displays during all of an NPC's happiness levels.
 				TownNPCMood: {
 					Content: I feel pretty fine right now.
 					NoHome: I would very much like a house, all the colorful monsters scare me.
@@ -68,7 +68,7 @@ Mods: {
 					DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
 					HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
 					LikeNPC_Princess: "{NPCName} and I get along, did you know that I am royalty too?"
-					Princess_LoveNPC: "{NPCName} has a very...angular face. Neat!"
+					Princess_LovesNPC: "{NPCName} has a very...angular face. Neat!"
 				}
 			}
 

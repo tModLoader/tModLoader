@@ -69,7 +69,7 @@
  			new AllPersonalitiesModifier().ModifyShopPrice(info, this);
  			if (_currentHappiness == "")
  				AddHappinessReportText("Content");
-@@ -167,11 +_,24 @@
+@@ -167,11 +_,23 @@
  		return priceAdjustment;
  	}
  
@@ -83,9 +83,8 @@
  	{
 +		string text;
 +
-+		if(textKeyInCategory == "Princess_LoveNPC") {
++		if(textKeyInCategory == "Princess_LovesNPC")
 +			text = ModContent.GetModNPC(npcType).GetLocalizationKey("TownNPCMood");
-+		}
 +		else if (_currentNPCBeingTalkedTo.type < NPCID.Count)
 -		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +			text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
@@ -152,7 +151,7 @@
 +			});
 +		else {
 +			// Princess text for liking modded npcs located with the text for the modnpc itself, not with the princess text
-+			AddHappinessReportText("Princess_LoveNPC", new {
++			AddHappinessReportText("Princess_LovesNPC", new {
 +				NPCName = NPC.GetFullnameByID(npcType)
 +			}, npcType);
 +		}
