@@ -17,6 +17,16 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public override int Music => 0;
 
+	/// <summary>
+	/// The torch item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeTorchItemType => -1;
+
+	/// <summary>
+	/// The campfire item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeCampfireItemType => -1;
+
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
 	public string LocalizationCategory => "Biomes";

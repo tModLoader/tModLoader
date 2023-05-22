@@ -90,7 +90,7 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 		shortList.Sort(AtmosWeight.InvertedCompare);
 		int sceneEffectFields = 0;
 
-		for (int i = 0; sceneEffectFields < 6 && i < shortList.Count; i++) {
+		for (int i = 0; sceneEffectFields < 8 && i < shortList.Count; i++) {
 			ModSceneEffect sceneEffect = shortList[i].type;
 
 			if (result.waterStyle.priority == 0 && sceneEffect.WaterStyle != null) {
@@ -117,16 +117,18 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 				sceneEffectFields++;
 			}
 
-			if (result.biomeTorchItemType.priority == 0 && sceneEffect.BiomeTorchItemType != -1) {
-				result.biomeTorchItemType.value = sceneEffect.BiomeTorchItemType;
-				result.biomeTorchItemType.priority = sceneEffect.Priority;
-				sceneEffectFields++;
-			}
+			if (sceneEffect is ModBiome modBiome) {
+				if (result.biomeTorchItemType.priority == 0 && modBiome.BiomeTorchItemType != -1) {
+					result.biomeTorchItemType.value = modBiome.BiomeTorchItemType;
+					result.biomeTorchItemType.priority = modBiome.Priority;
+					sceneEffectFields++;
+				}
 
-			if (result.biomeCampfireItemType.priority == 0 && sceneEffect.BiomeCampfireItemType != -1) {
-				result.biomeCampfireItemType.value = sceneEffect.BiomeCampfireItemType;
-				result.biomeCampfireItemType.priority = sceneEffect.Priority;
-				sceneEffectFields++;
+				if (result.biomeCampfireItemType.priority == 0 && modBiome.BiomeCampfireItemType != -1) {
+					result.biomeCampfireItemType.value = modBiome.BiomeCampfireItemType;
+					result.biomeCampfireItemType.priority = modBiome.Priority;
+					sceneEffectFields++;
+				}
 			}
 
 			if (result.tileColorStyle == CaptureBiome.TileColorStyle.Normal && sceneEffect.TileColorStyle != CaptureBiome.TileColorStyle.Normal) {
