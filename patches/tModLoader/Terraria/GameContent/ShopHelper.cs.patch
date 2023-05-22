@@ -69,7 +69,7 @@
  			new AllPersonalitiesModifier().ModifyShopPrice(info, this);
  			if (_currentHappiness == "")
  				AddHappinessReportText("Content");
-@@ -167,11 +_,22 @@
+@@ -167,11 +_,24 @@
  		return priceAdjustment;
  	}
  
@@ -78,17 +78,20 @@
 +	//TODO: Anything else?
 +	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue(biomeNameKey.StartsWith("Mods.") ? biomeNameKey : "TownNPCMoodBiomes." + biomeNameKey);
  
- 	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
+-	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
++	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null, int npcType = 0)
  	{
 +		string text;
 +
-+		if (_currentNPCBeingTalkedTo.type < NPCID.Count)
++		if(textKeyInCategory == "Princess_LoveNPC") {
++			text = ModContent.GetModNPC(npcType).GetLocalizationKey("TownNPCMood");
++		}
++		else if (_currentNPCBeingTalkedTo.type < NPCID.Count)
 -		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +			text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +		else {
 +			var modNpc = _currentNPCBeingTalkedTo.ModNPC;
-+
-+			text = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
++			text = modNpc.GetLocalizationKey("TownNPCMood");
 +		}
 +
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
@@ -130,7 +133,7 @@
  	public void LikeBiome(string nameKey)
  	{
  		AddHappinessReportText("LikeBiome", new {
-@@ -223,25 +_,29 @@
+@@ -223,25 +_,36 @@
  
  		_currentPriceAdjustment *= 0.94f;
  	}
@@ -140,9 +143,19 @@
 -	public void LoveNPCByTypeName(int npcType)
 +	internal void LoveNPCByTypeName(int npcType)
  	{
- 		AddHappinessReportText("LoveNPC_" + NPCID.Search.GetName(npcType), new {
- 			NPCName = NPC.GetFullnameByID(npcType)
- 		});
++		if (npcType < NPCID.Count)
+-		AddHappinessReportText("LoveNPC_" + NPCID.Search.GetName(npcType), new {
++			AddHappinessReportText("LoveNPC_" + NPCID.Search.GetName(npcType), new {
+-			NPCName = NPC.GetFullnameByID(npcType)
++				NPCName = NPC.GetFullnameByID(npcType)
+-		});
++			});
++		else {
++			// Princess text for liking modded npcs located with the text for the modnpc itself, not with the princess text
++			AddHappinessReportText("Princess_LoveNPC", new {
++				NPCName = NPC.GetFullnameByID(npcType)
++			}, npcType);
++		}
  
 -		_currentPriceAdjustment *= 0.88f;
 +		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
@@ -182,7 +195,7 @@
  			if (aShoppingBiome.IsInBiome(player)) {
  				AddHappinessReportText("HateBiome", new {
  					BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
-@@ -341,9 +_,31 @@
+@@ -341,7 +_,10 @@
  	private bool IsNotReallyTownNPC(NPC npc)
  	{
  		int type = npc.type;
@@ -193,24 +206,3 @@
  			return true;
  
  		return false;
-+	}
-+
-+	internal void RegisterTownNPCMoodLocalizations(ModNPC npc)
-+	{
-+		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !Main.ShopHelper.IsNotReallyTownNPC(npc.NPC)) {
-+
-+			string prefix = $"Mods.{npc.Mod.Name}.TownNPCMood.{npc.Name}";
-+			string[] keys = new string[] {
-+				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess"
-+			};
-+			foreach (var key in keys) {
-+				string fullKey = $"{prefix}.{key}";
-+				string defaultValueKey = "TownNPCMood." + key;
-+				Language.GetOrRegister(fullKey, () => Language.GetTextValue(defaultValueKey));
-+				//Language.GetOrRegister(fullKey, () => $"Translation missing for {fullKey}");
-+			}
-+			// TODO: Won't show up automatically in corresponding hjson since no Mods.ModName
-+			Language.GetOrRegister($"TownNPCMood_Princess.LoveNPC_{npc.FullName}", () => Language.GetTextValue("TownNPCMood_Princess.LoveNPC"));
-+		}
- 	}
- }

@@ -110,7 +110,7 @@ public static class NPCLoader
 
 		foreach (ModNPC npc in npcs) {
 			Lang._npcNameCache[npc.Type] = npc.DisplayName;
-			Main.ShopHelper.RegisterTownNPCMoodLocalizations(npc);
+			RegisterTownNPCMoodLocalizations(npc);
 		}
 	}
 
@@ -118,6 +118,21 @@ public static class NPCLoader
 	{
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update();
+		}
+	}
+
+	internal static void RegisterTownNPCMoodLocalizations(ModNPC npc)
+	{
+		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !NPCID.Sets.IsNotReallyTownNPC[npc.NPC.type]) {
+			string prefix = npc.GetLocalizationKey("TownNPCMood");
+			string[] keys = new string[] {
+				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess", "Princess_LoveNPC"
+			};
+			foreach (var key in keys) {
+				string fullKey = $"{prefix}.{key}";
+				string defaultValueKey = "TownNPCMood." + key;
+				Language.GetOrRegister(fullKey, () => $"{{${defaultValueKey}}}"); // {{ is literal {.
+			}
 		}
 	}
 

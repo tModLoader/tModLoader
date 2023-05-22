@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Localization/Content/en-US/Town.json
++++ src/tModLoader/Terraria/Localization/Content/en-US/Town.json
+@@ -1836,6 +_,8 @@
+ 		"LoveNPC": "I love {NPCName}.",
+ 		"DislikeNPC": "I dislike {NPCName}.",
+ 		"HateNPC": "I hate {NPCName}.",
++		"LikeNPC_Princess": "I like {NPCName}.",
++		"Princess_LoveNPC": "I like {NPCName}.",
+ 	},
+ 	"TownNPCMood_Guide": {
+ 		"Content": "I'm feeling quite alright.",
