@@ -60,6 +60,11 @@ public static class ConfigManager
 	public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "ModConfigs");
 	public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "ModConfigs", "Server");
 
+	static ConfigManager()
+	{
+		TypeCaching.OnClear += () => typesWithLocalizationRegistered.Clear();
+	}
+
 	internal static void Add(ModConfig config)
 	{
 		Load(config);
@@ -83,7 +88,6 @@ public static class ConfigManager
 
 	internal static void FinishSetup()
 	{
-		typesWithLocalizationRegistered.Clear();
 		// Register localization for all fields and properties that should show
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var config in activeConfigs.Value) {
@@ -150,7 +154,7 @@ public static class ConfigManager
 		}
 
 		// Register localization for classes added in this mod. This code handles the class itself and the fields of the classes
-		if ((type.IsClass || type.IsEnum) && type.Assembly == owningAssembly && typesWithLocalizationRegistered.Add(variable.Type)) {
+		if ((type.IsClass || type.IsEnum) && type.Assembly == owningAssembly && typesWithLocalizationRegistered.Add(type)) {
 			// Only tooltip is registered for the Type itself.
 			string typeTooltipKey = GetConfigKey<TooltipKeyAttribute>(type, dataName: "Tooltip");
 			Language.GetOrRegister(typeTooltipKey, () => "");
