@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_world_sections.html":[3,0,1427],
 "class_world_u_i_anchor.html":[3,0,1428],
 "class_world_utils.html":[3,0,1429],
 "class_world_workshop_entry.html":[3,0,1430],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_boss_bar_draw_params.html#a1e0eb99f0aaa99afc6e33677ca8b2071":[3,0,101,5],
 "struct_boss_bar_draw_params.html#a2e9df6d868c1b16a4b97cdd87b50b575":[3,0,101,9],
 "struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592":[3,0,101,2],
-"struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,101,1],
-"struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea":[3,0,101,11]
+"struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,101,1]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"class_profiles_1_1_variant_n_p_c_profile.html":[3,0,970,4],
 "class_program.html":[3,0,971],
 "class_progression_event_condition.html":[3,0,972],
 "class_proj_a_i_style_i_d.html":[3,0,973],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "class_projectile.html#acfca3a77d8685f83d806ea045399c3a7":[3,0,974,51],
 "class_projectile.html#acfedbe4036472a2e64e258e04242d095":[3,0,974,39],
 "class_projectile.html#ae2087937999fc8c7aedfcd120b999f3e":[3,0,974,52],
-"class_projectile.html#aea7754bae8b733ff4cdcfb8e8f379777":[3,0,974,18],
-"class_projectile.html#aece4c68ccff3998432020ffffb63cdfb":[3,0,974,15]
+"class_projectile.html#aea7754bae8b733ff4cdcfb8e8f379777":[3,0,974,18]
 };

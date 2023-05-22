@@ -41,6 +41,7 @@ var class_n_p_c_i_d_1_1_sets =
     [ "NoMultiplayerSmoothingByAI", "class_n_p_c_i_d_1_1_sets.html#af612a2c9d58d51a1606f2212ff6abbe4", null ],
     [ "NoMultiplayerSmoothingByType", "class_n_p_c_i_d_1_1_sets.html#a6ff0032f7de1978e59db9e356b31c901", null ],
     [ "NormalGoldCritterBestiaryPriority", "class_n_p_c_i_d_1_1_sets.html#ac773eb314751d4675229da6e65b7d327", null ],
+    [ "NoTownNPCHappiness", "class_n_p_c_i_d_1_1_sets.html#aa4c83a048d9fbe6b5de53de20534c277", null ],
     [ "NPCBestiaryDrawOffset", "class_n_p_c_i_d_1_1_sets.html#a40bb8cc65ea3e5163521ad0a81141243", null ],
     [ "NPCFramingGroup", "class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a", null ],
     [ "PositiveNPCTypesExcludedFromDeathTally", "class_n_p_c_i_d_1_1_sets.html#afdc23a61d8661a464b33d5a404facebd", null ],

@@ -61,14 +61,14 @@ var NAVTREEINDEX =
 "class_mod_resource_overlay.html#ac6122d587b27561eeb048b8e66fe7e3f",
 "class_modifiers_1_1_shape_scale.html",
 "class_n_p_c_a_i_style_i_d.html#ad796a59e2694566c2b2c37d99697c853",
-"class_player.html#a5f1e87241c154367d12fddf7f847d068",
-"class_program.html",
-"class_projectile.html#af13b8c2eca21e7745473cff173eeddd6",
-"class_spawn_condition_bestiary_overlay_info_element.html",
-"class_u_i_bestiary_info_item_line.html",
-"class_world_u_i_anchor.html",
-"struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486",
-"struct_resource_overlay_draw_context.html#af5cdc9b01085fb5c4d8c174e8d2c4ec4"
+"class_player.html#a5db9330455d5b114237bb9d7ee4c5dbd",
+"class_profiles_1_1_variant_n_p_c_profile.html",
+"class_projectile.html#aece4c68ccff3998432020ffffb63cdfb",
+"class_spawn_condition_bestiary_info_element.html",
+"class_u_i_bestiary_filtering_options_grid.html",
+"class_world_sections.html",
+"struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea",
+"struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
