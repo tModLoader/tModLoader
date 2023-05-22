@@ -7,7 +7,6 @@ var class_mod_item =
     [ "ArmorArmGlowMask", "class_mod_item.html#a49449f0a9d7ac05c2e19e8ecfc655dfc", null ],
     [ "ArmorSetShadows", "class_mod_item.html#ae53fe554e6e87541253e1557d4831793", null ],
     [ "AutoDefaults", "class_mod_item.html#ac29f8c5a4b65ea061cfad410adbae53a", null ],
-    [ "AutoLightSelect", "class_mod_item.html#a475ff58d1095e2600049507a83d1e3c8", null ],
     [ "AutoStaticDefaults", "class_mod_item.html#a0883146bb27bf2d00eebb96040b42f99", null ],
     [ "CanAccessoryBeEquippedWith", "class_mod_item.html#a3d45a378defd22de0298ee214bdc0ed5", null ],
     [ "CanAutoReuseItem", "class_mod_item.html#ae606c65377a2b1d33596c78782f2fdd6", null ],

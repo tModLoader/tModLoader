@@ -177,6 +177,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Boulders</b>
 <tr class="memitem:adc7a29dd61d264f7e51ed25c4e8e48e5"><td class="memItemLeft" align="right" valign="top"><a id="adc7a29dd61d264f7e51ed25c4e8e48e5" name="adc7a29dd61d264f7e51ed25c4e8e48e5"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BreakableWhenPlacing</b> = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624)</td></tr>
 <tr class="separator:adc7a29dd61d264f7e51ed25c4e8e48e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c292c5ff5257752e0ef0be8314fee77"><td class="memItemLeft" align="right" valign="top"><a id="a6c292c5ff5257752e0ef0be8314fee77" name="a6c292c5ff5257752e0ef0be8314fee77"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Campfire</b> = Factory.CreateBoolSet(TileID.Campfire)</td></tr>
+<tr class="memdesc:a6c292c5ff5257752e0ef0be8314fee77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile behaves like a campfire. Campfires must be 3x2 and need to follow the vanilla layout with the on state being at the top of the texture. Padding must also be present in the same manner, resulting in a 54x36 section for each style. The animation, however, can be done with a separate flame texture if desired. <br  />
+ Necessary for block swap and Marshmallow on a Stick features.<br /></td></tr>
+<tr class="separator:a6c292c5ff5257752e0ef0be8314fee77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad77093617112778764814703d044593"><td class="memItemLeft" align="right" valign="top"><a id="aad77093617112778764814703d044593" name="aad77093617112778764814703d044593"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeClearedDuringGeneration</b> = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237)</td></tr>
 <tr class="separator:aad77093617112778764814703d044593"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -586,7 +591,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileMossBric
 <tr class="separator:a46897420db0cef28b9b2ef74470c51a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af83141b5db3aec5e8f108fc234de071b"><td class="memItemLeft" align="right" valign="top"><a id="af83141b5db3aec5e8f108fc234de071b" name="af83141b5db3aec5e8f108fc234de071b"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Torch</b> = Factory.CreateBoolSet(TileID.Torches)</td></tr>
-<tr class="memdesc:af83141b5db3aec5e8f108fc234de071b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. <br /></td></tr>
+<tr class="memdesc:af83141b5db3aec5e8f108fc234de071b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <a class="el" href="class_item_i_d_1_1_sets.html#acadf8e3829cbae2a0bc9b37c289c813f" title="If true for a given item type (Item.type), then that item is a torch.   Torches can be auto-selected ...">ItemID.Sets.Torches</a>.<br /></td></tr>
 <tr class="separator:af83141b5db3aec5e8f108fc234de071b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0888b613264a345fd387a7f5457b802"><td class="memItemLeft" align="right" valign="top"><a id="af0888b613264a345fd387a7f5457b802" name="af0888b613264a345fd387a7f5457b802"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageBleeding</b> = Factory.CreateBoolSet(48, 232)</td></tr>

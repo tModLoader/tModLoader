@@ -10,6 +10,7 @@ var class_tile_i_d_1_1_sets =
     [ "AvoidedByMeteorLanding", "class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313", null ],
     [ "BlockMergesWithMergeAllBlock", "class_tile_i_d_1_1_sets.html#a0c566028cc2f0e464e4f630bd73d20e4", null ],
     [ "BlockMergesWithMergeAllBlockOverride", "class_tile_i_d_1_1_sets.html#ad263324405134e000e15ba050aeae0d7", null ],
+    [ "Campfire", "class_tile_i_d_1_1_sets.html#a6c292c5ff5257752e0ef0be8314fee77", null ],
     [ "CanBeClearedDuringOreRunner", "class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36", null ],
     [ "CanBeDugByShovel", "class_tile_i_d_1_1_sets.html#a7838ca05adaa92855309bde11fae9e57", null ],
     [ "CanBeSloped", "class_tile_i_d_1_1_sets.html#a1358ffd200656f7e6cc8f472ac4f2409", null ],

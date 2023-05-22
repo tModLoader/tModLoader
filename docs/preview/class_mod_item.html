@@ -131,9 +131,6 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AllowPrefix</
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AutoDefaults</b> ()</td></tr>
 <tr class="memdesc:ac29f8c5a4b65ea061cfad410adbae53a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically sets certain defaults. Override this if you do not want the properties to be set for you. <br /></td></tr>
 <tr class="separator:ac29f8c5a4b65ea061cfad410adbae53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a475ff58d1095e2600049507a83d1e3c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a475ff58d1095e2600049507a83d1e3c8">AutoLightSelect</a> (ref bool dryTorch, ref bool wetTorch, ref bool glowstick)</td></tr>
-<tr class="memdesc:a475ff58d1095e2600049507a83d1e3c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind.  <a href="class_mod_item.html#a475ff58d1095e2600049507a83d1e3c8">More...</a><br /></td></tr>
-<tr class="separator:a475ff58d1095e2600049507a83d1e3c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0883146bb27bf2d00eebb96040b42f99"><td class="memItemLeft" align="right" valign="top"><a id="a0883146bb27bf2d00eebb96040b42f99" name="a0883146bb27bf2d00eebb96040b42f99"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AutoStaticDefaults</b> ()</td></tr>
 <tr class="memdesc:a0883146bb27bf2d00eebb96040b42f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically sets certain static defaults. Override this if you do not want the properties to be set for you. <br /></td></tr>
@@ -863,58 +860,6 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Localizati
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a475ff58d1095e2600049507a83d1e3c8" name="a475ff58d1095e2600049507a83d1e3c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a475ff58d1095e2600049507a83d1e3c8">&#9670;&nbsp;</a></span>AutoLightSelect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModItem.AutoLightSelect </td>
-          <td>(</td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>dryTorch</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>wetTorch</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref bool&#160;</td>
-          <td class="paramname"><em>glowstick</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dryTorch</td><td>if set to <code>true</code> [dry torch].</td></tr>
-    <tr><td class="paramname">wetTorch</td><td>if set to <code>true</code> [wet torch].</td></tr>
-    <tr><td class="paramname">glowstick</td><td>if set to <code>true</code> [glowstick].</td></tr>
   </table>
   </dd>
 </dl>

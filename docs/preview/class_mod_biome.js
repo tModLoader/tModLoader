@@ -11,5 +11,7 @@ var class_mod_biome =
     [ "BackgroundColor", "class_mod_biome.html#ad1cdd95cfe7b604334833e3b34d45cd0", null ],
     [ "BackgroundPath", "class_mod_biome.html#a5dae31265d7b770d8cb40e948df63b91", null ],
     [ "BestiaryIcon", "class_mod_biome.html#a3026c1396f5d66430dda41dee39734cc", null ],
+    [ "BiomeCampfireItemType", "class_mod_biome.html#a32b4fd7d34c32fb78af362cb7e225fc7", null ],
+    [ "BiomeTorchItemType", "class_mod_biome.html#a454490cc5a3ff7ffb87450efe406a209", null ],
     [ "DisplayName", "class_mod_biome.html#ab727aa7efb5f1428de536388e0342a35", null ]
 ];

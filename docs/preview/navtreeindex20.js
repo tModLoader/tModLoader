@@ -1,5 +1,8 @@
 var NAVTREEINDEX20 =
 {
+"struct_boss_bar_draw_params.html#a2e9df6d868c1b16a4b97cdd87b50b575":[3,0,101,9],
+"struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592":[3,0,101,2],
+"struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,101,1],
 "struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea":[3,0,101,11],
 "struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,101,7],
 "struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422":[3,0,101,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX20 =
 "struct_ref_read_only_array.html":[3,0,1007],
 "struct_resource_draw_settings.html":[3,0,1016],
 "struct_resource_overlay_draw_context.html":[3,0,1018],
-"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1018,5],
-"struct_resource_overlay_draw_context.html#a46493f40a782e875eefb93bb0a4c6221":[3,0,1018,3],
-"struct_resource_overlay_draw_context.html#ab6569d2846bd21cae368ad0a675329b6":[3,0,1018,4],
-"struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34":[3,0,1018,0]
+"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1018,5]
 };

@@ -37,6 +37,7 @@ var class_main =
     [ "rockLayer", "class_main.html#a879663e005dab5ec98f1e90ebb7236d8", null ],
     [ "tileAxe", "class_main.html#aa844b5324096225533879d1901aa9afe", null ],
     [ "tileCut", "class_main.html#a7e567c0a497197b2f49f009f2ba01f05", null ],
+    [ "tileFlame", "class_main.html#abb7f16a068878aa07bcfb222d9002bed", null ],
     [ "tileFrameImportant", "class_main.html#ae49a753c6a45feca9bacc58d520efc1a", null ],
     [ "tileLavaDeath", "class_main.html#ae4e747a8a660d98c8fd21b613e1fc2d4", null ],
     [ "tileLighted", "class_main.html#a735063a3cb2816b52d2e861269294589", null ],

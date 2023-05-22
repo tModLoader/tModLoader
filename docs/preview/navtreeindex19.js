@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"class_world_gen_range.html":[3,0,1425],
+"class_world_generator.html":[3,0,1424],
+"class_world_map.html":[3,0,1426],
 "class_world_sections.html":[3,0,1427],
 "class_world_u_i_anchor.html":[3,0,1428],
 "class_world_utils.html":[3,0,1429],
@@ -8,8 +11,8 @@ var NAVTREEINDEX19 =
 "class_wsc_json_object.html":[3,0,1432],
 "classes.html":[3,1],
 "classnativefiledialog.html":[3,0,813],
-"functions.html":[3,3,0],
 "functions.html":[3,3,0,0],
+"functions.html":[3,3,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "struct_boss_bar_draw_params.html":[3,0,101],
 "struct_boss_bar_draw_params.html#a0840c3ca6303cfb7c95e9da0a54a444b":[3,0,101,10],
 "struct_boss_bar_draw_params.html#a0f4c99ca0b7ecb15fd2db3b7bb39eb9a":[3,0,101,0],
-"struct_boss_bar_draw_params.html#a1e0eb99f0aaa99afc6e33677ca8b2071":[3,0,101,5],
-"struct_boss_bar_draw_params.html#a2e9df6d868c1b16a4b97cdd87b50b575":[3,0,101,9],
-"struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592":[3,0,101,2],
-"struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,101,1]
+"struct_boss_bar_draw_params.html#a1e0eb99f0aaa99afc6e33677ca8b2071":[3,0,101,5]
 };
