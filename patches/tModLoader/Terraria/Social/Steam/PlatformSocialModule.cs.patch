@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Social/Steam/PlatformSocialModule.cs
++++ src/tModLoader/Terraria/Social/Steam/PlatformSocialModule.cs
+@@ -8,6 +_,9 @@
+ 	public class PlatformSocialModule : Terraria.Social.Base.PlatformSocialModule
+ 	{
+ 		public override void Initialize() {
++			if (Main.dedServ)
++				return;
++
+ 			bool num = PlayerInput.UseSteamDeckIfPossible = SteamUtils.IsSteamRunningOnSteamDeck();
+ 			if (num) {
+ 				PlayerInput.SettingsForUI.SetCursorMode(CursorMode.Gamepad);
