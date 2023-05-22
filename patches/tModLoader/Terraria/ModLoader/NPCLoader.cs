@@ -131,7 +131,7 @@ public static class NPCLoader
 			foreach (var key in keys) {
 				string fullKey = $"{prefix}.{key}";
 				string defaultValueKey = "TownNPCMood." + key;
-				Language.GetOrRegister(fullKey, () => $"{{${defaultValueKey}}}"); // {{ is literal {.
+				Language.GetOrRegister(fullKey, () => Language.GetTextValue(defaultValueKey)); // Register current language translation rather than vanilla text substitution so modder can see the {BiomeName} and {NPCName} usages. Might result in non-English values, but modder is expected to change the translation value anyway.
 			}
 		}
 	}

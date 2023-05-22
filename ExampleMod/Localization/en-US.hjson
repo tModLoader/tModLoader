@@ -951,8 +951,15 @@ Mods: {
 		}
 
 		Biomes: {
-			ExampleSurfaceBiome.DisplayName: Example Surface
-			ExampleUndergroundBiome.DisplayName: Example Underground
+			ExampleSurfaceBiome: {
+				DisplayName: Example Surface
+				TownNPCDialogueName: the Example Surface Biome
+			}
+
+			ExampleUndergroundBiome: {
+				DisplayName: Example Underground
+				TownNPCDialogueName: the Example Underground Biome
+			}
 		}
 
 		Prefixes: {
@@ -1013,11 +1020,6 @@ Mods: {
 			ExampleSoul: Drops in the Example Underground biome in hardmode
 			JourneyMode: Drops in Journey Mode
 			Example: Drops during daytime
-		}
-
-		TownNPCMoodBiomes: {
-			ExampleSurfaceBiome: the Example Surface Biome
-			ExampleUndergroundBiome: the Example Underground Biome
 		}
 	}
 }

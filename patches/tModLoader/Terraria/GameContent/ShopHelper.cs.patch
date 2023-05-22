@@ -69,7 +69,7 @@
  			new AllPersonalitiesModifier().ModifyShopPrice(info, this);
  			if (_currentHappiness == "")
  				AddHappinessReportText("Content");
-@@ -167,11 +_,23 @@
+@@ -167,11 +_,19 @@
  		return priceAdjustment;
  	}
  
@@ -79,19 +79,14 @@
 +	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue(biomeNameKey.StartsWith("Mods.") ? biomeNameKey : "TownNPCMoodBiomes." + biomeNameKey);
  
 -	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
-+	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null, int npcType = 0)
++	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null, int otherNPCType = 0)
  	{
-+		string text;
+ 		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +
-+		if(textKeyInCategory == "Princess_LovesNPC")
-+			text = ModContent.GetModNPC(npcType).GetLocalizationKey("TownNPCMood");
-+		else if (_currentNPCBeingTalkedTo.type < NPCID.Count)
--		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+			text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+		else {
-+			var modNpc = _currentNPCBeingTalkedTo.ModNPC;
-+			text = modNpc.GetLocalizationKey("TownNPCMood");
-+		}
++		if (textKeyInCategory == "Princess_LovesNPC")
++			text = ModContent.GetModNPC(otherNPCType).GetLocalizationKey("TownNPCMood");
++		else if (_currentNPCBeingTalkedTo.ModNPC is ModNPC modNPC)
++			text = modNPC.GetLocalizationKey("TownNPCMood");
 +
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  			text += "Transformed";

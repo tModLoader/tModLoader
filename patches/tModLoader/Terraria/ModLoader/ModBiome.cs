@@ -44,7 +44,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
-	string IShoppingBiome.NameKey => $"Mods.{Mod.Name}.TownNPCMoodBiomes.{Name}";
+	string IShoppingBiome.NameKey => this.GetLocalizationKey("TownNPCDialogueName");
 
 	protected sealed override void Register()
 	{
