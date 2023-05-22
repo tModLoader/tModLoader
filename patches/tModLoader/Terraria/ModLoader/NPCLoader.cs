@@ -123,7 +123,7 @@ public static class NPCLoader
 
 	internal static void RegisterTownNPCMoodLocalizations(ModNPC npc)
 	{
-		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !NPCID.Sets.IsNotReallyTownNPC[npc.NPC.type]) {
+		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !NPCID.Sets.NoTownNPCHappiness[npc.NPC.type]) {
 			string prefix = npc.GetLocalizationKey("TownNPCMood");
 			string[] keys = new string[] {
 				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess", "Princess_LoveNPC"

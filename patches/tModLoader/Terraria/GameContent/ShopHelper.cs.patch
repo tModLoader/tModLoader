@@ -202,7 +202,7 @@
 +		/*
  		if (type == 37 || type == 368 || type == 453)
 +		*/
-+		if (NPCID.Sets.IsNotReallyTownNPC[type])
++		if (NPCID.Sets.NoTownNPCHappiness[type])
  			return true;
  
  		return false;

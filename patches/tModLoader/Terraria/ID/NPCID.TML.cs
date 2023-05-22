@@ -21,9 +21,9 @@ public partial class NPCID
 
 		//Default ID is the skeleton merchant, traveling merchant, old man
 		/// <summary>
-		/// If true, the given NPC will not count towards town NPC happiness and won't have a happiness button.
+		/// If true, the given NPC will not count towards town NPC happiness and won't have a happiness button. Pets (<see cref="NPCID.Sets.IsTownPet"/>) do not need to set this.
 		/// </summary>
-		public static bool[] IsNotReallyTownNPC = Factory.CreateBoolSet(37, 368, 453);
+		public static bool[] NoTownNPCHappiness = Factory.CreateBoolSet(37, 368, 453);
 
 		//Default ID is the skeleton merchant
 		/// <summary>
