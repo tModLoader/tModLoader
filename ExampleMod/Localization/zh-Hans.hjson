@@ -47,7 +47,31 @@ Mods: {
 			// ExampleTravellingMerchant.DisplayName: Example Traveler
 			// ExampleBoneMerchant.DisplayName: Example Bone Merchant
 			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind N P C
-			// ExamplePerson.DisplayName: Example Person
+
+			ExamplePerson: {
+				// DisplayName: Example Person
+
+				# This is what displays during all of an NPC's happiness levels.
+				TownNPCMood: {
+					// Content: I feel pretty fine right now.
+					// NoHome: I would very much like a house, all the colorful monsters scare me.
+					// LoveSpace: I love how there is so much space here to code tModLoader mods!
+					// FarFromHome: Could you please get me back to my house?
+					// DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
+					// HateCrowded: I can't test my mod with so many people around!
+					// LikeBiome: "{BiomeName} is a very nice place to test mods in."
+					// LoveBiome: I love {BiomeName}.
+					// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
+					// HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
+					// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
+					// LoveNPC: Do you think {NPCName} notices me?
+					// DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
+					// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+					// LikeNPC_Princess: "{NPCName} and I get along, did you know that I am royalty too?"
+					// Princess_LovesNPC: "{NPCName} has a very...angular face. Neat!"
+				}
+			}
+
 			// ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
 			// ExampleWormBody.DisplayName: Example Worm
 			// ExampleWormHead.DisplayName: Example Worm
@@ -919,8 +943,15 @@ Mods: {
 		}
 
 		Biomes: {
-			// ExampleSurfaceBiome.DisplayName: Example Surface
-			// ExampleUndergroundBiome.DisplayName: Example Underground
+			ExampleSurfaceBiome: {
+				// DisplayName: Example Surface
+				// TownNPCDialogueName: the Example Surface Biome
+			}
+
+			ExampleUndergroundBiome: {
+				// DisplayName: Example Underground
+				// TownNPCDialogueName: the Example Underground Biome
+			}
 		}
 
 		Prefixes: {
@@ -936,26 +967,6 @@ Mods: {
 
 			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
 			// PowerTooltip: "{0:+0;-#} Power"
-		}
-
-		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
-		TownNPCMood: {
-			ExamplePerson: {
-				// Content: I feel pretty fine right now.
-				// NoHome: I would very much like a house, all the colorful monsters scare me.
-				// LoveSpace: I love how there is so much space here to code tModLoader mods!
-				// FarFromHome: Could you please get me back to my house?
-				// DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
-				// HateCrowded: I can't test my mod with so many people around!
-				// LikeBiome: "{BiomeName} is a very nice place to test mods in."
-				// LoveBiome: I love {BiomeName}.
-				// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
-				// HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
-				// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
-				// LoveNPC: Do you think {NPCName} notices me?
-				// DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
-				// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
-			}
 		}
 
 		MessageInfo: {

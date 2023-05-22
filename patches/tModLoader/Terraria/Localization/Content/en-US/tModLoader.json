@@ -906,5 +906,9 @@
 		"ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		"ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		"ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		"LikeNPC_Princess": "I like {NPCName}.",
+		"Princess_LovesNPC": "I like {NPCName}."
 	}
 }

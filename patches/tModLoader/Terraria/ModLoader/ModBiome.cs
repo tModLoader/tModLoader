@@ -44,7 +44,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
-	string IShoppingBiome.NameKey => Name;
+	string IShoppingBiome.NameKey => this.GetLocalizationKey("TownNPCDialogueName");
 
 	protected sealed override void Register()
 	{
@@ -57,6 +57,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 		SetStaticDefaults();
 
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
+		Language.GetOrRegister((this as IShoppingBiome).NameKey, () => "the " + Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}
 
 	/// <summary>
