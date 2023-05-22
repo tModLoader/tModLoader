@@ -308,7 +308,7 @@ Mods: {
 			}
 
 			MinionBossBag: {
-				DisplayName: Treasure Bag
+				DisplayName: Treasure Bag ({$Mods.ExampleMod.NPCs.MinionBossBody.DisplayName})
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 

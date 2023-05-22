@@ -20,7 +20,7 @@ public abstract class ModHair : ModTexturedType
 	/// <summary>
 	/// Used to set the character gender based on hairstyle when randomizing a new character. <br />
 	/// If <see cref="Gender.Unspecified" />, the gender will be randomly rolled. <br />
-	/// Note that all hairstyles can be selected with either gender. THis is just a defualt for quick randomization.
+	/// Note that all hairstyles can be selected with either gender. This is just a default for quick randomization.
 	/// </summary>
 	public virtual Gender RandomizedCharacterCreationGender => Gender.Unspecified;
 
