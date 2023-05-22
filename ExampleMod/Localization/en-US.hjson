@@ -47,7 +47,31 @@ Mods: {
 			ExampleTravellingMerchant.DisplayName: Example Traveler
 			ExampleBoneMerchant.DisplayName: Example Bone Merchant
 			ExampleDrawBehindNPC.DisplayName: Example Draw Behind N P C
-			ExamplePerson.DisplayName: Example Person
+
+			ExamplePerson: {
+				DisplayName: Example Person
+
+				# This is what displays during all of an NPC's happiness levels.
+				TownNPCMood: {
+					Content: I feel pretty fine right now.
+					NoHome: I would very much like a house, all the colorful monsters scare me.
+					LoveSpace: I love how there is so much space here to code tModLoader mods!
+					FarFromHome: Could you please get me back to my house?
+					DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
+					HateCrowded: I can't test my mod with so many people around!
+					LikeBiome: "{BiomeName} is a very nice place to test mods in."
+					LoveBiome: I love {BiomeName}.
+					DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
+					HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
+					LikeNPC: I can respect {NPCName} as a fellow guide and educator!
+					LoveNPC: Do you think {NPCName} notices me?
+					DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
+					HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+					LikeNPC_Princess: "{NPCName} and I get along, did you know that I am royalty too?"
+					Princess_LovesNPC: "{NPCName} has a very...angular face. Neat!"
+				}
+			}
+
 			ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
 			ExampleWormBody.DisplayName: Example Worm
 			ExampleWormHead.DisplayName: Example Worm
@@ -59,7 +83,6 @@ Mods: {
 		}
 
 		Tiles: {
-			ExampleClock.MapEntry: Example Clock
 			ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItem.DisplayName}"
 			ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItemAdvanced.DisplayName}"
 			ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
@@ -67,19 +90,12 @@ Mods: {
 			ExampleHerb.MapEntry: Example Herb
 			ExampleMusicBoxTile.MapEntry: Music Box
 			ExampleOre.MapEntry: ExampleOre
-			ExampleTorch.MapEntry: Torch
-			ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
 				MapEntry0: Example Chest
 				MapEntry1: Locked Example Chest
 			}
 
-			ExampleDoorClosed.MapEntry: Example Door
-			ExampleDoorOpen.MapEntry: Example Door
-			ExampleTable.MapEntry: Table
-			ExampleWorkbench.MapEntry: Work Bench
-			ExampleSapling.MapEntry: Example Sapling
 			ExampleDresser.MapEntry: Example Dresser
 		}
 
@@ -316,7 +332,7 @@ Mods: {
 			}
 
 			MinionBossBag: {
-				DisplayName: Treasure Bag
+				DisplayName: Treasure Bag ({$Mods.ExampleMod.NPCs.MinionBossBody.DisplayName})
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -804,6 +820,17 @@ Mods: {
 				DisplayName: Example Custom Drawn Sword
 				Tooltip: This is a modded sword with a changing color and custom use and hold styles.
 			}
+
+			ExampleWaterTorch: {
+				DisplayName: Example Water Torch
+				# "Can be placed in water"
+				Tooltip: "{$ItemTooltip.IchorTorch}"
+			}
+
+			ExampleCampfire: {
+				DisplayName: Example Campfire
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -932,33 +959,30 @@ Mods: {
 		}
 
 		Biomes: {
-			ExampleSurfaceBiome.DisplayName: Example Surface
-			ExampleUndergroundBiome.DisplayName: Example Underground
+			ExampleSurfaceBiome: {
+				DisplayName: Example Surface
+				TownNPCDialogueName: the Example Surface Biome
+			}
+
+			ExampleUndergroundBiome: {
+				DisplayName: Example Underground
+				TownNPCDialogueName: the Example Underground Biome
+			}
 		}
 
 		Prefixes: {
-			ExamplePrefix.DisplayName: Example Prefix
-			ExampleDerivedPrefix.DisplayName: Example Derived Prefix
-		}
-
-		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
-		TownNPCMood: {
-			ExamplePerson: {
-				Content: I feel pretty fine right now.
-				NoHome: I would very much like a house, all the colorful monsters scare me.
-				LoveSpace: I love how there is so much space here to code tModLoader mods!
-				FarFromHome: Could you please get me back to my house?
-				DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
-				HateCrowded: I can't test my mod with so many people around!
-				LikeBiome: "{BiomeName} is a very nice place to test mods in."
-				LoveBiome: I love {BiomeName}.
-				DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
-				HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
-				LikeNPC: I can respect {NPCName} as a fellow guide and educator!
-				LoveNPC: Do you think {NPCName} notices me?
-				DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
-				HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+			ExamplePrefix: {
+				DisplayName: Example Prefix
+				AdditionalTooltip: More Power
 			}
+
+			ExampleDerivedPrefix: {
+				DisplayName: Example Derived Prefix
+				AdditionalTooltip: Even More Power
+			}
+
+			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
+			PowerTooltip: "{0:+0;-#} Power"
 		}
 
 		MessageInfo: {
@@ -1017,5 +1041,6 @@ Mods: {
 		}
 	}
 }
+
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
 UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Journey world, silly.

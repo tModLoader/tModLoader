@@ -17,6 +17,16 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public override int Music => 0;
 
+	/// <summary>
+	/// The torch item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeTorchItemType => -1;
+
+	/// <summary>
+	/// The campfire item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeCampfireItemType => -1;
+
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
 	public string LocalizationCategory => "Biomes";
@@ -44,7 +54,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
-	string IShoppingBiome.NameKey => Name;
+	string IShoppingBiome.NameKey => this.GetLocalizationKey("TownNPCDialogueName");
 
 	protected sealed override void Register()
 	{
@@ -55,8 +65,9 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	public sealed override void SetupContent()
 	{
 		SetStaticDefaults();
-		
+
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
+		Language.GetOrRegister((this as IShoppingBiome).NameKey, () => "the " + Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}
 
 	/// <summary>
@@ -88,7 +99,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	/// <summary>
 	/// Override this hook to make things happen when the player is in the biome.
 	/// </summary>
-	public virtual void OnInBiome(Player player) {}
+	public virtual void OnInBiome(Player player) { }
 
 	/// <summary>
 	/// Override this hook to make things happen when the player leaves the biome.

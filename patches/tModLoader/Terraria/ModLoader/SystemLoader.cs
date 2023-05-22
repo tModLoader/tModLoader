@@ -125,7 +125,8 @@ public static partial class SystemLoader
 		}
 	}
 
-	public static void ClearWorld() {
+	public static void ClearWorld()
+	{
 		foreach (var system in HookClearWorld.Enumerate()) {
 			system.ClearWorld();
 		}

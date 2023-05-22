@@ -417,8 +417,7 @@ public static class PlayerLoader
 	{
 		// safe to get source entity, as hurt is not synchronized across the net
 		if (modifiers.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
-			switch (sourceEntity)
-			{
+			switch (sourceEntity) {
 				case Projectile proj:
 					CombinedHooks.ModifyHitByProjectile(player, proj, ref modifiers);
 					break;
@@ -442,8 +441,7 @@ public static class PlayerLoader
 	{
 		// source entity is only safe to retrieve if the hit is happening 'locally'
 		if (info.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
-			switch (sourceEntity)
-			{
+			switch (sourceEntity) {
 				case Projectile proj when player == Main.LocalPlayer:
 					CombinedHooks.OnHitByProjectile(player, proj, info);
 					break;
@@ -665,8 +663,7 @@ public static class PlayerLoader
 
 	public static void ProcessTriggers(Player player, TriggersSet triggersSet)
 	{
-		foreach (var modPlayer in HookProcessTriggers.Enumerate(player))
-		{
+		foreach (var modPlayer in HookProcessTriggers.Enumerate(player)) {
 			try { modPlayer.ProcessTriggers(triggersSet); }	catch { }
 		}
 	}

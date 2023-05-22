@@ -89,7 +89,7 @@ public static class LoaderManager
 
 			var autoload = AutoloadAttribute.GetValue(type);
 
-			if(autoload.NeedsAutoloading) {
+			if (autoload.NeedsAutoloading) {
 				loadersByType.Add(type, (ILoader)Activator.CreateInstance(type, true)!);
 			}
 		}

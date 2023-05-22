@@ -507,7 +507,7 @@ public static class ItemLoader
 			if (g.CanConsumeBait(player, bait) is bool b)
 				ret = (ret ?? true) && b;
 		}
-		
+
 		return ret;
 	}
 
@@ -557,7 +557,7 @@ public static class ItemLoader
 		foreach (var g in HookOnResearched.Enumerate(item))
 			g.Instance(item).OnResearched(item, fullyResearched);
 	}
-    
+
 	private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage);
 	private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 
@@ -1416,7 +1416,7 @@ public static class ItemLoader
 
 
 	private static HookList HookModifyItemLoot = AddHook<Action<Item, ItemLoot>>(g => g.ModifyItemLoot);
-	
+
 	/// <summary>
 	/// Calls each GlobalItem.ModifyItemLoot hooks.
 	/// </summary>
@@ -1451,7 +1451,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 	/// </summary>
@@ -1467,7 +1467,7 @@ public static class ItemLoader
 
 		return destination.ModItem?.CanStackInWorld(source) ?? true;
 	}
-	
+
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
 
 	/// <summary>
@@ -1707,7 +1707,7 @@ public static class ItemLoader
 
 	private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 	private static HookList HookVerticalWingSpeeds = AddHook<DelegateVerticalWingSpeeds>(g => g.VerticalWingSpeeds);
-	
+
 	/// <summary>
 	/// If the player is using wings, this uses the result of GetWing, and calls ModItem.VerticalWingSpeeds then all GlobalItem.VerticalWingSpeeds hooks.
 	/// </summary>
@@ -1734,7 +1734,7 @@ public static class ItemLoader
 
 	private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 	private static HookList HookHorizontalWingSpeeds = AddHook<DelegateHorizontalWingSpeeds>(g => g.HorizontalWingSpeeds);
-	
+
 	/// <summary>
 	/// If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds then all GlobalItem.HorizontalWingSpeeds hooks.
 	/// </summary>
@@ -1776,7 +1776,7 @@ public static class ItemLoader
 
 	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
-	
+
 	/// <summary>
 	/// Calls ModItem.Update, then all GlobalItem.Update hooks.
 	/// </summary>
@@ -1805,7 +1805,7 @@ public static class ItemLoader
 
 	private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
 	private static HookList HookGrabRange = AddHook<DelegateGrabRange>(g => g.GrabRange);
-	
+
 	/// <summary>
 	/// Calls ModItem.GrabRange, then all GlobalItem.GrabRange hooks.
 	/// </summary>
@@ -1819,7 +1819,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 	/// </summary>
@@ -1834,7 +1834,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookCanPickup = AddHook<Func<Item, Player, bool>>(g => g.CanPickup);
-	
+
 	public static bool CanPickup(Item item, Player player)
 	{
 		foreach (var g in HookCanPickup.Enumerate(item)) {
@@ -1846,7 +1846,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookOnPickup = AddHook<Func<Item, Player, bool>>(g => g.OnPickup);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 	/// </summary>
@@ -1861,7 +1861,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookItemSpace = AddHook<Func<Item, Player, bool>>(g => g.ItemSpace);
-	
+
 	public static bool ItemSpace(Item item, Player player)
 	{
 		foreach (var g in HookItemSpace.Enumerate(item)) {
@@ -1873,7 +1873,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookGetAlpha = AddHook<Func<Item, Color, Color?>>(g => g.GetAlpha);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.GetAlpha hooks then ModItem.GetAlpha, until one of them returns a color, and returns that color. Returns null if all of the hooks return null.
 	/// </summary>
@@ -1937,7 +1937,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookPostDrawInWorld = AddHook<Action<Item, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
-	
+
 	/// <summary>
 	/// Calls ModItem.PostDrawInWorld, then all GlobalItem.PostDrawInWorld hooks.
 	/// </summary>
@@ -1951,7 +1951,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookPreDrawInInventory = AddHook<Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>>(g => g.PreDrawInInventory);
-	
+
 	/// <summary>
 	/// Returns the "and" operator on the results of all GlobalItem.PreDrawInInventory hooks and ModItem.PreDrawInInventory.
 	/// </summary>
@@ -2033,7 +2033,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookCanEquipAccessory = AddHook<Func<Item, Player, int, bool, bool>>(g => g.CanEquipAccessory);
-	
+
 	public static bool CanEquipAccessory(Item item, int slot, bool modded)
 	{
 		Player player = Main.player[Main.myPlayer];
@@ -2182,7 +2182,7 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
@@ -2196,6 +2196,16 @@ public static class ItemLoader
 			}
 
 			tooltips.Add(tooltip);
+		}
+
+		if (item.prefix >= PrefixID.Count && prefixlineIndex != -1) {
+			var tooltipLines = PrefixLoader.GetPrefix(item.prefix)?.GetTooltipLines(item);
+			if (tooltipLines != null) {
+				foreach (var line in tooltipLines) {
+					tooltips.Insert(prefixlineIndex, line);
+					prefixlineIndex++;
+				}
+			}
 		}
 
 		item.ModItem?.ModifyTooltips(tooltips);

@@ -512,6 +512,12 @@
 		"TagsLangDescription": "Mod wspiera wiele wersji językowych gry",
 		"TagsGen": "Zmodyfikowany generator świata",
 		"TagsGenDescription": "Zmienia sposób generowania świata (np. surowce, nowe struktury, itd.)"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Zwiększ obronę o {0}",

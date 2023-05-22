@@ -102,7 +102,8 @@ public static class EquipLoader
 			}
 		}
 
-		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray) {
+		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray)
+		{
 			Array.Resize(ref typeArray, nextEquip[equipType]);
 
 			foreach (var entry in slotToId[equipType]) {
@@ -275,7 +276,7 @@ public static class EquipLoader
 			equipTexture = new EquipTexture();
 
 		ModContent.Request<Texture2D>(texture); //ensure texture exists
-		 
+
 		equipTexture.Texture = texture;
 		equipTexture.Name = name ?? item.Name;
 		equipTexture.Type = type;

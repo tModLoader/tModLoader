@@ -141,7 +141,7 @@ partial class SystemLoader
 
 	private static HookList HookPostUpdateEverything = AddHook<Action>(s => s.PostUpdateEverything);
 
-	private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>> (s => s.ModifyInterfaceLayers);
+	private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>>(s => s.ModifyInterfaceLayers);
 
 	private static HookList HookModifyGameTipVisibility = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTipVisibility);
 

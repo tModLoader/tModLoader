@@ -110,6 +110,7 @@ public static class NPCLoader
 
 		foreach (ModNPC npc in npcs) {
 			Lang._npcNameCache[npc.Type] = npc.DisplayName;
+			RegisterTownNPCMoodLocalizations(npc);
 		}
 	}
 
@@ -117,6 +118,21 @@ public static class NPCLoader
 	{
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update();
+		}
+	}
+
+	internal static void RegisterTownNPCMoodLocalizations(ModNPC npc)
+	{
+		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !NPCID.Sets.NoTownNPCHappiness[npc.NPC.type]) {
+			string prefix = npc.GetLocalizationKey("TownNPCMood");
+			string[] keys = new string[] {
+				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded", "LoveBiome", "LikeBiome", "DislikeBiome", "HateBiome", "LoveNPC", "LikeNPC", "DislikeNPC", "HateNPC", "LikeNPC_Princess", "Princess_LovesNPC"
+			};
+			foreach (var key in keys) {
+				string fullKey = $"{prefix}.{key}";
+				string defaultValueKey = "TownNPCMood." + key;
+				Language.GetOrRegister(fullKey, () => Language.GetTextValue(defaultValueKey)); // Register current language translation rather than vanilla text substitution so modder can see the {BiomeName} and {NPCName} usages. Might result in non-English values, but modder is expected to change the translation value anyway.
+			}
 		}
 	}
 
@@ -179,7 +195,7 @@ public static class NPCLoader
 	private static HookList HookSetBestiary = AddHook<DelegateSetBestiary>(g => g.SetBestiary);
 	public static void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 	{
-		if(IsModNPC(npc)) {
+		if (IsModNPC(npc)) {
 			bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
 			foreach (var type in npc.ModNPC.SpawnModBiomes) {
 				bestiaryEntry.Info.Add(LoaderManager.Get<BiomeLoader>().Get(type).ModBiomeBestiaryInfoElement);
@@ -1073,7 +1089,7 @@ public static class NPCLoader
 			if (g.CanChat(npc) is bool canChat) {
 				if (!canChat)
 					return false;
-				
+
 				ret = true;
 			}
 		}
@@ -1148,7 +1164,8 @@ public static class NPCLoader
 		}
 	}
 
-	public static void AddShops(int type) {
+	public static void AddShops(int type)
+	{
 		GetNPC(type)?.AddShops();
 	}
 
@@ -1193,7 +1210,7 @@ public static class NPCLoader
 			if (g.CanGoToStatue(npc, toKingStatue) is bool canGo) {
 				if (!canGo)
 					return false;
-				
+
 				ret = true;
 			}
 		}

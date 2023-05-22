@@ -33,7 +33,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void OnSpawn(Projectile projectile, IEntitySource source)
 	{
 	}
-	
+
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 	/// </summary>

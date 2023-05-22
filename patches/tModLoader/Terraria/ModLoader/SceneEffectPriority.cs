@@ -22,6 +22,6 @@ public enum SceneEffectPriority
 	BossLow,
 	/// <summary>Will override vanilla SceneEffect for Martian Madness, Celestial Towers, Plantera</summary>
 	BossMedium,
-	/// <summary>Will override SceneEffect of Moon Lord</summary>
+	/// <summary>Will override SceneEffect of Moon Lord and Torch God</summary>
 	BossHigh
 }

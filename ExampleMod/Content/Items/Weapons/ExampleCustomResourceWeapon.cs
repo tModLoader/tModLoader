@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
+	// Holding this item will cause the ExampleResourceBar UI to show, displaying the player's custom resource amounts tracked in ExampleResourcePlayer.
 	public class ExampleCustomResourceWeapon : ModItem
 	{
 		private int exampleResourceCost; // Add our custom resource cost

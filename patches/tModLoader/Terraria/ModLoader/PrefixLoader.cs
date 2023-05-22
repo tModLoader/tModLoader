@@ -90,7 +90,7 @@ public static class PrefixLoader
 			if (modPrefix.Category is PrefixCategory.Custom)
 				return true;
 
-			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || itemCategory == PrefixCategory.AnyWeapon && IsWeaponSubCategory(modPrefix.Category));
+			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || modPrefix.Category == PrefixCategory.AnyWeapon && IsWeaponSubCategory(itemCategory));
 		}
 
 		if (item.GetPrefixCategory() is PrefixCategory category) {
@@ -111,7 +111,8 @@ public static class PrefixLoader
 		prefix = 0;
 		var wr = new WeightedRandom<int>(unifiedRandom);
 
-		void AddCategory(PrefixCategory category) {
+		void AddCategory(PrefixCategory category)
+		{
 			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
 				wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 			}
@@ -131,7 +132,7 @@ public static class PrefixLoader
 			AddCategory(PrefixCategory.AnyWeapon);
 
 		// try 50 times
-		for (int i = 0; i < 50; i ++) {
+		for (int i = 0; i < 50; i++) {
 			prefix = wr.Get();
 			if (ItemLoader.AllowPrefix(item, prefix))
 				return true;
