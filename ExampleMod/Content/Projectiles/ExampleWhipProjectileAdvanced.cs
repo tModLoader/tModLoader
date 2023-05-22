@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -73,6 +74,32 @@ namespace ExampleMod.Content.Projectiles
 				List<Vector2> points = Projectile.WhipPointsForCollision;
 				Projectile.FillWhipControlPoints(Projectile, points);
 				SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
+			}
+
+			// Spawn Dust along the whip path
+			// This is the dust code used by Durendal. Consult the Terraria source code for even more examples, found in Projectile.AI_165_Whip.
+			float swingProgress = Timer / swingTime;
+			// This code limits dust to only spawn during the the actual swing.
+			if (Utils.GetLerpValue(0.1f, 0.7f, swingProgress, clamped: true) * Utils.GetLerpValue(0.9f, 0.7f, swingProgress, clamped: true) > 0.5f && !Main.rand.NextBool(3)) {
+				List<Vector2> points = Projectile.WhipPointsForCollision;
+				points.Clear();
+				Projectile.FillWhipControlPoints(Projectile, points);
+				int pointIndex = Main.rand.Next(points.Count - 10, points.Count);
+				Rectangle spawnArea = Utils.CenteredRectangle(points[pointIndex], new Vector2(30f, 30f));
+				int dustType = DustID.Enchanted_Gold;
+				if (Main.rand.NextBool(3))
+					dustType = DustID.TintableDustLighted;
+
+				// After choosing a randomized dust and a whip segment to spawn from, dust is spawned.
+				Dust dust = Dust.NewDustDirect(spawnArea.TopLeft(), spawnArea.Width, spawnArea.Height, dustType, 0f, 0f, 100, Color.White);
+				dust.position = points[pointIndex];
+				dust.fadeIn = 0.3f;
+				Vector2 spinningpoint = points[pointIndex] - points[pointIndex - 1];
+				dust.noGravity = true;
+				dust.velocity *= 0.5f;
+				// This math causes these dust to spawn with a velocity perpendicular to the direction of the whip segments, giving the impression of the dust flying off like sparks.
+				dust.velocity += spinningpoint.RotatedBy(owner.direction * ((float)Math.PI / 2f));
+				dust.velocity *= 0.5f;
 			}
 		}
 

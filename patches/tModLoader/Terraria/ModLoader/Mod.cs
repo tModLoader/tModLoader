@@ -58,7 +58,7 @@ public partial class Mod
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
+	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
 	/// <summary>

@@ -283,7 +283,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<ExampleItem>()
 				//.Add<EquipMaterial>()
 				//.Add<BossItem>()
-				.Add<Items.Placeable.Furniture.ExampleWorkbench>()
+				.Add(new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>()) { shopCustomPrice = Item.buyPrice(copper: 15) }) // This example sets a custom price, ExampleNPCShop.cs has more info on custom prices and currency. 
 				.Add<Items.Placeable.Furniture.ExampleChair>()
 				.Add<Items.Placeable.Furniture.ExampleDoor>()
 				.Add<Items.Placeable.Furniture.ExampleBed>()

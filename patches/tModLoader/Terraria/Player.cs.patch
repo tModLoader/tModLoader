@@ -296,6 +296,16 @@
  	public string setBonus = "";
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
+@@ -836,6 +_,9 @@
+ 	public int fartKartCloudDelay;
+ 	public const int fartKartCloudDelayMax = 20;
+ 	public int nonTorch = -1;
++	/// <summary>
++	/// An offset from the actual position of the player that will be added to the draw position. Used to fake the effect of the player smoothly traveling up single block obstacles.
++	/// </summary>
+ 	public float gfxOffY;
+ 	public float stepSpeed = 1f;
+ 	public static bool deadForGood = false;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
@@ -508,7 +518,7 @@
 +	*/
 +	public StatModifier arrowDamage = StatModifier.Default;
 +	public StatModifier bulletDamage = StatModifier.Default;
-+	public StatModifier rocketDamage = StatModifier.Default;
++	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage, Shroomite Helmet changed to use this.
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
 +	/*
@@ -2245,6 +2255,15 @@
  			moveSpeed += 0.05f;
  		}
  
+@@ -10139,7 +_,7 @@
+ 
+ 		if (armorPiece.type == 1548) {
+ 			rangedCrit += 5;
+-			rocketDamage *= 1.15f;
++			specialistDamage *= 1.15f; // rocketDamage renamed.
+ 		}
+ 
+ 		if (armorPiece.type == 1549) {
 @@ -10365,14 +_,17 @@
  			minionDamage += 0.11f;
  		}
@@ -2826,7 +2845,7 @@
 +		*/
 +		arrowDamage = StatModifier.Default;
 +		bulletDamage = StatModifier.Default;
-+		rocketDamage = StatModifier.Default;
++		specialistDamage = StatModifier.Default;
 +
  		coolWhipBuff = false;
  		yoraiz0rEye = 0;
@@ -6372,8 +6391,8 @@
 +		if (AmmoID.Sets.IsBullet[sItem.useAmmo])
 +			modifier = modifier.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[sItem.useAmmo])
-+			modifier = modifier.CombineWith(rocketDamage);
++		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.IsRangedSpecialistWeapon[sItem.type])
++			modifier = modifier.CombineWith(specialistDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +
@@ -6537,8 +6556,8 @@
 +		if (AmmoID.Sets.IsBullet[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(rocketDamage);
++		if (AmmoID.Sets.IsSpecialist[item.ammo])
++			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
 +		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
 +		ammoDamage.Base = 0;
@@ -7025,11 +7044,13 @@
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
-@@ -42002,7 +_,7 @@
+@@ -42001,8 +_,8 @@
+ 		fileIO.Write(newPlayer.name);
  		fileIO.Write(newPlayer.difficulty);
  		fileIO.Write(playerFile.GetPlayTime().Ticks);
- 		fileIO.Write(newPlayer.hair);
+-		fileIO.Write(newPlayer.hair);
 -		fileIO.Write(newPlayer.hairDye);
++		PlayerIO.WriteVanillaHair(newPlayer.hair, fileIO);
 +		PlayerIO.WriteByteVanillaHairDye(newPlayer.hairDye, fileIO);
  		BitsByte bitsByte = (byte)0;
  		for (int i = 0; i < 8; i++) {

@@ -382,6 +382,22 @@ public static class LocalizationLoader
 		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles))
 			return;
 
+		// Remove duplicates. Only remove string entries. Remove from longest filename.
+		// TODO: could combine comments to remaining entry. Also consider removing empty objects somewhere.
+		var duplicates = baseLocalizationFiles.SelectMany(f => f.Entries).Where(w => w.type == JsonType.String).GroupBy(x => x.key).Where(c => c.Count() > 1).ToDictionary(g => g.Key, g => g.ToList());
+		foreach (var baseLocalizationFile in baseLocalizationFiles.OrderByDescending(x=>x.path.Length)) {
+			var toRemove = new List<LocalizationEntry>();
+			foreach (var entry in baseLocalizationFile.Entries) {
+				if (duplicates.ContainsKey(entry.key)) {
+					duplicates.Remove(entry.key);
+					toRemove.Add(entry);
+				}
+			}
+			foreach (var entry in toRemove) {
+				baseLocalizationFile.Entries.Remove(entry);
+			}
+		}
+
 		// Find and add new content localization keys which are missing from the base (English) localization files
 		var baseLocalizationKeys = baseLocalizationFiles.SelectMany(f => f.Entries.Select(e => e.key)).ToHashSet();
 		foreach (var translation in LanguageManager.Instance._localizedTexts.Values) {

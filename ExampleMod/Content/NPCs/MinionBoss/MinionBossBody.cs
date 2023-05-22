@@ -289,7 +289,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
 
-				// This adds a screen shake similar to Deerclops
+				// This adds a screen shake (screenshake) similar to Deerclops
 				PunchCameraModifier modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
 				Main.instance.CameraModifiers.Add(modifier);
 			}

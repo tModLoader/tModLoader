@@ -2156,7 +2156,7 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
@@ -2170,6 +2170,16 @@ public static class ItemLoader
 			}
 
 			tooltips.Add(tooltip);
+		}
+
+		if (item.prefix >= PrefixID.Count && prefixlineIndex != -1) {
+			var tooltipLines = PrefixLoader.GetPrefix(item.prefix)?.GetTooltipLines(item);
+			if (tooltipLines != null) {
+				foreach (var line in tooltipLines) {
+					tooltips.Insert(prefixlineIndex, line);
+					prefixlineIndex++;
+				}
+			}
 		}
 
 		item.ModItem?.ModifyTooltips(tooltips);

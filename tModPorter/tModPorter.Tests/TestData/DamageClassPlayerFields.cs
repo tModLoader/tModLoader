@@ -16,6 +16,7 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.magicDamage += 2;
 		player.minionDamage += 0.1f;
 		player.thrownDamage += 0.1f;
+		player.rocketDamage += 0.3f;
 
 		player.allDamageMult *= 0.08f;
 		player.meleeDamageMult *= 0.08f;
