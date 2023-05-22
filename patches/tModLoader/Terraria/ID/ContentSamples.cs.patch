@@ -35,6 +35,27 @@
  			}
  		}
  
+@@ -238,7 +_,10 @@
+ 			if (item.type == 781 || item.type == 783 || item.type == 780 || item.type == 782 || item.type == 784)
+ 				return ItemGroup.Solutions;
+ 
++			/*
+ 			if (item.type == 282 || item.type == 3112 || item.type == 4776 || item.type == 3002 || item.type == 286) {
++			*/
++			if (ItemID.Sets.Glowsticks[item.type]) {
+ 				if (item.type == 282)
+ 					orderInGroup = -1;
+ 
+@@ -332,6 +_,9 @@
+ 						return ItemGroup.Torches;
+ 					}
+ 
++					if (TileID.Sets.Torch[item.createTile])
++						return ItemGroup.Torches;
++
+ 					if (item.createTile == 178) {
+ 						orderInGroup = 5;
+ 					}
 @@ -639,7 +_,7 @@
  		public static void SetCreativeMenuOrder()
  		{
