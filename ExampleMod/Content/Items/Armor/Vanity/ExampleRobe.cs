@@ -20,7 +20,6 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 
 		public override void SetStaticDefaults() {
 			// HidesHands defaults to true which we don't want.
-			// But, the set does not actually have an effect unless `ArmorIDs.Body.Sets.HidesArms[Item.bodySlot]` is also true.
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
 
