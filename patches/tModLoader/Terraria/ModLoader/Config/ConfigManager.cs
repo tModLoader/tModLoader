@@ -494,26 +494,20 @@ public static class ConfigManager
 	private static T GetAndValidate<T>(MemberInfo memberInfo) where T : ConfigKeyAttribute
 	{
 		var configKeyAttribute = (T)Attribute.GetCustomAttribute(memberInfo, typeof(T));
-		if (configKeyAttribute != null) {
-			if (configKeyAttribute.malformed)
-				throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: memberInfo is Type);
+		if (configKeyAttribute?.malformed == true) {
+			throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: memberInfo is Type);
 		}
 		return configKeyAttribute;
 	}
 
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
-	internal static string GetConfigKey<T>(MemberInfo memberInfo, string dataName) where T : ConfigKeyAttribute
+	private static string GetConfigKey<T>(MemberInfo memberInfo, string dataName) where T : ConfigKeyAttribute
 	{
-		var configKeyAttribute = GetAndValidate<T>(memberInfo);
-		if (configKeyAttribute != null) {
-			return configKeyAttribute.key;
-		}
-
-		// Autokey: Determine key from the Type the member belongs to.
-		return GetDefaultLocalizationKey(memberInfo, dataName);
+		// Attribute otherwise Autokey: Determine key from the Type the member belongs to.
+		return GetAndValidate<T>(memberInfo)?.key ?? GetDefaultLocalizationKey(memberInfo, dataName);
 	}
 
-	internal static string GetDefaultLocalizationKey(MemberInfo member, string dataName)
+	private static string GetDefaultLocalizationKey(MemberInfo member, string dataName)
 	{
 		Assembly asm = (member is Type t ? t : member.DeclaringType).Assembly;
 		string groupKey = AssemblyManager.GetAssemblyOwner(asm, out var modName) ? $"Mods.{modName}.Configs" : "Config";
@@ -554,27 +548,27 @@ public static class ConfigManager
 	{
 		// Priority: Provided Key or key derived from identifier on member
 		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
-		if (header != null) {
-			if (header.malformed && throwErrors)
-				throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.");
-
-			if (header.malformed)
-				header.identifier = memberInfo.Name;
-
-			if (header.IsIdentifier) {
-				AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
-				string className = memberInfo.MemberInfo.DeclaringType.Name;
-				if (modName == null) {  // tModLoader keys handle translations for existing classes
-					header.key = $"Config.{className}.Headers.{header.identifier}";
-				}
-				else {
-					header.key = $"Mods.{modName}.Configs.{className}.Headers.{header.identifier}";
-				}
-			}
-
-			return header;
+		if (header == null) {
+			return null;
 		}
-		return null;
+		if (header.malformed && throwErrors)
+			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.");
+
+		if (header.malformed)
+			header.identifier = memberInfo.Name;
+
+		if (header.IsIdentifier) {
+			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
+			string className = memberInfo.MemberInfo.DeclaringType.Name;
+			if (modName == null) {  // tModLoader keys handle translations for existing classes
+				header.key = $"Config.{className}.Headers.{header.identifier}";
+			}
+			else {
+				header.key = $"Mods.{modName}.Configs.{className}.Headers.{header.identifier}";
+			}
+		}
+
+		return header;
 	}
 }
 
