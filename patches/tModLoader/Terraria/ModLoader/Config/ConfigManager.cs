@@ -117,7 +117,7 @@ public static class ConfigManager
 #pragma warning restore CS0618 // Type or member is obsolete
 
 				// Label and Tooltip will always exist. Header is optional, need to be used to exist.
-				var header = GetLocalizedHeader(variable, throwErrors: true);
+				var header = GetLocalizedHeader(variable);
 				if (header != null) {
 					string identifier = header.IsIdentifier ? header.identifier : variable.Name;
 					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
@@ -544,18 +544,15 @@ public static class ConfigManager
 		return defaultToNull ? null : memberInfo.Name;
 	}
 
-	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo, bool throwErrors)
+	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo)
 	{
 		// Priority: Provided Key or key derived from identifier on member
 		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
 		if (header == null) {
 			return null;
 		}
-		if (header.malformed && throwErrors)
-			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.");
-
 		if (header.malformed)
-			header.identifier = memberInfo.Name;
+			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.");
 
 		if (header.IsIdentifier) {
 			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
