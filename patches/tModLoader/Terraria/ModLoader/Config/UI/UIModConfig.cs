@@ -696,7 +696,7 @@ internal class UIModConfig : UIState
 		uIPanel.Append(uIScrollbar);
 		separateList.SetScrollbar(uIScrollbar);
 
-		string name = ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(memberInfo, "Label", defaultToNull: false);
+		string name = ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(memberInfo, "Label");
 		if (index != -1)
 			name = name + " #" + (index + 1);
 		Interface.modConfig.subPageStack.Push(name);
