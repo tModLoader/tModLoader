@@ -43,10 +43,9 @@ Mods: {
 		NPCs: {
 			ExampleCustomAISlimeNPC.DisplayName: Порхающий слизень
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
-			Example_Person.DisplayName: Пример человека
 			// ExampleTravellingMerchant.DisplayName: Example Traveler
 			// ExampleBoneMerchant.DisplayName: Example Bone Merchant
-			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind N P C
+			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind NPC
 
 			ExamplePerson: {
 				// DisplayName: Example Person
@@ -62,13 +61,13 @@ Mods: {
 					// LoveBiome: I love {BiomeName}.
 					// LikeBiome: "{BiomeName} is a very nice place to test mods in."
 					// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
-					// HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
+					// HateBiome: It's kind of hard to mod while being attacked by monsters in {BiomeName}.
 					// LoveNPC: Do you think {NPCName} notices me?
 					// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
 					// DislikeNPC: '''"{NPCName} keeps rambling on about "paid mods"... Wish I could convince him how terrible of an idea that is."'''
 					// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
-					// LikeNPC_Princess: "{NPCName} and I get along, did you know that I am royalty too?"
-					// Princess_LovesNPC: "{NPCName} has a very...angular face. Neat!"
+					// LikeNPC_Princess: "{NPCName} is a princess? That is so cool!"
+					// Princess_LovesNPC: "{NPCName} is so square. I love that about them!"
 				}
 			}
 
