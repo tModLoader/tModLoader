@@ -823,7 +823,7 @@ Mods: {
 
 			ExampleCampfire: {
 				// DisplayName: Example Campfire
-				// Tooltip: ""
+				// Tooltip: "{$ItemTooltip.Campfire}"
 			}
 		}
 
