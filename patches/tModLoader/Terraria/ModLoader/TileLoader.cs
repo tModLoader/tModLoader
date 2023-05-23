@@ -802,6 +802,7 @@ public static class TileLoader
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
+		// TODO: Pass in TileDrawInfo so mods don't need to replicate existing SetDrawPositions logic. For example, ExampleTorch repeated logic (SetDrawPositions/PostDraw)
 		GetTile(type)?.PostDraw(i, j, spriteBatch);
 
 		foreach (var hook in HookPostDraw) {

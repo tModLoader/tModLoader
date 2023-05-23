@@ -14,6 +14,11 @@ namespace ExampleMod.Content.Items.Tools
 			Item.CloneDefaults(ItemID.AmethystHook);
 			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
 			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+
+			// If you do not use Item.CloneDefaults(), you must set the following values for the hook to work properly:
+			// Item.useStyle = ItemUseStyleID.None;
+			// Item.useTime = 0;
+			// Item.useAnimation = 0;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
