@@ -65,7 +65,7 @@ Mods: {
 					// HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
 					// LoveNPC: Do you think {NPCName} notices me?
 					// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
-					// DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
+					// DislikeNPC: '''"{NPCName} keeps rambling on about "paid mods"... Wish I could convince him how terrible of an idea that is."'''
 					// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
 					// LikeNPC_Princess: "{NPCName} and I get along, did you know that I am royalty too?"
 					// Princess_LovesNPC: "{NPCName} has a very...angular face. Neat!"
