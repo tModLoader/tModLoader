@@ -16,9 +16,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.IO;
-using static Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions;
 using Terraria.GameContent.Personalities;
-using Terraria.IO;
 
 namespace Terraria.ModLoader;
 
