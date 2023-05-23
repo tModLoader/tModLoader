@@ -108,18 +108,14 @@ public static class ConfigManager
 	{
 		AssemblyManager.GetAssemblyOwner(type.Assembly, out var modName);
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(type)) {
-#pragma warning disable CS0618
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute)) || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
+			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
+			var labelObsolete = GetLegacyLabelAttribute(variable.MemberInfo);
+			var tooltipObsolete = GetLegacyTooltipAttribute(variable.MemberInfo);
+
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(labelObsolete != null || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
 				continue;
-#pragma warning restore CS0618
 
 			RegisterLocalizationKeysForMemberType(variable.Type, type.Assembly);
-
-			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
-#pragma warning disable CS0618 // Type or member is obsolete
-			var labelObsolete = (LabelAttribute?)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
-			var tooltipObsolete = (TooltipAttribute?)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(TooltipAttribute));
-#pragma warning restore CS0618 // Type or member is obsolete
 
 			// Label and Tooltip will always exist. Header is optional, need to be used to exist.
 			var header = GetLocalizedHeader(variable);
@@ -141,9 +137,7 @@ public static class ConfigManager
 		var enumFields = type.GetFields(BindingFlags.Public | BindingFlags.Static).Select(x => new PropertyFieldWrapper(x));
 		foreach (PropertyFieldWrapper variable in enumFields) {
 			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
-#pragma warning disable CS0618 // Type or member is obsolete
-			var labelObsolete = (LabelAttribute?)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
-#pragma warning restore CS0618 // Type or member is obsolete
+			var labelObsolete = GetLegacyLabelAttribute(variable.MemberInfo);
 
 			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
 			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
@@ -170,6 +164,11 @@ public static class ConfigManager
 				RegisterLocalizationKeysForEnumMembers(type);
 		}
 	}
+
+#pragma warning disable CS0618 // Type or member is obsolete
+	internal static LabelAttribute? GetLegacyLabelAttribute(MemberInfo memberInfo) => (LabelAttribute?)Attribute.GetCustomAttribute(memberInfo, typeof(LabelAttribute));
+	internal static TooltipAttribute? GetLegacyTooltipAttribute(MemberInfo memberInfo) => (TooltipAttribute?)Attribute.GetCustomAttribute(memberInfo, typeof(TooltipAttribute));
+#pragma warning restore CS0618 // Type or member is obsolete
 
 	// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
 	internal static void LoadAll()
