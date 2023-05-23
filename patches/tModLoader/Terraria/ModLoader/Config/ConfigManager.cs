@@ -17,7 +17,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config;
-
+#nullable enable
 public static class ConfigManager
 {
 	// These are THE active configs.
@@ -69,11 +69,11 @@ public static class ConfigManager
 	{
 		Load(config);
 
-		if (!Configs.TryGetValue(config.Mod, out List<ModConfig> configList))
+		if (!Configs.TryGetValue(config.Mod, out List<ModConfig>? configList))
 			Configs.Add(config.Mod, configList = new List<ModConfig>());
 		configList.Add(config);
 
-		FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
+		FieldInfo? instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
 		if (instance != null) {
 			instance.SetValue(null, config);
 		}
@@ -81,7 +81,7 @@ public static class ConfigManager
 		config.OnChanged();
 
 		// Maintain a backup of LoadTime Configs.
-		if (!loadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig> configList2))
+		if (!loadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig>? configList2))
 			loadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
 		configList2.Add(GeneratePopulatedClone(config));
 	}
@@ -117,8 +117,8 @@ public static class ConfigManager
 
 			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
 #pragma warning disable CS0618 // Type or member is obsolete
-			var labelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
-			var tooltipObsolete = (TooltipAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(TooltipAttribute));
+			var labelObsolete = (LabelAttribute?)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+			var tooltipObsolete = (TooltipAttribute?)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(TooltipAttribute));
 #pragma warning restore CS0618 // Type or member is obsolete
 
 			// Label and Tooltip will always exist. Header is optional, need to be used to exist.
@@ -142,7 +142,7 @@ public static class ConfigManager
 		foreach (PropertyFieldWrapper variable in enumFields) {
 			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
 #pragma warning disable CS0618 // Type or member is obsolete
-			var labelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+			var labelObsolete = (LabelAttribute?)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
 #pragma warning restore CS0618 // Type or member is obsolete
 
 			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
@@ -235,7 +235,7 @@ public static class ConfigManager
 		serializerSettingsCompact.ContractResolver = serializerSettings.ContractResolver;
 
 		Configs.SelectMany(configList => configList.Value).ToList().ForEach(config => {
-			FieldInfo instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
+			FieldInfo? instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
 			if (instance != null) {
 				instance.SetValue(null, null);
 			}
@@ -267,7 +267,7 @@ public static class ConfigManager
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
 	{
-		if (Configs.TryGetValue(mod, out List<ModConfig> configs)) {
+		if (Configs.TryGetValue(mod, out List<ModConfig>? configs)) {
 			return configs.Single(x => x.Name == config);
 		}
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
@@ -275,7 +275,7 @@ public static class ConfigManager
 
 	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
 	{
-		if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig> configs)) {
+		if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
 			return configs.Single(x => x.Name == config);
 		}
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
@@ -395,7 +395,7 @@ public static class ConfigManager
 		return properClone;
 	}
 
-	public static object AlternateCreateInstance(Type type)
+	public static object? AlternateCreateInstance(Type type)
 	{
 		if (type == typeof(string))
 			return "";
@@ -404,33 +404,33 @@ public static class ConfigManager
 
 	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority,
 	// followed by the containing data structure, followed by attribute defined on the Class.
-	public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object item, object array) where T : Attribute
+	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object? item, object? array) where T : Attribute
 	{
 		// Class
-		T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
+		T? attribute = (T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 		if (array != null) {
 			// item null?
 			//	attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
 		}
 		// Member
-		attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
+		attribute = (T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
 		return attribute;
 		// TODO: allow for inheriting from parent's parent? (could get attribute from parent ConfigElement)
 	}
 
-	public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute
+	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute
 	{
 		// Class
-		T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
+		T? attribute = (T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
 
-		attribute = (T)Attribute.GetCustomAttribute(type, typeof(T), true) ?? attribute;
+		attribute = (T?)Attribute.GetCustomAttribute(type, typeof(T), true) ?? attribute;
 
 		// Member
-		attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
+		attribute = (T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
 		return attribute;
 	}
 
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
 	{
 		// public api for modders.
 		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
@@ -443,7 +443,7 @@ public static class ConfigManager
 	}
 
 	// TODO: better home?
-	public static bool ObjectEquals(object a, object b)
+	public static bool ObjectEquals(object? a, object? b)
 	{
 		if (ReferenceEquals(a, b))
 			return true;
@@ -469,7 +469,7 @@ public static class ConfigManager
 		return !hasNextA && !hasNextB;
 	}
 
-	internal static string FormatTextAttribute(string key, string localization, object[] args)
+	internal static string FormatTextAttribute(string key, string localization, object[]? args)
 	{
 		if (args == null)
 			return localization;
@@ -496,9 +496,9 @@ public static class ConfigManager
 		}
 	}
 
-	private static T GetAndValidate<T>(MemberInfo memberInfo) where T : ConfigKeyAttribute
+	private static T? GetAndValidate<T>(MemberInfo memberInfo) where T : ConfigKeyAttribute
 	{
-		var configKeyAttribute = (T)Attribute.GetCustomAttribute(memberInfo, typeof(T));
+		var configKeyAttribute = (T?)Attribute.GetCustomAttribute(memberInfo, typeof(T));
 		if (configKeyAttribute?.malformed == true) {
 			string message = $"{typeof(T).Name} only accepts localization keys for the 'key' parameter.";
 			if(memberInfo is Type type) {
@@ -521,13 +521,13 @@ public static class ConfigManager
 
 	private static string GetDefaultLocalizationKey(MemberInfo member, string dataName)
 	{
-		Assembly asm = (member is Type t ? t : member.DeclaringType).Assembly;
+		Assembly asm = (member is Type t ? t : member.DeclaringType!).Assembly;
 		string groupKey = AssemblyManager.GetAssemblyOwner(asm, out var modName) ? $"Mods.{modName}.Configs" : "Config";
-		string memberKey = member is Type ? member.Name : $"{member.DeclaringType.Name}.{member.Name}";
+		string memberKey = member is Type ? member.Name : $"{member.DeclaringType!.Name}.{member.Name}";
 		return $"{groupKey}.{memberKey}.{dataName}";
 	}
 
-	internal static string GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, string dataName) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
+	internal static string? GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, string dataName) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
 	{
 		bool isTooltip = typeof(T) == typeof(TooltipKeyAttribute);
 
@@ -549,7 +549,7 @@ public static class ConfigManager
 		return isTooltip ? null : memberInfo.Name;
 	}
 
-	internal static HeaderAttribute GetLocalizedHeader(PropertyFieldWrapper memberInfo)
+	internal static HeaderAttribute? GetLocalizedHeader(PropertyFieldWrapper memberInfo)
 	{
 		// Priority: Provided Key or key derived from identifier on member
 		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
@@ -561,7 +561,7 @@ public static class ConfigManager
 		}
 
 		if (header.IsIdentifier) {
-			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
+			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType!.Assembly, out var modName);
 			string className = memberInfo.MemberInfo.DeclaringType.Name;
 			if (modName == null) {  // tModLoader keys handle translations for existing classes
 				header.key = $"Config.{className}.Headers.{header.identifier}";
@@ -592,28 +592,28 @@ internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 			this.baseProvider = baseProvider ?? throw new ArgumentNullException();
 		}
 
-		public virtual object GetValue(object target)
+		public virtual object? GetValue(object target)
 			=> baseProvider.GetValue(target);
 
-		public virtual void SetValue(object target, object value)
+		public virtual void SetValue(object target, object? value)
 			=> baseProvider.SetValue(target, value);
 	}
 
 	private class NullToDefaultValueProvider : ValueProviderDecorator
 	{
 		//readonly object defaultValue;
-		readonly Func<object> defaultValueGenerator;
+		readonly Func<object?> defaultValueGenerator;
 
 		//public NullToDefaultValueProvider(IValueProvider baseProvider, object defaultValue) : base(baseProvider) {
 		//	this.defaultValue = defaultValue;
 		//}
 
-		public NullToDefaultValueProvider(IValueProvider baseProvider, Func<object> defaultValueGenerator) : base(baseProvider)
+		public NullToDefaultValueProvider(IValueProvider baseProvider, Func<object?> defaultValueGenerator) : base(baseProvider)
 		{
 			this.defaultValueGenerator = defaultValueGenerator;
 		}
 
-		public override void SetValue(object target, object value)
+		public override void SetValue(object target, object? value)
 		{
 			base.SetValue(target, value ?? defaultValueGenerator.Invoke());
 			//base.SetValue(target, value ?? defaultValue);
@@ -628,7 +628,7 @@ internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 			return props;
 		}
 
-		ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
+		ConstructorInfo? ctor = type.GetConstructor(Type.EmptyTypes);
 
 		if (ctor == null) {
 			return props;
@@ -637,27 +637,30 @@ internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 		object referenceInstance = ctor.Invoke(null);
 
 		foreach (JsonProperty prop in props.Where(p => p.Readable)) {
+			if (prop.PropertyType == null)
+				continue;
+
 			if (prop.PropertyType.IsValueType) {
 				continue;
 			}
 
-			var a = type.GetMember(prop.PropertyName);
+			// var a = type.GetMember(prop.PropertyName);
 
 			if (prop.Writable) {
 				if (prop.PropertyType.GetConstructor(Type.EmptyTypes) != null) {
 					// defaultValueCreator will create new instance, then get the value from a field in that object. Prevents deserialized nulls from sharing with other instances.
-					Func<object> defaultValueCreator = () => prop.ValueProvider.GetValue(ctor.Invoke(null));
-					prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
+					Func<object?> defaultValueCreator = () => prop.ValueProvider!.GetValue(ctor.Invoke(null));
+					prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider!, defaultValueCreator);
 				}
 				else if (prop.PropertyType.IsArray) {
-					Func<object> defaultValueCreator = () => (prop.ValueProvider.GetValue(referenceInstance) as Array).Clone();
-					prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
+					Func<object?> defaultValueCreator = () => (prop.ValueProvider!.GetValue(referenceInstance) as Array)!.Clone();
+					prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider!, defaultValueCreator);
 				}
 			}
 
 			prop.ShouldSerialize ??= instance => {
-				object val = prop.ValueProvider.GetValue(instance);
-				object refVal = prop.ValueProvider.GetValue(referenceInstance);
+				object? val = prop.ValueProvider!.GetValue(instance);
+				object? refVal = prop.ValueProvider.GetValue(referenceInstance);
 
 				return !ConfigManager.ObjectEquals(val, refVal);
 			};
