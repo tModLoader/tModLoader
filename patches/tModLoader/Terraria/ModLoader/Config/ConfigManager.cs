@@ -528,9 +528,7 @@ public static class ConfigManager
 
 		var typeConfigKey = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T));
 		if (typeConfigKey != null && Language.Exists(typeConfigKey.key)) {
-			string typeConfigLocalization = Language.GetTextValue(typeConfigKey.key);
-			if (!string.IsNullOrEmpty(typeConfigLocalization))
-				return FormatTextAttribute(typeConfigKey.key, typeConfigLocalization, args?.args);
+			return FormatTextAttribute(typeConfigKey.key, Language.GetTextValue(typeConfigKey.key), args?.args);
 		}
 		else if (memberInfo.Type.IsClass || memberInfo.Type.IsEnum) {
 			string typeKey = GetDefaultLocalizationKey(memberInfo.Type, dataName);
