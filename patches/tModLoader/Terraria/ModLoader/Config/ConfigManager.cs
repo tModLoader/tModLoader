@@ -91,9 +91,15 @@ public static class ConfigManager
 		// Register localization for all fields and properties that should show
 		foreach (var activeConfigs in ConfigManager.Configs) {
 			foreach (var config in activeConfigs.Value) {
-				_ = config.DisplayName;
+				try {
+					_ = config.DisplayName;
 
-				RegisterLocalizationKeysForMembers(config.GetType());
+					RegisterLocalizationKeysForMembers(config.GetType());
+				}
+				catch (Exception e) {
+					e.Data["mod"] = config.Mod.Name;
+					throw;
+				}
 			}
 		}
 	}
@@ -107,40 +113,27 @@ public static class ConfigManager
 				continue;
 #pragma warning restore CS0618
 
-			try {
-				RegisterLocalizationKeysForMemberType(variable.Type, type.Assembly);
+			RegisterLocalizationKeysForMemberType(variable.Type, type.Assembly);
 
-				// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
+			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
 #pragma warning disable CS0618 // Type or member is obsolete
-				var labelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
-				var tooltipObsolete = (TooltipAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(TooltipAttribute));
+			var labelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+			var tooltipObsolete = (TooltipAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(TooltipAttribute));
 #pragma warning restore CS0618 // Type or member is obsolete
 
-				// Label and Tooltip will always exist. Header is optional, need to be used to exist.
-				var header = GetLocalizedHeader(variable);
-				if (header != null) {
-					string identifier = header.IsIdentifier ? header.identifier : variable.Name;
-					Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
-				}
-
-				string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
-				Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
-
-				if (!type.IsEnum) {
-					string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
-					Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
-				}
+			// Label and Tooltip will always exist. Header is optional, need to be used to exist.
+			var header = GetLocalizedHeader(variable);
+			if (header != null) {
+				string identifier = header.IsIdentifier ? header.identifier : variable.Name;
+				Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 			}
-			catch (ValueNotTranslationKeyException e) when (!e.handled) {
-				if (e.errorOnType) {
-					e.additional = $"The class '{variable.Type.FullName}' caused this exception.";
-				}
-				else {
-					e.additional = $"The member '{variable.Name}' found in the '{variable.MemberInfo.DeclaringType}' class caused this exception.";
-				}
-				e.Data["mod"] = modName;
-				e.handled = true; // Recursion will cause this to be called higher in the stack, causing issues.
-				throw;
+
+			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
+			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
+
+			if (!type.IsEnum) {
+				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
+				Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 			}
 		}
 	}
@@ -495,7 +488,14 @@ public static class ConfigManager
 	{
 		var configKeyAttribute = (T)Attribute.GetCustomAttribute(memberInfo, typeof(T));
 		if (configKeyAttribute?.malformed == true) {
-			throw new ValueNotTranslationKeyException($"{nameof(T)} only accepts localization keys for the 'key' parameter.", errorOnType: memberInfo is Type);
+			string message = $"{typeof(T).Name} only accepts localization keys for the 'key' parameter.";
+			if(memberInfo is Type type) {
+				message += $"\nThe class '{type.FullName}' caused this exception.";
+			}
+			else {
+				message += $"\nThe member '{memberInfo.Name}' found in the '{memberInfo.DeclaringType}' class caused this exception.";
+			}
+			throw new ValueNotTranslationKeyException(message);
 		}
 		return configKeyAttribute;
 	}
@@ -544,8 +544,9 @@ public static class ConfigManager
 		if (header == null) {
 			return null;
 		}
-		if (header.malformed)
-			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.");
+		if (header.malformed) {
+			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.MemberInfo.DeclaringType}' class caused this exception.");
+		}
 
 		if (header.IsIdentifier) {
 			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType.Assembly, out var modName);
