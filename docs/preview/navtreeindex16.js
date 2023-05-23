@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile.html#acfedbe4036472a2e64e258e04242d095":[3,0,974,39],
 "class_projectile.html#ae2087937999fc8c7aedfcd120b999f3e":[3,0,974,52],
 "class_projectile.html#aea7754bae8b733ff4cdcfb8e8f379777":[3,0,974,18],
 "class_projectile.html#aece4c68ccff3998432020ffffb63cdfb":[3,0,974,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_sound_engine.html#a38f35ed7d33d5307279723a81b051ce4":[3,0,1095,1],
 "class_sound_i_d.html":[3,0,1096],
 "class_sound_instance_garbage_collector.html":[3,0,1097],
-"class_sound_play_set.html":[3,0,1099],
-"class_sound_player.html":[3,0,1098]
+"class_sound_play_set.html":[3,0,1099]
 };

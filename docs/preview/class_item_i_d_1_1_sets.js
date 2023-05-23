@@ -30,6 +30,7 @@ var class_item_i_d_1_1_sets =
     [ "GamepadSmartQuickReach", "class_item_i_d_1_1_sets.html#a550a2067a586aee70c62a765d6e78d4d", null ],
     [ "GamepadWholeScreenUseRange", "class_item_i_d_1_1_sets.html#a80bc6931916d232f4c31254af30be4d0", null ],
     [ "GeodeDrops", "class_item_i_d_1_1_sets.html#a3299be186ab7b34b4ec9ebd48b4bb515", null ],
+    [ "Glowsticks", "class_item_i_d_1_1_sets.html#ac7f218dce213d94f5e7e16c6af518941", null ],
     [ "GrassSeeds", "class_item_i_d_1_1_sets.html#ac8fde4d482e4927a44ef3ec2c6b2f590", null ],
     [ "gunProj", "class_item_i_d_1_1_sets.html#acebd1fba6640892a825f8be42c89afa9", null ],
     [ "HasAProjectileThatHasAUsabilityCheck", "class_item_i_d_1_1_sets.html#ae6bc841354d6d68ef61d2b021774cabb", null ],

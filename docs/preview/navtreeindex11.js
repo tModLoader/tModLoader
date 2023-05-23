@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"class_mod_resource_overlay.html#a445a5293d636985f0bed6ef2eae0e33f":[3,0,770,1],
 "class_mod_resource_overlay.html#a58c661f9af2117fbbc24996a65a5f75c":[3,0,770,6],
 "class_mod_resource_overlay.html#a71fb5095267b9d8161aa9c49347fa98b":[3,0,770,5],
 "class_mod_resource_overlay.html#ac6122d587b27561eeb048b8e66fe7e3f":[3,0,770,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "class_modifiers_1_1_not_in_shape.html":[3,0,752,12],
 "class_modifiers_1_1_not_touching.html":[3,0,752,13],
 "class_modifiers_1_1_offset.html":[3,0,752,14],
-"class_modifiers_1_1_only_tiles.html":[3,0,752,15],
-"class_modifiers_1_1_only_walls.html":[3,0,752,16]
+"class_modifiers_1_1_only_tiles.html":[3,0,752,15]
 };

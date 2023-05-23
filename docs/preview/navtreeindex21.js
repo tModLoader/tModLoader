@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1018,5],
 "struct_resource_overlay_draw_context.html#a46493f40a782e875eefb93bb0a4c6221":[3,0,1018,3],
 "struct_resource_overlay_draw_context.html#ab6569d2846bd21cae368ad0a675329b6":[3,0,1018,4],
 "struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34":[3,0,1018,0],

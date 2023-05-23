@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"class_u_i_bestiary_entry_button.html":[3,0,1238],
 "class_u_i_bestiary_entry_grid.html":[3,0,1239],
 "class_u_i_bestiary_entry_icon.html":[3,0,1240],
 "class_u_i_bestiary_entry_info_page.html":[3,0,1241],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "class_world_gen_1_1_saved_ore_tiers.html":[3,0,1422,3],
 "class_world_gen_1_1_spread.html":[3,0,1422,4],
 "class_world_gen_1_1_tenth_anniversary_world_info.html":[3,0,1422,5],
-"class_world_gen_1_1_world_size.html":[3,0,1422,7],
-"class_world_gen_configuration.html":[3,0,1423]
+"class_world_gen_1_1_world_size.html":[3,0,1422,7]
 };

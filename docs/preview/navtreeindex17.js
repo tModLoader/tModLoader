@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_sound_player.html":[3,0,1098],
 "class_sound_player.html#a1cb8b65823c0d9ecc9400e2ff8c24ca1":[3,0,1098,0],
 "class_spawn_condition.html":[3,0,1101],
 "class_spawn_condition_bestiary_info_element.html":[3,0,1102],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_u_i_achievements_menu.html":[3,0,1234],
 "class_u_i_align.html":[3,0,1235],
 "class_u_i_auto_scale_text_text_panel.html":[3,0,1236],
-"class_u_i_bestiary_bar.html":[3,0,1237],
-"class_u_i_bestiary_entry_button.html":[3,0,1238]
+"class_u_i_bestiary_bar.html":[3,0,1237]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_world_gen_configuration.html":[3,0,1423],
 "class_world_gen_range.html":[3,0,1425],
 "class_world_generator.html":[3,0,1424],
 "class_world_map.html":[3,0,1426],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "struct_bits_byte.html":[3,0,93],
 "struct_boss_bar_draw_params.html":[3,0,101],
 "struct_boss_bar_draw_params.html#a0840c3ca6303cfb7c95e9da0a54a444b":[3,0,101,10],
-"struct_boss_bar_draw_params.html#a0f4c99ca0b7ecb15fd2db3b7bb39eb9a":[3,0,101,0],
-"struct_boss_bar_draw_params.html#a1e0eb99f0aaa99afc6e33677ca8b2071":[3,0,101,5]
+"struct_boss_bar_draw_params.html#a0f4c99ca0b7ecb15fd2db3b7bb39eb9a":[3,0,101,0]
 };

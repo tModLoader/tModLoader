@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"class_profiles_1_1_legacy_n_p_c_profile.html":[3,0,970,1],
 "class_profiles_1_1_stacked_n_p_c_profile.html":[3,0,970,2],
 "class_profiles_1_1_transformable_n_p_c_profile.html":[3,0,970,3],
 "class_profiles_1_1_variant_n_p_c_profile.html":[3,0,970,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "class_projectile.html#ac64a90bef6c47cf5804770e63f522a87":[3,0,974,23],
 "class_projectile.html#ac8b4d04688f594237d173222401fc3b1":[3,0,974,53],
 "class_projectile.html#acf73b38dd6006395707713d1afb995ea":[3,0,974,63],
-"class_projectile.html#acfca3a77d8685f83d806ea045399c3a7":[3,0,974,51],
-"class_projectile.html#acfedbe4036472a2e64e258e04242d095":[3,0,974,39]
+"class_projectile.html#acfca3a77d8685f83d806ea045399c3a7":[3,0,974,51]
 };
