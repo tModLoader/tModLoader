@@ -131,10 +131,22 @@ public static class ConfigManager
 			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
 			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-			if (!type.IsEnum) {
-				string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
-				Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
-			}
+			string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
+			Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
+		}
+	}
+
+	private static void RegisterLocalizationKeysForEnumMembers(Type type)
+	{
+		var enumFields = type.GetFields(BindingFlags.Public | BindingFlags.Static).Select(x => new PropertyFieldWrapper(x));
+		foreach (PropertyFieldWrapper variable in enumFields) {
+			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
+#pragma warning disable CS0618 // Type or member is obsolete
+			var labelObsolete = (LabelAttribute)Attribute.GetCustomAttribute(variable.MemberInfo, typeof(LabelAttribute));
+#pragma warning restore CS0618 // Type or member is obsolete
+
+			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
+			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 		}
 	}
 
@@ -152,7 +164,10 @@ public static class ConfigManager
 			string typeTooltipKey = GetConfigKey<TooltipKeyAttribute>(type, dataName: "Tooltip");
 			Language.GetOrRegister(typeTooltipKey, () => "");
 
-			RegisterLocalizationKeysForMembers(type);
+			if (type.IsClass)
+				RegisterLocalizationKeysForMembers(type);
+			else
+				RegisterLocalizationKeysForEnumMembers(type);
 		}
 	}
 
@@ -361,9 +376,6 @@ public static class ConfigManager
 
 	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(Type type)
 	{
-		if (type.IsEnum) {
-			return type.GetFields(BindingFlags.Public |	BindingFlags.Static).Select(x => new PropertyFieldWrapper(x));
-		}
 		PropertyInfo[] properties = type.GetProperties(
 			BindingFlags.Public |
 			BindingFlags.Instance);
