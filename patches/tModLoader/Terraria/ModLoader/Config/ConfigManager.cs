@@ -520,7 +520,7 @@ public static class ConfigManager
 		bool isTooltip = typeof(T) == typeof(TooltipKeyAttribute);
 
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string and T is Tooltip -> member name or null
-		var args = (TArgs)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(TArgs));
+		var args = GetCustomAttribute<TArgs>(memberInfo, memberInfo.Type);
 		string configKey = GetConfigKey<T>(memberInfo.MemberInfo, dataName: dataName);
 		if (Language.Exists(configKey)) {
 			string configLocalization = Language.GetTextValue(configKey);
