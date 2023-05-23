@@ -159,9 +159,13 @@ public static class NPCLoader
 			keys.Add("Princess_LovesNPC");
 
 			foreach (var key in keys) {
+				string oldKey = npc.Mod.GetLocalizationKey($"TownNPCMood.{npc.Name}.{key}");
+				if (key == "Princess_LovesNPC")
+					oldKey = $"TownNPCMood_Princess.LoveNPC_{npc.FullName}";
 				string fullKey = $"{prefix}.{key}";
 				string defaultValueKey = "TownNPCMood." + key;
-				Language.GetOrRegister(fullKey, () => Language.GetTextValue(defaultValueKey)); // Register current language translation rather than vanilla text substitution so modder can see the {BiomeName} and {NPCName} usages. Might result in non-English values, but modder is expected to change the translation value anyway.
+				// Register current language translation rather than vanilla text substitution so modder can see the {BiomeName} and {NPCName} usages. Might result in non-English values, but modder is expected to change the translation value anyway.
+				Language.GetOrRegister(fullKey, () => Language.Exists(oldKey) ? $"{{${oldKey}}}" : Language.GetTextValue(defaultValueKey));
 			}
 		}
 	}
