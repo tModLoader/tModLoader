@@ -130,10 +130,10 @@ internal class ColorElement : ConfigElement
 		}
 
 		// TODO: Draw the sliders in the same manner as vanilla.
-		var colorHSLSliderAttribute = ConfigManager.GetCustomAttribute<ColorHSLSliderAttribute>(MemberInfo, Item, List);
+		var colorHSLSliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ColorHSLSliderAttribute>(MemberInfo, Item, List);
 		bool useHue = colorHSLSliderAttribute != null;
 		bool showSaturationAndLightness = colorHSLSliderAttribute?.ShowSaturationAndLightness ?? false;
-		bool noAlpha = ConfigManager.GetCustomAttribute<ColorNoAlphaAttribute>(MemberInfo, Item, List) != null;
+		bool noAlpha = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ColorNoAlphaAttribute>(MemberInfo, Item, List) != null;
 
 		var skip = new List<string>();
 

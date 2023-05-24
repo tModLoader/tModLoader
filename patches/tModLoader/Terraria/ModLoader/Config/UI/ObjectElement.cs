@@ -75,7 +75,7 @@ internal class ObjectElement : ConfigElement<object>
 			Value = data;
 		}
 
-		separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(MemberInfo, Item, List) != null;
+		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
 
 		//separatePage = separatePage && !ignoreSeparatePage;
 		//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
@@ -112,7 +112,7 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (List == null) {
 			// Member > Class
-			var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+			var expandAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ExpandAttribute>(MemberInfo, Item, List);
 			if (expandAttribute != null)
 				expanded = expandAttribute.Expand;
 		}

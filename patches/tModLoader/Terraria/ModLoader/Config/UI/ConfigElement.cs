@@ -73,27 +73,27 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		LabelAttribute = ConfigManager.GetCustomAttribute<LabelKeyAttribute>(MemberInfo, Item, List);
+		LabelAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<LabelKeyAttribute>(MemberInfo, Item, List);
 		Label = ConfigManager.GetLocalizedLabel(MemberInfo);
 		// Potential TODO if highly requested: Support interpolating value itself into label.
 		TextDisplayFunction = () => Label;
 
-		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipKeyAttribute>(MemberInfo, Item, List);
+		TooltipAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<TooltipKeyAttribute>(MemberInfo, Item, List);
 		string tooltip = ConfigManager.GetLocalizedTooltip(MemberInfo);
 		if (tooltip != null) {
 			TooltipFunction = () => tooltip;
 		}
 
-		BackgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(MemberInfo, Item, List);
+		BackgroundColorAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(MemberInfo, Item, List);
 
 		if (BackgroundColorAttribute != null) {
 			backgroundColor = BackgroundColorAttribute.Color;
 		}
 
-		RangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(MemberInfo, Item, List);
-		IncrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(MemberInfo, Item, List);
-		NullAllowed = ConfigManager.GetCustomAttribute<NullAllowedAttribute>(MemberInfo, Item, List) != null;
-		JsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(MemberInfo, Item, List);
+		RangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(MemberInfo, Item, List);
+		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
+		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
+		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
 	}
 
 	protected virtual void SetObject(object value)

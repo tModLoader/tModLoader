@@ -27,7 +27,7 @@ internal class StringOptionElement : RangeElement
 
 		StringList = (IList<string>)List;
 
-		var optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(MemberInfo, Item, StringList);
+		var optionsAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(MemberInfo, Item, StringList);
 
 		options = optionsAttribute.OptionLabels;
 

@@ -514,7 +514,7 @@ internal class UIModConfig : UIState
 		UIElement e;
 
 		// TODO: Other common structs? -- Rectangle, Point
-		var customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
+		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
 
 		if (customUI != null) {
 			Type customUIType = customUI.Type;
@@ -569,7 +569,7 @@ internal class UIModConfig : UIState
 			e = new UIntElement();
 		}
 		else if (type == typeof(int)) {
-			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttribute<SliderAttribute>(memberInfo, item, list);
+			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
 
 			if (sliderAttribute != null)
 				e = new IntRangeElement();
@@ -577,7 +577,7 @@ internal class UIModConfig : UIState
 				e = new IntInputElement();
 		}
 		else if (type == typeof(string)) {
-			OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, list);
+			OptionStringsAttribute ost = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
 			if (ost != null)
 				e = new StringOptionElement();
 			else
@@ -672,7 +672,7 @@ internal class UIModConfig : UIState
 		uIPanel.CopyStyle(Interface.modConfig.uIPanel);
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
-		BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
+		BackgroundColorAttribute bca = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, subitem, null);
 
 		if (bca != null) {
 			uIPanel.BackgroundColor = bca.Color;

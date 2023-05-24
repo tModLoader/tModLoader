@@ -389,22 +389,16 @@ public static class ConfigManager
 		return Activator.CreateInstance(type, true);
 	}
 
-	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority,
-	// followed by the containing data structure, followed by attribute defined on the Class.
-	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object? item, object? array) where T : Attribute
+	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority, followed by attribute defined on the Class of that member.
+	public static T? GetCustomAttributeFromMemberThenMemberType<T>(PropertyFieldWrapper memberInfo, object? item, object? array) where T : Attribute
 	{
-		// Class
-		T? attribute = (T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
-		if (array != null) {
-			// item null?
-			//	attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
-		}
-		// Member
-		attribute = (T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
-		return attribute;
-		// TODO: allow for inheriting from parent's parent? (could get attribute from parent ConfigElement)
+		return
+			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
+			(T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true); // on the class
+		// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
 	}
 
+	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attibute on the generic Type.
 	public static T? GetCustomAttributeFromCollectionMemberThenElementType<T>(MemberInfo memberInfo, Type elementType) where T : Attribute
 	{
 		return

@@ -72,7 +72,7 @@ public abstract class ModConfig : ILocalizedModType
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this)) {
-			var reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
+			var reloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(variable, this, null);
 
 			if (reloadRequired == null) {
 				continue;

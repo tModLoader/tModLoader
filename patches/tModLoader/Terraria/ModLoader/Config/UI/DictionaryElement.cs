@@ -97,8 +97,8 @@ internal class DictionaryElement : CollectionElement
 		keyType = MemberInfo.Type.GetGenericArguments()[0];
 		valueType = MemberInfo.Type.GetGenericArguments()[1];
 		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttributeFromCollectionMemberThenElementType<JsonDefaultListValueAttribute>(MemberInfo.MemberInfo, valueType);
-		defaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<DefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
-		jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
+		defaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<DefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
+		jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
 	}
 
 	protected override void AddItem()

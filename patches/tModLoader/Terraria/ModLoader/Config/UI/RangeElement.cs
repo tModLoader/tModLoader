@@ -73,7 +73,7 @@ public abstract class RangeElement : ConfigElement
 		base.OnBind();
 
 		DrawTicks = Attribute.IsDefined(MemberInfo.MemberInfo, typeof(DrawTicksAttribute));
-		SliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(MemberInfo, Item, List)?.Color ?? Color.White;
+		SliderColor = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderColorAttribute>(MemberInfo, Item, List)?.Color ?? Color.White;
 	}
 
 	public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)
