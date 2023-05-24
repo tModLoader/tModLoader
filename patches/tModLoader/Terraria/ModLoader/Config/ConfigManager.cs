@@ -359,20 +359,7 @@ public static class ConfigManager
 		return;
 	}
 
-	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item)
-	{
-		PropertyInfo[] properties = item.GetType().GetProperties(
-			//BindingFlags.DeclaredOnly |
-			BindingFlags.Public |
-			BindingFlags.Instance);
-
-		FieldInfo[] fields = item.GetType().GetFields(
-			//BindingFlags.DeclaredOnly |
-			BindingFlags.Public |
-			BindingFlags.Instance);
-
-		return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
-	}
+	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item) => GetFieldsAndProperties(item.GetType());
 
 	public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(Type type)
 	{
@@ -420,14 +407,10 @@ public static class ConfigManager
 
 	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute
 	{
-		// Class
-		T? attribute = (T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
-
-		attribute = (T?)Attribute.GetCustomAttribute(type, typeof(T), true) ?? attribute;
-
-		// Member
-		attribute = (T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
-		return attribute;
+		return
+			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
+			(T?)Attribute.GetCustomAttribute(type, typeof(T), true) ?? // on a provided fallback type
+			(T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true); // on the member type. TODO is there ever a reason to use this?
 	}
 
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
@@ -559,16 +542,8 @@ public static class ConfigManager
 		if (header.malformed)
 			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.MemberInfo.DeclaringType}' class caused this exception.");
 
-		if (header.IsIdentifier) {
-			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType!.Assembly, out var modName);
-			string className = memberInfo.MemberInfo.DeclaringType.Name;
-			if (modName == null) {  // tModLoader keys handle translations for existing classes
-				header.key = $"Config.{className}.Headers.{header.identifier}";
-			}
-			else {
-				header.key = $"Mods.{modName}.Configs.{className}.Headers.{header.identifier}";
-			}
-		}
+		if (header.IsIdentifier)
+			header.key = GetDefaultLocalizationKey(memberInfo.MemberInfo.DeclaringType!, $"Headers.{header.identifier}");
 
 		return header;
 	}
