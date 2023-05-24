@@ -405,12 +405,11 @@ public static class ConfigManager
 		// TODO: allow for inheriting from parent's parent? (could get attribute from parent ConfigElement)
 	}
 
-	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, Type type) where T : Attribute
+	public static T? GetCustomAttributeFromCollectionMemberThenElementType<T>(MemberInfo memberInfo, Type elementType) where T : Attribute
 	{
 		return
-			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
-			(T?)Attribute.GetCustomAttribute(type, typeof(T), true) ?? // on a provided fallback type
-			(T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true); // on the member type. TODO is there ever a reason to use this?
+			(T?)Attribute.GetCustomAttribute(memberInfo, typeof(T)) ?? // on the member itself
+			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
 	}
 
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
