@@ -119,7 +119,7 @@ public static class ConfigManager
 			RegisterLocalizationKeysForMemberType(variable.Type, type.Assembly);
 
 			// Label and Tooltip will always exist. Header is optional, need to be used to exist.
-			var header = GetLocalizedHeader(variable);
+			var header = GetLocalizedHeader(variable.MemberInfo);
 			if (header != null) {
 				string identifier = header.IsIdentifier ? header.identifier : variable.Name;
 				Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
@@ -532,18 +532,18 @@ public static class ConfigManager
 		return isTooltip ? null : memberInfo.Name;
 	}
 
-	internal static HeaderAttribute? GetLocalizedHeader(PropertyFieldWrapper memberInfo)
+	internal static HeaderAttribute? GetLocalizedHeader(MemberInfo memberInfo)
 	{
 		// Priority: Provided Key or key derived from identifier on member
-		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
+		var header = (HeaderAttribute?)Attribute.GetCustomAttribute(memberInfo, typeof(HeaderAttribute));
 		if (header == null)
 			return null;
 
 		if (header.malformed)
-			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.MemberInfo.DeclaringType}' class caused this exception.");
+			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.DeclaringType}' class caused this exception.");
 
 		if (header.IsIdentifier)
-			header.key = GetDefaultLocalizationKey(memberInfo.MemberInfo.DeclaringType!, $"Headers.{header.identifier}");
+			header.key = GetDefaultLocalizationKey(memberInfo.DeclaringType!, $"Headers.{header.identifier}");
 
 		return header;
 	}

@@ -792,7 +792,7 @@ internal class UIModConfig : UIState
 
 	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
-		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable);
+		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 
 		if (header != null) {
 			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
