@@ -69,27 +69,28 @@ public static class ConfigManager
 	{
 		Load(config);
 
-		if (!Configs.TryGetValue(config.Mod, out List<ModConfig>? configList))
-			Configs.Add(config.Mod, configList = new List<ModConfig>());
+		if (!Configs.TryGetValue(config.Mod, out var configList))
+			Configs[config.Mod] = configList = new List<ModConfig>();
+
 		configList.Add(config);
 
-		FieldInfo? instance = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
-		if (instance != null) {
-			instance.SetValue(null, config);
-		}
+		var instanceField = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
+		instanceField?.SetValue(null, config);
+
 		config.OnLoaded();
 		config.OnChanged();
 
 		// Maintain a backup of LoadTime Configs.
-		if (!loadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig>? configList2))
-			loadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
-		configList2.Add(GeneratePopulatedClone(config));
+		if (!loadTimeConfigs.TryGetValue(config.Mod, out var loadTimeConfigList))
+			loadTimeConfigs[config.Mod] = loadTimeConfigList = new List<ModConfig>();
+
+		loadTimeConfigList.Add(GeneratePopulatedClone(config));
 	}
 
 	internal static void FinishSetup()
 	{
 		// Register localization for all fields and properties that should show
-		foreach (var activeConfigs in ConfigManager.Configs) {
+		foreach (var activeConfigs in Configs) {
 			foreach (var config in activeConfigs.Value) {
 				try {
 					_ = config.DisplayName;
@@ -107,12 +108,12 @@ public static class ConfigManager
 	private static void RegisterLocalizationKeysForMembers(Type type)
 	{
 		AssemblyManager.GetAssemblyOwner(type.Assembly, out var modName);
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(type)) {
+		foreach (PropertyFieldWrapper variable in GetFieldsAndProperties(type)) {
 			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
 			var labelObsolete = GetLegacyLabelAttribute(variable.MemberInfo);
 			var tooltipObsolete = GetLegacyTooltipAttribute(variable.MemberInfo);
 
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !(labelObsolete != null || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))))
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && labelObsolete == null && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
 			RegisterLocalizationKeysForMemberType(variable.Type, type.Assembly);
@@ -124,23 +125,23 @@ public static class ConfigManager
 				Language.GetOrRegister(header.key, () => $"{Regex.Replace(identifier, "([A-Z])", " $1").Trim()} Header");
 			}
 
-			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
+			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, "Label");
 			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
 
-			string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, dataName: "Tooltip");
+			string tooltipKey = GetConfigKey<TooltipKeyAttribute>(variable.MemberInfo, "Tooltip");
 			Language.GetOrRegister(tooltipKey, () => tooltipObsolete?.LocalizationEntry ?? "");
 		}
 	}
 
 	private static void RegisterLocalizationKeysForEnumMembers(Type type)
 	{
-		var enumFields = type.GetFields(BindingFlags.Public | BindingFlags.Static).Select(x => new PropertyFieldWrapper(x));
-		foreach (PropertyFieldWrapper variable in enumFields) {
+		var enumFields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
+		foreach (var field in enumFields) {
 			// Handle obsolete attributes. Use them to populate value of key, if present, to ease porting.
-			var labelObsolete = GetLegacyLabelAttribute(variable.MemberInfo);
+			var labelObsolete = GetLegacyLabelAttribute(field);
 
-			string labelKey = GetConfigKey<LabelKeyAttribute>(variable.MemberInfo, dataName: "Label");
-			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(variable.Name, "([A-Z])", " $1").Trim());
+			string labelKey = GetConfigKey<LabelKeyAttribute>(field, "Label");
+			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(field.Name, "([A-Z])", " $1").Trim());
 		}
 	}
 
@@ -173,7 +174,7 @@ public static class ConfigManager
 	// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
 	internal static void LoadAll()
 	{
-		foreach (var activeConfigs in ConfigManager.Configs) {
+		foreach (var activeConfigs in Configs) {
 			foreach (var activeConfig in activeConfigs.Value) {
 				Load(activeConfig);
 			}
@@ -182,7 +183,7 @@ public static class ConfigManager
 
 	internal static void OnChangedAll()
 	{
-		foreach (var activeConfigs in ConfigManager.Configs) {
+		foreach (var activeConfigs in Configs) {
 			foreach (var activeConfig in activeConfigs.Value) {
 				activeConfig.OnChanged();
 			}
@@ -498,9 +499,9 @@ public static class ConfigManager
 	private static T? GetAndValidate<T>(MemberInfo memberInfo) where T : ConfigKeyAttribute
 	{
 		var configKeyAttribute = (T?)Attribute.GetCustomAttribute(memberInfo, typeof(T));
-		if (configKeyAttribute?.malformed == true) {
+		if (configKeyAttribute?.malformed is true) {
 			string message = $"{typeof(T).Name} only accepts localization keys for the 'key' parameter.";
-			if(memberInfo is Type type) {
+			if (memberInfo is Type type) {
 				message += $"\nThe class '{type.FullName}' caused this exception.";
 			}
 			else {
@@ -532,7 +533,7 @@ public static class ConfigManager
 
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string and T is Tooltip -> member name or null
 		var args = GetCustomAttribute<TArgs>(memberInfo, memberInfo.Type);
-		string configKey = GetConfigKey<T>(memberInfo.MemberInfo, dataName: dataName);
+		string configKey = GetConfigKey<T>(memberInfo.MemberInfo, dataName);
 		if (Language.Exists(configKey)) {
 			string configLocalization = Language.GetTextValue(configKey);
 			if (!(isTooltip && string.IsNullOrEmpty(configLocalization)))
@@ -540,8 +541,8 @@ public static class ConfigManager
 		}
 
 		if (memberInfo.Type.IsClass || memberInfo.Type.IsEnum) {
-			string typeConfigKey = GetConfigKey<T>(memberInfo.Type, dataName: dataName);
-			if(Language.Exists(typeConfigKey))
+			string typeConfigKey = GetConfigKey<T>(memberInfo.Type, dataName);
+			if (Language.Exists(typeConfigKey))
 				return FormatTextAttribute(typeConfigKey, Language.GetTextValue(typeConfigKey), args?.args);
 		}
 
@@ -552,12 +553,11 @@ public static class ConfigManager
 	{
 		// Priority: Provided Key or key derived from identifier on member
 		var header = GetCustomAttribute<HeaderAttribute>(memberInfo, null, null);
-		if (header == null) {
+		if (header == null)
 			return null;
-		}
-		if (header.malformed) {
+
+		if (header.malformed)
 			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.MemberInfo.DeclaringType}' class caused this exception.");
-		}
 
 		if (header.IsIdentifier) {
 			AssemblyManager.GetAssemblyOwner(memberInfo.MemberInfo.DeclaringType!.Assembly, out var modName);
