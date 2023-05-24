@@ -452,15 +452,15 @@ public static class ConfigManager
 		return !hasNextA && !hasNextB;
 	}
 
-	internal static string FormatTextAttribute(string key, string localization, object[]? args)
+	internal static string FormatTextAttribute(LocalizedText localizedText, object[]? args)
 	{
 		if (args == null)
-			return localization;
+			return localizedText.Value;
 		for (int i = 0; i < args.Length; i++) {
 			if (args[i] is string s && s.StartsWith("$"))
-				args[i] = Language.GetTextValue(FindKeyInScope(s.Substring(1), key));
+				args[i] = Language.GetTextValue(FindKeyInScope(s.Substring(1), localizedText.Key));
 		}
-		return Language.GetText(key).Format(args);
+		return localizedText.Format(args);
 
 		string FindKeyInScope(string key, string scope)
 		{
@@ -510,32 +510,33 @@ public static class ConfigManager
 		return $"{groupKey}.{memberKey}.{dataName}";
 	}
 
-	internal static string? GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, string dataName) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
+	internal static string GetLocalizedLabel(PropertyFieldWrapper member) => GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(member, "Label") ?? member.Name;
+	internal static string GetLocalizedTooltip(PropertyFieldWrapper member) => GetLocalizedText<TooltipKeyAttribute, TooltipArgsAttribute>(member, "Tooltip") ?? "";
+
+	private static string? GetLocalizedText<T, TArgs>(PropertyFieldWrapper memberInfo, string dataName) where T : ConfigKeyAttribute where TArgs : ConfigArgsAttribute
 	{
-		bool isTooltip = typeof(T) == typeof(TooltipKeyAttribute);
-
 		// Priority: Provided/AutoKey on member -> Provided/AutoKey on class if member translation is empty string and T is Tooltip -> member name or null
-		var args = GetCustomAttribute<TArgs>(memberInfo, memberInfo.Type);
-		string configKey = GetConfigKey<T>(memberInfo.MemberInfo, dataName);
-		if (Language.Exists(configKey)) {
-			string configLocalization = Language.GetTextValue(configKey);
-			if (!(isTooltip && string.IsNullOrEmpty(configLocalization)))
-				return FormatTextAttribute(configKey, configLocalization, args?.args);
-		}
+		string memberKey = GetConfigKey<T>(memberInfo.MemberInfo, dataName);
+		if (!Language.Exists(memberKey)) // If we didn't register a localization for the member, then it must be a member of a vanilla type and there's nothing more to do
+			return null;
 
-		if (memberInfo.Type.IsClass || memberInfo.Type.IsEnum) {
-			string typeConfigKey = GetConfigKey<T>(memberInfo.Type, dataName);
-			if (Language.Exists(typeConfigKey))
-				return FormatTextAttribute(typeConfigKey, Language.GetTextValue(typeConfigKey), args?.args);
-		}
+		var memberLocalization = Language.GetText(memberKey);
+		if (memberLocalization.Value != "")
+			return FormatTextAttribute(memberLocalization, memberInfo.MemberInfo.GetCustomAttribute<TArgs>()?.args);
 
-		return isTooltip ? null : memberInfo.Name;
+		// try falling back to the type
+		string typeKey = GetConfigKey<T>(memberInfo.Type, dataName);
+		if (Language.Exists(typeKey)) // if we didn't register a localization for the type, there's a good reason (T is a LabelKeyAttribute, or type is a vanilla type)
+			return null;
+
+		var typeLocalization = Language.GetText(typeKey);
+		return FormatTextAttribute(typeLocalization, memberInfo.Type.GetCustomAttribute<TArgs>()?.args);
 	}
 
 	internal static HeaderAttribute? GetLocalizedHeader(MemberInfo memberInfo)
 	{
 		// Priority: Provided Key or key derived from identifier on member
-		var header = (HeaderAttribute?)Attribute.GetCustomAttribute(memberInfo, typeof(HeaderAttribute));
+		var header = memberInfo.GetCustomAttribute<HeaderAttribute>();
 		if (header == null)
 			return null;
 

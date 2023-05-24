@@ -74,12 +74,12 @@ public abstract class ConfigElement : UIElement
 	public virtual void OnBind()
 	{
 		LabelAttribute = ConfigManager.GetCustomAttribute<LabelKeyAttribute>(MemberInfo, Item, List);
-		Label = ConfigManager.GetLocalizedText<LabelKeyAttribute, LabelArgsAttribute>(MemberInfo, "Label");
+		Label = ConfigManager.GetLocalizedLabel(MemberInfo);
 		// Potential TODO if highly requested: Support interpolating value itself into label.
 		TextDisplayFunction = () => Label;
 
 		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipKeyAttribute>(MemberInfo, Item, List);
-		string tooltip = ConfigManager.GetLocalizedText<TooltipKeyAttribute, TooltipArgsAttribute>(MemberInfo, "Tooltip");
+		string tooltip = ConfigManager.GetLocalizedTooltip(MemberInfo);
 		if (tooltip != null) {
 			TooltipFunction = () => tooltip;
 		}
