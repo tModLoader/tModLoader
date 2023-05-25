@@ -122,6 +122,7 @@ public partial class Mod
 
 		ConfigManager.Add(mc);
 		ContentInstance.Register(mc);
+		ModTypeLookup<ModConfig>.Register(mc);
 	}
 
 	/// <summary> Call this to manually add a content instance of the specified type (with a parameterless constructor) to the game. </summary>

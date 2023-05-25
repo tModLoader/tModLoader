@@ -27,7 +27,7 @@ internal class StringOptionElement : RangeElement
 
 		StringList = (IList<string>)List;
 
-		var optionsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(MemberInfo, Item, StringList);
+		var optionsAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(MemberInfo, Item, StringList);
 
 		options = optionsAttribute.OptionLabels;
 
@@ -42,8 +42,8 @@ internal class StringOptionElement : RangeElement
 			TextDisplayFunction = () => Index + 1 + ": " + StringList[Index];
 		}
 
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label + ": " + getValue();
+		if (Label != null) {
+			TextDisplayFunction = () => Label + ": " + getValue();
 		}
 	}
 

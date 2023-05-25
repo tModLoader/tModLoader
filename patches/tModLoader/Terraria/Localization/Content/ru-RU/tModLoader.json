@@ -803,6 +803,17 @@
 	"TitleLinks": {
 		"Patreon": "Patreon"
 	},
+	"Config": {
+		// "Color.Hue.Label": "Hue",
+		// "Color.Saturation.Label": "Saturation",
+		// "Color.Lightness.Label": "Lightness",
+		// "Color.Red.Label": "Red",
+		// "Color.Green.Label": "Green",
+		// "Color.Blue.Label": "Blue",
+		// "Color.Alpha.Label": "Alpha",
+		// "Vector2.X.Label": "X",
+		// "Vector2.Y.Label": "Y"
+	},
 	"Mods": {
 		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
 		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
