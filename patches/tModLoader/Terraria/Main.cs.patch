@@ -2108,12 +2108,7 @@
  		NPC.RevengeManager.Update();
  		if (netMode != 1) {
  			if (remixWorld)
-@@ -14264,9 +_,15 @@
- 			else {
- 				npc[l].UpdateNPC(l);
- 			}
-+
-+			IEntitySource.ClearFallbacks();
+@@ -14267,6 +_,10 @@
  		}
  
  		CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
