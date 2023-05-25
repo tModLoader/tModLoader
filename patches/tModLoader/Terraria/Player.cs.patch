@@ -6489,6 +6489,17 @@
  		if (whoAmI == Main.myPlayer && gravDir == -1f) {
  			mount.Dismount(this);
  		}
+@@ -40626,6 +_,10 @@
+ 		worldY = i * 16;
+ 	}
+ 
++	/// <summary>
++	/// Kills <see cref="Projectile.sentry"/> projectiles exceeding the players current <see cref="maxTurrets"/>. The oldest projectiles, determined by <see cref="Projectile.timeLeft"/>, are killed. <br/>
++	/// Call this method immediately after spawning a <see cref="Projectile.sentry"/> projectile.<br/>
++	/// </summary>
+ 	public void UpdateMaxTurrets()
+ 	{
+ 		if (Main.myPlayer != whoAmI)
 @@ -40853,8 +_,14 @@
  		}
  	}
