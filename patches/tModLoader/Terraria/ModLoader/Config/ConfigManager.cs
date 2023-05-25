@@ -517,9 +517,13 @@ public static class ConfigManager
 		if (memberLocalization.Value != "")
 			return FormatTextAttribute(memberLocalization, memberInfo.MemberInfo.GetCustomAttribute<TArgs>()?.args);
 
+		// bool, int, etc.
+		if (memberInfo.Type.IsPrimitive)
+			return null;
+
 		// try falling back to the type
 		string typeKey = GetConfigKey<T>(memberInfo.Type, dataName);
-		if (Language.Exists(typeKey)) // if we didn't register a localization for the type, there's a good reason (T is a LabelKeyAttribute, or type is a vanilla type)
+		if (!Language.Exists(typeKey)) // if we didn't register a localization for the type, there's a good reason (T is a LabelKeyAttribute, or type is a vanilla type)
 			return null;
 
 		var typeLocalization = Language.GetText(typeKey);
