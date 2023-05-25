@@ -102,6 +102,14 @@ var hierarchy =
       [ "CloneByReference", "class_clone_by_reference.html", null ],
       [ "ColorHSLSliderAttribute", "class_color_h_s_l_slider_attribute.html", null ],
       [ "ColorNoAlphaAttribute", "class_color_no_alpha_attribute.html", null ],
+      [ "ConfigArgsAttribute", "class_config_args_attribute.html", [
+        [ "LabelArgsAttribute", "class_label_args_attribute.html", null ],
+        [ "TooltipArgsAttribute", "class_tooltip_args_attribute.html", null ]
+      ] ],
+      [ "ConfigKeyAttribute", "class_config_key_attribute.html", [
+        [ "LabelKeyAttribute", "class_label_key_attribute.html", null ],
+        [ "TooltipKeyAttribute", "class_tooltip_key_attribute.html", null ]
+      ] ],
       [ "CustomModConfigItemAttribute", "class_custom_mod_config_item_attribute.html", null ],
       [ "DefaultDictionaryKeyValueAttribute", "class_default_dictionary_key_value_attribute.html", null ],
       [ "DefaultListValueAttribute", "class_default_list_value_attribute.html", null ],
@@ -125,6 +133,7 @@ var hierarchy =
       [ "RangeAttribute", "class_range_attribute.html", null ],
       [ "ReloadRequiredAttribute", "class_reload_required_attribute.html", null ],
       [ "SeparatePageAttribute", "class_separate_page_attribute.html", null ],
+      [ "ShowDespiteJsonIgnoreAttribute", "class_show_despite_json_ignore_attribute.html", null ],
       [ "SliderAttribute", "class_slider_attribute.html", null ],
       [ "SliderColorAttribute", "class_slider_color_attribute.html", null ],
       [ "TooltipAttribute", "class_tooltip_attribute.html", null ]
@@ -418,7 +427,8 @@ var hierarchy =
       [ "RecipeException", "class_recipe_exception.html", null ],
       [ "ResourceLoadException", "class_resource_load_exception.html", null ],
       [ "TopoSort< T >.SortingException", "class_topo_sort_1_1_sorting_exception.html", null ],
-      [ "UsageException", "class_usage_exception.html", null ]
+      [ "UsageException", "class_usage_exception.html", null ],
+      [ "ValueNotTranslationKeyException", "class_value_not_translation_key_exception.html", null ]
     ] ],
     [ "ExtensionFilter", "struct_extension_filter.html", null ],
     [ "ExtraBestiaryInfoPageInformation", "struct_extra_bestiary_info_page_information.html", null ],
@@ -1497,6 +1507,7 @@ var hierarchy =
         [ "ModBiome", "class_mod_biome.html", null ],
         [ "ModBlockType", "class_mod_block_type.html", null ],
         [ "ModBuff", "class_mod_buff.html", null ],
+        [ "ModConfig", "class_mod_config.html", null ],
         [ "ModItem", "class_mod_item.html", null ],
         [ "ModNPC", "class_mod_n_p_c.html", null ],
         [ "ModPrefix", "class_mod_prefix.html", null ],
@@ -1979,7 +1990,6 @@ var hierarchy =
     [ "PlayerInput.MiscSettingsTEMP", "class_player_input_1_1_misc_settings_t_e_m_p.html", null ],
     [ "Mod", "class_mod.html", null ],
     [ "ModBrowserSortModesExtensions", "class_mod_browser_sort_modes_extensions.html", null ],
-    [ "ModConfig", "class_mod_config.html", null ],
     [ "ModContent", "class_mod_content.html", null ],
     [ "Modifiers", "class_modifiers.html", null ],
     [ "ModKeybind", "class_mod_keybind.html", null ],

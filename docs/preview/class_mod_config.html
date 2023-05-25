@@ -92,8 +92,10 @@ $(document).ready(function(){initNavTree('class_mod_config.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> provides a way for mods to be configurable. ModConfigs can either be Client specific or Server specific. When joining a MP server, Client configs are kept but Server configs are synced from the server. Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. tModLoader also provides its own attributes such as <a class="el" href="class_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a> and <a class="el" href="class_label_attribute.html" title="This attribute sets a label for the property, field, or class for use in the ModConfig UI....">LabelAttribute</a>.  
+<p><a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> provides a way for mods to be configurable. ModConfigs can either be Client specific or Server specific. When joining a MP server, Client configs are kept but Server configs are synced from the server. Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. tModLoader also provides its own attributes such as <a class="el" href="class_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a> and <a class="el" href="class_label_attribute.html">LabelAttribute</a>.  
  <a href="class_mod_config.html#details">More...</a></p>
+
+<p>Inherits <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -120,18 +122,40 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnLoaded</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a9f7c968276ef6b016e02104f4bff5d89"><td class="memItemLeft" align="right" valign="top"><a id="a9f7c968276ef6b016e02104f4bff5d89" name="a9f7c968276ef6b016e02104f4bff5d89"></a>
-<a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Mod</b><code> [get, set]</code></td></tr>
+<tr class="memitem:aa5165b0bfc4a2610db956f0701384306"><td class="memItemLeft" align="right" valign="top"><a id="aa5165b0bfc4a2610db956f0701384306" name="aa5165b0bfc4a2610db956f0701384306"></a>
+virtual <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayName</b><code> [get]</code></td></tr>
+<tr class="separator:aa5165b0bfc4a2610db956f0701384306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a090288f1b691fde4c430d011bbbb50"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#a1a090288f1b691fde4c430d011bbbb50">FullName</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1a090288f1b691fde4c430d011bbbb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">=&gt; $"{Mod.Name}/{Name}"  <a href="class_mod_config.html#a1a090288f1b691fde4c430d011bbbb50">More...</a><br /></td></tr>
+<tr class="separator:a1a090288f1b691fde4c430d011bbbb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4c38f315a3842027514394336a342be"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#ab4c38f315a3842027514394336a342be">LocalizationCategory</a><code> [get]</code></td></tr>
+<tr class="separator:ab4c38f315a3842027514394336a342be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f7c968276ef6b016e02104f4bff5d89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#a9f7c968276ef6b016e02104f4bff5d89">Mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a9f7c968276ef6b016e02104f4bff5d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_mod_config.html#a9f7c968276ef6b016e02104f4bff5d89">More...</a><br /></td></tr>
 <tr class="separator:a9f7c968276ef6b016e02104f4bff5d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ab7a399c008e2987d0da172c10ded3"><td class="memItemLeft" align="right" valign="top"><a id="af5ab7a399c008e2987d0da172c10ded3" name="af5ab7a399c008e2987d0da172c10ded3"></a>
 abstract ConfigScope&#160;</td><td class="memItemRight" valign="bottom"><b>Mode</b><code> [get]</code></td></tr>
 <tr class="separator:af5ab7a399c008e2987d0da172c10ded3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be6005c02662f898ed6d54e60dfc13c"><td class="memItemLeft" align="right" valign="top"><a id="a7be6005c02662f898ed6d54e60dfc13c" name="a7be6005c02662f898ed6d54e60dfc13c"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get, set]</code></td></tr>
+<tr class="memitem:a7be6005c02662f898ed6d54e60dfc13c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#a7be6005c02662f898ed6d54e60dfc13c">Name</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a7be6005c02662f898ed6d54e60dfc13c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="class_mod_config.html#a7be6005c02662f898ed6d54e60dfc13c">More...</a><br /></td></tr>
 <tr class="separator:a7be6005c02662f898ed6d54e60dfc13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_i_localized_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_localized_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a></td></tr>
+<tr class="memitem:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="ac939fd71685c5b25062243257f03e1db" name="ac939fd71685c5b25062243257f03e1db"></a>
+abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>LocalizationCategory</b><code> [get]</code></td></tr>
+<tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_i_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_mod_type.html">IModType</a></td></tr>
+<tr class="memitem:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">FullName</a><code> [get]</code></td></tr>
+<tr class="memdesc:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">=&gt; $"{Mod.Name}/{Name}"  <a href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">More...</a><br /></td></tr>
+<tr class="separator:a010660aa019de5fee6f5968697764a5c inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">Mod</a><code> [get]</code></td></tr>
+<tr class="memdesc:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">More...</a><br /></td></tr>
+<tr class="separator:abd119f11712e3efbe2a917f863b5c0a9 inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">Name</a><code> [get]</code></td></tr>
+<tr class="memdesc:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">More...</a><br /></td></tr>
+<tr class="separator:a41ebe3ebcd4bfbfcf130be3aa92ce77c inherit properties_interface_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p ><a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> provides a way for mods to be configurable. ModConfigs can either be Client specific or Server specific. When joining a MP server, Client configs are kept but Server configs are synced from the server. Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. tModLoader also provides its own attributes such as <a class="el" href="class_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a> and <a class="el" href="class_label_attribute.html" title="This attribute sets a label for the property, field, or class for use in the ModConfig UI....">LabelAttribute</a>. </p>
+<div class="textblock"><p ><a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> provides a way for mods to be configurable. ModConfigs can either be Client specific or Server specific. When joining a MP server, Client configs are kept but Server configs are synced from the server. Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. tModLoader also provides its own attributes such as <a class="el" href="class_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a> and <a class="el" href="class_label_attribute.html">LabelAttribute</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a46ab3d9d5dfb2f2ec440bbb281a3c740" name="a46ab3d9d5dfb2f2ec440bbb281a3c740"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46ab3d9d5dfb2f2ec440bbb281a3c740">&#9670;&nbsp;</a></span>AcceptClientChanges()</h2>
@@ -246,6 +270,109 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a1a090288f1b691fde4c430d011bbbb50" name="a1a090288f1b691fde4c430d011bbbb50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a090288f1b691fde4c430d011bbbb50">&#9670;&nbsp;</a></span>FullName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string ModConfig.FullName</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>=&gt; $"{Mod.Name}/{Name}" </p>
+
+<p>Implements <a class="el" href="interface_i_mod_type.html#a010660aa019de5fee6f5968697764a5c">IModType</a>.</p>
+
+</div>
+</div>
+<a id="ab4c38f315a3842027514394336a342be" name="ab4c38f315a3842027514394336a342be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4c38f315a3842027514394336a342be">&#9670;&nbsp;</a></span>LocalizationCategory</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string ModConfig.LocalizationCategory</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
+
+</div>
+</div>
+<a id="a9f7c968276ef6b016e02104f4bff5d89" name="a9f7c968276ef6b016e02104f4bff5d89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f7c968276ef6b016e02104f4bff5d89">&#9670;&nbsp;</a></span>Mod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_mod.html">Mod</a> ModConfig.Mod</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The mod this belongs to. </p>
+
+<p>Implements <a class="el" href="interface_i_mod_type.html#abd119f11712e3efbe2a917f863b5c0a9">IModType</a>.</p>
+
+</div>
+</div>
+<a id="a7be6005c02662f898ed6d54e60dfc13c" name="a7be6005c02662f898ed6d54e60dfc13c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7be6005c02662f898ed6d54e60dfc13c">&#9670;&nbsp;</a></span>Name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string ModConfig.Name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The internal name of this instance. </p>
+
+<p>Implements <a class="el" href="interface_i_mod_type.html#a41ebe3ebcd4bfbfcf130be3aa92ce77c">IModType</a>.</p>
 
 </div>
 </div>

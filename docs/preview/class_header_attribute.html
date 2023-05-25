@@ -92,25 +92,44 @@ $(document).ready(function(){initNavTree('class_header_attribute.html',''); init
 </div><!--header-->
 <div class="contents">
 
-<p>This attribute adds a label above this property or field in the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI that acts as a header. Use this to delineate sections within your config. Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order.  
+<p>This attribute adds a label above this property or field in the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI that acts as a header. Use this to delineate sections within your config. <br  />
+ Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order. <br  />
+ <br  />
+ Header accept either a translation key or an identifier. <br  />
+ To use a translation key, the value passed in must start with "$". <br  />
+ A value passed in that does not start with "$" is interpreted as an identifier. The identifier is used to construct the localization key "Mods.{ModName}.Configs.{ConfigName}.Headers.{Identifier}" <br  />
+ No spaces are allowed in translation keys, so avoid spaces <br  />
+ Annotations on members of non-ModConfig classes need to supply a localization key using this attribute to be localized, no localization key can be correctly assumed using just an identifier. <br  />
+  
  <a href="class_header_attribute.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_attribute.html">Attribute</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae829b1336c502cc53a6d49f793442daa"><td class="memItemLeft" align="right" valign="top"><a id="ae829b1336c502cc53a6d49f793442daa" name="ae829b1336c502cc53a6d49f793442daa"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>HeaderAttribute</b> (string header)</td></tr>
-<tr class="separator:ae829b1336c502cc53a6d49f793442daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa51aaf6b8c4da9e82af01f3f427bffd3"><td class="memItemLeft" align="right" valign="top"><a id="aa51aaf6b8c4da9e82af01f3f427bffd3" name="aa51aaf6b8c4da9e82af01f3f427bffd3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>HeaderAttribute</b> (string identifierOrKey)</td></tr>
+<tr class="separator:aa51aaf6b8c4da9e82af01f3f427bffd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:af8e055ded7ff4d6c4469c5ab330abf87"><td class="memItemLeft" align="right" valign="top"><a id="af8e055ded7ff4d6c4469c5ab330abf87" name="af8e055ded7ff4d6c4469c5ab330abf87"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Header</b><code> [get]</code></td></tr>
 <tr class="separator:af8e055ded7ff4d6c4469c5ab330abf87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c88a2fd71d8d18ef2b2ebbfe56a46e6"><td class="memItemLeft" align="right" valign="top"><a id="a1c88a2fd71d8d18ef2b2ebbfe56a46e6" name="a1c88a2fd71d8d18ef2b2ebbfe56a46e6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsIdentifier</b><code> [get]</code></td></tr>
+<tr class="separator:a1c88a2fd71d8d18ef2b2ebbfe56a46e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This attribute adds a label above this property or field in the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI that acts as a header. Use this to delineate sections within your config. Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order. </p>
+<div class="textblock"><p >This attribute adds a label above this property or field in the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> UI that acts as a header. Use this to delineate sections within your config. <br  />
+ Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order. <br  />
+ <br  />
+ Header accept either a translation key or an identifier. <br  />
+ To use a translation key, the value passed in must start with "$". <br  />
+ A value passed in that does not start with "$" is interpreted as an identifier. The identifier is used to construct the localization key "Mods.{ModName}.Configs.{ConfigName}.Headers.{Identifier}" <br  />
+ No spaces are allowed in translation keys, so avoid spaces <br  />
+ Annotations on members of non-ModConfig classes need to supply a localization key using this attribute to be localized, no localization key can be correctly assumed using just an identifier. <br  />
+ </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
