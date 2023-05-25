@@ -1,15 +1,20 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_TileEntity.cs
-@@ -1,11 +_,16 @@
+@@ -1,11 +_,19 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
  
++/// <summary>
++/// Used by vanilla for training dummies
++/// </summary>
  public class EntitySource_TileEntity : IEntitySource
  {
- 	public TileEntity TileEntity;
- 
+-	public TileEntity TileEntity;
+-
 -	public EntitySource_TileEntity(TileEntity tileEntity)
++	public TileEntity TileEntity { get; }
++
 +	public string? Context { get; }
 +
 +	public EntitySource_TileEntity(TileEntity tileEntity, string? context = null)
