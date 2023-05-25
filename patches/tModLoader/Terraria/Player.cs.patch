@@ -4289,6 +4289,15 @@
  		}
  		else if (pulley) {
  			if (pulleyDir == 2)
+@@ -28252,7 +_,7 @@
+ 			else
+ 				bodyFrame.Y = bodyFrame.Height * 2;
+ 		}
+-		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
++		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(inventory[selectedItem].type)]/*Allow biome torches underwater.*/) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
+ 			bodyFrame.Y = bodyFrame.Height * 3;
+ 		}
+ 		else if (flag3 && inventory[selectedItem].holdStyle == 2 && (!wet || !inventory[selectedItem].noWet)) {
 @@ -28381,6 +_,10 @@
  			reference9.Y = 0;
  		}
@@ -6297,7 +6306,14 @@
  		for (int i = 0; i < 1000; i++) {
  			Projectile projectile = Main.projectile[i];
  			if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
-@@ -38475,6 +_,11 @@
+@@ -38469,12 +_,17 @@
+ 	private void ItemCheck_EmitHeldItemLight(Item sItem)
+ 	{
+ 		Vector2? handPosition = HandPosition;
+-		if (((ItemID.Sets.Torches[sItem.type] && !wet) || ItemID.Sets.WaterTorches[sItem.type]) && !pulley && !happyFunTorchTime) {
++		if (((ItemID.Sets.Torches[sItem.type] && !wet) || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(sItem.type)]) && !pulley && !happyFunTorchTime) {
+ 			float R = 1f;
+ 			float G = 0.95f;
  			float B = 0.8f;
  			int num = 0;
  			int num2 = BiomeTorchHoldStyle(sItem.type);

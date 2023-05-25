@@ -131,7 +131,7 @@
 +		/*
  		bool flag = providedInfo.item.type != 1333 && providedInfo.item.type != 523 && providedInfo.item.type != 4384;
 +		*/
-+		bool flag = !ItemID.Sets.WaterTorches[providedInfo.item.type];
++		bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];
  		for (int i = reachableStartX; i <= reachableEndX; i++) {
  			for (int j = reachableStartY; j <= reachableEndY; j++) {
  				Tile tile = Main.tile[i, j];
