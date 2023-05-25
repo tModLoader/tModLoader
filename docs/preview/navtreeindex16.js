@@ -1,18 +1,20 @@
 var NAVTREEINDEX16 =
 {
+"class_projectile.html#abca5cdec0d37c34c2604d20e8721b890":[3,0,978,17],
 "class_projectile.html#abe3803a7cad9a036d46d49a07cfed50a":[3,0,978,42],
 "class_projectile.html#abf4cdfa42fb235343e30a60054e4d5fb":[3,0,978,45],
 "class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f":[3,0,978,1],
 "class_projectile.html#ac64a90bef6c47cf5804770e63f522a87":[3,0,978,23],
-"class_projectile.html#ac8b4d04688f594237d173222401fc3b1":[3,0,978,53],
-"class_projectile.html#acf73b38dd6006395707713d1afb995ea":[3,0,978,63],
-"class_projectile.html#acfca3a77d8685f83d806ea045399c3a7":[3,0,978,51],
+"class_projectile.html#ac8b4d04688f594237d173222401fc3b1":[3,0,978,54],
+"class_projectile.html#acf73b38dd6006395707713d1afb995ea":[3,0,978,64],
+"class_projectile.html#acfca3a77d8685f83d806ea045399c3a7":[3,0,978,52],
 "class_projectile.html#acfedbe4036472a2e64e258e04242d095":[3,0,978,39],
-"class_projectile.html#ae2087937999fc8c7aedfcd120b999f3e":[3,0,978,52],
+"class_projectile.html#ae2087937999fc8c7aedfcd120b999f3e":[3,0,978,53],
 "class_projectile.html#aea7754bae8b733ff4cdcfb8e8f379777":[3,0,978,18],
 "class_projectile.html#aece4c68ccff3998432020ffffb63cdfb":[3,0,978,15],
+"class_projectile.html#aefcc822f644ea2ff3758de8263c93c20":[3,0,978,51],
 "class_projectile.html#af13b8c2eca21e7745473cff173eeddd6":[3,0,978,44],
-"class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46":[3,0,978,58],
+"class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46":[3,0,978,59],
 "class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53":[3,0,978,37],
 "class_projectile_audio_tracker.html":[3,0,979],
 "class_projectile_definition.html":[3,0,980],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "class_sorting_steps_1_1_by_defense.html":[3,0,1099,9],
 "class_sorting_steps_1_1_by_h_p.html":[3,0,1099,10],
 "class_sorting_steps_1_1_by_net_id.html":[3,0,1099,11],
-"class_sorting_steps_1_1_by_stat.html":[3,0,1099,12],
-"class_sorting_steps_1_1_by_unlock_state.html":[3,0,1099,13],
-"class_sorting_steps_1_1_placable_objects.html":[3,0,1099,14]
+"class_sorting_steps_1_1_by_stat.html":[3,0,1099,12]
 };

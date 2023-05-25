@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_triggers_pack.html":[3,0,1233],
+"class_triggers_set.html":[3,0,1234],
 "class_twilight_dye_shader_data.html":[3,0,1235],
 "class_twilight_hair_dye_shader_data.html":[3,0,1236],
 "class_twins_big_progress_bar.html":[3,0,1237],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "class_workshop_publish_info_state_for_mods.html":[3,0,1422],
 "class_workshop_publish_info_state_for_resource_pack.html":[3,0,1423],
 "class_workshop_publish_info_state_for_world.html":[3,0,1424],
-"class_workshop_publishing_indicator.html":[3,0,1425],
-"class_workshop_social_module.html":[3,0,1426],
-"class_workshop_tag_option.html":[3,0,1427]
+"class_workshop_publishing_indicator.html":[3,0,1425]
 };

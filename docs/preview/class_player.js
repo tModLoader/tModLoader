@@ -70,6 +70,7 @@ var class_player =
     [ "StrikeNPCDirect", "class_player.html#aa5747bc3c4c71944001372293befb3fd", null ],
     [ "TryGetModPlayer< T >", "class_player.html#acaf84e842d44dc35c7c3ed03a3c6b9ce", null ],
     [ "TryGetModPlayer< T >", "class_player.html#a2c0020bcfec04cecd36525f2cd84989d", null ],
+    [ "UpdateMaxTurrets", "class_player.html#a83ba32773f0666859d0405c09ee788f1", null ],
     [ "UpdateVisibleAccessories", "class_player.html#aef7d53f2e97e0d30ccce0116c5be2a6e", null ],
     [ "accFishingLine", "class_player.html#a39a13c4eeca802d67f88f96ccb050844", null ],
     [ "buffImmune", "class_player.html#ac060ab24f091f7549c6c8dbf56511ec0", null ],

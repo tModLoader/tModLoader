@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"class_workshop_social_module.html":[3,0,1426],
+"class_workshop_tag_option.html":[3,0,1427],
 "class_world_file.html":[3,0,1428],
 "class_world_file_1_1_tile_packer.html":[3,0,1428,0],
 "class_world_file_data.html":[3,0,1429],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[3,0,46,3,0,0],
 "struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0bc1e5563d255007edcba481e935752e":[3,0,46,3,0,0,2],
 "struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a93f98317856c858ca11a8ed4a9f0554d":[3,0,46,3,0,0,1],
-"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#acaa2359fd67c582e5e415a492a30fc2f":[3,0,46,3,0,0,0],
-"struct_ball_collision_event.html":[3,0,68],
-"struct_ball_pass_through_event.html":[3,0,69]
+"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#acaa2359fd67c582e5e415a492a30fc2f":[3,0,46,3,0,0,0]
 };

@@ -51,6 +51,7 @@ var class_projectile =
     [ "penetrate", "class_projectile.html#a94391ca36fc93547aba841b6fc4af5a0", null ],
     [ "rotation", "class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf", null ],
     [ "scale", "class_projectile.html#a70e6ef8c8986be5cca4335001e4fcb8d", null ],
+    [ "sentry", "class_projectile.html#aefcc822f644ea2ff3758de8263c93c20", null ],
     [ "stepSpeed", "class_projectile.html#acfca3a77d8685f83d806ea045399c3a7", null ],
     [ "tileCollide", "class_projectile.html#ae2087937999fc8c7aedfcd120b999f3e", null ],
     [ "timeLeft", "class_projectile.html#ac8b4d04688f594237d173222401fc3b1", null ],

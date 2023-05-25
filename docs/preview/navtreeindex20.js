@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"struct_ball_collision_event.html":[3,0,68],
+"struct_ball_pass_through_event.html":[3,0,69],
 "struct_ball_step_result.html":[3,0,70],
 "struct_bestiary_u_i_collection_info.html":[3,0,76],
 "struct_bestiary_unlock_progress_report.html":[3,0,77],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "struct_point16.html":[3,0,954],
 "struct_portable_stool_usage.html":[3,0,957],
 "struct_pos_data.html":[3,0,959],
-"struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[3,0,959,3],
-"struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[3,0,959,6],
-"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc":[3,0,959,5]
+"struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[3,0,959,3]
 };
