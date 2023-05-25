@@ -4,9 +4,8 @@ namespace Terraria.ModLoader.Exceptions;
 
 public class ValueNotTranslationKeyException : Exception
 {
-	internal bool handled;
-
 	public ValueNotTranslationKeyException(string message) : base(message)
 	{
+		HelpLink = "https://github.com/tModLoader/tModLoader/pull/3302";
 	}
 }

@@ -483,6 +483,7 @@ public static class ConfigManager
 			else {
 				message += $"\nThe member '{memberInfo.Name}' found in the '{memberInfo.DeclaringType}' class caused this exception.";
 			}
+			message += $"\nClick Open Web Help for more information.";
 			throw new ValueNotTranslationKeyException(message);
 		}
 		return configKeyAttribute;
@@ -538,7 +539,7 @@ public static class ConfigManager
 			return null;
 
 		if (header.malformed)
-			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.DeclaringType}' class caused this exception.");
+			throw new ValueNotTranslationKeyException($"{nameof(HeaderAttribute)} only accepts localization keys or identifiers for the 'identifierOrKey' parameter. Neither can have spaces.\nThe member '{memberInfo.Name}' found in the '{memberInfo.DeclaringType}' class caused this exception.\nClick Open Web Help for more information.");
 
 		if (header.IsIdentifier)
 			header.key = GetDefaultLocalizationKey(memberInfo.DeclaringType!, $"Headers.{header.identifier}");
