@@ -11,18 +11,16 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(148, 72, 188)]
-	[Label("ModConfig Showcase E: Subpages")]
 	public class ModConfigShowcaseSubpages : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[Header("SeparatePage Examples")]
+		[Header("SeparatePageExamples")]
 		// Using SeparatePage, an object will be presented to the user as a button. That button will lead to a separate page where the usual UI will be presented. Useful for organization.
 		[SeparatePage]
 		public Gradient gradient = new Gradient();
 
 		// This example has multiple levels of subpages, check it out. In this example, the SubConfigExample class itself is annotated with [SeparatePage]
-		[Label("Sub Config Example - Click me")]
 		public SubConfigExample subConfigExample = new SubConfigExample();
 
 		[SeparatePage]
@@ -30,11 +28,9 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		// These 2 examples show how [SeparatePage] works on annotating both a field for a class and annotating a List of a class
 		[SeparatePage]
-		[Label("Subpage List Of Pairs")]
 		public List<Pair> SeparateListOfPairs = new List<Pair>();
 
 		[SeparatePage]
-		[Label("Special Pair")]
 		public Pair pair = new Pair();
 
 		// C# allows inner classes (used here), which might be useful for organization if you want.
@@ -51,7 +47,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 			public SubSubConfigExample SubA = new SubSubConfigExample();
 
 			[SeparatePage]
-			[Label("Even More Sub")]
 			public SubSubConfigExample SubB = new SubSubConfigExample();
 
 			public override string ToString() {

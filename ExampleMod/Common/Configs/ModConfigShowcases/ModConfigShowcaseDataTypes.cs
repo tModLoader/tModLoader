@@ -13,7 +13,6 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(144, 252, 249)]
-	[Label("ModConfig Showcase A: Data Types")]
 	public class ModConfigShowcaseDataTypes : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;

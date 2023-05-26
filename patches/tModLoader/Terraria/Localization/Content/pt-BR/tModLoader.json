@@ -360,7 +360,7 @@
 		"MSBuildReloadAll": "Construir + Recarregar Todos",
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
 		"MSUpgradeLangFiles": "Atualizar arquivos .lang para .hjson (não destrutivo)",
-		"MSRebuildRequired": "Reconstruição Necessária",
+		"MSRebuildRequired": "Reconstrução Necessária",
 		"MSLocalizationFilesChangedCantPublish": "Mudanças foram feitas nos arquivos de localização,\numa reconstrução é necessária antes da publicação",
 		"MSOpenSources": "Abrir Fontes",
 		"MSManagePublished": "Gerenciar Publicados",
@@ -802,6 +802,17 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Config": {
+		"Color.Hue.Label": "Matiz",
+		"Color.Saturation.Label": "Saturação",
+		"Color.Lightness.Label": "Iluminação",
+		"Color.Red.Label": "Vermelho",
+		"Color.Green.Label": "Verde",
+		"Color.Blue.Label": "Azul",
+		"Color.Alpha.Label": "Alfa",
+		"Vector2.X.Label": "X",
+		"Vector2.Y.Label": "Y"
 	},
 	"Mods": {
 		"ModLoader.Items.Jofairden_Body.DisplayName": "Corpo de Andromedon",

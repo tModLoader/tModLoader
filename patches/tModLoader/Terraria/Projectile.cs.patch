@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,313 @@
+@@ -66,76 +_,319 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -65,6 +65,12 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
++	/// <summary>
++	/// Indicates that this projectile is a sentry
++	/// <br/> Defaults to <see langword="false"/>.
++	/// <br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
++	/// <br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
++	/// </summary>
  	public bool sentry;
  	public short glowMask;
 +

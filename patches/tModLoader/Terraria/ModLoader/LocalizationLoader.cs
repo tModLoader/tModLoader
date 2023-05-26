@@ -632,7 +632,7 @@ public static class LocalizationLoader
 			if (!string.IsNullOrWhiteSpace(file.prefix) && !key.StartsWith(file.prefix))
 				continue;
 
-			int level = LongestMatchingPrefix(file.Entries, key);
+			int level = LongestMatchingPrefix(file, key);
 			if (level > levelFound) {
 				levelFound = level;
 				best = file;
@@ -650,12 +650,13 @@ public static class LocalizationLoader
 		return best;
 	}
 
-	internal static int LongestMatchingPrefix(List<LocalizationEntry> localizationEntries, string key)
+	internal static int LongestMatchingPrefix(LocalizationFile file, string key)
 	{
 		// Returns 0 if no prefix matches, and up to the Key parts length depending on how much is found.
-
+		int start = string.IsNullOrWhiteSpace(file.prefix) ? 0 : file.prefix.Split(".").Length;
+		List<LocalizationEntry> localizationEntries = file.Entries;
 		string[] splitKey = key.Split(".");
-		for (int i = 0; i < splitKey.Length; i++) {
+		for (int i = start; i < splitKey.Length; i++) {
 			string k = splitKey[i];
 			string partialKey = string.Join(".", splitKey.Take(i + 1));
 

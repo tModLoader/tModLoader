@@ -27,6 +27,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileWaterDeath[Type] = true;
 			TileID.Sets.FramesOnKillWall[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.DisableSmartInteract[Type] = true;
 			TileID.Sets.Torch[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
