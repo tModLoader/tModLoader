@@ -1159,7 +1159,7 @@
  				return;
  		}
  
-@@ -12412,9 +_,16 @@
+@@ -12412,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
  
@@ -1173,6 +1173,8 @@
  				damage = (int)((float)originalDamage * player.minionDamage + 5E-06f);
 +				*/
 +				damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
++				CritChance = (int)(OriginalCritChance = player.GetTotalCritChance(DamageType) + 5E-06f);
++				ArmorPenetration = (int)(OriginalArmorPenetration = player.GetTotalArmorPenetration(DamageType) + 5E-06f);
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
