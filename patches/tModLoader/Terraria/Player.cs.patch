@@ -1560,7 +1560,7 @@
  		}
  	}
  
-+	public IEntitySource GetSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
++	public IEntitySource GetSource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
 +
 +	// made internal, public rename ^
 -	public IEntitySource GetProjectileSource_Buff(int buffIndex)
