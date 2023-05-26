@@ -631,13 +631,11 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
  	{
  		if (Owner == -1)
-@@ -8745,6 +_,10 @@
+@@ -8745,6 +_,8 @@
  		projectile.shimmerWet = Collision.shimmer;
  		Main.projectileIdentity[Owner, num] = num;
  		FindBannerToAssociateTo(spawnSource, projectile);
 +
-+		// Added by TML.
-+		HandlePlayerStatModifiers(spawnSource, projectile);
 +
  		if (projectile.aiStyle == 1) {
  			while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
@@ -677,10 +675,11 @@
  		}
  
  		if (Type == 249)
-@@ -8910,6 +_,11 @@
+@@ -8910,6 +_,12 @@
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
  
++		projectile.ApplyStatsFromSource(spawnSource);
 +		ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
 +		if (Main.netMode != 0 && Owner == Main.myPlayer)
