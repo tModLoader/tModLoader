@@ -379,8 +379,14 @@ public static class LocalizationLoader
 		}
 
 		// Abort if no default localization files found
-		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles))
-			return;
+		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles)) {
+			localizationFilesByCulture[GameCulture.DefaultCulture] = baseLocalizationFiles = new();
+			desiredCultures.Add(GameCulture.DefaultCulture);
+
+			string prefix = $"Mods.{mod.Name}";
+			string translationFileName = $"en-US_Mods.{prefix}.hjson";
+			baseLocalizationFiles.Add(new(translationFileName, prefix, new List<LocalizationEntry>()));
+		}
 
 		// Remove duplicates. Only remove string entries. Remove from longest filename.
 		// TODO: could combine comments to remaining entry. Also consider removing empty objects somewhere.
@@ -441,9 +447,10 @@ public static class LocalizationLoader
 
 				// Only write if file doesn't exist or if file has changed and .tmod file is newer than existing file.
 				// File Modified date check allows edits to English files to be propagated with a build and reload without being accidentally reverted when tmod is launched.
+				// Also write out if specificCulture isn't null. This is true when UpdateLocalizationFilesForMod is calling this method.
 				var outputFilePath = Path.Combine(sourceFolder, outputFileName) /*+ ".new"*/;
 				DateTime dateTime = File.GetLastWriteTime(outputFilePath);
-				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified) {
+				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified || specificCulture != null) {
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
 					changedMods.Add(mod.Name);
