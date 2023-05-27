@@ -378,13 +378,13 @@ public static class LocalizationLoader
 			}
 		}
 
-		// Abort if no default localization files found
+		// If no default localization files found, make one in the preferred path and prefix
 		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles)) {
 			localizationFilesByCulture[GameCulture.DefaultCulture] = baseLocalizationFiles = new();
 			desiredCultures.Add(GameCulture.DefaultCulture);
 
 			string prefix = $"Mods.{mod.Name}";
-			string translationFileName = $"en-US_Mods.{prefix}.hjson";
+			string translationFileName = $"Localization/en-US_{prefix}.hjson";
 			baseLocalizationFiles.Add(new(translationFileName, prefix, new List<LocalizationEntry>()));
 		}
 
