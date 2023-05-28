@@ -86,8 +86,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	// Query Items /////////////////////////
 
-	//TODO: Work In Progress
-	// START WIP
+	//TODO: Needs a refactor at some point, not the cleanest, but survivable 
+	//START SECTION
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
 		InstalledItems = GetInstalledMods();
@@ -113,6 +113,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 			foreach (var item in items)
 				yield return item;
 	}
+	//END SECTION
 
 	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
 	{

@@ -167,8 +167,6 @@ internal static class ModOrganizer
 		var mods = FindWorkshopMods();
 		var installedSlugs = mods.Select(s => s.Name).ToArray();
 
-		//TODO: This could be refactored to one single line once tested
-		//Begin
 		HashSet<string> missingModSlugs = new HashSet<string>();
 
 		// This won't look recursively for missing deps. Because any recursive missing deps implies a missing dep elsewhere
@@ -177,7 +175,6 @@ internal static class ModOrganizer
 
 			missingModSlugs.UnionWith(missingDeps);
 		}
-		//End
 
 		return missingModSlugs;
 	}

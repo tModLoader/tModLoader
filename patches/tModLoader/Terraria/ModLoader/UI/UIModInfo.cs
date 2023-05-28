@@ -37,7 +37,6 @@ internal class UIModInfo : UIState
 	private string _modName = string.Empty;
 	private string _modDisplayName = string.Empty;
 	private ModPubId_t _publishedFileId;
-	private bool _loadFromWeb;
 	private bool _loading;
 	private bool _ready;
 
@@ -165,22 +164,21 @@ internal class UIModInfo : UIState
 			extractLocalizationButton.SetText(Language.GetTextValue("tModLoader.ModInfoExtracted"));
 	}
 
-	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, ModPubId_t publishedFileId = default)
+	internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "")
 	{
 		_modName = modName;
 		_modDisplayName = displayName;
 		_gotoMenu = gotoMenu;
 		_localMod = localMod;
 		_info = description;
-		if (_info.Equals("") && !loadFromWeb) {
+		if (_info.Equals("")) {
 			_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
 		}
 		_url = url;
-		_loadFromWeb = loadFromWeb;
-		if (localMod != null && string.IsNullOrEmpty(publishedFileId.m_ModPubId) && WorkshopHelper.GetPublishIdLocal(localMod.modFile, out ulong publishId))
+		if (localMod != null && WorkshopHelper.GetPublishIdLocal(localMod.modFile, out ulong publishId))
 			_publishedFileId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
 		else
-			_publishedFileId = publishedFileId;
+			_publishedFileId = default;
 
 		Main.gameMenu = true;
 		Main.menuMode = Interface.modInfoID;
@@ -264,24 +262,8 @@ internal class UIModInfo : UIState
 	{
 		_modInfo.SetText(_info);
 		_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
-
-		if (_loadFromWeb) {
-			_modInfo.Append(_loaderElement);
-			_loading = true;
-			_ready = false;
-
-			// @TODO: Get description here??? (might be better to fetch description if in metadata during steam query)
-			if (string.IsNullOrWhiteSpace(_info)) {
-				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
-			}
-
-			_loading = false;
-			_ready = true;
-		}
-		else {
-			_loading = false;
-			_ready = true;
-		}
+		_loading = false;
+		_ready = true;
 	}
 
 	public override void Update(GameTime gameTime)

@@ -106,7 +106,7 @@ public interface SocialBrowserModule
 	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
 	{
 		// Can't update enabled items due to in-use file access constraints
-		//TODO: Mod unloading needs to occur off the main thread. This code needs testing as such
+		// Mod unloading needs to occur off the main thread o avoid UI impacts/soft-freeze
 		var needFreeInUseMods = items.Any(item => new ModDownloadItemInstallInfo(item).IsEnabled);
 		if (needFreeInUseMods) {
 			Interface.loadMods.suppressAutoLoad = true;

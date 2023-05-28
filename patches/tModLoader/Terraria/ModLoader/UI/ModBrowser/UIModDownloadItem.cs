@@ -388,10 +388,6 @@ internal class UIModDownloadItem : UIPanel
 	private void ViewModInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modInfo.Show(
-			ModDownload.ModName, ModDownload.DisplayName, Interface.modBrowserID,
-			new ModDownloadItemInstallInfo(ModDownload).Installed,
-			url: ModDownload.Homepage, loadFromWeb: true, publishedFileId: ModDownload.PublishId
-		);
+		Utils.OpenToURL(Interface.modBrowser.SocialBackend.GetModWebPage(ModDownload.PublishId));
 	}
 }

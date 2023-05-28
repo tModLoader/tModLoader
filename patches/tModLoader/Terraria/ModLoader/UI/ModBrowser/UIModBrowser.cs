@@ -91,7 +91,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	/* Filters */
 	public QueryParameters FilterParameters => new() {
-		searchTags = null, //new string[] { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) },
+		searchTags = new string[] { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) },
 		searchModIds = SpecialModPackFilter?.ToArray(),
 		searchModSlugs = null,
 		searchGeneric = SearchFilterMode == SearchFilter.Name ? Filter : null,
