@@ -21,7 +21,13 @@ namespace Terraria.ModLoader.UI.ModBrowser;
 internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 {
 	// Used for swapping backend hosting
-	public SocialBrowserModule SocialBackend => WorkshopBrowserModule.Instance;
+	public SocialBrowserModule SocialBackend;
+
+	public UIModBrowser(SocialBrowserModule socialBackend)
+	{
+		ModOrganizer.PostLocalModsChanged += CbLocalModsChanged;
+		SocialBackend = socialBackend;
+	}
 
 	private class AP_UIModDowloadItem : AsyncProvider<UIModDownloadItem>
 	{
@@ -276,7 +282,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		base.OnActivate();
 		Main.clrInput();
-		ModOrganizer.PostLocalModsChanged += CbLocalModsChanged;
 		if (_provider is null) {
 			PopulateModBrowser();
 		}
@@ -299,8 +304,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public override void OnDeactivate()
 	{
 		DebounceTimer = null;
-
-		ModOrganizer.PostLocalModsChanged -= CbLocalModsChanged;
 		base.OnDeactivate();
 	}
 

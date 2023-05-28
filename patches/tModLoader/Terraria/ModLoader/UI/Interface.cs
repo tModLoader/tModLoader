@@ -50,7 +50,7 @@ internal static class Interface
 	internal static UIModSources modSources = new UIModSources();
 	internal static UIBuildMod buildMod = new UIBuildMod();
 	internal static UIErrorMessage errorMessage = new UIErrorMessage();
-	internal static UIModBrowser modBrowser = new UIModBrowser();
+	internal static UIModBrowser modBrowser = new UIModBrowser(WorkshopBrowserModule.Instance);
 	internal static UIModInfo modInfo = new UIModInfo();
 	//internal static UIManagePublished managePublished = new UIManagePublished();
 	internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
