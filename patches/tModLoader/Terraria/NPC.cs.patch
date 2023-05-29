@@ -2422,7 +2422,7 @@
 +	/// </summary>
 -	private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
 +	//private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
-+	public void UpdateNPC_UpdateGravity()
++	private void UpdateNPC_UpdateGravity()
  	{
 +		Gravity = MultipliableFloat.One;
  		maxFallSpeed = 10f;
