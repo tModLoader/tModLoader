@@ -331,6 +331,7 @@ public static class ModContent
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
 		RarityLoader.FinishSetup();
+		Config.ConfigManager.FinishSetup();
 
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 

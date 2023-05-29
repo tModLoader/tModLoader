@@ -8,22 +8,7 @@
 
 Mods: {
 	ExampleMod: {
-		Config: {
-			// ItemHeader: Items
-			// SampleEnumLabels.Peculiar: Very Peculiar
-
-			ExampleWingsToggle: {
-				// Label: ExampleWings Toggle
-				// Tooltip: Enables or disables the ExampleWings item
-			}
-		}
-
-		Common: {
-			PaperAirplane: Бумажный самолётик
-			LocalizedLabel: Эта строка из файлов локализации: {$Mods.ExampleMod.Common.PaperAirplane}
-			LocalizedTooltip: Эта подсказка из файлов локализации.
-			LocalizedHeader: Заголовки помогут организовывать.
-		}
+		Common.PaperAirplane: Бумажный самолётик
 
 		CommonItemTooltip: {
 			// IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}
@@ -43,11 +28,34 @@ Mods: {
 		NPCs: {
 			ExampleCustomAISlimeNPC.DisplayName: Порхающий слизень
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
-			Example_Person.DisplayName: Пример человека
 			// ExampleTravellingMerchant.DisplayName: Example Traveler
 			// ExampleBoneMerchant.DisplayName: Example Bone Merchant
-			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind N P C
-			// ExamplePerson.DisplayName: Example Person
+			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind NPC
+
+			ExamplePerson: {
+				// DisplayName: Example Person
+
+				# This is what displays during all of an NPC's happiness levels.
+				TownNPCMood: {
+					// Content: I feel pretty fine right now.
+					// NoHome: I would very much like a house, all the colorful monsters scare me.
+					// FarFromHome: Could you please get me back to my house?
+					// LoveSpace: I love how there is so much space here to code tModLoader mods!
+					// DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
+					// HateCrowded: I can't test my mod with so many people around!
+					// LoveBiome: I love {BiomeName}.
+					// LikeBiome: "{BiomeName} is a very nice place to test mods in."
+					// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
+					// HateBiome: It's kind of hard to mod while being attacked by monsters in {BiomeName}.
+					// LoveNPC: Do you think {NPCName} notices me?
+					// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
+					// DislikeNPC: '''"{NPCName} keeps rambling on about "paid mods"... Wish I could convince him how terrible of an idea that is."'''
+					// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+					// LikeNPC_Princess: "{NPCName} is a princess? That is so cool!"
+					// Princess_LovesNPC: "{NPCName} is so square. I love that about them!"
+				}
+			}
+
 			// ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
 			// ExampleWormBody.DisplayName: Example Worm
 			// ExampleWormHead.DisplayName: Example Worm
@@ -308,7 +316,7 @@ Mods: {
 			}
 
 			MinionBossBag: {
-				// DisplayName: Treasure Bag
+				// DisplayName: Treasure Bag ({$Mods.ExampleMod.NPCs.MinionBossBody.DisplayName})
 				// Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -795,6 +803,16 @@ Mods: {
 			ExampleGravityDebuffBullet: {
 				// DisplayName: Example Gravity Debuff Bullet
 				// Tooltip: ""
+
+			ExampleWaterTorch: {
+				// DisplayName: Example Water Torch
+				# "Can be placed in water"
+				// Tooltip: "{$ItemTooltip.IchorTorch}"
+			}
+
+			ExampleCampfire: {
+				// DisplayName: Example Campfire
+				// Tooltip: "{$ItemTooltip.Campfire}"
 			}
 		}
 
@@ -930,8 +948,15 @@ Mods: {
 		}
 
 		Biomes: {
-			// ExampleSurfaceBiome.DisplayName: Example Surface
-			// ExampleUndergroundBiome.DisplayName: Example Underground
+			ExampleSurfaceBiome: {
+				// DisplayName: Example Surface
+				// TownNPCDialogueName: the Example Surface Biome
+			}
+
+			ExampleUndergroundBiome: {
+				// DisplayName: Example Underground
+				// TownNPCDialogueName: the Example Underground Biome
+			}
 		}
 
 		Prefixes: {
@@ -947,26 +972,6 @@ Mods: {
 
 			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
 			// PowerTooltip: "{0:+0;-#} Power"
-		}
-
-		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
-		TownNPCMood: {
-			ExamplePerson: {
-				// Content: I feel pretty fine right now.
-				// NoHome: I would very much like a house, all the colorful monsters scare me.
-				// LoveSpace: I love how there is so much space here to code tModLoader mods!
-				// FarFromHome: Could you please get me back to my house?
-				// DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
-				// HateCrowded: I can't test my mod with so many people around!
-				// LikeBiome: "{BiomeName} is a very nice place to test mods in."
-				// LoveBiome: I love {BiomeName}.
-				// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
-				// HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
-				// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
-				// LoveNPC: Do you think {NPCName} notices me?
-				// DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
-				// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
-			}
 		}
 
 		MessageInfo: {

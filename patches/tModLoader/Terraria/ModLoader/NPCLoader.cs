@@ -16,6 +16,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Utilities;
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.IO;
+using Terraria.GameContent.Personalities;
 
 namespace Terraria.ModLoader;
 
@@ -110,6 +111,7 @@ public static class NPCLoader
 
 		foreach (ModNPC npc in npcs) {
 			Lang._npcNameCache[npc.Type] = npc.DisplayName;
+			RegisterTownNPCMoodLocalizations(npc);
 		}
 	}
 
@@ -117,6 +119,54 @@ public static class NPCLoader
 	{
 		foreach (var hook in hooks.Union(modHooks)) {
 			hook.Update();
+		}
+	}
+
+	internal static void RegisterTownNPCMoodLocalizations(ModNPC npc)
+	{
+		if (npc.NPC.townNPC && !NPCID.Sets.IsTownPet[npc.NPC.type] && !NPCID.Sets.NoTownNPCHappiness[npc.NPC.type]) {
+			string prefix = npc.GetLocalizationKey("TownNPCMood");
+			List<string> keys = new List<string> {
+				"Content", "NoHome", "FarFromHome", "LoveSpace", "DislikeCrowded", "HateCrowded"
+			};
+
+			if (Main.ShopHelper._database.TryGetProfileByNPCID(npc.NPC.type, out var personalityProfile)) {
+				var shopModifiers = personalityProfile.ShopModifiers;
+
+				var biomePreferenceList = (BiomePreferenceListTrait)shopModifiers.SingleOrDefault(t => t is BiomePreferenceListTrait);
+				if (biomePreferenceList != null) {
+					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Love))
+						keys.Add("LoveBiome");
+					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Like))
+						keys.Add("LikeBiome");
+					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Dislike))
+						keys.Add("DislikeBiome");
+					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Hate))
+						keys.Add("HateBiome");
+				}
+
+				if(shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Love }))
+					keys.Add("LoveNPC");
+				if (shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Like }))
+					keys.Add("LikeNPC");
+				if (shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Dislike }))
+					keys.Add("DislikeNPC");
+				if (shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Hate }))
+					keys.Add("HateNPC");
+			}
+
+			keys.Add("LikeNPC_Princess"); // Added here because it makes sense to order this at end.
+			keys.Add("Princess_LovesNPC");
+
+			foreach (var key in keys) {
+				string oldKey = npc.Mod.GetLocalizationKey($"TownNPCMood.{npc.Name}.{key}");
+				if (key == "Princess_LovesNPC")
+					oldKey = $"TownNPCMood_Princess.LoveNPC_{npc.FullName}";
+				string fullKey = $"{prefix}.{key}";
+				string defaultValueKey = "TownNPCMood." + key;
+				// Register current language translation rather than vanilla text substitution so modder can see the {BiomeName} and {NPCName} usages. Might result in non-English values, but modder is expected to change the translation value anyway.
+				Language.GetOrRegister(fullKey, () => Language.Exists(oldKey) ? $"{{${oldKey}}}" : Language.GetTextValue(defaultValueKey));
+			}
 		}
 	}
 

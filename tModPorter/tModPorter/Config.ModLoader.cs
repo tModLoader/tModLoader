@@ -281,6 +281,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
 		HookRemoved("Terraria.ModLoader.ModItem",		"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
 		HookRemoved("Terraria.ModLoader.ModItem",		"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
+		HookRemoved("Terraria.ModLoader.ModItem",		"AutoLightSelect",		"Use ItemID.Sets.Torches[Type], ItemID.Sets.WaterTorches[Type], and ItemID.Sets.Glowsticks[Type] in SetStaticDefaults");
 		HookRemoved("Terraria.ModLoader.ModGore",		"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
 		HookRemoved("Terraria.ModLoader.ModTile",		"SaplingGrowthType",	"Use ModTree.SaplingGrowthType");
 		HookRemoved("Terraria.ModLoader.GlobalRecipe",	"RecipeAvailable",		"Use Recipe.AddCondition");

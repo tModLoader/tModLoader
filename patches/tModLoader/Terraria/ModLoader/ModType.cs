@@ -7,7 +7,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// The base type for most modded things.
 /// </summary>
-public abstract class ModType : IModType
+public abstract class ModType : IModType, ILoadable
 {
 	///<summary>
 	/// The mod this belongs to.

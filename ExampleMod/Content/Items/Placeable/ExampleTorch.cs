@@ -12,6 +12,8 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.ResearchUnlockCount = 100;
 
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.ShimmerTorch;
+			ItemID.Sets.SingleUseInGamepad[Type] = true;
+			ItemID.Sets.Torches[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -21,11 +23,9 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.value = 50;
 		}
 
-		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { // Overrides the default sorting method of this Item.
-			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; // Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be.
-		}
-
 		public override void HoldItem(Player player) {
+			// Note that due to biome select torch god's favour, the player may not actually have an ExampleTorch in their inventory when this hook is called, so no modifications should be made to the item instance.
+
 			// Randomly spawn sparkles when the torch is held. Twice bigger chance to spawn them when swinging the torch.
 			if (Main.rand.NextBool(player.itemAnimation > 0 ? 40 : 80)) {
 				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
@@ -42,10 +42,6 @@ namespace ExampleMod.Content.Items.Placeable
 			if (!Item.wet) {
 				Lighting.AddLight(Item.Center, 1f, 1f, 1f);
 			}
-		}
-
-		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick) {
-			dryTorch = true; // This makes our item eligible for being selected with smart select at a short distance when not underwater.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

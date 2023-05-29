@@ -37,6 +37,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Door"));
 
 			// Placement
+			// In addition to copying from the TileObjectData.Something templates, modders can copy from specific tile types. CopyFrom won't copy subtile data, so style specific properties won't be copied, such as how Obsidian doors are immune to lava.
+			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.OpenDoor, 0));
+			/* This is what is copied from the OpenDoor tile
 			TileObjectData.newTile.Width = 2;
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 0);
@@ -75,6 +78,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newAlternate.AnchorBottom = new AnchorData(AnchorType.SolidTile, 1, 1);
 			TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceLeft;
 			TileObjectData.addAlternate(1);
+			*/
 			TileObjectData.addTile(Type);
 		}
 

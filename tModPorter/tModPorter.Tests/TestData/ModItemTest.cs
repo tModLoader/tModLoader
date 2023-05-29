@@ -85,4 +85,9 @@ public class ModItemTest : ModItem
 	public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit) { }
 	public override void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit) { }
 	public override void OnHitPvp(Player player, Player target, int damage, bool crit) { }
+
+	public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
+	{
+		dryTorch = true;
+	}
 }

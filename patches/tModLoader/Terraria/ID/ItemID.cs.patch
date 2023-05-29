@@ -42,7 +42,7 @@
  		public readonly float NormalDamageReceived;
 +
 +		/// <summary>
-+		/// The percent of damage dealt to players by the NPC this banner represnets in Expert Mode or higher.
++		/// The percent of damage dealt to players by the NPC this banner represents in Expert Mode or higher.
 +		/// </summary>
  		public readonly float ExpertDamageReceived;
 +
@@ -396,7 +396,7 @@
  		});
 +
 +		/// <summary>
-+		/// If non-empty for a given item type (<see cref="Item.type"/>), then that item will create transluscent particles of the retrieved colors when used.
++		/// If non-empty for a given item type (<see cref="Item.type"/>), then that item will create translucent particles of the retrieved colors when used.
 +		/// <br/> Particles created by this set will drop downwards.
 +		/// <br/> Defaults to <c>Array.Empty&lt;Color&gt;</c>.
 +		/// </summary>
@@ -418,7 +418,7 @@
  		public static BannerEffect[] BannerStrength = Factory.CreateCustomSet(new BannerEffect(1f), (short)3838, DD2BannerEffect, (short)3845, DD2BannerEffect, (short)3837, DD2BannerEffect, (short)3844, DD2BannerEffect, (short)3843, DD2BannerEffect, (short)3839, DD2BannerEffect, (short)3840, DD2BannerEffect, (short)3842, DD2BannerEffect, (short)3841, DD2BannerEffect, (short)3846, DD2BannerEffect);
 +
 +		/// <summary>
-+		/// The default number of NPC kills requried to obtain the NPC's respective banner.
++		/// The default number of NPC kills required to obtain the NPC's respective banner.
 +		/// </summary>
  		public static int DefaultKillsForBannerNeeded = 50;
 +
@@ -491,7 +491,7 @@
  		public static bool[] NeverAppearsAsNewInInventory = Factory.CreateBoolSet(71, 72, 73, 74);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary and will add coin luck according to its stack when thrown into shimmer (<see cref="Entity.shimmerWet"/>).
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -565,7 +565,7 @@
  		public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
 +
 +		/// <summary>
-+		/// Determines the sorting order of miscellaneous important items, such as boss/event spawners, permanant stat upgrades, and <see cref="MagicMirror"/>-like items.
++		/// Determines the sorting order of miscellaneous important items, such as boss/event spawners, permanent stat upgrades, and <see cref="MagicMirror"/>-like items.
 +		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will fall into the "gameplay" tab of the Journey Mode menu
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
@@ -700,13 +700,13 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// To make a torch placable underwater, use <see cref="WaterTorches"/>.
++		/// To make a torch placable underwater, use <see cref="WaterTorches"/> as well.
 +		/// </remarks>
  		public static bool[] Torches = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388, 5293, 5353);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a water torch.
-+		/// <br/> Funtionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater.
++		/// <br/> Funtionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] WaterTorches = Factory.CreateBoolSet(523, 1333, 4384);
@@ -724,8 +724,8 @@
  		};
 +
 +		/// <summary>
-+		/// Set for all boss bags. Causes bags to drop dev armor.
-+		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjuction with this one.
++		/// Set for all boss bags. Causes bags to drop dev armor and creates a glow around the item when dropped in the world.
++		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjunction with this one.
 +		/// </summary>
  		public static bool[] BossBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
 +

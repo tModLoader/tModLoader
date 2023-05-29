@@ -421,9 +421,11 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -942,6 +_,13 @@
+@@ -941,7 +_,15 @@
+ 	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
++	/// <summary>If true, indicates that a tile has a flame texture that will draw over the tile. Modded tiles should not use this. <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> can be used to manually draw a flame texture.</summary>
  	public static bool[] tileFlame = new bool[TileID.Count];
 +
 +	/// <summary>

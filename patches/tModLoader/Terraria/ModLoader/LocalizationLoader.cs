@@ -378,9 +378,15 @@ public static class LocalizationLoader
 			}
 		}
 
-		// Abort if no default localization files found
-		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles))
-			return;
+		// If no default localization files found, make one in the preferred path and prefix
+		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles)) {
+			localizationFilesByCulture[GameCulture.DefaultCulture] = baseLocalizationFiles = new();
+			desiredCultures.Add(GameCulture.DefaultCulture);
+
+			string prefix = $"Mods.{mod.Name}";
+			string translationFileName = $"Localization/en-US_{prefix}.hjson";
+			baseLocalizationFiles.Add(new(translationFileName, prefix, new List<LocalizationEntry>()));
+		}
 
 		// Remove duplicates. Only remove string entries. Remove from longest filename.
 		// TODO: could combine comments to remaining entry. Also consider removing empty objects somewhere.
@@ -441,9 +447,10 @@ public static class LocalizationLoader
 
 				// Only write if file doesn't exist or if file has changed and .tmod file is newer than existing file.
 				// File Modified date check allows edits to English files to be propagated with a build and reload without being accidentally reverted when tmod is launched.
+				// Also write out if specificCulture isn't null. This is true when UpdateLocalizationFilesForMod is calling this method.
 				var outputFilePath = Path.Combine(sourceFolder, outputFileName) /*+ ".new"*/;
 				DateTime dateTime = File.GetLastWriteTime(outputFilePath);
-				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified) {
+				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified || specificCulture != null) {
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
 					changedMods.Add(mod.Name);
@@ -632,7 +639,7 @@ public static class LocalizationLoader
 			if (!string.IsNullOrWhiteSpace(file.prefix) && !key.StartsWith(file.prefix))
 				continue;
 
-			int level = LongestMatchingPrefix(file.Entries, key);
+			int level = LongestMatchingPrefix(file, key);
 			if (level > levelFound) {
 				levelFound = level;
 				best = file;
@@ -650,12 +657,13 @@ public static class LocalizationLoader
 		return best;
 	}
 
-	internal static int LongestMatchingPrefix(List<LocalizationEntry> localizationEntries, string key)
+	internal static int LongestMatchingPrefix(LocalizationFile file, string key)
 	{
 		// Returns 0 if no prefix matches, and up to the Key parts length depending on how much is found.
-
+		int start = string.IsNullOrWhiteSpace(file.prefix) ? 0 : file.prefix.Split(".").Length;
+		List<LocalizationEntry> localizationEntries = file.Entries;
 		string[] splitKey = key.Split(".");
-		for (int i = 0; i < splitKey.Length; i++) {
+		for (int i = start; i < splitKey.Length; i++) {
 			string k = splitKey[i];
 			string partialKey = string.Join(".", splitKey.Take(i + 1));
 
