@@ -1,0 +1,112 @@
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader.Utilities;
+using Terraria.DataStructures;
+using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Buffs;
+using Terraria.GameContent;
+using ExampleMod.Content.Items;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+
+namespace ExampleMod.Content.NPCs
+{
+	// for info on other ModNPC stuff see PartyZombie.cs
+	public class NPCShimmerShowcase : ModNPC
+	{
+		public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
+		public override void SetStaticDefaults() {
+			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
+
+			// So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
+			// 1: if the npc is on the left side of the world then spawn 3 skeletons and 30 exampleitems
+			// 2: if Plantera has been defeated then spawn 10 example items
+			// 3: if an early game boss has been defeated then spawn the bride
+			// 4: if all other conditions fail, transform into a skeleton
+
+
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method and is slightly different from the next items
+
+			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
+			ShimmerResult[] shimmerResultsCustomCheck = new ShimmerResult[] {
+				new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 30),
+				new ShimmerResult(ShimmerResultType.NPC, NPCID.Skeleton, 3),
+			};
+
+			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new ExampleCustomTransformationLogic(NPC.type, shimmerResultsCustomCheck)); // Using the custom transformation override
+
+			// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items
+			ShimmerResult[] shimmerResultsLateGame = new ShimmerResult[] {
+				new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 20),
+			};
+
+			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsLateGame, new[] { Condition.DownedPlantera }));
+
+
+			// Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns one the bride
+			ShimmerResult[] shimmerResultsEarlyGame = new ShimmerResult[] {
+				new ShimmerResult(ShimmerResultType.NPC, NPCID.TheBride, 1),
+			};
+
+			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsEarlyGame, new[] { Condition.DownedEarlygameBoss }));
+		}
+
+		public override void SetDefaults() {
+			NPC.width = 18;
+			NPC.height = 40;
+			NPC.damage = 14;
+			NPC.defense = 6;
+			NPC.lifeMax = 200;
+			NPC.HitSound = SoundID.NPCHit1;
+			NPC.DeathSound = SoundID.NPCDeath2;
+			NPC.value = 60f;
+			NPC.knockBackResist = 0.5f;
+			NPC.aiStyle = 3; // Fighter AI, important to choose the aiStyle that matches the NPCID that we want to mimic
+
+			AIType = NPCID.Zombie; // Use vanilla zombie's type when executing AI code. (This also means it will try to despawn during daytime)
+			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
+			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
+			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
+			SpawnModBiomes = new int[1] { ModContent.GetInstance<ExampleSurfaceBiome>().Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
+		}
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot) { // See PartyZombie.cs for info here
+			var zombieDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.Zombie, false);
+			foreach (var zombieDropRule in zombieDropRules) {
+				npcLoot.Add(zombieDropRule);
+			}
+			npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 1));
+		}
+
+		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+			return SpawnCondition.OverworldNightMonster.Chance * 0.05f;
+		}
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
+				new FlavorTextBestiaryInfoElement("This zombie looks like a normal zombie but interacts with shimmer differently based on different conditions."),
+				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
+			});
+		}
+	}
+
+	public class ExampleCustomTransformationLogic : NPCShimmerTransformation
+	{
+		// At least one constructor required, the constructor with conditions has been removed as they will go unused regardless
+		public ExampleCustomTransformationLogic(int targetID, IEnumerable<ShimmerResult> results) : base(targetID, results) {
+		}
+
+		public override bool CanShimmer(NPC npc) {
+			return npc.position.X <= Main.maxTilesX * 8; // True if the NPC is on the left size of the world
+		}
+
+		public override void OnShimmer(NPC npc) { // When the npc successfully shimmers shoot a bullet
+			Projectile.NewProjectile(npc.GetSource_Misc("Shimmer"), npc.position, npc.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
+		}
+	}
+}

@@ -131,7 +131,7 @@
  			int num = acceptedGroups[i];
  			if (num == -1)
  				break;
-@@ -99,19 +_,15 @@
+@@ -99,19 +_,21 @@
  
  	public bool AcceptedByItemGroups(int invType, int reqType)
  	{
@@ -149,12 +149,18 @@
  		return false;
  	}
  
++	/// <summary>
++	/// Adds a custom shimmer result to the recipe, overrides actual recipe ingredients when decrafting
++	/// </summary>
++	/// <param name="item">The item.</param>
++	/// <param name="stack">The stack.</param>
++	/// <returns></returns>
 -	public Item AddCustomShimmerResult(int itemType, int itemStack = 1)
 +	public Recipe AddCustomShimmerResult(int itemType, int itemStack = 1)
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -120,9 +_,10 @@
+@@ -120,9 +_,16 @@
  		item.SetDefaults(itemType);
  		item.stack = itemStack;
  		customShimmerResults.Add(item);
@@ -162,6 +168,12 @@
 +		return this;
  	}
  
++	/// <summary>
++	/// Adds a custom shimmer result to the recipe, overrides actual recipe ingredients when decrafting
++	/// </summary>
++	/// <param name="stack">The stack.</param>
++	public Recipe AddCustomShimmerResult<T>(int stack = 1) where T : ModItem
++		=> AddCustomShimmerResult(ModContent.ItemType<T>(), stack);
 +	/*
  	public Recipe()
  	{
@@ -650,7 +662,7 @@
 +
 +			Recipe recipe = Main.recipe[i];
 +
-+			if (!recipe.notDecraftable && !recipe.Disabled)
++			if (!recipe.notDecraftable)
 +				(recipeLists[recipe.createItem.type] ??= new()).Add(i);
  		}
 +

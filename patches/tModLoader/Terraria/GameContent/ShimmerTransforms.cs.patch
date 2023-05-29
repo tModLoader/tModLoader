@@ -1,6 +1,9 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ShimmerTransforms.cs
 +++ src/tModLoader/Terraria/GameContent/ShimmerTransforms.cs
-@@ -1,4 +_,5 @@
+@@ -1,4 +_,8 @@
++using System;
++using System.Collections.Generic;
++using System.Linq;
  using Terraria.ID;
 +using Terraria.ModLoader;
  
@@ -29,13 +32,117 @@
  	}
  
  	public static bool IsItemTransformLocked(int type)
-@@ -35,6 +_,9 @@
+@@ -37,6 +_,9 @@
+ 		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[decraftingRecipeIndex])
  			return true;
  
- 		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[decraftingRecipeIndex])
++		if (!RecipeLoader.DecraftAvailable(Main.recipe[decraftingRecipeIndex]))
 +			return true;
 +
-+		if (!RecipeLoader.DecraftAvailable(Main.recipe[decraftingRecipeIndex]))
- 			return true;
- 
  		return false;
+ 	}
+ 
+@@ -46,3 +_,103 @@
+ 		RecipeSets.PostGolem = Utils.MapArray(Main.recipe, (Recipe r) => r.ContainsIngredient(1101));
+ 	}
+ }
++// TML: #AdvancedShimmerTransformations
++public class ShimmerTransformation<Entity>
++{
++	public ShimmerTransformation(int targetID, IEnumerable<ShimmerResult> results)
++	{
++		TargetID = targetID;
++		Results = (ShimmerResult[])results;
++	}
++
++	public ShimmerTransformation(int targetID, IEnumerable<ShimmerResult> results, IEnumerable<Condition> conditions) : this(targetID, results)
++	{
++		Conditions = (List<Condition>)conditions;
++	}
++
++	/// <summary>
++	/// The list of types <see cref="Condition"/> that need to be satisfied for the transformation to occur
++	/// </summary>
++	public List<Condition> Conditions { get; set; }
++
++	/// <summary>
++	/// The ID of the entity to be transformed
++	/// </summary>
++	public int TargetID;
++
++	/// <summary>
++	/// The entities that the transformation produces.
++	/// </summary>
++	public ShimmerResult[] Results;
++	/// <summary>
++	/// Adds a condition to <see cref="Conditions"/>
++	/// </summary>
++	/// <param name="condition"> The condition to be added </param>
++	public void AddCondition(Condition condition) => Conditions.Add(condition);
++
++	/// <summary>
++	/// By default just checks the condition, when overriding in a derived class remember that you will have to check the condition if you would like it to be checked
++	/// </summary>
++	/// <param name="entity">The entity being shimmered</param>
++	/// <returns>True if the entity should proceed to transform</returns>
++	public virtual bool CanShimmer(Entity entity) => Conditions.All((condition) => condition.IsMet());
++
++	/// <summary>
++	///	Called when the entity first starts the shimmer animation
++	/// </summary>
++	/// <param name="entity"> The entity being shimmered </param>
++	public virtual void OnShimmer(Entity entity)
++	{
++	}
++}
++
++public class NPCShimmerTransformation : ShimmerTransformation<NPC>
++{
++	internal static List<NPCShimmerTransformation[]> AdvancedShimmerSets = new();
++
++	public NPCShimmerTransformation(int targetID, IEnumerable<ShimmerResult> results) : base(targetID, results)
++	{
++	}
++
++	public NPCShimmerTransformation(int targetID, IEnumerable<ShimmerResult> results, IEnumerable<Condition> conditions) : base(targetID, results, conditions)
++	{
++	}
++
++	/// <summary>
++	/// Adds a transformation to the NPCs transformation list, priority is in order of additions, will overwrite vanilla transformations so use carefully, if conditions are not met it falls to the next in the list, ending with vanilla code
++	/// </summary>
++	/// <param name="transformation"></param>
++	public static void AddAdvancedNPCShimmerTransformation(NPCShimmerTransformation transformation)
++	{
++		if (NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID] >= 0) {
++			AdvancedShimmerSets[NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID]] = (NPCShimmerTransformation[])AdvancedShimmerSets[NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID]].Append(transformation);
++		}
++		else {
++			AdvancedShimmerSets.Add(new NPCShimmerTransformation[] { transformation });
++			NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID] = AdvancedShimmerSets.Count - 1;
++		}
++
++	}
++
++	///<inheritdoc/>
++	/// <param name="npc"> The npc being shimmered </param>
++	public override bool CanShimmer(NPC npc) => base.CanShimmer(npc);
++
++	///<inheritdoc/>
++	/// <param name="npc"> The npc being shimmered </param>
++	public override void OnShimmer(NPC npc)
++	{
++	}
++}
++public enum ShimmerResultType
++{
++	NPC,
++	Item,
++}
++/// <summary>
++/// A record representing an entity to spawn during a shimmer transformation
++/// </summary>
++/// <param name="ResultType"> The type of entity to spawn, NPC or Item </param>
++/// <param name="EntityID"> The type of the entity to spawn </param>
++/// <param name="Count"> The number of this entity to spawn, if an item it will spawn in a stack </param>
++public sealed record ShimmerResult(ShimmerResultType ResultType, int EntityID, int Count);

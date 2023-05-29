@@ -59,10 +59,9 @@ public partial class Recipe
 	public (Recipe target, bool after) Ordering { get; internal set; }
 
 	/// <summary>
-	/// Any recipe with this flag won't be shown in game.
+	/// Any recipe with this flag won't be shown in game. Also disables shimmer decrafting unless paired with <see cref="Recipe.ShimmerIgnoresDisabled"/>
 	/// </summary>
 	public bool Disabled { get; private set; }
-
 	/// <summary>
 	/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
 	/// </summary>
@@ -288,6 +287,20 @@ public partial class Recipe
 			throw new RecipeException("A Recipe can only be disabled inside Recipe related methods.");
 
 		notDecraftable = true;
+		return this;
+	}
+
+	/// <summary>
+	/// Disables the recipe but keeps the shimmer decrafting ability, allows for both conditions and multi-item shimmer transformation without a corresponding recipe.
+	/// </summary>
+	/// <exception cref="RecipeException">A Recipe can only be disabled inside Recipe related methods.</exception>
+
+	public Recipe DisableCraft()
+	{
+		if (!RecipeLoader.setupRecipes)
+			throw new RecipeException("A Recipe can only be disabled inside Recipe related methods.");
+
+		Disabled = true;
 		return this;
 	}
 

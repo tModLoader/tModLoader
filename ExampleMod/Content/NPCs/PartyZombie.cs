@@ -7,6 +7,10 @@ using Terraria.ModLoader.Utilities;
 using Terraria.DataStructures;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Buffs;
+using Terraria.GameContent;
+using ExampleMod.Content.Items;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -17,6 +21,22 @@ namespace ExampleMod.Content.NPCs
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
+
+			//Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns a two skeletons and 10 example items
+			ShimmerResult[] shimmerResultsLateGame = new ShimmerResult[] {
+				new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 10),
+				new ShimmerResult(ShimmerResultType.NPC, NPCID.Skeleton, 2),
+			}; // Instead of spawning a skeleton, spawn two and a stack of 10 items 
+
+			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsLateGame, new[] { Condition.DownedPlantera }));
+
+			//Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns a two skeletons and 10 example items
+			ShimmerResult[] shimmerResultsEarlyGame = new ShimmerResult[] {
+				new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 10),
+				new ShimmerResult(ShimmerResultType.NPC, NPCID.Skeleton, 2),
+			}; // Instead of spawning a skeleton, spawn two and a stack of 10 items 
+
+			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsEarlyGame, new[] { Condition.DownedEarlygameBoss }));
 
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
