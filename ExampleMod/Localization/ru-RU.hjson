@@ -791,6 +791,11 @@ Mods: {
 				// DisplayName: Active Sound Showcase
 				// Tooltip: ""
 			}
+
+			ExampleGravityDebuffBullet: {
+				// DisplayName: Example Gravity Debuff Bullet
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -826,6 +831,7 @@ Mods: {
 			// ExampleExplosive.DisplayName: Example Explosive
 			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
+			// ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
 		}
 
 		Buffs: {
@@ -892,6 +898,11 @@ Mods: {
 			ExampleDodgeBuff: {
 				// DisplayName: Example Dodge Buff
 				// Description: You will dodge the next attack
+			}
+
+			ExampleGravityDebuff: {
+				// DisplayName: Example Gravity Debuff
+				// Description: Gravity has gone wild.
 			}
 
 			AbsorbTeamDamageBuff: {

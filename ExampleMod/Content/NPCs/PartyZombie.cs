@@ -69,7 +69,16 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void AI() {
-			NPC.gravity *= NPC.direction == -1 ? 2 : 3 // Multiplies effective gravity by two if npc is facing left, by three if facing right.
+			if (NPC.wet) {
+				if (NPC.honeyWet) { // Removes the effects of honey's fall rate making the NPC fall normally in honey
+					NPC.Gravity /= NPC.GravityWetMultipliers[1];
+					NPC.MaxFallSpeed /= NPC.MaxFallSpeedWetMultipliers[1];
+				}
+				else { // Removes water falls speed effects, then adds honey falls speed effects, making the NPC fall at the honey rate in water
+					NPC.Gravity *= NPC.GravityWetMultipliers[1] / NPC.GravityWetMultipliers[0];
+					NPC.MaxFallSpeed *= NPC.MaxFallSpeedWetMultipliers[1] / NPC.MaxFallSpeedWetMultipliers[0];
+				}
+			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
