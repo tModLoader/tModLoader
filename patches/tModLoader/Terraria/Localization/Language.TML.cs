@@ -2,6 +2,9 @@ using System;
 
 namespace Terraria.Localization;
 
+/// <summary>
+/// Contains methods to access or retrieve localization values. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization">Localization Guide</see> teaches more about localization.
+/// </summary>
 public static partial class Language
 {
 	/// <summary>
