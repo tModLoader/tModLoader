@@ -91,14 +91,17 @@ $(document).ready(function(){initNavTree('class_language.html',''); initResizabl
   <div class="headertitle"><div class="title">Language Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains methods to access or retrieve localization values. The Localization Guideteaches more about localization.  
+ <a href="class_language.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c4005ca436e30b0777c37aa99b546e0"><td class="memItemLeft" align="right" valign="top"><a id="a2c4005ca436e30b0777c37aa99b546e0" name="a2c4005ca436e30b0777c37aa99b546e0"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Exists</b> (string key)</td></tr>
+<tr class="memitem:a2c4005ca436e30b0777c37aa99b546e0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#a2c4005ca436e30b0777c37aa99b546e0">Exists</a> (string key)</td></tr>
+<tr class="memdesc:a2c4005ca436e30b0777c37aa99b546e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with the provided key has been registered or not. This can be used to avoid retrieving dummy values from <a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc" title="Retrieves a LocalizedText object for a specified localization key. The actual text value can be retri...">GetText(string)</a> and <a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408" title="Retrieves the text value for a specified localization key. The text returned will be for the currentl...">GetTextValue(string)</a> and instead load a fallback value or do other logic. If the key should be created if it doesn't exist, <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">GetOrRegister(string, Func&lt;string&gt;)</a> can be used instead.  <a href="class_language.html#a2c4005ca436e30b0777c37aa99b546e0">More...</a><br /></td></tr>
 <tr class="separator:a2c4005ca436e30b0777c37aa99b546e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe6d5907ebc3194c03c763eafa7358bc"><td class="memItemLeft" align="right" valign="top"><a id="afe6d5907ebc3194c03c763eafa7358bc" name="afe6d5907ebc3194c03c763eafa7358bc"></a>
-static <a class="el" href="class_localized_text.html">LocalizedText</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>FindAll</b> (LanguageSearchFilter filter)</td></tr>
+<tr class="memitem:afe6d5907ebc3194c03c763eafa7358bc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_localized_text.html">LocalizedText</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#afe6d5907ebc3194c03c763eafa7358bc">FindAll</a> (LanguageSearchFilter filter)</td></tr>
+<tr class="memdesc:afe6d5907ebc3194c03c763eafa7358bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that satisfy the <em>filter</em>  parameter. Typically used with <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> or <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a> as the <em>filter</em>  argument to find all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that have a specific key prefix and satisfy provided conditions.  <a href="class_language.html#afe6d5907ebc3194c03c763eafa7358bc">More...</a><br /></td></tr>
 <tr class="separator:afe6d5907ebc3194c03c763eafa7358bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a562f84270d556ec38951ddf444d360c1"><td class="memItemLeft" align="right" valign="top"><a id="a562f84270d556ec38951ddf444d360c1" name="a562f84270d556ec38951ddf444d360c1"></a>
 static <a class="el" href="class_localized_text.html">LocalizedText</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>FindAll</b> (Regex regex)</td></tr>
@@ -107,17 +110,21 @@ static <a class="el" href="class_localized_text.html">LocalizedText</a>[]&#160;<
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetCategorySize</b> (string key)</td></tr>
 <tr class="separator:ac5040c4e2ef2131e09f6fe4c54238a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeb7406a52fd6c027ecf54bb38159bd3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3">GetOrRegister</a> (string key, Func&lt; string &gt; makeDefaultValue=null)</td></tr>
-<tr class="memdesc:adeb7406a52fd6c027ecf54bb38159bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="class_localized_text.html">LocalizedText</a> for a given key. <br  />
+<tr class="memdesc:adeb7406a52fd6c027ecf54bb38159bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for a given key. <br  />
 If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file.  <a href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3">More...</a><br /></td></tr>
 <tr class="separator:adeb7406a52fd6c027ecf54bb38159bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b670f6aac08fdebb53cf1bfd510a3f3"><td class="memItemLeft" align="right" valign="top"><a id="a3b670f6aac08fdebb53cf1bfd510a3f3" name="a3b670f6aac08fdebb53cf1bfd510a3f3"></a>
 static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOrRegister</b> (Terraria.ModLoader.Mod mod, string key, Func&lt; string &gt; makeDefaultValue=null)</td></tr>
 <tr class="separator:a3b670f6aac08fdebb53cf1bfd510a3f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3cd200b00ed005379aa712464e298fc"><td class="memItemLeft" align="right" valign="top"><a id="ae3cd200b00ed005379aa712464e298fc" name="ae3cd200b00ed005379aa712464e298fc"></a>
-static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetText</b> (string key)</td></tr>
+<tr class="memitem:ae3cd200b00ed005379aa712464e298fc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc">GetText</a> (string key)</td></tr>
+<tr class="memdesc:ae3cd200b00ed005379aa712464e298fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> object for a specified localization key. The actual text value can be retrieved from <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> by accessing the <a class="el" href="class_localized_text.html#ac00724fa218d8c72912eb3b5eb4ab514" title="Retrieves the text value. This is the actual text the user should see.">LocalizedText.Value</a> property or by using the <a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408" title="Retrieves the text value for a specified localization key. The text returned will be for the currentl...">GetTextValue(string)</a> method directly.<br  />
+<br  />
+ Using <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> instead of string is prefered when the value is stored. If the user switches languages or if resource packs or mods change text, the <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> will automatically receive the new value. In turn, mods using those <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> will also start displaying the updated values.<br  />
+<br  />
+  <a href="class_language.html#ae3cd200b00ed005379aa712464e298fc">More...</a><br /></td></tr>
 <tr class="separator:ae3cd200b00ed005379aa712464e298fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f392308c3f9927bacc3d83792b46408"><td class="memItemLeft" align="right" valign="top"><a id="a9f392308c3f9927bacc3d83792b46408" name="a9f392308c3f9927bacc3d83792b46408"></a>
-static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextValue</b> (string key)</td></tr>
+<tr class="memitem:a9f392308c3f9927bacc3d83792b46408"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408">GetTextValue</a> (string key)</td></tr>
+<tr class="memdesc:a9f392308c3f9927bacc3d83792b46408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the text value for a specified localization key. The text returned will be for the currently selected language.  <a href="class_language.html#a9f392308c3f9927bacc3d83792b46408">More...</a><br /></td></tr>
 <tr class="separator:a9f392308c3f9927bacc3d83792b46408"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf03bb2bbbb9b5f19cf12ca449e16078"><td class="memItemLeft" align="right" valign="top"><a id="aaf03bb2bbbb9b5f19cf12ca449e16078" name="aaf03bb2bbbb9b5f19cf12ca449e16078"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextValue</b> (string key, object arg0)</td></tr>
@@ -137,8 +144,8 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextValue
 <tr class="memitem:a867ec68e23424ba016f30543940a81dc"><td class="memItemLeft" align="right" valign="top"><a id="a867ec68e23424ba016f30543940a81dc" name="a867ec68e23424ba016f30543940a81dc"></a>
 static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandomFromCategory</b> (string categoryName, <a class="el" href="class_unified_random.html">UnifiedRandom</a> random=null)</td></tr>
 <tr class="separator:a867ec68e23424ba016f30543940a81dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a888a684fddaa7e720e28ea0e88d9595b"><td class="memItemLeft" align="right" valign="top"><a id="a888a684fddaa7e720e28ea0e88d9595b" name="a888a684fddaa7e720e28ea0e88d9595b"></a>
-static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SelectRandom</b> (LanguageSearchFilter filter, <a class="el" href="class_unified_random.html">UnifiedRandom</a> random=null)</td></tr>
+<tr class="memitem:a888a684fddaa7e720e28ea0e88d9595b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b">SelectRandom</a> (LanguageSearchFilter filter, <a class="el" href="class_unified_random.html">UnifiedRandom</a> random=null)</td></tr>
+<tr class="memdesc:a888a684fddaa7e720e28ea0e88d9595b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that satisfies the <em>filter</em>  parameter. Typically used with <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> or <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a> as the <em>filter</em>  argument to find a random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that has a specific key prefix and satisfies the provided conditions.  <a href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b">More...</a><br /></td></tr>
 <tr class="separator:a888a684fddaa7e720e28ea0e88d9595b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -147,7 +154,80 @@ Properties</h2></td></tr>
 static <a class="el" href="class_game_culture.html">GameCulture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ActiveCulture</b><code> [get]</code></td></tr>
 <tr class="separator:ab29445df6a42420ac4794550a084d521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Contains methods to access or retrieve localization values. The Localization Guide</p>
+<p >teaches more about localization. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2c4005ca436e30b0777c37aa99b546e0" name="a2c4005ca436e30b0777c37aa99b546e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c4005ca436e30b0777c37aa99b546e0">&#9670;&nbsp;</a></span>Exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Language.Exists </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with the provided key has been registered or not. This can be used to avoid retrieving dummy values from <a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc" title="Retrieves a LocalizedText object for a specified localization key. The actual text value can be retri...">GetText(string)</a> and <a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408" title="Retrieves the text value for a specified localization key. The text returned will be for the currentl...">GetTextValue(string)</a> and instead load a fallback value or do other logic. If the key should be created if it doesn't exist, <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">GetOrRegister(string, Func&lt;string&gt;)</a> can be used instead. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="afe6d5907ebc3194c03c763eafa7358bc" name="afe6d5907ebc3194c03c763eafa7358bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe6d5907ebc3194c03c763eafa7358bc">&#9670;&nbsp;</a></span>FindAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_localized_text.html">LocalizedText</a>[] Language.FindAll </td>
+          <td>(</td>
+          <td class="paramtype">LanguageSearchFilter&#160;</td>
+          <td class="paramname"><em>filter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finds all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that satisfy the <em>filter</em>  parameter. Typically used with <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> or <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a> as the <em>filter</em>  argument to find all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that have a specific key prefix and satisfy provided conditions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filter</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="adeb7406a52fd6c027ecf54bb38159bd3" name="adeb7406a52fd6c027ecf54bb38159bd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adeb7406a52fd6c027ecf54bb38159bd3">&#9670;&nbsp;</a></span>GetOrRegister()</h2>
 
@@ -182,12 +262,132 @@ static <a class="el" href="class_game_culture.html">GameCulture</a>&#160;</td><t
 </table>
 </div><div class="memdoc">
 
-<p>Returns a <a class="el" href="class_localized_text.html">LocalizedText</a> for a given key. <br  />
+<p>Returns a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for a given key. <br  />
 If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td>The localization key</td></tr>
     <tr><td class="paramname">makeDefaultValue</td><td>A factory method for creating the default value, used to update localization files with missing entries</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae3cd200b00ed005379aa712464e298fc" name="ae3cd200b00ed005379aa712464e298fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3cd200b00ed005379aa712464e298fc">&#9670;&nbsp;</a></span>GetText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_localized_text.html">LocalizedText</a> Language.GetText </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> object for a specified localization key. The actual text value can be retrieved from <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> by accessing the <a class="el" href="class_localized_text.html#ac00724fa218d8c72912eb3b5eb4ab514" title="Retrieves the text value. This is the actual text the user should see.">LocalizedText.Value</a> property or by using the <a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408" title="Retrieves the text value for a specified localization key. The text returned will be for the currentl...">GetTextValue(string)</a> method directly.<br  />
+<br  />
+ Using <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> instead of string is prefered when the value is stored. If the user switches languages or if resource packs or mods change text, the <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> will automatically receive the new value. In turn, mods using those <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> will also start displaying the updated values.<br  />
+<br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a9f392308c3f9927bacc3d83792b46408" name="a9f392308c3f9927bacc3d83792b46408"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f392308c3f9927bacc3d83792b46408">&#9670;&nbsp;</a></span>GetTextValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string Language.GetTextValue </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the text value for a specified localization key. The text returned will be for the currently selected language. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a888a684fddaa7e720e28ea0e88d9595b" name="a888a684fddaa7e720e28ea0e88d9595b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a888a684fddaa7e720e28ea0e88d9595b">&#9670;&nbsp;</a></span>SelectRandom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_localized_text.html">LocalizedText</a> Language.SelectRandom </td>
+          <td>(</td>
+          <td class="paramtype">LanguageSearchFilter&#160;</td>
+          <td class="paramname"><em>filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_unified_random.html">UnifiedRandom</a>&#160;</td>
+          <td class="paramname"><em>random</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Selects a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that satisfies the <em>filter</em>  parameter. Typically used with <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> or <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a> as the <em>filter</em>  argument to find a random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that has a specific key prefix and satisfies the provided conditions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filter</td><td></td></tr>
+    <tr><td class="paramname">random</td><td></td></tr>
   </table>
   </dd>
 </dl>

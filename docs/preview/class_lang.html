@@ -121,11 +121,19 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>CatChat</b> 
 <tr class="memitem:a64e29d116d5dca1fd87cc22819d1207d"><td class="memItemLeft" align="right" valign="top"><a id="a64e29d116d5dca1fd87cc22819d1207d" name="a64e29d116d5dca1fd87cc22819d1207d"></a>
 static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDeathMessage</b> (string deadPlayerName, int plr=-1, int npc=-1, int proj=-1, int other=-1, int projType=0, int plrItemType=0)</td></tr>
 <tr class="separator:a64e29d116d5dca1fd87cc22819d1207d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdccb61a9ff6b0703222929ccd04425f"><td class="memItemLeft" align="right" valign="top"><a id="abdccb61a9ff6b0703222929ccd04425f" name="abdccb61a9ff6b0703222929ccd04425f"></a>
-static LanguageSearchFilter&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDialogFilter</b> (string startsWith)</td></tr>
+<tr class="memitem:abdccb61a9ff6b0703222929ccd04425f"><td class="memItemLeft" align="right" valign="top">static LanguageSearchFilter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f">CreateDialogFilter</a> (string startsWith)</td></tr>
+<tr class="memdesc:abdccb61a9ff6b0703222929ccd04425f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_filters.html">Filters</a> <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> objects by checking if their key starts with the provided <em>startsWith</em>  parameter.<br  />
+<br  />
+ When passed into <a class="el" href="class_language.html#afe6d5907ebc3194c03c763eafa7358bc" title="Finds all LocalizedText that satisfy the filter  parameter. Typically used with Lang....">Language.FindAll(LanguageSearchFilter)</a>, all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with keys starting with <em>startsWith</em>  will be returned. When passed into <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)</a>, a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with key starting with <em>startsWith</em>  will be returned.<br  />
+<br  />
+  <a href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f">More...</a><br /></td></tr>
 <tr class="separator:abdccb61a9ff6b0703222929ccd04425f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a191b0ff78330db4dd879322a6291f774"><td class="memItemLeft" align="right" valign="top"><a id="a191b0ff78330db4dd879322a6291f774" name="a191b0ff78330db4dd879322a6291f774"></a>
-static LanguageSearchFilter&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDialogFilter</b> (string startsWith, object substitutions)</td></tr>
+<tr class="memitem:a191b0ff78330db4dd879322a6291f774"><td class="memItemLeft" align="right" valign="top">static LanguageSearchFilter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774">CreateDialogFilter</a> (string startsWith, object substitutions)</td></tr>
+<tr class="memdesc:a191b0ff78330db4dd879322a6291f774"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_filters.html">Filters</a> <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> objects by checking if their key starts with the provided <em>startsWith</em>  parameter and if the conditions embedded into the <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> are all satisfied by the data in <em>substitutions</em> . See <a class="el" href="class_localized_text.html#a8e6e63319e65296c1ea272d013b41905" title="Checks if the conditions embedded in this LocalizedText are satisfied by the obj  argument....">LocalizedText.CanFormatWith(object)</a> for more information about conditions embedded in localization text. <br  />
+<br  />
+ When passed into <a class="el" href="class_language.html#afe6d5907ebc3194c03c763eafa7358bc" title="Finds all LocalizedText that satisfy the filter  parameter. Typically used with Lang....">Language.FindAll(LanguageSearchFilter)</a>, all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with keys starting with <em>startsWith</em>  that satisfy <em>substitutions</em>  will be returned. When passed into <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)</a>, a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with key starting with <em>startsWith</em>  that satisfies <em>substitutions</em>  will be returned.<br  />
+<br  />
+  <a href="class_lang.html#a191b0ff78330db4dd879322a6291f774">More...</a><br /></td></tr>
 <tr class="separator:a191b0ff78330db4dd879322a6291f774"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ac3b8f2b60ed78abed77a148d84b1bc"><td class="memItemLeft" align="right" valign="top"><a id="a5ac3b8f2b60ed78abed77a148d84b1bc" name="a5ac3b8f2b60ed78abed77a148d84b1bc"></a>
 static object&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDialogSubstitutionObject</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc=null)</td></tr>
@@ -236,6 +244,96 @@ static <a class="el" href="class_localized_text.html">LocalizedText</a>[]&#160;<
 static <a class="el" href="class_localized_text.html">LocalizedText</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>tip</b> = new <a class="el" href="class_localized_text.html">LocalizedText</a>[61]</td></tr>
 <tr class="separator:a4acb35e12b05496b56732b379c398c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abdccb61a9ff6b0703222929ccd04425f" name="abdccb61a9ff6b0703222929ccd04425f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdccb61a9ff6b0703222929ccd04425f">&#9670;&nbsp;</a></span>CreateDialogFilter() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static LanguageSearchFilter Lang.CreateDialogFilter </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>startsWith</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="class_filters.html">Filters</a> <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> objects by checking if their key starts with the provided <em>startsWith</em>  parameter.<br  />
+<br  />
+ When passed into <a class="el" href="class_language.html#afe6d5907ebc3194c03c763eafa7358bc" title="Finds all LocalizedText that satisfy the filter  parameter. Typically used with Lang....">Language.FindAll(LanguageSearchFilter)</a>, all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with keys starting with <em>startsWith</em>  will be returned. When passed into <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)</a>, a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with key starting with <em>startsWith</em>  will be returned.<br  />
+<br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startsWith</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a191b0ff78330db4dd879322a6291f774" name="a191b0ff78330db4dd879322a6291f774"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a191b0ff78330db4dd879322a6291f774">&#9670;&nbsp;</a></span>CreateDialogFilter() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static LanguageSearchFilter Lang.CreateDialogFilter </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>startsWith</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>substitutions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="class_filters.html">Filters</a> <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> objects by checking if their key starts with the provided <em>startsWith</em>  parameter and if the conditions embedded into the <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> are all satisfied by the data in <em>substitutions</em> . See <a class="el" href="class_localized_text.html#a8e6e63319e65296c1ea272d013b41905" title="Checks if the conditions embedded in this LocalizedText are satisfied by the obj  argument....">LocalizedText.CanFormatWith(object)</a> for more information about conditions embedded in localization text. <br  />
+<br  />
+ When passed into <a class="el" href="class_language.html#afe6d5907ebc3194c03c763eafa7358bc" title="Finds all LocalizedText that satisfy the filter  parameter. Typically used with Lang....">Language.FindAll(LanguageSearchFilter)</a>, all <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with keys starting with <em>startsWith</em>  that satisfy <em>substitutions</em>  will be returned. When passed into <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)</a>, a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with key starting with <em>startsWith</em>  that satisfies <em>substitutions</em>  will be returned.<br  />
+<br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startsWith</td><td></td></tr>
+    <tr><td class="paramname">substitutions</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

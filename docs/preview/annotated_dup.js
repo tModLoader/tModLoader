@@ -643,7 +643,7 @@ var annotated_dup =
     [ "LabelArgsAttribute", "class_label_args_attribute.html", null ],
     [ "LabelAttribute", "class_label_attribute.html", null ],
     [ "LabelKeyAttribute", "class_label_key_attribute.html", null ],
-    [ "Lang", "class_lang.html", null ],
+    [ "Lang", "class_lang.html", "class_lang" ],
     [ "LangID", "class_lang_i_d.html", null ],
     [ "Language", "class_language.html", "class_language" ],
     [ "LanguageManager", "class_language_manager.html", null ],

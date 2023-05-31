@@ -94,17 +94,26 @@ $(document).ready(function(){initNavTree('class_localized_text.html',''); initRe
   <div class="headertitle"><div class="title">LocalizedText Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains the localization value corresponding to a key for the current game language. Automatically updates as language, mods, and resource packs change. The Localization Guideteaches more about localization.  
+ <a href="class_localized_text.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8e6e63319e65296c1ea272d013b41905"><td class="memItemLeft" align="right" valign="top"><a id="a8e6e63319e65296c1ea272d013b41905" name="a8e6e63319e65296c1ea272d013b41905"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanFormatWith</b> (object obj)</td></tr>
+<tr class="memitem:a8e6e63319e65296c1ea272d013b41905"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localized_text.html#a8e6e63319e65296c1ea272d013b41905">CanFormatWith</a> (object obj)</td></tr>
+<tr class="memdesc:a8e6e63319e65296c1ea272d013b41905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the conditions embedded in this <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> are satisfied by the <em>obj</em>  argument. For example when used with Lang.CreateDialogSubstitutionObject(NPC) as the <em>obj</em>  argument, "{?Rain}" at the start of a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br  />
+ The method is typically used indirectly by using <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a>.  <a href="class_localized_text.html#a8e6e63319e65296c1ea272d013b41905">More...</a><br /></td></tr>
 <tr class="separator:a8e6e63319e65296c1ea272d013b41905"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390d22b406bdaf9afbd725569fcbc181"><td class="memItemLeft" align="right" valign="top"><a id="a390d22b406bdaf9afbd725569fcbc181" name="a390d22b406bdaf9afbd725569fcbc181"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>Format</b> (params object[] args)</td></tr>
+<tr class="memitem:a390d22b406bdaf9afbd725569fcbc181"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localized_text.html#a390d22b406bdaf9afbd725569fcbc181">Format</a> (params object[] args)</td></tr>
+<tr class="memdesc:a390d22b406bdaf9afbd725569fcbc181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a string from this <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> populated with data from the provided <em>args</em>  arguments. Formats the string in the same manner as string.Format. Placeholders such as "{0}", "{1}", etc will be replaced with the string representation of the corresponding objects provided.<br  />
+ Additionally, pluralization is supported as well. The Contributing Localization Guideteaches more about placeholders and plural support.  <a href="class_localized_text.html#a390d22b406bdaf9afbd725569fcbc181">More...</a><br /></td></tr>
 <tr class="separator:a390d22b406bdaf9afbd725569fcbc181"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a293e37e2678717137ac1e28a79365a96"><td class="memItemLeft" align="right" valign="top"><a id="a293e37e2678717137ac1e28a79365a96" name="a293e37e2678717137ac1e28a79365a96"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>FormatWith</b> (object obj)</td></tr>
+<tr class="memitem:a293e37e2678717137ac1e28a79365a96"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localized_text.html#a293e37e2678717137ac1e28a79365a96">FormatWith</a> (object obj)</td></tr>
+<tr class="memdesc:a293e37e2678717137ac1e28a79365a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a string from this <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> populated with data from the provided <em>obj</em>  parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with Lang.CreateDialogSubstitutionObject(NPC), the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br  />
+<br  />
+ When used in conjuction with Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom) and <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a>, simple boolean conditions expressed in each <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> can be used to filter a collection of <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a>. <br  />
+<br  />
+ Format(object[]) is more commonly used to format <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided.  <a href="class_localized_text.html#a293e37e2678717137ac1e28a79365a96">More...</a><br /></td></tr>
 <tr class="separator:a293e37e2678717137ac1e28a79365a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08cc2c3a27a44eda49ff8813c08c2dbf"><td class="memItemLeft" align="right" valign="top"><a id="a08cc2c3a27a44eda49ff8813c08c2dbf" name="a08cc2c3a27a44eda49ff8813c08c2dbf"></a>
 <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ToNetworkText</b> ()</td></tr>
@@ -116,9 +125,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FormatWith</b> (obj
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
 <tr class="separator:a42546cf6fcc0148fa3a9ccedf5e0e2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localized_text.html#a04e42d4ecba4a9f205cb72d26f23dd06">WithFormatArgs</a> (params object[] args)</td></tr>
-<tr class="memdesc:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="class_localized_text.html">LocalizedText</a> with the supplied arguments formatted into the value (via string.Format(string, object?[]))<br  />
+<tr class="memdesc:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with the supplied arguments formatted into the value (via string.Format(string, object?[]))<br  />
  Will automatically update to re-format the string with cached args when language changes. <br  />
- br/&gt; The resulting <a class="el" href="class_localized_text.html">LocalizedText</a> should be stored statically. Should not be used to create 'throwaway' <a class="el" href="class_localized_text.html">LocalizedText</a> instances. <br  />
+ br/&gt; The resulting <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> should be stored statically. Should not be used to create 'throwaway' <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> instances. <br  />
  Use Format(object[]) instead for repeated on-demand formatting with different args.  <a href="class_localized_text.html#a04e42d4ecba4a9f205cb72d26f23dd06">More...</a><br /></td></tr>
 <tr class="separator:a04e42d4ecba4a9f205cb72d26f23dd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -153,9 +162,100 @@ static readonly Regex&#160;</td><td class="memItemRight" valign="bottom"><b>Plur
 Properties</h2></td></tr>
 <tr class="memitem:ac00724fa218d8c72912eb3b5eb4ab514"><td class="memItemLeft" align="right" valign="top"><a id="ac00724fa218d8c72912eb3b5eb4ab514" name="ac00724fa218d8c72912eb3b5eb4ab514"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Value</b><code> [get]</code></td></tr>
+<tr class="memdesc:ac00724fa218d8c72912eb3b5eb4ab514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the text value. This is the actual text the user should see. <br /></td></tr>
 <tr class="separator:ac00724fa218d8c72912eb3b5eb4ab514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Contains the localization value corresponding to a key for the current game language. Automatically updates as language, mods, and resource packs change. The Localization Guide</p>
+<p >teaches more about localization. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8e6e63319e65296c1ea272d013b41905" name="a8e6e63319e65296c1ea272d013b41905"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e6e63319e65296c1ea272d013b41905">&#9670;&nbsp;</a></span>CanFormatWith()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LocalizedText.CanFormatWith </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the conditions embedded in this <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> are satisfied by the <em>obj</em>  argument. For example when used with Lang.CreateDialogSubstitutionObject(NPC) as the <em>obj</em>  argument, "{?Rain}" at the start of a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br  />
+ The method is typically used indirectly by using <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">obj</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a390d22b406bdaf9afbd725569fcbc181" name="a390d22b406bdaf9afbd725569fcbc181"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a390d22b406bdaf9afbd725569fcbc181">&#9670;&nbsp;</a></span>Format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string LocalizedText.Format </td>
+          <td>(</td>
+          <td class="paramtype">params object[]&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a string from this <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> populated with data from the provided <em>args</em>  arguments. Formats the string in the same manner as string.Format. Placeholders such as "{0}", "{1}", etc will be replaced with the string representation of the corresponding objects provided.<br  />
+ Additionally, pluralization is supported as well. The Contributing Localization Guideteaches more about placeholders and plural support. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a293e37e2678717137ac1e28a79365a96" name="a293e37e2678717137ac1e28a79365a96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a293e37e2678717137ac1e28a79365a96">&#9670;&nbsp;</a></span>FormatWith()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string LocalizedText.FormatWith </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a string from this <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> populated with data from the provided <em>obj</em>  parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with Lang.CreateDialogSubstitutionObject(NPC), the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br  />
+<br  />
+ When used in conjuction with Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom) and <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a>, simple boolean conditions expressed in each <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> can be used to filter a collection of <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a>. <br  />
+<br  />
+ Format(object[]) is more commonly used to format <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">obj</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a04e42d4ecba4a9f205cb72d26f23dd06" name="a04e42d4ecba4a9f205cb72d26f23dd06"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a04e42d4ecba4a9f205cb72d26f23dd06">&#9670;&nbsp;</a></span>WithFormatArgs()</h2>
 
@@ -172,9 +272,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>Value</b><code> [ge
       </table>
 </div><div class="memdoc">
 
-<p>Creates a new <a class="el" href="class_localized_text.html">LocalizedText</a> with the supplied arguments formatted into the value (via string.Format(string, object?[]))<br  />
+<p>Creates a new <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> with the supplied arguments formatted into the value (via string.Format(string, object?[]))<br  />
  Will automatically update to re-format the string with cached args when language changes. <br  />
- br/&gt; The resulting <a class="el" href="class_localized_text.html">LocalizedText</a> should be stored statically. Should not be used to create 'throwaway' <a class="el" href="class_localized_text.html">LocalizedText</a> instances. <br  />
+ br/&gt; The resulting <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> should be stored statically. Should not be used to create 'throwaway' <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> instances. <br  />
  Use Format(object[]) instead for repeated on-demand formatting with different args. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
