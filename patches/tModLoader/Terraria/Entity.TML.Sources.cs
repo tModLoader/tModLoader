@@ -28,7 +28,7 @@ partial class Entity
 	public IEntitySource GetSource_OnHit(Entity victim, string? context = null)
 		=> new EntitySource_OnHit(attacker: this, victim, context);
 	
-	public IEntitySource GetSource_OnHurt(Entity attacker, string? context = null)
+	public IEntitySource GetSource_OnHurt(Entity? attacker, string? context = null)
 		=> new EntitySource_OnHurt(victim: this, attacker, context);
 
 	public IEntitySource GetSource_Death(string? context = null)

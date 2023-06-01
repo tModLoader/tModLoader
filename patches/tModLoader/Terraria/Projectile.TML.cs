@@ -120,14 +120,16 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		OriginalArmorPenetration = ArmorPenetration;
 
 		 if (spawnSource is EntitySource_Parent { Entity: Player player }) {
-			if (spawnSource is EntitySource_ItemUse { Item: Item item }) {
+			if (spawnSource is IEntitySource_WithStatsFromItem { Item: Item item }) {
 				// Apply the weapon and player bonuses to the base stats
 				CritChance += player.GetWeaponCrit(item);
 				ArmorPenetration += player.GetWeaponArmorPenetration(item);
 
 				// Apply original stats, so that ContinuallyUpdateDamage can correctly scale the base values
 				// originalDamage is set to item.damage as a convenience.
-				originalDamage = item.damage;
+				if (item.damage >= 0)
+					originalDamage = item.damage;
+
 				OriginalCritChance += item.crit;
 				OriginalArmorPenetration += item.ArmorPenetration;
 			}
