@@ -68,7 +68,7 @@ var searchData=
   ['friendly_65',['friendly',['../class_n_p_c.html#a0d0e747e4548ea459606bcbb92b96c96',1,'NPC.friendly()'],['../class_projectile.html#ac64a90bef6c47cf5804770e63f522a87',1,'Projectile.friendly()']]],
   ['frontaccback_66',['FrontAccBack',['../class_player_draw_layers.html#a77664daef3a39d0bb800b0374b41bf1b',1,'PlayerDrawLayers']]],
   ['frontaccfront_67',['FrontAccFront',['../class_player_draw_layers.html#a71a62c95bb0a4653384a2e150db81324',1,'PlayerDrawLayers']]],
-  ['frontcape_68',['frontCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a93f98317856c858ca11a8ed4a9f0554d',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],
+  ['frontcape_68',['frontCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#ae20b61126a07dddf9beb6b96acd18d7a',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],
   ['fronttobackid_69',['FrontToBackID',['../class_armor_i_ds_1_1_head_1_1_sets.html#adc5918654ada97e2c7abffadf8572027',1,'ArmorIDs::Head::Sets']]],
   ['frosthydra_70',['FrostHydra',['../class_proj_a_i_style_i_d.html#acfc6c5238a5e3b0135dedbaca5a217ee',1,'ProjAIStyleID']]],
   ['frostmoonstarting_71',['FrostMoonStarting',['../class_game_tip_i_d.html#a0323e6044e7d36a6a3436093dcc27d51',1,'GameTipID']]],

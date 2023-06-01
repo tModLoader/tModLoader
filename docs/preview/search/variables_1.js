@@ -3,7 +3,7 @@ var searchData=
   ['babymothron_0',['BabyMothron',['../class_n_p_c_a_i_style_i_d.html#ab0348cc71bf5aa1a58cb5a2a8b6efb84',1,'NPCAIStyleID']]],
   ['babyspider_1',['BabySpider',['../class_proj_a_i_style_i_d.html#afd70286d9d697cef35f23d974eb96d0e',1,'ProjAIStyleID']]],
   ['backacc_2',['BackAcc',['../class_player_draw_layers.html#a1d93fea84e9e998de7278c0b94b2500f',1,'PlayerDrawLayers']]],
-  ['backcape_3',['backCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#acaa2359fd67c582e5e415a492a30fc2f',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],
+  ['backcape_3',['backCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#aa7f4e733e7c3cce70917381b6a698329',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],
   ['backinventory_4',['BackInventory',['../class_cursor_override_i_d.html#ad4fe0f026905ab558bfcae964c7bfb55',1,'CursorOverrideID']]],
   ['backpacks_5',['Backpacks',['../class_player_draw_layers.html#a3ce86e2b52e724f707cad5c3ab641e3b',1,'PlayerDrawLayers']]],
   ['bait_6',['bait',['../class_item.html#a26b858a4d810762f99fb4afab4bd2239',1,'Item']]],

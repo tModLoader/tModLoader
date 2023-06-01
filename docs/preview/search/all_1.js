@@ -4,7 +4,7 @@ var searchData=
   ['babyspider_1',['BabySpider',['../class_proj_a_i_style_i_d.html#afd70286d9d697cef35f23d974eb96d0e',1,'ProjAIStyleID']]],
   ['back_2',['Back',['../class_armor_i_ds_1_1_back.html',1,'ArmorIDs']]],
   ['backacc_3',['BackAcc',['../class_player_draw_layers.html#a1d93fea84e9e998de7278c0b94b2500f',1,'PlayerDrawLayers']]],
-  ['backcape_4',['backCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#acaa2359fd67c582e5e415a492a30fc2f',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],
+  ['backcape_4',['backCape',['../struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#aa7f4e733e7c3cce70917381b6a698329',1,'ArmorIDs::Body::Sets::IncludeCapeFrontAndBackInfo']]],
   ['backgroundautoloadingenabled_5',['BackgroundAutoloadingEnabled',['../class_mod.html#a7a2ec207e31889c9a9ca3ea3ecdb9c59',1,'Mod']]],
   ['backgroundchangeflashinfo_6',['BackgroundChangeFlashInfo',['../class_background_change_flash_info.html',1,'']]],
   ['backgroundcolor_7',['BackgroundColor',['../class_mod_biome.html#ad1cdd95cfe7b604334833e3b34d45cd0',1,'ModBiome']]],
