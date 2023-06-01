@@ -4214,6 +4214,15 @@
  			if (b2 != -1 && front == -1) {
  				front = b2;
  				cFront = cBody;
+@@ -27785,7 +_,7 @@
+ 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+ 				front = includeCapeFrontAndBackInfo.frontCape;
+ 				cFront = cBody;
+-				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
++				int backCape = includeCapeFrontAndBackInfo.backCape;
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
+ 					backpack = backCape;
+ 					cBackpack = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
