@@ -24,10 +24,12 @@ namespace ExampleMod.Content.Tiles
 			Main.tileNoAttach[Type] = true;
 			Main.tileWaterDeath[Type] = true;
 			Main.tileLavaDeath[Type] = true;
-			// Main.tileFlame[Type] = true; // This breaks it.
+			// Main.tileFlame[Type] = true; // Main.tileFlame is only useful for vanilla tiles. Modded tiles can manually draw flames in PostDraw.
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);
+			TileObjectData.newTile.StyleLineSkip = 2;
+			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.WaterDeath = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
 			TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;

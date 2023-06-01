@@ -19,6 +19,11 @@ internal static class PlayerIO
 		writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
 	}
 
+	internal static void WriteVanillaHair(int hair, BinaryWriter writer)
+	{
+		writer.Write(hair >= HairID.Count ? 0 : hair);
+	}
+
 	//make Terraria.Player.ENCRYPTION_KEY internal
 	//add to end of Terraria.Player.SavePlayer
 	internal static void Save(TagCompound tag, string path, bool isCloudSave)
@@ -36,10 +41,7 @@ internal static class PlayerIO
 
 	internal static TagCompound SaveData(Player player)
 	{
-		player._temporaryItemSlots[0] = Main.mouseItem;
-		player._temporaryItemSlots[1] = Main.CreativeMenu.GetItemByIndex(0);
-		player._temporaryItemSlots[2] = Main.guideItem;
-		player._temporaryItemSlots[3] = Main.reforgeItem;
+		var _temporaryItemSlots = new[] { Main.mouseItem, Main.CreativeMenu.GetItemByIndex(0), Main.guideItem, Main.reforgeItem }; // Don't use player._temporaryItemSlots directly, it expects nulls. It also isn't what is saved in vanilla, which is relevant with Player.SerializedClone. It is only what is used to load in data.
 
 		return new TagCompound {
 			["armor"] = SaveInventory(player.armor),
@@ -52,14 +54,15 @@ internal static class PlayerIO
 			["bank2"] = SaveInventory(player.bank2.item),
 			["bank3"] = SaveInventory(player.bank3.item),
 			["bank4"] = SaveInventory(player.bank4.item),
-			["temporaryItemSlots"] = SaveInventory(player._temporaryItemSlots),
+			["temporaryItemSlots"] = SaveInventory(_temporaryItemSlots),
 			["hairDye"] = SaveHairDye(player.hairDye),
 			["research"] = SaveResearch(player),
 			["modData"] = SaveModData(player),
 			["modBuffs"] = SaveModBuffs(player),
 			["infoDisplays"] = SaveInfoDisplays(player),
 			["usedMods"] = SaveUsedMods(player),
-			["usedModPack"] = SaveUsedModPack(player)
+			["usedModPack"] = SaveUsedModPack(player),
+			["hair"] = SaveHair(player.hair)
 		};
 	}
 
@@ -84,6 +87,7 @@ internal static class PlayerIO
 		LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 		LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
+		LoadHair(player, tag.GetString("hair"));
 	}
 
 	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
@@ -192,6 +196,23 @@ internal static class PlayerIO
 		// no mystery hair dye at this stage
 		if (ModContent.TryFind<ModItem>(hairDyeItemName, out var modItem))
 			player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.Type);
+	}
+
+	public static string SaveHair(int hair)
+	{
+		if (hair < HairID.Count)
+			return "";
+		
+		return HairLoader.GetHair(hair).FullName;
+	}
+
+	public static void LoadHair(Player player, string hairName)
+	{
+		if (hairName == "")
+			return;
+		
+		if (ModContent.TryFind<ModHair>(hairName, out var modHair))
+			player.hair = modHair.Type;
 	}
 
 	internal static List<TagCompound> SaveModData(Player player)

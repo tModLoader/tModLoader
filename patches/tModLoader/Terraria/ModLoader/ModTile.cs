@@ -48,7 +48,10 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
-	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>.
+	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>. Modders can also re-use the display name localization of items, such as <c>ModContent.GetInstance&lt;ItemThatPlacesThisStyle&gt;().DisplayName</c>. 
+	/// <br/><br/> Multiple map entries are suitable for tiles that need a different color or hover text for different tile styles. Vanilla code uses this mostly only for chest and dresser tiles. Map entries will be given a corresponding map option value, counting from 0, according to the order in which they are added. Map option values don't necessarily correspond to tile styles.
+	/// <br/> <see cref="ModBlockType.GetMapOption"/> will be used to choose which map entry is used for a given coordinate.
+	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name = null)
 	{
@@ -62,9 +65,8 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
-	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
-	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>.
+	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
+	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This function is most typically used for chests and dressers to show the current chest name, if assigned, instead of the default chest name. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleMod's ExampleChest</see> is one example of this functionality.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
@@ -74,6 +76,26 @@ public abstract class ModTile : ModBlockType
 				MapLoader.tileEntries[Type] = new List<MapEntry>();
 			}
 			MapLoader.tileEntries[Type].Add(entry);
+		}
+	}
+
+	/// <summary>
+	/// Manually registers an item to drop for the provided tile styles. Use this for tile styles that don't have an item that places them. For example, open door tiles don't have any item that places them, but they should drop an item when destroyed. A tile style with no registered drop and no fallback drop will not drop anything when destroyed.<br/><br/>
+	/// This method can also be used to register the fallback item drop. The fallback item will drop for any tile with a style that does not have a manual or automatic item drop.<br/>
+	/// To register the fallback item, omit the tileStyles parameter.<br/><br/>
+	/// If a mod removes content, manually specifying a replacement/fallback item allows users to recover something from the tile.<br/>
+	/// If more control over tile item drops is required, such as conditional drops, custom data on dropped items, or multiple item drops, use <see cref="GetItemDrops(int, int)"/>.<br/>
+	/// </summary>
+	/// <param name="itemType"></param>
+	/// <param name="tileStyles"></param>
+	public void RegisterItemDrop(int itemType, params int[] tileStyles) {
+		// Runs before TileLoader.FinishSetup
+		if (tileStyles == null || tileStyles.Length == 0) {
+			TileLoader.tileTypeAndTileStyleToItemType[(Type, -1)] = itemType;
+			return;
+		}
+		foreach (var tileStyle in tileStyles) {
+			TileLoader.tileTypeAndTileStyleToItemType[(Type, tileStyle)] = itemType;
 		}
 	}
 
@@ -190,14 +212,13 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize the items the tile at the given coordinates drops.
-	/// <br/> By default, this method will intelligently decide on a single item drop based on <see cref="ModBlockType.ItemDrop"/>, the tile style, and associated <see cref="TileObjectData"/> if it exists.
-	/// <br/> If <see cref="ModBlockType.ItemDrop"/> has a non-zero value, it will be used as the item to drop. If -1, no item will drop.
-	/// <br/> Otherwise, the dropped item will be the item type of the loaded item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of the Tile. If the specific <see cref="Item.placeStyle"/> is not found, the decision will fall back to a <see cref="Item.placeStyle"/> of 0.
-	/// <br/> Detecting the tile style is only reliable for tiles with an associated <see cref="TileObjectData"/>, so tiles using a manual tile style approach need to override this method. Once the style is calculated from the tile frame data, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop. 
-	/// <br/> This existing logic should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.
-	/// <br/> For tiles dropping multiple items, or dropping items that need custom data, override this method. Use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. 
-	/// <br/> Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.
+	/// Allows customization of the items the tile at the given coordinates drops.<br/><br/>
+	/// The default item drop is determined by finding an item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of this tile. 
+	/// <see cref="ModTile.RegisterItemDrop(int, int[])"/> can be used to manually register item drops for tile styles with no corresponding item. It can also be used to register a fallback item, which will be dropped if no suitable item is found.<br/><br/>
+	/// The default behavior should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/> 
+	/// When overriding, use <c>yield return new Item(ItemTypeHere);</c> for each spawned item.<br/>
+	/// The style based drop logic is based on <see cref="TileObjectData"/>. If a tile has custom 'styles' but still wants to make use of <see cref="ModTile.RegisterItemDrop(int, int[])"/>, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop.<br/><br/>
+	/// Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.<br/>
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -520,7 +541,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Returns the default name for a chest or dresser with the provided FrameX and FrameY values. <br/>
 	/// A typical implementation of a tile with only a single name might return <c>CreateMapEntryName()</c> <br/>
-	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries.
+	/// A container with multiple styles might return <c>this.GetLocalization("MapEntry" + option)</c> where option is determined using similar logic to <see cref="ModBlockType.GetMapOption"/> to match the <see cref="AddMapEntry(Color, LocalizedText)"/> entries. Another option is using <c>return Lang._mapLegendCache[MapHelper.TileToLookup(Type, option)];</c>, this will reuse the localizations used for the map entries.
 	/// </summary>
 	public virtual LocalizedText DefaultContainerName(int frameX, int frameY)
 	{

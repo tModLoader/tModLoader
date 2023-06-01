@@ -64,7 +64,7 @@ internal class SetElement : CollectionElement
 	protected override void PrepareTypes()
 	{
 		setType = MemberInfo.Type.GetGenericArguments()[0];
-		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, setType);
+		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttributeFromCollectionMemberThenElementType<JsonDefaultListValueAttribute>(MemberInfo.MemberInfo, setType);
 	}
 
 	protected override void AddItem()

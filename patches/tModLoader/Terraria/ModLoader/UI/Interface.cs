@@ -109,12 +109,13 @@ internal static class Interface
 	internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown)
 	{
 		if (Main.menuMode == loadModsID) {
+			// These must be "else if" because the code should only run when it will actually show. This code will be revisited each time these info messages are closed, to check if any other messages should be shown.
 			if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 				ModLoader.ShowFirstLaunchWelcomeMessage = false;
 				infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 			}
 
-			if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
 				ModLoader.WarnedFamilyShare = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}

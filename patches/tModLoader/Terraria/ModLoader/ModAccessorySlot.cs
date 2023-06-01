@@ -82,6 +82,7 @@ public abstract class ModAccessorySlot : ModType
 		if (FunctionalItem.accessory)
 			Player.GrantPrefixBenefits(FunctionalItem);
 
+		Player.GrantArmorBenefits(FunctionalItem);
 		Player.ApplyEquipFunctional(FunctionalItem, HideVisuals);
 		Player.ApplyEquipVanity(VanityItem);
 	}

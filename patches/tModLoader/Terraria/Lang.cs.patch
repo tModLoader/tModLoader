@@ -59,6 +59,27 @@
  			return _itemNameCache[id];
  
  		return LocalizedText.Empty;
+@@ -326,7 +_,20 @@
+ 		return npc.FullName;
+ 	}
+ 
++	/// <summary>
++	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter and if the conditions embedded into the LocalizedText are all satisfied by the data in <paramref name="substitutions"/>. See <see cref="LocalizedText.CanFormatWith(object)"/> for more information about conditions embedded in localization text. <br/><br/>
++	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> that satisfy <paramref name="substitutions"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> that satisfies <paramref name="substitutions"/> will be returned.<br/><br/>
++	/// </summary>
++	/// <param name="startsWith"></param>
++	/// <param name="substitutions"></param>
++	/// <returns></returns>
+ 	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.CanFormatWith(substitutions);
++	/// <summary>
++	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter.<br/><br/>
++	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>
++	/// </summary>
++	/// <param name="startsWith"></param>
++	/// <returns></returns>
+ 	public static LanguageSearchFilter CreateDialogFilter(string startsWith) => (string key, LocalizedText text) => key.StartsWith(startsWith);
+ 
+ 	public static string AnglerQuestChat(bool turnIn = false)
 @@ -339,6 +_,10 @@
  			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  

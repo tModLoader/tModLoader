@@ -266,7 +266,7 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Adds every condition from Recipie.Condtions to Recipie.DecraftContions, checking for duplicates.
+	/// Adds every condition from Recipe.Condtions to Recipe.DecraftContions, checking for duplicates.
 	/// </summary>
 	public Recipe ApplyConditionsAsDecraftConditions()
 	{

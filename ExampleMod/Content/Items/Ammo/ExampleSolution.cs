@@ -97,9 +97,12 @@ namespace ExampleMod.Content.Items.Ammo
 						int type = Main.tile[k, l].TileType;
 						int wall = Main.tile[k, l].WallType;
 
-						// Convert all walls to ExampleWall
-						if (wall != 0) {
-							Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWall>();
+						// Convert all walls to ExampleWall (or ExampleWallUnsafe for SpiderUnsafe)
+						if (wall != 0 && wall != ModContent.WallType<ExampleWallUnsafe>()) {
+							if(wall == WallID.SpiderUnsafe)
+								Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWallUnsafe>();
+							else
+								Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWall>();
 							WorldGen.SquareWallFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}

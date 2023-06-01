@@ -360,18 +360,18 @@
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSUpgradeCSProj": "Обновить .csproj файл",
 		"MSUpgradeLangFiles": "Обновить .lang файлы до .hjson (будут сделаны резервные копии)",
-		// "MSRebuildRequired": "Rebuild Required",
-		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
+		"MSRebuildRequired": "Требуется рекомпиляция",
+		"MSLocalizationFilesChangedCantPublish": "В файлы локализации были внесены изменения,\nперед публикацией необходимо пересобрать мод.",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Управление опубликованными",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Информация о переносе модов",
-		"WikiLink": "Ознакомление с Wiki",
-		"ExampleModLink": "Ознакомление с примерами в Example Mod",
+		"WikiLink": "tModLoader Wiki",
+		"ExampleModLink": "Примеры в Example Mod",
 		"DocumentationLink": "Просмотр документации",
-		"DiscordLink": "Поиск помощи на Discord сервере",
+		"DiscordLink": "Помощь на Discord сервере",
 		"MSPortToLatest": "Запустить tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Разработка модов для tModLoader в Visual Studio теперь требует установки .NET 6 SDK. После установки вам может потребоваться перезапустить tModLoader. Легче всего это сделать, установив Visual Studio 2022.\n\nРуководство по переносу модов на новую версию на Github, описывает необходимые изменения в коде для переноса на 1.4. Там же описано, как использовать tModPorter для автоматического переноса большей части кода мода.",
 		"DownloadNetSDK": "Загрузить .NET SDK",
@@ -511,13 +511,13 @@
 		"TagsLang": "Локализация",
 		"TagsLangDescription": "Этот мод поддерживает несколько языков.",
 		"TagsGen": "Генерация мира",
-		"TagsGenDescription": "Изменяет алгоритмы генерации игрового мира (т.е. руда, биомы, новые структуры и другие элементы)."
+		"TagsGenDescription": "Изменяет алгоритмы генерации игрового мира (т.е. руда, биомы, новые структуры и другие элементы).",
 
 		// Info Display Pages
-		// "NextInfoAccPage": "Next Page",
-		// "PreviousInfoAccPage": "Previous Page",
-		// "FirstInfoAccPage": "Go To First Page",
-		// "LastInfoAccPage": "Go To Last Page"
+		"NextInfoAccPage": "Следующая страница",
+		"PreviousInfoAccPage": "Предыдущая страница",
+		"FirstInfoAccPage": "Перейти на первую страницу",
+		"LastInfoAccPage": "Перейти на последнюю страницу"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Увеличивает защиту на {0}",
@@ -759,7 +759,7 @@
 		"DownedB2B3HM": "После победы над Пожирателем миров, Мозгом Ктулху, Скелетроном или Стеной плоти",
 		"DaytimeNotFullMoon": "Днём во время любой фазы луны, кроме полнолуния",
 		"NightDayFullMoon": "Ночью или днём во время полнолуния",
-		"NoAteLoaf": "Когда игрок ещё не успел использовать предмет «Домашний хлеб»",
+		"NoAteLoaf": "Когда игрок ещё не успел использовать предмет «Хлеб мастера-пекаря»",
 		"BloodOrSun": "Во время кровавой луны или солнечного затмения",
 		"NotBloodOrSun": "Не во время кровавой луны или солнечного затмения",
 		"HardmodeFTW": "В хардмоде в генерации мира «For the Worthy», иначе в любое время",
@@ -767,7 +767,7 @@
 		"BloodMoonOrHardmode": "Во время кровавой луны или в любое время в хардмоде",
 		"WorldGenSilver": "Нужен мир с серебряной рудой",
 		"WorldGenTungsten": "Нужен мир с вольфрамовой рудой",
-		"NightAfterEvilOrHardmode": "Ночью после победы над Пожирателем миров или Мозгом Ктулху или в любое время в хардмоде",
+		"NightAfterEvilOrHardmode": "Ночью после победы над Пожирателем миров или Мозгом Ктулху, или в любое время в хардмоде",
 		"AnglerQuestsFinishedOver": "Когда игрок выполнил {0} или более заданий рыбака.",
 
 		"HappyEnoughForPylons": "Когда торговец достаточно счастлив для продажи пилонов",
@@ -802,6 +802,17 @@
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
+	},
+	"Config": {
+		"Color.Hue.Label": "Оттенок",
+		"Color.Saturation.Label": "Насыщенность",
+		"Color.Lightness.Label": "Яркость",
+		"Color.Red.Label": "Красный",
+		"Color.Green.Label": "Зелёный",
+		"Color.Blue.Label": "Синий",
+		"Color.Alpha.Label": "Прозрачность",
+		"Vector2.X.Label": "X",
+		"Vector2.Y.Label": "Y"
 	},
 	"Mods": {
 		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
@@ -894,7 +905,7 @@
 		"ModLoader.Items.xAqult_Body.Tooltip": "'Примиритесь, особенно с собственной душой'",
 		"ModLoader.Items.xAqult_Head.DisplayName": "Почётная тиара Catalyst",
 		"ModLoader.Items.xAqult_Head.Tooltip": "'Бесценная тиара из Эрфии'",
-		"ModLoader.Items.xAqult_Legs.DisplayName": "Catalyst's Stand",
+		"ModLoader.Items.xAqult_Legs.DisplayName": "Подставка Catalyst",
 		"ModLoader.Items.xAqult_Legs.Tooltip": "'Стойте спокойно и не забывайте о концентрации'",
 		"ModLoader.Items.xAqult_Lens.DisplayName": "Прозрение Catalyst",
 		"ModLoader.Items.xAqult_Lens.Tooltip": "'Гетерохромия!'",

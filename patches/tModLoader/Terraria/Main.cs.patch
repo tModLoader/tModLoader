@@ -344,7 +344,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,29 +_,64 @@
+@@ -829,29 +_,67 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -374,6 +374,9 @@
 +	/// If true, the tile will be drawn to be slightly more bright. 
 +	/// </summary>
  	public static bool[] tileShine2 = new bool[TileID.Count];
++	/// <summary>
++	/// If true, the wall is considered "safe" for enemy spawning purposes.
++	/// </summary>
  	public static bool[] wallHouse = new bool[WallID.Count];
  	public static bool[] wallDungeon = new bool[WallID.Count];
  	public static bool[] wallLight = new bool[WallID.Count];
@@ -418,9 +421,11 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -942,6 +_,13 @@
+@@ -941,7 +_,15 @@
+ 	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
++	/// <summary>If true, indicates that a tile has a flame texture that will draw over the tile. Modded tiles should not use this. <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> can be used to manually draw a flame texture.</summary>
  	public static bool[] tileFlame = new bool[TileID.Count];
 +
 +	/// <summary>
@@ -1516,8 +1521,12 @@
  					switch (num2) {
  						case 1:
  							flag = true;
-@@ -9942,6 +_,8 @@
- 					break;
+@@ -9939,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1585,15 +1594,15 @@
  		else if (flag15) {
  			newMusic = 80;
  		}
-@@ -9995,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 81;
+@@ -10001,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 80;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 80;
+ 		else if (flag9) {
+ 			newMusic = 82;
  		}
 @@ -10009,6 +_,9 @@
  		}
@@ -1661,8 +1670,12 @@
  					switch (num3) {
  						case 1:
  							flag = true;
-@@ -10377,6 +_,8 @@
- 					break;
+@@ -10374,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1720,15 +1733,15 @@
  		else if (flag15) {
  			newMusic = 57;
  		}
-@@ -10466,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 25;
+@@ -10472,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 90;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 56;
+ 		else if (flag9) {
+ 			newMusic = 35;
  		}
 @@ -10481,6 +_,9 @@
  		else if (flag13) {
@@ -2309,7 +2322,7 @@
 +		string[] tooltipNames = new string[num2];
 +
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
-+		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames);
++		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames, out int prefixlineIndex);
  		float num3 = (float)(int)mouseTextColor / 255f;
  		float num4 = num3;
  		int a = mouseTextColor;
@@ -2342,7 +2355,7 @@
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor);
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
 +		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
 +
  		int num12 = 0;
@@ -2422,7 +2435,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,91 @@
+@@ -16311,47 +_,92 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2475,8 +2488,9 @@
  	}
  
 -	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine)
-+	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames)
++	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames, out int prefixlineIndex)
  	{
++		prefixlineIndex = -1;
  		toolTipLine[0] = item.HoverName;
 +		toolTipNames[0] = "ItemName";
  		if (item.favorited) {
@@ -2814,7 +2828,7 @@
  					numLines++;
  				}
  
-@@ -16739,137 +_,163 @@
+@@ -16739,137 +_,165 @@
  						badPreFixLine[numLines] = true;
  
  					preFixLine[numLines] = true;
@@ -2954,6 +2968,8 @@
 +					toolTipNames[numLines] = "PrefixAccMeleeSpeed";
  					numLines++;
  				}
++
++				prefixlineIndex = numLines;
  			}
  
  			if (item.wornArmor && player[myPlayer].setBonus != "") {
@@ -4500,6 +4516,20 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
+@@ -35410,7 +_,13 @@
+ 			return;
+ 		}
+ 
++		if (hairstylesUpdatedForThisInteraction)
++			goto SkipUpdateUnlocks;
++
++		hairstylesUpdatedForThisInteraction = true;
+ 		Hairstyles.UpdateUnlocks();
++		SkipUpdateUnlocks:;
++
+ 		int count = Hairstyles.AvailableHairstyles.Count;
+ 		int num = screenHeight / 2 + 60;
+ 		int num2 = screenWidth / 2 - TextureAssets.HairStyleBack.Width() / 2;
 @@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
@@ -4542,6 +4572,15 @@
  				num -= 140;
  				num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
  				_settingsButtonIsPushedToSide = true;
+@@ -37010,6 +_,8 @@
+ 	{
+ 		if (hairWindow)
+ 			DrawHairWindow();
++		else
++			hairstylesUpdatedForThisInteraction = false;
+ 	}
+ 
+ 	private static void DrawInterface_20_MultiplayerPlayerNames()
 @@ -37182,6 +_,11 @@
  
  	private static void DrawInterface_17_DiagnoseNet()

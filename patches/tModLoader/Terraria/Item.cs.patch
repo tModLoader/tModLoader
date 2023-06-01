@@ -319,7 +319,7 @@
 +	/// <summary>
 +	/// The time span of using the item in ticks. This is independant of the time it takes for the item animation to finish. 
 +	/// <br/> Blocks use 10. Default value is 100.
-+	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L111">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
++	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
  	public int useTime;
 +
@@ -607,7 +607,7 @@
  	public int buffTime;
 +
 +	/// <summary>
-+	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
++	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int mountType = -1;
@@ -1891,6 +1891,35 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public bool CanShimmer()
+@@ -47668,7 +_,7 @@
+ 		if (type == 3461 || createTile == 139)
+ 			flag = true;
+ 
+-		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && !ItemID.Sets.CommonCoin[type])
++		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && ItemID.Sets.CoinLuckValue[type] <= 0)
+ 			return makeNPC > 0;
+ 
+ 		return true;
+@@ -47723,7 +_,9 @@
+ 	{
+ 		int shimmerEquivalentType = GetShimmerEquivalentType();
+ 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
+-		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
++		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
++			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
++			/*
+ 			switch (shimmerEquivalentType) {
+ 				case 72:
+ 					stack *= 100;
+@@ -47737,6 +_,8 @@
+ 					stack *= 1000000;
+ 					break;
+ 			}
++			*/
++			// patch context for CoinLuckValue
+ 
+ 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
+ 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];

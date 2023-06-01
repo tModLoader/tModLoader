@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool IsTileDangerous(int i, int j, Player player) => true;
 
-		// Because this tile does not use a TileObjectData, the correct item drop won't automatically be known, so we must use GetItemDrops to determine it. 
+		// Because this tile does not use a TileObjectData, and consequently does not have "real" tile styles, the correct tile style value can't be determined automatically. This means that the correct item won't automatically drop, so we must use GetItemDrops to calculate the tile style to determine the item drop. 
 		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			Tile t = Main.tile[i, j];
 			int style = t.TileFrameY / 18;

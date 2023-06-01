@@ -279,7 +279,7 @@
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
 +
 +	/// <summary>
-+	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
++	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
 +	/// </summary>
  	public int[] immune = new int[256];
  	public int directionY = 1;
@@ -303,7 +303,7 @@
  	public int aiAction;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <br/> If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic.
 +	/// <br/> Defaults to 0.
@@ -385,7 +385,7 @@
 +
 +	/// <summary>
 +	/// Indicates that this NPC is drawn at a specific layer in the render order. Must use in conjunction with <see cref="ModNPC.DrawBehind(int)"/>.
-+	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
 +	/// </summary>
  	public bool hide;
 +
@@ -429,7 +429,7 @@
 +
 +	/// <summary>
 +	/// Indicates that this NPC draws behind solid tiles.
-+	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
 +	/// </summary>
  	public bool behindTiles;
  	public bool lavaImmune;

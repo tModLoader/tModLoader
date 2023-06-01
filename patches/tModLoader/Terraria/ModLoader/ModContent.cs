@@ -331,6 +331,7 @@ public static class ModContent
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
 		RarityLoader.FinishSetup();
+		Config.ConfigManager.FinishSetup();
 
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
@@ -463,6 +464,7 @@ public static class ModContent
 		InfoDisplayLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
+		HairLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -526,6 +528,7 @@ public static class ModContent
 		BuffLoader.ResizeArrays();
 		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
+		HairLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {

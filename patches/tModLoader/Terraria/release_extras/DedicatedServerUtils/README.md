@@ -36,7 +36,7 @@ You can copy `enabled.json` and `install.txt` to your script directory and they 
 To run tModLoader, you just need to navigate to your install directory (`~/tModLoader` for GitHub, `~/Steam/steamapps/common/tModLoader` for SteamCMD, by default), and run `./start-tModLoaderServer.sh`. There is also a `--start` argument that will launch the game.
 
 #### Automatically Selecting A World
-If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/serverconfig.txt) and change the settings how you like. Additional options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)
+If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/serverconfig.txt) and change the settings how you like. Additional options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)
 
 ## Updating
 If an update for `manage-tModLoaderServer.sh` is available, a message will be printed letting you know one is available. It can be updated using `./manage-tModLoaderServer.sh --update-script`. An outdated script may contain bugs or lack features, so it is usually a good idea to update.
@@ -48,7 +48,7 @@ When using the Docker container, simply rebuild the container using `docker-comp
 ## Using The Docker Container
 To install and run the container:
 * Ensure `docker` and `docker-compose` are installed. They can be installed from your package manager or [Docker's Documentation](https://docs.docker.com/engine/install/)
-* Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Dockerfile).
+* Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Dockerfile).
 * Next to those docker files, create a folder named `Terraria`, and place `enabled.json`, [install.txt](#obtaining-install.txt), [serverconfig.txt](#automatically-selecting-a-world), your worlds, and any `.tmod` files inside.
 * Edit `docker-compose.yml` with your GID and UID. These can be found by running `id`.
 * Run `docker-compose build`

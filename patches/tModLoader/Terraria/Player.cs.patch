@@ -518,7 +518,7 @@
 +	*/
 +	public StatModifier arrowDamage = StatModifier.Default;
 +	public StatModifier bulletDamage = StatModifier.Default;
-+	public StatModifier rocketDamage = StatModifier.Default;
++	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage, Shroomite Helmet changed to use this.
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
 +	/*
@@ -2255,6 +2255,15 @@
  			moveSpeed += 0.05f;
  		}
  
+@@ -10139,7 +_,7 @@
+ 
+ 		if (armorPiece.type == 1548) {
+ 			rangedCrit += 5;
+-			rocketDamage *= 1.15f;
++			specialistDamage *= 1.15f; // rocketDamage renamed.
+ 		}
+ 
+ 		if (armorPiece.type == 1549) {
 @@ -10365,14 +_,17 @@
  			minionDamage += 0.11f;
  		}
@@ -2836,7 +2845,7 @@
 +		*/
 +		arrowDamage = StatModifier.Default;
 +		bulletDamage = StatModifier.Default;
-+		rocketDamage = StatModifier.Default;
++		specialistDamage = StatModifier.Default;
 +
  		coolWhipBuff = false;
  		yoraiz0rEye = 0;
@@ -4205,6 +4214,15 @@
  			if (b2 != -1 && front == -1) {
  				front = b2;
  				cFront = cBody;
+@@ -27785,7 +_,7 @@
+ 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+ 				front = includeCapeFrontAndBackInfo.frontCape;
+ 				cFront = cBody;
+-				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
++				int backCape = includeCapeFrontAndBackInfo.backCape;
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
+ 					backpack = backCape;
+ 					cBackpack = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -4280,6 +4298,15 @@
  		}
  		else if (pulley) {
  			if (pulleyDir == 2)
+@@ -28252,7 +_,7 @@
+ 			else
+ 				bodyFrame.Y = bodyFrame.Height * 2;
+ 		}
+-		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
++		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(inventory[selectedItem].type)]/*Allow biome torches underwater.*/) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
+ 			bodyFrame.Y = bodyFrame.Height * 3;
+ 		}
+ 		else if (flag3 && inventory[selectedItem].holdStyle == 2 && (!wet || !inventory[selectedItem].noWet)) {
 @@ -28381,6 +_,10 @@
  			reference9.Y = 0;
  		}
@@ -5024,24 +5051,68 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -30833,8 +_,17 @@
+@@ -30778,15 +_,15 @@
+ 			}
+ 
+ 			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
+-			ushort num3 = (ushort)HeldItem.createTile;
++			int num3 = HeldItem.createTile;
+ 			int num4 = HeldItem.placeStyle;
+ 			if (UsingBiomeTorches && num3 == 4)
+-				num4 = BiomeTorchPlaceStyle(num4);
++				BiomeTorchPlaceStyle(ref num3, ref num4);
+ 
+ 			if (UsingBiomeTorches && num3 == 215)
+-				num4 = BiomeCampfirePlaceStyle(num4);
++				BiomeCampfirePlaceStyle(ref num3, ref num4);
+ 
+-			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, num3, num4)) {
++			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, (ushort)num3, num4)) {
+ 				canUse = false;
+ 				NetMessage.SendData(17, -1, -1, null, 21, tileTargetX, tileTargetY, (int)num3, num4);
+ 				ApplyItemTime(HeldItem);
+@@ -30803,10 +_,10 @@
+ 		int createTile = HeldItem.createTile;
+ 		int num = HeldItem.placeStyle;
+ 		if (UsingBiomeTorches && createTile == 4)
+-			num = BiomeTorchPlaceStyle(num);
++			BiomeTorchPlaceStyle(ref createTile, ref num);
+ 
+ 		if (UsingBiomeTorches && createTile == 215)
+-			num = BiomeCampfirePlaceStyle(num);
++			BiomeCampfirePlaceStyle(ref createTile, ref num);
+ 
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
+ 		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
+@@ -30833,11 +_,19 @@
  		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
  			return tile.frameY != num * 18;
  
-+		if (TileID.Sets.Torch[tile.type] && TileID.Sets.Torch[createTile]) {
-+			if (tile.frameY == num * 22)
-+				return tile.type != createTile;
-+
-+			return true;
-+		}
-+
 +		/*
  		if (tile.type == 4 && tile.type == createTile)
  			return tile.frameY != num * 22;
 +		*/
++		if (TileID.Sets.Torch[tile.type] && TileID.Sets.Torch[createTile])
++			return tile.type != createTile || tile.frameY != num * 22;
  
++		/*
  		if (tile.type == 215 && tile.type == createTile)
  			return tile.frameX / 54 != num;
++		*/
++		if (TileID.Sets.Campfire[tile.type] && TileID.Sets.Campfire[createTile])
++			return tile.type != createTile || tile.frameX / 54 != num;
+ 
+ 		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
+ 			if (tile.frameX / 36 == num)
+@@ -30938,7 +_,7 @@
+ 		}
+ 		else {
+ 			if (UsingBiomeTorches && tileToCreate == 4 && num == 0)
+-				num = BiomeTorchPlaceStyle(num);
++				BiomeTorchPlaceStyle(ref tileToCreate, ref num);
+ 
+ 			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
+ 		}
 @@ -30964,8 +_,12 @@
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
@@ -5055,6 +5126,72 @@
  		}
  
  		return data;
+@@ -30981,7 +_,10 @@
+ 		}
+ 	}
+ 
++	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
+ 	public int BiomeTorchPlaceStyle(int style)
++	*/
++	public int BiomeTorchPlaceStyle(ref int type, ref int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 0)
+ 			return style;
+@@ -31011,6 +_,12 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 16;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeTorchItemType.value];
++			type = item.createTile;
++			style = item.placeStyle;
++		}
++
+ 		return style;
+ 	}
+ 
+@@ -31044,10 +_,17 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 4383;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			style = CurrentSceneEffect.biomeTorchItemType.value;
++		}
++
+ 		return style;
+ 	}
+ 
++	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
+ 	public int BiomeCampfirePlaceStyle(int style)
++	*/
++	public int BiomeCampfirePlaceStyle(ref int type, ref int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 0)
+ 			return style;
+@@ -31077,6 +_,12 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 8;
+ 
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeCampfireItemType.value];
++			type = item.createTile;
++			style = item.placeStyle;
++		}
++
+ 		return style;
+ 	}
+ 
+@@ -31110,6 +_,10 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			itemType = 4689;
+ 
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			itemType = CurrentSceneEffect.biomeCampfireItemType.value;
++		}
++
+ 		return itemType;
+ 	}
+ 
 @@ -31253,7 +_,9 @@
  				int num7 = FindItem(849);
  				if (num7 > -1 && WorldGen.PlaceActuator(num5, num6)) {
@@ -5525,6 +5662,15 @@
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
  		}
+@@ -33782,7 +_,7 @@
+ 		overrideCanPlace = null;
+ 		forcedRandom = null;
+ 		if (UsingBiomeTorches && tileToCreate == 215 && previewPlaceStyle == 0)
+-			previewPlaceStyle = BiomeCampfirePlaceStyle(previewPlaceStyle);
++			BiomeCampfirePlaceStyle(ref tileToCreate, ref previewPlaceStyle);
+ 
+ 		if (targetTile != null && targetTile.active()) {
+ 			ushort type = targetTile.type;
 @@ -33820,13 +_,18 @@
  			_spawnMuramasaCut = true;
  
@@ -6169,6 +6315,33 @@
  		for (int i = 0; i < 1000; i++) {
  			Projectile projectile = Main.projectile[i];
  			if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
+@@ -38469,12 +_,17 @@
+ 	private void ItemCheck_EmitHeldItemLight(Item sItem)
+ 	{
+ 		Vector2? handPosition = HandPosition;
+-		if (((ItemID.Sets.Torches[sItem.type] && !wet) || ItemID.Sets.WaterTorches[sItem.type]) && !pulley && !happyFunTorchTime) {
++		if (((ItemID.Sets.Torches[sItem.type] && !wet) || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(sItem.type)]) && !pulley && !happyFunTorchTime) {
+ 			float R = 1f;
+ 			float G = 0.95f;
+ 			float B = 0.8f;
+ 			int num = 0;
+ 			int num2 = BiomeTorchHoldStyle(sItem.type);
++			if (num2 >= ItemID.Count) {
++				// This could be a different hook, but then modders would have to move code. TorchID could be used, but it would be a lot of work managing another modded ID and would limit torch lighting and dust behavior to the vanilla pattern.
++				ItemLoader.GetItem(num2).HoldItem(this);
++				goto PostVanillaTorchLight;
++			}
+ 			if (num2 == 523)
+ 				num = 8;
+ 			else if (num2 == 974)
+@@ -38552,6 +_,7 @@
+ 				Lighting.AddLight(RotatedRelativePoint(new Vector2(itemLocation.X + 12f + velocity.X, itemLocation.Y - 14f + velocity.Y)), R, G, B);
+ 			}
+ 		}
++		PostVanillaTorchLight:
+ 
+ 		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
+ 			int maxValue2 = 20;
 @@ -38777,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)
@@ -6182,6 +6355,15 @@
  		if (isPettingAnimal) {
  			int num = miscCounter % 14 / 7;
  			CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -38865,7 +_,7 @@
+ 					if (Main.tile[num5, num6] == null)
+ 						Main.tile[num5, num6] = new Tile();
+ 
+-					if (Main.tile[num5, num6].active() && Main.tile[num5, num6].type == 215 && Main.tile[num5, num6].frameY < 54) {
++					if (Main.tile[num5, num6].active() && TileID.Sets.Campfire[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameY < 54) {
+ 						miscTimer++;
+ 						if (Main.rand.Next(5) == 0)
+ 							miscTimer++;
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
@@ -6316,6 +6498,17 @@
  		if (whoAmI == Main.myPlayer && gravDir == -1f) {
  			mount.Dismount(this);
  		}
+@@ -40626,6 +_,10 @@
+ 		worldY = i * 16;
+ 	}
+ 
++	/// <summary>
++	/// Kills <see cref="Projectile.sentry"/> projectiles exceeding the players current <see cref="maxTurrets"/>. The oldest projectiles, determined by <see cref="Projectile.timeLeft"/>, are killed. <br/>
++	/// Call this method immediately after spawning a <see cref="Projectile.sentry"/> projectile.<br/>
++	/// </summary>
+ 	public void UpdateMaxTurrets()
+ 	{
+ 		if (Main.myPlayer != whoAmI)
 @@ -40853,8 +_,14 @@
  		}
  	}
@@ -6382,8 +6575,8 @@
 +		if (AmmoID.Sets.IsBullet[sItem.useAmmo])
 +			modifier = modifier.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[sItem.useAmmo])
-+			modifier = modifier.CombineWith(rocketDamage);
++		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.IsRangedSpecialistWeapon[sItem.type])
++			modifier = modifier.CombineWith(specialistDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +
@@ -6547,8 +6740,8 @@
 +		if (AmmoID.Sets.IsBullet[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(rocketDamage);
++		if (AmmoID.Sets.IsSpecialist[item.ammo])
++			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
 +		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
 +		ammoDamage.Base = 0;
@@ -7035,11 +7228,13 @@
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
-@@ -42002,7 +_,7 @@
+@@ -42001,8 +_,8 @@
+ 		fileIO.Write(newPlayer.name);
  		fileIO.Write(newPlayer.difficulty);
  		fileIO.Write(playerFile.GetPlayTime().Ticks);
- 		fileIO.Write(newPlayer.hair);
+-		fileIO.Write(newPlayer.hair);
 -		fileIO.Write(newPlayer.hairDye);
++		PlayerIO.WriteVanillaHair(newPlayer.hair, fileIO);
 +		PlayerIO.WriteByteVanillaHairDye(newPlayer.hairDye, fileIO);
  		BitsByte bitsByte = (byte)0;
  		for (int i = 0; i < 8; i++) {
@@ -7148,33 +7343,6 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
-@@ -42216,22 +_,22 @@
- 	{
- 		Item mouseItem = new Item();
- 		if (_temporaryItemSlots[0] != null)
--			mouseItem = _temporaryItemSlots[0].Clone();
-+			_temporaryItemSlots[0].CopyNetStateTo(mouseItem);
- 
- 		Main.mouseItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[1] != null)
--			mouseItem = _temporaryItemSlots[1].Clone();
-+			_temporaryItemSlots[1].CopyNetStateTo(mouseItem);
- 
- 		Main.CreativeMenu.SetItembyIndex(mouseItem, 0);
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[2] != null)
--			mouseItem = _temporaryItemSlots[2].Clone();
-+			_temporaryItemSlots[2].CopyNetStateTo(mouseItem);
- 
- 		Main.guideItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[3] != null)
--			mouseItem = _temporaryItemSlots[3].Clone();
-+			_temporaryItemSlots[3].CopyNetStateTo(mouseItem);
- 
- 		Main.reforgeItem = mouseItem;
- 		CreativePowerManager.Instance.ApplyLoadedDataToPlayer(this);
 @@ -42272,6 +_,10 @@
  
  		Player player = new Player();
