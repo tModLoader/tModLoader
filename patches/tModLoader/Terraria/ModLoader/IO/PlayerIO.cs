@@ -41,10 +41,7 @@ internal static class PlayerIO
 
 	internal static TagCompound SaveData(Player player)
 	{
-		player._temporaryItemSlots[0] = Main.mouseItem;
-		player._temporaryItemSlots[1] = Main.CreativeMenu.GetItemByIndex(0);
-		player._temporaryItemSlots[2] = Main.guideItem;
-		player._temporaryItemSlots[3] = Main.reforgeItem;
+		var _temporaryItemSlots = new[] { Main.mouseItem, Main.CreativeMenu.GetItemByIndex(0), Main.guideItem, Main.reforgeItem }; // Don't use player._temporaryItemSlots directly, it expects nulls. It also isn't what is saved in vanilla, which is relevant with Player.SerializedClone. It is only what is used to load in data.
 
 		return new TagCompound {
 			["armor"] = SaveInventory(player.armor),
@@ -57,7 +54,7 @@ internal static class PlayerIO
 			["bank2"] = SaveInventory(player.bank2.item),
 			["bank3"] = SaveInventory(player.bank3.item),
 			["bank4"] = SaveInventory(player.bank4.item),
-			["temporaryItemSlots"] = SaveInventory(player._temporaryItemSlots),
+			["temporaryItemSlots"] = SaveInventory(_temporaryItemSlots),
 			["hairDye"] = SaveHairDye(player.hairDye),
 			["research"] = SaveResearch(player),
 			["modData"] = SaveModData(player),

@@ -4215,6 +4215,15 @@
  			if (b2 != -1 && front == -1) {
  				front = b2;
  				cFront = cBody;
+@@ -27785,7 +_,7 @@
+ 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+ 				front = includeCapeFrontAndBackInfo.frontCape;
+ 				cFront = cBody;
+-				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
++				int backCape = includeCapeFrontAndBackInfo.backCape;
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
+ 					backpack = backCape;
+ 					cBackpack = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -7335,33 +7344,6 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
-@@ -42216,22 +_,22 @@
- 	{
- 		Item mouseItem = new Item();
- 		if (_temporaryItemSlots[0] != null)
--			mouseItem = _temporaryItemSlots[0].Clone();
-+			_temporaryItemSlots[0].CopyNetStateTo(mouseItem);
- 
- 		Main.mouseItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[1] != null)
--			mouseItem = _temporaryItemSlots[1].Clone();
-+			_temporaryItemSlots[1].CopyNetStateTo(mouseItem);
- 
- 		Main.CreativeMenu.SetItembyIndex(mouseItem, 0);
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[2] != null)
--			mouseItem = _temporaryItemSlots[2].Clone();
-+			_temporaryItemSlots[2].CopyNetStateTo(mouseItem);
- 
- 		Main.guideItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[3] != null)
--			mouseItem = _temporaryItemSlots[3].Clone();
-+			_temporaryItemSlots[3].CopyNetStateTo(mouseItem);
- 
- 		Main.reforgeItem = mouseItem;
- 		CreativePowerManager.Instance.ApplyLoadedDataToPlayer(this);
 @@ -42272,6 +_,10 @@
  
  		Player player = new Player();
