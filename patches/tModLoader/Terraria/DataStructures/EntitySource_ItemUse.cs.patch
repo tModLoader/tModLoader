@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_ItemUse.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_ItemUse.cs
-@@ -1,13 +_,31 @@
+@@ -1,13 +_,38 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
@@ -17,6 +17,14 @@
 +/// </summary>
 +public interface IEntitySource_WithStatsFromItem
 +{
++	/// <summary>
++	/// The Player using the Item. Equal to <see cref="EntitySource_Parent.Entity"/>
++	/// </summary>
++	public Player Player { get; }
++
++	/// <summary>
++	/// The item being used
++	/// </summary>
 +	public Item Item { get; }
 +}
 +
@@ -28,9 +36,8 @@
 +/// </summary>
 +public class EntitySource_ItemUse : EntitySource_Parent, IEntitySource_WithStatsFromItem
 +{
-+	/// <summary>
-+	/// The item being used
-+	/// </summary>
++	public Player Player => (Player)Entity;
++
 +	public Item Item { get; }
 +
 +	public EntitySource_ItemUse(Player player, Item item, string? context = null) : base(player, context)
