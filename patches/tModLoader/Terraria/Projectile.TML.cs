@@ -140,7 +140,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 			}
 		}
 		else if (spawnSource is EntitySource_Parent { Entity: Projectile parentProjectile }) {
-			// This doesn't offer enough control, there's no way to determine if the parent originalDamage property should ovewrite the child or not.
+			// This doesn't offer enough control, there's no way to determine if the parent originalDamage property should overwrite the child or not.
 			// In the case of parent.originalDamage = item.damage, it could be helpful, but the caller of NewProjectile could also just pass originalDamage as the dmg param and get the same effective result.
 			// In general, it is the responsibility of the creator of a minion or ContinuouslyUpdateDamage projectile to configure the child correctly.
 			// originalDamage = parentProjectile.originalDamage;
