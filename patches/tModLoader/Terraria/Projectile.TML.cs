@@ -87,13 +87,13 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 
 	/// <summary>
 	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamage"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
+	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
 	/// </summary>
 	public int OriginalCritChance { get; set; }
 
 	/// <summary>
 	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamage"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
+	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
 	/// </summary>
 	public int OriginalArmorPenetration { get; set; }
 
@@ -103,14 +103,17 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// 
 	/// No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
 	/// </summary>
-	public bool ContinuouslyUpdateDamage { get; set; }
+	public bool ContinuouslyUpdateDamageStats { get; set; }
+
+	[Obsolete("Use ContinuouslyUpdateDamageStats", error: true)]
+	public bool ContinuouslyUpdateDamage { get => ContinuouslyUpdateDamageStats; set => ContinuouslyUpdateDamageStats = value; }
 
 	/// <summary>
 	/// Transfers stat modifiers from the spawn source to the projectile. <br/>
 	/// Adds <see cref="CritChance"/> and <see cref="ArmorPenetration"/> bonuses from players (<see cref="EntitySource_Parent"/>), weapons (<see cref="EntitySource_ItemUse"/>)<br/>
 	/// If the source is a <see cref="EntitySource_Parent"/> projectile, <c>CritChance</c> and <c>ArmorPenetration</c> from the parent will be added, in order to transfer the original item/player bonus values.<br/><br/>
 	/// <br/>
-	/// To support minions, sentries and <see cref="ContinuouslyUpdateDamage"/>, <see cref="OriginalCritChance"/> and <see cref="OriginalArmorPenetration"/> are also copied from item sources and parent projectiles.
+	/// To support minions, sentries and <see cref="ContinuouslyUpdateDamageStats"/>, <see cref="OriginalCritChance"/> and <see cref="OriginalArmorPenetration"/> are also copied from item sources and parent projectiles.
 	/// </summary>
 	/// <param name="spawnSource"></param>
 	public void ApplyStatsFromSource(IEntitySource spawnSource)
@@ -125,7 +128,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 				CritChance += player.GetWeaponCrit(item);
 				ArmorPenetration += player.GetWeaponArmorPenetration(item);
 
-				// Apply original stats, so that ContinuallyUpdateDamage can correctly scale the base values
+				// Apply original stats, so that ContinuouslyUpdateDamageStats can correctly scale the base values
 				// originalDamage is set to item.damage as a convenience.
 				if (item.damage >= 0)
 					originalDamage = item.damage;
@@ -142,7 +145,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		else if (spawnSource is EntitySource_Parent { Entity: Projectile parentProjectile }) {
 			// This doesn't offer enough control, there's no way to determine if the parent originalDamage property should overwrite the child or not.
 			// In the case of parent.originalDamage = item.damage, it could be helpful, but the caller of NewProjectile could also just pass originalDamage as the dmg param and get the same effective result.
-			// In general, it is the responsibility of the creator of a minion or ContinuouslyUpdateDamage projectile to configure the child correctly.
+			// In general, it is the responsibility of the creator of a minion or ContinuouslyUpdateDamageStats projectile to configure the child correctly.
 			// originalDamage = parentProjectile.originalDamage;
 
 			// To ensure snapshotted bonuses are passed on from parent to child, we just stack any parent CritChance/ArmorPenetration with the child default values

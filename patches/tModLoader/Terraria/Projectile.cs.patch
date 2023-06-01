@@ -407,7 +407,7 @@
 +		ArmorPenetration = 0;
 +		CritChance = 0;
 +		WhipSettings = default;
-+		ContinuouslyUpdateDamage = false;
++		ContinuouslyUpdateDamageStats = false;
 +		nameOverride = null;
 +
  		ownerHitCheckDistance = 1000f;
@@ -1172,7 +1172,7 @@
 +			/*
  			if (numUpdates == -1 && (minion || sentry)) {
 +			*/
-+			if ((minion || sentry || ContinuouslyUpdateDamage)) {
++			if ((minion || sentry || ContinuouslyUpdateDamageStats)) {
  				Player player = Main.player[owner];
 +
 +				/*
