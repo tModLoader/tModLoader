@@ -71,12 +71,12 @@ namespace ExampleMod.Content.NPCs
 		public override void AI() {
 			if (NPC.wet) {
 				if (NPC.honeyWet) { // Removes the effects of honey's fall rate making the NPC fall normally in honey
-					NPC.Gravity /= NPC.GravityWetMultipliers[1];
-					NPC.MaxFallSpeed /= NPC.MaxFallSpeedWetMultipliers[1];
+					NPC.GravityMultiplier /= NPC.GravityWetMultipliers[LiquidID.Honey];
+					NPC.MaxFallSpeedMultiplier /= NPC.MaxFallSpeedWetMultipliers[LiquidID.Honey];
 				}
-				else { // Removes water falls speed effects, then adds honey falls speed effects, making the NPC fall at the honey rate in water
-					NPC.Gravity *= NPC.GravityWetMultipliers[1] / NPC.GravityWetMultipliers[0];
-					NPC.MaxFallSpeed *= NPC.MaxFallSpeedWetMultipliers[1] / NPC.MaxFallSpeedWetMultipliers[0];
+				else if (!NPC.lavaWet && !NPC.shimmerWet) { // Removes water falls speed effects, then adds honey falls speed effects, making the NPC fall at the honey rate in water
+					NPC.GravityMultiplier *= NPC.GravityWetMultipliers[LiquidID.Honey] / NPC.GravityWetMultipliers[LiquidID.Water];
+					NPC.MaxFallSpeedMultiplier *= NPC.MaxFallSpeedWetMultipliers[LiquidID.Honey] / NPC.MaxFallSpeedWetMultipliers[LiquidID.Water];
 				}
 			}
 		}

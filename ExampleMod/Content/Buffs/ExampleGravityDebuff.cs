@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Buffs
 		public int Counter;
 		public override void Update(NPC npc, ref int buffIndex) {
 			Counter++;
-			npc.Gravity *= MathF.Cos(Counter/100);
+			npc.GravityMultiplier *= MathF.Cos(Counter/100);
 		}
 	}
 }
