@@ -52,12 +52,12 @@
 +	public ShimmerTransformation(int targetID, IEnumerable<ShimmerResult> results)
 +	{
 +		TargetID = targetID;
-+		Results = (ShimmerResult[])results;
++		Results = results.ToArray();
 +	}
 +
 +	public ShimmerTransformation(int targetID, IEnumerable<ShimmerResult> results, IEnumerable<Condition> conditions) : this(targetID, results)
 +	{
-+		Conditions = (List<Condition>)conditions;
++		Conditions = conditions.ToList();
 +	}
 +
 +	/// <summary>
@@ -115,7 +115,7 @@
 +	public static void AddAdvancedNPCShimmerTransformation(NPCShimmerTransformation transformation)
 +	{
 +		if (NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID] >= 0) {
-+			AdvancedShimmerSets[NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID]] = (NPCShimmerTransformation[])AdvancedShimmerSets[NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID]].Append(transformation);
++			AdvancedShimmerSets[NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID]] = AdvancedShimmerSets[NPCID.Sets.ShimmerAdvancedTransformToEntity[transformation.TargetID]].Append(transformation).ToArray();
 +		}
 +		else {
 +			AdvancedShimmerSets.Add(new NPCShimmerTransformation[] { transformation });

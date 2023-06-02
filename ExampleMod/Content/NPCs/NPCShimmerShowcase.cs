@@ -28,7 +28,6 @@ namespace ExampleMod.Content.NPCs
 			// 3: if an early game boss has been defeated then spawn the bride
 			// 4: if all other conditions fail, transform into a skeleton
 
-
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method and is slightly different from the next items
 
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
@@ -45,7 +44,6 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsLateGame, new[] { Condition.DownedPlantera }));
-
 
 			// Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns one the bride
 			ShimmerResult[] shimmerResultsEarlyGame = new ShimmerResult[] {
