@@ -86,44 +86,67 @@ $(document).ready(function(){initNavTree('class_entity_source___item_use.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_entity_source___item_use-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EntitySource_ItemUse Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Inherits <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>Use the interface, <a class="el" href="interface_i_entity_source___with_stats_from_item.html" title="Used along with EntitySource_Parent to indicate that stats from the item should be transferred to spa...">IEntitySource_WithStatsFromItem</a> instead when checking entity sources in <code>OnSpawn</code> <br  />
+<br  />
+  
+ <a href="class_entity_source___item_use.html#details">More...</a></p>
 
-<p>Inherited by <a class="el" href="class_entity_source___item_use___with_ammo.html">EntitySource_ItemUse_WithAmmo</a>.</p>
+<p>Inherits <a class="el" href="class_entity_source___parent.html">EntitySource_Parent</a>, and <a class="el" href="interface_i_entity_source___with_stats_from_item.html">IEntitySource_WithStatsFromItem</a>.</p>
+
+<p>Inherited by <a class="el" href="class_entity_source___item_use___on_hurt.html">EntitySource_ItemUse_OnHurt</a>, and <a class="el" href="class_entity_source___item_use___with_ammo.html">EntitySource_ItemUse_WithAmmo</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac69c694e7fd0faff208c4981af32fbb8"><td class="memItemLeft" align="right" valign="top"><a id="ac69c694e7fd0faff208c4981af32fbb8" name="ac69c694e7fd0faff208c4981af32fbb8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_ItemUse</b> (<a class="el" href="class_entity.html">Entity</a> entity, <a class="el" href="class_item.html">Item</a> item, string? context=null)</td></tr>
-<tr class="separator:ac69c694e7fd0faff208c4981af32fbb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ad097bb0712ef427b0764d7efe3254134"><td class="memItemLeft" align="right" valign="top"><a id="ad097bb0712ef427b0764d7efe3254134" name="ad097bb0712ef427b0764d7efe3254134"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b></td></tr>
-<tr class="separator:ad097bb0712ef427b0764d7efe3254134"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb7ab30af06b78563dd5d113032bbb39"><td class="memItemLeft" align="right" valign="top"><a id="afb7ab30af06b78563dd5d113032bbb39" name="afb7ab30af06b78563dd5d113032bbb39"></a>
-readonly <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item</b></td></tr>
-<tr class="separator:afb7ab30af06b78563dd5d113032bbb39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae35c84077a048ff2c391dc13dcd36f1a"><td class="memItemLeft" align="right" valign="top"><a id="ae35c84077a048ff2c391dc13dcd36f1a" name="ae35c84077a048ff2c391dc13dcd36f1a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_ItemUse</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, string? context=null)</td></tr>
+<tr class="separator:ae35c84077a048ff2c391dc13dcd36f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_entity_source___parent"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_entity_source___parent')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_entity_source___parent.html">EntitySource_Parent</a></td></tr>
+<tr class="memitem:ad8506c6e54301919a87a786ba1df7d24 inherit pub_methods_class_entity_source___parent"><td class="memItemLeft" align="right" valign="top"><a id="ad8506c6e54301919a87a786ba1df7d24" name="ad8506c6e54301919a87a786ba1df7d24"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_Parent</b> (<a class="el" href="class_entity.html">Entity</a> entity, string? context=null)</td></tr>
+<tr class="separator:ad8506c6e54301919a87a786ba1df7d24 inherit pub_methods_class_entity_source___parent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:aef829699bcfc50b727b2061e8b66cefc"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___item_use.html#aef829699bcfc50b727b2061e8b66cefc">Context</a><code> [get]</code></td></tr>
-<tr class="separator:aef829699bcfc50b727b2061e8b66cefc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c651c8a0564a3ca07ee11f8169199c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___item_use.html#a7c651c8a0564a3ca07ee11f8169199c7">Item</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7c651c8a0564a3ca07ee11f8169199c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The item being used  <a href="class_entity_source___item_use.html#a7c651c8a0564a3ca07ee11f8169199c7">More...</a><br /></td></tr>
+<tr class="separator:a7c651c8a0564a3ca07ee11f8169199c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a065c08bcdf98964f14afebf7efec2dc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___item_use.html#a065c08bcdf98964f14afebf7efec2dc8">Player</a><code> [get]</code></td></tr>
+<tr class="memdesc:a065c08bcdf98964f14afebf7efec2dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_player.html">Player</a> using the <a class="el" href="class_item.html">Item</a>. Equal to <a class="el" href="class_entity_source___parent.html#ad36c00db5b8800b07a05796e2d59cf81" title="The entity which is the source of the effect or action. In many cases, it makes sense to consider buf...">EntitySource_Parent.Entity</a>  <a href="class_entity_source___item_use.html#a065c08bcdf98964f14afebf7efec2dc8">More...</a><br /></td></tr>
+<tr class="separator:a065c08bcdf98964f14afebf7efec2dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_entity_source___parent"><td colspan="2" onclick="javascript:toggleInherit('properties_class_entity_source___parent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_entity_source___parent.html">EntitySource_Parent</a></td></tr>
+<tr class="memitem:a4703640646efe004e9d86e2ff89890fc inherit properties_class_entity_source___parent"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___parent.html#a4703640646efe004e9d86e2ff89890fc">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4703640646efe004e9d86e2ff89890fc inherit properties_class_entity_source___parent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="class_entity_source___parent.html#a4703640646efe004e9d86e2ff89890fc">More...</a><br /></td></tr>
+<tr class="separator:a4703640646efe004e9d86e2ff89890fc inherit properties_class_entity_source___parent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36c00db5b8800b07a05796e2d59cf81 inherit properties_class_entity_source___parent"><td class="memItemLeft" align="right" valign="top"><a id="ad36c00db5b8800b07a05796e2d59cf81" name="ad36c00db5b8800b07a05796e2d59cf81"></a>
+<a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get]</code></td></tr>
+<tr class="memdesc:ad36c00db5b8800b07a05796e2d59cf81 inherit properties_class_entity_source___parent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity which is the source of the effect or action. In many cases, it makes sense to consider buffs or effects applied to the parent entity, and make changes to the spawned entity. <br /></td></tr>
+<tr class="separator:ad36c00db5b8800b07a05796e2d59cf81 inherit properties_class_entity_source___parent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_source"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source.html">IEntitySource</a></td></tr>
-<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top"><a id="ac17ad5ab7ad9bac426721c8278b6ac37" name="ac17ad5ab7ad9bac426721c8278b6ac37"></a>
-string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> [get]</code></td></tr>
+<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">More...</a><br /></td></tr>
 <tr class="separator:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_i_entity_source___with_stats_from_item"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source___with_stats_from_item')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source___with_stats_from_item.html">IEntitySource_WithStatsFromItem</a></td></tr>
+<tr class="memitem:a51a58148654892cfdcb30fd98d0d3643 inherit properties_interface_i_entity_source___with_stats_from_item"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643">Item</a><code> [get]</code></td></tr>
+<tr class="memdesc:a51a58148654892cfdcb30fd98d0d3643 inherit properties_interface_i_entity_source___with_stats_from_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">The item being used  <a href="interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643">More...</a><br /></td></tr>
+<tr class="separator:a51a58148654892cfdcb30fd98d0d3643 inherit properties_interface_i_entity_source___with_stats_from_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac78b6c96e0ef8fda869f6271ace0bd32 inherit properties_interface_i_entity_source___with_stats_from_item"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32">Player</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac78b6c96e0ef8fda869f6271ace0bd32 inherit properties_interface_i_entity_source___with_stats_from_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_player.html">Player</a> using the <a class="el" href="class_item.html">Item</a>. Equal to <a class="el" href="class_entity_source___parent.html#ad36c00db5b8800b07a05796e2d59cf81" title="The entity which is the source of the effect or action. In many cases, it makes sense to consider buf...">EntitySource_Parent.Entity</a>  <a href="interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32">More...</a><br /></td></tr>
+<tr class="separator:ac78b6c96e0ef8fda869f6271ace0bd32 inherit properties_interface_i_entity_source___with_stats_from_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="aef829699bcfc50b727b2061e8b66cefc" name="aef829699bcfc50b727b2061e8b66cefc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef829699bcfc50b727b2061e8b66cefc">&#9670;&nbsp;</a></span>Context</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Use the interface, <a class="el" href="interface_i_entity_source___with_stats_from_item.html" title="Used along with EntitySource_Parent to indicate that stats from the item should be transferred to spa...">IEntitySource_WithStatsFromItem</a> instead when checking entity sources in <code>OnSpawn</code> <br  />
+<br  />
+ </p>
+<p >Used when a player uses an item or an accessory. </p>
+</div><h2 class="groupheader">Property Documentation</h2>
+<a id="a7c651c8a0564a3ca07ee11f8169199c7" name="a7c651c8a0564a3ca07ee11f8169199c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c651c8a0564a3ca07ee11f8169199c7">&#9670;&nbsp;</a></span>Item</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,7 +155,7 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string? EntitySource_ItemUse.Context</td>
+          <td class="memname"><a class="el" href="class_item.html">Item</a> EntitySource_ItemUse.Item</td>
         </tr>
       </table>
   </td>
@@ -142,7 +165,35 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>The item being used </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643">IEntitySource_WithStatsFromItem</a>.</p>
+
+</div>
+</div>
+<a id="a065c08bcdf98964f14afebf7efec2dc8" name="a065c08bcdf98964f14afebf7efec2dc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a065c08bcdf98964f14afebf7efec2dc8">&#9670;&nbsp;</a></span>Player</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_player.html">Player</a> EntitySource_ItemUse.Player</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The <a class="el" href="class_player.html">Player</a> using the <a class="el" href="class_item.html">Item</a>. Equal to <a class="el" href="class_entity_source___parent.html#ad36c00db5b8800b07a05796e2d59cf81" title="The entity which is the source of the effect or action. In many cases, it makes sense to consider buf...">EntitySource_Parent.Entity</a> </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32">IEntitySource_WithStatsFromItem</a>.</p>
 
 </div>
 </div>

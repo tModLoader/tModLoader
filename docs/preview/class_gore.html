@@ -106,14 +106,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a032a72afef4e0a55d848795d43123549"><td class="memItemLeft" align="right" valign="top"><a id="a032a72afef4e0a55d848795d43123549" name="a032a72afef4e0a55d848795d43123549"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewGore</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 Position, Vector2 Velocity, int Type, float Scale=1f)</td></tr>
+<tr class="memitem:a032a72afef4e0a55d848795d43123549"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gore.html#a032a72afef4e0a55d848795d43123549">NewGore</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 Position, Vector2 Velocity, int Type, float Scale=1f)</td></tr>
+<tr class="memdesc:a032a72afef4e0a55d848795d43123549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns a gore with given properties  <a href="class_gore.html#a032a72afef4e0a55d848795d43123549">More...</a><br /></td></tr>
 <tr class="separator:a032a72afef4e0a55d848795d43123549"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada3a876b8e6ef4e6ae38ca3697a3d7c0"><td class="memItemLeft" align="right" valign="top"><a id="ada3a876b8e6ef4e6ae38ca3697a3d7c0" name="ada3a876b8e6ef4e6ae38ca3697a3d7c0"></a>
-static <a class="el" href="class_gore.html">Gore</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewGoreDirect</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 Position, Vector2 Velocity, int Type, float Scale=1f)</td></tr>
+<tr class="memitem:ada3a876b8e6ef4e6ae38ca3697a3d7c0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_gore.html">Gore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gore.html#ada3a876b8e6ef4e6ae38ca3697a3d7c0">NewGoreDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 Position, Vector2 Velocity, int Type, float Scale=1f)</td></tr>
+<tr class="memdesc:ada3a876b8e6ef4e6ae38ca3697a3d7c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns a gore with given properties  <a href="class_gore.html#ada3a876b8e6ef4e6ae38ca3697a3d7c0">More...</a><br /></td></tr>
 <tr class="separator:ada3a876b8e6ef4e6ae38ca3697a3d7c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25e5afd6806c7a1621d4d105125eb253"><td class="memItemLeft" align="right" valign="top"><a id="a25e5afd6806c7a1621d4d105125eb253" name="a25e5afd6806c7a1621d4d105125eb253"></a>
-static <a class="el" href="class_gore.html">Gore</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewGorePerfect</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 Position, Vector2 Velocity, int Type, float Scale=1f)</td></tr>
+<tr class="memitem:a25e5afd6806c7a1621d4d105125eb253"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_gore.html">Gore</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gore.html#a25e5afd6806c7a1621d4d105125eb253">NewGorePerfect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 Position, Vector2 Velocity, int Type, float Scale=1f)</td></tr>
+<tr class="memdesc:a25e5afd6806c7a1621d4d105125eb253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns a gore with an exact position and velocity, no randomization  <a href="class_gore.html#a25e5afd6806c7a1621d4d105125eb253">More...</a><br /></td></tr>
 <tr class="separator:a25e5afd6806c7a1621d4d105125eb253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -188,6 +188,208 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>numFrames</b><code> [
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Width</b><code> [get]</code></td></tr>
 <tr class="separator:a8fda72e542a6ed8e9321b862e18c6401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a032a72afef4e0a55d848795d43123549" name="a032a72afef4e0a55d848795d43123549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a032a72afef4e0a55d848795d43123549">&#9670;&nbsp;</a></span>NewGore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Gore.NewGore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns a gore with given properties </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>Recommend using Entity.GetSource_Death or Entity.GetSource_FromThis" as the spawn source&lt;/param&gt;
+&lt;param name="Position"&gt;&lt;/param&gt;
+&lt;param name="Velocity"&gt;&lt;/param&gt;
+&lt;param name="Type"&gt;&lt;/param&gt;
+&lt;param name="Scale"&gt;&lt;/param&gt;
+&lt;returns&gt;The index of the gore in the &lt;see cref="Main.gore"/&gt; array</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ada3a876b8e6ef4e6ae38ca3697a3d7c0" name="ada3a876b8e6ef4e6ae38ca3697a3d7c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada3a876b8e6ef4e6ae38ca3697a3d7c0">&#9670;&nbsp;</a></span>NewGoreDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_gore.html">Gore</a> Gore.NewGoreDirect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns a gore with given properties </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>Recommend using Entity.GetSource_Death or Entity.GetSource_FromThis" as the spawn source&lt;/param&gt;
+&lt;param name="Position"&gt;&lt;/param&gt;
+&lt;param name="Velocity"&gt;&lt;/param&gt;
+&lt;param name="Type"&gt;&lt;/param&gt;
+&lt;param name="Scale"&gt;</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the gore</dd></dl>
+
+</div>
+</div>
+<a id="a25e5afd6806c7a1621d4d105125eb253" name="a25e5afd6806c7a1621d4d105125eb253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25e5afd6806c7a1621d4d105125eb253">&#9670;&nbsp;</a></span>NewGorePerfect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_gore.html">Gore</a> Gore.NewGorePerfect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns a gore with an exact position and velocity, no randomization </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>Recommend using Entity.GetSource_Death or Entity.GetSource_FromThis" as the spawn source&lt;/param&gt;
+&lt;param name="Position"&gt;&lt;/param&gt;
+&lt;param name="Velocity"&gt;&lt;/param&gt;
+&lt;param name="Type"&gt;&lt;/param&gt;
+&lt;param name="Scale"&gt;</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

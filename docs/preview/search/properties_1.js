@@ -9,5 +9,7 @@ var searchData=
   ['biomecampfireitemtype_6',['BiomeCampfireItemType',['../class_mod_biome.html#a32b4fd7d34c32fb78af362cb7e225fc7',1,'ModBiome']]],
   ['biometorchitemtype_7',['BiomeTorchItemType',['../class_mod_biome.html#a454490cc5a3ff7ffb87450efe406a209',1,'ModBiome']]],
   ['bossbar_8',['BossBar',['../class_n_p_c.html#a19da99bc7becda9172cb9002eacdd3d0',1,'NPC']]],
-  ['bossheadtexture_9',['BossHeadTexture',['../class_mod_n_p_c.html#af2700325531a60ac9e61e01970a0c3b0',1,'ModNPC']]]
+  ['bossheadtexture_9',['BossHeadTexture',['../class_mod_n_p_c.html#af2700325531a60ac9e61e01970a0c3b0',1,'ModNPC']]],
+  ['buffid_10',['BuffId',['../class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652',1,'EntitySource_Buff']]],
+  ['buffindex_11',['BuffIndex',['../class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4',1,'EntitySource_Buff']]]
 ];

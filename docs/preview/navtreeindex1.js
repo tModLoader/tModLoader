@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_boss_bar_loader.html#ac043304c2915d51833b6cab542153466":[3,0,102,0],
 "class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99":[3,0,102,1],
 "class_boss_bestiary_info_element.html":[3,0,103],
 "class_brain_of_cthulu_big_progress_bar.html":[3,0,104],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_content_samples.html#a0436d4c4434a13c690c2738ccb60df44":[3,0,186,5],
 "class_content_samples.html#a13377377fd758f4b74973c4c1a4ef1c0":[3,0,186,9],
 "class_content_samples.html#a44014f952ed912dc44add4f3ad41d49e":[3,0,186,10],
-"class_content_samples.html#a452457312e68e2eb03d26ad9de75264a":[3,0,186,11],
-"class_content_samples.html#a765028f028e8967d2caaaf41c6d067ad":[3,0,186,14]
+"class_content_samples.html#a452457312e68e2eb03d26ad9de75264a":[3,0,186,11]
 };

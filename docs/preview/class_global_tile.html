@@ -168,7 +168,9 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <tr class="memitem:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd">NearbyEffects</a> (int i, int j, int type, bool closer)</td></tr>
 <tr class="memdesc:a1173ef4323d9e01a36b5c909f1d348fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.  <a href="class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd">More...</a><br /></td></tr>
 <tr class="separator:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c20aceb0500f1518da17f0a9c29294b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a7c20aceb0500f1518da17f0a9c29294b">PostSetupTileMerge</a> ()</td></tr>
+<tr class="memitem:a7c20aceb0500f1518da17f0a9c29294b"><td class="memItemLeft" align="right" valign="top"><a id="a7c20aceb0500f1518da17f0a9c29294b" name="a7c20aceb0500f1518da17f0a9c29294b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTileMerge</b> ()</td></tr>
+<tr class="memdesc:a7c20aceb0500f1518da17f0a9c29294b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to adjust tile merge related things that are not possible to do in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModBlockType.SetStaticDefaults</a> due to timing. <br /></td></tr>
 <tr class="separator:a7c20aceb0500f1518da17f0a9c29294b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e1dd0f415df215847048a005719966c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">PreHitWire</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a9e1dd0f415df215847048a005719966c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the vanilla HitWire code and the HitWire hook is allowed to run. Useful for overriding vanilla behavior by returning false. Returns true by default.  <a href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">More...</a><br /></td></tr>
@@ -1264,32 +1266,6 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a7c20aceb0500f1518da17f0a9c29294b" name="a7c20aceb0500f1518da17f0a9c29294b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c20aceb0500f1518da17f0a9c29294b">&#9670;&nbsp;</a></span>PostSetupTileMerge()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalTile.PostSetupTileMerge </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p >Can be used to adjust tile merge related things that are not possible to do in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModBlockType.SetStaticDefaults</a> due to timing. </p>
 
 </div>
 </div>

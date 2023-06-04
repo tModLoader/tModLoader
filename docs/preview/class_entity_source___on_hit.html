@@ -86,42 +86,65 @@ $(document).ready(function(){initNavTree('class_entity_source___on_hit.html','')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_entity_source___on_hit-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EntitySource_OnHit Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Inherits <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>Use the interface, <a class="el" href="interface_i_entity_source___on_hit.html" title="Used along with EntitySource_Parent. The Attacker is also the EntitySource_Parent....">IEntitySource_OnHit</a> instead when checking entity sources in <code>OnSpawn</code> <br  />
+<br  />
+  
+ <a href="class_entity_source___on_hit.html#details">More...</a></p>
+
+<p>Inherits <a class="el" href="class_entity_source___parent.html">EntitySource_Parent</a>, and <a class="el" href="interface_i_entity_source___on_hit.html">IEntitySource_OnHit</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afd8129203552e25d94447e0e3504d830"><td class="memItemLeft" align="right" valign="top"><a id="afd8129203552e25d94447e0e3504d830" name="afd8129203552e25d94447e0e3504d830"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_OnHit</b> (<a class="el" href="class_entity.html">Entity</a> entityStriking, <a class="el" href="class_entity.html">Entity</a> entityStruck, string? context=null)</td></tr>
-<tr class="separator:afd8129203552e25d94447e0e3504d830"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ab51196332aee03e561072d4204dfc88a"><td class="memItemLeft" align="right" valign="top"><a id="ab51196332aee03e561072d4204dfc88a" name="ab51196332aee03e561072d4204dfc88a"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EntityStriking</b></td></tr>
-<tr class="separator:ab51196332aee03e561072d4204dfc88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdba7297ac5cfe0605f544d15a28b018"><td class="memItemLeft" align="right" valign="top"><a id="abdba7297ac5cfe0605f544d15a28b018" name="abdba7297ac5cfe0605f544d15a28b018"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EntityStruck</b></td></tr>
-<tr class="separator:abdba7297ac5cfe0605f544d15a28b018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add054761361e19cc250632674956d2e2"><td class="memItemLeft" align="right" valign="top"><a id="add054761361e19cc250632674956d2e2" name="add054761361e19cc250632674956d2e2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_OnHit</b> (<a class="el" href="class_entity.html">Entity</a> attacker, <a class="el" href="class_entity.html">Entity</a> victim, string? context=null)</td></tr>
+<tr class="separator:add054761361e19cc250632674956d2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_entity_source___parent"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_entity_source___parent')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_entity_source___parent.html">EntitySource_Parent</a></td></tr>
+<tr class="memitem:ad8506c6e54301919a87a786ba1df7d24 inherit pub_methods_class_entity_source___parent"><td class="memItemLeft" align="right" valign="top"><a id="ad8506c6e54301919a87a786ba1df7d24" name="ad8506c6e54301919a87a786ba1df7d24"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_Parent</b> (<a class="el" href="class_entity.html">Entity</a> entity, string? context=null)</td></tr>
+<tr class="separator:ad8506c6e54301919a87a786ba1df7d24 inherit pub_methods_class_entity_source___parent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a3489a1f534e821d22ffb75cf838c754f"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___on_hit.html#a3489a1f534e821d22ffb75cf838c754f">Context</a><code> [get]</code></td></tr>
-<tr class="separator:a3489a1f534e821d22ffb75cf838c754f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb5e838d9092828bb7982f81ec4ca6a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___on_hit.html#afb5e838d9092828bb7982f81ec4ca6a9">Attacker</a><code> [get]</code></td></tr>
+<tr class="memdesc:afb5e838d9092828bb7982f81ec4ca6a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attacking entity. Note that this may be a <a class="el" href="class_projectile.html">Projectile</a> (possibly owned by a player), a <a class="el" href="class_player.html">Player</a> or even a <a class="el" href="class_n_p_c.html">NPC</a>  <a href="class_entity_source___on_hit.html#afb5e838d9092828bb7982f81ec4ca6a9">More...</a><br /></td></tr>
+<tr class="separator:afb5e838d9092828bb7982f81ec4ca6a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ff5716647ea67668215ded8e8086a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___on_hit.html#a04ff5716647ea67668215ded8e8086a1">Victim</a><code> [get]</code></td></tr>
+<tr class="memdesc:a04ff5716647ea67668215ded8e8086a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity being attacked. Normally an <a class="el" href="class_n_p_c.html">NPC</a>, but could be an <a class="el" href="class_player.html">Player</a> if a mod decides to use this source in such a way  <a href="class_entity_source___on_hit.html#a04ff5716647ea67668215ded8e8086a1">More...</a><br /></td></tr>
+<tr class="separator:a04ff5716647ea67668215ded8e8086a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_entity_source___parent"><td colspan="2" onclick="javascript:toggleInherit('properties_class_entity_source___parent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_entity_source___parent.html">EntitySource_Parent</a></td></tr>
+<tr class="memitem:a4703640646efe004e9d86e2ff89890fc inherit properties_class_entity_source___parent"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___parent.html#a4703640646efe004e9d86e2ff89890fc">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4703640646efe004e9d86e2ff89890fc inherit properties_class_entity_source___parent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="class_entity_source___parent.html#a4703640646efe004e9d86e2ff89890fc">More...</a><br /></td></tr>
+<tr class="separator:a4703640646efe004e9d86e2ff89890fc inherit properties_class_entity_source___parent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36c00db5b8800b07a05796e2d59cf81 inherit properties_class_entity_source___parent"><td class="memItemLeft" align="right" valign="top"><a id="ad36c00db5b8800b07a05796e2d59cf81" name="ad36c00db5b8800b07a05796e2d59cf81"></a>
+<a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get]</code></td></tr>
+<tr class="memdesc:ad36c00db5b8800b07a05796e2d59cf81 inherit properties_class_entity_source___parent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity which is the source of the effect or action. In many cases, it makes sense to consider buffs or effects applied to the parent entity, and make changes to the spawned entity. <br /></td></tr>
+<tr class="separator:ad36c00db5b8800b07a05796e2d59cf81 inherit properties_class_entity_source___parent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_source"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source.html">IEntitySource</a></td></tr>
-<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top"><a id="ac17ad5ab7ad9bac426721c8278b6ac37" name="ac17ad5ab7ad9bac426721c8278b6ac37"></a>
-string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> [get]</code></td></tr>
+<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">More...</a><br /></td></tr>
 <tr class="separator:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_i_entity_source___on_hit"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source___on_hit')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source___on_hit.html">IEntitySource_OnHit</a></td></tr>
+<tr class="memitem:a0532e76ea397c9c983e87c99970ad6a2 inherit properties_interface_i_entity_source___on_hit"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2">Attacker</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0532e76ea397c9c983e87c99970ad6a2 inherit properties_interface_i_entity_source___on_hit"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attacking entity. Note that this may be a <a class="el" href="class_projectile.html">Projectile</a> (possibly owned by a player), a <a class="el" href="class_player.html">Player</a> or even a <a class="el" href="class_n_p_c.html">NPC</a>  <a href="interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2">More...</a><br /></td></tr>
+<tr class="separator:a0532e76ea397c9c983e87c99970ad6a2 inherit properties_interface_i_entity_source___on_hit"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a524708fe33b2b2a27f03b90c45226f71 inherit properties_interface_i_entity_source___on_hit"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source___on_hit.html#a524708fe33b2b2a27f03b90c45226f71">Victim</a><code> [get]</code></td></tr>
+<tr class="memdesc:a524708fe33b2b2a27f03b90c45226f71 inherit properties_interface_i_entity_source___on_hit"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity being attacked. Normally an <a class="el" href="class_n_p_c.html">NPC</a>, but could be an <a class="el" href="class_player.html">Player</a> if a mod decides to use this source in such a way  <a href="interface_i_entity_source___on_hit.html#a524708fe33b2b2a27f03b90c45226f71">More...</a><br /></td></tr>
+<tr class="separator:a524708fe33b2b2a27f03b90c45226f71 inherit properties_interface_i_entity_source___on_hit"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a3489a1f534e821d22ffb75cf838c754f" name="a3489a1f534e821d22ffb75cf838c754f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3489a1f534e821d22ffb75cf838c754f">&#9670;&nbsp;</a></span>Context</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Use the interface, <a class="el" href="interface_i_entity_source___on_hit.html" title="Used along with EntitySource_Parent. The Attacker is also the EntitySource_Parent....">IEntitySource_OnHit</a> instead when checking entity sources in <code>OnSpawn</code> <br  />
+<br  />
+ </p>
+<p >Recommend setting <a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37" title="Additional context identifier, particularly useful for set bonuses or accessory affects....">IEntitySource.Context</a> to indicate the effect. Many vanilla set bonuses or accessories use this source. </p>
+</div><h2 class="groupheader">Property Documentation</h2>
+<a id="afb5e838d9092828bb7982f81ec4ca6a9" name="afb5e838d9092828bb7982f81ec4ca6a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb5e838d9092828bb7982f81ec4ca6a9">&#9670;&nbsp;</a></span>Attacker</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -130,7 +153,7 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string? EntitySource_OnHit.Context</td>
+          <td class="memname"><a class="el" href="class_entity.html">Entity</a> EntitySource_OnHit.Attacker</td>
         </tr>
       </table>
   </td>
@@ -140,7 +163,35 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>The attacking entity. Note that this may be a <a class="el" href="class_projectile.html">Projectile</a> (possibly owned by a player), a <a class="el" href="class_player.html">Player</a> or even a <a class="el" href="class_n_p_c.html">NPC</a> </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2">IEntitySource_OnHit</a>.</p>
+
+</div>
+</div>
+<a id="a04ff5716647ea67668215ded8e8086a1" name="a04ff5716647ea67668215ded8e8086a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04ff5716647ea67668215ded8e8086a1">&#9670;&nbsp;</a></span>Victim</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_entity.html">Entity</a> EntitySource_OnHit.Victim</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The entity being attacked. Normally an <a class="el" href="class_n_p_c.html">NPC</a>, but could be an <a class="el" href="class_player.html">Player</a> if a mod decides to use this source in such a way </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source___on_hit.html#a524708fe33b2b2a27f03b90c45226f71">IEntitySource_OnHit</a>.</p>
 
 </div>
 </div>

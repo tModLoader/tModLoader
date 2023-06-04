@@ -86,40 +86,44 @@ $(document).ready(function(){initNavTree('class_entity_source___item_open.html',
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_entity_source___item_open-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EntitySource_ItemOpen Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Used when opening bags or gifts. Passed to <a class="el" href="class_player.html#a5f4c568dba11277c2164aed64b8bae65">Player.QuickSpawnItem(IEntitySource, Item, int)</a>  
+ <a href="class_entity_source___item_open.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1ce5560390aa9aa4bb14ff01682e0662"><td class="memItemLeft" align="right" valign="top"><a id="a1ce5560390aa9aa4bb14ff01682e0662" name="a1ce5560390aa9aa4bb14ff01682e0662"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_ItemOpen</b> (<a class="el" href="class_entity.html">Entity</a> entity, int itemType, string? context=null)</td></tr>
-<tr class="separator:a1ce5560390aa9aa4bb14ff01682e0662"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:abbd0ef73256e04123f4ab021b30ccd7f"><td class="memItemLeft" align="right" valign="top"><a id="abbd0ef73256e04123f4ab021b30ccd7f" name="abbd0ef73256e04123f4ab021b30ccd7f"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b></td></tr>
-<tr class="separator:abbd0ef73256e04123f4ab021b30ccd7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5b3398e0e907c1e66a08e664a7883a4"><td class="memItemLeft" align="right" valign="top"><a id="af5b3398e0e907c1e66a08e664a7883a4" name="af5b3398e0e907c1e66a08e664a7883a4"></a>
-readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemType</b></td></tr>
-<tr class="separator:af5b3398e0e907c1e66a08e664a7883a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc8d751516d22673a1d9c4ae0dc04916"><td class="memItemLeft" align="right" valign="top"><a id="adc8d751516d22673a1d9c4ae0dc04916" name="adc8d751516d22673a1d9c4ae0dc04916"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_ItemOpen</b> (<a class="el" href="class_player.html">Player</a> player, int itemType, string? context=null)</td></tr>
+<tr class="separator:adc8d751516d22673a1d9c4ae0dc04916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a8002f4a933406b3b55430eb4013b80e1"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___item_open.html#a8002f4a933406b3b55430eb4013b80e1">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8002f4a933406b3b55430eb4013b80e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="class_entity_source___item_open.html#a8002f4a933406b3b55430eb4013b80e1">More...</a><br /></td></tr>
 <tr class="separator:a8002f4a933406b3b55430eb4013b80e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4abcad5e531864385c79e4c3a054f4f"><td class="memItemLeft" align="right" valign="top"><a id="af4abcad5e531864385c79e4c3a054f4f" name="af4abcad5e531864385c79e4c3a054f4f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemType</b><code> [get]</code></td></tr>
+<tr class="memdesc:af4abcad5e531864385c79e4c3a054f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of item being opened <br /></td></tr>
+<tr class="separator:af4abcad5e531864385c79e4c3a054f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac34bf38246fc93d31e4d90d7f43eb31b"><td class="memItemLeft" align="right" valign="top"><a id="ac34bf38246fc93d31e4d90d7f43eb31b" name="ac34bf38246fc93d31e4d90d7f43eb31b"></a>
+<a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Player</b><code> [get]</code></td></tr>
+<tr class="memdesc:ac34bf38246fc93d31e4d90d7f43eb31b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player opening the item <br /></td></tr>
+<tr class="separator:ac34bf38246fc93d31e4d90d7f43eb31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_source"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source.html">IEntitySource</a></td></tr>
-<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top"><a id="ac17ad5ab7ad9bac426721c8278b6ac37" name="ac17ad5ab7ad9bac426721c8278b6ac37"></a>
-string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> [get]</code></td></tr>
+<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">More...</a><br /></td></tr>
 <tr class="separator:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Used when opening bags or gifts. Passed to <a class="el" href="class_player.html#a5f4c568dba11277c2164aed64b8bae65">Player.QuickSpawnItem(IEntitySource, Item, int)</a> </p>
+</div><h2 class="groupheader">Property Documentation</h2>
 <a id="a8002f4a933406b3b55430eb4013b80e1" name="a8002f4a933406b3b55430eb4013b80e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8002f4a933406b3b55430eb4013b80e1">&#9670;&nbsp;</a></span>Context</h2>
 
@@ -140,7 +144,9 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">IEntitySource</a>.</p>
 
 </div>
 </div>

@@ -399,6 +399,8 @@ var hierarchy =
     ] ],
     [ "EntityGlobalsEnumerator< TGlobal >", "struct_entity_globals_enumerator.html", null ],
     [ "EntityShadowInfo", "struct_entity_shadow_info.html", null ],
+    [ "EntitySource_CatchEntity", "class_entity_source___catch_entity.html", null ],
+    [ "EntitySource_TorchGod", "class_entity_source___torch_god.html", null ],
     [ "AbstractNPCShop.Entry", "interface_abstract_n_p_c_shop_1_1_entry.html", [
       [ "NPCShop.Entry", "class_n_p_c_shop_1_1_entry.html", null ]
     ] ],
@@ -1094,29 +1096,45 @@ var hierarchy =
         [ "EntitySource_Wiring", "class_entity_source___wiring.html", null ]
       ] ],
       [ "EntitySource_BossSpawn", "class_entity_source___boss_spawn.html", null ],
-      [ "EntitySource_Buff", "class_entity_source___buff.html", null ],
-      [ "EntitySource_CatchEntity", "class_entity_source___catch_entity.html", null ],
       [ "EntitySource_DebugCommand", "class_entity_source___debug_command.html", null ],
-      [ "EntitySource_DropAsItem", "class_entity_source___drop_as_item.html", null ],
       [ "EntitySource_Film", "class_entity_source___film.html", null ],
       [ "EntitySource_FishedOut", "class_entity_source___fished_out.html", null ],
-      [ "EntitySource_Gift", "class_entity_source___gift.html", null ],
       [ "EntitySource_ItemOpen", "class_entity_source___item_open.html", null ],
-      [ "EntitySource_ItemUse", "class_entity_source___item_use.html", [
-        [ "EntitySource_ItemUse_WithAmmo", "class_entity_source___item_use___with_ammo.html", null ]
-      ] ],
-      [ "EntitySource_Loot", "class_entity_source___loot.html", null ],
       [ "EntitySource_Misc", "class_entity_source___misc.html", null ],
-      [ "EntitySource_Mount", "class_entity_source___mount.html", null ],
       [ "EntitySource_OldOnesArmy", "class_entity_source___old_ones_army.html", null ],
-      [ "EntitySource_OnHit", "class_entity_source___on_hit.html", null ],
-      [ "EntitySource_Parent", "class_entity_source___parent.html", null ],
+      [ "EntitySource_OverfullInventory", "class_entity_source___overfull_inventory.html", null ],
+      [ "EntitySource_Parent", "class_entity_source___parent.html", [
+        [ "EntitySource_Buff", "class_entity_source___buff.html", null ],
+        [ "EntitySource_Caught", "class_entity_source___caught.html", null ],
+        [ "EntitySource_Death", "class_entity_source___death.html", null ],
+        [ "EntitySource_DropAsItem", "class_entity_source___drop_as_item.html", null ],
+        [ "EntitySource_Gift", "class_entity_source___gift.html", null ],
+        [ "EntitySource_HitEffect", "class_entity_source___hit_effect.html", null ],
+        [ "EntitySource_ItemUse", "class_entity_source___item_use.html", [
+          [ "EntitySource_ItemUse_OnHurt", "class_entity_source___item_use___on_hurt.html", null ],
+          [ "EntitySource_ItemUse_WithAmmo", "class_entity_source___item_use___with_ammo.html", null ]
+        ] ],
+        [ "EntitySource_Loot", "class_entity_source___loot.html", null ],
+        [ "EntitySource_Mount", "class_entity_source___mount.html", null ],
+        [ "EntitySource_OnHit", "class_entity_source___on_hit.html", null ],
+        [ "EntitySource_OnHurt", "class_entity_source___on_hurt.html", null ]
+      ] ],
       [ "EntitySource_RevengeSystem", "class_entity_source___revenge_system.html", null ],
       [ "EntitySource_SpawnNPC", "class_entity_source___spawn_n_p_c.html", null ],
       [ "EntitySource_Sync", "class_entity_source___sync.html", null ],
       [ "EntitySource_TileEntity", "class_entity_source___tile_entity.html", null ],
       [ "EntitySource_WorldEvent", "class_entity_source___world_event.html", null ],
       [ "EntitySource_WorldGen", "class_entity_source___world_gen.html", null ]
+    ] ],
+    [ "IEntitySource_OnHit", "interface_i_entity_source___on_hit.html", [
+      [ "EntitySource_OnHit", "class_entity_source___on_hit.html", null ]
+    ] ],
+    [ "IEntitySource_OnHurt", "interface_i_entity_source___on_hurt.html", [
+      [ "EntitySource_ItemUse_OnHurt", "class_entity_source___item_use___on_hurt.html", null ],
+      [ "EntitySource_OnHurt", "class_entity_source___on_hurt.html", null ]
+    ] ],
+    [ "IEntitySource_WithStatsFromItem", "interface_i_entity_source___with_stats_from_item.html", [
+      [ "EntitySource_ItemUse", "class_entity_source___item_use.html", null ]
     ] ],
     [ "IEntityWithGlobals< TGlobal >", "interface_i_entity_with_globals.html", null ],
     [ "IEntityWithGlobals< GlobalItem >", "interface_i_entity_with_globals.html", [

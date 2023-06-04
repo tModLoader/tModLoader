@@ -86,37 +86,40 @@ $(document).ready(function(){initNavTree('class_entity_source___fished_out.html'
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_entity_source___fished_out-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EntitySource_FishedOut Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Used when an <a class="el" href="class_n_p_c.html">NPC</a> spawns as a result of fishing.  
+ <a href="class_entity_source___fished_out.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a72ca24481f19d9997471a68d77b86edf"><td class="memItemLeft" align="right" valign="top"><a id="a72ca24481f19d9997471a68d77b86edf" name="a72ca24481f19d9997471a68d77b86edf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_FishedOut</b> (<a class="el" href="class_entity.html">Entity</a> entity, string? context=null)</td></tr>
-<tr class="separator:a72ca24481f19d9997471a68d77b86edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a985431896d8a5f252d8d12edece06cbc"><td class="memItemLeft" align="right" valign="top"><a id="a985431896d8a5f252d8d12edece06cbc" name="a985431896d8a5f252d8d12edece06cbc"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b></td></tr>
-<tr class="separator:a985431896d8a5f252d8d12edece06cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a505fa05146ed8073c8cce61087da43cc"><td class="memItemLeft" align="right" valign="top"><a id="a505fa05146ed8073c8cce61087da43cc" name="a505fa05146ed8073c8cce61087da43cc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_FishedOut</b> (<a class="el" href="class_entity.html">Entity</a> fisher, string? context=null)</td></tr>
+<tr class="separator:a505fa05146ed8073c8cce61087da43cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a2497c9cab55f524479dbf663aeb46f93"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___fished_out.html#a2497c9cab55f524479dbf663aeb46f93">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2497c9cab55f524479dbf663aeb46f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="class_entity_source___fished_out.html#a2497c9cab55f524479dbf663aeb46f93">More...</a><br /></td></tr>
 <tr class="separator:a2497c9cab55f524479dbf663aeb46f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5e3424b2c37c98ded5f42196456565b"><td class="memItemLeft" align="right" valign="top"><a id="ac5e3424b2c37c98ded5f42196456565b" name="ac5e3424b2c37c98ded5f42196456565b"></a>
+<a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Fisher</b><code> [get]</code></td></tr>
+<tr class="memdesc:ac5e3424b2c37c98ded5f42196456565b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity which was fishing. Normally a <a class="el" href="class_player.html">Player</a> <br /></td></tr>
+<tr class="separator:ac5e3424b2c37c98ded5f42196456565b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_source"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source.html">IEntitySource</a></td></tr>
-<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top"><a id="ac17ad5ab7ad9bac426721c8278b6ac37" name="ac17ad5ab7ad9bac426721c8278b6ac37"></a>
-string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> [get]</code></td></tr>
+<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">More...</a><br /></td></tr>
 <tr class="separator:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Used when an <a class="el" href="class_n_p_c.html">NPC</a> spawns as a result of fishing. </p>
+</div><h2 class="groupheader">Property Documentation</h2>
 <a id="a2497c9cab55f524479dbf663aeb46f93" name="a2497c9cab55f524479dbf663aeb46f93"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2497c9cab55f524479dbf663aeb46f93">&#9670;&nbsp;</a></span>Context</h2>
 
@@ -137,7 +140,9 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">IEntitySource</a>.</p>
 
 </div>
 </div>

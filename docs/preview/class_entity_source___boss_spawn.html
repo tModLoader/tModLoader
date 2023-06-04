@@ -86,37 +86,42 @@ $(document).ready(function(){initNavTree('class_entity_source___boss_spawn.html'
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_entity_source___boss_spawn-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EntitySource_BossSpawn Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Used for most vanilla bosses, conveys their initial target, which is normally the closest player.  
+ <a href="class_entity_source___boss_spawn.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a40c9659c3912a9222479f1eb475312c8"><td class="memItemLeft" align="right" valign="top"><a id="a40c9659c3912a9222479f1eb475312c8" name="a40c9659c3912a9222479f1eb475312c8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_BossSpawn</b> (<a class="el" href="class_entity.html">Entity</a> entity, string? context=null)</td></tr>
-<tr class="separator:a40c9659c3912a9222479f1eb475312c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a8d77caaa430dffc4a268fecda4f19ccd"><td class="memItemLeft" align="right" valign="top"><a id="a8d77caaa430dffc4a268fecda4f19ccd" name="a8d77caaa430dffc4a268fecda4f19ccd"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b></td></tr>
-<tr class="separator:a8d77caaa430dffc4a268fecda4f19ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0566248e87d4a10f7ecc7f96dccd662a"><td class="memItemLeft" align="right" valign="top"><a id="a0566248e87d4a10f7ecc7f96dccd662a" name="a0566248e87d4a10f7ecc7f96dccd662a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>EntitySource_BossSpawn</b> (<a class="el" href="class_entity.html">Entity</a> target, string? context=null)</td></tr>
+<tr class="separator:a0566248e87d4a10f7ecc7f96dccd662a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a70798afd3e246700e23286b6cf28af65"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity_source___boss_spawn.html#a70798afd3e246700e23286b6cf28af65">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:a70798afd3e246700e23286b6cf28af65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="class_entity_source___boss_spawn.html#a70798afd3e246700e23286b6cf28af65">More...</a><br /></td></tr>
 <tr class="separator:a70798afd3e246700e23286b6cf28af65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5fd09a8a4ee17aad84a1182acb2a75c"><td class="memItemLeft" align="right" valign="top"><a id="aa5fd09a8a4ee17aad84a1182acb2a75c" name="aa5fd09a8a4ee17aad84a1182acb2a75c"></a>
+<a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Target</b><code> [get]</code></td></tr>
+<tr class="memdesc:aa5fd09a8a4ee17aad84a1182acb2a75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity which this boss spawn on. <br  />
+<br  />
+ In the vast majority of cases, this will be a <a class="el" href="class_player.html">Player</a>. Often NPC.target will be set to <code><a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Player.whoAmI</a></code> <br /></td></tr>
+<tr class="separator:aa5fd09a8a4ee17aad84a1182acb2a75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_source"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source.html">IEntitySource</a></td></tr>
-<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top"><a id="ac17ad5ab7ad9bac426721c8278b6ac37" name="ac17ad5ab7ad9bac426721c8278b6ac37"></a>
-string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> [get]</code></td></tr>
+<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">More...</a><br /></td></tr>
 <tr class="separator:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Used for most vanilla bosses, conveys their initial target, which is normally the closest player. </p>
+</div><h2 class="groupheader">Property Documentation</h2>
 <a id="a70798afd3e246700e23286b6cf28af65" name="a70798afd3e246700e23286b6cf28af65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70798afd3e246700e23286b6cf28af65">&#9670;&nbsp;</a></span>Context</h2>
 
@@ -137,7 +142,9 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> 
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_entity_source.html">IEntitySource</a>.</p>
+<p>Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses </p>
+
+<p>Implements <a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">IEntitySource</a>.</p>
 
 </div>
 </div>

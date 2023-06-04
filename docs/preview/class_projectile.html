@@ -129,6 +129,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>AI_172_GetPelletStorms
 <tr class="memitem:adcdc288fb31c582405bf09507af90b8d"><td class="memItemLeft" align="right" valign="top"><a id="adcdc288fb31c582405bf09507af90b8d" name="adcdc288fb31c582405bf09507af90b8d"></a>
 Color&#160;</td><td class="memItemRight" valign="bottom"><b>AI_173_GetColor</b> ()</td></tr>
 <tr class="separator:adcdc288fb31c582405bf09507af90b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3f80d72caeaa31e98d84bb35cb498a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#ad3f80d72caeaa31e98d84bb35cb498a5">ApplyStatsFromSource</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> spawnSource)</td></tr>
+<tr class="memdesc:ad3f80d72caeaa31e98d84bb35cb498a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfers stat modifiers from the spawn source to the projectile. <br  />
+ Adds <a class="el" href="class_projectile.html#a56758a1e35c234345b4507b36c0e8088" title="The critical strike chance modifier of this projectile. Cannot be set to negative values....">CritChance</a> and <a class="el" href="class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46" title="The number of defense points that this projectile can ignore on its own. Cannot be set to negative va...">ArmorPenetration</a> bonuses from players (<a class="el" href="class_entity_source___parent.html" title="Use when the parent can be considered the &#39;owner&#39; or &#39;responsible for&#39; the effect....">EntitySource_Parent</a>), weapons (<a class="el" href="class_entity_source___item_use.html" title="Use the interface, IEntitySource_WithStatsFromItem instead when checking entity sources in OnSpawn">EntitySource_ItemUse</a>)<br  />
+ If the source is a <a class="el" href="class_entity_source___parent.html" title="Use when the parent can be considered the &#39;owner&#39; or &#39;responsible for&#39; the effect....">EntitySource_Parent</a> projectile, <code>CritChance</code> and <code>ArmorPenetration</code> from the parent will be added, in order to transfer the original item/player bonus values.<br  />
+<br  />
+ <br  />
+ To support minions, sentries and <a class="el" href="class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33" title="If set damage will be recalculated based on originalDamage, DamageType and the owner player,...">ContinuouslyUpdateDamageStats</a>, <a class="el" href="class_projectile.html#aa4f752f854e89325b991e7db7a316562" title="The crit chance of this projectile, without any player bonuses, similar to originalDamage  Used by Co...">OriginalCritChance</a> and <a class="el" href="class_projectile.html#ab9b496d833e80e1b7a950e968ec3841c" title="The crit chance of this projectile, without any player bonuses, similar to originalDamage  Used by Co...">OriginalArmorPenetration</a> are also copied from item sources and parent projectiles.  <a href="class_projectile.html#ad3f80d72caeaa31e98d84bb35cb498a5">More...</a><br /></td></tr>
+<tr class="separator:ad3f80d72caeaa31e98d84bb35cb498a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62e5ecbf445b7d0c7eb0a48fcf1e8d28"><td class="memItemLeft" align="right" valign="top"><a id="a62e5ecbf445b7d0c7eb0a48fcf1e8d28" name="a62e5ecbf445b7d0c7eb0a48fcf1e8d28"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeReflected</b> ()</td></tr>
 <tr class="separator:a62e5ecbf445b7d0c7eb0a48fcf1e8d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -327,9 +335,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Distance</b> (Vector
 <tr class="memitem:a53839e13c669068d3f671e661da55e65 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a53839e13c669068d3f671e661da55e65" name="a53839e13c669068d3f671e661da55e65"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceSQ</b> (Vector2 Other)</td></tr>
 <tr class="separator:a53839e13c669068d3f671e661da55e65 inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeae71f92d52c6ad489e68b94265c2f5b inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aeae71f92d52c6ad489e68b94265c2f5b" name="aeae71f92d52c6ad489e68b94265c2f5b"></a>
-<a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Accessory</b> (<a class="el" href="class_item.html">Item</a> item, string? context=null)</td></tr>
-<tr class="separator:aeae71f92d52c6ad489e68b94265c2f5b inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a304532afdd3b415ae103488534961942 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a304532afdd3b415ae103488534961942" name="a304532afdd3b415ae103488534961942"></a>
 <a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_CatchEntity</b> (<a class="el" href="class_entity.html">Entity</a> caughtEntity, string? context=null)</td></tr>
 <tr class="separator:a304532afdd3b415ae103488534961942 inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -348,12 +353,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceSQ</b> (Vect
 <tr class="memitem:abf2bcfa61d41fcbfd36630c2740e44d9 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="abf2bcfa61d41fcbfd36630c2740e44d9" name="abf2bcfa61d41fcbfd36630c2740e44d9"></a>
 <a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_GiftOrReward</b> (string? context=null)</td></tr>
 <tr class="separator:abf2bcfa61d41fcbfd36630c2740e44d9 inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adca570757c7b9fc667792be50a2d6ebe inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="adca570757c7b9fc667792be50a2d6ebe" name="adca570757c7b9fc667792be50a2d6ebe"></a>
-<a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_ItemUse</b> (<a class="el" href="class_item.html">Item</a> item, string? context=null)</td></tr>
-<tr class="separator:adca570757c7b9fc667792be50a2d6ebe inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19d060f6cc02e602bfdb371a7b6c08dc inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a19d060f6cc02e602bfdb371a7b6c08dc" name="a19d060f6cc02e602bfdb371a7b6c08dc"></a>
-<a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_ItemUse_WithPotentialAmmo</b> (<a class="el" href="class_item.html">Item</a> item, int ammoItemId, string? context=null)</td></tr>
-<tr class="separator:a19d060f6cc02e602bfdb371a7b6c08dc inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0cfb111152135b29a2565c7c67cc75 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="afb0cfb111152135b29a2565c7c67cc75" name="afb0cfb111152135b29a2565c7c67cc75"></a>
 <a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Loot</b> (string? context=null)</td></tr>
 <tr class="separator:afb0cfb111152135b29a2565c7c67cc75 inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,12 +362,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceSQ</b> (Vect
 <tr class="memitem:aa6d49f346a4258c542ba8e152df928eb inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa6d49f346a4258c542ba8e152df928eb" name="aa6d49f346a4258c542ba8e152df928eb"></a>
 <a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OnHit</b> (<a class="el" href="class_entity.html">Entity</a> victim, string? context=null)</td></tr>
 <tr class="separator:aa6d49f346a4258c542ba8e152df928eb inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71a122fa81e616589bbf360128496417 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a71a122fa81e616589bbf360128496417" name="a71a122fa81e616589bbf360128496417"></a>
-<a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OnHurt</b> (<a class="el" href="class_entity.html">Entity</a> attacker, string? context=null)</td></tr>
-<tr class="separator:a71a122fa81e616589bbf360128496417 inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ab4d3932a618dc2e04bda04b579a97c inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a1ab4d3932a618dc2e04bda04b579a97c" name="a1ab4d3932a618dc2e04bda04b579a97c"></a>
-<a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OpenItem</b> (int itemType, string? context=null)</td></tr>
-<tr class="separator:a1ab4d3932a618dc2e04bda04b579a97c inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae71010c91caf99380e6b12b98d8ecc9f inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae71010c91caf99380e6b12b98d8ecc9f" name="ae71010c91caf99380e6b12b98d8ecc9f"></a>
+<a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OnHurt</b> (<a class="el" href="class_entity.html">Entity</a>? attacker, string? context=null)</td></tr>
+<tr class="separator:ae71010c91caf99380e6b12b98d8ecc9f inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a376a92be191f5a2bb46252e09c85a8b0 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a376a92be191f5a2bb46252e09c85a8b0" name="a376a92be191f5a2bb46252e09c85a8b0"></a>
 <a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_ReleaseEntity</b> (string? context=null)</td></tr>
 <tr class="separator:a376a92be191f5a2bb46252e09c85a8b0 inherit pub_methods_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -870,8 +866,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ArmorPenetration</b><c
 <tr class="separator:afc7aebede199bd1bd64e7cb52d5f8c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9f6c227fecdc1271b3adde2ca8a68b6"><td class="memItemLeft" align="right" valign="top"><a id="ab9f6c227fecdc1271b3adde2ca8a68b6" name="ab9f6c227fecdc1271b3adde2ca8a68b6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ContinuouslyUpdateDamage</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:ab9f6c227fecdc1271b3adde2ca8a68b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set, <a class="el" href="class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4" title="This will always be set in Projectile.NewProjectile based on the weapons damage and player stat modif...">Projectile.damage</a> will be recalculated based on Projectile.originalDamage, <a class="el" href="class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4" title="The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageC...">Projectile.DamageType</a> and the owning player, just like minions and sentries. This has no effect if <a class="el" href="class_projectile.html#a01ec793a8f23b86a7ac80513ad1d0949" title="Indicates that this projectile is a minion   Defaults to false.">Projectile.minion</a> or <a class="el" href="class_projectile.html#aefcc822f644ea2ff3758de8263c93c20" title="Indicates that this projectile is a sentry   Defaults to false.   All sentries should set Projectile....">Projectile.sentry</a> is set. <br /></td></tr>
 <tr class="separator:ab9f6c227fecdc1271b3adde2ca8a68b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4dc4490af8ba89759ac68786b86fb33"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33">ContinuouslyUpdateDamageStats</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:aa4dc4490af8ba89759ac68786b86fb33"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set <a class="el" href="class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4" title="This will always be set in Projectile.NewProjectile based on the weapons damage and player stat modif...">damage</a> will be recalculated based on originalDamage, <a class="el" href="class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4" title="The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageC...">DamageType</a> and the <a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">owner</a> player, just like minions and sentries. <br  />
+ Similarly for <a class="el" href="class_projectile.html#a56758a1e35c234345b4507b36c0e8088" title="The critical strike chance modifier of this projectile. Cannot be set to negative values....">CritChance</a> and <a class="el" href="class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46" title="The number of defense points that this projectile can ignore on its own. Cannot be set to negative va...">ArmorPenetration</a>.  <a href="class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33">More...</a><br /></td></tr>
+<tr class="separator:aa4dc4490af8ba89759ac68786b86fb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56758a1e35c234345b4507b36c0e8088"><td class="memItemLeft" align="right" valign="top"><a id="a56758a1e35c234345b4507b36c0e8088" name="a56758a1e35c234345b4507b36c0e8088"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>CritChance</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a56758a1e35c234345b4507b36c0e8088"><td class="mdescLeft">&#160;</td><td class="mdescRight">The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself. <br /></td></tr>
@@ -904,6 +903,16 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get
 <tr class="memitem:aaaef267521b5f0b04e58f12ec817da83"><td class="memItemLeft" align="right" valign="top"><a id="aaaef267521b5f0b04e58f12ec817da83" name="aaaef267521b5f0b04e58f12ec817da83"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Opacity</b><code> [get, set]</code></td></tr>
 <tr class="separator:aaaef267521b5f0b04e58f12ec817da83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9b496d833e80e1b7a950e968ec3841c"><td class="memItemLeft" align="right" valign="top"><a id="ab9b496d833e80e1b7a950e968ec3841c" name="ab9b496d833e80e1b7a950e968ec3841c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>OriginalArmorPenetration</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab9b496d833e80e1b7a950e968ec3841c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The crit chance of this projectile, without any player bonuses, similar to originalDamage<br  />
+ Used by <a class="el" href="class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33" title="If set damage will be recalculated based on originalDamage, DamageType and the owner player,...">ContinuouslyUpdateDamageStats</a> to recalculate <a class="el" href="class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46" title="The number of defense points that this projectile can ignore on its own. Cannot be set to negative va...">ArmorPenetration</a> in combination with Player.GetTotalArmorPenetration(DamageClass) <br /></td></tr>
+<tr class="separator:ab9b496d833e80e1b7a950e968ec3841c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4f752f854e89325b991e7db7a316562"><td class="memItemLeft" align="right" valign="top"><a id="aa4f752f854e89325b991e7db7a316562" name="aa4f752f854e89325b991e7db7a316562"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>OriginalCritChance</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:aa4f752f854e89325b991e7db7a316562"><td class="mdescLeft">&#160;</td><td class="mdescRight">The crit chance of this projectile, without any player bonuses, similar to originalDamage<br  />
+ Used by <a class="el" href="class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33" title="If set damage will be recalculated based on originalDamage, DamageType and the owner player,...">ContinuouslyUpdateDamageStats</a> to recalculate <a class="el" href="class_projectile.html#a56758a1e35c234345b4507b36c0e8088" title="The critical strike chance modifier of this projectile. Cannot be set to negative values....">CritChance</a> in combination with Player.GetTotalCritChance(DamageClass) <br /></td></tr>
+<tr class="separator:aa4f752f854e89325b991e7db7a316562"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad328a29da8e27df99d82fb057fc87546"><td class="memItemLeft" align="right" valign="top"><a id="ad328a29da8e27df99d82fb057fc87546" name="ad328a29da8e27df99d82fb057fc87546"></a>
 <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OwnerMinionAttackTargetNPC</b><code> [get]</code></td></tr>
 <tr class="separator:ad328a29da8e27df99d82fb057fc87546"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -956,6 +965,37 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 <tr class="separator:ac5a145aa3bbabc385b4510f2519ea3bd inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad3f80d72caeaa31e98d84bb35cb498a5" name="ad3f80d72caeaa31e98d84bb35cb498a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3f80d72caeaa31e98d84bb35cb498a5">&#9670;&nbsp;</a></span>ApplyStatsFromSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Projectile.ApplyStatsFromSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>spawnSource</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transfers stat modifiers from the spawn source to the projectile. <br  />
+ Adds <a class="el" href="class_projectile.html#a56758a1e35c234345b4507b36c0e8088" title="The critical strike chance modifier of this projectile. Cannot be set to negative values....">CritChance</a> and <a class="el" href="class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46" title="The number of defense points that this projectile can ignore on its own. Cannot be set to negative va...">ArmorPenetration</a> bonuses from players (<a class="el" href="class_entity_source___parent.html" title="Use when the parent can be considered the &#39;owner&#39; or &#39;responsible for&#39; the effect....">EntitySource_Parent</a>), weapons (<a class="el" href="class_entity_source___item_use.html" title="Use the interface, IEntitySource_WithStatsFromItem instead when checking entity sources in OnSpawn">EntitySource_ItemUse</a>)<br  />
+ If the source is a <a class="el" href="class_entity_source___parent.html" title="Use when the parent can be considered the &#39;owner&#39; or &#39;responsible for&#39; the effect....">EntitySource_Parent</a> projectile, <code>CritChance</code> and <code>ArmorPenetration</code> from the parent will be added, in order to transfer the original item/player bonus values.<br  />
+<br  />
+ <br  />
+ To support minions, sentries and <a class="el" href="class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33" title="If set damage will be recalculated based on originalDamage, DamageType and the owner player,...">ContinuouslyUpdateDamageStats</a>, <a class="el" href="class_projectile.html#aa4f752f854e89325b991e7db7a316562" title="The crit chance of this projectile, without any player bonuses, similar to originalDamage  Used by Co...">OriginalCritChance</a> and <a class="el" href="class_projectile.html#ab9b496d833e80e1b7a950e968ec3841c" title="The crit chance of this projectile, without any player bonuses, similar to originalDamage  Used by Co...">OriginalArmorPenetration</a> are also copied from item sources and parent projectiles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spawnSource</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ac40596ec0c75dea27a09b9ded8a21f4f" name="ac40596ec0c75dea27a09b9ded8a21f4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac40596ec0c75dea27a09b9ded8a21f4f">&#9670;&nbsp;</a></span>CountsAsClass()</h2>
 
@@ -1469,6 +1509,33 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
  Set directly on the projectile instance returned from <a class="el" href="class_projectile.html#a76031be1e4228ce7e8a3ec67e2c293ad" title="Spawns a projectile into the game world with the given type. The spawn position is given in world coo...">Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)</a>, not in <a class="el" href="class_mod_projectile.html#a1022001acebe0c11fc6941e35ba704ad" title="Allows you to set all your projectile&#39;s properties, such as width, damage, aiStyle,...">ModProjectile.SetDefaults</a>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible. <br  />
  Set automatically when shot from a weapon that counts as <a class="el" href="class_damage_class.html#a911b671d0e9de1f35e70d22ef9bbe756" title="Class provided for modders who want to coordinate throwing accessories and items. Not used by any van...">DamageClass.Throwing</a> and <a class="el" href="class_player.html#a55103513d96bc820345e45f34cad7c7a" title="Returns true if either ThrownCost33 or ThrownCost50 are true">Player.AnyThrownCostReduction</a> is <code>true</code>. <br  />
  Defaults to <code>false</code>. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="aa4dc4490af8ba89759ac68786b86fb33" name="aa4dc4490af8ba89759ac68786b86fb33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4dc4490af8ba89759ac68786b86fb33">&#9670;&nbsp;</a></span>ContinuouslyUpdateDamageStats</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Projectile.ContinuouslyUpdateDamageStats</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If set <a class="el" href="class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4" title="This will always be set in Projectile.NewProjectile based on the weapons damage and player stat modif...">damage</a> will be recalculated based on originalDamage, <a class="el" href="class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4" title="The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageC...">DamageType</a> and the <a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">owner</a> player, just like minions and sentries. <br  />
+ Similarly for <a class="el" href="class_projectile.html#a56758a1e35c234345b4507b36c0e8088" title="The critical strike chance modifier of this projectile. Cannot be set to negative values....">CritChance</a> and <a class="el" href="class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46" title="The number of defense points that this projectile can ignore on its own. Cannot be set to negative va...">ArmorPenetration</a>. </p>
+<p >No need to set this if <a class="el" href="class_projectile.html#a01ec793a8f23b86a7ac80513ad1d0949" title="Indicates that this projectile is a minion   Defaults to false.">minion</a> or <a class="el" href="class_projectile.html#aefcc822f644ea2ff3758de8263c93c20" title="Indicates that this projectile is a sentry   Defaults to false.   All sentries should set Projectile....">sentry</a> is set. </p>
 
 </div>
 </div>

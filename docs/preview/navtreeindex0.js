@@ -3,6 +3,7 @@ var NAVTREEINDEX0 =
 "annotated.html":[3,0],
 "class_a_basic_particle.html":[3,0,0],
 "class_a_entity_source___tile.html":[3,0,22],
+"class_a_entity_source___tile.html#a6c9efc9eaefa23fb1c9346979d30bc60":[3,0,22,0],
 "class_a_hover_interaction_checker.html":[3,0,24],
 "class_a_render_target_content_by_request.html":[3,0,43],
 "class_a_shopping_biome.html":[3,0,49],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "class_blood_moon_screen_shader_data.html":[3,0,99],
 "class_bool_tag_serializer.html":[3,0,100],
 "class_boss_bar_loader.html":[3,0,102],
-"class_boss_bar_loader.html#a14f46ce35973cb73308ca5c49f4c424d":[3,0,102,2],
-"class_boss_bar_loader.html#ac043304c2915d51833b6cab542153466":[3,0,102,0]
+"class_boss_bar_loader.html#a14f46ce35973cb73308ca5c49f4c424d":[3,0,102,2]
 };

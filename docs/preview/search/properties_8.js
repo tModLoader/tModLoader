@@ -11,9 +11,10 @@ var searchData=
   ['islooped_8',['IsLooped',['../struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994',1,'SoundStyle']]],
   ['isminionorsentryrelated_9',['IsMinionOrSentryRelated',['../class_projectile.html#a0b34b3b9b56439acfc13ebba50455ca6',1,'Projectile']]],
   ['isselected_10',['IsSelected',['../class_mod_boss_bar_style.html#a8efc9756fa9339b35538beb7675de4ec',1,'ModBossBarStyle']]],
-  ['item_11',['Item',['../class_equip_texture.html#a04598992facef2f95d269c11b89f6a7a',1,'EquipTexture.Item()'],['../class_mod_item.html#ae7cd71216cb932d036dd916f67b2cdd1',1,'ModItem.Item()']]],
+  ['item_11',['Item',['../interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643',1,'IEntitySource_WithStatsFromItem.Item()'],['../class_entity_source___item_use.html#a7c651c8a0564a3ca07ee11f8169199c7',1,'EntitySource_ItemUse.Item()'],['../class_equip_texture.html#a04598992facef2f95d269c11b89f6a7a',1,'EquipTexture.Item()'],['../class_mod_item.html#ae7cd71216cb932d036dd916f67b2cdd1',1,'ModItem.Item()']]],
   ['itemanimationactive_12',['ItemAnimationActive',['../class_player.html#ac0d99ef77f3caa4cac5217ae7c0092ff',1,'Player']]],
   ['itemanimationendingorended_13',['ItemAnimationEndingOrEnded',['../class_player.html#a91d1ca1a2b97c5a540b448b5d86a3627',1,'Player']]],
   ['itemanimationjuststarted_14',['ItemAnimationJustStarted',['../class_player.html#ac479b8ca92fc8377275c5b4fcf4c025b',1,'Player']]],
-  ['itemusesthisanimation_15',['ItemUsesThisAnimation',['../class_player.html#a841b107297d8f66873c10b711ddecafe',1,'Player']]]
+  ['itemtype_15',['ItemType',['../class_entity_source___item_open.html#af4abcad5e531864385c79e4c3a054f4f',1,'EntitySource_ItemOpen']]],
+  ['itemusesthisanimation_16',['ItemUsesThisAnimation',['../class_player.html#a841b107297d8f66873c10b711ddecafe',1,'Player']]]
 ];

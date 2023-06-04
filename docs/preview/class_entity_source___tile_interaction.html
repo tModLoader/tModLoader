@@ -86,11 +86,15 @@ $(document).ready(function(){initNavTree('class_entity_source___tile_interaction
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_entity_source___tile_interaction-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EntitySource_TileInteraction Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Used when an entity interacts with a tile. <br  />
+ Used by vanilla when players activate mechanisms like cannons and fireworks  
+ <a href="class_entity_source___tile_interaction.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_a_entity_source___tile.html">AEntitySource_Tile</a>.</p>
 <table class="memberdecls">
@@ -104,27 +108,29 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AEntitySource_Tile</b> (int tileCoordsX, int tileCoordsY, string? context)</td></tr>
 <tr class="separator:a2eba080897f81a3b5be2f67dbcee7e32 inherit pub_methods_class_a_entity_source___tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:aabe3332f0ce70e0d603c6ca594227425"><td class="memItemLeft" align="right" valign="top"><a id="aabe3332f0ce70e0d603c6ca594227425" name="aabe3332f0ce70e0d603c6ca594227425"></a>
-readonly <a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b></td></tr>
-<tr class="separator:aabe3332f0ce70e0d603c6ca594227425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_class_a_entity_source___tile"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_a_entity_source___tile')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_a_entity_source___tile.html">AEntitySource_Tile</a></td></tr>
-<tr class="memitem:a65d559cfdb8f652458a8f0bb974f9b15 inherit pub_attribs_class_a_entity_source___tile"><td class="memItemLeft" align="right" valign="top"><a id="a65d559cfdb8f652458a8f0bb974f9b15" name="a65d559cfdb8f652458a8f0bb974f9b15"></a>
-readonly Point&#160;</td><td class="memItemRight" valign="bottom"><b>TileCoords</b></td></tr>
-<tr class="separator:a65d559cfdb8f652458a8f0bb974f9b15 inherit pub_attribs_class_a_entity_source___tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:af001441bb01ecc997fcaa871beef7bfb"><td class="memItemLeft" align="right" valign="top"><a id="af001441bb01ecc997fcaa871beef7bfb" name="af001441bb01ecc997fcaa871beef7bfb"></a>
+<a class="el" href="class_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get]</code></td></tr>
+<tr class="memdesc:af001441bb01ecc997fcaa871beef7bfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The entity interacting with the tile. <br  />
+ Normally a <a class="el" href="class_player.html">Player</a> <br /></td></tr>
+<tr class="separator:af001441bb01ecc997fcaa871beef7bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_a_entity_source___tile"><td colspan="2" onclick="javascript:toggleInherit('properties_class_a_entity_source___tile')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_a_entity_source___tile.html">AEntitySource_Tile</a></td></tr>
 <tr class="memitem:a6c9efc9eaefa23fb1c9346979d30bc60 inherit properties_class_a_entity_source___tile"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_entity_source___tile.html#a6c9efc9eaefa23fb1c9346979d30bc60">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:a6c9efc9eaefa23fb1c9346979d30bc60 inherit properties_class_a_entity_source___tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="class_a_entity_source___tile.html#a6c9efc9eaefa23fb1c9346979d30bc60">More...</a><br /></td></tr>
 <tr class="separator:a6c9efc9eaefa23fb1c9346979d30bc60 inherit properties_class_a_entity_source___tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab86138a851dd8b4e8c37bd354a9d471d inherit properties_class_a_entity_source___tile"><td class="memItemLeft" align="right" valign="top"><a id="ab86138a851dd8b4e8c37bd354a9d471d" name="ab86138a851dd8b4e8c37bd354a9d471d"></a>
+Point&#160;</td><td class="memItemRight" valign="bottom"><b>TileCoords</b><code> [get]</code></td></tr>
+<tr class="separator:ab86138a851dd8b4e8c37bd354a9d471d inherit properties_class_a_entity_source___tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_entity_source"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_source')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_source.html">IEntitySource</a></td></tr>
-<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top"><a id="ac17ad5ab7ad9bac426721c8278b6ac37" name="ac17ad5ab7ad9bac426721c8278b6ac37"></a>
-string?&#160;</td><td class="memItemRight" valign="bottom"><b>Context</b><code> [get]</code></td></tr>
+<tr class="memitem:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memItemLeft" align="right" valign="top">string?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">Context</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional context identifier, particularly useful for set bonuses or accessory affects. See ItemSourceID and ProjectileSourceID for vanilla uses  <a href="interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37">More...</a><br /></td></tr>
 <tr class="separator:ac17ad5ab7ad9bac426721c8278b6ac37 inherit properties_interface_i_entity_source"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Used when an entity interacts with a tile. <br  />
+ Used by vanilla when players activate mechanisms like cannons and fireworks </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

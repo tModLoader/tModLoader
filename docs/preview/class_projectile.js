@@ -1,6 +1,7 @@
 var class_projectile =
 [
     [ "HallowBossPelletStormInfo", "struct_projectile_1_1_hallow_boss_pellet_storm_info.html", null ],
+    [ "ApplyStatsFromSource", "class_projectile.html#ad3f80d72caeaa31e98d84bb35cb498a5", null ],
     [ "CountsAsClass", "class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f", null ],
     [ "CountsAsClass< T >", "class_projectile.html#aa563376ec59229db5f0f0be3c8ac3f9b", null ],
     [ "DropGeodeLoot", "class_projectile.html#aa3ca38cd7b4932cc0dab33c55a6dc820", null ],
@@ -60,9 +61,11 @@ var class_projectile =
     [ "usesIDStaticNPCImmunity", "class_projectile.html#a32061f901e77c762155c2a927c1fd140", null ],
     [ "usesLocalNPCImmunity", "class_projectile.html#aac037d80bb3fc6a3a54c4fd8cc771197", null ],
     [ "ArmorPenetration", "class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46", null ],
-    [ "ContinuouslyUpdateDamage", "class_projectile.html#ab9f6c227fecdc1271b3adde2ca8a68b6", null ],
+    [ "ContinuouslyUpdateDamageStats", "class_projectile.html#aa4dc4490af8ba89759ac68786b86fb33", null ],
     [ "CritChance", "class_projectile.html#a56758a1e35c234345b4507b36c0e8088", null ],
     [ "DamageType", "class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4", null ],
     [ "IsMinionOrSentryRelated", "class_projectile.html#a0b34b3b9b56439acfc13ebba50455ca6", null ],
-    [ "ModProjectile", "class_projectile.html#acf73b38dd6006395707713d1afb995ea", null ]
+    [ "ModProjectile", "class_projectile.html#acf73b38dd6006395707713d1afb995ea", null ],
+    [ "OriginalArmorPenetration", "class_projectile.html#ab9b496d833e80e1b7a950e968ec3841c", null ],
+    [ "OriginalCritChance", "class_projectile.html#aa4f752f854e89325b991e7db7a316562", null ]
 ];
