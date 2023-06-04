@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_value_not_translation_key_exception.html":[3,0,1382],
 "class_vanilla_content_validator.html":[3,0,1383],
 "class_vanilla_damage_class.html":[3,0,1384],
 "class_vanilla_info_display.html":[3,0,1385],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "interface_i_item_drop_rule_chain_attempt.html":[3,0,531],
 "interface_i_item_drop_rule_condition.html":[3,0,532],
 "interface_i_item_entry_filter.html":[3,0,533],
-"interface_i_lighting_engine.html":[3,0,534],
-"interface_i_loadable.html":[3,0,535]
+"interface_i_lighting_engine.html":[3,0,534]
 };

@@ -22,6 +22,7 @@ var class_main =
     [ "TryRemovingBuff", "class_main.html#aa3c33b3a39f7a4e711830285ac31ef7a", null ],
     [ "buffNoSave", "class_main.html#a37a50bf3ced9746a42bd06faf3ce79c6", null ],
     [ "buffNoTimeDisplay", "class_main.html#ae81cfab1b6c394a567d7fcb42465b8ea", null ],
+    [ "clientPlayer", "class_main.html#af88d54d9bdedfd2f95be86cfa6f03902", null ],
     [ "dayRate", "class_main.html#a0933e4f6c2546c1278824d94721cd30d", null ],
     [ "debuff", "class_main.html#a59423ffeea5a4ed3c5cc9e2a9d1d2a68", null ],
     [ "lightPet", "class_main.html#a52907c46ebad4f04fe95179cffef3b97", null ],

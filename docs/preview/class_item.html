@@ -136,7 +136,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeItemType</b> (i
 <tr class="separator:ab84f4bfdd8120b688cf6952b6eb90477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98eb0daeff26b7342d2fcf37232d2984"><td class="memItemLeft" align="right" valign="top"><a id="a98eb0daeff26b7342d2fcf37232d2984" name="a98eb0daeff26b7342d2fcf37232d2984"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearNameOverride</b> ()</td></tr>
-<tr class="memdesc:a98eb0daeff26b7342d2fcf37232d2984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the overriden value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a>. <br /></td></tr>
+<tr class="memdesc:a98eb0daeff26b7342d2fcf37232d2984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the overridden value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a>. <br /></td></tr>
 <tr class="separator:a98eb0daeff26b7342d2fcf37232d2984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf8c66cf232da2a62614267f2f0e7472"><td class="memItemLeft" align="right" valign="top"><a id="aaf8c66cf232da2a62614267f2f0e7472" name="aaf8c66cf232da2a62614267f2f0e7472"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
@@ -574,7 +574,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>accessory</b></td></t
 <tr class="separator:a693c7569b5678fe0b8df310c1f4131df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a158f9a52b83d014930c53bdfa22f16"><td class="memItemLeft" align="right" valign="top"><a id="a6a158f9a52b83d014930c53bdfa22f16" name="a6a158f9a52b83d014930c53bdfa22f16"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
-<tr class="memdesc:a6a158f9a52b83d014930c53bdfa22f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to a value from 0 to 255 to control how transparant the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <a class="el" href="class_mod_item.html#a82ecb7d05b711e4996d46e67ff5a0cd9" title="Allows you to determine the color and transparency in which this item is drawn. Return null to use th...">ModItem.GetAlpha(Color)</a> for more control over the resulting color. <br  />
+<tr class="memdesc:a6a158f9a52b83d014930c53bdfa22f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to a value from 0 to 255 to control how transparent the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <a class="el" href="class_mod_item.html#a82ecb7d05b711e4996d46e67ff5a0cd9" title="Allows you to determine the color and transparency in which this item is drawn. Return null to use th...">ModItem.GetAlpha(Color)</a> for more control over the resulting color. <br  />
  Defaults to 0. <br /></td></tr>
 <tr class="separator:a6a158f9a52b83d014930c53bdfa22f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addaf53abeefd8999bc77746befd84d8f"><td class="memItemLeft" align="right" valign="top"><a id="addaf53abeefd8999bc77746befd84d8f" name="addaf53abeefd8999bc77746befd84d8f"></a>
@@ -1086,7 +1086,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>useAmmo</b> = AmmoID.N
 <tr class="separator:a04dab8e6b2d1fb2de84201340ea8b63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07884f03e59e5fd14dd73424b07b5439"><td class="memItemLeft" align="right" valign="top"><a id="a07884f03e59e5fd14dd73424b07b5439" name="a07884f03e59e5fd14dd73424b07b5439"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>useAnimation</b></td></tr>
-<tr class="memdesc:a07884f03e59e5fd14dd73424b07b5439"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time span of the using animation for the item in ticks. This is independant of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independant of the time it takes for the item anima...">useTime</a> as this is only the animation. <br  />
+<tr class="memdesc:a07884f03e59e5fd14dd73424b07b5439"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time span of the using animation for the item in ticks. This is independent of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independent of the time it takes for the item anima...">useTime</a> as this is only the animation. <br  />
  Blocks use 15. Default value is 100. <a class="el" href="namespace_terraria.html">Terraria</a> runs at 60 frames per second, so 15 is 1/4th of a second. <br /></td></tr>
 <tr class="separator:a07884f03e59e5fd14dd73424b07b5439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc52dd00889f63a40abc437392eec33"><td class="memItemLeft" align="right" valign="top"><a id="a7bc52dd00889f63a40abc437392eec33" name="a7bc52dd00889f63a40abc437392eec33"></a>
@@ -1103,9 +1103,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>useStyle</b></td></tr>
 <tr class="separator:a0377de5f17d5f7d0d448e549ea3c172a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e4256dafa7294d30c9d57c1510fc9c0"><td class="memItemLeft" align="right" valign="top"><a id="a0e4256dafa7294d30c9d57c1510fc9c0" name="a0e4256dafa7294d30c9d57c1510fc9c0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>useTime</b></td></tr>
-<tr class="memdesc:a0e4256dafa7294d30c9d57c1510fc9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time span of using the item in ticks. This is independant of the time it takes for the item animation to finish. <br  />
+<tr class="memdesc:a0e4256dafa7294d30c9d57c1510fc9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish. <br  />
  Blocks use 10. Default value is 100. <br  />
- Weapons usually have equal <a class="el" href="class_item.html#a07884f03e59e5fd14dd73424b07b5439" title="The time span of the using animation for the item in ticks. This is independant of the time it takes ...">useAnimation</a> and useTime, unequal values for these two results in multiple attacks per click. See ExampleGun.cs's Clockwork Assault Rifle examplefor an example of that. <br /></td></tr>
+ Weapons usually have equal <a class="el" href="class_item.html#a07884f03e59e5fd14dd73424b07b5439" title="The time span of the using animation for the item in ticks. This is independent of the time it takes ...">useAnimation</a> and useTime, unequal values for these two results in multiple attacks per click. See ExampleGun.cs's Clockwork Assault Rifle examplefor an example of that. <br /></td></tr>
 <tr class="separator:a0e4256dafa7294d30c9d57c1510fc9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a454f5012981a5be2b2b526c72477b889"><td class="memItemLeft" align="right" valign="top"><a id="a454f5012981a5be2b2b526c72477b889" name="a454f5012981a5be2b2b526c72477b889"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>useTurn</b></td></tr>
@@ -1408,8 +1408,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>PaintOrCoating</b><co
 <tr class="separator:a6206f7bf649546467ee0b9e347fad5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7fcb405aa707d7031409bb397b39738"><td class="memItemLeft" align="right" valign="top"><a id="ab7fcb405aa707d7031409bb397b39738" name="ab7fcb405aa707d7031409bb397b39738"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ResearchUnlockCount</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:ab7fcb405aa707d7031409bb397b39738"><td class="mdescLeft">&#160;</td><td class="mdescRight">A utility property for easily geting or setting the amount of items required for this item's current type to be researched. <br  />
- By default, all modded items will have this set to 1. Set to 0 for unresearchable items, such as items that disappear on pickup. The Journey Mode Research wiki pagelists values for various types of items, use it as a guide for consistency. <br  />
+<tr class="memdesc:ab7fcb405aa707d7031409bb397b39738"><td class="mdescLeft">&#160;</td><td class="mdescRight">A utility property for easily getting or setting the amount of items required for this item's current type to be researched. <br  />
+ By default, all modded items will have this set to 1. Set to 0 for un-researchable items, such as items that disappear on pickup. The Journey Mode Research wiki pagelists values for various types of items, use it as a guide for consistency. <br  />
  <b>NOTE:</b> The accessed values are stored per item type, not per item instance. You're recommended to only use the setter in load-time hooks, like <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModType.SetStaticDefaults</a>. <br /></td></tr>
 <tr class="separator:ab7fcb405aa707d7031409bb397b39738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7cba0ef1318508a361b377e663e6f90"><td class="memItemLeft" align="right" valign="top"><a id="af7cba0ef1318508a361b377e663e6f90" name="af7cba0ef1318508a361b377e663e6f90"></a>
@@ -1786,7 +1786,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 <p ><code>width = 14;<br  />
 height = 30;<br  />
 UseSound = SoundID.Item5;</code><br  />
- Addtionally: <br  />
+ Additionally: <br  />
  </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1851,7 +1851,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to food items.<br  />
  Specifically: </p>
-<p ><code> UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <a class="el" href="class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65" title="Item is brought in front of player and rotated towards player.   Used by potions, drings,...">ItemUseStyleID.DrinkLiquid</a> : <a class="el" href="class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715" title="Eating or using Used by food">ItemUseStyleID.EatFood</a>; useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true; buffType = foodbuff; buffTime = foodbuffduration; rare = <a class="el" href="class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435" title="One (1)">ItemRarityID.Blue</a>; value = 20 silver; </code> </p>
+<p ><code> UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <a class="el" href="class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65" title="Item is brought in front of player and rotated towards player.   Used by potions, drings,...">ItemUseStyleID.DrinkLiquid</a> : <a class="el" href="class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715" title="Eating or using Used by food">ItemUseStyleID.EatFood</a>; useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true; buffType = <em>foodbuff</em> ; buffTime = <em>foodbuffduration</em> ; rare = <a class="el" href="class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435" title="One (1)">ItemRarityID.Blue</a>; value = 20 silver; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newwidth</td><td></td></tr>
@@ -1884,7 +1884,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to golf ball items.<br  />
  Specifically: </p>
-<p ><code> shoot = projid; useStyle = <a class="el" href="class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb" title="Item is swung in an overhead arch. Used for many sword weapons, block placement, etc.">ItemUseStyleID.Swing</a>; shootSpeed = 12f; width = 18; height = 20; maxStack = 1; UseSound = SoundID.Item1; useAnimation = 15; useTime = 15; noUseGraphic = true; noMelee = true; accessory = true; SetShopValues(ItemRarityColor.Green2, buyPrice(0, 1)); hasVanityEffects = true; </code> </p>
+<p ><code> shoot = <em>projid</em> ; useStyle = <a class="el" href="class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb" title="Item is swung in an overhead arch. Used for many sword weapons, block placement, etc.">ItemUseStyleID.Swing</a>; shootSpeed = 12f; width = 18; height = 20; maxStack = 1; UseSound = SoundID.Item1; useAnimation = 15; useTime = 15; noUseGraphic = true; noMelee = true; accessory = true; SetShopValues(ItemRarityColor.Green2, buyPrice(0, 1)); hasVanityEffects = true; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projid</td><td></td></tr>
@@ -2248,7 +2248,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to staff magic weapons.<br  />
  Specifically: </p>
-<p ><code> DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true); mana = manaPerShot; width = 40; height = 40; UseSound = SoundID.Item43; </code> Addtionally: <br  />
+<p ><code> DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true); mana = manaPerShot; width = 40; height = 40; UseSound = SoundID.Item43; </code> Additionally: <br  />
  </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2407,7 +2407,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to whip weapons.<br  />
  Specifically: </p>
-<p ><code> autoReuse = false; useStyle = <a class="el" href="class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb" title="Item is swung in an overhead arch. Used for many sword weapons, block placement, etc.">ItemUseStyleID.Swing</a>; useAnimation = animationTotalTime; useTime = animationTotalTime; width = 18; height = 18; shoot = projectileId; UseSound = SoundID.Item152; noMelee = true; DamageType = <a class="el" href="class_damage_class.html#af73ff3cb3f79309368ad6a09924c2af9" title="This is a damage class used solely by vanilla whips. It benefits from melee attackSpeed bonuses.">DamageClass.SummonMeleeSpeed</a>; noUseGraphic = true; damage = dmg; knockBack = kb; shootSpeed = shootspeed; </code> </p>
+<p ><code> autoReuse = false; useStyle = <a class="el" href="class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb" title="Item is swung in an overhead arch. Used for many sword weapons, block placement, etc.">ItemUseStyleID.Swing</a>; useAnimation = animationTotalTime; useTime = animationTotalTime; width = 18; height = 18; shoot = projectileId; UseSound = SoundID.Item152; noMelee = true; DamageType = <a class="el" href="class_damage_class.html#af73ff3cb3f79309368ad6a09924c2af9" title="This is a damage class used solely by vanilla whips. It benefits from melee attackSpeed bonuses.">DamageClass.SummonMeleeSpeed</a>; noUseGraphic = true; damage = dmg; knockBack = kb; shootSpeed = <em>shootspeed</em> ; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectileId</td><td></td></tr>

@@ -1193,7 +1193,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>noTileCollide</b></td
 <tr class="separator:adb91395f7c6559c16bad7097d358e867"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c91873c3b58b70afca2cfe7ddc8355"><td class="memItemLeft" align="right" valign="top"><a id="ae1c91873c3b58b70afca2cfe7ddc8355" name="ae1c91873c3b58b70afca2cfe7ddc8355"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>npcSlots</b> = 1f</td></tr>
-<tr class="memdesc:ae1c91873c3b58b70afca2cfe7ddc8355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flys have values around 0.1f and 0.25f. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6. <br  />
+<tr class="memdesc:ae1c91873c3b58b70afca2cfe7ddc8355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flies have values around 0.1f and 0.25f. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6. <br  />
  Proper npcSlots values help balance the game and prevents the player from randomly being overwhelmed by powerful enemies. The Spawn rates section on the <a class="el" href="class_n_p_c.html">NPC</a> spawning wiki pagelists vanilla npcSlots values. Use this as a guide to find a suitable value. <br  />
  Defaults to 1f. <br /></td></tr>
 <tr class="separator:ae1c91873c3b58b70afca2cfe7ddc8355"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1251,7 +1251,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rarity</b></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>realLife</b> = -1</td></tr>
 <tr class="memdesc:afcca3c242b80ef23de93ebb6135acc9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the index (the <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a>) of a single <a class="el" href="class_n_p_c.html">NPC</a>. This <a class="el" href="class_n_p_c.html">NPC</a> will then share a health pool with that <a class="el" href="class_n_p_c.html">NPC</a>.<br  />
  Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br  />
- This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part npcs will have the default value of -1 still. <br  />
+ This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part NPCs will have the default value of -1 still. <br  />
  Defaults to -1. <br /></td></tr>
 <tr class="separator:afcca3c242b80ef23de93ebb6135acc9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addf44ff73d1bb4bc3b6e8b234030f56c"><td class="memItemLeft" align="right" valign="top"><a id="addf44ff73d1bb4bc3b6e8b234030f56c" name="addf44ff73d1bb4bc3b6e8b234030f56c"></a>
@@ -2100,7 +2100,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
     <tr><td class="paramname">knockBack</td><td>Defaults to 0</td></tr>
     <tr><td class="paramname">damageType</td><td>Defaults to DamageClass.Default</td></tr>
     <tr><td class="paramname">damageVariation</td><td>Whether to apply damage variation. Defaults to false.</td></tr>
-    <tr><td class="paramname">luck</td><td>Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</td></tr>
+    <tr><td class="paramname">luck</td><td>Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</td></tr>
   </table>
   </dd>
 </dl>
@@ -2801,12 +2801,12 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
     <tr><td class="paramname">knockBack</td><td>Defaults to 0</td></tr>
     <tr><td class="paramname">damageType</td><td>Defaults to DamageClass.Default</td></tr>
     <tr><td class="paramname">damageVariation</td><td>Whether to apply damage variation. Defaults to false.</td></tr>
-    <tr><td class="paramname">luck</td><td>Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</td></tr>
-    <tr><td class="paramname">noPlayerInteraction</td><td>Prevents PlayerInteraction(int) from being called in singleplayer. In multiplayer, player interaction is handled by the server.</td></tr>
+    <tr><td class="paramname">luck</td><td>Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</td></tr>
+    <tr><td class="paramname">noPlayerInteraction</td><td>Prevents PlayerInteraction(int) from being called in single player. In multiplayer, player interaction is handled by the server.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The actual health lost by the <a class="el" href="class_n_p_c.html">NPC</a>. Normally this is <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> but it is capped at the current health of the <a class="el" href="class_n_p_c.html">NPC</a>, and represents the actual damge dealt in the case of <a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47" title="If true, as much damage as necessary will be dealt, and damage number popups will not be shown for th...">HitInfo.InstantKill</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The actual health lost by the <a class="el" href="class_n_p_c.html">NPC</a>. Normally this is <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> but it is capped at the current health of the <a class="el" href="class_n_p_c.html">NPC</a>, and represents the actual damage dealt in the case of <a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47" title="If true, as much damage as necessary will be dealt, and damage number popups will not be shown for th...">HitInfo.InstantKill</a> </dd></dl>
 
 </div>
 </div>
@@ -2850,11 +2850,11 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
   <table class="params">
     <tr><td class="paramname">hit</td><td>The parameters of the hit. Normally obtained via <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html" title="Represents a damage calculation in the process of being calculated for damage to be applied to an NPC...">NPC.HitModifiers</a> or <a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d" title="Runs NPCLoader.ModifyIncomingHit hooks and and does the full damage calculations.   The result HitInf...">CalculateHitInfo</a></td></tr>
     <tr><td class="paramname">fromNet</td><td>true if this strike came from another client over the network. Just changes the combat text to be darker in color.</td></tr>
-    <tr><td class="paramname">noPlayerInteraction</td><td>Prevents PlayerInteraction(int) from being called in singleplayer. In multiplayer, player interaction is handled by the server.</td></tr>
+    <tr><td class="paramname">noPlayerInteraction</td><td>Prevents PlayerInteraction(int) from being called in single player. In multiplayer, player interaction is handled by the server.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The actual health lost by the <a class="el" href="class_n_p_c.html">NPC</a>. Normally this is <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> but it is capped at the current health of the <a class="el" href="class_n_p_c.html">NPC</a>, and represents the actual damge dealt in the case of <a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47" title="If true, as much damage as necessary will be dealt, and damage number popups will not be shown for th...">HitInfo.InstantKill</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The actual health lost by the <a class="el" href="class_n_p_c.html">NPC</a>. Normally this is <a class="el" href="struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886" title="The amount of damage received by the NPC. How much life the NPC will lose.   Is NOT capped at the NPC...">HitInfo.Damage</a> but it is capped at the current health of the <a class="el" href="class_n_p_c.html">NPC</a>, and represents the actual damage dealt in the case of <a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47" title="If true, as much damage as necessary will be dealt, and damage number popups will not be shown for th...">HitInfo.InstantKill</a> </dd></dl>
 
 </div>
 </div>

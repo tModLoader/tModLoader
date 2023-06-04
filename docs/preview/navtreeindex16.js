@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_proj_a_i_style_i_d.html#aebcf0db9af5833c830523257f68fc141":[3,0,987,130],
 "class_proj_a_i_style_i_d.html#aec40cffcfcf7c7049ed82f4bb0f7083e":[3,0,987,15],
 "class_proj_a_i_style_i_d.html#aecbf3e7800ae41795bd9717f50a70374":[3,0,987,73],
 "class_proj_a_i_style_i_d.html#af0e227f39cd1ab5a022ed41405d736b2":[3,0,987,173],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_segments_1_1_sprite_segment_1_1_masked_fade_effect.html":[3,0,1061,7,1],
 "class_selection_holder.html":[3,0,1062],
 "class_separate_page_attribute.html":[3,0,1063],
-"class_sepia_screen_shader_data.html":[3,0,1064],
-"class_sequential_rules_not_scaling_with_luck_rule.html":[3,0,1065]
+"class_sepia_screen_shader_data.html":[3,0,1064]
 };

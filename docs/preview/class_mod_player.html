@@ -140,7 +140,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
  If false is returned, the <a class="el" href="class_mod_player.html#ad7e0b2773568e7b6a50391c550ae7e4d" title="Allows you to make things happen when the given ammo is consumed by the given weapon....">OnConsumeAmmo</a> hook is never called.  <a href="class_mod_player.html#adc004b059ed61ae339bd5acc1fd02245">More...</a><br /></td></tr>
 <tr class="separator:adc004b059ed61ae339bd5acc1fd02245"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a762b51ce1b8a32ff3e24f5dc26563fd0"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a762b51ce1b8a32ff3e24f5dc26563fd0">CanConsumeBait</a> (<a class="el" href="class_item.html">Item</a> bait)</td></tr>
-<tr class="memdesc:a762b51ce1b8a32ff3e24f5dc26563fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour. Not consuming will always take priority over forced consumption  <a href="class_mod_player.html#a762b51ce1b8a32ff3e24f5dc26563fd0">More...</a><br /></td></tr>
+<tr class="memdesc:a762b51ce1b8a32ff3e24f5dc26563fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior. Not consuming will always take priority over forced consumption  <a href="class_mod_player.html#a762b51ce1b8a32ff3e24f5dc26563fd0">More...</a><br /></td></tr>
 <tr class="separator:a762b51ce1b8a32ff3e24f5dc26563fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cfbc744d67beea8b331a2aab1afd128"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a5cfbc744d67beea8b331a2aab1afd128">CanHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target)</td></tr>
 <tr class="memdesc:a5cfbc744d67beea8b331a2aab1afd128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a player can hit the given <a class="el" href="class_n_p_c.html">NPC</a>. Returns true by default.  <a href="class_mod_player.html#a5cfbc744d67beea8b331a2aab1afd128">More...</a><br /></td></tr>
@@ -171,7 +171,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memdesc:a06d300d3a15d328a3a504e100318efc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return false to prevent an item from being used. By default returns true.  <a href="class_mod_player.html#a06d300d3a15d328a3a504e100318efc5">More...</a><br /></td></tr>
 <tr class="separator:a06d300d3a15d328a3a504e100318efc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a031921ab7d8289137eac8285865bb432"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a031921ab7d8289137eac8285865bb432">CatchFish</a> (<a class="el" href="struct_fishing_attempt.html">FishingAttempt</a> attempt, ref int itemDrop, ref int npcSpawn, ref <a class="el" href="struct_advanced_popup_request.html">AdvancedPopupRequest</a> sonar, ref Vector2 sonarPosition)</td></tr>
-<tr class="memdesc:a031921ab7d8289137eac8285865bb432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the item or enemy the player gets when sucessfully catching an item or <a class="el" href="class_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_n_p_c.html">NPC</a>) freely  <a href="class_mod_player.html#a031921ab7d8289137eac8285865bb432">More...</a><br /></td></tr>
+<tr class="memdesc:a031921ab7d8289137eac8285865bb432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the item or enemy the player gets when successfully catching an item or <a class="el" href="class_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_n_p_c.html">NPC</a>) freely  <a href="class_mod_player.html#a031921ab7d8289137eac8285865bb432">More...</a><br /></td></tr>
 <tr class="separator:a031921ab7d8289137eac8285865bb432"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4afd4db6bd12cec91f783a4bf0fd10bf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf">ConsumableDodge</a> (<a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> info)</td></tr>
 <tr class="memdesc:a4afd4db6bd12cec91f783a4bf0fd10bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dodge damage for a player.<br  />
@@ -232,7 +232,7 @@ See ID.CursorOverrideID for cursor override style IDs  <a href="class_mod_player
  Vanilla examples include shimmer and journey god mode.<br  />
  <br  />
  Runs before dodges are used, or any damage calculations are performed. <br  />
- Runs on all players, on all clients, so checking <a class="el" href="class_player.html">Player</a> == <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Shorthand for player[myPlayer].">Main.LocalPlayer</a> is advisable. <br  />
+ Runs on all players, on all clients, so checking <a class="el" href="class_player.html">Player</a> == <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> is advisable. <br  />
  If immunity is determined on the local player, the hit will not be sent across the network. <br  />
  <br  />
  In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.  <a href="class_mod_player.html#a36713d1e34d50e3125362ae1b4406ee5">More...</a><br /></td></tr>
@@ -263,9 +263,9 @@ See ID.CursorOverrideID for cursor override style IDs  <a href="class_mod_player
 <tr class="memdesc:a94cd29d983860c0570caa16ef0a09600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to reorder the player draw layers. This is called once at the end of mod loading, not during the game. Use with extreme caution, or risk breaking other mods.  <a href="class_mod_player.html#a94cd29d983860c0570caa16ef0a09600">More...</a><br /></td></tr>
 <tr class="separator:a94cd29d983860c0570caa16ef0a09600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f1888c345019158a7c25485b0208b26"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a6f1888c345019158a7c25485b0208b26">ModifyFishingAttempt</a> (ref <a class="el" href="struct_fishing_attempt.html">FishingAttempt</a> attempt)</td></tr>
-<tr class="memdesc:a6f1888c345019158a7c25485b0208b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered. <br  />
+<tr class="memdesc:a6f1888c345019158a7c25485b0208b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered. <br  />
 Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those. <br  />
-Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278923495634" title="The item type (Item.type) of the caught item.">FishingAttempt.rolledItemDrop</a> or <a class="el" href="struct_fishing_attempt.html#ab7a3c6407ef96aa356a8a20388a93992" title="The item type (Item.type) of the caught NPC.">FishingAttempt.rolledEnemySpawn</a> is not allowed and will be reset, use <a class="el" href="class_mod_player.html#a031921ab7d8289137eac8285865bb432" title="Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC....">CatchFish</a> for that.  <a href="class_mod_player.html#a6f1888c345019158a7c25485b0208b26">More...</a><br /></td></tr>
+Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278923495634" title="The item type (Item.type) of the caught item.">FishingAttempt.rolledItemDrop</a> or <a class="el" href="struct_fishing_attempt.html#ab7a3c6407ef96aa356a8a20388a93992" title="The item type (Item.type) of the caught NPC.">FishingAttempt.rolledEnemySpawn</a> is not allowed and will be reset, use <a class="el" href="class_mod_player.html#a031921ab7d8289137eac8285865bb432" title="Allows you to change the item or enemy the player gets when successfully catching an item or NPC....">CatchFish</a> for that.  <a href="class_mod_player.html#a6f1888c345019158a7c25485b0208b26">More...</a><br /></td></tr>
 <tr class="separator:a6f1888c345019158a7c25485b0208b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbcf7654634ac6e02234e678965ab94a"><td class="memItemLeft" align="right" valign="top"><a id="acbcf7654634ac6e02234e678965ab94a" name="acbcf7654634ac6e02234e678965ab94a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitByNPC</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
@@ -1051,7 +1051,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">weapon</td><td>The weapon that this player is attempting to use.</td></tr>
-    <tr><td class="paramname">ammo</td><td>The ammo that the give nweapon is attempting to consume.</td></tr>
+    <tr><td class="paramname">ammo</td><td>The ammo that the given weapon is attempting to consume.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1083,7 +1083,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour. Not consuming will always take priority over forced consumption </p>
+<p>Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior. Not consuming will always take priority over forced consumption </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bait</td><td>The item (bait) that would be consumed</td></tr>
@@ -1545,7 +1545,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to change the item or enemy the player gets when sucessfully catching an item or <a class="el" href="class_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_n_p_c.html">NPC</a>) freely </p>
+<p>Allows you to change the item or enemy the player gets when successfully catching an item or <a class="el" href="class_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_n_p_c.html">NPC</a>) freely </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">attempt</td><td>The structure containing most data from the vanilla fishing attempt</td></tr>
@@ -2095,7 +2095,7 @@ See ID.CursorOverrideID for cursor override style IDs </p>
  Vanilla examples include shimmer and journey god mode.<br  />
  <br  />
  Runs before dodges are used, or any damage calculations are performed. <br  />
- Runs on all players, on all clients, so checking <a class="el" href="class_player.html">Player</a> == <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Shorthand for player[myPlayer].">Main.LocalPlayer</a> is advisable. <br  />
+ Runs on all players, on all clients, so checking <a class="el" href="class_player.html">Player</a> == <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> is advisable. <br  />
  If immunity is determined on the local player, the hit will not be sent across the network. <br  />
  <br  />
  In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player. </p>
@@ -2444,9 +2444,9 @@ See ID.CursorOverrideID for cursor override style IDs </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered. <br  />
+<p>Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered. <br  />
 Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those. <br  />
-Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278923495634" title="The item type (Item.type) of the caught item.">FishingAttempt.rolledItemDrop</a> or <a class="el" href="struct_fishing_attempt.html#ab7a3c6407ef96aa356a8a20388a93992" title="The item type (Item.type) of the caught NPC.">FishingAttempt.rolledEnemySpawn</a> is not allowed and will be reset, use <a class="el" href="class_mod_player.html#a031921ab7d8289137eac8285865bb432" title="Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC....">CatchFish</a> for that. </p>
+Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278923495634" title="The item type (Item.type) of the caught item.">FishingAttempt.rolledItemDrop</a> or <a class="el" href="struct_fishing_attempt.html#ab7a3c6407ef96aa356a8a20388a93992" title="The item type (Item.type) of the caught NPC.">FishingAttempt.rolledEnemySpawn</a> is not allowed and will be reset, use <a class="el" href="class_mod_player.html#a031921ab7d8289137eac8285865bb432" title="Allows you to change the item or enemy the player gets when successfully catching an item or NPC....">CatchFish</a> for that. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">attempt</td><td>The structure containing most data from the vanilla fishing attempt</td></tr>

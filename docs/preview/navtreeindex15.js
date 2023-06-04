@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"class_player_titanium_storm_buff_texture_content.html":[3,0,962],
 "class_player_variant_i_d.html":[3,0,963],
 "class_player_variant_i_d_1_1_sets.html":[3,0,963,0],
 "class_player_variant_i_d_1_1_sets.html#a0b2b5d05bedba2ad7931b927984953ea":[3,0,963,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "class_proj_a_i_style_i_d.html#ae61b141cc6be33783e42246fe3ac7870":[3,0,987,135],
 "class_proj_a_i_style_i_d.html#ae7a86ffadca584b906bc91b75dcb54d8":[3,0,987,117],
 "class_proj_a_i_style_i_d.html#ae9cf07e363133480da1ffa27f540196c":[3,0,987,142],
-"class_proj_a_i_style_i_d.html#aea341712eb1e3ef1e386f9521156d9a0":[3,0,987,164],
-"class_proj_a_i_style_i_d.html#aebcf0db9af5833c830523257f68fc141":[3,0,987,130]
+"class_proj_a_i_style_i_d.html#aea341712eb1e3ef1e386f9521156d9a0":[3,0,987,164]
 };

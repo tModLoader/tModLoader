@@ -56,19 +56,19 @@ var NAVTREEINDEX =
 "class_item.html#a1f63868d44588200030b9d6abca20aef",
 "class_item_i_d_1_1_sets.html#adf18358a434b86368fdfa1329d266f6f",
 "class_main.html",
-"class_mod_content.html#a3db198aac78121d4f2f241f8edc0d730",
-"class_mod_n_p_c.html#a393ace1e7d24a06a5fe8c480035aae9a",
-"class_mod_projectile.html#a5ded6f6f7c2227733b5dd3ed1aa35e0c",
-"class_mod_type.html#a26a0e922a37d6997b4913dd4af99130e",
-"class_n_p_c_a_i_style_i_d.html#a4aa17d53033f71712b21d199ffa97bbb",
-"class_particle_renderer.html",
-"class_player_variant_i_d.html",
-"class_proj_a_i_style_i_d.html#aec40cffcfcf7c7049ed82f4bb0f7083e",
-"class_sequential_rules_rule.html",
-"class_tile_i_d_1_1_sets_1_1_for_advanced_collision.html",
-"class_vanilla_content_validator.html",
-"interface_i_loadable.html#a74b8cb29a82ac7ee8022f01dc1c52ed9",
-"struct_n_p_c_spawn_info.html#a43d099598f4d626d847274e9dbdce963"
+"class_mod_content.html#a2e5088dea2ed1df947181a447284d950",
+"class_mod_n_p_c.html#a38e287cc0b3e5c7f972fb78749e83e8d",
+"class_mod_projectile.html#a5b3ee9c49ae4759e7ac230692e7c5329",
+"class_mod_type.html#a2044bf46ccf5c8ba4d8358f06c6d1770",
+"class_n_p_c_a_i_style_i_d.html#a466e496c4e7e47817d3c526a28ea3a94",
+"class_particle_pool.html",
+"class_player_titanium_storm_buff_texture_content.html",
+"class_proj_a_i_style_i_d.html#aebcf0db9af5833c830523257f68fc141",
+"class_sequential_rules_not_scaling_with_luck_rule.html",
+"class_tile_i_d_1_1_sets_1_1_conversion.html",
+"class_value_not_translation_key_exception.html",
+"interface_i_loadable.html",
+"struct_n_p_c_spawn_info.html#a42f731d043522a38513b94962d9ab2e5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

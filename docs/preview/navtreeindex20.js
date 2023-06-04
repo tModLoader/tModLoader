@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"interface_i_loadable.html":[3,0,535],
 "interface_i_loadable.html#a74b8cb29a82ac7ee8022f01dc1c52ed9":[3,0,535,1],
 "interface_i_loadable.html#a92a6276a1235d57c8e834508ba16ece1":[3,0,535,0],
 "interface_i_loadable.html#aec1540dae35bd83a145bb336b6e981e8":[3,0,535,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_n_p_c_spawn_info.html":[3,0,884],
 "struct_n_p_c_spawn_info.html#a0e8769976f0f0bfaec1759f726885812":[3,0,884,13],
 "struct_n_p_c_spawn_info.html#a1a49661456fde97e15a15875819965df":[3,0,884,9],
-"struct_n_p_c_spawn_info.html#a2639f3b35ad5f88ffe1a5d87e599a6e3":[3,0,884,1],
-"struct_n_p_c_spawn_info.html#a42f731d043522a38513b94962d9ab2e5":[3,0,884,0]
+"struct_n_p_c_spawn_info.html#a2639f3b35ad5f88ffe1a5d87e599a6e3":[3,0,884,1]
 };

@@ -862,7 +862,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>startPumpkinMo
 <tr class="memitem:a9ff5fc055998930148540c434e6e9ad0"><td class="memItemLeft" align="right" valign="top"><a id="a9ff5fc055998930148540c434e6e9ad0" name="a9ff5fc055998930148540c434e6e9ad0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StartRain</b> ()</td></tr>
 <tr class="memdesc:a9ff5fc055998930148540c434e6e9ad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <a class="el" href="class_main.html#ab621bfa9926b1c9670fe702b52976662" title="Syncs rain state if StartRain or StopRain were called in the same tick and caused a change to maxRain...">SyncRain</a>. <br  />
-You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this). <br /></td></tr>
+You can also call this on the client to update visuals immediately, assuming it was/will be called serverside as well (Journey Mode rain slider does this). <br /></td></tr>
 <tr class="separator:a9ff5fc055998930148540c434e6e9ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a535a258d50ae76f789245eb737fb3143"><td class="memItemLeft" align="right" valign="top"><a id="a535a258d50ae76f789245eb737fb3143" name="a535a258d50ae76f789245eb737fb3143"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StartSlimeRain</b> (bool announce=true)</td></tr>
@@ -876,7 +876,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>stopMoonEvent<
 <tr class="memitem:a053eafe7fd9246ae67cecbb359c4e591"><td class="memItemLeft" align="right" valign="top"><a id="a053eafe7fd9246ae67cecbb359c4e591" name="a053eafe7fd9246ae67cecbb359c4e591"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StopRain</b> ()</td></tr>
 <tr class="memdesc:a053eafe7fd9246ae67cecbb359c4e591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <a class="el" href="class_main.html#ab621bfa9926b1c9670fe702b52976662" title="Syncs rain state if StartRain or StopRain were called in the same tick and caused a change to maxRain...">SyncRain</a>. <br  />
-You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this). <br /></td></tr>
+You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this). <br /></td></tr>
 <tr class="separator:a053eafe7fd9246ae67cecbb359c4e591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7bdb067221dcc8fc078892eda3a5e84"><td class="memItemLeft" align="right" valign="top"><a id="aa7bdb067221dcc8fc078892eda3a5e84" name="aa7bdb067221dcc8fc078892eda3a5e84"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StopSlimeRain</b> (bool announce=true)</td></tr>
@@ -1462,6 +1462,7 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>cLeft</b> = 
 <tr class="separator:ae2271fb57dd92de133e572eec04ea5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88d54d9bdedfd2f95be86cfa6f03902"><td class="memItemLeft" align="right" valign="top"><a id="af88d54d9bdedfd2f95be86cfa6f03902" name="af88d54d9bdedfd2f95be86cfa6f03902"></a>
 static <a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clientPlayer</b> = new <a class="el" href="class_player.html">Player</a>()</td></tr>
+<tr class="memdesc:af88d54d9bdedfd2f95be86cfa6f03902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally for network syncing. Use <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> to access the player for the local user. <br /></td></tr>
 <tr class="separator:af88d54d9bdedfd2f95be86cfa6f03902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf81c646643ee9237e4e23164ba05c90"><td class="memItemLeft" align="right" valign="top"><a id="adf81c646643ee9237e4e23164ba05c90" name="adf81c646643ee9237e4e23164ba05c90"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>clientUUID</b></td></tr>
@@ -3592,7 +3593,7 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLargeFra
 <tr class="separator:a31efd2fbedd7a4071162d6678c0da706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memItemLeft" align="right" valign="top"><a id="ae4e747a8a660d98c8fd21b613e1fc2d4" name="ae4e747a8a660d98c8fd21b613e1fc2d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLavaDeath</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destoryed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
+<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
 <tr class="separator:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735063a3cb2816b52d2e861269294589"><td class="memItemLeft" align="right" valign="top"><a id="a735063a3cb2816b52d2e861269294589" name="a735063a3cb2816b52d2e861269294589"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLighted</b> = new bool[TileID.Count]</td></tr>
@@ -3641,7 +3642,7 @@ static <a class="el" href="class_ref.html">Ref</a>&lt; Effect &gt;&#160;</td><td
 <tr class="separator:a19471436f5b6a8c6c4eccf94a1c0c400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="memItemLeft" align="right" valign="top"><a id="a0c44dedfb9235fff05a7cdb2cf3360ab" name="a0c44dedfb9235fff05a7cdb2cf3360ab"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileShine</b> = new int[TileID.Count]</td></tr>
-<tr class="memdesc:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">How rarly tiny ambient dust appear from this tile. Larger values mean less frequently <br /></td></tr>
+<tr class="memdesc:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">How rarely tiny ambient dust appear from this tile. Larger values mean less frequently <br /></td></tr>
 <tr class="separator:a0c44dedfb9235fff05a7cdb2cf3360ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa040125595dd0a090c6588743b7dc34b"><td class="memItemLeft" align="right" valign="top"><a id="aa040125595dd0a090c6588743b7dc34b" name="aa040125595dd0a090c6588743b7dc34b"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileShine2</b> = new bool[TileID.Count]</td></tr>
@@ -3661,7 +3662,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSolidTop
 <tr class="separator:abb9f20241fec0d772d4f6fcb72fea998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150df780377d15cb6bbb579fa529a722"><td class="memItemLeft" align="right" valign="top"><a id="a150df780377d15cb6bbb579fa529a722" name="a150df780377d15cb6bbb579fa529a722"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSpelunker</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:a150df780377d15cb6bbb579fa529a722"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles will be drawn much brigter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. <br /></td></tr>
+<tr class="memdesc:a150df780377d15cb6bbb579fa529a722"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. <br /></td></tr>
 <tr class="separator:a150df780377d15cb6bbb579fa529a722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a8b201f7ad2abc9e6080216909b858f"><td class="memItemLeft" align="right" valign="top"><a id="a9a8b201f7ad2abc9e6080216909b858f" name="a9a8b201f7ad2abc9e6080216909b858f"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileStone</b> = new bool[TileID.Count]</td></tr>
@@ -3671,7 +3672,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileTable</b
 <tr class="separator:a5a86804046801c50b3fa3efa42d5e260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a224593043e88020b9290cc6065a8c1ba"><td class="memItemLeft" align="right" valign="top"><a id="a224593043e88020b9290cc6065a8c1ba" name="a224593043e88020b9290cc6065a8c1ba"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileWaterDeath</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:a224593043e88020b9290cc6065a8c1ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destoryed if in contact with water. TileObjectData.WaterDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
+<tr class="memdesc:a224593043e88020b9290cc6065a8c1ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if in contact with water. TileObjectData.WaterDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
 <tr class="separator:a224593043e88020b9290cc6065a8c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a286e04821e5e48abf3d683972a668976"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main.html#a286e04821e5e48abf3d683972a668976">time</a> = 13500.0</td></tr>
 <tr class="memdesc:a286e04821e5e48abf3d683972a668976"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time that has passed since it last became day/night. <br  />
@@ -4210,7 +4211,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUpdateGamep
 <tr class="separator:ab286b46880fff0da9745258d98c55226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab60656fb0e91b1cbec3a13882f999cae"><td class="memItemLeft" align="right" valign="top"><a id="ab60656fb0e91b1cbec3a13882f999cae" name="ab60656fb0e91b1cbec3a13882f999cae"></a>
 static <a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentPlayer</b><code> [get]</code></td></tr>
-<tr class="memdesc:ab60656fb0e91b1cbec3a13882f999cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">A replacement for <code><a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Shorthand for player[myPlayer].">Main.LocalPlayer</a></code> which respects whichever player is currently running hooks on the main thread. This works in the player select screen, and in multiplayer (when other players are updating) <br /></td></tr>
+<tr class="memdesc:ab60656fb0e91b1cbec3a13882f999cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">A replacement for <code><a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a></code> which respects whichever player is currently running hooks on the main thread. This works in the player select screen, and in multiplayer (when other players are updating) <br /></td></tr>
 <tr class="separator:ab60656fb0e91b1cbec3a13882f999cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a657557a8f75d70a7a07566afbb4286aa"><td class="memItemLeft" align="right" valign="top"><a id="a657557a8f75d70a7a07566afbb4286aa" name="a657557a8f75d70a7a07566afbb4286aa"></a>
 static Matrix&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentWantedZoomMatrix</b><code> [get]</code></td></tr>
@@ -4253,7 +4254,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsItStorming</
 <tr class="separator:a0e83bd64964b6f6253e35bf7631611ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad16e3f4f93bb8e3ea87505b2d4eae809"><td class="memItemLeft" align="right" valign="top"><a id="ad16e3f4f93bb8e3ea87505b2d4eae809" name="ad16e3f4f93bb8e3ea87505b2d4eae809"></a>
 static <a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LocalPlayer</b><code> [get]</code></td></tr>
-<tr class="memdesc:ad16e3f4f93bb8e3ea87505b2d4eae809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for <code>player[<a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">myPlayer</a>]</code>. <br /></td></tr>
+<tr class="memdesc:ad16e3f4f93bb8e3ea87505b2d4eae809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the <a class="el" href="class_player.html">Player</a> object for the local user. Shorthand for <code>player[<a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">myPlayer</a>]</code>.<br  />
+ Many gameplay elements such as recipes, UI, TownNPC chat, and Biome logic are only executed locally, <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">LocalPlayer</a> is suitable for code relating to those situations. If the hook has a <a class="el" href="class_player.html">Player</a> parameter, it is likely not suitable to use <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">LocalPlayer</a> in it. <br /></td></tr>
 <tr class="separator:ad16e3f4f93bb8e3ea87505b2d4eae809"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d1cb71f6ca325a00810e6ac8b83b441"><td class="memItemLeft" align="right" valign="top"><a id="a1d1cb71f6ca325a00810e6ac8b83b441" name="a1d1cb71f6ca325a00810e6ac8b83b441"></a>
 static <a class="el" href="class_creative_unlocks_tracker.html">CreativeUnlocksTracker</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LocalPlayerCreativeTracker</b><code> [get]</code></td></tr>

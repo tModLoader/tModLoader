@@ -189,7 +189,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanReforge</b
 <tr class="memdesc:a1f5a5d167ad652b5de43ae418a3fff2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned by the <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or any <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a>, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called. Reforging preserves modded data on the item. <br /></td></tr>
 <tr class="separator:a1f5a5d167ad652b5de43ae418a3fff2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85aa9a75402379f875fd343f99558929"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a85aa9a75402379f875fd343f99558929">CanResearch</a> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
-<tr class="memdesc:a85aa9a75402379f875fd343f99558929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent an item from being researched by returning false. True is the default behaviour.  <a href="class_global_item.html#a85aa9a75402379f875fd343f99558929">More...</a><br /></td></tr>
+<tr class="memdesc:a85aa9a75402379f875fd343f99558929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent an item from being researched by returning false. True is the default behavior.  <a href="class_global_item.html#a85aa9a75402379f875fd343f99558929">More...</a><br /></td></tr>
 <tr class="separator:a85aa9a75402379f875fd343f99558929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac36b6279fdb6326fc6e4109fddf2f88d"><td class="memItemLeft" align="right" valign="top"><a id="ac36b6279fdb6326fc6e4109fddf2f88d" name="ac36b6279fdb6326fc6e4109fddf2f88d"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRightClick</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
@@ -307,7 +307,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitPvp<
 <tr class="separator:ac41b0f0836de47ddd80f0fd1cbf1b5a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8b7d0051cbaf9c1079f849ab5d2ee23"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#ad8b7d0051cbaf9c1079f849ab5d2ee23">ModifyItemLoot</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="struct_item_loot.html">ItemLoot</a> itemLoot)</td></tr>
 <tr class="memdesc:ad8b7d0051cbaf9c1079f849ab5d2ee23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify the loot items that spawn from bag items when opened. <br  />
- The Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use the <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> hook to modify <a class="el" href="class_n_p_c.html">NPC</a> loot as well as this hook. A common usage is to use this hook and <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> to edit non-expert exlclusive drops for bosses. <br  />
+ The Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use the <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> hook to modify <a class="el" href="class_n_p_c.html">NPC</a> loot as well as this hook. A common usage is to use this hook and <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> to edit non-expert exclusive drops for bosses. <br  />
  This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves. <br  />
  This hook is not instanced.  <a href="class_global_item.html#ad8b7d0051cbaf9c1079f849ab5d2ee23">More...</a><br /></td></tr>
 <tr class="separator:ad8b7d0051cbaf9c1079f849ab5d2ee23"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -386,7 +386,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>OnPickup</b> 
 <tr class="memdesc:ad1f983f0812edc3344dd1414e29fa763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make special things happen when the player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default. <br /></td></tr>
 <tr class="separator:ad1f983f0812edc3344dd1414e29fa763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7accf7c0732dd9cb7186bc094c04d5a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#aa7accf7c0732dd9cb7186bc094c04d5a">OnResearched</a> (<a class="el" href="class_item.html">Item</a> item, bool fullyResearched)</td></tr>
-<tr class="memdesc:aa7accf7c0732dd9cb7186bc094c04d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create custom behaviour when an item is accepted by the Research function  <a href="class_global_item.html#aa7accf7c0732dd9cb7186bc094c04d5a">More...</a><br /></td></tr>
+<tr class="memdesc:aa7accf7c0732dd9cb7186bc094c04d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create custom behavior when an item is accepted by the Research function  <a href="class_global_item.html#aa7accf7c0732dd9cb7186bc094c04d5a">More...</a><br /></td></tr>
 <tr class="separator:aa7accf7c0732dd9cb7186bc094c04d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00f1c24c3e30d9d1737ee0f6c1a06a64"><td class="memItemLeft" align="right" valign="top"><a id="a00f1c24c3e30d9d1737ee0f6c1a06a64" name="a00f1c24c3e30d9d1737ee0f6c1a06a64"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
@@ -1200,7 +1200,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <p>Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td>The item that is attepting to equip.</td></tr>
+    <tr><td class="paramname">item</td><td>The item that is attempting to equip.</td></tr>
     <tr><td class="paramname">player</td><td>The player.</td></tr>
     <tr><td class="paramname">slot</td><td>The inventory slot that the item is attempting to occupy.</td></tr>
     <tr><td class="paramname">modded</td><td>If the inventory slot index is for modded slots.</td></tr>
@@ -1295,7 +1295,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to prevent an item from being researched by returning false. True is the default behaviour. </p>
+<p>Allows you to prevent an item from being researched by returning false. True is the default behavior. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being researched</td></tr>
@@ -2051,7 +2051,7 @@ This is only called when two items of the same type attempt to stack. </p>
 </div><div class="memdoc">
 
 <p>Allows you to add and modify the loot items that spawn from bag items when opened. <br  />
- The Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use the <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> hook to modify <a class="el" href="class_n_p_c.html">NPC</a> loot as well as this hook. A common usage is to use this hook and <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> to edit non-expert exlclusive drops for bosses. <br  />
+ The Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use the <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> hook to modify <a class="el" href="class_n_p_c.html">NPC</a> loot as well as this hook. A common usage is to use this hook and <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModNPC.ModifyNPCLoot(NPCLoot)</a> to edit non-expert exclusive drops for bosses. <br  />
  This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves. <br  />
  This hook is not instanced. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2761,7 +2761,7 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create custom behaviour when an item is accepted by the Research function </p>
+<p>Allows you to create custom behavior when an item is accepted by the Research function </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being researched</td></tr>
@@ -2818,7 +2818,7 @@ This is only called when two items of the same type attempt to stack. </p>
   <table class="params">
     <tr><td class="paramname">destination</td><td>The item instance that <em>source</em>  will attempt to stack onto</td></tr>
     <tr><td class="paramname">source</td><td>The item instance being stacked onto <em>destination</em> </td></tr>
-    <tr><td class="paramname">numToTransfer</td><td>The quanity of <em>source</em>  that will be transferred to <em>destination</em> </td></tr>
+    <tr><td class="paramname">numToTransfer</td><td>The quantity of <em>source</em>  that will be transferred to <em>destination</em> </td></tr>
   </table>
   </dd>
 </dl>

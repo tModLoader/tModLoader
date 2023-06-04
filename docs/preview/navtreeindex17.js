@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_sequential_rules_not_scaling_with_luck_rule.html":[3,0,1065],
 "class_sequential_rules_rule.html":[3,0,1066],
 "class_server_join_requests_manager.html":[3,0,1067],
 "class_set_factory.html":[3,0,1068],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36":[3,0,1197,0,11],
 "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add":[3,0,1197,0,31],
 "class_tile_i_d_1_1_sets.html#af6d219061ccc5d59b713d81ef0767c67":[3,0,1197,0,34],
-"class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b":[3,0,1197,0,44],
-"class_tile_i_d_1_1_sets_1_1_conversion.html":[3,0,1197,0,0]
+"class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b":[3,0,1197,0,44]
 };

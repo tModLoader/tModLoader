@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_particle_pool.html":[3,0,911],
 "class_particle_renderer.html":[3,0,912],
 "class_party_chat_command.html":[3,0,914],
 "class_party_sky.html":[3,0,915],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_player_rainbow_wings_texture_content.html":[3,0,955],
 "class_player_resource_sets_manager.html":[3,0,956],
 "class_player_resource_sets_manager2.html":[3,0,957],
-"class_player_texture_i_d.html":[3,0,961],
-"class_player_titanium_storm_buff_texture_content.html":[3,0,962]
+"class_player_texture_i_d.html":[3,0,961]
 };

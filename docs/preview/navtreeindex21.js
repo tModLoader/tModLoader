@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_n_p_c_spawn_info.html#a42f731d043522a38513b94962d9ab2e5":[3,0,884,0],
 "struct_n_p_c_spawn_info.html#a43d099598f4d626d847274e9dbdce963":[3,0,884,11],
 "struct_n_p_c_spawn_info.html#a64625a696e9cfa4b0329f4d6b20f51fb":[3,0,884,12],
 "struct_n_p_c_spawn_info.html#a772a64f16b785d7abc7d272c20b8b265":[3,0,884,3],
