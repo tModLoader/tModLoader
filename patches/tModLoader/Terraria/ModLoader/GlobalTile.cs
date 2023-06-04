@@ -301,6 +301,7 @@ public abstract class GlobalTile : GlobalBlockType
 		return true;
 	}
 
+	/// <summary>
 	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
 	/// </summary>
 	public virtual void PostSetupTileMerge()

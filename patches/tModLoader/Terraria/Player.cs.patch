@@ -902,7 +902,7 @@
 +				//TODO: Replace with Item.DropItem?
 -				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
 +				// int num = //Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
-+				int num = Item.NewItem(GetItemSource_Misc(4), position, width, height, item, noGrabDelay: true);
++				int num = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item, noGrabDelay: true);
  				Main.item[num].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num, 1f);
@@ -913,7 +913,7 @@
 +				//TODO: Replace with Item.DropItem?
 -				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
 +				// int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
-+				int num2 = Item.NewItem(GetItemSource_Misc(4), position, width, height, item2, noGrabDelay: true);
++				int num2 = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item2, noGrabDelay: true);
  				Main.item[num2].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num2, 1f);
@@ -922,7 +922,8 @@
  			Item item3 = GetItem(whoAmI, Main.mouseItem, getItemInDropItemCheck);
  			if (item3.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
+-				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
++				int num3 = Item.NewItem(new EntitySource_OverfullInventory(this), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
 +				Main.item[num3] = item3.Clone(); // Added by TML.
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
@@ -1555,23 +1556,32 @@
  			cWings = dyeItem.dye;
  
  		if (armorItem.type == 934)
-@@ -7112,6 +_,8 @@
+@@ -7112,12 +_,17 @@
  		}
+ 	}
+ 
++	public IEntitySource GetSource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
++
++	// made internal, public rename ^
+-	public IEntitySource GetProjectileSource_Buff(int buffIndex)
++	internal IEntitySource GetProjectileSource_Buff(int buffIndex)
+ 	{
+ 		int buffId = buffType[buffIndex];
+ 		return new EntitySource_Buff(this, buffId, buffIndex);
  	}
  
 +	// Original vanilla methods:
 +	/*
- 	public IEntitySource GetProjectileSource_Buff(int buffIndex)
- 	{
- 		int buffId = buffType[buffIndex];
-@@ -7132,9 +_,36 @@
+ 	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+ 	public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
+@@ -7132,9 +_,35 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
 +	*/
 +
 +	// Internal redirects:
-+	internal IEntitySource GetProjectileSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
 +	internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
@@ -2736,19 +2746,10 @@
  
  			if (numberOfTorchAttacksMade >= 95) {
 -				int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
-+				int number = Item.NewItem(new EntitySource_TorchGod(this, Context: "TorchGod_FavorLoot"), (int)position.X, (int)position.Y, width, height, 5043);
++				int number = Item.NewItem(GetItemSource_Misc(6), (int)position.X, (int)position.Y, width, height, 5043);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-@@ -13973,7 +_,7 @@
- 				float num10 = vector2.Length();
- 				vector2.Normalize();
- 				vector2 *= num7;
--				int num11 = Projectile.NewProjectile(GetProjectileSource_Misc(10), vector, vector2, 949, num8, 1f, whoAmI, num9, num10);
-+				int num11 = Projectile.NewProjectile(new EntitySource_TorchGod(this, Context: "TorchGod_Projectile"), vector, vector2, 949, num8, 1f, whoAmI, num9, num10);
- 				Main.projectile[num11].ai[0] = num9;
- 				Main.projectile[num11].ai[1] = num10;
- 				Main.projectile[num11].netUpdate = true;
 @@ -13991,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -4707,9 +4708,12 @@
  				if (brainOfConfusionItem != null && !brainOfConfusionItem.IsAir && Main.myPlayer == whoAmI) {
  					for (int num9 = 0; num9 < 200; num9++) {
  						if (!Main.npc[num9].active || Main.npc[num9].friendly)
-@@ -29708,14 +_,37 @@
+@@ -29706,16 +_,39 @@
+ 						}
+ 					}
  
- 					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
+-					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
++					Projectile.NewProjectile(GetSource_Accessory_OnHurt(brainOfConfusionItem, info.DamageSource), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
  				}
 +			}
 +		}
@@ -4746,6 +4750,24 @@
  
  				Color color = (Crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
  				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num2, Crit);
+@@ -29785,7 +_,7 @@
+ 							else if (Main.expertMode)
+ 								num19 *= 2;
+ 
+-							Projectile.NewProjectile(GetProjectileSource_Accessory(item), x, y, num16, num17, type, num19, 5f, whoAmI, 0f, position.Y);
++							Projectile.NewProjectile(GetSource_Accessory_OnHurt(item, info.DamageSource), x, y, num16, num17, type, num19, 5f, whoAmI, 0f, position.Y);
+ 						}
+ 					}
+ 
+@@ -29809,7 +_,7 @@
+ 						else if (Main.expertMode)
+ 							num21 *= 1.5f;
+ 
+-						IEntitySource projectileSource_Accessory = GetProjectileSource_Accessory(honeyCombItem);
++						IEntitySource projectileSource_Accessory = GetSource_Accessory_OnHurt(honeyCombItem, info.DamageSource);
+ 						for (int num22 = 0; num22 < num20; num22++) {
+ 							float speedX = (float)Main.rand.Next(-35, 36) * 0.02f;
+ 							float speedY = (float)Main.rand.Next(-35, 36) * 0.02f;
 @@ -29821,6 +_,7 @@
  				}
  

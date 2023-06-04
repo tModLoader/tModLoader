@@ -41,7 +41,7 @@
  	}
  
  	private void Gore_UpdateLeaf()
-@@ -1023,17 +_,33 @@
+@@ -1023,17 +_,60 @@
  			alpha++;
  	}
  
@@ -51,16 +51,25 @@
 +
 -	public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +	internal static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+		=> NewGorePerfect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
++		=> NewGorePerfect(IEntitySource.GetGoreFallback(), Position, Velocity, Type, Scale);
 +
 +	internal static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+		=> NewGoreDirect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
++		=> NewGoreDirect(IEntitySource.GetGoreFallback(), Position, Velocity, Type, Scale);
 +
 +	internal static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+		=> NewGore(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
++		=> NewGore(IEntitySource.GetGoreFallback(), Position, Velocity, Type, Scale);
 +
 +	// Actual API methods
 +
++	/// <summary>
++	/// Spawns a gore with an exact position and velocity, no randomization
++	/// </summary>
++	/// <param name="source">Recommend using <see cref="Entity.GetSource_Death"/> or <see cref="Entity.GetSource_FromThis"/>" as the spawn source</param>
++	/// <param name="Position"></param>
++	/// <param name="Velocity"></param>
++	/// <param name="Type"></param>
++	/// <param name="Scale"></param>
++	/// <returns></returns>
 +	public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
  	{
 -		Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
@@ -71,9 +80,27 @@
  	}
  
 -	public static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) => Main.gore[NewGore(Position, Velocity, Type, Scale)];
++	/// <summary>
++	/// Spawns a gore with given properties
++	/// </summary>
++	/// <param name="source">Recommend using <see cref="Entity.GetSource_Death"/> or <see cref="Entity.GetSource_FromThis"/>" as the spawn source</param>
++	/// <param name="Position"></param>
++	/// <param name="Velocity"></param>
++	/// <param name="Type"></param>
++	/// <param name="Scale"></param>
++	/// <returns>A reference to the gore</returns>
 +	public static Gore NewGoreDirect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +		=> Main.gore[NewGore(source, Position, Velocity, Type, Scale)];
  
++	/// <summary>
++	/// Spawns a gore with given properties
++	/// </summary>
++	/// <param name="source">Recommend using <see cref="Entity.GetSource_Death"/> or <see cref="Entity.GetSource_FromThis"/>" as the spawn source</param>
++	/// <param name="Position"></param>
++	/// <param name="Velocity"></param>
++	/// <param name="Type"></param>
++	/// <param name="Scale"></param>
++	/// <returns>The index of the gore in the <see cref="Main.gore"/> array</returns>
 -	public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +	public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
  	{
@@ -91,7 +118,7 @@
 +
 +		// Initialize ModGore objects.
 +		gore.ModGore = GoreLoader.GetModGore(gore.type);
-+		gore.ModGore?.OnSpawn(gore, source);
++		gore.ModGore?.OnSpawn(gore, source ?? IEntitySource.GetGoreFallback());
 +
  		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  			Main.gore[num].type = Main.rand.Next(11, 14);

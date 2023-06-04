@@ -407,7 +407,7 @@
 +		ArmorPenetration = 0;
 +		CritChance = 0;
 +		WhipSettings = default;
-+		ContinuouslyUpdateDamage = false;
++		ContinuouslyUpdateDamageStats = false;
 +		nameOverride = null;
 +
  		ownerHitCheckDistance = 1000f;
@@ -637,13 +637,11 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
  	{
  		if (Owner == -1)
-@@ -8745,6 +_,10 @@
+@@ -8745,6 +_,8 @@
  		projectile.shimmerWet = Collision.shimmer;
  		Main.projectileIdentity[Owner, num] = num;
  		FindBannerToAssociateTo(spawnSource, projectile);
 +
-+		// Added by TML.
-+		HandlePlayerStatModifiers(spawnSource, projectile);
 +
  		if (projectile.aiStyle == 1) {
  			while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
@@ -683,10 +681,11 @@
  		}
  
  		if (Type == 249)
-@@ -8910,6 +_,11 @@
+@@ -8910,6 +_,12 @@
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
  
++		projectile.ApplyStatsFromSource(spawnSource);
 +		ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
 +		if (Main.netMode != 0 && Owner == Main.myPlayer)
@@ -1166,20 +1165,22 @@
  				return;
  		}
  
-@@ -12412,9 +_,16 @@
+@@ -12412,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
  
 +			/*
  			if (numUpdates == -1 && (minion || sentry)) {
 +			*/
-+			if ((minion || sentry || ContinuouslyUpdateDamage)) {
++			if ((minion || sentry || ContinuouslyUpdateDamageStats)) {
  				Player player = Main.player[owner];
 +
 +				/*
  				damage = (int)((float)originalDamage * player.minionDamage + 5E-06f);
 +				*/
 +				damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
++				CritChance = (int)(OriginalCritChance + player.GetTotalCritChance(DamageType) + 5E-06f);
++				ArmorPenetration = (int)(OriginalArmorPenetration + player.GetTotalArmorPenetration(DamageType) + 5E-06f);
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
@@ -1581,7 +1582,7 @@
  					for (int l = 0; l < num4; l++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -37401,6 +_,9 @@
+@@ -37401,10 +_,13 @@
  			item.stack = stack2;
  		}
  
@@ -1591,6 +1592,11 @@
  		item.newAndShiny = true;
  		Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
  		if (item2.stack > 0) {
+-			int number = Item.NewItem(new EntitySource_FishedOut(this), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
++			int number = Item.NewItem(new EntitySource_OverfullInventory(thePlayer), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 		}
 @@ -46721,7 +_,7 @@
  			}
  

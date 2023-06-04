@@ -647,7 +647,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
 	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
 	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
-	/// <summary>
 	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}
