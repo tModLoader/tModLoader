@@ -15,7 +15,7 @@ public static class BossBarLoader
 {
 	/// <summary>
 	/// Set to the current info that is being drawn just before any registered bar draws through the vanilla system (modded and vanilla), reset in the method used to draw it.
-	/// <para>Allows tML to shortcirquit the draw method and make ModBossBar and GlobalBossBar modify the draw parameters. Is null if a ModBossBarStyle skips drawing</para>
+	/// <para>Allows tML to short-circuit the draw method and make ModBossBar and GlobalBossBar modify the draw parameters. Is null if a ModBossBarStyle skips drawing</para>
 	/// </summary>
 	internal static BigProgressBarInfo? drawingInfo = null;
 
@@ -157,7 +157,7 @@ public static class BossBarLoader
 	}
 
 	/// <summary>
-	/// Inserts the boss bar style select option into the main and ingame menu under the "Interface" category
+	/// Inserts the boss bar style select option into the main and in-game menu under the "Interface" category
 	/// </summary>
 	internal static string InsertMenu(out Action onClick)
 	{
@@ -312,7 +312,7 @@ public static class BossBarLoader
 		Vector2 iconOffset = new Vector2(4f, 20f);
 		Vector2 iconSize = new Vector2(26f, 28f);
 		// The vanilla method with the shieldCurrent parameter, which is used only by the lunar pillars, uses iconSize = iconFrame.Size() instead, which have a size of 26x30,
-		// causing a slight vertical offset that is barely noticeable. Concidering that the non-shieldCurrent method is the more general one, let's keep it like this
+		// causing a slight vertical offset that is barely noticeable. Considering that the non-shieldCurrent method is the more general one, let's keep it like this
 		// (changing that using the lunar pillar code will cause many other icons to be offset instead) --direwolf420
 		Vector2 iconPos = iconOffset + iconSize / 2f;
 		// iconFrame Centered around iconPos

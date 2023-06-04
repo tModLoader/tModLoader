@@ -228,7 +228,7 @@ public static class ItemLoader
 	/// <summary>
 	/// Allows for blocking, forcing and altering chance of prefix rolling.
 	/// False (block) takes precedence over True (force).
-	/// Null gives vanilla behaviour
+	/// Null gives vanilla behavior
 	/// </summary>
 	public static bool? PrefixChance(Item item, int pre, UnifiedRandom rand)
 	{
@@ -1475,7 +1475,7 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quantity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
 	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
 	/// <returns>Whether or not the items were allowed to stack</returns>
 	public static bool TryStackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false)
@@ -1496,7 +1496,7 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quantity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
 	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
 	/// <param name="numToTransfer">
 	/// An optional argument used to specify the quantity of items to transfer from <paramref name="source"/> to <paramref name="destination"/>.<br/>
@@ -1524,7 +1524,7 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
 	public static void OnStack(Item destination, Item source, int numToTransfer)
 	{
 		foreach (var g in HookOnStack.Enumerate(destination)) {

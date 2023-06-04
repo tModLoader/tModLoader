@@ -460,7 +460,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.
-	/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
+	/// DOES NOT affect vanilla behavior of swapping items like for like where existing in a slot
 	/// </summary>
 	public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo)
 	{

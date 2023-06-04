@@ -367,7 +367,7 @@
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
 +	/// <summary>
-+	/// How rarly tiny ambient dust appear from this tile. Larger values mean less frequently
++	/// How rarely tiny ambient dust appear from this tile. Larger values mean less frequently
 +	/// </summary>
  	public static int[] tileShine = new int[TileID.Count];
 +	/// <summary>
@@ -388,11 +388,11 @@
  	public static bool[] tileAxe = new bool[TileID.Count];
  	public static bool[] tileHammer = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles of the type will be destoryed if in contact with water. <see cref="TileObjectData.WaterDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with water. <see cref="TileObjectData.WaterDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
 +	/// </summary>
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles of the type will be destoryed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
  	public static bool[] tileTable = new bool[TileID.Count];
@@ -400,7 +400,7 @@
  	public static bool[] tileNoSunLight = new bool[TileID.Count];
  	public static bool[] tileDungeon = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles will be drawn much brigter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
++	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
 +	/// </summary>
  	public static bool[] tileSpelunker = new bool[TileID.Count];
  	public static bool[] tileSolidTop = new bool[TileID.Count];
@@ -481,7 +481,15 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
-@@ -1865,6 +_,11 @@
+@@ -1860,11 +_,19 @@
+ 	public static float exitScale = 0.8f;
+ 	public static bool mouseReforge;
+ 	public static float reforgeScale = 0.8f;
++	/// <summary>
++	/// Used internally for network syncing. Use <see cref="Main.LocalPlayer"/> to access the player for the local user.
++	/// </summary>
+ 	public static Player clientPlayer = new Player();
+ 	public static string getIP = defaultIP;
  	public static string getPort = Convert.ToString(Netplay.ListenPort);
  	public static bool menuMultiplayer;
  	public static bool menuServer;
@@ -609,7 +617,7 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
-@@ -2311,15 +_,22 @@
+@@ -2311,15 +_,23 @@
  		}
  	}
  
@@ -622,7 +630,8 @@
  	public static float WindForVisuals => windSpeedCurrent;
  
 +	/// <summary>
-+	/// Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.
++	/// Retrieves the <see cref="Player"/> object for the local user. Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.<br/>
++	/// Many gameplay elements such as recipes, UI, TownNPC chat, and Biome logic are only executed locally, <see cref="LocalPlayer"/> is suitable for code relating to those situations. If the hook has a <see cref="Player"/> parameter, it is likely not suitable to use <see cref="LocalPlayer"/> in it.
 +	/// </summary>
  	public static Player LocalPlayer => player[myPlayer];
  
@@ -1539,7 +1548,7 @@
  			return;
  		}
 +
-+		//TODO: Re-implment game menu/menuloader audio in Other World soundtrack???
++		//TODO: Re-implement game menu/menuloader audio in Other World soundtrack???
 +        /*if (gameMenu) {
 +			if (netMode != 2) {
 +				if (WorldGen.drunkWorldGen) {
@@ -2313,7 +2322,7 @@
  			array3[i] = false;
  		}
  
-+		// This array will be filled with internal names assigned to vanilla toolips.
++		// This array will be filled with internal names assigned to vanilla tooltips.
 +		string[] tooltipNames = new string[num2];
 +
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
@@ -2573,7 +2582,7 @@
 +					// does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
 +					// special scaling rules. they're TML-specific, and can be messed with at the will of the modder.
 +					// 
-+					// As for why they're differently named: preparatiom for when that tooltip rework comes out.
++					// As for why they're differently named: preparation for when that tooltip rework comes out.
 +					// - Thomas
 +					if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
 +						if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
@@ -4077,7 +4086,7 @@
  			DrawLoadoutButtons(num20, flag5, flag6);
  			int num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num40 = 0; num40 < 10; num40++) {
 +			*/
@@ -4107,7 +4116,7 @@
  
  			num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num46 = 10; num46 < 20; num46++) {
 +			*/
@@ -4120,7 +4129,7 @@
  
  			num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num50 = 0; num50 < 10; num50++) {
 +			*/
@@ -5715,7 +5724,7 @@
  				}
  
 -				if (renderCount == 3) {
-+				//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++				//TML: Remapped from 3 to 2 to flatten per frame load for color lighting ( ~5ms peak).
 +				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
  					RenderTiles2();
  					sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
@@ -5723,7 +5732,7 @@
  				}
  
 -				if (renderCount == 3) {
-+				//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++				//TML: Remapped from 3 to 0 to flatten per frame load for color lighting ( ~15ms peak).
 +				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
  					RenderWalls();
  					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
@@ -6104,7 +6113,7 @@
  
 +	/// <summary>
 +	/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).</br>
 +	/// </summary>
  	public static void StopRain()
  	{
@@ -6115,7 +6124,7 @@
  
 +	/// <summary>
 +	/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside as well (Journey Mode rain slider does this).</br>
 +	/// </summary>
  	public static void StartRain()
  	{

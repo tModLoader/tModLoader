@@ -382,7 +382,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
 
 	/// <summary>
-	/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+	/// Allows you to modify overall brightness of lights. Can be used to create effects similar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
 	/// </summary>
 	/// <param name="scale">Brightness scale</param>
 	public virtual void ModifyLightingBrightness(ref float scale) { }

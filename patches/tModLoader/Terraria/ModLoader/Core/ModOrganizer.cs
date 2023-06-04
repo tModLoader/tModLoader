@@ -582,7 +582,7 @@ internal static class ModOrganizer
 		return val;
 	}
 
-	// Delete in Mod Browsewr refactor - temp
+	// Delete in Mod Browser refactor - temp
 	public static string GetBrowserVersionNumber(Version tmlVersion)
 	{
 		if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9
@@ -620,7 +620,7 @@ internal static class ModOrganizer
 			return;
 
 		// Solxan: We want to keep 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
-		// we need to rollback to the last stable due to a signficant bug.
+		// we need to rollback to the last stable due to a significant bug.
 		// We thus check for what the previous Stable was and compare for anything less than that.
 
 		string deleteFolder = null;

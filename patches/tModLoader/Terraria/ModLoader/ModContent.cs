@@ -62,7 +62,7 @@ public static class ModContent
 	private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 	public static void SplitName(string name, out string domain, out string subName)
 	{
-		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
+		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatibility, just in case
 		if (slash < 0)
 			throw new MissingResourceException("Missing mod qualifier: " + name);
 

@@ -141,7 +141,7 @@
 +
 +	/// <summary>
 +	/// The amount of time that has to pass, in ticks, before a new dash input will be registered.<br/>
-+	/// For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br/>
++	/// For the first frame of any given dash, this is set to -1. After that frame has passed, it is set to 20 ticks, or 1/3 of a second.<br/>
 +	/// For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br/>
 +	/// </summary>
  	public int dashDelay;
@@ -686,7 +686,7 @@
  	}
  
 +	/// <summary>
-+	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjuction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
 +	/// </summary>
  	public Vector2 MountedCenter {
  		get {
@@ -697,7 +697,7 @@
  
 +	/// <summary>
 +	/// If <see langword="true"/>, then this player is the top 35% of the world.
-+	/// <br/> <strong>NOTE:</strong> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logc behind it is used for NPC shops and enemy spawns.
++	/// <br/> <strong>NOTE:</strong> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logic behind it is used for NPC shops and enemy spawns.
 +	/// </summary>
  	public bool ZoneSkyHeight {
  		get {
@@ -1309,7 +1309,7 @@
 +	/// Use <see cref="Player.HasItem(int)"/> to check if the player has the item at all. <br/>
 +	/// </summary>
 +	/// <param name="type">The item type to count</param>
-+	/// <param name="stopCountingAt">When to stop counting, useful to avoid unneccessary calculations</param>
++	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
 +	/// <returns>The total amount counted</returns>
  	public int CountItem(int type, int stopCountingAt = 0)
  	{
@@ -3078,7 +3078,7 @@
 +	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
 +	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
 +	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
-+	/// Will apply daamage class based armor penetration. <br/>
++	/// Will apply damage class based armor penetration. <br/>
 +	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
 +	/// </summary>
 +	/// <param name="npc">The NPC to strike</param>
@@ -3576,7 +3576,7 @@
  			statManaMax2 = 400;
 +		*/
  
-+		// positive value capping builtin to DefenseStat
++		// positive value capping built-in to DefenseStat
 +		/*
  		if (statDefense < 0)
  			statDefense = 0;
@@ -4336,7 +4336,7 @@
 +			if (!IsItemSlotUnlockedAndUsable(i))
 +				continue;
 +
-+			// Commented code above moved into UpdateVisibileAccessories
++			// Commented code above moved into UpdateVisibleAccessories
 +			UpdateVisibleAccessories(armor[i], hideVisibleAccessory[i], i);
 +		}
 +
@@ -5465,7 +5465,7 @@
  		}
  
 +		// #2351
-+		// TML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behaviour.
++		// TML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behavior.
 +		// The flow of this method has changed as follows...
 +		//
 +		// VANILLA:
@@ -5493,7 +5493,7 @@
 +		//   TML:     itemAnimation goes from itemAnimationMax to 1, before it can restart
 +		//
 +		//   VANILLA: If the item has autoReuse, then it can restart at itemAnimation = 1, making the actual animation one frame shorter than expected.
-+		//            If a reusuable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
++		//            If a reusable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
 +		//
 +		//   TML:     ItemCheck_HandleMPItemAnimation unnecessary. Animation times for modded items as written. See Item.ApplyItemAnimationCompensations
 +		//
@@ -7532,7 +7532,7 @@
  	}
  
 +	/// <summary>
-+	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instad. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
++	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instead. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
 +	/// </summary>
  	public bool HasItem(int type, Item[] collection)
  	{

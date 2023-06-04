@@ -167,7 +167,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		throw new NotImplementedException();
 	}
 
-	// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overriden.
+	// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overridden.
 	public override void NetSend(BinaryWriter writer) { }
 	public override void NetReceive(BinaryReader reader) { }
 

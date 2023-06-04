@@ -555,7 +555,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
-	/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
+	/// <param name="ammo">The ammo that the given weapon is attempting to consume.</param>
 	/// <returns></returns>
 	public virtual bool CanConsumeAmmo(Item weapon, Item ammo)
 	{
@@ -853,7 +853,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+	/// Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered.
 	/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
 	/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
 	/// </summary>
@@ -863,7 +863,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+	/// Allows you to change the item or enemy the player gets when successfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 	/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
@@ -884,7 +884,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior.
 	/// Not consuming will always take priority over forced consumption
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>

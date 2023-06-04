@@ -177,7 +177,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	[ThreadStatic]
 	private static bool newItemDisabled = false;
-	// Used to disable NewItem in situations that would result in an undesireable amount of patches.
+	// Used to disable NewItem in situations that would result in an undesirable amount of patches.
 	internal ref struct DisableNewItemMethod
 	{
 		internal DisableNewItemMethod(bool disabled) => newItemDisabled = disabled;

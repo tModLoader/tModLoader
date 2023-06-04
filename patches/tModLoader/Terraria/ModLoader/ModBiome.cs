@@ -43,7 +43,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	public virtual string BestiaryIcon => (GetType().Namespace + "." + Name + "_Icon").Replace('.', '/');
 
 	/// <summary>
-	/// The path to the background texture that will appear for this biome behind npcs in the bestiary. Defaults to adding "_Background" onto the usual namespace+classname derived texture path.
+	/// The path to the background texture that will appear for this biome behind NPC's in the bestiary. Defaults to adding "_Background" onto the usual namespace+classname derived texture path.
 	/// </summary>
 	public virtual string BackgroundPath => (GetType().Namespace + "." + Name + "_Background").Replace('.', '/');
 

@@ -174,7 +174,7 @@ public partial class Mod
 	/// </summary>
 	/// <param name="npcType">Type of the NPC.</param>
 	/// <param name="texture">The texture.</param>
-	/// <returns>The boss head txture slot</returns>
+	/// <returns>The boss head texture slot</returns>
 	/// <exception cref="MissingResourceException"></exception>
 	public int AddNPCHeadTexture(int npcType, string texture)
 	{
@@ -202,7 +202,7 @@ public partial class Mod
 	/// </summary>
 	/// <param name="texture">The texture.</param>
 	/// <param name="npcType">An optional npc id for NPCID.Sets.BossHeadTextures</param>
-	/// <returns>The boss head txture slot</returns>
+	/// <returns>The boss head texture slot</returns>
 	public int AddBossHeadTexture(string texture, int npcType = -1)
 	{
 		if (!loading)

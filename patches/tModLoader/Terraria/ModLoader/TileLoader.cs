@@ -555,8 +555,8 @@ public static class TileLoader
 
 		// Various call sites to WorldGen.KillTile_DropItems expect different sets of tile drops to be retrieved:
 		// KillTile: All 1x1 tiles
-		// ReplaceTile: All 1x1 tiles, all supported multitiles
-		// CheckModTile: All modded tiles (except 1x1 tiles will drop from killtile)
+		// ReplaceTile: All 1x1 tiles, all supported multi-tiles
+		// CheckModTile: All modded tiles (except 1x1 tiles will drop from KillTile)
 		bool needDrops = false;
 		TileObjectData tileData = TileObjectData.GetTileData(tileCache.TileType, 0, 0);
 		if (tileData == null) {

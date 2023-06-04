@@ -311,13 +311,13 @@
  	public bool accessory;
 +
 +	/// <summary>
-+	/// The time span of the using animation for the item in ticks. This is independant of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <see cref="useTime"/> as this is only the animation.
++	/// The time span of the using animation for the item in ticks. This is independent of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <see cref="useTime"/> as this is only the animation.
 +	/// <br/> Blocks use 15. Default value is 100. Terraria runs at 60 frames per second, so 15 is 1/4th of a second.
 +	/// </summary>
  	public int useAnimation;
 +
 +	/// <summary>
-+	/// The time span of using the item in ticks. This is independant of the time it takes for the item animation to finish. 
++	/// The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish. 
 +	/// <br/> Blocks use 10. Default value is 100.
 +	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
@@ -439,7 +439,7 @@
  	public Color color;
 +
 +	/// <summary>
-+	/// Set to a value from 0 to 255 to control how transparant the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
++	/// Set to a value from 0 to 255 to control how transparent the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
@@ -1294,7 +1294,7 @@
 +	/// <summary>
 +	/// This method sets a variety of Item values common to golf ball items.<br/>
 +	/// Specifically:<code>
-+	///	shoot = projid;
++	///	shoot = <paramref name="projid"/>;
 +	///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
 +	///	shootSpeed = 12f;
 +	///	width = 18;
@@ -1374,7 +1374,7 @@
 +	///	noUseGraphic = true;
 +	///	damage = dmg;
 +	///	knockBack = kb;
-+	///	shootSpeed = shootspeed;
++	///	shootSpeed = <paramref name="shootspeed"/>;
 +	/// </code>
 +	/// </summary>
 +	/// <param name="projectileId"></param>
@@ -1428,7 +1428,7 @@
 +	///	height = 40;
 +	///	UseSound = <see cref="SoundID.Item43"/>;
 +	/// </code>
-+	/// Addtionally: <br/><inheritdoc cref="DefaultToMagicWeapon" />
++	/// Additionally: <br/><inheritdoc cref="DefaultToMagicWeapon" />
 +	/// </summary>
 +	/// <param name="projType"></param>
 +	/// <param name="pushForwardSpeed">Passed into DefaultToMagicWeapon as the shotVelocity parameter</param>
@@ -1496,7 +1496,7 @@
 +	/// <summary>
 +	/// This method sets a variety of Item values common to bow weapons.<br/>
 +	/// Specifically: <code>width = 14;<br/>height = 30;<br/>UseSound = SoundID.Item5;</code><br/>
-+	/// Addtionally: <br/><inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
++	/// Additionally: <br/><inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
 +	/// </summary>
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
@@ -1662,8 +1662,8 @@
 +	/// useAnimation = useTime = animationTime;
 +	/// maxStack = 30;
 +	/// consumable = true;
-+	/// buffType = foodbuff;
-+	/// buffTime = foodbuffduration;
++	/// buffType = <paramref name="foodbuff"/>;
++	/// buffTime = <paramref name="foodbuffduration"/>;
 +	/// rare = <see cref="ItemRarityID.Blue"/>;
 +	/// value = 20 silver;
 +	/// </code>
@@ -2186,7 +2186,7 @@
  	}
  
 +	/// <summary>
-+	/// Clears the overriden value of <see cref="Name"/>.
++	/// Clears the overridden value of <see cref="Name"/>.
 +	/// </summary>
  	public void ClearNameOverride()
  	{

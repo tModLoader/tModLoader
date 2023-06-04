@@ -1116,7 +1116,7 @@
  
  	public static void Check1x1(int x, int y, int type)
  	{
-+		// could put here, but there are probably other situations killtile is calleD?
++		// could put here, but there are probably other situations KillTile is called?
  		if (Main.tile[x, y + 1] != null) {
  			if (!SolidTileAllowBottomSlope(x, y + 1))
  				KillTile(x, y);
@@ -2190,7 +2190,7 @@
 +
 +		TileLoader.GetItemDrops(x, y, tileCache, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
 +
-+		// TODO: support centering spawn location for multitiles? Vanilla code is inconsistent in doing this.
++		// TODO: support centering spawn location for multi-tiles? Vanilla code is inconsistent in doing this.
  		if (!Main.getGoodWorld || tileCache.active()) {
  			if (dropItem > 0) {
  				int num = Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, dropItem, dropItemStack, noBroadcast: false, -1);
