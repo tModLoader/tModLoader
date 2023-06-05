@@ -8,7 +8,7 @@ namespace Terraria.Localization;
 public static partial class Language
 {
 	/// <summary>
-	/// Returns a LocalizedText for a given key.
+	/// Returns a <see cref="LocalizedText"/> for a given key.
 	/// <br/>If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file.
 	/// </summary>
 	/// <param name="key">The localization key</param>
