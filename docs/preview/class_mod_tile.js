@@ -47,6 +47,7 @@ var class_mod_tile =
     [ "AdjTiles", "class_mod_tile.html#a0ac0b849d7787ee3ca125ff576e12c5a", null ],
     [ "AnimationFrameHeight", "class_mod_tile.html#a147087fb6dd795d857cf099fa06f009f", null ],
     [ "HighlightTexture", "class_mod_tile.html#ae12810d265c604e5a4941b299859fa85", null ],
+    [ "LocalizationCategory", "class_mod_tile.html#a9e81b5f17fcccb2fb458c3c13f1656a1", null ],
     [ "MineResist", "class_mod_tile.html#a36cfe4b7996be9bf5d5fa83cd3fbfea2", null ],
     [ "MinPick", "class_mod_tile.html#ac2edba54b94a6177676a99d37f512f57", null ]
 ];

@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_entity_source___item_use.html":[3,0,310],
 "class_entity_source___item_use.html#a065c08bcdf98964f14afebf7efec2dc8":[3,0,310,1],
 "class_entity_source___item_use.html#a7c651c8a0564a3ca07ee11f8169199c7":[3,0,310,0],
 "class_entity_source___item_use___on_hurt.html":[3,0,311],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_game_tip_i_d.html#ad2197cd5b530f98d5faed43712820216":[3,0,408,18],
 "class_game_tip_i_d.html#ad27594bc7754f6a53fdd1575b070988d":[3,0,408,109],
 "class_game_tip_i_d.html#ad31f9130da0c2528e421562dc975cdde":[3,0,408,24],
-"class_game_tip_i_d.html#ad769b21f3d469105d22e705d8377dd81":[3,0,408,1],
-"class_game_tip_i_d.html#ad85fdb0d3007c60d44414ad61694b6fa":[3,0,408,25]
+"class_game_tip_i_d.html#ad769b21f3d469105d22e705d8377dd81":[3,0,408,1]
 };

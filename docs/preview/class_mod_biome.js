@@ -13,5 +13,6 @@ var class_mod_biome =
     [ "BestiaryIcon", "class_mod_biome.html#a3026c1396f5d66430dda41dee39734cc", null ],
     [ "BiomeCampfireItemType", "class_mod_biome.html#a32b4fd7d34c32fb78af362cb7e225fc7", null ],
     [ "BiomeTorchItemType", "class_mod_biome.html#a454490cc5a3ff7ffb87450efe406a209", null ],
-    [ "DisplayName", "class_mod_biome.html#ab727aa7efb5f1428de536388e0342a35", null ]
+    [ "DisplayName", "class_mod_biome.html#ab727aa7efb5f1428de536388e0342a35", null ],
+    [ "LocalizationCategory", "class_mod_biome.html#a0d0cca24cafbd44c81cfb0cf11338e03", null ]
 ];

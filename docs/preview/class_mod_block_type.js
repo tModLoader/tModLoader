@@ -15,6 +15,7 @@ var class_mod_block_type =
     [ "SetStaticDefaults", "class_mod_block_type.html#ada91244ef4715c2a5816256e494f8f22", null ],
     [ "DustType", "class_mod_block_type.html#aa83de9a9f6db248a1d359918cf8a5b9a", null ],
     [ "HitSound", "class_mod_block_type.html#aaf6985e10e0ba2cc9e28729604013f0d", null ],
+    [ "LocalizationCategory", "class_mod_block_type.html#a22f06da30041acfeb85eb671ebc59497", null ],
     [ "Type", "class_mod_block_type.html#a648adabb5df38e5fe4db10fc18694df7", null ],
     [ "VanillaFallbackOnModDeletion", "class_mod_block_type.html#a1263f5a6ef3d7c7e477465c4acaa7674", null ]
 ];

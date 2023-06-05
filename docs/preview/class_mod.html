@@ -168,8 +168,8 @@ This only includes the 'template' instance for each piece of content, not all th
 <tr class="memitem:a6bfa0ce3609d5ad9cea40676acc08373"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">GetFileStream</a> (string name, bool newFileStream=false)</td></tr>
 <tr class="memdesc:a6bfa0ce3609d5ad9cea40676acc08373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve contents of files within the tmod file  <a href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">More...</a><br /></td></tr>
 <tr class="separator:a6bfa0ce3609d5ad9cea40676acc08373"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3cc0ce693c21784b185d1da10d5fd81"><td class="memItemLeft" align="right" valign="top"><a id="ae3cc0ce693c21784b185d1da10d5fd81" name="ae3cc0ce693c21784b185d1da10d5fd81"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>GetLocalizationKey</b> (string suffix)</td></tr>
+<tr class="memitem:ae3cc0ce693c21784b185d1da10d5fd81"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81">GetLocalizationKey</a> (string suffix)</td></tr>
+<tr class="memdesc:ae3cc0ce693c21784b185d1da10d5fd81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">Language.GetOrRegister(string, Func&lt;string&gt;)</a> to retrieve a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for custom localization keys. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files.  <a href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81">More...</a><br /></td></tr>
 <tr class="separator:ae3cc0ce693c21784b185d1da10d5fd81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae95db58d653971959368e4a7e56c1d94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod_packet.html">ModPacket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#ae95db58d653971959368e4a7e56c1d94">GetPacket</a> (int capacity=256)</td></tr>
 <tr class="memdesc:ae95db58d653971959368e4a7e56c1d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_mod_packet.html" title="This class inherits from BinaryWriter. This means that you can use all of its writing functions to se...">ModPacket</a> object that you can write to and then send between servers and clients.  <a href="class_mod.html#ae95db58d653971959368e4a7e56c1d94">More...</a><br /></td></tr>
@@ -568,6 +568,33 @@ This only includes the 'template' instance for each piece of content, not all th
   <table class="params">
     <tr><td class="paramname">name</td><td>The name.</td></tr>
     <tr><td class="paramname">newFileStream</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae3cc0ce693c21784b185d1da10d5fd81" name="ae3cc0ce693c21784b185d1da10d5fd81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3cc0ce693c21784b185d1da10d5fd81">&#9670;&nbsp;</a></span>GetLocalizationKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Mod.GetLocalizationKey </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>suffix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">Language.GetOrRegister(string, Func&lt;string&gt;)</a> to retrieve a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for custom localization keys. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">suffix</td><td></td></tr>
   </table>
   </dd>
 </dl>

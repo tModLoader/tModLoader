@@ -1,5 +1,10 @@
 var NAVTREEINDEX7 =
 {
+"class_item_i_d_1_1_sets.html#ad25423ef6f4bec77cca627a1382c8ace":[3,0,610,1,39],
+"class_item_i_d_1_1_sets.html#ad584336a6b1bc6869a14b100d44a2733":[3,0,610,1,89],
+"class_item_i_d_1_1_sets.html#ada6351fa7cff484ac94cd268c9a1fb01":[3,0,610,1,18],
+"class_item_i_d_1_1_sets.html#adc8ccc13bfa2e8e765437539bff9fe31":[3,0,610,1,81],
+"class_item_i_d_1_1_sets.html#add52a865f19f9be54ffba9d361be8ae3":[3,0,610,1,1],
 "class_item_i_d_1_1_sets.html#adf18358a434b86368fdfa1329d266f6f":[3,0,610,1,72],
 "class_item_i_d_1_1_sets.html#ae31b2005741ded7a4eeb856768730929":[3,0,610,1,63],
 "class_item_i_d_1_1_sets.html#ae4c4b63e82b4ab463a5edb2c0881dc11":[3,0,610,1,8],
@@ -244,10 +249,5 @@ var NAVTREEINDEX7 =
 "class_lucy_axe_message.html":[3,0,704],
 "class_lunar_pillar_big_progess_bar.html":[3,0,705],
 "class_m_p3_audio_track.html":[3,0,814],
-"class_m_p3_reader.html":[3,0,815],
-"class_magic_damage_class.html":[3,0,706],
-"class_magic_summon_hybrid_damage_class.html":[3,0,708],
-"class_magic_summon_hybrid_damage_class.html#a3370b5404ad840d63267dcd6e9a79a8f":[3,0,708,1],
-"class_magic_summon_hybrid_damage_class.html#a46b1433058e94f0bd1aa6b58f38f56de":[3,0,708,0],
-"class_mahogany_tree_biome.html":[3,0,709]
+"class_m_p3_reader.html":[3,0,815]
 };

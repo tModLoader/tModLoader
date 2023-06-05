@@ -8,5 +8,6 @@ var class_mod_wall =
     [ "Register", "class_mod_wall.html#aa446d7a2d33b4d021e40f7a1ab8bcccf", null ],
     [ "RegisterItemDrop", "class_mod_wall.html#a09254fba94fd495dfaf6f8776f48360c", null ],
     [ "SetupContent", "class_mod_wall.html#a252576fc96fc9f8a95c1e6ce7f4f9bf3", null ],
-    [ "WallFrame", "class_mod_wall.html#a09cbfd2b9e7ea3d2e86351bb25551885", null ]
+    [ "WallFrame", "class_mod_wall.html#a09cbfd2b9e7ea3d2e86351bb25551885", null ],
+    [ "LocalizationCategory", "class_mod_wall.html#a04b71c4df64f7bc07391ebd3ea110e36", null ]
 ];

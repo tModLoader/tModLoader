@@ -10,5 +10,6 @@ var class_mod_prefix =
     [ "RollChance", "class_mod_prefix.html#a77f82f439e83c620069eaaceab315abc", null ],
     [ "SetStats", "class_mod_prefix.html#abcf9a5adab3b2b4a268d890d83d78bec", null ],
     [ "SetupContent", "class_mod_prefix.html#afea7d45eade2489cc61ddcb167b5942e", null ],
-    [ "Category", "class_mod_prefix.html#a338179902193069e527980ec876ca923", null ]
+    [ "Category", "class_mod_prefix.html#a338179902193069e527980ec876ca923", null ],
+    [ "LocalizationCategory", "class_mod_prefix.html#a2ca0dfeee0d04c4a2689e9a4d4b57c68", null ]
 ];

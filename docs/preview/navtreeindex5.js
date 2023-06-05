@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"class_global_n_p_c.html#aa03f7f9ed767f027736a2ce7f8063368":[3,0,437,25],
 "class_global_n_p_c.html#aa246d912a444cdd003884d099503ca2c":[3,0,437,58],
 "class_global_n_p_c.html#aa4320fe846bd9bf341ee89f0a42f5bc4":[3,0,437,65],
 "class_global_n_p_c.html#aa48f83f5be63b4a70c77674f2b482012":[3,0,437,38],
@@ -188,6 +189,9 @@ var NAVTREEINDEX5 =
 "class_i_equatable.html":[3,0,522],
 "class_i_l_patch_failure_exception.html":[3,0,540],
 "class_i_localized_mod_type_extensions.html":[3,0,538],
+"class_i_localized_mod_type_extensions.html#a35b92f7bfe82102e66c7850511e24352":[3,0,538,2],
+"class_i_localized_mod_type_extensions.html#a70f096ad4dbff8af771a3cf629a92eb8":[3,0,538,1],
+"class_i_localized_mod_type_extensions.html#ab5df6bd8d314d84b6770c551d353acc7":[3,0,538,0],
 "class_i_o_exception.html":[3,0,560],
 "class_i_p_c_base.html":[3,0,563],
 "class_i_p_c_client.html":[3,0,564],
@@ -212,12 +216,13 @@ var NAVTREEINDEX5 =
 "class_in_game_popups_1_1_player_wants_to_join_game_popup.html":[3,0,556,1],
 "class_increment_attribute.html":[3,0,547],
 "class_info_display.html":[3,0,551],
+"class_info_display.html#a1503b6cca74087c7acb8bd1368a46c06":[3,0,551,6],
 "class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763":[3,0,551,5],
 "class_info_display.html#a3ec287f9bdc143eb8426b67dac705265":[3,0,551,2],
 "class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a":[3,0,551,1],
 "class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb":[3,0,551,3],
 "class_info_display.html#a7799c04325bac7bc63c691f08ad60992":[3,0,551,0],
-"class_info_display.html#ac53cc325cd4be38efbf6c00d972a9c4b":[3,0,551,6],
+"class_info_display.html#ac53cc325cd4be38efbf6c00d972a9c4b":[3,0,551,7],
 "class_info_display.html#ae84cd7f72e3961efdaa6b6e4b8d76983":[3,0,551,4],
 "class_info_display_loader.html":[3,0,552],
 "class_ingame_fancy_u_i.html":[3,0,553],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "class_item.html#a15ee11cea8fa8a34361bf437ba32f987":[3,0,596,99],
 "class_item.html#a164ffb6c05e54cd51021290cc2c0180a":[3,0,596,2],
 "class_item.html#a16ff6e8d39858cb8a29ebaef6a4bc992":[3,0,596,42],
-"class_item.html#a19537efd3f1a35e4f0c00561f89703ce":[3,0,596,64],
-"class_item.html#a19677680af3f6930fe59649fa96086b9":[3,0,596,28],
-"class_item.html#a196a67d23ce3deea5129f05a329f280e":[3,0,596,106],
-"class_item.html#a1acb85d0f70816b12d4f5a7ef8867a08":[3,0,596,145],
-"class_item.html#a1c4234850be36ca5bba7c8901b16df52":[3,0,596,16],
-"class_item.html#a1de8c83868f78381c09d4822b5df0750":[3,0,596,156]
+"class_item.html#a19537efd3f1a35e4f0c00561f89703ce":[3,0,596,64]
 };

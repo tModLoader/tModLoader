@@ -50,6 +50,7 @@ var class_mod_projectile =
     [ "DrawOriginOffsetX", "class_mod_projectile.html#a996ee9f31263fcf9d384237537eff592", null ],
     [ "DrawOriginOffsetY", "class_mod_projectile.html#a03cbd1be6a2b2595c3d972cf8eddce10", null ],
     [ "GlowTexture", "class_mod_projectile.html#a3c9a209c0d7c63045b46f9123438be8d", null ],
+    [ "LocalizationCategory", "class_mod_projectile.html#a6a09916a490a16a1f78d5487de53ad91", null ],
     [ "Projectile", "class_mod_projectile.html#a3dc7232386718dacd571cf54b990315d", null ],
     [ "Texture", "class_mod_projectile.html#a4ca732aa351a6f08a92412c12b48015b", null ],
     [ "Type", "class_mod_projectile.html#aeff3a47d89479ccce075059cd4fd2c70", null ]
