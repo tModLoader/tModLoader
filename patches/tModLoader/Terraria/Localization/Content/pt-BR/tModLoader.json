@@ -125,6 +125,9 @@
 		"LoadError": "Ocorreu um erro ao carregar {0}",
 		"LoadErrorDisabled": "O(s) mod(s) foi(ram) desabilitado(s) automaticamente.",
 		"LoadErrorCulpritUnknown": "O mod responsável é desconhecido e o tModLoader deve ser reiniciado.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Foi detectado que este mod foi desenvolvido para o tModLoader v{0}\nNo entanto, você está usando {1}",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 ou mais recente é necessário para usar mods. Por favor, baixe o .NET Framework mais recente.",
 		"LoadErrorDependencyMissing": "Mod não encontrado: {0} necessário por {1}",
@@ -815,6 +818,15 @@
 		"Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Items.AprilFools.DisplayName": "April Fools Joke",
+		// "ModLoader.Items.StartBag.DisplayName": "Starting Bag",
+		// "ModLoader.Items.StartBag.Tooltip": "Some starting items couldn't fit in your inventory\n{$CommonItemTooltip.RightClickToOpen}",
+		// "ModLoader.Items.UnloadedItem.DisplayName": "Unloaded Item",
+		// "ModLoader.Items.UnloadedItem.Tooltip": "\n",
+		// "ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
+		// "ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry0": "Unloaded Chest",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry1": "Locked Unloaded Chest",
 		"ModLoader.Items.Jofairden_Body.DisplayName": "Corpo de Andromedon",
 		"ModLoader.Items.Jofairden_Body.Tooltip": "O poder do Andrômedo flui dentro de você",
 		"ModLoader.Items.Jofairden_Head.DisplayName": "Cabeça de Andromedon",
@@ -908,5 +920,9 @@
 		"ModLoader.Items.Zeph_Head.DisplayName": "Cabeça de Zeph",
 		"ModLoader.Items.Zeph_Legs.DisplayName": "Pernas de Zeph",
 		"ModLoader.Items.Zeph_Wings.DisplayName": "Asas de Zeph"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

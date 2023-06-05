@@ -126,6 +126,9 @@
 		"LoadError": "该模组加载时发生错误 {0}",
 		"LoadErrorDisabled": "该模组已被自动禁用.",
 		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "该模组是基于tModLoader v{0}开发的\n但是, 你正在使用 {1}\n(版本不同不一定是加载错误的原因)",
 		"LoadErrorDotNet45Required": "需要[.NET Framework 4.5]或更高版本才能使用模组.请下载最新版本的[.NET Framework]",
 		"LoadErrorDependencyMissing": "缺少模组: {0} 需求来源: {1}",
@@ -918,5 +921,9 @@
 		"ModLoader.Items.Zeph_Head.DisplayName": "Zeph之盔",
 		"ModLoader.Items.Zeph_Legs.DisplayName": "Zeph护腿",
 		"ModLoader.Items.Zeph_Wings.DisplayName": "Zeph之翼"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

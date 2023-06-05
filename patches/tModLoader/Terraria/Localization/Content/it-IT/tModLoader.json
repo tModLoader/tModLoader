@@ -127,6 +127,9 @@
 		// "LoadError": "An error occurred while loading {0}",
 		// "LoadErrorDisabled": "The mod(s) have been automatically disabled.",
 		// "LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		// "LoadErrorVersionMessage": "It has been detected that this mod was built for tModLoader v{0}\nHowever, you are using {1}",
 		// "LoadErrorDotNet45Required": ".NET Framework 4.5 or newer is required to use mods. Please download the latest .NET Framework",
 		// "LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
@@ -135,7 +138,7 @@
 		// "LoadErrorDependencyVersionTooLow": "{0} requires {2} version {1} or greater but version {3} is installed",
 		// "LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		// "LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
-		// "UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
+		// "UnloadError": "One or more errors occurred while unloading and tModLoader must be restarted to prevent further issues.",
 		// "DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
 		// "BuildError": "An error occurred while building {0}",
 		// "CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
@@ -919,5 +922,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

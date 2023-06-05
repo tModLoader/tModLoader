@@ -125,6 +125,9 @@
 		"LoadError": "Se ha producido un error al cargar {0}",
 		"LoadErrorDisabled": "Los mods se han desactivado automáticamente.",
 		"LoadErrorCulpritUnknown": "Se desconoce el mod responsable y tModLoader debe reiniciarse.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Se ha detectado que este mod fue creado para tModLoader v. {0}\nSin embargo, estás usando la versión {1}",
 		"LoadErrorDotNet45Required": "Se necesita .NET Framework 4.5 o posterior para usar los mods. Por favor, descarga la última versión de .NET Framework",
 		"LoadErrorDependencyMissing": "Falta el mod {0}, requerido por {1}",
@@ -917,5 +920,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

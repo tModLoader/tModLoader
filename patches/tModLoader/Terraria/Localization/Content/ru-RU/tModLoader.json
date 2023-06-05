@@ -14,7 +14,7 @@
 		"ModsModPacks": "Сборки модов",
 		"MenuModPackDescription": "Управление сборками модов для сохранения списка модов и конфигурации, а также для импорта/экспорта сборок. Экспериментальная функция.",
 		"MenuEnableDeveloperMode": "Включить режим разработчика",
-		// //No Longer In Use. "WelcomeMessageBeta": "Добро пожаловать в альфа-версию tModLoader 1.4!\n\nВы установили нестабильную версию tModLoader, которая может содержать баги, ломающие игру.\n\nИспользуйте меню «Мастерская» для доступа к функционалу модов tModLoader.\n\nПрисоединитесь к Discord серверу tModLoader, чтобы узнать о тестировании модах и/или инструментах, доступных в tModLoader в рамках обновления 1.4.",
+		// //No Longer In Use. "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		"WelcomeMessageUpgradeBeta": "Добро пожаловать в бета-версию tModLoader.\n\nВы установили нестабильную версию tModLoader, которая может содержать баги, ломающие игру.\n\nИспользуйте меню «Мастерская» для доступа к функционалу модов tModLoader.\n\nПрисоединитесь к Discord серверу tModLoader, чтобы узнать о тестировании модах и/или инструментах, доступных в tModLoader в рамках обновления версии Terraria.",
 		"MonthlyFreezeNotification": "Ежемесячная заморозка Preview-версии началась. Напоминаем, что 21 числа каждого месяца наступает период, когда разработчикам модов следует обновить свои моды до версии 1.4-preview в следствии с изменениями кода и API, произведёнными за прошедший месяц. Текущая 1.4-preview станет новой 1.4-stable с 1-го числа следующего месяца.\n\nНесоблюдение этого правила означает, что созданные вами моды, вероятнее всего, не будут запускаться, начиная с 1-го числа следующего месяца.\n\nПрисоединитесь к Discord серверу tModLoader, чтобы узнать об изменениях этого месяца и ознакомиться с заметками по переносу модов на новую версию. Нажмите на «Больше информации», чтобы узнать о постоянном цикле релизов Preview-версий.",
 		"FirstLaunchWelcomeMessage": "Добро пожаловать в tModLoader 1.4!\n\nВы успешно установили tModLoader. Используйте меню «Мастерская» для доступа к функционалу модов tModLoader.\n\nЕсли до этого вы играли в версию 1.3, вы можете вернуться обратно на эту версию, переключившись на ветку 1.3-legacy в свойствах tModLoader в Steam. Если вы не можете найти моды, с которыми собирались играть, возможно, они пока доступны только в версии 1.3.",
@@ -125,6 +125,9 @@
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
 		"LoadErrorDisabled": "Мод(ы) был(и) автоматически выключен(ы).",
 		"LoadErrorCulpritUnknown": "Виновный мод неизвестен. Следует перезапустить tModLoader.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Было обнаружено, что этот мод предназначен для tModLoader версии {0}\nОднако вы используете версию {1}",
 		"LoadErrorDotNet45Required": "Для использования модов требуется .NET Framework 4.5 или новее. Пожалуйста, скачайте и установите последнюю версию .NET Framework",
 		"LoadErrorDependencyMissing": "Отсутствует мод: Для корректной работы {1} требуется {0}",
@@ -917,5 +920,9 @@
 		"ModLoader.Items.Zeph_Head.DisplayName": "Голова Zeph",
 		"ModLoader.Items.Zeph_Legs.DisplayName": "Ноги Zeph",
 		"ModLoader.Items.Zeph_Wings.DisplayName": "Крылья Zeph"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }
