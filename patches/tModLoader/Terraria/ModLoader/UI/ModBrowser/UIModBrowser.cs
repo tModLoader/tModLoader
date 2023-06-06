@@ -31,6 +31,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	private class AP_UIModDowloadItem : AsyncProvider<UIModDownloadItem>
 	{
+		// @TODO: Not used, could be used to avoid piling partial queries to Steam (wait total clean of previous
+		// AsyncProvider of this type before executing the Run) (remember if you do so to verify the token after
+		// the lock, but before the web request since it could pass some time and early exit is good)
 		private static object GlobalThreadLock = new();
 
 		private SocialBrowserModule SocialBackend;
@@ -52,7 +55,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 					var uiItem = new UIModDownloadItem(item);
 					// @NOTE: LOCKING CONSTRUCTOR! must be outside the lock instruction
 					uiItem.UpdateInstallInfo(new ModDownloadItemInstallInfo(uiItem.ModDownload));
-					lock (_Data) {
+					lock (this) {
 						// @OPTIMIZATION: Could lock in batches instead of each item added, but
 						// can't really in this case because the constructor of ModDownloadItemInstallInfo
 						// is blocking

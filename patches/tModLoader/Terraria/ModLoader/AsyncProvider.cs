@@ -101,10 +101,11 @@ public abstract class AsyncProvider<T> : IAsyncProvider<T>
 				if (await this.Run(token))
 					State = AsyncProvider.State.Completed;
 			}
-			/*
+			// @TODO: from Chicken Bones: should catch cancellation and both make error true and
+			// avoid hitting the thread pool, correct, you can have a full list of exceptions
+			// and all should bubble (hopefully being intercepted and logged) except cancellations
 			catch (OperationCanceledException) {
 			}
-			*/
 			finally {
 				if (State == AsyncProvider.State.Loading)
 					State = AsyncProvider.State.Aborted;
