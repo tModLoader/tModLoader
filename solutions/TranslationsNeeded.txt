@@ -2,7 +2,7 @@ zh-Hans 19
 ru-RU 10
 pt-BR 15
 pl-PL 350
-it-IT 797
+it-IT 795
 fr-FR 407
 es-ES 314
 de-DE 335

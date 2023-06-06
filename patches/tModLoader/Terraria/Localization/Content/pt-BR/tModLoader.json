@@ -484,9 +484,7 @@
 		"SteamAPIHashMismatch": "Incompatibilidade de hash da API do Steam, presumido como pirataria.\n\ntModLoader requer uma instalação legítima do Terraria para funcionar.",
 		"SteamInitFailed": "SteamAPI.Init falhou. Tente sair do Steam e reiniciá-lo.\n\nVerifique terrariasteamclient.log e Natives.Log para detalhes",
 		"TerrariaNotInstalled": "Terrara deve estar instalado no Steam para que o tModLoader seja executado.\n\nVocê precisará reiniciar seu cliente Steam para que o botão de instalação apareça no aplicativo do Terraria.\n\nInicie o Terraria pelo menos uma vez para garantir que as dependências sejam instaladas antes de iniciar o tModLoader novamente.",
-		"VanillaGOGNotFound": "{0} não foi encontrado.\r\n\r\nAs instalações do GOG devem ter o executável Terraria não modificado para funcionar. Esta versão do tModLoader espera a versão {1} do Terraria, pode ser preciso desatualizar ou atualizar o Terraria através do GOG Galaxy ou aguardar uma atualização do tModLoader.",
-		"GOGHashMismatch": "{0} não é o executável Terraria não modificado.\r\n\r\nAs instalações do GOG devem ter o executável Terraria não modificado para funcionar.\r\n\r\nSe você editou o .exe, você pode criar uma cópia do exe original e nomeá-lo \"Terraria_v<VERSÃO>.exe\"",
-		"GOGVersionHint": "Esta versão do tModLoader espera ser instalada juntamente com o Terraria v{0}. Se o Terraria foi atualizado recentemente, talvez seja necessário desatualizá-lo para esta versão anterior no GOG Galaxy.",
+		"GOGHashMismatch": "{0} não é o executável Terraria {1} não modificado.\r\n\r\nEsta versão do tModLoader espera ser instalada juntamente com o Terraria {1}. Se o Terraria foi atualizado recentemente, talvez seja necessário desatualizá-lo para esta versão anterior no GOG Galaxy.\r\n\r\nSe você editou o .exe, você pode criar uma cópia do exe original e nomeá-lo \"{2}\"",
 		"DefaultExtraMessage": "Por favor, restaure a instalação do Terraria e, em seguida, instale tModLoader no Steam ou seguindo as instruções README.txt para instalação manual.",
 		"LogPathHint": "Um arquivo {0} contendo informações de erro foi gerado em\n{1}\n(Você precisará compartilhar este arquivo se pedir ajuda)",
 		"OutOfMemoryHint": "Dica: Tente executar menos mods de uma vez ou determine se um mod está ocupando muita memória. Opcionalmente, instale o tModLoader 64 bits",
@@ -514,7 +512,7 @@
 		"TagsLang": "Suporte de Localização",
 		"TagsLangDescription": "Este mod tem suporte para vários idiomas",
 		"TagsGen": "Geração de Mundo Personalizada",
-		"TagsGenDescription": "Altera a forma como o mundo é gerado (por exemplo, minérios, novas estruturas, etc.)"
+		"TagsGenDescription": "Altera a forma como o mundo é gerado (por exemplo, minérios, novas estruturas, etc.)",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Próxima Página",
