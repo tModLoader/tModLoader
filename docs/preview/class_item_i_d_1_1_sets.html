@@ -486,12 +486,12 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>SortingPriori
  Only used for vanilla spears to make sure they still scale with attack speed (though it's encouraged to set this for your spears as well, for cross-mod support).<br  />
   <a href="class_item_i_d_1_1_sets.html#aa34118f163ed20dfadf8fdfe2efba384">More...</a><br /></td></tr>
 <tr class="separator:aa34118f163ed20dfadf8fdfe2efba384"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa96971b2cb5a6b3b1636e7c5fee0a70"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#afa96971b2cb5a6b3b1636e7c5fee0a70">StaffMinionSlotsRequired</a> = Factory.CreateIntSet(1)</td></tr>
-<tr class="memdesc:afa96971b2cb5a6b3b1636e7c5fee0a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the number of minion slots a player needs to sacrifice to use this item. <br  />
- This is only used when <a class="el" href="class_projectile_i_d_1_1_sets.html#a6476098c135953f1f8a6c5542caeb037" title="If true for a given projectile type (Projectile.type), then that projectile can be sacrificed to summ...">ProjectileID.Sets.MinionSacrificable</a>[<a class="el" href="class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e" title="The ID of the projectile that is fired by this item on use. Either a ProjectileID entry or ModContent...">Item.shoot</a>] is <code>true</code> and when the player tries to summon a new minion. <br  />
- The retrieved value's worth of minion slots (<a class="el" href="class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53" title="Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summo...">Projectile.minionSlots</a>) will be killed to make room for the projectile. <br  />
- Defaults to <code>1</code>.  <a href="class_item_i_d_1_1_sets.html#afa96971b2cb5a6b3b1636e7c5fee0a70">More...</a><br /></td></tr>
-<tr class="separator:afa96971b2cb5a6b3b1636e7c5fee0a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33807287a7b5da4b817beb9b8910cbbb"><td class="memItemLeft" align="right" valign="top">static float[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a33807287a7b5da4b817beb9b8910cbbb">StaffMinionSlotsRequired</a> = Factory.CreateFloatSet(1f)</td></tr>
+<tr class="memdesc:a33807287a7b5da4b817beb9b8910cbbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many minion slots one usage of this item will spawn. <br  />
+ This is only used when <a class="el" href="class_projectile_i_d_1_1_sets.html#a6476098c135953f1f8a6c5542caeb037" title="If true for a given projectile type (Projectile.type), then other minions will be sacrificed to make ...">ProjectileID.Sets.MinionSacrificable</a>[<a class="el" href="class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e" title="The ID of the projectile that is fired by this item on use. Either a ProjectileID entry or ModContent...">Item.shoot</a>] and Main.projPet are <code>true</code> and when the player tries to summon a new minion. <br  />
+ The retrieved value's worth of minion slots (<a class="el" href="class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53" title="Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summo...">Projectile.minionSlots</a>) will be killed, if necessary, to make room for the minion projectiles prior to spawning them. <br  />
+ Defaults to <code>1f</code>. If the value is greater than 1f, make sure to check <a class="el" href="class_player.html#adf3e81ffc3ac75480fa380568cef9756" title="The maximum value of minions this player can have summoned at once.   A minion&#39;s value is stored as P...">Player.maxMinions</a> in <a class="el" href="class_mod_item.html#ad49d48612c92aa85d7aed09c3751116b" title="Returns whether or not this item can be used. By default returns true.">ModItem.CanUseItem(Player)</a> as well.  <a href="class_item_i_d_1_1_sets.html#a33807287a7b5da4b817beb9b8910cbbb">More...</a><br /></td></tr>
+<tr class="separator:a33807287a7b5da4b817beb9b8910cbbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98688c0fd8edb291f83092c2a1a36e1a"><td class="memItemLeft" align="right" valign="top"><a id="a98688c0fd8edb291f83092c2a1a36e1a" name="a98688c0fd8edb291f83092c2a1a36e1a"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>TextureCopyLoad</b> = Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 3665, 3706, 3665, 4713, 4712, 5167, 5156, 5188, 5177, 5209, 5198)</td></tr>
 <tr class="memdesc:a98688c0fd8edb291f83092c2a1a36e1a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Only checked for vanilla IDs.</b> <br  />
@@ -1455,8 +1455,8 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 
 </div>
 </div>
-<a id="afa96971b2cb5a6b3b1636e7c5fee0a70" name="afa96971b2cb5a6b3b1636e7c5fee0a70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa96971b2cb5a6b3b1636e7c5fee0a70">&#9670;&nbsp;</a></span>StaffMinionSlotsRequired</h2>
+<a id="a33807287a7b5da4b817beb9b8910cbbb" name="a33807287a7b5da4b817beb9b8910cbbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33807287a7b5da4b817beb9b8910cbbb">&#9670;&nbsp;</a></span>StaffMinionSlotsRequired</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1465,7 +1465,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int [] ItemID.Sets.StaffMinionSlotsRequired = Factory.CreateIntSet(1)</td>
+          <td class="memname">float [] ItemID.Sets.StaffMinionSlotsRequired = Factory.CreateFloatSet(1f)</td>
         </tr>
       </table>
   </td>
@@ -1475,10 +1475,10 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 </table>
 </div><div class="memdoc">
 
-<p>Determines the number of minion slots a player needs to sacrifice to use this item. <br  />
- This is only used when <a class="el" href="class_projectile_i_d_1_1_sets.html#a6476098c135953f1f8a6c5542caeb037" title="If true for a given projectile type (Projectile.type), then that projectile can be sacrificed to summ...">ProjectileID.Sets.MinionSacrificable</a>[<a class="el" href="class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e" title="The ID of the projectile that is fired by this item on use. Either a ProjectileID entry or ModContent...">Item.shoot</a>] is <code>true</code> and when the player tries to summon a new minion. <br  />
- The retrieved value's worth of minion slots (<a class="el" href="class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53" title="Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summo...">Projectile.minionSlots</a>) will be killed to make room for the projectile. <br  />
- Defaults to <code>1</code>. </p>
+<p>How many minion slots one usage of this item will spawn. <br  />
+ This is only used when <a class="el" href="class_projectile_i_d_1_1_sets.html#a6476098c135953f1f8a6c5542caeb037" title="If true for a given projectile type (Projectile.type), then other minions will be sacrificed to make ...">ProjectileID.Sets.MinionSacrificable</a>[<a class="el" href="class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e" title="The ID of the projectile that is fired by this item on use. Either a ProjectileID entry or ModContent...">Item.shoot</a>] and Main.projPet are <code>true</code> and when the player tries to summon a new minion. <br  />
+ The retrieved value's worth of minion slots (<a class="el" href="class_projectile.html#aff08a9cb8ae79f0807639baf32e28c53" title="Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summo...">Projectile.minionSlots</a>) will be killed, if necessary, to make room for the minion projectiles prior to spawning them. <br  />
+ Defaults to <code>1f</code>. If the value is greater than 1f, make sure to check <a class="el" href="class_player.html#adf3e81ffc3ac75480fa380568cef9756" title="The maximum value of minions this player can have summoned at once.   A minion&#39;s value is stored as P...">Player.maxMinions</a> in <a class="el" href="class_mod_item.html#ad49d48612c92aa85d7aed09c3751116b" title="Returns whether or not this item can be used. By default returns true.">ModItem.CanUseItem(Player)</a> as well. </p>
 <p >The full process for sacrificing minions can be found at Player.FreeUpPetsAndMinions(Item). </p>
 
 </div>

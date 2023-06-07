@@ -113,7 +113,7 @@ var searchData=
   ['spritedirection_110',['SpriteDirection',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#acf36dfbc571b7354203881c28d01a192',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
   ['stack_111',['stack',['../class_item.html#a87032523d0721bc622ae3d37452f78b8',1,'Item.stack()'],['../class_popup_text.html#a04beb1444dea0bed25b693da66168f6e',1,'PopupText.stack()']]],
   ['staff_112',['staff',['../class_item.html#af0415741ce7179b5adf69e3a8c643172',1,'Item']]],
-  ['staffminionslotsrequired_113',['StaffMinionSlotsRequired',['../class_item_i_d_1_1_sets.html#afa96971b2cb5a6b3b1636e7c5fee0a70',1,'ItemID::Sets']]],
+  ['staffminionslotsrequired_113',['StaffMinionSlotsRequired',['../class_item_i_d_1_1_sets.html#a33807287a7b5da4b817beb9b8910cbbb',1,'ItemID::Sets']]],
   ['starcell_114',['StarCell',['../class_n_p_c_a_i_style_i_d.html#a9612b23663c801ea8d2fe29c82566ff0',1,'NPCAIStyleID']]],
   ['stardustdragon_115',['StardustDragon',['../class_proj_a_i_style_i_d.html#a4b8c6ed67014d565a840fed0699376e3',1,'ProjAIStyleID']]],
   ['stardustguardian_116',['StardustGuardian',['../class_proj_a_i_style_i_d.html#ae568ef639b4e92e9611bec23d653e2c3',1,'ProjAIStyleID']]],

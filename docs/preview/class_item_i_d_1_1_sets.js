@@ -79,7 +79,7 @@ var class_item_i_d_1_1_sets =
     [ "SortingPriorityTerraforming", "class_item_i_d_1_1_sets.html#a8768f2eee306575ef7519e6e28886827", null ],
     [ "SortingPriorityWiring", "class_item_i_d_1_1_sets.html#a08d35537a2044465311403b3f0a1176e", null ],
     [ "Spears", "class_item_i_d_1_1_sets.html#aa34118f163ed20dfadf8fdfe2efba384", null ],
-    [ "StaffMinionSlotsRequired", "class_item_i_d_1_1_sets.html#afa96971b2cb5a6b3b1636e7c5fee0a70", null ],
+    [ "StaffMinionSlotsRequired", "class_item_i_d_1_1_sets.html#a33807287a7b5da4b817beb9b8910cbbb", null ],
     [ "TextureCopyLoad", "class_item_i_d_1_1_sets.html#a98688c0fd8edb291f83092c2a1a36e1a", null ],
     [ "ToolTipDamageMultiplier", "class_item_i_d_1_1_sets.html#adc8ccc13bfa2e8e765437539bff9fe31", null ],
     [ "Torches", "class_item_i_d_1_1_sets.html#acadf8e3829cbae2a0bc9b37c289c813f", null ],

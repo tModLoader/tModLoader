@@ -54,7 +54,7 @@ var NAVTREEINDEX =
 "class_game_tip_i_d.html#ad85fdb0d3007c60d44414ad61694b6fa",
 "class_global_n_p_c.html#aa03f7f9ed767f027736a2ce7f8063368",
 "class_item.html#a19677680af3f6930fe59649fa96086b9",
-"class_item_i_d_1_1_sets.html#ad25423ef6f4bec77cca627a1382c8ace",
+"class_item_i_d_1_1_sets.html#acfbbf6149ab9b530243b438002903fa4",
 "class_magic_damage_class.html",
 "class_mod_content.html#a0f9b12a89d7252be96248ce8eaf91b94",
 "class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde",

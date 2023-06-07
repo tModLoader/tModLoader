@@ -307,7 +307,7 @@ var searchData=
   ['stackednpcprofile_304',['StackedNPCProfile',['../class_profiles_1_1_stacked_n_p_c_profile.html',1,'Profiles']]],
   ['stackitems_305',['StackItems',['../class_item_loader.html#ac409567b93a7331273b6d1d2259fbe6d',1,'ItemLoader']]],
   ['staff_306',['staff',['../class_item.html#af0415741ce7179b5adf69e3a8c643172',1,'Item']]],
-  ['staffminionslotsrequired_307',['StaffMinionSlotsRequired',['../class_item_i_d_1_1_sets.html#afa96971b2cb5a6b3b1636e7c5fee0a70',1,'ItemID::Sets']]],
+  ['staffminionslotsrequired_307',['StaffMinionSlotsRequired',['../class_item_i_d_1_1_sets.html#a33807287a7b5da4b817beb9b8910cbbb',1,'ItemID::Sets']]],
   ['star_308',['Star',['../class_star.html',1,'']]],
   ['starcell_309',['StarCell',['../class_n_p_c_a_i_style_i_d.html#a9612b23663c801ea8d2fe29c82566ff0',1,'NPCAIStyleID']]],
   ['stardewvalleyanimation_310',['StardewValleyAnimation',['../class_stardew_valley_animation.html',1,'']]],
