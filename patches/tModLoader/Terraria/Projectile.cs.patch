@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,319 @@
+@@ -66,76 +_,320 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -221,6 +221,7 @@
 +
 +	/// <summary>
 +	/// Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summons two minions at once with 0.5f each)
++	/// <br/> Make sure to set <see cref="ItemID.Sets.StaffMinionSlotsRequired"/> for the minion summoning item to the sum of the minionSlots values of the minions that will be spawned.
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;

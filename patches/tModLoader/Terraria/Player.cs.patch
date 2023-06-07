@@ -6410,6 +6410,17 @@
  		if (Main.dedServ)
  			return;
  
+@@ -39780,7 +_,10 @@
+ 			}
+ 
+ 			for (int l = 0; l < list.Count; l++) {
++				/*
+ 				if (!(num - num3 > (float)maxMinions - num2))
++				*/
++				if (!(num - num3 > (float)maxMinions - num2 + 0.00001f)) // existing - killedSoFar > maxMinions - needed. Even if a modder does 1/3f for Projectile.minionSlots, the floating point math won't work out without an "epsilon".
+ 					break;
+ 
+ 				int type2 = Main.projectile[list[l]].type;
 @@ -39862,8 +_,12 @@
  
  	private void ApplyLifeAndOrMana(Item item)
