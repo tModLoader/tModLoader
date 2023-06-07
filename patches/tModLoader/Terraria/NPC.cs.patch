@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
 @@ -21,12 +_,13 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
@@ -774,23 +781,76 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -10792,14 +_,31 @@
+@@ -10792,14 +_,84 @@
  			DeathSound = SoundID.NPCDeath6;
  			catchItem = 2121;
  		}
 +		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.  
-+		if (NPCID.Sets.ImmuneToAllDebuffsByDefault[type])
++		if (NPCID.Sets.FullyImmuneToBuffs[type])
 +			Array.Fill(buffImmune, true);
 +
-+		foreach (var buffType in NPCID.Sets.ImmuneToDebuffs[type])
-+			buffImmune[buffType] = true;
++		if (NPCID.Sets.DefaultDebuffImmunity[type] || NPCID.Sets.FullyImmuneToBuffs[type]) {
++			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
++			if (!NPCID.Sets.FullyImmuneToBuffs[type]) {
++				for (int i = 0; i < buffImmune.Length; i++) {
++					buffImmune[i] = !BuffID.Sets.IsAnNPCWhipDebuff[i];
++				}
++			}
 +
-+		if (NPCID.Sets.ImmuneToWhipDebuffs[type] is bool whipBuffImmunityOverride)
-+			for (int i = 0; i < buffImmune.Length; i++)
-+				if (BuffID.Sets.IsAnNPCWhipDebuff[i])
-+					buffImmune[i] = whipBuffImmunityOverride;
++			// If immune to most buffs...
++			// Apply all `SpecificDebuffImmunity` `false` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if(buffImmunity is false) {
++					buffImmune[i] = false;
++				}
++			}
 +
-+		buffImmune[353] = NPCID.Sets.ShimmerImmunity[type];
++			// Apply all `GrantImmunityWith` in reverse (if vulnerable to OnFire, add vulnerability to OnFire3, keep in mind this is _all_ of the vulnerabilities in `[OnFire3]` list)
++			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
++				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
++				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[i]))
++					buffImmune[i] = false;
++			}
++
++			// Apply all `SpecificDebuffImmunity` `true` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is true) {
++					buffImmune[i] = true;
++				}
++			}
++		}
++		else {
++			// If not immune to most buffs...
++			// Apply all `SpecificDebuffImmunity` `true` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is true) {
++					buffImmune[i] = true;
++				}
++			}
++
++			// Apply all `GrantImmunityWith`  (if immune to OnFire, add OnFire3, keep in mind this is _any_ of the immunities in `[OnFire3]` list)
++			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
++				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
++				foreach (var inheritableBuff in buffsToInherit) {
++					if (buffImmune[inheritableBuff]) {
++						buffImmune[i] = true;
++						break;
++					}
++				}
++			}
++
++			// Apply all `SpecificDebuffImmunity` `false` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is false) {
++					buffImmune[i] = false;
++				}
++			}
++		}
++
 +		NPCLoader.SetDefaults(this);
  
  		if (Main.dedServ)

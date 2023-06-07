@@ -115,7 +115,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
 			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
-			NPCID.Sets.ImmuneToDebuffs[Type] = new() { BuffID.Poisoned, BuffID.Confused };
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {

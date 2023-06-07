@@ -47,7 +47,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Specify the debuffs it is immune to.
 			// This NPC will be immune to the Poisoned debuff.
-			NPCID.Sets.ImmuneToDebuffs[Type] = new() { BuffID.Poisoned };
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
 		}
 
 		public override void SetDefaults() {
