@@ -61,21 +61,27 @@ public partial class NPCID
 		public static bool[] AllowDoorInteraction = Factory.CreateBoolSet();
 
 		/// <summary>
-		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs. To allow whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>), set <see cref="DefaultDebuffImmunity "/> to false.
+		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs by default.<br/><br/>
+		/// Use this for special NPC that cannot be hit at all, such as fairy critters, container NPCs like Martian Saucer and Pirate Ship, bound town slimes, and Blazing Wheel. Dungeon Guardian also is in this set to prevent the bonus damage from whip debuffs.<br/><br/>
+		/// If the NPC should be attacked, it is recommended to set <see cref="DefaultDebuffImmunity"/> to <see langword="true"/> instead. This will prevent all debuffs except whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>), which are intended to affect enemies typically seen as immune to all debuffs.<br/><br/>
+		/// Modders can specify specific buffs to not be immune to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
 		public static bool[] FullyImmuneToBuffs; // derived from DebuffImmunitySets
 
 		/// <summary>
-		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>). If false, the NPC will not be immune, overriding <see cref="FullyImmuneToBuffs "/> and <see cref="SpecificDebuffImmunity"/>. The default null value will leave immunities unchanged from the effects of <see cref="FullyImmuneToBuffs "/> and <see cref="SpecificDebuffImmunity"/>.
+		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs except whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>) by default.<br/><br/>
+		/// Use this for NPC that can be attacked that should be immune to all normal debuffs. Whip debuffs are special debuffs that facilitate "summon tag damage" applied by whip weapons. Wraith, Reaper, CultistBoss, the Celestial Pillars, The Destroyer, and the Martian Saucer Turret/Cannon/Core are examples of NPC that use this setting.<br/><br/>
+		/// Modders can specify specific buffs to not be immune to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
 		public static bool[] DefaultDebuffImmunity; // derived from DebuffImmunitySets
 
 		/// <summary>
-		/// This NPC type (<see cref="NPC.type"/>) will be immune to all <see cref="BuffID"/>s in this list.
+		/// Indexed by NPC type and then Buff type. If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune (<see cref="NPC.buffImmune"/>) to the specified buff type. If <see langword="false"/>, the NPC will not be immune.<br/><br/>
+		/// By default, NPC aren't immune to any buffs, but <see cref="DefaultDebuffImmunity"/> or <see cref="FullyImmuneToBuffs"/> can make an NPC immune to all buffs. The values in this set override those settings.<br/><br/>
+		/// Additionally, the effects of <see cref="BuffID.Sets.GrantImmunityWith"/> will also be applied. Inherited buff immunities do not need to be specifically assigned, as they will be automatically applied. Setting an inherited debuff to false in this set can be used to undo the effects of <see cref="BuffID.Sets.GrantImmunityWith"/>, if needed.<br/><br/>
+		/// Defaults to <see langword="null"/>, indicating no immunity override.<br/>
 		/// </summary>
 		public static bool?[][] SpecificDebuffImmunity; // derived from DebuffImmunitySets
-
-		// TODO: Some mod-order agnostic way to inherit buff immunities --> run after immunities assigned, or run after 
 
 		static Sets()
 		{

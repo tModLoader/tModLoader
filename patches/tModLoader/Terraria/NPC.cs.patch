@@ -97,7 +97,7 @@
  	public int[] buffTime = new int[maxBuffs];
 +
 +	/// <summary>
-+	/// Make the NPC immune to buffs/debuffs. Example: <c>NPC.buffImmune[BuffID.OnFire] = true;</c>
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.FullyImmuneToBuffs"/>, <see cref="NPCID.Sets.DefaultDebuffImmunity"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>. 
 +	/// </summary>
 -	public bool[] buffImmune = new bool[BuffID.Count];
 +	public bool[] buffImmune = new bool[BuffLoader.BuffCount];

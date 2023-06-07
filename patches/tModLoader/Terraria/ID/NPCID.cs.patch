@@ -138,7 +138,7 @@
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
-+		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="FullyImmuneToBuffs "/>, and <see cref="DefaultDebuffImmunity "/><br/><br/>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="FullyImmuneToBuffs "/>, and <see cref="DefaultDebuffImmunity"/><br/><br/>
 +		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
@@ -251,7 +251,7 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -4980,53 +_,360 @@
+@@ -4980,53 +_,361 @@
  			{ 622, 621 },
  			{ 623, 621 }
  		};
@@ -458,6 +458,7 @@
  		public static int[] DangerDetectRange = Factory.CreateIntSet(-1, 38, 300, 17, 320, 107, 300, 19, 900, 22, 700, 124, 800, 228, 800, 178, 900, 18, 300, 229, 1000, 209, 1000, 54, 700, 108, 700, 160, 700, 20, 1200, 369, 300, 453, 300, 368, 900, 207, 60, 227, 800, 208, 400, 142, 500, 441, 50, 353, 60, 633, 100, 550, 120, 588, 120, 663, 700, 638, 250, 637, 250, 656, 250, 670, 250, 678, 250, 679, 250, 680, 250, 681, 250, 682, 250, 683, 250, 684, 250);
 +
 +		/// <summary>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/><br/><br/>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is immune to the effects of the shimmer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
