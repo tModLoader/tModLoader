@@ -1,7 +1,4 @@
-﻿using ExampleMod.Content.Buffs;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,12 +8,10 @@ namespace ExampleMod.Common.GlobalNPCs
 	// Showcases various debuff immunity changes. Both individual debuff immunity changes and inherited immunity changes are shown.
 
 	// For mod compatibility, it is important to put code adjusting debuffs in the correct methods:
-	// Add or remove individual buffs from NPCID.Sets.ImmuneToDebuffs in ModNPC/GlobalNPC.SetStaticDefaults. (Also assign ImmuneToAllDebuffsByDefault and ImmuneToWhipDebuffs)
-	// Add additional immunities to NPCID.Sets.ImmuneToDebuffs based on existing immunities in Mod/ModSystem.PostSetupContent (for example, if immune to OnFire, then immune to the ModBuff CustomFire). Don't remove immunities here, don't apply immunity sets yet.
-	// Interact with modded BuffID.Sets in Mod/ModSystem.PostSetupContent through Mod.Call or mod references.
-	// Don't do anything with buff immunities in ModNPC.SetDefaults
-	// Apply modded BuffID.Sets to NPC.immune[] in GlobalNPC.SetDefaults
-	// Apply dynamic NPC.immune[] in AI as usual. (While boss is spinning, set NPC.buffImmune[OnFire] = true)
+	// Adjust BuffID.Sets.GrantImmunityWith and NPCID.Sets.SpecificDebuffImmunity in ModNPC/GlobalNPC.SetStaticDefaults.
+	// Only adjust NPC.buffImmune[] directly in ModNPC/GlobalNPC.SetDefaults for complex or world state specific logic.
+	// Adjusting NPC.buffImmune[] during AI methods is possible, but be aware that debuff inheritance will not apply.
+	// For example: While boss is spinning, set NPC.buffImmune[OnFire] = true.
 	public class BuffImmuneGlobalNPC : GlobalNPC
 	{
 		// This can't use BuffID.Sets.Factory.CreateBoolSet because it will run before ResizeArrays
