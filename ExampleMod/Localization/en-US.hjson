@@ -54,6 +54,9 @@ Mods: {
 					LikeNPC_Princess: "{NPCName} is a princess? That is so cool!"
 					Princess_LovesNPC: "{NPCName} is so square. I love that about them!"
 				}
+
+				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
+				Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
 			}
 
 			ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
@@ -61,7 +64,13 @@ Mods: {
 			ExampleWormHead.DisplayName: Example Worm
 			ExampleWormTail.DisplayName: Example Worm
 			ExampleZombieThief.DisplayName: Example Zombie Thief
-			MinionBossBody.DisplayName: Minion Boss
+
+			MinionBossBody: {
+				DisplayName: Minion Boss
+				# This is part of ModIntegrationsSystem.cs: Information for the player so he knows how to encounter the boss
+				BossChecklistIntegration.SpawnInfo: Use a [i:ExampleMod/MinionBossSummonItem]
+			}
+
 			MinionBossMinion.DisplayName: Minion Boss Minion
 			PartyZombie.DisplayName: Party Zombie
 		}
