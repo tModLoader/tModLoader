@@ -63,7 +63,7 @@ namespace ExampleMod.Common.Players
 			exampleResourceCurrent = Utils.Clamp(exampleResourceCurrent, 0, exampleResourceMax2);
 		}
 
-		public void CapResourceGodMode() {
+		private void CapResourceGodMode() {
 			if (Main.myPlayer == Player.whoAmI && Player.creativeGodMode) {
 				exampleResourceCurrent = exampleResourceMax2;
 			}
