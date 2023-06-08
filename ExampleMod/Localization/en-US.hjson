@@ -800,6 +800,10 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleGravityDebuffBullet: {
+				DisplayName: Example Gravity Debuff Bullet
+				Tooltip: ""
+
 			ExampleWaterTorch: {
 				DisplayName: Example Water Torch
 				# "Can be placed in water"
@@ -845,6 +849,7 @@ Mods: {
 			ExampleExplosive.DisplayName: Example Explosive
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
+			ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
 		}
 
 		Buffs: {
@@ -911,6 +916,11 @@ Mods: {
 			ExampleDodgeBuff: {
 				DisplayName: Example Dodge Buff
 				Description: You will dodge the next attack
+			}
+
+			ExampleGravityDebuff: {
+				DisplayName: Example Gravity Debuff
+				Description: Gravity has gone wild.
 			}
 
 			AbsorbTeamDamageBuff: {

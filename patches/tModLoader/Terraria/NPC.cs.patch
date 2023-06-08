@@ -39,7 +39,7 @@
  	public int rarity;
  	public static bool taxCollector = false;
  	public bool[] playerInteraction = new bool[256];
-@@ -75,7 +_,13 @@
+@@ -75,9 +_,18 @@
  	public static bool freeCake = false;
  	private static int spawnSpaceX = 3;
  	private static int spawnSpaceY = 3;
@@ -51,8 +51,13 @@
 +	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
 +	/// </summary>
  	public float stepSpeed;
++	/*
  	private static float gravity = 0.3f;
++	*/
++
  	public bool teleporting;
+ 	private static int maxAttack = 20;
+ 	private static int[] attackNPC = new int[maxAttack];
 @@ -99,6 +_,13 @@
  	public static int deerclopsBoss = -1;
  	public int netSkip;
@@ -682,7 +687,7 @@
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
-@@ -2156,6 +_,12 @@
+@@ -2156,6 +_,15 @@
  			return;
  		}
  
@@ -691,6 +696,9 @@
 +		HideStrikeDamage = false;
 +		BossBar = null;
 +		_globals = null;
++		GravityIgnoresLiquid = false;
++		GravityIgnoresSpace = false;
++		GravityIgnoresType = false;
 +
  		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  		honeyMovementSpeed = 0.25f;
@@ -2243,7 +2251,7 @@
  			try {
  				if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
  					if (Main.tile[num4, num5] == null)
-@@ -72516,12 +_,15 @@
+@@ -72516,19 +_,25 @@
  			catch {
  				flag = true;
  			}
@@ -2256,9 +2264,20 @@
  
  		UpdateNPC_BuffFlagsReset();
 +		NPCLoader.ResetEffects(this);
++		UpdateNPC_UpdateGravity();
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
+ 		UpdateNPC_BuffApplyDOTs();
+ 		UpdateNPC_BuffApplyVFX();
+ 		UpdateNPC_BloodMoonTransformations();
++		/*TML: #AccessibleNPCGravity, removed out parameter and moved a couple lines up to allow gravity to be modified with buffs
+-		UpdateNPC_UpdateGravity(out var maxFallSpeed);
++		UpdateNPC_UpdateGravity(out var maxFallSpeed)
++		*/
+ 		if (soundDelay > 0)
+ 			soundDelay--;
+ 
 @@ -72653,19 +_,21 @@
  		justHit = false;
  	}
@@ -2318,6 +2337,56 @@
  
  	private void UpdateNPC_UpdateTrails()
  	{
+@@ -72862,10 +_,22 @@
+ 		}
+ 	}
+ 
++	/* Out parameter replaced with property
+ 	private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
++	*/
++
++	/// <summary>
++	/// Updates <see cref="maxFallSpeed"/> and <see cref="gravity"/> in line with vanilla behavior and resets <see cref="GravityMultiplier"/>. Behavior can be modified with <see cref="GravityIgnoresType"/>, <see cref="GravityIgnoresSpace"/>, and <see cref="GravityIgnoresLiquid"/>.<br/>
++	/// Certain NPC type ids may also cap velocity, see <see cref="GravityIgnoresType"/>.
++	/// </summary>
++	private void UpdateNPC_UpdateGravity()
+ 	{
+ 		maxFallSpeed = 10f;
+ 		gravity = 0.3f;
++
++		if (!GravityIgnoresType) //TML: #AccessibleNPCGravity
++			goto skipGravityTypeChecks;
++
+ 		if (type == 258) {
+ 			gravity = 0.1f;
+ 			if (velocity.Y > 3f)
+@@ -72896,7 +_,13 @@
+ 			gravity = 0f;
+ 		}
+ 
++		skipGravityTypeChecks:
++
++		if (GravityIgnoresSpace) //TML: #AccessibleNPCGravity
++			goto skipGravitySpaceEffect;
++
+ 		float num = (float)Main.maxTilesX / 4200f;
++
+ 		num *= num;
+ 		float num2 = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
+ 		if ((double)num2 < 0.25)
+@@ -72906,6 +_,12 @@
+ 			num2 = 1f;
+ 
+ 		gravity *= num2;
++
++		skipGravitySpaceEffect:
++
++		if (GravityIgnoresLiquid) //TML: #AccessibleNPCGravity
++			return;
++
+ 		if (wet) {
+ 			if (shimmerWet) {
+ 				gravity = 0.15f;
 @@ -73627,9 +_,12 @@
  				num = 5;
  		}
