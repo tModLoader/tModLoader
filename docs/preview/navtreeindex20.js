@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32":[3,0,515,1],
 "interface_i_entity_with_globals.html":[3,0,516],
 "interface_i_entity_with_instances.html":[3,0,517],
 "interface_i_entry_filter.html":[3,0,518],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_n_p_c_happiness.html":[3,0,866],
 "struct_n_p_c_happiness.html#a561736ffe7f94e4f7b18efd48adf5b6d":[3,0,866,0],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[3,0,871,0,0],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[3,0,871,0,0,3],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7":[3,0,871,0,0,2]
+"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[3,0,871,0,0,3]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_unlock_progress_display_bestiary_info_element.html":[3,0,1372],
 "class_unlockable_n_p_c_entry_icon.html":[3,0,1371],
 "class_update_filter_modes_extensions.html":[3,0,1373],
 "class_upload_file.html":[3,0,1374],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "interface_i_entity_source___on_hurt.html#a1ac1443778a8aa8aaf7f1759064a4e62":[3,0,514,1],
 "interface_i_entity_source___on_hurt.html#aafe2a9d09991742c467c8ba27e42f308":[3,0,514,0],
 "interface_i_entity_source___with_stats_from_item.html":[3,0,515],
-"interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643":[3,0,515,0],
-"interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32":[3,0,515,1]
+"interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643":[3,0,515,0]
 };

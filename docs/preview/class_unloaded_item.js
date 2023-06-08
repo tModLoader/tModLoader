@@ -6,5 +6,6 @@ var class_unloaded_item =
     [ "NetReceive", "class_unloaded_item.html#a32c75795f5ea1a8fa4d5f9f6c886ce57", null ],
     [ "NetSend", "class_unloaded_item.html#af9a5e2d5ab6b9da46f1f55eb39336eae", null ],
     [ "SaveData", "class_unloaded_item.html#a8ecf3536a3f8ecd368746eb540e8b254", null ],
-    [ "SetDefaults", "class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab", null ]
+    [ "SetDefaults", "class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab", null ],
+    [ "SetStaticDefaults", "class_unloaded_item.html#afc5f9791ed834c179419c609800ea7c7", null ]
 ];

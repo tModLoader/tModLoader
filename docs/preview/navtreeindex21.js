@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7":[3,0,871,0,0,2],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc":[3,0,871,0,0,9],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51fcb2adc165dc222462218057f2f013":[3,0,871,0,0,5],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a53f0e730271b23e614707e8d55cf796c":[3,0,871,0,0,13],

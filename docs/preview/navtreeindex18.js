@@ -224,6 +224,7 @@ var NAVTREEINDEX18 =
 "class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab":[3,0,1361,6],
 "class_unloaded_item.html#ae55673c8d05024e98d89a2dcb87a327e":[3,0,1361,2],
 "class_unloaded_item.html#af9a5e2d5ab6b9da46f1f55eb39336eae":[3,0,1361,4],
+"class_unloaded_item.html#afc5f9791ed834c179419c609800ea7c7":[3,0,1361,7],
 "class_unloaded_non_solid_tile.html":[3,0,1362],
 "class_unloaded_non_solid_tile.html#aae5bc2c98b0a722a2c6bc4e8d1d64ab1":[3,0,1362,0],
 "class_unloaded_player.html":[3,0,1363],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "class_unloaded_tile_entity.html#a4e365e991066b027309a75fd6942543d":[3,0,1369,1],
 "class_unloaded_tile_entity.html#af4f5531f8fe60bf9c8a8636565d57760":[3,0,1369,0],
 "class_unloaded_wall.html":[3,0,1370],
-"class_unloaded_wall.html#a53f0afb1be8674dd2022f301bb599d23":[3,0,1370,0],
-"class_unlock_progress_display_bestiary_info_element.html":[3,0,1372]
+"class_unloaded_wall.html#a53f0afb1be8674dd2022f301bb599d23":[3,0,1370,0]
 };
