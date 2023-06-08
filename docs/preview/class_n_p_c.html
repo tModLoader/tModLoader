@@ -1059,6 +1059,25 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>friendlyRegen</b></td>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>gfxOffY</b></td></tr>
 <tr class="memdesc:a7f796a0ac2fe61dea6f6975552f4b59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">An offset from the actual position of the npc that will be added to the draw position. Used to fake the effect of <a class="el" href="class_n_p_c.html">NPC</a> smoothly traveling up single block obstacles. <br /></td></tr>
 <tr class="separator:a7f796a0ac2fe61dea6f6975552f4b59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f9f4d12804ff2b364c51a9760da83c3"><td class="memItemLeft" align="right" valign="top"><a id="a7f9f4d12804ff2b364c51a9760da83c3" name="a7f9f4d12804ff2b364c51a9760da83c3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GravityIgnoresLiquid</b> = false</td></tr>
+<tr class="memdesc:a7f9f4d12804ff2b364c51a9760da83c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to disable the effect of being submerged in liquid on <a class="el" href="class_n_p_c.html">NPC</a> gravity. <br  />
+ Note that being submerged in liquid overrides both type and space effects. <br /></td></tr>
+<tr class="separator:a7f9f4d12804ff2b364c51a9760da83c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b7d323b48aa3158d9adc2388c98b61"><td class="memItemLeft" align="right" valign="top"><a id="a52b7d323b48aa3158d9adc2388c98b61" name="a52b7d323b48aa3158d9adc2388c98b61"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GravityIgnoresSpace</b> = false</td></tr>
+<tr class="memdesc:a52b7d323b48aa3158d9adc2388c98b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to disable the effect of being in space on <a class="el" href="class_n_p_c.html">NPC</a> gravity. <br /></td></tr>
+<tr class="separator:a52b7d323b48aa3158d9adc2388c98b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e2b709bdd8394dbd8d861d9fd8d78d6"><td class="memItemLeft" align="right" valign="top"><a id="a8e2b709bdd8394dbd8d861d9fd8d78d6" name="a8e2b709bdd8394dbd8d861d9fd8d78d6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GravityIgnoresType</b> = false</td></tr>
+<tr class="memdesc:a8e2b709bdd8394dbd8d861d9fd8d78d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to disable vanilla type and AI based <a class="el" href="class_n_p_c.html">NPC</a> gravity calculations. <br  />
+ Affects types 258, 425, 576, 577, 427, 426, 541, and the aiStyle 7. <br  />
+ Use with caution <br /></td></tr>
+<tr class="separator:a8e2b709bdd8394dbd8d861d9fd8d78d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae63c16ee50368bdb03ab0ba2087929eb"><td class="memItemLeft" align="right" valign="top"><a id="ae63c16ee50368bdb03ab0ba2087929eb" name="ae63c16ee50368bdb03ab0ba2087929eb"></a>
+<a class="el" href="struct_multipliable_float.html">MultipliableFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GravityMultiplier</b> = MultipliableFloat.One</td></tr>
+<tr class="memdesc:ae63c16ee50368bdb03ab0ba2087929eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply this value in order to change the NPCs active gravity, this can be done in AI as gravity values are reset slightly beforehand, and used slightly after. <br /></td></tr>
+<tr class="separator:ae63c16ee50368bdb03ab0ba2087929eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab559bbc9e10d0286b2e5ca809a93c60b"><td class="memItemLeft" align="right" valign="top"><a id="ab559bbc9e10d0286b2e5ca809a93c60b" name="ab559bbc9e10d0286b2e5ca809a93c60b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hide</b></td></tr>
 <tr class="memdesc:ab559bbc9e10d0286b2e5ca809a93c60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this <a class="el" href="class_n_p_c.html">NPC</a> is drawn at a specific layer in the render order. Must use in conjunction with <a class="el" href="class_mod_n_p_c.html#a38e287cc0b3e5c7f972fb78749e83e8d" title="When used in conjunction with &quot;NPC.hide = true&quot;, allows you to specify that this NPC should be drawn ...">ModNPC.DrawBehind(int)</a>. <br  />
@@ -1150,6 +1169,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>loveStruck</b></td></
 <tr class="memitem:aa4eefed5919ba63eb2db60399c0f8c44"><td class="memItemLeft" align="right" valign="top"><a id="aa4eefed5919ba63eb2db60399c0f8c44" name="aa4eefed5919ba63eb2db60399c0f8c44"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>markedByScytheWhip</b></td></tr>
 <tr class="separator:aa4eefed5919ba63eb2db60399c0f8c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab49dcf5d10bee8a2874c48faa1ed1a34"><td class="memItemLeft" align="right" valign="top"><a id="ab49dcf5d10bee8a2874c48faa1ed1a34" name="ab49dcf5d10bee8a2874c48faa1ed1a34"></a>
+<a class="el" href="struct_multipliable_float.html">MultipliableFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MaxFallSpeedMultiplier</b> = MultipliableFloat.One</td></tr>
+<tr class="memdesc:ab49dcf5d10bee8a2874c48faa1ed1a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply this value in order to change the NPCs active maxFallSpeed, this can be done in AI as gravity values are reset slightly beforehand <br /></td></tr>
+<tr class="separator:ab49dcf5d10bee8a2874c48faa1ed1a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba263d30a966b2d56a82d4553b55bdd1"><td class="memItemLeft" align="right" valign="top"><a id="aba263d30a966b2d56a82d4553b55bdd1" name="aba263d30a966b2d56a82d4553b55bdd1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>midas</b></td></tr>
 <tr class="separator:aba263d30a966b2d56a82d4553b55bdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1869,6 +1892,16 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>GivenOrTypeName</b>
 <tr class="memitem:a8765404efa8b7240abad639e45043e94"><td class="memItemLeft" align="right" valign="top"><a id="a8765404efa8b7240abad639e45043e94" name="a8765404efa8b7240abad639e45043e94"></a>
 <a class="el" href="struct_entity_globals_enumerator.html">EntityGlobalsEnumerator</a>&lt; <a class="el" href="class_global_n_p_c.html">GlobalNPC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
 <tr class="separator:a8765404efa8b7240abad639e45043e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca20cbb9772b5da03dfafecd3af9f459"><td class="memItemLeft" align="right" valign="top"><a id="aca20cbb9772b5da03dfafecd3af9f459" name="aca20cbb9772b5da03dfafecd3af9f459"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>gravity</b><code> [get]</code></td></tr>
+<tr class="memdesc:aca20cbb9772b5da03dfafecd3af9f459"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current change in velocity due to gravity applied every frame. <br  />
+ Multiply <a class="el" href="class_n_p_c.html#ae63c16ee50368bdb03ab0ba2087929eb" title="Multiply this value in order to change the NPCs active gravity, this can be done in AI as gravity val...">GravityMultiplier</a> to modify this value <br /></td></tr>
+<tr class="separator:aca20cbb9772b5da03dfafecd3af9f459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2292855a6c7c224ef4d0c6f2e1bf9038"><td class="memItemLeft" align="right" valign="top"><a id="a2292855a6c7c224ef4d0c6f2e1bf9038" name="a2292855a6c7c224ef4d0c6f2e1bf9038"></a>
+static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>GravityWetMultipliers</b> = new float[4] { 2f / 3f, 2f / 3f, 1f / 3f, 1.5f / 3f }<code> [get]</code></td></tr>
+<tr class="memdesc:a2292855a6c7c224ef4d0c6f2e1bf9038"><td class="mdescLeft">&#160;</td><td class="mdescRight">The effect of different liquids on <a class="el" href="class_n_p_c.html">NPC</a> gravity. Provided for reference only, modifying these will have no effect. <br  />
+ Corresponds with wet, lavaWet, honetWet, and shimmerWet. <br /></td></tr>
+<tr class="separator:a2292855a6c7c224ef4d0c6f2e1bf9038"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a389ec7ffed5231b9500e1ed6cd974aee"><td class="memItemLeft" align="right" valign="top"><a id="a389ec7ffed5231b9500e1ed6cd974aee" name="a389ec7ffed5231b9500e1ed6cd974aee"></a>
 <a class="el" href="struct_n_p_c_happiness.html">NPCHappiness</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Happiness</b><code> [get]</code></td></tr>
 <tr class="memdesc:a389ec7ffed5231b9500e1ed6cd974aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides access to (static) happiness data associated with this <a class="el" href="class_n_p_c.html">NPC</a>'s type. <br /></td></tr>
@@ -1901,6 +1934,16 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMechQueenUp<
 <tr class="memitem:a8f5f02e6e5d8791fc4a094cb5e8d2b9e"><td class="memItemLeft" align="right" valign="top"><a id="a8f5f02e6e5d8791fc4a094cb5e8d2b9e" name="a8f5f02e6e5d8791fc4a094cb5e8d2b9e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsShimmerVariant</b><code> [get]</code></td></tr>
 <tr class="separator:a8f5f02e6e5d8791fc4a094cb5e8d2b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3823160f603729a078506f2216b6bccd"><td class="memItemLeft" align="right" valign="top"><a id="a3823160f603729a078506f2216b6bccd" name="a3823160f603729a078506f2216b6bccd"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>maxFallSpeed</b><code> [get]</code></td></tr>
+<tr class="memdesc:a3823160f603729a078506f2216b6bccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current fall speed cap in velocity applied every frame. <br  />
+ Multiply <a class="el" href="class_n_p_c.html#ab49dcf5d10bee8a2874c48faa1ed1a34" title="Multiply this value in order to change the NPCs active maxFallSpeed, this can be done in AI as gravit...">MaxFallSpeedMultiplier</a> to modify this value <br /></td></tr>
+<tr class="separator:a3823160f603729a078506f2216b6bccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d471effc89ff67863df5d7252a9251b"><td class="memItemLeft" align="right" valign="top"><a id="a7d471effc89ff67863df5d7252a9251b" name="a7d471effc89ff67863df5d7252a9251b"></a>
+static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>MaxFallSpeedWetMultipliers</b> = new float[4] { 0.7f, 0.7f, 0.4f, 0.55f }<code> [get]</code></td></tr>
+<tr class="memdesc:a7d471effc89ff67863df5d7252a9251b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The effect of different liquids on <a class="el" href="class_n_p_c.html">NPC</a> maxFallSpeed. Provided for reference only, modifying these will have no effect. <br  />
+ Corresponds with wet, lavaWet, honetWet, and shimmerWet. <br /></td></tr>
+<tr class="separator:a7d471effc89ff67863df5d7252a9251b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a5966f3995c783e132c8bc37d6f290c"><td class="memItemLeft" align="right" valign="top"><a id="a0a5966f3995c783e132c8bc37d6f290c" name="a0a5966f3995c783e132c8bc37d6f290c"></a>
 <a class="el" href="class_mod_n_p_c.html">ModNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ModNPC</b><code> [get, set]</code></td></tr>
 <tr class="separator:a0a5966f3995c783e132c8bc37d6f290c"><td class="memSeparator" colspan="2">&#160;</td></tr>

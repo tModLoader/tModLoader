@@ -60,15 +60,15 @@ var NAVTREEINDEX =
 "class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde",
 "class_mod_projectile.html#a334cfb8a55763d529a2bd1c506c35e27",
 "class_mod_tile_entity.html#ad72aefe362cd89908bc3a10a5eae6055",
-"class_n_p_c_a_i_style_i_d.html#a3279b2610fb50b32fb137bdce30c81a4",
-"class_ocean_biome.html",
-"class_player_file_data.html",
-"class_proj_a_i_style_i_d.html#ad43ced2c45213e4a77e4255ddf2583b4",
-"class_searches_1_1_left.html",
-"class_tile_i_d_1_1_sets.html#a8fb0968be6950da945654afe3afdc8ec",
-"class_unlock_progress_display_bestiary_info_element.html",
-"interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32",
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7"
+"class_n_p_c_a_i_style_i_d.html#a0fd8e3b3b86d8904b974a6c845695cc6",
+"class_netplay.html",
+"class_player_draw_layers.html#acb52e6d0810e6040c984833295d3402c",
+"class_proj_a_i_style_i_d.html#acfc6c5238a5e3b0135dedbaca5a217ee",
+"class_scene_metrics.html",
+"class_tile_i_d_1_1_sets.html#a685eed3c2a831a7c96e839ae383a68c2",
+"class_unloaded_system.html#af4c01545e1b6f9ded8df75c6c3918119",
+"interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37",
+"struct_n_p_c_1_1_hit_modifiers.html#af77c582a376918753e76b24f4fda031c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

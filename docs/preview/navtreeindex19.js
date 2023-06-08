@@ -1,5 +1,14 @@
 var NAVTREEINDEX19 =
 {
+"class_unloaded_system.html#af4c01545e1b6f9ded8df75c6c3918119":[3,0,1367,2],
+"class_unloaded_tile.html":[3,0,1368],
+"class_unloaded_tile.html#a2c2adf210c1e2aec8924b4ab67e17a9d":[3,0,1368,0],
+"class_unloaded_tile_entity.html":[3,0,1369],
+"class_unloaded_tile_entity.html#a3a4a66c6ca0f870d04858fde801db32a":[3,0,1369,2],
+"class_unloaded_tile_entity.html#a4e365e991066b027309a75fd6942543d":[3,0,1369,1],
+"class_unloaded_tile_entity.html#af4f5531f8fe60bf9c8a8636565d57760":[3,0,1369,0],
+"class_unloaded_wall.html":[3,0,1370],
+"class_unloaded_wall.html#a53f0afb1be8674dd2022f301bb599d23":[3,0,1370,0],
 "class_unlock_progress_display_bestiary_info_element.html":[3,0,1372],
 "class_unlockable_n_p_c_entry_icon.html":[3,0,1371],
 "class_update_filter_modes_extensions.html":[3,0,1373],
@@ -240,14 +249,5 @@ var NAVTREEINDEX19 =
 "interface_i_config_key_holder.html":[3,0,508],
 "interface_i_creative_item_sort_step.html":[3,0,510],
 "interface_i_creative_power.html":[3,0,511],
-"interface_i_entity_source.html":[3,0,512],
-"interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37":[3,0,512,0],
-"interface_i_entity_source___on_hit.html":[3,0,513],
-"interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2":[3,0,513,0],
-"interface_i_entity_source___on_hit.html#a524708fe33b2b2a27f03b90c45226f71":[3,0,513,1],
-"interface_i_entity_source___on_hurt.html":[3,0,514],
-"interface_i_entity_source___on_hurt.html#a1ac1443778a8aa8aaf7f1759064a4e62":[3,0,514,1],
-"interface_i_entity_source___on_hurt.html#aafe2a9d09991742c467c8ba27e42f308":[3,0,514,0],
-"interface_i_entity_source___with_stats_from_item.html":[3,0,515],
-"interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643":[3,0,515,0]
+"interface_i_entity_source.html":[3,0,512]
 };

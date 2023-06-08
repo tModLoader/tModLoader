@@ -1,5 +1,14 @@
 var NAVTREEINDEX20 =
 {
+"interface_i_entity_source.html#ac17ad5ab7ad9bac426721c8278b6ac37":[3,0,512,0],
+"interface_i_entity_source___on_hit.html":[3,0,513],
+"interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2":[3,0,513,0],
+"interface_i_entity_source___on_hit.html#a524708fe33b2b2a27f03b90c45226f71":[3,0,513,1],
+"interface_i_entity_source___on_hurt.html":[3,0,514],
+"interface_i_entity_source___on_hurt.html#a1ac1443778a8aa8aaf7f1759064a4e62":[3,0,514,1],
+"interface_i_entity_source___on_hurt.html#aafe2a9d09991742c467c8ba27e42f308":[3,0,514,0],
+"interface_i_entity_source___with_stats_from_item.html":[3,0,515],
+"interface_i_entity_source___with_stats_from_item.html#a51a58148654892cfdcb30fd98d0d3643":[3,0,515,0],
 "interface_i_entity_source___with_stats_from_item.html#ac78b6c96e0ef8fda869f6271ace0bd32":[3,0,515,1],
 "interface_i_entity_with_globals.html":[3,0,516],
 "interface_i_entity_with_instances.html":[3,0,517],
@@ -240,14 +249,5 @@ var NAVTREEINDEX20 =
 "struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf":[3,0,860,1,20],
 "struct_n_p_c_1_1_hit_modifiers.html#ab4296e1f49756d599c976b1000f6528c":[3,0,860,1,22],
 "struct_n_p_c_1_1_hit_modifiers.html#ab92ee61bb3c9bc7ee1ebbde65cbc15ff":[3,0,860,1,14],
-"struct_n_p_c_1_1_hit_modifiers.html#ae4b8ed585bcf70d7bacc6cc0e56ae34f":[3,0,860,1,16],
-"struct_n_p_c_1_1_hit_modifiers.html#af77c582a376918753e76b24f4fda031c":[3,0,860,1,21],
-"struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f":[3,0,860,1,8],
-"struct_n_p_c_1_1_hit_modifiers.html#afadf0c41e3043a05af10804e0f33d24a":[3,0,860,1,17],
-"struct_n_p_c_1_1_hit_modifiers.html#afcdafff52439ec0ee8e40df10db8f16b":[3,0,860,1,15],
-"struct_n_p_c_aimed_target.html":[3,0,861],
-"struct_n_p_c_happiness.html":[3,0,866],
-"struct_n_p_c_happiness.html#a561736ffe7f94e4f7b18efd48adf5b6d":[3,0,866,0],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[3,0,871,0,0],
-"struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9":[3,0,871,0,0,3]
+"struct_n_p_c_1_1_hit_modifiers.html#ae4b8ed585bcf70d7bacc6cc0e56ae34f":[3,0,860,1,16]
 };
