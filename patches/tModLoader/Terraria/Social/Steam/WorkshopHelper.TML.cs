@@ -321,7 +321,7 @@ public partial class WorkshopHelper
 			foreach (var item in VersionSummaryToArray(versionSummary)) {
 				if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
 					selectVersion.modV = item.modVersion;
-					selectVersion.tmlV = item.tmlVersion.MajorMinor().ToString();
+					selectVersion.tmlV = item.tmlVersion.ToString(); //item.tmlVersion.MajorMinor().ToString();
 				}
 			}
 		}
