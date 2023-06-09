@@ -2277,8 +2277,8 @@
  	}
  
 +	/// <summary>
-+	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap.
-+	/// <br/> Use <see cref="NPC.DelBuff"/> if you only know the buff index.
++	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap. Note that only buffs contained in <see cref="BuffID.Sets.CanBeRemovedByNetMessage"/> can be removed with this method. The intention is that those specific buffs are "owned" by the player who inflicts them, so they can be freely removed by multiplayer clients.
++	/// <br/><br/>  In all other cases code running on the server or in single player is in charge of the NPC debuffs and <see cref="NPC.DelBuff"/> should be used directly.
 +	/// </summary>
 +	/// <param name="buffTypeToRemove">The buff type</param>
  	public void RequestBuffRemoval(int buffTypeToRemove)
@@ -2288,13 +2288,12 @@
  			return;
  
  		int num = FindBuffIndex(buffTypeToRemove);
-@@ -72253,6 +_,11 @@
+@@ -72253,6 +_,10 @@
  		}
  	}
  
 +	/// <summary>
-+	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap.
-+	/// <br/> Use <see cref="NPC.RequestBuffRemoval"/> if you only know the buff type.
++	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player. 
 +	/// </summary>
 +	/// <param name="buffIndex">The index of the buff to remove.</param>
  	public void DelBuff(int buffIndex)
