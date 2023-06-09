@@ -20,7 +20,7 @@ namespace ExampleMod.Common.Players
 		// Here are additional things you might need to implement if you intend to make a custom resource:
 		// - Multiplayer Syncing: The current example doesn't require MP code, but pretty much any additional functionality will require this. ModPlayer.SendClientChanges and CopyClientState will be necessary, as well as SyncPlayer if you allow the user to increase exampleResourceMax.
 		// - Save/Load permanent changes to max resource: You'll need to implement Save/Load to remember increases to your exampleResourceMax cap.
-		// - Resouce replenishment item: Use GlobalNPC.NPCLoot to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource.
+		// - Resouce replenishment item: Use GlobalNPC.OnKill to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource.
 
 		public override void Initialize() {
 			exampleResourceMax = DefaultExampleResourceMax;
@@ -44,19 +44,29 @@ namespace ExampleMod.Common.Players
 			UpdateResource();
 		}
 
+		public override void PostUpdate() {
+			CapResourceGodMode();
+		}
+
 		// Lets do all our logic for the custom resource here, such as limiting it, increasing it and so on.
 		private void UpdateResource() {
 			// For our resource lets make it regen slowly over time to keep it simple, let's use exampleResourceRegenTimer to count up to whatever value we want, then increase currentResource.
 			exampleResourceRegenTimer++; // Increase it by 60 per second, or 1 per tick.
 
-			// A simple timer that goes up to 3 seconds, increases the exampleResourceCurrent by 1 and then resets back to 0.
-			if (exampleResourceRegenTimer > 180 / exampleResourceRegenRate) {
+			// A simple timer that goes up to 1 second, increases the exampleResourceCurrent by 1 and then resets back to 0.
+			if (exampleResourceRegenTimer > 60 / exampleResourceRegenRate) {
 				exampleResourceCurrent += 1;
 				exampleResourceRegenTimer = 0;
 			}
 
 			// Limit exampleResourceCurrent from going over the limit imposed by exampleResourceMax.
 			exampleResourceCurrent = Utils.Clamp(exampleResourceCurrent, 0, exampleResourceMax2);
+		}
+
+		private void CapResourceGodMode() {
+			if (Main.myPlayer == Player.whoAmI && Player.creativeGodMode) {
+				exampleResourceCurrent = exampleResourceMax2;
+			}
 		}
 	}
 }

@@ -595,6 +595,7 @@ Mods: {
 			ExampleCustomResourceWeapon: {
 				// DisplayName: Example Custom Resource Weapon
 				// Tooltip: ""
+				// UsesXExampleResource: Uses {0} example resource
 			}
 
 			ExampleFlail: {
@@ -1028,6 +1029,8 @@ Mods: {
 			// JourneyMode: Drops in Journey Mode
 			// Example: Drops during daytime
 		}
+
+		// UI.ExampleResource: Example Resource: {0} / {1}
 	}
 }
 
