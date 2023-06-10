@@ -804,6 +804,7 @@ Mods: {
 			ExampleGravityDebuffBullet: {
 				// DisplayName: Example Gravity Debuff Bullet
 				// Tooltip: ""
+			}
 
 			ExampleWaterTorch: {
 				// DisplayName: Example Water Torch
