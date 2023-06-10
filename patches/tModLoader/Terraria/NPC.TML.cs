@@ -238,7 +238,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		get => vanillaMaxFallSpeed * MaxFallSpeedMultiplier.Value;
 		private set {
 			MaxFallSpeedMultiplier = MultipliableFloat.One;
-			vanillaGravity = value;
+			vanillaMaxFallSpeed = value;
 		}
 	}
 
