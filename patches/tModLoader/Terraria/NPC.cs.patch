@@ -2337,7 +2337,7 @@
 +					foreach (ShimmerResult shimmerResult in transformation.Results) { // Loop each shimmerResult
 +						switch (shimmerResult.ResultType) { // could easily add in support for spawning projectiles, didn't currently because the use cases seem pretty low 
 +							case ShimmerResultType.Item: { // spawn item code copied from vanilla
-+								int num = Item.NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, transformation.TargetID);
++								int num = Item.NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, shimmerResult.EntityID);
 +								Main.item[num].stack = shimmerResult.Count;
 +								Main.item[num].shimmerTime = 1f;
 +								Main.item[num].shimmered = true;
@@ -2386,7 +2386,7 @@
 +						if (Main.netMode == 0)
 +							Item.ShimmerEffect(base.Center);
 +						else
-+							NetMessage.SendData(146, -1, -1, null, 0, (int)base.Center.X, (int)base.Center.Y);
++							NetMessage.SendData(146, -1, -1, null, 0, (int)base.Center.X, (int)base.Center.Y); //Shimmer effect and coinluck
 +
 +						noSpawnCycle = true;
 +						active = false;

@@ -64,6 +64,7 @@ Mods: {
 			// MinionBossBody.DisplayName: Minion Boss
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
+			// NPCShimmerShowcase.DisplayName: N P C Shimmer Showcase
 		}
 
 		Tiles: {

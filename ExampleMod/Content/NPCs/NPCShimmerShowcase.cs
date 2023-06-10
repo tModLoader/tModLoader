@@ -19,6 +19,7 @@ namespace ExampleMod.Content.NPCs
 	public class NPCShimmerShowcase : ModNPC
 	{
 		public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
@@ -104,7 +105,9 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnShimmer(NPC npc) { // When the npc successfully shimmers shoot a bullet
-			Projectile.NewProjectile(npc.GetSource_Misc("Shimmer"), npc.position, npc.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
+			Projectile p = Projectile.NewProjectileDirect(npc.GetSource_Misc("Shimmer"), npc.position, npc.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
+			p.friendly = false;
+			p.hostile = true;
 		}
 	}
 }
