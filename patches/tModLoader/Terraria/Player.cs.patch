@@ -4280,10 +4280,13 @@
  		if (!isDisplayDollOrInanimate) {
  			if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  				int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
-@@ -28029,6 +_,9 @@
+@@ -28028,7 +_,11 @@
+ 
  		Item.GetDrawHitbox(HeldItem.type, this);
  		bool flag3 = CanVisuallyHoldItem(HeldItem);
- 		bool flag4 = HeldItem.type != 4952;
+-		bool flag4 = HeldItem.type != 4952;
++		// bool flag4 = HeldItem.type != 4952;
++		bool flag4 = HeldItem.useStyle != ItemUseStyleID.RaiseLamp; // TML: #RaiseLampAnimationFix
 +
 +		ItemLoader.UpdateVanitySet(this);
 +
