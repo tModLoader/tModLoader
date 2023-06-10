@@ -6075,6 +6075,17 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35479,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		itemTime = (int)((float)item.useTime * pickSpeed);
++		*/
++		ApplyItemTime(item, pickSpeed);
+ 	}
+ 
+ 	private void DamageTileWithShovel(Player user, Item item, int x, int y)
 @@ -35516,7 +_,10 @@
  
  		if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -6128,6 +6139,19 @@
  				}
  				else {
  					WorldGen.KillTile(x, y, fail: true);
+@@ -35649,8 +_,12 @@
+ 			PickTile(x, y, sItem.pick);
+ 		}
+ 
++
+ 		if (sItem.pick > 0)
++		/*
+ 			itemTime = (int)((float)sItem.useTime * pickSpeed);
++		*/
++			ApplyItemTime(sItem, pickSpeed);
+ 
+ 		ItemCheck_UseMiningTools_TryPoundingTile(sItem, num, ref canHitWalls, x, y);
+ 	}
 @@ -35673,10 +_,13 @@
  		return true;
  	}
