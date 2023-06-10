@@ -2352,14 +2352,14 @@
 +							case ShimmerResultType.NPC: {
 +								for (int i = 0; i < shimmerResult.Count; i++) { // Loop spawn NPCs, will more than likely always be only one, but for the sake of completeness this is here
 +									if (Main.netMode != 1) { // Else use the custom stuff and avoid spawning on multiplayer
-+										NPC newNPC = NPC.NewNPCDirect(GetSource_Misc("Shimmer"), (int)position.X, (int)position.Y + height, shimmerResult.EntityID); //Should cause net update stuff
++										NPC newNPC = NPC.NewNPCDirect(GetSource_Misc("Shimmer"), (int)position.X, (int)position.Y, shimmerResult.EntityID); //Should cause net update stuff
 +
 +										//syncing up some values that vanilla intentionally sets after SetDefaults() 
 +										newNPC.extraValue = extraValue;
 +										newNPC.CopyInteractions(this);
 +										newNPC.SpawnedFromStatue = SpawnedFromStatue;
 +										newNPC.spriteDirection = spriteDirection;
-+										newNPC.position.Y -= newNPC.height;
++										newNPC.Center = Center + new Vector2(25f * ((1-shimmerResult.Count) / 2 + i), 0); //Vanilla does not do centering like this, but otherwise multiple NPCs stack
 +										newNPC.velocity = velocity;
 +										newNPC.shimmerTransparency = shimmerTransparency;
 +
