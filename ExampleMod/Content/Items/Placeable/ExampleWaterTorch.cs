@@ -27,8 +27,15 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void HoldItem(Player player) {
-			if (Main.rand.NextBool(player.itemAnimation > 0 ? 40 : 80)) {
-				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
+			if (Main.rand.NextBool(player.itemAnimation > 0 ? 7 : 30)) {
+				Dust dust = Dust.NewDustDirect(new Vector2(player.itemLocation.X + (player.direction == -1 ? -16f : 6f), player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>(), 0f, 0f, 100);
+				if (!Main.rand.NextBool(3)) {
+					dust.noGravity = true;
+				}
+
+				dust.velocity *= 0.3f;
+				dust.velocity.Y -= 1.5f;
+				dust.position = player.RotatedRelativePoint(dust.position);
 			}
 
 			// Create a greenish (0.5, 1.5, 0.5) light at the torch's approximate position, when the item is held.
