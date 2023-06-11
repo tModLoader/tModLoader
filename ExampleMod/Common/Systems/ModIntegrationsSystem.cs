@@ -13,6 +13,9 @@ namespace ExampleMod.Common.Systems
 	// You need to look for resources the mod developers provide regarding how they want you to add mod compatibility
 	// This can be their homepage, workshop page, wiki, github, discord, other contacts etc.
 	// If the mod is open source, you can visit its code distribution platform (usually GitHub) and look for "Call" in its Mod class
+
+	// In addition to the examples shown here, ExampleMod also integrates with the Census Mod (https://steamcommunity.com/sharedfiles/filedetails/?id=2687866031)
+	// That integration is done solely through localization files, look for "Census.SpawnCondition" in the .hjson files. 
 	public class ModIntegrationsSystem : ModSystem
 	{
 		public override void PostSetupContent() {
@@ -35,7 +38,7 @@ namespace ExampleMod.Common.Systems
 			}
 
 			// For some messages, mods might not have them at release, so we need to verify when the last iteration of the method variation was first added to the mod, in this case 1.6
-			// Usually mods either provide that information themselves in some way, or it's found on the github through commit history/blame
+			// Usually mods either provide that information themselves in some way, or it's found on the GitHub through commit history/blame
 			if (bossChecklistMod.Version < new Version(1, 6)) {
 				return;
 			}
