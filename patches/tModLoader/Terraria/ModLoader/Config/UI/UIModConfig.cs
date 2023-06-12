@@ -53,26 +53,24 @@ internal class UIModConfig : UIState
 	{
 		uIElement = new UIElement();
 		uIElement.Width.Set(0f, 0.8f);
-		uIElement.MaxWidth.Set(600f, 0f);
-		uIElement.Top.Set(160f, 0f);
-		uIElement.Height.Set(-180f, 1f);
+		uIElement.MaxWidth.Set(800f, 0f);
+		uIElement.Top.Set(110f, 0f);
+		uIElement.Height.Set(-110f, 1f);
 		uIElement.HAlign = 0.5f;
 
 		uIPanel = new UIPanel();
 		uIPanel.Width.Set(0f, 1f);
-		uIPanel.Height.Set(-140f, 1f);
-		uIPanel.Top.Set(30f, 0f);
+		uIPanel.Height.Set(-110f, 1f);
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 		uIElement.Append(uIPanel);
 
 		UIPanel textBoxBackground = new UIPanel();
 		textBoxBackground.SetPadding(0);
 		filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions"));//"Filter Options"
-		textBoxBackground.Top.Set(2f, 0f);
-		textBoxBackground.Left.Set(-190, 1f);
-		textBoxBackground.Width.Set(180, 0f);
-		textBoxBackground.Height.Set(30, 0f);
-		uIElement.Append(textBoxBackground);
+		textBoxBackground.Width.Set(0f, 1f);
+		textBoxBackground.Height.Set(30f, 0f);
+		textBoxBackground.Top.Set(20f, 0f);
+		uIPanel.Append(textBoxBackground);
 
 		filterTextField.SetText("");
 		filterTextField.Top.Set(5, 0f);
@@ -98,26 +96,27 @@ internal class UIModConfig : UIState
 
 		mainConfigList = new UIList();
 		mainConfigList.Width.Set(-25f, 1f);
-		mainConfigList.Height.Set(0f, 1f);
-		//mainConfigList.Top.Set(40f, 0f);
+		mainConfigList.Height.Set(-62f, 1f);
+		mainConfigList.Top.Set(62f, 0f);
 		mainConfigList.ListPadding = 5f;
 		uIPanel.Append(mainConfigList);
 		configPanelStack.Push(uIPanel);
 		//currentConfigList = mainConfigList;
 
 		uIScrollbar = new UIScrollbar();
+		uIScrollbar.Top.Set(62f, 0f);
 		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(0f, 1f);
+		uIScrollbar.Height.Set(-62f, 1f);
 		uIScrollbar.HAlign = 1f;
 		uIPanel.Append(uIScrollbar);
 		mainConfigList.SetScrollbar(uIScrollbar);
 
 		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true);//"Mod Config"
 		headerTextPanel.HAlign = 0.5f;
-		headerTextPanel.Top.Set(-50f, 0f);
+		headerTextPanel.Top.Set(-35f, 0f);
 		headerTextPanel.SetPadding(15f);
 		headerTextPanel.BackgroundColor = UICommon.DefaultUIBlue;
-		uIElement.Append(headerTextPanel);
+		uIPanel.Append(headerTextPanel);
 
 		previousConfigButton = new UITextPanel<string>("<", 1f, false);
 		previousConfigButton.Width.Set(25f, 0);

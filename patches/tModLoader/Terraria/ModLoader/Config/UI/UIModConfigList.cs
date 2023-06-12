@@ -28,8 +28,8 @@ internal class UIModConfigList : UIState
 		uIElement = new UIElement {
 			Width = { Pixels = 0f, Percent = 0.8f },
 			MaxWidth = { Pixels = 800f, Percent = 0f },
-			Top = { Pixels = 220f, Percent = 0f },
-			Height = { Pixels = -220f, Percent = 1f },
+			Top = { Pixels = 110f, Percent = 0f },
+			Height = { Pixels = -110f, Percent = 1f },
 			HAlign = 0.5f
 		};
 		Append(uIElement);
