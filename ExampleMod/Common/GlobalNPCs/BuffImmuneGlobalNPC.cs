@@ -10,8 +10,9 @@ namespace ExampleMod.Common.GlobalNPCs
 	// For mod compatibility, it is important to put code adjusting debuffs in the correct methods:
 	// Adjust BuffID.Sets.GrantImmunityWith and NPCID.Sets.SpecificDebuffImmunity in ModNPC/GlobalNPC.SetStaticDefaults.
 	// Only adjust NPC.buffImmune[] directly in ModNPC/GlobalNPC.SetDefaults for complex or world state specific logic.
-	// Adjusting NPC.buffImmune[] during AI methods is possible, but be aware that debuff inheritance will not apply.
+	// Adjusting NPC.buffImmune[] during AI or SetDefaults methods is possible, but be aware that debuff inheritance will not apply to manual changes.
 	// For example: While boss is spinning, set NPC.buffImmune[OnFire] = true.
+	// Using the NPC.BecomeImmuneTo and NPC.ClearImmuneToBuffs methods instead of adjusting NPC.buffImmune[] directly will allow debuff inheritance. MinionBossBody showcases this approach.
 	public class BuffImmuneGlobalNPC : GlobalNPC
 	{
 		// This can't use BuffID.Sets.Factory.CreateBoolSet because it will run before ResizeArrays
@@ -25,6 +26,8 @@ namespace ExampleMod.Common.GlobalNPCs
 			// Secondly, it changes some existing NPC immunities.
 
 			// This code causes any NPC immune to Ichor to automatically be immune to BetsysCurse and ExampleDefenseDebuff.
+			// Originally Ghost, Desert Spirit, and Ancient Vision are immune to both BetsysCurse and Ichor,
+			// while Ichor Sticker and Paladin are immune to just Ichor. These will change when this mod is active.
 			foreach (var defenseReductionDebuff in IsADefenseReductionDebuff) {
 				if(defenseReductionDebuff == BuffID.Ichor) {
 					continue;
