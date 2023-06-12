@@ -19,7 +19,7 @@
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
  			float num = 1f;
-@@ -38,19 +_,24 @@
+@@ -38,19 +_,25 @@
  					value.Frame();
  			}
  
@@ -33,7 +33,9 @@
 +			num = scale * 0.75f;
  
 +			// removed double application of scale from use of the above local below.
- 			if (!justCheckingString && color != Color.Black) {
+-			if (!justCheckingString && color != Color.Black) {
++			// if (!justCheckingString && color != Color.Black) {
++			if (!justCheckingString && (color.R != 0 || color.G != 0 || color.B != 0)) { // TML: One of the DrawColorCodedStringWithShadow overloads uses `new Color(0, 0, 0, baseColor.A)` rather than Black. Since I am not sure of the implications of changing that, change the check here to prevent item tags in item tooltips from drawing shadow versions.
  				float inventoryScale = Main.inventoryScale;
 -				Main.inventoryScale = scale * num;
 +				Main.inventoryScale = num;

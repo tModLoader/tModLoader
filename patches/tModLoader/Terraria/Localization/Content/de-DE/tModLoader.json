@@ -125,6 +125,9 @@
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
 		"LoadErrorDisabled": "Der/Die Mod/s wurden automatisch deaktiviert.",
 		"LoadErrorCulpritUnknown": "Der verantwortliche Mod ist unbekannt. tModLoader muss neu gestartet werden.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Dieser Mod wurde für tModLoader v{0} erstellt.\n Du benutzt jedoch {1}",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 wird benötigt um Mods zu benutzen. Bitte lade die neueste Version von.NET Framework herunter",
 		"LoadErrorDependencyMissing": "Fehlender Mod: {0} Wird benötigt von: {1}",
@@ -360,6 +363,8 @@
 		"MSBuildReloadAll": "Alle Erstellen + Neu laden",
 		"MSUpgradeCSProj": ".csproj-Datei aktualisieren",
 		"MSUpgradeLangFiles": ".lang Dateien in .hjson Dateien umwandeln (zerstörungsfrei)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Quellen öffnen",
 		"MSManagePublished": "Veröffentlichte verwalten",
 		"MSPublish": "Veröffentlichen",
@@ -479,9 +484,7 @@
 		"SteamAPIHashMismatch": "Steam API-Hash-Mismatch, Raubkopie vermutet.\n\ntModLoader benötigt eine legitime Terraria-Installation zum Funktionieren.",
 		// "SteamInitFailed": "SteamAPI.Init failed. Try logging out of Steam and restarting it.\n\nCheck terrariasteamclient.log and Natives.Log for details",
 		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
-		"VanillaGOGNotFound": "{0} konnte nicht gefunden werden.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren. Diese Version von tModLoader erwartet die {1}-Version von Terraria, du musst vielleicht über GOG Galaxy auf eine ältere oder neuere Terraria-Version wechseln, oder warten bis tModLoader aktualisiert wird.",
-		"GOGHashMismatch": "{0} ist nicht die unveränderte Terraria-Programmdatei.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren\r\n\r\nFalls du die .exe gepatcht hast kannst du eine Kopie der originalen exe machen und sie \"Terraria_v<VERSION>.exe\" nennen.",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
+		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Stelle bitte deine Terraria-Installation wieder her und installiere dann tModLoader über Steam oder folge der README.txt-Anleitung zur manuellen Installation.",
 		"LogPathHint": "Eine {0}-Datei die Fehlerinformationen enthält wurde im folgenden Ordner generiert:\n{1}\n(Du musst diese Datei teilen, wenn du nach Hilfe fragst)",
 		"OutOfMemoryHint": "Tipp: Versuche mit weniger Mods auf einmal zu spielen, oder stelle fest, ob ein Mod zu viel Speicher verbraucht. Wahlweise könntest du den 64-bit tModLoader installieren.",
@@ -510,6 +513,12 @@
 		"TagsLangDescription": "Dieser Mod unterstützt mehrere Sprachen",
 		"TagsGen": "Benutzerdefinierte Weltgeneration",
 		"TagsGenDescription": "Ändert, wie die Welt genertiert wird (z.B. Erze, neue Strukturen, usw.)"
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Erhöht die Abwehr um {0}",
@@ -795,6 +804,17 @@
 	"TitleLinks": {
 		"Patreon": "Patreon"
 	},
+	"Config": {
+		// "Color.Hue.Label": "Hue",
+		// "Color.Saturation.Label": "Saturation",
+		// "Color.Lightness.Label": "Lightness",
+		// "Color.Red.Label": "Red",
+		// "Color.Green.Label": "Green",
+		// "Color.Blue.Label": "Blue",
+		// "Color.Alpha.Label": "Alpha",
+		// "Vector2.X.Label": "X",
+		// "Vector2.Y.Label": "Y"
+	},
 	"Mods": {
 		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz",
 		"ModLoader.Items.StartBag.DisplayName": "Starterpaket",
@@ -898,5 +918,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

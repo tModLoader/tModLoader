@@ -41,7 +41,7 @@ public static class MenuLoader
 
 	private static void AddKnownMenu(string name)
 	{
-		var newSaveString = string.Join(",", KnownMenus.Concat(new [] { name }).Distinct());
+		var newSaveString = string.Join(",", KnownMenus.Concat(new[] { name }).Distinct());
 		if (newSaveString != KnownMenuSaveString) {
 			KnownMenuSaveString = newSaveString;
 			Main.SaveSettings();

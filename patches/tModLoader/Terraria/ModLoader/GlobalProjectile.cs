@@ -22,24 +22,10 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<GlobalProjectile>.Register(this);
-
-		Index = (ushort)ProjectileLoader.globalProjectiles.Count;
-
-		ProjectileLoader.globalProjectiles.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, Index);
-
-	/// <summary>
-	/// Allows you to set the properties of any and every projectile that gets created.
-	/// </summary>
-	/// <param name="projectile"></param>
-	public virtual void SetDefaults(Projectile projectile)
-	{
-	}
 
 	/// <summary>
 	/// Gets called when any projectiles spawns in world
@@ -47,7 +33,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void OnSpawn(Projectile projectile, IEntitySource source)
 	{
 	}
-	
+
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 	/// </summary>

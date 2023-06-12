@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,27 @@
+@@ -1,15 +_,30 @@
 +using System;
 +using System.Collections.Generic;
  using System.ComponentModel;
@@ -20,6 +20,9 @@
  	public string Value { get; private set; }
 +	*/
 +	private string _value;
++	/// <summary>
++	/// Retrieves the text value. This is the actual text the user should see.
++	/// </summary>
 +	public string Value {
 +		get => _value;
 +		private set {

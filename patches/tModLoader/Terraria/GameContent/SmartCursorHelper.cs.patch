@@ -119,7 +119,7 @@
  			return;
  
  		int reachableStartX = providedInfo.reachableStartX;
-@@ -2269,7 +_,7 @@
+@@ -2269,11 +_,14 @@
  		int reachableEndY = providedInfo.reachableEndY;
  		_ = providedInfo.screenTargetX;
  		_ = providedInfo.screenTargetY;
@@ -128,3 +128,28 @@
  			return;
  
  		_targets.Clear();
++		/*
+ 		bool flag = providedInfo.item.type != 1333 && providedInfo.item.type != 523 && providedInfo.item.type != 4384;
++		*/
++		bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];
+ 		for (int i = reachableStartX; i <= reachableEndX; i++) {
+ 			for (int j = reachableStartY; j <= reachableEndY; j++) {
+ 				Tile tile = Main.tile[i, j];
+@@ -2286,7 +_,7 @@
+ 				bool flag2 = false;
+ 				for (int k = i - 8; k <= i + 8; k++) {
+ 					for (int l = j - 8; l <= j + 8; l++) {
+-						if (Main.tile[k, l] != null && Main.tile[k, l].type == 4) {
++						if (Main.tile[k, l] != null && TileID.Sets.Torch[Main.tile[k, l].type]) {
+ 							flag2 = true;
+ 							break;
+ 						}
+@@ -2296,7 +_,7 @@
+ 						break;
+ 				}
+ 
+-				if (!flag2 && (!flag || tile.liquid <= 0) && (tile.wall > 0 || (tile2.active() && (tile2.slope() == 0 || (int)tile2.slope() % 2 != 1) && ((Main.tileSolid[tile2.type] && !Main.tileNoAttach[tile2.type] && !Main.tileSolidTop[tile2.type] && !TileID.Sets.NotReallySolid[tile2.type]) || TileID.Sets.IsBeam[tile2.type] || (WorldGen.IsTreeType(tile2.type) && WorldGen.IsTreeType(Main.tile[i - 1, j - 1].type) && WorldGen.IsTreeType(Main.tile[i - 1, j + 1].type)))) || (tile3.active() && (tile3.slope() == 0 || (int)tile3.slope() % 2 != 0) && ((Main.tileSolid[tile3.type] && !Main.tileNoAttach[tile3.type] && !Main.tileSolidTop[tile3.type] && !TileID.Sets.NotReallySolid[tile3.type]) || TileID.Sets.IsBeam[tile3.type] || (WorldGen.IsTreeType(tile3.type) && WorldGen.IsTreeType(Main.tile[i + 1, j - 1].type) && WorldGen.IsTreeType(Main.tile[i + 1, j + 1].type)))) || (tile4.active() && Main.tileSolid[tile4.type] && !Main.tileNoAttach[tile4.type] && (!Main.tileSolidTop[tile4.type] || (TileID.Sets.Platforms[tile4.type] && tile4.slope() == 0)) && !TileID.Sets.NotReallySolid[tile4.type] && !tile4.halfBrick() && tile4.slope() == 0)) && tile.type != 4)
++				if (!flag2 && (!flag || tile.liquid <= 0) && (tile.wall > 0 || (tile2.active() && (tile2.slope() == 0 || (int)tile2.slope() % 2 != 1) && ((Main.tileSolid[tile2.type] && !Main.tileNoAttach[tile2.type] && !Main.tileSolidTop[tile2.type] && !TileID.Sets.NotReallySolid[tile2.type]) || TileID.Sets.IsBeam[tile2.type] || (WorldGen.IsTreeType(tile2.type) && WorldGen.IsTreeType(Main.tile[i - 1, j - 1].type) && WorldGen.IsTreeType(Main.tile[i - 1, j + 1].type)))) || (tile3.active() && (tile3.slope() == 0 || (int)tile3.slope() % 2 != 0) && ((Main.tileSolid[tile3.type] && !Main.tileNoAttach[tile3.type] && !Main.tileSolidTop[tile3.type] && !TileID.Sets.NotReallySolid[tile3.type]) || TileID.Sets.IsBeam[tile3.type] || (WorldGen.IsTreeType(tile3.type) && WorldGen.IsTreeType(Main.tile[i + 1, j - 1].type) && WorldGen.IsTreeType(Main.tile[i + 1, j + 1].type)))) || (tile4.active() && Main.tileSolid[tile4.type] && !Main.tileNoAttach[tile4.type] && (!Main.tileSolidTop[tile4.type] || (TileID.Sets.Platforms[tile4.type] && tile4.slope() == 0)) && !TileID.Sets.NotReallySolid[tile4.type] && !tile4.halfBrick() && tile4.slope() == 0)) && !TileID.Sets.Torch[tile.type])
+ 					_targets.Add(new Tuple<int, int>(i, j));
+ 			}
+ 		}

@@ -28,7 +28,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public override ModPlayer NewInstance(Player entity)
 	{
 		var inst = base.NewInstance(entity);
-		
+
 		inst.Index = Index;
 
 		return inst;
@@ -42,7 +42,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	protected override void ValidateType()
 	{
 		base.ValidateType();
-		
+
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
@@ -364,7 +364,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Called on local, server and remote clients. <br/>
 	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
 	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
-	/// The player will always take at least 1 damage. To prevent damage <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
 	/// </summary>
 	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
 	{
@@ -555,7 +555,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
-	/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
+	/// <param name="ammo">The ammo that the given weapon is attempting to consume.</param>
 	/// <returns></returns>
 	public virtual bool CanConsumeAmmo(Item weapon, Item ammo)
 	{
@@ -853,7 +853,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+	/// Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered.
 	/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
 	/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
 	/// </summary>
@@ -863,7 +863,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+	/// Allows you to change the item or enemy the player gets when successfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 	/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
@@ -884,7 +884,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior.
 	/// Not consuming will always take priority over forced consumption
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>

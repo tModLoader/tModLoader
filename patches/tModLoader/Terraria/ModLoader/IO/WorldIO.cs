@@ -243,7 +243,7 @@ internal static class WorldIO
 					}
 					else {
 						npc = Main.npc[nextFreeNPC];
-						npc.SetDefaults(npc.type);
+						npc.SetDefaults(npcId);
 						npc.position = new Vector2(x, y);
 					}
 				}

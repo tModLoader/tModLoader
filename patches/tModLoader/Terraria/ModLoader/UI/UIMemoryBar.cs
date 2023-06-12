@@ -34,7 +34,6 @@ internal class UIMemoryBar : UIElement
 	internal static bool RecalculateMemoryNeeded = true;
 
 	private readonly List<MemoryBarItem> _memoryBarItems = new List<MemoryBarItem>();
-	private UIPanel _hoverPanel;
 	private long _maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
 
 	public override void OnInitialize()
@@ -60,7 +59,6 @@ internal class UIMemoryBar : UIElement
 		var mouse = new Point(Main.mouseX, Main.mouseY);
 		int xOffset = 0;
 		bool drawHover = false;
-		Rectangle hoverRect = Rectangle.Empty;
 		MemoryBarItem hoverData = null;
 
 		for (int i = 0; i < _memoryBarItems.Count; i++) {
@@ -74,28 +72,13 @@ internal class UIMemoryBar : UIElement
 			Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, drawArea, memoryBarData.DrawColor);
 
 			if (!drawHover && drawArea.Contains(mouse)) {
-				Vector2 stringSize = FontAssets.MouseText.Value.MeasureString(memoryBarData.Tooltip);
-				float x = stringSize.X;
-				Vector2 vector = Main.MouseScreen + new Vector2(16f);
-				vector.Y = Math.Min(vector.Y, Main.screenHeight - 30);
-				vector.X = Math.Min(vector.X, Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 40);
-				var r = new Rectangle((int)vector.X, (int)vector.Y, (int)x, (int)stringSize.Y);
-				r.Inflate(5, 5);
 				drawHover = true;
-				hoverRect = r;
 				hoverData = memoryBarData;
 			}
 		}
 
 		if (drawHover && hoverData != null) {
-			_hoverPanel.Width.Set(hoverRect.Width + 10, 0);
-			_hoverPanel.Height.Set(hoverRect.Height + 5, 0);
-			_hoverPanel.Top.Set(hoverRect.Y - 10, 0);
-			_hoverPanel.Left.Set(hoverRect.X - 8, 0);
-			_hoverPanel.Recalculate();
-			_hoverPanel.Draw(spriteBatch);
-
-			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverData.Tooltip, hoverRect.X + 5, hoverRect.Y + 2, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+			UICommon.TooltipMouseText(hoverData.Tooltip);
 		}
 	}
 
@@ -111,8 +94,6 @@ internal class UIMemoryBar : UIElement
 	private void RecalculateMemory()
 	{
 		_memoryBarItems.Clear();
-		_hoverPanel = new UIPanel();
-		_hoverPanel.Activate();
 
 #if WINDOWS //TODO: 64bit?
 		_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;

@@ -55,7 +55,7 @@ public abstract class ModWaterStyle : ModTexturedType
 	/// </summary>
 	public virtual void LightColorMultiplier(ref float r, ref float g, ref float b)
 	{
-		// Default values taken from the LightMap contructor
+		// Default values taken from the LightMap constructor
 		r = 0.88f;
 		g = 0.96f;
 		b = 1.015f;

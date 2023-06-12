@@ -52,7 +52,12 @@ public static partial class Logging
 
 		// This is the first file we attempt to use.
 		Utils.TryCreatingDirectory(LogDir);
-		ConfigureAppenders(logFile);
+		try {
+			ConfigureAppenders(logFile);
+		}
+		catch (Exception e) {
+			ErrorReporting.FatalExit("Failed to init logging", e);
+		}
 	}
 
 	internal static void LogStartup(bool dedServ)
@@ -78,9 +83,6 @@ public static partial class Logging
 		if (!string.IsNullOrEmpty(stackLimit))
 			tML.InfoFormat("Override Default Thread Stack Size Limit: {0}", stackLimit);
 
-		if (ModCompile.DeveloperMode)
-			tML.Info("Developer mode enabled");
-
 		foreach (string line in initWarnings)
 			tML.Warn(line);
 
@@ -89,9 +91,6 @@ public static partial class Logging
 		AssemblyResolving.Init();
 		LoggingHooks.Init();
 		LogArchiver.ArchiveLogs();
-		
-		if (!dedServ)
-			FNALogging.RedirectLogs();
 	}
 
 	private static void ConfigureAppenders(LogFile logFile)
@@ -99,7 +98,7 @@ public static partial class Logging
 		var layout = new PatternLayout {
 			ConversionPattern = "[%d{HH:mm:ss.fff}] [%t/%level] [%logger]: %m%n"
 		};
-		
+
 		layout.ActivateOptions();
 
 		var appenders = new List<IAppender>();
@@ -109,7 +108,7 @@ public static partial class Logging
 				Layout = layout
 			});
 		}
-		
+
 		appenders.Add(new DebugAppender {
 			Name = "DebugAppender",
 			Layout = layout
@@ -137,10 +136,10 @@ public static partial class Logging
 		if (!existingLogs.All(CanOpen)) {
 			int n = existingLogs.Select(s => {
 				string tok = pattern.Match(Path.GetFileName(s)).Groups[1].Value;
-				
+
 				return tok.Length == 0 ? 1 : int.Parse(tok);
 			}).Max();
-			
+
 			return $"{baseName}{n + 1}.log";
 		}
 
@@ -167,7 +166,7 @@ public static partial class Logging
 	{
 		try {
 			using (new FileStream(fileName, FileMode.Append)) { };
-			
+
 			return true;
 		}
 		catch (IOException) {
@@ -191,7 +190,7 @@ public static partial class Logging
 		Main.NewText(msg, color);
 		Main.soundVolume = soundVolume;
 	}
-	
+
 	internal static void LogStatusChange(string oldStatusText, string newStatusText)
 	{
 		// Trim numbers and percentage to reduce log spam
@@ -201,10 +200,10 @@ public static partial class Logging
 		if (newBase != oldBase && newBase.Length > 0)
 			LogManager.GetLogger("StatusText").Info(newBase);
 	}
-	
+
 	internal static void ServerConsoleLine(string msg)
 		=> ServerConsoleLine(msg, Level.Info);
-	
+
 	internal static void ServerConsoleLine(string msg, Level level, Exception ex = null, ILog log = null)
 	{
 		if (level == Level.Warn)

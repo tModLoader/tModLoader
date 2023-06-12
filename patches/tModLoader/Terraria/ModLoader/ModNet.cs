@@ -242,8 +242,8 @@ public static class ModNet
 				blockedList.Add(header);
 		}
 
-		Logging.tML.Debug($"Server mods: "+string.Join(", ", syncList));
-		Logging.tML.Debug($"Download queue: "+string.Join(", ", downloadQueue));
+		Logging.tML.Debug($"Server mods: " + string.Join(", ", syncList));
+		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
 
@@ -484,7 +484,7 @@ public static class ModNet
 		}
 	}
 
-	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a bandaid until they fix their code.
+	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a band aid until they fix their code.
 	internal static bool ReadUnderflowBypass = false; // Remove by 0.11.7
 	internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
 	{

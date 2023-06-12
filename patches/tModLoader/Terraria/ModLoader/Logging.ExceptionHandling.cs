@@ -54,7 +54,7 @@ public static partial class Logging
 		"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 		"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 	};
-	
+
 	private static Exception previousException;
 
 	public static void IgnoreExceptionSource(string source)
@@ -153,8 +153,8 @@ public static partial class Logging
 			if (sep < 0)
 				return true;
 
-			traceString = traceString[(f+m.Length)..];
-			contentPattern = contentPattern[(sep+2)..];
+			traceString = traceString[(f + m.Length)..];
+			contentPattern = contentPattern[(sep + 2)..];
 		}
 	}
 }

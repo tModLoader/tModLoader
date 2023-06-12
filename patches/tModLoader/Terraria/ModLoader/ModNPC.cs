@@ -53,11 +53,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public int AnimationType { get; set; }
 
 	/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
-	/// Will be superceded by ModSceneEffect. Kept for legacy.
+	/// Will be superseded by ModSceneEffect. Kept for legacy.
 	public int Music { get; set; } = -1;
 
 	/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
-	/// Will be superceded by ModSceneEffect. Kept for legacy.
+	/// Will be superseded by ModSceneEffect. Kept for legacy.
 	public SceneEffectPriority SceneEffectPriority { get; set; } = SceneEffectPriority.BossLow;
 
 	/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
@@ -72,7 +72,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	//TODO: Find a better solution in the future.
 	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
-	
+
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
 	public bool TownNPCStayingHomeless { get; set; }
 
@@ -407,6 +407,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC attacker)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
 	/// Runs in single player or on the server. <br/>
 	/// </summary>
@@ -721,7 +731,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
+	/// Whether this NPC can be teleported to a King or Queen statue. Returns false by default.
 	/// </summary>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
 	public virtual bool CanGoToStatue(bool toKingStatue)
@@ -801,7 +811,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and hori<paramref name="horizontalHoldoutOffset"/>zontalHoldoutOffset is how far away the item should be drawn from the NPC.<br/>
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.<br/>
 	/// To use an actual item sprite, use <code>Main.GetItemDrawFrame(itemTypeHere, out item, out itemFrame);
 	/// horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - someOffsetHere</code>
 	/// </summary>
@@ -826,7 +836,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the npc's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+	/// Allows you to modify the NPC's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
 	/// </summary>
 	/// <param name="victimHitbox"></param>
 	/// <param name="immunityCooldownSlot"></param>

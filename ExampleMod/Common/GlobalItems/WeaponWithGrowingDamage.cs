@@ -28,7 +28,7 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 			//Apply to weapons
-			return entity.damage > 0;
+			return lateInstantiation && entity.damage > 0;
 		}
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;

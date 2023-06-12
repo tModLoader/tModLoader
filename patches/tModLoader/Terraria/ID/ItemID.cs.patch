@@ -42,7 +42,7 @@
  		public readonly float NormalDamageReceived;
 +
 +		/// <summary>
-+		/// The percent of damage dealt to players by the NPC this banner represnets in Expert Mode or higher.
++		/// The percent of damage dealt to players by the NPC this banner represents in Expert Mode or higher.
 +		/// </summary>
  		public readonly float ExpertDamageReceived;
 +
@@ -90,7 +90,7 @@
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
-@@ -46,17 +_,84 @@
+@@ -46,17 +_,85 @@
  			1536,
  			1537
  		};
@@ -152,6 +152,7 @@
 +		/// If <c>&gt; 0</c> for a given item type (<see cref="Item.type"/>), then that item will transform into the retrieved item type when dropped into shimmer (<see cref="Entity.shimmerWet"/>).
 +		/// <br/> If <c>&lt;= 0</c> for a given item type, then that item will attempt to decraft itself.
 +		/// <br/> Defaults to <c>-1</c>.
++		/// <br/> This takes precedence over both critter items (<c><see cref="Item.makeNPC"/> &gt; 0</c>) transforming into NPCs and items decrafting into the ingredients used to craft the item.
 +		/// </summary>
  		public static int[] ShimmerTransformToItem = Factory.CreateIntSet(-1, 3460, 947, 947, 1106, 1106, 366, 366, 1105, 1105, 365, 365, 1104, 1104, 364, 364, 702, 702, 13, 13, 701, 701, 14, 14, 700, 700, 11, 11, 699, 699, 12, 12, 3, 3, 2, 182, 178, 178, 179, 179, 177, 177, 180, 180, 181, 181, 3, 4843, 182, 4836, 182, 4842, 178, 4835, 178, 4841, 179, 4834, 179, 4840, 177, 4833, 177, 4832, 180, 4839, 180, 4838, 181, 4831, 181, 4844, 999, 4837, 999, 620, 9, 619, 9, 911, 9, 621, 9, 2503, 9, 2504, 9, 2260, 9, 1729, 9, 5215, 9, 9, 2, 3271, 169, 3272, 169, 3276, 370, 3274, 370, 3339, 408, 3338, 408, 3277, 1246, 3275, 1246, 1127, 1124, 1125, 1124, 4503, 5363, 134, 5417, 137, 5419, 139, 5421, 141, 5423, 143, 5425, 145, 5427, 415, 5429, 416, 5431, 192, 5433, 214, 5435, 135, 5365, 1379, 5367, 1378, 5366, 140, 5368, 1381, 5370, 1380, 5369, 138, 5371, 1383, 5373, 1382, 5372, 1102, 5376, 3340, 5375, 3273, 5374, 664, 593, 3982, 3203, 3983, 3204, 3984, 3205, 3985, 3206, 4406, 4405, 3981, 2336, 3986, 3207, 3980, 2335, 3987, 3208, 4878, 4877, 4408, 4407, 5003, 5002, 3979, 2334, 3064, 5381, 3086, 3081, 3081, 3086, 1534, 1529, 1535, 1530, 1536, 1531, 1537, 1532, 4714, 4712, 1533, 1528, 206, 207, 207, 1128, 1128, 206, 832, 4281, 3818, 3824, 3824, 3832, 3832, 3829, 3829, 3818, 3819, 3825, 3825, 3833, 3833, 3830, 3830, 3819, 3820, 3826, 3826, 3834, 3834, 3831, 3831, 3820, 960, 228, 961, 229, 962, 230, 228, 960, 229, 961, 230, 962, 956, 102, 957, 101, 958, 100, 102, 956, 101, 957, 100, 958, 959, 151, 151, 959, 955, 92, 92, 955, 954, 90, 90, 954, 3093, 4345, 4345, 3093, 215, 5346, 5356, 5346, 3000, 2999, 2999, 3000, 411, 410, 410, 411, 1725, 276, 276, 1725, 2886, 66, 67, 66, 195, 194, 194, 195, 4389, 5128, 4377, 5128, 4378, 5128, 4354, 5128, 5127, 5128, 8, 5353, 427, 5353, 3004, 5353, 523, 5353, 433, 5353, 429, 5353, 974, 5353, 1333, 5353, 1245, 5353, 3114, 5353, 430, 5353, 3045, 5353, 428, 5353, 2274, 5353, 431, 5353, 432, 5353, 4383, 5353, 4384, 5353, 4385, 5353, 4386, 5353, 4387, 5353, 4388, 5353, 5293, 5353, 966, 5357, 52, 5347, 280, 277, 1304, 215, 40, 5348, 265, 5348, 931, 5380, 1614, 5380, 848, 857, 857, 848, 866, 934, 934, 866, 532, 5355, 3225, 159, 3120, 3096, 3096, 3037, 3037, 3120, 2373, 2374, 2374, 2375, 2375, 2373, 855, 3033, 854, 855, 3033, 854, 490, 491, 491, 489, 489, 2998, 2998, 490, 892, 886, 886, 892, 885, 887, 887, 885, 891, 890, 890, 891, 893, 889, 889, 893, 888, 3781, 3781, 888, 1322, 906, 906, 1322, 531, 5336, 29, 5337, 1291, 5338, 109, 5339, 4414, 5340, 2895, 5341, 2222, 5343, 4009, 5342, 4282, 5342, 4290, 5342, 4291, 5342, 4293, 5342, 4286, 5342, 4295, 5342, 4284, 5342, 4289, 5342, 4285, 5342, 4296, 5342, 4292, 5342, 4294, 5342, 4283, 5342, 4287, 5342, 4288, 5342, 4297, 5342, 5278, 5342, 5277, 5342);
 +
@@ -395,7 +396,7 @@
  		});
 +
 +		/// <summary>
-+		/// If non-empty for a given item type (<see cref="Item.type"/>), then that item will create transluscent particles of the retrieved colors when used.
++		/// If non-empty for a given item type (<see cref="Item.type"/>), then that item will create translucent particles of the retrieved colors when used.
 +		/// <br/> Particles created by this set will drop downwards.
 +		/// <br/> Defaults to <c>Array.Empty&lt;Color&gt;</c>.
 +		/// </summary>
@@ -417,7 +418,7 @@
  		public static BannerEffect[] BannerStrength = Factory.CreateCustomSet(new BannerEffect(1f), (short)3838, DD2BannerEffect, (short)3845, DD2BannerEffect, (short)3837, DD2BannerEffect, (short)3844, DD2BannerEffect, (short)3843, DD2BannerEffect, (short)3839, DD2BannerEffect, (short)3840, DD2BannerEffect, (short)3842, DD2BannerEffect, (short)3841, DD2BannerEffect, (short)3846, DD2BannerEffect);
 +
 +		/// <summary>
-+		/// The default number of NPC kills requried to obtain the NPC's respective banner.
++		/// The default number of NPC kills required to obtain the NPC's respective banner.
 +		/// </summary>
  		public static int DefaultKillsForBannerNeeded = 50;
 +
@@ -490,7 +491,7 @@
  		public static bool[] NeverAppearsAsNewInInventory = Factory.CreateBoolSet(71, 72, 73, 74);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary and will add coin luck according to its stack when thrown into shimmer (<see cref="Entity.shimmerWet"/>).
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -518,19 +519,20 @@
 +		/// </summary>
 +		/*
  		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
+-		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
 +		*/
 +		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss);
 +
 +		/// <summary>
-+		/// Determines the number of minion slots a player needs to sacrifice to use this item.
-+		/// <br/> This is only used when <see cref="ProjectileID.Sets.MinionSacrificable"/>[<see cref="Item.shoot"/>] is <see langword="true"/> and when the player tries to summon a new minion.
-+		/// <br/> The retrieved value's worth of minion slots (<see cref="Projectile.minionSlots"/>) will be killed to make room for the projectile.
-+		/// <br/> Defaults to <c>1</c>.
++		/// How many minion slots one usage of this item will spawn.
++		/// <br/> This is only used when <see cref="ProjectileID.Sets.MinionSacrificable"/>[<see cref="Item.shoot"/>] and <see cref="Main.projPet"/> are <see langword="true"/> and when the player tries to summon a new minion.
++		/// <br/> The retrieved value's worth of minion slots (<see cref="Projectile.minionSlots"/>) will be killed, if necessary, to make room for the minion projectiles prior to spawning them.
++		/// <br/> Defaults to <c>1f</c>. If the value is greater than 1f, make sure to check <see cref="Player.maxMinions"/> in <see cref="ModItem.CanUseItem(Player)"/> as well.
 +		/// </summary>
 +		/// <remarks>
 +		/// The full process for sacrificing minions can be found at <see cref="Player.FreeUpPetsAndMinions(Item)"/>.
 +		/// </remarks>
- 		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
++		public static float[] StaffMinionSlotsRequired = Factory.CreateFloatSet(1f); // TML: changed from int to float.
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be traded with the <see cref="NPCID.DyeTrader"/> in exchange for strange dyes.
@@ -564,7 +566,7 @@
  		public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
 +
 +		/// <summary>
-+		/// Determines the sorting order of miscellaneous important items, such as boss/event spawners, permanant stat upgrades, and <see cref="MagicMirror"/>-like items.
++		/// Determines the sorting order of miscellaneous important items, such as boss/event spawners, permanent stat upgrades, and <see cref="MagicMirror"/>-like items.
 +		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will fall into the "gameplay" tab of the Journey Mode menu
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
@@ -699,13 +701,13 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// To make a torch placable underwater, use <see cref="WaterTorches"/>.
++		/// To make a torch placable underwater, use <see cref="WaterTorches"/> as well.
 +		/// </remarks>
  		public static bool[] Torches = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388, 5293, 5353);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a water torch.
-+		/// <br/> Funtionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater.
++		/// <br/> Funtionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] WaterTorches = Factory.CreateBoolSet(523, 1333, 4384);
@@ -723,8 +725,8 @@
  		};
 +
 +		/// <summary>
-+		/// Set for all boss bags. Causes bags to drop dev armor.
-+		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjuction with this one.
++		/// Set for all boss bags. Causes bags to drop dev armor and creates a glow around the item when dropped in the world.
++		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjunction with this one.
 +		/// </summary>
  		public static bool[] BossBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
 +

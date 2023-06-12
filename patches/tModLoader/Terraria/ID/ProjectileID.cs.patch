@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,25 +_,79 @@
+@@ -1,25 +_,80 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -71,9 +71,10 @@
  		public static bool[] IsAnNPCAttachedExplosive = Factory.CreateBoolSet(636);
 +
 +		/// <summary>
++		/// Wind Physics is <b>completely disabled</b> and unfunctional in Terraria, but the presence of the code suggest that it might be enabled in a future update. There is no need to use WindPhysicsImmunity currently.<br/>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will always use wind physics.
 +		/// <br/> If <see langword="false"/> for a given projectile type, then that projectile will never use wind physics.
-+		/// <br/> If <see langword="true"/> for a given projectile type, then vanilla decides if that projectile will use wind physics.
++		/// <br/> If <see langword="null"/> for a given projectile type, then vanilla decides if that projectile will use wind physics by checking <see cref="Projectile.aiStyle"/>.
 +		/// <br/> Defaults to <see langword="null"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -109,7 +110,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is a kind of golf ball.
-+		/// <br/> Items that "shoot" golf balls can be placed onto tees. if one of thes eitems is in the player's inventory or equipped, then its projectile will be preferred over the standard golf ball.
++		/// <br/> Items that "shoot" golf balls can be placed onto tees. if one of these items is in the player's inventory or equipped, then its projectile will be preferred over the standard golf ball.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsAGolfBall = Factory.CreateBoolSet(false, 721, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752);
@@ -165,12 +166,12 @@
 +		/// <summary>
 +		/// Determines what data will be remembered for projectile trails. Each projectile type defaults to -1, meaning no information is saved. Use values of 0 or 2 most of the time.<br/>0: only position data is remembered.<br/>1: should not be used.<br/>2: position, rotation, and spriteDirection data is remembered<br/>3: same as 2, but attempts to smooth out old data by interpolating values<br/>4: same as 2, but adjusts old data to follow the player owner.
 +		/// <br/>Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/>, <see cref="Projectile.oldPos"/>, <see cref="Projectile.oldRot"/>, <see cref="Projectile.oldSpriteDirection"/> to be used properly. 
-+		/// <br/>Refer to <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet.cs</see> in ExampleMod for sample usage.
++		/// <br/>Refer to <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet.cs</see> in ExampleMod for sample usage.
 +		/// </summary>
  		public static int[] TrailingMode = Factory.CreateIntSet(-1, 94, 0, 301, 0, 388, 0, 385, 0, 408, 0, 409, 0, 435, 0, 436, 0, 437, 0, 438, 0, 452, 0, 459, 0, 462, 0, 502, 0, 503, 0, 466, 1, 532, 0, 533, 0, 573, 0, 580, 1, 582, 0, 585, 0, 592, 0, 601, 0, 617, 0, 636, 0, 638, 0, 639, 0, 640, 0, 424, 0, 425, 0, 426, 0, 660, 0, 661, 0, 671, 2, 664, 0, 666, 0, 668, 0, 675, 0, 680, 2, 682, 0, 684, 0, 686, 2, 700, 0, 706, 0, 709, 0, 710, 2, 711, 2, 712, 0, 715, 2, 716, 2, 717, 2, 718, 2, 261, 0, 721, 0, 729, 2, 732, 0, 731, 0, 739, 0, 740, 0, 741, 0, 742, 0, 743, 0, 744, 0, 745, 0, 746, 0, 747, 0, 748, 0, 749, 0, 750, 0, 751, 0, 752, 0, 755, 2, 766, 2, 767, 2, 768, 2, 769, 2, 770, 2, 771, 2, 811, 2, 814, 2, 822, 2, 823, 2, 824, 2, 826, 2, 827, 2, 828, 2, 829, 2, 830, 2, 838, 2, 839, 2, 840, 2, 843, 2, 844, 2, 845, 2, 846, 2, 850, 2, 852, 2, 853, 2, 856, 0, 857, 0, 864, 2, 873, 2, 872, 2, 833, 2, 834, 2, 835, 2, 818, 2, 902, 0, 883, 0, 887, 0, 893, 0, 894, 0, 909, 0, 916, 2, 34, 3, 16, 3, 79, 3, 931, 2, 933, 4, 946, 2, 964, 0, 965, 0, 977, 2, 976, 2, 973, 2, 106, 5, 85, 3, 1001, 3, 1020, 2);
 +
 +		/// <summary>
-+		/// The length of the the trail to store. Each projectile type defaults to 10. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly. 
++		/// The length of the trail to store. Each projectile type defaults to 10. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly. 
 +		/// </summary>
  		public static int[] TrailCacheLength = Factory.CreateIntSet(10, 466, 20, 502, 25, 580, 20, 636, 20, 640, 20, 686, 20, 711, 20, 715, 20, 716, 20, 717, 20, 718, 20, 261, 20, 721, 20, 729, 20, 731, 20, 739, 20, 740, 20, 741, 20, 742, 20, 743, 20, 744, 20, 745, 20, 746, 20, 747, 20, 748, 20, 749, 20, 750, 20, 751, 20, 752, 20, 766, 60, 767, 60, 768, 60, 769, 60, 770, 60, 771, 80, 814, 40, 822, 80, 823, 80, 824, 60, 826, 60, 827, 65, 828, 60, 829, 60, 830, 80, 838, 80, 839, 60, 840, 60, 843, 60, 844, 65, 845, 80, 846, 80, 850, 80, 852, 60, 853, 60, 856, 2, 857, 2, 864, 60, 873, 60, 872, 120, 833, 20, 834, 20, 835, 20, 818, 20, 883, 41, 887, 51, 893, 71, 894, 10, 909, 5, 916, 20, 34, 30, 16, 30, 79, 60, 931, 20, 933, 60, 946, 20, 977, 30, 976, 60, 973, 20, 106, 15, 85, 60, 1001, 12, 1020, 20);
 +
@@ -203,7 +204,7 @@
 +
 +		/// <summary>
 +		/// Iff <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is counted as a DD2 turret.
-+		/// <br/> Items that create DD2 turrets cannot be used before the Old One's Army is cleared at least once, but can be infinitely used during the event for 20 Etehrian Mana.
++		/// <br/> Items that create DD2 turrets cannot be used before the Old One's Army is cleared at least once, but can be infinitely used during the event for 20 Etherian Mana.
 +		/// <br/> All DD2 turrets are cleared when the Old One's Army ends.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
@@ -217,13 +218,13 @@
  		public static bool[] TurretFeature = Factory.CreateBoolSet();
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then any item that shoots that projectile can be right-clicked to force minion targetting.
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then any item that shoots that projectile can be right-clicked to force minion targeting.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] MinionTargettingFeature = Factory.CreateBoolSet(191, 192, 193, 194, 266, 317, 373, 375, 387, 388, 390, 393, 407, 423, 533, 613, 625, 755, 758, 759, 831, 833, 834, 835, 864, 946, 951, 963, 970, 377, 308, 643, 641, 663, 665, 667, 677, 678, 679, 688, 689, 690, 691, 692, 693, 966);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile can be sacrificed to summon other minions.
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then other minions will be sacrificed to make room to summon this minion.
 +		/// <br/> Used for all standard minions.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>

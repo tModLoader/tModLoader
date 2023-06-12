@@ -23,24 +23,34 @@ public class MissingResourceException : Exception
 	{
 	}
 
-	public MissingResourceException(string message, ICollection<string> keys) : this(ProcessMessage(message, keys))
+	public MissingResourceException(List<string> reasons, string assetPath, ICollection<string> keys) : this(ProcessMessage(reasons, assetPath, keys))
 	{
 	}
 
-	public static string ProcessMessage(string message, ICollection<string> keys)
+	public static string ProcessMessage(List<string> reasons, string assetPath, ICollection<string> keys)
 	{
-		string closestMatch = LevenshteinDistance.FolderAwareEditDistance(message, keys.ToArray());
+		if(reasons.Count > 0) {
+			reasons.Insert(0, $"Failed to load asset: \"{assetPath}\"");
+			return string.Join(Environment.NewLine, reasons);
+		}
+
+		string closestMatch = LevenshteinDistance.FolderAwareEditDistance(assetPath, keys.ToArray());
 		if (closestMatch != null && closestMatch != "") {
 			// TODO: UIMessageBox still doesn't display long sequences of colored text correct.
-			(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(message, closestMatch);
-			return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", message, closestMatch) + "\n" + a + "\n" + b + "\n";
+			(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(assetPath, closestMatch);
+			return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", assetPath, closestMatch) + "\n" + a + "\n" + b + "\n";
 		}
-		return message;
+		return assetPath;
 	}
 }
 
 static class LevenshteinDistance
 {
+	enum Edits
+	{
+		Keep, Delete, Insert, Substitute, Blank
+	}
+
 	internal static string FolderAwareEditDistance(string source, string[] targets)
 	{
 		if (targets.Length == 0) return null;
@@ -144,8 +154,6 @@ static class LevenshteinDistance
 		int n = s.Length;
 		int m = t.Length;
 		int[,] d = new int[n + 1, m + 1];
-		string[,] resultsA = new string[n + 1, m + 1];
-		string[,] resultsB = new string[n + 1, m + 1];
 
 		// Step 1
 		if (n == 0) {
@@ -158,17 +166,9 @@ static class LevenshteinDistance
 
 		// Step 2
 		for (int i = 0; i <= n; d[i, 0] = i++) {
-			if (i < n) {
-				resultsA[i + 1, 0] = "" + s[i];
-				resultsB[i + 1, 0] = "" + s[i];
-			}
 		}
 
 		for (int j = 0; j <= m; d[0, j] = j++) {
-			if (j < m) {
-				resultsA[0, j + 1] = "" + t[j];
-				resultsB[0, j + 1] = "" + t[j];
-			}
 		}
 
 		// Step 3
@@ -176,43 +176,104 @@ static class LevenshteinDistance
 			//Step 4
 			for (int j = 1; j <= m; j++) {
 				// Step 5
-				int cost = (t[j - 1] == s[i - 1]) ? 0 : 2; // substitution
+				int cost = (t[j - 1] == s[i - 1]) ? 0 : 1; // substitution
 
 				// Step 6
 				d[i, j] = Math.Min(
-					Math.Min(d[i - 1, j] + 2, d[i, j - 1] + 2),
+					Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
 					d[i - 1, j - 1] + cost);
-
-				if (d[i, j] == d[i - 1, j - 1] + cost) {
-					if (cost == 0) {
-						resultsA[i, j] = $"{resultsA[i - 1, j - 1]}{s[i - 1]}";
-						resultsB[i, j] = $"{resultsB[i - 1, j - 1]}{t[j - 1]}";
-					}
-					else {
-						resultsA[i, j] = $"{resultsA[i - 1, j - 1]}[c/ffff00:{s[i - 1]}]"; //
-						resultsB[i, j] = $"{resultsB[i - 1, j - 1]}[c/ffff00:{t[j - 1]}]"; // 
-					}
-				}
-				else if (d[i, j] == d[i - 1, j] + 2) // deletion
-				{
-					resultsA[i, j] = $"{resultsA[i - 1, j]} ";
-					resultsB[i, j] = $"{resultsB[i - 1, j]}[c/ff0000:{s[i - 1]}]";
-
-					//resultsB[i, j] = $"{resultsA[i - 1, j]}{s[i - 1]}";
-				}
-				else if (d[i, j] == d[i, j - 1] + 2) // insertion
-				{
-					resultsA[i, j] = $"{resultsA[i, j - 1]}[c/00ff00:{t[j - 1]}]";
-					resultsB[i, j] = $"{resultsB[i, j - 1]} ";
-
-					//resultsA[i, j] = $"{resultsA[i, j - 1]}{t[i]}";
-				}
-				else {
-					Console.WriteLine();
-				}
 			}
 		}
 		// Step 7
-		return (resultsA[n, m], resultsB[n, m]);
+
+		// Backtracking approach adapted from https://stackoverflow.com/a/50864452
+		var x = n;
+		var y = m;
+
+		var editsFromStoT = new Stack<(Edits, char)>();
+		var editsFromTtoS = new Stack<(Edits, char)>();
+
+		while (x != 0 || y != 0) {
+			var cost = d[x, y];
+			// edge cases
+			if (y - 1 < 0) {
+				editsFromStoT.Push((Edits.Delete, s[x - 1]));
+				editsFromTtoS.Push((Edits.Blank, ' '));
+				x--;
+				continue;
+			}
+
+			if (x - 1 < 0) {
+				editsFromStoT.Push((Edits.Insert, t[y - 1]));
+				editsFromTtoS.Push((Edits.Blank, ' '));
+				y--;
+				continue;
+			}
+
+			// Middle cases
+			var costLeft = d[x, y - 1];
+			var costUp = d[x - 1, y];
+			var costDiagonal = d[x - 1, y - 1];
+
+			if (costDiagonal <= costLeft && costDiagonal <= costUp && (costDiagonal == cost - 1 || costDiagonal == cost)) {
+				if (costDiagonal == cost - 1) {
+					editsFromStoT.Push((Edits.Substitute, s[x - 1]));
+					editsFromTtoS.Push((Edits.Substitute, t[y - 1])); 
+					x--;
+					y--;
+				}
+				else {
+					editsFromStoT.Push((Edits.Keep, s[x - 1]));
+					editsFromTtoS.Push((Edits.Keep, t[y - 1]));
+					x--;
+					y--;
+				}
+			}
+			else if (costLeft <= costDiagonal && costLeft == cost - 1) {
+				editsFromStoT.Push((Edits.Insert, t[y - 1]));
+				editsFromTtoS.Push((Edits.Blank, ' '));
+				y--;
+			}
+			else {
+				editsFromStoT.Push((Edits.Delete, s[x - 1]));
+				editsFromTtoS.Push((Edits.Blank, ' '));
+				x--;
+			}
+		}
+
+		string resultA = FinalizeText(editsFromStoT);
+		string resultB = FinalizeText(editsFromTtoS);
+
+		string FinalizeText(Stack<(Edits, char)> results)
+		{
+			string result = "";
+			// Track last edit for efficient color tag usage.
+			Edits editCurrent = Edits.Keep;
+			while (results.Count > 0) {
+				var entry = results.Pop();
+				//for (int i = 0; i < results[n, m].Item1.Length; i++) {
+				Edits nextEdit = entry.Item1;
+				if (editCurrent != nextEdit) {
+					if (editCurrent != Edits.Keep && editCurrent != Edits.Blank)
+						result += "]";
+					if (nextEdit == Edits.Delete) {
+						result += "[c/ff0000:";
+					}
+					else if (nextEdit == Edits.Insert) {
+						result += "[c/00ff00:";
+					}
+					else if (nextEdit == Edits.Substitute) {
+						result += "[c/ffff00:";
+					}
+				}
+				result += entry.Item2;
+				editCurrent = nextEdit;
+			}
+			if (editCurrent != Edits.Keep && editCurrent != Edits.Blank)
+				result += "]";
+			return result;
+		} 
+
+		return (resultA, resultB);
 	}
 }

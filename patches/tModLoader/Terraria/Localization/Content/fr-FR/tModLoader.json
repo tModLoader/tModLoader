@@ -125,6 +125,9 @@
 		"LoadError": "Une erreur s'est produite lors en lançant {0}",
 		"LoadErrorDisabled": "Le(s) mod(s) ont été automatiquement désactivés.",
 		"LoadErrorCulpritUnknown": "Le Mod fautif n'est pas identifié et tModLoader doit être redémarré.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Il a été détecté que ce mod a été compilé pour la version de tModLoader {0}\nCependant, vous utilisez la version {1}",
 		"LoadErrorDotNet45Required": "La version de .NET Framework 4.5 ou plus est requise pour utiliser des Mods. Merci de télécharger la plus récente version de .NET Framework",
 		"LoadErrorDependencyMissing": "Mod manquant: {0} requis par {1}",
@@ -180,7 +183,7 @@
 		"ModInfoNoDescriptionAvailable": "Pas de description disponible",
 		"ModInfoProblemTryAgain": "Il y a eu un problème, réessayez",
 		"ModInfoDisableModToDelete": "Désactiver le Mod à supprimer",
-		// "ModInfoVisitSteampage": "Steam Workshop page",
+		// "ModInfoVisitSteampage": "Steam Workshop Page",
 		// "ModInfoExtractLocalization": "Extract Localization",
 		// "ModInfoExtracted": "Extracted",
 		// "ModInfoEnableModToExtractLocalizationFiles": "Enable Mod to Extract Localization Files",
@@ -360,6 +363,8 @@
 		"MSBuildReloadAll": "Tout compiler + Tout relancer",
 		"MSUpgradeCSProj": "Mettre à jour le fichier .csproj",
 		"MSUpgradeLangFiles": "Mettre à niveau les fichiers .lang à .hjson (non destructif)",
+		// "MSRebuildRequired": "Rebuild Required",
+		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Dossier des sources",
 		"MSManagePublished": "Gérer les publications",
 		"MSPublish": "Publier",
@@ -479,9 +484,7 @@
 		"SteamAPIHashMismatch": "Incompatibilité de hachage de l'API Steam, supposée piratée.\n\ntModLoader nécessite une installation Terraria légitime pour fonctionner.",
 		// "SteamInitFailed": "SteamAPI.Init failed. Try logging out of Steam and restarting it.\n\nCheck terrariasteamclient.log and Natives.Log for details",
 		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
-		"VanillaGOGNotFound": "{0} introuvable.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner. Cette version de tModLoader attend la version {1} de Terraria, vous devrez peut-être rétrograder ou mettre à niveau Terraria via GOG Galaxy, ou attendre que tModLoader se mette à jour.",
-		"GOGHashMismatch": "{0} n'est pas l'exécutable Terraria non modifié.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner.\r\n\r\nSi vous avez patché le .exe, vous pouvez créer une copie de l'exe d'origine et le nommer \"Terraria_v<VERSION>.exe\"",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
+		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Veuillez restaurer votre installation de Terraria, puis installer tModLoader sur Steam ou en suivant les instructions README.txt pour une installation manuelle.",
 		"LogPathHint": "{0} fichier journal contenant des informations d'erreur a été généré dans\n{1}\n(Vous devrez partager ce fichier si vous demandez de l'aide)",
 		"OutOfMemoryHint": "Conseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire. En option, installez tModLoader 64 bits",
@@ -509,7 +512,13 @@
 		// "TagsLang": "Localization Support",
 		// "TagsLangDescription": "This mod supports multiple languages",
 		// "TagsGen": "Custom World Gen",
-		// "TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)"
+		// "TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)",
+
+		// Info Display Pages
+		// "NextInfoAccPage": "Next Page",
+		// "PreviousInfoAccPage": "Previous Page",
+		// "FirstInfoAccPage": "Go To First Page",
+		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "+{0} points de défense",
@@ -795,6 +804,17 @@
 	"TitleLinks": {
 		// "Patreon": "Patreon"
 	},
+	"Config": {
+		// "Color.Hue.Label": "Hue",
+		// "Color.Saturation.Label": "Saturation",
+		// "Color.Lightness.Label": "Lightness",
+		// "Color.Red.Label": "Red",
+		// "Color.Green.Label": "Green",
+		// "Color.Blue.Label": "Blue",
+		// "Color.Alpha.Label": "Alpha",
+		// "Vector2.X.Label": "X",
+		// "Vector2.Y.Label": "Y"
+	},
 	"Mods": {
 		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril",
 		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
@@ -898,5 +918,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

@@ -13,16 +13,8 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.buffTime[buffIndex] = 18000;
-
-			int projType = ModContent.ProjectileType<ExampleLightPetProjectile>();
-
-			// If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
-			if (player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[projType] <= 0) {
-				var entitySource = player.GetSource_Buff(buffIndex);
-
-				Projectile.NewProjectile(entitySource, player.Center, Vector2.Zero, projType, 0, 0f, player.whoAmI);
-			}
+			bool unused = false;
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<ExampleLightPetProjectile>());
 		}
 	}
 }

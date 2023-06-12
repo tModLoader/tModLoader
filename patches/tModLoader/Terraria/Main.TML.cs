@@ -51,6 +51,9 @@ public partial class Main
 	// Magic constant comes from default windows border settings: ~ 1377 / 1440 and 1033 / 1080.
 	private static int BorderedHeight(int height, bool state) => (int)(height * (state ? 1 : 0.95625));
 
+	// Tracks whether the Stylist has had her hairstyle list updated for the current interaction.
+	private static bool hairstylesUpdatedForThisInteraction; // TML: Track whether hairstyle cache needs refreshing for Stylist UI.
+
 	private static Player _currentPlayerOverride;
 
 	/// <summary>
@@ -107,7 +110,7 @@ public partial class Main
 				}
 
 				if (!Main.mouseText) {
-					mouseText = (InfoDisplayLoader.ActivePages() != InfoDisplayLoader.InfoDisplayPage + 1) ? "Next Page" : "To First Page";
+					mouseText = (InfoDisplayLoader.ActivePages() != InfoDisplayLoader.InfoDisplayPage + 1) ? Language.GetTextValue("tModLoader.NextInfoAccPage") : Language.GetTextValue("tModLoader.FirstInfoAccPage");
 					Main.mouseText = true;
 				}
 			}
@@ -136,7 +139,7 @@ public partial class Main
 				}
 
 				if (!Main.mouseText) {
-					mouseText = (InfoDisplayLoader.InfoDisplayPage != 0) ? "Previous Page" : "To Last Page";
+					mouseText = (InfoDisplayLoader.InfoDisplayPage != 0) ? Language.GetTextValue("tModLoader.PreviousInfoAccPage") : Language.GetTextValue("tModLoader.LastInfoAccPage");
 					Main.mouseText = true;
 				}
 			}

@@ -41,6 +41,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), this.GetLocalization("MapEntry0"), MapChestName);
 			AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 
+			// Style 1 is ExampleChest when locked. We want that tile style to drop the ExampleChest item as well. Use the Chest Lock item to lock this chest.
+			// No item places ExampleChest in the locked style, so the automatically determined item drop is unknown, this is why RegisterItemDrop is necessary in this situation. 
+			RegisterItemDrop(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>(), 1);
+			// Sometimes mods remove content, such as tile styles, or tiles accidentally get corrupted. We can, if desired, register a fallback item for any tile style that doesn't have an automatically determined item drop. This is done by omitting the tileStyles parameter.
+			RegisterItemDrop(ItemID.Chest);
+
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
@@ -61,6 +67,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		// This example shows using GetItemDrops to manually decide item drops. This example is for a tile with a TileObjectData.
+		// This example is commented out because the RegisterItemDrop line in SetStaticDefaults above handles this situation and is the recommended approach, but the code is still useful to learn from if conditional drops need to be implemented.
+		/*
 		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			Tile tile = Main.tile[i, j];
 			int style = TileObjectData.GetTileStyle(tile);
@@ -68,11 +76,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 				yield return new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>());
 			}
 			if (style == 1) {
-				// Style 1 is ExampleChest when locked. We want that tile style to drop the ExampleChest item as well. Use the Chest Lock item to lock this chest.
-				// No item places ExampleChest in the locked style, so the automatic item drop is unknown, this is why GetItemDrops is necessary in this situation. 
 				yield return new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>());
 			}
 		}
+		*/
 
 		public override ushort GetMapOption(int i, int j) {
 			return (ushort)(Main.tile[i, j].TileFrameX / 36);

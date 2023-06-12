@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalProjectile>;
+using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalProjectile>;
 
 namespace Terraria.ModLoader;
 
@@ -22,8 +22,6 @@ public static class ProjectileLoader
 {
 	public static int ProjectileCount { get; private set; } = ProjectileID.Count;
 	private static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
-
-	internal static readonly List<GlobalProjectile> globalProjectiles = new();
 
 	private static readonly List<HookList> hooks = new();
 	private static readonly List<HookList> modHooks = new();
@@ -37,7 +35,6 @@ public static class ProjectileLoader
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
-		hook.Update(globalProjectiles);
 		modHooks.Add(hook);
 		return hook;
 	}
@@ -58,8 +55,11 @@ public static class ProjectileLoader
 		return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;
 	}
 
-	internal static void ResizeArrays()
+	internal static void ResizeArrays(bool unloading)
 	{
+		if (!unloading)
+			GlobalList<GlobalProjectile>.FinishLoading(ProjectileCount);
+
 		//Textures
 		Array.Resize(ref TextureAssets.Projectile, ProjectileCount);
 
@@ -83,16 +83,23 @@ public static class ProjectileLoader
 		for (int i = 0; i < ProjectileCount; i++) {
 			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
 		}
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update(globalProjectiles);
-		}
 	}
 
 	internal static void FinishSetup()
 	{
+		GlobalLoaderUtils<GlobalProjectile, Projectile>.BuildTypeLookups(new Projectile().SetDefaults);
+		UpdateHookLists();
+		GlobalTypeLookups<GlobalProjectile>.LogStats();
+
 		foreach (ModProjectile proj in projectiles) {
 			Lang._projectileNameCache[proj.Type] = proj.DisplayName;
+		}
+	}
+
+	private static void UpdateHookLists()
+	{
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
 		}
 	}
 
@@ -100,8 +107,9 @@ public static class ProjectileLoader
 	{
 		ProjectileCount = ProjectileID.Count;
 		projectiles.Clear();
-		globalProjectiles.Clear();
+		GlobalList<GlobalProjectile>.Reset();
 		modHooks.Clear();
+		UpdateHookLists();
 	}
 
 	internal static bool IsModProjectile(Projectile projectile)
@@ -109,21 +117,13 @@ public static class ProjectileLoader
 		return projectile.type >= ProjectileID.Count;
 	}
 
-	private static HookList HookSetDefaults = AddHook<Action<Projectile>>(g => g.SetDefaults);
-
 	internal static void SetDefaults(Projectile projectile, bool createModProjectile = true)
 	{
 		if (IsModProjectile(projectile) && createModProjectile) {
 			projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 		}
 
-		LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, () => {
-			projectile.ModProjectile?.SetDefaults();
-		});
-
-		foreach (var g in HookSetDefaults.Enumerate(projectile)) {
-			g.SetDefaults(projectile);
-		}
+		GlobalLoaderUtils<GlobalProjectile, Projectile>.SetDefaults(projectile, ref projectile._globals, static e => e.ModProjectile?.SetDefaults());
 	}
 
 	private static HookList HookOnSpawn = AddHook<Action<Projectile, IEntitySource>>(g => g.OnSpawn);
@@ -136,7 +136,7 @@ public static class ProjectileLoader
 			g.OnSpawn(projectile, source);
 		}
 	}
-	
+
 	//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 	public static void ProjectileAI(Projectile projectile)
 	{
@@ -650,7 +650,7 @@ public static class ProjectileLoader
 	{
 		bool? flag = GetProjectile(type)?.CanUseGrapple(player);
 
-		foreach (var g in HookCanUseGrapple.Enumerate()) {
+		foreach (var g in HookCanUseGrapple.Enumerate(type)) {
 			bool? canGrapple = g.CanUseGrapple(type, player);
 
 			if (canGrapple.HasValue) {

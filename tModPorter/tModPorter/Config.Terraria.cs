@@ -98,6 +98,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"allDamage",		DamageModifier("Generic",	"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"meleeDamage",		DamageModifier("Melee",		"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"rangedDamage",		DamageModifier("Ranged",	"GetDamage"));
+		RenameInstanceField("Terraria.Player",			"rocketDamage",		"specialistDamage");
 		RefactorInstanceMember("Terraria.Player",		"magicDamage",		DamageModifier("Magic",		"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"minionDamage",		DamageModifier("Summon",	"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"thrownDamage",		DamageModifier("Throwing",	"GetDamage"));
@@ -117,6 +118,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
 
 		RefactorInstanceMethodCall("Terraria.Player", "VanillaUpdateEquip",	Removed("Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots)"));
+		RenameMethod("Terraria.Player", "CanBuyItem", "CanAfford");
 
 		RefactorInstanceMember("Terraria.Main", "fastForwardTime", Removed("Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk"));
 
@@ -227,6 +229,11 @@ public static partial class Config
 		RenameMethod("Terraria.UI.UIElement",			from: "DoubleClick",	to: "LeftDoubleClick");
 
 		AddWorldGenToGenVars();
+
+		RenameInstanceField("Terraria.DataStructures.EntitySource_BossSpawn", "Entity", "Target");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_FishedOut", "Entity", "Fisher");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStriking", "Attacker");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 	}
 
 	private static void AddTextureRenames() {

@@ -106,7 +106,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// </summary>
 	/// <remarks>To disable tooltip lines you should return <see langword="false"/> for each of those cases.</remarks>
 	/// <param name="player">The player to apply tooltip changes to</param>
-	/// <param name="lineName">The tooltip line to change visiblity for. Usable values are: "Damage", "CritChance", "Speed", and "Knockback"</param>
+	/// <param name="lineName">The tooltip line to change visibility for. Usable values are: "Damage", "CritChance", "Speed", and "Knockback"</param>
 	public virtual bool ShowStatTooltipLine(Player player, string lineName) => true;
 
 	protected sealed override void Register()

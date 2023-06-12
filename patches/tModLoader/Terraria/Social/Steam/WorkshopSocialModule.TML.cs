@@ -50,7 +50,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
-		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"]).MajorMinor()}:{buildData["version"]}";
+		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
 		buildData["trueversion"] = buildData["version"];
 
@@ -120,7 +120,7 @@ public partial class WorkshopSocialModule
 		return false;
 	}
 
-	// Output version string: "2022.05:0.2.0;2022.06;0.2.1;2022.07:0.2.2"
+	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20;0.2.1;2022.07.10.20:0.2.2"
 	// Return False if the mod version did not increase for the particular tml version
 	// This will have up to 1 more version than is actually relevant, but that won't break anything
 	public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData)
@@ -132,7 +132,7 @@ public partial class WorkshopSocialModule
 					return false;
 
 			if (mod.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor())
-				buildData["versionsummary"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
+				buildData["versionsummary"] += $";{mod.tModLoaderVersion}:{mod.properties.version}";
 		}
 
 		return true;

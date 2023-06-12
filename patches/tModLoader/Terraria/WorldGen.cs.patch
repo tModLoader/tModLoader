@@ -1116,7 +1116,7 @@
  
  	public static void Check1x1(int x, int y, int type)
  	{
-+		// could put here, but there are probably other situations killtile is calleD?
++		// could put here, but there are probably other situations KillTile is called?
  		if (Main.tile[x, y + 1] != null) {
  			if (!SolidTileAllowBottomSlope(x, y + 1))
  				KillTile(x, y);
@@ -1825,9 +1825,14 @@
  
  		bool result = false;
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
-@@ -42239,7 +_,7 @@
+@@ -42238,8 +_,12 @@
+ 							if (style != 8 && style != 11 && style != 17)
  								return false;
  							break;
++						case int _ when TileID.Sets.Torch[num]:
++							if (TileObjectData.GetTileData(num, style).WaterPlacement != LiquidPlacement.Allowed)
++								return false;
++							break;
  						case 3:
 -						case 20:
 +						case int _ when TileID.Sets.TreeSapling[num]:
@@ -2033,6 +2038,15 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
+@@ -44631,7 +_,7 @@
+ 		else if (TileID.Sets.BasicDresser[targetType]) {
+ 			ReplaceTile_DoActualReplacement_Area(targetType, targetStyle, topLeftX, topLeftY, 3, 2);
+ 		}
+-		else if (targetType == 215) {
++		else if (TileID.Sets.Campfire[targetType]) {
+ 			ReplaceTile_DoActualReplacement_Area(targetType, targetStyle, topLeftX, topLeftY, 3, 2);
+ 		}
+ 		else {
 @@ -44647,7 +_,7 @@
  		if (TileID.Sets.Platforms[t.type])
  			t.frameY = (short)(targetStyle * 18);
@@ -2050,6 +2064,15 @@
  		SquareTileFrame(topLeftX, topLeftY);
  	}
  
+@@ -44708,7 +_,7 @@
+ 			y -= t.frameY % 36 / 18;
+ 		}
+ 
+-		if (t.type == 215) {
++		if (TileID.Sets.Campfire[t.type]) {
+ 			x -= t.frameX % 54 / 18;
+ 			y -= t.frameY % 36 / 18;
+ 		}
 @@ -44729,7 +_,7 @@
  	public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y)
  	{
@@ -2068,15 +2091,17 @@
  		bool flag6 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  		return !(num && flag2 && flag3 && flag && flag4 && flag5 && flag6);
  	}
-@@ -44767,7 +_,7 @@
+@@ -44767,8 +_,8 @@
  		return false;
  	}
  
 -	private static bool ReplaceTile_IsValidTorch(int type) => type == 4;
+-	private static bool ReplaceTile_IsValidCampfire(int type) => type == 215;
 +	private static bool ReplaceTile_IsValidTorch(int type) => TileID.Sets.Torch[type];
- 	private static bool ReplaceTile_IsValidCampfire(int type) => type == 215;
++	private static bool ReplaceTile_IsValidCampfire(int type) => TileID.Sets.Campfire[type];
  	private static bool ReplaceTile_IsValidChest(int type) => TileID.Sets.BasicChest[type];
  	private static bool ReplaceTile_IsValidDresser(int type) => TileID.Sets.BasicDresser[type];
+ 	private static bool ReplaceTile_IsValidPlatform(int type) => TileID.Sets.Platforms[type];
 @@ -44973,14 +_,26 @@
  					else if (i % 3 == 1) {
  						treeFrame += 3;
@@ -2165,7 +2190,7 @@
 +
 +		TileLoader.GetItemDrops(x, y, tileCache, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
 +
-+		// TODO: support centering spawn location for multitiles? Vanilla code is inconsistent in doing this.
++		// TODO: support centering spawn location for multi-tiles? Vanilla code is inconsistent in doing this.
  		if (!Main.getGoodWorld || tileCache.active()) {
  			if (dropItem > 0) {
  				int num = Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, dropItem, dropItemStack, noBroadcast: false, -1);

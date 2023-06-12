@@ -37,7 +37,7 @@ public static class BuildInfo
 
 	static BuildInfo()
 	{
-		var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('|');
+		var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+') + 1).Split('|');
 		int i = 0;
 
 		tMLVersion = new Version(parts[i++]);

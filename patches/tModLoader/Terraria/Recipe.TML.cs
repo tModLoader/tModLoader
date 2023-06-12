@@ -266,7 +266,7 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Adds every condition from Recipie.Condtions to Recipie.DecraftContions, checking for duplicates.
+	/// Adds every condition from Recipe.Conditions to Recipe.DecraftConditions, checking for duplicates.
 	/// </summary>
 	public Recipe ApplyConditionsAsDecraftConditions()
 	{
@@ -422,7 +422,7 @@ public partial class Recipe
 		}
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
-		// it here to not have multiple dupliocate hooks.
+		// it here to not have multiple duplicate hooks.
 		if (clone.requiredTile.Contains(TileID.Bottles))
 			clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
 

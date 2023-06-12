@@ -167,7 +167,7 @@ public static class LocalizationLoader
 			return new();
 
 		try {
-			// Flatten JSON into dot seperated key and value
+			// Flatten JSON into dot separated key and value
 			var flattened = new List<(string, string)>();
 
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
@@ -181,7 +181,7 @@ public static class LocalizationLoader
 				string translationFileContents = streamReader.ReadToEnd();
 
 				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
-				if (changedFiles.Contains(modpath)) {
+				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
 					string path = Path.Combine(ModCompile.ModSourcePath, modpath);
 					if (File.Exists(path)) {
 						try {
@@ -193,7 +193,7 @@ public static class LocalizationLoader
 				}
 
 				// Parse HJSON and convert to standard JSON
-  				string jsonString;
+				string jsonString;
 				try {
 					jsonString = HjsonValue.Parse(translationFileContents).ToString();
 				}
@@ -301,7 +301,7 @@ public static class LocalizationLoader
 
 		DateTime modLastModified = File.GetLastWriteTime(mod.File.path);
 
-		if(mod.TranslationForMods != null) {
+		if (mod.TranslationForMods != null) {
 			foreach (var translatedMod in mod.TranslationForMods) {
 				ModLoader.TryGetMod(translatedMod, out Mod otherMod);
 				if (otherMod == null) {
@@ -335,22 +335,20 @@ public static class LocalizationLoader
 				string translationFileContents = streamReader.ReadToEnd();
 				(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 				string fixedFileName = translationFile.Name;
-				if(culture == GameCulture.DefaultCulture && !fixedFileName.Contains("en-US"))
-				{
+				if (culture == GameCulture.DefaultCulture && !fixedFileName.Contains("en-US")) {
 					fixedFileName = Path.Combine(Path.GetDirectoryName(fixedFileName), "en-US.hjson").Replace("\\", "/");
 				}
 
 				if (!localizationFilesByCulture.TryGetValue(culture, out var fileList))
 					localizationFilesByCulture[culture] = fileList = new();
 
-				if (inputMod == mod)
-				{
+				if (inputMod == mod) {
 					desiredCultures.Add(culture);
 
 					// Check translationFile.Name instead of fixedFileName since this is used for modified and file cleanup.
 					if (!localizationFileContentsByPath.ContainsKey(translationFile.Name))
 						localizationFileContentsByPath[translationFile.Name] = translationFileContents;
-					// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
+					// If the file exists, it's from a supplementary mod, so the original file contents should be used for checks.
 				}
 
 				JsonValue jsonValueEng;
@@ -360,15 +358,16 @@ public static class LocalizationLoader
 				catch (Exception e) {
 					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
 				}
-				
-				// Default language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
+
+				// Language files are flattened to a different data structure here to avoid confusing WscJsonObject manipulation with Prefix.AnotherPrefix-type keys and comment preservation.
 				var entries = ParseLocalizationEntries((WscJsonObject)jsonValueEng, prefix);
-				if (!fileList.Any(x => x.path == fixedFileName))
+				if (!fileList.Any(x => x.path == fixedFileName)) {
 					fileList.Add(new(fixedFileName, prefix, entries));
+				}
 				else {
 					// If file exists, then we are merging.
 					// Resulting entries will have new entries added
-					// Comments will be taken from 1st loaded english
+					// Comments will be taken from 1st loaded English
 					LocalizationFile localizationFile = fileList.First(x => x.path == fixedFileName);
 					foreach (var entry in entries) {
 						if (!localizationFile.Entries.Exists(x => x.key == entry.key)) {
@@ -379,9 +378,31 @@ public static class LocalizationLoader
 			}
 		}
 
-		// Abort if no default localization files found
-		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles))
-			return;
+		// If no default localization files found, make one in the preferred path and prefix
+		if (!localizationFilesByCulture.TryGetValue(GameCulture.DefaultCulture, out var baseLocalizationFiles)) {
+			localizationFilesByCulture[GameCulture.DefaultCulture] = baseLocalizationFiles = new();
+			desiredCultures.Add(GameCulture.DefaultCulture);
+
+			string prefix = $"Mods.{mod.Name}";
+			string translationFileName = $"Localization/en-US_{prefix}.hjson";
+			baseLocalizationFiles.Add(new(translationFileName, prefix, new List<LocalizationEntry>()));
+		}
+
+		// Remove duplicates. Only remove string entries. Remove from longest filename.
+		// TODO: could combine comments to remaining entry. Also consider removing empty objects somewhere.
+		var duplicates = baseLocalizationFiles.SelectMany(f => f.Entries).Where(w => w.type == JsonType.String).GroupBy(x => x.key).Where(c => c.Count() > 1).ToDictionary(g => g.Key, g => g.ToList());
+		foreach (var baseLocalizationFile in baseLocalizationFiles.OrderByDescending(x=>x.path.Length)) {
+			var toRemove = new List<LocalizationEntry>();
+			foreach (var entry in baseLocalizationFile.Entries) {
+				if (duplicates.ContainsKey(entry.key)) {
+					duplicates.Remove(entry.key);
+					toRemove.Add(entry);
+				}
+			}
+			foreach (var entry in toRemove) {
+				baseLocalizationFile.Entries.Remove(entry);
+			}
+		}
 
 		// Find and add new content localization keys which are missing from the base (English) localization files
 		var baseLocalizationKeys = baseLocalizationFiles.SelectMany(f => f.Entries.Select(e => e.key)).ToHashSet();
@@ -410,9 +431,14 @@ public static class LocalizationLoader
 		foreach (var culture in targetCultures) {
 			IEnumerable<LocalizationEntry> localizationEntriesForCulture = localizationFilesByCulture[culture].SelectMany(f => f.Entries);
 			Dictionary<string, string> localizationsForCulture = new();
-			foreach (var localizationEntry in localizationEntriesForCulture)
-			{
-				localizationsForCulture[localizationEntry.key] = localizationEntry.value;
+			foreach (var localizationEntry in localizationEntriesForCulture) {
+				if (localizationEntry.value != null) {
+					string key = localizationEntry.key;
+					if (key.EndsWith(".$parentVal")) {
+						key = key.Replace(".$parentVal", "");
+					}
+					localizationsForCulture[key] = localizationEntry.value;
+				}
 			}
 
 			foreach (var baseFile in baseLocalizationFiles) {
@@ -421,18 +447,18 @@ public static class LocalizationLoader
 
 				// Only write if file doesn't exist or if file has changed and .tmod file is newer than existing file.
 				// File Modified date check allows edits to English files to be propagated with a build and reload without being accidentally reverted when tmod is launched.
+				// Also write out if specificCulture isn't null. This is true when UpdateLocalizationFilesForMod is calling this method.
 				var outputFilePath = Path.Combine(sourceFolder, outputFileName) /*+ ".new"*/;
 				DateTime dateTime = File.GetLastWriteTime(outputFilePath);
-				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified) {
+				if (!localizationFileContentsByPath.TryGetValue(outputFileName, out string existingFileContents) || existingFileContents.ReplaceLineEndings() != hjsonContents && dateTime < modLastModified || specificCulture != null) {
 					Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath)); // Folder might not exist when using Extract mode
 					File.WriteAllText(outputFilePath, hjsonContents);
-
-					// TODO: Indicate on Mods/Mod Sources that localizations have updated maybe?
+					changedMods.Add(mod.Name);
 				}
 			}
 		}
 
-		// Clean up orphaned language files, if any. This should remove any hjson not present in english, and any english files without "en-US"
+		// Clean up orphaned language files, if any. This should remove any hjson not present in English, and any English files without "en-US"
 		var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
 		var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
 
@@ -440,7 +466,7 @@ public static class LocalizationLoader
 			string originalPath = Path.Combine(sourceFolder, name);
 			string newPath = originalPath + ".legacy";
 
-			if(File.Exists(originalPath)) // File might have already been deleted
+			if (File.Exists(originalPath)) // File might have already been deleted
 				File.Move(originalPath, newPath);
 		}
 	}
@@ -450,7 +476,6 @@ public static class LocalizationLoader
 	private static string LocalizationFileToHjsonText(LocalizationFile baseFile, Dictionary<string, string> localizationsForCulture)
 	{
 		const int minimumNumberOfEntriesInObject = 1;
-		// TODO: Detect string entries that share a key with an object here, convert to "$parentVal" entry. We don't know if a translation key collides until all keys are collected, so here is a suitable place.
 
 		// Count prefixes to determine candidates for non-object output.
 		Dictionary<string, int> prefixCounts = new();
@@ -469,11 +494,19 @@ public static class LocalizationLoader
 
 		for (int i = baseFile.Entries.Count - 1; i >= 0; i--) {
 			var entry = baseFile.Entries[i];
-			if(entry.type == JsonType.Object) {
+			if (entry.type == JsonType.Object) {
 				string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
 				if (prefixCounts.TryGetValue(key, out var count) && count <= minimumNumberOfEntriesInObject) {
 					// Remove objects with too few children. Should this be ignored if comments exist?
 					baseFile.Entries.RemoveAt(i);
+				}
+			}
+			if (entry.type == JsonType.String) {
+				// We don't know if a translation key collides until all keys are collected, convert to "$parentVal" entry if any other entry shares the prefix
+				string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
+				if (prefixCounts.TryGetValue(key, out var count) && count > 1) {
+					baseFile.Entries[i] = entry with { key = entry.key + ".$parentVal" };
+					// Note: Editing baseFile changes English as well. Undone when localizationsForCulture calculated populated
 				}
 			}
 		}
@@ -504,7 +537,6 @@ public static class LocalizationLoader
 				}
 			}
 
-			// TODO: "$parentVal" support?
 			// Populate parent object with this translation, manipulating comments to appear above the entry.
 
 			if (entry.value == null && entry.type == JsonType.Object) {
@@ -515,7 +547,8 @@ public static class LocalizationLoader
 			}
 			else {
 				// Add values
-				if (!localizationsForCulture.TryGetValue(entry.key, out var value)) {
+				string realKey = entry.key.Replace(".$parentVal", "");
+				if (!localizationsForCulture.TryGetValue(realKey, out var value)) {
 					parent.CommentedOut.Add(finalKey);
 					value = entry.value;
 				}
@@ -551,16 +584,12 @@ public static class LocalizationLoader
 
 	private static List<LocalizationEntry> ParseLocalizationEntries(WscJsonObject jsonObjectEng, string prefix)
 	{
-		// TODO: How should "$parentVal" be handled?
-		// TODO: Which entry should this comment attach to in the result, if it ends up being expanded?
-		//       # Some Comment on ExampleMod.Common
-		//       ExampleMod.Common: {...}
-
 		var existingKeys = new List<LocalizationEntry>();
 		RecurseThrough(jsonObjectEng, prefix);
 		return existingKeys;
 
-		void RecurseThrough(WscJsonObject original, string prefix) {
+		void RecurseThrough(WscJsonObject original, string prefix)
+		{
 			int index = 0;
 			foreach (var item in original) {
 				if (item.Value.JsonType == JsonType.Object) {
@@ -575,7 +604,9 @@ public static class LocalizationLoader
 				else if (item.Value.JsonType == JsonType.String) {
 					var localizationValue = item.Value.Qs();
 					string key = string.IsNullOrWhiteSpace(prefix) ? item.Key : prefix + "." + item.Key;
-
+					if (key.EndsWith(".$parentVal")) {
+						key = key.Replace(".$parentVal", "");
+					}
 					string comment = GetCommentFromIndex(index, original);
 					existingKeys.Add(new(key, localizationValue, comment));
 				}
@@ -608,7 +639,7 @@ public static class LocalizationLoader
 			if (!string.IsNullOrWhiteSpace(file.prefix) && !key.StartsWith(file.prefix))
 				continue;
 
-			int level = LongestMatchingPrefix(file.Entries, key);
+			int level = LongestMatchingPrefix(file, key);
 			if (level > levelFound) {
 				levelFound = level;
 				best = file;
@@ -626,12 +657,13 @@ public static class LocalizationLoader
 		return best;
 	}
 
-	internal static int LongestMatchingPrefix(List<LocalizationEntry> localizationEntries, string key)
+	internal static int LongestMatchingPrefix(LocalizationFile file, string key)
 	{
 		// Returns 0 if no prefix matches, and up to the Key parts length depending on how much is found.
-
+		int start = string.IsNullOrWhiteSpace(file.prefix) ? 0 : file.prefix.Split(".").Length;
+		List<LocalizationEntry> localizationEntries = file.Entries;
 		string[] splitKey = key.Split(".");
-		for (int i = 0; i < splitKey.Length; i++) {
+		for (int i = start; i < splitKey.Length; i++) {
 			string k = splitKey[i];
 			string partialKey = string.Join(".", splitKey.Take(i + 1));
 
@@ -683,8 +715,9 @@ public static class LocalizationLoader
 
 	private const int defaultWatcherCooldown = 60;
 	private static readonly Dictionary<Mod, FileSystemWatcher> localizationFileWatchers = new();
-	private static readonly HashSet<string> changedFiles = new();
-	private static readonly HashSet<string> pendingFiles = new();
+	private static readonly HashSet<(string Mod, string fileName)> changedFiles = new();
+	private static readonly HashSet<(string Mod, string fileName)> pendingFiles = new();
+	internal static readonly HashSet<string> changedMods = new();
 	private static int watcherCooldown;
 	private static void SetupFileWatchers()
 	{
@@ -739,8 +772,14 @@ public static class LocalizationLoader
 	{
 		watcherCooldown = defaultWatcherCooldown;
 		lock (pendingFiles) {
-			pendingFiles.Add(Path.Combine(modName, fileName));
+			pendingFiles.Add((modName, fileName));
 		}
+	}
+
+	internal static void HandleModBuilt(string modName)
+	{
+		changedMods.Remove(modName);
+		changedFiles.RemoveWhere(x => x.Mod == modName);
 	}
 
 	internal static void Update()
@@ -754,11 +793,12 @@ public static class LocalizationLoader
 			return;
 
 		lock (pendingFiles) {
-			string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", string.Join(", ", pendingFiles));
+			string newText = Language.GetTextValue("tModLoader.WatchLocalizationFileMessage", string.Join(", ", pendingFiles.Select(x => Path.Join(x.Mod, x.fileName))));
 			Utils.LogAndChatAndConsoleInfoMessage(newText);
 		}
 
 		lock (pendingFiles) {
+			changedMods.UnionWith(pendingFiles.Select(x => x.Mod));
 			changedFiles.UnionWith(pendingFiles);
 			pendingFiles.Clear();
 		}

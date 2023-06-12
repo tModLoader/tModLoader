@@ -60,7 +60,8 @@ public static class NPCHeadLoader
 
 	internal static void ResizeAndFillArrays()
 	{
-		static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures) {
+		static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures)
+		{
 			Main.ContentThatNeedsRenderTargets.Remove(renderer);
 			Main.ContentThatNeedsRenderTargets.Add(renderer = new NPCHeadRenderer(textures));
 		}

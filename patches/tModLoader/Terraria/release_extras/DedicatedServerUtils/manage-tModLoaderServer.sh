@@ -3,7 +3,7 @@
 #shellcheck disable=2164
 
 script_version="1.0.0.1"
-script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
+script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
 # Define functions used in script
 

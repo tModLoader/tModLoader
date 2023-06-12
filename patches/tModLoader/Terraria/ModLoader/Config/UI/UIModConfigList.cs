@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -133,7 +134,7 @@ internal class UIModConfigList : UIState
 				}
 				*/
 
-				string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
+				string configDisplayName = config.DisplayName.Value;
 				var t = new UITextPanel<string>(item.Key.DisplayName + ": " + configDisplayName);
 				//UIText t = new UIText(item.Key.DisplayName + ": " + item.Value.Count);
 

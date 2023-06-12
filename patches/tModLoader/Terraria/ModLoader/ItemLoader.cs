@@ -16,7 +16,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalItem>;
+using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalItem>;
 
 namespace Terraria.ModLoader;
 
@@ -28,11 +28,10 @@ public static class ItemLoader
 	public static int ItemCount { get; private set; } = ItemID.Count;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
-	internal static readonly List<GlobalItem> globalItems = new();
-	internal static readonly int vanillaQuestFishCount = 41;
-
 	private static readonly List<HookList> hooks = new List<HookList>();
 	private static readonly List<HookList> modHooks = new List<HookList>();
+
+	internal static readonly int vanillaQuestFishCount = 41;
 
 	private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) where F : Delegate
 	{
@@ -43,7 +42,6 @@ public static class ItemLoader
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
-		hook.Update(globalItems);
 		modHooks.Add(hook);
 		return hook;
 	}
@@ -64,6 +62,9 @@ public static class ItemLoader
 
 	internal static void ResizeArrays(bool unloading)
 	{
+		if (!unloading)
+			GlobalList<GlobalItem>.FinishLoading(ItemCount);
+
 		//Textures
 		Array.Resize(ref TextureAssets.Item, ItemCount);
 		Array.Resize(ref TextureAssets.ItemFlame, ItemCount);
@@ -101,14 +102,14 @@ public static class ItemLoader
 			Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
 				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
 				.ToArray();
-
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update(globalItems);
-		}
 	}
 
 	internal static void FinishSetup()
 	{
+		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups(new Item().SetDefaults);
+		UpdateHookLists();
+		GlobalTypeLookups<GlobalItem>.LogStats();
+
 		foreach (ModItem item in items) {
 			Lang._itemNameCache[item.Type] = item.DisplayName;
 			Lang._itemTooltipCache[item.Type] = ItemTooltip.FromLocalization(item.Tooltip);
@@ -116,6 +117,13 @@ public static class ItemLoader
 		}
 
 		ValidateDropsSet();
+	}
+
+	private static void UpdateHookLists()
+	{
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update();
+		}
 	}
 
 	internal static void ValidateDropsSet()
@@ -143,8 +151,9 @@ public static class ItemLoader
 	{
 		ItemCount = ItemID.Count;
 		items.Clear();
-		globalItems.Clear();
+		GlobalList<GlobalItem>.Reset();
 		modHooks.Clear();
+		UpdateHookLists();
 	}
 
 	internal static bool IsModItem(int index)
@@ -162,21 +171,15 @@ public static class ItemLoader
 	internal static bool MagicPrefix(Item item)
 		=> item.ModItem != null && item.ModItem.MagicPrefix();
 
-	private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
-
 	internal static void SetDefaults(Item item, bool createModItem = true)
 	{
 		if (IsModItem(item.type) && createModItem)
 			item.ModItem = GetItem(item.type).NewInstance(item);
 
-		LoaderUtils.InstantiateGlobals(item, globalItems, ref item.globalItems, () => {
-			item.ModItem?.AutoDefaults();
-			item.ModItem?.SetDefaults();
+		GlobalLoaderUtils<GlobalItem, Item>.SetDefaults(item, ref item._globals, static i => {
+			i.ModItem?.AutoDefaults();
+			i.ModItem?.SetDefaults();
 		});
-
-		foreach (var g in HookSetDefaults.Enumerate(item)) {
-			g.SetDefaults(item);
-		}
 	}
 
 	private static HookList HookOnSpawn = AddHook<Action<Item, IEntitySource>>(g => g.OnSpawn);
@@ -225,7 +228,7 @@ public static class ItemLoader
 	/// <summary>
 	/// Allows for blocking, forcing and altering chance of prefix rolling.
 	/// False (block) takes precedence over True (force).
-	/// Null gives vanilla behaviour
+	/// Null gives vanilla behavior
 	/// </summary>
 	public static bool? PrefixChance(Item item, int pre, UnifiedRandom rand)
 	{
@@ -504,7 +507,7 @@ public static class ItemLoader
 			if (g.CanConsumeBait(player, bait) is bool b)
 				ret = (ret ?? true) && b;
 		}
-		
+
 		return ret;
 	}
 
@@ -554,7 +557,7 @@ public static class ItemLoader
 		foreach (var g in HookOnResearched.Enumerate(item))
 			g.Instance(item).OnResearched(item, fullyResearched);
 	}
-    
+
 	private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage);
 	private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 
@@ -1413,7 +1416,7 @@ public static class ItemLoader
 
 
 	private static HookList HookModifyItemLoot = AddHook<Action<Item, ItemLoot>>(g => g.ModifyItemLoot);
-	
+
 	/// <summary>
 	/// Calls each GlobalItem.ModifyItemLoot hooks.
 	/// </summary>
@@ -1448,7 +1451,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 	/// </summary>
@@ -1464,7 +1467,7 @@ public static class ItemLoader
 
 		return destination.ModItem?.CanStackInWorld(source) ?? true;
 	}
-	
+
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
 
 	/// <summary>
@@ -1472,7 +1475,7 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quantity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
 	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
 	/// <returns>Whether or not the items were allowed to stack</returns>
 	public static bool TryStackItems(Item destination, Item source, out int numTransferred, bool infiniteSource = false)
@@ -1493,7 +1496,7 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numTransferred">The quanity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
+	/// <param name="numTransferred">The quantity of <paramref name="source"/> that was transferred to <paramref name="destination"/></param>
 	/// <param name="infiniteSource">If true, <paramref name="source"/>.stack will not be decreased</param>
 	/// <param name="numToTransfer">
 	/// An optional argument used to specify the quantity of items to transfer from <paramref name="source"/> to <paramref name="destination"/>.<br/>
@@ -1521,7 +1524,7 @@ public static class ItemLoader
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
 	public static void OnStack(Item destination, Item source, int numToTransfer)
 	{
 		foreach (var g in HookOnStack.Enumerate(destination)) {
@@ -1595,21 +1598,34 @@ public static class ItemLoader
 		return b;
 	}
 
-	// TODO: PreReforge marked obsolete until v0.11
-	private static HookList HookPreReforge = AddHook<Func<Item, bool>>(g => g.PreReforge);
+	private static HookList HookCanReforge = AddHook<Func<Item, bool>>(g => g.CanReforge);
+
+	/// <summary>
+	/// Calls ModItem.CanReforge, then all GlobalItem.CanReforge hooks. If any return false then false is returned.
+	/// </summary>
+	public static bool CanReforge(Item item)
+	{
+		bool b = item.ModItem?.CanReforge() ?? true;
+
+		foreach (var g in HookCanReforge.Enumerate(item)) {
+			b &= g.CanReforge(item);
+		}
+
+		return b;
+	}
+
+	private static HookList HookPreReforge = AddHook<Action<Item>>(g => g.PreReforge);
 
 	/// <summary>
 	/// Calls ModItem.PreReforge, then all GlobalItem.PreReforge hooks.
 	/// </summary>
-	public static bool PreReforge(Item item)
+	public static void PreReforge(Item item)
 	{
-		bool b = item.ModItem?.PreReforge() ?? true;
+		item.ModItem?.PreReforge();
 
 		foreach (var g in HookPreReforge.Enumerate(item)) {
-			b &= g.PreReforge(item);
+			g.PreReforge(item);
 		}
-
-		return b;
 	}
 
 	private static HookList HookPostReforge = AddHook<Action<Item>>(g => g.PostReforge);
@@ -1691,7 +1707,7 @@ public static class ItemLoader
 
 	private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 	private static HookList HookVerticalWingSpeeds = AddHook<DelegateVerticalWingSpeeds>(g => g.VerticalWingSpeeds);
-	
+
 	/// <summary>
 	/// If the player is using wings, this uses the result of GetWing, and calls ModItem.VerticalWingSpeeds then all GlobalItem.VerticalWingSpeeds hooks.
 	/// </summary>
@@ -1718,7 +1734,7 @@ public static class ItemLoader
 
 	private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 	private static HookList HookHorizontalWingSpeeds = AddHook<DelegateHorizontalWingSpeeds>(g => g.HorizontalWingSpeeds);
-	
+
 	/// <summary>
 	/// If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds then all GlobalItem.HorizontalWingSpeeds hooks.
 	/// </summary>
@@ -1760,7 +1776,7 @@ public static class ItemLoader
 
 	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
-	
+
 	/// <summary>
 	/// Calls ModItem.Update, then all GlobalItem.Update hooks.
 	/// </summary>
@@ -1789,7 +1805,7 @@ public static class ItemLoader
 
 	private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
 	private static HookList HookGrabRange = AddHook<DelegateGrabRange>(g => g.GrabRange);
-	
+
 	/// <summary>
 	/// Calls ModItem.GrabRange, then all GlobalItem.GrabRange hooks.
 	/// </summary>
@@ -1803,7 +1819,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 	/// </summary>
@@ -1818,7 +1834,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookCanPickup = AddHook<Func<Item, Player, bool>>(g => g.CanPickup);
-	
+
 	public static bool CanPickup(Item item, Player player)
 	{
 		foreach (var g in HookCanPickup.Enumerate(item)) {
@@ -1830,7 +1846,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookOnPickup = AddHook<Func<Item, Player, bool>>(g => g.OnPickup);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 	/// </summary>
@@ -1845,7 +1861,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookItemSpace = AddHook<Func<Item, Player, bool>>(g => g.ItemSpace);
-	
+
 	public static bool ItemSpace(Item item, Player player)
 	{
 		foreach (var g in HookItemSpace.Enumerate(item)) {
@@ -1857,7 +1873,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookGetAlpha = AddHook<Func<Item, Color, Color?>>(g => g.GetAlpha);
-	
+
 	/// <summary>
 	/// Calls all GlobalItem.GetAlpha hooks then ModItem.GetAlpha, until one of them returns a color, and returns that color. Returns null if all of the hooks return null.
 	/// </summary>
@@ -1895,7 +1911,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookPostDrawInWorld = AddHook<Action<Item, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
-	
+
 	/// <summary>
 	/// Calls ModItem.PostDrawInWorld, then all GlobalItem.PostDrawInWorld hooks.
 	/// </summary>
@@ -1909,7 +1925,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookPreDrawInInventory = AddHook<Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>>(g => g.PreDrawInInventory);
-	
+
 	/// <summary>
 	/// Returns the "and" operator on the results of all GlobalItem.PreDrawInInventory hooks and ModItem.PreDrawInInventory.
 	/// </summary>
@@ -1957,7 +1973,7 @@ public static class ItemLoader
 			}
 		}
 
-		foreach (var g in HookHoldoutOffset.Enumerate()) {
+		foreach (var g in HookHoldoutOffset.Enumerate(type)) {
 			Vector2? modOffset = g.HoldoutOffset(type);
 
 			if (modOffset.HasValue) {
@@ -1991,7 +2007,7 @@ public static class ItemLoader
 	}
 
 	private static HookList HookCanEquipAccessory = AddHook<Func<Item, Player, int, bool, bool>>(g => g.CanEquipAccessory);
-	
+
 	public static bool CanEquipAccessory(Item item, int slot, bool modded)
 	{
 		Player player = Main.player[Main.myPlayer];
@@ -2062,7 +2078,7 @@ public static class ItemLoader
 		if (modItem != null)
 			notAvailable |= !modItem.IsAnglerQuestAvailable();
 
-		foreach (var g in HookIsAnglerQuestAvailable.Enumerate()) {
+		foreach (var g in HookIsAnglerQuestAvailable.Enumerate(itemID)) {
 			notAvailable |= !g.IsAnglerQuestAvailable(itemID);
 		}
 	}
@@ -2076,7 +2092,7 @@ public static class ItemLoader
 		string catchLocation = "";
 		GetItem(type)?.AnglerQuestChat(ref chat, ref catchLocation);
 
-		foreach (var g in HookAnglerChat.Enumerate()) {
+		foreach (var g in HookAnglerChat.Enumerate(type)) {
 			g.AnglerChat(type, ref chat, ref catchLocation);
 		}
 
@@ -2140,7 +2156,7 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
@@ -2154,6 +2170,16 @@ public static class ItemLoader
 			}
 
 			tooltips.Add(tooltip);
+		}
+
+		if (item.prefix >= PrefixID.Count && prefixlineIndex != -1) {
+			var tooltipLines = PrefixLoader.GetPrefix(item.prefix)?.GetTooltipLines(item);
+			if (tooltipLines != null) {
+				foreach (var line in tooltipLines) {
+					tooltips.Insert(prefixlineIndex, line);
+					prefixlineIndex++;
+				}
+			}
 		}
 
 		item.ModItem?.ModifyTooltips(tooltips);
