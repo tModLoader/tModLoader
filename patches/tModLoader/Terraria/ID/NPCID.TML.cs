@@ -64,14 +64,14 @@ public partial class NPCID
 		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs by default.<br/><br/>
 		/// Use this for special NPC that cannot be hit at all, such as fairy critters, container NPCs like Martian Saucer and Pirate Ship, bound town slimes, and Blazing Wheel. Dungeon Guardian also is in this set to prevent the bonus damage from whip debuffs.<br/><br/>
 		/// If the NPC should be attacked, it is recommended to set <see cref="DefaultDebuffImmunity"/> to <see langword="true"/> instead. This will prevent all debuffs except whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>), which are intended to affect enemies typically seen as immune to all debuffs.<br/><br/>
-		/// Modders can specify specific buffs to not be immune to by assigning <see cref="SpecificDebuffImmunity"/> to false.
+		/// Modders can specify specific buffs to be vulnerable to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
 		public static bool[] FullyImmuneToBuffs; // derived from DebuffImmunitySets
 
 		/// <summary>
 		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs except whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>) by default.<br/><br/>
 		/// Use this for NPC that can be attacked that should be immune to all normal debuffs. Whip debuffs are special debuffs that facilitate "summon tag damage" applied by whip weapons. Wraith, Reaper, CultistBoss, the Celestial Pillars, The Destroyer, and the Martian Saucer Turret/Cannon/Core are examples of NPC that use this setting.<br/><br/>
-		/// Modders can specify specific buffs to not be immune to by assigning <see cref="SpecificDebuffImmunity"/> to false.
+		/// Modders can specify specific buffs to be vulnerable to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
 		public static bool[] DefaultDebuffImmunity; // derived from DebuffImmunitySets
 
