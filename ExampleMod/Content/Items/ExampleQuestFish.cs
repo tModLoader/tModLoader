@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -8,7 +7,6 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 2;
-			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true; // All vanilla fish can be placed in a weapon rack.
 		}
 
 		public override void SetDefaults() {

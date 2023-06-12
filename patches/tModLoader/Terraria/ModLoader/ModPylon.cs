@@ -79,21 +79,23 @@ public abstract class ModPylon : ModTile
 	}
 
 	/// <summary>
-	/// Creates the npc shop entry which will be registered to the shops of all NPCs which can sell pylons. <br/>
-	/// Override this to change the sold item type, or alter the conditions of sale. <br/>
-	/// Return null to prevent automatically registering this pylon in shops. <br/>
-	/// By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero item drop.<br/>
-	/// <br/>
-	/// The standard pylon conditions are <see cref="Condition.HappyEnoughToSellPylons"/>, <see cref="Condition.AnotherTownNPCNearby"/>, <see cref="Condition.NotInEvilBiome"/>
+	/// Whether or not this Pylon should be sold by the specified NPC type and with the given player.
+	/// This should return the ITEM TYPE of the item that places this ModPylon, if one exists. If you don't
+	/// want anything to be put up for sale, return null.
+	/// <br>
+	/// Returns null by default.
+	/// </br>
 	/// </summary>
-	public virtual NPCShop.Entry GetNPCShopEntry()
+	/// <param name="npcType"> The type of the NPC currently being spoken to to determine the shop of. </param>
+	/// <param name="player"> The current player asking said NPC type what they have for sale. </param>
+	/// <param name="isNPCHappyEnough">
+	/// Whether or not this NPC is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness.
+	/// For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
+	/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code> 
+	/// </param>
+	public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough)
 	{
-		// TODO: Handle this correctly once pylons support multiple styles.
-		int drop = TileLoader.GetItemDropFromTypeAndStyle(Type);
-		if (drop == 0)
-			return null;
-
-		return new NPCShop.Entry(drop, Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome);
+		return null;
 	}
 
 	/// <summary>
@@ -252,7 +254,6 @@ public abstract class ModPylon : ModTile
 			return true;
 		}
 
-		WorldGen.KillTile_DropItems(i, j, tileSafely, includeLargeObjectDrops: true, includeAllModdedLargeObjectDrops: true); // include all drops.
 		KillMultiTile(topLeftX, topLeftY, tileSafely.TileFrameX, tileSafely.TileFrameY);
 		WorldGen.destroyObject = true;
 		for (int x = topLeftX; x < rightX; x++) {

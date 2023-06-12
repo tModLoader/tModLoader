@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using System;
 
 namespace Terraria.ModLoader;
 
@@ -29,10 +30,23 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	protected sealed override void Register()
 	{
-		base.Register();
+		ModTypeLookup<GlobalItem>.Register(this);
+
+		Index = (ushort)ItemLoader.globalItems.Count;
+
+		ItemLoader.globalItems.Add(this);
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
+
+	public GlobalItem Instance(Item item) => Instance(item.globalItems, Index);
+
+	/// <summary>
+	/// Allows you to set the properties of any and every item that gets created.
+	/// </summary>
+	public virtual void SetDefaults(Item item)
+	{
+	}
 
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
@@ -221,7 +235,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
+	/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
 	/// </summary>
 	/// <param name="item">The item being researched</param>
 	public virtual bool CanResearch(Item item)
@@ -230,7 +244,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to create custom behavior when an item is accepted by the Research function 
+	/// Allows you to create custom behaviour when an item is accepted by the Research function 
 	/// </summary>
 	/// <param name="item">The item being researched</param>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
@@ -473,33 +487,16 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
-	/// Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
+	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
 	/// </summary>
-	/// <param name="item">The weapon item the player is holding.</param>
-	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
-	/// <param name="player">The player wielding this item.</param>
-	/// <param name="target">The target npc.</param>
-	/// <returns>
-	/// Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default.
-	/// </returns>
-	public virtual bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target)
-	{
-		return null;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC. <br/>
-	/// This method is only called on the on the client of the player holding the weapon. <br/>
-	/// </summary>
-	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
+	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
 	/// </summary>
-	public virtual void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
+	public virtual void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
 	{
 	}
 
@@ -514,15 +511,14 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
 	/// </summary>
-	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
+	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a melee weapon hits a player. <br/>
-	/// Called on local, server and remote clients. <br/>
+	/// Allows you to create special effects when a melee weapon hits a player.
 	/// </summary>
-	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
+	public virtual void OnHitPvp(Item item, Player player, Player target, int damage, bool crit)
 	{
 	}
 
@@ -575,18 +571,11 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item is in the player's inventory. This should NOT be used for information accessories;
-	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
+	/// Allows you to make things happen when an item is in the player's inventory (for example, how the cell phone makes information display).
 	/// </summary>
 	public virtual void UpdateInventory(Item item, Player player)
 	{
 	}
-
-	/// <summary>
-	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
-	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
-	/// </summary>
-	public virtual void UpdateInfoAccessory(Item item, Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to armors and accessories, such as increased damage.
@@ -724,7 +713,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to add and modify the loot items that spawn from bag items when opened.
-	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
 	/// <br/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
 	/// <br/> This hook is not instanced.
 	/// </summary>
@@ -766,7 +755,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
 	public virtual void OnStack(Item destination, Item source, int numToTransfer)
 	{
 	}
@@ -796,19 +785,12 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
+	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool CanReforge(Item item)
+	public virtual bool PreReforge(Item item)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
-	/// </summary>
-	public virtual void PreReforge(Item item)
-	{
 	}
 
 	/// <summary>
@@ -987,7 +969,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.
 	/// </summary>
-	/// <param name="item">The item that is attempting to equip.</param>
+	/// <param name="item">The item that is attepting to equip.</param>
 	/// <param name="player">The player.</param>
 	/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
 	/// <param name="modded">If the inventory slot index is for modded slots.</param>
@@ -1051,8 +1033,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
-	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
+	/// This is essentially the same as Mod.AddRecipes or ModItem.AddRecipes. Use whichever method makes organizational sense for your mod.
 	/// </summary>
 	public virtual void AddRecipes()
 	{

@@ -3,20 +3,16 @@ using ExampleMod.Common.Players;
 using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
-	// Holding this item will cause the ExampleResourceBar UI to show, displaying the player's custom resource amounts tracked in ExampleResourcePlayer.
 	public class ExampleCustomResourceWeapon : ModItem
 	{
 		private int exampleResourceCost; // Add our custom resource cost
 
-		public static LocalizedText UsesXExampleResourceText { get; private set; }
-
 		public override void SetStaticDefaults() {
-			UsesXExampleResourceText = this.GetLocalization("UsesXExampleResource");
+			Item.ResearchUnlockCount = 1;
 		}
 
 		public override void SetDefaults() {
@@ -40,23 +36,19 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			tooltips.Add(new TooltipLine(Mod, "ExampleResourceCost", UsesXExampleResourceText.Format(exampleResourceCost)));
+			tooltips.Add(new TooltipLine(Mod, "Example Resource Cost", $"Uses {exampleResourceCost} example resource"));
 		}
 
 		// Make sure you can't use the item if you don't have enough resource
 		public override bool CanUseItem(Player player) {
 			var exampleResourcePlayer = player.GetModPlayer<ExampleResourcePlayer>();
 
-			return exampleResourcePlayer.exampleResourceCurrent >= exampleResourceCost;
-		}
+			if (exampleResourcePlayer.exampleResourceCurrent >= exampleResourceCost) {
+				exampleResourcePlayer.exampleResourceCurrent -= exampleResourceCost;
+				return true;
+			}
 
-		// Reduce resource on use
-		public override bool? UseItem(Player player) {
-			var exampleResourcePlayer = player.GetModPlayer<ExampleResourcePlayer>();
-
-			exampleResourcePlayer.exampleResourceCurrent -= exampleResourceCost;
-
-			return true;
+			return false;
 		}
 
 		public override void AddRecipes() {

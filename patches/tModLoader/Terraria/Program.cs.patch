@@ -92,7 +92,7 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,56 @@
+@@ -147,23 +_,74 @@
  		}
  	}
  
@@ -136,8 +136,26 @@
 -#endif
 +		bool isServer = LaunchParameters.ContainsKey("-server");
 +
-+		StartupSequenceTml(isServer);
-+		
++		try {
++			ControlledFolderAccessSupport.CheckFileSystemAccess();
++			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
++
++			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
++				throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
++		}
++		catch (Exception e) {
++			ErrorReporting.FatalExit("Failed to init logging", e);
++		}
++
++		try {
++			SetSavePath(); // Needs to run before Logging.LogStartup due to DeveloperMode check in ModCompile
++			Logging.LogStartup(isServer);
++		}
++		catch (Exception e) {
++			ErrorReporting.FatalExit("Failed to handle save data", e);
++		}
++
++		AttemptSupportHighDPI(isServer);
 +		LaunchGame_(isServer);
 +	}
 +

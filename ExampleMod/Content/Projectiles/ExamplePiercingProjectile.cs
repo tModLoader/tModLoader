@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Projectiles
 	// Projectiles, however, provide mechanisms for custom immunity.
 	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the npc's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
 	//	Ex: Wooden Arrow.
-	// 2. No code and penetrate > 1, penetrate == -1, or (appliesImmunityTimeOnSingleHits && penetrate == 1): npc.immune[owner] will be set to 10.
+	// 2. No code and penetrate > 1 or -1: npc.immune[owner] will be set to 10.
 	// 	The NPC will be hit if not immune and will become immune to all damage for 10 ticks
 	// 	Ex: Unholy Arrow
 	// 3. Override OnHitNPC: If not immune, when it hits it manually set an immune other than 10
@@ -53,11 +53,11 @@ namespace ExampleMod.Content.Projectiles
 			// 2b: Projectile.penetrate = 3; // Same, but max 3 hits before dying
 			// 5: Projectile.usesLocalNPCImmunity = true;
 			// 5a: Projectile.localNPCHitCooldown = -1; // 1 hit per npc max
-			// 5b: Projectile.localNPCHitCooldown = 20; // 20 ticks before the same npc can be hit again
+			// 5b: Projectile.localNPCHitCooldown = 20; // up to 20 hits
 		}
 
 		// See comments at the beginning of the class
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
 			// 3a: target.immune[Projectile.owner] = 20;
 			// 3b: target.immune[Projectile.owner] = 5;
 		}
@@ -67,6 +67,10 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExamplePiercingProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
+
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);

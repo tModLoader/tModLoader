@@ -30,7 +30,7 @@ namespace ExampleMod.Common.Systems
 		public PosData<byte>[] myMap;
 
 		// Next, we ensure we initialize the map on world load to an empty map.
-		public override void ClearWorld() {
+		public override void OnWorldLoad() {
 			myMap = new PosData<byte>[0];
 		}
 
@@ -56,6 +56,11 @@ namespace ExampleMod.Common.Systems
 				));
 			}
 			myMap = list.ToArray();
+		}
+
+		public override void OnWorldUnload() {
+			// We discard our map after unloading, because we don't need it anymore.
+			myMap = null;
 		}
 
 		// We define what we want to generate as additional location data, for this example, in PostWorldGen.

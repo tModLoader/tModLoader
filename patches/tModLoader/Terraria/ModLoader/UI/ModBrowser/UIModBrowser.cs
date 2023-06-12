@@ -197,13 +197,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		UpdateNeeded = false;
 		if (!Loading) _backgroundElement.RemoveChild(_loaderElement);
 		ModList.Clear();
-
-		// @WARN: Clear up mod icon request status, this should be in the UI element, not in the ModDownloadItem
-		// (but this will be nuked by the paginated browser so it's ok as a fix)
-		foreach (var item in _items) {
-			item.ModDownload.ModIconStatus = ModIconStatus.UNKNOWN;
-		}
-
 		ModList.AddRange(_items.Where(item => item.PassFilters()));
 		bool hasNoModsFoundNotif = ModList.HasChild(NoModsFoundText);
 		if (ModList.Count <= 0 && !hasNoModsFoundNotif)
@@ -231,18 +224,20 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		Loading = true;
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
-		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
+		_reloadButton.SetText(Language.GetTextValue("tModLoader.MBGettingData"));
 		_backgroundElement.Append(_loaderElement);
-		SetHeading(Language.GetText("tModLoader.MenuModBrowser"));
+		SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 
 		// Remove old data
+		ModList.Clear();
 		_items.Clear();
-		
+		ModList.Deactivate();
+
 		// Asynchronous load the Mod Browser
 		Task.Run(() => {
 			InnerPopulateModBrowser(uiOnly: uiOnly);
 			Loading = false;
-			_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));
+			_reloadButton.SetText(Language.GetTextValue("tModLoader.MBReloadBrowser"));
 		});
 	}
 
@@ -288,7 +283,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void SetHeading(LocalizedText heading)
+	private void SetHeading(string heading)
 	{
 		HeaderTextPanel.SetText(heading, 0.8f, true);
 		HeaderTextPanel.Recalculate();

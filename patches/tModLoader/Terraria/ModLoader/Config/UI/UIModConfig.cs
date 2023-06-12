@@ -15,7 +15,6 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
-using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -45,7 +44,7 @@ internal class UIModConfig : UIState
 	private Mod mod;
 	private List<ModConfig> modConfigs;
 	private ModConfig modConfig; // This is from ConfigManager.Configs
-	internal ModConfig pendingConfig; // the clone we modify.
+	private ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
 	private bool openedFromConfigList = false;
@@ -389,7 +388,7 @@ internal class UIModConfig : UIState
 		base.Draw(spriteBatch);
 
 		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.TooltipMouseText(Tooltip);
+			UICommon.DrawHoverStringInBounds(spriteBatch, Tooltip, GetDimensions().ToRectangle());
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
@@ -432,7 +431,7 @@ internal class UIModConfig : UIState
 
 		SetMessage("", Color.White);
 
-		string configDisplayName = modConfig.DisplayName.Value;
+		string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
 
 		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + " - " + configDisplayName);
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
@@ -487,10 +486,15 @@ internal class UIModConfig : UIState
 			if (variable.IsProperty && variable.Name == "Mode")
 				continue;
 
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 				continue;
 
-			HandleHeader(mainConfigList, ref top, ref order, variable);
+			HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
+
+			if (header != null) {
+				var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+				WrapIt(mainConfigList, ref top, wrapper, header, order++);
+			}
 
 			WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
 		}
@@ -508,7 +512,7 @@ internal class UIModConfig : UIState
 		UIElement e;
 
 		// TODO: Other common structs? -- Rectangle, Point
-		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
+		var customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
 
 		if (customUI != null) {
 			Type customUIType = customUI.Type;
@@ -563,7 +567,7 @@ internal class UIModConfig : UIState
 			e = new UIntElement();
 		}
 		else if (type == typeof(int)) {
-			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
+			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttribute<SliderAttribute>(memberInfo, item, list);
 
 			if (sliderAttribute != null)
 				e = new IntRangeElement();
@@ -571,7 +575,7 @@ internal class UIModConfig : UIState
 				e = new IntInputElement();
 		}
 		else if (type == typeof(string)) {
-			OptionStringsAttribute ost = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
+			OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, list);
 			if (ost != null)
 				e = new StringOptionElement();
 			else
@@ -666,7 +670,7 @@ internal class UIModConfig : UIState
 		uIPanel.CopyStyle(Interface.modConfig.uIPanel);
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
-		BackgroundColorAttribute bca = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, subitem, null);
+		BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
 
 		if (bca != null) {
 			uIPanel.BackgroundColor = bca.Color;
@@ -690,7 +694,7 @@ internal class UIModConfig : UIState
 		uIPanel.Append(uIScrollbar);
 		separateList.SetScrollbar(uIScrollbar);
 
-		string name = ConfigManager.GetLocalizedLabel(memberInfo);
+		string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
 		if (index != -1)
 			name = name + " #" + (index + 1);
 		Interface.modConfig.subPageStack.Push(name);
@@ -764,10 +768,15 @@ internal class UIModConfig : UIState
 			}
 
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
 					continue;
 
-				HandleHeader(separateList, ref top, ref order, variable);
+				HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
+
+				if (header != null) {
+					var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+					WrapIt(separateList, ref top, wrapper, header, order++);
+				}
 
 				WrapIt(separateList, ref top, variable, subitem, order++);
 			}
@@ -779,16 +788,6 @@ internal class UIModConfig : UIState
 
 		Interface.modConfig.subPageStack.Pop();
 		return uIPanel;
-	}
-
-	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
-	{
-		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
-
-		if (header != null) {
-			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-			WrapIt(parent, ref top, wrapper, header, order++);
-		}
 	}
 
 	internal static void SwitchToSubConfig(UIPanel separateListPanel)

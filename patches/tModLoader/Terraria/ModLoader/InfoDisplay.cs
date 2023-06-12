@@ -1,5 +1,4 @@
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
@@ -21,11 +20,6 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	public static InfoDisplay DepthMeter { get; private set; } = new DepthMeterInfoDisplay();
 
 	/// <summary>
-	/// The color when no valuable information is displayed
-	/// </summary>
-	public static Color InactiveInfoTextColor => new(100, 100, 100, Main.mouseTextColor);
-
-	/// <summary>
 	/// This is the internal ID of this InfoDisplay.
 	/// </summary>
 	public int Type { get; internal set; }
@@ -44,10 +38,8 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// This is the value that will show up when viewing this display in normal play, right next to the icon.
-	/// <br/>Set <paramref name="displayColor"/> to <see cref="InactiveInfoTextColor"/> if your display value is "zero"/shows no valuable information.
 	/// </summary>
-	/// <param name="displayColor">The color the text is displayed as.</param>
-	public abstract string DisplayValue(ref Color displayColor);
+	public abstract string DisplayValue();
 
 	public sealed override void SetupContent()
 	{

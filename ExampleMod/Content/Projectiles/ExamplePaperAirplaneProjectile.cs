@@ -155,13 +155,5 @@ namespace ExampleMod.Content.Projectiles
 				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, ModContent.DustType<Dusts.Sparkle>());
 			}
 		}
-
-		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			if (target.type == NPCID.GraniteGolem) {
-				// Paper beats Rock!
-				// Use FinalDamage since the projectile isn't conceptually stronger, the target is weaker to this weapon.
-				modifiers.FinalDamage *= 20f; // 20x damage...isn't much since defense is high and damage is low.
-			}
-		}
 	}
 }

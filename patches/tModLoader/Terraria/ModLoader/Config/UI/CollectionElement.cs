@@ -33,12 +33,12 @@ internal abstract class CollectionElement : ConfigElement
 	{
 		base.OnBind();
 
-		var expandAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ExpandAttribute>(MemberInfo, Item, List);
+		var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
 		if (expandAttribute != null)
 			expanded = expandAttribute.Expand;
 
 		Data = MemberInfo.GetValue(Item);
-		DefaultListValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<DefaultListValueAttribute>(MemberInfo, null, null);
+		DefaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(MemberInfo, null, null);
 
 		MaxHeight.Set(300, 0f);
 		DataListElement = new UIElement();

@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Biomes;
-using Terraria.GameContent.Personalities;
+﻿using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,8 +11,6 @@ namespace ExampleMod.Common.GlobalNPCs
 			var guideHappiness = NPCHappiness.Get(NPCID.Guide); // Get the key into The Guide's happiness
 
 			guideHappiness.SetNPCAffection(examplePersonType, AffectionLevel.Love); // Make the Guide love ExamplePerson!
-
-			guideHappiness.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love);  // Make the Guide love ExampleSurfaceBiome!
 		}
 	}
 }

@@ -8,6 +8,10 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 {
 	public class ExampleLightPetItem : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.damage = 0;
 			Item.useStyle = ItemUseStyleID.Swing;

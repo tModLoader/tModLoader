@@ -143,10 +143,18 @@ namespace ExampleMod.Content.Tiles
 			// Above code works, but since we are just mimicking another tile, we can just use the same value
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
 		}
+
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
+		}
 	}
 
 	internal class ExampleAnimatedTileItem : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FireflyinaBottle);
 			Item.createTile = ModContent.TileType<ExampleAnimatedTile>();

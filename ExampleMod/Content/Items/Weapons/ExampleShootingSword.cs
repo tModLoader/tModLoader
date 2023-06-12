@@ -13,6 +13,10 @@ namespace ExampleMod.Content.Items.Weapons
 	/// </summary>
 	public class ExampleShootingSword : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.width = 26;
 			Item.height = 42;

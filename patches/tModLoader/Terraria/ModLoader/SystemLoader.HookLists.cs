@@ -20,22 +20,15 @@ namespace Terraria.ModLoader;
 
 partial class SystemLoader
 {
-	internal class HookList
+	private class HookList
 	{
 		public readonly MethodInfo method;
-		private ModSystem[] arr = Array.Empty<ModSystem>();
+
+		public ModSystem[] arr = new ModSystem[0];
 
 		public HookList(MethodInfo method)
 		{
 			this.method = method;
-		}
-
-		// Sadly, returning ReadOnlySpan<T>.Enumerator from a GetEnumerator() method doesn't bring the same performance
-		public ReadOnlySpan<ModSystem> Enumerate() => arr;
-
-		public void Update(IEnumerable<ModSystem> systems)
-		{
-			arr = systems.WhereMethodIsOverridden(method).ToArray();
 		}
 	}
 
@@ -44,14 +37,16 @@ partial class SystemLoader
 	private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate
 	{
 		var hook = new HookList(func.ToMethodInfo());
+
 		hooks.Add(hook);
+
 		return hook;
 	}
 
 	private static void RebuildHooks()
 	{
 		foreach (var hook in hooks) {
-			hook.Update(Systems);
+			hook.arr = Systems.WhereMethodIsOverridden(hook.method).ToArray();
 		}
 	}
 
@@ -79,11 +74,15 @@ partial class SystemLoader
 
 	private static HookList HookOnLocalizationsLoaded = AddHook<Action>(s => s.OnLocalizationsLoaded);
 
+	private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
+
+	private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);
+
+	private static HookList HookAddRecipeGroups = AddHook<Action>(s => s.AddRecipeGroups);
+
 	private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
 	private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
-
-	private static HookList HookClearWorld = AddHook<Action>(s => s.ClearWorld);
 
 	private static HookList HookCanWorldBePlayed = AddHook<Func<PlayerFileData, WorldFileData, bool>>(s => s.CanWorldBePlayed);
 
@@ -141,7 +140,7 @@ partial class SystemLoader
 
 	private static HookList HookPostUpdateEverything = AddHook<Action>(s => s.PostUpdateEverything);
 
-	private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>>(s => s.ModifyInterfaceLayers);
+	private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>> (s => s.ModifyInterfaceLayers);
 
 	private static HookList HookModifyGameTipVisibility = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTipVisibility);
 
@@ -170,7 +169,4 @@ partial class SystemLoader
 	private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);
 
 	private static HookList HookHijackSendData = AddHook<Func<int, int, int, int, NetworkText, int, float, float, float, int, int, int, bool>>(s => s.HijackSendData);
-
-	internal static HookList HookNetSend = AddHook<Action<BinaryWriter>>(s => s.NetSend);
-	internal static HookList HookNetReceive = AddHook<Action<BinaryReader>>(s => s.NetReceive);
 }

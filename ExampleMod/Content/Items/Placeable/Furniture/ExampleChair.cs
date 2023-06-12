@@ -5,6 +5,10 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleChair : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleChair>());
 			Item.width = 12;

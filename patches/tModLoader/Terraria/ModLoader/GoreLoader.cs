@@ -65,7 +65,7 @@ public static class GoreLoader
 		Array.Resize(ref TextureAssets.Gore, GoreCount);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(GoreID));
+		LoaderUtils.ResetStaticMembers(typeof(GoreID), true);
 		Array.Resize(ref ChildSafety.SafeGore, GoreCount);
 
 		for (int k = GoreID.Count; k < GoreCount; k++) {

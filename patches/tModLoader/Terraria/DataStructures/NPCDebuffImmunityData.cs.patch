@@ -1,35 +1,12 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/NPCDebuffImmunityData.cs
 +++ src/tModLoader/Terraria/DataStructures/NPCDebuffImmunityData.cs
-@@ -1,17 +_,36 @@
+@@ -1,4 +_,5 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.DataStructures;
  
-+/// <summary>
-+/// Determines the default debuff immunities of an <see cref="NPC"/>.
-+/// </summary>
- public class NPCDebuffImmunityData
- {
-+	/// <summary>
-+	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
-+	/// </summary>
- 	public bool ImmuneToWhips;
-+
-+	/// <summary>
-+	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all non-whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
-+	/// </summary>
- 	public bool ImmuneToAllBuffsThatAreNotWhips;
-+
-+	/// <summary>
-+	/// This NPC type (<see cref="NPC.type"/>) will be immune to all <see cref="BuffID"/>s in this array.
-+	/// </summary>
- 	public int[] SpecificallyImmuneTo;
- 
-+	/// <summary>
-+	/// Sets up <see cref="NPC.buffImmune"/> to be immune to the stored buffs.
-+	/// </summary>
-+	/// <param name="npc">The NPC to apply immunities to.</param>
+@@ -11,7 +_,7 @@
  	public void ApplyToNPC(NPC npc)
  	{
  		if (ImmuneToWhips || ImmuneToAllBuffsThatAreNotWhips) {

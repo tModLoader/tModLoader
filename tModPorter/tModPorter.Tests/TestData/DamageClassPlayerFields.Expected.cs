@@ -16,7 +16,6 @@ public class DamageClassPlayerFields : ModPlayer {
 		Player.GetDamage(DamageClass.Magic) += 2;
 		Player.GetDamage(DamageClass.Summon) += 0.1f;
 		Player.GetDamage(DamageClass.Throwing) += 0.1f;
-		Player.specialistDamage += 0.3f;
 
 		Player.GetDamage(DamageClass.Generic) *= 0.08f;
 		Player.GetDamage(DamageClass.Melee) *= 0.08f;

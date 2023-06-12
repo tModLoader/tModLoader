@@ -6,6 +6,10 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleToilet : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleToilet>());
 			Item.width = 16;

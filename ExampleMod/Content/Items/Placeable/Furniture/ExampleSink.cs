@@ -5,6 +5,10 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 {
 	public class ExampleSink : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleSink>());
 			Item.width = 24;

@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
-using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalProjectile>;
+using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalProjectile>;
 
 namespace Terraria.ModLoader;
 
@@ -20,30 +21,40 @@ namespace Terraria.ModLoader;
 /// </summary>
 public static class ProjectileLoader
 {
-	public static int ProjectileCount { get; private set; } = ProjectileID.Count;
-	private static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
+	internal static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
+	internal static readonly List<GlobalProjectile> globalProjectiles = new();
 
+	private static int nextProjectile = ProjectileID.Count;
 	private static readonly List<HookList> hooks = new();
 	private static readonly List<HookList> modHooks = new();
 
 	private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func) where F : Delegate
 	{
 		var hook = HookList.Create(func);
+
 		hooks.Add(hook);
+
 		return hook;
 	}
 
 	public static T AddModHook<T>(T hook) where T : HookList
 	{
+		hook.Update(globalProjectiles);
+
 		modHooks.Add(hook);
+
 		return hook;
 	}
 
-	internal static int Register(ModProjectile projectile)
+	internal static int ReserveProjectileID()
 	{
-		projectiles.Add(projectile);
-		return ProjectileCount++;
+		if (ModNet.AllowVanillaClients)
+			throw new Exception("Adding projectiles breaks vanilla client compatibility");
+
+		return nextProjectile++;
 	}
+
+	public static int ProjectileCount => nextProjectile;
 
 	/// <summary>
 	/// Gets the ModProjectile template instance corresponding to the specified type (not the clone/new instance which gets added to Projectiles as the game is played).
@@ -54,62 +65,51 @@ public static class ProjectileLoader
 	{
 		return type >= ProjectileID.Count && type < ProjectileCount ? projectiles[type - ProjectileID.Count] : null;
 	}
-
-	internal static void ResizeArrays(bool unloading)
+	//change initial size of Terraria.Player.ownedProjectileCounts to ProjectileLoader.ProjectileCount()
+	internal static void ResizeArrays()
 	{
-		if (!unloading)
-			GlobalList<GlobalProjectile>.FinishLoading(ProjectileCount);
-
 		//Textures
-		Array.Resize(ref TextureAssets.Projectile, ProjectileCount);
+		Array.Resize(ref TextureAssets.Projectile, nextProjectile);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(ProjectileID));
+		LoaderUtils.ResetStaticMembers(typeof(ProjectileID), true);
 
 		//Etc
-		Array.Resize(ref Main.projHostile, ProjectileCount);
-		Array.Resize(ref Main.projHook, ProjectileCount);
-		Array.Resize(ref Main.projFrames, ProjectileCount);
-		Array.Resize(ref Main.projPet, ProjectileCount);
-		Array.Resize(ref Lang._projectileNameCache, ProjectileCount);
+		Array.Resize(ref Main.projHostile, nextProjectile);
+		Array.Resize(ref Main.projHook, nextProjectile);
+		Array.Resize(ref Main.projFrames, nextProjectile);
+		Array.Resize(ref Main.projPet, nextProjectile);
+		Array.Resize(ref Lang._projectileNameCache, nextProjectile);
 
-		for (int k = ProjectileID.Count; k < ProjectileCount; k++) {
+		for (int k = ProjectileID.Count; k < nextProjectile; k++) {
 			Main.projFrames[k] = 1;
 			Lang._projectileNameCache[k] = LocalizedText.Empty;
 		}
 
-		Array.Resize(ref Projectile.perIDStaticNPCImmunity, ProjectileCount);
+		Array.Resize(ref Projectile.perIDStaticNPCImmunity, nextProjectile);
 
-		for (int i = 0; i < ProjectileCount; i++) {
+		for (int i = 0; i < nextProjectile; i++) {
 			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
+		}
+
+		foreach (var hook in hooks.Union(modHooks)) {
+			hook.Update(globalProjectiles);
 		}
 	}
 
 	internal static void FinishSetup()
 	{
-		GlobalLoaderUtils<GlobalProjectile, Projectile>.BuildTypeLookups(new Projectile().SetDefaults);
-		UpdateHookLists();
-		GlobalTypeLookups<GlobalProjectile>.LogStats();
-
-		foreach (ModProjectile proj in projectiles) {
+		foreach (ModProjectile proj in ProjectileLoader.projectiles) {
 			Lang._projectileNameCache[proj.Type] = proj.DisplayName;
-		}
-	}
-
-	private static void UpdateHookLists()
-	{
-		foreach (var hook in hooks.Union(modHooks)) {
-			hook.Update();
 		}
 	}
 
 	internal static void Unload()
 	{
-		ProjectileCount = ProjectileID.Count;
 		projectiles.Clear();
-		GlobalList<GlobalProjectile>.Reset();
+		nextProjectile = ProjectileID.Count;
+		globalProjectiles.Clear();
 		modHooks.Clear();
-		UpdateHookLists();
 	}
 
 	internal static bool IsModProjectile(Projectile projectile)
@@ -117,13 +117,21 @@ public static class ProjectileLoader
 		return projectile.type >= ProjectileID.Count;
 	}
 
+	private static HookList HookSetDefaults = AddHook<Action<Projectile>>(g => g.SetDefaults);
+
 	internal static void SetDefaults(Projectile projectile, bool createModProjectile = true)
 	{
 		if (IsModProjectile(projectile) && createModProjectile) {
 			projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 		}
 
-		GlobalLoaderUtils<GlobalProjectile, Projectile>.SetDefaults(projectile, ref projectile._globals, static e => e.ModProjectile?.SetDefaults());
+		LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, () => {
+			projectile.ModProjectile?.SetDefaults();
+		});
+
+		foreach (GlobalProjectile g in HookSetDefaults.Enumerate(projectile.globalProjectiles)) {
+			g.SetDefaults(projectile);
+		}
 	}
 
 	private static HookList HookOnSpawn = AddHook<Action<Projectile, IEntitySource>>(g => g.OnSpawn);
@@ -132,11 +140,11 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.OnSpawn(source);
 
-		foreach (var g in HookOnSpawn.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile.globalProjectiles)) {
 			g.OnSpawn(projectile, source);
 		}
 	}
-
+	
 	//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 	public static void ProjectileAI(Projectile projectile)
 	{
@@ -161,7 +169,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (var g in HookPreAI.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookPreAI.Enumerate(projectile.globalProjectiles)) {
 			result &= g.PreAI(projectile);
 		}
 
@@ -178,7 +186,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.AI();
 
-		foreach (var g in HookAI.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookAI.Enumerate(projectile.globalProjectiles)) {
 			g.AI(projectile);
 		}
 	}
@@ -189,7 +197,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.PostAI();
 
-		foreach (var g in HookPostAI.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookPostAI.Enumerate(projectile.globalProjectiles)) {
 			g.PostAI(projectile);
 		}
 	}
@@ -203,7 +211,7 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookSendExtraAI = AddHook<Action<Projectile, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
+	private static HookList HookWriteExtraAI = AddHook<Action<Projectile, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
 	public static byte[] WriteExtraAI(Projectile projectile)
 	{
@@ -217,12 +225,17 @@ public static class ProjectileLoader
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (var g in HookSendExtraAI.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile.globalProjectiles)) {
 			g.SendExtraAI(projectile, bitWriter, globalWriter);
 		}
 
 		bitWriter.Flush(modWriter);
+
 		modWriter.Write(bufferedStream.ToArray());
+
+		globalWriter.Flush();
+
+		modWriter.Flush();
 
 		return stream.ToArray();
 	}
@@ -243,9 +256,8 @@ public static class ProjectileLoader
 
 		BitReader bitReader = new BitReader(modReader);
 
-		bool anyGlobals = false;
 		try {
-			foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
+			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 
@@ -258,13 +270,13 @@ public static class ProjectileLoader
 			}
 		}
 		catch (IOException e) {
-			string message = $"Error in ReceiveExtraAI for Projectile {projectile.ModProjectile?.FullName ?? projectile.Name}";
-			if (anyGlobals) {
-				message += ", may be caused by one of these GlobalNPCs:";
-				foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
-					message += $"\n\t{g.FullName}";
-				}
+			Logging.tML.Error(e.ToString());
+
+			string culprits = $"Above IOException error in projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} may be caused by one of these:";
+			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+				culprits += $"\n    {g.Name}";
 			}
+			Logging.tML.Error(culprits);
 		}
 	}
 
@@ -276,7 +288,7 @@ public static class ProjectileLoader
 			return false;
 		}
 
-		foreach (var g in HookShouldUpdatePosition.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookShouldUpdatePosition.Enumerate(projectile.globalProjectiles)) {
 			if (!g.ShouldUpdatePosition(projectile)) {
 				return false;
 			}
@@ -294,7 +306,7 @@ public static class ProjectileLoader
 			return false;
 		}
 
-		foreach (var g in HookTileCollideStyle.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookTileCollideStyle.Enumerate(projectile.globalProjectiles)) {
 			if (!g.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac)) {
 				return false;
 			}
@@ -309,7 +321,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (var g in HookOnTileCollide.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookOnTileCollide.Enumerate(projectile.globalProjectiles)) {
 			result &= g.OnTileCollide(projectile, oldVelocity);
 		}
 
@@ -324,7 +336,7 @@ public static class ProjectileLoader
 
 	public static bool? CanCutTiles(Projectile projectile)
 	{
-		foreach (var g in HookCanCutTiles.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookCanCutTiles.Enumerate(projectile.globalProjectiles)) {
 			bool? canCutTiles = g.CanCutTiles(projectile);
 
 			if (canCutTiles.HasValue) {
@@ -340,7 +352,7 @@ public static class ProjectileLoader
 	public static void CutTiles(Projectile projectile)
 	{
 
-		foreach (var g in HookCutTiles.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookCutTiles.Enumerate(projectile.globalProjectiles)) {
 			g.CutTiles(projectile);
 		}
 
@@ -353,7 +365,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (var g in HookPreKill.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookPreKill.Enumerate(projectile.globalProjectiles)) {
 			result &= g.PreKill(projectile, timeLeft);
 		}
 
@@ -370,7 +382,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.Kill(timeLeft);
 
-		foreach (var g in HookKill.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookKill.Enumerate(projectile.globalProjectiles)) {
 			g.Kill(projectile, timeLeft);
 		}
 	}
@@ -381,7 +393,7 @@ public static class ProjectileLoader
 	{
 		bool? result = null;
 
-		foreach (var g in HookCanDamage.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookCanDamage.Enumerate(projectile.globalProjectiles)) {
 			bool? canDamage = g.CanDamage(projectile);
 
 			if (canDamage.HasValue) {
@@ -404,7 +416,7 @@ public static class ProjectileLoader
 			return true;
 		}
 
-		foreach (var g in HookMinionContactDamage.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookMinionContactDamage.Enumerate(projectile.globalProjectiles)) {
 			if (g.MinionContactDamage(projectile)) {
 				return true;
 			}
@@ -420,8 +432,20 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.ModifyDamageHitbox(ref hitbox);
 
-		foreach (var g in HookModifyDamageHitbox.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookModifyDamageHitbox.Enumerate(projectile.globalProjectiles)) {
 			g.ModifyDamageHitbox(projectile, ref hitbox);
+		}
+	}
+
+	private delegate void DelegateModifyDamageScaling(Projectile projectile, ref float damageScale);
+	private static HookList HookModifyDamageScaling = AddHook<DelegateModifyDamageScaling>(g => g.ModifyDamageScaling);
+
+	public static void ModifyDamageScaling(Projectile projectile, ref float damageScale)
+	{
+		projectile.ModProjectile?.ModifyDamageScaling(ref damageScale);
+
+		foreach (GlobalProjectile g in HookModifyDamageScaling.Enumerate(projectile.globalProjectiles)) {
+			g.ModifyDamageScaling(projectile, ref damageScale);
 		}
 	}
 
@@ -431,7 +455,7 @@ public static class ProjectileLoader
 	{
 		bool? flag = null;
 
-		foreach (var g in HookCanHitNPC.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookCanHitNPC.Enumerate(projectile.globalProjectiles)) {
 			bool? canHit = g.CanHitNPC(projectile, target);
 
 			if (canHit.HasValue && !canHit.Value) {
@@ -456,26 +480,26 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers);
+	private delegate void DelegateModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection);
 	private static HookList HookModifyHitNPC = AddHook<DelegateModifyHitNPC>(g => g.ModifyHitNPC);
 
-	public static void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
+	public static void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 	{
-		projectile.ModProjectile?.ModifyHitNPC(target, ref modifiers);
+		projectile.ModProjectile?.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
 
-		foreach (var g in HookModifyHitNPC.Enumerate(projectile)) {
-			g.ModifyHitNPC(projectile, target, ref modifiers);
+		foreach (GlobalProjectile g in HookModifyHitNPC.Enumerate(projectile.globalProjectiles)) {
+			g.ModifyHitNPC(projectile, target, ref damage, ref knockback, ref crit, ref hitDirection);
 		}
 	}
 
-	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, NPC.HitInfo, int>>(g => g.OnHitNPC);
+	private static HookList HookOnHitNPC = AddHook<Action<Projectile, NPC, int, float, bool>>(g => g.OnHitNPC);
 
-	public static void OnHitNPC(Projectile projectile, NPC target, in NPC.HitInfo hit, int damageDone)
+	public static void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
 	{
-		projectile.ModProjectile?.OnHitNPC(target, hit, damageDone);
+		projectile.ModProjectile?.OnHitNPC(target, damage, knockback, crit);
 
-		foreach (var g in HookOnHitNPC.Enumerate(projectile)) {
-			g.OnHitNPC(projectile, target, hit, damageDone);
+		foreach (GlobalProjectile g in HookOnHitNPC.Enumerate(projectile.globalProjectiles)) {
+			g.OnHitNPC(projectile, target, damage, knockback, crit);
 		}
 	}
 
@@ -483,7 +507,7 @@ public static class ProjectileLoader
 
 	public static bool CanHitPvp(Projectile projectile, Player target)
 	{
-		foreach (var g in HookCanHitPvp.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookCanHitPvp.Enumerate(projectile.globalProjectiles)) {
 			if (!g.CanHitPvp(projectile, target)) {
 				return false;
 			}
@@ -496,11 +520,34 @@ public static class ProjectileLoader
 		return true;
 	}
 
+	private delegate void DelegateModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit);
+	private static HookList HookModifyHitPvp = AddHook<DelegateModifyHitPvp>(g => g.ModifyHitPvp);
+
+	public static void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
+	{
+		projectile.ModProjectile?.ModifyHitPvp(target, ref damage, ref crit);
+
+		foreach (GlobalProjectile g in HookModifyHitPvp.Enumerate(projectile.globalProjectiles)) {
+			g.ModifyHitPvp(projectile, target, ref damage, ref crit);
+		}
+	}
+
+	private static HookList HookOnHitPvp = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPvp);
+
+	public static void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
+	{
+		projectile.ModProjectile?.OnHitPvp(target, damage, crit);
+
+		foreach (GlobalProjectile g in HookOnHitPvp.Enumerate(projectile.globalProjectiles)) {
+			g.OnHitPvp(projectile, target, damage, crit);
+		}
+	}
+
 	private static HookList HookCanHitPlayer = AddHook<Func<Projectile, Player, bool>>(g => g.CanHitPlayer);
 
 	public static bool CanHitPlayer(Projectile projectile, Player target)
 	{
-		foreach (var g in HookCanHitPlayer.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookCanHitPlayer.Enumerate(projectile.globalProjectiles)) {
 			if (!g.CanHitPlayer(projectile, target)) {
 				return false;
 			}
@@ -513,26 +560,26 @@ public static class ProjectileLoader
 		return true;
 	}
 
-	private delegate void DelegateModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers);
+	private delegate void DelegateModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit);
 	private static HookList HookModifyHitPlayer = AddHook<DelegateModifyHitPlayer>(g => g.ModifyHitPlayer);
 
-	public static void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
+	public static void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
 	{
-		projectile.ModProjectile?.ModifyHitPlayer(target, ref modifiers);
+		projectile.ModProjectile?.ModifyHitPlayer(target, ref damage, ref crit);
 
-		foreach (var g in HookModifyHitPlayer.Enumerate(projectile)) {
-			g.ModifyHitPlayer(projectile, target, ref modifiers);
+		foreach (GlobalProjectile g in HookModifyHitPlayer.Enumerate(projectile.globalProjectiles)) {
+			g.ModifyHitPlayer(projectile, target, ref damage, ref crit);
 		}
 	}
 
-	private static HookList HookOnHitPlayer = AddHook<Action<Projectile, Player, Player.HurtInfo>>(g => g.OnHitPlayer);
+	private static HookList HookOnHitPlayer = AddHook<Action<Projectile, Player, int, bool>>(g => g.OnHitPlayer);
 
-	public static void OnHitPlayer(Projectile projectile, Player target, in Player.HurtInfo hurtInfo)
+	public static void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
 	{
-		projectile.ModProjectile?.OnHitPlayer(target, hurtInfo);
+		projectile.ModProjectile?.OnHitPlayer(target, damage, crit);
 
-		foreach (var g in HookOnHitPlayer.Enumerate(projectile)) {
-			g.OnHitPlayer(projectile, target, hurtInfo);
+		foreach (GlobalProjectile g in HookOnHitPlayer.Enumerate(projectile.globalProjectiles)) {
+			g.OnHitPlayer(projectile, target, damage, crit);
 		}
 	}
 
@@ -540,7 +587,7 @@ public static class ProjectileLoader
 
 	public static bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
 	{
-		foreach (var g in HookColliding.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookColliding.Enumerate(projectile.globalProjectiles)) {
 			bool? colliding = g.Colliding(projectile, projHitbox, targetHitbox);
 
 			if (colliding.HasValue) {
@@ -578,7 +625,7 @@ public static class ProjectileLoader
 
 	public static Color? GetAlpha(Projectile projectile, Color lightColor)
 	{
-		foreach (var g in HookGetAlpha.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookGetAlpha.Enumerate(projectile.globalProjectiles)) {
 			Color? color = g.GetAlpha(projectile, lightColor);
 
 			if (color.HasValue) {
@@ -604,7 +651,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (var g in HookPreDrawExtras.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookPreDrawExtras.Enumerate(projectile.globalProjectiles)) {
 			result &= g.PreDrawExtras(projectile);
 		}
 
@@ -622,7 +669,7 @@ public static class ProjectileLoader
 	{
 		bool result = true;
 
-		foreach (var g in HookPreDraw.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookPreDraw.Enumerate(projectile.globalProjectiles)) {
 			result &= g.PreDraw(projectile, ref lightColor);
 		}
 
@@ -639,7 +686,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.PostDraw(lightColor);
 
-		foreach (var g in HookPostDraw.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookPostDraw.Enumerate(projectile.globalProjectiles)) {
 			g.PostDraw(projectile, lightColor);
 		}
 	}
@@ -650,11 +697,28 @@ public static class ProjectileLoader
 	{
 		bool? flag = GetProjectile(type)?.CanUseGrapple(player);
 
-		foreach (var g in HookCanUseGrapple.Enumerate(type)) {
+		foreach (GlobalProjectile g in HookCanUseGrapple.Enumerate(globalProjectiles)) {
 			bool? canGrapple = g.CanUseGrapple(type, player);
 
 			if (canGrapple.HasValue) {
 				flag = canGrapple;
+			}
+		}
+
+		return flag;
+	}
+
+	private static HookList HookSingleGrappleHook = AddHook<Func<int, Player, bool?>>(g => g.SingleGrappleHook);
+
+	public static bool? SingleGrappleHook(int type, Player player)
+	{
+		bool? flag = GetProjectile(type)?.SingleGrappleHook(player);
+
+		foreach (GlobalProjectile g in HookSingleGrappleHook.Enumerate(globalProjectiles)) {
+			bool? singleHook = g.SingleGrappleHook(type, player);
+
+			if (singleHook.HasValue) {
+				flag = singleHook;
 			}
 		}
 
@@ -668,7 +732,7 @@ public static class ProjectileLoader
 	{
 		GetProjectile(type)?.UseGrapple(player, ref type);
 
-		foreach (var g in HookUseGrapple.Enumerate()) {
+		foreach (GlobalProjectile g in HookUseGrapple.Enumerate(globalProjectiles)) {
 			g.UseGrapple(player, ref type);
 		}
 	}
@@ -685,7 +749,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.NumGrappleHooks(player, ref numHooks);
 
-		foreach (var g in HookNumGrappleHooks.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookNumGrappleHooks.Enumerate(projectile.globalProjectiles)) {
 			g.NumGrappleHooks(projectile, player, ref numHooks);
 		}
 	}
@@ -697,7 +761,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.GrappleRetreatSpeed(player, ref speed);
 
-		foreach (var g in HookGrappleRetreatSpeed.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookGrappleRetreatSpeed.Enumerate(projectile.globalProjectiles)) {
 			g.GrappleRetreatSpeed(projectile, player, ref speed);
 		}
 	}
@@ -709,7 +773,7 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.GrapplePullSpeed(player, ref speed);
 
-		foreach (var g in HookGrapplePullSpeed.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookGrapplePullSpeed.Enumerate(projectile.globalProjectiles)) {
 			g.GrapplePullSpeed(projectile, player, ref speed);
 		}
 	}
@@ -721,29 +785,9 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.GrappleTargetPoint(player, ref grappleX, ref grappleY);
 
-		foreach (var g in HookGrappleTargetPoint.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookGrappleTargetPoint.Enumerate(projectile.globalProjectiles)) {
 			g.GrappleTargetPoint(projectile, player, ref grappleX, ref grappleY);
 		}
-	}
-
-	private static HookList HookGrappleCanLatchOnTo = AddHook<Func<Projectile, Player, int, int, bool?>>(g => g.GrappleCanLatchOnTo);
-
-	public static bool? GrappleCanLatchOnTo(Projectile projectile, Player player, int x, int y)
-	{
-		bool? flag = projectile.ModProjectile?.GrappleCanLatchOnTo(player, x, y);
-
-		foreach (var g in HookGrappleCanLatchOnTo.Enumerate(projectile)) {
-			bool? globalFlag = g.GrappleCanLatchOnTo(projectile, player, x, y);
-
-			if (globalFlag.HasValue) {
-				if (!globalFlag.Value)
-					return false;
-
-				flag = globalFlag;
-			}
-		}
-
-		return flag;
 	}
 
 	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
@@ -752,8 +796,22 @@ public static class ProjectileLoader
 	{
 		projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 
-		foreach (var g in HookDrawBehind.Enumerate(projectile)) {
+		foreach (GlobalProjectile g in HookDrawBehind.Enumerate(projectile.globalProjectiles)) {
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
+		}
+	}
+
+	internal static void VerifyGlobalProjectile(GlobalProjectile projectile)
+	{
+		var type = projectile.GetType();
+
+		bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+			.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalProjectile)));
+
+		if (hasInstanceFields) {
+			if (!projectile.InstancePerEntity) {
+				throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
+			}
 		}
 	}
 }

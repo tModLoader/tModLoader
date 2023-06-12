@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Terraria.ModLoader.IO;
 
@@ -13,10 +12,11 @@ public class UnloadedGlobalItem : GlobalItem
 
 	public override void SaveData(Item item, TagCompound tag)
 	{
-		throw new NotSupportedException("UnloadedGlobalItem data is meant to be flattened and saved transparently via ItemIO");
+		if (data.Count > 0) {
+			tag["modData"] = data;
+		}
 	}
 
-	// Unloaded globals aren't meant to save themselves, but we keep this to let us unpack legacy unloaedd globals items which did save themselves
 	public override void LoadData(Item item, TagCompound tag)
 	{
 		if (tag.ContainsKey("modData")) {

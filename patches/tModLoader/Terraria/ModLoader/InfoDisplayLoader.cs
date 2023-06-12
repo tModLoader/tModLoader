@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
 
@@ -107,13 +107,6 @@ public static class InfoDisplayLoader
 	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
 			global.ModifyDisplayValue(info, ref displayName);
-		}
-	}
-
-	public static void ModifyDisplayColor(InfoDisplay info, ref Color displayColor)
-	{
-		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
-			global.ModifyDisplayColor(info, ref displayColor);
 		}
 	}
 }

@@ -68,9 +68,9 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(Color.Black, pylonName);
 		}
 
-		public override NPCShop.Entry GetNPCShopEntry() {
+		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
 			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
-			return new NPCShop.Entry(ModContent.ItemType<ExamplePylonItemAdvanced>());
+			return ModContent.ItemType<ExamplePylonItemAdvanced>();
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
@@ -90,6 +90,8 @@ namespace ExampleMod.Content.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			ModContent.GetInstance<AdvancedPylonTileEntity>().Kill(i, j);
+
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}
 
 		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
@@ -162,7 +164,7 @@ namespace ExampleMod.Content.Tiles
 			// otherwise, it acts as normal.
 			drawColor = !entity.isActive ? Color.Gray * 0.5f : drawColor;
 			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1, 1.5f), drawColor, deselectedScale, selectedScale);
-			DefaultMapClickHandle(mouseOver, pylonInfo, ModContent.GetInstance<ExamplePylonItemAdvanced>().DisplayName.Key, ref mouseOverText);
+			DefaultMapClickHandle(mouseOver, pylonInfo, "Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced", ref mouseOverText);
 		}
 	}
 }

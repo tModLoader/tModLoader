@@ -9,9 +9,7 @@ public class NPCSpawnInfoTest
 		var c = info.Invasion;
 		var d = info.Lihzahrd;
 		var e = info.Marble;
-		#if COMPILE_ERROR
-		var f = info.PlanteraDefeated/* tModPorter Note: Removed. Use (NPC.downedPlantBoss && Main.hardMode) instead */;
-		#endif
+		var f = info.PlanteraDefeated;
 		var g = info.Player;
 		var h = info.PlayerFloorX;
 		var i = info.PlayerFloorY;

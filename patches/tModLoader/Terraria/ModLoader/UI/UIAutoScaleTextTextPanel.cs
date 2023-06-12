@@ -21,7 +21,6 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 
 	private Rectangle oldInnerDimensions;
 	private T _text = default;
-	private string oldText;
 	private string[] textStrings;
 	private Vector2[] drawOffsets;
 
@@ -45,7 +44,7 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 	{
 		var innerDimensionsRectangle = GetDimensions().ToRectangle();
 
-		if (text.ToString() != oldText || oldInnerDimensions != innerDimensionsRectangle) {
+		if (text.ToString() != _text?.ToString() || oldInnerDimensions != innerDimensionsRectangle) {
 			oldInnerDimensions = innerDimensionsRectangle;
 
 			TextScaleMax = textScaleMax;
@@ -67,7 +66,6 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			innerDimensionsRectangle.Y += 8;
 			innerDimensionsRectangle.Height -= 8;
 			_text = text;
-			oldText = _text?.ToString();
 			//this.TextScale = textScaleMax;
 			TextSize = textSize;
 			IsLarge = large;

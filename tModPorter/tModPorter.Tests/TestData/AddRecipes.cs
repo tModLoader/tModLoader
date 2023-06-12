@@ -137,9 +137,4 @@ public class ModAddRecipes : Mod
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.AddRecipe();
 	}
-
-	public void NewRecipeMethodConditionRefactors(Recipe recipe) {
-		recipe.AddCondition(Recipe.Condition.TimeDay);
-		recipe.AddCondition(Recipe.Condition.InGraveyardBiome);
-	}
 }

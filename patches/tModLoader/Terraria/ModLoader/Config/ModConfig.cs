@@ -1,6 +1,4 @@
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -13,22 +11,13 @@ namespace Terraria.ModLoader.Config;
 /// Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of ModConfig.
 /// tModLoader also provides its own attributes such as ReloadRequiredAttribute and LabelAttribute.
 /// </summary>
-public abstract class ModConfig : ILocalizedModType
+public abstract class ModConfig
 {
 	[JsonIgnore]
 	public Mod Mod { get; internal set; }
 
 	[JsonIgnore]
 	public string Name { get; internal set; }
-
-	[JsonIgnore]
-	public string FullName => $"{Mod.Name}/{Name}";
-
-	[JsonIgnore]
-	public string LocalizationCategory => "Configs";
-
-	[JsonIgnore]
-	public virtual LocalizedText DisplayName => Language.GetOrRegister(this.GetLocalizationKey(nameof(DisplayName)), () => ConfigManager.GetLegacyLabelAttribute(GetType())?.LocalizationEntry ?? Regex.Replace(Name, "([A-Z])", " $1").Trim());
 
 	[JsonIgnore]
 	public abstract ConfigScope Mode { get; }
@@ -72,7 +61,7 @@ public abstract class ModConfig : ILocalizedModType
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this)) {
-			var reloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(variable, this, null);
+			var reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
 
 			if (reloadRequired == null) {
 				continue;

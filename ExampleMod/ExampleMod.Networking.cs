@@ -12,8 +12,7 @@ namespace ExampleMod
 		internal enum MessageType : byte
 		{
 			ExampleStatIncreasePlayerSync,
-			ExampleTeleportToStatue,
-			ExampleDodge
+			ExampleTeleportToStatue
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -38,9 +37,6 @@ namespace ExampleMod
 						person.StatueTeleport();
 					}
 
-					break;
-				case MessageType.ExampleDodge:
-					ExampleDamageModificationPlayer.HandleExampleDodgeMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

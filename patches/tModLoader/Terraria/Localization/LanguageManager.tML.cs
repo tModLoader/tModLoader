@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using ReLogic.Content.Sources;
 
 namespace Terraria.Localization;
@@ -38,9 +40,8 @@ public partial class LanguageManager
 	{
 		// Matches {$key.subkey.etc}
 		// Optional @n for arg index remapping, eg {$key.subkey.etc@5} to add 5 to all format arg indices
-		Regex referenceRegex = new Regex(@"{\$([\w\.]+)(?:@(\d+))?}", RegexOptions.Compiled);
-		// The arg remapping regex matches both {0} and the pluralization pattern "{^0:item;items}" via positive lookbehind and lookahead
-		Regex argRemappingRegex = new Regex(@"(?<={\^?)(\d+)(?=(?::[^\r\n]+?)?})", RegexOptions.Compiled);
+		Regex referenceRegex = new Regex(@"{\$([\w\.]+)(@\d+)?}", RegexOptions.Compiled);
+		Regex argRemappingRegex = new Regex(@"{(\d+)}", RegexOptions.Compiled);
 
 		// Use depth first processing to handle recursive arg mapping substitutions more easily
 		var processed = new HashSet<LocalizedText>();
@@ -55,7 +56,7 @@ public partial class LanguageManager
 
 				var repl = refText.Value;
 				if (match.Groups[2].Success && int.TryParse(match.Groups[2].Value, out int offset))
-					repl = argRemappingRegex.Replace(repl, match => (int.Parse(match.Groups[1].Value) + offset).ToString());
+					repl = argRemappingRegex.Replace(repl, match => "{" + (int.Parse(match.Groups[1].Value) + offset) + "}");
 
 				return repl;
 			});
@@ -109,7 +110,7 @@ public partial class LanguageManager
 				hash.Add(arg);
 
 			return hash.ToHashCode();
-		}
+}
 	}
 
 	private Dictionary<TextBinding, LocalizedText> boundTextCache = new();
@@ -142,7 +143,6 @@ public partial class LanguageManager
 	private string ComputeBoundTextValue(TextBinding binding)
 	{
 		var value = GetTextValue(binding.key);
-		value = LocalizedText.ApplyPluralization(value, binding.args);
 
 		// TODO, consider if we should do partial binding, shifting the higher args down
 		return string.Format(value, binding.args);

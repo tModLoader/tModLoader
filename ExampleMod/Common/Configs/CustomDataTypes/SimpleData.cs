@@ -8,11 +8,11 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 	[BackgroundColor(255, 7, 7)]
 	public class SimpleData
 	{
-		[Header("FirstHeader")]
+		[Header("Awesome")]
 		public int boost;
 		public float percent;
 
-		[Header("SecondHeader")]
+		[Header("Lame")]
 		public bool enabled;
 
 		[DrawTicks]

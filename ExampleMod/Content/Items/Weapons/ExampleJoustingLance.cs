@@ -7,6 +7,10 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleJoustingLance : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1; // The number of sacrifices that is required to research the item in Journey Mode.
+		}
+
 		public override void SetDefaults() {
 			// A special method that sets a variety of item parameters that make the item act like a spear weapon.
 			// To see everything DefaultToSpear() does, right click the method in Visual Studios and choose "Go To Definition" (or press F12). You can also hover over DefaultToSpear to see the documentation.

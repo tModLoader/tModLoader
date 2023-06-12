@@ -15,6 +15,10 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MaxManaIncrease, MaxMinionIncrease);
 
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item

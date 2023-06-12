@@ -10,6 +10,8 @@ namespace ExampleMod.Content.Items
 	public class ExampleTooltipsItem : ModItem
 	{
 		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(30, 4));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
 

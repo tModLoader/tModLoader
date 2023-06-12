@@ -13,6 +13,56 @@ internal static class RecipeGroupHelper
 		RecipeGroup.nextRecipeGroupIndex = 0;
 	}
 
+	internal static void AddOldVanillaGroups()
+	{
+		RecipeGroup rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.Wood), new int[]
+			{
+				ItemID.Wood,
+				ItemID.Ebonwood,
+				ItemID.RichMahogany,
+				ItemID.Pearlwood,
+				ItemID.Shadewood,
+				ItemID.SpookyWood,
+				ItemID.BorealWood,
+				ItemID.PalmWood
+			});
+		RecipeGroupID.Wood = RecipeGroup.RegisterGroup("Wood", rec);
+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.IronBar), new int[]
+			{
+				ItemID.IronBar,
+				ItemID.LeadBar
+			});
+		RecipeGroupID.IronBar = RecipeGroup.RegisterGroup("IronBar", rec);
+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[38].Value, new int[]
+			{
+				ItemID.RedPressurePlate,
+				ItemID.GreenPressurePlate,
+				ItemID.GrayPressurePlate,
+				ItemID.BrownPressurePlate,
+				ItemID.BluePressurePlate,
+				ItemID.YellowPressurePlate,
+				ItemID.LihzahrdPressurePlate
+			});
+		RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PresurePlate", rec);
+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.SandBlock), new int[]
+			{
+				ItemID.SandBlock,
+				ItemID.PearlsandBlock,
+				ItemID.CrimsandBlock,
+				ItemID.EbonsandBlock,
+				ItemID.HardenedSand
+			});
+		RecipeGroupID.Sand = RecipeGroup.RegisterGroup("Sand", rec);
+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[51].Value, new int[]
+			{
+				ItemID.FragmentSolar,
+				ItemID.FragmentVortex,
+				ItemID.FragmentNebula,
+				ItemID.FragmentStardust
+			});
+		RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
+	}
+
 	internal static void AddRecipeGroups()
 	{
 		var addRecipeGroupsMethod = typeof(Mod).GetMethod(nameof(Mod.AddRecipeGroups), BindingFlags.Instance | BindingFlags.Public)!;

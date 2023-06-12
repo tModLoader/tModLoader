@@ -147,13 +147,11 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 
 	public class MoneyCounterGlobalItem : GlobalItem
 	{
-		public override bool AppliesToEntity(Item item, bool lateInstantiation) {
-			return item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin;
-		}
-
 		public override bool OnPickup(Item item, Player player) {
 			// If we have picked up coins of any type, then we will update the values in exampleCoinsUI
-			ModContent.GetInstance<ExampleCoinsUISystem>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
+			if (item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin)
+				ModContent.GetInstance<ExampleCoinsUISystem>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
+
 			return base.OnPickup(item, player);
 		}
 	}

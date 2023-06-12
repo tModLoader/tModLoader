@@ -16,8 +16,6 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
-			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
-
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
@@ -68,19 +66,6 @@ namespace ExampleMod.Content.NPCs
 			return SpawnCondition.OverworldNightMonster.Chance * 0.2f; // Spawn with 1/5th the chance of a regular zombie.
 		}
 
-		public override void AI() {
-			if (NPC.wet) {
-				if (NPC.honeyWet) { // Removes the effects of honey's fall rate making the NPC fall normally in honey
-					NPC.GravityMultiplier /= NPC.GravityWetMultipliers[LiquidID.Honey];
-					NPC.MaxFallSpeedMultiplier /= NPC.MaxFallSpeedWetMultipliers[LiquidID.Honey];
-				}
-				else if (!NPC.lavaWet && !NPC.shimmerWet) { // Removes water falls speed effects, then adds honey falls speed effects, making the NPC fall at the honey rate in water
-					NPC.GravityMultiplier *= NPC.GravityWetMultipliers[LiquidID.Honey] / NPC.GravityWetMultipliers[LiquidID.Water];
-					NPC.MaxFallSpeedMultiplier *= NPC.MaxFallSpeedWetMultipliers[LiquidID.Honey] / NPC.MaxFallSpeedWetMultipliers[LiquidID.Water];
-				}
-			}
-		}
-
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -97,7 +82,7 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void HitEffect(NPC.HitInfo hit) {
+		public override void HitEffect(int hitDirection, double damage) {
 			// Spawn confetti when this zombie is hit.
 
 			for (int i = 0; i < 10; i++) {
@@ -111,7 +96,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) {
+		public override void OnHitPlayer(Player target, int damage, bool crit) {
 			// Here we can make things happen if this NPC hits a player via its hitbox (not projectiles it shoots, this is handled in the projectile code usually)
 			// Common use is applying buffs/debuffs:
 
@@ -120,14 +105,6 @@ namespace ExampleMod.Content.NPCs
 
 			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
 			target.AddBuff(buffType, timeToAdd);
-		}
-
-		public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
-			if (modifiers.DamageType.CountsAsClass(DamageClass.Magic)) {
-				// This example shows how PartyZombie reduces magic damage by 75%. We use FinalDamage here rather than SourceDamage since we are affecting how the npc reacts to the damage.
-				// Conceptually, the source dealing the damage isn't interpreted as stronger, but rather this NPC has a resistance to this damage source.
-				modifiers.FinalDamage *= 0.25f;
-			}
 		}
 	}
 }

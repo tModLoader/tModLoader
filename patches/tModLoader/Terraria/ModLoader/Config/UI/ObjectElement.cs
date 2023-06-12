@@ -59,7 +59,7 @@ internal class ObjectElement : ConfigElement<object>
 			bool hasToString = MemberInfo.Type.GetMethod("ToString", Array.Empty<Type>()).DeclaringType != typeof(object);
 
 			if (hasToString) {
-				TextDisplayFunction = () => Label + (Value == null ? "" : ": " + Value.ToString());
+				TextDisplayFunction = () => (LabelAttribute == null ? MemberInfo.Name : LabelAttribute.Label) + (Value == null ? "" : ": " + Value.ToString());
 				AbridgedTextDisplayFunction = () => Value?.ToString() ?? "";
 			}
 		}
@@ -75,7 +75,7 @@ internal class ObjectElement : ConfigElement<object>
 			Value = data;
 		}
 
-		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
+		separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(MemberInfo, Item, List) != null;
 
 		//separatePage = separatePage && !ignoreSeparatePage;
 		//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
@@ -112,7 +112,7 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (List == null) {
 			// Member > Class
-			var expandAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ExpandAttribute>(MemberInfo, Item, List);
+			var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
 			if (expandAttribute != null)
 				expanded = expandAttribute.Expand;
 		}
@@ -265,8 +265,12 @@ internal class ObjectElement : ConfigElement<object>
 						continue;
 
 					int top = 0;
+					var header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
 
-					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
+					if (header != null) {
+						var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+						UIModConfig.WrapIt(dataList, ref top, wrapper, header, order++);
+					}
 
 					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
 

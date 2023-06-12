@@ -123,7 +123,6 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		player.VanillaUpdateEquip(null)/* tModPorter Note: Removed. Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots) */;
 #endif
-		player.CanAfford(100000);
 
 		// not-yet-implemented
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);

@@ -13,9 +13,9 @@ public class ModAccessorySlotPlayer : ModPlayer
 	internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
 	// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
-	internal Item[] exAccessorySlot;
-	internal Item[] exDyesAccessory;
-	internal bool[] exHideAccessory;
+	internal Item[] exAccessorySlot = new Item[2];
+	internal Item[] exDyesAccessory = new Item[1];
+	internal bool[] exHideAccessory = new bool[1];
 	internal Dictionary<string, int> slots = new Dictionary<string, int>();
 
 	// Setting toggle for stack or scroll accessories/npcHousing
@@ -23,25 +23,35 @@ public class ModAccessorySlotPlayer : ModPlayer
 	internal int scrollbarSlotPosition;
 
 	public int SlotCount => slots.Count;
-	public int LoadedSlotCount => Loader.TotalCount;
+	public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
+	public int UnloadedSlotCount { get; private set; } = 0;
 
 	public ModAccessorySlotPlayer()
 	{
 		foreach (var slot in Loader.list) {
-			slots.Add(slot.FullName, slot.Type);
+			if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase)) {
+				slots.Add(slot.FullName, slot.Type);
+			}
+			else {
+				UnloadedSlotCount++;
+				slots.Add(slot.Name, slot.Type);
+			}
 		}
 
-		ResetAndSizeAccessoryArrays();
+		ResizeAccesoryArrays(slots.Count);
 	}
 
-	internal void ResetAndSizeAccessoryArrays()
+	internal void ResizeAccesoryArrays(int newSize)
 	{
-		int size = slots.Count;
-		exAccessorySlot = new Item[2 * size];
-		exDyesAccessory = new Item[size];
-		exHideAccessory = new bool[size];
+		if (newSize < slots.Count) {
+			return;
+		}
 
-		for (int i = 0; i < size; i++) {
+		Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
+		Array.Resize<Item>(ref exDyesAccessory, newSize);
+		Array.Resize<bool>(ref exHideAccessory, newSize);
+
+		for (int i = 0; i < newSize; i++) {
 			exDyesAccessory[i] = new Item();
 			exHideAccessory[i] = false;
 
@@ -52,7 +62,6 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 	public override void SaveData(TagCompound tag)
 	{
-		// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded. Otherwise old unloaded slots just bloat the array with empty entries forever
 		tag["order"] = slots.Keys.ToList();
 		tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
 		tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
@@ -61,28 +70,29 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 	public override void LoadData(TagCompound tag)
 	{
-		// Scan the saved slot names and add ids for any unloaded slots
 		var order = tag.GetList<string>("order").ToList();
-		foreach (var name in order) {
-			if (!slots.ContainsKey(name))
-				slots.Add(name, slots.Count);
-		}
-
-		ResetAndSizeAccessoryArrays();
-
-
 		var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
 		var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
 		var visible = tag.GetList<bool>("visible").ToList();
 
+		ResizeAccesoryArrays(order.Count);
+
 		for (int i = 0; i < order.Count; i++) {
-			int type = slots[order[i]];
+			// Try finding the slot item goes in to
+			if (!slots.TryGetValue(order[i], out int type)) {
+				var unloaded = new UnloadedAccessorySlot(Loader.list.Count, order[i]);
+
+				slots.Add(unloaded.Name, unloaded.Type);
+				Loader.list.Add(unloaded);
+				type = unloaded.Type;
+				UnloadedSlotCount++;
+			}
 
 			// Place loaded items in to the correct slot
 			exDyesAccessory[type] = dyes[i];
 			exHideAccessory[type] = visible[i];
 			exAccessorySlot[type] = items[i];
-			exAccessorySlot[type + SlotCount] = items[i + order.Count];
+			exAccessorySlot[type + order.Count] = items[i + order.Count];
 		}
 	}
 
@@ -161,7 +171,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	// The following netcode is adapted from ChickenBones' UtilitySlots:
+	// The following netcode is adapted from ChickenBone's UtilitySlots:
 	public override void CopyClientState(ModPlayer targetCopy)
 	{
 		var defaultInv = (ModAccessorySlotPlayer)targetCopy;

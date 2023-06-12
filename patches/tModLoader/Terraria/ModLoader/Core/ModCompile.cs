@@ -224,7 +224,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			mod.modFile.Save();
 			ModLoader.EnableMod(mod.Name);
-			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
 		catch (Exception e) {
 			e.Data["mod"] = mod.Name;

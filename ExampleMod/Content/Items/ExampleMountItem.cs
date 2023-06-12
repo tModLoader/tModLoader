@@ -6,6 +6,10 @@ namespace ExampleMod.Content.Items
 {
 	public class ExampleMountItem : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.width = 20;
 			Item.height = 30;

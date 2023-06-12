@@ -53,7 +53,6 @@ public static class ModNet
 		public override string ToString() => $"{modname}:{configname} {json}";
 	}
 
-	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
 	internal static bool onlyDownloadSignedMods = false;
@@ -242,8 +241,8 @@ public static class ModNet
 				blockedList.Add(header);
 		}
 
-		Logging.tML.Debug($"Server mods: " + string.Join(", ", syncList));
-		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
+		Logging.tML.Debug($"Server mods: "+string.Join(", ", syncList));
+		Logging.tML.Debug($"Download queue: "+string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
 
@@ -453,6 +452,8 @@ public static class ModNet
 		foreach (Mod mod in netMods)
 			p.Write(mod.Name);
 
+		ItemLoader.WriteNetGlobalOrder(p);
+		SystemLoader.WriteNetSystemOrder(p);
 		p.Write(Player.MaxBuffs);
 
 		p.Send(toClient);
@@ -477,14 +478,18 @@ public static class ModNet
 		netMods = list.ToArray();
 		SetModNetDiagnosticsUI(netMods.Where(mod => mod != null)); // When client receives netMods, exclude NoSync mods that aren't on the client, and assign a new UI
 
+		ItemLoader.ReadNetGlobalOrder(reader);
+		SystemLoader.ReadNetSystemOrder(reader);
+
 		int serverMaxBuffs = reader.ReadInt32();
+
 		if (serverMaxBuffs != Player.MaxBuffs) {
 			Netplay.Disconnect = true;
 			Main.statusText = $"The server expects Player.MaxBuffs of {serverMaxBuffs}\nbut this client reports {Player.MaxBuffs}.\nSome mod is behaving poorly.";
 		}
 	}
 
-	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a band aid until they fix their code.
+	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a bandaid until they fix their code.
 	internal static bool ReadUnderflowBypass = false; // Remove by 0.11.7
 	internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
 	{

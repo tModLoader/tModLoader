@@ -50,7 +50,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
-		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
+		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"]).MajorMinor()}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
 		buildData["trueversion"] = buildData["version"];
 
@@ -81,15 +81,16 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
+		string description = buildData["description"];
 		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
 			return false;
 		}
 
-		List<string> tagsList = new List<string>();
-		tagsList.AddRange(settings.GetUsedTagsInternalNames());
-		tagsList.Add(buildData["modside"]);
+		string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
+		string[] modMetadata = { buildData["modside"] };
+
+		string[] tagsList = usedTagsInternalNames.Concat(modMetadata).ToArray();
 
 		CalculateWorkshopDeps(ref buildData);
 		
@@ -105,14 +106,11 @@ public partial class WorkshopSocialModule
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(workshopFolderPath);
 
-			// Should be called after folder created & cleaned up
-			tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
-
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
 			_publisherInstances.Add(modPublisherInstance);
 
-			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes);
+			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID, settings.ChangeNotes);
 
 			return true;
 		}
@@ -120,7 +118,7 @@ public partial class WorkshopSocialModule
 		return false;
 	}
 
-	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20;0.2.1;2022.07.10.20:0.2.2"
+	// Output version string: "2022.05:0.2.0;2022.06;0.2.1;2022.07:0.2.2"
 	// Return False if the mod version did not increase for the particular tml version
 	// This will have up to 1 more version than is actually relevant, but that won't break anything
 	public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData)
@@ -132,7 +130,7 @@ public partial class WorkshopSocialModule
 					return false;
 
 			if (mod.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor())
-				buildData["versionsummary"] += $";{mod.tModLoaderVersion}:{mod.properties.version}";
+				buildData["versionsummary"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
 		}
 
 		return true;
@@ -242,7 +240,7 @@ public partial class WorkshopSocialModule
 			workshopDesc = File.ReadAllText(workshopDescFile);
 
 		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
+		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]" +
 			$"{workshopDesc}";
 
 

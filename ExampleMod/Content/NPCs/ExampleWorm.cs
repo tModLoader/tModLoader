@@ -26,7 +26,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetDefaults() {
-			// Head is 10 defense, body 20, tail 30.
+			// Head is 10 defence, body 20, tail 30.
 			NPC.CloneDefaults(NPCID.DiggerHead);
 			NPC.aiStyle = -1;
 		}

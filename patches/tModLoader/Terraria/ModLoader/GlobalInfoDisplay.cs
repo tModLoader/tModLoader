@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-
 namespace Terraria.ModLoader;
 
 /// <summary>
@@ -29,13 +27,6 @@ public abstract class GlobalInfoDisplay : ModType
 	/// Allows you to modify the display value (the text displayed next to the icon) of an InfoDisplay.
 	/// </summary>
 	/// <param name="currentDisplay">The display you're modifying the display value for.</param>
-	/// <param name="displayValue">The display value of the current display</param>
+	/// <param name="displayValue">The</param>
 	public virtual void ModifyDisplayValue(InfoDisplay currentDisplay, ref string displayValue) { }
-
-	/// <summary>
-	/// Allows you to modify the display color (the color of the text displayed next to the icon) of an InfoDisplay.
-	/// </summary>
-	/// <param name="currentDisplay">The display you're modifying the display color for.</param>
-	/// <param name="displayColor">The display color of the current display</param>
-	public virtual void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor) { }
 }

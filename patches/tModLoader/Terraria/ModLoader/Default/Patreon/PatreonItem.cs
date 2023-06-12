@@ -11,7 +11,6 @@ internal abstract class PatreonItem : ModLoaderModItem
 {
 	public string InternalSetName { get; set; }
 	public string SetSuffix { get; set; }
-	public override LocalizedText Tooltip => LocalizedText.Empty;
 
 	public PatreonItem()
 	{
@@ -35,6 +34,8 @@ internal abstract class PatreonItem : ModLoaderModItem
 
 		DisplayName.SetDefault(displayName);
 		*/
+
+		Item.ResearchUnlockCount = 1;
 	}
 
 	public override void SetDefaults()

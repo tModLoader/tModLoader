@@ -4,6 +4,7 @@
 namespace ExampleMod.Common.Configs.CustomDataTypes
 {
 	[BackgroundColor(0, 255, 255)]
+	[Label("Pair label")]
 	public class Pair
 	{
 		public bool enabled;

@@ -105,7 +105,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return true;
 		}
 
-		public override void HitEffect(NPC.HitInfo hit) {
+		public override void HitEffect(int hitDirection, double damage) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals
 

@@ -1,6 +1,6 @@
 namespace Terraria.ModLoader;
 
-public interface IModType
+public interface IModType : ILoadable
 {
 	///<summary>
 	/// The mod this belongs to.

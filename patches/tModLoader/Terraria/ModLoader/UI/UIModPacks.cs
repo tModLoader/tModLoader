@@ -67,14 +67,14 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		_scrollPanel.Append(uIScrollbar);
 		_modPacks.SetScrollbar(uIScrollbar);
 
-		var titleTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModPacksHeader"), 0.8f, true) {
+		var titleTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModPacksHeader"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue
 		}.WithPadding(15f);
 		uIElement.Append(titleTextPanel);
 
-		var folderButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.OpenModPackFolder")) {
+		var folderButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.OpenModPackFolder")) {
 			Width = new StyleDimension(-10f, 1f / 2f),
 			Height = { Pixels = 40 },
 			VAlign = 0.9f,
@@ -84,7 +84,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		folderButton.OnLeftClick += OpenFolder;
 		uIElement.Append(folderButton);
 
-		var backButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("UI.Back")) {
+		var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
 			Width = new StyleDimension(-10f, 1f / 2f),
 			Height = { Pixels = 40 },
 			VAlign = 1f,
@@ -94,7 +94,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
 
-		var saveNewButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModPacksSaveEnabledAsNewPack"));
+		var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
 		saveNewButton.CopyStyle(backButton);
 		saveNewButton.TextColor = Color.Green;
 		saveNewButton.VAlign = 1f;

@@ -15,10 +15,6 @@ namespace ExampleMod.Content.Projectiles
 	// ExampleFlailProjectile is a copy of the Sunfury flail projectile.
 	internal class ExampleFlailProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
-		}
-
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
 			Projectile.width = 22; // The width of your projectile
@@ -80,13 +76,13 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Another thing that won't automatically be inherited by using Projectile.aiStyle and AIType are effects that happen when the projectile hits something. Here we see the code responcible for applying the OnFire debuff to players and enemies.
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
 			if (Main.rand.NextBool(2)) {
 				target.AddBuff(BuffID.OnFire, 300);
 			}
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
+		public override void OnHitPlayer(Player target, int damage, bool crit) {
 			if (Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.OnFire, 180, quiet: false);
 			}

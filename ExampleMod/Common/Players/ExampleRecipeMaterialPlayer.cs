@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
@@ -15,11 +16,6 @@ namespace ExampleMod.Common.Players
 
 		// Nearby chest finding
 		public override void PostUpdateMiscEffects() {
-			if (Main.netMode == NetmodeID.Server) {
-				// We don't need to do any recipe stuff on the server
-				return;
-			}
-
 			int oldChestIndex = _chestIndexNearby;
 
 			// Gets leg position in tile coord for further chest searching
@@ -48,15 +44,10 @@ namespace ExampleMod.Common.Players
 					top--;
 				}
 
-				int chestIndex = Chest.FindChest(left, top);
-				if (chestIndex > -1 && !Chest.IsLocked(left, top)) {
-					Chest chest = Main.chest[chestIndex];
-					// Unopened chests in multiplayer have not initialized the items inside of them, so we check for safety if the first item is not null (assuming that all others won't be null either)
-					// Ideally, we would want to write custom netcode to request chest contents, see how a mod like Recipe Browser handles this: https://github.com/JavidPack/RecipeBrowser/blob/1.4/RecipeBrowser.cs, look for usage of packets
-					if (chest.item[0] != null) {
-						_chestIndexNearby = chestIndex;
-						break;
-					}
+				int chest = Chest.FindChest(left, top);
+				if (chest > 0 && !Chest.IsLocked(left, top)) {
+					_chestIndexNearby = chest;
+					break;
 				}
 			}
 
@@ -69,8 +60,8 @@ namespace ExampleMod.Common.Players
 
 		// Use items in the chest for crafting
 		public override IEnumerable<Item> AddMaterialsForCrafting(out ItemConsumedCallback itemConsumedCallback) {
-			// Ensure there is a chest nearby that is not opened by the player, and wasn't destroyed last tick
-			if (_chestIndexNearby is -1 || Player.chest == _chestIndexNearby || Main.chest[_chestIndexNearby] is not Chest chest)
+			// Ensure there is a chest nearby that is not opened by the player
+			if (_chestIndexNearby is -1 || Player.chest == _chestIndexNearby)
 				return base.AddMaterialsForCrafting(out itemConsumedCallback);
 
 			// onUsedForCrafting invokes when the item is consumed, can be used to send packets in multiplayer mode
@@ -84,7 +75,7 @@ namespace ExampleMod.Common.Players
 
 			// Returns the items in the chest to use them for crafting
 			// The returned list should not be a cloned version of items otherwise items will not be consumed
-			return chest.item;
+			return Main.chest[_chestIndexNearby].item;
 		}
 	}
 }

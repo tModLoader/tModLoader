@@ -8,6 +8,10 @@ namespace ExampleMod.Content.Items.Tools
 {
 	public class ExampleHamaxe : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.damage = 25;
 			Item.DamageType = DamageClass.Melee;

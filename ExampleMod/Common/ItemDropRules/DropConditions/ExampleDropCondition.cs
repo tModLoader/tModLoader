@@ -1,20 +1,16 @@
 ﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Localization;
 
 namespace ExampleMod.Common.ItemDropRules.DropConditions
 {
 	// Very simple drop condition: drop during daytime
 	public class ExampleDropCondition : IItemDropRuleCondition
 	{
-		private static LocalizedText Description;
-
-		public ExampleDropCondition() {
-			Description ??= Language.GetOrRegister("Mods.ExampleMod.DropConditions.Example");
-		}
-
 		public bool CanDrop(DropAttemptInfo info) {
-			return Main.dayTime;
+			if (!info.IsInSimulation) {
+				return Main.dayTime;
+			}
+			return false;
 		}
 
 		public bool CanShowItemDropInUI() {
@@ -22,7 +18,7 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 		}
 
 		public string GetConditionDescription() {
-			return Description.Value;
+			return "Drops during daytime";
 		}
 	}
 }

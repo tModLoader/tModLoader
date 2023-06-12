@@ -20,7 +20,7 @@ internal class Vector2Element : ConfigElement
 
 		private Vector2 current;
 
-		[LabelKey("$Config.Vector2.X.Label")]
+		[Label("X")]
 		public float X {
 			get => current.X;
 			set {
@@ -29,7 +29,7 @@ internal class Vector2Element : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Vector2.Y.Label")]
+		[Label("Y")]
 		public float Y {
 			get => current.Y;
 			set {

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,19 +_,51 @@
+@@ -3,9 +_,20 @@
  
  namespace Terraria;
  
@@ -21,29 +21,10 @@
 +	/// </summary>
  	public bool active;
  	internal long entityId;
-+
-+	/// <summary>
-+	/// The position of this Entity in world coordinates.
-+	/// </summary>
  	public Vector2 position;
-+
-+	/// <summary>
-+	/// The velocity of this Entity in world coordinates per tick.
-+	/// </summary>
- 	public Vector2 velocity;
- 	public Vector2 oldPosition;
- 	public Vector2 oldVelocity;
- 	public int oldDirection;
+@@ -16,6 +_,11 @@
  	public int direction = 1;
-+
-+	/// <summary>
-+	/// The width of this Entity's hitbox, in pixels.
-+	/// </summary>
  	public int width;
-+
-+	/// <summary>
-+	/// The height of this Entity's hitbox, in pixels.
-+	/// </summary>
  	public int height;
 +
 +	/// <summary>

@@ -1,7 +1,8 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
+using Terraria.Map;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader;
 
@@ -93,29 +94,41 @@ public static class CombinedHooks
 		bool? ret = null;
 		bool Update(bool? b) => (ret ??= b) is not false;
 
-		_ = Update(PlayerLoader.CanHitNPCWithItem(player, item, npc))
+		_ = Update(PlayerLoader.CanHitNPC(player, item, npc))
 			&& Update(ItemLoader.CanHitNPC(item, player, npc))
 			&& Update(NPCLoader.CanBeHitByItem(npc, player, item));
 		return ret;
 	}
 
-	public static void ModifyPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, ref NPC.HitModifiers modifiers)
+	public static void ModifyPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, ref int damage, ref float knockBack, ref bool crit)
 	{
-		ItemLoader.ModifyHitNPC(sItem, player, nPC, ref modifiers);
-		NPCLoader.ModifyHitByItem(nPC, player, sItem, ref modifiers);
-		PlayerLoader.ModifyHitNPCWithItem(player, sItem, nPC, ref modifiers);
+		ItemLoader.ModifyHitNPC(sItem, player, nPC, ref damage, ref knockBack, ref crit);
+		NPCLoader.ModifyHitByItem(nPC, player, sItem, ref damage, ref knockBack, ref crit);
+		PlayerLoader.ModifyHitNPC(player, sItem, nPC, ref damage, ref knockBack, ref crit);
 	}
 
-	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, in NPC.HitInfo hit, int damageDone)
+	public static void OnPlayerHitNPCWithItem(Player player, Item sItem, NPC nPC, int dmgDone, float knockBack, bool crit)
 	{
-		ItemLoader.OnHitNPC(sItem, player, nPC, hit, damageDone);
-		NPCLoader.OnHitByItem(nPC, player, sItem, hit, damageDone);
-		PlayerLoader.OnHitNPCWithItem(player, sItem, nPC, hit, damageDone);
+		ItemLoader.OnHitNPC(sItem, player, nPC, dmgDone, knockBack, crit);
+		NPCLoader.OnHitByItem(nPC, player, sItem, dmgDone, knockBack, crit);
+		PlayerLoader.OnHitNPC(player, sItem, nPC, dmgDone, knockBack, crit);
 	}
 
 	public static bool CanHitPvp(Player player, Item sItem, Player target)
 	{
 		return ItemLoader.CanHitPvp(sItem, player, target) && PlayerLoader.CanHitPvp(player, sItem, target);
+	}
+
+	public static void ModifyHitPvp(Player player, Item sItem, Player target, ref int damage, ref bool crit)
+	{
+		ItemLoader.ModifyHitPvp(sItem, player, target, ref damage, ref crit);
+		PlayerLoader.ModifyHitPvp(player, sItem, target, ref damage, ref crit);
+	}
+
+	public static void OnHitPvp(Player player, Item sItem, Player target, int damage, bool crit)
+	{
+		ItemLoader.OnHitPvp(sItem, player, target, damage, crit);
+		PlayerLoader.OnHitPvp(player, sItem, target, damage, crit);
 	}
 
 	public static void MeleeEffects(Player player, Item sItem, Rectangle itemRectangle)
@@ -129,28 +142,24 @@ public static class CombinedHooks
 		bool? ret = null;
 		bool Update(bool? b) => (ret ??= b) is not false;
 
-		_ = Update(proj.TryGetOwner(out var player) ? PlayerLoader.CanHitNPCWithProj(player, proj, npc) : null)
+		_ = Update(PlayerLoader.CanHitNPCWithProj(proj, npc))
 			&& Update(ProjectileLoader.CanHitNPC(proj, npc))
 			&& Update(NPCLoader.CanBeHitByProjectile(npc, proj));
 		return ret;
 	}
 
-	public static void ModifyHitNPCWithProj(Projectile projectile, NPC nPC, ref NPC.HitModifiers modifiers)
+	public static void ModifyHitNPCWithProj(Projectile projectile, NPC nPC, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
 	{
-		ProjectileLoader.ModifyHitNPC(projectile, nPC, ref modifiers);
-		NPCLoader.ModifyHitByProjectile(nPC, projectile, ref modifiers);
-
-		if (projectile.TryGetOwner(out var player))
-			PlayerLoader.ModifyHitNPCWithProj(player, projectile, nPC, ref modifiers);
+		ProjectileLoader.ModifyHitNPC(projectile, nPC, ref damage, ref knockback, ref crit, ref hitDirection);
+		NPCLoader.ModifyHitByProjectile(nPC, projectile, ref damage, ref knockback, ref crit, ref hitDirection);
+		PlayerLoader.ModifyHitNPCWithProj(projectile, nPC, ref damage, ref knockback, ref crit, ref hitDirection);
 	}
 
-	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, in NPC.HitInfo hit, int damageDone)
+	public static void OnHitNPCWithProj(Projectile projectile, NPC nPC, int knockback, float crit, bool hitDirection)
 	{
-		ProjectileLoader.OnHitNPC(projectile, nPC, hit, damageDone);
-		NPCLoader.OnHitByProjectile(nPC, projectile, hit, damageDone);
-
-		if (projectile.TryGetOwner(out var player))
-			PlayerLoader.OnHitNPCWithProj(player, projectile, nPC, hit, damageDone);
+		ProjectileLoader.OnHitNPC(projectile, nPC, knockback, crit, hitDirection);
+		NPCLoader.OnHitByProjectile(nPC, projectile, knockback, crit, hitDirection);
+		PlayerLoader.OnHitNPCWithProj(projectile, nPC, knockback, crit, hitDirection);
 	}
 
 	public static bool CanBeHitByProjectile(Player player, Projectile projectile)
@@ -158,31 +167,16 @@ public static class CombinedHooks
 		return ProjectileLoader.CanHitPlayer(projectile, player) && PlayerLoader.CanBeHitByProjectile(player, projectile);
 	}
 
-	public static void ModifyHitByProjectile(Player player, Projectile projectile, ref Player.HurtModifiers modifiers)
+	public static void ModifyHitByProjectile(Player player, Projectile projectile, ref int damage, ref bool crit)
 	{
-		ProjectileLoader.ModifyHitPlayer(projectile, player, ref modifiers);
-		PlayerLoader.ModifyHitByProjectile(player, projectile, ref modifiers);
-
-		player.ApplyBannerDefenseBuff(projectile.bannerIdToRespondTo, ref modifiers);
-		if (player.resistCold && projectile.coldDamage)
-			modifiers.IncomingDamageMultiplier *= 0.7f;
-
-		if (!projectile.reflected) {
-			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
-			if (Main.GameModeInfo.IsJourneyMode) {
-				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-				if (power.GetIsUnlocked())
-					damageMult = power.StrengthMultiplierToGiveNPCs;
-			}
-
-			modifiers.SourceDamage *= damageMult;
-		}
+		ProjectileLoader.ModifyHitPlayer(projectile, player, ref damage, ref crit);
+		PlayerLoader.ModifyHitByProjectile(player, projectile, ref damage, ref crit);
 	}
 
-	public static void OnHitByProjectile(Player player, Projectile projectile, in Player.HurtInfo hurtInfo)
+	public static void OnHitByProjectile(Player player, Projectile projectile, int realDamage, bool crit)
 	{
-		ProjectileLoader.OnHitPlayer(projectile, player, hurtInfo);
-		PlayerLoader.OnHitByProjectile(player, projectile, hurtInfo);
+		ProjectileLoader.OnHitPlayer(projectile, player, realDamage, crit);
+		PlayerLoader.OnHitByProjectile(player, projectile, realDamage, crit);
 	}
 
 	public static bool CanHitPvpWithProj(Projectile projectile, Player target)
@@ -190,15 +184,16 @@ public static class CombinedHooks
 		return ProjectileLoader.CanHitPvp(projectile, target) && PlayerLoader.CanHitPvpWithProj(projectile, target);
 	}
 
-	public static bool? CanPlayerMeleeAttackCollideWithNPC(Player player, Item item, Rectangle meleeAttackHitbox, NPC target)
+	public static void ModifyHitPvpWithProj(Projectile projectile, Player target, ref int damage, ref bool crit)
 	{
-		bool? ret = null;
-		bool Update(bool? b) => (ret ??= b) is not false;
+		ProjectileLoader.ModifyHitPvp(projectile, target, ref damage, ref crit);
+		PlayerLoader.ModifyHitPvpWithProj(projectile, target, ref damage, ref crit);
+	}
 
-		_ = Update(PlayerLoader.CanMeleeAttackCollideWithNPC(player, item, meleeAttackHitbox, target))
-			&& Update(ItemLoader.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target))
-			&& Update(NPCLoader.CanCollideWithPlayerMeleeAttack(target, player, item, meleeAttackHitbox));
-		return ret;
+	public static void OnHitPvpWithProj(Projectile projectile, Player target, int damage, bool crit)
+	{
+		ProjectileLoader.OnHitPvp(projectile, target, damage, crit);
+		PlayerLoader.OnHitPvpWithProj(projectile, target, damage, crit);
 	}
 
 	public static void ModifyItemScale(Player player, Item item, ref float scale)
@@ -286,20 +281,16 @@ public static class CombinedHooks
 		return NPCLoader.CanHitPlayer(nPC, player, ref specialHitSetter) && PlayerLoader.CanBeHitByNPC(player, nPC, ref specialHitSetter);
 	}
 
-	public static void ModifyHitByNPC(Player player, NPC nPC, ref Player.HurtModifiers modifiers)
+	public static void ModifyNPCHitPlayer(NPC nPC, Player player, ref int damage, ref bool crit)
 	{
-		NPCLoader.ModifyHitPlayer(nPC, player, ref modifiers);
-		PlayerLoader.ModifyHitByNPC(player, nPC, ref modifiers);
-
-		player.ApplyBannerDefenseBuff(nPC, ref modifiers);
-		if (player.resistCold && nPC.coldDamage)
-			modifiers.IncomingDamageMultiplier *= 0.7f;
+		NPCLoader.ModifyHitPlayer(nPC, player, ref damage, ref crit);
+		PlayerLoader.ModifyHitByNPC(player, nPC, ref damage, ref crit);
 	}
 
-	public static void OnHitByNPC(Player player, NPC nPC, in Player.HurtInfo hurtInfo)
+	public static void OnNPCHitPlayer(NPC nPC, Player player, int damage, bool crit)
 	{
-		NPCLoader.OnHitPlayer(nPC, player, hurtInfo);
-		PlayerLoader.OnHitByNPC(player, nPC, hurtInfo);
+		NPCLoader.OnHitPlayer(nPC, player, damage, crit);
+		PlayerLoader.OnHitByNPC(player, nPC, damage, crit);
 	}
 
 	public static void PlayerFrameEffects(Player player)

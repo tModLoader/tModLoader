@@ -32,11 +32,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
 			// Etc
-			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Table"));
+			LocalizedText name = CreateMapEntryName();
+			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
 		public override void NumDust(int x, int y, bool fail, ref int num) {
 			num = fail ? 1 : 3;
+		}
+
+		public override void KillMultiTile(int x, int y, int frameX, int frameY) {
+			Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 48, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleTable>());
 		}
 	}
 }

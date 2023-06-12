@@ -9,6 +9,7 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleFishingRod : ModItem
 	{
 		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
 			ItemID.Sets.CanFishInLava[Item.type] = true; // Allows the pole to fish in lava
 		}
 

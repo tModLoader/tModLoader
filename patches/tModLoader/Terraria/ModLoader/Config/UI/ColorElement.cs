@@ -16,7 +16,7 @@ internal class ColorElement : ConfigElement
 
 		internal Color current;
 
-		[LabelKey("$Config.Color.Red.Label")]
+		[Label("Red")]
 		public byte R {
 			get => current.R;
 			set {
@@ -25,7 +25,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Color.Green.Label")]
+		[Label("Green")]
 		public byte G {
 			get => current.G;
 			set {
@@ -34,7 +34,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Color.Blue.Label")]
+		[Label("Blue")]
 		public byte B {
 			get => current.B;
 			set {
@@ -43,7 +43,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Color.Hue.Label")]
+		[Label("Hue")]
 		public float Hue {
 			get => Main.rgbToHsl(current).X;
 			set {
@@ -54,7 +54,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Color.Saturation.Label")]
+		[Label("Saturation")]
 		public float Saturation {
 			get => Main.rgbToHsl(current).Y;
 			set {
@@ -65,7 +65,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Color.Lightness.Label")]
+		[Label("Lightness")]
 		public float Lightness {
 			get => Main.rgbToHsl(current).Z;
 			set {
@@ -76,7 +76,7 @@ internal class ColorElement : ConfigElement
 			}
 		}
 
-		[LabelKey("$Config.Color.Alpha.Label")]
+		[Label("Alpha")]
 		public byte A {
 			get => current.A;
 			set {
@@ -130,10 +130,10 @@ internal class ColorElement : ConfigElement
 		}
 
 		// TODO: Draw the sliders in the same manner as vanilla.
-		var colorHSLSliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ColorHSLSliderAttribute>(MemberInfo, Item, List);
+		var colorHSLSliderAttribute = ConfigManager.GetCustomAttribute<ColorHSLSliderAttribute>(MemberInfo, Item, List);
 		bool useHue = colorHSLSliderAttribute != null;
 		bool showSaturationAndLightness = colorHSLSliderAttribute?.ShowSaturationAndLightness ?? false;
-		bool noAlpha = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ColorNoAlphaAttribute>(MemberInfo, Item, List) != null;
+		bool noAlpha = ConfigManager.GetCustomAttribute<ColorNoAlphaAttribute>(MemberInfo, Item, List) != null;
 
 		var skip = new List<string>();
 

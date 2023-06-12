@@ -6,6 +6,10 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleMagicWeapon : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 1;
+		}
+
 		public override void SetDefaults() {
 			// DefaultToStaff handles setting various Item values that magic staff weapons use.
 			// Hover over DefaultToStaff in Visual Studio to read the documentation!

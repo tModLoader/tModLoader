@@ -71,8 +71,6 @@ public static class SimpleSyntaxFactory
 	public static ArgumentListSyntax ArgumentList(IEnumerable<ExpressionSyntax> items) => ArgumentList(items.Select(Argument));
 	public static GenericNameSyntax GenericName(string name, params TypeSyntax[] args) => SyntaxFactory.GenericName(Identifier(name), TypeArgumentList(args));
 
-	public static ArrayTypeSyntax ArrayTypeRank1(TypeSyntax elementType) => ArrayType(elementType, new(ArrayRankSpecifier(SingletonSeparatedList<ExpressionSyntax>(OmittedArraySizeExpression()))));
-
 	public static SyntaxToken ModifierToken(RefKind refKind) => refKind switch {
 		RefKind.None => default,
 		RefKind.Ref => TokenSpace(SyntaxKind.RefKeyword),

@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -7,8 +6,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleHerbSeeds : ModItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true; // This prevents this item from being automatically dropped from ExampleHerb tile. 
-			Item.ResearchUnlockCount = 25;
+			Item.ResearchUnlockCount = 20;
 		}
 
 		public override void SetDefaults() {

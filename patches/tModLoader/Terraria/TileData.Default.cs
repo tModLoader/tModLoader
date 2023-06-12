@@ -44,11 +44,10 @@ public struct LiquidData : ITileData
 	public bool CheckingLiquid	{ get => GetBit(typeAndFlags, 7); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 7); }
 }
 
-public struct TileWallBrightnessInvisibilityData : ITileData
+//TODO: @ChickenBones, review this, this is a placeholder implementation -- Mirsario.
+internal struct TileWallBrightnessInvisibilityData : ITileData
 {
 	private BitsByte bitpack;
-
-	public byte Data => bitpack;
 
 	public bool IsTileInvisible { get => bitpack[0]; set => bitpack[0] = value; }
 	public bool IsWallInvisible { get => bitpack[1]; set => bitpack[1] = value; }

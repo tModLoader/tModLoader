@@ -7,7 +7,6 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI;
@@ -86,29 +85,6 @@ public static class UICommon
 		Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, 255); // 255 needed for black check in item tags
 
 		Terraria.UI.Chat.ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, vector, color, 0f, Vector2.Zero, Vector2.One);
-	}
-
-	/// <summary>
-	/// Functions like Main.instance.MouseText, but adds the same background seen in tooltips to the text
-	/// </summary>
-	/// <param name="text"></param>
-	public static void TooltipMouseText(string text)
-	{
-		if (Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
-			Item fakeItem = new Item();
-			fakeItem.SetDefaults(0, noMatCheck: true);
-			fakeItem.SetNameOverride(text);
-			fakeItem.type = 1;
-			fakeItem.scale = 0f;
-			fakeItem.rare = 0;
-			fakeItem.value = -1;
-			Main.HoverItem = fakeItem;
-			Main.instance.MouseText("");
-			Main.mouseText = true;
-		}
-		else {
-			Main.instance.MouseText(text);
-		}
 	}
 
 	public static Asset<Texture2D> ButtonErrorTexture { get; internal set; }

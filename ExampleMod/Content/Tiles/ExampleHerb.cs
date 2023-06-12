@@ -2,7 +2,6 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Metadata;
@@ -110,20 +109,15 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			offsetY = -2; // This is -1 for tiles using StyleAlch, but vanilla sets to -2 for herbs, which causes a slight visual offset between the placement preview and the placed tile. 
-		}
+		} 
 
-		public override bool CanDrop(int i, int j) {
+		public override bool Drop(int i, int j) {
 			PlantStage stage = GetStage(i, j);
 
 			if (stage == PlantStage.Planted) {
 				// Do not drop anything when just planted
 				return false;
 			}
-			return true;
-		}
-
-		public override IEnumerable<Item> GetItemDrops(int i, int j) {
-			PlantStage stage = GetStage(i, j);
 
 			Vector2 worldPosition = new Vector2(i, j).ToWorldCoordinates();
 			Player nearestPlayer = Main.player[Player.FindClosest(worldPosition, 16, 16)];
@@ -145,13 +139,18 @@ namespace ExampleMod.Content.Tiles
 				seedItemStack = Main.rand.Next(1, 4);
 			}
 
+			var source = new EntitySource_TileBreak(i, j);
+
 			if (herbItemType > 0 && herbItemStack > 0) {
-				yield return new Item(herbItemType, herbItemStack);
+				Item.NewItem(source, worldPosition, herbItemType, herbItemStack);
 			}
 
 			if (seedItemType > 0 && seedItemStack > 0) {
-				yield return new Item(seedItemType, seedItemStack);
+				Item.NewItem(source, worldPosition, seedItemType, seedItemStack);
 			}
+
+			// Custom drop code, so return false
+			return false;
 		}
 
 		public override bool IsTileSpelunkable(int i, int j) {

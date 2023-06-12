@@ -105,52 +105,19 @@ public static partial class Program
 		}
 		else {
 			// File migration is only attempted for the default save folder
-			try {
-				PortOldSaveDirectories();
-				PortCommonFiles();
-			}
-			catch (Exception e) {
-				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
-			}
+			PortOldSaveDirectories();
+			PortCommonFiles();
 
 			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
 			SavePath = Path.Combine(SavePath, SaveFolderName);
 		}
 		
-		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
+		Logging.tML.Info($"Save Are Located At: {Path.GetFullPath(SavePath)}");
 
 		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
 			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
 		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
 			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
-	}
-
-	private static void StartupSequenceTml(bool isServer)
-	{
-		try {
-			ControlledFolderAccessSupport.CheckFileSystemAccess();
-			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
-
-			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
-				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
-
-			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
-
-			SetSavePath();
-		
-			if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
-				Logging.tML.Info("Developer mode enabled");
-
-			AttemptSupportHighDPI(isServer); // Can run anytime
-
-		    if (!isServer) {
-		    	NativeLibraries.CheckNativeFAudioDependencies();
-		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
-		    }
-		}
-		catch (Exception ex) {
-			ErrorReporting.FatalExit("An unexpected error occured during tML startup", ex);
-		}
 	}
 
 	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
@@ -170,11 +137,7 @@ public static partial class Program
 
 		SDL2.SDL.SDL_VideoInit(null);
 		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
-		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
-		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
+		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold)
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
-			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
-		}
-			
 	}
 }
