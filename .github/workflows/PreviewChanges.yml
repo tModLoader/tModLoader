@@ -2,7 +2,7 @@ name: Preview tModLoader
 
 # Controls when the action will run. 
 on:
-  # This workflow runs when a push to 1.4.4 branch happens
+  # This workflow runs when a push to 1.4.4 branch happens so that it copies over to preview
   push:
     branches: [1.4.4]
 
@@ -31,7 +31,8 @@ jobs:
         # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
         # The below merger for sure won't work while preview branch is ahead of 1.4.4, so can't fast forward to test.
         - name: Merge
-          #if: steps.date.outputs.date < 21
+          # CHange the number to 
+          if: steps.date.outputs.date > 40
           uses: tModLoader/gh-action-nightly-merge@master
           with:
               stable_branch: '1.4.4'
