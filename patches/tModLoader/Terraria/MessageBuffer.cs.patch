@@ -243,7 +243,7 @@
  					item4.position = position3;
  					item4.velocity = velocity3;
  					item4.active = true;
-@@ -1419,9 +_,13 @@
+@@ -1419,11 +_,16 @@
  				if (num158 == 668)
  					NPC.deerclopsBoss = num155;
  
@@ -257,12 +257,23 @@
 +
  				break;
  			}
++			/*
  			case 24: {
+ 				int num120 = reader.ReadInt16();
+ 				int num121 = reader.ReadByte();
+@@ -1439,6 +_,7 @@
+ 
+ 				break;
+ 			}
++			*/
+ 			case 27: {
+ 				int num34 = reader.ReadInt16();
+ 				Vector2 position = reader.ReadVector2();
 @@ -1459,6 +_,8 @@
  					num37 = -1;
  
  				array[2] = (bitsByte3[0] ? reader.ReadSingle() : 0f);
-+				byte[] extraAI = bitsByte3[2] ? ProjectileLoader.ReadExtraAI(reader) : null;
++				byte[] extraAI = bitsByte3[1] ? ProjectileLoader.ReadExtraAI(reader) : null;
 +
  				if (Main.netMode == 2) {
  					if (num36 == 949) {
@@ -278,15 +289,59 @@
  				projectile.ProjectileFixDesperation();
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(27, -1, whoAmI, null, num38);
-@@ -1523,7 +_,7 @@
+@@ -1523,10 +_,29 @@
  			}
  			case 28: {
  				int num190 = reader.ReadInt16();
--				int num191 = reader.ReadInt16();
-+				int num191 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.ReadInt32();
++				/*
+ 				int num191 = reader.ReadInt16();
  				float num192 = reader.ReadSingle();
  				int num193 = reader.ReadByte() - 1;
  				byte b10 = reader.ReadByte();
++				*/
++
++				var num191 = reader.Read7BitEncodedInt();
++				NPC.HitInfo hit = default;
++				if (num191 >= 0) {
++					hit = new NPC.HitInfo {
++						Damage = num191,
++						SourceDamage = reader.Read7BitEncodedInt(),
++						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
++						HitDirection = reader.ReadSByte(),
++						Knockback = reader.ReadSingle()
++					};
++					BitsByte flags = reader.ReadByte();
++					hit.Crit = flags[0];
++					hit.InstantKill = flags[1];
++					hit.HideCombatText = flags[2];
++				}
++
+ 				if (Main.netMode == 2) {
+ 					if (num191 < 0)
+ 						num191 = 0;
+@@ -1535,7 +_,10 @@
+ 				}
+ 
+ 				if (num191 >= 0) {
++					/*
+ 					Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, noEffect: false, fromNet: true);
++					*/
++					Main.npc[num190].StrikeNPC(hit, fromNet: true);
+ 				}
+ 				else {
+ 					Main.npc[num190].life = 0;
+@@ -1546,7 +_,11 @@
+ 				if (Main.netMode != 2)
+ 					break;
+ 
++				/*
+ 				NetMessage.TrySendData(28, -1, whoAmI, null, num190, num191, num192, num193, b10);
++				*/
++				NetMessage.SendStrikeNPC(Main.npc[num190], hit, ignoreClient: whoAmI);
++
+ 				if (Main.npc[num190].life <= 0)
+ 					NetMessage.TrySendData(23, -1, -1, null, num190);
+ 				else
 @@ -1625,9 +_,9 @@
  			case 32: {
  				int num164 = reader.ReadInt16();
@@ -347,7 +402,7 @@
 +								/*
  								Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, Chest.chestItemSpawn[num205], 1, noBroadcast: true);
 +								*/
-+								int itemSpawn = b12 < 100 ? Chest.chestItemSpawn[num205] : TileLoader.GetTile(modType).ChestDrop;
++								int itemSpawn = b12 < 100 ? Chest.chestItemSpawn[num205] : TileLoader.GetItemDropFromTypeAndStyle(modType, num205);
 +								if (itemSpawn > 0)
 +									Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  							}
@@ -393,7 +448,7 @@
 +										/*
  										Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, Chest.dresserItemSpawn[num205], 1, noBroadcast: true);
 +										*/
-+										int itemSpawn = b12 < 100 ? Chest.dresserItemSpawn[num205] : TileLoader.GetTile(modType).DresserDrop;
++										int itemSpawn = b12 < 100 ? Chest.dresserItemSpawn[num205] : TileLoader.GetItemDropFromTypeAndStyle(modType, num205);
 +										if (itemSpawn > 0)
 +											Item.NewItem(new EntitySource_TileBreak(num203, num204), num203 * 16, num204 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  									}
@@ -576,6 +631,50 @@
  				if (num186 == 255) {
  					if (EmoteBubble.byID.ContainsKey(num185))
  						EmoteBubble.byID.Remove(num185);
+@@ -3182,7 +_,16 @@
+ 				break;
+ 			case 117: {
+ 				int num234 = reader.ReadByte();
++				bool directHurt = false;
++				if (num234 == 255) {
++					num234 = reader.ReadByte();
++					directHurt = true;
++				}
++
+ 				if (Main.netMode != 2 || whoAmI == num234 || (Main.player[num234].hostile && Main.player[whoAmI].hostile)) {
++					if (directHurt)
++						goto ReadDirectHurt;
++
+ 					PlayerDeathReason playerDeathReason2 = PlayerDeathReason.FromReader(reader);
+ 					int damage3 = reader.ReadInt16();
+ 					int num235 = reader.ReadByte() - 1;
+@@ -3193,6 +_,26 @@
+ 					Main.player[num234].Hurt(playerDeathReason2, damage3, num235, pvp2, quiet: true, flag15, num236);
+ 					if (Main.netMode == 2)
+ 						NetMessage.SendPlayerHurt(num234, playerDeathReason2, damage3, num235, flag15, pvp2, num236, -1, whoAmI);
++
++					break;
++
++					ReadDirectHurt:
++					BitsByte pack = reader.ReadByte();
++					var args = new Player.HurtInfo {
++						DamageSource = PlayerDeathReason.FromReader(reader),
++						PvP = pack[0],
++						CooldownCounter = reader.ReadSByte(),
++						Dodgeable = pack[1],
++						SourceDamage = reader.Read7BitEncodedInt(),
++						Damage = reader.Read7BitEncodedInt(),
++						HitDirection = reader.ReadSByte(),
++						Knockback = reader.ReadSingle(),
++						DustDisabled = pack[2],
++						SoundDisabled = pack[3]
++					};
++					Main.player[num234].Hurt(args, quiet: true);
++					if (Main.netMode == 2)
++						NetMessage.SendPlayerHurt(num234, args, ignoreClient: whoAmI);
+ 				}
+ 
+ 				break;
 @@ -3293,10 +_,23 @@
  				if (Main.netMode == 2) {
  					short x10 = reader.ReadInt16();

@@ -152,7 +152,7 @@ internal class UIModConfigList : UIState
 					// TODO: selected indicator
 					selectedMod = mod;
 					PopulateConfigs();
-				};
+				}
 
 				modList.Add(modPanel);
 			}

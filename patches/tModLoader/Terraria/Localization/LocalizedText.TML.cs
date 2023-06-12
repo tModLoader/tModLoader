@@ -3,11 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace Terraria.Localization;
 
+/// <summary>
+/// Contains the localization value corresponding to a key for the current game language. Automatically updates as language, mods, and resource packs change. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization">Localization Guide</see> teaches more about localization.
+/// </summary>
 public partial class LocalizedText
 {
 	private bool? _hasPlurals;
 
-	// https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
+	// https://www.unicode.org/cldr/charts/43/supplemental/language_plural_rules.html
 	// implementations extracted from build of https://github.com/xyzsd/cldr-plural-rules
 	// English, German, Italian, Spanish, Portugese, French
 	//   one, other
@@ -67,29 +70,22 @@ public partial class LocalizedText
 
 	public static string ApplyPluralization(string value, params object[] args)
 	{
-		if (!AnyInts(args))
-			return value;
-
 		return PluralizationPatternRegex.Replace(value, delegate (Match match) {
 			int argIndex = Convert.ToInt32(match.Groups[1].Value);
-			if (args[argIndex] is not int count)
-				return match.ToString();
-			
 			string[] options = match.Groups[2].Value.Split(';');
+			int count = Convert.ToInt32(args[argIndex]);			
 			int rule = CardinalPluralRule(Language.ActiveCulture, count);
 			return options[Math.Min(rule, options.Length-1)];
 		});
 	}
 
-	private static bool AnyInts(object[] args)
-	{
-		foreach (var arg in args)
-			if (arg is int)
-				return true;
-
-		return false;
-	}
-
+	/// <summary>
+	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="args"/> arguments. Formats the string in the same manner as <see href="https://learn.microsoft.com/en-us/dotnet/api/system.string.format?view=net-6.0">string.Format</see>. Placeholders such as "{0}", "{1}", etc will be replaced with the string representation of the corresponding objects provided.<br/>
+	/// Additionally, pluralization is supported as well. The <see href="https://github.com/tModLoader/tModLoader/wiki/Contributing-Localization#placeholders">Contributing Localization Guide</see> teaches more about placeholders and plural support.
+	/// 
+	/// </summary>
+	/// <param name="args"></param>
+	/// <returns></returns>
 	public string Format(params object[] args)
 	{
 		string value = Value;
@@ -99,5 +95,14 @@ public partial class LocalizedText
 		return string.Format(value, args);
 	}
 
+	/// <summary>
+	/// Creates a new LocalizedText with the supplied arguments formatted into the value (via <see cref="string.Format(string, object?[])"/>)<br/>
+	/// Will automatically update to re-format the string with cached args when language changes. <br/>
+	///<br/>
+	/// The resulting LocalizedText should be stored statically. Should not be used to create 'throwaway' LocalizedText instances. <br/>
+	/// Use <see cref="Format(object[])"/> instead for repeated on-demand formatting with different args.
+	/// </summary>
+	/// <param name="args">The substitution args</param>
+	/// <returns></returns>
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
 }

@@ -102,6 +102,7 @@ public class SimpleRenamedVanillaMembersTest
 		var discount = player.discount;
 		player.IsAValidEquipmentSlotForIteration(0);
 		player.VanillaUpdateEquip(null);
+		player.CanBuyItem(100000);
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 

@@ -36,12 +36,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public SearchFilter searchFilterMode = SearchFilter.Name;
 	internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 	internal string filter;
-	private UIAutoScaleTextTextPanel<string> buttonEA;
-	private UIAutoScaleTextTextPanel<string> buttonDA;
-	private UIAutoScaleTextTextPanel<string> buttonRM;
-	private UIAutoScaleTextTextPanel<string> buttonB;
-	private UIAutoScaleTextTextPanel<string> buttonOMF;
-	private UIAutoScaleTextTextPanel<string> buttonCL;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonEA;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonDA;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonRM;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonB;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonOMF;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonCL;
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
@@ -90,14 +90,14 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		modList.SetScrollbar(uIScrollbar);
 
-		var uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true) {
+		var uIHeaderTexTPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsModsList"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue
 		}.WithPadding(15f);
 		uIElement.Append(uIHeaderTexTPanel);
 
-		buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll")) {
+		buttonEA = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsEnableAll")) {
 			TextColor = Color.Green,
 			Width = new StyleDimension(-10f, 1f / 3f),
 			Height = { Pixels = 40 },
@@ -108,7 +108,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		uIElement.Append(buttonEA);
 
 		// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
-		buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"));
+		buttonDA = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsDisableAll"));
 		buttonDA.CopyStyle(buttonEA);
 		buttonDA.TextColor = Color.Red;
 		buttonDA.HAlign = 0.5f;
@@ -116,7 +116,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonDA.OnLeftClick += DisableAll;
 		uIElement.Append(buttonDA);
 
-		buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsForceReload"));
+		buttonRM = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsForceReload"));
 		buttonRM.CopyStyle(buttonEA);
 		buttonRM.Width = new StyleDimension(-10f, 1f / 3f);
 		buttonRM.HAlign = 1f;
@@ -126,7 +126,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		UpdateTopRowButtons();
 
-		buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+		buttonB = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("UI.Back")) {
 			Width = new StyleDimension(-10f, 1f / 3f),
 			Height = { Pixels = 40 },
 			VAlign = 1f,
@@ -136,7 +136,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonB.OnLeftClick += BackClick;
 
 		uIElement.Append(buttonB);
-		buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolders"));
+		buttonOMF = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenModsFolders"));
 		buttonOMF.CopyStyle(buttonB);
 		buttonOMF.HAlign = 0.5f;
 		buttonOMF.WithFadedMouseOver();

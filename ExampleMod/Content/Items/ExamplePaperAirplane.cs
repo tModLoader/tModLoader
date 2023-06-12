@@ -6,10 +6,6 @@ namespace ExampleMod.Content.Items
 {
 	public class ExamplePaperAirplane : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
-		}
-
 		public override void SetDefaults() {
 			Item.width = 22; // The item texture's width
 			Item.height = 16; // The item texture's height

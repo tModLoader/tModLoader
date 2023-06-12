@@ -41,7 +41,7 @@ public class UnloadedChest : UnloadedTile
 		AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 	}
 
-	public override LocalizedText ContainerName(int frameX, int frameY)
+	public override LocalizedText DefaultContainerName(int frameX, int frameY)
 	{
 		return Language.GetText(this.GetLocalizationKey("MapEntry0"));
 	}

@@ -3,9 +3,9 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria.GameContent.Events;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
@@ -143,23 +143,22 @@ internal static class WorldIO
 
 			var globalData = new List<TagCompound>();
 
-			foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.Instance)) {
-				if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
+			foreach (var g in NPCLoader.HookSaveData.Enumerate(npc)) {
+				if (g is UnloadedGlobalNPC unloadedGlobalNPC) {
 					globalData.AddRange(unloadedGlobalNPC.data);
 					continue;
 				}
 
-				globalNPC.SaveData(npc, data);
-
-				if (data.Count != 0) {
-					globalData.Add(new TagCompound {
-						["mod"] = globalNPC.Mod.Name,
-						["name"] = globalNPC.Name,
-						["data"] = data
-					});
-
-					data = new TagCompound();
-				}
+				g.SaveData(npc, data);
+				if (data.Count == 0)
+					continue;
+				
+				globalData.Add(new TagCompound {
+					["mod"] = g.Mod.Name,
+					["name"] = g.Name,
+					["data"] = data
+				});
+				data = new TagCompound();
 			}
 
 			TagCompound tag;
@@ -182,6 +181,8 @@ internal static class WorldIO
 					tag["homeless"] = npc.homeless;
 					tag["homeTileX"] = npc.homeTileX;
 					tag["homeTileY"] = npc.homeTileY;
+					tag["isShimmered"] = NPC.ShimmeredTownNPCs[npc.type];
+					tag["npcTownVariationIndex"] = npc.townNpcVariationIndex;
 				}
 			}
 			else if (globalData.Count != 0) {
@@ -219,10 +220,10 @@ internal static class WorldIO
 				nextFreeNPC++;
 			}
 
-			if ((string)tag["mod"] == "Terraria") {
-				int npcId = NPCID.Search.GetId((string)tag["name"]);
-				float x = (float)tag["x"];
-				float y = (float)tag["y"];
+			if (tag.GetString("mod") == "Terraria") {
+				int npcId = NPCID.Search.GetId(tag.GetString("name"));
+				float x = tag.GetFloat("x");
+				float y = tag.GetFloat("y");
 
 				int index;
 
@@ -230,7 +231,8 @@ internal static class WorldIO
 					npc = Main.npc[index];
 
 					if (npc.active) {
-						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y) break;
+						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y)
+							break;
 					}
 				}
 
@@ -241,7 +243,7 @@ internal static class WorldIO
 					}
 					else {
 						npc = Main.npc[nextFreeNPC];
-						npc.SetDefaults(npc.type);
+						npc.SetDefaults(npcId);
 						npc.position = new Vector2(x, y);
 					}
 				}
@@ -259,39 +261,41 @@ internal static class WorldIO
 
 				npc = Main.npc[nextFreeNPC];
 				npc.SetDefaults(modNpc.Type);
-				npc.position.X = (float)tag["x"];
-				npc.position.Y = (float)tag["y"];
+				npc.position.X = tag.GetFloat("x");
+				npc.position.Y = tag.GetFloat("y");
 
 				if (npc.townNPC) {
-					npc.GivenName = (string)tag["displayName"];
+					npc.GivenName = tag.GetString("displayName");
 					npc.homeless = tag.GetBool("homeless");
-					npc.homeTileX = (int)tag["homeTileX"];
-					npc.homeTileY = (int)tag["homeTileY"];
+					npc.homeTileX = tag.GetInt("homeTileX");
+					npc.homeTileY = tag.GetInt("homeTileY");
+
+					NPC.ShimmeredTownNPCs[modNpc.Type] = tag.GetBool("isShimmered");
+					npc.townNpcVariationIndex = tag.GetInt("npcTownVariationIndex");
 				}
 
 				if (tag.ContainsKey("data")) {
 					npc.ModNPC.LoadData((TagCompound)tag["data"]);
 				}
 			}
+			LoadGlobals(npc, tag.GetList<TagCompound>("globalData"));
+		}
+	}
 
-			IList<TagCompound> globalData = tag.GetList<TagCompound>("globalData");
-
-			foreach (TagCompound tagCompound in globalData) {
-				string modName = (string)tagCompound["mod"];
-
-				if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
-					GlobalNPC globalNPC2 = globalNPC.Instance(npc);
-
-					try {
-						globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
-					}
-					catch (Exception inner) {
-						throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom player data for {modName}", inner);
-					}
+	private static void LoadGlobals(NPC npc, IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalNPC globalNPCBase) && npc.TryGetGlobalNPC(globalNPCBase, out var globalNPC)) {
+				try {
+					globalNPC.LoadData(npc, tag.GetCompound("data"));
 				}
-				else {
-					npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tagCompound);
+				catch (Exception inner) {
+					throw new CustomModDataException(globalNPC.Mod, $"Error in reading custom player data for {tag.GetString("mod")}", inner);
 				}
+			}
+			else {
+				// Unloaded or no longer valid on an item (e.g. through AppliesToEntity)
+				npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tag);
 			}
 		}
 	}
@@ -539,13 +543,13 @@ internal static class WorldIO
 
 	public static void SendModData(BinaryWriter writer)
 	{
-		foreach (var system in SystemLoader.NetSystems)
+		foreach (var system in SystemLoader.HookNetSend.Enumerate())
 			writer.SafeWrite(w => system.NetSend(w));
 	}
 
 	public static void ReceiveModData(BinaryReader reader)
 	{
-		foreach (var system in SystemLoader.NetSystems) {
+		foreach (var system in SystemLoader.HookNetReceive.Enumerate()) {
 			try {
 				reader.SafeRead(r => system.NetReceive(r));
 			}

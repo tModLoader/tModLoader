@@ -16,23 +16,23 @@ namespace ExampleMod.Content.NPCs
 			return lateInstantiation && entity.townNPC;
 		}
 
-		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
+		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 			if (projectile.owner != 255) {
 				HasBeenHitByPlayer = true;
 			}
 		}
 
-		public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit) {
+		public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 			HasBeenHitByPlayer = true;
 		}
 
 		//If the merchant has been hit by a player, they will double their sell price
-		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (Main.LocalPlayer.talkNPC == -1 || !Main.npc[Main.LocalPlayer.talkNPC].GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
+		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
+			if (!npc.GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
 				return;
 			}
 
-			foreach (Item item in shop.item) {
+			foreach (Item item in items) {
 				int value = item.shopCustomPrice ?? item.value;
 				item.shopCustomPrice = value * 2;
 			}

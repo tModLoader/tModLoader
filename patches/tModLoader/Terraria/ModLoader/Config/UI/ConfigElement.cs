@@ -40,8 +40,9 @@ public abstract class ConfigElement : UIElement
 	// If non-null, the memberInfo actually referes to the collection containing this item and array and index need to be used to assign this data
 	protected IList List { get; set; }
 	// Attributes
-	protected LabelAttribute LabelAttribute;
-	protected TooltipAttribute TooltipAttribute;
+	protected LabelKeyAttribute LabelAttribute;
+	protected string Label;
+	protected TooltipKeyAttribute TooltipAttribute;
 	protected BackgroundColorAttribute BackgroundColorAttribute;
 	protected RangeAttribute RangeAttribute;
 	protected IncrementAttribute IncrementAttribute;
@@ -72,29 +73,27 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		TextDisplayFunction = () => MemberInfo.Name;
-		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
+		LabelAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<LabelKeyAttribute>(MemberInfo, Item, List);
+		Label = ConfigManager.GetLocalizedLabel(MemberInfo);
+		// Potential TODO if highly requested: Support interpolating value itself into label.
+		TextDisplayFunction = () => Label;
 
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label;
+		TooltipAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<TooltipKeyAttribute>(MemberInfo, Item, List);
+		string tooltip = ConfigManager.GetLocalizedTooltip(MemberInfo);
+		if (tooltip != null) {
+			TooltipFunction = () => tooltip;
 		}
 
-		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(MemberInfo, Item, List);
-
-		if (TooltipAttribute != null) {
-			TooltipFunction = () => TooltipAttribute.Tooltip;
-		}
-
-		BackgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(MemberInfo, Item, List);
+		BackgroundColorAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(MemberInfo, Item, List);
 
 		if (BackgroundColorAttribute != null) {
 			backgroundColor = BackgroundColorAttribute.Color;
 		}
 
-		RangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(MemberInfo, Item, List);
-		IncrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(MemberInfo, Item, List);
-		NullAllowed = ConfigManager.GetCustomAttribute<NullAllowedAttribute>(MemberInfo, Item, List) != null;
-		JsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(MemberInfo, Item, List);
+		RangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(MemberInfo, Item, List);
+		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
+		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
+		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
 	}
 
 	protected virtual void SetObject(object value)
@@ -141,6 +140,7 @@ public abstract class ConfigElement : UIElement
 		if (DrawLabel) {
 			position.X += 8f;
 			position.Y += 8f;
+			// TODO: Support chat tag hover?
 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 		}
 

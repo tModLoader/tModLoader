@@ -1,20 +1,22 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Loot.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_Loot.cs
-@@ -1,11 +_,16 @@
+@@ -1,11 +_,12 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
  
- public class EntitySource_Loot : IEntitySource
++/// <summary>
++/// Used when an NPC or Projectile is killed and drops loot. <br/>
++/// Vanilla projectile examples are geodes and life crystal boulders
++/// </summary>
+-public class EntitySource_Loot : IEntitySource
++public class EntitySource_Loot : EntitySource_Parent
  {
- 	public readonly Entity Entity;
-+	
-+	public string? Context { get; }
- 
+-	public readonly Entity Entity;
+-
 -	public EntitySource_Loot(Entity entity)
-+	public EntitySource_Loot(Entity entity, string? context = null)
- 	{
- 		Entity = entity;
-+		Context = context;
- 	}
+-	{
+-		Entity = entity;
+-	}
++	public EntitySource_Loot(Entity entity, string? context = null) : base(entity, context) { }
  }
