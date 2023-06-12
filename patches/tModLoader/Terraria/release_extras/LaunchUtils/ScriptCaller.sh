@@ -86,11 +86,30 @@ else
 	fi
 fi
 
-if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
-	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
-	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+if [[ "$_uname" == *"_NT"* ]]; then
+
+	opengl="/gldriver:opengl"
+	args=$(echo "$@" | tr '[:upper:]' '[:lower:]')
+	args=${args//$opengl}
+	customargs=$(echo "$customargs" | tr '[:upper:]' '[:lower:]')
+	customargs=${customargs//$opengl}
+	
+	if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
+		echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
+		[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
+		echo "$customargs" "$args" 2>&1 | tee -a "$LogFile"
+		exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$args" 2>"$NativeLog"
+	else
+		echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
+		exec dotnet tModLoader.dll "$customargs" "$args" 2>"$NativeLog"
+	fi
 else
-	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
-	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
+		echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
+		[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
+		exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	else
+		echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
+		exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	fi
 fi
