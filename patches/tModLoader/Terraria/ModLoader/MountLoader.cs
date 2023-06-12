@@ -41,7 +41,7 @@ public static class MountLoader
 	internal static void ResizeArrays()
 	{
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(MountID), true);
+		LoaderUtils.ResetStaticMembers(typeof(MountID));
 
 		//Etc
 		Array.Resize(ref Mount.mounts, MountCount);

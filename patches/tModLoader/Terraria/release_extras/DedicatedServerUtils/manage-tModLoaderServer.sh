@@ -3,7 +3,7 @@
 #shellcheck disable=2164
 
 script_version="1.0.0.1"
-script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
+script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
 # Define functions used in script
 
@@ -241,7 +241,9 @@ function install_mods {
 	mkdir -p $mods_path
 
 	# If someone has .tmod files this will install them
-	if [[ -f "*.tmod" ]]; then
+	local count
+	count=$(ls -1 ./*.tmod 2>/dev/null | wc -l)
+	if [ $count != 0 ]; then
 		echo "Copying .tmod files to the mods directory"
 		cp ./*.tmod $mods_path
 	fi

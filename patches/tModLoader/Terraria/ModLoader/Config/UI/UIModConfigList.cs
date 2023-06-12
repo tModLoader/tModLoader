@@ -143,7 +143,7 @@ internal class UIModConfigList : UIState
 		foreach (var mod in ModLoader.Mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
 				string modName = mod.DisplayName;
-
+				
 				var modPanel = new UITextPanel<string>(modName);
 				modPanel.HAlign = 0.5f;
 				modPanel.WithFadedMouseOver();

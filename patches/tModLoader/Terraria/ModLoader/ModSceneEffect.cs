@@ -45,7 +45,7 @@ public abstract partial class ModSceneEffect : ModType
 	public virtual SceneEffectPriority Priority => SceneEffectPriority.None;
 
 	/// <summary>
-	/// Used to apply secondary colour shading for the capture camera. For example, darkening the background with the GlowingMushroom style.
+	/// Used to apply secondary color shading for the capture camera. For example, darkening the background with the GlowingMushroom style.
 	/// </summary>
 	public virtual CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 

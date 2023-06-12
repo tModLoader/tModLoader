@@ -101,6 +101,18 @@
  				return false;
  
  			item.favorited = !item.favorited;
+@@ -443,8 +_,11 @@
+ 
+ 		if (Main.cursorOverride == 7) {
+ 			if (context == 29) {
++				/*
+ 				Item item2 = new Item();
+ 				item2.SetDefaults(inv[slot].netID);
++				*/
++				Item item2 = inv[slot].Clone();
+ 				item2.stack = item2.maxStack;
+ 				item2.OnCreated(new JourneyDuplicationItemCreationContext());
+ 				item2 = Main.player[Main.myPlayer].GetItem(Main.myPlayer, item2, GetItemSettings.InventoryEntityToPlayerInventorySettings);
 @@ -497,6 +_,9 @@
  		inv = singleSlotArray[0];
  	}
@@ -255,7 +267,7 @@
  				HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
  				break;
  			case 4: {
-+				if (!PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, inv, Main.mouseItem))
 +					break;
 +
  				Chest chest = Main.instance.shop[Main.npcShop];
@@ -266,7 +278,7 @@
  					SoundEngine.PlaySound(18);
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  				else if (Main.mouseItem.value == 0) {
 -					chest.AddItemToShop(Main.mouseItem);
@@ -275,10 +287,20 @@
  					SoundEngine.PlaySound(7);
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  
  				Recipe.FindRecipes();
+@@ -762,7 +_,8 @@
+ 			case 5:
+ 				if (Main.mouseItem.IsAir) {
+ 					SoundEngine.PlaySound(7);
+-					Main.mouseItem.SetDefaults(inv[slot].netID);
++					//Main.mouseItem.SetDefaults(inv[slot].netID);
++					Main.mouseItem = inv[slot].Clone();
+ 					Main.mouseItem.stack = Main.mouseItem.maxStack;
+ 					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
+ 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
 @@ -788,7 +_,7 @@
  		bool result = false;
  		if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
@@ -310,7 +332,7 @@
  		if (Main.npcShop > 0 && !inv[slot].favorited) {
  			Chest chest = Main.instance.shop[Main.npcShop];
  			if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (!PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) { } else				
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else				
  				if (player.SellItem(inv[slot])) {
 +					// Moved below AnnounceTransfer
 +					/*
@@ -322,7 +344,7 @@
  					SoundEngine.PlaySound(18);
  					Recipe.FindRecipes();
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  				else if (inv[slot].value == 0) {
 +					// Moved below AnnounceTransfer
@@ -335,7 +357,7 @@
  					SoundEngine.PlaySound(7);
  					Recipe.FindRecipes();
 +
-+					PlayerLoader.PostSellItem(player, Main.npc[player.talkNPC], chest.item, chest.item[soldItemIndex]);
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  			}
  		}
@@ -402,7 +424,7 @@
  							PickupItemIntoMouse(inv, context, slot, player);
  							SoundEngine.PlaySound(12);
  							RefreshStackSplitCooldown();
-@@ -1124,25 +_,38 @@
+@@ -1124,25 +_,39 @@
  
  	public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player)
  	{
@@ -413,7 +435,8 @@
 +			*/
  			if (context == 29) {
 -				Main.mouseItem.SetDefaults(Main.mouseItem.type);
-+				Main.mouseItem.SetDefaults(inv[slot].type /* Main.mouseItem.type */);
++				//Main.mouseItem.SetDefaults(Main.mouseItem.type);
++				Main.mouseItem = inv[slot].Clone();
  				Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  			}
 +			else { // Added, replaces commented code above and below
@@ -468,7 +491,7 @@
  		if (item.stack == 0)
  			item.SetDefaults();
  
-@@ -1226,22 +_,32 @@
+@@ -1226,11 +_,18 @@
  
  	private static void SwapVanityEquip(Item[] inv, int context, int slot, Player player)
  	{
@@ -484,20 +507,39 @@
 -		Item item = inv[slot - 10];
 +		Item item = inv[tSlot];
  		bool flag = context != 11 || item.FitsAccessoryVanitySlot || item.IsAir;
++		/*
  		if (flag && context == 11 && inv[slot].wingSlot > 0) {
-+			/*
  			for (int i = 3; i < 10; i++) {
  				if (inv[i].wingSlot > 0 && i != slot - 10)
-+			*/
-+			for (int i = 0; i < inv.Length / 2; i++) {
-+				if (inv[i].wingSlot > 0 && i != tSlot || !ItemLoader.CanAccessoryBeEquippedWith(inv[tSlot], inv[i]))
- 					flag = false;
- 			}
- 		}
+@@ -1240,8 +_,33 @@
  
--		if (!flag)
-+		if (!flag || !ItemLoader.CanEquipAccessory(inv[slot], tSlot, context < 0))
+ 		if (!flag)
  			return;
++		*/
++
++		if (flag && Math.Abs(context) == 11) {
++			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
++			for (int invNum = 0; invNum < 2; invNum++) {
++				var checkInv = player.armor;
++				int startIndex = 3;
++				if (invNum == 1) {
++					checkInv = accessories;
++					startIndex = 0;
++				}
++
++				for (int i = startIndex; i < checkInv.Length / 2; i++) {
++					if (context == 11 && invNum == 0 && i == tSlot)
++						continue;
++					if (context == -11 && invNum == 1 && i == tSlot)
++						continue;
++					if (inv[slot].wingSlot > 0 && checkInv[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(inv[slot], checkInv[i]))
++						flag = false;
++				}
++			}
++		}
++
++		if (!flag || !ItemLoader.CanEquipAccessory(inv[slot], tSlot, context < 0))
++			return;
  
 -		Utils.Swap(ref inv[slot], ref inv[slot - 10]);
 +		Utils.Swap(ref inv[slot], ref inv[tSlot]);
@@ -537,20 +579,23 @@
  		int num = Main.superFastStack + 1;
  		Player localPlayer = Main.LocalPlayer;
  		for (int i = 0; i < num; i++) {
-+			if (!PlayerLoader.CanBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, inv[slot]))
++			if (!PlayerLoader.CanBuyItem(localPlayer, localPlayer.TalkNPC, inv, inv[slot]))
 +				continue;
 +
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
  
-@@ -1394,25 +_,40 @@
- 					SoundEngine.PlaySound(18);
- 				else
+@@ -1396,23 +_,41 @@
  					SoundEngine.PlaySound(7);
-+
-+				PlayerLoader.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
  			}
  
++			// Changed for parity with the Recipe item creation process
++			Item boughtItem = inv[slot].Clone();
++			boughtItem.buyOnce = false;
++			boughtItem.isAShopItem = false;
++			boughtItem.stack = 1;
++			boughtItem.OnCreated(new BuyItemCreationContext(Main.mouseItem, localPlayer.TalkNPC));
++
  			if (Main.mouseItem.type == 0) {
 +				/*
  				Main.mouseItem.netDefaults(inv[slot].netID);
@@ -559,9 +604,7 @@
  
  				Main.mouseItem.stack = 0;
 +				*/
-+				Main.mouseItem = inv[slot].Clone();
-+				Main.mouseItem.buyOnce = false;
-+				Main.mouseItem.stack = 1;
++				Main.mouseItem = boughtItem;
 +			}
 +			else {
 +				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: true, 1);
@@ -580,7 +623,7 @@
  
  			AnnounceTransfer(new ItemTransferInfo(Main.mouseItem, 15, 21));
 +
-+			PlayerLoader.PostBuyItem(localPlayer, Main.npc[localPlayer.talkNPC], inv, Main.mouseItem);
++			PlayerLoader.PostBuyItem(localPlayer, localPlayer.TalkNPC, inv, Main.mouseItem);
  		}
  	}
  

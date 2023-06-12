@@ -60,7 +60,8 @@ public static class NPCHeadLoader
 
 	internal static void ResizeAndFillArrays()
 	{
-		static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures) {
+		static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures)
+		{
 			Main.ContentThatNeedsRenderTargets.Remove(renderer);
 			Main.ContentThatNeedsRenderTargets.Add(renderer = new NPCHeadRenderer(textures));
 		}
@@ -80,7 +81,7 @@ public static class NPCHeadLoader
 		}
 
 		//Sets. The arrays modified here are resized in NPCLoader.
-		LoaderUtils.ResetStaticMembers(typeof(NPCHeadID), true);
+		LoaderUtils.ResetStaticMembers(typeof(NPCHeadID));
 
 		foreach (int npc in npcToBossHead.Keys) {
 			NPCID.Sets.BossHeadTextures[npc] = npcToBossHead[npc];

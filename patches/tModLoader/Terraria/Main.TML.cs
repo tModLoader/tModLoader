@@ -33,7 +33,12 @@ public partial class Main
 	public static bool showServerConsole;
 	public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
-	public static double timePass; // used to account for more precise time rates when deciding when to update weather
+	/// <summary>
+	/// Representation that dictates the actual amount of "world event updates" that happen in a given GAME tick. This number increases/decreases in direct tandem with
+	/// <seealso cref="desiredWorldEventsUpdateRate"/>.
+	/// </summary>
+	public static int worldEventUpdates;
+	private double _partialWorldEventUpdates = 0f;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
@@ -45,6 +50,9 @@ public partial class Main
 	// Does not effect resizing the window manually. May not be perfect, but will at least be sufficient to provide room to manually address this on the end user side
 	// Magic constant comes from default windows border settings: ~ 1377 / 1440 and 1033 / 1080.
 	private static int BorderedHeight(int height, bool state) => (int)(height * (state ? 1 : 0.95625));
+
+	// Tracks whether the Stylist has had her hairstyle list updated for the current interaction.
+	private static bool hairstylesUpdatedForThisInteraction; // TML: Track whether hairstyle cache needs refreshing for Stylist UI.
 
 	private static Player _currentPlayerOverride;
 
@@ -102,7 +110,7 @@ public partial class Main
 				}
 
 				if (!Main.mouseText) {
-					mouseText = (InfoDisplayLoader.ActivePages() != InfoDisplayLoader.InfoDisplayPage + 1) ? "Next Page" : "To First Page";
+					mouseText = (InfoDisplayLoader.ActivePages() != InfoDisplayLoader.InfoDisplayPage + 1) ? Language.GetTextValue("tModLoader.NextInfoAccPage") : Language.GetTextValue("tModLoader.FirstInfoAccPage");
 					Main.mouseText = true;
 				}
 			}
@@ -131,7 +139,7 @@ public partial class Main
 				}
 
 				if (!Main.mouseText) {
-					mouseText = (InfoDisplayLoader.InfoDisplayPage != 0) ? "Previous Page" : "To Last Page";
+					mouseText = (InfoDisplayLoader.InfoDisplayPage != 0) ? Language.GetTextValue("tModLoader.PreviousInfoAccPage") : Language.GetTextValue("tModLoader.LastInfoAccPage");
 					Main.mouseText = true;
 				}
 			}
