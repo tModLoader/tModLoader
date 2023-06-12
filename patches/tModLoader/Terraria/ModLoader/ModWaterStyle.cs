@@ -32,7 +32,7 @@ public abstract class ModWaterStyle : ModTexturedType
 		SetStaticDefaults();
 
 		TextureAssets.Liquid[Slot] = ModContent.Request<Texture2D>(BlockTexture);
-		TextureAssets.LiquidSlope[Slot] = ModContent.Request<Texture2D>(BlockTexture);
+		TextureAssets.LiquidSlope[Slot] = ModContent.Request<Texture2D>(SlopeTexture);
 	}
 
 	/// <summary>
