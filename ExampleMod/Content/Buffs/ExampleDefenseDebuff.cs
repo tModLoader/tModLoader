@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Buffs
 			Main.pvpBuff[Type] = true; // This buff can be applied by other players in Pvp, so we need this to be true.
 
 			// Our BuffImmuneGlobalNPC class changes some buff immunity logic. NPCs immune to Ichor will automatically be immune to this buff.
-			BuffImmuneGlobalNPC.IsADefenseReductionDebuff.Add(Type);
+			BuffImmuneGlobalNPC.SetDefenseDebuffStaticDefaults(Type);
 		}
 
 		public override void Update(NPC npc, ref int buffIndex) {
