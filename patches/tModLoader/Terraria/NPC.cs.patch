@@ -793,7 +793,7 @@
 +			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
 +			if (!NPCID.Sets.FullyImmuneToBuffs[type]) {
 +				for (int i = 0; i < buffImmune.Length; i++) {
-+					buffImmune[i] = !BuffID.Sets.IsAnNPCWhipDebuff[i];
++					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
 +				}
 +			}
 +
