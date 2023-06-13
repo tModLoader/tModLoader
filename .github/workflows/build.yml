@@ -209,11 +209,8 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Giving Purpose         
-          if [ ${{github.ref}} = 'refs/heads/stable' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/1.4.3-legacy' ] ; then
             export BUILDPURPOSE="Stable"
-          fi
-          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
-            export BUILDPURPOSE="Preview"
           fi
           echo ::endgroup::
           

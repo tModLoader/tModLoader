@@ -71,7 +71,9 @@ namespace Terraria
 			Logging.tML.Info($"Folder Renames Success");
 		}
 
+		
 		private static void PortCommonFiles() {
+			/*
 			// Only create and port config files from stable if needed.
 			if(BuildInfo.IsDev || BuildInfo.IsPreview) {
 				var releasePath = Path.Combine(SavePath, ReleaseFolder);
@@ -84,7 +86,18 @@ namespace Terraria
 						File.Copy(Path.Combine(releasePath, "input profiles.json"), Path.Combine(newPath, "input profiles.json"));
 				}
 			}
+			*/
+
+			// Copy all current stable player files to 1.4.3-legacy during transition period
+			if (!Directory.Exists(Path.Combine(SavePath, ReleaseFolder))) {
+				Utilities.FileUtilities.CopyFolder(Path.Combine(SavePath, StableFolder), Path.Combine(SavePath, ReleaseFolder));
+			}
 		}
+
+
+		public const string ReleaseFolder = "tModLoader-1.4.3";
+		public const string StableFolder = "tModLoader";
+		//public const string DevFolder = "tModLoader-dev";
 
 		private static void SetSavePath() {
 			SavePath =
@@ -100,10 +113,8 @@ namespace Terraria
 				PortCommonFiles();
 			}
 
-			var fileFolder =
-				BuildInfo.IsStable ? ReleaseFolder :
-				BuildInfo.IsPreview ? PreviewFolder :
-				DevFolder;
+			// 1.4.3 legacy custom statement - the legacy 143 folder
+			var fileFolder = ReleaseFolder;
 
 			SavePath = Path.Combine(SavePath, fileFolder);
 
