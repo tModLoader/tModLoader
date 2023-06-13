@@ -4,6 +4,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config;
 

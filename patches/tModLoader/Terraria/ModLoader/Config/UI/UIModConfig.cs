@@ -1,20 +1,21 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
+using Terraria.Localization;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -112,9 +113,8 @@ internal class UIModConfig : UIState
 		uIPanel.Append(uIScrollbar);
 		mainConfigList.SetScrollbar(uIScrollbar);
 
-		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true) {
-			HAlign = 0.5f
-		};//"Mod Config"
+		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true);//"Mod Config"
+		headerTextPanel.HAlign = 0.5f;
 		headerTextPanel.Top.Set(-35f, 0f);
 		headerTextPanel.SetPadding(15f);
 		headerTextPanel.BackgroundColor = UICommon.DefaultUIBlue;
@@ -152,14 +152,12 @@ internal class UIModConfig : UIState
 		backButton.HAlign = 0;
 		backButton.WithFadedMouseOver();
 		backButton.OnMouseOver += (a, b) => {
-			if (pendingChanges) {
+			if (pendingChanges)
 				backButton.BackgroundColor = Color.Red;
-			}
 		};
 		backButton.OnMouseOut += (a, b) => {
-			if (pendingChanges) {
+			if (pendingChanges)
 				backButton.BackgroundColor = Color.Red * 0.7f;
-			}
 		};
 		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
@@ -205,9 +203,8 @@ internal class UIModConfig : UIState
 		modConfig = null;
 		pendingConfig = null;
 
-		while (configPanelStack.Count > 1) {
+		while (configPanelStack.Count > 1)
 			uIElement.RemoveChild(configPanelStack.Pop());
-		}
 	}
 
 	// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
@@ -321,7 +318,10 @@ internal class UIModConfig : UIState
 		DiscardChanges();
 	}
 
-	private void DiscardChanges() => DoMenuModeState();
+	private void DiscardChanges()
+	{
+		DoMenuModeState();
+	}
 
 	private bool pendingChanges;
 	private bool pendingChangesUIUpdate;
@@ -364,9 +364,8 @@ internal class UIModConfig : UIState
 			netUpdate = false;
 		}
 
-		if (!updateNeeded) {
+		if (!updateNeeded)
 			return;
-		}
 
 		updateNeeded = false;
 
@@ -456,13 +455,11 @@ internal class UIModConfig : UIState
 		uIElement.RemoveChild(previousConfigButton);
 		uIElement.RemoveChild(nextConfigButton);
 
-		if (index + 1 < count) {
+		if (index + 1 < count)
 			uIElement.Append(nextConfigButton);
-		}
 
-		if (index - 1 >= 0) {
+		if (index - 1 >= 0)
 			uIElement.Append(previousConfigButton);
-		}
 
 		uIElement.RemoveChild(configPanelStack.Peek());
 		uIElement.Append(uIPanel);
@@ -488,13 +485,11 @@ internal class UIModConfig : UIState
 		int order = 0;
 
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
-			if (variable.IsProperty && variable.Name == "Mode") {
+			if (variable.IsProperty && variable.Name == "Mode")
 				continue;
-			}
 
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))) {
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
-			}
 
 			HandleHeader(mainConfigList, ref top, ref order, variable);
 
@@ -571,29 +566,23 @@ internal class UIModConfig : UIState
 		else if (type == typeof(int)) {
 			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
 
-			if (sliderAttribute != null) {
+			if (sliderAttribute != null)
 				e = new IntRangeElement();
-			}
-			else {
+			else
 				e = new IntInputElement();
-			}
 		}
 		else if (type == typeof(string)) {
 			OptionStringsAttribute ost = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
-			if (ost != null) {
+			if (ost != null)
 				e = new StringOptionElement();
-			}
-			else {
+			else
 				e = new StringInputElement();
-			}
 		}
 		else if (type.IsEnum) {
-			if (list != null) {
+			if (list != null)
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
-			}
-			else {
+			else
 				e = new EnumElement();
-			}
 		}
 		else if (type.IsArray) {
 			e = new ArrayElement();
@@ -703,21 +692,18 @@ internal class UIModConfig : UIState
 		separateList.SetScrollbar(uIScrollbar);
 
 		string name = ConfigManager.GetLocalizedLabel(memberInfo);
-		if (index != -1) {
+		if (index != -1)
 			name = name + " #" + (index + 1);
-		}
-
 		Interface.modConfig.subPageStack.Push(name);
 		//UIPanel heading = new UIPanel();
 		//UIText headingText = new UIText(name);
 
 		name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
 
-		UITextPanel<string> heading = new UITextPanel<string>(name) {
-			HAlign = 0f
-		}; // TODO: ToString as well. Separate label?
-		   //heading.Width.Set(-10, 0.5f);
-		   //heading.Left.Set(60, 0f);
+		UITextPanel<string> heading = new UITextPanel<string>(name); // TODO: ToString as well. Separate label?
+		heading.HAlign = 0f;
+		//heading.Width.Set(-10, 0.5f);
+		//heading.Left.Set(60, 0f);
 		heading.Top.Set(-6, 0);
 		heading.Height.Set(40, 0);
 		//var headingContainer = GetContainer(heading, i++);
@@ -779,9 +765,8 @@ internal class UIModConfig : UIState
 			}
 
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))) {
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 					continue;
-				}
 
 				HandleHeader(separateList, ref top, ref order, variable);
 

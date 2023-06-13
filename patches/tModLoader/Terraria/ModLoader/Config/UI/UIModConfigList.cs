@@ -1,9 +1,15 @@
+using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
+using System.Xml;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -31,7 +37,7 @@ internal class UIModConfigList : UIState
 
 		uIPanel = new UIPanel {
 			Width = { Pixels = 0f, Percent = 1f },
-			Height = { Pixels = -110f, Percent = 1f },
+			Height = { Pixels = -110f, Percent = 1f},
 			BackgroundColor = UICommon.MainPanelBackground
 		};
 		uIElement.Append(uIPanel);
@@ -138,10 +144,9 @@ internal class UIModConfigList : UIState
 		foreach (var mod in ModLoader.Mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
 				string modName = mod.DisplayName;
-
-				var modPanel = new UITextPanel<string>(modName) {
-					HAlign = 0.5f
-				};
+				
+				var modPanel = new UITextPanel<string>(modName);
+				modPanel.HAlign = 0.5f;
 				modPanel.WithFadedMouseOver();
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -160,10 +165,9 @@ internal class UIModConfigList : UIState
 	{
 		configList?.Clear();
 
-		if (!ConfigManager.Configs.TryGetValue(selectedMod, out var configs)) {
+		if (!ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
-		}
-
+		
 		foreach (var config in configs) {
 			var configPanel = new UITextPanel<string>(config.DisplayName.Value) {
 				HAlign = 0.5f
