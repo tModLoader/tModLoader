@@ -616,39 +616,41 @@ internal static class ModOrganizer
 			RemoveSkippablePreview(repo);
 
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-		if (tmods.Length <= 3)
+		if (tmods.Length <= 4)
 			return;
 
-		// Solxan: We want to keep 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+		// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
 		// we need to rollback to the last stable due to a significant bug.
-		// We thus check for what the previous Stable was and compare for anything less than that.
+		// We also keep a 1.4.3 version from version 2022.9 prior
 
-		string deleteFolder = null;
-		var lowestVersion = BuildInfo.stableVersion.MajorMinor();
-
+		// Get the list of all tMod files on Workshop
+		List<(string file, Version tModVersion, bool isFolder)> information = new();
 		for (int i = 0; i < tmods.Length; i++) {
 			var filename = tmods[i];
 
-			// Legacy, non-folder .tmods
-			if (filename.EndsWith(".tmod") && tmods.Length > 3) {
-				File.Delete(filename);
-				return;
-			}
-
 			var match = PublishFolderMetadata.Match(filename);
 			if (match.Success) {
-				var checkVersion = new Version(match.Groups[1].Value);
-
-				// If the mod copy is from a legacy version
-				if (checkVersion < lowestVersion) {
-					lowestVersion = checkVersion;
-					deleteFolder = filename;
-				}
+				information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), true));
+			}
+			else {
+				information.Add((filename, new Version(0,12), false));
 			}
 		}
 
-		if (deleteFolder != null)
-			Directory.Delete(deleteFolder, true);
+		string[] versions = { "1.4.3", "1.4.4" };
+		int[] keepCount = { 1, 3 };
+
+		for (int j = 0; j < versions.Length; j++) {
+			// Get an ordered list for the particular version
+			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == versions[j]).OrderBy(t => t.tModVersion).ToArray();
+
+			for (int i = keepCount[j]; i < mods.Count(); i++) {
+				if (mods[i].isFolder)
+					Directory.Delete(mods[i].file, true);
+				else
+					File.Delete(mods[i].file);
+			}
+		}
 	}
 
 	// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
