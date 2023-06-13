@@ -4466,7 +4466,7 @@
 +
 +				// Developer mode button.
 +				if (menuMode == 0 /*&& !ModCompile.DeveloperMode*/) {
-+					string DeveloperModeText = Language.GetTextValue("tModLoader.13InfoButton");
++					string DeveloperModeText = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 +
 +					// measure and draw text from bottom right
 +					var textSize = FontAssets.MouseText.Value.MeasureString(DeveloperModeText);
@@ -4483,7 +4483,7 @@
 +
 +						if (mouseover && mouseLeftRelease && mouseLeft) {
 +							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players");
++							Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches");
 +						}
 +					}
 +

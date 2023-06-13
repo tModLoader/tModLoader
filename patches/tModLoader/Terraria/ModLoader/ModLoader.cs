@@ -31,6 +31,7 @@ namespace Terraria.ModLoader
 		public static string LastLaunchedTModLoaderAlphaSha;
 		public static bool ShowWhatsNew;
 		public static bool AlphaWelcomed;
+		public static bool SeenMigrateTo143BranchMessage;
 		public static bool PreviewFreezeNotification;
 		public static bool DownloadedDependenciesOnStartup;
 		public static bool ShowFirstLaunchWelcomeMessage;

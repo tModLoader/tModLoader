@@ -33,7 +33,11 @@
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "Aucun matériel audio trouvé. Désactivation de tout l’audio.",
 		// "13InfoButton": "How to Access 1.3 tModLoader",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		// "PleaseMoveTo143LegacyMessage": "tModLoader is in the process of updating to Terraria 1.4.4. Soon, the default release of tModLoader will be this 1.4.4 version.\n\nWhen tModLoader updates, there is a very high chance that your current playthrough will be interrupted since many mods will break. We hope mod authors will start porting mods now, but it isn't guaranteed that all mods will update before 1.4.4 is the new default version of tModLoader.\n\nSteam has a feature to allow users to choose between multiple versions of a game, we will use this feature to allow users to smoothly transition to 1.4.4 when they are ready. By switching to another beta branch identical to this version, your game will not be interrupted during this period. To do this, please switch to the 1.4.3-legacy beta branch. Click 'View Instructions' below and follow the instructions to switch to the 1.4.3-legacy beta branch.",
 
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",
@@ -162,6 +166,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Ressource supposée introuvable :\n    {0}\nRésultat le plus probable: (Possiblement un typo ou un mauvais emplacement?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Exception capturée silencieusement : ",
 		"RuntimeErrorSeeLogsForFullTrace": "(Voir {0} pour plus de détails)",
+		// "PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Ouvrir les Registres",
 		"OpenWebHelp": "Ouvrir l'Aide Internet",
 		"SkipToMainMenu": "Sauter le chargement",
@@ -176,7 +181,7 @@
 		"ModInfoNoDescriptionAvailable": "Pas de description disponible",
 		"ModInfoProblemTryAgain": "Il y a eu un problème, réessayez",
 		"ModInfoDisableModToDelete": "Désactiver le Mod à supprimer",
-		// "ModInfoVisitSteampage": "Steam Workshop page",
+		// "ModInfoVisitSteampage": "Visit the Mod's Steam Workshop page",
 
 		// Mod Packs
 		"ModPacksHeader": "Packs de Mods",
