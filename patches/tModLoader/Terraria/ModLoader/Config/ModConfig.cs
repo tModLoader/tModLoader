@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 using tModPorter;
 
 namespace Terraria.ModLoader.Config;
@@ -95,11 +96,19 @@ public abstract class ModConfig : ILocalizedModType
 	/// </summary>
 	public void Open()
 	{
+		// TODO: make these menus just exit instead of going to the config list?
 		Interface.modConfig.SetMod(Mod, this, true);
 		if (Main.gameMenu) {
 			Main.menuMode = Interface.modConfigID;
 		}
 		else {
+			IngameFancyUI.CoverNextFrame();
+
+			Main.playerInventory = false;
+			Main.editChest = false;
+			Main.npcChatText = "";
+			Main.inFancyUI = true;
+
 			Main.InGameUI.SetState(Interface.modConfig);
 		}
 	}

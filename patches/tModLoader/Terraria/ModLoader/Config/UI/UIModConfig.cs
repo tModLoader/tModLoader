@@ -50,6 +50,7 @@ internal class UIModConfig : UIState
 	private UIFocusInputTextField filterTextField;
 	private bool openedFromConfigList = false;
 
+	// TODO: panel sizing, search bar, and modal for notification and remove next and previous config buttons
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement();

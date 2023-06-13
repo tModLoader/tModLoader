@@ -23,6 +23,7 @@ internal class UIModConfigList : UIState
 
 	public Mod selectedMod;
 
+	// TODO panel sizing
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement {
@@ -168,15 +169,14 @@ internal class UIModConfigList : UIState
 			return;
 		
 		foreach (var config in configs) {
-			// TODO - properly allow no name
-			string configName = ((LabelAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(LabelAttribute)))?.Label ?? config.Name;
-
-			var configPanel = new UITextPanel<string>(configName);
-			configPanel.HAlign = 0.5f;
+			var configPanel = new UITextPanel<string>(config.DisplayName.Value) {
+				HAlign = 0.5f
+			};
 			configPanel.WithFadedMouseOver();
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 
+				// TODO: add server side indicator
 				Interface.modConfig.SetMod(selectedMod, config, true);
 				if (Main.gameMenu) {
 					Main.menuMode = Interface.modConfigID;
