@@ -37,7 +37,9 @@
 #WindowsServer
 #world=C:\Users\YOUR_USERNAME_HERE\My Documents\My Games\Terraria\Worlds\world1.wld
 #Linux
-world=~/.local/share/Terraria/tModLoader/Worlds/YourWorld.wld
+world=~/.local/share/Terraria/tModLoader/Worlds/Terraria.wld
+#Linux 1.4.4-preview
+#world=~/.local/share/Terraria/tModLoader-preview/Worlds/Terraria.wld
 
 #Creates a new world if none is found. World size is specified by: 1(small), 2(medium), and 3(large).
 autocreate=1
@@ -55,16 +57,21 @@ worldname=Terraria
 #maxplayers=8
 
 #Set the port number
-#port=7777
+port=7777
 
 #Set the server password
 #password=p@55w0rd
 
 #Set the message of the day
-#motd=Please don�t cut the purple trees!
+#motd=Please don't cut the purple trees!
 
 #Sets the folder where world files will be stored
+#Windows
 #worldpath=C:\Users\Defaults\My Documents\My Games\Terraria\Worlds\
+#Linux
+#~/.local/share/Terraria/tModLoader/Worlds/
+#Linux 1.4.4-preview
+#~/.local/share/Terraria/tModLoader-preview/Worlds/
 
 #The location of the banlist. Defaults to "banlist.txt" in the working directory.
 #banlist=banlist.txt
@@ -89,12 +96,11 @@ priority=1
 
 #Sets the folder where manually installed mods will be loaded from.
 #modpath=C:\Users\YOUR_USERNAME_HERE\My Documents\My Games\Terraria\tModLoader\Mods\
+#Linux
+modpath=~/.local/share/Terraria/tModLoader/Mods
+#Linux 1.4.4-preview
+#modpath=~/.local/share/Terraria/tModLoader-preview/Mods
 
 #Sets the mod pack to load, causing only the specified mods to load. 
 #modpack=MyModpack
-
-
-# These are the minimum required fileds to run the server with no user input. If in a container, make sure NOT to set the port.
-
-
 
