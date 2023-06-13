@@ -616,7 +616,7 @@ internal static class ModOrganizer
 			RemoveSkippablePreview(repo);
 
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-		if (tmods.Length <= 4)
+		if (tmods.Length <= 3)
 			return;
 
 		// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
@@ -642,7 +642,7 @@ internal static class ModOrganizer
 
 		for (int j = 0; j < versions.Length; j++) {
 			// Get an ordered list for the particular version
-			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == versions[j]).OrderBy(t => t.tModVersion).ToArray();
+			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == versions[j]).OrderByDescending(t => t.tModVersion).ToArray();
 
 			for (int i = keepCount[j]; i < mods.Count(); i++) {
 				if (mods[i].isFolder)
