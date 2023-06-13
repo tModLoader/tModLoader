@@ -19,10 +19,11 @@ jobs:
         - name: Get current day
           id: date
           shell: bash
-          # stores day of the month
-          run: echo "::set-output name=date::$(date +'%d')"
-          # stores month as a number
-          run: echo "::set-output name=month::$(date +'%m')"
+          run: 
+            # stores day of the month
+            echo "::set-output name=date::$(date +'%d')"
+            # stores month as a number
+            echo "::set-output name=month::$(date +'%m')"
         
         - name: Check out repo
           # If the condition is TRUE then we setup to merge 1.4.4 into preview. If False, nothing happens 
