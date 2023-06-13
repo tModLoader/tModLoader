@@ -9,6 +9,7 @@ namespace ExampleMod.Common.GlobalNPCs
 
 	// For mod compatibility, it is important to put code adjusting debuffs in the correct methods:
 	// Adjust BuffID.Sets.GrantImmunityWith and NPCID.Sets.SpecificDebuffImmunity in ModNPC/GlobalNPC.SetStaticDefaults.
+	// It is acceptable to adjust SpecificDebuffImmunity in PostSetupContent if there is a need to change the immunities of content from other mods and GrantImmunityWith is insufficient.
 	// Only adjust NPC.buffImmune[] directly in ModNPC/GlobalNPC.SetDefaults for complex or world state specific logic.
 	// Adjusting NPC.buffImmune[] during AI or SetDefaults methods is possible, but be aware that debuff inheritance will not apply to manual changes.
 	// For example: While boss is spinning, set NPC.buffImmune[OnFire] = true.
