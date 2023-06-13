@@ -4,10 +4,10 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4_mergedtesting, gh_actions_test, 1.4-preview, stable, 1.4]
+    branches: [1.4.3-legacy]
   pull_request_target:
     types: [labeled]
-    branches: [1.4-preview, stable, 1.4, 1.4.4]
+    branches: [1.4.3-legacy]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -32,7 +32,7 @@ jobs:
 
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/1.4-preview')
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4.3-legacy')
         shell: bash
         run: |
           echo "Attempting get previous version id"
@@ -50,7 +50,7 @@ jobs:
             exit 1
           fi
           echo "Applying verison updates"
-          if [[ "refs/heads/stable" = $branch ]] ; then
+          if [[ "refs/heads/1.4.3-legacy" = $branch ]] ; then
              echo "Rolling Forward the Patch #..."
              ((++patch))   
           fi
@@ -80,7 +80,7 @@ jobs:
       - name: Check out stable branch
         uses: actions/checkout@v2
         with:
-          ref: "stable"
+          ref: "1.4.3-legacy"
           persist-credentials: false
           fetch-depth: 0
       
@@ -274,7 +274,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/stable' || github.ref == 'refs/heads/1.4-preview')
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4.3-legacy')
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
@@ -441,7 +441,7 @@ jobs:
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/stable')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4.3-legacy')
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
@@ -528,11 +528,8 @@ jobs:
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
           manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
-          if [ ${{github.ref}} = 'refs/heads/stable' ] ; then
-            manifesto=$manifesto/stable.vdf
-          fi
-          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
-            manifesto=$manifesto/preview.vdf
+          if [ ${{github.ref}} = 'refs/heads/1.4.3-legacy' ] ; then
+            manifesto=$manifesto/143-legacy.vdf
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
@@ -576,11 +573,13 @@ jobs:
           cat publish.vdf
           echo Done
         working-directory: artifacts/ExampleMod
-
+        
+        # Used for Github Releases
       - name: Install Zip
-        if: github.ref == 'refs/heads/stable'
+        if: github.ref == 'refs/heads/1.4.3-legacy'
         uses: montudor/action-zip@v1
         
+        # Used for Github Releases
       - name: Zip Artifacts
         working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
         run: |
@@ -588,7 +587,7 @@ jobs:
           cd Build; zip -qq -r ../tModLoader.zip .; cd ..
       
       - name: Make a release
-        if: github.ref == 'refs/heads/stable'
+        if: github.ref == 'refs/heads/1.4.3-legacy'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
