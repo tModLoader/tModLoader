@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.UI
 				Left = { Percent = 0 },
 				VAlign = 1f,
 				Top = { Pixels = -30 },
-				BackgroundColor = Color.Red
+				BackgroundColor = Color.Orange
 			};
 		}
 

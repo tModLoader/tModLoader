@@ -28,6 +28,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static string lastLaunchedModsFilePath = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 		internal static List<(string ModName, Version previousVersion)> modsThatUpdatedSinceLastLaunch = new List<(string ModName, Version previousVersion)>();
+		internal static HashSet<string> modsReadyFor144 = new HashSet<string>();
 
 		internal static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
 
@@ -48,6 +49,7 @@ namespace Terraria.ModLoader.Core
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
 			var names = new HashSet<string>();
+			modsReadyFor144.Clear();
 
 			DeleteTemporaryFiles();
 
@@ -521,11 +523,12 @@ namespace Terraria.ModLoader.Core
 				if (match.Success) {
 					Version testVers = new Version(match.Groups[1].Value);
 					if (testVers > tmodVersion) {
+						if(testVers >= new Version(2023, 4))
+							modsReadyFor144.Add(Path.GetFileNameWithoutExtension(fileName));
 						continue;
 					}
 					else if (testVers == currVersion) {
 						val = fileName;
-						break;
 					}
 					else if (testVers > currVersion) {
 						currVersion = testVers;

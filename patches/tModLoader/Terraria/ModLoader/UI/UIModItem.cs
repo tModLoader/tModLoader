@@ -26,6 +26,7 @@ namespace Terraria.ModLoader.UI
 		private UIImage _moreInfoButton;
 		private UIImage _modIcon;
 		private UIImageFramed updatedModDot;
+		private UIImage readyFor144Icon;
 		private Version previousVersionHint;
 		private UIHoverImage _keyImage;
 		private UIImage _configButton;
@@ -100,20 +101,22 @@ namespace Terraria.ModLoader.UI
 			_uiModStateText.OnClick += ToggleEnabled;
 			Append(_uiModStateText);
 
+			int bottomRightRowOffset = -36;
 			_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
-				Left = { Pixels = -36, Precent = 1 },
+				Left = { Pixels = bottomRightRowOffset, Precent = 1 },
 				Top = { Pixels = 40 }
 			};
 			_moreInfoButton.OnClick += ShowMoreInfo;
 			Append(_moreInfoButton);
 
 			if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
+				bottomRightRowOffset -= 36;
 				_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
 					Width = { Pixels = 36 },
 					Height = { Pixels = 36f },
-					Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1f },
+					Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1f },
 					Top = { Pixels = 40f }
 				};
 				_configButton.OnClick += OpenConfig;
@@ -207,14 +210,28 @@ namespace Terraria.ModLoader.UI
 			};
 
 			if (!_loaded) {
+				bottomRightRowOffset -= 36;
 				_deleteModButton = new UIImage(TextureAssets.Trash) {
 					Width = { Pixels = 36 },
 					Height = { Pixels = 36 },
-					Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1 },
+					Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
 					Top = { Pixels = 42.5f }
 				};
 				_deleteModButton.OnClick += QuickModDelete;
 				Append(_deleteModButton);
+			}
+
+			if (ModOrganizer.modsReadyFor144.Contains(_mod.Name)) {
+				bottomRightRowOffset -= 26;
+				Main.instance.LoadItem(ItemID.ManaCrystal);
+				readyFor144Icon = new UIImage(TextureAssets.Item[ItemID.ManaCrystal]) {
+					//ImageScale = 1.3f,
+					//Width = { Pixels = 36 },
+					//Height = { Pixels = 36 },
+					Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
+					Top = { Pixels = 46f }
+				};
+				Append(readyFor144Icon);
 			}
 
 			var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
@@ -306,6 +323,9 @@ namespace Terraria.ModLoader.UI
 					_tooltip = Language.GetTextValue("tModLoader.ModAddedSinceLastLaunchMessage");
 				else
 					_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
+			}
+			else if (readyFor144Icon?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModReadyFor144");
 			}
 		}
 
