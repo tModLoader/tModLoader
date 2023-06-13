@@ -357,12 +357,12 @@ internal static class Interface
 			Main.MenuUI.SetState(modConfig);
 			Main.menuMode = 888;
 		}
-		else if (Main.menuMode == exitID) {
-			Environment.Exit(0);
-		}
 		else if (Main.menuMode == modConfigListID) {
 			Main.MenuUI.SetState(modConfigList);
 			Main.menuMode = 888;
+		}
+		else if (Main.menuMode == exitID) {
+			Environment.Exit(0);
 		}
 	}
 

@@ -2,6 +2,8 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.UI;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config;
 
@@ -85,5 +87,20 @@ public abstract class ModConfig : ILocalizedModType
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Opens this config in the config UI.<br/>
+	/// Can be used to allow your own UI to add buttons to access the config.
+	/// </summary>
+	public void Open()
+	{
+		Interface.modConfig.SetMod(Mod, this, true);
+		if (Main.gameMenu) {
+			Main.menuMode = Interface.modConfigID;
+		}
+		else {
+			Main.InGameUI.SetState(Interface.modConfig);
+		}
 	}
 }

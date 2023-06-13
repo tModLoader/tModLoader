@@ -434,7 +434,7 @@ internal class UIModConfig : UIState
 
 		string configDisplayName = modConfig.DisplayName.Value;
 
-		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + " - " + configDisplayName);
+		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + " " + configDisplayName);
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		pendingChanges = pendingRevertDefaults;
 
