@@ -63,7 +63,7 @@ public partial class NPCID
 		/// <summary>
 		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs and "tag" buffs by default.<br/><br/>
 		/// Use this for special NPC that cannot be hit at all, such as fairy critters, container NPCs like Martian Saucer and Pirate Ship, bound town slimes, and Blazing Wheel. Dungeon Guardian also is in this set to prevent the bonus damage from "tag" buffs.<br/><br/>
-		/// If the NPC should be attacked, it is recommended to set <see cref="DefaultDebuffImmunity"/> to <see langword="true"/> instead. This will prevent all debuffs except "tag" buffs (<see cref="BuffID.Sets.IsATagBuff"/>), which are intended to affect enemies typically seen as immune to all debuffs.<br/><br/>
+		/// If the NPC should be attacked, it is recommended to set <see cref="DefaultDebuffImmunity"/> to <see langword="true"/> instead. This will prevent all debuffs except "tag" buffs (<see cref="BuffID.Sets.IsATagBuff"/>), which are intended to affect enemies typically seen as immune to all debuffs. Tag debuffs are special debuffs that facilitate combat mechanics, they are not something that adversely affects NPC.<br/><br/>
 		/// Modders can specify specific buffs to be vulnerable to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
 		public static bool[] FullyImmuneToBuffs; // derived from DebuffImmunitySets
