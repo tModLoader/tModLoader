@@ -255,6 +255,7 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TERRARIA_VERSION: 1436
           TMLVERSION: ${{ steps.version.outputs.new_version }}
+          STABLEVERSION: ${{ steps.stable.outputs.stable_version }}
                     
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2

@@ -565,45 +565,70 @@ namespace Terraria.ModLoader.Core
 			return versions;
 		}
 
+		/// <summary>
+		/// Must Be called AFTER the new files are added to the publishing repo.
+		/// Assumes one .tmod per YYYY.XX folder in the publishing repo
+		/// </summary>
+		/// <param name="repo"></param>
 		internal static void CleanupOldPublish(string repo) {
+			if (BuildInfo.IsPreview)
+				RemoveSkippablePreview(repo);
+
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 			if (tmods.Length <= 3)
 				return;
 
-			string location = FindOldest(repo);
-			if (location.EndsWith(".tmod"))
-				File.Delete(location);
-			else
-				Directory.Delete(location, true);
-		}
+			// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+			// we need to rollback to the last stable due to a significant bug.
+			// We also keep a 1.4.3 version from version 2022.9 prior
 
-		internal static string FindOldest(string repo) {
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length == 1)
-				return tmods[0];
-
-			string val = null;
-			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-
+			// Get the list of all tMod files on Workshop
+			List<(string file, Version tModVersion, bool isFolder)> information = new();
+			foreach (var filename in tmods) {
+				var match = PublishFolderMetadata.Match(filename);
 				if (match.Success) {
-					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers > currVersion) {
-						continue;
-					}
-					else {
-						val = Directory.GetParent(fileName).ToString();
-						currVersion = testVers;
-					}
+					information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), isFolder: true));
 				}
 				else {
-					val = fileName;
-					break;
+					// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
+					// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
+					information.Add((filename, new Version(0, 12), isFolder: false));
 				}
 			}
 
-			return val;
+			(string browserVersion, int keepCount)[] keepRequirements =
+				{ ("1.4.3", 1), ("1.4.4", 3) };
+
+			foreach (var requirement in keepRequirements) {
+				// Get an ordered list for the particular version
+				var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
+					.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
+
+				foreach (var item in mods) {
+					if (item.isFolder)
+						Directory.Delete(item.file, recursive: true);
+					else
+						File.Delete(item.file);
+				}
+			}
+		}
+
+		// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
+		private static void RemoveSkippablePreview(string repo) {
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+
+			for (int i = 0; i < tmods.Length; i++) {
+				var filename = tmods[i];
+
+				var match = PublishFolderMetadata.Match(filename);
+				if (!match.Success)
+					continue;
+
+				var checkVersion = new Version(match.Groups[1].Value);
+
+				if (checkVersion > BuildInfo.stableVersion && checkVersion < BuildInfo.tMLVersion.MajorMinor())
+					Directory.Delete(Path.GetDirectoryName(filename), true);
+			}
 		}
 
 		internal static void DeleteMod(LocalMod tmod) {

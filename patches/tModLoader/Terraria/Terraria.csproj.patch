@@ -26,7 +26,7 @@
 +    <BranchName>$(BranchName.Replace("|","-"))</BranchName>
 +    <CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
-+    <SourceRevisionId>$(tMLVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
++    <SourceRevisionId>$(tMLVersion)|$(StableVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
    </PropertyGroup>
    <PropertyGroup>
      <OutputName>$(AssemblyName)</OutputName>
