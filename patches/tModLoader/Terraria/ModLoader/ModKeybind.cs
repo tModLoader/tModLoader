@@ -10,6 +10,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Represents a loaded input binding. It is suggested to access the keybind status only in ModPlayer.ProcessTriggers.
+/// <br/> If you need to access a keybind in localization, it's referred to as {ModName.InputTrigger_Name}.
 /// </summary>
 public class ModKeybind // We could make this a ModType later
 {

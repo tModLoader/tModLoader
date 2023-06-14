@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,29 @@
+@@ -1,15 +_,30 @@
 +using System;
++using System.Collections.Generic;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
  
@@ -32,34 +33,66 @@
  
  	internal LocalizedText(string key, string text)
  	{
-@@ -22,6 +_,13 @@
+@@ -22,6 +_,15 @@
  		Value = text;
  	}
  
 +	/// <summary>
-+	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="obj"/> parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/>, the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br/><br/>
-+	/// When used in conjuction with <see cref="Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom)"/> and <see cref="Lang.CreateDialogFilter(string, object)"/>, simple boolean conditions expressed in each LocalizedText can be used to filter a collection of LocalizedText.  <br/><br/>
-+	/// <see cref="Format(object[])"/> is more commonly used to format LocalizedText placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided.
++	/// Formats this <see cref="LocalizedText"/> using an anonymous type or dictionary.
++	/// <br/> If <paramref name="obj"/> is an <see cref="IDictionary{TKey, TValue}">IDictionary&lt;string, object&gt;</see>, then formatting placeholders will be keys to this dictionary.
++	/// <br/> Otherwise, formatting placeholders will be property names on <paramref name="obj"/>.
++	/// <br/> For each key <c>K</c> with value <c>V</c>, any substring in the localized text of form <c>{P}</c> will be replaced with <c>(V ?? "").ToString()</c>.
++	/// <br/> <b>All key names must start with a letter a-z</b>, followed by any combination of letters, numbers, underscores, and periods.
 +	/// </summary>
-+	/// <param name="obj"></param>
-+	/// <returns></returns>
++	/// <param name="obj">The set of substitutions.</param>
++	/// <returns>The formatted string.</returns>
  	public string FormatWith(object obj)
  	{
  		string value = Value;
-@@ -36,6 +_,13 @@
+@@ -31,16 +_,33 @@
+ 				return "";
+ 
+ 			string name = match.Groups[2].ToString();
++			/*
+ 			PropertyDescriptor propertyDescriptor = properties.Find(name, ignoreCase: false);
+ 			return (propertyDescriptor == null) ? "" : (propertyDescriptor.GetValue(obj) ?? "").ToString();
++			*/
++			return !GetValueFromSubstitution(properties, obj, name, out object value) ? "" : (value ?? "").ToString(); // #ModdedDialogueSubstitutions: Added support for Dictionary<string, object>.
  		});
  	}
  
 +	/// <summary>
-+	/// Checks if the conditions embedded in this LocalizedText are satisfied by the <paramref name="obj"/> argument.
-+	/// For example when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/> as the <paramref name="obj"/> argument, "{?Rain}" at the start of a LocalizedText value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br/>
-+	/// The method is typically used indirectly by using <see cref="Lang.CreateDialogFilter(string, object)"/>.
++	/// Determines if this <see cref="LocalizedText"/> can be formatted using an anonymous type or a dictionary.
++	/// <br/> If <paramref name="obj"/> is an <see cref="IDictionary{TKey, TValue}">IDictionary&lt;string, object&gt;</see>, then formatting placeholders will be keys to this dictionary.
++	/// <br/> Otherwise, formatting placeholders will be property names on <paramref name="obj"/>.
++	/// <br/> A <see cref="LocalizedText"/> can be formatted if:
++	/// <list type="bullet">
++	/// <item>Every substring of the text in form <c>{?Name}</c> has a property <c>Name</c> in <paramref name="obj"/> which is a <see cref="bool"/> with the value <see langword="true"/>.</item>
++	/// <item>Every substring of the text in form <c>{?!Name}</c> has a property <c>Name</c> in <paramref name="obj"/> which is a <see cref="bool"/> with the value <see langword="false"/>.</item>
++	/// <item>Every substring of the text in form <c>{Name}</c> has a property <c>Name</c> in <paramref name="obj"/> which is not <see langword="null"/>.</item>
++	/// </list>
 +	/// </summary>
-+	/// <param name="obj"></param>
-+	/// <returns></returns>
++	/// <param name="obj">The set of substitutions.</param>
++	/// <returns><see langword="true"/> if all conditions pass, <see langword="false"/> otherwise.</returns>
  	public bool CanFormatWith(object obj)
  	{
  		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+ 		foreach (Match item in _substitutionRegex.Matches(Value)) {
+ 			string name = item.Groups[2].ToString();
++			/*
+ 			PropertyDescriptor propertyDescriptor = properties.Find(name, ignoreCase: false);
+ 			if (propertyDescriptor == null)
+ 				return false;
+@@ -48,6 +_,9 @@
+ 			object value = propertyDescriptor.GetValue(obj);
+ 			if (value == null)
+ 				return false;
++			*/
++			if (!GetValueFromSubstitution(properties, obj, name, out object value)) // #ModdedDialogueSubstitutions: Added support for Dictionary<string, object>.
++				return false;
+ 
+ 			if (item.Groups[1].Length != 0 && (((value as bool?) ?? false) ^ (item.Groups[1].Length == 1)))
+ 				return false;
 @@ -64,9 +_,12 @@
  		return text.Value;
  	}

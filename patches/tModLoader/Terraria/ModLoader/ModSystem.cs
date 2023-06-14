@@ -286,6 +286,18 @@ public abstract partial class ModSystem : ModType
 	public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 	/// <summary>
+	/// Called every time an NPC or a GameTip needs dialogue substitutions. <b>This can be called at any time, including when a world isn't loaded. Be cautious!</b>
+	/// <br/> Keys to this dictionary <b>must</b> start with a letter. It may then be followed by any combination of letters, numbers, underscores, and periods. <b>Invalid keys will be ignored.</b>
+	/// <br/> Any substitution added using this hook will be available in localization files as "ModName.Substitution". For example, "ExampleMod.ExampleSubstitution".
+	/// <br/> Town NPC (<see cref="NPC.isLikeATownNPC"/>, <see cref="NPCID.Sets.SpawnsWithCustomName"/>) names and <see cref="ModKeybind"/>s are automatically added. Town NPCs are added as "ModName.NPCName", while keybinds are added as "ModName.InputTrigger_KeybindName".
+	/// </summary>
+	/// <param name="npc">The NPC being spoken to, or <see langword="null"/> if this hook is called for a GameTip.</param>
+	/// <returns>The substitutions to add. If <see langword="null"/>, does nothing.</returns>
+	public virtual IDictionary<string, object> PopulateDialogueSubstitutions(in NPC npc) {
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags.
 	/// <br/>For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world.
 	/// <br/>

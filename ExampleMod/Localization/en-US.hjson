@@ -1006,6 +1006,7 @@ Mods: {
 				StandardDialogue1: It's relaxing down here in the underground.
 				StandardDialogue2: What am I doing down here you may ask? I'm not sure, but leave me be!
 				StandardDialogue3: Huh? What wares do I have? I have no idea! How about you ask?
+				MinionBossDialogue: "{?ExampleMod.MinionBossDefeated}You've beaten the {$Mods.ExampleMod.NPCs.MinionBossBody.DisplayName}? That's impressive!"
 			}
 
 			ExampleTravelingMerchant: {
@@ -1022,6 +1023,8 @@ Mods: {
 			ExampleTip1: This tip was added by Example Mod!
 			ExampleTip2: This is yet another tip added by Example Mod!
 			DisabledExampleTip: This tip will be added but then disabled by Example Mod.
+			# This game tip uses a custom dialogue substitution. For more info, see https://github.com/tModLoader/tModLoader/wiki/Localization#substitutions.
+			RandomBuffTip: You can press {ExampleMod.InputTrigger_RandomBuff} to get a random buff. Try it out!
 		}
 
 		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count

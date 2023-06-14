@@ -1,5 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
+@@ -1,4 +_,5 @@
+ using System;
++using System.Collections.Generic;
+ using System.Linq;
+ using System.Reflection;
+ using Terraria.DataStructures;
 @@ -8,6 +_,7 @@
  using Terraria.ID;
  using Terraria.Localization;
@@ -36,6 +42,31 @@
  	private static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
  
  	public static string GetMapObjectName(int id)
+@@ -52,9 +_,9 @@
+ 		return string.Empty;
+ 	}
+ 
+-	public static object CreateDialogSubstitutionObject(NPC npc = null)
++	public static Dictionary<string, object> CreateDialogSubstitutionObject(NPC npc = null) // #ModdedDialogSubstitutions: Changed return type from object to Dictionary<string, object>
+ 	{
+-		return new {
++		object oldSubstitutions = new {
+ 			Nurse = NPC.GetFirstNPCNameOrNull(18),
+ 			Merchant = NPC.GetFirstNPCNameOrNull(17),
+ 			ArmsDealer = NPC.GetFirstNPCNameOrNull(19),
+@@ -112,6 +_,12 @@
+ 			InputTrigger_InteractWithTile = PlayerInput.GenerateInputTag_ForCurrentGamemode(tagForGameplay: true, "MouseRight"),
+ 			InputTrigger_SmartSelect = PlayerInput.GenerateInputTag_ForCurrentGamemode(tagForGameplay: true, "SmartSelect")
+ 		};
++
++		PropertyInfo[] properties = oldSubstitutions.GetType().GetProperties();
++		Dictionary<string, object> substitutionsDict = properties.ToDictionary(p => p.Name, p => p.GetValue(oldSubstitutions));
++		SystemLoader.PopulateDialogueSubstitutions(substitutionsDict, npc);
++
++		return substitutionsDict;
+ 	}
+ 
+ 	[Old("dialog is deprecated. Please use Language.GetText instead.")]
 @@ -120,7 +_,7 @@
  
  	public static LocalizedText GetNPCName(int netID)

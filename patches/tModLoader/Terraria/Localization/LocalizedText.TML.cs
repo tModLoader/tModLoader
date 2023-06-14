@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace Terraria.Localization;
@@ -105,4 +107,23 @@ public partial class LocalizedText
 	/// <param name="args">The substitution args</param>
 	/// <returns></returns>
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
+
+	/// <summary>
+	/// Gets a value from either <paramref name="substitutionObject"/> or <paramref name="properties"/>.
+	/// <br/> If <paramref name="substitutionObject"/> is an <see cref="IDictionary{TKey, TValue}">IDictionary&lt;string, object&gt;</see>, it will be used. Otherwise, the value will be found in <paramref name="properties"/>.
+	/// </summary>
+	/// <param name="properties">The properties of <paramref name="substitutionObject"/>.</param>
+	/// <param name="substitutionObject">The dialogue substitution object, either as an anonymous type or as an <see cref="IDictionary{TKey, TValue}"/>.</param>
+	/// <param name="key">The key of the value to get.</param>
+	/// <param name="value">The retrieved value, or <see langword="null"/> if it doesn't exist. The retrieved value may also be <see langword="null"/>.</param>
+	/// <returns><see langword="true"/> if a value was retrieved, <see langword="false"/> otherwise.</returns>
+	private static bool GetValueFromSubstitution(PropertyDescriptorCollection properties, object substitutionObject, string key, out object value)
+	{
+		if (substitutionObject is IDictionary<string, object> dict)
+			return dict.TryGetValue(key, out value);
+
+		PropertyDescriptor property = properties[key]; // Calls Find(key, false)
+		value = property?.GetValue(substitutionObject) ?? null;
+		return property != null;
+	}
 }
