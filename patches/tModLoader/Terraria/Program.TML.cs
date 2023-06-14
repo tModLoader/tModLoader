@@ -89,7 +89,7 @@ namespace Terraria
 			*/
 
 			// Copy all current stable player files to 1.4.3-legacy during transition period
-			if (!Directory.Exists(Path.Combine(SavePath, ReleaseFolder))) {
+			if (!Directory.Exists(Path.Combine(SavePath, ReleaseFolder)) && Directory.Exists(Path.Combine(SavePath, StableFolder))) {
 				Utilities.FileUtilities.CopyFolder(Path.Combine(SavePath, StableFolder), Path.Combine(SavePath, ReleaseFolder));
 			}
 		}
