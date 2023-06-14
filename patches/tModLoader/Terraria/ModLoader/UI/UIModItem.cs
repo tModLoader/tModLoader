@@ -32,6 +32,7 @@ namespace Terraria.ModLoader.UI
 		private UIImage _configButton;
 		private UIText _modName;
 		private UIModStateText _uiModStateText;
+		private UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 		private UIHoverImage _modReferenceIcon;
 		private UIImage _deleteModButton;
 		private UIAutoScaleTextTextPanel<string> _dialogYesButton;
@@ -100,6 +101,29 @@ namespace Terraria.ModLoader.UI
 			};
 			_uiModStateText.OnClick += ToggleEnabled;
 			Append(_uiModStateText);
+
+			if (!BuildInfo.IsDev && BuildInfo.tMLVersion < _mod.tModLoaderVersion) {
+				string updateVersion = $"v{_mod.tModLoaderVersion}";
+				string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
+				bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
+				if (BuildInfo.IsStable && new Version(_mod.tModLoaderVersion.Major, _mod.tModLoaderVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
+					updateVersion = $"Preview {updateVersion}";
+				if (ModOrganizer.GetBrowserVersionNumber(_mod.tModLoaderVersion) == "1.4.4") {
+					updateVersion = $"1.4.4 tModLoader";
+					updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+				}
+
+				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
+				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
+				tMLUpdateRequired.Top.Pixels = 40;
+				tMLUpdateRequired.Width.Pixels = 280;
+				tMLUpdateRequired.Height.Pixels = 36;
+				tMLUpdateRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
+				tMLUpdateRequired.OnClick += (a, b) => {
+					Utils.OpenToURL(updateURL);
+				};
+				Append(tMLUpdateRequired);
+			}
 
 			int bottomRightRowOffset = -36;
 			_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
@@ -326,6 +350,9 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (readyFor144Icon?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModReadyFor144");
+			}
+			else if (tMLUpdateRequired?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.MBClickToUpdate");
 			}
 		}
 
