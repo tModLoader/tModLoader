@@ -1,25 +1,147 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDeathReason.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDeathReason.cs
-@@ -14,6 +_,14 @@
- 		private int _sourceItemPrefix;
- 		private string _sourceCustomReason;
+@@ -1,5 +_,7 @@
+ using System.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
-+		public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
-+		public ref int SourceNPCIndex => ref _sourceNPCIndex;
-+		public ref int SourceProjectileIndex => ref _sourceProjectileIndex;
-+		public ref int SourceOtherIndex => ref _sourceOtherIndex;
-+		public ref int SourceItemType => ref _sourceItemType;
-+		public ref int SourceItemPrefix => ref _sourceItemPrefix;
-+		public ref string SourceCustomReason => ref _sourceCustomReason;
+ namespace Terraria.DataStructures;
+ 
+@@ -10,19 +_,31 @@
+ 	private int _sourceProjectileLocalIndex = -1;
+ 	private int _sourceOtherIndex = -1;
+ 	private int _sourceProjectileType;
+-	private int _sourceItemType;
+-	private int _sourceItemPrefix;
 +
- 		public int? SourceProjectileType {
- 			get {
- 				if (_sourceProjectileIndex == -1)
-@@ -21,6 +_,7 @@
++	// Added
++	private Item _sourceItem;
++
++	// Changed to reference _sourceItem
++	private int _sourceItemType => _sourceItem?.type ?? 0;
++	private int _sourceItemPrefix => _sourceItem?.prefix ?? 0;
+ 	private string _sourceCustomReason;
  
- 				return _sourceProjectileType;
- 			}
-+			set => _sourceProjectileType = value??-1;
+-	public int? SourceProjectileType {
+-		get {
+-			if (_sourceProjectileLocalIndex == -1)
+-				return null;
+-
+-			return _sourceProjectileType;
+-		}
+-	}
+-
++	// Ref fields added by TML.
++	public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
++	public ref int SourceNPCIndex => ref _sourceNPCIndex;
++	public ref int SourceProjectileLocalIndex => ref _sourceProjectileLocalIndex;
++	public ref int SourceOtherIndex => ref _sourceOtherIndex;
++	public ref int SourceProjectileType => ref _sourceProjectileType;
++	public ref Item SourceItem => ref _sourceItem;
++	public ref string SourceCustomReason => ref _sourceCustomReason;
++
++	/// <summary>
++	/// Only safe for use when the local player is the one taking damage! <br/>
++	/// Projectile ids are not synchronized across clients, and NPCs may have despawned/died by the time a strike/death packet arrives. <br/>
++	/// Just because the method returns true, doesn't mean that the _correct_ NPC/Projectile is returned on remote clients.
++	/// </summary>
++	/// <param name="entity"></param>
++	/// <returns></returns>
+ 	public bool TryGetCausingEntity(out Entity entity)
+ 	{
+ 		entity = null;
+@@ -33,6 +_,11 @@
+ 
+ 		if (Main.projectile.IndexInRange(_sourceProjectileLocalIndex)) {
+ 			entity = Main.projectile[_sourceProjectileLocalIndex];
++
++			// some extra safety for projectiles, because their ids are not sent across the network
++			if (Main.player.IndexInRange(_sourcePlayerIndex) && (_sourcePlayerIndex != Main.myPlayer || ((Projectile)entity).owner != _sourcePlayerIndex))
++				entity = Main.player[_sourcePlayerIndex];
++			
+ 			return true;
  		}
  
- 		public bool TryGetCausingEntity(out Entity entity) {
+@@ -72,18 +_,26 @@
+ 		};
+ 	}
+ 
++	/*
+ 	public static PlayerDeathReason ByPlayer(int index)
++	*/
++	public static PlayerDeathReason ByPlayerItem(int index, Item item)
+ 	{
+ 		return new PlayerDeathReason {
+ 			_sourcePlayerIndex = index,
++			/*
+ 			_sourceItemType = Main.player[index].inventory[Main.player[index].selectedItem].type,
+ 			_sourceItemPrefix = Main.player[index].inventory[Main.player[index].selectedItem].prefix
++			*/
++			_sourceItem = item
+ 		};
+ 	}
+ 
+-	public static PlayerDeathReason ByOther(int type)
++	// playerIndex added
++	public static PlayerDeathReason ByOther(int type, int playerIndex = -1)
+ 	{
+ 		return new PlayerDeathReason {
++			_sourcePlayerIndex = playerIndex,
+ 			_sourceOtherIndex = type
+ 		};
+ 	}
+@@ -96,10 +_,12 @@
+ 			_sourceProjectileType = Main.projectile[projectileIndex].type
+ 		};
+ 
++		/*
+ 		if (playerIndex >= 0 && playerIndex <= 255) {
+ 			playerDeathReason._sourceItemType = Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].type;
+ 			playerDeathReason._sourceItemPrefix = Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].prefix;
+ 		}
++		*/
+ 
+ 		return playerDeathReason;
+ 	}
+@@ -139,11 +_,19 @@
+ 		if (bitsByte[4])
+ 			writer.Write((short)_sourceProjectileType);
+ 
++		if (!ModNet.AllowVanillaClients) {
++			if (bitsByte[5])
++				ItemIO.Send(_sourceItem, writer);
++
++			goto SkipVanillaItemWrite;
++		}
++
+ 		if (bitsByte[5])
+ 			writer.Write((short)_sourceItemType);
+ 
+ 		if (bitsByte[6])
+ 			writer.Write((byte)_sourceItemPrefix);
++		SkipVanillaItemWrite:
+ 
+ 		if (bitsByte[7])
+ 			writer.Write(_sourceCustomReason);
+@@ -168,11 +_,20 @@
+ 		if (bitsByte[4])
+ 			playerDeathReason._sourceProjectileType = reader.ReadInt16();
+ 
++		/*
+ 		if (bitsByte[5])
+ 			playerDeathReason._sourceItemType = reader.ReadInt16();
+ 
+ 		if (bitsByte[6])
+ 			playerDeathReason._sourceItemPrefix = reader.ReadByte();
++		*/
++		if (ModNet.AllowVanillaClients) {
++			int itemType = bitsByte[5] ? reader.ReadInt16() : 0;
++			int prefix = bitsByte[6] ? reader.ReadByte() : 0;
++			playerDeathReason._sourceItem = itemType == 0 ? null : new Item(itemType, prefix: prefix);
++		}
++		else if (bitsByte[5])
++			playerDeathReason._sourceItem = ItemIO.Receive(reader);
+ 
+ 		if (bitsByte[7])
+ 			playerDeathReason._sourceCustomReason = reader.ReadString();

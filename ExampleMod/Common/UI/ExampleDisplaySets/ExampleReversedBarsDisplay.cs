@@ -194,7 +194,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			if (elementIndex < _hpFruitCount)
 				sprite = _hpFillHoney;
 
-			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(elementIndex, sprite, _hpSegmentsCount, _hpPercent, out offset, out drawScale, out sourceRect);
+			HorizontalBarsPlayerResourcesDisplaySet.FillBarByValues(elementIndex, sprite, _hpSegmentsCount, _hpPercent, out offset, out drawScale, out sourceRect);
 			// Make the bar fillings draw from right to left
 			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
 			int drawIndexOffset = opposite - elementIndex;
@@ -203,7 +203,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 
 		private void ManaFillingDrawer(int elementIndex, int firstElementIndex, int lastElementIndex, out Asset<Texture2D> sprite, out Vector2 offset, out float drawScale, out Rectangle? sourceRect) {
 			sprite = _mpFill;
-			HorizontalBarsPlayerReosurcesDisplaySet.FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
+			HorizontalBarsPlayerResourcesDisplaySet.FillBarByValues(elementIndex, sprite, _mpSegmentsCount, _mpPercent, out offset, out drawScale, out sourceRect);
 			// Make the bar fillings draw from right to left
 			int opposite = lastElementIndex - (elementIndex - firstElementIndex);
 			int drawIndexOffset = opposite - elementIndex;

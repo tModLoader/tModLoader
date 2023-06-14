@@ -12,10 +12,6 @@ namespace ExampleMod.Content.Projectiles
 		protected virtual float HoldoutRangeMin => 24f;
 		protected virtual float HoldoutRangeMax => 96f;
 
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Spear");
-		}
-
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
 		}

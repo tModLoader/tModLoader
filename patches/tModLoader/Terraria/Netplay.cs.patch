@@ -1,131 +1,106 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -11,12 +_,14 @@
- using Terraria.IO;
+@@ -9,6 +_,7 @@
+ using Terraria.Audio;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
- using Terraria.Utilities;
- #if !XNA
- using Terraria.Social.Base;
-+using Terraria.ModLoader.IO;
- #endif
- using NATUPNPLib;
+@@ -165,6 +_,8 @@
  
-@@ -43,6 +_,7 @@
- 		public static int ListenPort = 7777;
- 		public static bool IsListening = true;
- 		public static bool UseUPNP = true;
-+		public static bool SaveOnServerExit = true;
- 		public static bool Disconnect;
- 		public static bool SpamCheck = false;
- 		public static bool HasClients;
-@@ -160,6 +_,8 @@
- 		}
- 
- 		private static void OnConnectionAccepted(ISocket client) {
-+			Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress().GetFriendlyName()));
+ 	private static void OnConnectionAccepted(ISocket client)
+ 	{
++		Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress().GetFriendlyName()));
 +
- 			int num = FindNextOpenClientSlot();
- 			if (num != -1) {
- 				Clients[num].Reset();
-@@ -278,6 +_,7 @@
- 				Clients[i].Reset();
+ 		int num = FindNextOpenClientSlot();
+ 		if (num != -1) {
+ 			Clients[num].Reset();
+@@ -312,7 +_,7 @@
  			}
  
-+			/*
- 			if (Main.menuMode != 15) {
- 				Main.netMode = 0;
- 				Main.menuMode = 10;
-@@ -287,7 +_,9 @@
- 			else {
- 				Main.netMode = 0;
+ 			if (Clients[i].IsActive) {
+-				Clients[i].PendingTermination = true;
++				Clients[i].SetPendingTermination("Connection lost");
+ 				Clients[i].PendingTerminationApproved = true;
+ 				continue;
  			}
-+			*/
+@@ -413,6 +_,12 @@
  
-+			Main.netMode = 0;
- 			Main.myPlayer = 0;
- 		}
- 
-@@ -324,7 +_,7 @@
- 				}
- 
- 				if (Clients[i].IsActive) {
--					Clients[i].PendingTermination = true;
-+					Clients[i].SetPendingTermination("Connection lost");
- 					Clients[i].PendingTerminationApproved = true;
- 					continue;
- 				}
-@@ -418,6 +_,12 @@
- 		}
- 
- 		private static void ClientLoopSetup(RemoteAddress address) {
-+			string friendlyName = address.GetFriendlyName();
-+			if (string.IsNullOrEmpty(friendlyName))
-+				Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
+ 	private static void ClientLoopSetup(RemoteAddress address)
+ 	{
++		string friendlyName = address.GetFriendlyName();
++		if (string.IsNullOrEmpty(friendlyName))
++			Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
 +
-+			Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
++		Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
 +
- 			Connection.ResetSpecialFlags();
- 			ResetNetDiag();
- 			Main.ServerSideCharacter = false;
-@@ -434,11 +_,11 @@
- 			Main.netMode = 1;
- 			Main.menuMode = 14;
- 			if (!Main.autoPass)
--				Main.statusText = Language.GetTextValue("Net.ConnectingTo", address.GetFriendlyName());
-+				Main.statusText = Language.GetTextValue("Net.ConnectingTo", friendlyName);
+ 		Connection.ResetSpecialFlags();
+ 		ResetNetDiag();
+ 		Main.ServerSideCharacter = false;
+@@ -429,11 +_,11 @@
+ 		Main.netMode = 1;
+ 		Main.menuMode = 14;
+ 		if (!Main.autoPass)
+-			Main.statusText = Language.GetTextValue("Net.ConnectingTo", address.GetFriendlyName());
++			Main.statusText = Language.GetTextValue("Net.ConnectingTo", friendlyName);
  
- 			Disconnect = false;
- 			Connection = new RemoteServer();
--			Connection.ReadBuffer = new byte[1024];
-+			Connection.ReadBuffer = new byte[ushort.MaxValue];
- 		}
+ 		Disconnect = false;
+ 		Connection = new RemoteServer();
+-		Connection.ReadBuffer = new byte[1024];
++		Connection.ReadBuffer = new byte[ushort.MaxValue]; // TML: 1024 -> ushort.MaxValue
+ 	}
  
- 		private static void InnerClientLoop() {
-@@ -476,6 +_,7 @@
- 							Main.cloudAlpha = Main.maxRaining;
- 							Main.ToggleGameplayUpdates(state: false);
- 							WorldGen.clearWorld();
-+							SystemLoader.OnWorldLoad();
- 							if (Main.mapEnabled)
- 								Main.Map.Load();
- 						}
-@@ -527,6 +_,10 @@
- 				}
- 
- 				if (!Main.gameMenu) {
-+					//This is only called in case of kicks and other sudden disconnects.
-+					//The more common (client) call to this is in Main.SaveAndQuitCallback
-+					SystemLoader.OnWorldUnload();
+ 	private static void InnerClientLoop()
+@@ -472,6 +_,9 @@
+ 						Main.cloudAlpha = Main.maxRaining;
+ 						Main.ToggleGameplayUpdates(state: false);
+ 						WorldGen.clearWorld();
 +
- 					Main.gameMenu = true;
- 					Main.SwitchNetMode(0);
- 					MapHelper.noStatusText = true;
-@@ -591,7 +_,22 @@
- 			thread.Start();
- 		}
- 
--		public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
-+		public static bool SetRemoteIP(string remoteAddress) {
-+			if (remoteAddress.Contains(':')) {
-+				int colonInd = remoteAddress.LastIndexOf(':');
-+				if (int.TryParse(remoteAddress.AsSpan(colonInd + 1), out int port)) {
-+					remoteAddress = remoteAddress.Substring(0, colonInd);
++						SystemLoader.OnWorldLoad();
 +
-+					bool set = SetRemoteIPOld(remoteAddress);
-+					if (set) {
-+						ListenPort = port;
-+					}
-+					return set;
-+				}
+ 						if (Main.mapEnabled)
+ 							Main.Map.Load();
+ 					}
+@@ -523,6 +_,10 @@
+ 			}
+ 
+ 			if (!Main.gameMenu) {
++				// This is only called in case of kicks and other sudden disconnects.
++				// The more common (client) call to this is in Main.SaveAndQuitCallback.
++				SystemLoader.OnWorldUnload();
++
+ 				Main.gameMenu = true;
+ 				Main.SwitchNetMode(0);
+ 				MapHelper.noStatusText = true;
+@@ -589,7 +_,29 @@
+ 		thread.Start();
+ 	}
+ 
++	/*
+ 	public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
++	*/
++
++	public static bool SetRemoteIP(string remoteAddress)
++	{
++		if (remoteAddress.Contains(':')) {
++			int colonInd = remoteAddress.LastIndexOf(':');
++
++			if (int.TryParse(remoteAddress.AsSpan(colonInd + 1), out int port)) {
++				remoteAddress = remoteAddress.Substring(0, colonInd);
++
++				bool set = SetRemoteIPOld(remoteAddress);
++
++				if (set)
++					ListenPort = port;
++
++				return set;
 +			}
-+
-+			return SetRemoteIPOld(remoteAddress);
 +		}
++
++		return SetRemoteIPOld(remoteAddress);
++	}
  
- 		public static bool SetRemoteIPOld(string remoteAddress) {
- 			try {
+ 	public static bool SetRemoteIPOld(string remoteAddress)
+ 	{

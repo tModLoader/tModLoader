@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/FromOptionsWithoutRepeatsDropRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/FromOptionsWithoutRepeatsDropRule.cs
+@@ -28,7 +_,7 @@
+ 				break;
+ 
+ 			int index = info.rng.Next(_temporaryAvailableItems.Count);
+-			CommonCode.DropItemFromNPC(info.npc, _temporaryAvailableItems[index], 1);
++			CommonCode.DropItem(info, _temporaryAvailableItems[index], 1);
+ 			_temporaryAvailableItems.RemoveAt(index);
+ 		}
+ 

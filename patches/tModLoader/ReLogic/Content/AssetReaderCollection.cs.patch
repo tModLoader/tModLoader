@@ -1,37 +1,43 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetReaderCollection.cs
 +++ src/tModLoader/ReLogic/Content/AssetReaderCollection.cs
-@@ -1,26 +_,23 @@
- using ReLogic.Content.Readers;
+@@ -1,5 +_,5 @@
  using System.Collections.Generic;
 -using System.IO;
 +using System.Linq;
+ using ReLogic.Content.Readers;
  
- namespace ReLogic.Content
+ namespace ReLogic.Content;
+@@ -8,13 +_,27 @@
  {
- 	public class AssetReaderCollection
- 	{
- 		private readonly Dictionary<string, IAssetReader> _readersByExtension = new Dictionary<string, IAssetReader>();
-+		private string[] _extensions;
+ 	private readonly Dictionary<string, IAssetReader> _readersByExtension = new Dictionary<string, IAssetReader>();
  
- 		public void RegisterReader(IAssetReader reader, params string[] extensions) {
- 			foreach (string text in extensions) {
- 				_readersByExtension[text.ToLower()] = reader;
- 			}
--		}
--
--		public T Read<T>(Stream stream, string extension) where T : class {
--			if (!_readersByExtension.TryGetValue(extension.ToLower(), out IAssetReader value))
--				throw AssetLoadException.FromMissingReader(extension);
--
--			return value.FromStream<T>(stream);
--		}
--
--		public bool CanReadExtension(string extension) => _readersByExtension.ContainsKey(extension.ToLower());
-+			_extensions = _readersByExtension.Keys.ToArray();
-+		}
++	// Added by TML.
++	private string[] _extensions;
 +
-+		public bool TryGetReader(string extension, out IAssetReader reader) => _readersByExtension.TryGetValue(extension.ToLower(), out reader);
+ 	public void RegisterReader(IAssetReader reader, params string[] extensions)
+ 	{
+ 		foreach (string text in extensions) {
+ 			_readersByExtension[text.ToLower()] = reader;
+ 		}
 +
-+		public string[] GetSupportedExtensions() => _extensions;
++		_extensions = _readersByExtension.Keys.ToArray();
  	}
+ 
++	// Added by TML.
++	public bool TryGetReader(string extension, out IAssetReader reader)
++		=> _readersByExtension.TryGetValue(extension.ToLower(), out reader);
++
++	// Added by TML.
++	public string[] GetSupportedExtensions()
++		=> _extensions;
++
++	/*
+ 	public T Read<T>(Stream stream, string extension) where T : class
+ 	{
+ 		if (!_readersByExtension.TryGetValue(extension.ToLower(), out var value))
+@@ -24,4 +_,5 @@
+ 	}
+ 
+ 	public bool CanReadExtension(string extension) => _readersByExtension.ContainsKey(extension.ToLower());
++	*/
  }

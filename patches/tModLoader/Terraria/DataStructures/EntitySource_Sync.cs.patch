@@ -1,16 +1,22 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Sync.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_Sync.cs
-@@ -1,6 +_,13 @@
+@@ -1,5 +_,19 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_Sync : IEntitySource
- 	{
-+		public string? Context { get; }
++using Terraria.ID;
 +
-+		public EntitySource_Sync(string? context = null) {
-+			Context = context;
-+		}
- 	}
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Used when an <see cref="Item"/> is spawned on the server as a result of <see cref="MessageID.SyncItemCannotBeTakenByEnemies"/> <br/>
++/// Only used by vanilla for lucky coin. Note that the item is spawned client-side with <see cref="IEntitySource.Context"/> = <see cref="ItemSourceID.LuckyCoin"/>
++/// </summary>
+ public class EntitySource_Sync : IEntitySource
+ {
++	public string? Context { get; }
++
++	public EntitySource_Sync(string? context = null)
++	{
++		Context = context;
++	}
  }

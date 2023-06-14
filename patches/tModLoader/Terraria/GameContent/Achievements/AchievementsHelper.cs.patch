@@ -3,43 +3,43 @@
 @@ -1,3 +_,5 @@
 +using System.Linq;
 +
- namespace Terraria.GameContent.Achievements
- {
- 	public class AchievementsHelper
-@@ -96,10 +_,10 @@
- 				}
+ namespace Terraria.GameContent.Achievements;
+ 
+ public class AchievementsHelper
+@@ -114,10 +_,10 @@
  			}
+ 		}
  
--			if (player.statManaMax > 20)
-+			if (player.ConsumedManaCrystals > 0)
+-		if (player.statManaMax > 20)
++		if (player.ConsumedManaCrystals > 0)
+ 			Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();
+ 
+-		if (player.statLifeMax == 500 && player.statManaMax == 200)
++		if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
+ 			Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
+ 
+ 		if (player.miscEquips[4].type > 0)
+@@ -191,7 +_,7 @@
+ 		if (context == 17)
+ 			Main.Achievements.GetCondition("THE_CAVALRY", "Equip").Complete();
+ 
+-		if ((context == 10 || context == 11) && item.wingSlot > 0)
++		if (new int[4] { 10, 11, -10, 11 }.Contains(context) && item.wingSlot > 0)
+ 			Main.Achievements.GetCondition("HEAD_IN_THE_CLOUDS", "Equip").Complete();
+ 
+ 		if (context == 8 && player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
+@@ -224,12 +_,12 @@
+ 		switch (eventID) {
+ 			case 1:
  				Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();
- 
--			if (player.statLifeMax == 500 && player.statManaMax == 200)
-+			if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
- 				Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
- 
- 			if (player.miscEquips[4].type > 0)
-@@ -164,7 +_,7 @@
- 			if (context == 17)
- 				Main.Achievements.GetCondition("THE_CAVALRY", "Equip").Complete();
- 
--			if ((context == 10 || context == 11) && item.wingSlot > 0)
-+			if (new int[4] { 10, 11, -10, 11 }.Contains(context) && item.wingSlot > 0)
- 				Main.Achievements.GetCondition("HEAD_IN_THE_CLOUDS", "Equip").Complete();
- 
- 			if (context == 8 && player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
-@@ -196,12 +_,12 @@
- 			switch (eventID) {
- 				case 1:
- 					Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();
--					if (player.statLifeMax == 500 && player.statManaMax == 200)
-+					if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
- 						Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
- 					break;
- 				case 2:
- 					Main.Achievements.GetCondition("GET_A_LIFE", "Use").Complete();
--					if (player.statLifeMax == 500 && player.statManaMax == 200)
-+					if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
- 						Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
- 					break;
- 				case 3:
+-				if (player.statLifeMax == 500 && player.statManaMax == 200)
++				if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
+ 					Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
+ 				break;
+ 			case 2:
+ 				Main.Achievements.GetCondition("GET_A_LIFE", "Use").Complete();
+-				if (player.statLifeMax == 500 && player.statManaMax == 200)
++				if (player.ConsumedLifeCrystals == Player.LifeCrystalMax && player.ConsumedLifeFruit == Player.LifeFruitMax && player.ConsumedManaCrystals == Player.ManaCrystalMax)
+ 					Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
+ 				break;
+ 			case 3:

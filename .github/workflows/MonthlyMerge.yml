@@ -2,9 +2,10 @@ name: Monthly Update tModLoader
 
 # Controls when the action will run. 
 on:
-  # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
+  # This workflow runs on the first of every odd month at midnight UTC
   #schedule:
-  #  - cron: '0 0 1 * *'
+  #  - cron: '0 0 1 1,3,5,7,9,11 *'
+  
   # Allows you to manually run the workflow
   workflow_dispatch:
 
@@ -20,7 +21,7 @@ jobs:
         - name: Check out repo
           uses: actions/checkout@v3
           with:
-            ref: 'refs/heads/1.4-stable'
+            ref: 'refs/heads/stable'
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
             persist-credentials: false
             fetch-depth: 0        
@@ -32,8 +33,8 @@ jobs:
             git config user.name github-actions
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-            git reset --hard origin/1.4-preview
-            git push --force origin 1.4-stable
+            git reset --hard origin/preview
+            git push --force origin stable
             
   # This workflow contains a single job called "build"
   MergeToPreview:
@@ -47,7 +48,7 @@ jobs:
         - name: Check out repo
           uses: actions/checkout@v3
           with:
-            ref: 'refs/heads/1.4-preview'
+            ref: 'refs/heads/preview'
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
             persist-credentials: false
             fetch-depth: 0        
@@ -59,5 +60,5 @@ jobs:
             git config user.name github-actions
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-            git reset --hard origin/1.4
-            git push --force origin 1.4-preview
+            git reset --hard origin/1.4.4
+            git push --force origin preview

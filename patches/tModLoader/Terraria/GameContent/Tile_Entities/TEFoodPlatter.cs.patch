@@ -8,88 +8,87 @@
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
- namespace Terraria.GameContent.Tile_Entities
+ namespace Terraria.GameContent.Tile_Entities;
+ 
+-public class TEFoodPlatter : TileEntity, IFixLoadedData
++public sealed partial class TEFoodPlatter : TileEntity, IFixLoadedData
  {
--	public class TEFoodPlatter : TileEntity
-+	public sealed partial class TEFoodPlatter : TileEntity
+ 	private static byte _myEntityID;
+ 	public Item item;
+@@ -87,8 +_,8 @@
+ 
+ 	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
  	{
- 		private static byte _myEntityID;
- 		public Item item;
-@@ -77,8 +_,8 @@
- 		}
+-		writer.Write((short)item.netID);
+-		writer.Write(item.prefix);
++		ItemIO.WriteShortVanillaID(item, writer);
++		ItemIO.WriteByteVanillaPrefix(item, writer);
+ 		writer.Write((short)item.stack);
+ 	}
  
- 		public override void WriteExtraData(BinaryWriter writer, bool networkSend) {
--			writer.Write((short)item.netID);
--			writer.Write(item.prefix);
-+			ItemIO.WriteShortVanillaID(item, writer);
-+			ItemIO.WriteByteVanillaPrefix(item, writer);
- 			writer.Write((short)item.stack);
- 		}
+@@ -105,21 +_,24 @@
+ 	public void DropItem()
+ 	{
+ 		if (Main.netMode != 1)
+-			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
++			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item, noBroadcast: false);
  
-@@ -93,20 +_,26 @@
+ 		item = new Item();
+ 	}
  
- 		public void DropItem() {
- 			if (Main.netMode != 1)
-+				/*
- 				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
-+				*/
-+				Item.DropItem(new EntitySource_TileBreak(Position.X, Position.Y), item, new Rectangle(Position.X * 16, Position.Y * 16, 16, 16));
- 
- 			item = new Item();
- 		}
- 
--		public static void TryPlacing(int x, int y, int netid, int prefix, int stack) {
-+		public static void TryPlacing(int x, int y, Item item, int stack) {
- 			WorldGen.RangeFrame(x, y, x + 1, y + 1);
- 			int num = Find(x, y);
- 			if (num == -1) {
-+				/*
- 				int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 16, 16, 1);
- 				Main.item[num2].netDefaults(netid);
- 				Main.item[num2].Prefix(prefix);
- 				Main.item[num2].stack = stack;
- 				NetMessage.SendData(21, -1, -1, null, num2);
-+				*/
-+				Item.DropItem(new EntitySource_TileBreak(x, y), item, new Rectangle(x * 16, y * 16, 16, 16));
- 				return;
- 			}
- 
-@@ -114,10 +_,15 @@
- 			if (tEFoodPlatter.item.stack > 0)
- 				tEFoodPlatter.DropItem();
- 
+-	public static void TryPlacing(int x, int y, int netid, int prefix, int stack)
++	public static void TryPlacing(int x, int y, Item item, int stack)
+ 	{
+ 		WorldGen.RangeFrame(x, y, x + 1, y + 1);
+ 		int num = Find(x, y);
+ 		if (num == -1) {
 +			/*
- 			tEFoodPlatter.item = new Item();
- 			tEFoodPlatter.item.netDefaults(netid);
- 			tEFoodPlatter.item.Prefix(prefix);
- 			tEFoodPlatter.item.stack = stack;
+ 			int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 16, 16, 1);
+ 			Main.item[num2].netDefaults(netid);
+ 			Main.item[num2].Prefix(prefix);
+ 			Main.item[num2].stack = stack;
+ 			NetMessage.SendData(21, -1, -1, null, num2);
 +			*/
-+
-+			tEFoodPlatter.item = ItemLoader.TransferWithLimit(item, stack);
-+
- 			NetMessage.SendData(86, -1, -1, null, tEFoodPlatter.ID, x, y);
++			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
+ 			return;
  		}
  
-@@ -159,16 +_,20 @@
- 					NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
- 			}
+@@ -127,10 +_,15 @@
+ 		if (tEFoodPlatter.item.stack > 0)
+ 			tEFoodPlatter.DropItem();
  
--			if (Main.netMode == 1)
-+			if (Main.netMode == 1) {
- 				NetMessage.SendData(133, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
-+				ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
-+			}
- 			else
--				TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
-+				TryPlacing(x, y, player.inventory[player.selectedItem], 1);
++		/*
+ 		tEFoodPlatter.item = new Item();
+ 		tEFoodPlatter.item.netDefaults(netid);
+ 		tEFoodPlatter.item.Prefix(prefix);
+ 		tEFoodPlatter.item.stack = stack;
++		*/
++
++		tEFoodPlatter.item = ItemLoader.TransferWithLimit(item, stack);
++
+ 		NetMessage.SendData(86, -1, -1, null, tEFoodPlatter.ID, x, y);
+ 	}
  
-+			/*
- 			player.inventory[player.selectedItem].stack--;
- 			if (player.inventory[player.selectedItem].stack <= 0) {
- 				player.inventory[player.selectedItem].SetDefaults();
- 				Main.mouseItem.SetDefaults();
- 			}
-+			*/
+@@ -175,16 +_,20 @@
+ 				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
+ 		}
  
- 			if (player.selectedItem == 58)
- 				Main.mouseItem = player.inventory[player.selectedItem].Clone();
+-		if (Main.netMode == 1)
++		if (Main.netMode == 1) {
+ 			NetMessage.SendData(133, -1, -1, null, x, y, player.selectedItem, player.whoAmI, 1);
++			ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
++		}
+ 		else
+-			TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
++			TryPlacing(x, y, player.inventory[player.selectedItem], 1);
+ 
++		/*
+ 		player.inventory[player.selectedItem].stack--;
+ 		if (player.inventory[player.selectedItem].stack <= 0) {
+ 			player.inventory[player.selectedItem].SetDefaults();
+ 			Main.mouseItem.SetDefaults();
+ 		}
++		*/
+ 
+ 		if (player.selectedItem == 58)
+ 			Main.mouseItem = player.inventory[player.selectedItem].Clone();

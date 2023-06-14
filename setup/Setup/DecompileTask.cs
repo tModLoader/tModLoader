@@ -8,10 +8,12 @@ using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.OutputVisitor;
+using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.CSharp.Transforms;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -31,7 +33,7 @@ namespace Terraria.ModLoader.Setup
 			public EmbeddedAssemblyResolver(PEFile baseModule, string targetFramework)
 			{
 				this.baseModule = baseModule;
-				_resolver = new UniversalAssemblyResolver(baseModule.FileName, true, targetFramework, PEStreamOptions.PrefetchMetadata);
+				_resolver = new UniversalAssemblyResolver(baseModule.FileName, true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
 				_resolver.AddSearchDirectory(Path.GetDirectoryName(baseModule.FileName));
 			}
 
@@ -45,27 +47,39 @@ namespace Terraria.ModLoader.Setup
 					//look in the base module's embedded resources
 					var resName = name.Name + ".dll";
 					var res = baseModule.Resources.Where(r => r.ResourceType == ResourceType.Embedded).SingleOrDefault(r => r.Name.EndsWith(resName));
-					if (!res.IsNil)
+
+					if (res != null)
 						module = new PEFile(res.Name, res.TryOpenStream());
 
-					if (module == null)
-						module = _resolver.Resolve(name);
+					module ??= _resolver.Resolve(name);
 					
 					cache[name.FullName] = module;
 					return module;
 				}
 			}
 
-			public PEFile ResolveModule(PEFile mainModule, string moduleName) => _resolver.ResolveModule(mainModule, moduleName);
+			public PEFile ResolveModule(PEFile mainModule, string moduleName)
+				=> _resolver.ResolveModule(mainModule, moduleName);
+
+			public async Task<PEFile> ResolveAsync(IAssemblyReference reference)
+				=> await Task.Run(() => Resolve(reference));
+
+			public async Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
+				=> await Task.Run(() => ResolveModule(mainModule, moduleName));
 		}
 
+		// What function does this serve..?
 		private class ExtendedProjectDecompiler : WholeProjectDecompiler
 		{
-			public new bool IncludeTypeWhenDecompilingProject(PEFile module, TypeDefinitionHandle type) => base.IncludeTypeWhenDecompilingProject(module, type);
+			public ExtendedProjectDecompiler(DecompilerSettings settings, IAssemblyResolver assemblyResolver)
+				: base(settings, assemblyResolver, assemblyReferenceClassifier: null, debugInfoProvider: null) { }
+
+			public new bool IncludeTypeWhenDecompilingProject(PEFile module, TypeDefinitionHandle type)
+				=> base.IncludeTypeWhenDecompilingProject(module, type);
 		}
 
-		public static readonly Version clientVersion = new Version(Settings.Default.ClientVersion);
-		public static readonly Version serverVersion = new Version(Settings.Default.ServerVersion);
+		public static readonly Version clientVersion = new("1.4.4.9");
+		public static readonly Version serverVersion = new("1.4.4.9");
 
 		private readonly string srcDir;
 		private readonly bool serverOnly;
@@ -73,16 +87,32 @@ namespace Terraria.ModLoader.Setup
 
 		private ExtendedProjectDecompiler projectDecompiler;
 
-		private readonly DecompilerSettings decompilerSettings = new DecompilerSettings(LanguageVersion.Latest)
-		{
-			RemoveDeadCode = true,
-			CSharpFormattingOptions = FormattingOptionsFactory.CreateKRStyle()
-		};
+		private readonly DecompilerSettings decompilerSettings;
 
 		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface)
 		{
 			this.srcDir = srcDir;
 			this.serverOnly = serverOnly;
+
+			var formatting = FormattingOptionsFactory.CreateKRStyle();
+
+			// Arrays should have a new line for every entry, since it's easier to insert values in patches that way.
+			formatting.ArrayInitializerWrapping = Wrapping.WrapAlways;
+			formatting.ArrayInitializerBraceStyle = BraceStyle.EndOfLine;
+
+			// Force wrapping for chained calls for the same reason.
+			// Hm, doesn't work.
+			//formatting.ChainedMethodCallWrapping = Wrapping.WrapAlways;
+
+			decompilerSettings = new(LanguageVersion.Latest) {
+				RemoveDeadCode = true,
+				CSharpFormattingOptions = formatting,
+
+				// Switch expressions are not patching-friendly,
+				// and do not even support expression bodies at this time:
+				// https://github.com/dotnet/csharplang/issues/3037
+				SwitchExpressions = false,
+			};
 		}
 
 		public override bool ConfigurationDialog()
@@ -108,11 +138,9 @@ namespace Terraria.ModLoader.Setup
 			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
 			var mainModule = serverOnly ? serverModule : clientModule;
 
-			projectDecompiler = new ExtendedProjectDecompiler { 
-				Settings = decompilerSettings,
-				AssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.Reader.DetectTargetFrameworkId())
-			};
+			var embeddedAssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId());
 
+			projectDecompiler = new ExtendedProjectDecompiler(decompilerSettings, embeddedAssemblyResolver);
 
 			var items = new List<WorkItem>();
 			var files = new HashSet<string>();
@@ -356,26 +384,33 @@ namespace Terraria.ModLoader.Setup
 
 				// references
 				w.WriteStartElement("ItemGroup");
-				foreach (var r in module.AssemblyReferences.OrderBy(r => r.Name)) {
-					if (r.Name == "mscorlib") continue;
 
-					if (decompiledLibraries?.Contains(r.Name) ?? false) {
-						w.WriteStartElement("ProjectReference");
-						w.WriteAttributeString("Include", $"../{r.Name}/{r.Name}.csproj");
-						w.WriteEndElement();
+				var references = module.AssemblyReferences.Where(r => r.Name != "mscorlib").OrderBy(r => r.Name).ToArray();
+				var projectReferences = decompiledLibraries != null
+					? references.Where(r => decompiledLibraries.Contains(r.Name)).ToArray()
+					: Array.Empty<ICSharpCode.Decompiler.Metadata.AssemblyReference>();
+				var normalReferences = references.Except(projectReferences).ToArray();
 
-						w.WriteStartElement("EmbeddedResource");
-						w.WriteAttributeString("Include", $"../{r.Name}/bin/$(Configuration)/$(TargetFramework)/{r.Name}.dll");
-						w.WriteElementString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
-					}
-					else {
-						w.WriteStartElement("Reference");
-						w.WriteAttributeString("Include", r.Name);
-					}
+				foreach (var r in projectReferences) {
+					w.WriteStartElement("ProjectReference");
+					w.WriteAttributeString("Include", $"../{r.Name}/{r.Name}.csproj");
 					w.WriteEndElement();
 				}
-				w.WriteEndElement(); // </ItemGroup>
 
+				foreach (var r in projectReferences) {
+					w.WriteStartElement("EmbeddedResource");
+					w.WriteAttributeString("Include", $"../{r.Name}/bin/$(Configuration)/$(TargetFramework)/{r.Name}.dll");
+					w.WriteElementString("LogicalName", $"Terraria.Libraries.{r.Name}.{r.Name}.dll");
+					w.WriteEndElement();
+				}
+
+				foreach (var r in normalReferences) {
+					w.WriteStartElement("Reference");
+					w.WriteAttributeString("Include", r.Name);
+					w.WriteEndElement();
+				}
+
+				w.WriteEndElement(); // </ItemGroup>
 			});
 		}
 
@@ -389,7 +424,7 @@ namespace Terraria.ModLoader.Setup
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
-				using (var w = new XmlTextWriter(sw)) {
+				using (var w = CreateXmlWriter(sw)) {
 					w.Formatting = System.Xml.Formatting.Indented;
 					w.WriteStartElement("Project");
 					w.WriteAttributeString("Sdk", "Microsoft.NET.Sdk");
@@ -434,7 +469,7 @@ namespace Terraria.ModLoader.Setup
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
-				using (var w = new XmlTextWriter(sw)) {
+				using (var w = CreateXmlWriter(sw)) {
 					w.Formatting = System.Xml.Formatting.Indented;
 					w.WriteStartElement("Project");
 
@@ -469,6 +504,15 @@ namespace Terraria.ModLoader.Setup
 					sw.Write(Environment.NewLine);
 				}
 			});
+		}
+
+		private static XmlTextWriter CreateXmlWriter(StreamWriter streamWriter)
+		{
+			return new XmlTextWriter(streamWriter) {
+				Formatting = System.Xml.Formatting.Indented,
+				IndentChar = '\t',
+				Indentation = 1,
+			};
 		}
 
 		private IEnumerable<string> ApplyWildcards(IEnumerable<string> include, IReadOnlyList<string> exclude) {

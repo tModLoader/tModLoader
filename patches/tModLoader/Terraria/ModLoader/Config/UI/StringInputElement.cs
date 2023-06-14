@@ -1,33 +1,33 @@
-﻿using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
 
-namespace Terraria.ModLoader.Config.UI
+namespace Terraria.ModLoader.Config.UI;
+
+internal class StringInputElement : ConfigElement<string>
 {
-	internal class StringInputElement : ConfigElement<string>
+	public override void OnBind()
 	{
-		public override void OnBind() {
-			base.OnBind();
+		base.OnBind();
 
-			UIPanel textBoxBackground = new UIPanel();
-			textBoxBackground.SetPadding(0);
-			UIFocusInputTextField uIInputTextField = new UIFocusInputTextField("Type here");
-			textBoxBackground.Top.Set(0f, 0f);
-			textBoxBackground.Left.Set(-190, 1f);
-			textBoxBackground.Width.Set(180, 0f);
-			textBoxBackground.Height.Set(30, 0f);
+		UIPanel textBoxBackground = new UIPanel();
+		textBoxBackground.SetPadding(0);
+		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField("Type here");
+		textBoxBackground.Top.Set(0f, 0f);
+		textBoxBackground.Left.Set(-190, 1f);
+		textBoxBackground.Width.Set(180, 0f);
+		textBoxBackground.Height.Set(30, 0f);
 
-			Append(textBoxBackground);
+		Append(textBoxBackground);
 
-			uIInputTextField.SetText(Value);
-			uIInputTextField.Top.Set(5, 0f);
-			uIInputTextField.Left.Set(10, 0f);
-			uIInputTextField.Width.Set(-20, 1f);
-			uIInputTextField.Height.Set(20, 0);
-			uIInputTextField.OnTextChange += (a, b) => {
-				Value = uIInputTextField.CurrentString;
-			};
+		uIInputTextField.SetText(Value);
+		uIInputTextField.Top.Set(5, 0f);
+		uIInputTextField.Left.Set(10, 0f);
+		uIInputTextField.Width.Set(-20, 1f);
+		uIInputTextField.Height.Set(20, 0);
+		uIInputTextField.OnTextChange += (a, b) => {
+			Value = uIInputTextField.CurrentString;
+		};
 
-			textBoxBackground.Append(uIInputTextField);
-		}
+		textBoxBackground.Append(uIInputTextField);
 	}
 }

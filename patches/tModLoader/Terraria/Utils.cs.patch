@@ -1,120 +1,108 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -4,7 +_,6 @@
- using Microsoft.Xna.Framework.Input;
- using ReLogic.Content;
- using ReLogic.Graphics;
--using ReLogic.OS;
- using System;
- using System.Collections;
- using System.Collections.Generic;
-@@ -24,7 +_,7 @@
+@@ -25,7 +_,7 @@
  
- namespace Terraria
+ namespace Terraria;
+ 
+-public static class Utils
++public static partial class Utils
  {
--	public static class Utils
-+	public static partial class Utils
- 	{
- 		public delegate bool TileActionAttempt(int x, int y);
+ 	public delegate bool TileActionAttempt(int x, int y);
  
-@@ -200,7 +_,8 @@
- 			ArrayList arrayList = new ArrayList();
- 			string text = "";
- 			for (int i = 0; i < brokenArgs.Length; i++) {
--				if (brokenArgs[i].StartsWith("-")) {
-+				//TML: Steam uses +connect_lobby as an argument, so had to add == "+" so this wouldn't break that argument.
-+				if (brokenArgs[i].StartsWith("-") || brokenArgs[i].StartsWith("+")) {
- 					if (text != "") {
- 						arrayList.Add(text);
- 						text = "";
-@@ -263,6 +_,12 @@
- 								num2 -= 16;
+@@ -294,7 +_,8 @@
+ 		ArrayList arrayList = new ArrayList();
+ 		string text = "";
+ 		for (int i = 0; i < brokenArgs.Length; i++) {
+-			if (brokenArgs[i].StartsWith("-")) {
++			//TML: Steam uses +connect_lobby as an argument, so had to add == "+" so this wouldn't break that argument.
++			if (brokenArgs[i].StartsWith("-") || brokenArgs[i].StartsWith("+")) {
+ 				if (text != "") {
+ 					arrayList.Add(text);
+ 					text = "";
+@@ -375,6 +_,14 @@
+ 							num2 -= 16;
  
- 							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
-+							for (int i = 0; i < list3[l].Text.Length; i++) {
-+								// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
-+								if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
-+									num3 = i;
-+							}
+ 						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
 +
- 							if (num3 < 0)
- 								num3 = 0;
++						// Loop added by TML. Explain what this is?
++						for (int i = 0; i < list3[l].Text.Length; i++) {
++							// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
++							if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
++								num3 = i;
++						}
++
+ 						if (num3 < 0)
+ 							num3 = 0;
  
-@@ -306,8 +_,8 @@
- 			}
+@@ -644,17 +_,32 @@
+ 			return false;
+ 		}
+ 	}
++	private static void OpenFolderXdg(string folderPath)
++	{
++		ProcessStartInfo processStartInfo = new ProcessStartInfo {
++			FileName = "xdg-open",
++			Arguments = folderPath,
++			UseShellExecute = true,
++			CreateNoWindow = true
++		};
++
++		processStartInfo.EnvironmentVariables["LD_LIBRARY_PATH"] = "/usr/lib:/lib";
++		Process.Start(processStartInfo);
++	}
  
- 			if (maxLines != -1) {
--				while (list.Count > 10) {
-+				while (list.Count > maxLines) {
--					list.RemoveAt(10);
-+					list.RemoveAt(maxLines);
- 				}
- 			}
- 
-@@ -529,18 +_,22 @@
- 
- 		public static void OpenFolder(string folderPath) {
- 			if (TryCreatingDirectory(folderPath)) {
--#if !LINUX
--				if (Platform.IsWindows)
--					Process.Start("explorer.exe", folderPath);
--				else
--					Process.Start(folderPath);
--#else
--				Process.Start(new ProcessStartInfo(folderPath) {
--					FileName = "open-folder",
--					Arguments = folderPath,
--					UseShellExecute = true,
--					CreateNoWindow = true
-+#if !LINUX && !NETCORE
-+				Process.Start(folderPath);
-+#elif LINUX
-+				Process.Start(
-+					new ProcessStartInfo(folderPath) {
-+						FileName = "open-folder",
-+						Arguments = folderPath,
-+						UseShellExecute = true,
-+						CreateNoWindow = true
+ 	public static void OpenFolder(string folderPath)
+ 	{
+ 		if (TryCreatingDirectory(folderPath)) {
+ 			if (Platform.IsLinux) {
++				/*
+ 				Process.Start(new ProcessStartInfo(folderPath) {
+ 					FileName = "open-folder",
+ 					Arguments = folderPath,
+ 					UseShellExecute = true,
+ 					CreateNoWindow = true
  				});
-+#else
-+				Process.Start(
-+					new ProcessStartInfo(folderPath) {
-+						UseShellExecute = true
-+					}
-+				);
- #endif
++				*/
++				OpenFolderXdg(folderPath);
+ 			}
+ 			else {
+ 				Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
+@@ -669,6 +_,11 @@
+ 		return array;
+ 	}
+ 
++	/// <summary>
++	/// Generates a random value between 0f (inclusive) and 1f (exclusive). <br/>It will not return 1f.
++	/// </summary>
++	/// <param name="r"></param>
++	/// <returns></returns>
+ 	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
+ 	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
+ 	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
+@@ -1383,14 +_,26 @@
+ 			text.Substring(0, maxCharactersDisplayed);
+ 
+ 		DynamicSpriteFont value = FontAssets.DeathText.Value;
++
++		TextSnippet[] snippets = ChatManager.ParseMessage(text, color).ToArray();
++		ChatManager.ConvertNormalSnippets(snippets);
++		Vector2 textSize = ChatManager.GetStringSize(value, snippets, Vector2.One);
++
+ 		for (int i = -1; i < 2; i++) {
+ 			for (int j = -1; j < 2; j++) {
++				/*
+ 				spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
++				*/
++				ChatManager.DrawColorCodedString(spriteBatch, value, snippets, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * textSize, new Vector2(scale), out var _, maxWidth: -1, ignoreColors: true);
  			}
  		}
-@@ -551,6 +_,11 @@
- 			return array;
- 		}
  
-+		/// <summary>
-+		/// Generates a random value between 0f (inclusive) and 1f (exclusive). <br/>It will not return 1f.
-+		/// </summary>
-+		/// <param name="r"></param>
-+		/// <returns></returns>
- 		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
- 		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
- 		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1140,14 +_,17 @@
- 				text.Substring(0, maxCharactersDisplayed);
++		/*
+ 		spriteBatch.DrawString(value, text, pos, color, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
+ 		return value.MeasureString(text) * scale;
++		*/
++		ChatManager.DrawColorCodedString(spriteBatch, value, snippets, pos, color, 0f, new Vector2(anchorx, anchory) * textSize, new Vector2(scale), out var _, maxWidth: -1);
++		return textSize * scale;
+ 	}
  
- 			DynamicSpriteFont value = FontAssets.DeathText.Value;
-+			/*
- 			for (int i = -1; i < 2; i++) {
- 				for (int j = -1; j < 2; j++) {
--					spriteBatch.DrawString(value, text, pos + new Vector2(i, j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
-+					spriteBatch.DrawString(value, text, pos + new Vector2((float)i, (float)j), Color.Black, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
- 				}
- 			}
--
- 			spriteBatch.DrawString(value, text, pos, color, 0f, new Vector2(anchorx, anchory) * value.MeasureString(text), scale, SpriteEffects.None, 0f);
--			return value.MeasureString(text) * scale;
-+			*/
-+			Vector2 vector = ChatManager.GetStringSize(value, text, Vector2.One);
-+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, pos, color, 0f, new Vector2(anchorx, anchory) * vector, new Vector2(scale), -1f, 2f);
-+			return vector * scale;
- 		}
- 
- 		public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color)) {
+ 	public static void DrawInvBG(SpriteBatch sb, Rectangle R, Color c = default(Color))

@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_OverfullChest.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_OverfullChest.cs
+@@ -1,11 +_,16 @@
+ namespace Terraria.DataStructures;
+ 
++#nullable enable
++
++/// <summary>
++/// Used when attempting to add an item to a chest, but the chest is full so it spills into the world. <br/>
++/// Only vanilla use is the gas trap.
++/// </summary>
+ public class EntitySource_OverfullChest : AEntitySource_Tile
+ {
+-	public readonly Chest Chest;
++	public Chest Chest { get; }
+ 
+-	public EntitySource_OverfullChest(int tileCoordsX, int tileCoordsY, Chest chest)
+-		: base(tileCoordsX, tileCoordsY)
++	public EntitySource_OverfullChest(int tileCoordsX, int tileCoordsY, Chest chest, string? context) : base(tileCoordsX, tileCoordsY, context)
+ 	{
+ 		Chest = chest;
+ 	}

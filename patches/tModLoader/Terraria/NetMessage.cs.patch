@@ -1,575 +1,640 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
-@@ -3,6 +_,7 @@
- using Microsoft.Xna.Framework.Graphics.PackedVector;
+@@ -1,5 +_,6 @@
  using System;
  using System.IO;
 +using System.Threading;
- using Terraria.Chat;
- using Terraria.DataStructures;
- using Terraria.GameContent;
-@@ -11,6 +_,8 @@
+ using Ionic.Zlib;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics.PackedVector;
+@@ -10,6 +_,8 @@
+ using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
- using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
  
- namespace Terraria
-@@ -50,7 +_,7 @@
+ namespace Terraria;
+@@ -54,7 +_,7 @@
+ 	private static short[] _compressChestList = new short[8000];
+ 	private static short[] _compressSignList = new short[1000];
+ 	private static short[] _compressEntities = new short[1000];
+-	private static PlayerDeathReason _currentPlayerDeathReason;
++	public static PlayerDeathReason _currentPlayerDeathReason;
+ 	private static NetSoundInfo _currentNetSoundInfo;
+ 	private static CoinLossRevengeSystem.RevengeMarker _currentRevengeMarker;
+ 
+@@ -85,6 +_,9 @@
+ 		if (Main.netMode == 2 && remoteClient >= 0)
+ 			num = remoteClient;
+ 
++		if (ModNet.HijackSendData(num, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7))
++			return;
++
+ 		lock (buffer[num]) {
+ 			BinaryWriter writer = buffer[num].writer;
+ 			if (writer == null) {
+@@ -98,12 +_,12 @@
+ 			writer.Write((byte)msgType);
+ 			switch (msgType) {
+ 				case 1:
+-					writer.Write("Terraria" + 279);
++					writer.Write(ModNet.NetVersionString);
+ 					break;
+ 				case 2:
+ 					text.Serialize(writer);
+ 					if (Main.dedServ)
+-						Console.WriteLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
++						Logging.ServerConsoleLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
+ 					break;
+ 				case 3:
+ 					writer.Write((byte)remoteClient);
+@@ -115,7 +_,15 @@
+ 					writer.Write((byte)player4.skinVariant);
+ 					writer.Write((byte)player4.hair);
+ 					writer.Write(player4.name);
++
++					if (ModNet.AllowVanillaClients) {
+-					writer.Write(player4.hairDye);
++						writer.Write7BitEncodedInt(player4.hairDye);
++						goto SkipVanillaWrite;
++					}
++
++					writer.Write((byte)player4.hairDye);
++					SkipVanillaWrite:
++
+ 					WriteAccessoryVisibility(writer, player4.hideVisibleAccessory);
+ 					writer.Write(player4.hideMisc);
+ 					writer.WriteRGB(player4.hairColor);
+@@ -166,12 +_,19 @@
+ 
+ 					num11 = item6.stack;
+ 					num12 = item6.netID;
++					// Extra patch context.
+ 					if (num11 < 0)
+ 						num11 = 0;
+ 
++					if (!ModNet.AllowVanillaClients) {
++						ItemIO.Send(item6, writer, writeStack: true);
++						goto SkipVanillaWrite;
++					}
++
+ 					writer.Write((short)num11);
+ 					writer.Write((byte)number3);
+ 					writer.Write((short)num12);
++					SkipVanillaWrite:
+ 					break;
+ 				}
+ 				case 7: {
+@@ -340,8 +_,13 @@
+ 						writer.Write(SocialAPI.Network.GetLobbyId());
+ 					else
+ 						writer.Write(0uL);
++					// Extra patch context.
+ 
+ 					writer.Write(Sandstorm.IntendedSeverity);
++
++					if (!ModNet.AllowVanillaClients)
++						WorldIO.SendModData(writer);
++
+ 					break;
+ 				}
+ 				case 8:
+@@ -551,8 +_,17 @@
+ 					writer.Write((short)number);
+ 					writer.WriteVector2(item3.position);
+ 					writer.WriteVector2(item3.velocity);
++
++					if (!ModNet.AllowVanillaClients) {
++						writer.Write7BitEncodedInt(item3.stack);
++						writer.Write7BitEncodedInt(item3.prefix);
++						goto SkipVanillaWrite;
++					}
++
+ 					writer.Write((short)item3.stack);
+-					writer.Write(item3.prefix);
++					writer.Write((byte)item3.prefix);
++					SkipVanillaWrite:
++
+ 					writer.Write((byte)number2);
+ 					short value2 = 0;
+ 					if (item3.active && item3.stack > 0)
+@@ -567,6 +_,7 @@
+ 					if (msgType == 148)
+ 						writer.Write((byte)MathHelper.Clamp(item3.timeLeftInWhichTheItemCannotBeTakenByEnemies, 0f, 255f));
+ 
++					ItemIO.SendModData(item3, writer);
+ 					break;
+ 				}
+ 				case 22:
+@@ -636,9 +_,12 @@
+ 						}
+ 					}
+ 
+-					if (nPC2.type >= 0 && nPC2.type < NPCID.Count && Main.npcCatchable[nPC2.type])
++					if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
+ 						writer.Write((byte)nPC2.releaseOwner);
+ 
++					if (!ModNet.AllowVanillaClients)
++						NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++
+ 					break;
+ 				}
+ 				case 24:
+@@ -673,12 +_,16 @@
+ 					if (projectile.knockBack != 0f)
+ 						bitsByte23[5] = true;
+ 
+-					if (projectile.type > 0 && projectile.type < ProjectileID.Count && ProjectileID.Sets.NeedsUUID[projectile.type])
++					if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
+ 						bitsByte23[7] = true;
+ 
+ 					if (projectile.originalDamage != 0)
+ 						bitsByte23[6] = true;
+ 
++					byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
++					bool hasExtraAI = extraAI?.Length > 0;
++					bitsByte24[1] = hasExtraAI; // This bit is unused by vanilla
++
+ 					if ((byte)bitsByte24 != 0)
+ 						bitsByte23[2] = true;
+ 
+@@ -710,14 +_,38 @@
+ 					if (bitsByte24[0])
+ 						writer.Write(projectile.ai[2]);
+ 
++					if (hasExtraAI) {
++						ProjectileLoader.SendExtraAI(writer, extraAI);
++					}
++
+ 					break;
+ 				}
+ 				case 28:
+ 					writer.Write((short)number);
++					/*
+ 					writer.Write((short)number2);
+ 					writer.Write(number3);
+ 					writer.Write((byte)(number4 + 1f));
+ 					writer.Write((byte)number5);
++					*/
++
++					if (number2 < 0) {
++						if (Main.netMode != NetmodeID.Server)
++							throw new ArgumentException("Packet 28 (StrikeNPC) can only be sent with negative damage (silent insta-kill) from the server.");
++
++						// send 'kill NPC' variant
++						writer.Write7BitEncodedInt((int)number2);
++						break;
++					}
++
++					var hit = number7 == 1 ? _currentStrike : _lastLegacyStrike;
++					writer.Write7BitEncodedInt(hit.Damage);
++					writer.Write7BitEncodedInt(hit.SourceDamage);
++					writer.Write7BitEncodedInt(hit.DamageType.Type);
++					writer.Write((sbyte)hit.HitDirection);
++					writer.Write(hit.Knockback);
++					var flags = new BitsByte(hit.Crit, hit.InstantKill, hit.HideCombatText);
++					writer.Write(flags);
+ 					break;
+ 				case 29:
+ 					writer.Write((short)number);
+@@ -735,13 +_,21 @@
+ 					Item item7 = Main.chest[number].item[(byte)number2];
+ 					writer.Write((short)number);
+ 					writer.Write((byte)number2);
++
++					if (!ModNet.AllowVanillaClients) {
++						ItemIO.Send(item7, writer, writeStack: true);
++						goto SkipVanillaWrite;
++					}
++
+ 					short value4 = (short)item7.netID;
+ 					if (item7.Name == null)
+ 						value4 = 0;
+ 
++					// Extra patch context
+ 					writer.Write((short)item7.stack);
+-					writer.Write(item7.prefix);
++					writer.Write((byte)item7.prefix);
+ 					writer.Write(value4);
++					SkipVanillaWrite:
+ 					break;
+ 				}
+ 				case 33: {
+@@ -785,6 +_,11 @@
+ 					else {
+ 						writer.Write((short)0);
+ 					}
++
++					// Write extra modded chest id, see calls to SendData(34, 
++					if (number >= 100)
++						writer.Write((ushort)number6);
++
+ 					break;
+ 				case 35:
+ 					writer.Write((byte)number);
+@@ -798,6 +_,10 @@
+ 					writer.Write(player3.zone3);
+ 					writer.Write(player3.zone4);
+ 					writer.Write(player3.zone5);
++
++					if (!ModNet.AllowVanillaClients)
++						BiomeLoader.SendCustomBiomes(player3, writer);
++
+ 					break;
+ 				}
+ 				case 38:
+@@ -1058,7 +_,7 @@
+ 					bool flag3 = TileEntity.ByID.ContainsKey(number);
+ 					writer.Write(flag3);
+ 					if (flag3)
+-						TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true);
++						TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true, lightSend: true); //TML: Made lightSend true.
+ 
+ 					break;
+ 				}
+@@ -1121,14 +_,27 @@
+ 					writer.Write((short)number);
+ 					writer.Write((short)number2);
+ 					Item item4 = Main.player[(int)number4].inventory[(int)number3];
++
++					if (!ModNet.AllowVanillaClients) {
++						ItemIO.Send(item4, writer);
++						writer.Write7BitEncodedInt(number5);
++						goto SkipVanillaWrite;
++					}
++
+ 					writer.Write((short)item4.netID);
+-					writer.Write(item4.prefix);
++					writer.Write((byte)item4.prefix);
+ 					writer.Write((short)number5);
++					SkipVanillaWrite:
+ 					break;
+ 				}
+ 				case 91:
+ 					writer.Write(number);
+ 					writer.Write((byte)number2);
++
++					// Send byte for owner if type corresponds to projectile (magic number 2) #WorldUIAnchorProjectileSyncFix
++					if (!ModNet.AllowVanillaClients && (byte)number2 == 2)
++						writer.Write((byte)((int)number2 >> 8));
++
+ 					if (number2 != 255f) {
+ 						writer.Write((ushort)number3);
+ 						writer.Write((ushort)number4);
+@@ -1247,6 +_,11 @@
+ 					writer.Write(number);
+ 					break;
+ 				case 117:
++					if (number7 == 1) {
++						writer.Write((byte)255); // special signifier of new direct hurt packet
++						goto SendDirectHurt;
++					}
++
+ 					writer.Write((byte)number);
+ 					_currentPlayerDeathReason.WriteSelfTo(writer);
+ 					writer.Write((short)number2);
+@@ -1254,6 +_,19 @@
+ 					writer.Write((byte)number4);
+ 					writer.Write((sbyte)number5);
+ 					break;
++
++					SendDirectHurt:
++					writer.Write((byte)number);
++					var args = _currentPlayerHurtInfo;
++					var pack = new BitsByte(args.PvP, args.Dodgeable, args.DustDisabled, args.SoundDisabled);
++					writer.Write(pack);
++					args.DamageSource.WriteSelfTo(writer);
++					writer.Write((sbyte)args.CooldownCounter);
++					writer.Write7BitEncodedInt(args.SourceDamage);
++					writer.Write7BitEncodedInt(args.Damage);
++					writer.Write((sbyte)args.HitDirection);
++					writer.Write(args.Knockback);
++					break;
+ 				case 118:
+ 					writer.Write((byte)number);
+ 					_currentPlayerDeathReason.WriteSelfTo(writer);
+@@ -1291,9 +_,16 @@
+ 					writer.Write((short)number);
+ 					writer.Write((short)number2);
+ 					Item item2 = Main.player[(int)number4].inventory[(int)number3];
++
++					if (!ModNet.AllowVanillaClients) {
++						ItemIO.Send(item2, writer, writeStack: true);
++						goto SkipVanillaWrite;
++					}
++
+ 					writer.Write((short)item2.netID);
+-					writer.Write(item2.prefix);
++					writer.Write((byte)item2.prefix);
+ 					writer.Write((short)number5);
++					SkipVanillaWrite:
+ 					break;
+ 				}
+ 				case 124: {
+@@ -1356,9 +_,17 @@
+ 					writer.Write((short)number);
+ 					writer.Write((short)number2);
+ 					Item item = Main.player[(int)number4].inventory[(int)number3];
++
++
++					if (!ModNet.AllowVanillaClients) {
++						ItemIO.Send(item, writer, writeStack: true);
++						goto SkipVanillaWrite;
++					}
++
+ 					writer.Write((short)item.netID);
+-					writer.Write(item.prefix);
++					writer.Write((byte)item.prefix);
+ 					writer.Write((short)number5);
++					SkipVanillaWrite:
+ 					break;
+ 				}
+ 				case 134: {
+@@ -1440,6 +_,16 @@
+ 				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
+ 
+ 			writer.BaseStream.Position = position;
++
++			// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile
++			// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
++			// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
++			if (num21 > ushort.MaxValue) // An exception is better than silent packet drops.
++				throw new IndexOutOfRangeException($"Maximum packet length exceeded {num21} > {ushort.MaxValue}");
++
++			if (ModNet.DetailedLogging)
++				ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num21);
++
+ 			writer.Write((ushort)num21);
+ 			writer.BaseStream.Position = num21;
+ 			if (Main.netMode == 1) {
+@@ -1652,7 +_,7 @@
+ 
+ 			buffer[num].writeLocked = false;
+ 			if (msgType == 2 && Main.netMode == 2) {
+-				Netplay.Clients[num].PendingTermination = true;
++				Netplay.Clients[num].SetPendingTermination("Kicked");
+ 				Netplay.Clients[num].PendingTerminationApproved = true;
+ 			}
+ 		}
+@@ -1690,11 +_,11 @@
+ 		int num6 = 0;
+ 		byte b = 0;
+ 		byte[] array = new byte[16];
+-		Tile tile = null;
++		Tile? tile = null;
+ 		for (int i = yStart; i < yStart + height; i++) {
+ 			for (int j = xStart; j < xStart + width; j++) {
+ 				Tile tile2 = Main.tile[j, i];
+-				if (tile2.isTheSameAs(tile) && TileID.Sets.AllowsSaveCompressionBatching[tile2.type]) {
++				if (tile.HasValue && tile2.isTheSameAs(tile.Value) && TileID.Sets.AllowsSaveCompressionBatching[tile2.type]) {
+ 					num4 = (short)(num4 + 1);
+ 					continue;
+ 				}
+@@ -1741,7 +_,7 @@
+ 						}
+ 					}
+ 
+-					if (tile2.type == 88 && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
++					if (TileID.Sets.BasicDresser[tile2.type] && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
+ 						short num8 = (short)Chest.FindChest(j, i);
+ 						if (num8 != -1) {
+ 							_compressChestList[num] = num8;
+@@ -1761,7 +_,7 @@
+ 							_compressSignList[num2++] = num10;
+ 					}
+ 
+-					if (tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) {
++					if ((tile2.type == 425 || tile2.type >= TileID.Count && Main.tileSign[tile2.type]) && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) {
+ 						short num11 = (short)Sign.ReadSign(j, i);
+ 						if (num11 != -1)
+ 							_compressSignList[num2++] = num11;
+@@ -1951,9 +_,18 @@
+ 			writer.Write(sign.text);
  		}
  
- 		public static MessageBuffer[] buffer = new MessageBuffer[257];
--		private static PlayerDeathReason _currentPlayerDeathReason;
-+		public static PlayerDeathReason _currentPlayerDeathReason;
- 		private static NetSoundInfo _currentNetSoundInfo;
- 		private static CoinLossRevengeSystem.RevengeMarker _currentRevengeMarker;
++		// Add all modded tile entities within the range to the send list
++		foreach (var item in TileEntity.ByPosition) {
++			Point16 pos = item.Key;
++			if (pos.X >= xStart && pos.X < xStart + width && pos.Y >= yStart && pos.Y < yStart + height) {
++				if (item.Value.type >= TileEntitiesManager.VanillaTypeCount)
++					_compressEntities[num3++] = (short)item.Value.ID;
++			}
++		}
++
+ 		writer.Write(num3);
+ 		for (int m = 0; m < num3; m++) {
+-			TileEntity.Write(writer, TileEntity.ByID[_compressEntities[m]]);
++			TileEntity.Write(writer, TileEntity.ByID[_compressEntities[m]], networkSend: true); //TML: Made networkSend true, but lightSend should be false.
+ 		}
+ 	}
  
-@@ -76,6 +_,9 @@
- 			if (Main.netMode == 2 && remoteClient >= 0)
- 				num = remoteClient;
+@@ -1966,16 +_,20 @@
  
-+			if (ModNet.HijackSendData(num, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7))
-+				return;
-+
- 			lock (buffer[num]) {
- 				BinaryWriter writer = buffer[num].writer;
- 				if (writer == null) {
-@@ -89,12 +_,12 @@
- 				writer.Write((byte)msgType);
- 				switch (msgType) {
- 					case 1:
--						writer.Write("Terraria" + 248);
-+						writer.Write(ModNet.NetVersionString);
- 						break;
- 					case 2:
- 						text.Serialize(writer);
- 						if (Main.dedServ)
--							Console.WriteLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
-+							Logging.ServerConsoleLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
- 						break;
- 					case 3:
- 						writer.Write((byte)remoteClient);
-@@ -106,7 +_,12 @@
- 							writer.Write((byte)player5.skinVariant);
- 							writer.Write((byte)player5.hair);
- 							writer.Write(player5.name);
-+
-+							if (ModNet.AllowVanillaClients)
-+								PlayerIO.WriteByteVanillaHairDye(player5.hairDye, writer);
-+							else
--							writer.Write(player5.hairDye);
-+								writer.Write7BitEncodedInt(player5.hairDye);
-+
- 							BitsByte bb6 = (byte)0;
- 							for (int num14 = 0; num14 < 8; num14++) {
- 								bb6[num14] = player5.hideVisibleAccessory[num14];
-@@ -157,12 +_,19 @@
- 
- 							num8 = item5.stack;
- 							num9 = item5.netID;
-+							//Patch context.
- 							if (num8 < 0)
- 								num8 = 0;
- 
--							writer.Write((short)num8);
--							writer.Write((byte)number3);
--							writer.Write((short)num9);
-+							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaStack(num8, writer);
-+								ItemIO.WriteByteVanillaPrefix(item5, writer);
-+								ItemIO.WriteShortVanillaID(item5, writer);
-+							}
-+							else {
-+								ItemIO.Send(item5, writer, writeStack: true);
-+							}
-+
- 							break;
- 						}
- 					case 7: {
-@@ -306,12 +_,15 @@
- 							writer.Write((short)WorldGen.SavedOreTiers.Mythril);
- 							writer.Write((short)WorldGen.SavedOreTiers.Adamantite);
- 							writer.Write((sbyte)Main.invasionType);
-+
- 							if (SocialAPI.Network != null)
- 								writer.Write(SocialAPI.Network.GetLobbyId());
- 							else
- 								writer.Write(0uL);
- 
- 							writer.Write(Sandstorm.IntendedSeverity);
-+							if (!ModNet.AllowVanillaClients)
-+								WorldIO.SendModData(writer);
- 							break;
- 						}
- 					case 8:
-@@ -509,14 +_,24 @@
- 							writer.Write((short)number);
- 							writer.WriteVector2(item7.position);
- 							writer.WriteVector2(item7.velocity);
--							writer.Write((short)item7.stack);
--							writer.Write(item7.prefix);
-+
-+							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaStack(item7, writer);
-+								ItemIO.WriteByteVanillaPrefix(item7, writer);
-+							}
-+							else {
-+								writer.Write7BitEncodedInt(item7.stack);
-+								writer.Write7BitEncodedInt(item7.prefix);
-+							}
-+
- 							writer.Write((byte)number2);
- 							short value5 = 0;
-+							//Patch context just in case.
- 							if (item7.active && item7.stack > 0)
- 								value5 = (short)item7.netID;
- 
- 							writer.Write(value5);
-+							ItemIO.SendModData(item7, writer);
- 							break;
- 						}
- 					case 22:
-@@ -586,9 +_,12 @@
- 								}
- 							}
- 
--							if (nPC2.type >= 0 && nPC2.type < 670 && Main.npcCatchable[nPC2.type])
-+							if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
- 								writer.Write((byte)nPC2.releaseOwner);
- 
-+							if (!ModNet.AllowVanillaClients)
-+								NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
-+
- 							break;
- 						}
- 					case 24:
-@@ -624,12 +_,17 @@
- 							if (projectile.knockBack != 0f)
- 								bb22[5] = true;
- 
--							if (projectile.type > 0 && projectile.type < 972 && ProjectileID.Sets.NeedsUUID[projectile.type])
-+							if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
- 								bb22[7] = true;
- 
- 							if (projectile.originalDamage != 0)
- 								bb22[6] = true;
- 
-+							byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
-+							bool hasExtraAI = extraAI?.Length > 0;
-+
-+							bb22[2] = hasExtraAI; // This bit is unused by vanilla.
-+
- 							writer.Write(bb22);
- 							for (int num21 = 0; num21 < Projectile.maxAI; num21++) {
- 								if (bb22[num21])
-@@ -651,11 +_,18 @@
- 							if (bb22[7])
- 								writer.Write((short)projectile.projUUID);
- 
-+							if (hasExtraAI) {
-+								ProjectileLoader.SendExtraAI(writer, extraAI);
-+							}
-+
- 							break;
- 						}
- 					case 28:
- 						writer.Write((short)number);
-+						if (ModNet.AllowVanillaClients)
--						writer.Write((short)number2);
-+							writer.Write((short)number2);
-+						else
-+							writer.Write((int)number2);
- 						writer.Write(number3);
- 						writer.Write((byte)(number4 + 1f));
- 						writer.Write((byte)number5);
-@@ -676,13 +_,21 @@
- 							Item item6 = Main.chest[number].item[(byte)number2];
- 							writer.Write((short)number);
- 							writer.Write((byte)number2);
-+							/*
- 							short value2 = (short)item6.netID;
- 							if (item6.Name == null)
- 								value2 = 0;
--
--							writer.Write((short)item6.stack);
--							writer.Write(item6.prefix);
--							writer.Write(value2);
-+							*/
-+
-+							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaStack(item6, writer);
-+								ItemIO.WriteByteVanillaPrefix(item6, writer);
-+								ItemIO.WriteShortVanillaID(item6, writer);
-+							}
-+							else {
-+								ItemIO.Send(item6, writer, writeStack: true);
-+							}
-+
- 							break;
- 						}
- 					case 33: {
-@@ -726,6 +_,8 @@
- 						else {
- 							writer.Write((short)0);
- 						}
-+						if (number >= 100)
-+							writer.Write((ushort)number6);
- 						break;
- 					case 35:
- 						writer.Write((byte)number);
-@@ -738,6 +_,9 @@
- 							writer.Write(player3.zone2);
- 							writer.Write(player3.zone3);
- 							writer.Write(player3.zone4);
-+							if (!ModNet.AllowVanillaClients)
-+								BiomeLoader.SendCustomBiomes(player3, writer);
-+
- 							break;
- 						}
- 					case 38:
-@@ -790,7 +_,7 @@
- 						}
- 					case 50: {
- 							writer.Write((byte)number);
--							for (int n = 0; n < 22; n++) {
-+							for (int n = 0; n < Player.MaxBuffs; n++) {
- 								writer.Write((ushort)Main.player[number].buffType[n]);
- 							}
- 
-@@ -997,7 +_,7 @@
- 							bool flag3 = TileEntity.ByID.ContainsKey(number);
- 							writer.Write(flag3);
- 							if (flag3)
--								TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true);
-+								TileEntity.Write(writer, TileEntity.ByID[number], networkSend: true, lightSend: true); //TML: Made lightSend true.
- 
- 							break;
- 						}
-@@ -1060,14 +_,28 @@
- 							writer.Write((short)number);
- 							writer.Write((short)number2);
- 							Item item3 = Main.player[(int)number4].inventory[(int)number3];
--							writer.Write((short)item3.netID);
--							writer.Write(item3.prefix);
--							writer.Write((short)number5);
-+							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaID(item3, writer);
-+								ItemIO.WriteByteVanillaPrefix(item3, writer);
-+								ItemIO.WriteShortVanillaStack(number5, writer);
-+							}
-+							else {
-+								ItemIO.Send(item3, writer);
-+								writer.Write7BitEncodedInt(number5);
-+							}
-+
- 							break;
- 						}
- 					case 91:
- 						writer.Write(number);
-+						// TML: #WorldUIAnchorProjectileSyncFix
-+						// number2 is packed with owner and type
-+						int packedOwnerType = (int)number2;
-+						number2 = (int)number2 & 0xFF; // Reassign for patch reduction - this is now "type" (Masking has no effect on vanilla value)
- 						writer.Write((byte)number2);
-+						// Send byte for owner if type corresponds to projectile (magic number 2)
-+						if (!ModNet.AllowVanillaClients && number2 == 2)
-+							writer.Write((byte)(packedOwnerType >> 8));
- 						if (number2 != 255f) {
- 							writer.Write((ushort)number3);
- 							writer.Write((ushort)number4);
-@@ -1230,9 +_,17 @@
- 							writer.Write((short)number);
- 							writer.Write((short)number2);
- 							Item item2 = Main.player[(int)number4].inventory[(int)number3];
--							writer.Write((short)item2.netID);
--							writer.Write(item2.prefix);
--							writer.Write((short)number5);
-+
-+							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaID(item2, writer);
-+								ItemIO.WriteByteVanillaPrefix(item2, writer);
-+								ItemIO.WriteShortVanillaStack(number5, writer);
-+							}
-+							else {
-+								ItemIO.Send(item2, writer);
-+								writer.Write7BitEncodedInt(number5);
-+							}
-+
- 							break;
- 						}
- 					case 124: {
-@@ -1293,9 +_,17 @@
- 							writer.Write((short)number);
- 							writer.Write((short)number2);
- 							Item item = Main.player[(int)number4].inventory[(int)number3];
--							writer.Write((short)item.netID);
--							writer.Write(item.prefix);
--							writer.Write((short)number5);
-+
-+							if (ModNet.AllowVanillaClients) {
-+								ItemIO.WriteShortVanillaID(item, writer);
-+								ItemIO.WriteByteVanillaPrefix(item, writer);
-+								ItemIO.WriteShortVanillaStack(number5, writer);
-+							}
-+							else {
-+								ItemIO.Send(item, writer);
-+								writer.Write7BitEncodedInt(number5);
-+							}
-+
- 							break;
- 						}
- 					case 134: {
-@@ -1352,7 +_,16 @@
- 
- 				int num26 = (int)writer.BaseStream.Position;
- 				writer.BaseStream.Position = position;
-+				// TODO: Make this int or some other solution. This used to be cast to short. NetMessage.CheckBytes reads ushort though, so changing this is fine. We want to allow for more data primarily because writing tile
-+				// chunks can go more than 32767 (and even 65535) bytes. This is because ModTileEntities can have large amounts of data especially when they sync Items and instanced GlobalItem classes are in play.
-+				// Complications include AllowVanillaClients, message length byte length negotiation, and MessageBuffer.readBuffer having a fixed size.
-+				if (num26 > ushort.MaxValue) // an exception is better than silent packet drops.
-+					throw new IndexOutOfRangeException($"Maximum packet length exceeded {num26} > {ushort.MaxValue}");
-+
-+				if (ModNet.DetailedLogging)
-+					ModNet.LogSend(remoteClient, ignoreClient, $"SendData {MessageID.GetName(msgType)}({msgType})", num26);
-+
--				writer.Write((short)num26);
-+				writer.Write((ushort)num26);
- 				writer.BaseStream.Position = num26;
- 				if (Main.netMode == 1) {
- 					if (Netplay.Connection.Socket.IsConnected()) {
-@@ -1564,7 +_,7 @@
- 
- 				buffer[num].writeLocked = false;
- 				if (msgType == 2 && Main.netMode == 2) {
--					Netplay.Clients[num].PendingTermination = true;
-+					Netplay.Clients[num].SetPendingTermination("Kicked");
- 					Netplay.Clients[num].PendingTerminationApproved = true;
- 				}
- 			}
-@@ -1578,9 +_,11 @@
- 					binaryWriter.Write(width);
- 					binaryWriter.Write(height);
- 					CompressTileBlock_Inner(binaryWriter, xStart, yStart, width, height);
-+					/* Bad vanilla return condition, removed in 1.4.4
- 					int num = buffer.Length;
- 					if (bufferStart + memoryStream.Length > num)
- 						return (int)(num - bufferStart + memoryStream.Length);
+ 	public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height)
+ 	{
+-		Tile tile = null;
++		Tile tile = default;
+ 		int num = 0;
+ 		for (int i = yStart; i < yStart + height; i++) {
+ 			for (int j = xStart; j < xStart + width; j++) {
+ 				if (num != 0) {
+ 					num--;
++					/*
+ 					if (Main.tile[j, i] == null)
+ 						Main.tile[j, i] = new Tile(tile);
+ 					else
+ 						Main.tile[j, i].CopyFrom(tile);
 +					*/
- 
- 					memoryStream.Position = 0L;
- 					MemoryStream memoryStream2 = new MemoryStream();
-@@ -1620,16 +_,16 @@
- 			int num6 = 0;
- 			byte b = 0;
- 			byte[] array4 = new byte[15];
--			Tile tile = null;
-+			Tile? tile = null;
- 			for (int i = yStart; i < yStart + height; i++) {
- 				for (int j = xStart; j < xStart + width; j++) {
- 					Tile tile2 = Main.tile[j, i];
--					if (tile2.isTheSameAs(tile) && TileID.Sets.AllowsSaveCompressionBatching[tile2.type]) {
--						num4 = (short)(num4 + 1);
--						continue;
--					}
--
- 					if (tile != null) {
-+						if (tile2.isTheSameAs(tile.Value) && TileID.Sets.AllowsSaveCompressionBatching[tile2.type]) {
-+							num4 = (short)(num4 + 1);
-+							continue;
-+						}
 +
- 						if (num4 > 0) {
- 							array4[num5] = (byte)(num4 & 0xFF);
- 							num5++;
-@@ -1670,7 +_,7 @@
- 							}
- 						}
++					Main.tile[j, i].CopyFrom(tile);
  
--						if (tile2.type == 88 && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
-+						if (TileID.Sets.BasicDresser[tile2.type] && tile2.frameX % 54 == 0 && tile2.frameY % 36 == 0) {
- 							short num8 = (short)Chest.FindChest(j, i);
- 							if (num8 != -1) {
- 								array[num] = num8;
-@@ -1690,7 +_,7 @@
- 								array2[num2++] = num10;
- 						}
+ 					continue;
+ 				}
+@@ -2154,7 +_,7 @@
  
--						if (tile2.type == 425 && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) {
-+						if ((tile2.type == 425 || tile2.type >= TileID.Count && Main.tileSign[tile2.type]) && tile2.frameX % 36 == 0 && tile2.frameY % 36 == 0) {
- 							short num11 = (short)Sign.ReadSign(j, i);
- 							if (num11 != -1)
- 								array2[num2++] = num11;
-@@ -1855,9 +_,17 @@
- 				writer.Write(sign.text);
- 			}
+ 		num3 = reader.ReadInt16();
+ 		for (int m = 0; m < num3; m++) {
+-			TileEntity tileEntity = TileEntity.Read(reader);
++			TileEntity tileEntity = TileEntity.Read(reader, networkSend: true); //TML: Made networkSend true, but lightSend should be false.
+ 			TileEntity.ByID[tileEntity.ID] = tileEntity;
+ 			TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+ 		}
+@@ -2164,20 +_,45 @@
  
-+			foreach (var item in TileEntity.ByPosition) {
-+				Point16 pos = item.Key;
-+				if (pos.X >= xStart && pos.X < xStart + width && pos.Y >= yStart && pos.Y < yStart + height) {
-+					if (item.Value.type > 2)
-+						array3[num3++] = (short)item.Value.ID;
+ 	public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256)
+ 	{
++		if (ModNet.DetailedLogging)
++			ModNet.Debug(i, $"recv {streamLength}");
++
++		var lockStart = DateTime.Now;
+ 		lock (buffer[i]) {
++			// Actually do some flow-control to handle the case where we get more than 128kb between main thread CheckBytes calls (once per frame).
++			// Without this, BlockCopy gets an out of bounds exception and the connection terminates with a read buffer overflow error.
++			bool firstWait = true;
++			while (buffer[i].totalData + streamLength > buffer[i].readBuffer.Length) {
++				if (firstWait) {
++					if (ModNet.DetailedLogging)
++						ModNet.Debug(i, $"waiting for space in readBuffer");
++
++					firstWait = false;
 +				}
++
++				Monitor.Exit(buffer[i]);
++				Thread.Yield();
++				Monitor.Enter(buffer[i]);
 +			}
 +
- 			writer.Write(num3);
- 			for (int m = 0; m < num3; m++) {
--				TileEntity.Write(writer, TileEntity.ByID[array3[m]]);
-+				TileEntity.Write(writer, TileEntity.ByID[array3[m]], networkSend: true); //TML: Made networkSend true, but lightSend should be false.
++			var timeToAcquireLock = (DateTime.Now - lockStart).TotalMilliseconds;
++			if (timeToAcquireLock > 1 && ModNet.DetailedLogging)
++				ModNet.Debug(i, $"buffer lock contended for {timeToAcquireLock:0.0}ms");
++
+ 			try {
+ 				Buffer.BlockCopy(bytes, 0, buffer[i].readBuffer, buffer[i].totalData, streamLength);
+ 				buffer[i].totalData += streamLength;
+ 				buffer[i].checkBytes = true;
+ 			}
+-			catch {
++			catch (Exception e) {
+ 				if (Main.netMode == 1) {
+ 					Main.menuMode = 15;
+ 					Main.statusText = Language.GetTextValue("Error.BadHeaderBufferOverflow");
++					ModNet.Error($"BlockCopy bounds error: srclen={bytes.Length}, dstlen={buffer[i].readBuffer.Length}, dstoffset={buffer[i].totalData}, num={streamLength}", e);
+ 					Netplay.Disconnect = true;
+ 				}
+ 				else {
+-					Netplay.Clients[i].PendingTermination = true;
++					Netplay.Clients[i].SetPendingTermination($"Exception in ReceiveBytes {e.Message}");
+ 				}
  			}
  		}
+@@ -2194,12 +_,16 @@
  
-@@ -1892,16 +_,20 @@
- 		}
- 
- 		public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height) {
--			Tile tile = null;
-+			Tile tile = default;
  			int num = 0;
- 			for (int i = yStart; i < yStart + height; i++) {
- 				for (int j = xStart; j < xStart + width; j++) {
- 					if (num != 0) {
- 						num--;
-+						/*
- 						if (Main.tile[j, i] == null)
- 							Main.tile[j, i] = new Tile(tile);
- 						else
- 							Main.tile[j, i].CopyFrom(tile);
-+						*/
+ 			int num2 = buffer[bufferIndex].totalData;
++			int msgId = -1;
+ 			try {
++				if (num2 > 0 && ModNet.DetailedLogging)
++					ModNet.Debug(bufferIndex, $"check {num2}");
 +
-+						Main.tile[j, i].CopyFrom(tile);
- 
- 						continue;
- 					}
-@@ -2053,27 +_,51 @@
- 
- 			num3 = reader.ReadInt16();
- 			for (int m = 0; m < num3; m++) {
--				TileEntity tileEntity = TileEntity.Read(reader);
-+				TileEntity tileEntity = TileEntity.Read(reader, networkSend: true); //TML: Made networkSend true, but lightSend should be false.
- 				TileEntity.ByID[tileEntity.ID] = tileEntity;
- 				TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+ 				while (num2 >= 2) {
+ 					int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
+ 					if (num2 >= num3) {
+ 						long position = buffer[bufferIndex].reader.BaseStream.Position;
+-						buffer[bufferIndex].GetData(num + 2, num3 - 2, out var _);
++						buffer[bufferIndex].GetData(num + 2, num3 - 2, out msgId);
+ 						if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
+ 							Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
+ 							buffer[bufferIndex].checkBytes = false;
+@@ -2215,9 +_,12 @@
+ 					break;
+ 				}
  			}
+-			catch (Exception) {
++			catch (Exception e) {
++				/*
+ 				if (Main.dedServ && num < buffer.Length - 100)
+ 					Console.WriteLine(Language.GetTextValue("Error.NetMessageError", buffer[num + 2]));
++				*/
++				ModNet.Error(bufferIndex, $"{MessageID.GetName(msgId)}({msgId})", e);
+ 
+ 				num2 = 0;
+ 				num = 0;
+@@ -2229,6 +_,9 @@
+ 				}
+ 
+ 				buffer[bufferIndex].totalData = num2;
 +
-+			Main.sectionManager.SetTilesLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
++				if (num2 > 0 && ModNet.DetailedLogging)
++					ModNet.Debug(bufferIndex, $"partial {num2}");
+ 			}
+ 
+ 			buffer[bufferIndex].checkBytes = false;
+@@ -2262,8 +_,12 @@
+ 			SendData(77, whoAmi, -1, null, animationType, tileType, xCoord, yCoord);
+ 	}
+ 
++	// Made internal, only for PvP use
+-	public static void SendPlayerHurt(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool critical, bool pvp, int hitContext, int remoteClient = -1, int ignoreClient = -1)
++	internal static void SendPlayerHurt(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool critical, bool pvp, int hitContext, int remoteClient = -1, int ignoreClient = -1)
+ 	{
++		if (!pvp)
++			throw new ArgumentException("SendPlayerHurt is legacy, for pvp usage only. Call Player.Hurt with quiet: false, or use the Player.HurtInfo overload");
++
+ 		_currentPlayerDeathReason = reason;
+ 		BitsByte bitsByte = (byte)0;
+ 		bitsByte[0] = critical;
+@@ -2271,6 +_,14 @@
+ 		SendData(117, remoteClient, ignoreClient, null, playerTargetIndex, damage, direction, (int)(byte)bitsByte, hitContext);
+ 	}
+ 
++	// Added by TML
++	private static Player.HurtInfo _currentPlayerHurtInfo;
++	public static void SendPlayerHurt(int playerTargetIndex, Player.HurtInfo info, int ignoreClient = -1)
++	{
++		_currentPlayerHurtInfo = info;
++		SendData(117, -1, ignoreClient, number: playerTargetIndex, number7: 1);
++	}
++
+ 	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
+ 	{
+ 		_currentPlayerDeathReason = reason;
+@@ -2291,6 +_,23 @@
+ 		SendData(126, remoteClient, ignoreClient);
+ 	}
+ 
++	private static NPC.HitInfo _lastLegacyStrike;
++	internal static void SetLegacyStrike(NPC.HitInfo hit)
++	{
++		_lastLegacyStrike = hit;
++	}
++
++	private static NPC.HitInfo _currentStrike;
++
++	/// <summary>
++	/// Use this to synchronize damage strikes against NPCs!
++	/// </summary>
++	public static void SendStrikeNPC(NPC npc, in NPC.HitInfo hit, int ignoreClient = -1)
++	{
++		_currentStrike = hit;
++		SendData(28, -1, ignoreClient, null, npc.whoAmI, number7: 1);
++	}
++
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
+@@ -2455,7 +_,7 @@
  		}
  
- 		public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256) {
-+			if (ModNet.DetailedLogging)
-+				ModNet.Debug(i, $"recv {streamLength}");
-+
-+			var lockStart = DateTime.Now;
- 			lock (buffer[i]) {
-+				// actually do some flow-control to handle the case where we get more than 128kb between main thread CheckBytes calls (once per frame).
-+				// Without this, BlockCopy gets an out of bounds exception and the connection terminates with a read buffer overflow error.
-+				bool firstWait = true;
-+				while (buffer[i].totalData + streamLength > buffer[i].readBuffer.Length) {
-+					if (firstWait) {
-+						if (ModNet.DetailedLogging)
-+							ModNet.Debug(i, $"waiting for space in readBuffer");
-+						firstWait = false;
-+					}
-+					Monitor.Exit(buffer[i]);
-+					Thread.Yield();
-+					Monitor.Enter(buffer[i]);
-+				}
-+				var timeToAcquireLock = (DateTime.Now - lockStart).TotalMilliseconds;
-+				if (timeToAcquireLock > 1 && ModNet.DetailedLogging)
-+					ModNet.Debug(i, $"buffer lock contended for {timeToAcquireLock:0.0}ms");
-+
- 				try {
- 					Buffer.BlockCopy(bytes, 0, buffer[i].readBuffer, buffer[i].totalData, streamLength);
- 					buffer[i].totalData += streamLength;
- 					buffer[i].checkBytes = true;
- 				}
--				catch {
-+				catch (Exception e) {
- 					if (Main.netMode == 1) {
- 						Main.menuMode = 15;
- 						Main.statusText = Language.GetTextValue("Error.BadHeaderBufferOverflow");
-+						ModNet.Error($"BlockCopy bounds error: srclen={bytes.Length}, dstlen={buffer[i].readBuffer.Length}, dstoffset={buffer[i].totalData}, num={streamLength}", e);
- 						Netplay.Disconnect = true;
- 					}
- 					else {
--						Netplay.Clients[i].PendingTermination = true;
-+						Netplay.Clients[i].SetPendingTermination($"Exception in ReceiveBytes {e.Message}");
- 					}
- 				}
- 			}
-@@ -2089,12 +_,16 @@
- 
- 				int num = 0;
- 				int num2 = buffer[bufferIndex].totalData;
-+				int msgId = -1;
- 				try {
-+					if (num2 > 0 && ModNet.DetailedLogging) {
-+						ModNet.Debug(bufferIndex, $"check {num2}");
-+					}
- 					while (num2 >= 2) {
- 						int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
- 						if (num2 >= num3) {
- 							long position = buffer[bufferIndex].reader.BaseStream.Position;
--							buffer[bufferIndex].GetData(num + 2, num3 - 2, out int _);
-+							buffer[bufferIndex].GetData(num + 2, num3 - 2, out msgId);
- 
- 							if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
- 								Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
-@@ -2111,10 +_,13 @@
- 						break;
- 					}
- 				}
--				catch (Exception) {
-+				catch (Exception e) {
-+					/*
- 					if (Main.dedServ && num < NetMessage.buffer.Length - 100)
--						Console.WriteLine("Error on message " + NetMessage.buffer[num + 2]);
-+						Logging.ServerConsoleLine("Error on message " + NetMessage.buffer[num + 2], Level.Warn);
-+					*/
- 
-+					ModNet.Error(bufferIndex, $"{MessageID.GetName(msgId)}({msgId})", e);
- 					num2 = 0;
- 					num = 0;
- 				}
-@@ -2125,6 +_,8 @@
- 					}
- 
- 					buffer[bufferIndex].totalData = num2;
-+					if (num2 > 0 && ModNet.DetailedLogging)
-+						ModNet.Debug(bufferIndex, $"partial {num2}");
- 				}
- 
- 				buffer[bufferIndex].checkBytes = false;
-@@ -2324,8 +_,7 @@
- 			}
- 
- 			if (!flag) {
--				Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
-+				Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
--				WorldFile.SaveWorld();
- 				Netplay.Disconnect = true;
- 			}
+ 		if (!flag) {
+-			Console.WriteLine(Language.GetTextValue("Net.ServerAutoShutdown"));
++			Logging.ServerConsoleLine(Language.GetTextValue("Net.ServerAutoShutdown"));
+ 			Netplay.Disconnect = true;
  		}
-@@ -2376,11 +_,12 @@
- 					SendData(5, toWho, fromWho, null, plr, 94 + m, (int)Main.player[plr].miscDyes[m].prefix);
- 				}
- 
-+				PlayerLoader.SyncPlayer(Main.player[plr], toWho, fromWho, false);
- 				if (!Netplay.Clients[plr].IsAnnouncementCompleted) {
- 					Netplay.Clients[plr].IsAnnouncementCompleted = true;
- 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[19].Key, Main.player[plr].name), new Color(255, 240, 20), plr);
- 					if (Main.dedServ)
--						Console.WriteLine(Lang.mp[19].Format(Main.player[plr].name));
-+						Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
- 				}
- 
- 				return;
-@@ -2392,7 +_,7 @@
- 				Netplay.Clients[plr].IsAnnouncementCompleted = false;
- 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
+ 	}
+@@ -2509,11 +_,14 @@
+ 			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
+ 			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
+ 			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
++
++			PlayerLoader.SyncPlayer(Main.player[plr], toWho, fromWho, false);
++
+ 			if (!Netplay.Clients[plr].IsAnnouncementCompleted) {
+ 				Netplay.Clients[plr].IsAnnouncementCompleted = true;
+ 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[19].Key, Main.player[plr].name), new Color(255, 240, 20), plr);
  				if (Main.dedServ)
--					Console.WriteLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
-+					Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
- 
- 				Netplay.Clients[plr].Name = "Anonymous";
+-					Console.WriteLine(Lang.mp[19].Format(Main.player[plr].name));
++					Logging.ServerConsoleLine(Lang.mp[19].Format(Main.player[plr].name));
  			}
+ 
+ 			return;
+@@ -2525,7 +_,7 @@
+ 			Netplay.Clients[plr].IsAnnouncementCompleted = false;
+ 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
+ 			if (Main.dedServ)
+-				Console.WriteLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
++				Logging.ServerConsoleLine(Lang.mp[20].Format(Netplay.Clients[plr].Name));
+ 
+ 			Netplay.Clients[plr].Name = "Anonymous";
+ 		}

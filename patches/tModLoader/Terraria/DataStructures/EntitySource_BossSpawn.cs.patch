@@ -1,20 +1,30 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_BossSpawn.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_BossSpawn.cs
-@@ -1,11 +_,16 @@
+@@ -1,11 +_,23 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_BossSpawn : IEntitySource
- 	{
- 		public readonly Entity Entity;
+ namespace Terraria.DataStructures;
  
--		public EntitySource_BossSpawn(Entity entity) {
-+		public string? Context { get; }
++/// <summary>
++/// Used for most vanilla bosses, conveys their initial target, which is normally the closest player.
++/// </summary>
+ public class EntitySource_BossSpawn : IEntitySource
+ {
+-	public readonly Entity Entity;
+-
+-	public EntitySource_BossSpawn(Entity entity)
++	/// <summary>
++	/// The entity which this boss spawn on. <br/><br/>
++	/// In the vast majority of cases, this will be a <see cref="Player"/>. Often <see cref="NPC.target"/> will be set to <c>Player.whoAmI</c>
++	/// </summary>
++	public Entity Target { get; }
 +
-+		public EntitySource_BossSpawn(Entity entity, string? context = null) {
- 			Entity = entity;
-+			Context = context;
- 		}
++	public string? Context { get; }
++
++	public EntitySource_BossSpawn(Entity target, string? context = null)
+ 	{
+-		Entity = entity;
++		Target = target;
++		Context = context;
  	}
  }

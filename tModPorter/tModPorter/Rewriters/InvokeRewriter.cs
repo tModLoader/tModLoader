@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
@@ -29,7 +29,7 @@ public partial class InvokeRewriter : BaseRewriter
 			return newNode;
 
 		IOperation op = model.GetOperation(node);
-		if (op is not IInvalidOperation && (op is not IInvocationOperation invocation|| !invocation.TargetMethod.IsObsolete()))
+		if (!IsInvalidOrObsolete(op))
 			return node;
 
 		return node.Expression switch {
@@ -46,6 +46,9 @@ public partial class InvokeRewriter : BaseRewriter
 	}
 
 	private SyntaxNode Refactor(InvocationExpressionSyntax node, SimpleNameSyntax nameSyntax, ITypeSymbol targetType) {
+		if (targetType == null)
+			return node;
+
 		var nameToken = nameSyntax.Identifier;
 		foreach (var (type, name, isStatic, handler) in handlers) {
 			if (name != nameToken.Text || !targetType.InheritsFrom(type))
@@ -238,6 +241,34 @@ public partial class InvokeRewriter : BaseRewriter
 
 		return invoke;
 	};
+
+	public static RewriteInvoke CommentOut => (rw, invoke, methodName) => {
+		// This doesn't actually do the right thing, which would be to remove the entire StatementSyntax from the block, and then add the comment trivia in the right spot to the previous node, but that's really hard...
+		// So instead, we just chuck some line comment trivia in front of this and hope no-one else gets too confused
+		if (invoke.Parent is StatementSyntax stmt)
+			rw.RegisterAction(stmt, CommentOutNode);
+		else if (invoke.Parent is ArrowExpressionClauseSyntax arrowExpr)
+			rw.RegisterAction(arrowExpr.Parent, CommentOutNode); // whole method is now redundant
+
+		return invoke;
+	};
+
+	private static SyntaxNode CommentOutNode(SyntaxNode node) {
+
+		var t = node.GetLeadingTrivia();
+		if (t.LastOrDefault().Kind() is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.MultiLineCommentTrivia)
+			return node; // prevents infinite recursion
+
+		bool multiline = node.ToString().Contains('\n');
+		if (multiline) {
+			return node
+				.WithLeadingTrivia(t.Add(Comment("/* ")))
+				.WithTrailingTrivia(node.GetTrailingTrivia().Insert(0, Comment(" */")));
+		}
+		else {
+			return node.WithLeadingTrivia(t.Add(Comment("// ")));
+		}
+	}
 	#endregion
 }
 

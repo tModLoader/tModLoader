@@ -1,10 +1,9 @@
+using System;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,9 +21,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleSimpleMinionBuff : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Minion");
-			Description.SetDefault("The example minion will fight for you");
-
 			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
 			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
 		}
@@ -44,12 +40,10 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleSimpleMinionItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Minion Item");
-			Tooltip.SetDefault("Summons an example minion to fight for you");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
 		}
 
 		public override void SetDefaults() {
@@ -106,7 +100,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleSimpleMinion : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Minion");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 4;
 			// This is necessary for right-click targeting

@@ -37,10 +37,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 			base.OnBind();
 			circleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 			valueStrings = Enum.GetNames(MemberInfo.Type);
-			TextDisplayFunction = () => MemberInfo.Name + ": " + GetStringValue();
-			if (LabelAttribute != null) {
-				TextDisplayFunction = () => LabelAttribute.Label + ": " + GetStringValue();
-			}
+			TextDisplayFunction = () => Label + ": " + GetStringValue();
 		}
 
 		void SetValue(Corner value) => SetObject(value);
@@ -51,8 +48,8 @@ namespace ExampleMod.Common.Configs.CustomUI
 			return valueStrings[(int)GetValue()];
 		}
 
-		public override void Click(UIMouseEvent evt) {
-			base.Click(evt);
+		public override void LeftClick(UIMouseEvent evt) {
+			base.LeftClick(evt);
 			SetValue(GetValue().NextEnum());
 		}
 

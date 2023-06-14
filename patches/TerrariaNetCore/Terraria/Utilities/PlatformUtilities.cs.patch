@@ -1,32 +1,29 @@
 --- src/Terraria/Terraria/Utilities/PlatformUtilities.cs
 +++ src/TerrariaNetCore/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,4 +_,5 @@
- #if !XNA
+@@ -2,6 +_,7 @@
+ using System.IO;
+ #if FNA
+ using System.Runtime.InteropServices;
 +using Microsoft.Xna.Framework.Graphics;
  using SDL2;
- using System;
- using System.IO;
-@@ -60,6 +_,7 @@
  #endif
  
- #if !XNA
-+		/* commented to avoid SDL_image dependency, FNA3D has a WritePNG function		
- 		private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH) {
- 			IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);
- 			SDL.SDL_LockSurface(intPtr);
-@@ -90,6 +_,15 @@
- 			_ = array[35];
- 			_ = array[36];
- 			stream.Write(array, 0, array.Length);
-+		}
-+		*/
+@@ -9,7 +_,17 @@
+ 
+ public static class PlatformUtilities
+ {
+-#if FNA
++#if NETCORE
++	// Use FNA3D.WritePNGStream to avoid SDL_image dependency
++	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
++	{
++		if (width * height * 4 > data.Length)
++			throw new IndexOutOfRangeException($"Data length {data.Length} must be >= width({width})*height({height})*4");
 +
-+		public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data) {
-+			if (width * height * 4 > data.Length)
-+				throw new IndexOutOfRangeException($"Data length {data.Length} must be >= width({width})*height({height})*4");
-+
-+			fixed (byte* ptr = data)
-+				FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
- 		}
- #endif
- 	}
++		fixed (byte* ptr = data)
++			FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
++	}
++#elif FNA
+ 	private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH)
+ 	{
+ 		IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);

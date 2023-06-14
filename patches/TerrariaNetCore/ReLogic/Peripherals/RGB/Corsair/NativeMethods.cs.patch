@@ -1,0 +1,55 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Corsair/NativeMethods.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Corsair/NativeMethods.cs
+@@ -5,37 +_,41 @@
+ 
+ internal class NativeMethods
+ {
++	// TML: Updated dll to a newer 64-bit version and updated dll name. Changed all instances of the constant to DLL_NAME.
++	/*
+-	private const string DLL_NAME = "CUESDK_2015.dll";
++	public const string DLL_NAME = "CUESDK_2015.dll";
++	*/
++	public const string DLL_NAME = "CUESDK.x64_2019.dll";
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	[return: MarshalAs(UnmanagedType.I1)]
+ 	public static extern bool CorsairSetLedsColors(int size, [In][Out] CorsairLedColor[] ledsColors);
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	[return: MarshalAs(UnmanagedType.I1)]
+ 	public static extern bool CorsairSetLedsColorsAsync(int size, [In][Out] CorsairLedColor[] ledsColors, IntPtr callback, IntPtr context);
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern int CorsairGetDeviceCount();
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr CorsairGetDeviceInfo(int deviceIndex);
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr CorsairGetLedPositions();
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr CorsairGetLedPositionsByDeviceIndex(int deviceIndex);
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern bool CorsairRequestControl(CorsairAccessMode accessMode);
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern CorsairProtocolDetails CorsairPerformProtocolHandshake();
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern CorsairError CorsairGetLastError();
+ 
+-	[DllImport("CUESDK_2015.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
++	[DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+ 	public static extern bool CorsairReleaseControl(CorsairAccessMode accessMode);
+ }

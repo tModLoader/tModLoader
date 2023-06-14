@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExampleFlailProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Flail");
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -80,13 +80,13 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Another thing that won't automatically be inherited by using Projectile.aiStyle and AIType are effects that happen when the projectile hits something. Here we see the code responcible for applying the OnFire debuff to players and enemies.
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (Main.rand.NextBool(2)) {
 				target.AddBuff(BuffID.OnFire, 300);
 			}
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit) {
+		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
 			if (Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.OnFire, 180, quiet: false);
 			}

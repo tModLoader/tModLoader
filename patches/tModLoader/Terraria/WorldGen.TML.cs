@@ -1,57 +1,35 @@
-﻿using Terraria.WorldBuilding;
+using MonoMod.Cil;
+using System.Collections.Generic;
+using Terraria.GameContent.Generation;
+using Terraria.WorldBuilding;
+using Terraria.IO;
+using Terraria.ModLoader;
 
-namespace Terraria
+namespace Terraria;
+
+public partial class WorldGen
 {
-	public partial class WorldGen
+	internal static void ClearGenerationPasses()
 	{
-		#region WorldGen.GenerateWorld Values
-		public static WorldGenConfiguration configuration;
-		public static int copper;
-		public static int iron;
-		public static int silver;
-		public static int gold;
-		public static int dungeonSide;
-		public static ushort jungleHut;
-		public static int shellStartXLeft;
-		public static int shellStartYLeft;
-		public static int shellStartXRight;
-		public static int shellStartYRight;
-		public static int howFar;
-		public static int[] PyrX;
-		public static int[] PyrY;
-		public static int numPyr;
-		public static int jungleMinX;
-		public static int jungleMaxX;
-		public static int[] snowMinX;
-		public static int[] snowMaxX;
-		public static int snowTop;
-		public static int snowBottom;
-		public static float dub2 = 0f;
-		public static int skyLakes;
-		public static int beachBordersWidth;
-		public static int beachSandRandomCenter;
-		public static int beachSandRandomWidthRange;
-		public static int beachSandDungeonExtraWidth;
-		public static int beachSandJungleExtraWidth;
-		public static int oceanWaterStartRandomMin;
-		public static int oceanWaterStartRandomMax;
-		public static int oceanWaterForcedJungleLength;
-		public static int leftBeachEnd;
-		public static int rightBeachStart;
-		public static int minSsandBeforeWater;
-		public static int evilBiomeBeachAvoidance;
-		public static int evilBiomeAvoidanceMidFixer;
-		public static int lakesBeachAvoidance;
-		public static int smallHolesBeachAvoidance;
-		public static int surfaceCavesBeachAvoidance2;
-		public static int jungleOriginX;
-		public static int snowOriginLeft;
-		public static int snowOriginRight;
-		public static int logX;
-		public static int logY;
-		public static int dungeonLocation;
-		#endregion
+		_generator?._passes.Clear();
+	}
 
-		internal static void ClearGenerationPasses() => _generator?._passes.Clear();
+	internal static Dictionary<string, GenPass> _vanillaGenPasses = new();
+	public static IReadOnlyDictionary<string, GenPass> VanillaGenPasses => _vanillaGenPasses;
+
+	public static void ModifyPass(PassLegacy pass, ILContext.Manipulator callback)
+	{
+		MonoModHooks.Modify(pass._method.Method, callback);
+	}
+
+	// The self reference has to be object, because the actual type is a compiler generated closure class
+	// The self reference isn't useful anyway, since the closure doesn't capture any method locals or an enclosing class instance
+	// We might think to omit the self parameter from mod delegates, and register a wrapper which propogates self via a closure, but then MonoModHooks will attribute the hook to tModLoader rather than the original mod.
+	public delegate void GenPassDetour(orig_GenPassDetour orig, object self, GenerationProgress progress, GameConfiguration configuration);
+	public delegate void orig_GenPassDetour(object self, GenerationProgress progress, GameConfiguration configuration);
+
+	public static void DetourPass(PassLegacy pass, GenPassDetour hookDelegate)
+	{
+		MonoModHooks.Add(pass._method.Method, hookDelegate);
 	}
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -27,7 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 
 			// Etc
-			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName()); // We don't need to call SetDefault() on CreateMapEntryName()'s return value if we have .lang files.
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("ItemName.GrandfatherClock"));
 		}
 
 		public override bool RightClick(int x, int y) {
@@ -81,10 +82,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleClock>());
 		}
 	}
 }

@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleJoustingLanceProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Jousting Lance"); // The English name of the projectile
-
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
 			ProjectileID.Sets.DismountsPlayersOnHit[Type] = true;
@@ -132,17 +130,13 @@ namespace ExampleMod.Content.Projectiles
 				}
 			}
 		}
+		
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
+			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
 
-		// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
-			if (damage > 0) {
-				knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
-			}
-		}
-
-		// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyDamageScaling(ref float damageScale) {
-			damageScale *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
+			// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
+			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
 		}
 
 		// This is the custom collision that Jousting Lances uses. 

@@ -13,6 +13,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,6 +45,13 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
+		public int MinionMaxHealthTotal {
+			get => (int)NPC.ai[3];
+			set => NPC.ai[3] = value;
+		}
+
+		public int MinionHealthTotal { get; set; }
+
 		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
 		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
 
@@ -57,8 +65,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		private const int FirstStageTimerMax = 90;
 		// This is a reference property. It lets us write FirstStageTimer as if it's NPC.localAI[1], essentially giving it our own name
 		public ref float FirstStageTimer => ref NPC.localAI[1];
-
-		public ref float RemainingShields => ref NPC.localAI[2];
 
 		// We could also repurpose FirstStageTimer since it's unused in the second stage, or write "=> ref FirstStageTimer", but then we have to reset the timer when the state switch happens
 		public ref float SecondStageTimer_SpawnEyes => ref NPC.localAI[3];
@@ -101,7 +107,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss");
 			Main.npcFrameCount[Type] = 6;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
@@ -263,7 +268,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// If the NPC dies, spawn gore and play a sound
 			if (Main.netMode == NetmodeID.Server) {
 				// We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
@@ -283,6 +288,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
+
+				// This adds a screen shake (screenshake) similar to Deerclops
+				PunchCameraModifier modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
+				Main.instance.CameraModifiers.Add(modifier);
 			}
 		}
 
@@ -334,23 +343,29 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			int count = MinionCount();
 			var entitySource = NPC.GetSource_FromAI();
 
+			MinionMaxHealthTotal = 0;
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
-				NPC minionNPC = Main.npc[index];
+				NPC minionNPC = NPC.NewNPCDirect(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				if (minionNPC.whoAmI == Main.maxNPCs)
+					continue; // spawn failed due to spawn cap
 
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
 				// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
+				MinionBossMinion minion = (MinionBossMinion)minionNPC.ModNPC;
+				minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
+				minion.PositionOffset = i / (float) count; // Give it a separate position offset
 
-				if (minionNPC.ModNPC is MinionBossMinion minion) {
-					// This checks if our spawned NPC is indeed the minion, and casts it so we can access its variables
-					minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
-					minion.PositionIndex = i; // Give it the iteration index so each minion has a separate one, used for movement
-				}
+				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield texxt
 
 				// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-				if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs) {
-					NetMessage.SendData(MessageID.SyncNPC, number: index);
+				if (Main.netMode == NetmodeID.Server) {
+					NetMessage.SendData(MessageID.SyncNPC, number: minionNPC.whoAmI);
 				}
+			}
+
+			// sync MinionMaxHealthTotal
+			if (Main.netMode == NetmodeID.Server) {
+				NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
 			}
 		}
 
@@ -360,20 +375,17 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				return;
 			}
 
-			float remainingShieldsSum = 0f;
+			MinionHealthTotal = 0;
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC otherNPC = Main.npc[i];
 				if (otherNPC.active && otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
 					if (minion.ParentIndex == NPC.whoAmI) {
-						remainingShieldsSum += (float)otherNPC.life / otherNPC.lifeMax;
+						MinionHealthTotal += otherNPC.life;
 					}
 				}
 			}
 
-			// We reference this in the MinionBossBossBar
-			RemainingShields = remainingShieldsSum / MinionCount();
-
-			if (RemainingShields <= 0 && Main.netMode != NetmodeID.MultiplayerClient) {
+			if (MinionHealthTotal <= 0 && Main.netMode != NetmodeID.MultiplayerClient) {
 				// If we have no shields (aka "no minions alive"), we initiate the second stage, and notify other players that this NPC has reached its second stage
 				// by setting NPC.netUpdate to true in this tick. It will send important data like position, velocity and the NPC.ai[] array to all connected clients
 
@@ -447,7 +459,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.damage = 0;
 
 			// Fade in based on remaining total minion life
-			NPC.alpha = (int)(RemainingShields * 255);
+			float remainingShields = MinionHealthTotal / (float)MinionMaxHealthTotal;
+			NPC.alpha = (int)(remainingShields * 255);
 
 			NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver2;
 		}

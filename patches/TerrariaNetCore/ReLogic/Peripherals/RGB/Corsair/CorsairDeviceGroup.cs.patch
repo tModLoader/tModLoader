@@ -1,0 +1,34 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Corsair/CorsairDeviceGroup.cs
+@@ -17,6 +_,9 @@
+ 	private readonly List<RgbDevice> _devices = new List<RgbDevice>();
+ 	private State _state;
+ 	private readonly VendorColorProfile _colorProfiles;
++#if NETCORE
++	private bool _initializationFailed;
++#endif
+ 
+ 	public CorsairDeviceGroup(VendorColorProfile colorProfiles)
+ 	{
+@@ -27,6 +_,21 @@
+ 	{
+ 		if (_state == State.AnyDevicesAdded)
+ 			return;
++
++#if NETCORE
++		if (_initializationFailed)
++			return;
++
++		// TML: Added additional parameters to make the dll actually load. See changes in NativeMethods.
++		/*
++		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++		*/
++		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, System.Reflection.Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
++			_initializationFailed = true;
++
++			return;
++		}
++#endif
+ 
+ 		try {
+ 			if (_state < State.HandshakeCompleted) {

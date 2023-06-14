@@ -8,26 +8,45 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1019,8 +_,13 @@
- 		private void SetupPlayerStatsAndInventoryBasedOnDifficulty() {
- 			int num = 0;
- 			if (_player.difficulty == 3) {
-+				PlayerLoader.ModifyMaxStats(_player);
-+				_player.statLife = _player.statLifeMax;
-+				_player.statMana = _player.statManaMax;
-+				/*
- 				_player.statLife = (_player.statLifeMax = 100);
- 				_player.statMana = (_player.statManaMax = 20);
-+				*/
- 				_player.inventory[num].SetDefaults(6);
- 				_player.inventory[num++].Prefix(-1);
- 				_player.inventory[num].SetDefaults(1);
-@@ -1055,6 +_,8 @@
- 
- 			_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
- 			CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
-+
-+			PlayerLoader.SetStartInventory(_player, PlayerLoader.GetStartingItems(_player, _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone())));
+@@ -1054,6 +_,15 @@
+ 				break;
  		}
  
- 		private bool GetHexColor(string hexString, out Vector3 hsl) {
++		if (player.hair >= HairID.Count) {
++		    player.Male = HairLoader.GetHair(player.hair).RandomizedCharacterCreationGender switch {
++				Gender.Male => true,
++				Gender.Female => false,
++				Gender.Unspecified => Main.rand.NextBool(),
++				_ => Main.rand.NextBool()
++			};
++		}
++
+ 		Click_CharClothStyle(null, null);
+ 		UpdateSelectedGender();
+ 		UpdateColorPickers();
+@@ -1117,8 +_,14 @@
+ 		int num = 0;
+ 		byte difficulty = _player.difficulty;
+ 		if (difficulty == 3) {
++			PlayerLoader.ModifyMaxStats(_player);
++
++			/*
+ 			_player.statLife = (_player.statLifeMax = 100);
+ 			_player.statMana = (_player.statManaMax = 20);
++			*/
++			_player.statLife = _player.statLifeMax;
++			_player.statMana = _player.statManaMax;
+ 			_player.inventory[num].SetDefaults(6);
+ 			_player.inventory[num++].Prefix(-1);
+ 			_player.inventory[num].SetDefaults(1);
+@@ -1156,6 +_,10 @@
+ 
+ 		_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
+ 		CreativePowerManager.Instance.ResetDataForNewPlayer(_player);
++
++		var vanillaItems = _player.inventory.Where(item => !item.IsAir).Select(x => x.Clone());
++		var startingItems = PlayerLoader.GetStartingItems(_player, vanillaItems);
++		PlayerLoader.SetStartInventory(_player, startingItems);
+ 	}
+ 
+ 	private bool GetHexColor(string hexString, out Vector3 hsl)

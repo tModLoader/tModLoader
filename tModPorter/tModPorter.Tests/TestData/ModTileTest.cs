@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,22 +8,22 @@ public class ModTileTest : ModTile
 {
 	void Method() {
 		drop = 1;
+		ItemDrop = 12;
 		dustType = 0;
-#if COMPILE_ERROR
 		soundType = 1;
 		soundStyle = 0;
-#endif
 
 		dresserDrop = 0;
 		chestDrop = 0;
-		closeDoorID = 0;
-		openDoorID = 0;
+		ChestDrop = 2;
+		DresserDrop = 3;
 		minPick = 0;
 		mineResist = 0;
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
 
-#if COMPILE_ERROR
+		OpenDoorID = 0;
+		CloseDoorID = 0;
 		sapling = true;
 		torch = true;
 		bed = true;
@@ -34,12 +35,22 @@ public class ModTileTest : ModTile
 		SetModTree(new ExampleTree());
 		SetModCactus(new ExampleCactus());
 		SetModPalmTree(new ExamplePalmTree());
-#endif
+
+		ContainerName.SetDefault("Some Container");
+		string containerName = TileLoader.ContainerName(13);
+
+		ModTranslation name = CreateMapEntryName();
+		name.SetDefault("Test");
+		AddMapEntry(new Color(200, 200, 200), name);
 	}
 
-#if COMPILE_ERROR
+	public override void SetStaticDefaults() {
+		TileID.Sets.TouchDamageSands[Type] = 15;
+		TileID.Sets.TouchDamageOther[Type] = 99;
+		TileID.Sets.TouchDamageVines[Type] = 10;
+	}
+
 	public override int SaplingGrowthType(ref int style) { return -1; }
-#endif
 
 	public override bool Dangersense(int i, int j, Player player) {
 		return false;
@@ -59,4 +70,6 @@ public class ModTileTest : ModTile
 	}
 
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
+
+	public override bool Drop(int i, int j) { /* Empty */ }
 }

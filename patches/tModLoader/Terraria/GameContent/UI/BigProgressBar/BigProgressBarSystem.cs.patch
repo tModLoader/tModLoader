@@ -1,61 +1,70 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarSystem.cs
-@@ -1,10 +_,11 @@
+@@ -2,10 +_,11 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
- using System.Collections.Generic;
+ using Terraria.IO;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.UI.BigProgressBar
+ namespace Terraria.GameContent.UI.BigProgressBar;
+ 
+-public class BigProgressBarSystem
++public partial class BigProgressBarSystem
  {
--	public class BigProgressBarSystem
-+	public partial class BigProgressBarSystem
+ 	private IBigProgressBar _currentBar;
+ 	private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
+@@ -62,17 +_,31 @@
+ 
+ 	public void Update()
  	{
- 		private IBigProgressBar _currentBar;
- 		private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
-@@ -50,16 +_,30 @@
- 			{ 668, _deerclopsBar }		};
- 
- 		public void Update() {
-+			if (BossBarLoader.CurrentStyle.PreventUpdate)
-+				goto endUpdate;
++		if (BossBarLoader.CurrentStyle.PreventUpdate)
++			goto endUpdate;
 +
- 			if (_currentBar == null)
- 				TryFindingNPCToTrack();
+ 		if (_currentBar == null)
+ 			TryFindingNPCToTrack();
  
- 			if (_currentBar != null && !_currentBar.ValidateAndCollectNecessaryInfo(ref _info))
- 				_currentBar = null;
+ 		if (_currentBar != null && !_currentBar.ValidateAndCollectNecessaryInfo(ref _info))
+ 			_currentBar = null;
 +
-+			endUpdate:
-+			BossBarLoader.CurrentStyle.Update(_currentBar, ref _info);
- 		}
++		endUpdate:
++		BossBarLoader.CurrentStyle.Update(_currentBar, ref _info);
+ 	}
  
- 		public void Draw(SpriteBatch spriteBatch) {
-+			if (BossBarLoader.CurrentStyle.PreventDraw)
-+				goto endDraw;
+ 	public void Draw(SpriteBatch spriteBatch)
+ 	{
++		if (BossBarLoader.CurrentStyle.PreventDraw)
++			goto endDraw;
 +
--			if (_currentBar != null)
-+			if (_currentBar != null) {
-+				BossBarLoader.drawingInfo = _info;
- 				_currentBar.Draw(ref _info, spriteBatch);
-+			}
+-		if (_currentBar != null)
++		if (_currentBar != null) {
++			BossBarLoader.drawingInfo = _info;
+ 			_currentBar.Draw(ref _info, spriteBatch);
++		}
 +
-+			endDraw:
-+			BossBarLoader.CurrentStyle.Draw(spriteBatch, _currentBar, _info);
- 		}
++		endDraw:
++		BossBarLoader.CurrentStyle.Draw(spriteBatch, _currentBar, _info);
+ 	}
  
- 		private void TryFindingNPCToTrack() {
-@@ -88,7 +_,12 @@
- 			bigProgressBarInfo.npcIndexToAimAt = npcIndex;
- 			BigProgressBarInfo info = bigProgressBarInfo;
- 			IBigProgressBar bigProgressBar = _bossBar;
+ 	private void TryFindingNPCToTrack()
+@@ -103,14 +_,19 @@
+ 		bigProgressBarInfo.npcIndexToAimAt = npcIndex;
+ 		BigProgressBarInfo info = bigProgressBarInfo;
+ 		IBigProgressBar bigProgressBar = _bossBar;
 +
-+			//BossBars assigned by mods take priority
-+			if (nPC.BossBar != null) {
-+				bigProgressBar = nPC.BossBar;
-+			}
--			if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
-+			else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out IBigProgressBar value))
- 				bigProgressBar = value;
++		//BossBars assigned by mods take priority
++		if (nPC.BossBar != null) {
++			bigProgressBar = nPC.BossBar;
++		}
+-		if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out var value))
++		else if (_bossBarsByNpcNetId.TryGetValue(nPC.netID, out var value))
+ 			bigProgressBar = value;
  
- 			if (!bigProgressBar.ValidateAndCollectNecessaryInfo(ref info))
++		info.showText = true; // Moved so that mods can set it to false
+ 		if (!bigProgressBar.ValidateAndCollectNecessaryInfo(ref info))
+ 			return false;
+ 
+ 		_currentBar = bigProgressBar;
+-		info.showText = true;
+ 		_info = info;
+ 		return true;
+ 	}

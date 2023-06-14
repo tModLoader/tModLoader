@@ -1,0 +1,29 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowService.cs
++++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
+@@ -10,7 +_,11 @@
+ 	public float GetScaling()
+ 	{
+ 		try {
++#if NETCORE
++			IntPtr hdc = NativeMethods.GetDC(IntPtr.Zero);
++#else
+ 			IntPtr hdc = System.Drawing.Graphics.FromHwnd(IntPtr.Zero).GetHdc();
++#endif
+ 			int deviceCaps = NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.VertRes);
+ 			return (float)NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.DesktopVertRes) / (float)deviceCaps;
+ 		}
+@@ -30,10 +_,14 @@
+ 
+ 	public void SetUnicodeTitle(GameWindow window, string title)
+ 	{
++#if NETCORE
++		SDL2.SDL.SDL_SetWindowTitle(window.Handle, title);
++#else
+ 		NativeMethods.WndProcCallback d = NativeMethods.DefWindowProc;
+ 		int dwNewLong = NativeMethods.SetWindowLong(window.Handle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)d));
+ 		window.Title = title;
+ 		NativeMethods.SetWindowLong(window.Handle, -4, dwNewLong);
++#endif
+ 	}
+ 
+ 	public void StartFlashingIcon(GameWindow window)

@@ -1,20 +1,15 @@
-﻿using Terraria;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
-using Terraria.ID;
+﻿using ExampleMod.Common.GlobalProjectiles;
 using Microsoft.Xna.Framework;
-using ExampleMod.Common.GlobalProjectiles;
-using Terraria.GameContent.Creative;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleModifiedProjectilesItem : ModItem
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleShootingSword";
-
-		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.useTime = 20;

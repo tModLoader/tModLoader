@@ -18,13 +18,10 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
 	/// </summary>
-	[Label("ModConfig Showcase G: Misc")]
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[Label("Custom UI Element")]
-		[Tooltip("This UI Element is modder defined")]
 		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
 
@@ -40,7 +37,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public List<Gradient> gradients = new List<Gradient>();
 		*/
 
-		[Label("Custom UI Element 2")]
 		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
 		public Corner corner;
 
@@ -58,10 +54,18 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		public HashSet<ItemDefinition> itemSet = new HashSet<ItemDefinition>();
 
-		[Label("ListOfPair2 label")]
 		public List<Pair> ListOfPair2 = new List<Pair>();
 		public Pair pairExample2 = new Pair();
 
+		// In this example, the list defaults to collapse.
+		[Expand(false)]
+		public List<string> collapsedList = new List<string>() { "1", "2", "3", "4", "5" };
+
+		// This example collapses the list elements as well as the list itself.
+		[Expand(false, false)]
+		public List<Pair> collapsedListOfCollapsedObjects = new List<Pair>() { new Pair() { enabled = true, boost = 3 }, new Pair { enabled = true, boost = 6 } };
+
+		[Expand(false)]
 		public SimpleData simpleDataExample; // you can also initialize in the constructor, see initialization in public ModConfigShowcaseMisc() below.
 
 		// This annotation allows the UI to null out this class. You need to make sure to initialize fields without the NullAllowed annotation in constructor or initializer or you might have issues. Of course, if you allow nulls, you'll need to make sure the rest of your mod will handle them correctly. Try to avoid null unless you have a good reason to use them, as null objects will only complicate the rest of your code.
@@ -69,7 +73,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[JsonDefaultValue("{\"boost\": 777}")] // With NullAllowed, you can specify a default value like this.
 		public SimpleData simpleDataExample2;
 
-		[Label("Really Complex Data")]
 		public ComplexData complexData = new ComplexData();
 
 		[JsonExtensionData]

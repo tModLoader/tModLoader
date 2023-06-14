@@ -3,24 +3,22 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
 {
 	internal class ExampleHookItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Hook"); // The item's name in-game.
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
-		}
-
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
 			Item.CloneDefaults(ItemID.AmethystHook);
 			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
 			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+
+			// If you do not use Item.CloneDefaults(), you must set the following values for the hook to work properly:
+			// Item.useStyle = ItemUseStyleID.None;
+			// Item.useTime = 0;
+			// Item.useAnimation = 0;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -46,9 +44,12 @@ namespace ExampleMod.Content.Items.Tools
 			chainTexture = null;
 		}
 
+		/*
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("${ProjectileName.GemHookAmethyst}");
+			// If you wish for your hook projectile to have ONE copy of it PER player, uncomment this section.
+			ProjectileID.Sets.SingleGrappleHook[Type] = true;
 		}
+		*/
 
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
@@ -65,12 +66,6 @@ namespace ExampleMod.Content.Items.Tools
 
 			return hooksOut <= 2;
 		}
-
-		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
-		// public override bool? SingleGrappleHook(Player player)
-		// {
-		//	return true;
-		// }
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook
@@ -121,6 +116,23 @@ namespace ExampleMod.Content.Items.Tools
 			float hangDist = 50f;
 			grappleX += dirToPlayer.X * hangDist;
 			grappleY += dirToPlayer.Y * hangDist;
+		}
+
+		// Can customize what tiles this hook can latch onto, or force/prevent latching alltogether, like Squirrel Hook also latching to trees
+		public override bool? GrappleCanLatchOnTo(Player player, int x, int y) {
+			// By default, the hook returns null to apply the vanilla conditions for the given tile position (this tile position could be air or an actuated tile!)
+			// If you want to return true here, make sure to check for Main.tile[x, y].HasUnactuatedTile (and Main.tileSolid[Main.tile[x, y].TileType] and/or Main.tile[x, y].HasTile if needed)
+
+			// We make this hook latch onto trees just like Squirrel Hook
+
+			// Tree trunks cannot be actuated so we don't need to check for that here
+			Tile tile = Main.tile[x, y];
+			if (TileID.Sets.IsATreeTrunk[tile.TileType] || tile.TileType == TileID.PalmTree) {
+				return true;
+			}
+
+			// In any other case, behave like a normal hook
+			return null;
 		}
 
 		// Draws the grappling hook's chain.

@@ -1,0 +1,29 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
++++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using ReLogic.Localization.IME;
++using SDL2;
+ 
+ namespace ReLogic.OS.Windows;
+ 
+@@ -19,10 +_,18 @@
+ 
+ 	public override void InitializeClientServices(IntPtr windowHandle)
+ 	{
++		// Window.handle from FNAPlatform.CreateWindow() points to an SDL window instead of Win32 window
++		// Need to convert it to Win32 window
++		SDL.SDL_SysWMinfo info = new SDL.SDL_SysWMinfo();
++		SDL.SDL_VERSION(out info.version);
++		SDL.SDL_GetWindowWMInfo(windowHandle, ref info);
++		windowHandle = info.info.win.window;
++
+ 		if (_wndProcHook == null)
+ 			_wndProcHook = new WindowsMessageHook(windowHandle);
+ 
++		// NetCore change from WindowsIme to WinImm32Ime
+-		RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++		RegisterService((IImeService)new WinImm32Ime(_wndProcHook, windowHandle));
+ 	}
+ 
+ 	protected override void Dispose(bool disposing)

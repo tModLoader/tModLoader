@@ -4,29 +4,40 @@
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.Tile_Entities
- {
--	public class TETeleportationPylon : TileEntity
-+	public sealed class TETeleportationPylon : TileEntity, IPylonTileEntity
- 	{
- 		private static byte _myEntityID;
- 		private const int MyTileID = 597;
-@@ -21,7 +_,8 @@
- 				return;
- 			}
+ namespace Terraria.GameContent.Tile_Entities;
  
--			if (Main.PylonSystem.HasPylonOfType(pylonType)) {
-+			bool canPlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? !Main.PylonSystem.HasPylonOfType(pylonType);
-+			if (!canPlace) {
- 				RejectPlacementFromNet(x, y);
- 				return;
- 			}
-@@ -147,6 +_,8 @@
+-public class TETeleportationPylon : TileEntity
++public sealed class TETeleportationPylon : TileEntity, IPylonTileEntity
+ {
+ 	private static byte _myEntityID;
+ 	private const int MyTileID = 597;
+@@ -23,7 +_,8 @@
+ 			return;
  		}
  
- 		public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0) {
-+			if (PylonLoader.PreCanPlacePylon(x, y, type, GetPylonTypeFromPylonTileStyle(style)) is bool value)
-+				return value ? 0 : 1;
- 			TeleportPylonType pylonTypeFromPylonTileStyle = GetPylonTypeFromPylonTileStyle(style);
- 			if (Main.PylonSystem.HasPylonOfType(pylonTypeFromPylonTileStyle))
- 				return 1;
+-		if (Main.PylonSystem.HasPylonOfType(pylonType)) {
++		bool canPlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? !Main.PylonSystem.HasPylonOfType(pylonType);
++		if (!canPlace) {
+ 			RejectPlacementFromNet(x, y);
+ 			return;
+ 		}
+@@ -98,7 +_,8 @@
+ 
+ 		Kill(num, num2);
+ 		int pylonItemTypeFromTileStyle = GetPylonItemTypeFromTileStyle(pylonStyleFromTile);
++		if (TileLoader.Drop(callX, callY, 470))
+-		Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, pylonItemTypeFromTileStyle);
++			Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, pylonItemTypeFromTileStyle);
+ 		WorldGen.destroyObject = true;
+ 		for (int k = num; k < num + 3; k++) {
+ 			for (int l = num2; l < num2 + 4; l++) {
+@@ -157,6 +_,9 @@
+ 
+ 	public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0)
+ 	{
++		if (PylonLoader.PreCanPlacePylon(x, y, type, GetPylonTypeFromPylonTileStyle(style)) is bool value)
++			return value ? 0 : 1;
++
+ 		TeleportPylonType pylonTypeFromPylonTileStyle = GetPylonTypeFromPylonTileStyle(style);
+ 		if (Main.PylonSystem.HasPylonOfType(pylonTypeFromPylonTileStyle))
+ 			return 1;

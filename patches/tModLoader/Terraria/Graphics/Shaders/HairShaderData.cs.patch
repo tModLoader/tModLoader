@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/HairShaderData.cs
++++ src/tModLoader/Terraria/Graphics/Shaders/HairShaderData.cs
+@@ -70,6 +_,12 @@
+ 		return this;
+ 	}
+ 
++	public HairShaderData UseImage(Asset<Texture2D> asset)
++	{
++		_uImage = asset;
++		return this;
++	}
++
+ 	public HairShaderData UseOpacity(float alpha)
+ 	{
+ 		_uOpacity = alpha;

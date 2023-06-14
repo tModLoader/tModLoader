@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common.Systems;
+using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -18,17 +19,14 @@ namespace ExampleMod.Content.Biomes
 		// Select Music
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
 
+		public override int BiomeTorchItemType => ModContent.ItemType<ExampleTorch>();
+		public override int BiomeCampfireItemType => ModContent.ItemType<ExampleCampfire>();
+
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
-
-		// Use SetStaticDefaults to assign the display name
-		public override void SetStaticDefaults() {
-			// This translation is set in localization files
-			// DisplayName.SetDefault("Example Surface");
-		}
 
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player) {
