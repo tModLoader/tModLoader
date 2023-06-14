@@ -610,6 +610,11 @@ internal static class ModOrganizer
 		return versions;
 	}
 
+	/// <summary>
+	/// Must Be called AFTER the new files are added to the publishing repo.
+	/// Assumes one .tmod per YYYY.XX folder in the publishing repo
+	/// </summary>
+	/// <param name="repo"></param>
 	internal static void CleanupOldPublish(string repo)
 	{
 		if (BuildInfo.IsPreview)
@@ -625,30 +630,31 @@ internal static class ModOrganizer
 
 		// Get the list of all tMod files on Workshop
 		List<(string file, Version tModVersion, bool isFolder)> information = new();
-		for (int i = 0; i < tmods.Length; i++) {
-			var filename = tmods[i];
-
+		foreach (var filename in tmods) {
 			var match = PublishFolderMetadata.Match(filename);
 			if (match.Success) {
-				information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), true));
+				information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), isFolder: true));
 			}
 			else {
-				information.Add((filename, new Version(0,12), false));
+				// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
+				// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
+				information.Add((filename, new Version(0, 12), isFolder: false));
 			}
 		}
 
-		string[] versions = { "1.4.3", "1.4.4" };
-		int[] keepCount = { 1, 3 };
+		(string browserVersion, int keepCount)[] keepRequirements =
+			{ ("1.4.3", 1), ("1.4.4", 3) };
 
-		for (int j = 0; j < versions.Length; j++) {
+		foreach (var requirement in keepRequirements) {
 			// Get an ordered list for the particular version
-			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == versions[j]).OrderByDescending(t => t.tModVersion).ToArray();
+			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
+				.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
 
-			for (int i = keepCount[j]; i < mods.Count(); i++) {
-				if (mods[i].isFolder)
-					Directory.Delete(mods[i].file, true);
+			foreach (var item in mods) {
+				if (item.isFolder)
+					Directory.Delete(item.file, recursive:true);
 				else
-					File.Delete(mods[i].file);
+					File.Delete(item.file);
 			}
 		}
 	}
