@@ -510,6 +510,8 @@ namespace Terraria.ModLoader.Core
 		private static readonly Regex PublishFolderMetadata = new Regex(@"[/|\\]([0-9]{4}[.][0-9]{1,2})[/|\\]");
 
 		internal static string GetActiveTmodInRepo(string repo) {
+			// TODO: This logic is incorrect. I think sometimes we want to know every mod, and othertimes we want to know every mod with a version we can load.
+			// The tmods.Length == 1 check and the logic below contradict each other, sometimes returning null when no loadable mods and othertimes returning a mod path.
 			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 			if (tmods.Length == 1)

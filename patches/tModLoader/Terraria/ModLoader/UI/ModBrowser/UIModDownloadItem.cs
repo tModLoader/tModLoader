@@ -84,18 +84,22 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var modBuildVersion = new Version(ModDownload.ModloaderVersion.Replace("tModLoader v",""));
 			if (!BuildInfo.IsDev && BuildInfo.tMLVersion < modBuildVersion) {
 				string updateVersion = $"v{modBuildVersion}";
+				string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
 				bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
 				if (BuildInfo.IsStable && new Version(modBuildVersion.Major, modBuildVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
 					updateVersion = $"Preview {updateVersion}";
+				if (ModOrganizer.GetBrowserVersionNumber(modBuildVersion) == "1.4.4") { 
+					updateVersion = $"1.4.4 tModLoader";
+					updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+				}
 
-				// TODO: Rework this.
 				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
 				tMLUpdateRequired.CopyStyle(_moreInfoButton);
-				tMLUpdateRequired.Width.Pixels = 340;
+				tMLUpdateRequired.Width.Pixels = 280;
 				tMLUpdateRequired.Left.Pixels += 36 + PADDING;
 				tMLUpdateRequired.OnClick += (a, b) => {
-					Utils.OpenToURL("https://github.com/tModLoader/tModLoader/releases/latest");
+					Utils.OpenToURL(updateURL);
 				};
 				Append(tMLUpdateRequired);
 			}
