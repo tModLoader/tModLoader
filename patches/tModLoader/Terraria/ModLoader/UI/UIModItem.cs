@@ -223,8 +223,8 @@ namespace Terraria.ModLoader.UI
 
 			if (ModOrganizer.modsReadyFor144.Contains(_mod.Name)) {
 				bottomRightRowOffset -= 26;
-				Main.instance.LoadItem(ItemID.ManaCrystal);
-				readyFor144Icon = new UIImage(TextureAssets.Item[ItemID.ManaCrystal]) {
+				Main.instance.LoadProjectile(ProjectileID.FallingStar);
+				readyFor144Icon = new UIImage(TextureAssets.Projectile[ProjectileID.FallingStar]) {
 					//ImageScale = 1.3f,
 					//Width = { Pixels = 36 },
 					//Height = { Pixels = 36 },
