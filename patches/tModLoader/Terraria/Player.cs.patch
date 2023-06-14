@@ -285,7 +285,7 @@
  	public bool[] buffImmune = new bool[BuffID.Count];
  	public int heldProj = -1;
  	public int breathCD;
-@@ -813,6 +_,10 @@
+@@ -813,7 +_,16 @@
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;
@@ -294,8 +294,14 @@
 +	/// The text that is shown on armor (<see cref="Item.wornArmor"/>) with an active set bonus.
 +	/// </summary>
  	public string setBonus = "";
++	/// <summary>
++	/// The players normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventory, 50-53 are coin slots, 54-57 are ammo slots. Index 58 is used to store the mouse item in some situations.<br/>
++	/// Additional inventories are found in <see cref="bank"/> (Piggy Bank), <see cref="bank2"/> (Safe), <see cref="bank3"/> (Defender's Forge), and <see cref="bank4"/> (Void Vault).
++	/// For armor and accessories, see <see cref="armor"/> and <see cref="dye"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/>
++	/// </summary>
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
+ 	public Item lastVisualizedSelectedItem;
 @@ -836,6 +_,9 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
@@ -639,7 +645,7 @@
  	public bool noFallDmg;
  	public int swimTime;
  	public bool killGuide;
-@@ -1397,6 +_,10 @@
+@@ -1397,11 +_,20 @@
  	public int forcedGravity;
  	public bool gravControl;
  	public bool gravControl2;
@@ -650,6 +656,16 @@
  	public Item honeyCombItem;
  	public int wireOperationsCooldown;
  	public int lastChest;
+ 	public TrackedProjectileReference piggyBankProjTracker;
+ 	public TrackedProjectileReference voidLensChest;
++	/// <summary>
++	/// Represents the chest the player currently has open. If -1, the player has no chest open.<br/>
++	/// Positive values indicate the index of the chest in <see cref="Main.chest"/> the player currently has open.<br/>
++	/// Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5)
++	/// </summary>
+ 	public int chest = -1;
+ 	public int chestX;
+ 	public int chestY;
 @@ -1458,6 +_,12 @@
  	public int cMinion;
  	public int cLeinShampoo;
