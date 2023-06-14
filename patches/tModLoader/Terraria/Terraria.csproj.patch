@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,26 +_,27 @@
+@@ -7,26 +_,28 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2022 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -21,6 +21,7 @@
 -    <AssemblyName>$(AssemblyName)Release</AssemblyName>
 +  <PropertyGroup>
 +    <tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
++    <StableVersion Condition="'$(stableVersion)' == ''">0.0</StableVersion>
 +    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
 +    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
 +    <BranchName>$(BranchName.Replace("|","-"))</BranchName>
