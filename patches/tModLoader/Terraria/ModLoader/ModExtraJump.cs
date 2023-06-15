@@ -6,7 +6,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// <see cref="ModExtraJump"/> is a singleton type used to facilitate the logic for extra midair jumps
 /// </summary>
-public abstract class ModExtraJump : ModType
+public abstract partial class ModExtraJump : ModType
 {
 	public static ModExtraJump GoatMount { get; private set; } = new GoatMountJump();
 
@@ -43,6 +43,12 @@ public abstract class ModExtraJump : ModType
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
+
+	/// <summary>
+	/// Return which extra jumps this extra jump should be placed between in the priority order here
+	/// </summary>
+	/// <param name="player">The player performing the jumps</param>
+	public abstract Between GetOrder(Player player);
 
 	internal void PerformJump(Player player) {
 		// Set velocity and jump duration

@@ -7,8 +7,17 @@ using Terraria.ID;
 namespace Terraria.ModLoader;
 
 [Autoload(false)]
-public class GoatMountJump : ModExtraJump
+public abstract class VanillaExtraJump : ModExtraJump
 {
+	public override Between GetOrder(Player player)
+		=> new Between(Type == 0 ? null : ExtraJumpLoader.ExtraJumps[Type - 1],
+			Type == ExtraJumpLoader.DefaultExtraJumpCount - 1 ? null : ExtraJumpLoader.ExtraJumps[Type + 1]);
+}
+
+public class GoatMountJump : VanillaExtraJump
+{
+	public override Between GetOrder(Player player) => throw new NotImplementedException();
+
 	public override float GetJumpDuration(Player player) => 2f;
 
 	public override void OnJumpStarted(Player player, ref bool playSound)
@@ -38,8 +47,7 @@ public class GoatMountJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class BasiliskMountJump : ModExtraJump
+public class BasiliskMountJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 0.75f;
 
@@ -70,8 +78,7 @@ public class BasiliskMountJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class SantankMountJump : ModExtraJump
+public class SantankMountJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 2f;
 
@@ -122,8 +129,7 @@ public class SantankMountJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class UnicornMountJump : ModExtraJump
+public class UnicornMountJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 2f;
 
@@ -167,8 +173,7 @@ public class UnicornMountJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class SandstormInABottleJump : ModExtraJump
+public class SandstormInABottleJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 3f;
 
@@ -203,8 +208,7 @@ public class SandstormInABottleJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class BlizzardInABottleJump : ModExtraJump
+public class BlizzardInABottleJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 1.5f;
 
@@ -256,8 +260,7 @@ public class BlizzardInABottleJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class FartInAJarJump : ModExtraJump
+public class FartInAJarJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 2f;
 
@@ -309,8 +312,7 @@ public class FartInAJarJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class TsunamiInABottleJump : ModExtraJump
+public class TsunamiInABottleJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 1.25f;
 
@@ -371,8 +373,7 @@ public class TsunamiInABottleJump : ModExtraJump
 	}
 }
 
-[Autoload(false)]
-public class CloudInABottleJump : ModExtraJump
+public class CloudInABottleJump : VanillaExtraJump
 {
 	public override bool IgnoresSwimmingChecks => true;
 

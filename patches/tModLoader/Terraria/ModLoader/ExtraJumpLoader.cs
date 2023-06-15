@@ -24,6 +24,10 @@ public static class ExtraJumpLoader
 
 	internal static readonly int DefaultExtraJumpCount = ExtraJumps.Count;
 
+	public static readonly ModExtraJump FirstVanillaExtraJump = ExtraJumps[0];
+
+	public static readonly ModExtraJump LastVanillaExtraJump = ExtraJumps[^1];
+
 	internal static IEnumerable<ModExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
 
 	static ExtraJumpLoader()
@@ -105,7 +109,12 @@ public static class ExtraJumpLoader
 
 	private static IEnumerable<ModExtraJump> GetOrderedJumps(Player player)
 	{
-		// TODO: ordered collection, simply using ExtraJumps here for laziness
-		return ExtraJumps;
+		var positions = ExtraJumps.ToDictionary(static j => j, j => j.GetOrder(player));
+
+		var sort = new TopoSort<ModExtraJump>(positions.Keys,
+			j => new[] { positions[j].Before }.Where(static j => j != null),
+			j => new[] { positions[j].After }.Where(static j => j != null));
+
+		return sort.Sort();
 	}
 }
