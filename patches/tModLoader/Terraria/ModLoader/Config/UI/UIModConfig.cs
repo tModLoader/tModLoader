@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -15,142 +14,118 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
-using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
 // TODO: Revert individual button.
 // TODO: Collapse All button, or default to collapsed?
-// TODO: Localization support
 internal class UIModConfig : UIState
 {
 	public int UpdateCount { get; set; }
 
+	public static string Tooltip { get; set; }
+	private static bool pendingRevertDefaults;
+
 	private UIElement uIElement;
-	private UITextPanel<string> headerTextPanel;
-	private UITextPanel<string> message;
-	private UITextPanel<string> previousConfigButton;
-	private UITextPanel<string> nextConfigButton;
-	private UITextPanel<string> saveConfigButton;
-	private UITextPanel<string> backButton;
-	private UITextPanel<string> revertConfigButton;
-	private UITextPanel<string> restoreDefaultsConfigButton;
 	private UIPanel uIPanel;
-	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
 	private UIList mainConfigList;
 	private UIScrollbar uIScrollbar;
+	private UIFocusInputTextField filterTextField;
+	private UITextPanel<LocalizedText> headerTextPanel;
+	private UIAutoScaleTextTextPanel<LocalizedText> saveConfigButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> backButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> revertConfigButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> restoreDefaultsConfigButton;
+	private UITextPanel<string> notificationModal;
+
+	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
 	private readonly Stack<UIPanel> configPanelStack = new();
 	private readonly Stack<string> subPageStack = new();
-	//private UIList currentConfigList;
+	
 	private Mod mod;
 	private List<ModConfig> modConfigs;
 	private ModConfig modConfig; // This is from ConfigManager.Configs
-	internal ModConfig pendingConfig; // the clone we modify.
+	internal ModConfig pendingConfig; // The clone we modify.
 	private bool updateNeeded;
-	private UIFocusInputTextField filterTextField;
 	private bool openedFromConfigList = false;
+	private bool pendingChanges;
+	private bool pendingChangesUIUpdate;
+	private bool netUpdate;
 
-	// TODO: panel sizing, search bar, and modal for notification and remove next and previous config buttons
+	// TODO: panel sizing, search bar, and modal for notification and remove next and previous config buttons, localization
 	public override void OnInitialize()
 	{
-		uIElement = new UIElement();
-		uIElement.Width.Set(0f, 0.8f);
-		uIElement.MaxWidth.Set(800f, 0f);
-		uIElement.Top.Set(110f, 0f);
-		uIElement.Height.Set(-110f, 1f);
-		uIElement.HAlign = 0.5f;
+		uIElement = new UIElement {
+			Width = { Percent = 0.8f },
+			MaxWidth = UICommon.MaxPanelWidth,
+			Top = { Pixels = 220 },
+			Height = { Pixels = -220, Percent = 1f },
+			HAlign = 0.5f,
+		};
+		Append(uIElement);
 
-		uIPanel = new UIPanel();
-		uIPanel.Width.Set(0f, 1f);
-		uIPanel.Height.Set(-110f, 1f);
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
+		uIPanel = new UIPanel {
+			Width = { Percent = 1f },
+			Height = { Pixels = -65, Percent = 1f },
+			BackgroundColor = UICommon.MainPanelBackground,
+		};
 		uIElement.Append(uIPanel);
 
-		UIPanel textBoxBackground = new UIPanel();
-		textBoxBackground.SetPadding(0);
-		filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions"));//"Filter Options"
-		textBoxBackground.Width.Set(0f, 1f);
-		textBoxBackground.Height.Set(30f, 0f);
-		textBoxBackground.Top.Set(20f, 0f);
-		uIPanel.Append(textBoxBackground);
+		headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
+			HAlign = 0.5f,
+			Top = { Pixels = -35 },
+			BackgroundColor = UICommon.DefaultUIBlue,
+		}.WithPadding(15f);
+		uIElement.Append(headerTextPanel);
 
+		float searchBarTop = 5;
+		UIPanel textBoxBackground = new UIPanel {
+			Width = { Pixels = 200 },
+			Height = { Pixels = 30 },
+			Top = { Pixels = searchBarTop },
+			HAlign = 1f,
+		}.WithPadding(0f);
+		uIPanel.Append(textBoxBackground);
+		configPanelStack.Push(uIPanel);
+
+		filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions")) {// TODO: localize
+			Top = { Pixels = 5 },
+			Left = { Pixels = 10 },
+			Width = { Pixels = -20, Percent = 1f },
+			Height = { Pixels = 20 },
+		};
+		filterTextField.OnTextChange += (a, b) => updateNeeded = true;
+		filterTextField.OnRightClick += (a, b) => filterTextField.SetText("");
 		filterTextField.SetText("");
-		filterTextField.Top.Set(5, 0f);
-		filterTextField.Left.Set(10, 0f);
-		filterTextField.Width.Set(-20, 1f);
-		filterTextField.Height.Set(20, 0);
-		filterTextField.OnTextChange += (a, b) => {
-			updateNeeded = true;
-		};
-		filterTextField.OnRightClick += (a, b) => {
-			filterTextField.SetText("");
-		};
 		textBoxBackground.Append(filterTextField);
 
-		// TODO: ModConfig Localization support
-		message = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigNotification"));//"Notification: "
-		message.Width.Set(-80f, 1f);
-		message.Height.Set(20f, 0f);
-		message.HAlign = 0.5f;
-		message.VAlign = 1f;
-		message.Top.Set(-65f, 0f);
-		uIElement.Append(message);
+		// TODO: Better notification - tModLoader.ModConfigNotification
 
-		mainConfigList = new UIList();
-		mainConfigList.Width.Set(-25f, 1f);
-		mainConfigList.Height.Set(-62f, 1f);
-		mainConfigList.Top.Set(62f, 0f);
-		mainConfigList.ListPadding = 5f;
+		float listTop = 50;
+		mainConfigList = new UIList {
+			Width = { Pixels = -25, Percent = 1f },
+			Height = { Pixels = -listTop, Percent = 1f},
+			Top = { Pixels = listTop },
+			ListPadding = 5f,
+		};
 		uIPanel.Append(mainConfigList);
-		configPanelStack.Push(uIPanel);
-		//currentConfigList = mainConfigList;
 
-		uIScrollbar = new UIScrollbar();
-		uIScrollbar.Top.Set(62f, 0f);
+		uIScrollbar = new UIScrollbar {
+			Top = { Pixels = listTop },
+			Height = { Pixels = -listTop, Percent = 1f },
+			HAlign = 1f,
+		};
 		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(-62f, 1f);
-		uIScrollbar.HAlign = 1f;
-		uIPanel.Append(uIScrollbar);
 		mainConfigList.SetScrollbar(uIScrollbar);
+		uIPanel.Append(uIScrollbar);
 
-		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true);//"Mod Config"
-		headerTextPanel.HAlign = 0.5f;
-		headerTextPanel.Top.Set(-35f, 0f);
-		headerTextPanel.SetPadding(15f);
-		headerTextPanel.BackgroundColor = UICommon.DefaultUIBlue;
-		uIPanel.Append(headerTextPanel);
-
-		previousConfigButton = new UITextPanel<string>("<", 1f, false);
-		previousConfigButton.Width.Set(25f, 0);
-		previousConfigButton.Height.Set(25f, 0f);
-		previousConfigButton.VAlign = 1f;
-		previousConfigButton.Top.Set(-65f, 0f);
-		previousConfigButton.HAlign = 0f;
-		previousConfigButton.WithFadedMouseOver();
-		previousConfigButton.OnLeftClick += PreviousConfig;
-		//uIElement.Append(previousConfigButton);
-
-		nextConfigButton = new UITextPanel<string>(">", 1f, false);
-		nextConfigButton.CopyStyle(previousConfigButton);
-		nextConfigButton.WithFadedMouseOver();
-		nextConfigButton.HAlign = 1f;
-		nextConfigButton.OnLeftClick += NextConfig;
-		//uIElement.Append(nextConfigButton);
-
-		saveConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
-		saveConfigButton.Width.Set(-10f, 1f / 4f);
-		saveConfigButton.Height.Set(25f, 0f);
-		saveConfigButton.Top.Set(-20f, 0f);
-		saveConfigButton.WithFadedMouseOver();
-		saveConfigButton.HAlign = 0.33f;
-		saveConfigButton.VAlign = 1f;
-		saveConfigButton.OnLeftClick += SaveConfig;
-		//uIElement.Append(saveConfigButton);
-
-		backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack"), 1f, false);//"Back"
-		backButton.CopyStyle(saveConfigButton);
-		backButton.HAlign = 0;
-		backButton.WithFadedMouseOver();
+		backButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigBack")) {
+			Width = { Pixels = -10, Percent = 0.25f },
+			Height = { Pixels = 40 },
+			Top = { Pixels = -20 },
+			HAlign = 0 / 3f,
+			VAlign = 1f,
+		}.WithFadedMouseOver();
 		backButton.OnMouseOver += (a, b) => {
 			if (pendingChanges)
 				backButton.BackgroundColor = Color.Red;
@@ -162,24 +137,35 @@ internal class UIModConfig : UIState
 		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
 
-		revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
-		revertConfigButton.CopyStyle(saveConfigButton);
-		revertConfigButton.WithFadedMouseOver();
-		revertConfigButton.HAlign = 0.66f;
-		revertConfigButton.OnLeftClick += RevertConfig;
-		//uIElement.Append(revertConfigButton);
+		saveConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigSaveConfig"));
+		saveConfigButton.CopyStyle(backButton);
+		saveConfigButton.WithFadedMouseOver();
+		saveConfigButton.HAlign = 1 / 3f;
+		saveConfigButton.OnLeftClick += SaveConfig;
+		// Don't append
 
-		//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
-		restoreDefaultsConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRestoreDefaults"), 1f, false);//"Restore Defaults"
-		restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
+		revertConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigRevertChanges"));
+		revertConfigButton.CopyStyle(backButton);
+		revertConfigButton.WithFadedMouseOver();
+		revertConfigButton.HAlign = 2 / 3f;
+		revertConfigButton.OnLeftClick += RevertConfig;
+		// Don't append
+
+		restoreDefaultsConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigRestoreDefaults"));
+		restoreDefaultsConfigButton.CopyStyle(backButton);
 		restoreDefaultsConfigButton.WithFadedMouseOver();
-		restoreDefaultsConfigButton.HAlign = 1f;
+		restoreDefaultsConfigButton.HAlign = 3 / 3f;
 		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
 		uIElement.Append(restoreDefaultsConfigButton);
 
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-
-		Append(uIElement);
+		// TODO - better mesage
+		notificationModal = new UITextPanel<string>("") {
+			MinWidth = { Pixels = 400f },
+			MinHeight = { Pixels = 200f },
+			HAlign = 0.5f,
+			VAlign = 0.5f,
+		};
+		// Don't append
 	}
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -207,34 +193,7 @@ internal class UIModConfig : UIState
 			uIElement.RemoveChild(configPanelStack.Pop());
 	}
 
-	// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
-	private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		//DiscardChanges();
-
-		int index = modConfigs.IndexOf(modConfig);
-		modConfig = modConfigs[index - 1 < 0 ? modConfigs.Count - 1 : index - 1];
-
-		//modConfigClone = modConfig.Clone();
-
-		DoMenuModeState();
-	}
-
-	private void NextConfig(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		//DiscardChanges();
-
-		int index = modConfigs.IndexOf(modConfig);
-		modConfig = modConfigs[index + 1 > modConfigs.Count ? 0 : index + 1];
-
-		//modConfigClone = modConfig.Clone();
-
-		DoMenuModeState();
-	}
-
-	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
+	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults
 	private void DoMenuModeState()
 	{
 		if (Main.gameMenu) {
@@ -323,9 +282,7 @@ internal class UIModConfig : UIState
 		DoMenuModeState();
 	}
 
-	private bool pendingChanges;
-	private bool pendingChangesUIUpdate;
-
+	// TODO: make this set pending changes based on whether elements were changed rather than interacted with
 	public void SetPendingChanges(bool changes = true)
 	{
 		pendingChangesUIUpdate |= changes;
@@ -334,22 +291,20 @@ internal class UIModConfig : UIState
 
 	public void SetMessage(string text, Color color)
 	{
-		message.TextScale = 1f;
-		message.SetText(Language.GetText("tModLoader.ModConfigNotification") + text);
-		float width = FontAssets.MouseText.Value.MeasureString(text).X;
-		if (width > 400) {
-			message.TextScale = 400 / width;
-			message.Recalculate();
+		if (string.IsNullOrEmpty(text)) {
+			RemoveChild(notificationModal);
+			notificationModal.SetText("");
+			notificationModal.TextColor = Color.White;
+			return;
 		}
-		message.TextColor = color;
-	}
 
-	private bool netUpdate;
+		Append(notificationModal);
+		notificationModal.SetText(text);
+		notificationModal.TextColor = color;
+	}
 
 	public override void Update(GameTime gameTime)
 	{
-		base.Update(gameTime);
-
 		UpdateCount++;
 
 		if (pendingChangesUIUpdate) {
@@ -363,6 +318,14 @@ internal class UIModConfig : UIState
 			DoMenuModeState();
 			netUpdate = false;
 		}
+
+		base.Update(gameTime);
+
+		if (revertConfigButton.IsMouseHovering)
+			Main.instance.MouseText(Language.GetTextValue("tModLoader.ModConfigRevertChangesHover"));
+
+		if (restoreDefaultsConfigButton.IsMouseHovering)
+			Main.instance.MouseText(Language.GetTextValue("tModLoader.ModConfigRestoreDefaultsHover"));
 
 		if (!updateNeeded)
 			return;
@@ -380,8 +343,6 @@ internal class UIModConfig : UIState
 
 		Recalculate();
 	}
-
-	public static string Tooltip { get; set; }
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
@@ -423,19 +384,13 @@ internal class UIModConfig : UIState
 		}
 	}
 
-	private static bool pendingRevertDefaults;
-
 	public override void OnActivate()
 	{
 		filterTextField.SetText("");
-
+		SetMessage("", Color.White);
 		updateNeeded = false;
 
-		SetMessage("", Color.White);
-
-		string configDisplayName = modConfig.DisplayName.Value;
-
-		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + " " + configDisplayName);
+		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// TODO: Hacky, but works, use WithFormatArgs
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		pendingChanges = pendingRevertDefaults;
 
@@ -445,24 +400,14 @@ internal class UIModConfig : UIState
 			pendingChangesUIUpdate = true;
 		}
 
-		int index = modConfigs.IndexOf(modConfig);
-		int count = modConfigs.Count;
-		//pendingChanges = false;
-
 		backButton.BackgroundColor = UICommon.DefaultUIBlueMouseOver;
 		uIElement.RemoveChild(saveConfigButton);
 		uIElement.RemoveChild(revertConfigButton);
-		uIElement.RemoveChild(previousConfigButton);
-		uIElement.RemoveChild(nextConfigButton);
-
-		if (index + 1 < count)
-			uIElement.Append(nextConfigButton);
-
-		if (index - 1 >= 0)
-			uIElement.Append(previousConfigButton);
-
 		uIElement.RemoveChild(configPanelStack.Peek());
 		uIElement.Append(uIPanel);
+		uIElement.RemoveChild(headerTextPanel);
+		uIElement.Append(headerTextPanel);
+
 		mainConfigItems.Clear();
 		mainConfigList.Clear();
 		configPanelStack.Clear();
@@ -798,10 +743,4 @@ internal class UIModConfig : UIState
 		Interface.modConfig.uIElement.Append(separateListPanel);
 		Interface.modConfig.configPanelStack.Push(separateListPanel);
 	}
-
-	//public override void Recalculate()
-	//{
-	//	base.Recalculate();
-	//	mainConfigList?.Recalculate();
-	//}
 }

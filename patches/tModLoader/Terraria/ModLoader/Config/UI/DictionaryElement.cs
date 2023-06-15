@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -122,7 +123,7 @@ internal class DictionaryElement : CollectionElement
 			((IDictionary)Data).Add(keyValue, CreateCollectionElementInstance(valueType));
 		}
 		catch (Exception e) {
-			Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
+			Interface.modConfig.SetMessage(Language.GetText("ModConfigError").Format(e.Message), Color.Red);// TODO: exception message isn't localized
 		}
 	}
 

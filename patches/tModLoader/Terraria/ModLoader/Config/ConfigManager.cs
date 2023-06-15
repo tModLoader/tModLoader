@@ -295,9 +295,12 @@ public static class ConfigManager
 				activeConfig.OnChanged();
 
 				Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(Interface.modConfig);
-					Interface.modConfig.SetMessage("Server response: " + message, Color.Green);
+				string messageText = Language.GetText("tModLoader.ModConfigServerResponse").Format(Language.GetTextValue(message));
+				if (Main.InGameUI.CurrentState == Interface.modConfig || Main.MenuUI.CurrentState == Interface.modConfig) {
+					Interface.modConfig.SetMessage(messageText, Color.Green);
+				}
+				else {
+					Main.NewText(messageText);
 				}
 			}
 			else {
@@ -306,7 +309,7 @@ public static class ConfigManager
 
 				Main.NewText("Changes Rejected: " + message);
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage("Server rejected changes: " + message, Color.Red);
+					Interface.modConfig.SetMessage(Language.GetTextValue("Server rejected changes: " + message), Color.Red);// TODO - localize
 					//Main.InGameUI.SetState(Interface.modConfig);
 				}
 
@@ -325,10 +328,10 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			string message = "Accepted";
+			string message = "tModLoader.ModConfigAccepted";// Send key in case client and server have different languages instead of value
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = "Can't save because changes would require a reload.";
+				message = "tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload";
 			}
 			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
 				success = false;

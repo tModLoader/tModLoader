@@ -1,4 +1,5 @@
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -17,87 +18,83 @@ internal class UIModConfigList : UIState
 
 	public Mod selectedMod;
 
-	// TODO panel sizing
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement {
-			Width = { Pixels = 0f, Percent = 0.8f },
-			MaxWidth = { Pixels = 800f, Percent = 0f },
-			Top = { Pixels = 110f, Percent = 0f },
-			Height = { Pixels = -110f, Percent = 1f },
-			HAlign = 0.5f
+			Width = { Percent = 0.8f },
+			MaxWidth = UICommon.MaxPanelWidth,
+			Top = { Pixels = 220 },
+			Height = { Pixels = -220, Percent = 1f },
+			HAlign = 0.5f,
 		};
 		Append(uIElement);
 
 		uIPanel = new UIPanel {
-			Width = { Pixels = 0f, Percent = 1f },
-			Height = { Pixels = -110f, Percent = 1f },
-			BackgroundColor = UICommon.MainPanelBackground
+			Width = { Percent = 1f },
+			Height = { Pixels = -110, Percent = 1f },
+			BackgroundColor = UICommon.MainPanelBackground,
 		};
 		uIElement.Append(uIPanel);
 
+		var uIHeaderTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfiguration"), 0.8f, true) {
+			HAlign = 0.5f,
+			Top = { Pixels = -35f },
+			BackgroundColor = UICommon.DefaultUIBlue,
+		}.WithPadding(15f);
+		uIElement.Append(uIHeaderTextPanel);
+
+		// TODO: add headers to the panels
 		var modListPanel = new UIPanel {
 			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
-			Height = { Pixels = 0f, Percent = 1f },
-			HAlign = 0f
+			Height = { Percent = 1f },
 		};
 		uIPanel.Append(modListPanel);
 
 		var configListPanel = new UIPanel {
 			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
-			Height = { Pixels = 0f, Percent = 1f },
-			HAlign = 1f
+			Height = { Percent = 1f },
+			HAlign = 1f,
 		};
 		uIPanel.Append(configListPanel);
 
 		modList = new UIList {
-			Width = { Pixels = -25f, Percent = 1f },
-			Height = { Pixels = 0f, Percent = 1f },
+			Width = { Pixels = -25, Percent = 1f },
+			Height = { Percent = 1f },
 			ListPadding = 5f,
-			HAlign = 1f
+			HAlign = 1f,
 		};
 		modListPanel.Append(modList);
 
 		configList = new UIList {
 			Width = { Pixels = -25f, Percent = 1f },
-			Height = { Pixels = 0f, Percent = 1f },
+			Height = { Percent = 1f },
 			ListPadding = 5f,
-			HAlign = 0f
+			HAlign = 0f,
 		};
 		configListPanel.Append(configList);
 
-		UIScrollbar modListScrollbar = new UIScrollbar {
-			Height = { Pixels = 0f, Percent = 1f },
-			HAlign = 0f
+		var modListScrollbar = new UIScrollbar {
+			Height = { Percent = 1f },
 		};
 		modListScrollbar.SetView(100f, 1000f);
 		modList.SetScrollbar(modListScrollbar);
 		modListPanel.Append(modListScrollbar);
 
-		UIScrollbar configListScrollbar = new UIScrollbar {
-			Height = { Pixels = 0f, Percent = 1f },
-			HAlign = 1f
+		var configListScrollbar = new UIScrollbar {
+			Height = { Percent = 1f },
+			HAlign = 1f,
 		};
 		configListScrollbar.SetView(100f, 1000f);
 		configList.SetScrollbar(configListScrollbar);
 		configListPanel.Append(configListScrollbar);
 
-		UITextPanel<LocalizedText> uIHeaderTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfiguration"), 0.8f, true) {
-			Top = { Pixels = -35f, Percent = 0f },
-			BackgroundColor = UICommon.DefaultUIBlue,
-			HAlign = 0.5f
-		};
-		uIHeaderTextPanel.SetPadding(15f);
-		uIElement.Append(uIHeaderTextPanel);
-
 		buttonBack = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true) {
 			Width = { Pixels = -10f, Percent = 0.5f },
-			Height = { Pixels = 50f, Percent = 0f },
-			Top = { Pixels = -45f, Percent = 0f },
+			Height = { Pixels = 50f },
+			Top = { Pixels = -45f },
 			VAlign = 1f,
-			HAlign = 0.5f
-		};
-		buttonBack.WithFadedMouseOver();
+			HAlign = 0.5f,
+		}.WithFadedMouseOver();
 		buttonBack.OnLeftClick += BackClick;
 		uIElement.Append(buttonBack);
 	}
@@ -130,22 +127,24 @@ internal class UIModConfigList : UIState
 		PopulateMods();
 	}
 
-	// TODO improve
 	internal void PopulateMods()
 	{
 		modList?.Clear();
 
 		foreach (var mod in ModLoader.Mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
-				string modName = mod.DisplayName;
-
-				var modPanel = new UITextPanel<string>(modName) {
+				var modPanel = new UITextPanel<string>(mod.DisplayName) {
 					HAlign = 0.5f
 				};
-				modPanel.WithFadedMouseOver();
+				modPanel.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+				};
+				modPanel.OnUpdate += delegate (UIElement affectedElement) {
+					modPanel.BackgroundColor = selectedMod == mod ? UICommon.DefaultUIBlue : UICommon.DefaultUIBlueMouseOver;
+					modPanel.BorderColor = modPanel.IsMouseHovering ? UICommon.DefaultUIBorderMouseOver : UICommon.DefaultUIBorder;
+				};
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
-					// TODO: selected indicator
 					selectedMod = mod;
 					PopulateConfigs();
 				};
@@ -155,7 +154,6 @@ internal class UIModConfigList : UIState
 		}
 	}
 
-	// TODO improve
 	internal void PopulateConfigs()
 	{
 		configList?.Clear();
@@ -165,14 +163,13 @@ internal class UIModConfigList : UIState
 		}
 
 		foreach (var config in configs) {
-			var configPanel = new UITextPanel<string>(config.DisplayName.Value) {
-				HAlign = 0.5f
+			var configPanel = new UITextPanel<LocalizedText>(config.DisplayName) {
+				HAlign = 0.5f,
 			};
 			configPanel.WithFadedMouseOver();
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 
-				// TODO: add server side indicator
 				Interface.modConfig.SetMod(selectedMod, config, true);
 				if (Main.gameMenu) {
 					Main.menuMode = Interface.modConfigID;
@@ -181,6 +178,18 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 				}
 			};
+
+			// TODO: add server side indicator
+			var sideIndicator = new UIImage(TextureAssets.Item[5000]) {
+				HAlign = 1f,
+				VAlign = 0.5f,
+			};
+			sideIndicator.OnUpdate += delegate(UIElement affectedElement) {
+				if (sideIndicator.IsMouseHovering) {
+					Main.instance.MouseText("EEEE");
+				}
+			};
+			configPanel.Append(sideIndicator);
 
 			configList.Add(configPanel);
 		}
