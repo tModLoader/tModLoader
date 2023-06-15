@@ -77,7 +77,7 @@ public static class ExtraJumpLoader
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 
 			// The Cloud in a Bottle's extra jump ignores the "flipper swimming" check
-			// "IgnoresSqwimmingChecks" allows modders to mimic this behavior
+			// "IgnoresSwimmingChecks" allows modders to mimic this behavior
 			if ((jump.IgnoresSwimmingChecks || !flipperOrSlimeMountSwimming) && data.JumpAvailable) {
 				data.JumpAvailable = false;
 				data.PerformingJump = true;
