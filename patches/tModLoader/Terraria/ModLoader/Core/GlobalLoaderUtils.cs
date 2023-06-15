@@ -86,7 +86,7 @@ public static class GlobalLoaderUtils<TGlobal, TEntity> where TGlobal : GlobalTy
 		// set defaults
 		foreach (var g in Globals) {
 			if (instTimes[g.StaticIndex] == InstantiationTime.Pass1)
-				(g.PerEntityIndex >= 0 ? entityGlobals[g.PerEntityIndex] : g).SetDefaults(entity);
+				(g.PerEntityIndex >= 0 ? entityGlobals[g.PerEntityIndex] : g)?.SetDefaults(entity);
 		}
 
 		// pass 2
@@ -103,7 +103,7 @@ public static class GlobalLoaderUtils<TGlobal, TEntity> where TGlobal : GlobalTy
 		// set defaults
 		foreach (var g in Globals) {
 			if (instTimes[g.StaticIndex] == InstantiationTime.Pass2)
-				(g.PerEntityIndex >= 0 ? entityGlobals[g.PerEntityIndex] : g).SetDefaults(entity);
+				(g.PerEntityIndex >= 0 ? entityGlobals[g.PerEntityIndex] : g)?.SetDefaults(entity);
 		}
 	}
 
