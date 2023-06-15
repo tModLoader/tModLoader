@@ -24,34 +24,32 @@ namespace ExampleMod.Content.NPCs
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
 			// So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
-			// 1: if the npc is on the left side of the world then spawn 3 skeletons and 30 exampleitems
+			// 1: if the npc is on the left side of the world then spawn 3 skeletons and 30 exampleitems, then shoot bullets from each skeleton
 			// 2: if Plantera has been defeated then spawn 10 example items
 			// 3: if an early game boss has been defeated then spawn the bride
 			// 4: if all other conditions fail, transform into a skeleton
 
-			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method and is slightly different from the next items
-
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
-			ShimmerResult[] shimmerResultsCustomCheck = new ShimmerResult[] {
-				new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 30),
-				new ShimmerResult(ShimmerResultType.NPC, NPCID.Skeleton, 3),
-			};
-
-			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new ExampleCustomTransformationLogic(NPC.type, shimmerResultsCustomCheck)); // Using the custom transformation override
+			CreateShimmerTransformation()
+				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((Entity target) => target.Center.X <= Main.maxTilesX * 8))
+				.AddResult(new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 30))
+				.AddResult(new ShimmerResult(ShimmerResultType.NPC, NPCID.Skeleton, 3))
+				.AddOnShimmerCallBack(new ShimmerTransformation.OnShimmerCallBack(OnShimmerCallBack))
+				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items
-			ShimmerResult[] shimmerResultsLateGame = new ShimmerResult[] {
-				new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 20),
-			};
-
-			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsLateGame, new[] { Condition.DownedPlantera }));
+			CreateShimmerTransformation()
+				.AddCondition(Condition.DownedPlantera)
+				.AddResult(new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 20))
+				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns one the bride
-			ShimmerResult[] shimmerResultsEarlyGame = new ShimmerResult[] {
-				new ShimmerResult(ShimmerResultType.NPC, NPCID.TheBride, 1),
-			};
+			CreateShimmerTransformation()
+				.AddCondition(Condition.DownedEarlygameBoss)
+				.AddResult(new ShimmerResult(ShimmerResultType.NPC, NPCID.TheBride, 1))
+				.Register();
 
-			NPCShimmerTransformation.AddAdvancedNPCShimmerTransformation(new NPCShimmerTransformation(NPC.type, shimmerResultsEarlyGame, new[] { Condition.DownedEarlygameBoss }));
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method and is slightly different from the next items
 		}
 
 		public override void SetDefaults() {
@@ -92,22 +90,13 @@ namespace ExampleMod.Content.NPCs
 				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
 			});
 		}
-	}
 
-	public class ExampleCustomTransformationLogic : NPCShimmerTransformation
-	{
-		// At least one constructor required, the constructor with conditions has been removed as they will go unused regardless
-		public ExampleCustomTransformationLogic(int targetID, IEnumerable<ShimmerResult> results) : base(targetID, results) {
-		}
-
-		public override bool CanShimmer(NPC npc) {
-			return npc.position.X <= Main.maxTilesX * 8; // True if the NPC is on the left size of the world
-		}
-
-		public override void OnShimmer(NPC npc) { // When the npc successfully shimmers shoot a bullet
-			Projectile p = Projectile.NewProjectileDirect(npc.GetSource_Misc("Shimmer"), npc.position, npc.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
-			p.friendly = false;
-			p.hostile = true;
+		public static void OnShimmerCallBack(Entity origin, List<NPC> spawnedNPCs, List<Item> spawnedItems) {
+			foreach (NPC npc in spawnedNPCs) {
+				Projectile p = Projectile.NewProjectileDirect(npc.GetSource_Misc("Shimmer"), npc.position, npc.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
+				p.friendly = false;
+				p.hostile = true;
+			}
 		}
 	}
 }

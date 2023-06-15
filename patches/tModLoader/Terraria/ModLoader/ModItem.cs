@@ -1327,4 +1327,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
+
+	/// <summary>
+	/// Creates a <see cref="ShimmerTransformation"/> resulting this ModItem. This method only creates the <see cref="ShimmerTransformation"/>, it does not register it into the game. Call this at the very beginning when creating a new <see cref="ShimmerTransformation"/>.<br/>
+	/// This method automatically sets <see cref="ShimmerTransformation.TargetID"/> and <see cref="ShimmerTransformation.TransformationType"/>
+	/// </summary>
+	public ShimmerTransformation CreateShimmerTransformation() => new(Item);
 }

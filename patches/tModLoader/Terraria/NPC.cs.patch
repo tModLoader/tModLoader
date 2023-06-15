@@ -2323,88 +2323,17 @@
  
  	private void UpdateNPC_UpdateTrails()
  	{
-@@ -73361,8 +_,80 @@
+@@ -73361,6 +_,10 @@
  				life = 0;
  				NetMessage.SendData(23, -1, -1, null, whoAmI);
  			}
 +			return;
-+		} // TML: #AdvancedShimmerTransformations
-+		else if (NPCID.Sets.ShimmerAdvancedTransformToEntity[type] >= 0) { // Checks if the npc has an already defined transformation
-+			bool shimmerSuccess = false;
-+			int advancedShimmerIndex = NPCID.Sets.ShimmerAdvancedTransformToEntity[type];
-+			foreach (NPCShimmerTransformation transformation in NPCShimmerTransformation.AdvancedShimmerSets[advancedShimmerIndex]) { // Loops possible transformations
-+				if (transformation.CanShimmer(this)) { // Checks conditions
-+					foreach (ShimmerResult shimmerResult in transformation.Results) { // Loop each shimmerResult
-+						switch (shimmerResult.ResultType) { // could easily add in support for spawning projectiles, didn't currently because the use cases seem pretty low 
-+							case ShimmerResultType.Item: { // spawn item code copied from vanilla
-+								int num = Item.NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, shimmerResult.EntityID);
-+								Main.item[num].stack = shimmerResult.Count;
-+								Main.item[num].shimmerTime = 1f;
-+								Main.item[num].shimmered = true;
-+								Main.item[num].shimmerWet = true;
-+								Main.item[num].wet = true;
-+								Main.item[num].velocity *= 0.1f;
-+								Main.item[num].playerIndexTheItemIsReservedFor = Main.myPlayer;
-+								NetMessage.SendData(145, -1, -1, null, num, 1f);// net sync spawning the item
-+
-+								break;
-+							}
-+							case ShimmerResultType.NPC: {
-+								for (int i = 0; i < shimmerResult.Count; i++) { // Loop spawn NPCs, will more than likely always be only one, but for the sake of completeness this is here
-+									if (Main.netMode != 1) { // Else use the custom stuff and avoid spawning on multiplayer
-+										NPC newNPC = NPC.NewNPCDirect(GetSource_Misc("Shimmer"), (int)position.X, (int)position.Y, shimmerResult.EntityID); //Should cause net update stuff
-+
-+										//syncing up some values that vanilla intentionally sets after SetDefaults() 
-+										newNPC.extraValue = extraValue;
-+										newNPC.CopyInteractions(this);
-+										newNPC.SpawnedFromStatue = SpawnedFromStatue;
-+										newNPC.spriteDirection = spriteDirection;
-+										newNPC.Center = Center + new Vector2(25f * ((1-shimmerResult.Count) / 2 + i), 0); //Vanilla does not do centering like this, but otherwise multiple NPCs stack
-+										newNPC.velocity = velocity;
-+										newNPC.shimmerTransparency = shimmerTransparency;
-+
-+										if (value == 0f)
-+											newNPC.value = 0f;
-+										for (int j = 0; j < maxBuffs; j++) {
-+											newNPC.buffType[j] = buffType[j];
-+											newNPC.buffTime[j] = buffTime[j];
-+										}
-+
-+										newNPC.TargetClosest();
-+									}
-+								}
-+
-+								break;
-+							}
-+						}
-+						shimmerSuccess = true;
-+					}
-+
-+					if (shimmerSuccess) { // If CanShimmer returns true and spawns something, delete the npc and return
-+						transformation.OnShimmer(this);
-+
-+						if (Main.netMode == 0)
-+							Item.ShimmerEffect(base.Center);
-+						else
-+							NetMessage.SendData(146, -1, -1, null, 0, (int)base.Center.X, (int)base.Center.Y); //Shimmer effect and coinluck
-+
-+						noSpawnCycle = true;
-+						active = false;
-+						if (Main.netMode == 2) {
-+							netSkip = -1;
-+							life = 0;
-+							NetMessage.SendData(23, -1, -1, null, whoAmI);
-+						}
-+						return;
-+					} // else continue to other shimmer opportunities
-+				}
-+			}
++		} 
++		else if (AdvancedShimmerTransformationHelper.AdvancedShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++			noSpawnCycle = true; // Here instead of in Helper due to protection level
  		}
--		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
-+		if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
+ 		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
  			Transform(NPCID.Sets.ShimmerTransformToNPC[type]);
- 			if (Main.netMode == 0)
- 				Item.ShimmerEffect(base.Center);
 @@ -73627,9 +_,12 @@
  				num = 5;
  		}

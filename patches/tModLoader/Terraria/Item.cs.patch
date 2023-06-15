@@ -1900,8 +1900,14 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -47723,7 +_,9 @@
+@@ -47721,9 +_,15 @@
+ 
+ 	private void GetShimmered()
  	{
++		if (AdvancedShimmerTransformationHelper.AdvancedShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++			return;
++		}
++
  		int shimmerEquivalentType = GetShimmerEquivalentType();
  		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
 -		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
