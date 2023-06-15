@@ -1,4 +1,5 @@
 ﻿using Terraria.Audio;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
 
@@ -88,7 +89,12 @@ public abstract class ModExtraJump : ModType
 	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
 	public virtual void OnJumpStarted(Player player, ref bool playSound) { }
 
-	// TODO: OnJumpEnded
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpData.PerformingJump"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> in <see cref="Player.CancelAllJumpVisualEffects"/><br/>
+	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// </summary>
+	/// <param name="player">The player that was performing the jump</param>
+	public virtual void OnJumpEnded(Player player) { }
 
 	/// <summary>
 	/// Modify the player's horizontal movement while performing this extra jump here.<br/>

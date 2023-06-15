@@ -4586,13 +4586,24 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
-@@ -28410,6 +_,9 @@
+@@ -28401,8 +_,11 @@
+ 			rabbitOrderFrame.Update();
+ 	}
+ 
+-	private void CancelAllJumpVisualEffects()
++	public void CancelAllJumpVisualEffects()
+ 	{
++		ExtraJumpLoader.OnJumpEnded(this);
++
++		/*
+ 		isPerformingJump_Cloud = false;
+ 		isPerformingJump_Sandstorm = false;
+ 		isPerformingJump_Blizzard = false;
+@@ -28410,6 +_,7 @@
  		isPerformingJump_Sail = false;
  		isPerformingJump_Unicorn = false;
  		isPerformingJump_Santank = false;
-+
-+		foreach (ref ExtraJumpData jump in ModdedExtraJumps)
-+			jump.PerformingJump = false;
++		*/
  	}
  
  	private void CancelAllBootRunVisualEffects()

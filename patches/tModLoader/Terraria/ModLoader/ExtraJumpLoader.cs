@@ -92,6 +92,17 @@ public static class ExtraJumpLoader
 		}
 	}
 
+	public static void OnJumpEnded(Player player)
+	{
+		foreach (ModExtraJump jump in ExtraJumps) {
+			ref ExtraJumpData data = ref player.GetExtraJump(jump);
+			if (data.JumpAvailable) {
+				jump.OnJumpEnded(player);
+				data.JumpAvailable = false;
+			}
+		}
+	}
+
 	private static IEnumerable<ModExtraJump> GetOrderedJumps(Player player)
 	{
 		// TODO: ordered collection, simply using ExtraJumps here for laziness
