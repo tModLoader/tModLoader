@@ -3222,11 +3222,39 @@
  				if (mount.Active && MountID.Sets.Cart[mount.Type])
  					position.Y -= 0.001f;
  
+@@ -16027,6 +_,7 @@
+ 					flag4 = true;
+ 				}
+ 
++				/*
+ 				bool flag5 = false;
+ 				bool flag6 = false;
+ 				bool flag7 = false;
+@@ -16035,7 +_,11 @@
+ 				bool flag10 = false;
+ 				bool flag11 = false;
+ 				bool flag12 = false;
++				*/
++				bool attemptDoubleJumps = false;
+ 				if (!flag2 && !flag) {
++					attemptDoubleJumps = true;
++					/*
+ 					if (canJumpAgain_Basilisk) {
+ 						flag12 = true;
+ 						canJumpAgain_Basilisk = false;
+@@ -16072,6 +_,7 @@
+ 					else {
+ 						canJumpAgain_Cloud = false;
+ 					}
++					*/
+ 				}
+ 
+ 				canRocket = false;
 @@ -16093,6 +_,10 @@
  					if (sliding)
  						velocity.X = 3 * -slideDir;
  				}
-+				else {
++				else if (attemptDoubleJumps) {
 +					ExtraJumpLoader.ProcessJumps(this);
 +				}
 +				/*
