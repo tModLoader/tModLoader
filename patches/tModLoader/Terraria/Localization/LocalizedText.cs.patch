@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,29 @@
+@@ -1,15 +_,30 @@
 +using System;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
@@ -27,6 +27,7 @@
 +		private set {
 +			_value = value;
 +			_hasPlurals = null;
++			BoundArgs = null;
 +		}
 +	}
  
@@ -60,6 +61,17 @@
  	public bool CanFormatWith(object obj)
  	{
  		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+@@ -56,7 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/*
+ 	public NetworkText ToNetworkText() => NetworkText.FromKey(Key);
++	*/
++	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? Array.Empty<object>());
+ 	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
+ 
+ 	public static explicit operator string(LocalizedText text)
 @@ -64,9 +_,12 @@
  		return text.Value;
  	}
