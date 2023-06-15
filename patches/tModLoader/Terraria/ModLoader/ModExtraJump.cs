@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Terraria.Audio;
-using Terraria.Graphics.Shaders;
+﻿using Terraria.Audio;
 
 namespace Terraria.ModLoader;
 
