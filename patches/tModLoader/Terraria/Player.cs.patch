@@ -3254,9 +3254,9 @@
  					if (sliding)
  						velocity.X = 3 * -slideDir;
  				}
-+				else if (attemptDoubleJumps) {
++				else {
 +					// TODO: Cloud in a Bottle can be used even when underwater with flippers... investigate how this can be replicated in the new hooks
-+					ExtraJumpLoader.ProcessJumps(this);
++					ExtraJumpLoader.ProcessJumps(this, !attemptDoubleJumps);
 +				}
 +				/*
  				else if (flag5) {

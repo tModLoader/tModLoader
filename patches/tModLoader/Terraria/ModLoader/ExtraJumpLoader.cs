@@ -52,7 +52,8 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	public static void ModifyPlayerHorizontalSpeeds(Player player) {
+	public static void ModifyPlayerHorizontalSpeeds(Player player)
+	{
 		foreach (ModExtraJump moddedExtraJump in ExtraJumps) {
 			// Special case: Sandstorm in a Bottle uses a separate flag
 			ref ExtraJumpData extraJump = ref player.GetExtraJump(moddedExtraJump);
@@ -61,7 +62,8 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	public static void HandleJumpVisuals(Player player) {
+	public static void HandleJumpVisuals(Player player)
+	{
 		foreach (ModExtraJump jump in ExtraJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump && data.Active && !data.JumpAvailable)
@@ -69,19 +71,29 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	public static void ProcessJumps(Player player) {
+	public static void ProcessJumps(Player player, bool flipperOrSlimeMountSwimming)
+	{
 		foreach (ModExtraJump jump in GetOrderedJumps(player)) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.JumpAvailable) {
+
+			// The Cloud in a Bottle's extra jump ignores the "flipper swimming" check
+			// "IgnoresSqwimmingChecks" allows modders to mimic this behavior
+			if ((jump.IgnoresSwimmingChecks || !flipperOrSlimeMountSwimming) && data.JumpAvailable) {
 				data.JumpAvailable = false;
 				data.PerformingJump = true;
 				jump.PerformJump(player);
 				break;
 			}
 		}
+
+		if (!flipperOrSlimeMountSwimming) {
+			// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
+			player.GetExtraJump(ModExtraJump.BasiliskMount).JumpAvailable = false;
+		}
 	}
 
-	private static IEnumerable<ModExtraJump> GetOrderedJumps(Player player) {
+	private static IEnumerable<ModExtraJump> GetOrderedJumps(Player player)
+	{
 		// TODO: ordered collection, simply using ExtraJumps here for laziness
 		return ExtraJumps;
 	}

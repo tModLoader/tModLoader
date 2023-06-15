@@ -374,6 +374,8 @@ public class TsunamiInABottleJump : ModExtraJump
 [Autoload(false)]
 public class CloudInABottleJump : ModExtraJump
 {
+	public override bool IgnoresSwimmingChecks => true;
+
 	public override float GetJumpDuration(Player player) => 0.75f;
 
 	public override void OnJumpStarted(Player player, ref bool playSound)

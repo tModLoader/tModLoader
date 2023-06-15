@@ -2,6 +2,9 @@
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// <see cref="ModExtraJump"/> is a singleton type used to facilitate the logic for extra midair jumps
+/// </summary>
 public abstract class ModExtraJump : ModType
 {
 	public static ModExtraJump GoatMount { get; private set; } = new GoatMountJump();
@@ -26,6 +29,11 @@ public abstract class ModExtraJump : ModType
 	/// The internal ID of this <see cref="ModExtraJump"/>.
 	/// </summary>
 	public int Type { get; internal set; }
+
+	/// <summary>
+	/// Whether this extra jump should ignore the vanilla checks for swimming with the Flippers equipped or swimming with the Slime mount
+	/// </summary>
+	public virtual bool IgnoresSwimmingChecks => false;
 
 	protected sealed override void Register()
 	{
