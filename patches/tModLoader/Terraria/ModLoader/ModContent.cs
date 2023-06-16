@@ -354,6 +354,7 @@ public static class ModContent
 	{
 		EffectsTracker.CacheVanillaState();
 		DamageClassLoader.RegisterDefaultClasses();
+		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
 	}
 

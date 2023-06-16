@@ -100,9 +100,9 @@ public static class ExtraJumpLoader
 	{
 		foreach (ModExtraJump jump in ExtraJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.JumpAvailable) {
+			if (data.PerformingJump) {
 				jump.OnJumpEnded(player);
-				data.JumpAvailable = false;
+				data.PerformingJump = false;
 			}
 		}
 	}

@@ -3904,6 +3904,15 @@
  				if (flag21 && wings != 4 && wings != 22 && wings != 0 && wings != 24 && wings != 28 && wings != 30 && wings != 33 && wings != 45) {
  					bool flag22 = wingFrame == 3;
  					if (wings == 43 || wings == 44)
+@@ -20722,7 +_,7 @@
+ 				if (empressBrooch)
+ 					rocketTime = rocketTimeMax;
+ 
+-				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !canJumpAgain_Cloud) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpAvailableNoActiveCheck()) {
+ 					if (rocketTime > 0) {
+ 						rocketTime--;
+ 						rocketDelay = 10;
 @@ -20916,6 +_,7 @@
  								Main.dust[num59].shader = GameShaders.Armor.GetSecondaryShader(cWings, this);
  							}
