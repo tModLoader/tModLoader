@@ -4545,7 +4545,7 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
-@@ -28401,8 +_,11 @@
+@@ -28401,8 +_,10 @@
  			rabbitOrderFrame.Update();
  	}
  
@@ -4553,7 +4553,6 @@
 +	public void CancelAllJumpVisualEffects()
  	{
 +		ExtraJumpLoader.OnJumpEnded(this);
-+
 +		/*
  		isPerformingJump_Cloud = false;
  		isPerformingJump_Sandstorm = false;
