@@ -151,11 +151,11 @@ public static class ExtraJumpLoader
 			}
 		}
 
-		var sort = new TopoSort<ModExtraJump>(ExtraJumps,
-			j => dependenciesByType[j.Type].Select(static t => ExtraJumps[t]),
-			j => dependentsByType[j.Type].Select(static t => ExtraJumps[t]));
+		var sort = new TopoSort<int>(ExtraJumps.Select(static j => j.Type),
+			j => dependenciesByType[j],
+			j => dependentsByType[j]);
 
-		return sort.Sort();
+		return sort.Sort().Select(static t => ExtraJumps[t]);
 	}
 
 	public static void RefreshExtraJumps(Player player)

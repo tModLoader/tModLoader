@@ -3777,7 +3777,7 @@
  			movementAbilitiesCache.PasteInto(this);
  
  		if (mount.Active && mount.BlockExtraJumps) {
-+			ExtraJumpLoader.ClearAllExtraJumps(this);
++			ClearAllExtraJumps();
 +			/*
  			canJumpAgain_Cloud = false;
  			canJumpAgain_Sandstorm = false;
