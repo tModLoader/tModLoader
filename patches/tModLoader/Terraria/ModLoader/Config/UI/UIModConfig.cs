@@ -82,11 +82,10 @@ internal class UIModConfig : UIState
 		}.WithPadding(15f);
 		uIElement.Append(headerTextPanel);
 
-		float searchBarTop = 5;
 		UIPanel textBoxBackground = new UIPanel {
-			Width = { Pixels = 200 },
+			Width = { Pixels = 175 },
 			Height = { Pixels = 30 },
-			Top = { Pixels = searchBarTop },
+			Top = { Pixels = 10 },
 			HAlign = 1f,
 		}.WithPadding(0f);
 		uIPanel.Append(textBoxBackground);

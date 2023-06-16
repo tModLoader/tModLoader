@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections;
+using System.Threading.Tasks.Sources;
 using Terraria.GameContent;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -195,18 +196,19 @@ internal class HeaderElement : UIElement
 		this.header = header;
 		Vector2 size = ChatManager.GetStringSize(FontAssets.ItemStack.Value, this.header, Vector2.One, 532); // TODO: Max Width can't be known at this time.
 		Width.Set(0f, 1f);
-		Height.Set(size.Y + 6, 0f);
+		Height.Set(size.Y, 0f);
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		base.DrawSelf(spriteBatch);
 
-		CalculatedStyle dimensions = base.GetDimensions();
+		CalculatedStyle dimensions = GetDimensions();
 		float settingsWidth = dimensions.Width + 1f;
-		Vector2 position = new Vector2(dimensions.X, dimensions.Y) + new Vector2(8);
+		Vector2 position = new Vector2(dimensions.X, dimensions.Y) + new Vector2(8, 4);
 
 		spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)dimensions.X + 10, (int)dimensions.Y + (int)dimensions.Height - 2, (int)dimensions.Width - 20, 1), Color.LightGray);
+		spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)dimensions.X + 10, (int)dimensions.Y + (int)dimensions.Height - 1, (int)dimensions.Width - 20, 1), Color.DarkGray);
 
 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, header, position, Color.White, 0f, Vector2.Zero, new Vector2(1f), settingsWidth - 20, 2f);
 	}

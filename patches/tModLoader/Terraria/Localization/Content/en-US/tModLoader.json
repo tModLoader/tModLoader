@@ -90,6 +90,7 @@
 		"AskForCommand": "Type a command: ",
 
 		//Mod Config
+		"ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Search config",
 		"ModConfigModConfig": "Mod Config",
 		"ModConfigSaveConfig": "Save",

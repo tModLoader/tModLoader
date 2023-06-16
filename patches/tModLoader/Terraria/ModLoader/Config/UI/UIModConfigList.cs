@@ -43,7 +43,6 @@ internal class UIModConfigList : UIState
 		}.WithPadding(15f);
 		uIElement.Append(uIHeaderTextPanel);
 
-		// TODO: add headers to the panels
 		var modListPanel = new UIPanel {
 			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
 			Height = { Percent = 1f },
@@ -57,31 +56,50 @@ internal class UIModConfigList : UIState
 		};
 		uIPanel.Append(configListPanel);
 
+		float headerHeight = 35;
+		var modListHeader = new UIText(Language.GetText("tModLoader.MenuMods"), 0.5f, true) {
+			Top = { Pixels = 5 },
+			Left = { Pixels = 12.5f },
+			HAlign = 0.5f,
+		};
+		modListPanel.Append(modListHeader);
+
+		var configListHeader = new UIText(Language.GetText("tModLoader.ModConfigs"), 0.5f, true) {
+			Top = { Pixels = 5 },
+			Left = { Pixels = -12.5f },
+			HAlign = 0.5f,
+		};
+		configListPanel.Append(configListHeader);
+
 		modList = new UIList {
+			Top = { Pixels = headerHeight },
 			Width = { Pixels = -25, Percent = 1f },
-			Height = { Percent = 1f },
+			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 1f,
 		};
 		modListPanel.Append(modList);
 
 		configList = new UIList {
+			Top = { Pixels = headerHeight },
 			Width = { Pixels = -25f, Percent = 1f },
-			Height = { Percent = 1f },
+			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 0f,
 		};
 		configListPanel.Append(configList);
 
 		var modListScrollbar = new UIScrollbar {
-			Height = { Percent = 1f },
+			Top = { Pixels = headerHeight },
+			Height = { Pixels = -headerHeight, Percent = 1f },
 		};
 		modListScrollbar.SetView(100f, 1000f);
 		modList.SetScrollbar(modListScrollbar);
 		modListPanel.Append(modListScrollbar);
 
 		var configListScrollbar = new UIScrollbar {
-			Height = { Percent = 1f },
+			Top = { Pixels = headerHeight },
+			Height = { Pixels = -headerHeight, Percent = 1f },
 			HAlign = 1f,
 		};
 		configListScrollbar.SetView(100f, 1000f);
