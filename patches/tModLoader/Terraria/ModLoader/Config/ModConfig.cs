@@ -54,7 +54,8 @@ public abstract class ModConfig : ILocalizedModType
 	/// </summary>
 	/// <param name="pendingConfig">An instance of the ModConfig with the attempted changes</param>
 	/// <param name="whoAmI">The client whoAmI</param>
-	/// <param name="message">A message that will be returned to the client, set this to the reason the server rejects the changes.</param>
+	/// <param name="message">A message that will be returned to the client, set this to the reason the server rejects the changes.<br/>
+	/// Make sure you set this to the localization key instead of the actual value, since the server and client could have different languages.</param>
 	/// <returns>Return false to reject client changes</returns>
 	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
 		=> true;

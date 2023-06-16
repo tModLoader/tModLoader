@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -16,7 +18,10 @@ internal class BooleanElement : ConfigElement<bool>
 		base.OnBind();
 		_toggleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
 
-		OnLeftClick += (ev, v) => Value = !Value;
+		OnLeftClick += (ev, v) => {
+			Value = !Value;
+			SoundEngine.PlaySound(SoundID.MenuTick);
+		};
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)

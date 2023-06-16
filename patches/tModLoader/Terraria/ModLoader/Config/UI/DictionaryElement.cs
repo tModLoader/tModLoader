@@ -123,7 +123,7 @@ internal class DictionaryElement : CollectionElement
 			((IDictionary)Data).Add(keyValue, CreateCollectionElementInstance(valueType));
 		}
 		catch (Exception e) {
-			Interface.modConfig.SetMessage(Language.GetText("ModConfigError").Format(e.Message), Color.Red);// TODO: exception message isn't localized
+			Interface.modConfig.SetMessage(e.Message, Language.GetTextValue("ModConfigError"), Color.Red);// TODO: exception message isn't localized
 		}
 	}
 

@@ -14,6 +14,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -36,7 +37,10 @@ internal class UIModConfig : UIState
 	private UIAutoScaleTextTextPanel<LocalizedText> backButton;
 	private UIAutoScaleTextTextPanel<LocalizedText> revertConfigButton;
 	private UIAutoScaleTextTextPanel<LocalizedText> restoreDefaultsConfigButton;
-	private UITextPanel<string> notificationModal;
+	private UIPanel notificationModal;
+	private UIText notificationModalText;
+	private UIText notificationModalHeader;
+	private UIImage modalInputBlocker;
 
 	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
 	private readonly Stack<UIPanel> configPanelStack = new();
@@ -52,7 +56,7 @@ internal class UIModConfig : UIState
 	private bool pendingChangesUIUpdate;
 	private bool netUpdate;
 
-	// TODO: panel sizing, search bar, and modal for notification and remove next and previous config buttons, localization
+	// TODO: sizing at the top
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement {
@@ -99,12 +103,10 @@ internal class UIModConfig : UIState
 		filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
-		// TODO: Better notification - tModLoader.ModConfigNotification
-
 		float listTop = 50;
 		mainConfigList = new UIList {
 			Width = { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -listTop, Percent = 1f},
+			Height = { Pixels = -listTop, Percent = 1f },
 			Top = { Pixels = listTop },
 			ListPadding = 5f,
 		};
@@ -158,13 +160,40 @@ internal class UIModConfig : UIState
 		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
 		uIElement.Append(restoreDefaultsConfigButton);
 
-		// TODO - better mesage
-		notificationModal = new UITextPanel<string>("") {
-			MinWidth = { Pixels = 400f },
-			MinHeight = { Pixels = 200f },
+		// TODO - finish modal
+		notificationModal = new UIPanel {
+			Width = { Pixels = 400f },
+			Height = { Pixels = 200f },
+			HAlign = 0.5f,
+			VAlign = 0.5f,
+			BackgroundColor = UICommon.DefaultUIBlue,
+		};
+		// Don't append
+
+		notificationModalText = new UIText("") {
 			HAlign = 0.5f,
 			VAlign = 0.5f,
 		};
+		notificationModal.Append(notificationModalText);
+
+		notificationModalHeader = new UIText("", 0.5f, large: true) {
+			HAlign = 0.5f,
+		};
+		notificationModal.Append(notificationModalHeader);
+
+		var modalCloseButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
+			HAlign = 1f,
+		};
+		modalCloseButton.OnLeftClick += ClearMessage;
+		notificationModal.Append(modalCloseButton);
+
+		modalInputBlocker = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = new Color(0, 0, 0, 0),
+			ScaleToFit = true,
+		};
+		modalInputBlocker.OnLeftClick += ClearMessage; 
 		// Don't append
 	}
 
@@ -221,8 +250,7 @@ internal class UIModConfig : UIState
 		else {
 			// If we are in game...
 			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-				// TODO: Too
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); //"Asking server to accept changes..."
+				SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
 
 				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
 				requestChanges.Write(pendingConfig.Mod.Name);
@@ -240,8 +268,7 @@ internal class UIModConfig : UIState
 			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
 
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
-				SoundEngine.PlaySound(SoundID.MenuClose);
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);//"Can't save because changes would require a reload."
+				SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 				return;
 			}
 			else {
@@ -273,7 +300,7 @@ internal class UIModConfig : UIState
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
+		SoundEngine.PlaySound(SoundID.MenuClose);
 		DiscardChanges();
 	}
 
@@ -289,18 +316,33 @@ internal class UIModConfig : UIState
 		pendingChanges |= changes;
 	}
 
-	public void SetMessage(string text, Color color)
+	private void ClearMessage(UIMouseEvent evt, UIElement listeningElement)
 	{
-		if (string.IsNullOrEmpty(text)) {
-			RemoveChild(notificationModal);
-			notificationModal.SetText("");
-			notificationModal.TextColor = Color.White;
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		SetMessage("", "");
+	}
+
+	public void SetMessage(string text, string header, Color headerColor = default)
+	{
+		if (headerColor == default)
+			headerColor = Color.White;
+
+		RemoveChild(notificationModal);
+		RemoveChild(modalInputBlocker);
+		notificationModalText.SetText("");
+		notificationModalHeader.SetText("");
+		notificationModalHeader.TextColor = Color.White;
+
+		if (string.IsNullOrEmpty(text) && string.IsNullOrEmpty(header)) {
 			return;
 		}
 
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Append(modalInputBlocker);
 		Append(notificationModal);
-		notificationModal.SetText(text);
-		notificationModal.TextColor = color;
+		notificationModalText.SetText(text);
+		notificationModalHeader.SetText(header);
+		notificationModalHeader.TextColor = headerColor;
 	}
 
 	public override void Update(GameTime gameTime)
@@ -387,7 +429,7 @@ internal class UIModConfig : UIState
 	public override void OnActivate()
 	{
 		filterTextField.SetText("");
-		SetMessage("", Color.White);
+		SetMessage("", "", Color.White);
 		updateNeeded = false;
 
 		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// TODO: Hacky, but works, use WithFormatArgs

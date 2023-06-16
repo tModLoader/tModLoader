@@ -294,23 +294,26 @@ public static class ConfigManager
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
 
-				Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
-				string messageText = Language.GetText("tModLoader.ModConfigServerResponse").Format(Language.GetTextValue(message));
+				string header = Language.GetTextValue("tModLoader.ModConfigChangesAccepted");
 				if (Main.InGameUI.CurrentState == Interface.modConfig || Main.MenuUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(messageText, Color.Green);
+					Interface.modConfig.SetMessage(message, header, Color.Green);
+					Main.NewText(header + ": " + message);// TODO: temporary
 				}
 				else {
-					Main.NewText(messageText);
+					Main.NewText(header + ": " + message);
 				}
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
 
-				Main.NewText("Changes Rejected: " + message);
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(Language.GetTextValue("Server rejected changes: " + message), Color.Red);// TODO - localize
-					//Main.InGameUI.SetState(Interface.modConfig);
+				string header = Language.GetTextValue("tModLoader.ModConfigChangesRejected");
+				if (Main.InGameUI.CurrentState == Interface.modConfig || Main.MenuUI.CurrentState == Interface.modConfig) {
+					Interface.modConfig.SetMessage(message, header, Color.Red);
+					Main.NewText(header + ": " + message);// TODO: temporary
+				}
+				else {
+					Main.NewText(header + ": " + message);
 				}
 
 			}
@@ -327,8 +330,8 @@ public static class ConfigManager
 			ModConfig loadTimeConfig = GetLoadTimeConfig(mod, configname);
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
-			bool success = true;
-			string message = "tModLoader.ModConfigAccepted";// Send key in case client and server have different languages instead of value
+			bool success = true;// TODO: what message to send here?
+			string message = "tModLoader.ModConfigChangesAccepted";// Send key in case client and server have different languages instead of value
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
 				message = "tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload";

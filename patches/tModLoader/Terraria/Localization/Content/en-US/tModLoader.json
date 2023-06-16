@@ -50,6 +50,7 @@
 		"DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Click to disable",
 		"ModsEnable": "Click to enable",
+		"ModConfiguration": "Mod Configuration",
 		"ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Old mod, enable at own risk",
 		"ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
@@ -89,8 +90,7 @@
 		"AskForCommand": "Type a command: ",
 
 		//Mod Config
-		"ModConfigFilterOptions": "Search config options",
-		"ModConfigNotification": "Notification",
+		"ModConfigFilterOptions": "Search config",
 		"ModConfigModConfig": "Mod Config",
 		"ModConfigSaveConfig": "Save",
 		"ModConfigBack": "Back",
@@ -99,12 +99,11 @@
 		"ModConfigRestoreDefaults": "Restore",
 		"ModConfigRestoreDefaultsHover": "Restore default config values",
 		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
-		"ModConfigAccepted": "Accepted",
-		"ModConfigError": "Error: {0}",
-		"ModConfigChangesAccepted": "Changes Accepted:\n{0}",
-		"ModConfigChangesRejected": "Changes Rejected:\n{0}",
+		"ModConfigError": "Error",
+		"ModConfigChangesAccepted": "Changes Accepted",
+		"ModConfigChangesRejected": "Changes Rejected",
+		"ModConfigChangesPending": "Changes Pending",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
-		"ModConfiguration": "Mod Configuration",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",
