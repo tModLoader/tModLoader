@@ -109,11 +109,51 @@ public static class ExtraJumpLoader
 
 	private static IEnumerable<ModExtraJump> GetOrderedJumps(Player player)
 	{
-		var positions = ExtraJumps.ToDictionary(static j => j, j => j.GetOrder(player));
+		Dictionary<int, HashSet<int>> dependenciesByType = new();
+		Dictionary<int, HashSet<int>> dependentsByType = new();
 
-		var sort = new TopoSort<ModExtraJump>(positions.Keys,
-			j => new[] { positions[j].Dependency }.Where(static j => j != null),
-			j => new[] { positions[j].Dependent }.Where(static j => j != null));
+		void AddDependent(int type, int dependent)
+		{
+			if (!dependentsByType.TryGetValue(type, out var list))
+				dependentsByType[type] = list = new();
+
+			list.Add(dependent);
+		}
+
+		void AddDependency(int type, int dependency)
+		{
+			if (!dependenciesByType.TryGetValue(type, out var list))
+				dependenciesByType[type] = list = new();
+
+			list.Add(dependency);
+		}
+
+		foreach (ModExtraJump jump in ExtraJumps) {
+			var position = jump.GetOrder(player);
+
+			switch (position) {
+				case ModExtraJump.AfterParent after:
+					AddDependent(after.Parent.Type, jump.Type);
+					break;
+				case ModExtraJump.BeforeParent before:
+					AddDependency(before.Parent.Type, jump.Type);
+					break;
+				case ModExtraJump.Between between:
+					if (between.Dependent?.Type is { } dependent) {
+						AddDependent(jump.Type, dependent);
+						AddDependency(dependent, jump.Type);
+					}
+					if (between.Dependency?.Type is { } dependency) {
+						AddDependent(dependency, jump.Type);
+						AddDependency(jump.Type, dependency);
+					}
+					break;
+			}
+		}
+
+		var sort = new TopoSort<ModExtraJump>(ExtraJumps,
+			j => dependenciesByType[j.Type].Select(static t => ExtraJumps[t]),
+			j => dependentsByType[j.Type].Select(static t => ExtraJumps[t]));
 
 		return sort.Sort();
 	}

@@ -44,11 +44,13 @@ public abstract partial class ModExtraJump : ModType
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
+	public override string ToString() => Name;
+
 	/// <summary>
 	/// Return which extra jumps this extra jump should be placed between in the priority order here
 	/// </summary>
 	/// <param name="player">The player performing the jumps</param>
-	public abstract Between GetOrder(Player player);
+	public abstract Position GetOrder(Player player);
 
 	internal void PerformJump(Player player) {
 		// Set velocity and jump duration

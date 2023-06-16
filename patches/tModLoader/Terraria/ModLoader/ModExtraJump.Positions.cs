@@ -2,7 +2,9 @@
 
 partial class ModExtraJump
 {
-	public sealed class Between
+	public abstract class Position { }
+
+	public sealed class Between : Position
 	{
 		public ModExtraJump Dependency { get; }
 
@@ -17,7 +19,27 @@ partial class ModExtraJump
 		}
 	}
 
-	protected static Between BeforeFirstVanillaExtraJump => new Between(null, ExtraJumpLoader.FirstVanillaExtraJump);
+	public sealed class BeforeParent : Position
+	{
+		public ModExtraJump Parent { get; }
 
-	protected static Between AfterLastVanillaExtraJump => new Between(ExtraJumpLoader.LastVanillaExtraJump, null);
+		public BeforeParent(ModExtraJump parent)
+		{
+			Parent = parent;
+		}
+	}
+
+	public sealed class AfterParent : Position
+	{
+		public ModExtraJump Parent { get; }
+
+		public AfterParent(ModExtraJump parent)
+		{
+			Parent = parent;
+		}
+	}
+
+	protected static Position BeforeFirstVanillaExtraJump => new BeforeParent(ExtraJumpLoader.FirstVanillaExtraJump);
+
+	protected static Position AfterLastVanillaExtraJump => new AfterParent(ExtraJumpLoader.LastVanillaExtraJump);
 }

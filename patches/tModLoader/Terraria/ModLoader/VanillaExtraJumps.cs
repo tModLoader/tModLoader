@@ -9,9 +9,7 @@ namespace Terraria.ModLoader;
 [Autoload(false)]
 public abstract class VanillaExtraJump : ModExtraJump
 {
-	public override Between GetOrder(Player player)
-		=> new Between(Type == 0 ? null : ExtraJumpLoader.ExtraJumps[Type - 1],
-			Type == ExtraJumpLoader.DefaultExtraJumpCount - 1 ? null : ExtraJumpLoader.ExtraJumps[Type + 1]);
+	public override Position GetOrder(Player player) => new AfterParent(Type == 0 ? null : ExtraJumpLoader.ExtraJumps[Type - 1]);
 }
 
 public sealed class GoatMountJump : VanillaExtraJump
