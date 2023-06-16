@@ -3364,12 +3364,11 @@
  			if (controlJump && canCarpet) {
  				canCarpet = false;
  				carpetTime = 300;
-@@ -16783,6 +_,9 @@
+@@ -16783,6 +_,8 @@
  
  	public void DoubleJumpVisuals()
  	{
 +		ExtraJumpLoader.HandleJumpVisuals(this);
-+
 +		/*
  		if (isPerformingJump_Cloud && hasJumpOption_Cloud && !canJumpAgain_Cloud && (canJumpAgain_Sandstorm || !hasJumpOption_Sandstorm) && ((gravDir == 1f && velocity.Y < 0f) || (gravDir == -1f && velocity.Y > 0f))) {
  			int num = height;
