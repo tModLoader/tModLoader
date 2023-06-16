@@ -12,6 +12,7 @@ This directory contains utilities for a dedicated ***Linux*** or Docker server.
 The `manage-tModLoaderServer.sh` script can be used to install tModLoader either directly from the GitHub release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
 
 ### Installing tModLoader
+**Note:** SteamCMD does not have an ARM build currently. The only way to install tModLoader in this case is via [Github](#github).
 #### SteamCMD (recommended)
 * Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [Valve's Wiki](https://developer.valvesoftware.com/wiki/SteamCMD).
 * Run `./manage-tModLoaderServer.sh --install --username your_steam_username`.
