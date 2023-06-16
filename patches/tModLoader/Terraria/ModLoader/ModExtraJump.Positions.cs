@@ -19,27 +19,27 @@ partial class ModExtraJump
 		}
 	}
 
-	public sealed class BeforeParent : Position
+	public sealed class Before : Position
 	{
 		public ModExtraJump Parent { get; }
 
-		public BeforeParent(ModExtraJump parent)
+		public Before(ModExtraJump parent)
 		{
 			Parent = parent;
 		}
 	}
 
-	public sealed class AfterParent : Position
+	public sealed class After : Position
 	{
 		public ModExtraJump Parent { get; }
 
-		public AfterParent(ModExtraJump parent)
+		public After(ModExtraJump parent)
 		{
 			Parent = parent;
 		}
 	}
 
-	protected static Position BeforeFirstVanillaExtraJump => new BeforeParent(ExtraJumpLoader.FirstVanillaExtraJump);
+	protected static Position BeforeFirstVanillaExtraJump => new Before(ExtraJumpLoader.FirstVanillaExtraJump);
 
-	protected static Position AfterLastVanillaExtraJump => new AfterParent(ExtraJumpLoader.LastVanillaExtraJump);
+	protected static Position AfterLastVanillaExtraJump => new After(ExtraJumpLoader.LastVanillaExtraJump);
 }

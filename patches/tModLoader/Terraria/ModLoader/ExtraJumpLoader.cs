@@ -132,10 +132,10 @@ public static class ExtraJumpLoader
 			var position = jump.GetOrder(player);
 
 			switch (position) {
-				case ModExtraJump.AfterParent after:
+				case ModExtraJump.After after:
 					AddDependent(after.Parent.Type, jump.Type);
 					break;
-				case ModExtraJump.BeforeParent before:
+				case ModExtraJump.Before before:
 					AddDependency(before.Parent.Type, jump.Type);
 					break;
 				case ModExtraJump.Between between:
