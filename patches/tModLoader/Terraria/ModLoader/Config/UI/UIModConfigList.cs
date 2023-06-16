@@ -10,13 +10,14 @@ namespace Terraria.ModLoader.Config.UI;
 
 internal class UIModConfigList : UIState
 {
+	public Mod modToSelect;
+
 	private UIElement uIElement;
 	private UIPanel uIPanel;
 	private UITextPanel<LocalizedText> buttonBack;
 	private UIList modList;
 	private UIList configList;
-
-	public Mod selectedMod;
+	private Mod selectedMod;
 
 	public override void OnInitialize()
 	{
@@ -143,6 +144,12 @@ internal class UIModConfigList : UIState
 		configList?.Clear();
 		selectedMod = null;
 		PopulateMods();
+
+		if (modToSelect != null) {
+			selectedMod = modToSelect;
+			PopulateConfigs();
+			modToSelect = null;
+		}
 	}
 
 	internal void PopulateMods()
@@ -188,7 +195,7 @@ internal class UIModConfigList : UIState
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 
-				Interface.modConfig.SetMod(selectedMod, config, true);
+				Interface.modConfig.SetMod(selectedMod, config);
 				if (Main.gameMenu) {
 					Main.menuMode = Interface.modConfigID;
 				}

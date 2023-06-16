@@ -385,8 +385,8 @@ internal class UIModItem : UIPanel
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfig.SetMod(ModLoader.GetMod(ModName));
-		Main.menuMode = Interface.modConfigID;
+		Interface.modConfigList.modToSelect = ModLoader.GetMod(ModName);
+		Main.menuMode = Interface.modConfigListID;
 	}
 
 	public override int CompareTo(object obj)

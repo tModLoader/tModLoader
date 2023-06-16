@@ -1,5 +1,7 @@
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
@@ -96,7 +98,7 @@ public abstract class ModConfig : ILocalizedModType
 	/// </summary>
 	public void Open()
 	{
-		// TODO: make these menus just exit instead of going to the config list?
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Interface.modConfig.SetMod(Mod, this, true);
 		if (Main.gameMenu) {
 			Main.menuMode = Interface.modConfigID;
