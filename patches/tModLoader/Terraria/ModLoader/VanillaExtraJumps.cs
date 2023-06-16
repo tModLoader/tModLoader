@@ -16,8 +16,6 @@ public abstract class VanillaExtraJump : ModExtraJump
 
 public sealed class GoatMountJump : VanillaExtraJump
 {
-	public override Between GetOrder(Player player) => throw new NotImplementedException();
-
 	public override float GetJumpDuration(Player player) => 2f;
 
 	public override void OnJumpStarted(Player player, ref bool playSound)
