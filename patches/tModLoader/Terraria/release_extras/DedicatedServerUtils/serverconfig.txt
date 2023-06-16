@@ -1,9 +1,87 @@
-# These are the minimum required fileds to run the server with no user input. If in a container, make sure NOT to set the port.
+# Example config for a Dedicated Server. DO NOT SET A PORT FOR A DOCKER CONTAINER INSTALLATION
+# For a dedicated server, the required parameters for a functioning server are "worldname" and "autocreate", optionally with a "world" argument for a custom world file location.
+# Remove the # in front of any additional commands to enable them.
+
+# Command line parameters added by Terraria (https://terraria.fandom.com/wiki/Server#Server_config_file)
+
+#-config <config file>				        Specifies the configuration file to use.
+#-port <port number>				        Specifies the port to listen on.
+#-players <number> / -maxplayers <number>	Sets the max number of players
+#-pass <password> / -password <password>	Sets the server password
+#-world <world file>				        Load a world and automatically start the server.
+#-autocreate <#>			                Creates a world if none is found in the path specified by -world. World size is specified by: 1(small), 2(medium), and 3(large).
+#-banlist <path>			                Specifies the location of the banlist. Defaults to "banlist.txt" in the working directory.
+#-worldname <world name>             		Sets the name of the world when using -autocreate.
+#-secure			                        Adds addition cheat protection to the server.
+#-noupnp				                    Disables automatic port forwarding
+#-steam                         			Enables Steam Support
+#-lobby <friends> or <private>              Allows friends to join the server or sets it to private if Steam is enabled
+#-ip <ip address>	                        Sets the IP address for the server to listen on
+#-forcepriority <priority>	                Sets the process priority for this task. If this is used the "priority" setting below will be ignored.
+#-disableannouncementbox                    Disables the text announcements Announcement Box makes when pulsed from wire.
+#-announcementboxrange <number>             Sets the announcement box text messaging range in pixels, -1 for serverwide announcements.
+#-seed <seed>                               Specifies the world seed when using -autocreate
+
+
+# Command line parameters added by tModLoader (https://github.com/tModLoader/tModLoader/wiki/Command-Line)
+
+#-tmlsavedirectory <path>		Specifies the tModLoader save directory. Mod and World directories are derived from the save directory.
+#-modpack <modpackname>			Sets the mod pack to load, causing only the specified mods to load. 
+#-modpath <path>				Sets the folder where manually installed mods will be loaded from.
 
 
 # The world file to load. If you already have a world, set this to the filename. Only change the last segment of the path.
+# If you used a custom folder while installing the mod this path may need to change
 world=/home/tml/.local/share/Terraria/tModLoader/Worlds/YourWorld.wld
+
 # Allow the world to be created if none are found. World size is specified by 1 (small), 2 (medium), and 3 (large).
 autocreate=1
+
 # Sets the name of the world when using autocreate
 worldname=YourWorld
+
+
+#Sets the world seed when using autocreate
+#seed=AwesomeSeed
+
+#Sets the difficulty of the world when using autocreate 0(normal), 1(expert)
+#difficulty=1
+
+#Sets the max number of players allowed on a server.  Value must be between 1 and 255
+#maxplayers=8
+
+#Set the port number (DO NOT SET FOR A DOCKER INSTALLATION)
+#port=7777
+
+#Set the server password
+#password=p@55w0rd
+
+#Set the message of the day
+#motd=Please don’t cut the purple trees!
+
+#The location of the banlist. Defaults to "banlist.txt" in the working directory.
+#banlist=banlist.txt
+
+#Adds addition cheat protection.
+#secure=1
+
+#Sets the server language from its language code. 
+#English = en-US, German = de-DE, Italian = it-IT, French = fr-FR, Spanish = es-ES, Russian = ru-RU, Chinese = zh-Hans, Portuguese = pt-BR, Polish = pl-PL,
+#language=en-US
+
+#Automatically forward ports with uPNP
+#upnp=1
+
+#Reduces enemy skipping but increases bandwidth usage. The lower the number the less skipping will happen, but more data is sent. 0 is off.
+#npcstream=60
+
+#Default system priority 0:Realtime, 1:High, 2:AboveNormal, 3:Normal, 4:BelowNormal, 5:Idle
+priority=1
+
+# Server config options added by tModLoader (https://github.com/tModLoader/tModLoader/wiki/Command-Line)
+
+#Sets the folder where manually installed mods will be loaded from.
+#modpath=C:\Users\YOUR_USERNAME_HERE\My Documents\My Games\Terraria\tModLoader\Mods\
+
+#Sets the mod pack to load, causing only the specified mods to load. 
+#modpack=MyModpack
