@@ -293,29 +293,13 @@ public static class ConfigManager
 				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
-
-				string header = Language.GetTextValue("tModLoader.ModConfigChangesAccepted");
-				if (Main.InGameUI.CurrentState == Interface.modConfig || Main.MenuUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(message, header, Color.Green);
-					Main.NewText(header + ": " + message);// TODO: temporary
-				}
-				else {
-					Main.NewText(header + ": " + message);
-				}
+				Interface.modConfig.DoMenuModeState();
+				Interface.modConfig.SetMessage(Language.GetTextValue(message), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
-
-				string header = Language.GetTextValue("tModLoader.ModConfigChangesRejected");
-				if (Main.InGameUI.CurrentState == Interface.modConfig || Main.MenuUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(message, header, Color.Red);
-					Main.NewText(header + ": " + message);// TODO: temporary
-				}
-				else {
-					Main.NewText(header + ": " + message);
-				}
-
+				Interface.modConfig.SetMessage(Language.GetTextValue(message), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 			}
 		}
 		else {
@@ -330,7 +314,7 @@ public static class ConfigManager
 			ModConfig loadTimeConfig = GetLoadTimeConfig(mod, configname);
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
-			bool success = true;// TODO: what message to send here?
+			bool success = true;
 			string message = "tModLoader.ModConfigChangesAccepted";// Send key in case client and server have different languages instead of value
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;

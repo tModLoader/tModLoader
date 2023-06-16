@@ -55,8 +55,7 @@ internal class UIModConfig : UIState
 	private bool pendingChanges;
 	private bool pendingChangesUIUpdate;
 	private bool netUpdate;
-
-	// TODO: sizing at the top
+	
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement {
@@ -159,10 +158,9 @@ internal class UIModConfig : UIState
 		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
 		uIElement.Append(restoreDefaultsConfigButton);
 
-		// TODO - finish modal
 		notificationModal = new UIPanel {
-			Width = { Pixels = 400f },
-			Height = { Pixels = 200f },
+			Width = { Pixels = 400 },
+			Height = { Pixels = 200 },
 			HAlign = 0.5f,
 			VAlign = 0.5f,
 			BackgroundColor = UICommon.DefaultUIBlue,
@@ -170,8 +168,11 @@ internal class UIModConfig : UIState
 		// Don't append
 
 		notificationModalText = new UIText("") {
+			Width = { Percent = 1f },
+			MaxHeight = { Pixels = 175 },
 			HAlign = 0.5f,
 			VAlign = 0.5f,
+			IsWrapped = true,
 		};
 		notificationModal.Append(notificationModalText);
 
@@ -222,7 +223,7 @@ internal class UIModConfig : UIState
 	}
 
 	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults
-	private void DoMenuModeState()
+	public void DoMenuModeState()
 	{
 		if (Main.gameMenu) {
 			Main.MenuUI.SetState(null);
@@ -308,7 +309,7 @@ internal class UIModConfig : UIState
 		DoMenuModeState();
 	}
 
-	// TODO: make this set pending changes based on whether elements were changed rather than interacted with
+	// TODO: make this set pending changes based on whether elements were changed rather than interacted with, since changing their values back doesn't update the UI
 	public void SetPendingChanges(bool changes = true)
 	{
 		pendingChangesUIUpdate |= changes;
@@ -321,10 +322,10 @@ internal class UIModConfig : UIState
 		SetMessage("", "");
 	}
 
-	public void SetMessage(string text, string header, Color headerColor = default)
+	public void SetMessage(string text, string header, Color color = default)
 	{
-		if (headerColor == default)
-			headerColor = Color.White;
+		if (color == default)
+			color = Color.White;
 
 		RemoveChild(notificationModal);
 		RemoveChild(modalInputBlocker);
@@ -341,7 +342,7 @@ internal class UIModConfig : UIState
 		Append(notificationModal);
 		notificationModalText.SetText(text);
 		notificationModalHeader.SetText(header);
-		notificationModalHeader.TextColor = headerColor;
+		notificationModalHeader.TextColor = color;
 	}
 
 	public override void Update(GameTime gameTime)
@@ -431,7 +432,7 @@ internal class UIModConfig : UIState
 		SetMessage("", "", Color.White);
 		updateNeeded = false;
 
-		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// TODO: Hacky, but works, use WithFormatArgs
+		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// TODO: Hacky, but works
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		pendingChanges = pendingRevertDefaults;
 

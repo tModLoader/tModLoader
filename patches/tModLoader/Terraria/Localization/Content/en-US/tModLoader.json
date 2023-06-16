@@ -105,6 +105,8 @@
 		"ModConfigChangesRejected": "Changes Rejected",
 		"ModConfigChangesPending": "Changes Pending",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		"ModConfigServerSide": "Server Side",
+		"ModConfigClientSide": "Client Side",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",

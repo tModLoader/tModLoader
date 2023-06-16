@@ -196,19 +196,10 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 				}
 			};
-
-			// TODO: add server side indicator
-			var sideIndicator = new UIImage(TextureAssets.Item[5000]) {
-				HAlign = 1f,
-				VAlign = 0.5f,
+			configPanel.OnUpdate += delegate (UIElement affectedElement) {
+				if (configPanel.IsMouseHovering)
+					Main.instance.MouseText(Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide"));
 			};
-			sideIndicator.OnUpdate += delegate(UIElement affectedElement) {
-				if (sideIndicator.IsMouseHovering) {
-					Main.instance.MouseText("EEEE");
-				}
-			};
-			configPanel.Append(sideIndicator);
-
 			configList.Add(configPanel);
 		}
 	}
