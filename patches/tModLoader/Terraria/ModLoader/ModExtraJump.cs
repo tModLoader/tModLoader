@@ -108,4 +108,11 @@ public abstract partial class ModExtraJump : ModType
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
 	public virtual void ModifyHorizontalSpeeds(Player player) { }
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for this extra jump is set from <see langword="false"/> to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This occurs at the start of the grounded jump and while the player is grounded.
+	/// </summary>
+	/// <param name="player">The player instance</param>
+	public virtual void OnJumpRefreshed(Player player) { }
 }

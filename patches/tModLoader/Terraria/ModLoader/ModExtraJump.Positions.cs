@@ -4,16 +4,16 @@ partial class ModExtraJump
 {
 	public sealed class Between
 	{
-		public ModExtraJump Before { get; }
+		public ModExtraJump Dependency { get; }
 
-		public ModExtraJump After { get; }
+		public ModExtraJump Dependent { get; }
 
 		public Between() { }
 
-		public Between(ModExtraJump before, ModExtraJump after)
+		public Between(ModExtraJump dependency, ModExtraJump dependent)
 		{
-			Before = before;
-			After = after;
+			Dependency = dependency;
+			Dependent = dependent;
 		}
 	}
 

@@ -3450,77 +3450,29 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
-@@ -17489,7 +_,7 @@
+@@ -17489,8 +_,10 @@
  			RefreshDoubleJumps();
  	}
  
 -	private void RefreshDoubleJumps()
 +	public void RefreshDoubleJumps()
  	{
++		ExtraJumpLoader.RefreshExtraJumps(this);
++		/*
  		if (hasJumpOption_Cloud)
  			canJumpAgain_Cloud = true;
-@@ -17517,6 +_,64 @@
+ 
+@@ -17517,6 +_,13 @@
  
  		if (hasJumpOption_Basilisk)
  			canJumpAgain_Basilisk = true;
-+
-+		foreach (ref ExtraJumpData jump in ModdedExtraJumps)
-+		{
-+			if (jump.Active)
-+				jump.JumpAvailable = true;
-+		}
++		*/
 +	}
 +
-+	private void ClearUnavailableDoubleJumps()
++	public void ClearAllExtraJumps()
 +	{
-+		if (!hasJumpOption_Cloud)
-+			canJumpAgain_Cloud = false;
-+
-+		if (!hasJumpOption_Sandstorm)
-+			canJumpAgain_Sandstorm = false;
-+
-+		if (!hasJumpOption_Blizzard)
-+			canJumpAgain_Blizzard = false;
-+
-+		if (!hasJumpOption_Fart)
-+			canJumpAgain_Fart = false;
-+
-+		if (!hasJumpOption_Sail)
-+			canJumpAgain_Sail = false;
-+
-+		if (!hasJumpOption_Unicorn)
-+			canJumpAgain_Unicorn = false;
-+
-+		if (!hasJumpOption_Santank)
-+			canJumpAgain_Santank = false;
-+
-+		if (!hasJumpOption_WallOfFleshGoat)
-+			canJumpAgain_WallOfFleshGoat = false;
-+
-+		if (!hasJumpOption_Basilisk)
-+			canJumpAgain_Basilisk = false;
-+
-+		foreach (ref ExtraJumpData jump in ModdedExtraJumps)
-+		{
-+			if (!jump.Active)
-+				jump.JumpAvailable = false;
-+		}
-+	}
-+
-+	public void ClearAllDoubleJumps()
-+	{
-+		canJumpAgain_Cloud = false;
-+		canJumpAgain_Sandstorm = false;
-+		canJumpAgain_Blizzard = false;
-+		canJumpAgain_Fart = false;
-+		canJumpAgain_Sail = false;
-+		canJumpAgain_Unicorn = false;
-+		canJumpAgain_Santank = false;
-+		canJumpAgain_WallOfFleshGoat = false;
-+		canJumpAgain_Basilisk = false;
-+
-+		foreach (ref ExtraJumpData jump in ModdedExtraJumps)
-+			jump.JumpAvailable = false;
++		// Included to make clearing all extra jumps easier to write
++		ExtraJumpLoader.ClearAllExtraJumps(this);
  	}
  
  	public void StickyMovement()
@@ -3822,10 +3774,11 @@
  		}
  
  		lastTileRangeX = tileRangeX;
-@@ -20085,6 +_,7 @@
+@@ -20085,6 +_,8 @@
  			movementAbilitiesCache.PasteInto(this);
  
  		if (mount.Active && mount.BlockExtraJumps) {
++			ExtraJumpLoader.ClearAllExtraJumps(this);
 +			/*
  			canJumpAgain_Cloud = false;
  			canJumpAgain_Sandstorm = false;
@@ -3835,22 +3788,21 @@
  			canJumpAgain_WallOfFleshGoat = false;
  			canJumpAgain_Basilisk = false;
 +			*/
-+			ClearAllDoubleJumps();
  		}
  		else if (velocity.Y == 0f || sliding) {
  			RefreshDoubleJumps();
  		}
  		else {
++			ExtraJumpLoader.ClearUnavailableExtraJumps(this);
 +			/*
  			if (!hasJumpOption_Cloud)
  				canJumpAgain_Cloud = false;
  
-@@ -20125,6 +_,8 @@
+@@ -20125,6 +_,7 @@
  
  			if (!hasJumpOption_Basilisk)
  				canJumpAgain_Basilisk = false;
 +			*/
-+			ClearUnavailableDoubleJumps();
  		}
  
  		if (!carpet) {

@@ -112,9 +112,37 @@ public static class ExtraJumpLoader
 		var positions = ExtraJumps.ToDictionary(static j => j, j => j.GetOrder(player));
 
 		var sort = new TopoSort<ModExtraJump>(positions.Keys,
-			j => new[] { positions[j].Before }.Where(static j => j != null),
-			j => new[] { positions[j].After }.Where(static j => j != null));
+			j => new[] { positions[j].Dependency }.Where(static j => j != null),
+			j => new[] { positions[j].Dependent }.Where(static j => j != null));
 
 		return sort.Sort();
+	}
+
+	public static void RefreshExtraJumps(Player player)
+	{
+		foreach (ModExtraJump jump in ExtraJumps) {
+			ref ExtraJumpData data = ref player.GetExtraJump(jump);
+			if (data.Active) {
+				if (!data.JumpAvailable) {
+					jump.OnJumpRefreshed(player);
+					data.JumpAvailable = true;
+				}
+			}
+		}
+	}
+
+	internal static void ClearUnavailableExtraJumps(Player player)
+	{
+		foreach (ModExtraJump jump in ExtraJumps) {
+			ref ExtraJumpData data = ref player.GetExtraJump(jump);
+			if (!data.Active)
+				data.JumpAvailable = false;
+		}
+	}
+
+	internal static void ClearAllExtraJumps(Player player)
+	{
+		foreach (ModExtraJump jump in ExtraJumps)
+			player.GetExtraJump(jump).JumpAvailable = false;
 	}
 }
