@@ -14,7 +14,7 @@ public abstract class VanillaExtraJump : ModExtraJump
 			Type == ExtraJumpLoader.DefaultExtraJumpCount - 1 ? null : ExtraJumpLoader.ExtraJumps[Type + 1]);
 }
 
-public class GoatMountJump : VanillaExtraJump
+public sealed class GoatMountJump : VanillaExtraJump
 {
 	public override Between GetOrder(Player player) => throw new NotImplementedException();
 
@@ -47,7 +47,7 @@ public class GoatMountJump : VanillaExtraJump
 	}
 }
 
-public class BasiliskMountJump : VanillaExtraJump
+public sealed class BasiliskMountJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 0.75f;
 
@@ -78,7 +78,7 @@ public class BasiliskMountJump : VanillaExtraJump
 	}
 }
 
-public class SantankMountJump : VanillaExtraJump
+public sealed class SantankMountJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 2f;
 
@@ -129,7 +129,7 @@ public class SantankMountJump : VanillaExtraJump
 	}
 }
 
-public class UnicornMountJump : VanillaExtraJump
+public sealed class UnicornMountJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 2f;
 
@@ -173,7 +173,7 @@ public class UnicornMountJump : VanillaExtraJump
 	}
 }
 
-public class SandstormInABottleJump : VanillaExtraJump
+public sealed class SandstormInABottleJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 3f;
 
@@ -208,7 +208,7 @@ public class SandstormInABottleJump : VanillaExtraJump
 	}
 }
 
-public class BlizzardInABottleJump : VanillaExtraJump
+public sealed class BlizzardInABottleJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 1.5f;
 
@@ -260,7 +260,7 @@ public class BlizzardInABottleJump : VanillaExtraJump
 	}
 }
 
-public class FartInAJarJump : VanillaExtraJump
+public sealed class FartInAJarJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 2f;
 
@@ -312,7 +312,7 @@ public class FartInAJarJump : VanillaExtraJump
 	}
 }
 
-public class TsunamiInABottleJump : VanillaExtraJump
+public sealed class TsunamiInABottleJump : VanillaExtraJump
 {
 	public override float GetJumpDuration(Player player) => 1.25f;
 
@@ -373,7 +373,7 @@ public class TsunamiInABottleJump : VanillaExtraJump
 	}
 }
 
-public class CloudInABottleJump : VanillaExtraJump
+public sealed class CloudInABottleJump : VanillaExtraJump
 {
 	public override bool IgnoresSwimmingChecks => true;
 
