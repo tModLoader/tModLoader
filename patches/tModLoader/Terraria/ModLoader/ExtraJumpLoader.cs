@@ -28,7 +28,9 @@ public static class ExtraJumpLoader
 
 	public static readonly ModExtraJump LastVanillaExtraJump = ExtraJumps[^1];
 
-	internal static IEnumerable<ModExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
+	private static ModExtraJump[] orderedJumps;
+
+	public static IReadOnlyList<ModExtraJump> OrderedExtraJumps => orderedJumps;
 
 	static ExtraJumpLoader()
 	{
@@ -46,6 +48,72 @@ public static class ExtraJumpLoader
 		ExtraJumps.RemoveRange(DefaultExtraJumpCount, ExtraJumpCount - DefaultExtraJumpCount);
 	}
 
+	internal static void ResizeArrays()
+	{
+		// While using the ModExtraJump objects directly would suffice, abstracting them to their Type property makes
+		// checking if a dependency/dependent already exist much easier, since each ModExtraJump has a unique Type
+		//   -- absoluteAquarian
+		Dictionary<int, HashSet<int>> dependenciesByType = new();
+		Dictionary<int, HashSet<int>> dependentsByType = new();
+
+		void AddDependent(int type, int dependent)
+		{
+			if (!dependentsByType.TryGetValue(type, out var list))
+				dependentsByType[type] = list = new();
+
+			list.Add(dependent);
+		}
+
+		void AddDependency(int type, int dependency)
+		{
+			if (!dependenciesByType.TryGetValue(type, out var list))
+				dependenciesByType[type] = list = new();
+
+			list.Add(dependency);
+		}
+
+		void CheckPosition(int type, ModExtraJump.Position position)
+		{
+			switch (position) {
+				case ModExtraJump.After after:
+					AddDependent(after.Parent.Type, type);
+					break;
+				case ModExtraJump.Before before:
+					AddDependency(before.Parent.Type, type);
+					break;
+				case ModExtraJump.Between between:
+					if (between.Dependent?.Type is { } dependent) {
+						AddDependent(type, dependent);
+						AddDependency(dependent, type);
+					}
+					if (between.Dependency?.Type is { } dependency) {
+						AddDependent(dependency, type);
+						AddDependency(type, dependency);
+					}
+					break;
+			}
+		}
+
+		// Handle the vanilla order
+		foreach (ModExtraJump jump in ExtraJumps) {
+			CheckPosition(jump.Type, jump.GetDefaultPosition());
+		}
+
+		// Handle the modded order
+		foreach (ModExtraJump jump in ExtraJumps) {
+			foreach (var position in jump.GetModdedConstraints()) {
+				// TODO: force After/Before and at least one of Between's properties to refer to a modded jump?
+				CheckPosition(jump.Type, position);
+			}
+		}
+
+		var sort = new TopoSort<int>(ExtraJumps.Select(static j => j.Type),
+			j => dependenciesByType[j],
+			j => dependentsByType[j]);
+
+		orderedJumps = sort.Sort().Select(static t => ExtraJumps[t]).ToArray();
+	}
+
 	internal static void RegisterDefaultJumps()
 	{
 		int i = 0;
@@ -58,7 +126,7 @@ public static class ExtraJumpLoader
 
 	public static void ModifyPlayerHorizontalSpeeds(Player player)
 	{
-		foreach (ModExtraJump moddedExtraJump in ExtraJumps) {
+		foreach (ModExtraJump moddedExtraJump in orderedJumps) {
 			// Special case: Sandstorm in a Bottle uses a separate flag
 			ref ExtraJumpData extraJump = ref player.GetExtraJump(moddedExtraJump);
 			if ((object.ReferenceEquals(moddedExtraJump, ModExtraJump.SandstormInABottle) && player.sandStorm) || (extraJump.PerformingJump && extraJump.Active))
@@ -68,7 +136,7 @@ public static class ExtraJumpLoader
 
 	public static void HandleJumpVisuals(Player player)
 	{
-		foreach (ModExtraJump jump in ExtraJumps) {
+		foreach (ModExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump && data.Active && !data.JumpAvailable)
 				jump.JumpVisuals(player);
@@ -77,7 +145,7 @@ public static class ExtraJumpLoader
 
 	public static void ProcessJumps(Player player, bool flipperOrSlimeMountSwimming)
 	{
-		foreach (ModExtraJump jump in GetOrderedJumps(player)) {
+		foreach (ModExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 
 			// The Cloud in a Bottle's extra jump ignores the "flipper swimming" check
@@ -98,7 +166,7 @@ public static class ExtraJumpLoader
 
 	public static void OnJumpEnded(Player player)
 	{
-		foreach (ModExtraJump jump in ExtraJumps) {
+		foreach (ModExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump) {
 				jump.OnJumpEnded(player);
@@ -107,60 +175,9 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	private static IEnumerable<ModExtraJump> GetOrderedJumps(Player player)
-	{
-		Dictionary<int, HashSet<int>> dependenciesByType = new();
-		Dictionary<int, HashSet<int>> dependentsByType = new();
-
-		void AddDependent(int type, int dependent)
-		{
-			if (!dependentsByType.TryGetValue(type, out var list))
-				dependentsByType[type] = list = new();
-
-			list.Add(dependent);
-		}
-
-		void AddDependency(int type, int dependency)
-		{
-			if (!dependenciesByType.TryGetValue(type, out var list))
-				dependenciesByType[type] = list = new();
-
-			list.Add(dependency);
-		}
-
-		foreach (ModExtraJump jump in ExtraJumps) {
-			var position = jump.GetOrder(player);
-
-			switch (position) {
-				case ModExtraJump.After after:
-					AddDependent(after.Parent.Type, jump.Type);
-					break;
-				case ModExtraJump.Before before:
-					AddDependency(before.Parent.Type, jump.Type);
-					break;
-				case ModExtraJump.Between between:
-					if (between.Dependent?.Type is { } dependent) {
-						AddDependent(jump.Type, dependent);
-						AddDependency(dependent, jump.Type);
-					}
-					if (between.Dependency?.Type is { } dependency) {
-						AddDependent(dependency, jump.Type);
-						AddDependency(jump.Type, dependency);
-					}
-					break;
-			}
-		}
-
-		var sort = new TopoSort<int>(ExtraJumps.Select(static j => j.Type),
-			j => dependenciesByType[j],
-			j => dependentsByType[j]);
-
-		return sort.Sort().Select(static t => ExtraJumps[t]);
-	}
-
 	public static void RefreshExtraJumps(Player player)
 	{
-		foreach (ModExtraJump jump in ExtraJumps) {
+		foreach (ModExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.Active) {
 				if (!data.JumpAvailable) {

@@ -517,6 +517,7 @@ public static class ModContent
 	private static void ResizeArrays(bool unloading = false)
 	{
 		DamageClassLoader.ResizeArrays();
+		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
 		EquipLoader.ResizeAndFillArrays();
 		PrefixLoader.ResizeArrays();

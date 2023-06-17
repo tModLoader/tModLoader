@@ -1,4 +1,5 @@
-﻿using Terraria.Audio;
+﻿using System.Collections.Generic;
+using Terraria.Audio;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
@@ -47,10 +48,17 @@ public abstract partial class ModExtraJump : ModType
 	public override string ToString() => Name;
 
 	/// <summary>
-	/// Return which extra jumps this extra jump should be placed between in the priority order here
+	/// Returns this extra jump's default position in regard to the vanilla extra jumps.  Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an extra jump
 	/// </summary>
-	/// <param name="player">The player performing the jumps</param>
-	public abstract Position GetOrder(Player player);
+	public abstract Position GetDefaultPosition();
+
+	/// <summary>
+	/// Returns additional constraints for this extra jump's position in regard to other modded extra jumps
+	/// </summary>
+	public virtual IEnumerable<Position> GetModdedConstraints()
+	{
+		yield break;
+	}
 
 	internal void PerformJump(Player player) {
 		// Set velocity and jump duration
