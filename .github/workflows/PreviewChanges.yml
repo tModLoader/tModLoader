@@ -28,7 +28,7 @@ jobs:
         - name: Check out repo
           # If the condition is TRUE then we setup to merge 1.4.4 into preview. If False, nothing happens 
           # Allow changes to flow from dev to preview during Month 1 and Month 2 up to the 10th. Freeze 11th to Month 2 end
-          if: steps.date.outputs.date < 11 || steps.date.outputs.month % 2 == 1
+          if: steps.date.outputs.date < 0 #|| steps.date.outputs.month % 2 == 1
           uses: actions/checkout@v2
           with:
             ref: 'refs/heads/1.3'
