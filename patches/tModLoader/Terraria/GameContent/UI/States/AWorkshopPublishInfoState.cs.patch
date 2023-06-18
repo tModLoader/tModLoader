@@ -8,7 +8,12 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -38,16 +_,32 @@
+@@ -34,20 +_,36 @@
+ 	private UIElement _publishButton;
+ 	private WorkshopItemPublicSettingId _optionPublicity = WorkshopItemPublicSettingId.Public;
+ 	private GroupOptionButton<WorkshopItemPublicSettingId>[] _publicityOptions;
+-	private List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
++	protected List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
  	private UICharacterNameButton _previewImagePathPlate;
  	private Texture2D _previewImageTransientTexture;
  	private UIImage _previewImageUIElement;

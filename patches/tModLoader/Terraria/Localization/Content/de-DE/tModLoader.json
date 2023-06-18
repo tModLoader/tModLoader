@@ -512,7 +512,26 @@
 		"TagsLang": "Lokalisierungsunterstützung",
 		"TagsLangDescription": "Dieser Mod unterstützt mehrere Sprachen",
 		"TagsGen": "Benutzerdefinierte Weltgeneration",
-		"TagsGenDescription": "Ändert, wie die Welt genertiert wird (z.B. Erze, neue Strukturen, usw.)"
+		"TagsGenDescription": "Ändert, wie die Welt genertiert wird (z.B. Erze, neue Strukturen, usw.)",
+		"TagsLanguage_English": "Englisch",
+		"TagsLanguage_Spanish": "Spanisch",
+		"TagsLanguage_French": "Französisch",
+		"TagsLanguage_Italian": "Italienisch",
+		"TagsLanguage_Russian": "Russisch",
+		"TagsLanguage_Chinese": "Vereinfachtes Chinesisch",
+		"TagsLanguage_Portuguese": "Portugiesisch (Brasilien)",
+		"TagsLanguage_German": "Deutsch",
+		"TagsLanguage_Polish": "Polnisch",
+		// "TagsLanguage_Description": "This mod is localized for this language.",
+		"TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",

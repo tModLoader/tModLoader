@@ -512,7 +512,26 @@
 		"TagsLang": "Traducciones",
 		"TagsLangDescription": "Este mod soporta varios idiomas",
 		"TagsGen": "Generación de mundos",
-		"TagsGenDescription": "Cambian la forma en la que se generan nuevos mundos (añadiendo minerales, estructuras, etc.)"
+		"TagsGenDescription": "Cambian la forma en la que se generan nuevos mundos (añadiendo minerales, estructuras, etc.)",
+		"TagsLanguage_English": "Inglés",
+		"TagsLanguage_Spanish": "Español",
+		"TagsLanguage_French": "Francés",
+		"TagsLanguage_Italian": "Italiano",
+		"TagsLanguage_Russian": "Ruso",
+		"TagsLanguage_Chinese": "Chino simplificado",
+		"TagsLanguage_Portuguese": "Portugués de Brasil",
+		"TagsLanguage_German": "Alemán",
+		"TagsLanguage_Polish": "Polaco",
+		// "TagsLanguage_Description": "This mod is localized for this language.",
+		"TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",

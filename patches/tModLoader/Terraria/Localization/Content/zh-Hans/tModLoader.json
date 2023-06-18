@@ -513,7 +513,26 @@
 		"TagsLang": "翻译与本地化",
 		"TagsLangDescription": "这个模组支持多种语言",
 		"TagsGen": "地图生成",
-		"TagsGenDescription": "影响地图生成的方式, 例如添加了新的矿物、地形等"
+		"TagsGenDescription": "影响地图生成的方式, 例如添加了新的矿物、地形等",
+		"TagsLanguage_English": "英语",
+		"TagsLanguage_Spanish": "西班牙语",
+		"TagsLanguage_French": "法语",
+		"TagsLanguage_Italian": "意大利语",
+		"TagsLanguage_Russian": "俄语",
+		"TagsLanguage_Chinese": "简体中文",
+		"TagsLanguage_Portuguese": "巴西葡萄牙语",
+		"TagsLanguage_German": "德语",
+		"TagsLanguage_Polish": "波兰语",
+		// "TagsLanguage_Description": "This mod is localized for this language.",
+		"TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",
