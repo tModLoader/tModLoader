@@ -2925,6 +2925,23 @@
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
+@@ -14597,6 +_,8 @@
+ 		boneGloveItem = null;
+ 		hasLuck_LuckyCoin = false;
+ 		hasLuck_LuckyHorseshoe = false;
++		ExtraJumpLoader.ResetActiveFlags(this);
++		/*
+ 		hasJumpOption_Cloud = false;
+ 		hasJumpOption_Sail = false;
+ 		hasJumpOption_Sandstorm = false;
+@@ -14606,6 +_,7 @@
+ 		hasJumpOption_Santank = false;
+ 		hasJumpOption_WallOfFleshGoat = false;
+ 		hasJumpOption_Basilisk = false;
++		*/
+ 		defendedByPaladin = false;
+ 		hasPaladinShield = false;
+ 		hasLucyTheAxe = false;
 @@ -14652,18 +_,23 @@
  			}
  		}

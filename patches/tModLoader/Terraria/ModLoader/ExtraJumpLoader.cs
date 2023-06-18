@@ -188,6 +188,12 @@ public static class ExtraJumpLoader
 		}
 	}
 
+	internal static void ResetActiveFlags(Player player)
+	{
+		foreach (ModExtraJump jump in ExtraJumps)
+			player.GetExtraJump(jump).Active = false;
+	}
+
 	internal static void ClearUnavailableExtraJumps(Player player)
 	{
 		foreach (ModExtraJump jump in ExtraJumps) {

@@ -80,7 +80,7 @@ public abstract partial class ModExtraJump : ModType
 	public virtual void JumpVisuals(Player player) { }
 
 	/// <summary>
-	/// Vanilla jumps use the following values:
+	/// Vanilla's extra jumps use the following values:
 	/// <para>
 	/// Basilisk mount: 0.75<br/>
 	/// Blizzard in a Bottle: 1.5<br/>
@@ -114,7 +114,18 @@ public abstract partial class ModExtraJump : ModType
 
 	/// <summary>
 	/// Modify the player's horizontal movement while performing this extra jump here.<br/>
-	/// For example, the Sandstorm in a Bottle multiplies <see cref="Player.runAcceleration"/> by 1.5x and <see cref="Player.maxRunSpeed"/> by 2x.
+	/// Vanilla's extra jumps use the following values:
+	/// <para>
+	/// Basilisk mount: runAcceleration *= 3; maxRunSpeed *= 1.5;<br/>
+	/// Blizzard in a Bottle: runAcceleration *= 3; maxRunSpeed *= 1.5;<br/>
+	/// Cloud in a Bottle: no change<br/>
+	/// Fart in a Jar: runAcceleration *= 3; maxRunSpeed *= 1.75;<br/>
+	/// Goat mount: runAcceleration *= 3; maxRunSpeed *= 1.5;<br/>
+	/// Sandstorm in a Bottle: runAcceleration *= 1.5; maxRunSpeed *= 2;<br/>
+	/// Santank mount: runAcceleration *= 3; maxRunSpeed *= 1.5;<br/>
+	/// Tsunami in a Bottle: runAcceleration *= 1.5; maxRunSpeed *= 1.25;<br/>
+	/// Unicorn mount: runAcceleration *= 3; maxRunSpeed *= 1.5;
+	/// </para>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
 	public virtual void ModifyHorizontalSpeeds(Player player) { }
