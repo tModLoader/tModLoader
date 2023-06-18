@@ -56,7 +56,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
 	/// </summary>
 	/// <remarks>
-	/// Note: This properly gets ignored if the game would not play music for this NPC by default (i.e. it's not a boss, or it doesn't belong to an invasion)
+	/// Note: This property gets ignored if the game would not play music for this NPC by default (i.e. it's not a boss, or it doesn't belong to an invasion)
 	/// </remarks>
 	/// Will be superseded by ModSceneEffect. Kept for legacy.
 	public int Music { get; set; } = -1;
