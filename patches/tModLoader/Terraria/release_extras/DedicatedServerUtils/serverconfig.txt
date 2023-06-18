@@ -32,7 +32,16 @@
 
 # The world file to load. If you already have a world, set this to the filename. Only change the last segment of the path.
 # If you used a custom folder while installing the mod this path may need to change
+# Docker (default)
 world=/home/tml/.local/share/Terraria/tModLoader/Worlds/YourWorld.wld
+
+# Thanks to Drackrath for the Windows and 1.4.4 paths
+#Windows
+#world=C:\Users\YOUR_USERNAME_HERE\My Documents\My Games\Terraria\Worlds\YourWorld.wld
+#Linux
+#world=~/.local/share/Terraria/tModLoader/Worlds/YourWorld.wld
+#Linux 1.4.4-preview
+#world=~/.local/share/Terraria/tModLoader-preview/Worlds/YourWorld.wld
 
 # Allow the world to be created if none are found. World size is specified by 1 (small), 2 (medium), and 3 (large).
 autocreate=1
