@@ -1666,6 +1666,77 @@
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  			int num2 = 5000;
  			for (int j = 0; j < 200; j++) {
+@@ -10219,12 +_,15 @@
+ 					case 131:
+ 						num3 = 1;
+ 						break;
++					/*
+ 					case 26:
+ 					case 27:
+ 					case 28:
+ 					case 29:
+ 					case 111:
+ 					case 471:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 11;
+ 						break;
+ 					case 113:
+@@ -10236,18 +_,24 @@
+ 					case 134:
+ 					case 135:
+ 					case 136:
++					/*
+ 					case 143:
+ 					case 144:
+ 					case 145:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 					case 266:
+ 						num3 = 3;
+ 						break;
++					/*
+ 					case 212:
+ 					case 213:
+ 					case 214:
+ 					case 215:
+ 					case 216:
+ 					case 491:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 8;
+ 						break;
+ 					case 245:
+@@ -10261,6 +_,7 @@
+ 					case 264:
+ 						num3 = 6;
+ 						break;
++					/*
+ 					case 381:
+ 					case 382:
+ 					case 383:
+@@ -10271,7 +_,10 @@
+ 					case 390:
+ 					case 391:
+ 					case 395:
+-					case 520:
++					*/
++					// No 387 tesla turret, handled via NoInvasionMusic below 
++					case int _ when npc[j].type != 387 && NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
++					case 520: // martian walker, currently not in NPC.GetInvasionGroup and by extension not in NPCID.Sets.BelongsToInvasionMartianMadness
+ 						num3 = 9;
+ 						break;
+ 					case 398:
+@@ -10309,6 +_,9 @@
+ 				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[j].type])
+ 					num3 = 12;
+ 
++				if (NPCID.Sets.NoInvasionMusic[npc[j].type])
++					num3 = 0;
++
+ 				if (num3 == 0 && npc[j].boss)
+ 					num3 = 1;
+ 
 @@ -10320,6 +_,12 @@
  
  				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
