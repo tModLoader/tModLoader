@@ -19,7 +19,7 @@ jobs:
         - name: Get current day
           id: date
           shell: bash
-          run: 
+          run: |
             # stores day of the month
             echo "::set-output name=date::$(date +'%d')"
             # stores month as a number
