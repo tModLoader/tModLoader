@@ -4,21 +4,6 @@ partial class ModExtraJump
 {
 	public abstract class Position { }
 
-	public sealed class Between : Position
-	{
-		public ModExtraJump Dependency { get; }
-
-		public ModExtraJump Dependent { get; }
-
-		public Between() { }
-
-		public Between(ModExtraJump dependency, ModExtraJump dependent)
-		{
-			Dependency = dependency;
-			Dependent = dependent;
-		}
-	}
-
 	public sealed class Before : Position
 	{
 		public ModExtraJump Parent { get; }

@@ -3385,7 +3385,7 @@
  
  	public void DoubleJumpVisuals()
  	{
-+		ExtraJumpLoader.HandleJumpVisuals(this);
++		ExtraJumpLoader.JumpVisuals(this);
 +		/*
  		if (isPerformingJump_Cloud && hasJumpOption_Cloud && !canJumpAgain_Cloud && (canJumpAgain_Sandstorm || !hasJumpOption_Sandstorm) && ((gravDir == 1f && velocity.Y < 0f) || (gravDir == -1f && velocity.Y > 0f))) {
  			int num = height;

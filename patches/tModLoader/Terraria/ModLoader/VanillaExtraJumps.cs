@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
@@ -9,7 +10,11 @@ namespace Terraria.ModLoader;
 [Autoload(false)]
 public abstract class VanillaExtraJump : ModExtraJump
 {
-	public override Position GetDefaultPosition() => new After(Type == 0 ? null : ExtraJumpLoader.ExtraJumps[Type - 1]);
+	public sealed override Position GetDefaultPosition() => null;
+
+	public sealed override IEnumerable<Position> GetModdedConstraints() {
+		yield break;
+	}
 }
 
 public sealed class GoatMountJump : VanillaExtraJump
@@ -151,9 +156,6 @@ public sealed class UnicornMountJump : VanillaExtraJump
 
 	public override void JumpVisuals(Player player)
 	{
-		if ((player.gravDir != 1f || !(player.velocity.Y < 0f)) && (player.gravDir != -1f || !(player.velocity.Y > 0f)))
-			return;
-
 		Dust obj = Main.dust[Dust.NewDust(player.position, player.width, player.height, Utils.SelectRandom(Main.rand, 176, 177, 179))];
 		obj.velocity = Vector2.Zero;
 		obj.noGravity = true;
@@ -175,9 +177,6 @@ public sealed class SandstormInABottleJump : VanillaExtraJump
 
 	public override void JumpVisuals(Player player)
 	{
-		if ((player.gravDir != 1f || !(player.velocity.Y < 0f)) && (player.gravDir != -1f || !(player.velocity.Y > 0f)))
-			return;
-
 		int num3 = player.height;
 		if (player.gravDir == -1f)
 			num3 = -6;
@@ -210,9 +209,6 @@ public sealed class BlizzardInABottleJump : VanillaExtraJump
 
 	public override void JumpVisuals(Player player)
 	{
-		if ((player.gravDir != 1f || !(player.velocity.Y < 0f)) && (player.gravDir != -1f || !(player.velocity.Y > 0f)))
-			return;
-
 		int num12 = player.height - 6;
 		if (player.gravDir == -1f)
 			num12 = 6;
@@ -288,9 +284,6 @@ public sealed class FartInAJarJump : VanillaExtraJump
 
 	public override void JumpVisuals(Player player)
 	{
-		if ((player.gravDir != 1f || !(player.velocity.Y < 0f)) && (player.gravDir != -1f || !(player.velocity.Y > 0f)))
-			return;
-
 		int num7 = player.height;
 		if (player.gravDir == -1f)
 			num7 = -6;
@@ -336,9 +329,6 @@ public sealed class TsunamiInABottleJump : VanillaExtraJump
 
 	public override void JumpVisuals(Player player)
 	{
-		if ((player.gravDir != 1f || !(player.velocity.Y < 0f)) && (player.gravDir != -1f || !(player.velocity.Y > 0f)))
-			return;
-
 		int num9 = 1;
 		if (player.jump > 0)
 			num9 = 2;
@@ -398,11 +388,10 @@ public sealed class CloudInABottleJump : VanillaExtraJump
 		Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
 
+	public override bool PreJumpVisuals(Player player) => (player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && base.PreJumpVisuals(player);
+
 	public override void JumpVisuals(Player player)
 	{
-		if (!(player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && (player.gravDir != 1f || !(player.velocity.Y < 0f)) && (player.gravDir != -1f || !(player.velocity.Y > 0f)))
-			return;
-
 		int num = player.height;
 		if (player.gravDir == -1f)
 			num = -6;

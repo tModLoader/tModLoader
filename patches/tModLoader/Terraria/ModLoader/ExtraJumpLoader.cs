@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
 
@@ -28,6 +29,8 @@ public static class ExtraJumpLoader
 
 	public static readonly ModExtraJump LastVanillaExtraJump = ExtraJumps[^1];
 
+	internal static IEnumerable<ModExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
+
 	private static ModExtraJump[] orderedJumps;
 
 	public static IReadOnlyList<ModExtraJump> OrderedExtraJumps => orderedJumps;
@@ -50,68 +53,66 @@ public static class ExtraJumpLoader
 
 	internal static void ResizeArrays()
 	{
-		// While using the ModExtraJump objects directly would suffice, abstracting them to their Type property makes
-		// checking if a dependency/dependent already exist much easier, since each ModExtraJump has a unique Type
-		//   -- absoluteAquarian
-		Dictionary<int, HashSet<int>> dependenciesByType = new();
-		Dictionary<int, HashSet<int>> dependentsByType = new();
-
-		void AddDependent(int type, int dependent)
-		{
-			if (!dependentsByType.TryGetValue(type, out var list))
-				dependentsByType[type] = list = new();
-
-			list.Add(dependent);
+		if (!ModdedExtraJumps.Any()) {
+			// Vanilla extra jumps are already sorted in the collection; any additional work would be a moot point
+			orderedJumps = ExtraJumps.ToArray();
+			return;
 		}
 
-		void AddDependency(int type, int dependency)
-		{
-			if (!dependenciesByType.TryGetValue(type, out var list))
-				dependenciesByType[type] = list = new();
+		// Between each vanilla extra jump, before the first jump and after the last jump exists a "slot"
+		// Modded jumps are added to a "slot", and then the slots are filled in load order by default
+		// Modders can use "ModExtraJump::GetModdedConstraints()" to facilitate sorting within a slot
+		List<int>[] sortingSlots = new List<int>[DefaultExtraJumpCount + 2];
+		for (int i = 0; i < sortingSlots.Length; i++)
+			sortingSlots[i] = new();
 
-			list.Add(dependency);
-		}
+		// Initially put the modded extra jumps in load order
+		foreach (ModExtraJump jump in ModdedExtraJumps) {
+			var position = jump.GetDefaultPosition();
 
-		void CheckPosition(int type, ModExtraJump.Position position)
-		{
 			switch (position) {
 				case ModExtraJump.After after:
-					AddDependent(after.Parent.Type, type);
+					int afterParent = after.Parent?.Type is { } afterType ? afterType + 1 : 0;
+
+					sortingSlots[afterParent].Add(jump.Type);
 					break;
 				case ModExtraJump.Before before:
-					AddDependency(before.Parent.Type, type);
+					int beforeParent = before.Parent?.Type is { } beforeType ? beforeType : DefaultExtraJumpCount + 1;
+
+					sortingSlots[beforeParent].Add(jump.Type);
 					break;
-				case ModExtraJump.Between between:
-					if (between.Dependent?.Type is { } dependent) {
-						AddDependent(type, dependent);
-						AddDependency(dependent, type);
-					}
-					if (between.Dependency?.Type is { } dependency) {
-						AddDependent(dependency, type);
-						AddDependency(type, dependency);
-					}
-					break;
+				default:
+					throw new ArgumentException($"ModExtraJump {jump} has unknown Position {position}");
 			}
 		}
 
-		// Handle the vanilla order
-		foreach (ModExtraJump jump in ExtraJumps) {
-			CheckPosition(jump.Type, jump.GetDefaultPosition());
-		}
+		// Cache the information for which additional constraints each modded extra jump has
+		var positions = ModdedExtraJumps.ToDictionary(j => j.Type, j => j.GetModdedConstraints()?.Select(p => VerifyPositionType(j, p)).ToList());
 
-		// Handle the modded order
-		foreach (ModExtraJump jump in ExtraJumps) {
-			foreach (var position in jump.GetModdedConstraints()) {
-				// TODO: force After/Before and at least one of Between's properties to refer to a modded jump?
-				CheckPosition(jump.Type, position);
+		// Sort the modded jumps per slot
+		List<ModExtraJump> sorted = new();
+
+		for (int i = 0; i < DefaultExtraJumpCount + 2; i++) {
+			var sort = new TopoSort<ModExtraJump>(sortingSlots[i].Select(static t => ExtraJumps[t]),
+				j => positions[j.Type].OfType<ModExtraJump.After>().Select(static a => a.Parent).OfType<ModExtraJump>(),
+				j => positions[j.Type].OfType<ModExtraJump.Before>().Select(static b => b.Parent).OfType<ModExtraJump>());
+
+			foreach (ModExtraJump jump in sort.Sort()) {
+				sorted.Add(jump);
 			}
+
+			if (i < DefaultExtraJumpCount)
+				sorted.Add(ExtraJumps[i]);
 		}
 
-		var sort = new TopoSort<int>(ExtraJumps.Select(static j => j.Type),
-			j => dependenciesByType[j],
-			j => dependentsByType[j]);
+		orderedJumps = sorted.ToArray();
+	}
 
-		orderedJumps = sort.Sort().Select(static t => ExtraJumps[t]).ToArray();
+	private static ModExtraJump.Position VerifyPositionType(ModExtraJump jump, ModExtraJump.Position position) {
+		if (position is not ModExtraJump.After and not ModExtraJump.Before)
+			throw new ArgumentException($"ModExtraJump {jump} has unknown Position {position}");
+
+		return position;
 	}
 
 	internal static void RegisterDefaultJumps()
@@ -134,11 +135,11 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	public static void HandleJumpVisuals(Player player)
+	public static void JumpVisuals(Player player)
 	{
 		foreach (ModExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.PerformingJump && data.Active && !data.JumpAvailable)
+			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreJumpVisuals(player))
 				jump.JumpVisuals(player);
 		}
 	}
@@ -180,10 +181,8 @@ public static class ExtraJumpLoader
 		foreach (ModExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.Active) {
-				if (!data.JumpAvailable) {
-					jump.OnJumpRefreshed(player);
-					data.JumpAvailable = true;
-				}
+				jump.OnJumpRefreshed(player);
+				data.JumpAvailable = true;
 			}
 		}
 	}

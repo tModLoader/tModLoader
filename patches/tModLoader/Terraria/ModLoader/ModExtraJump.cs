@@ -80,6 +80,15 @@ public abstract partial class ModExtraJump : ModType
 	public virtual void JumpVisuals(Player player) { }
 
 	/// <summary>
+	/// Return <see langword="false"/> to prevent <see cref="JumpVisuals(Player)"/> from executing.<br/>
+	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
+	/// </summary>
+	/// <param name="player">The player performing the jump</param>
+	public virtual bool PreJumpVisuals(Player player) {
+		return (player.gravDir == 1f && player.velocity.Y < 0f) || (player.gravDir == -1f && player.velocity.Y > 0f);
+	}
+
+	/// <summary>
 	/// Vanilla's extra jumps use the following values:
 	/// <para>
 	/// Basilisk mount: 0.75<br/>
@@ -131,7 +140,7 @@ public abstract partial class ModExtraJump : ModType
 	public virtual void ModifyHorizontalSpeeds(Player player) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for this extra jump is set from <see langword="false"/> to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for this extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
 	/// This occurs at the start of the grounded jump and while the player is grounded.
 	/// </summary>
 	/// <param name="player">The player instance</param>
