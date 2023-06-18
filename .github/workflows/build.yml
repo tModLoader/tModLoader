@@ -38,7 +38,7 @@ jobs:
       # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/$DevBranch' || github.ref == 'refs/heads/$StableBranch' || github.ref == 'refs/heads/$PreviewBranch')
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/${{DevBranch}}' || github.ref == 'refs/heads/${{StableBranch}}' || github.ref == 'refs/heads/$PreviewBranch')
         shell: bash
         run: |
           echo "Attempting get previous version id"
@@ -57,8 +57,8 @@ jobs:
             exit 1
           fi
           
-          echo "Checking Version Updates for $DevBranch"
-          if [[ "refs/heads/$DevBranch" = $branch ]] ; then
+          echo "Checking Version Updates for ${{DevBranch}}"
+          if [[ "refs/heads/${{DevBranch}}" = $branch ]] ; then
              newdt="$(date --date="1 month" +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
                 echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
@@ -69,7 +69,7 @@ jobs:
           fi
           
           echo "Checking Version Updates for Rollover"
-          if [[ "refs/heads/$StableBranch" = $branch && $feature = 2 || "refs/heads/$PreviewBranch" = $branch && $feature = 1 ]] ; then
+          if [[ "refs/heads/${{StableBranch}}" = $branch && $feature = 2 || "refs/heads/$PreviewBranch" = $branch && $feature = 1 ]] ; then
              ((++feature)
              patch=-1
           fi
@@ -90,10 +90,10 @@ jobs:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       # Grab a Copy of Stable for determing what is the current stable version
-      - name: Check out $StableBranch branch
+      - name: Check out ${{StableBranch}} branch
         uses: actions/checkout@v2
         with:
-          ref: "$StableBranch"
+          ref: "${{StableBranch}}"
           persist-credentials: false
           fetch-depth: 0
       
@@ -103,7 +103,7 @@ jobs:
         if: github.event_name == 'push'
         shell: bash
         run: |
-          echo "Fetching the $StableBranch version of tmodloader"
+          echo "Fetching the ${{StableBranch}} version of tmodloader"
           version=$(git describe --tags --abbrev=0)
           
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
@@ -224,7 +224,7 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Giving Purpose         
-          if [ ${{github.ref}} = 'refs/heads/$StableBranch' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/${{StableBranch}}' ] ; then
             export BUILDPURPOSE="Stable"
           fi
           if [ ${{github.ref}} = 'refs/heads/$PreviewBranch' ] ; then
@@ -290,7 +290,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/$StableBranch' || github.ref == 'refs/heads/$PreviewBranch' || github.ref == 'refs/heads/$DevBranch' )
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/${{StableBranch}}' || github.ref == 'refs/heads/$PreviewBranch' || github.ref == 'refs/heads/${{DevBranch}}' )
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
@@ -332,7 +332,7 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          if [ ${{github.ref}} = 'refs/heads/$StableBranch' ] || [ ${{github.ref}} = 'refs/heads/$PreviewBranch' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/${{StableBranch}}' ] || [ ${{github.ref}} = 'refs/heads/$PreviewBranch' ] ; then
             ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           else
             ciprep=""
@@ -389,9 +389,9 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
-    # Documentation generated on successful builds of pushes to $StableBranch and $PreviewBranch
+    # Documentation generated on successful builds of pushes to ${{StableBranch}} and $PreviewBranch
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/$StableBranch' || github.ref == 'refs/heads/$PreviewBranch')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/${{StableBranch}}' || github.ref == 'refs/heads/$PreviewBranch')
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -459,13 +459,13 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: ${{ fromJSON('{"refs/heads/$StableBranch":"docs/$StableBranch", "refs/heads/$PreviewBranch":"docs/$PreviewBranch"}')[github.ref] }}
+          destination_dir: ${{ fromJSON('{"refs/heads/${{StableBranch}}":"docs/${{StableBranch}}", "refs/heads/$PreviewBranch":"docs/$PreviewBranch"}')[github.ref] }}
           commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
     needs: build
     # We push a release only on push events to the stable/preview branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/$PreviewBranch' || github.ref == 'refs/heads/$StableBranch')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/$PreviewBranch' || github.ref == 'refs/heads/${{StableBranch}}')
     name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
@@ -555,8 +555,8 @@ jobs:
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
           manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
-          if [ ${{github.ref}} = 'refs/heads/$StableBranch' ] ; then
-            manifesto=$manifesto/$StableBranch.vdf
+          if [ ${{github.ref}} = 'refs/heads/${{StableBranch}}' ] ; then
+            manifesto=$manifesto/${{StableBranch}}.vdf
           fi
           if [ ${{github.ref}} = 'refs/heads/$PreviewBranch' ] ; then
             manifesto=$manifesto/$PreviewBranch.vdf
@@ -609,7 +609,7 @@ jobs:
         
       # Zip for making a Release Zip
       - name: Install Zip
-        if: github.ref == 'refs/heads/$StableBranch'
+        if: github.ref == 'refs/heads/${{StableBranch}}'
         uses: montudor/action-zip@v1
       
       # Zip all files for Releases
