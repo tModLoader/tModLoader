@@ -62,11 +62,19 @@ public abstract partial class ModExtraJump : ModType
 
 	internal void PerformJump(Player player) {
 		// Set velocity and jump duration
+		float duration = GetJumpDuration(player);
+
+		foreach (GlobalExtraJump globalJump in ExtraJumpLoader.GlobalExtraJumps)
+			globalJump.ModifyJumpDuration(this, player, ref duration);
+
 		player.velocity.Y = -Player.jumpSpeed * player.gravDir;
-		player.jump = (int)(Player.jumpHeight * GetJumpDuration(player));
+		player.jump = (int)(Player.jumpHeight * duration);
 
 		bool playSound = true;
 		OnJumpStarted(player, ref playSound);
+
+		foreach (GlobalExtraJump jump in ExtraJumpLoader.GlobalExtraJumps)
+			jump.OnJumpStarted(this, player, ref playSound);
 
 		if (playSound)
 			SoundEngine.PlaySound(16, (int)player.position.X, (int)player.position.Y);

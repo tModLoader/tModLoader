@@ -9,6 +9,8 @@ public static class ExtraJumpLoader
 {
 	public static int ExtraJumpCount => ExtraJumps.Count;
 
+	public static int GlobalExtraJumpCount => GlobalExtraJumps.Count;
+
 	// Order is the vanilla priority when consuming the extra jumps
 	internal static readonly List<ModExtraJump> ExtraJumps = new List<ModExtraJump>()
 	{
@@ -35,6 +37,8 @@ public static class ExtraJumpLoader
 
 	public static IReadOnlyList<ModExtraJump> OrderedExtraJumps => orderedJumps;
 
+	internal static readonly List<GlobalExtraJump> GlobalExtraJumps = new List<GlobalExtraJump>();
+
 	static ExtraJumpLoader()
 	{
 		RegisterDefaultJumps();
@@ -46,9 +50,19 @@ public static class ExtraJumpLoader
 		return ExtraJumps.Count - 1;
 	}
 
+	public static ModExtraJump Get(int index) => index < 0 || index >= ExtraJumpCount ? null : ExtraJumps[index];
+
+	internal static int Add(GlobalExtraJump jump) {
+		GlobalExtraJumps.Add(jump);
+		return GlobalExtraJumps.Count - 1;
+	}
+
+	public static GlobalExtraJump GetGlobal(int index) => index < 0 || index >= GlobalExtraJumpCount ? null : GlobalExtraJumps[index];
+
 	internal static void Unload()
 	{
 		ExtraJumps.RemoveRange(DefaultExtraJumpCount, ExtraJumpCount - DefaultExtraJumpCount);
+		GlobalExtraJumps.Clear();
 	}
 
 	internal static void ResizeArrays()
@@ -171,6 +185,10 @@ public static class ExtraJumpLoader
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump) {
 				jump.OnJumpEnded(player);
+
+				foreach (GlobalExtraJump globalJump in GlobalExtraJumps)
+					globalJump.OnJumpEnded(jump, player);
+
 				data.PerformingJump = false;
 			}
 		}
@@ -182,6 +200,10 @@ public static class ExtraJumpLoader
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.Active) {
 				jump.OnJumpRefreshed(player);
+
+				foreach (GlobalExtraJump globalJump in GlobalExtraJumps)
+					globalJump.OnJumpRefreshed(jump, player);
+
 				data.JumpAvailable = true;
 			}
 		}
