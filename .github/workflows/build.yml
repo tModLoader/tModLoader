@@ -45,7 +45,7 @@ jobs:
       # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/'env.DevBranch)
+        if: github.event_name == 'push' && (contains(github.ref, env.DevBranch))
         shell: bash
         run: |
           echo "Attempting get previous version id"
