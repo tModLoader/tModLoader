@@ -94,7 +94,7 @@ jobs:
       - name: Check out ${{env.StableBranch}} branch
         uses: actions/checkout@v2
         with:
-          ref: "${{${{env.StableBranch}}}}"
+          ref: "${{env.StableBranch}}"
           persist-credentials: false
           fetch-depth: 0
       
