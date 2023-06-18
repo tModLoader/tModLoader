@@ -64,24 +64,26 @@ jobs:
             exit 1
           fi
           
-          echo "Checking Version Updates for ${{env.DevBranch}}"
+          echo "Checking Version Updates"
           if [[ "refs/heads/${{env.DevBranch}}" = $branch ]] ; then
+            echo "Checking Version Updates for ${{env.DevBranch}}"
              newdt="$(date --date="1 month" +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
                 echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
                 oldate="$newdt"
                 feature=1
-                patch=-1
+                patch=0
              fi
           fi
-          
-          echo "Checking Version Updates for Rollover"
-          if [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
+          else if [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
+             echo "Checking Version Updates for Rollover"
              ((++feature)
-             patch=-1
+             patch=0
           fi
-          echo "Rolling Forward the Patch #..."
-          ((++patch))
+          else
+            echo "Rolling Forward the Patch #..."
+            ((++patch))
+          fi 
           
           version="$oldate.$feature.$patch"
           echo "New version is '$version'"
