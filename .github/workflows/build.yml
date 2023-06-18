@@ -9,10 +9,10 @@ env:
 on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
-    branches: [$DevBranch, gh_actions_test, $PreviewBranch, $StableBranch]
+    branches: [gh_actions_test, preview, stable, 1.4.4]
   pull_request_target:
     types: [labeled]
-    branches: [$PreviewBranch, $StableBranch, $DevBranch]
+    branches: [preview, stable, 1.4.4]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
