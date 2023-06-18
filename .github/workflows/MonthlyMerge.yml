@@ -27,7 +27,7 @@ jobs:
         - name: Check out repo
           uses: actions/checkout@v3
           with:
-            ref: 'refs/heads/$StableBranch'
+            ref: 'refs/heads/${{env.StableBranch}}'
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
             persist-credentials: false
             fetch-depth: 0        
@@ -39,8 +39,8 @@ jobs:
             git config user.name github-actions
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-            git reset --hard origin/$PreviewBranch
-            git push --force origin $StableBranch
+            git reset --hard origin/${{env.PreviewBranch}}
+            git push --force origin ${{env.StableBranch}}
             
   # This workflow replaces $PreviewBranch with a copy of $DevBranch, destroying anything on it prior
   MergeToPreview:
@@ -54,7 +54,7 @@ jobs:
         - name: Check out repo
           uses: actions/checkout@v3
           with:
-            ref: 'refs/heads/$PreviewBranch'
+            ref: 'refs/heads/${{env.PreviewBranch}}'
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
             persist-credentials: false
             fetch-depth: 0        
@@ -66,5 +66,5 @@ jobs:
             git config user.name github-actions
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-            git reset --hard origin/$DevBranch
-            git push --force origin $PreviewBranch
+            git reset --hard origin/${{env.DevBranch}}
+            git push --force origin ${[env.PreviewBranch}}
