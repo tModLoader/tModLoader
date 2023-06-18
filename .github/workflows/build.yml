@@ -39,7 +39,7 @@ jobs:
       # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/${{env.DevBranch}}' || github.ref == 'refs/heads/${{env.StableBranch}}' || github.ref == 'refs/heads/${{env.PreviewBranch}}')
+        if: github.event_name == 'push' && github.ref == 'refs/heads/env.DevBranch' || github.ref == 'refs/heads/env.StableBranch' || github.ref == 'refs/heads/env.PreviewBranch')
         shell: bash
         run: |
           echo "Attempting get previous version id"
@@ -291,7 +291,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/${{env.StableBranch}}' || github.ref == 'refs/heads/${{env.PreviewBranch}}' || github.ref == 'refs/heads/${{env.DevBranch}}' )
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/env.StableBranch' || github.ref == 'refs/heads/env.PreviewBranch' || github.ref == 'refs/heads/env.DevBranch' )
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
@@ -392,7 +392,7 @@ jobs:
   documentation:
     # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/${{env.StableBranch}}' || github.ref == 'refs/heads/${{env.PreviewBranch}}')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/env.StableBranch' || github.ref == 'refs/heads/env.PreviewBranch')
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -466,7 +466,7 @@ jobs:
   deploy:
     needs: build
     # We push a release only on push events to the stable/preview branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/${{env.PreviewBranch}}' || github.ref == 'refs/heads/${{env.StableBranch}}')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/env.PreviewBranch' || github.ref == 'refs/heads/env.StableBranch')
     name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
@@ -610,7 +610,7 @@ jobs:
         
       # Zip for making a Release Zip
       - name: Install Zip
-        if: github.ref == 'refs/heads/${{env.StableBranch}}'
+        if: github.ref == 'refs/heads/env.StableBranch'
         uses: montudor/action-zip@v1
       
       # Zip all files for Releases
