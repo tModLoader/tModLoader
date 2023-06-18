@@ -120,7 +120,7 @@ jobs:
           fi
           
           echo "Stable Version is '$stableVer'"
-          echo "::set-output name=$stable_version::$stableVer"
+          echo "::set-output name=stable_version::$stableVer"
       
       # Get the base branch for build steps
       - name: Re:Check out base branch
