@@ -35,6 +35,7 @@ jobs:
         run: |
           echo "Dev Branch is: ${{env.DevBranch}}"
           echo "Preview Branch is: ${{env.PreviewBranch}}"
+          echo "IsRElease? ${{env.IsRelease}}"
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out base branch
