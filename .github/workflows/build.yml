@@ -48,7 +48,7 @@ jobs:
       # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: env.IsRelease == 1
+        if: env.IsRelease == 'true'
         shell: bash
         run: |
           echo "Attempting get previous version id"
