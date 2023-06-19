@@ -1,14 +1,14 @@
 ﻿namespace Terraria.ModLoader;
 
-partial class ModExtraJump
+partial class ExtraJump
 {
 	public abstract class Position { }
 
 	public sealed class Before : Position
 	{
-		public ModExtraJump Parent { get; }
+		public ExtraJump Parent { get; }
 
-		public Before(ModExtraJump parent)
+		public Before(ExtraJump parent)
 		{
 			Parent = parent;
 		}
@@ -16,9 +16,9 @@ partial class ModExtraJump
 
 	public sealed class After : Position
 	{
-		public ModExtraJump Parent { get; }
+		public ExtraJump Parent { get; }
 
-		public After(ModExtraJump parent)
+		public After(ExtraJump parent)
 		{
 			Parent = parent;
 		}

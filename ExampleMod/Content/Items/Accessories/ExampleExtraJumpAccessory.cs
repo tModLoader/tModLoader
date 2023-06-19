@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.Enums;
 using Terraria.ModLoader;
 using Terraria.ID;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -27,9 +28,16 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 	}
 
-	public class SimpleExtraJump : ModExtraJump
+	public class SimpleExtraJump : ExtraJump
 	{
-		public override Position GetDefaultPosition() => new After(SandstormInABottle);
+		public override Position GetDefaultPosition() => new After(BlizzardInABottle);
+
+		public override IEnumerable<Position> GetModdedConstraints() {
+			// By default, modded extra jumps set to be between two vanilla extra jumps (via After and Before) are ordered in load order.
+			// This hook allows you to organize where this extra jump is located relative to other modded extra jumps that are also
+			// placed between the same two vanila extra jumps.
+			yield return new Before(ModContent.GetInstance<MultipleUseExtraJump>());
+		}
 
 		public override float GetJumpDuration(Player player) {
 			// Use this hook to set the duration of the extra jump

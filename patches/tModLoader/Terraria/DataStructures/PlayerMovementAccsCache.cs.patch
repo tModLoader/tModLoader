@@ -27,7 +27,7 @@
  			rocketDelay2 = player.rocketDelay2;
  			wingTime = player.wingTime;
 +			canJumpAgain ??= new bool[ExtraJumpLoader.ExtraJumpCount];
-+			foreach (ModExtraJump jump in ExtraJumpLoader.ExtraJumps)
++			foreach (ExtraJump jump in ExtraJumpLoader.ExtraJumps)
 +				canJumpAgain[jump.Type] = player.GetExtraJump(jump).JumpAvailable;
 +			/*
  			jumpAgainCloud = player.canJumpAgain_Cloud;
@@ -52,7 +52,7 @@
  				player.canJumpAgain_Sail = jumpAgainSail;
  				player.canJumpAgain_Unicorn = jumpAgainUnicorn;
 +				*/
-+				foreach (ModExtraJump jump in ExtraJumpLoader.ExtraJumps)
++				foreach (ExtraJump jump in ExtraJumpLoader.ExtraJumps)
 +					player.GetExtraJump(jump).JumpAvailable = canJumpAgain[jump.Type];
  			}
  		}

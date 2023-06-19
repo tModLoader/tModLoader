@@ -5,30 +5,30 @@ using Terraria.DataStructures;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// <see cref="ModExtraJump"/> is a singleton type used to facilitate the logic for extra midair jumps
+/// <see cref="ExtraJump"/> is a singleton type used to facilitate the logic for extra midair jumps
 /// </summary>
-public abstract partial class ModExtraJump : ModType
+public abstract partial class ExtraJump : ModType
 {
-	public static ModExtraJump GoatMount { get; private set; } = new GoatMountJump();
+	public static ExtraJump GoatMount { get; private set; } = new GoatMountJump();
 
-	public static ModExtraJump BasiliskMount { get; private set; } = new BasiliskMountJump();
+	public static ExtraJump BasiliskMount { get; private set; } = new BasiliskMountJump();
 
-	public static ModExtraJump SantankMount { get; private set; } = new SantankMountJump();
+	public static ExtraJump SantankMount { get; private set; } = new SantankMountJump();
 
-	public static ModExtraJump UnicornMount { get; private set; } = new UnicornMountJump();
+	public static ExtraJump UnicornMount { get; private set; } = new UnicornMountJump();
 
-	public static ModExtraJump SandstormInABottle { get; private set; } = new SandstormInABottleJump();
+	public static ExtraJump SandstormInABottle { get; private set; } = new SandstormInABottleJump();
 
-	public static ModExtraJump BlizzardInABottle { get; private set; } = new BlizzardInABottleJump();
+	public static ExtraJump BlizzardInABottle { get; private set; } = new BlizzardInABottleJump();
 
-	public static ModExtraJump FartInAJar { get; private set; } = new FartInAJarJump();
+	public static ExtraJump FartInAJar { get; private set; } = new FartInAJarJump();
 
-	public static ModExtraJump TsunamiInABottle { get; private set; } = new TsunamiInABottleJump();
+	public static ExtraJump TsunamiInABottle { get; private set; } = new TsunamiInABottleJump();
 
-	public static ModExtraJump CloudInABottle { get; private set; } = new CloudInABottleJump();
+	public static ExtraJump CloudInABottle { get; private set; } = new CloudInABottleJump();
 
 	/// <summary>
-	/// The internal ID of this <see cref="ModExtraJump"/>.
+	/// The internal ID of this <see cref="ExtraJump"/>.
 	/// </summary>
 	public int Type { get; internal set; }
 
@@ -39,7 +39,7 @@ public abstract partial class ModExtraJump : ModType
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<ModExtraJump>.Register(this);
+		ModTypeLookup<ExtraJump>.Register(this);
 		Type = ExtraJumpLoader.Add(this);
 	}
 
@@ -53,7 +53,12 @@ public abstract partial class ModExtraJump : ModType
 	public abstract Position GetDefaultPosition();
 
 	/// <summary>
-	/// Returns additional constraints for this extra jump's position in regard to other modded extra jumps
+	/// Modded extra jumps are placed between vanilla jumps via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
+	/// This hook allows you to sort this extra jump before/after other modded extra jumps that were placed before/after the same vanilla extra jump.<br/>
+	/// Example:
+	/// <para>
+	/// <c>yield return new After(ModContent.GetInstance&lt;SimpleExtraJump&gt;());</c>
+	/// </para>
 	/// </summary>
 	public virtual IEnumerable<Position> GetModdedConstraints()
 	{

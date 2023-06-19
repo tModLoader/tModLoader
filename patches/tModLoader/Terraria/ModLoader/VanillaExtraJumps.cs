@@ -8,7 +8,7 @@ using Terraria.ID;
 namespace Terraria.ModLoader;
 
 [Autoload(false)]
-public abstract class VanillaExtraJump : ModExtraJump
+public abstract class VanillaExtraJump : ExtraJump
 {
 	public sealed override Position GetDefaultPosition() => null;
 

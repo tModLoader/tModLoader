@@ -3,7 +3,7 @@
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// <see cref="GlobalExtraJump"/> is a singleton type used to facilitate modifying or overwriting logic from <see cref="ModExtraJump"/>
+/// <see cref="GlobalExtraJump"/> is a singleton type used to facilitate modifying or overwriting logic from <see cref="ExtraJump"/>
 /// </summary>
 public abstract class GlobalExtraJump : ModType
 {
@@ -40,7 +40,7 @@ public abstract class GlobalExtraJump : ModType
 	/// <param name="jump">The jump being performed</param>
 	/// <param name="player">The player performing the jump</param>
 	/// <param name="duration">A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</param>
-	public virtual void ModifyJumpDuration(ModExtraJump jump, Player player, ref float duration) { }
+	public virtual void ModifyJumpDuration(ExtraJump jump, Player player, ref float duration) { }
 
 	/// <summary>
 	/// Effects that should appear when the extra jump starts should happen here.<br/>
@@ -49,7 +49,7 @@ public abstract class GlobalExtraJump : ModType
 	/// <param name="jump">The jump being performed</param>
 	/// <param name="player">The player performing the jump</param>
 	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
-	public virtual void OnJumpStarted(ModExtraJump jump, Player player, ref bool playSound) { }
+	public virtual void OnJumpStarted(ExtraJump jump, Player player, ref bool playSound) { }
 
 	/// <summary>
 	/// This hook runs before the <see cref="ExtraJumpData.PerformingJump"/> flag for an extra jump is set from <see langword="true"/> to <see langword="false"/> in <see cref="Player.CancelAllJumpVisualEffects"/><br/>
@@ -57,7 +57,7 @@ public abstract class GlobalExtraJump : ModType
 	/// </summary>
 	/// <param name="jump">The jump that was performed</param>
 	/// <param name="player">The player that was performing the jump</param>
-	public virtual void OnJumpEnded(ModExtraJump jump, Player player) { }
+	public virtual void OnJumpEnded(ExtraJump jump, Player player) { }
 
 	/// <summary>
 	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for an extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
@@ -65,5 +65,5 @@ public abstract class GlobalExtraJump : ModType
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
 	/// <param name="player">The player instance</param>
-	public virtual void OnJumpRefreshed(ModExtraJump jump, Player player) { }
+	public virtual void OnJumpRefreshed(ExtraJump jump, Player player) { }
 }

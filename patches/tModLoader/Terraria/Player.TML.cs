@@ -598,9 +598,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	// Extra jumps
 	private ExtraJumpData[] extraJumps = new ExtraJumpData[ExtraJumpLoader.ExtraJumpCount];
 
-	public ref ExtraJumpData GetExtraJump<T>(T baseInstance) where T : ModExtraJump => ref extraJumps[baseInstance.Type];
+	public ref ExtraJumpData GetExtraJump<T>(T baseInstance) where T : ExtraJump => ref extraJumps[baseInstance.Type];
 
-	public ref ExtraJumpData GetExtraJump<T>() where T : ModExtraJump => ref GetExtraJump(ModContent.GetInstance<T>());
+	public ref ExtraJumpData GetExtraJump<T>() where T : ExtraJump => ref GetExtraJump(ModContent.GetInstance<T>());
 
 	public Span<ExtraJumpData> ExtraJumps => extraJumps.AsSpan();
 

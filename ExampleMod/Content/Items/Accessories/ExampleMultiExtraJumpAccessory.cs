@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Enums;
@@ -29,7 +30,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 	}
 
-	public class MultipleUseExtraJump : ModExtraJump
+	public class MultipleUseExtraJump : ExtraJump
 	{
 		public override Position GetDefaultPosition() => new After(BlizzardInABottle);
 

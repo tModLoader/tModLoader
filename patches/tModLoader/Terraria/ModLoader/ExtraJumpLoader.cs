@@ -12,30 +12,30 @@ public static class ExtraJumpLoader
 	public static int GlobalExtraJumpCount => GlobalExtraJumps.Count;
 
 	// Order is the vanilla priority when consuming the extra jumps
-	internal static readonly List<ModExtraJump> ExtraJumps = new List<ModExtraJump>()
+	internal static readonly List<ExtraJump> ExtraJumps = new List<ExtraJump>()
 	{
-		ModExtraJump.GoatMount,
-		ModExtraJump.SantankMount,
-		ModExtraJump.UnicornMount,
-		ModExtraJump.SandstormInABottle,
-		ModExtraJump.BlizzardInABottle,
-		ModExtraJump.FartInAJar,
-		ModExtraJump.TsunamiInABottle,
-		ModExtraJump.BasiliskMount,
-		ModExtraJump.CloudInABottle
+		ExtraJump.GoatMount,
+		ExtraJump.SantankMount,
+		ExtraJump.UnicornMount,
+		ExtraJump.SandstormInABottle,
+		ExtraJump.BlizzardInABottle,
+		ExtraJump.FartInAJar,
+		ExtraJump.TsunamiInABottle,
+		ExtraJump.BasiliskMount,
+		ExtraJump.CloudInABottle
 	};
 
 	internal static readonly int DefaultExtraJumpCount = ExtraJumps.Count;
 
-	public static readonly ModExtraJump FirstVanillaExtraJump = ExtraJumps[0];
+	public static readonly ExtraJump FirstVanillaExtraJump = ExtraJumps[0];
 
-	public static readonly ModExtraJump LastVanillaExtraJump = ExtraJumps[^1];
+	public static readonly ExtraJump LastVanillaExtraJump = ExtraJumps[^1];
 
-	internal static IEnumerable<ModExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
+	internal static IEnumerable<ExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
 
-	private static ModExtraJump[] orderedJumps;
+	private static ExtraJump[] orderedJumps;
 
-	public static IReadOnlyList<ModExtraJump> OrderedExtraJumps => orderedJumps;
+	public static IReadOnlyList<ExtraJump> OrderedExtraJumps => orderedJumps;
 
 	internal static readonly List<GlobalExtraJump> GlobalExtraJumps = new List<GlobalExtraJump>();
 
@@ -44,13 +44,13 @@ public static class ExtraJumpLoader
 		RegisterDefaultJumps();
 	}
 
-	internal static int Add(ModExtraJump jump)
+	internal static int Add(ExtraJump jump)
 	{
 		ExtraJumps.Add(jump);
 		return ExtraJumps.Count - 1;
 	}
 
-	public static ModExtraJump Get(int index) => index < 0 || index >= ExtraJumpCount ? null : ExtraJumps[index];
+	public static ExtraJump Get(int index) => index < 0 || index >= ExtraJumpCount ? null : ExtraJumps[index];
 
 	internal static int Add(GlobalExtraJump jump) {
 		GlobalExtraJumps.Add(jump);
@@ -81,16 +81,16 @@ public static class ExtraJumpLoader
 			sortingSlots[i] = new();
 
 		// Initially put the modded extra jumps in load order
-		foreach (ModExtraJump jump in ModdedExtraJumps) {
+		foreach (ExtraJump jump in ModdedExtraJumps) {
 			var position = jump.GetDefaultPosition();
 
 			switch (position) {
-				case ModExtraJump.After after:
+				case ExtraJump.After after:
 					int afterParent = after.Parent?.Type is { } afterType ? afterType + 1 : 0;
 
 					sortingSlots[afterParent].Add(jump.Type);
 					break;
-				case ModExtraJump.Before before:
+				case ExtraJump.Before before:
 					int beforeParent = before.Parent?.Type is { } beforeType ? beforeType : sortingSlots.Length - 1;
 
 					sortingSlots[beforeParent].Add(jump.Type);
@@ -101,17 +101,17 @@ public static class ExtraJumpLoader
 		}
 
 		// Cache the information for which additional constraints each modded extra jump has
-		var positions = ModdedExtraJumps.ToDictionary(j => j.Type, j => j.GetModdedConstraints()?.Select(p => VerifyPositionType(j, p)).ToList());
+		var positions = ModdedExtraJumps.ToDictionary(j => j.Type, j => j.GetModdedConstraints()?.Select(p => VerifyPositionType(j, p)).ToList() ?? new());
 
 		// Sort the modded jumps per slot
-		List<ModExtraJump> sorted = new();
+		List<ExtraJump> sorted = new();
 
 		for (int i = 0; i < DefaultExtraJumpCount + 2; i++) {
-			var sort = new TopoSort<ModExtraJump>(sortingSlots[i].Select(static t => ExtraJumps[t]),
-				j => positions[j.Type].OfType<ModExtraJump.After>().Select(static a => a.Parent).OfType<ModExtraJump>(),
-				j => positions[j.Type].OfType<ModExtraJump.Before>().Select(static b => b.Parent).OfType<ModExtraJump>());
+			var sort = new TopoSort<ExtraJump>(sortingSlots[i].Select(static t => ExtraJumps[t]),
+				j => positions[j.Type].OfType<ExtraJump.After>().Select(static a => a.Parent).OfType<ExtraJump>(),
+				j => positions[j.Type].OfType<ExtraJump.Before>().Select(static b => b.Parent).OfType<ExtraJump>());
 
-			foreach (ModExtraJump jump in sort.Sort()) {
+			foreach (ExtraJump jump in sort.Sort()) {
 				sorted.Add(jump);
 			}
 
@@ -122,8 +122,8 @@ public static class ExtraJumpLoader
 		orderedJumps = sorted.ToArray();
 	}
 
-	private static ModExtraJump.Position VerifyPositionType(ModExtraJump jump, ModExtraJump.Position position) {
-		if (position is not ModExtraJump.After and not ModExtraJump.Before)
+	private static ExtraJump.Position VerifyPositionType(ExtraJump jump, ExtraJump.Position position) {
+		if (position is not ExtraJump.After and not ExtraJump.Before)
 			throw new ArgumentException($"ModExtraJump {jump} has unknown Position {position}");
 
 		return position;
@@ -135,23 +135,23 @@ public static class ExtraJumpLoader
 		foreach (var jump in ExtraJumps) {
 			jump.Type = i++;
 			ContentInstance.Register(jump);
-			ModTypeLookup<ModExtraJump>.Register(jump);
+			ModTypeLookup<ExtraJump>.Register(jump);
 		}
 	}
 
 	public static void ModifyPlayerHorizontalSpeeds(Player player)
 	{
-		foreach (ModExtraJump moddedExtraJump in orderedJumps) {
+		foreach (ExtraJump moddedExtraJump in orderedJumps) {
 			// Special case: Sandstorm in a Bottle uses a separate flag
 			ref ExtraJumpData extraJump = ref player.GetExtraJump(moddedExtraJump);
-			if ((object.ReferenceEquals(moddedExtraJump, ModExtraJump.SandstormInABottle) && player.sandStorm) || (extraJump.PerformingJump && extraJump.Active))
+			if ((object.ReferenceEquals(moddedExtraJump, ExtraJump.SandstormInABottle) && player.sandStorm) || (extraJump.PerformingJump && extraJump.Active))
 				moddedExtraJump.ModifyHorizontalSpeeds(player);
 		}
 	}
 
 	public static void JumpVisuals(Player player)
 	{
-		foreach (ModExtraJump jump in orderedJumps) {
+		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreJumpVisuals(player))
 				jump.JumpVisuals(player);
@@ -160,7 +160,7 @@ public static class ExtraJumpLoader
 
 	public static void ProcessJumps(Player player, bool flipperOrSlimeMountSwimming)
 	{
-		foreach (ModExtraJump jump in orderedJumps) {
+		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 
 			// The Cloud in a Bottle's extra jump ignores the "flipper swimming" check
@@ -175,13 +175,13 @@ public static class ExtraJumpLoader
 
 		if (!flipperOrSlimeMountSwimming) {
 			// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
-			player.GetExtraJump(ModExtraJump.BasiliskMount).JumpAvailable = false;
+			player.GetExtraJump(ExtraJump.BasiliskMount).JumpAvailable = false;
 		}
 	}
 
 	public static void OnJumpEnded(Player player)
 	{
-		foreach (ModExtraJump jump in orderedJumps) {
+		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump) {
 				jump.OnJumpEnded(player);
@@ -196,7 +196,7 @@ public static class ExtraJumpLoader
 
 	public static void RefreshExtraJumps(Player player)
 	{
-		foreach (ModExtraJump jump in orderedJumps) {
+		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.Active) {
 				jump.OnJumpRefreshed(player);
@@ -211,13 +211,13 @@ public static class ExtraJumpLoader
 
 	internal static void ResetActiveFlags(Player player)
 	{
-		foreach (ModExtraJump jump in ExtraJumps)
+		foreach (ExtraJump jump in ExtraJumps)
 			player.GetExtraJump(jump).Active = false;
 	}
 
 	internal static void ClearUnavailableExtraJumps(Player player)
 	{
-		foreach (ModExtraJump jump in ExtraJumps) {
+		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (!data.Active)
 				data.JumpAvailable = false;
@@ -226,7 +226,7 @@ public static class ExtraJumpLoader
 
 	internal static void ClearAllExtraJumps(Player player)
 	{
-		foreach (ModExtraJump jump in ExtraJumps)
+		foreach (ExtraJump jump in ExtraJumps)
 			player.GetExtraJump(jump).JumpAvailable = false;
 	}
 }
