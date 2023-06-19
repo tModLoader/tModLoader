@@ -41,7 +41,7 @@ namespace ExampleMod.Content
 			////////////////////////////////////////////////////////////////////////////////////
 
 			Recipe recipe = Recipe.Create(ModContent.ItemType<Items.ExampleItem>(), 999);
-			// This adds a requirement of 1 dirt block to the recipe.
+			// This adds a requirement of 1 stone block to the recipe.
 			recipe.AddIngredient(ItemID.StoneBlock);
 			// When you're done, call this to register the recipe.
 			recipe.Register();
