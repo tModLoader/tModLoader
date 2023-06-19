@@ -4,6 +4,8 @@ env:
     DevBranch: gh_actions_test
     StableBranch: stable
     PreviewBranch: preview
+    IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'gh_actions_test') || contains(github.ref, 'stable')) }}
+
 
 # Controls when the action will run. 
 on:
@@ -45,7 +47,7 @@ jobs:
       # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (contains(github.ref, env.DevBranch))
+        if: env.IsRelease == 1
         shell: bash
         run: |
           echo "Attempting get previous version id"
