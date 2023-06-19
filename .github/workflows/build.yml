@@ -76,7 +76,7 @@ jobs:
              fi
           elif [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
              echo "Checking Version Updates for Rollover"
-             ((++feature)
+             ((++feature))
              patch=0
           else
             echo "Rolling Forward the Patch #..."
