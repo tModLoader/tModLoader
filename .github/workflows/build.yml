@@ -629,3 +629,4 @@ jobs:
           generateReleaseNotes: true
           body: "Monthly Github Auto-release for ${{github.ref}}"
           tag: ${{ steps.version2.outputs.new_version }}
+          prerelease: ${{ contains(github.ref, 'preview') }}
