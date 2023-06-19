@@ -4,6 +4,8 @@ env:
     DevBranch: 1.4.4
     StableBranch: stable
     PreviewBranch: preview
+    IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, env.PreviewBranch) || contains(github.ref, env.StableBranch)) }}
+    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, env.PreviewBranch) || contains(github.ref, env.StableBranch)) }}
 
 # Controls when the action will run. 
 on:
@@ -39,7 +41,7 @@ jobs:
       # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/env.DevBranch' || github.ref == 'refs/heads/env.StableBranch' || github.ref == 'refs/heads/env.PreviewBranch')
+        if: env.IsVersioned
         shell: bash
         run: |
           echo "Attempting get previous version id"
@@ -58,24 +60,22 @@ jobs:
             exit 1
           fi
           
-          echo "Checking Version Updates for ${{env.DevBranch}}"
-          if [[ "refs/heads/${{env.DevBranch}}" = $branch ]] ; then
-             newdt="$(date --date="1 month" +%Y.%m)"
+          echo "Applying version updates"
+          if [[ "refs/heads/stable" = $branch ]] ; then
+             echo "Rolling Forward the Patch #..."
+             ((++patch))   
+          fi
+          if [[ "refs/heads/preview" = $branch ]] ; then
+            echo "Rolling Forward the Feature #..."
+             ((++feature))
+             newdt="$(date +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
                 echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
                 oldate="$newdt"
-                feature=1
-                patch=-1
+                feature=0
+                patch=0
              fi
           fi
-          
-          echo "Checking Version Updates for Rollover"
-          if [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
-             ((++feature)
-             patch=-1
-          fi
-          echo "Rolling Forward the Patch #..."
-          ((++patch))
           
           version="$oldate.$feature.$patch"
           echo "New version is '$version'"
@@ -291,7 +291,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/env.StableBranch' || github.ref == 'refs/heads/env.PreviewBranch' || github.ref == 'refs/heads/env.DevBranch' )
+        if: env.IsVersioned
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
@@ -333,7 +333,7 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] || [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
+          if [ ${{env.IsRelease}} ] ; then
             ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           else
             ciprep=""
@@ -392,7 +392,7 @@ jobs:
   documentation:
     # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/env.StableBranch' || github.ref == 'refs/heads/env.PreviewBranch')
+    if: env.IsRelease
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -466,7 +466,7 @@ jobs:
   deploy:
     needs: build
     # We push a release only on push events to the stable/preview branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/env.PreviewBranch' || github.ref == 'refs/heads/env.StableBranch')
+    if: env.IsRelease
     name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
@@ -610,7 +610,7 @@ jobs:
         
       # Zip for making a Release Zip
       - name: Install Zip
-        if: github.ref == 'refs/heads/env.StableBranch'
+        if: env.IsRelease
         uses: montudor/action-zip@v1
       
       # Zip all files for Releases
