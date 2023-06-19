@@ -4,8 +4,8 @@ env:
     DevBranch: 1.4.4
     StableBranch: stable
     PreviewBranch: preview
-    IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, env.PreviewBranch) || contains(github.ref, env.StableBranch)) }}
-    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, env.PreviewBranch) || contains(github.ref, env.StableBranch)) }}
+    IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
+    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
 
 # Controls when the action will run. 
 on:
