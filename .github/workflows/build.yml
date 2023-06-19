@@ -392,7 +392,7 @@ jobs:
   documentation:
     # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
     needs: build
-    if: env.IsRelease == 'true'
+    if: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -466,7 +466,7 @@ jobs:
   deploy:
     needs: build
     # We push a release only on push events to the stable/preview branch that build correctly
-    if: env.IsRelease == 'true'
+    if: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
     name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
