@@ -76,7 +76,7 @@ public static class ExtraJumpLoader
 		// Between each vanilla extra jump, before the first jump and after the last jump exists a "slot"
 		// Modded jumps are added to a "slot", and then the slots are filled in load order by default
 		// Modders can use "ModExtraJump::GetModdedConstraints()" to facilitate sorting within a slot
-		List<int>[] sortingSlots = new List<int>[DefaultExtraJumpCount + 2];
+		List<int>[] sortingSlots = new List<int>[DefaultExtraJumpCount + 1];
 		for (int i = 0; i < sortingSlots.Length; i++)
 			sortingSlots[i] = new();
 
@@ -91,7 +91,7 @@ public static class ExtraJumpLoader
 					sortingSlots[afterParent].Add(jump.Type);
 					break;
 				case ModExtraJump.Before before:
-					int beforeParent = before.Parent?.Type is { } beforeType ? beforeType : DefaultExtraJumpCount + 1;
+					int beforeParent = before.Parent?.Type is { } beforeType ? beforeType : sortingSlots.Length - 1;
 
 					sortingSlots[beforeParent].Add(jump.Type);
 					break;
