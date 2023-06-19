@@ -1722,7 +1722,7 @@
 -					case 520:
 +					*/
 +					// No 387 tesla turret, handled via NoInvasionMusic below 
-+					case int _ when npc[j].type != 387 && NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
 +					case 520: // martian walker, currently not in NPC.GetInvasionGroup and by extension not in NPCID.Sets.BelongsToInvasionMartianMadness
  						num3 = 9;
  						break;
