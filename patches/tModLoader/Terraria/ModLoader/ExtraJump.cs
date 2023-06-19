@@ -59,11 +59,9 @@ public abstract partial class ExtraJump : ModType
 	/// <para>
 	/// <c>yield return new After(ModContent.GetInstance&lt;SimpleExtraJump&gt;());</c>
 	/// </para>
+	/// By default, this hook returns <see langword="null"/>, which indicates that this extra jump has no constraints.
 	/// </summary>
-	public virtual IEnumerable<Position> GetModdedConstraints()
-	{
-		yield break;
-	}
+	public virtual IEnumerable<Position> GetModdedConstraints() => null;
 
 	internal void PerformJump(Player player) {
 		// Set velocity and jump duration
