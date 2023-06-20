@@ -1715,13 +1715,11 @@
  					case 381:
  					case 382:
  					case 383:
-@@ -10271,7 +_,11 @@
- 					case 390:
+@@ -10272,6 +_,9 @@
  					case 391:
  					case 395:
-+					*/
-+					// 520 martian walker, currently not in NPC.GetNPCInvasionGroup and by extension not in NPCID.Sets.BelongsToInvasionMartianMadness
  					case 520:
++					*/
 +					// No 387 tesla turret, handled via NoInvasionMusic below 
 +					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
  						num3 = 9;

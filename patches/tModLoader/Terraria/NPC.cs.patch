@@ -1514,12 +1514,11 @@
  			case 381:
  			case 382:
  			case 383:
-@@ -58836,6 +_,9 @@
+@@ -58836,6 +_,8 @@
  			case 390:
  			case 391:
  			case 395:
 +			*/
-+			// 520 martian walker missing, vanilla bug?
 +			case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npcID]:
  				result = 4;
  				break;
