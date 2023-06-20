@@ -494,6 +494,11 @@
 		"TypeInitializationHint": "Tipp: Starte das Spiel neu. Wenn das Problem bestehen bleibt, versuche Terraria vollständig zu deinstallieren, es über Steam neu zu installieren und dann tModLoader erneut zu installieren.",
 		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
 
+		// Tag categories are not displayed in game currently, but are shown on workshop
+		// "TagsCategoryModFeatures": "Mod Features",
+		// "TagsCategoryModSide": "Mod Side",
+		// "TagsCategoryTModLoaderVersion": "tModLoader Version",
+		// "TagsCategoryLanguage": "{$LegacyMenu.103}",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Neue Inhalte",
 		"TagsContentDescription": "Fügt neue Inhalte (z.B. Gegenstände, Waffen, NPCs, usw.) zum Spiel hinzu",

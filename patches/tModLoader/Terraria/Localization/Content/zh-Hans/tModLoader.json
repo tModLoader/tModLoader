@@ -495,6 +495,11 @@
 		"TypeInitializationHint": "提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
 		"TerrariaOutOfDateMessage": "泰拉瑞亚 (Terraria) 是过时的，你需要在Steam中更新泰拉瑞亚。",
 
+		// Tag categories are not displayed in game currently, but are shown on workshop
+		// "TagsCategoryModFeatures": "Mod Features",
+		// "TagsCategoryModSide": "Mod Side",
+		// "TagsCategoryTModLoaderVersion": "tModLoader Version",
+		// "TagsCategoryLanguage": "{$LegacyMenu.103}",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容, 例如物品、武器、NPC等",

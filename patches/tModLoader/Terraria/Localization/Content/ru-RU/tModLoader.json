@@ -494,6 +494,11 @@
 		"TypeInitializationHint": "Совет: Перезапустите игру. Если проблема не исчезла, то попробуйте полностью удалить Terraria, а затем повторно установить игру через Steam, после чего переустановите tModLoader.",
 		"TerrariaOutOfDateMessage": "Ваша версия Terraria устарела, пожалуйста, обновите её через Steam.",
 
+		// Tag categories are not displayed in game currently, but are shown on workshop
+		// "TagsCategoryModFeatures": "Mod Features",
+		// "TagsCategoryModSide": "Mod Side",
+		// "TagsCategoryTModLoaderVersion": "tModLoader Version",
+		// "TagsCategoryLanguage": "{$LegacyMenu.103}",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Новый контент",
 		"TagsContentDescription": "Добавляет в игру новый контент (т.е. предметы, оружие, НИПы, боссы и другой контент расширяющий игровой процесс).",

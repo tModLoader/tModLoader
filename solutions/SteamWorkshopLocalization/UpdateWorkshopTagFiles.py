@@ -12,10 +12,10 @@ tModLoaderLocalizationFilename = '../../src/tModLoader/Terraria/Localization/Con
 steamToLocalizationKey = {
   #"language":"english",
   #"appid":1281930,
-  # TODO: Localize the Categories.
-  #"category_0":"Mod Features",
-  #"category_1":"Mod Side",
-  #"category_2":"tModLoader Version",
+  "category_0":"TagsCategoryModFeatures",
+  "category_1":"TagsCategoryModSide",
+  "category_2":"TagsCategoryTModLoaderVersion",
+  #"category_3":"LegacyMenu.103", # Handled manually below
   "tag_197618":"TagsQoL", #"quality of life",
   "tag_197621":"TagsContent", #"new content",
   "tag_275098":"TagsLibrary", #"library",
@@ -36,6 +36,8 @@ steamToLocalizationKey = {
 # English will be updated directly, if ever needed.
 languages = ['de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
 steamLanguages = ['german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
+TagsCategoryLanguage = ['Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język'] # not in tModLoader.json, so just do it manually for simplicity
+
 # TODO: what to do about latam-spanishlatinamerica, sc_schinese-steamsimplifiedchinese, tchinese-traditionalchinese, portuguese-portugalportuguese?
 # should we copy the results from the similar language? Not sure why there are 3 chinese either, steam website only has 2 options.
 missings = []
@@ -46,7 +48,7 @@ anyFileNeedsUploading = False
 # for each entry in the mapping, update the json if exists
 # write out steam tag json
 
-for language, steamLanguage in zip(languages, steamLanguages):
+for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)):
     print("Updating:", language)
     missing = 0
 
@@ -62,6 +64,8 @@ for language, steamLanguage in zip(languages, steamLanguages):
             steamTagData[key] = temp
         else:
             missing += 1
+    
+    # uncomment once tag is live: steamTagData['category_3'] = TagsCategoryLanguage[index]
 
     if missing > 0:
         missings.append( (language, missing) )
