@@ -1731,7 +1731,7 @@
  				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[j].type])
  					num3 = 12;
  
-+				if (NPCID.Sets.NoInvasionMusic[npc[j].type])
++				if (NPCID.Sets.NoInvasionMusic[npc[j].type] && NPC.GetNPCInvasionGroup(npc[j].type) != 0)
 +					num3 = 0;
 +
  				if (num3 == 0 && npc[j].boss)
