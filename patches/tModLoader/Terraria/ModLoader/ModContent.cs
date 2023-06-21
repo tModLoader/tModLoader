@@ -496,8 +496,6 @@ public static class ModContent
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
 
-		FlexibleTileWand.Unload();
-
 		// ItemID.Search = IdDictionary.Create<ItemID, short>();
 		// NPCID.Search = IdDictionary.Create<NPCID, short>();
 		// ProjectileID.Search = IdDictionary.Create<ProjectileID, short>();
