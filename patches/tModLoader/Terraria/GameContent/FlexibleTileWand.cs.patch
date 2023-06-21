@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/GameContent/FlexibleTileWand.cs
++++ src/tModLoader/Terraria/GameContent/FlexibleTileWand.cs
+@@ -194,4 +_,11 @@
+ 		wand.AddVariations_ByRow(3081, tileType, variationsPerRow, 31, 32, 33);
+ 		wand.AddVariations_ByRow(607, tileType, variationsPerRow, 34, 35, 36);
+ 	}
++
++	public static void Unload()
++	{
++		RubblePlacementSmall = CreateRubblePlacerSmall();
++		RubblePlacementMedium = CreateRubblePlacerMedium();
++		RubblePlacementLarge = CreateRubblePlacerLarge();
++	} 
+ }

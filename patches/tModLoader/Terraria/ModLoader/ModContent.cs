@@ -452,6 +452,7 @@ public static class ModContent
 		WallLoader.Unload();
 		ProjectileLoader.Unload();
 
+
 		NPCLoader.Unload();
 		NPCHeadLoader.Unload();
 
@@ -494,6 +495,8 @@ public static class ModContent
 		Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
+
+		FlexibleTileWand.Unload();
 
 		// ItemID.Search = IdDictionary.Create<ItemID, short>();
 		// NPCID.Search = IdDictionary.Create<NPCID, short>();

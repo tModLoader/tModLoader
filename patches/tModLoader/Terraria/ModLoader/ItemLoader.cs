@@ -106,6 +106,7 @@ public static class ItemLoader
 
 	internal static void FinishSetup()
 	{
+
 		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups(new Item().SetDefaults);
 		UpdateHookLists();
 		GlobalTypeLookups<GlobalItem>.LogStats();
@@ -116,6 +117,7 @@ public static class ItemLoader
 			ContentSamples.ItemsByType[item.Type].RebuildTooltip();
 		}
 
+		AddToRubblemaker(FlexibleTileWand.RubblePlacementSmall, FlexibleTileWand.RubblePlacementMedium, FlexibleTileWand.RubblePlacementLarge);
 		ValidateDropsSet();
 	}
 
@@ -151,6 +153,7 @@ public static class ItemLoader
 	{
 		ItemCount = ItemID.Count;
 		items.Clear();
+		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
 		modHooks.Clear();
 		UpdateHookLists();
@@ -2212,6 +2215,17 @@ public static class ItemLoader
 		return tooltips;
 	}
 
+
+	private delegate void DelegateAddToRubblemaker(FlexibleTileWand rubblemakerSmall, FlexibleTileWand rubblemakerMedium, FlexibleTileWand rubblemakerLarge);
+	private static HookList HookAddToRubblemaker = AddHook<DelegateAddToRubblemaker>(g => g.AddToRubblemaker);
+
+	public static void AddToRubblemaker(FlexibleTileWand rubblemakerSmall, FlexibleTileWand rubblemakerMedium, FlexibleTileWand rubblemakerLarge)
+	{
+		foreach (var g in HookAddToRubblemaker.Enumerate()) {
+			g.AddToRubblemaker(rubblemakerSmall, rubblemakerMedium, rubblemakerLarge);
+		}
+	}
+
 	internal static HookList HookSaveData = AddHook<Action<Item, TagCompound>>(g => g.SaveData);
 	internal static HookList HookNetSend = AddHook<Action<Item, BinaryWriter>>(g => g.NetSend);
 	internal static HookList HookNetReceive = AddHook<Action<Item, BinaryReader>>(g => g.NetReceive);
@@ -2226,4 +2240,5 @@ public static class ItemLoader
 
 		return false;
 	}
+
 }

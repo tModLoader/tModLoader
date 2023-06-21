@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader;
 
@@ -1105,6 +1106,17 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify all the tooltips that display for the given item. See here for information about TooltipLine.
 	/// </summary>
 	public virtual void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to add items and their respective rubble tile types and styles for each Rubblemaker size
+	/// Use AddVariations for the preferred Rubblemaker size
+	/// </summary>
+	/// <param name="rubblemakerSmall"> The small Rubblemaker </param>
+	/// <param name="rubblemakerMedium"> The medium Rubblemaker </param>
+	/// <param name="rubblemakerLarge"> The large Rubblemaker </param>
+	public virtual void AddToRubblemaker(FlexibleTileWand rubblemakerSmall, FlexibleTileWand rubblemakerMedium, FlexibleTileWand rubblemakerLarge)
 	{
 	}
 
