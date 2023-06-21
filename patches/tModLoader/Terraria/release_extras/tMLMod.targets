@@ -55,6 +55,7 @@
 			<ModProperty Include="SortBefore" Value="$(SortBefore)" Condition="$(SortBefore) != ''" />
 			<ModProperty Include="SortAfter" Value="$(SortAfter)" Condition="$(SortAfter) != ''" />
 			<ModProperty Include="PlayableOnPreview" Value="$(PlayableOnPreview)" Condition="$(PlayableOnPreview) != ''" />
+			<ModProperty Include="TranslationMod" Value="$(TranslationMod)" Condition="$(TranslationMod) != ''" />
 		</ItemGroup>
 
 		<GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">

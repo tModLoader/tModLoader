@@ -24,6 +24,7 @@ public class BuildProperties
 	public bool HideResources = false;
 	public bool IncludeSource = false;
 	public bool PlayableOnPreview = true;
+	public bool TranslationMod = false;
 	public string EacPath = string.Empty;
 	public string Homepage = "";
 	public string Description = "";
@@ -124,6 +125,9 @@ public class BuildProperties
 			case "playableOnPreview":
 				properties.PlayableOnPreview = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
+			case "translationMod":
+				properties.TranslationMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+				break;
 			case "buildIgnore":
 				properties.BuildIgnores = value.Split(',')
 					.Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar))
@@ -204,6 +208,9 @@ public class BuildProperties
 		}
 		if (!PlayableOnPreview) {
 			writer.Write("!playableOnPreview");
+		}
+		if (TranslationMod) {
+			writer.Write("translationMod");
 		}
 		if (EacPath.Length > 0) {
 			writer.Write("eacPath");
