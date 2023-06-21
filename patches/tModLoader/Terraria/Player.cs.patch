@@ -707,6 +707,16 @@
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
+@@ -1653,6 +_,9 @@
+ 
+ 	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
+ 
++	/// <summary>
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// </summary>
+ 	public bool CCed {
+ 		get {
+ 			if (!frozen && !webbed)
 @@ -1823,6 +_,10 @@
  		}
  	}
