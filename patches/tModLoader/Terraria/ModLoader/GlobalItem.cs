@@ -8,7 +8,6 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
-using Terraria.GameContent;
 
 namespace Terraria.ModLoader;
 
