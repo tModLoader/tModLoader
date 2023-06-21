@@ -5,7 +5,7 @@
  		wand.AddVariations_ByRow(607, tileType, variationsPerRow, 34, 35, 36);
  	}
 +
-+	public static void Unload()
++	public static void Reload()
 +	{
 +		RubblePlacementSmall = CreateRubblePlacerSmall();
 +		RubblePlacementMedium = CreateRubblePlacerMedium();

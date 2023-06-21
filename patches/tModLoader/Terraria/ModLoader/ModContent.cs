@@ -452,7 +452,6 @@ public static class ModContent
 		WallLoader.Unload();
 		ProjectileLoader.Unload();
 
-
 		NPCLoader.Unload();
 		NPCHeadLoader.Unload();
 

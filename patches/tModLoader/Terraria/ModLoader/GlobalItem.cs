@@ -1110,17 +1110,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to add items and their respective rubble tile types and styles for each Rubblemaker size
-	/// Use AddVariations for the preferred Rubblemaker size
-	/// </summary>
-	/// <param name="rubblemakerSmall"> The small Rubblemaker </param>
-	/// <param name="rubblemakerMedium"> The medium Rubblemaker </param>
-	/// <param name="rubblemakerLarge"> The large Rubblemaker </param>
-	public virtual void AddToRubblemaker(FlexibleTileWand rubblemakerSmall, FlexibleTileWand rubblemakerMedium, FlexibleTileWand rubblemakerLarge)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to save custom data for this item.
 	/// <br/>
 	/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
