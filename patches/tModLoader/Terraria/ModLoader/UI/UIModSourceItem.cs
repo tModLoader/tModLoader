@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -228,6 +229,51 @@ internal class UIModSourceItem : UIPanel
 
 				Append(portModButton);
 
+				contextButtonsLeft -= 26;
+			}
+			
+			// Display "Upgrade build.txt" button if build.txt is present and csproj is valid
+			string buildTxtFile = Path.Combine(_mod, "build.txt");
+			if (!projNeedsUpdate && File.Exists(buildTxtFile)) {
+				var icon = UICommon.ButtonExclamationTexture;
+				var upgradeInfoButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeBuildTxt")) {
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+
+				upgradeInfoButton.OnLeftClick += (s, e) => {
+					string[] rawBuildTxt = File.ReadAllLines(buildTxtFile);
+
+					StringBuilder builder = new();
+					builder.AppendLine("  <PropertyGroup>");
+
+					foreach (string line in rawBuildTxt) {
+						string[] parts = line.Split('=');
+						if (parts.Length != 2) continue;
+
+						string name = parts[0].Trim();
+						name = char.ToUpper(name[0]) + name[1..]; // To PascalCase
+						string value = parts[1].Trim();
+						builder.AppendLine($"    <{name}>{value}</{name}>");
+					}
+
+					builder.Append("  </PropertyGroup>");
+					string output = builder.ToString();
+
+					string csproj = File.ReadAllText(csprojFile);
+
+					const string target = "</PropertyGroup>";
+					int index = csproj.IndexOf(target, StringComparison.Ordinal);
+					csproj = csproj.Insert(index + target.Length + 1, output);
+					
+					File.WriteAllText(csprojFile, csproj);
+					File.Delete(buildTxtFile);
+					
+					upgradeInfoButton.Remove();
+				};
+				
+				Append(upgradeInfoButton);
+				
 				contextButtonsLeft -= 26;
 			}
 		}

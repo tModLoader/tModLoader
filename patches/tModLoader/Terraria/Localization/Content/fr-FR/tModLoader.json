@@ -363,6 +363,7 @@
 		"MSBuildReloadAll": "Tout compiler + Tout relancer",
 		"MSUpgradeCSProj": "Mettre à jour le fichier .csproj",
 		"MSUpgradeLangFiles": "Mettre à niveau les fichiers .lang à .hjson (non destructif)",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Dossier des sources",
