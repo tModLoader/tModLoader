@@ -319,9 +319,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </para>
 	/// </summary>
 	/// <param name="jump">The jump being performed</param>
-	/// <param name="player">The player performing the jump</param>
 	/// <param name="duration">A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</param>
-	public virtual void ModifyExtraJumpDuration(ExtraJump jump, Player player, ref float duration)
+	public virtual void ModifyExtraJumpDuration(ExtraJump jump, ref float duration)
 	{
 	}
 
@@ -332,7 +331,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="jump">The jump being performed</param>
 	/// <param name="player">The player performing the jump</param>
 	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
-	public virtual void OnExtraJumpStarted(ExtraJump jump, Player player, ref bool playSound)
+	public virtual void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
 	{
 	}
 
@@ -341,8 +340,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
 	/// </summary>
 	/// <param name="jump">The jump that was performed</param>
-	/// <param name="player">The player that was performing the jump</param>
-	public virtual void OnExtraJumpEnded(ExtraJump jump, Player player)
+	public virtual void OnExtraJumpEnded(ExtraJump jump)
 	{
 	}
 
@@ -351,8 +349,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// This occurs at the start of the grounded jump and while the player is grounded.
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
-	/// <param name="player">The player instance</param>
-	public virtual void OnExtraJumpRefreshed(ExtraJump jump, Player player)
+	public virtual void OnExtraJumpRefreshed(ExtraJump jump)
 	{
 	}
 
@@ -361,8 +358,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
-	/// <param name="player">The player performing the jump</param>
-	public virtual bool PreExtraJumpVisuals(ExtraJump jump, Player player)
+	public virtual bool PreExtraJumpVisuals(ExtraJump jump)
 	{
 		return true;
 	}
@@ -371,8 +367,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for an extra jump is set to <see langword="false"/>  in <see cref="Player.Update(int)"/> due to the jump being unavailable or when calling <see cref="Player.ClearAllExtraJumps"/> (vanilla calls it when a mount that blocks jumps is active)
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
-	/// <param name="player">The player instance</param>
-	public virtual void OnExtraJumpCleared(ExtraJump jump, Player player)
+	public virtual void OnExtraJumpCleared(ExtraJump jump)
 	{
 	}
 
