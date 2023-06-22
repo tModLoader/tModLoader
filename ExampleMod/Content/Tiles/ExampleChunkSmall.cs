@@ -51,8 +51,9 @@ namespace ExampleMod.Content.Tiles
 		public override string Texture => "ExampleMod/Content/Tiles/ExampleChunkSmall";
 
 		// Drops 1 ExampleItem on tile break
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<ExampleItem>(), Stack: 1);
+		public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
+			if(!fail && !effectOnly && !noItem)
+				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<ExampleItem>(), Stack: 1);
 		}
 
 		//Adds a 1/8 chance to drop worms 
