@@ -86,17 +86,22 @@ namespace ExampleMod.Content.Items.Armor
 			p.BlockyHideVanity = false;
 			p.BlockyForceVanity = true;
 		}
-
-		// TODO: Fix this once new hook prior to FrameEffects added.
-		// Required so UpdateVanitySet gets called in EquipTextures
-		public override bool IsVanitySet(int head, int body, int legs) => true;
 	}
 
 	public class BlockyHead : EquipTexture
 	{
+		public override bool IsVanitySet(int head, int body, int legs) => true;
+
 		public override void UpdateVanitySet(Player player) {
 			if (Main.rand.NextBool(20)) {
-				Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Sparkle>());
+				// 2 separate instances of the BlockyHead class are used, we can differentiate them with Name if needed.
+				if (Name == "ExampleCostume") {
+					Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Sparkle>());
+				}
+				else {
+					// Name == "BlockyAlt"
+					Dust.NewDust(player.position, player.width, player.height, DustID.BlueFlare);
+				}
 			}
 		}
 	}
