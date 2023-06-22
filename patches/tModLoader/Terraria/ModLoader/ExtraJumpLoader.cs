@@ -9,8 +9,6 @@ public static class ExtraJumpLoader
 {
 	public static int ExtraJumpCount => ExtraJumps.Count;
 
-	public static int GlobalExtraJumpCount => GlobalExtraJumps.Count;
-
 	// Order is the vanilla priority when consuming the extra jumps
 	internal static readonly List<ExtraJump> ExtraJumps = new List<ExtraJump>()
 	{
@@ -35,10 +33,6 @@ public static class ExtraJumpLoader
 
 	private static ExtraJump[] orderedJumps;
 
-	public static IReadOnlyList<ExtraJump> OrderedExtraJumps => orderedJumps;
-
-	internal static readonly List<GlobalExtraJump> GlobalExtraJumps = new List<GlobalExtraJump>();
-
 	static ExtraJumpLoader()
 	{
 		RegisterDefaultJumps();
@@ -52,17 +46,9 @@ public static class ExtraJumpLoader
 
 	public static ExtraJump Get(int index) => index < 0 || index >= ExtraJumpCount ? null : ExtraJumps[index];
 
-	internal static int Add(GlobalExtraJump jump) {
-		GlobalExtraJumps.Add(jump);
-		return GlobalExtraJumps.Count - 1;
-	}
-
-	public static GlobalExtraJump GetGlobal(int index) => index < 0 || index >= GlobalExtraJumpCount ? null : GlobalExtraJumps[index];
-
 	internal static void Unload()
 	{
 		ExtraJumps.RemoveRange(DefaultExtraJumpCount, ExtraJumpCount - DefaultExtraJumpCount);
-		GlobalExtraJumps.Clear();
 	}
 
 	internal static void ResizeArrays()
@@ -153,27 +139,24 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreJumpVisuals(player))
-				jump.JumpVisuals(player);
+			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreVisuals(player) && PlayerLoader.PreExtraJumpVisuals(jump, player))
+				jump.Visuals(player);
 		}
 	}
 
 	public static void ProcessJumps(Player player, bool flipperOrSlimeMountSwimming)
 	{
-		foreach (ExtraJump jump in orderedJumps) {
-			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-
-			// The Cloud in a Bottle's extra jump ignores the "flipper swimming" check
-			// "IgnoresSwimmingChecks" allows modders to mimic this behavior
-			if ((jump.IgnoresSwimmingChecks || !flipperOrSlimeMountSwimming) && data.JumpAvailable) {
-				data.JumpAvailable = false;
-				data.PerformingJump = true;
-				jump.PerformJump(player);
-				break;
-			}
-		}
-
 		if (!flipperOrSlimeMountSwimming) {
+			foreach (ExtraJump jump in orderedJumps) {
+				ref ExtraJumpData data = ref player.GetExtraJump(jump);
+				if (data.JumpAvailable) {
+					data.JumpAvailable = false;
+					data.PerformingJump = true;
+					jump.PerformJump(player);
+					break;
+				}
+			}
+
 			// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
 			player.GetExtraJump(ExtraJump.BasiliskMount).JumpAvailable = false;
 		}
@@ -184,11 +167,8 @@ public static class ExtraJumpLoader
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.PerformingJump) {
-				jump.OnJumpEnded(player);
-
-				foreach (GlobalExtraJump globalJump in GlobalExtraJumps)
-					globalJump.OnJumpEnded(jump, player);
-
+				jump.OnEnded(player);
+				PlayerLoader.OnExtraJumpEnded(jump, player);
 				data.PerformingJump = false;
 			}
 		}
@@ -199,11 +179,8 @@ public static class ExtraJumpLoader
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
 			if (data.Active) {
-				jump.OnJumpRefreshed(player);
-
-				foreach (GlobalExtraJump globalJump in GlobalExtraJumps)
-					globalJump.OnJumpRefreshed(jump, player);
-
+				jump.OnRefreshed(player);
+				PlayerLoader.OnExtraJumpRefreshed(jump, player);
 				data.JumpAvailable = true;
 			}
 		}
@@ -219,14 +196,27 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (!data.Active)
+			if (!data.Active) {
+				if (data.JumpAvailable) {
+					jump.OnCleared(player);
+					PlayerLoader.OnExtraJumpCleared(jump, player);
+				}
+
 				data.JumpAvailable = false;
+			}
 		}
 	}
 
 	internal static void ClearAllExtraJumps(Player player)
 	{
-		foreach (ExtraJump jump in ExtraJumps)
-			player.GetExtraJump(jump).JumpAvailable = false;
+		foreach (ExtraJump jump in ExtraJumps) {
+			ref ExtraJumpData data = ref player.GetExtraJump(jump);
+			if (data.JumpAvailable) {
+				jump.OnCleared(player);
+				PlayerLoader.OnExtraJumpCleared(jump, player);
+			}
+
+			data.JumpAvailable = false;
+		}
 	}
 }

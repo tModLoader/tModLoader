@@ -19,9 +19,9 @@ public abstract class VanillaExtraJump : ExtraJump
 
 public sealed class GoatMountJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 2f;
+	public override float GetDuration(Player player) => 2f;
 
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		Vector2 center2 = player.Center;
 		Vector2 vector4 = new Vector2(50f, 20f);
@@ -50,9 +50,9 @@ public sealed class GoatMountJump : VanillaExtraJump
 
 public sealed class BasiliskMountJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 0.75f;
+	public override float GetDuration(Player player) => 0.75f;
 
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		Vector2 center2 = player.Center;
 		Vector2 vector4 = new Vector2(50f, 20f);
@@ -81,9 +81,9 @@ public sealed class BasiliskMountJump : VanillaExtraJump
 
 public sealed class SantankMountJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 2f;
+	public override float GetDuration(Player player) => 2f;
 
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		int num17 = player.height;
 		if (player.gravDir == -1f)
@@ -132,9 +132,9 @@ public sealed class SantankMountJump : VanillaExtraJump
 
 public sealed class UnicornMountJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 2f;
+	public override float GetDuration(Player player) => 2f;
 
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		Vector2 center = player.Center;
 		Vector2 vector2 = new Vector2(50f, 20f);
@@ -154,7 +154,7 @@ public sealed class UnicornMountJump : VanillaExtraJump
 		}
 	}
 
-	public override void JumpVisuals(Player player)
+	public override void Visuals(Player player)
 	{
 		Dust obj = Main.dust[Dust.NewDust(player.position, player.width, player.height, Utils.SelectRandom(Main.rand, 176, 177, 179))];
 		obj.velocity = Vector2.Zero;
@@ -173,9 +173,9 @@ public sealed class UnicornMountJump : VanillaExtraJump
 
 public sealed class SandstormInABottleJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 3f;
+	public override float GetDuration(Player player) => 3f;
 
-	public override void JumpVisuals(Player player)
+	public override void Visuals(Player player)
 	{
 		int num3 = player.height;
 		if (player.gravDir == -1f)
@@ -205,9 +205,9 @@ public sealed class SandstormInABottleJump : VanillaExtraJump
 
 public sealed class BlizzardInABottleJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 1.5f;
+	public override float GetDuration(Player player) => 1.5f;
 
-	public override void JumpVisuals(Player player)
+	public override void Visuals(Player player)
 	{
 		int num12 = player.height - 6;
 		if (player.gravDir == -1f)
@@ -254,9 +254,9 @@ public sealed class BlizzardInABottleJump : VanillaExtraJump
 
 public sealed class FartInAJarJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 2f;
+	public override float GetDuration(Player player) => 2f;
 
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		int num7 = player.height;
 		if (player.gravDir == -1f)
@@ -282,7 +282,7 @@ public sealed class FartInAJarJump : VanillaExtraJump
 		Main.gore[num9].velocity.Y = Main.gore[num9].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
 
-	public override void JumpVisuals(Player player)
+	public override void Visuals(Player player)
 	{
 		int num7 = player.height;
 		if (player.gravDir == -1f)
@@ -303,9 +303,9 @@ public sealed class FartInAJarJump : VanillaExtraJump
 
 public sealed class TsunamiInABottleJump : VanillaExtraJump
 {
-	public override float GetJumpDuration(Player player) => 1.25f;
+	public override float GetDuration(Player player) => 1.25f;
 
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		int num5 = player.height;
 		if (player.gravDir == -1f)
@@ -327,7 +327,7 @@ public sealed class TsunamiInABottleJump : VanillaExtraJump
 		}
 	}
 
-	public override void JumpVisuals(Player player)
+	public override void Visuals(Player player)
 	{
 		int num9 = 1;
 		if (player.jump > 0)
@@ -361,11 +361,9 @@ public sealed class TsunamiInABottleJump : VanillaExtraJump
 
 public sealed class CloudInABottleJump : VanillaExtraJump
 {
-	public override bool IgnoresSwimmingChecks => true;
+	public override float GetDuration(Player player) => 0.75f;
 
-	public override float GetJumpDuration(Player player) => 0.75f;
-
-	public override void OnJumpStarted(Player player, ref bool playSound)
+	public override void OnStarted(Player player, ref bool playSound)
 	{
 		int num22 = player.height;
 		if (player.gravDir == -1f)
@@ -388,9 +386,9 @@ public sealed class CloudInABottleJump : VanillaExtraJump
 		Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
 
-	public override bool PreJumpVisuals(Player player) => (player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && base.PreJumpVisuals(player);
+	public override bool PreVisuals(Player player) => (player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && base.PreVisuals(player);
 
-	public override void JumpVisuals(Player player)
+	public override void Visuals(Player player)
 	{
 		int num = player.height;
 		if (player.gravDir == -1f)

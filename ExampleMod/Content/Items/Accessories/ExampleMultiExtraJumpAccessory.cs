@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override Position GetDefaultPosition() => new After(BlizzardInABottle);
 
-		public override float GetJumpDuration(Player player) {
+		public override float GetDuration(Player player) {
 			// Each successive jump has weaker power
 			return player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining switch {
 				1 => 0.2f,
@@ -44,12 +44,12 @@ namespace ExampleMod.Content.Items.Accessories
 			};
 		}
 
-		public override void OnJumpRefreshed(Player player) {
+		public override void OnRefreshed(Player player) {
 			// Reset the jump counter
 			player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining = 3;
 		}
 
-		public override void OnJumpStarted(Player player, ref bool playSound) {
+		public override void OnStarted(Player player, ref bool playSound) {
 			// Get the jump counter
 			ref int jumps = ref player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining;
 
@@ -113,7 +113,7 @@ namespace ExampleMod.Content.Items.Accessories
 			jumps--;
 		}
 
-		public override void OnJumpEnded(Player player) {
+		public override void OnEnded(Player player) {
 			// Allow the jump to be used again while the jump counter is > 0
 			if (player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining > 0)
 				player.GetExtraJump<MultipleUseExtraJump>().JumpAvailable = true;

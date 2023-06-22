@@ -368,6 +368,64 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate void DelegateModifyExtraJumpDuration(ExtraJump jump, Player player, ref float duration);
+	private static HookList HookModifyExtraJumpDuration = AddHook<DelegateModifyExtraJumpDuration>(p => p.ModifyExtraJumpDuration);
+
+	public static void ModifyExtraJumpDuration(ExtraJump jump, Player player, ref float duration)
+	{
+		foreach (var modPlayer in HookModifyExtraJumpDuration.Enumerate(player)) {
+			try { modPlayer.ModifyExtraJumpDuration(jump, player, ref duration); } catch { }
+		}
+	}
+
+	private delegate void DelegateOnExtraJumpStarted(ExtraJump jump, Player player, ref bool playSound);
+	private static HookList HookOnExtraJumpStarted = AddHook<DelegateOnExtraJumpStarted>(p => p.OnExtraJumpStarted);
+
+	public static void OnExtraJumpStarted(ExtraJump jump, Player player, ref bool playSound)
+	{
+		foreach (var modPlayer in HookOnExtraJumpStarted.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpStarted(jump, player, ref playSound); } catch { }
+		}
+	}
+
+	private static HookList HookOnExtraJumpEnded = AddHook<Action<ExtraJump, Player>>(p => p.OnExtraJumpEnded);
+
+	public static void OnExtraJumpEnded(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookOnExtraJumpEnded.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpEnded(jump, player); } catch { }
+		}
+	}
+
+	private static HookList HookOnExtraJumpRefreshed = AddHook<Action<ExtraJump, Player>>(p => p.OnExtraJumpRefreshed);
+
+	public static void OnExtraJumpRefreshed(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookOnExtraJumpRefreshed.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpRefreshed(jump, player); } catch { }
+		}
+	}
+
+	private static HookList HookPreExtraJumpVisuals = AddHook<Func<ExtraJump, Player, bool>>(p => p.PreExtraJumpVisuals);
+
+	public static bool PreExtraJumpVisuals(ExtraJump jump, Player player)
+	{
+		bool ret = true;
+		foreach (var modPlayer in HookPreExtraJumpVisuals.Enumerate(player)) {
+			try { ret &= modPlayer.PreExtraJumpVisuals(jump, player); } catch { }
+		}
+		return ret;
+	}
+
+	private static HookList HookOnExtraJumpCleared = AddHook<Action<ExtraJump, Player>>(p => p.OnExtraJumpCleared);
+
+	public static void OnExtraJumpCleared(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookPreExtraJumpVisuals.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpCleared(jump, player); } catch { }
+		}
+	}
+
 	private static HookList HookFrameEffects = AddHook<Action>(p => p.FrameEffects);
 
 	public static void FrameEffects(Player player)
