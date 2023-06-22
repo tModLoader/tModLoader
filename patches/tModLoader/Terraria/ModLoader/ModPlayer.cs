@@ -329,7 +329,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
 	/// </summary>
 	/// <param name="jump">The jump being performed</param>
-	/// <param name="player">The player performing the jump</param>
 	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
 	public virtual void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
 	{
