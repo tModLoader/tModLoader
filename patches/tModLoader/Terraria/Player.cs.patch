@@ -4905,6 +4905,21 @@
  		if (pvp)
  			pvpDeath = true;
  
+@@ -30004,10 +_,14 @@
+ 			}
+ 		}
+ 
++		if (!playSound)
++			goto postSound;
++
+ 		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
+ 			SoundEngine.PlaySound(Male ? SoundID.DSTMaleHurt : SoundID.DSTFemaleHurt, position);
+ 		else
+ 			SoundEngine.PlaySound(5, (int)position.X, (int)position.Y);
++		postSound:
+ 
+ 		if (Main.tenthAnniversaryWorld) {
+ 			for (int j = 0; j < 85; j++) {
 @@ -30041,12 +_,15 @@
  		headVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
  		bodyVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
