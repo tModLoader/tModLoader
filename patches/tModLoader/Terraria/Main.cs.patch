@@ -5453,6 +5453,15 @@
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
  			LoadBackground(array3[2]);
+@@ -43698,7 +_,7 @@
+ 									Lighting.GetCornerColors(num24, num25, out var vertices);
+ 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+ 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+-									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 								}
+ 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+ 									Lighting.GetColor9Slice(num24, num25, ref slices);
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
