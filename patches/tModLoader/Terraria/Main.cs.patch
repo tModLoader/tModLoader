@@ -5435,12 +5435,20 @@
  		if (num9 != undergroundBackground) {
  			oldUndergroundBackground = undergroundBackground;
  			undergroundBackground = num9;
+@@ -43390,6 +_,7 @@
+ 		int[] array = new int[7];
+ 		int[] array2 = new int[7];
+ 		for (int i = 0; i < 2; i++) {
++			// patch context, num10 below
+ 			int num10 = undergroundBackground;
+ 			if (i == 1)
+ 				num10 = oldUndergroundBackground;
 @@ -43580,6 +_,9 @@
  				array3[5] = 127;
  
  			array3[6] = 185 + hellBackStyle;
 +
-+			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num9, array3);
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num10, array3);
 +
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
