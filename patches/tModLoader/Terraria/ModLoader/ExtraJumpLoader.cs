@@ -139,8 +139,10 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreVisuals(player) && PlayerLoader.PreExtraJumpVisuals(jump, player))
+			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreVisuals(player) && PlayerLoader.PreExtraJumpVisuals(jump, player)) {
 				jump.Visuals(player);
+				PlayerLoader.ExtraJumpVisuals(jump, player);
+			}
 		}
 	}
 

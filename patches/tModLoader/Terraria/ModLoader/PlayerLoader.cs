@@ -406,6 +406,15 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookExtraJumpVisuals = AddHook<Action<ExtraJump>>(p => p.ExtraJumpVisuals);
+
+	public static void ExtraJumpVisuals(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookExtraJumpVisuals.Enumerate(player)) {
+			try { modPlayer.ExtraJumpVisuals(jump); } catch { }
+		}
+	}
+
 	private static HookList HookPreExtraJumpVisuals = AddHook<Func<ExtraJump, bool>>(p => p.PreExtraJumpVisuals);
 
 	public static bool PreExtraJumpVisuals(ExtraJump jump, Player player)
@@ -421,7 +430,7 @@ public static class PlayerLoader
 
 	public static void OnExtraJumpCleared(ExtraJump jump, Player player)
 	{
-		foreach (var modPlayer in HookPreExtraJumpVisuals.Enumerate(player)) {
+		foreach (var modPlayer in HookOnExtraJumpCleared.Enumerate(player)) {
 			try { modPlayer.OnExtraJumpCleared(jump); } catch { }
 		}
 	}

@@ -353,6 +353,14 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Effects that should appear while the player is performing an extra jump should happen here.<br/>
+	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
+	/// </summary>
+	public virtual void ExtraJumpVisuals(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
 	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.Visuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
