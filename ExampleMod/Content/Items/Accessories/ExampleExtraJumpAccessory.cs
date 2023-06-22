@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleExtraJumpAccessory : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToAccessory(32, 32);
+			Item.DefaultToAccessory(20, 26);
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(silver: 50));
 		}
 

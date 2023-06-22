@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleMultiExtraJumpAccessory : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToAccessory(32, 32);
+			Item.DefaultToAccessory(20, 26);
 			Item.SetShopValues(ItemRarityColor.Orange3, Item.buyPrice(gold: 2));
 		}
 
