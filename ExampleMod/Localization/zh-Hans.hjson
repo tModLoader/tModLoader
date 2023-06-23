@@ -251,6 +251,11 @@ Mods: {
 				// Tooltip: ""
 			}
 
+			ExampleTallHelmet: {
+				// DisplayName: Example Tall Helmet
+				// Tooltip: This is a tall modded helmet.
+			}
+
 			MinionBossMask: {
 				// DisplayName: Minion Boss Mask
 				// Tooltip: ""
