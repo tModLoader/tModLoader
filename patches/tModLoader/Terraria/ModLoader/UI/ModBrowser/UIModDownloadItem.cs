@@ -1,21 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Utilities;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Core;
-using Terraria.Social.Steam;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
@@ -39,20 +34,17 @@ internal class UIModDownloadItem : UIPanel
 	private static int ModIconDownloadFailCount = 0;
 	private bool HasModIcon => ModDownload.ModIconUrl != null;
 	private float ModIconAdjust => 85f;
-	private bool IsInstalled => new ModDownloadItemInstallInfo(ModDownload).IsInstalled;
-	private bool HasUpdate => new ModDownloadItemInstallInfo(ModDownload).NeedUpdate;
-	private bool NeedsGameRestart => new ModDownloadItemInstallInfo(ModDownload).AppNeedRestartToReinstall;
 	private bool UpdateIsDowngrade = false;
 
 	private string ViewModInfoText => Language.GetTextValue("tModLoader.ModsMoreInfo");
 
-	private string UpdateText => HasUpdate
+	private string UpdateText => ModDownload.NeedUpdate
 		? UpdateIsDowngrade
 			? Language.GetTextValue("tModLoader.MBDowngrade")
 			: Language.GetTextValue("tModLoader.MBUpdate")
 		: Language.GetTextValue("tModLoader.MBDownload");
 
-	private string UpdateWithDepsText => HasUpdate
+	private string UpdateWithDepsText => ModDownload.NeedUpdate
 		? UpdateIsDowngrade
 			? Language.GetTextValue("tModLoader.MBDowngradeWithDependencies")
 			: Language.GetTextValue("tModLoader.MBUpdateWithDependencies")
@@ -129,7 +121,7 @@ internal class UIModDownloadItem : UIPanel
 		OnLeftDoubleClick += ViewModInfo;
 	}
 
-	public void UpdateInstallInfo(ModDownloadItemInstallInfo installInfo)
+	public void UpdateInstallInfo()
 	{
 		if (tMLNeedUpdate)
 			return;
@@ -137,10 +129,10 @@ internal class UIModDownloadItem : UIPanel
 		_updateWithDepsButton.Remove();
 		_updateButton.Remove();
 
-		if (NeedsGameRestart) {
+		if (ModDownload.AppNeedRestartToReinstall) {
 			Append(_updateButton);
 		}
-		else if (HasUpdate || !IsInstalled) {
+		else if (ModDownload.NeedUpdate || !ModDownload.IsInstalled) {
 			Append(_updateWithDepsButton);
 		}
 	}
@@ -180,6 +172,7 @@ internal class UIModDownloadItem : UIPanel
 		}
 	}
 
+	/* Legacy 1.3 Browser Code to Be Removed - Solxan
 	public bool PassFilters()
 	{
 		if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(ModDownload.PublishId))
@@ -204,13 +197,14 @@ internal class UIModDownloadItem : UIPanel
 			case UpdateFilter.All:
 				return true;
 			case UpdateFilter.Available:
-				return HasUpdate || !IsInstalled;
+				return ModDownload.NeedUpdate || !ModDownload.IsInstalled;
 			case UpdateFilter.UpdateOnly:
-				return HasUpdate;
+				return ModDownload.NeedUpdate;
 			case UpdateFilter.InstalledOnly:
-				return IsInstalled;
+				return ModDownload.IsInstalled;
 		}
 	}
+	*/
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{

@@ -1,7 +1,5 @@
-using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -9,7 +7,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;

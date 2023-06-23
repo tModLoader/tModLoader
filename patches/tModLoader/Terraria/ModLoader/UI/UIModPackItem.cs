@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.Audio;

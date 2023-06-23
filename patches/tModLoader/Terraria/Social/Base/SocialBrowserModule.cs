@@ -1,46 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Terraria.ModLoader.UI.ModBrowser;
+namespace Terraria.Social.Base;
 
 public struct ModPubId_t
 {
 	public string m_ModPubId;
-}
-
-public struct ModDownloadItemInstallInfo
-{
-	internal LocalMod Installed; // Shoudn't be internal
-
-	public bool NeedUpdate;
-	public bool AppNeedRestartToReinstall;
-
-	public bool IsInstalled => Installed != null;
-	public bool IsEnabled => IsInstalled && Installed.Enabled;
-
-	public ModDownloadItemInstallInfo (ModDownloadItem item)
-	{
-		// Remember this constructor is blocking, it does network stuff...
-		// @TODO: This should probably be a method returning a Task so it can be awaited or
-		// run async so that it's clear it can stop execution and break lock instructions
-		// (not possible now since the functions used inside are not async atm...)
-
-		// Check against installed mods for updates.
-		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
-		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(item.ModName);
-
-		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(item.PublishId, Installed, new System.Version(item.Version));
-		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
-		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(item.PublishId);
-	}
-
 }
 
 public interface SocialBrowserModule
@@ -107,11 +82,11 @@ public interface SocialBrowserModule
 	{
 		// Can't update enabled items due to in-use file access constraints
 		// Mod unloading needs to occur off the main thread o avoid UI impacts/soft-freeze
-		var needFreeInUseMods = items.Any(item => new ModDownloadItemInstallInfo(item).IsEnabled);
+		var needFreeInUseMods = items.Any(item => { item.UpdateInstallState(); return item.IsEnabled; });
 		if (needFreeInUseMods) {
 			Interface.loadMods.suppressAutoLoad = true;
 			Main.menuMode = Interface.loadModsID;
-			var unload = Task.Run(() => ModLoader.Unload());
+			var unload = Task.Run(() => ModLoader.ModLoader.Unload());
 			return unload.ContinueWith(delegate { DownloadRunner(items, previousMenuId, needFreeInUseMods); });
 		}
 		else {
@@ -152,7 +127,7 @@ public interface SocialBrowserModule
 		uiProgress?.Leave();
 
 		if (reloadWhenDone)
-			ModLoader.Reload();
+			ModLoader.ModLoader.Reload();
 	}
 
 	internal void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress);

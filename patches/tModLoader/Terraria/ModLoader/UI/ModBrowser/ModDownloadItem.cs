@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader.Core;
+using Terraria.Social.Base;
 using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -29,6 +31,13 @@ public class ModDownloadItem
 	public readonly string Homepage;
 	public readonly string ModloaderVersion;
 
+	private LocalMod Installed; // Shoudn't be internal
+	public bool NeedUpdate { get; private set; }
+	public bool AppNeedRestartToReinstall { get; private set; }
+
+	public bool IsInstalled => Installed != null;
+	public bool IsEnabled => IsInstalled && Installed.Enabled;
+
 	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
 		ModName = name;
@@ -50,6 +59,19 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 	}
 
+	internal void UpdateInstallState()
+	{
+		// Remember this method is blocking, it does network stuff... - DarioDaf
+
+		// Check against installed mods for updates.
+		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
+		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(this.ModName);
+
+		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(this.PublishId, Installed, new System.Version(this.Version));
+		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
+		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(this.PublishId);
+	}
+
 	internal Task InnerDownloadWithDeps()
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
@@ -66,8 +88,8 @@ public class ModDownloadItem
 			if (item == null)
 				return false;
 
-			var installInfo = new ModDownloadItemInstallInfo(item);
-			return !installInfo.IsInstalled || installInfo.NeedUpdate;
+			item.UpdateInstallState();
+			return !item.IsInstalled || item.NeedUpdate;
 		});
 	}
 }

@@ -12,7 +12,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.Social.Steam;
+using Terraria.Social.Base;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
@@ -54,7 +54,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				else {
 					var uiItem = new UIModDownloadItem(item);
 					// @NOTE: LOCKING CONSTRUCTOR! must be outside the lock instruction
-					uiItem.UpdateInstallInfo(new ModDownloadItemInstallInfo(uiItem.ModDownload));
+					uiItem.UpdateInstallInfo();
 					lock (this) {
 						// @OPTIMIZATION: Could lock in batches instead of each item added, but
 						// can't really in this case because the constructor of ModDownloadItemInstallInfo
@@ -165,7 +165,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		_rootElement.RemoveChild(_updateAllButton);
 		if (
 			SpecialModPackFilter == null &&
-			SocialBackend.GetInstalledModDownloadItems().Where(item => new ModDownloadItemInstallInfo(item).NeedUpdate).Count() > 0
+			SocialBackend.GetInstalledModDownloadItems().Where(item => { item.UpdateInstallState(); return item.NeedUpdate; }).Count() > 0
 		)
 			_rootElement.Append(_updateAllButton);
 	}
@@ -173,7 +173,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private void UpdateAllMods(UIMouseEvent @event, UIElement element)
 	{
 		var relevantMods = SocialBackend.GetInstalledModDownloadItems()
-			.Where(item => new ModDownloadItemInstallInfo(item).NeedUpdate)
+			.Where(item => item.NeedUpdate)
 			.Select(item => item.PublishId)
 			.ToList();
 		DownloadMods(relevantMods);
@@ -328,7 +328,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				if (modSlugsToUpdateInstallInfo.Count > 0) {
 					// Should take very little time this so it's ok inside the lock, otherwise move it with a copy outside
 					foreach (var item in _provider?.GetData(false).Where(d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName))) {
-						item.UpdateInstallInfo(new ModDownloadItemInstallInfo(item.ModDownload));
+						item.UpdateInstallInfo();
 					}
 
 					modSlugsToUpdateInstallInfo.Clear();

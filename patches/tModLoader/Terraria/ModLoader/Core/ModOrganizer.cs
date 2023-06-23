@@ -572,7 +572,7 @@ internal static class ModOrganizer
 		foreach (string fileName in tmods) {
 			var match = PublishFolderMetadata.Match(fileName);
 			if (match.Success) {
-				versions.Add(UI.ModBrowser.SocialBrowserModule.GetBrowserVersionNumber(new Version(match.Groups[1].Value)));
+				versions.Add(SocialBrowserModule.GetBrowserVersionNumber(new Version(match.Groups[1].Value)));
 			}
 		}
 
