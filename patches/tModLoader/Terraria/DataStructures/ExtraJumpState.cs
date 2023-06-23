@@ -16,7 +16,7 @@ public struct ExtraJumpState
 	/// </summary>
 	public bool Enabled;
 	/// <summary>
-	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when a jump starts.<br/>
+	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when the extra jump starts.<br/>
 	/// Setting this field to <see langword="false"/> will effectively make the game think that the player has already used this extra jump.<br/>
 	/// When checking this field, make sure to check <see cref="Enabled"/> first.<br/>
 	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this field should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/> since <see cref="ExtraJump.Visuals(Player)"/> only runs when <see cref="Enabled"/> and <see cref="PerformingJump"/> are true and this field is <see langword="false"/>.
