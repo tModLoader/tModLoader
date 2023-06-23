@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Items.Accessories
 			yield return new Before(ModContent.GetInstance<MultipleUseExtraJump>());
 		}
 
-		public override float GetDuration(Player player) {
+		public override float GetDurationMultiplier(Player player) {
 			// Use this hook to set the duration of the extra jump
 			// The XML summary for this hook mentions the values used by the vanilla extra jumps
 			return 2.25f;

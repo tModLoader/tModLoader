@@ -320,7 +320,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="jump">The jump being performed</param>
 	/// <param name="duration">A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</param>
-	public virtual void ModifyExtraJumpDuration(ExtraJump jump, ref float duration)
+	public virtual void ModifyExtraJumpDurationMultiplier(ExtraJump jump, ref float duration)
 	{
 	}
 

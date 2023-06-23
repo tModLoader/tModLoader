@@ -19,7 +19,7 @@ public abstract class VanillaExtraJump : ExtraJump
 
 public sealed class GoatMountJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 2f;
+	public override float GetDurationMultiplier(Player player) => 2f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{
@@ -50,7 +50,7 @@ public sealed class GoatMountJump : VanillaExtraJump
 
 public sealed class BasiliskMountJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 0.75f;
+	public override float GetDurationMultiplier(Player player) => 0.75f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{
@@ -81,7 +81,7 @@ public sealed class BasiliskMountJump : VanillaExtraJump
 
 public sealed class SantankMountJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 2f;
+	public override float GetDurationMultiplier(Player player) => 2f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{
@@ -132,7 +132,7 @@ public sealed class SantankMountJump : VanillaExtraJump
 
 public sealed class UnicornMountJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 2f;
+	public override float GetDurationMultiplier(Player player) => 2f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{
@@ -173,7 +173,7 @@ public sealed class UnicornMountJump : VanillaExtraJump
 
 public sealed class SandstormInABottleJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 3f;
+	public override float GetDurationMultiplier(Player player) => 3f;
 
 	public override void Visuals(Player player)
 	{
@@ -205,7 +205,7 @@ public sealed class SandstormInABottleJump : VanillaExtraJump
 
 public sealed class BlizzardInABottleJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 1.5f;
+	public override float GetDurationMultiplier(Player player) => 1.5f;
 
 	public override void Visuals(Player player)
 	{
@@ -254,7 +254,7 @@ public sealed class BlizzardInABottleJump : VanillaExtraJump
 
 public sealed class FartInAJarJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 2f;
+	public override float GetDurationMultiplier(Player player) => 2f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{
@@ -303,7 +303,7 @@ public sealed class FartInAJarJump : VanillaExtraJump
 
 public sealed class TsunamiInABottleJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 1.25f;
+	public override float GetDurationMultiplier(Player player) => 1.25f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{
@@ -361,7 +361,7 @@ public sealed class TsunamiInABottleJump : VanillaExtraJump
 
 public sealed class CloudInABottleJump : VanillaExtraJump
 {
-	public override float GetDuration(Player player) => 0.75f;
+	public override float GetDurationMultiplier(Player player) => 0.75f;
 
 	public override void OnStarted(Player player, ref bool playSound)
 	{

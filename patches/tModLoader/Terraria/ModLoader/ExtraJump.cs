@@ -61,8 +61,8 @@ public abstract partial class ExtraJump : ModType
 	// Moved out of ExtraJumpLoader.ProcessJumps to make it more readable
 	internal void PerformJump(Player player) {
 		// Set velocity and jump duration
-		float duration = GetDuration(player);
-		PlayerLoader.ModifyExtraJumpDuration(this, player, ref duration);
+		float duration = GetDurationMultiplier(player);
+		PlayerLoader.ModifyExtraJumpDurationMultiplier(this, player, ref duration);
 
 		player.velocity.Y = -Player.jumpSpeed * player.gravDir;
 		player.jump = (int)(Player.jumpHeight * duration);
@@ -107,7 +107,7 @@ public abstract partial class ExtraJump : ModType
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
 	/// <returns>A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</returns>
-	public abstract float GetDuration(Player player);
+	public abstract float GetDurationMultiplier(Player player);
 
 	/// <summary>
 	/// Effects that should appear when the extra jump starts should happen here.<br/>

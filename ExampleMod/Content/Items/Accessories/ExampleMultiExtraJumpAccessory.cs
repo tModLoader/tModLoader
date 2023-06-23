@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		public override Position GetDefaultPosition() => new After(BlizzardInABottle);
 
-		public override float GetDuration(Player player) {
+		public override float GetDurationMultiplier(Player player) {
 			// Each successive jump has weaker power
 			return player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining switch {
 				1 => 0.2f,

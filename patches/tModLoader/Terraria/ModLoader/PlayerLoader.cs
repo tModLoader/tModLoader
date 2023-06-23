@@ -369,12 +369,12 @@ public static class PlayerLoader
 	}
 
 	private delegate void DelegateModifyExtraJumpDuration(ExtraJump jump, ref float duration);
-	private static HookList HookModifyExtraJumpDuration = AddHook<DelegateModifyExtraJumpDuration>(p => p.ModifyExtraJumpDuration);
+	private static HookList HookModifyExtraJumpDurationMultiplier = AddHook<DelegateModifyExtraJumpDuration>(p => p.ModifyExtraJumpDurationMultiplier);
 
-	public static void ModifyExtraJumpDuration(ExtraJump jump, Player player, ref float duration)
+	public static void ModifyExtraJumpDurationMultiplier(ExtraJump jump, Player player, ref float duration)
 	{
-		foreach (var modPlayer in HookModifyExtraJumpDuration.Enumerate(player)) {
-			try { modPlayer.ModifyExtraJumpDuration(jump, ref duration); } catch { }
+		foreach (var modPlayer in HookModifyExtraJumpDurationMultiplier.Enumerate(player)) {
+			try { modPlayer.ModifyExtraJumpDurationMultiplier(jump, ref duration); } catch { }
 		}
 	}
 
