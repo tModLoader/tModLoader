@@ -12,9 +12,7 @@ public abstract class VanillaExtraJump : ExtraJump
 {
 	public sealed override Position GetDefaultPosition() => null;
 
-	public sealed override IEnumerable<Position> GetModdedConstraints() {
-		yield break;
-	}
+	public sealed override IEnumerable<Position> GetModdedConstraints() => null;
 }
 
 public sealed class GoatMountJump : VanillaExtraJump
@@ -385,8 +383,6 @@ public sealed class CloudInABottleJump : VanillaExtraJump
 		Main.gore[num25].velocity.X = Main.gore[num25].velocity.X * 0.1f - player.velocity.X * 0.1f;
 		Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
-
-	public override bool CanShowVisuals(Player player) => (player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && base.CanShowVisuals(player);
 
 	public override void Visuals(Player player)
 	{

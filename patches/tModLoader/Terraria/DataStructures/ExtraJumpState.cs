@@ -28,7 +28,7 @@ public struct ExtraJumpState
 	internal bool _disabled;
 
 	/// <summary>
-	/// Forces this extra jump to be disabled without modifying the state of <see cref="Enabled"/><br/>
+	/// Forces this extra jump to be disabled for this game tick without modifying the state of <see cref="Enabled"/><br/>
 	/// If you want to disable all extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
 	/// </summary>
 	public void Disable() => _disabled = true;
