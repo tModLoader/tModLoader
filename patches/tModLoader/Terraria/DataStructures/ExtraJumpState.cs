@@ -11,11 +11,12 @@ public struct ExtraJumpState
 	/// </summary>
 	public bool Enabled;
 	/// <summary>
-	/// Whether the extra jump has been consumed
+	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when a jump starts.<br/>
+	/// When checking this field, make sure to check <see cref="Enabled"/> first.
 	/// </summary>
 	public bool JumpAvailable;
 	/// <summary>
-	/// Whether any effects (e.g. spawning dusts) should be performed
+	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out
 	/// </summary>
 	public bool PerformingJump;
 }
