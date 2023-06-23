@@ -125,53 +125,51 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	public static void ModifyPlayerHorizontalSpeeds(Player player)
+	public static void UpdateHorizontalSpeeds(Player player)
 	{
 		foreach (ExtraJump moddedExtraJump in orderedJumps) {
 			// Special case: Sandstorm in a Bottle uses a separate flag
-			ref ExtraJumpData extraJump = ref player.GetExtraJump(moddedExtraJump);
-			if ((object.ReferenceEquals(moddedExtraJump, ExtraJump.SandstormInABottle) && player.sandStorm) || (extraJump.PerformingJump && extraJump.Active))
-				moddedExtraJump.ModifyHorizontalSpeeds(player);
+			ref ExtraJumpState extraJump = ref player.GetJumpState(moddedExtraJump);
+			if ((object.ReferenceEquals(moddedExtraJump, ExtraJump.SandstormInABottle) && player.sandStorm) || (extraJump.PerformingJump && extraJump.Enabled))
+				moddedExtraJump.UpdateHorizontalSpeeds(player);
 		}
 	}
 
 	public static void JumpVisuals(Player player)
 	{
 		foreach (ExtraJump jump in orderedJumps) {
-			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.PerformingJump && data.Active && !data.JumpAvailable && jump.PreVisuals(player) && PlayerLoader.PreExtraJumpVisuals(jump, player)) {
+			ref ExtraJumpState state = ref player.GetJumpState(jump);
+			if (state.PerformingJump && state.Enabled && !state.JumpAvailable && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
 				jump.Visuals(player);
 				PlayerLoader.ExtraJumpVisuals(jump, player);
 			}
 		}
 	}
 
-	public static void ProcessJumps(Player player, bool flipperOrSlimeMountSwimming)
+	public static void ProcessJumps(Player player)
 	{
-		if (!flipperOrSlimeMountSwimming) {
-			foreach (ExtraJump jump in orderedJumps) {
-				ref ExtraJumpData data = ref player.GetExtraJump(jump);
-				if (data.JumpAvailable) {
-					data.JumpAvailable = false;
-					data.PerformingJump = true;
-					jump.PerformJump(player);
-					break;
-				}
+		foreach (ExtraJump jump in orderedJumps) {
+			ref ExtraJumpState state = ref player.GetJumpState(jump);
+			if (state.JumpAvailable) {
+				state.JumpAvailable = false;
+				state.PerformingJump = true;
+				jump.PerformJump(player);
+				break;
 			}
-
-			// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
-			player.GetExtraJump(ExtraJump.BasiliskMount).JumpAvailable = false;
 		}
+
+		// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
+		player.GetJumpState(ExtraJump.BasiliskMount).JumpAvailable = false;
 	}
 
 	public static void OnJumpEnded(Player player)
 	{
 		foreach (ExtraJump jump in orderedJumps) {
-			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.PerformingJump) {
+			ref ExtraJumpState state = ref player.GetJumpState(jump);
+			if (state.PerformingJump) {
 				jump.OnEnded(player);
 				PlayerLoader.OnExtraJumpEnded(jump, player);
-				data.PerformingJump = false;
+				state.PerformingJump = false;
 			}
 		}
 	}
@@ -179,11 +177,11 @@ public static class ExtraJumpLoader
 	public static void RefreshExtraJumps(Player player)
 	{
 		foreach (ExtraJump jump in orderedJumps) {
-			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.Active) {
+			ref ExtraJumpState state = ref player.GetJumpState(jump);
+			if (state.Enabled) {
 				jump.OnRefreshed(player);
 				PlayerLoader.OnExtraJumpRefreshed(jump, player);
-				data.JumpAvailable = true;
+				state.JumpAvailable = true;
 			}
 		}
 	}
@@ -191,34 +189,22 @@ public static class ExtraJumpLoader
 	internal static void ResetActiveFlags(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps)
-			player.GetExtraJump(jump).Active = false;
+			player.GetJumpState(jump).Enabled = false;
 	}
 
 	internal static void ClearUnavailableExtraJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (!data.Active) {
-				if (data.JumpAvailable) {
-					jump.OnCleared(player);
-					PlayerLoader.OnExtraJumpCleared(jump, player);
-				}
-
-				data.JumpAvailable = false;
-			}
+			ref ExtraJumpState state = ref player.GetJumpState(jump);
+			if (!state.Enabled)
+				state.JumpAvailable = false;
 		}
 	}
 
 	internal static void ClearAllExtraJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			ref ExtraJumpData data = ref player.GetExtraJump(jump);
-			if (data.JumpAvailable) {
-				jump.OnCleared(player);
-				PlayerLoader.OnExtraJumpCleared(jump, player);
-			}
-
-			data.JumpAvailable = false;
+			player.GetJumpState(jump).JumpAvailable = false;
 		}
 	}
 }

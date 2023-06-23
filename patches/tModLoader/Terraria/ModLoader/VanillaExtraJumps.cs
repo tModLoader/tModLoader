@@ -41,7 +41,7 @@ public sealed class GoatMountJump : VanillaExtraJump
 		}
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 3f;
 		player.maxRunSpeed *= 1.5f;
@@ -72,7 +72,7 @@ public sealed class BasiliskMountJump : VanillaExtraJump
 		}
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 3f;
 		player.maxRunSpeed *= 1.5f;
@@ -123,7 +123,7 @@ public sealed class SantankMountJump : VanillaExtraJump
 		}
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 3f;
 		player.maxRunSpeed *= 1.5f;
@@ -164,7 +164,7 @@ public sealed class UnicornMountJump : VanillaExtraJump
 		obj.shader = GameShaders.Armor.GetSecondaryShader(player.cMount, player);
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 3f;
 		player.maxRunSpeed *= 1.5f;
@@ -196,7 +196,7 @@ public sealed class SandstormInABottleJump : VanillaExtraJump
 		}
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 1.5f;
 		player.maxRunSpeed *= 2f;
@@ -245,7 +245,7 @@ public sealed class BlizzardInABottleJump : VanillaExtraJump
 		}
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 3f;
 		player.maxRunSpeed *= 1.5f;
@@ -294,7 +294,7 @@ public sealed class FartInAJarJump : VanillaExtraJump
 		Main.dust[num8].velocity *= 0.5f;
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 3f;
 		player.maxRunSpeed *= 1.75f;
@@ -352,7 +352,7 @@ public sealed class TsunamiInABottleJump : VanillaExtraJump
 		}
 	}
 
-	public override void ModifyHorizontalSpeeds(Player player)
+	public override void UpdateHorizontalSpeeds(Player player)
 	{
 		player.runAcceleration *= 1.5f;
 		player.maxRunSpeed *= 1.25f;
@@ -386,7 +386,7 @@ public sealed class CloudInABottleJump : VanillaExtraJump
 		Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
 
-	public override bool PreVisuals(Player player) => (player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && base.PreVisuals(player);
+	public override bool CanShowVisuals(Player player) => (player.canJumpAgain_Sandstorm || !player.hasJumpOption_Sandstorm) && base.CanShowVisuals(player);
 
 	public override void Visuals(Player player)
 	{

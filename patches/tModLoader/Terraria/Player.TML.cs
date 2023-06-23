@@ -596,22 +596,20 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	}
 
 	// Extra jumps
-	private ExtraJumpData[] extraJumps = new ExtraJumpData[ExtraJumpLoader.ExtraJumpCount];
+	private ExtraJumpState[] extraJumps = new ExtraJumpState[ExtraJumpLoader.ExtraJumpCount];
 
-	public ref ExtraJumpData GetExtraJump<T>(T baseInstance) where T : ExtraJump => ref extraJumps[baseInstance.Type];
+	public ref ExtraJumpState GetJumpState<T>(T baseInstance) where T : ExtraJump => ref extraJumps[baseInstance.Type];
 
-	public ref ExtraJumpData GetExtraJump<T>() where T : ExtraJump => ref GetExtraJump(ModContent.GetInstance<T>());
+	public ref ExtraJumpState GetJumpState<T>() where T : ExtraJump => ref GetJumpState(ModContent.GetInstance<T>());
 
-	public Span<ExtraJumpData> ExtraJumps => extraJumps.AsSpan();
+	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
 
-	internal Span<ExtraJumpData> ModdedExtraJumps => extraJumps[ExtraJumpLoader.DefaultExtraJumpCount..];
+	internal Span<ExtraJumpState> ModdedExtraJumps => extraJumps[ExtraJumpLoader.DefaultExtraJumpCount..];
 
 	public bool AnyExtraJumpAvailable()
 	{
-		for (int i = 0; i < extraJumps.Length; i++)
-		{
-			ExtraJumpData data = extraJumps[i];
-			if (data.Active && data.JumpAvailable)
+		foreach (ExtraJumpState state in extraJumps) {
+			if (state.Enabled && state.JumpAvailable)
 				return true;
 		}
 
@@ -621,10 +619,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	// An alternative more in line with the vanilla behavior
 	private bool AnyExtraJumpAvailableNoActiveCheck()
 	{
-		for (int i = 0; i < extraJumps.Length; i++)
-		{
-			ExtraJumpData data = extraJumps[i];
-			if (data.JumpAvailable)
+		foreach (ExtraJumpState state in extraJumps) {
+			if (state.JumpAvailable)
 				return true;
 		}
 

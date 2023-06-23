@@ -628,33 +628,33 @@
  	public bool canJumpAgain_Basilisk;
  	public bool isPerformingJump_Basilisk;
 +	*/
-+	internal ref bool hasJumpOption_Cloud => ref GetExtraJump<CloudInABottleJump>().Active;
-+	internal ref bool canJumpAgain_Cloud => ref GetExtraJump<CloudInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Cloud => ref GetExtraJump<CloudInABottleJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Sandstorm => ref GetExtraJump<SandstormInABottleJump>().Active;
-+	internal ref bool canJumpAgain_Sandstorm => ref GetExtraJump<SandstormInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Sandstorm => ref GetExtraJump<SandstormInABottleJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Blizzard => ref GetExtraJump<BlizzardInABottleJump>().Active;
-+	internal ref bool canJumpAgain_Blizzard => ref GetExtraJump<BlizzardInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Blizzard => ref GetExtraJump<BlizzardInABottleJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Fart => ref GetExtraJump<FartInAJarJump>().Active;
-+	internal ref bool canJumpAgain_Fart => ref GetExtraJump<FartInAJarJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Fart => ref GetExtraJump<FartInAJarJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Sail => ref GetExtraJump<TsunamiInABottleJump>().Active;
-+	internal ref bool canJumpAgain_Sail => ref GetExtraJump<TsunamiInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Sail => ref GetExtraJump<TsunamiInABottleJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Unicorn => ref GetExtraJump<UnicornMountJump>().Active;
-+	internal ref bool canJumpAgain_Unicorn => ref GetExtraJump<UnicornMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Unicorn => ref GetExtraJump<UnicornMountJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Santank => ref GetExtraJump<SantankMountJump>().Active;
-+	internal ref bool canJumpAgain_Santank => ref GetExtraJump<SantankMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Santank => ref GetExtraJump<SantankMountJump>().PerformingJump;
-+	internal ref bool hasJumpOption_WallOfFleshGoat => ref GetExtraJump<GoatMountJump>().Active;
-+	internal ref bool canJumpAgain_WallOfFleshGoat => ref GetExtraJump<GoatMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetExtraJump<GoatMountJump>().PerformingJump;
-+	internal ref bool hasJumpOption_Basilisk => ref GetExtraJump<BasiliskMountJump>().Active;
-+	internal ref bool canJumpAgain_Basilisk => ref GetExtraJump<BasiliskMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Basilisk => ref GetExtraJump<BasiliskMountJump>().PerformingJump;
++	internal ref bool hasJumpOption_Cloud => ref GetJumpState<CloudInABottleJump>().Enabled;
++	internal ref bool canJumpAgain_Cloud => ref GetJumpState<CloudInABottleJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Cloud => ref GetJumpState<CloudInABottleJump>().PerformingJump;
++	internal ref bool hasJumpOption_Sandstorm => ref GetJumpState<SandstormInABottleJump>().Enabled;
++	internal ref bool canJumpAgain_Sandstorm => ref GetJumpState<SandstormInABottleJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Sandstorm => ref GetJumpState<SandstormInABottleJump>().PerformingJump;
++	internal ref bool hasJumpOption_Blizzard => ref GetJumpState<BlizzardInABottleJump>().Enabled;
++	internal ref bool canJumpAgain_Blizzard => ref GetJumpState<BlizzardInABottleJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Blizzard => ref GetJumpState<BlizzardInABottleJump>().PerformingJump;
++	internal ref bool hasJumpOption_Fart => ref GetJumpState<FartInAJarJump>().Enabled;
++	internal ref bool canJumpAgain_Fart => ref GetJumpState<FartInAJarJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Fart => ref GetJumpState<FartInAJarJump>().PerformingJump;
++	internal ref bool hasJumpOption_Sail => ref GetJumpState<TsunamiInABottleJump>().Enabled;
++	internal ref bool canJumpAgain_Sail => ref GetJumpState<TsunamiInABottleJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Sail => ref GetJumpState<TsunamiInABottleJump>().PerformingJump;
++	internal ref bool hasJumpOption_Unicorn => ref GetJumpState<UnicornMountJump>().Enabled;
++	internal ref bool canJumpAgain_Unicorn => ref GetJumpState<UnicornMountJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Unicorn => ref GetJumpState<UnicornMountJump>().PerformingJump;
++	internal ref bool hasJumpOption_Santank => ref GetJumpState<SantankMountJump>().Enabled;
++	internal ref bool canJumpAgain_Santank => ref GetJumpState<SantankMountJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Santank => ref GetJumpState<SantankMountJump>().PerformingJump;
++	internal ref bool hasJumpOption_WallOfFleshGoat => ref GetJumpState<GoatMountJump>().Enabled;
++	internal ref bool canJumpAgain_WallOfFleshGoat => ref GetJumpState<GoatMountJump>().JumpAvailable;
++	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetJumpState<GoatMountJump>().PerformingJump;
++	internal ref bool hasJumpOption_Basilisk => ref GetJumpState<BasiliskMountJump>().Enabled;
++	internal ref bool canJumpAgain_Basilisk => ref GetJumpState<BasiliskMountJump>().JumpAvailable;
++	internal ref bool isPerformingJump_Basilisk => ref GetJumpState<BasiliskMountJump>().PerformingJump;
 +
  	public bool isPerformingPogostickTricks;
  	public bool autoJump;
@@ -3271,8 +3271,8 @@
  					if (sliding)
  						velocity.X = 3 * -slideDir;
  				}
-+				else {
-+					ExtraJumpLoader.ProcessJumps(this, !attemptDoubleJumps);
++				else if (attemptDoubleJumps) {
++					ExtraJumpLoader.ProcessJumps(this);
 +				}
 +				/*
  				else if (flag5) {
@@ -3836,7 +3836,7 @@
  			}
 +			*/
 +
-+			ExtraJumpLoader.ModifyPlayerHorizontalSpeeds(this);
++			ExtraJumpLoader.UpdateHorizontalSpeeds(this);
  
  			if (carpetFrame != -1) {
  				runAcceleration *= 1.25f;

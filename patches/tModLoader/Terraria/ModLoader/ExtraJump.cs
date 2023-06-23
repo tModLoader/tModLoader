@@ -87,7 +87,7 @@ public abstract partial class ExtraJump : ModType
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
-	public virtual bool PreVisuals(Player player) {
+	public virtual bool CanShowVisuals(Player player) {
 		return (player.gravDir == 1f && player.velocity.Y < 0f) || (player.gravDir == -1f && player.velocity.Y > 0f);
 	}
 
@@ -118,7 +118,7 @@ public abstract partial class ExtraJump : ModType
 	public virtual void OnStarted(Player player, ref bool playSound) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpData.PerformingJump"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> in <see cref="Player.CancelAllJumpVisualEffects"/><br/>
+	/// This hook runs before the <see cref="ExtraJumpState.PerformingJump"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> in <see cref="Player.CancelAllJumpVisualEffects"/><br/>
 	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
 	/// </summary>
 	/// <param name="player">The player that was performing the jump</param>
@@ -140,18 +140,12 @@ public abstract partial class ExtraJump : ModType
 	/// </para>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
-	public virtual void ModifyHorizontalSpeeds(Player player) { }
+	public virtual void UpdateHorizontalSpeeds(Player player) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for this extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This hook runs before the <see cref="ExtraJumpState.JumpAvailable"/> flag for this extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
 	/// This occurs at the start of the grounded jump and while the player is grounded.
 	/// </summary>
 	/// <param name="player">The player instance</param>
 	public virtual void OnRefreshed(Player player) { }
-
-	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpData.JumpAvailable"/> flag for this extra jump is set to <see langword="false"/> in <see cref="Player.Update(int)"/> due to the jump being unavailable or when calling <see cref="Player.ClearAllExtraJumps"/> (vanilla calls it when a mount that blocks jumps is active).
-	/// </summary>
-	/// <param name="player">The player instance</param>
-	public virtual void OnCleared(Player player) { }
 }

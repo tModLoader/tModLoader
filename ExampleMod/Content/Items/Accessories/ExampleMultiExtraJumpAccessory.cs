@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetExtraJump<MultipleUseExtraJump>().Active = true;
+			player.GetJumpState<MultipleUseExtraJump>().Enabled = true;
 		}
 
 		public override void AddRecipes() {
@@ -116,7 +116,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void OnEnded(Player player) {
 			// Allow the jump to be used again while the jump counter is > 0
 			if (player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining > 0)
-				player.GetExtraJump<MultipleUseExtraJump>().JumpAvailable = true;
+				player.GetJumpState<MultipleUseExtraJump>().JumpAvailable = true;
 		}
 	}
 

@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetExtraJump<SimpleExtraJump>().Active = true;
+			player.GetJumpState<SimpleExtraJump>().Enabled = true;
 		}
 
 		public override void AddRecipes() {
@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Items.Accessories
 			return 2.25f;
 		}
 
-		public override void ModifyHorizontalSpeeds(Player player) {
+		public override void UpdateHorizontalSpeeds(Player player) {
 			// Use this hook to modify "player.runAcceleration" and "player.maxRunSpeed"
 			// The XML summary for this hook mentions the values used by the vanilla extra jumps
 			player.runAcceleration *= 1.75f;
@@ -66,15 +66,13 @@ namespace ExampleMod.Content.Items.Accessories
 				dust.velocity = dust.velocity * 0.5f - player.velocity * new Vector2(0.1f, 0.3f);
 			}
 
-			Gore gore = Gore.NewGoreDirect(player.GetSource_FromThis(), player.Top + new Vector2(-16f, offsetY), -player.velocity, Main.rand.Next(11, 14));
-			gore.velocity.X = gore.velocity.X * 0.1f - player.velocity.X * 0.1f;
-			gore.velocity.Y = gore.velocity.Y * 0.1f - player.velocity.Y * 0.05f;
+			SpawnCloudPoof(player, player.Top + new Vector2(-16f, offsetY));
+			SpawnCloudPoof(player, player.position + new Vector2(-36f, offsetY));
+			SpawnCloudPoof(player, player.TopRight + new Vector2(4f, offsetY));
+		}
 
-			gore = Gore.NewGoreDirect(player.GetSource_FromThis(), player.position + new Vector2(-36f, offsetY), -player.velocity, Main.rand.Next(11, 14));
-			gore.velocity.X = gore.velocity.X * 0.1f - player.velocity.X * 0.1f;
-			gore.velocity.Y = gore.velocity.Y * 0.1f - player.velocity.Y * 0.05f;
-
-			gore = Gore.NewGoreDirect(player.GetSource_FromThis(), player.TopRight + new Vector2(4f, offsetY), -player.velocity, Main.rand.Next(11, 14));
+		private static void SpawnCloudPoof(Player player, Vector2 position) {
+			Gore gore = Gore.NewGoreDirect(player.GetSource_FromThis(), position, -player.velocity, Main.rand.Next(11, 14));
 			gore.velocity.X = gore.velocity.X * 0.1f - player.velocity.X * 0.1f;
 			gore.velocity.Y = gore.velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 		}
@@ -89,35 +87,25 @@ namespace ExampleMod.Content.Items.Accessories
 			Vector2 spawnPos = new Vector2(player.position.X, player.position.Y + offsetY);
 
 			for (int i = 0; i < 2; i++) {
-				Dust dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.Gray);
-				dust.velocity *= 0.1f;
-				if (i == 0)
-					dust.velocity += player.velocity * 0.03f;
-				else
-					dust.velocity -= player.velocity * 0.03f;
-
-				dust.velocity -= player.velocity * 0.1f;
-				dust.noGravity = true;
-				dust.noLight = true;
+				SpawnBlizzardDust(player, spawnPos, 0.1f, i == 0 ? -0.07f : -0.13f);
 			}
 
 			for (int i = 0; i < 3; i++) {
-				Dust dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.Gray);
-				dust.fadeIn = 1.5f;
-				dust.velocity *= 0.6f;
-				dust.velocity += player.velocity * 0.8f;
-				dust.noGravity = true;
-				dust.noLight = true;
+				SpawnBlizzardDust(player, spawnPos, 0.6f, 0.8f);
 			}
 
 			for (int i = 0; i < 3; i++) {
-				Dust dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.Gray);
-				dust.fadeIn = 1.5f;
-				dust.velocity *= 0.6f;
-				dust.velocity -= player.velocity * 0.8f;
-				dust.noGravity = true;
-				dust.noLight = true;
+				SpawnBlizzardDust(player, spawnPos, 0.6f, -0.8f);
 			}
+		}
+
+		private static void SpawnBlizzardDust(Player player, Vector2 spawnPos, float dustVelocityMultiplier, float playerVelocityMultiplier) {
+			Dust dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.Gray);
+			dust.fadeIn = 1.5f;
+			dust.velocity *= dustVelocityMultiplier;
+			dust.velocity += player.velocity * playerVelocityMultiplier;
+			dust.noGravity = true;
+			dust.noLight = true;
 		}
 	}
 }

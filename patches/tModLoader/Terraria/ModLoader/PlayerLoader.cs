@@ -415,24 +415,15 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookPreExtraJumpVisuals = AddHook<Func<ExtraJump, bool>>(p => p.PreExtraJumpVisuals);
+	private static HookList HookCanShowExtraJumpVisuals = AddHook<Func<ExtraJump, bool>>(p => p.CanShowExtraJumpVisuals);
 
-	public static bool PreExtraJumpVisuals(ExtraJump jump, Player player)
+	public static bool CanShowExtraJumpVisuals(ExtraJump jump, Player player)
 	{
 		bool ret = true;
-		foreach (var modPlayer in HookPreExtraJumpVisuals.Enumerate(player)) {
-			try { ret &= modPlayer.PreExtraJumpVisuals(jump); } catch { }
+		foreach (var modPlayer in HookCanShowExtraJumpVisuals.Enumerate(player)) {
+			try { ret &= modPlayer.CanShowExtraJumpVisuals(jump); } catch { }
 		}
 		return ret;
-	}
-
-	private static HookList HookOnExtraJumpCleared = AddHook<Action<ExtraJump>>(p => p.OnExtraJumpCleared);
-
-	public static void OnExtraJumpCleared(ExtraJump jump, Player player)
-	{
-		foreach (var modPlayer in HookOnExtraJumpCleared.Enumerate(player)) {
-			try { modPlayer.OnExtraJumpCleared(jump); } catch { }
-		}
 	}
 
 	private static HookList HookFrameEffects = AddHook<Action>(p => p.FrameEffects);
