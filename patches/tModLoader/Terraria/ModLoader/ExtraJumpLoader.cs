@@ -150,7 +150,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.JumpAvailable) {
+			if (state.JumpAvailable && !state._disabled) {
 				state.JumpAvailable = false;
 				state.PerformingJump = true;
 				jump.PerformJump(player);
@@ -188,8 +188,11 @@ public static class ExtraJumpLoader
 
 	internal static void ResetActiveFlags(Player player)
 	{
-		foreach (ExtraJump jump in ExtraJumps)
-			player.GetJumpState(jump).Enabled = false;
+		foreach (ExtraJump jump in ExtraJumps) {
+			ref ExtraJumpState state = ref player.GetJumpState(jump);
+			state.Enabled = false;
+			state._disabled = false;
+		}
 	}
 
 	internal static void ClearUnavailableExtraJumps(Player player)

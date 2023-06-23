@@ -606,6 +606,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	internal Span<ExtraJumpState> ModdedExtraJumps => extraJumps[ExtraJumpLoader.DefaultExtraJumpCount..];
 
+	/// <summary>
+	/// When <see langword="true"/>, all extra jumps will be blocked like how Flipper swimming blocks extra jumps.
+	/// </summary>
+	public bool blockExtraJumps;
+
 	public bool AnyExtraJumpAvailable()
 	{
 		foreach (ExtraJumpState state in extraJumps) {

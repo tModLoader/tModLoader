@@ -2925,10 +2925,11 @@
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
-@@ -14597,6 +_,8 @@
+@@ -14597,6 +_,9 @@
  		boneGloveItem = null;
  		hasLuck_LuckyCoin = false;
  		hasLuck_LuckyHorseshoe = false;
++		blockExtraJumps = false;
 +		ExtraJumpLoader.ResetActiveFlags(this);
 +		/*
  		hasJumpOption_Cloud = false;
@@ -3271,7 +3272,7 @@
  					if (sliding)
  						velocity.X = 3 * -slideDir;
  				}
-+				else if (attemptDoubleJumps) {
++				else if (attemptDoubleJumps && !blockExtraJumps) {
 +					ExtraJumpLoader.ProcessJumps(this);
 +				}
 +				/*
@@ -3466,10 +3467,14 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
-@@ -17489,8 +_,10 @@
+@@ -17489,8 +_,14 @@
  			RefreshDoubleJumps();
  	}
  
++	/// <summary>
++	/// For all extra jumps whose <see cref="ExtraJumpState.Enabled"/> flag is set to <see langword="true"/>, its <see cref="ExtraJumpState.JumpAvailable"/> flag is also set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
++	/// </summary>
 -	private void RefreshDoubleJumps()
 +	public void RefreshDoubleJumps()
  	{
@@ -3478,13 +3483,18 @@
  		if (hasJumpOption_Cloud)
  			canJumpAgain_Cloud = true;
  
-@@ -17517,6 +_,13 @@
+@@ -17517,6 +_,18 @@
  
  		if (hasJumpOption_Basilisk)
  			canJumpAgain_Basilisk = true;
 +		*/
 +	}
 +
++	/// <summary>
++	/// Sets the <see cref="ExtraJumpState.JumpAvailable"/> flag for all extra jumps to <see langword="false"/>.<br/>
++	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
++	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
++	/// </summary>
 +	public void ClearAllExtraJumps()
 +	{
 +		// Included to make clearing all extra jumps easier to write
