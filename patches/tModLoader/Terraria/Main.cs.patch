@@ -392,7 +392,7 @@
 +	/// </summary>
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
  	public static bool[] tileTable = new bool[TileID.Count];
@@ -412,12 +412,16 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
-@@ -862,6 +_,8 @@
+@@ -861,7 +_,12 @@
+ 	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
-+	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that should preserve frame data should set this to true. </summary>
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
