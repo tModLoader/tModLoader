@@ -415,7 +415,7 @@
 +	/// </summary>
 +	/// <remarks>
 +	/// If you want to heal the player with the green text effect, use <see cref="Player.Heal(int)"/>.
-+	/// <br/> If you want to hurt the player, use <see cref="Hurt"/>.
++	/// <br/> If you want to hurt the player, use <see cref="Hurt(PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float)"/>.
 +	/// </remarks>
  	public int statLife = 100;
 +

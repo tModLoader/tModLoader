@@ -52,6 +52,24 @@
  	private static int CurrentUser = 255;
  
  	public static void SetCurrentUser(int plr = -1)
+@@ -75,11 +_,17 @@
+ 		_mechTime = new int[1000];
+ 	}
+ 
++	/// <summary>
++	/// Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles to prevent a wire touching multiple tiles of the multi-tile from erroneously running wire code multiple times. In <see cref="ModTile.HitWire(int, int)"/>, call SkipWire for all the coordinates the tile covers.
++	/// </summary>
++	/// <param name="x"></param>
++	/// <param name="y"></param>
+ 	public static void SkipWire(int x, int y)
+ 	{
+ 		_wireSkip[new Point16(x, y)] = true;
+ 	}
+ 
++	/// <inheritdoc cref="SkipWire(int, int)"/>
+ 	public static void SkipWire(Point16 point)
+ 	{
+ 		_wireSkip[point] = true;
 @@ -349,7 +_,7 @@
  		}
  	}
@@ -61,10 +79,17 @@
  	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
-@@ -410,7 +_,7 @@
+@@ -410,7 +_,14 @@
  		}
  	}
  
++	/// <summary>
++	/// Used to send a single to wiring wired up to the specified area. The parameters represent the tile coordinates where wire signals will be sent. Mechanism tiles such as <see cref="TileID.Switches"/>, <see cref="TileID.PressurePlates"/>, <see cref="TileID.Timers"/>, and <see cref="TileID.LogicSensor"/> use this method as part of their interaction code.
++	/// </summary>
++	/// <param name="left"></param>
++	/// <param name="top"></param>
++	/// <param name="width"></param>
++	/// <param name="height"></param>
 -	private static void TripWire(int left, int top, int width, int height)
 +	public static void TripWire(int left, int top, int width, int height)
  	{
