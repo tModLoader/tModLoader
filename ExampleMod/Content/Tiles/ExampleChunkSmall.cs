@@ -1,7 +1,5 @@
-using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,54 +7,59 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles
 {
-	public abstract class ExampleChunkSmallBase : ModTile {
+	// This file contains 3 classes and shows off using inheritance to share code between classes.
+	// Terraria has many tiles that are purely decorative and do not drop items when broken.
+	// These tiles go by many names, such as ambient tiles, background tiles, piles, detritus, and rubble. We will use the term rubble because of the recently added Rubblemaker item. 
+	// The Rubblemaker (https://terraria.wiki.gg/wiki/Rubblemaker) is a special item that can place these decorative tiles. The tile placed by the Rubblemaker looks the same as the original rubble tile but behaves slightly differently.
+
+	// Example1x1Rubble is an abstract class, it is not an actual tile, but the other 2 classes in this file will reuse the Texture and SetStaticDefaults code shown here because they inherit from it. 
+
+	public abstract class Example1x1Rubble : ModTile
+	{
+		// We want both tiles to use the same texture
+		public override string Texture => "ExampleMod/Content/Tiles/ExampleChunkSmall";
+
 		public override void SetStaticDefaults() {
-			Main.tileSolid[Type] = false;
-			Main.tileSolidTop[Type] = false;
-			Main.tileTable[Type] = false;
-			Main.tileNoAttach[Type] = true;
 			Main.tileFrameImportant[Type] = true;
-			Main.tileLavaDeath[Type] = true;
+			Main.tileNoFail[Type] = true;
+			Main.tileObsidianKill[Type] = true;
 
 			DustType = DustID.Stone;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
 			TileObjectData.newTile.StyleHorizontal = true;
+			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.addTile(Type);
 
-			TileID.Sets.DisableSmartCursor[Type] = true;
 			AddMapEntry(new Color(152, 171, 198));
 		}
 	}
 
-	// Ambient tile created by Rubblemaker
-	public class ExampleChunkSmallRubble : ExampleChunkSmallBase {
-
-		//Override texture path, shared with natural variant
-		public override string Texture => "ExampleMod/Content/Tiles/ExampleChunkSmall";
-
+	// This is the fake tile that will be placed by the Rubblemaker.
+	public class Example1x1RubbleFake : Example1x1Rubble
+	{
 		public override void SetStaticDefaults() {
 			// Call to base SetStaticDefaults. Must inherit static defaults from base type 
 			base.SetStaticDefaults();
 
-			// Add rubble variant, all existing styles, to Rubblemaker, allowing to place this tile by consuming ExampleItems
-			FlexibleTileWand.RubblePlacementSmall.AddVariations(ModContent.ItemType<ExampleItem>(), Type, 0, 1, 2, 3, 4, 5);
+			// Add rubble variant, all existing styles, to Rubblemaker, allowing to place this tile by consuming ExampleBlock
+			FlexibleTileWand.RubblePlacementSmall.AddVariations(ModContent.ItemType<Items.Placeable.ExampleBlock>(), Type, 0, 1, 2, 3, 4, 5);
+
+			// Tiles placed by Rubblemaker drop the item used to place them.
+			RegisterItemDrop(ModContent.ItemType<Items.Placeable.ExampleBlock>());
 		}
 	}
 
-	// Natural ambient tile (i.e. created on WorldGen, not by Rubblemaker) 
-	public class ExampleChunkSmallNatural : ExampleChunkSmallBase {
+	// This is the natural tile, this version is placed during world generation in the RubbleWorldGen class.
+	public class Example1x1RubbleNatural : Example1x1Rubble
+	{
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
 
-		//Override texture path, shared with rubble variant
-		public override string Texture => "ExampleMod/Content/Tiles/ExampleChunkSmall";
-
-		// Drops 1 ExampleItem on tile break
-		public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
-			if(!fail && !effectOnly && !noItem)
-				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<ExampleItem>(), Stack: 1);
+			// By default, the TileObjectData.Style1x1 tile we copied in Example1x1Rubble has LavaDeath = true. Natural rubble tiles don't have this behavior, so we want to be immune to lava.
+			TileObjectData.GetTileData(Type, 0).LavaDeath = false;
 		}
 
-		//Adds a 1/8 chance to drop worms 
 		public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
 			wormChance = 8;
 		}
