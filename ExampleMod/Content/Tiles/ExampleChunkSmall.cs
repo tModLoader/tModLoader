@@ -12,9 +12,9 @@ namespace ExampleMod.Content.Tiles
 	// These tiles go by many names, such as ambient tiles, background tiles, piles, detritus, and rubble. We will use the term rubble because of the recently added Rubblemaker item. 
 	// The Rubblemaker (https://terraria.wiki.gg/wiki/Rubblemaker) is a special item that can place these decorative tiles. The tile placed by the Rubblemaker looks the same as the original rubble tile but behaves slightly differently.
 
-	// Example1x1Rubble is an abstract class, it is not an actual tile, but the other 2 classes in this file will reuse the Texture and SetStaticDefaults code shown here because they inherit from it. 
+	// Example1x1RubbleBase is an abstract class, it is not an actual tile, but the other 2 classes in this file will reuse the Texture and SetStaticDefaults code shown here because they inherit from it. 
 
-	public abstract class Example1x1Rubble : ModTile
+	public abstract class Example1x1RubbleBase : ModTile
 	{
 		// We want both tiles to use the same texture
 		public override string Texture => "ExampleMod/Content/Tiles/ExampleChunkSmall";
@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Tiles
 	}
 
 	// This is the fake tile that will be placed by the Rubblemaker.
-	public class Example1x1RubbleFake : Example1x1Rubble
+	public class Example1x1RubbleFake : Example1x1RubbleBase
 	{
 		public override void SetStaticDefaults() {
 			// Call to base SetStaticDefaults. Must inherit static defaults from base type 
@@ -51,12 +51,12 @@ namespace ExampleMod.Content.Tiles
 	}
 
 	// This is the natural tile, this version is placed during world generation in the RubbleWorldGen class.
-	public class Example1x1RubbleNatural : Example1x1Rubble
+	public class Example1x1RubbleNatural : Example1x1RubbleBase
 	{
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
-			// By default, the TileObjectData.Style1x1 tile we copied in Example1x1Rubble has LavaDeath = true. Natural rubble tiles don't have this behavior, so we want to be immune to lava.
+			// By default, the TileObjectData.Style1x1 tile we copied in Example1x1RubbleBase has LavaDeath = true. Natural rubble tiles don't have this behavior, so we want to be immune to lava.
 			TileObjectData.GetTileData(Type, 0).LavaDeath = false;
 		}
 
