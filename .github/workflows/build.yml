@@ -591,5 +591,7 @@ jobs:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
-          body: "Monthly Github Auto-release for stable"
+          makeLatest: false
+          prerelease: true
+          body: "1.4.3-Legacy Github Auto-release Stable"
           tag: ${{ steps.version2.outputs.new_version }}
