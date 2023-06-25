@@ -593,5 +593,6 @@ jobs:
           generateReleaseNotes: true
           makeLatest: false
           prerelease: true
-          body: "1.4.3-Legacy Github Auto-release Stable"
+          name: "1.4.3-Legacy Version Update: ${{ steps.version2.outputs.new_version }}"
+          body: "1.4.3-Legacy Github Auto-release"
           tag: ${{ steps.version2.outputs.new_version }}
