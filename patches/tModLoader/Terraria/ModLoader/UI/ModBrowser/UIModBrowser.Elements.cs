@@ -14,7 +14,7 @@ internal partial class UIModBrowser
 	/* Layout */
 	private UIElement _rootElement;
 	private UIPanel _backgroundElement;
-	public UIAsyncList ModList;
+	public UIAsyncList_ModDowloadItem ModList;
 	public UIText NoModsFoundText;
 	public UITextPanel<LocalizedText> HeaderTextPanel;
 	private UIElement _upperMenuContainer;
@@ -36,8 +36,7 @@ internal partial class UIModBrowser
 
 	internal void Reset()
 	{
-		ModList?.AbortLoading();
-		ModList?.Clear();
+		ModList?.SetProvider(null);
 		_missingMods?.Clear();
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
@@ -84,7 +83,7 @@ internal partial class UIModBrowser
 		};
 		_rootElement.Append(_backgroundElement);
 
-		ModList = new UIAsyncList {
+		ModList = new UIAsyncList_ModDowloadItem {
 			Width = { Pixels = -25, Percent = 1f },
 			Height = { Pixels = -50, Percent = 1f },
 			Top = { Pixels = 50 },

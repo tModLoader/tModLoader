@@ -23,3 +23,12 @@
  	private float _innerListHeight;
  	public float ListPadding = 5f;
  	public Action<List<UIElement>> ManualSortMethod;
+@@ -71,6 +_,8 @@
+ 	public virtual bool Remove(UIElement item)
+ 	{
+ 		_innerList.RemoveChild(item);
++		// @TODO: Is it correct that order is updated before the real remove?
++		// (if order is stable this does nothing anyway cause order is preserved by remove)
+ 		UpdateOrder();
+ 		return _items.Remove(item);
+ 	}

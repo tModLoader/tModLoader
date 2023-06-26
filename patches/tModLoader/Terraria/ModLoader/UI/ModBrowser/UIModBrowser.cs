@@ -3,15 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.Social.Base;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -29,43 +27,21 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SocialBackend = socialBackend;
 	}
 
-	private class AP_UIModDowloadItem : AsyncProvider<UIModDownloadItem>
+	private AsyncProvider<ModDownloadItem> CreateAsyncProvider()
 	{
-		// @TODO: Not used, could be used to avoid piling partial queries to Steam (wait total clean of previous
-		// AsyncProvider of this type before executing the Run) (remember if you do so to verify the token after
-		// the lock, but before the web request since it could pass some time and early exit is good)
-		private static object GlobalThreadLock = new();
-
-		private SocialBrowserModule SocialBackend;
-		private QueryParameters QParams;
-		public AP_UIModDowloadItem(SocialBrowserModule socialBackend, QueryParameters qparams) : base()
-		{
-			SocialBackend = socialBackend;
-			QParams = qparams;
-		}
-
-		protected override async Task<bool> Run(CancellationToken token)
-		{
-			bool error = false;
-			await foreach (var item in SocialBackend.QueryBrowser(QParams).WithCancellation(token)) {
-				if (item is null) {
-					error = true; // Save the error, but let the enumerator finish
-				}
-				else {
-					var uiItem = new UIModDownloadItem(item);
-					// @NOTE: LOCKING CONSTRUCTOR! must be outside the lock instruction
-					uiItem.UpdateInstallInfo();
-					lock (this) {
-						// @OPTIMIZATION: Could lock in batches instead of each item added, but
-						// can't really in this case because the constructor of ModDownloadItemInstallInfo
-						// is blocking
-						_Data.Add(uiItem);
-						HasNewData = true;
-					}
-				}
-			}
-			return !error;
-		}
+		// Local references
+		var _SocialBackend = SocialBackend;
+		QueryParameters _QParams = FilterParameters;
+		return new(async (channel, token) => {
+			await foreach (var item in _SocialBackend.QueryBrowser(_QParams).WithCancellation(token))
+				await channel.WriteAsync(item, token);
+		});
+	}
+	public class UIAsyncList_ModDowloadItem : UIAsyncList<ModDownloadItem, UIModDownloadItem>
+	{
+		public UIAsyncList_ModDowloadItem() : base(
+			data => new UIModDownloadItem(data), uiel => uiel.UpdateInstallInfo()
+		) { }
 	}
 
 	public static bool AvoidGithub;
@@ -76,10 +52,12 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public UIModDownloadItem SelectedItem;
 
 	// TODO maybe we can refactor this as a "BrowserState" enum
-	public bool Loading => _provider?.State.IsFinished() != true;
+	public bool Loading => !ModList.State.IsFinished();
 	public bool anEnabledModUpdated;
 	public bool aDisabledModUpdated;
 	public bool aNewModDownloaded;
+
+	private bool _firstLoad = true;
 
 	private bool _updateAvailable;
 	private string _updateText;
@@ -90,8 +68,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private readonly List<string> _missingMods = new List<string>();
 
 	private HashSet<string> modSlugsToUpdateInstallInfo = new();
-
-	AP_UIModDowloadItem _provider = null;
 
 	public const int DEBOUNCE_MS = 100;
 	private Stopwatch DebounceTimer = null;
@@ -266,14 +242,14 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		if (Loading) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			ModList.AbortLoading();
+			ModList.Cancel();
 		} else {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			PopulateModBrowser();
 		}
 	}
 
-	private void ModListStateChanged(AsyncProvider.State newState, AsyncProvider.State oldState)
+	private void ModListStateChanged(AsyncProviderState newState, AsyncProviderState oldState)
 	{
 		_browserStatus.SetCurrentState(newState);
 		if (newState.IsFinished()) {
@@ -285,8 +261,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		base.OnActivate();
 		Main.clrInput();
-		if (_provider is null) {
+		if (_firstLoad) {
 			PopulateModBrowser();
+			_firstLoad = false;
 		}
 
 		// Check for mods to update
@@ -323,17 +300,16 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			Main.menuMode = Interface.updateMessageID;
 		}
 
-		if (_provider is not null) {
-			lock (modSlugsToUpdateInstallInfo) {
-				if (modSlugsToUpdateInstallInfo.Count > 0) {
-					// Should take very little time this so it's ok inside the lock, otherwise move it with a copy outside
-					foreach (var item in _provider?.GetData(false).Where(d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName))) {
-						item.UpdateInstallInfo();
-					}
-
-					modSlugsToUpdateInstallInfo.Clear();
-				}
+		// @TODO: UpdateInstallInfo is "blocking" even tho it's not a Task
+		// Make sure this doesn't hang the process!!!
+		lock (modSlugsToUpdateInstallInfo) {
+			foreach (var item in ModList.ReceivedItems.Where(
+				d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName)
+			)) {
+				item.UpdateInstallInfo();
 			}
+			// @TODO: Shouldn't only delete processed slugs?
+			modSlugsToUpdateInstallInfo.Clear();
 		}
 
 		if (
@@ -369,9 +345,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		// Asynchronous load the Mod Browser
 		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
-		QueryParameters qparams = FilterParameters;
-		_provider = new AP_UIModDowloadItem(SocialBackend, qparams);
-		ModList.SetProvider(_provider);
+		ModList.SetProvider(CreateAsyncProvider());
 	}
 
 	/// <summary>

@@ -12,22 +12,22 @@ public class UIBrowserStatus : UIAnimatedImage
 	public UIBrowserStatus()
 		: base(Texture, 32, 32, 34 * 6, 0, 1, 6, 2)
 	{
-		SetCurrentState(AsyncProvider.State.NotStarted);
+		SetCurrentState(AsyncProviderState.Completed);
 	}
 
-	public void SetCurrentState(AsyncProvider.State state)
+	public void SetCurrentState(AsyncProviderState state)
 	{
 		switch (state) {
-			case AsyncProvider.State.NotStarted:
-			case AsyncProvider.State.Loading:
+			case AsyncProviderState.Loading:
 				FrameStart = 0;
 				FrameCount = 4;
 				break;
-			case AsyncProvider.State.Aborted:
+			case AsyncProviderState.Canceled:
+			case AsyncProviderState.Aborted:
 				FrameStart = 4;
 				FrameCount = 1;
 				break;
-			case AsyncProvider.State.Completed:
+			case AsyncProviderState.Completed:
 				FrameStart = 5;
 				FrameCount = 1;
 				break;

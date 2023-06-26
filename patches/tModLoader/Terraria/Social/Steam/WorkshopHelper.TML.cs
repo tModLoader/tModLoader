@@ -215,7 +215,7 @@ public partial class WorkshopHelper
 			if (!SteamedWraps.SteamAvailable) {
 				if (!SteamedWraps.TryInitViaGameServer()) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
-					yield return null;
+					throw new SocialBrowserException("No Workshop Access");
 				}
 
 				var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
@@ -321,9 +321,8 @@ public partial class WorkshopHelper
 						await Task.Delay(100, token);
 						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
 							ReleaseWorkshopQuery();
-							// Exit for error fetching stuff (will leave the status as not complete (could in alternative throw an error for clearer info)
-							yield return null;
-							yield break;
+							// Exit for error fetching stuff
+							throw new SocialBrowserException("Workshop Query Failed");
 						}
 					}
 

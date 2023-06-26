@@ -18,6 +18,13 @@ public struct ModPubId_t
 	public string m_ModPubId;
 }
 
+public class SocialBrowserException : Exception
+{
+	public SocialBrowserException(string message) : base(message)
+	{
+	}
+}
+
 public interface SocialBrowserModule
 {
 	/////// Management of Browser Items ///////////////////////////////////////////

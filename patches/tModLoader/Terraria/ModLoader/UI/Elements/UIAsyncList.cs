@@ -1,109 +1,169 @@
 using Microsoft.Xna.Framework;
-using System.Threading;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.Localization;
-using rail;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace Terraria.ModLoader.UI.Elements;
 
-public class UIAsyncList : UIList
+/**
+ * <remarks>
+ *   Remember to set GenElement is not provided in the constructor and TResource is not a TUIElement.
+ *   DO NOT USE Add/AddRange directly, always use the provider methods.
+ * </remarks>
+ */
+public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIElement
 {
-	// DON'T USE Add/AddRange!
+	private bool ProviderChanged = false;
+	private bool UpdateRequested = false;
+	private AsyncProvider<TResource> Provider = null;
 
-	public delegate void StateChangedDelegate(AsyncProvider.State newState, AsyncProvider.State oldState);
+	public Func<TResource, TUIElement> GenElement;
+	public Action<TUIElement> UpdateElement;
+
+	// Graphical elements set on OnInitialize
+	private UIText EndItem = null;
+	// null Provider is empty so completed
+	private AsyncProviderState LastProviderState = AsyncProviderState.Completed;
+
+	// null Provider is empty so completed
+	public AsyncProviderState State => Provider?.State ?? AsyncProviderState.Completed;
+
+	public delegate void StateChangedDelegate(AsyncProviderState newState, AsyncProviderState oldState);
 	public event StateChangedDelegate OnStateChanged;
 
-	CancellationTokenSource _token = new();
-	IAsyncProvider<UIElement> _provider = new AsyncProvider.Empty<UIElement>();
-	UIText _endItem;
-	AsyncProvider.State _lastState = AsyncProvider.State.NotStarted;
-	bool _forceUpdateData = false;
-
-	public UIAsyncList() : base()
-	{
-		ManualSortMethod = (l) => { };
-
-		/*
-		_endItem = new UIText(GetEndItemTextForState(_lastState, _provider.Count <= 0)) {
-			HAlign = 0.5f
-		}.WithPadding(15f);
-		*/
-	}
-
-	// @NOTE: Doesn't get called? when CheckIfAnyModUpdateIsAvailable is called ???
-	public override void OnInitialize()
-	{
-		base.OnInitialize();
-
-		_endItem = new UIText(GetEndItemTextForState(_lastState, _provider.Count <= 0)) {
-			HAlign = 0.5f
-		}.WithPadding(15f);
-		Add(_endItem);
-	}
-
-	public void SetProvider(IAsyncProvider<UIElement> provider)
-	{
-		_token.Cancel();
-
-		// Clear the list in the Update in case SetProvider is called from a Task
-		//Clear();
-		ForceUpdateData();
-
-		_token = new();
-		_provider = provider;
-		_provider.Start(_token.Token);
-	}
-
-	protected virtual string GetEndItemTextForState(AsyncProvider.State state, bool empty)
-	{
-		switch (state) {
-			case AsyncProvider.State.NotStarted:
-			case AsyncProvider.State.Loading:
-				return Language.GetTextValue("tModLoader.ALLoading");
-			case AsyncProvider.State.Completed:
-				return empty ? Language.GetTextValue("tModLoader.ALNoEntries") : "";
-			case AsyncProvider.State.Aborted:
-				return Language.GetTextValue("tModLoader.ALAborted");
+	public IEnumerable<TUIElement> ReceivedItems {
+		get {
+			foreach (var el in this) {
+				if (el != EndItem)
+					yield return el as TUIElement;
+			}
 		}
-		return "ERROR: Invalid State";
 	}
 
-	public void AbortLoading()
+	public UIAsyncList(Func<TResource, TUIElement> genElement, Action<TUIElement> updateElement) : base()
 	{
-		_token.Cancel();
+		// Make sure not to sort
+		this.ManualSortMethod = (l) => { };
+
+		GenElement = genElement;
+		UpdateElement = updateElement;
 	}
 
-	public void ForceUpdateData()
+	public UIAsyncList() : this(res => res as TUIElement, el => { })
 	{
-		_forceUpdateData = true;
+	}
+
+	/**
+	 * <remarks>
+	 *   SetProvider will delegate all UI actions to next Update,
+	 *   so it NOT SAFE to be called out of the main thread,
+	 *   because having an assignment to ProviderChanged it CAN
+	 *   cause problems in case the list is cleared before the provider
+	 *   is swapped and the old provider is partially read giving unwanted
+	 *   elements, same if you do the other way around (the provider can be
+	 *   partially consumed before the clear)
+	 * </remarks>
+	 */
+	public void SetProvider(AsyncProvider<TResource> provider, bool cancelPrevious = true)
+	{
+		if (cancelPrevious && Provider is not null) {
+			Provider.Cancel();
+		}
+
+		ProviderChanged = true;
+		Provider = provider;
 	}
 
 	public override void Update(GameTime gameTime)
 	{
-		// @WARN: Gets called before Initialize?
+		bool endItemTextNeedUpdate = false;
+		AsyncProviderState providerState;
 
-		base.Update(gameTime);
+		// Before normal update add extra elements
+		if (ProviderChanged) {
+			this.Clear();
+			ProviderChanged = false;
 
-		var _tmpState = AsyncProvider.State.Aborted;
+			// Force a state change in case of changed provider so it's clear a change happened
+			// In general you'd have a cancelled if was not finished, then a loading state (GUARANTEED)
+			// And in case the completion if already finished (handled automatically later in Update
+			// given that LastProviderState is changed)
+			if (!LastProviderState.IsFinished()) {
+				providerState = AsyncProviderState.Canceled;
+				OnStateChanged(providerState, LastProviderState);
+				LastProviderState = providerState;
+			}
+			providerState = AsyncProviderState.Loading;
+			OnStateChanged(providerState, LastProviderState);
+			LastProviderState = providerState;
+			endItemTextNeedUpdate = true;
+		}
 
-		if (!_token.IsCancellationRequested) {
-			_tmpState = _provider.State;
-
-			if (_provider.HasNewData || _forceUpdateData) {
-				_forceUpdateData = false;
-				Clear();
-				AddRange(_provider.GetData(true));
-				Add(_endItem);
-				//Recalculate(); // Not Needed, it's in UIList.DrawSelf
+		if (Provider is not null) {
+			var uiels = Provider.GetData().Select(GenElement).ToArray();
+			if (uiels.Length > 0) {
+				this.Remove(EndItem);
+				this.AddRange(uiels);
+				this.Add(EndItem);
 			}
 		}
 
-		if (_lastState != _tmpState) {
-			OnStateChanged?.Invoke(_tmpState, _lastState);
-			_endItem.SetText(GetEndItemTextForState(_tmpState, _provider.Count <= 0));
-			_lastState = _tmpState;
-			//Recalculate(); // Not Needed, it's in UIList.DrawSelf
+		if (UpdateRequested) {
+			foreach (var item in ReceivedItems) {
+				UpdateElement(item);
+			}
+			UpdateRequested = false;
 		}
+
+		// null Provider is empty so completed
+		providerState = this.State;
+		if (providerState != LastProviderState) {
+			OnStateChanged(providerState, LastProviderState);
+			LastProviderState = providerState;
+			endItemTextNeedUpdate = true;
+		}
+		if (endItemTextNeedUpdate)
+			EndItem.SetText(this.GetEndItemText());
+
+		base.Update(gameTime);
+	}
+
+	public override void OnInitialize()
+	{
+		base.OnInitialize();
+
+		EndItem = new UIText(this.GetEndItemText()) {
+			HAlign = 0.5f
+		}.WithPadding(15f);
+		Add(EndItem);
+	}
+
+	protected virtual string GetEndItemText()
+	{
+		switch (this.LastProviderState) {
+			case AsyncProviderState.Loading:
+				return Language.GetTextValue("tModLoader.ALLoading");
+			case AsyncProviderState.Completed:
+				return this.ReceivedItems.Count() > 0 ? "" : Language.GetTextValue("tModLoader.ALNoEntries");
+			case AsyncProviderState.Canceled:
+				// @TODO: Maybe distinguish aborted for cancel and aborted for error
+				return Language.GetTextValue("tModLoader.ALAborted");
+			case AsyncProviderState.Aborted:
+				return Language.GetTextValue("tModLoader.ALAborted");
+		}
+		return "Invalid state";
+	}
+
+	public void Cancel()
+	{
+		Provider?.Cancel();
+	}
+
+	public void UpdateData()
+	{
+		UpdateRequested = true;
 	}
 }
