@@ -14,7 +14,7 @@ internal partial class UIModBrowser
 	/* Layout */
 	private UIElement _rootElement;
 	private UIPanel _backgroundElement;
-	public UIAsyncList_ModDowloadItem ModList;
+	public UIAsyncList_ModDownloadItem ModList;
 	public UIText NoModsFoundText;
 	public UITextPanel<LocalizedText> HeaderTextPanel;
 	private UIElement _upperMenuContainer;
@@ -36,7 +36,7 @@ internal partial class UIModBrowser
 
 	internal void Reset()
 	{
-		ModList?.SetProvider(null);
+		ModList?.SetEnumerable(null);
 		_missingMods?.Clear();
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
@@ -56,7 +56,8 @@ internal partial class UIModBrowser
 		_clearButton.OnLeftClick += ClearTextFilters;
 		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
 		_updateAllButton.OnLeftClick += UpdateAllMods;
-		ModList.OnStateChanged += ModListStateChanged;
+		ModList.OnStartLoading += ModListStartLoading;
+		ModList.OnFinished += ModListFinished;
 		_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnTextChange += UpdateHandler;
@@ -83,7 +84,7 @@ internal partial class UIModBrowser
 		};
 		_rootElement.Append(_backgroundElement);
 
-		ModList = new UIAsyncList_ModDowloadItem {
+		ModList = new UIAsyncList_ModDownloadItem {
 			Width = { Pixels = -25, Percent = 1f },
 			Height = { Pixels = -50, Percent = 1f },
 			Top = { Pixels = 50 },

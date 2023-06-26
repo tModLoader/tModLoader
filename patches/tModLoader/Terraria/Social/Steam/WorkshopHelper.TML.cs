@@ -220,6 +220,7 @@ public partial class WorkshopHelper
 
 				var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
 				while (!SteamGameServer.BLoggedOn() && (DateTime.Now - start) < TimeSpan.FromSeconds(5)) {
+					// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
 					SteamedWraps.ForceCallbacks();
 				}
 			}
@@ -314,11 +315,13 @@ public partial class WorkshopHelper
 					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
 
 					string currentPage = _nextCursor;
+					// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
 					if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
 						ReleaseWorkshopQuery();
 
 						// If it failed, make a second attempt after 100 ms
 						await Task.Delay(100, token);
+						// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
 						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
 							ReleaseWorkshopQuery();
 							// Exit for error fetching stuff
@@ -327,6 +330,7 @@ public partial class WorkshopHelper
 					}
 
 					// Appx. 10 ms per page of 50 items
+					// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
 					foreach (var item in ProcessPageResult())
 						yield return item;
 

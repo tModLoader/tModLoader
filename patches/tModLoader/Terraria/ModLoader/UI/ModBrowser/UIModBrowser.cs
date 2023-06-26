@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -27,21 +26,16 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SocialBackend = socialBackend;
 	}
 
-	private AsyncProvider<ModDownloadItem> CreateAsyncProvider()
+	public class UIAsyncList_ModDownloadItem : UIAsyncList<ModDownloadItem, UIModDownloadItem>
 	{
-		// Local references
-		var _SocialBackend = SocialBackend;
-		QueryParameters _QParams = FilterParameters;
-		return new(async (channel, token) => {
-			await foreach (var item in _SocialBackend.QueryBrowser(_QParams).WithCancellation(token))
-				await channel.WriteAsync(item, token);
-		});
-	}
-	public class UIAsyncList_ModDowloadItem : UIAsyncList<ModDownloadItem, UIModDownloadItem>
-	{
-		public UIAsyncList_ModDowloadItem() : base(
-			data => new UIModDownloadItem(data), uiel => uiel.UpdateInstallInfo()
-		) { }
+		protected override UIModDownloadItem GenElement(ModDownloadItem resource)
+		{
+			return new UIModDownloadItem(resource);
+		}
+		protected override void UpdateElement(UIModDownloadItem element)
+		{
+			element.UpdateInstallInfo();
+		}
 	}
 
 	public static bool AvoidGithub;
@@ -249,12 +243,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void ModListStateChanged(AsyncProviderState newState, AsyncProviderState oldState)
+	private void ModListStartLoading(AsyncProviderState state)
 	{
-		_browserStatus.SetCurrentState(newState);
-		if (newState.IsFinished()) {
-			_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));
-		}
+		_browserStatus.SetCurrentState(state);
+		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
+	}
+	private void ModListFinished(AsyncProviderState state)
+	{
+		_browserStatus.SetCurrentState(state);
+		_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));
 	}
 
 	public override void OnActivate()
@@ -263,7 +260,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		Main.clrInput();
 		if (_firstLoad) {
 			PopulateModBrowser();
-			_firstLoad = false;
 		}
 
 		// Check for mods to update
@@ -334,6 +330,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	internal void PopulateModBrowser()
 	{
+		_firstLoad = false;
+
 		// Only called if using mod browser and not for modpacks
 		SpecialModPackFilter = null;
 		SpecialModPackFilterTitle = null;
@@ -344,8 +342,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		// Old data will be removed and old provider aborted when setting the new provider `ModList.SetProvider`
 
 		// Asynchronous load the Mod Browser
-		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
-		ModList.SetProvider(CreateAsyncProvider());
+		// @TODO: "Chicken Bones" here the line below blocks
+		// the final version imo should have THIS line not the
+		// one uncommented below
+		//ModList.SetEnumerable(SocialBackend.QueryBrowser(FilterParameters));
+		ModList.SetEnumerable(SocialBackend.QueryBrowser(FilterParameters), true);
 	}
 
 	/// <summary>

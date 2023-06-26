@@ -14,14 +14,14 @@ namespace Terraria.ModLoader.UI.Elements;
  *   DO NOT USE Add/AddRange directly, always use the provider methods.
  * </remarks>
  */
-public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIElement
+public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIElement
 {
 	private bool ProviderChanged = false;
 	private bool UpdateRequested = false;
 	private AsyncProvider<TResource> Provider = null;
 
-	public Func<TResource, TUIElement> GenElement;
-	public Action<TUIElement> UpdateElement;
+	protected abstract TUIElement GenElement(TResource resource);
+	protected virtual void UpdateElement(TUIElement element) { }
 
 	// Graphical elements set on OnInitialize
 	private UIText EndItem = null;
@@ -31,8 +31,9 @@ public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIEl
 	// null Provider is empty so completed
 	public AsyncProviderState State => Provider?.State ?? AsyncProviderState.Completed;
 
-	public delegate void StateChangedDelegate(AsyncProviderState newState, AsyncProviderState oldState);
-	public event StateChangedDelegate OnStateChanged;
+	public delegate void StateDelegate(AsyncProviderState state);
+	public event StateDelegate OnStartLoading;
+	public event StateDelegate OnFinished;
 
 	public IEnumerable<TUIElement> ReceivedItems {
 		get {
@@ -43,17 +44,10 @@ public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIEl
 		}
 	}
 
-	public UIAsyncList(Func<TResource, TUIElement> genElement, Action<TUIElement> updateElement) : base()
+	public UIAsyncList() : base()
 	{
 		// Make sure not to sort
 		this.ManualSortMethod = (l) => { };
-
-		GenElement = genElement;
-		UpdateElement = updateElement;
-	}
-
-	public UIAsyncList() : this(res => res as TUIElement, el => { })
-	{
 	}
 
 	/**
@@ -67,14 +61,23 @@ public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIEl
 	 *   partially consumed before the clear)
 	 * </remarks>
 	 */
-	public void SetProvider(AsyncProvider<TResource> provider, bool cancelPrevious = true)
+	public void SetProvider(AsyncProvider<TResource> provider = null)
 	{
-		if (cancelPrevious && Provider is not null) {
+		if (Provider is not null) {
 			Provider.Cancel();
 		}
 
 		ProviderChanged = true;
 		Provider = provider;
+	}
+
+	public void SetEnumerable(IAsyncEnumerable<TResource> enumerable = null, bool forceSeparateThread = false)
+	{
+		if (enumerable is not null) {
+			SetProvider(new(enumerable, forceSeparateThread));
+		} else {
+			SetProvider(null);
+		}
 	}
 
 	public override void Update(GameTime gameTime)
@@ -85,20 +88,18 @@ public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIEl
 		// Before normal update add extra elements
 		if (ProviderChanged) {
 			this.Clear();
+			this.Add(EndItem);
 			ProviderChanged = false;
 
 			// Force a state change in case of changed provider so it's clear a change happened
 			// In general you'd have a cancelled if was not finished, then a loading state (GUARANTEED)
 			// And in case the completion if already finished (handled automatically later in Update
 			// given that LastProviderState is changed)
-			if (!LastProviderState.IsFinished()) {
-				providerState = AsyncProviderState.Canceled;
-				OnStateChanged(providerState, LastProviderState);
-				LastProviderState = providerState;
-			}
-			providerState = AsyncProviderState.Loading;
-			OnStateChanged(providerState, LastProviderState);
-			LastProviderState = providerState;
+			/*
+			if (!LastProviderState.IsFinished())
+				InternalOnUpdateState(AsyncProviderState.Canceled);
+			*/
+			InternalOnUpdateState(AsyncProviderState.Loading);
 			endItemTextNeedUpdate = true;
 		}
 
@@ -118,17 +119,25 @@ public class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIEl
 			UpdateRequested = false;
 		}
 
-		// null Provider is empty so completed
 		providerState = this.State;
 		if (providerState != LastProviderState) {
-			OnStateChanged(providerState, LastProviderState);
-			LastProviderState = providerState;
+			InternalOnUpdateState(providerState);
 			endItemTextNeedUpdate = true;
 		}
 		if (endItemTextNeedUpdate)
 			EndItem.SetText(this.GetEndItemText());
 
 		base.Update(gameTime);
+	}
+
+	private void InternalOnUpdateState(AsyncProviderState state)
+	{
+		LastProviderState = state;
+		if (LastProviderState.IsFinished()) {
+			OnFinished(LastProviderState);
+		} else {
+			OnStartLoading(LastProviderState);
+		}
 	}
 
 	public override void OnInitialize()

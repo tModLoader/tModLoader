@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Iced.Intel;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader;
 
@@ -28,23 +29,36 @@ public class AsyncProvider<T>
 	private Channel<T> _Channel;
 	private CancellationTokenSource TokenSource;
 
-	public AsyncProvider(Func<ChannelWriter<T>, CancellationToken, Task> task) {
+	/**
+	 * <remarks>
+	 *   Remember to provide your enumerator with
+	 *   `[EnumeratorCancellation] CancellationToken token = default`
+	 *   as argument to allow cancellation notification
+	 * </remarks>
+	 */
+	public AsyncProvider(IAsyncEnumerable<T> provider, bool forceSeparateThread = false) {
 		this._Channel = Channel.CreateUnbounded<T>();
 		TokenSource = new CancellationTokenSource();
-		// No need to store the task, the completion event is present in the channel itself
-		Task.Run(async () => {
+		var taskRunner = async () => {
 			var writer = this._Channel.Writer;
-			Exception ex = null;
 			try {
-				await task(writer, this.TokenSource.Token);
+				await foreach (var item in provider.WithCancellation(this.TokenSource.Token)) {
+					await writer.WriteAsync(item);
+				}
+				writer.Complete();
 			}
-			catch (Exception _ex) {
-				ex = _ex;
+			catch (Exception ex) {
+				writer.Complete(ex);
 			}
-			finally {
-				writer.TryComplete(ex); // Accept the runner to close the channel beforehand
-			}
-		}, this.TokenSource.Token);
+		};
+		// No need to store the task, the completion event is present in the channel itself
+		// @TODO: SteamedWraps.ForceCallbacks is blocking so the enumerator is NOT guaranteeed
+		// to be purely async so make sure it gets spawned in a separate thread
+		if (forceSeparateThread) {
+			Task.Run(taskRunner);
+		} else {
+			taskRunner();
+		}
 	}
 
 	public void Cancel()
