@@ -17,3 +17,46 @@
  		}
  
  		public static string GetFullPath(string path, bool cloud) {
+@@ -38,10 +_,21 @@
+ 		}
+ 
+ 		public static void Copy(string source, string destination, bool cloud, bool overwrite = true) {
+-			if (!cloud)
++			if (!cloud) {
+ 				File.Copy(source, destination, overwrite);
+-			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+-				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
++				return;
++			}
++
++			// Sanitize the paths for Steam calls
++			string cloudPath = Social.Steam.CoreSocialModule.GetCloudSaveLocation();
++			destination = destination.Replace(cloudPath, "");
++			source = source.Replace(cloudPath, "");
++
++			if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination))) {
++				var bytes = SocialAPI.Cloud.Read(source);
++				SocialAPI.Cloud.Write(destination, bytes);
++			}
++				
+ 		}
+ 
+ 		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
+@@ -154,7 +_,7 @@
+ 			return match.Groups["path"].Value;
+ 		}
+ 
+-		public static void CopyFolder(string sourcePath, string destinationPath) {
++		public static void CopyFolder(string sourcePath, string destinationPath, bool isCloud = false) {
+ 			Directory.CreateDirectory(destinationPath);
+ 			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
+ 			for (int i = 0; i < directories.Length; i++) {
+@@ -163,7 +_,7 @@
+ 
+ 			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
+ 			foreach (string obj in directories) {
+-				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
++				Copy(obj, obj.Replace(sourcePath, destinationPath), isCloud, overwrite: true);
+ 			}
+ 		}
+ 

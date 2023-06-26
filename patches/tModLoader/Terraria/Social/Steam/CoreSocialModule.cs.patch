@@ -12,7 +12,8 @@
  
  namespace Terraria.Social.Steam
  {
- 	public class CoreSocialModule : ISocialModule
+-	public class CoreSocialModule : ISocialModule
++	public partial class CoreSocialModule : ISocialModule
  	{
  		private static CoreSocialModule _instance;
 -		public const int SteamAppId = 105600;
@@ -20,7 +21,7 @@
  		private bool IsSteamValid;
  		private object _steamTickLock = new object();
  		private object _steamCallbackLock = new object();
-@@ -24,14 +_,16 @@
+@@ -24,15 +_,18 @@
  
  		public void Initialize() {
  			_instance = this;
@@ -37,5 +38,7 @@
 -				Environment.Exit(1);
 +				ErrorReporting.FatalExit(Language.GetTextValue("Error.LaunchFromSteam"));
  			}
++			PortFilesToCurrentStructure();
  
  			IsSteamValid = true;
+ 			Thread thread = new Thread(SteamCallbackLoop);
