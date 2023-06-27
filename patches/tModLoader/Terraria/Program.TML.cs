@@ -87,24 +87,14 @@ namespace Terraria
 		}
 
 		private static void Port143FilesFromStable(string savePath, bool isCloud) {
-			// Copy all current stable player files to 1.4.3-legacy during transition period
+			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
 
 			string newFolderPath = Path.Combine(savePath, ReleaseFolder);
 			string oldFolderPath = Path.Combine(savePath, StableFolder);
 
 			if (!Directory.Exists(newFolderPath) && Directory.Exists(oldFolderPath)) {
-				
-				Utilities.FileUtilities.CopyFolder(oldFolderPath, newFolderPath, isCloud);
-
-				// Windows doesn't like deleting things right after a copy call. It tends to lag behind.
-				// Especially if OneDrive is involved. This is not a good solution and will fail as is
-				string modSources = Path.Combine(newFolderPath, "ModSources");
-				if (Directory.Exists(modSources))
-					Directory.Delete(modSources, true);
-
-				string workshopTemp = Path.Combine(newFolderPath, "Workshop");
-				if (Directory.Exists(workshopTemp))
-					Directory.Delete(workshopTemp, true);
+				Utilities.FileUtilities.CopyFolder(oldFolderPath, newFolderPath, isCloud,
+					excludeFilter: new System.Text.RegularExpressions.Regex("(Workshop)|(ModSources)"));
 			}
 		}
 

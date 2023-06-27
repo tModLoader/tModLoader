@@ -42,19 +42,26 @@
  		}
  
  		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
-@@ -154,7 +_,7 @@
+@@ -154,16 +_,22 @@
  			return match.Groups["path"].Value;
  		}
  
 -		public static void CopyFolder(string sourcePath, string destinationPath) {
-+		public static void CopyFolder(string sourcePath, string destinationPath, bool isCloud = false) {
++		public static void CopyFolder(string sourcePath, string destinationPath, bool isCloud = false, Regex excludeFilter = null) {
  			Directory.CreateDirectory(destinationPath);
  			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < directories.Length; i++) {
-@@ -163,7 +_,7 @@
++				if (excludeFilter != null && excludeFilter.IsMatch(directories[i]))
++					continue;
++
+ 				Directory.CreateDirectory(directories[i].Replace(sourcePath, destinationPath));
+ 			}
  
  			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
  			foreach (string obj in directories) {
++				if (excludeFilter != null && excludeFilter.IsMatch(obj))
++					continue;
++
 -				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
 +				Copy(obj, obj.Replace(sourcePath, destinationPath), isCloud, overwrite: true);
  			}
