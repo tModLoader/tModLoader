@@ -41,7 +41,7 @@ partial class ArmorIDs
 			/// <br/> Defaults to <see langword="false"/>.
 			/// </summary>
 			/// <remarks>
-			/// This is used for, for example, wizard hats. Without this setting, some animation frames would render cropped at the top.
+			/// This is used by, for example, wizard hats and gladiator helmet. Without this setting, some animation frames would render cropped at the top.
 			/// </remarks>
 			public static bool[] IsTallHat = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180);
 
