@@ -34,7 +34,4 @@
 - Reforging is now implemented via `Item.ResetPrefix`. This sets `prefix` to 0 and then refreshes the item. Make sure any custom fields set by custom prefixes are not serialized independently.
 
 ## Formatter
-- Not visiting into switch case blocks properly? See `ItemSlot.LeftClick`
-
-## ChildSafety
-- Factories, do they need support for modded ids? (Should be made into issue - Mutant)
+- Not visiting into switch case blocks properly? See `ItemSlot.LeftClick

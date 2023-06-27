@@ -123,6 +123,16 @@
  		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  			Main.gore[num].type = Main.rand.Next(11, 14);
  			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+@@ -1126,7 +_,8 @@
+ 		int num2 = GoreID.Sets.SpecialAI[Type];
+ 		if (num2 == 3) {
+ 			Main.gore[num].velocity = new Vector2((Main.rand.NextFloat() - 0.5f) * 1f, Main.rand.NextFloat() * ((float)Math.PI * 2f));
+-			bool flag = (Type >= 910 && Type <= 925) || (Type >= 1113 && Type <= 1121) || (Type >= 1248 && Type <= 1255) || Type == 1257 || Type == 1278;
++			//bool flag = (Type >= 910 && Type <= 925) || (Type >= 1113 && Type <= 1121) || (Type >= 1248 && Type <= 1255) || Type == 1257 || Type == 1278;
++			bool flag = GoreID.Sets.PaintedFallingLeaf[Type];
+ 			Gore obj = Main.gore[num];
+ 			SpriteFrame spriteFrame = new SpriteFrame((byte)((!flag) ? 1u : 32u), 8) {
+ 				CurrentRow = (byte)Main.rand.Next(8)
 @@ -1194,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
