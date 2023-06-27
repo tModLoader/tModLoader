@@ -66,7 +66,7 @@ namespace ExampleMod.Content
 				.AddIngredient(ItemID.Acorn, 10)
 				// We can also specify the current item as an ingredient
 				.AddIngredient(resultItem)
-				// Adds a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
+				// Adds a Mod Ingredient. Do not attempt ItemID.ExampleSword, it's not how it works.
 				.AddIngredient<Items.Weapons.ExampleSword>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower.
 				.AddIngredient(Mod, "ExampleSword")
