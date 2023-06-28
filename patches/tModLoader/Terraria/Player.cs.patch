@@ -5896,7 +5896,7 @@
  			Rectangle rectangle = new Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  			bool flag = itemRectangle.Intersects(rectangle);
  			int type = sItem.type;
-@@ -34388,21 +_,36 @@
+@@ -34388,21 +_,39 @@
  				flag = ((!_spawnVolcanoExplosion) ? (flag || flag2) : flag2);
  			}
  
@@ -5915,14 +5915,14 @@
 +			*/
 +			float num = 1000f; // to reduce patches, set to 1000, and then turn it into a multiplier later
  			bool flag3 = false;
-+			if (sItem.DamageType.UseStandardCritCalcs) {
--			int weaponCrit = GetWeaponCrit(sItem);
-+				int weaponCrit = GetWeaponCrit(sItem);
--			if (Main.rand.Next(1, 101) <= weaponCrit)
-+				if (Main.rand.Next(1, 101) <= weaponCrit)
--				flag3 = true;
-+					flag3 = true;
-+			}
++			if (!sItem.DamageType.UseStandardCritCalcs)
++				goto skipStandardCritCalcs;
++
+ 			int weaponCrit = GetWeaponCrit(sItem);
+ 			if (Main.rand.Next(1, 101) <= weaponCrit)
+ 				flag3 = true;
++			
++			skipStandardCritCalcs:
  
 +			/*
  			int num2 = Item.NPCtoBanner(nPC.BannerID());
