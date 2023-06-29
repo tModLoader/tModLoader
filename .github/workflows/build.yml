@@ -63,7 +63,7 @@ jobs:
           echo "Checking Version Updates"
           if [[ "refs/heads/${{env.DevBranch}}" = $branch ]] ; then
             echo "Checking Version Updates for ${{env.DevBranch}}"
-             newdt="$(date --date="1 month" +%Y.%m)"
+             newdt="$(date +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
                 echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
                 oldate="$newdt"
