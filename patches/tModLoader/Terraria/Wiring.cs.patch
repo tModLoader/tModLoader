@@ -70,10 +70,17 @@
  	public static void SkipWire(Point16 point)
  	{
  		_wireSkip[point] = true;
-@@ -349,7 +_,7 @@
+@@ -349,7 +_,14 @@
  		}
  	}
  
++	/// <summary>
++	/// Returns true if the wiring cooldown has been reached for the provided tile coordinates. The <paramref name="time"/> parameter will set the cooldown if wiring cooldown has elapsed. Use larger values for less frequent activations. Use this method to limit how often mechanisms can be triggerd. <see cref="Item.MechSpawn(float, float, int)"/> and <see cref="NPC.MechSpawn(float, float, int)"/> should also be checked for mechanisms spawning items or NPC, such as Statues.
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="time"></param>
++	/// <returns></returns>
 -	private static bool CheckMech(int i, int j, int time)
 +	public static bool CheckMech(int i, int j, int time)
  	{
