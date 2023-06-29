@@ -1904,7 +1904,7 @@
  
  	private void GetShimmered()
  	{
-+		if (AdvancedShimmerTransformationHelper.AdvancedShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++		if (ShimmerTransformation.AdvancedShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
 +			return;
 +		}
 +

@@ -32,21 +32,21 @@ namespace ExampleMod.Content.NPCs
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
 			CreateShimmerTransformation()
 				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((Entity target) => target.Center.X <= Main.maxTilesX * 8))
-				.AddResult(new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 30))
-				.AddResult(new ShimmerResult(ShimmerResultType.NPC, NPCID.Skeleton, 3))
+				.AddResult(new ShimmerResult(ShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 30))
+				.AddResult(new ShimmerResult(ShimmerTypeID.NPC, NPCID.Skeleton, 3))
 				.AddOnShimmerCallBack(new ShimmerTransformation.OnShimmerCallBack(OnShimmerCallBack))
 				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items
 			CreateShimmerTransformation()
 				.AddCondition(Condition.DownedPlantera)
-				.AddResult(new ShimmerResult(ShimmerResultType.Item, ModContent.ItemType<ExampleItem>(), 20))
+				.AddResult(new ShimmerResult(ShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 20))
 				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns one the bride
 			CreateShimmerTransformation()
 				.AddCondition(Condition.DownedEarlygameBoss)
-				.AddResult(new ShimmerResult(ShimmerResultType.NPC, NPCID.TheBride, 1))
+				.AddResult(new ShimmerResult(ShimmerTypeID.NPC, NPCID.TheBride, 1))
 				.Register();
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method and is slightly different from the next items
