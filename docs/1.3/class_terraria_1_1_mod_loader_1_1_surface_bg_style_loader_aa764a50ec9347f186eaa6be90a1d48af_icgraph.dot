@@ -1,0 +1,12 @@
+digraph "Terraria.ModLoader.SurfaceBgStyleLoader.GetSurfaceBgStyle"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.Surface\lBgStyleLoader.GetSurfaceBgStyle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Returns the ModSurfaceBgStyle object with the given ID."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Surface\lBgStyleLoader.DrawCloseBackground",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#a777c300a4861f509a52819bffa187c3c",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.Surface\lBgStyleLoader.ModifyFarFades",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_surface_bg_style_loader.html#a9292f588b85c0fa5248b83b826c643bf",tooltip=" "];
+}

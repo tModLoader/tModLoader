@@ -1,0 +1,19 @@
+digraph "Terraria.ModLoader.SpawnCondition.SpawnCondition"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.Spawn\lCondition.SpawnCondition",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Spawn\lCondition.GetTile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a83f3c71f1baa2e088cd16e751ab4ed15",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.Spawn\lCondition.InnerThird",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a349f9947f04186b4e43285c35f592b12",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.Spawn\lCondition.MartianProbeHelper",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_spawn_condition.html#af5e36847e665aa4d46984ad8b08be615",tooltip=" "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Terraria.ModLoader.Spawn\lCondition.OuterThird",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_spawn_condition.html#a8501b4122cdbb03edc3639f81be8bc22",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Terraria.ModLoader.Spawn\lCondition.WaterSurface",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_spawn_condition.html#ad04077a5e04bb5aeae4af21ba347e6c9",tooltip=" "];
+}

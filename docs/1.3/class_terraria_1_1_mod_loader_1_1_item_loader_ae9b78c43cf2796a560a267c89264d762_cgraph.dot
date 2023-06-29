@@ -1,0 +1,14 @@
+digraph "Terraria.ModLoader.ItemLoader.DrawLegs"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.ItemLoader.\lDrawLegs",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Calls the item's leg equipment texture's DrawLegs hook, then the item's shoe equipment texture's Draw..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Equip\lTexture.DrawLegs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#ab965e6403a150acbfe7d011ab880b44f",tooltip="Return false to hide the player's legs when this leg or shoe equipment texture is worn...."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.ModItem.\lDrawLegs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a4c5bf5212c99fa20ba3ad5355b6b3ad1",tooltip="Return false to hide the player's legs when this leg armor or shoe accessory is worn...."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.Equip\lLoader.GetEquipTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575",tooltip="Gets the equipment texture for the specified equipment type and ID."];
+}

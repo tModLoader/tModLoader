@@ -1,0 +1,18 @@
+digraph "Terraria.ModLoader.Audio.Music.Reset"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.Audio.\lMusic.Reset",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Audio.\lMusicStreaming.FillBuffer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a1bb36be0a56e31b3164163a04f4ec77f",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.Audio.\lMusicStreaming.SubmitSingle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a554f84fb2db17462daf034116d251842",tooltip=" "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.Audio.\lMusicStreaming.CheckBuffer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a1c00ff070cdeacc62e2dd0f31d4043b6",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Terraria.ModLoader.Audio.\lMusicStreaming.EnsureLoaded",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#ab6f127b36eee38dca1af8bf878be624f",tooltip=" "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Terraria.ModLoader.Audio.\lMusicStreaming.Play",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_audio_1_1_music_streaming.html#a8ba99bd0e226526b8f14ec346b12ef50",tooltip=" "];
+}

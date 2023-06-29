@@ -1,0 +1,10 @@
+digraph "Terraria.ModLoader.ModTile.DropCritterChance"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.ModTile.\lDropCritterChance",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter w..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.TileLoader.\lDropCritterChance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7c19d93e07e563e0cfa0caaf0bf73bb7",tooltip=" "];
+}

@@ -1,0 +1,12 @@
+digraph "Terraria.ModLoader.ModItem.DrawHead"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.ModItem.\lDrawHead",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Return false to hide the player's head when this head armor is worn. Returns true by default...."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Equip\lTexture.DrawHead",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a5d883ac0f403b52ffff8fb9c312c1e6e",tooltip="Return false to hide the player's head when this head equipment texture is worn. By default this will..."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.ItemLoader.\lDrawHead",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_item_loader.html#a7b9463e05c08aab7f506e5e6796a8d97",tooltip="Calls the item's head equipment texture's DrawHead hook, then all GlobalItem.DrawHead hooks,..."];
+}

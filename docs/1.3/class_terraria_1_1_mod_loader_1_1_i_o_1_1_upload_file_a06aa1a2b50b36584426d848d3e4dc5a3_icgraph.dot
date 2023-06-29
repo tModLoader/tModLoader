@@ -1,0 +1,12 @@
+digraph "Terraria.ModLoader.IO.UploadFile.WriteFiles"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.IO.Upload\lFile.WriteFiles",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.IO.Upload\lFile.GetUploadFilesRequestData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#a5eb2882c212557db1bfbc2591fda1791",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.IO.Upload\lFile.UploadFiles",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_i_o_1_1_upload_file.html#ab98bd2490576abf7282a2c6b6a08b2fc",tooltip=" "];
+}

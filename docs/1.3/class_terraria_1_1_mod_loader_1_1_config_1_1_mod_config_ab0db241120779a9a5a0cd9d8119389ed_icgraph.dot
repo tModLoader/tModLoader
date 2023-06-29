@@ -1,0 +1,10 @@
+digraph "Terraria.ModLoader.Config.ModConfig.Clone"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.Config.\lModConfig.Clone",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="tModLoader will call Clone on ModConfig to facilitate proper implementation of the ModConfig user int..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Config.\lConfigManager.GeneratePopulatedClone",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html#a0826f3929bcf66e9b34b3618e39c0e75",tooltip=" "];
+}

@@ -1,0 +1,24 @@
+digraph "Terraria.ModLoader.Logging"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.Logging",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" LogArchiveDir\nLogDir\nside" ,fontname="Helvetica"];
+  Node2 [label="string",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ignoreContents\nignoreMessages\nignoreThrowingMethods\ninitWarnings" ,fontname="Helvetica"];
+  Node3 [label="static List\< string \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ignoreSources\npastExceptions" ,fontname="Helvetica"];
+  Node4 [label="static HashSet\< string \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" handlerActive" ,fontname="Helvetica"];
+  Node5 [label="static ThreadLocal\l\< bool \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" previousException" ,fontname="Helvetica"];
+  Node6 [label="static Exception",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" statusRegex" ,fontname="Helvetica"];
+  Node7 [label="static Regex",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node8 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" f_fileName" ,fontname="Helvetica"];
+  Node8 [label="static readonly FieldInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node9 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" TerrariaAssembly" ,fontname="Helvetica"];
+  Node9 [label="static readonly Assembly",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+}

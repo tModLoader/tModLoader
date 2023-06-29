@@ -1,0 +1,7 @@
+var _config_manager_8cs =
+[
+    [ "Terraria.ModLoader.Config.ConfigManager", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager" ],
+    [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver.NullToDefaultValueProvider", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider" ],
+    [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver" ],
+    [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver.ValueProviderDecorator", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator" ]
+];

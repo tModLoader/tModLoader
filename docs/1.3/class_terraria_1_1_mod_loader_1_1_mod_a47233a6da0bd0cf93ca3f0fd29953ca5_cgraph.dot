@@ -1,0 +1,14 @@
+digraph "Terraria.ModLoader.Mod.AutoloadGlobalBuff"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.Mod.Autoload\lGlobalBuff",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Mod.Add\lGlobalBuff",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#a84928ee1f0255c4c2820c1abe82b1485",tooltip="Adds the given GlobalBuff instance to this mod using the provided name."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.Content\lInstance.Register",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_content_instance.html#a9056e387eacb153e6b1c64aa8a08778a",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.Global\lBuff.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_buff.html#a7af3bfce3cc87194ded5534df2ddad03",tooltip="Allows you to automatically load a GlobalBuff instead of using Mod.AddGlobalBuff. Return true to allo..."];
+}
