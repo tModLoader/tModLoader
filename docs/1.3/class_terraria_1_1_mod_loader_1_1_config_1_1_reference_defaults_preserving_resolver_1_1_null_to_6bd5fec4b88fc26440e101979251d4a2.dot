@@ -1,0 +1,11 @@
+digraph "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver.NullToDefaultValueProvider"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Terraria.ModLoader.Config.\lReferenceDefaultsPreservingResolver.\lNullToDefaultValueProvider",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ValueProviderDecorator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="IValueProvider",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_i_value_provider.html",tooltip=" "];
+}

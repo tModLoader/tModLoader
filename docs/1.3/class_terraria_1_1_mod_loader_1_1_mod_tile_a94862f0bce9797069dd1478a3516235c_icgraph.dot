@@ -1,0 +1,10 @@
+digraph "Terraria.ModLoader.ModTile.KillTile"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.ModTile.\lKillTile",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.TileLoader.\lKillTile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9d48f57f2a17d2c9ada8c5d7ceb43564",tooltip=" "];
+}

@@ -1,0 +1,10 @@
+digraph "Terraria.ModLoader.ModNPC.SpawnChance"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.ModNPC.\lSpawnChance",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chanc..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.NPCLoader.\lChooseSpawn",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a5bcc2cf38a97e5ba87005b39428d8d5c",tooltip=" "];
+}

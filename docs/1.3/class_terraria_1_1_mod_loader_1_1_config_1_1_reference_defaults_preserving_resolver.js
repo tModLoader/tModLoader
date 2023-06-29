@@ -1,0 +1,6 @@
+var class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver =
+[
+    [ "NullToDefaultValueProvider", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_null_to_default_value_provider" ],
+    [ "ValueProviderDecorator", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver_1_1_value_provider_decorator" ],
+    [ "CreateProperties", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html#a65b84a0d7e0732f00f2f472c88c9593b", null ]
+];
