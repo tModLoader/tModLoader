@@ -1,10 +1,10 @@
 "appbuild"
 {
   "appid" "1281930"
-  "desc" "Github Actions Preview Auto-Release"
+  "desc" "Github Actions 1.4.4 Preview Auto-Release"
   "buildoutput" "../../BuildOutput"
   "contentroot" "../../artifacts"
-  "setlive" "1.4-preview"
+  "setlive" "1.4.4-preview"
   "preview" ""
   "local" ""
 
