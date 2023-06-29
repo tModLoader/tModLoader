@@ -95,7 +95,7 @@ namespace Terraria
 			if (!Directory.Exists(newFolderPath) && Directory.Exists(oldFolderPath)) {
 				Utilities.FileUtilities.CopyFolder(oldFolderPath, newFolderPath, isCloud,
 					// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
-					excludeFilter: new System.Text.RegularExpressions.Regex("((/|\\)Workshop(/|\\))|((/|\\)ModSources(/|\\))"));
+					excludeFilter: new System.Text.RegularExpressions.Regex("(Workshop|ModSources)($|/|\\))"));
 			}
 		}
 

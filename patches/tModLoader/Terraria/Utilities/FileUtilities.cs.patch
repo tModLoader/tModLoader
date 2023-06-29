@@ -31,8 +31,8 @@
 +
 +			// Sanitize the paths for Steam calls
 +			string cloudPath = Social.Steam.CoreSocialModule.GetCloudSaveLocation();
-+			destination = destination.Replace(cloudPath, "");
-+			source = source.Replace(cloudPath, "");
++			destination = ConvertToRelativePath(cloudPath, destination);
++			destination = ConvertToRelativePath(cloudPath, source);
 +
 +			if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination))) {
 +				var bytes = SocialAPI.Cloud.Read(source);
@@ -42,7 +42,7 @@
  		}
  
  		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
-@@ -154,16 +_,22 @@
+@@ -154,16 +_,24 @@
  			return match.Groups["path"].Value;
  		}
  
@@ -51,7 +51,8 @@
  			Directory.CreateDirectory(destinationPath);
  			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < directories.Length; i++) {
-+				if (excludeFilter != null && excludeFilter.IsMatch(directories[i]))
++				string testStr = ConvertToRelativePath(sourcePath, directories[i]);
++				if (excludeFilter != null && excludeFilter.IsMatch(testStr))
 +					continue;
 +
  				Directory.CreateDirectory(directories[i].Replace(sourcePath, destinationPath));
@@ -59,7 +60,8 @@
  
  			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
  			foreach (string obj in directories) {
-+				if (excludeFilter != null && excludeFilter.IsMatch(obj))
++				string testStr = ConvertToRelativePath(sourcePath, obj);
++				if (excludeFilter != null && excludeFilter.IsMatch(testStr))
 +					continue;
 +
 -				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
@@ -67,3 +69,20 @@
  			}
  		}
  
+@@ -176,6 +_,16 @@
+ 			finally {
+ 				Thread.CurrentThread.IsBackground = isBackground;
+ 			}
++		}
++
++		/// <summary>
++		/// Converts the full 'path' to remove the base path component.
++		/// Example: C://My Documents//Help Me I'm Hungry.txt is full 'path'
++		///		basePath is C://My Documents
++		///		Thus returns 'Help Me I'm Hungry.txt'
++		/// </summary>
++		public static string ConvertToRelativePath(string basePath, string fullPath) {
++			return fullPath.Replace(basePath + Path.DirectorySeparatorChar, "");
+ 		}
+ 	}
+ }
