@@ -462,7 +462,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: ${{ fromJSON('{"refs/heads/${{env.StableBranch}}":"docs/${{env.StableBranch}}", "refs/heads/${{env.PreviewBranch}}":"docs/${{env.PreviewBranch}}"}')[github.ref] }}
+          destination_dir: ${{ fromJSON('{"refs/heads/env.StableBranch":"docs/env.DevBranch-env.StableBranch", "refs/heads/env.PreviewBranch":"docs/env.DevBranch-env.PreviewBranch"}')[github.ref] }}
           commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
