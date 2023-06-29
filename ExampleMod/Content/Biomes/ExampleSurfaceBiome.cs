@@ -41,5 +41,8 @@ namespace ExampleMod.Content.Biomes
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
 			return b1 && b2 && b3;
 		}
+
+		// Declare biome priority. The default is BiomeLow so this is only necessary if it needs a higher priority.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 	}
 }

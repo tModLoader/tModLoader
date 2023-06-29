@@ -1786,16 +1786,16 @@
  		else if (player[myPlayer].ZoneMeteor) {
  			newMusic = 2;
  		}
-@@ -10653,6 +_,9 @@
- 			else
- 				newMusic = 52;
+@@ -10590,6 +_,9 @@
+ 				newMusic = 14;
+ 			}
  		}
 +		else if (modPriority >= SceneEffectPriority.BiomeLow) {
 +			newMusic = modMusic;
 +		}
- 		else if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
- 			if (bloodMoon) {
- 				newMusic = 2;
+ 		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
+ 			if (player[myPlayer].ZoneHallow) {
+ 				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
