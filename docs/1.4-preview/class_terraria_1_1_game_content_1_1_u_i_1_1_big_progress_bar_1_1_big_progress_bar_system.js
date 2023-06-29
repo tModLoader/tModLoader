@@ -1,4 +1,0 @@
-var class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_system =
-[
-    [ "TryGetSpecialVanillaBossBar", "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_system.html#af4b4b3dd850d441b092e59c4b0ac6821", null ]
-];
