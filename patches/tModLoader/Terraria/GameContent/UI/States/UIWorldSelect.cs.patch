@@ -65,7 +65,7 @@
 +
 +					autoMigrateButton.Append(migrateText);
 +					_worldList.Add(autoMigrateButton);
-+					var noWorldsMessage = new UIText(Language.GetTextValue("tModLoader.MigrateWorldsMessage", Program.ReleaseFolder));
++					var noWorldsMessage = new UIText(Language.GetTextValue("tModLoader.MigrateWorldsMessage", Program.Legacy143Folder));
 +					noWorldsMessage.Width.Set(0, 1);
 +					noWorldsMessage.Height.Set(300, 0);
 +					noWorldsMessage.MarginTop = 20f;
@@ -110,9 +110,9 @@
 +			var otherPaths = new (string path, string message, int stabilityLevel)[] {
 +				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Worlds"), "Click to copy \"{0}\" over from Terraria", 0),
 +				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", "Worlds"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
-+				(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4.3-legacy", 1),
++				(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, "Worlds"), "Click to copy \"{0}\" over from 1.4.3-legacy", 1),
 +				(path: Path.Combine(Main.SavePath, "..", Program.StableFolder, "Worlds"), "Click to copy \"{0}\" over from Default (stable)", 2),
-+				//(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Players"), "Click to copy \"{0}\" over from 1.4-dev", 3),
++				(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Players"), "Click to copy \"{0}\" over from dev", 3),
 +			};
 +
 +			int currentStabilityLevel = BuildInfo.Purpose switch {

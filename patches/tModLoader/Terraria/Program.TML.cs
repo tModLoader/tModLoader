@@ -89,12 +89,13 @@ namespace Terraria
 		private static void Port143FilesFromStable(string savePath, bool isCloud) {
 			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
 
-			string newFolderPath = Path.Combine(savePath, ReleaseFolder);
+			string newFolderPath = Path.Combine(savePath, Legacy143Folder);
 			string oldFolderPath = Path.Combine(savePath, StableFolder);
 
 			if (!Directory.Exists(newFolderPath) && Directory.Exists(oldFolderPath)) {
 				Utilities.FileUtilities.CopyFolder(oldFolderPath, newFolderPath, isCloud,
-					excludeFilter: new System.Text.RegularExpressions.Regex("(Workshop)|(ModSources)"));
+					// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
+					excludeFilter: new System.Text.RegularExpressions.Regex("((/|\\)Workshop(/|\\))|((/|\\)ModSources(/|\\))"));
 			}
 		}
 
@@ -104,7 +105,7 @@ namespace Terraria
 			Port143FilesFromStable(savePath, isCloud);
 		}
 
-		public const string ReleaseFolder = "tModLoader-1.4.3";
+		public const string Legacy143Folder = "tModLoader-1.4.3";
 		public const string StableFolder = "tModLoader";
 		public const string DevFolder = "tModLoader-dev";
 		public const string PreviewFolder = "tModLoader-preview";
@@ -123,7 +124,7 @@ namespace Terraria
 			}
 
 			// 1.4.3 legacy custom statement - the legacy 143 folder
-			var fileFolder = ReleaseFolder;
+			var fileFolder = Legacy143Folder;
 
 			SavePath = Path.Combine(SavePath, fileFolder);
 
