@@ -10,11 +10,11 @@ public enum SceneEffectPriority
 	None,
 	/// <summary> Will override vanilla SceneEffect for Hallow, Ocean, Desert, Overworld, Night</summary>
 	BiomeLow,
-	/// <summary> Will override vanilla SceneEffect for Dungeon, Meteor, Jungle, Snow</summary>
+	/// <summary> Will override vanilla SceneEffect for Meteor, Jungle, Graveyard, Snow</summary>
 	BiomeMedium,
-	/// <summary> Will override vanilla SceneEffect for Temple, Mushrooms, Corruption, Crimson, </summary>
+	/// <summary> Will override vanilla SceneEffect for Temple, Dungeon, Mushrooms, Corruption, Crimson</summary>
 	BiomeHigh,
-	/// <summary> Will override vanilla SceneEffect for Sandstorm, Hell, Above surface during Eclipse, Space</summary>
+	/// <summary> Will override vanilla SceneEffect for Sandstorm, Hell, Above surface during Eclipse, Space, Shimmer</summary>
 	Environment,
 	/// <summary> Will override vanilla SceneEffect for Pirate Invasion, Goblin Invasion, Old Ones Army</summary>
 	Event,

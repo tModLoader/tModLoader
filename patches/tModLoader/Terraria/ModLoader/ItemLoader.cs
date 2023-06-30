@@ -151,6 +151,7 @@ public static class ItemLoader
 	{
 		ItemCount = ItemID.Count;
 		items.Clear();
+		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
 		modHooks.Clear();
 		UpdateHookLists();

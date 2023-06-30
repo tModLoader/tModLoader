@@ -60,21 +60,23 @@ jobs:
             exit 1
           fi
           
-          echo "Applying version updates"
-          if [[ "refs/heads/stable" = $branch ]] ; then
-             echo "Rolling Forward the Patch #..."
-             ((++patch))   
-          fi
-          if [[ "refs/heads/preview" = $branch ]] ; then
-            echo "Rolling Forward the Feature #..."
-             ((++feature))
+          echo "Checking Version Updates"
+          if [[ "refs/heads/${{env.DevBranch}}" = $branch ]] ; then
+            echo "Checking Version Updates for ${{env.DevBranch}}"
              newdt="$(date +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
                 echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
                 oldate="$newdt"
-                feature=0
+                feature=1
                 patch=0
              fi
+          elif [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
+             echo "Checking Version Updates for Rollover"
+             ((++feature))
+             patch=0
+          else
+            echo "Rolling Forward the Patch #..."
+            ((++patch))
           fi
           
           version="$oldate.$feature.$patch"
@@ -627,6 +629,9 @@ jobs:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
+          name: "1.4.4-${{github.ref}} Version Update: ${{ steps.version2.outputs.new_version }}"
           body: "Monthly Github Auto-release for ${{github.ref}}"
           tag: ${{ steps.version2.outputs.new_version }}
           prerelease: ${{ contains(github.ref, 'preview') }}
+          makeLatest: ${{ contains(github.ref, 'stable') }}
+          
