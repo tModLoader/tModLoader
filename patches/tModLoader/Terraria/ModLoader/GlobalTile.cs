@@ -112,6 +112,18 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Allows you to customize whether this tile can glow white while having the Biome Sight buff.
+	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The tile type</param>
+	public virtual bool? IsTileBiomeSightable(int i, int j, int type)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
 	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
 	/// </summary>

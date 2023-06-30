@@ -29,6 +29,8 @@ namespace ExampleMod.Content.Tiles
 			// MineResist = 4f;
 			// MinPick = 200;
 		}
+
+		public override bool IsTileBiomeSightable(int i, int j) => true;
 	}
 
 	public class ExampleOreSystem : ModSystem

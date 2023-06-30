@@ -302,6 +302,17 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows you to determine whether this tile glows white when the given player has the Biome Sight buff.
+	/// <br/>This is only called on the local client.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool IsTileBiomeSightable(int i, int j)
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
 	/// <br/>This is only called if Main.tileSpelunker[type] is false.
 	/// </summary>

@@ -3169,6 +3169,38 @@
  		if (tileSpelunker[typeCache])
  			return true;
  
+@@ -17293,19 +_,27 @@
+ 		return false;
+ 	}
+ 
+-	public static bool IsTileBiomeSightable(ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
++	//TML: Added x/y to IsTileBiomeSightable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, Tile t, ref Microsoft.Xna.Framework.Color sightColor) =>
++		IsTileBiomeSightable(tileX, tileY, t.type, t.frameX, t.frameY, ref sightColor);
++
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
+ 	{
++		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, typeCache);
++		if (modded.HasValue)
++			return modded.Value;
++
+-		if (TileID.Sets.CorruptBiomeSight[type] || (remixWorld && type == 474)) {
++		if (TileID.Sets.CorruptBiomeSight[typeCache] || (remixWorld && typeCache == 474)) {
+ 			sightColor = new Microsoft.Xna.Framework.Color(200, 100, 240);
+ 			return true;
+ 		}
+ 
+-		if (TileID.Sets.CrimsonBiomeSight[type] || (remixWorld && type == 195)) {
++		if (TileID.Sets.CrimsonBiomeSight[typeCache] || (remixWorld && typeCache == 195)) {
+ 			sightColor = new Microsoft.Xna.Framework.Color(255, 100, 100);
+ 			return true;
+ 		}
+ 
+-		if (TileID.Sets.HallowBiomeSight[type]) {
++		if (TileID.Sets.HallowBiomeSight[typeCache]) {
+ 			sightColor = new Microsoft.Xna.Framework.Color(255, 160, 240);
+ 			return true;
+ 		}
 @@ -17325,19 +_,25 @@
  				continue;
  
