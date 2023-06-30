@@ -5843,6 +5843,19 @@
  		if (!PlayerInput.Triggers.Current.MouseRight && !PlayerInput.Triggers.Current.MouseLeft && !preventStackSplitReset)
  			stackSplit = 0;
  
+@@ -51628,8 +_,12 @@
+ 		}
+ 
+ 		Vector2 value = screenPosition;
++		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
++		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
++		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
+ 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
+ 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
++		*/
+ 		Vector2 vector3 = Vector2.Zero;
+ 		float num2 = 0f;
+ 		float num3 = 0f;
 @@ -51684,6 +_,8 @@
  						else if (player.scope)
  							num5 = 0.5f;
@@ -5930,15 +5943,15 @@
  			}
  		}
  
-@@ -51852,6 +_,8 @@
+@@ -51850,6 +_,8 @@
+ 		}
+ 
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
- 		screenPosition.X = (int)screenPosition.X;
- 		screenPosition.Y = (int)screenPosition.Y;
 +		PlayerLoader.ModifyScreenPosition(LocalPlayer);
 +		SystemLoader.ModifyScreenPosition();
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
- 	}
- 
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
