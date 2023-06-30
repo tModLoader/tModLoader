@@ -582,7 +582,7 @@ internal static class ModOrganizer
 		return val;
 	}
 
-	// Delete in Mod Browsewr refactor - temp
+	// Delete in Mod Browser refactor - temp
 	public static string GetBrowserVersionNumber(Version tmlVersion)
 	{
 		if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9
@@ -610,6 +610,11 @@ internal static class ModOrganizer
 		return versions;
 	}
 
+	/// <summary>
+	/// Must Be called AFTER the new files are added to the publishing repo.
+	/// Assumes one .tmod per YYYY.XX folder in the publishing repo
+	/// </summary>
+	/// <param name="repo"></param>
 	internal static void CleanupOldPublish(string repo)
 	{
 		if (BuildInfo.IsPreview)
@@ -619,36 +624,39 @@ internal static class ModOrganizer
 		if (tmods.Length <= 3)
 			return;
 
-		// Solxan: We want to keep 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
-		// we need to rollback to the last stable due to a signficant bug.
-		// We thus check for what the previous Stable was and compare for anything less than that.
+		// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+		// we need to rollback to the last stable due to a significant bug.
+		// We also keep a 1.4.3 version from version 2022.9 prior
 
-		string deleteFolder = null;
-		var lowestVersion = BuildInfo.stableVersion.MajorMinor();
-
-		for (int i = 0; i < tmods.Length; i++) {
-			var filename = tmods[i];
-
-			// Legacy, non-folder .tmods
-			if (filename.EndsWith(".tmod") && tmods.Length > 3) {
-				File.Delete(filename);
-				return;
-			}
-
+		// Get the list of all tMod files on Workshop
+		List<(string file, Version tModVersion, bool isFolder)> information = new();
+		foreach (var filename in tmods) {
 			var match = PublishFolderMetadata.Match(filename);
 			if (match.Success) {
-				var checkVersion = new Version(match.Groups[1].Value);
-
-				// If the mod copy is from a legacy version
-				if (checkVersion < lowestVersion) {
-					lowestVersion = checkVersion;
-					deleteFolder = filename;
-				}
+				information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), isFolder: true));
+			}
+			else {
+				// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
+				// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
+				information.Add((filename, new Version(0, 12), isFolder: false));
 			}
 		}
 
-		if (deleteFolder != null)
-			Directory.Delete(deleteFolder, true);
+		(string browserVersion, int keepCount)[] keepRequirements =
+			{ ("1.4.3", 1), ("1.4.4", 3) };
+
+		foreach (var requirement in keepRequirements) {
+			// Get an ordered list for the particular version
+			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
+				.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
+
+			foreach (var item in mods) {
+				if (item.isFolder)
+					Directory.Delete(item.file, recursive:true);
+				else
+					File.Delete(item.file);
+			}
+		}
 	}
 
 	// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6

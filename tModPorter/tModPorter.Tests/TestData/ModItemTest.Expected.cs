@@ -104,4 +104,11 @@ public class ModItemTest : ModItem
 	public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers) { }
 	public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) { }
+
+#if COMPILE_ERROR
+	public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)/* tModPorter Note: Removed. Use ItemID.Sets.Torches[Type], ItemID.Sets.WaterTorches[Type], and ItemID.Sets.Glowsticks[Type] in SetStaticDefaults */
+	{
+		dryTorch = true;
+	}
+#endif
 }

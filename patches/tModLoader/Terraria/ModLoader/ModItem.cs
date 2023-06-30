@@ -33,7 +33,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public int Type => Item.type;
 
-	public string LocalizationCategory => "Items";
+	public virtual string LocalizationCategory => "Items";
 
 	/// <summary>
 	/// The translations for the display name of this item.
@@ -312,7 +312,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
+	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behavior.
 	/// </summary>
 	/// <param name="player">The Player that owns the bait</param>
 	public virtual bool? CanConsumeBait(Player player)
@@ -321,7 +321,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
 	/// </summary>
 	public virtual bool CanResearch()
 	{
@@ -329,7 +329,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create custom behaviour when an item is accepted by the Research function
+	/// Allows you to create custom behavior when an item is accepted by the Research function
 	/// </summary>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
 	public virtual void OnResearched(bool fullyResearched)
@@ -850,7 +850,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to add and modify the loot items that spawn from bag items when opened.
-	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
 	/// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
 	/// </summary>
 	/// <param name="itemLoot">A reference to the item drop database for this item type</param>
@@ -887,7 +887,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
 	public virtual void OnStack(Item source, int numToTransfer)
 	{
 	}
@@ -897,7 +897,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
 	/// </summary>
 	/// <param name="source">The original item that will have it's stack reduced.</param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
 	public virtual void SplitStack(Item source, int numToTransfer)
 	{
 	}
@@ -1180,16 +1180,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="resultType">Type of the result.</param>
 	/// <param name="resultStack">The result stack.</param>
 	public virtual void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind.
-	/// </summary>
-	/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
-	/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>
-	/// <param name="glowstick">if set to <c>true</c> [glowstick].</param>
-	public virtual void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
 	{
 	}
 

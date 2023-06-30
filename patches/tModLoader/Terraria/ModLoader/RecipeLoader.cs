@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This is where all Recipe and GlobalRecipe hooks are gathered and called.
+/// This is where all Recipe hooks are gathered and called.
 /// </summary>
 public static class RecipeLoader
 {

@@ -241,7 +241,7 @@
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2147,8 +_,20 @@
+@@ -2147,8 +_,21 @@
  
  				while (num3 > 0) {
  					j++;
@@ -259,6 +259,7 @@
 +					tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
 +					tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
 +					tile2.Get<TileWallWireStateData>() = tile.Get<TileWallWireStateData>();
++					tile2.Get<TileWallBrightnessInvisibilityData>() = tile.Get<TileWallBrightnessInvisibilityData>();
  				}
  			}
  		}

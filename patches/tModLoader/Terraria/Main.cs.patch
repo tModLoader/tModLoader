@@ -367,7 +367,7 @@
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
 +	/// <summary>
-+	/// How rarly tiny ambient dust appear from this tile. Larger values mean less frequently
++	/// How rarely tiny ambient dust appear from this tile. Larger values mean less frequently
 +	/// </summary>
  	public static int[] tileShine = new int[TileID.Count];
 +	/// <summary>
@@ -388,11 +388,11 @@
  	public static bool[] tileAxe = new bool[TileID.Count];
  	public static bool[] tileHammer = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles of the type will be destoryed if in contact with water. <see cref="TileObjectData.WaterDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with water. <see cref="TileObjectData.WaterDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
 +	/// </summary>
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles of the type will be destoryed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
  	public static bool[] tileTable = new bool[TileID.Count];
@@ -400,7 +400,7 @@
  	public static bool[] tileNoSunLight = new bool[TileID.Count];
  	public static bool[] tileDungeon = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles will be drawn much brigter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
++	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
 +	/// </summary>
  	public static bool[] tileSpelunker = new bool[TileID.Count];
  	public static bool[] tileSolidTop = new bool[TileID.Count];
@@ -412,18 +412,24 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
-@@ -862,6 +_,8 @@
+@@ -861,7 +_,12 @@
+ 	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
-+	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that should preserve frame data should set this to true. </summary>
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -942,6 +_,13 @@
+@@ -941,7 +_,15 @@
+ 	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
++	/// <summary>If true, indicates that a tile has a flame texture that will draw over the tile. Modded tiles should not use this. <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> can be used to manually draw a flame texture.</summary>
  	public static bool[] tileFlame = new bool[TileID.Count];
 +
 +	/// <summary>
@@ -446,6 +452,17 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -972,6 +_,10 @@
+ 	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
+ 	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
+ 	public static List<int> itemAnimationsRegistered = new List<int>();
++	/// <summary>
++	/// The position of the top left corner of the screen in world coordinates. Modify in <see cref="ModSystem.ModifyScreenPosition"/> or <see cref="ModPlayer.ModifyScreenPosition"/>. Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.<br/><br/>
++	/// When manually drawing, subtracting Main.screenPosition from the world position of the thing being drawn will result in the correct screen coordinates for use in <see cref="SpriteBatch"/>.Draw methods. When drawing tiles or walls, an additional offset calculated as <c>Vector2 zero = Main.drawToScreen? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange);</c> needs to be added to the coordinates.
++	/// </summary>
+ 	public static Vector2 screenPosition;
+ 	public static Vector2 screenLastPosition;
+ 	public static int screenWidth = 1152;
 @@ -1026,6 +_,11 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -479,7 +496,15 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
-@@ -1865,6 +_,11 @@
+@@ -1860,11 +_,19 @@
+ 	public static float exitScale = 0.8f;
+ 	public static bool mouseReforge;
+ 	public static float reforgeScale = 0.8f;
++	/// <summary>
++	/// Used internally for network syncing. Use <see cref="Main.LocalPlayer"/> to access the player for the local user.
++	/// </summary>
+ 	public static Player clientPlayer = new Player();
+ 	public static string getIP = defaultIP;
  	public static string getPort = Convert.ToString(Netplay.ListenPort);
  	public static bool menuMultiplayer;
  	public static bool menuServer;
@@ -607,7 +632,7 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
-@@ -2311,15 +_,22 @@
+@@ -2311,15 +_,23 @@
  		}
  	}
  
@@ -620,7 +645,8 @@
  	public static float WindForVisuals => windSpeedCurrent;
  
 +	/// <summary>
-+	/// Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.
++	/// Retrieves the <see cref="Player"/> object for the local user. Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.<br/>
++	/// Many gameplay elements such as recipes, UI, TownNPC chat, and Biome logic are only executed locally, <see cref="LocalPlayer"/> is suitable for code relating to those situations. If the hook has a <see cref="Player"/> parameter, it is likely not suitable to use <see cref="LocalPlayer"/> in it.
 +	/// </summary>
  	public static Player LocalPlayer => player[myPlayer];
  
@@ -1537,7 +1563,7 @@
  			return;
  		}
 +
-+		//TODO: Re-implment game menu/menuloader audio in Other World soundtrack???
++		//TODO: Re-implement game menu/menuloader audio in Other World soundtrack???
 +        /*if (gameMenu) {
 +			if (netMode != 2) {
 +				if (WorldGen.drunkWorldGen) {
@@ -1771,16 +1797,16 @@
  		else if (player[myPlayer].ZoneMeteor) {
  			newMusic = 2;
  		}
-@@ -10653,6 +_,9 @@
- 			else
- 				newMusic = 52;
+@@ -10590,6 +_,9 @@
+ 				newMusic = 14;
+ 			}
  		}
 +		else if (modPriority >= SceneEffectPriority.BiomeLow) {
 +			newMusic = modMusic;
 +		}
- 		else if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
- 			if (bloodMoon) {
- 				newMusic = 2;
+ 		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
+ 			if (player[myPlayer].ZoneHallow) {
+ 				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
@@ -2106,12 +2132,7 @@
  		NPC.RevengeManager.Update();
  		if (netMode != 1) {
  			if (remixWorld)
-@@ -14264,9 +_,15 @@
- 			else {
- 				npc[l].UpdateNPC(l);
- 			}
-+
-+			IEntitySource.ClearFallbacks();
+@@ -14267,6 +_,10 @@
  		}
  
  		CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
@@ -2316,7 +2337,7 @@
  			array3[i] = false;
  		}
  
-+		// This array will be filled with internal names assigned to vanilla toolips.
++		// This array will be filled with internal names assigned to vanilla tooltips.
 +		string[] tooltipNames = new string[num2];
 +
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
@@ -2576,7 +2597,7 @@
 +					// does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
 +					// special scaling rules. they're TML-specific, and can be messed with at the will of the modder.
 +					// 
-+					// As for why they're differently named: preparatiom for when that tooltip rework comes out.
++					// As for why they're differently named: preparation for when that tooltip rework comes out.
 +					// - Thomas
 +					if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
 +						if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
@@ -4080,7 +4101,7 @@
  			DrawLoadoutButtons(num20, flag5, flag6);
  			int num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num40 = 0; num40 < 10; num40++) {
 +			*/
@@ -4110,7 +4131,7 @@
  
  			num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num46 = 10; num46 < 20; num46++) {
 +			*/
@@ -4123,7 +4144,7 @@
  
  			num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num50 = 0; num50 < 10; num50++) {
 +			*/
@@ -5429,16 +5450,33 @@
  		if (num9 != undergroundBackground) {
  			oldUndergroundBackground = undergroundBackground;
  			undergroundBackground = num9;
+@@ -43390,6 +_,7 @@
+ 		int[] array = new int[7];
+ 		int[] array2 = new int[7];
+ 		for (int i = 0; i < 2; i++) {
++			// patch context, num10 below
+ 			int num10 = undergroundBackground;
+ 			if (i == 1)
+ 				num10 = oldUndergroundBackground;
 @@ -43580,6 +_,9 @@
  				array3[5] = 127;
  
  			array3[6] = 185 + hellBackStyle;
 +
-+			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num9, array3);
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num10, array3);
 +
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
  			LoadBackground(array3[2]);
+@@ -43698,7 +_,7 @@
+ 									Lighting.GetCornerColors(num24, num25, out var vertices);
+ 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+ 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+-									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 								}
+ 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+ 									Lighting.GetColor9Slice(num24, num25, ref slices);
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
@@ -5718,7 +5756,7 @@
  				}
  
 -				if (renderCount == 3) {
-+				//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++				//TML: Remapped from 3 to 2 to flatten per frame load for color lighting ( ~5ms peak).
 +				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
  					RenderTiles2();
  					sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
@@ -5726,7 +5764,7 @@
  				}
  
 -				if (renderCount == 3) {
-+				//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++				//TML: Remapped from 3 to 0 to flatten per frame load for color lighting ( ~15ms peak).
 +				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
  					RenderWalls();
  					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
@@ -5816,6 +5854,19 @@
  		if (!PlayerInput.Triggers.Current.MouseRight && !PlayerInput.Triggers.Current.MouseLeft && !preventStackSplitReset)
  			stackSplit = 0;
  
+@@ -51628,8 +_,12 @@
+ 		}
+ 
+ 		Vector2 value = screenPosition;
++		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
++		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
++		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
+ 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
+ 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
++		*/
+ 		Vector2 vector3 = Vector2.Zero;
+ 		float num2 = 0f;
+ 		float num3 = 0f;
 @@ -51684,6 +_,8 @@
  						else if (player.scope)
  							num5 = 0.5f;
@@ -5903,15 +5954,15 @@
  			}
  		}
  
-@@ -51852,6 +_,8 @@
+@@ -51850,6 +_,8 @@
+ 		}
+ 
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
- 		screenPosition.X = (int)screenPosition.X;
- 		screenPosition.Y = (int)screenPosition.Y;
 +		PlayerLoader.ModifyScreenPosition(LocalPlayer);
 +		SystemLoader.ModifyScreenPosition();
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
- 	}
- 
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
@@ -6107,7 +6158,7 @@
  
 +	/// <summary>
 +	/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).</br>
 +	/// </summary>
  	public static void StopRain()
  	{
@@ -6118,7 +6169,7 @@
  
 +	/// <summary>
 +	/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside as well (Journey Mode rain slider does this).</br>
 +	/// </summary>
  	public static void StartRain()
  	{

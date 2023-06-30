@@ -115,7 +115,7 @@ partial class Mod
 		}
 		else {
 			if (e is AssetLoadException AssetLoadException) {
-				// Fix this once ContenSources are sane with extensions
+				// Fix this once ContentSources are sane with extensions
 				ICollection<string> keys = RootContentSource.EnumerateAssets().ToList();
 				var cleanKeys = new List<string>();
 				foreach (var key in keys) {

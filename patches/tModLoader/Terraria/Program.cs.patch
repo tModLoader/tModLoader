@@ -182,7 +182,7 @@
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
 @@ -197,10 +_,14 @@
- 			main.Run();
+ 				main.Run();
  		}
  		catch (Exception e) {
 +			ErrorReporting.FatalExit("Main engine crash", e);

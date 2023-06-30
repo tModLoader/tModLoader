@@ -263,7 +263,7 @@ public partial class NPC
 		/// <br/>
 		/// Using this instead of <see cref="Damage"/> can prevent diminishing returns from NPC defense, double crits, or excessively strong effects if the NPC has a vulnerability to the weapon/projectile (like vampires and stakes).
 		/// <br/>
-		/// Used by vanilla for dryad ward retaliation, and many sword on-hit projectiles like volcano and beekeepr
+		/// Used by vanilla for dryad ward retaliation, and many sword on-hit projectiles like volcano and beekeeper
 		/// </summary>
 		public int SourceDamage {
 			readonly get => _sourceDamage;
