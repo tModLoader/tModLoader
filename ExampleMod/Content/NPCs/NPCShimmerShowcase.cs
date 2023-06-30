@@ -91,9 +91,9 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public static void OnShimmerCallBack(Entity origin, List<NPC> spawnedNPCs, List<Item> spawnedItems) {
-			foreach (NPC npc in spawnedNPCs) {
-				Projectile p = Projectile.NewProjectileDirect(npc.GetSource_Misc("Shimmer"), npc.position, npc.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
+		public static void OnShimmerCallBack(Entity origin, List<Entity> spawnedEntities) {
+			foreach (Entity entity in spawnedEntities) {
+				Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
 				p.friendly = false;
 				p.hostile = true;
 			}
