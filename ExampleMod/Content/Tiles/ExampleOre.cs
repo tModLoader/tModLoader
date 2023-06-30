@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Tiles
 			// MinPick = 200;
 		}
 
+		// Example of how to enable the Biome Sight buff to highlight this tile
 		public override bool IsTileBiomeSightable(int i, int j) => true;
 	}
 
