@@ -452,6 +452,17 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -972,6 +_,10 @@
+ 	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
+ 	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
+ 	public static List<int> itemAnimationsRegistered = new List<int>();
++	/// <summary>
++	/// The position of the top left corner of the screen in world coordinates. Modify in <see cref="ModSystem.ModifyScreenPosition"/> or <see cref="ModPlayer.ModifyScreenPosition"/>. Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.<br/><br/>
++	/// When manually drawing, subtracting Main.screenPosition from the world position of the thing being drawn will result in the correct screen coordinates for use in <see cref="SpriteBatch"/>.Draw methods. When drawing tiles or walls, an additional offset calculated as <c>Vector2 zero = Main.drawToScreen? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange);</c> needs to be added to the coordinates.
++	/// </summary>
+ 	public static Vector2 screenPosition;
+ 	public static Vector2 screenLastPosition;
+ 	public static int screenWidth = 1152;
 @@ -1026,6 +_,11 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
