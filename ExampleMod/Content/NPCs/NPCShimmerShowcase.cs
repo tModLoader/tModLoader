@@ -4,13 +4,9 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.Utilities;
-using Terraria.DataStructures;
 using ExampleMod.Content.Biomes;
-using ExampleMod.Content.Buffs;
-using Terraria.GameContent;
 using ExampleMod.Content.Items;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.NPCs
@@ -32,21 +28,21 @@ namespace ExampleMod.Content.NPCs
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
 			CreateShimmerTransformation()
 				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((Entity target) => target.Center.X <= Main.maxTilesX * 8))
-				.AddResult(new ShimmerResult(ShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 30))
-				.AddResult(new ShimmerResult(ShimmerTypeID.NPC, NPCID.Skeleton, 3))
+				.AddResult(new ModShimmerResult(ModShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 30))
+				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.Skeleton, 3))
 				.AddOnShimmerCallBack(new ShimmerTransformation.OnShimmerCallBack(OnShimmerCallBack))
 				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items
 			CreateShimmerTransformation()
 				.AddCondition(Condition.DownedPlantera)
-				.AddResult(new ShimmerResult(ShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 20))
+				.AddResult(new ModShimmerResult(ModShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 20))
 				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns one the bride
 			CreateShimmerTransformation()
 				.AddCondition(Condition.DownedEarlygameBoss)
-				.AddResult(new ShimmerResult(ShimmerTypeID.NPC, NPCID.TheBride, 1))
+				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.TheBride, 1))
 				.Register();
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method

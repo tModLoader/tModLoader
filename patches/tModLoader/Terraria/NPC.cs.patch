@@ -2421,7 +2421,7 @@
  			}
 +			return;
 +		}
-+		else if (ShimmerTransformation.AdvancedShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++		else if (ShimmerTransformation.DoModShimmer(this)) { // TML: #AdvancedShimmerTransformations
 +			noSpawnCycle = true; // Here instead of in Helper due to protection level
  		}
  		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
