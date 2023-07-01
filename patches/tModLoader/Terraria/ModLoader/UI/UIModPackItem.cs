@@ -358,7 +358,7 @@ internal class UIModPackItem : UIPanel
 	{
 		UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
 		foreach (var mod in ModOrganizer.FindMods()) {
-			mod.Enabled = modListItem._mods.Contains(mod.Name);
+			mod.Enabled = mod.Enabled || modListItem._mods.Contains(mod.Name);
 		}
 
 		if (modListItem._missing.Count > 0) {

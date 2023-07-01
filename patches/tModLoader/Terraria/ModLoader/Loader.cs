@@ -13,7 +13,7 @@ public abstract class Loader : ILoader
 	internal int TotalCount { get; set; }
 
 	/// <summary>
-	/// Initilizes the loader based on the vanilla count of the ModType.
+	/// Initializes the loader based on the vanilla count of the ModType.
 	/// </summary>
 	internal void Initialize(int vanillaCount)
 	{

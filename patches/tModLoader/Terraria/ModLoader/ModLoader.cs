@@ -170,6 +170,9 @@ public static class ModLoader
 			if (e is ReflectionTypeLoadException reflectionTypeLoadException)
 				msg += "\n\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message));
 
+			if (e.Data.Contains("contentType") && e.Data["contentType"] is Type contentType)
+				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
+
 			Logging.tML.Error(msg, e);
 
 			foreach (var mod in responsibleMods)

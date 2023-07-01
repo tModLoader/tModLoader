@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,319 @@
+@@ -66,76 +_,320 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -127,7 +127,7 @@
  	public int spriteDirection = 1;
 +
 +	/// <summary>
-+	/// If True, this projectile will hurt players and friendly npcs (<see cref="NPC.friendly"/>)
++	/// If True, this projectile will hurt players and friendly NPCs (<see cref="NPC.friendly"/>)
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hostile;
@@ -221,6 +221,7 @@
 +
 +	/// <summary>
 +	/// Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summons two minions at once with 0.5f each)
++	/// <br/> Make sure to set <see cref="ItemID.Sets.StaffMinionSlotsRequired"/> for the minion summoning item to the sum of the minionSlots values of the minions that will be spawned.
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;
@@ -231,7 +232,7 @@
  	public int restrikeDelay;
 +
 +	/// <summary>
-+	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implemtent bounce.
++	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implement bounce.
 +	/// <br/> Defaults to <see langword="true"/>.
 +	/// </summary>
  	public bool tileCollide;
@@ -407,7 +408,7 @@
 +		ArmorPenetration = 0;
 +		CritChance = 0;
 +		WhipSettings = default;
-+		ContinuouslyUpdateDamage = false;
++		ContinuouslyUpdateDamageStats = false;
 +		nameOverride = null;
 +
  		ownerHitCheckDistance = 1000f;
@@ -616,7 +617,7 @@
  	}
  
 +	/// <summary>
-+	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self-explanatory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 +	/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
 +	/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
 +	/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
@@ -637,13 +638,11 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
  	{
  		if (Owner == -1)
-@@ -8745,6 +_,10 @@
+@@ -8745,6 +_,8 @@
  		projectile.shimmerWet = Collision.shimmer;
  		Main.projectileIdentity[Owner, num] = num;
  		FindBannerToAssociateTo(spawnSource, projectile);
 +
-+		// Added by TML.
-+		HandlePlayerStatModifiers(spawnSource, projectile);
 +
  		if (projectile.aiStyle == 1) {
  			while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
@@ -683,10 +682,11 @@
  		}
  
  		if (Type == 249)
-@@ -8910,6 +_,11 @@
+@@ -8910,6 +_,12 @@
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
  
++		projectile.ApplyStatsFromSource(spawnSource);
 +		ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
 +		if (Main.netMode != 0 && Owner == Main.myPlayer)
@@ -1166,20 +1166,22 @@
  				return;
  		}
  
-@@ -12412,9 +_,16 @@
+@@ -12412,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
  
 +			/*
  			if (numUpdates == -1 && (minion || sentry)) {
 +			*/
-+			if ((minion || sentry || ContinuouslyUpdateDamage)) {
++			if ((minion || sentry || ContinuouslyUpdateDamageStats)) {
  				Player player = Main.player[owner];
 +
 +				/*
  				damage = (int)((float)originalDamage * player.minionDamage + 5E-06f);
 +				*/
 +				damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
++				CritChance = (int)(OriginalCritChance + player.GetTotalCritChance(DamageType) + 5E-06f);
++				ArmorPenetration = (int)(OriginalArmorPenetration + player.GetTotalArmorPenetration(DamageType) + 5E-06f);
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
@@ -1552,7 +1554,7 @@
 +		// Code taken 1:1 from the commented out method with the same name
 +		bool vanilla = Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
 +
-+		// TML: Vanilla check modified by moving Tile.nactive() from its callsites into here to allow actuated or air to be grappled by mods
++		// TML: Vanilla check modified by moving Tile.nactive() from its call sites into here to allow actuated or air to be grappled by mods
 +		vanilla &= theTile.nactive();
 +
 +		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
@@ -1581,7 +1583,7 @@
  					for (int l = 0; l < num4; l++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -37401,6 +_,9 @@
+@@ -37401,10 +_,13 @@
  			item.stack = stack2;
  		}
  
@@ -1591,6 +1593,11 @@
  		item.newAndShiny = true;
  		Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
  		if (item2.stack > 0) {
+-			int number = Item.NewItem(new EntitySource_FishedOut(this), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
++			int number = Item.NewItem(new EntitySource_OverfullInventory(thePlayer), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 		}
 @@ -46721,7 +_,7 @@
  			}
  
@@ -1759,7 +1766,7 @@
  	}
  
 +	/// <summary>
-+	/// Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjuction with <see cref="ExplodeTiles"/>.
++	/// Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjunction with <see cref="ExplodeTiles"/>.
 +	/// </summary>
  	public bool ShouldWallExplode(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)
  	{

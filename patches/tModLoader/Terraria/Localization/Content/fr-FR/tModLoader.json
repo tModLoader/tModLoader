@@ -125,6 +125,9 @@
 		"LoadError": "Une erreur s'est produite lors en lançant {0}",
 		"LoadErrorDisabled": "Le(s) mod(s) ont été automatiquement désactivés.",
 		"LoadErrorCulpritUnknown": "Le Mod fautif n'est pas identifié et tModLoader doit être redémarré.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Il a été détecté que ce mod a été compilé pour la version de tModLoader {0}\nCependant, vous utilisez la version {1}",
 		"LoadErrorDotNet45Required": "La version de .NET Framework 4.5 ou plus est requise pour utiliser des Mods. Merci de télécharger la plus récente version de .NET Framework",
 		"LoadErrorDependencyMissing": "Mod manquant: {0} requis par {1}",
@@ -343,11 +346,11 @@
 		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		"MigratingWorldsText": "Migration en cours...",
 		"ModsDifferentSinceLastPlay": "Les Mods suivants sont différents depuis la dernière fois que vous avez joué : ",
-		"Missing1Mod": "1 Mod est manquant.",
-		"MissingXMods": "{0} Mods sont manquants.",
+		"Missing1Mod": "1 Mod est manquant",
+		"MissingXMods": "{0} Mods sont manquants",
 		"MissingModsListing": "Mods manquants :\n{0}",
-		"New1Mod": "1 nouveau Mod.",
-		"NewXMods": "{0} nouveaux Mods.",
+		"New1Mod": "1 nouveau Mod",
+		"NewXMods": "{0} nouveaux Mods",
 		"NewModsListing": "Nouveaux Mods :\n{0}",
 		"PlayerCustomDataFail": "Un problème a été rencontré pendant le chargement des données personnalisées d'un personnage",
 		"PlayerLoadWorldFail": "Un problème a été rencontré pendant le chargement du monde",
@@ -481,9 +484,7 @@
 		"SteamAPIHashMismatch": "Incompatibilité de hachage de l'API Steam, supposée piratée.\n\ntModLoader nécessite une installation Terraria légitime pour fonctionner.",
 		// "SteamInitFailed": "SteamAPI.Init failed. Try logging out of Steam and restarting it.\n\nCheck terrariasteamclient.log and Natives.Log for details",
 		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
-		"VanillaGOGNotFound": "{0} introuvable.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner. Cette version de tModLoader attend la version {1} de Terraria, vous devrez peut-être rétrograder ou mettre à niveau Terraria via GOG Galaxy, ou attendre que tModLoader se mette à jour.",
-		"GOGHashMismatch": "{0} n'est pas l'exécutable Terraria non modifié.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner.\r\n\r\nSi vous avez patché le .exe, vous pouvez créer une copie de l'exe d'origine et le nommer \"Terraria_v<VERSION>.exe\"",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
+		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Veuillez restaurer votre installation de Terraria, puis installer tModLoader sur Steam ou en suivant les instructions README.txt pour une installation manuelle.",
 		"LogPathHint": "{0} fichier journal contenant des informations d'erreur a été généré dans\n{1}\n(Vous devrez partager ce fichier si vous demandez de l'aide)",
 		"OutOfMemoryHint": "Conseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire. En option, installez tModLoader 64 bits",
@@ -917,5 +918,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

@@ -54,6 +54,9 @@ Mods: {
 					// LikeNPC_Princess: "{NPCName} is a princess? That is so cool!"
 					// Princess_LovesNPC: "{NPCName} is so square. I love that about them!"
 				}
+
+				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
+				// Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
 			}
 
 			// ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
@@ -61,7 +64,13 @@ Mods: {
 			// ExampleWormHead.DisplayName: Example Worm
 			// ExampleWormTail.DisplayName: Example Worm
 			// ExampleZombieThief.DisplayName: Example Zombie Thief
-			// MinionBossBody.DisplayName: Minion Boss
+
+			MinionBossBody: {
+				// DisplayName: Minion Boss
+				# This is part of ModIntegrationsSystem.cs: Information for the player so he knows how to encounter the boss
+				// BossChecklistIntegration.SpawnInfo: Use a [i:ExampleMod/MinionBossSummonItem]
+			}
+
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
 			// NPCShimmerShowcase.DisplayName: N P C Shimmer Showcase
@@ -241,6 +250,11 @@ Mods: {
 			ExampleRobe: {
 				// DisplayName: Example Robe
 				// Tooltip: ""
+			}
+
+			ExampleTallHelmet: {
+				// DisplayName: Example Tall Helmet
+				// Tooltip: This is a tall modded helmet.
 			}
 
 			MinionBossMask: {
@@ -596,6 +610,7 @@ Mods: {
 			ExampleCustomResourceWeapon: {
 				// DisplayName: Example Custom Resource Weapon
 				// Tooltip: ""
+				// UsesXExampleResource: Uses {0} example resource
 			}
 
 			ExampleFlail: {
@@ -801,6 +816,11 @@ Mods: {
 				// Tooltip: ""
 			}
 
+			ExampleGravityDebuffBullet: {
+				// DisplayName: Example Gravity Debuff Bullet
+				// Tooltip: ""
+			}
+
 			ExampleWaterTorch: {
 				// DisplayName: Example Water Torch
 				# "Can be placed in water"
@@ -846,6 +866,7 @@ Mods: {
 			// ExampleExplosive.DisplayName: Example Explosive
 			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
+			// ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
 		}
 
 		Buffs: {
@@ -912,6 +933,11 @@ Mods: {
 			ExampleDodgeBuff: {
 				// DisplayName: Example Dodge Buff
 				// Description: You will dodge the next attack
+			}
+
+			ExampleGravityDebuff: {
+				// DisplayName: Example Gravity Debuff
+				// Description: Gravity has gone wild.
 			}
 
 			AbsorbTeamDamageBuff: {
@@ -1019,6 +1045,8 @@ Mods: {
 			// JourneyMode: Drops in Journey Mode
 			// Example: Drops during daytime
 		}
+
+		// UI.ExampleResource: Example Resource: {0} / {1}
 	}
 }
 

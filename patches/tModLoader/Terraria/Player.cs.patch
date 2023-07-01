@@ -141,7 +141,7 @@
 +
 +	/// <summary>
 +	/// The amount of time that has to pass, in ticks, before a new dash input will be registered.<br/>
-+	/// For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br/>
++	/// For the first frame of any given dash, this is set to -1. After that frame has passed, it is set to 20 ticks, or 1/3 of a second.<br/>
 +	/// For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br/>
 +	/// </summary>
  	public int dashDelay;
@@ -250,6 +250,23 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
+@@ -769,8 +_,16 @@
+ 	public const int miscSlotMount = 3;
+ 	public const int miscSlotHook = 4;
+ 	public const int SupportedMiscSlotCount = 5;
++	/// <summary>
++	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
++	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Old/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
++	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
++	/// </summary>
+ 	public Item[] armor = new Item[20];
+ 	public Item[] dye = new Item[10];
++	/// <summary>
++	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
++	/// </summary>
+ 	public Item[] miscEquips = new Item[5];
+ 	public Item[] miscDyes = new Item[5];
+ 	public Item trashItem = new Item();
 @@ -781,9 +_,34 @@
  	public bool poundRelease;
  	public float ghostFade;
@@ -285,7 +302,7 @@
  	public bool[] buffImmune = new bool[BuffID.Count];
  	public int heldProj = -1;
  	public int breathCD;
-@@ -813,6 +_,10 @@
+@@ -813,7 +_,16 @@
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;
@@ -294,8 +311,14 @@
 +	/// The text that is shown on armor (<see cref="Item.wornArmor"/>) with an active set bonus.
 +	/// </summary>
  	public string setBonus = "";
++	/// <summary>
++	/// The player's normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventory, 50-53 are coin slots, 54-57 are ammo slots. Index 58 is used to store the mouse item in some situations.<br/>
++	/// Additional inventories are found in <see cref="bank"/> (Piggy Bank), <see cref="bank2"/> (Safe), <see cref="bank3"/> (Defender's Forge), and <see cref="bank4"/> (Void Vault).
++	/// For armor and accessories, see <see cref="armor"/> and <see cref="dye"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/>
++	/// </summary>
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
+ 	public Item lastVisualizedSelectedItem;
 @@ -836,6 +_,9 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
@@ -392,7 +415,7 @@
 +	/// </summary>
 +	/// <remarks>
 +	/// If you want to heal the player with the green text effect, use <see cref="Player.Heal(int)"/>.
-+	/// <br/> If you want to hurt the player, use <see cref="Hurt"/>.
++	/// <br/> If you want to hurt the player, use <see cref="Hurt(PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float)"/>.
 +	/// </remarks>
  	public int statLife = 100;
 +
@@ -639,7 +662,7 @@
  	public bool noFallDmg;
  	public int swimTime;
  	public bool killGuide;
-@@ -1397,6 +_,10 @@
+@@ -1397,11 +_,20 @@
  	public int forcedGravity;
  	public bool gravControl;
  	public bool gravControl2;
@@ -650,6 +673,16 @@
  	public Item honeyCombItem;
  	public int wireOperationsCooldown;
  	public int lastChest;
+ 	public TrackedProjectileReference piggyBankProjTracker;
+ 	public TrackedProjectileReference voidLensChest;
++	/// <summary>
++	/// Represents the chest the player currently has open. If -1, the player has no chest open.<br/>
++	/// Positive values indicate the index of the chest in <see cref="Main.chest"/> the player currently has open.<br/>
++	/// Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5)
++	/// </summary>
+ 	public int chest = -1;
+ 	public int chestX;
+ 	public int chestY;
 @@ -1458,6 +_,12 @@
  	public int cMinion;
  	public int cLeinShampoo;
@@ -686,18 +719,28 @@
  	}
  
 +	/// <summary>
-+	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjuction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
 +	/// </summary>
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
+@@ -1653,6 +_,9 @@
+ 
+ 	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
+ 
++	/// <summary>
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// </summary>
+ 	public bool CCed {
+ 		get {
+ 			if (!frozen && !webbed)
 @@ -1823,6 +_,10 @@
  		}
  	}
  
 +	/// <summary>
 +	/// If <see langword="true"/>, then this player is the top 35% of the world.
-+	/// <br/> <strong>NOTE:</strong> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logc behind it is used for NPC shops and enemy spawns.
++	/// <br/> <strong>NOTE:</strong> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logic behind it is used for NPC shops and enemy spawns.
 +	/// </summary>
  	public bool ZoneSkyHeight {
  		get {
@@ -902,7 +945,7 @@
 +				//TODO: Replace with Item.DropItem?
 -				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
 +				// int num = //Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
-+				int num = Item.NewItem(GetItemSource_Misc(4), position, width, height, item, noGrabDelay: true);
++				int num = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item, noGrabDelay: true);
  				Main.item[num].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num, 1f);
@@ -913,7 +956,7 @@
 +				//TODO: Replace with Item.DropItem?
 -				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
 +				// int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
-+				int num2 = Item.NewItem(GetItemSource_Misc(4), position, width, height, item2, noGrabDelay: true);
++				int num2 = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item2, noGrabDelay: true);
  				Main.item[num2].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num2, 1f);
@@ -922,7 +965,8 @@
  			Item item3 = GetItem(whoAmI, Main.mouseItem, getItemInDropItemCheck);
  			if (item3.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
+-				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
++				int num3 = Item.NewItem(new EntitySource_OverfullInventory(this), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
 +				Main.item[num3] = item3.Clone(); // Added by TML.
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
@@ -1308,7 +1352,7 @@
 +	/// Use <see cref="Player.HasItem(int)"/> to check if the player has the item at all. <br/>
 +	/// </summary>
 +	/// <param name="type">The item type to count</param>
-+	/// <param name="stopCountingAt">When to stop counting, useful to avoid unneccessary calculations</param>
++	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
 +	/// <returns>The total amount counted</returns>
  	public int CountItem(int type, int stopCountingAt = 0)
  	{
@@ -1555,23 +1599,32 @@
  			cWings = dyeItem.dye;
  
  		if (armorItem.type == 934)
-@@ -7112,6 +_,8 @@
+@@ -7112,12 +_,17 @@
  		}
+ 	}
+ 
++	public IEntitySource GetSource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
++
++	// made internal, public rename ^
+-	public IEntitySource GetProjectileSource_Buff(int buffIndex)
++	internal IEntitySource GetProjectileSource_Buff(int buffIndex)
+ 	{
+ 		int buffId = buffType[buffIndex];
+ 		return new EntitySource_Buff(this, buffId, buffIndex);
  	}
  
 +	// Original vanilla methods:
 +	/*
- 	public IEntitySource GetProjectileSource_Buff(int buffIndex)
- 	{
- 		int buffId = buffType[buffIndex];
-@@ -7132,9 +_,36 @@
+ 	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+ 	public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
+@@ -7132,9 +_,35 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
 +	*/
 +
 +	// Internal redirects:
-+	internal IEntitySource GetProjectileSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
 +	internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
@@ -2736,19 +2789,10 @@
  
  			if (numberOfTorchAttacksMade >= 95) {
 -				int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
-+				int number = Item.NewItem(new EntitySource_TorchGod(this, Context: "TorchGod_FavorLoot"), (int)position.X, (int)position.Y, width, height, 5043);
++				int number = Item.NewItem(GetItemSource_Misc(6), (int)position.X, (int)position.Y, width, height, 5043);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-@@ -13973,7 +_,7 @@
- 				float num10 = vector2.Length();
- 				vector2.Normalize();
- 				vector2 *= num7;
--				int num11 = Projectile.NewProjectile(GetProjectileSource_Misc(10), vector, vector2, 949, num8, 1f, whoAmI, num9, num10);
-+				int num11 = Projectile.NewProjectile(new EntitySource_TorchGod(this, Context: "TorchGod_Projectile"), vector, vector2, 949, num8, 1f, whoAmI, num9, num10);
- 				Main.projectile[num11].ai[0] = num9;
- 				Main.projectile[num11].ai[1] = num10;
- 				Main.projectile[num11].netUpdate = true;
 @@ -13991,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -3077,7 +3121,7 @@
 +	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
 +	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
 +	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
-+	/// Will apply daamage class based armor penetration. <br/>
++	/// Will apply damage class based armor penetration. <br/>
 +	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
 +	/// </summary>
 +	/// <param name="npc">The NPC to strike</param>
@@ -3575,7 +3619,7 @@
  			statManaMax2 = 400;
 +		*/
  
-+		// positive value capping builtin to DefenseStat
++		// positive value capping built-in to DefenseStat
 +		/*
  		if (statDefense < 0)
  			statDefense = 0;
@@ -4214,6 +4258,15 @@
  			if (b2 != -1 && front == -1) {
  				front = b2;
  				cFront = cBody;
+@@ -27785,7 +_,7 @@
+ 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+ 				front = includeCapeFrontAndBackInfo.frontCape;
+ 				cFront = cBody;
+-				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
++				int backCape = includeCapeFrontAndBackInfo.backCape;
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
+ 					backpack = backCape;
+ 					cBackpack = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -4270,10 +4323,13 @@
  		if (!isDisplayDollOrInanimate) {
  			if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  				int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
-@@ -28029,6 +_,9 @@
+@@ -28028,7 +_,11 @@
+ 
  		Item.GetDrawHitbox(HeldItem.type, this);
  		bool flag3 = CanVisuallyHoldItem(HeldItem);
- 		bool flag4 = HeldItem.type != 4952;
+-		bool flag4 = HeldItem.type != 4952;
++		// bool flag4 = HeldItem.type != 4952;
++		bool flag4 = HeldItem.useStyle != ItemUseStyleID.RaiseLamp; // TML: #RaiseLampAnimationFix
 +
 +		ItemLoader.UpdateVanitySet(this);
 +
@@ -4326,7 +4382,7 @@
 +			if (!IsItemSlotUnlockedAndUsable(i))
 +				continue;
 +
-+			// Commented code above moved into UpdateVisibileAccessories
++			// Commented code above moved into UpdateVisibleAccessories
 +			UpdateVisibleAccessories(armor[i], hideVisibleAccessory[i], i);
 +		}
 +
@@ -4698,9 +4754,12 @@
  				if (brainOfConfusionItem != null && !brainOfConfusionItem.IsAir && Main.myPlayer == whoAmI) {
  					for (int num9 = 0; num9 < 200; num9++) {
  						if (!Main.npc[num9].active || Main.npc[num9].friendly)
-@@ -29708,14 +_,37 @@
+@@ -29706,16 +_,39 @@
+ 						}
+ 					}
  
- 					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
+-					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
++					Projectile.NewProjectile(GetSource_Accessory_OnHurt(brainOfConfusionItem, info.DamageSource), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
  				}
 +			}
 +		}
@@ -4737,6 +4796,24 @@
  
  				Color color = (Crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
  				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num2, Crit);
+@@ -29785,7 +_,7 @@
+ 							else if (Main.expertMode)
+ 								num19 *= 2;
+ 
+-							Projectile.NewProjectile(GetProjectileSource_Accessory(item), x, y, num16, num17, type, num19, 5f, whoAmI, 0f, position.Y);
++							Projectile.NewProjectile(GetSource_Accessory_OnHurt(item, info.DamageSource), x, y, num16, num17, type, num19, 5f, whoAmI, 0f, position.Y);
+ 						}
+ 					}
+ 
+@@ -29809,7 +_,7 @@
+ 						else if (Main.expertMode)
+ 							num21 *= 1.5f;
+ 
+-						IEntitySource projectileSource_Accessory = GetProjectileSource_Accessory(honeyCombItem);
++						IEntitySource projectileSource_Accessory = GetSource_Accessory_OnHurt(honeyCombItem, info.DamageSource);
+ 						for (int num22 = 0; num22 < num20; num22++) {
+ 							float speedX = (float)Main.rand.Next(-35, 36) * 0.02f;
+ 							float speedY = (float)Main.rand.Next(-35, 36) * 0.02f;
 @@ -29821,6 +_,7 @@
  				}
  
@@ -4828,6 +4905,21 @@
  		if (pvp)
  			pvpDeath = true;
  
+@@ -30004,10 +_,14 @@
+ 			}
+ 		}
+ 
++		if (!playSound)
++			goto postSound;
++
+ 		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
+ 			SoundEngine.PlaySound(Male ? SoundID.DSTMaleHurt : SoundID.DSTFemaleHurt, position);
+ 		else
+ 			SoundEngine.PlaySound(5, (int)position.X, (int)position.Y);
++		postSound:
+ 
+ 		if (Main.tenthAnniversaryWorld) {
+ 			for (int j = 0; j < 85; j++) {
 @@ -30041,12 +_,15 @@
  		headVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
  		bodyVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
@@ -5434,7 +5526,7 @@
  		}
  
 +		// #2351
-+		// TML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behaviour.
++		// TML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behavior.
 +		// The flow of this method has changed as follows...
 +		//
 +		// VANILLA:
@@ -5462,7 +5554,7 @@
 +		//   TML:     itemAnimation goes from itemAnimationMax to 1, before it can restart
 +		//
 +		//   VANILLA: If the item has autoReuse, then it can restart at itemAnimation = 1, making the actual animation one frame shorter than expected.
-+		//            If a reusuable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
++		//            If a reusable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
 +		//
 +		//   TML:     ItemCheck_HandleMPItemAnimation unnecessary. Animation times for modded items as written. See Item.ApplyItemAnimationCompensations
 +		//
@@ -6044,6 +6136,17 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35479,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		itemTime = (int)((float)item.useTime * pickSpeed);
++		*/
++		ApplyItemTime(item, pickSpeed);
+ 	}
+ 
+ 	private void DamageTileWithShovel(Player user, Item item, int x, int y)
 @@ -35516,7 +_,10 @@
  
  		if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -6097,6 +6200,19 @@
  				}
  				else {
  					WorldGen.KillTile(x, y, fail: true);
+@@ -35649,8 +_,12 @@
+ 			PickTile(x, y, sItem.pick);
+ 		}
+ 
++
+ 		if (sItem.pick > 0)
++		/*
+ 			itemTime = (int)((float)sItem.useTime * pickSpeed);
++		*/
++			ApplyItemTime(sItem, pickSpeed);
+ 
+ 		ItemCheck_UseMiningTools_TryPoundingTile(sItem, num, ref canHitWalls, x, y);
+ 	}
 @@ -35673,10 +_,13 @@
  		return true;
  	}
@@ -6379,6 +6495,17 @@
  		if (Main.dedServ)
  			return;
  
+@@ -39780,7 +_,10 @@
+ 			}
+ 
+ 			for (int l = 0; l < list.Count; l++) {
++				/*
+ 				if (!(num - num3 > (float)maxMinions - num2))
++				*/
++				if (!(num - num3 > (float)maxMinions - num2 + 0.00001f)) // existing - killedSoFar > maxMinions - needed. Even if a modder does 1/3f for Projectile.minionSlots, the floating point math won't work out without an "epsilon".
+ 					break;
+ 
+ 				int type2 = Main.projectile[list[l]].type;
 @@ -39862,8 +_,12 @@
  
  	private void ApplyLifeAndOrMana(Item item)
@@ -7334,33 +7461,6 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
-@@ -42216,22 +_,22 @@
- 	{
- 		Item mouseItem = new Item();
- 		if (_temporaryItemSlots[0] != null)
--			mouseItem = _temporaryItemSlots[0].Clone();
-+			_temporaryItemSlots[0].CopyNetStateTo(mouseItem);
- 
- 		Main.mouseItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[1] != null)
--			mouseItem = _temporaryItemSlots[1].Clone();
-+			_temporaryItemSlots[1].CopyNetStateTo(mouseItem);
- 
- 		Main.CreativeMenu.SetItembyIndex(mouseItem, 0);
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[2] != null)
--			mouseItem = _temporaryItemSlots[2].Clone();
-+			_temporaryItemSlots[2].CopyNetStateTo(mouseItem);
- 
- 		Main.guideItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[3] != null)
--			mouseItem = _temporaryItemSlots[3].Clone();
-+			_temporaryItemSlots[3].CopyNetStateTo(mouseItem);
- 
- 		Main.reforgeItem = mouseItem;
- 		CreativePowerManager.Instance.ApplyLoadedDataToPlayer(this);
 @@ -42272,6 +_,10 @@
  
  		Player player = new Player();
@@ -7528,7 +7628,7 @@
  	}
  
 +	/// <summary>
-+	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instad. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
++	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instead. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
 +	/// </summary>
  	public bool HasItem(int type, Item[] collection)
  	{

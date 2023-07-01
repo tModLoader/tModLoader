@@ -164,7 +164,7 @@ internal class UIModItem : UIPanel
 
 
 		if (ModOrganizer.CheckStableBuildOnPreview(_mod)) {
-			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.LavaSkull].Name), Language.GetTextValue("ModStableOnPreviewWarning")) {
+			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.LavaSkull].Name), Language.GetTextValue("tModLoader.ModStableOnPreviewWarning")) {
 				Left = { Pixels = 4, Percent = 0.2f },
 				Top = { Pixels = 0, Percent = 0.5f }
 			};

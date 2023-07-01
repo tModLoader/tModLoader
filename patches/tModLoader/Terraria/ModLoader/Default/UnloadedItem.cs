@@ -25,6 +25,12 @@ public sealed class UnloadedItem : ModLoaderModItem
 		Item.maxStack = int.MaxValue;
 	}
 
+	public override void SetStaticDefaults()
+	{
+		// Must not be researchable
+		Item.ResearchUnlockCount = 0;
+	}
+
 	internal void Setup(TagCompound tag)
 	{
 		ModName = tag.GetString("mod");

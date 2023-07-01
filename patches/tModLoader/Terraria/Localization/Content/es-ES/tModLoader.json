@@ -125,6 +125,9 @@
 		"LoadError": "Se ha producido un error al cargar {0}",
 		"LoadErrorDisabled": "Los mods se han desactivado automáticamente.",
 		"LoadErrorCulpritUnknown": "Se desconoce el mod responsable y tModLoader debe reiniciarse.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Se ha detectado que este mod fue creado para tModLoader v. {0}\nSin embargo, estás usando la versión {1}",
 		"LoadErrorDotNet45Required": "Se necesita .NET Framework 4.5 o posterior para usar los mods. Por favor, descarga la última versión de .NET Framework",
 		"LoadErrorDependencyMissing": "Falta el mod {0}, requerido por {1}",
@@ -481,9 +484,7 @@
 		"SteamAPIHashMismatch": "La API de Steam no coincide, se asume que es pirata.\n\ntModLoader necesita una versión legítima de Terraria para funcionar correctamente.",
 		"SteamInitFailed": "SteamAPI.Init falló. Comprueba terrariasteamclient.log y Natives.Log para más detalles",
 		"TerrariaNotInstalled": "Terraria tiene que estar instalado en Steam para que tModLoader funcione.\n\n Tendrás que reiniciar tu cliente de Steam para que el botón de instalación aparezca en la aplicación de Terraria.\n\nInicia Terraria al menos una vez para asegurarte de que las dependencias se instalen antes de ejecutar tModLoader de nuevo.",
-		"VanillaGOGNotFound": "No se ha encontrado {0}. Las instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar. Esta versión de tModLoader espera la versión {1} de Terraria, por lo que puede ser necesario restaurar una versión previa o actualizar Terraria a través de GOG Galaxy o esperar a que tModLoader se actualice.",
-		"GOGHashMismatch": "{0} no es el ejecutable de Terraria sin modificar.\r\n\r\nLas instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar.\r\n\r\nSi has parcheado el .exe, puedes crear una copia del ejecutable original y nombrarlo \"Terraria_v<VERSIÓN>.exe\"",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
+		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Restaura tu instalación de Terraria e instala tModLoader por Steam o siguiendo las instrucciones de README.txt para la instalación manual.",
 		"LogPathHint": "Se ha generado un archivo {0} con información sobre los errores en\n{1}\n(Tendrás que compartir este archivo si pides ayuda)",
 		"OutOfMemoryHint": "Sugerencia: Intenta ejecutar menos mods a la vez o determina si uno de ellos está ocupando demasiada memoria. Opcionalmente, puedes instalar tModLoader 64 bits.",
@@ -917,5 +918,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

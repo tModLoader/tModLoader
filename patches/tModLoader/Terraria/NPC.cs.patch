@@ -39,7 +39,7 @@
  	public int rarity;
  	public static bool taxCollector = false;
  	public bool[] playerInteraction = new bool[256];
-@@ -75,7 +_,13 @@
+@@ -75,9 +_,18 @@
  	public static bool freeCake = false;
  	private static int spawnSpaceX = 3;
  	private static int spawnSpaceY = 3;
@@ -51,8 +51,13 @@
 +	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
 +	/// </summary>
  	public float stepSpeed;
++	/*
  	private static float gravity = 0.3f;
++	*/
++
  	public bool teleporting;
+ 	private static int maxAttack = 20;
+ 	private static int[] attackNPC = new int[maxAttack];
 @@ -99,6 +_,13 @@
  	public static int deerclopsBoss = -1;
  	public int netSkip;
@@ -61,7 +66,7 @@
 +	/// <summary>
 +	/// Stores the index (the <see cref="Entity.whoAmI"/>) of a single NPC. This NPC will then share a health pool with that NPC.<br/>
 +	/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
-+	/// This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part npcs will have the default value of -1 still.
++	/// This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part NPCs will have the default value of -1 still.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int realLife = -1;
@@ -73,7 +78,7 @@
  	private static int townRangeY = sHeight;
 +
 +	/// <summary>
-+	/// Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flys have values around 0.1f and 0.25f. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6.
++	/// Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flies have values around 0.1f and 0.25f. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6.
 +	/// <br/> Proper npcSlots values help balance the game and prevents the player from randomly being overwhelmed by powerful enemies. The <see href="https://terraria.wiki.gg/wiki/NPC_spawning#Spawn_rates">Spawn rates section on the NPC spawning wiki page</see> lists vanilla npcSlots values. Use this as a guide to find a suitable value.
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
@@ -528,6 +533,18 @@
  				return true;
  
  			return townNPC;
+@@ -726,6 +_,11 @@
+ 		return array;
+ 	}
+ 
++	/// <summary>
++	/// Returns the <see cref="FullName"/> of the first active NPC of the given type in the world. If not found, the type name is returned instead.
++	/// </summary>
++	/// <param name="npcID"></param>
++	/// <returns></returns>
+ 	public static string GetFullnameByID(int npcID)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
 @@ -863,7 +_,10 @@
  
  		for (int i = 0; i < 255; i++) {
@@ -603,14 +620,30 @@
  	public static string firstNPCName(int npcType)
  	{
  		for (int i = 0; i < 200; i++) {
-@@ -1188,6 +_,7 @@
+@@ -1188,7 +_,13 @@
  
  		return getNewNPCName(npcType);
  	}
 +	*/
  
++	/// <summary>
++	/// Returns the <see cref="GivenOrTypeName"/> of the first active NPC of the given type in the world. If not found, null is returned.
++	/// </summary>
++	/// <param name="npcType"></param>
++	/// <returns></returns>
  	public static string GetFirstNPCNameOrNull(int npcType)
  	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -1199,6 +_,9 @@
+ 		return null;
+ 	}
+ 
++	/// <summary>
++	/// Use to check if a mechanism is allowed to spawn an NPC of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
++	/// </summary>
+ 	public static bool MechSpawn(float x, float y, int type)
+ 	{
+ 		int num = 0;
 @@ -1345,7 +_,10 @@
  			case 684:
  				return 53;
@@ -682,7 +715,7 @@
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
-@@ -2156,6 +_,12 @@
+@@ -2156,6 +_,15 @@
  			return;
  		}
  
@@ -691,6 +724,9 @@
 +		HideStrikeDamage = false;
 +		BossBar = null;
 +		_globals = null;
++		GravityIgnoresLiquid = false;
++		GravityIgnoresSpace = false;
++		GravityIgnoresType = false;
 +
  		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  		honeyMovementSpeed = 0.25f;
@@ -837,7 +873,7 @@
  			break;
  		}
  	}
-@@ -12338,6 +_,20 @@
+@@ -12338,6 +_,17 @@
  
  	public void AI()
  	{
@@ -846,11 +882,8 @@
 +
 +	public void VanillaAI()
 +	{
-+		IEntitySource.PushFallback(thisEntitySourceCache);
-+
++		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
 +		VanillaAI_Inner();
-+
-+		IEntitySource.PopFallback();
 +	}
 +
 +	private void VanillaAI_Inner()
@@ -1805,24 +1838,27 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[k].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
-@@ -64272,6 +_,20 @@
+@@ -64272,6 +_,23 @@
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
  	}
  
 +	/// <summary>
-+	/// Spawns an NPC into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the NPC targetting a specific Player immediately on spawn. Start can be used to ensure that an NPC spawns in a slot after an existing NPC. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. The return value is the index of the spawned NPC within the <see cref="Main.npc"/> array.
++	/// Spawns an NPC into the game world with the given type. <br/>
++	/// This method should not be called on multiplayer clients. <br/>
++	/// The X and Y parameters dictate the centered spawn position. <br/>
++	/// <c>>ai0, ai1, ai2, ai3</c> will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. <br/>
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="X"></param>
 +	/// <param name="Y"></param>
-+	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or ModContent.NPCType&lt;MyModNPC&gt;()</param>
-+	/// <param name="Start"></param>
++	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or <c>ModContent.NPCType&lt;MyModNPC&gt;()</c></param>
++	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. </param>
 +	/// <param name="ai0"></param>
 +	/// <param name="ai1"></param>
 +	/// <param name="ai2"></param>
 +	/// <param name="ai3"></param>
-+	/// <param name="Target"></param>
-+	/// <returns></returns>
++	/// <param name="Target">Optionally, provide a <c>Player.whoAmI</c> to set <see cref="NPC.target"/> to a specific Player immediately on spawn.</param>
++	/// <returns>The index of the spawned NPC within the <see cref="Main.npc"/> array</returns>
  	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
  	{
  		if (Main.getGoodWorld && Main.rand.Next(3) != 0) {
@@ -1969,7 +2005,7 @@
 +	/// <param name="knockBack">Defaults to 0</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
-+	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
++	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
 +	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
@@ -1984,9 +2020,9 @@
 +	/// <param name="knockBack">Defaults to 0</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
-+	/// <param name="luck">Luck modifier to produce weight damagevariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
-+	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
-+	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
++	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in single player. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damage dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
 +	public int SimpleStrikeNPC(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0, bool noPlayerInteraction = false)
 +	{
 +		var hit = CalculateHitInfo(damage, hitDirection, crit, knockBack, damageType, damageVariation, luck);
@@ -2018,8 +2054,8 @@
 +	/// </summary>
 +	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="CalculateHitInfo"/></param>
 +	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
-+	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in singleplayer. In multiplayer, player interaction is handled by the server.</param>
-+	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damge dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in single player. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damage dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
 +	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false)
  	{
  		bool flag = Main.netMode == 0;
@@ -2097,7 +2133,7 @@
  	}
  
  	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
-@@ -64897,7 +_,31 @@
+@@ -64897,7 +_,29 @@
  		}
  	}
  
@@ -2119,10 +2155,8 @@
 +
 +	public void HitEffect(HitInfo hit)
 +	{
-+		IEntitySource.PushFallback(thisEntitySourceCache);
++		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
 +		VanillaHitEffect(hit.HitDirection, hit.Damage, hit.InstantKill);
-+		IEntitySource.PopFallback();
-+
 +		NPCLoader.HitEffect(this, hit);
 +	}
 +
@@ -2211,7 +2245,7 @@
  	public void DelBuff(int buffIndex)
  	{
  		buffTime[buffIndex] = 0;
-@@ -72432,9 +_,19 @@
+@@ -72432,9 +_,16 @@
  	public void UpdateNPC(int i)
  	{
  		whoAmI = i;
@@ -2219,11 +2253,8 @@
  		if (!active)
  			return;
  
-+		IEntitySource.PushFallback(thisEntitySourceCache);
-+
++		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
 +		UpdateNPC_Inner(i);
-+
-+		IEntitySource.PopFallback();
 +	}
 +
 +	private void UpdateNPC_Inner(int i)
@@ -2248,7 +2279,7 @@
  			try {
  				if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
  					if (Main.tile[num4, num5] == null)
-@@ -72516,12 +_,15 @@
+@@ -72516,19 +_,25 @@
  			catch {
  				flag = true;
  			}
@@ -2261,9 +2292,20 @@
  
  		UpdateNPC_BuffFlagsReset();
 +		NPCLoader.ResetEffects(this);
++		UpdateNPC_UpdateGravity();
  		UpdateNPC_BuffSetFlags();
  		UpdateNPC_SoulDrainDebuff();
  		UpdateNPC_BuffClearExpiredBuffs();
+ 		UpdateNPC_BuffApplyDOTs();
+ 		UpdateNPC_BuffApplyVFX();
+ 		UpdateNPC_BloodMoonTransformations();
++		/*TML: #AccessibleNPCGravity, removed out parameter and moved a couple lines up to allow gravity to be modified with buffs
+-		UpdateNPC_UpdateGravity(out var maxFallSpeed);
++		UpdateNPC_UpdateGravity(out var maxFallSpeed)
++		*/
+ 		if (soundDelay > 0)
+ 			soundDelay--;
+ 
 @@ -72653,19 +_,21 @@
  		justHit = false;
  	}
@@ -2323,12 +2365,62 @@
  
  	private void UpdateNPC_UpdateTrails()
  	{
+@@ -72862,10 +_,22 @@
+ 		}
+ 	}
+ 
++	/* Out parameter replaced with property
+ 	private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
++	*/
++
++	/// <summary>
++	/// Updates <see cref="maxFallSpeed"/> and <see cref="gravity"/> in line with vanilla behavior and resets <see cref="GravityMultiplier"/>. Behavior can be modified with <see cref="GravityIgnoresType"/>, <see cref="GravityIgnoresSpace"/>, and <see cref="GravityIgnoresLiquid"/>.<br/>
++	/// Certain NPC type ids may also cap velocity, see <see cref="GravityIgnoresType"/>.
++	/// </summary>
++	private void UpdateNPC_UpdateGravity()
+ 	{
+ 		maxFallSpeed = 10f;
+ 		gravity = 0.3f;
++
++		if (GravityIgnoresType) //TML: #AccessibleNPCGravity
++			goto skipGravityTypeChecks;
++
+ 		if (type == 258) {
+ 			gravity = 0.1f;
+ 			if (velocity.Y > 3f)
+@@ -72896,7 +_,13 @@
+ 			gravity = 0f;
+ 		}
+ 
++		skipGravityTypeChecks:
++
++		if (GravityIgnoresSpace) //TML: #AccessibleNPCGravity
++			goto skipGravitySpaceEffect;
++
+ 		float num = (float)Main.maxTilesX / 4200f;
++
+ 		num *= num;
+ 		float num2 = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
+ 		if ((double)num2 < 0.25)
+@@ -72906,6 +_,12 @@
+ 			num2 = 1f;
+ 
+ 		gravity *= num2;
++
++		skipGravitySpaceEffect:
++
++		if (GravityIgnoresLiquid) //TML: #AccessibleNPCGravity
++			return;
++
+ 		if (wet) {
+ 			if (shimmerWet) {
+ 				gravity = 0.15f;
 @@ -73361,6 +_,10 @@
  				life = 0;
  				NetMessage.SendData(23, -1, -1, null, whoAmI);
  			}
 +			return;
-+		} 
++		}
 +		else if (ShimmerTransformation.AdvancedShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
 +			noSpawnCycle = true; // Here instead of in Helper due to protection level
  		}

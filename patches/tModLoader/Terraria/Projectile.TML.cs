@@ -86,31 +86,77 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	}
 
 	/// <summary>
-	/// If set, Projectile.damage will be recalculated based on Projectile.originalDamage, Projectile.DamageType and the owning player, just like minions and sentries.
-	/// This has no effect if Projectile.minion or Projectile.sentry is set.
+	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
+	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
 	/// </summary>
-	public bool ContinuouslyUpdateDamage { get; set; }
+	public int OriginalCritChance { get; set; }
 
-	/* tML:
-	this method is used to set the critical strike chance of a projectile based on the environment in which it was fired
-	this critical strike chance is then stored on the projectile and checked against for all critical strike calculations
-	this, alongside a number of other changes, is part of a massive list of fixes to critical strike chance made by tML
+	/// <summary>
+	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
+	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
+	/// </summary>
+	public int OriginalArmorPenetration { get; set; }
 
-	- thomas
-	*/
-	private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile)
+	/// <summary>
+	/// If set <see cref="damage"/> will be recalculated based on <see cref="originalDamage"/>, <see cref="DamageType"/> and the <see cref="owner"/> player, just like minions and sentries. <br/>
+	/// Similarly for <see cref="CritChance"/> and <see cref="ArmorPenetration"/>.
+	/// 
+	/// No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
+	/// </summary>
+	public bool ContinuouslyUpdateDamageStats { get; set; }
+
+	[Obsolete("Use ContinuouslyUpdateDamageStats", error: true)]
+	public bool ContinuouslyUpdateDamage { get => ContinuouslyUpdateDamageStats; set => ContinuouslyUpdateDamageStats = value; }
+
+	/// <summary>
+	/// Transfers stat modifiers from the spawn source to the projectile. <br/>
+	/// Adds <see cref="CritChance"/> and <see cref="ArmorPenetration"/> bonuses from players (<see cref="EntitySource_Parent"/>), weapons (<see cref="EntitySource_ItemUse"/>)<br/>
+	/// If the source is a <see cref="EntitySource_Parent"/> projectile, <c>CritChance</c> and <c>ArmorPenetration</c> from the parent will be added, in order to transfer the original item/player bonus values.<br/><br/>
+	/// <br/>
+	/// To support minions, sentries and <see cref="ContinuouslyUpdateDamageStats"/>, <see cref="OriginalCritChance"/> and <see cref="OriginalArmorPenetration"/> are also copied from item sources and parent projectiles.
+	/// </summary>
+	/// <param name="spawnSource"></param>
+	public void ApplyStatsFromSource(IEntitySource spawnSource)
 	{
-		// to-do: make this less ugly and more easily extensible to modded sources
-		// (requires substantial changes, at minimum, to how entity sources are handled)
-		if (spawnSource is EntitySource_ItemUse { Entity: Player player, Item: Item item }) {
-			projectile.originalDamage = item.damage;
-			projectile.CritChance += player.GetWeaponCrit(item);
-			projectile.ArmorPenetration += player.GetWeaponArmorPenetration(item);
+		originalDamage = damage;
+		OriginalCritChance = CritChance;
+		OriginalArmorPenetration = ArmorPenetration;
+
+		 if (spawnSource is EntitySource_Parent { Entity: Player player }) {
+			if (spawnSource is IEntitySource_WithStatsFromItem { Item: Item item }) {
+				// Apply the weapon and player bonuses to the base stats
+				CritChance += player.GetWeaponCrit(item);
+				ArmorPenetration += player.GetWeaponArmorPenetration(item);
+
+				// Apply original stats, so that ContinuouslyUpdateDamageStats can correctly scale the base values
+				// originalDamage is set to item.damage as a convenience.
+				if (item.damage >= 0)
+					originalDamage = item.damage;
+
+				OriginalCritChance += item.crit;
+				OriginalArmorPenetration += item.ArmorPenetration;
+			}
+			else {
+				// Apply player bonuses to the base stats
+				CritChance += (int)(player.GetTotalCritChance(DamageType) + 5E-06f);
+				ArmorPenetration += (int)(player.GetTotalArmorPenetration(DamageType) + 5E-06f);
+			}
 		}
 		else if (spawnSource is EntitySource_Parent { Entity: Projectile parentProjectile }) {
-			projectile.originalDamage = parentProjectile.originalDamage;
-			projectile.CritChance += parentProjectile.CritChance;
-			projectile.ArmorPenetration += parentProjectile.ArmorPenetration;
+			// This doesn't offer enough control, there's no way to determine if the parent originalDamage property should overwrite the child or not.
+			// In the case of parent.originalDamage = item.damage, it could be helpful, but the caller of NewProjectile could also just pass originalDamage as the dmg param and get the same effective result.
+			// In general, it is the responsibility of the creator of a minion or ContinuouslyUpdateDamageStats projectile to configure the child correctly.
+			// originalDamage = parentProjectile.originalDamage;
+
+			// To ensure snapshotted bonuses are passed on from parent to child, we just stack any parent CritChance/ArmorPenetration with the child default values
+			// This is a pattern that mods can safely follow for their own stats, matches vanilla non-snapshotting behavior, and is easy to use.
+			CritChance += parentProjectile.CritChance;
+			ArmorPenetration += parentProjectile.ArmorPenetration;
+
+			// In case this projectile is a minion or continuously updates damage (long running projectiles spawned by minions or sentries perhaps, maybe a laser for eg)
+			// We want to pass on the OriginalCrit and OriginalArmorPenetration values from the parent, so that item.crit and item.ArmorPenetration can affect the child.
+			OriginalCritChance += parentProjectile.OriginalCritChance;
+			OriginalArmorPenetration += parentProjectile.OriginalArmorPenetration;
 		}
 	}
 

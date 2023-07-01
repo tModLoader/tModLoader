@@ -138,12 +138,12 @@ public partial class ItemSlot
 		bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 
 		for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {
-			if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
 				return true;
 		}
 
 		for (int i = (targetVanity ? modCount : 0) + 20; i < (targetVanity ? modCount * 2 : modCount) + 20; i++) {
-			if (item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
 				return true;
 		}
 

@@ -60,7 +60,7 @@ public static class NPCLoader
 	/// Gets the ModNPC template instance corresponding to the specified type (not the clone/new instance which gets added to NPCs as the game is played).
 	/// </summary>
 	/// <param name="type">The type of the npc</param>
-	/// <returns>The ModNPC instance in the npcs array, null if not found.</returns>
+	/// <returns>The ModNPC instance in the <see cref="npcs"/> array, null if not found.</returns>
 	public static ModNPC GetNPC(int type)
 	{
 		return type >= NPCID.Count && type < NPCCount ? npcs[type - NPCID.Count] : null;
