@@ -49,7 +49,7 @@ namespace ExampleMod.Content.NPCs
 				.AddResult(new ShimmerResult(ShimmerTypeID.NPC, NPCID.TheBride, 1))
 				.Register();
 
-			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method and is slightly different from the next items
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method
 		}
 
 		public override void SetDefaults() {

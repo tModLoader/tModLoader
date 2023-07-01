@@ -44,7 +44,7 @@
  		return false;
  	}
  
-@@ -46,3 +_,319 @@
+@@ -46,3 +_,338 @@
  		RecipeSets.PostGolem = Utils.MapArray(Main.recipe, (Recipe r) => r.ContainsIngredient(1101));
  	}
  }
@@ -233,11 +233,10 @@
 +	{
 +		if (NPCID.Sets.ShimmerAdvancedTransformIndex[npc.type] < 0)
 +			return false;
-+		ShimmerData shimmerData = new(npc.GetItemSource_Misc(ItemSourceID.Shimmer), npc.position, npc.velocity, npc.width, npc.height, npc);
++		ShimmerData shimmerData = new(npc);
 +		int advancedShimmerIndex = NPCID.Sets.ShimmerAdvancedTransformIndex[npc.type];
 +
 +		if (AdvancedShimmer(shimmerData, AdvancedShimmerSets[advancedShimmerIndex])) {
-+
 +			npc.active = false; // despawn this NPC
 +			if (Main.netMode == 2) {
 +				npc.netSkip = -1;
@@ -251,10 +250,19 @@
 +
 +	public static bool AdvancedShimmer(Item item)
 +	{
-+		throw new NotImplementedException();
++		if (NPCID.Sets.ShimmerAdvancedTransformIndex[item.type] < 0)
++			return false;
++		ShimmerData shimmerData = new(item);
++		int advancedShimmerIndex = NPCID.Sets.ShimmerAdvancedTransformIndex[item.type];
++
++		if (AdvancedShimmer(shimmerData, AdvancedShimmerSets[advancedShimmerIndex])) {
++			throw new NotImplementedException();
++			return true;
++		}
++		return false;
 +	}
 +
-+	public static bool AdvancedShimmer(ShimmerData shimmerData, ShimmerTransformation[] shimmerTransformations)
++	private static bool AdvancedShimmer(ShimmerData shimmerData, ShimmerTransformation[] shimmerTransformations)
 +	{
 +		foreach (ShimmerTransformation transformation in shimmerTransformations) { // Loops possible transformations
 +			if (transformation.CanShimmer(shimmerData.Source) && transformation.Results.Count > 0) { // Checks conditions and callback in CanShimmer
@@ -276,7 +284,7 @@
 +		return false;
 +	}
 +
-+	public static void SpawnShimmerResult(ShimmerData shimmerData, ShimmerResult shimmerResult, int resultIndex)
++	private static void SpawnShimmerResult(ShimmerData shimmerData, ShimmerResult shimmerResult, int resultIndex)
 +	{
 +		switch (shimmerResult.ResultType) { // could easily add in support for spawning projectiles, didn't currently because the use cases seem pretty low
 +			case ShimmerTypeID.Item: { // spawn item code copied from vanilla
@@ -300,7 +308,7 @@
 +						NPC newNPC = NPC.NewNPCDirect(shimmerData.EntitySource, (int)shimmerData.Position.X, (int)shimmerData.Position.Y, shimmerResult.EntityID); //Should cause net update stuff
 +
 +						//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
-+						if (shimmerData.Source is NPC) {
++						if (shimmerData.Source is NPC && shimmerResult.KeepVanillaNPCTransformationValues) {
 +							newNPC.extraValue = (shimmerData.Source as NPC).extraValue;
 +							newNPC.CopyInteractions((shimmerData.Source as NPC));
 +							newNPC.SpawnedFromStatue = (shimmerData.Source as NPC).SpawnedFromStatue;
@@ -329,12 +337,18 @@
 +			case ShimmerTypeID.Custom: {
 +				break;
 +			}
++
++			case ShimmerTypeID.Null: {
++				throw new ArgumentException("The value for shimmerResult.ResultType should not be ShimmerTypeID.Null at this point, if behavior is being manually added please use ShimmerTypeID.Custom", nameof(shimmerResult));
++			}
 +		}
 +	}
 +
-+	public record ShimmerData(IEntitySource EntitySource, Vector2 Position, Vector2 Velocity, int Width, int Height, Entity Source)
++	private record ShimmerData(IEntitySource EntitySource, Vector2 Position, Vector2 Velocity, int Width, int Height, Entity Source)
 +	{
-+		public Vector2 Center { get => Position + new Vector2(Width, Height) / 2; }
++		public ShimmerData(Entity entity) : this(entity.GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId)), entity.position, entity.velocity, entity.width, entity.height, entity)
++		{ }
++		public Vector2 Center => Position + new Vector2(Width, Height) / 2;
 +	}
 +}
 +
@@ -356,7 +370,12 @@
 +/// <param name="ResultType"> The type of entity to spawn </param>
 +/// <param name="EntityID"> The type of the entity to spawn </param>
 +/// <param name="Count"> The number of this entity to spawn, if an item it will spawn in a stack </param>
-+public sealed record ShimmerResult(ShimmerTypeID ResultType, int EntityID, int Count);
++/// <param name="KeepVanillaNPCTransformationValues"> Makes spawned NPCs duplicate  </param>
++public sealed record ShimmerResult(ShimmerTypeID ResultType, int EntityID, int Count, bool KeepVanillaNPCTransformationValues)
++{
++	public ShimmerResult(ShimmerTypeID ResultType, int EntityID, int Count) : this(ResultType, EntityID, Count, true)
++	{ }
++}
 +
 +/// <summary>
 +/// A record representing the type information of an entity that will transform in shimmer
