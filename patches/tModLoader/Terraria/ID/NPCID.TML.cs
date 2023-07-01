@@ -1,4 +1,5 @@
 using Terraria.ModLoader;
+using Terraria.GameContent;
 
 namespace Terraria.ID;
 

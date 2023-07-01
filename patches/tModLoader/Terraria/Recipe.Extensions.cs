@@ -139,6 +139,7 @@ public partial class Recipe
 	public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
 	public bool RemoveShimmerCondition(Condition condition) => DecraftConditions.Remove(condition);
+
 	/// <summary>
 	/// Disables both crafting and decrafting of the recipe, essentially removes recipe
 	/// </summary>
@@ -150,7 +151,6 @@ public partial class Recipe
 		Disabled = true;
 		notDecraftable = true;
 	}
-
 	#endregion
 
 	#region ReplaceX

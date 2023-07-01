@@ -1,11 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,110 @@
+@@ -3,29 +_,109 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
-+using Terraria.GameContent;
  
  namespace Terraria.ID;
  

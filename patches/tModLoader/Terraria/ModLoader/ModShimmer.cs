@@ -210,8 +210,8 @@ public sealed class ShimmerTransformation
 
 	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, int resultIndex)
 	{
-		switch (shimmerResult.ResultType) { // could easily add in support for spawning projectiles, didn't currently because the use cases seem pretty low
-			case ModShimmerTypeID.Item: { // spawn item code copied from vanilla
+		switch (shimmerResult.ResultType) {
+			case ModShimmerTypeID.Item: {
 				int num = Item.NewItem(entity.GetSource_Misc(context: ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, entity.width, entity.height, shimmerResult.Type);
 				Main.item[num].stack = shimmerResult.Count;
 				Main.item[num].shimmerTime = 1f;
@@ -232,7 +232,7 @@ public sealed class ShimmerTransformation
 						NPC newNPC = NPC.NewNPCDirect(entity.GetSource_Misc(context: ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, shimmerResult.Type); //Should cause net update stuff
 
 						//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
-						if (entity is NPC && shimmerResult.KeepVanillaNPCTransformationValues) {
+						if (entity is NPC && shimmerResult.KeepVanillaTransformationConventions) {
 							newNPC.extraValue = (entity as NPC).extraValue;
 							newNPC.CopyInteractions((entity as NPC));
 							newNPC.SpawnedFromStatue = (entity as NPC).SpawnedFromStatue;
@@ -258,13 +258,14 @@ public sealed class ShimmerTransformation
 				break;
 			}
 
-			case ModShimmerTypeID.Custom: {
-				break;
-			}
+			case ModShimmerTypeID.Projectile:
+				throw new NotImplementedException();
 
-			case ModShimmerTypeID.Null: {
+			case ModShimmerTypeID.Custom:
+				break;
+
+			case ModShimmerTypeID.Null:
 				throw new ArgumentException("The value for shimmerResult.ResultType should not be ShimmerTypeID.Null at this point, if behavior is being manually added please use ShimmerTypeID.Custom", nameof(shimmerResult));
-			}
 		}
 	}
 
@@ -325,8 +326,8 @@ public enum ModShimmerTypeID
 /// <param name="ResultType"> The type of entity to spawn </param>
 /// <param name="Type"> The type of the entity to spawn </param>
 /// <param name="Count"> The number of this entity to spawn, if an item it will spawn in a stack </param>
-/// <param name="KeepVanillaNPCTransformationValues"> Makes spawned NPCs duplicate  </param>
-public sealed record ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count, bool KeepVanillaNPCTransformationValues)
+/// <param name="KeepVanillaTransformationConventions"> Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay spawned from a statue when shimmered </param>
+public sealed record ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count, bool KeepVanillaTransformationConventions)
 {
 	public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true)
 	{ }
