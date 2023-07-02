@@ -46,21 +46,25 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 	public override void Update(GameTime gameTime)
 	{
 		if (needToUpdateProgressData) {
+			ProgressData localProgressData;
 			lock (this) {
-				// Update reset
-				if (progressData.reset) {
-					_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", progressData.displayName);
-					downloadTimer.Restart();
-					Main.MenuUI.RefreshState();
-				}
-				// Update progress
-				_progressBar.UpdateProgress(progressData.progress);
-				double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
-				double speed = elapsedSeconds > 0.0 ? progressData.bytesReceived / elapsedSeconds : 0.0;
-				SubProgressText = $"{UIMemoryBar.SizeSuffix(progressData.bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(progressData.totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
+				localProgressData = progressData; // Make local to release the lock
+				progressData.reset = false; // Reset reset status
 
 				needToUpdateProgressData = false;
 			}
+
+			// Update reset
+			if (localProgressData.reset) {
+				_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", localProgressData.displayName);
+				downloadTimer.Restart();
+				Main.MenuUI.RefreshState();
+			}
+			// Update progress
+			_progressBar.UpdateProgress(localProgressData.progress);
+			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
+			double speed = elapsedSeconds > 0.0 ? localProgressData.bytesReceived / elapsedSeconds : 0.0;
+			SubProgressText = $"{UIMemoryBar.SizeSuffix(localProgressData.bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(localProgressData.totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
 		}
 		base.Update(gameTime);
 	}
@@ -71,13 +75,12 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 	public void DownloadStarted(string displayName)
 	{
 		lock (this) {
-			progressData = new ProgressData {
-				displayName = displayName,
-				progress = 0,
-				bytesReceived = 0,
-				totalBytesNeeded = 0,
-				reset = true
-			};
+			progressData.displayName = displayName;
+			progressData.progress = 0;
+			progressData.bytesReceived = 0;
+			progressData.totalBytesNeeded = 0;
+			progressData.reset = true;
+
 			needToUpdateProgressData = true;
 		};
 	}
@@ -88,13 +91,11 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded)
 	{
 		lock (this) {
-			progressData = new ProgressData {
-				displayName = "",
-				progress = progress,
-				bytesReceived = bytesReceived,
-				totalBytesNeeded = totalBytesNeeded,
-				reset = false
-			};
+			// Intentional leaving reset and name as previous data (to handle multiple events before UI update
+			progressData.progress = progress;
+			progressData.bytesReceived = bytesReceived;
+			progressData.totalBytesNeeded = totalBytesNeeded;
+
 			needToUpdateProgressData = true;
 		};
 	}
