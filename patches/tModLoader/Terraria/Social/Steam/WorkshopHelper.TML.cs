@@ -212,16 +212,17 @@ public partial class WorkshopHelper
 		// Yield returns null if an error happens and the result is cut short
 		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token)
 		{
+			// @TODO: "Solxan" This code will be moved to another place
 			if (!SteamedWraps.SteamAvailable) {
 				if (!SteamedWraps.TryInitViaGameServer()) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
 					throw new SocialBrowserException("No Workshop Access");
 				}
 
-				var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
-				while (!SteamGameServer.BLoggedOn() && (DateTime.Now - start) < TimeSpan.FromSeconds(5)) {
-					// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
-					SteamedWraps.ForceCallbacks();
+				// lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
+				var stopwatch = Stopwatch.StartNew();
+				while (!SteamGameServer.BLoggedOn() && stopwatch.Elapsed.TotalSeconds < 5) {
+					await SteamedWraps.ForceCallbacks(token);
 				}
 			}
 
@@ -315,23 +316,20 @@ public partial class WorkshopHelper
 					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
 
 					string currentPage = _nextCursor;
-					// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
-					if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
+					if (!await TryRunQueryAsync(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
 						ReleaseWorkshopQuery();
 
 						// If it failed, make a second attempt after 100 ms
 						await Task.Delay(100, token);
 						// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
-						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
+						if (!await TryRunQueryAsync(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
 							ReleaseWorkshopQuery();
 							// Exit for error fetching stuff
 							throw new SocialBrowserException("Workshop Query Failed");
 						}
 					}
 
-					// Appx. 10 ms per page of 50 items
-					// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
-					foreach (var item in ProcessPageResult())
+					foreach (var item in await Task.Run(ProcessPageResult))
 						yield return item;
 
 					ReleaseWorkshopQuery();
@@ -344,6 +342,7 @@ public partial class WorkshopHelper
 
 			private IEnumerable<ModDownloadItem> ProcessPageResult()
 			{
+				// Appx. 10 ms per page of 50 items
 				for (uint i = 0; i < _queryReturnCount; i++) {
 					var mod = GenerateModDownloadItemFromQuery(i);
 					if (mod == null)
@@ -381,21 +380,31 @@ public partial class WorkshopHelper
 
 			/////// Run Queries ////////////////////
 
-			internal bool TryRunQuery(SteamAPICall_t query)
+			internal async Task<bool> TryRunQueryAsync(SteamAPICall_t query, CancellationToken token = default)
 			{
 				_primaryQueryResult = EResult.k_EResultNone;
 				_queryHook.Set(query);
 
-				var stopwatch = Stopwatch.StartNew();
+				Stopwatch stopwatch = Stopwatch.StartNew();
 				do {
-					if (stopwatch.Elapsed.TotalSeconds >= 10) // 10 seconds maximum allotted time before no connection is assumed
-						_primaryQueryResult = EResult.k_EResultTimeout;
-
-					SteamedWraps.ForceCallbacks();
+					await SteamedWraps.ForceCallbacks(token);
+				} while (
+					(_primaryQueryResult == EResult.k_EResultNone) &&
+					(stopwatch.Elapsed.TotalSeconds < 10)
+				);
+				if (_primaryQueryResult == EResult.k_EResultNone) {
+					_primaryQueryResult = EResult.k_EResultTimeout;
 				}
-				while (_primaryQueryResult == EResult.k_EResultNone);
 
+				// @TODO: HandleError calls show fancy page and UI stuff, is this ok since it is scheduled?
+				// Also shouldn't all the UI and handling happen in the browser and not in Workshop methods?
 				return HandleError(_primaryQueryResult);
+			}
+
+			[Obsolete("Should not be used because it hides syncronous waiting")]
+			internal bool TryRunQuery(SteamAPICall_t query)
+			{
+				return TryRunQueryAsync(query).GetAwaiter().GetResult();
 			}
 
 			internal static bool HandleError(EResult eResult)

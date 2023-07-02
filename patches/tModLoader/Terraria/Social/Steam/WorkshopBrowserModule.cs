@@ -70,14 +70,14 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	// Downloading Items /////////////////////////
 
-	public void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress)
+	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
 		item.UpdateInstallState();
 
 		var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId.m_ModPubId));
 		bool forceUpdate = item.NeedUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
 
-		uiProgress?.PrepUIForDownload(item.DisplayName);
+		uiProgress?.DownloadStarted(item.DisplayName);
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
 	}
@@ -91,29 +91,46 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	//START SECTION
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
+		// @TODO: "Solxan" was not used???
 		InstalledItems = GetInstalledMods();
 
-		if (queryParams.updateStatusFilter == UpdateFilter.All)
-			await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token))
-				yield return item;
-
-		if (queryParams.updateStatusFilter == UpdateFilter.Available)
-			await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token))
-				if (!CachedInstalledModDownloadItems.Contains(item))
+		// Each filter has independent code for simplicity and readability
+		switch (queryParams.updateStatusFilter) {
+			case UpdateFilter.All:
+				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
+					item.UpdateInstallState();
 					yield return item;
-
-		// Special code for checking all mods installed. Can't use 'Subscribed' API query because GoG
-		var items = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
-
-		if (queryParams.updateStatusFilter == UpdateFilter.UpdateOnly)
-			foreach (var item in items) {
-				item.UpdateInstallState();
-				if (item.NeedUpdate)
+				}
+				yield break;
+			case UpdateFilter.Available:
+				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
+					if (!CachedInstalledModDownloadItems.Contains(item)) {
+						item.UpdateInstallState(); // @TODO: Needed?
+						yield return item;
+					}
+				}
+				yield break;
+			case UpdateFilter.UpdateOnly:
+				// Special code for checking all mods installed. Can't use 'Subscribed' API query because GoG
+				// @TODO: Techinically DirectyQuery and derivates are blocking!
+				// @TODO: "Solxan" this was written so it WILL run even in case of All or
+				// Available filters, is it intended?
+				// Should be documented in case this method has interesting side effects
+				foreach (var item in (this as SocialBrowserModule).DirectQueryInstalledMDItems()) {
+					// @TODO: This too is blocking
+					item.UpdateInstallState();
+					if (item.NeedUpdate) // Needs update beforehand
+						yield return item;
+				}
+				yield break;
+			case UpdateFilter.InstalledOnly:
+				// Special code for checking all mods installed. Can't use 'Subscribed' API query because GoG
+				foreach (var item in (this as SocialBrowserModule).DirectQueryInstalledMDItems()) {
+					item.UpdateInstallState();
 					yield return item;
-			}
-		if (queryParams.updateStatusFilter == UpdateFilter.InstalledOnly)
-			foreach (var item in items)
-				yield return item;
+				}
+				yield break;
+		}
 	}
 	//END SECTION
 

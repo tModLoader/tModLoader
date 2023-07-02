@@ -1,11 +1,31 @@
+using System;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.DownloadManager;
 
-internal class UIWorkshopDownload : UIProgress
+public interface IDownloadProgress
 {
+	public void DownloadStarted(string displayName);
+	public void DownloadCompleted();
+	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded);
+}
+
+internal class UIWorkshopDownload : UIProgress, IDownloadProgress
+{
+	internal struct ProgressData
+	{
+		public string displayName;
+		public float progress;
+		public long bytesReceived;
+		public long totalBytesNeeded;
+		public bool reset;
+	}
+	private ProgressData progressData;
+	private bool needToUpdateProgressData = false;
+
 	private Stopwatch downloadTimer;
 
 	public int PreviousMenuMode { get; set; } = -1;
@@ -17,29 +37,73 @@ internal class UIWorkshopDownload : UIProgress
 		Main.menuMode = 888;
 	}
 
-	public void PrepUIForDownload(string displayName)
+	public override void OnInitialize()
 	{
-		_progressBar.UpdateProgress(0f);
-		_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", displayName);
-		downloadTimer.Restart();
-		Main.MenuUI.RefreshState();
-
-		_cancelButton.Remove();
+		base.OnInitialize();
+		_cancelButton.Remove(); // Why cannot cancel???
 	}
 
+	public override void Update(GameTime gameTime)
+	{
+		if (needToUpdateProgressData) {
+			lock (this) {
+				// Update reset
+				if (progressData.reset) {
+					_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", progressData.displayName);
+					downloadTimer.Restart();
+					Main.MenuUI.RefreshState();
+				}
+				// Update progress
+				_progressBar.UpdateProgress(progressData.progress);
+				double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
+				double speed = elapsedSeconds > 0.0 ? progressData.bytesReceived / elapsedSeconds : 0.0;
+				SubProgressText = $"{UIMemoryBar.SizeSuffix(progressData.bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(progressData.totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
+
+				needToUpdateProgressData = false;
+			}
+		}
+		base.Update(gameTime);
+	}
+
+	/**
+	 * <remarks>This will be called from a thread!</remarks>
+	 */
+	public void DownloadStarted(string displayName)
+	{
+		lock (this) {
+			progressData = new ProgressData {
+				displayName = displayName,
+				progress = 0,
+				bytesReceived = 0,
+				totalBytesNeeded = 0,
+				reset = true
+			};
+			needToUpdateProgressData = true;
+		};
+	}
+
+	/**
+	 * <remarks>This will be called from a thread!</remarks>
+	 */
 	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded)
 	{
-		_progressBar.UpdateProgress(progress);
-
-		double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
-		double speed = elapsedSeconds > 0.0 ? bytesReceived / elapsedSeconds : 0.0;
-
-		SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
+		lock (this) {
+			progressData = new ProgressData {
+				displayName = "",
+				progress = progress,
+				bytesReceived = bytesReceived,
+				totalBytesNeeded = totalBytesNeeded,
+				reset = false
+			};
+			needToUpdateProgressData = true;
+		};
 	}
-
-	public void Leave()
+	/**
+	* <remarks>This will be called from a thread!</remarks>
+	*/
+	public void DownloadCompleted()
 	{
-		// Exit
+		// @TODO: Is this ok in a thread?
 		ReturnToPreviousMenu();
 	}
 

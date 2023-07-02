@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.DownloadManager;
@@ -283,9 +284,10 @@ public static class SteamedWraps
 		}
 	}
 
-	public static void ForceCallbacks()
+	public static async Task ForceCallbacks(CancellationToken token = default)
 	{
-		Thread.Sleep(5);
+		// @TODO: Updated to a more reasonable time
+		await Task.Delay(1, token);
 
 		if (SteamClient)
 			SteamAPI.RunCallbacks();
@@ -451,7 +453,7 @@ public static class SteamedWraps
 	/// <summary>
 	/// Updates and/or Downloads the Item specified by publishId
 	/// </summary>
-	internal static void Download(PublishedFileId_t publishId, UIWorkshopDownload uiProgress = null, bool forceUpdate = false)
+	internal static void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
 	{
 		if (!SteamAvailable)
 			return;
@@ -483,7 +485,7 @@ public static class SteamedWraps
 		}
 	}
 
-	private static void InnerDownloadHandler(UIWorkshopDownload uiProgress, PublishedFileId_t publishId)
+	private static void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
 	{
 		ulong dlBytes, totalBytes;
 
@@ -510,8 +512,7 @@ public static class SteamedWraps
 				}
 			}
 
-			if (uiProgress != null)
-				uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+			uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
 			int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
 

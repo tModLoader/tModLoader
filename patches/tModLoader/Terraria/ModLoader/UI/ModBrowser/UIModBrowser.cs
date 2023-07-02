@@ -30,7 +30,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		protected override UIModDownloadItem GenElement(ModDownloadItem resource)
 		{
-			return new UIModDownloadItem(resource);
+			var element = new UIModDownloadItem(resource);
+			element.UpdateInstallInfo();
+			return element;
 		}
 		protected override void UpdateElement(UIModDownloadItem element)
 		{
@@ -296,8 +298,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			Main.menuMode = Interface.updateMessageID;
 		}
 
-		// @TODO: UpdateInstallInfo is "blocking" even tho it's not a Task
-		// Make sure this doesn't hang the process!!!
 		lock (modSlugsToUpdateInstallInfo) {
 			foreach (var item in ModList.ReceivedItems.Where(
 				d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName)
@@ -342,11 +342,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		// Old data will be removed and old provider aborted when setting the new provider `ModList.SetProvider`
 
 		// Asynchronous load the Mod Browser
-		// @TODO: "Chicken Bones" here the line below blocks
-		// the final version imo should have THIS line not the
-		// one uncommented below
-		//ModList.SetEnumerable(SocialBackend.QueryBrowser(FilterParameters));
-		ModList.SetEnumerable(SocialBackend.QueryBrowser(FilterParameters), true);
+		ModList.SetEnumerable(SocialBackend.QueryBrowser(FilterParameters));
 	}
 
 	/// <summary>

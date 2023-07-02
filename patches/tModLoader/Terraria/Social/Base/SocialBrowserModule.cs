@@ -103,18 +103,19 @@ public interface SocialBrowserModule
 
 	private Task DownloadRunner(List<ModDownloadItem> items, int previousMenuId, bool needReload)
 	{
-		//Set UIWorkshopDownload
-		UIWorkshopDownload uiProgress = null;
+		IDownloadProgress progress = null;
 
 		if (!Main.dedServ) {
-			uiProgress = new UIWorkshopDownload(previousMenuId);
-			Main.MenuUI.SetState(uiProgress);
+			// Create UIWorkshopDownload
+			var ui = new UIWorkshopDownload(previousMenuId);
+			Main.MenuUI.SetState(ui);
+			progress = ui;
 		}
 
-		return Task.Run(() => InnerDownload(uiProgress, items, needReload));
+		return Task.Run(() => InnerDownload(progress, items, needReload));
 	}
 
-	private void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
+	private void InnerDownload(IDownloadProgress uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
 	{
 		var changedModsSlugs = new HashSet<string>();
 
@@ -131,13 +132,13 @@ public interface SocialBrowserModule
 
 		ModOrganizer.LocalModsChanged(changedModsSlugs);
 
-		uiProgress?.Leave();
+		uiProgress?.DownloadCompleted();
 
 		if (reloadWhenDone)
 			ModLoader.ModLoader.Reload();
 	}
 
-	internal void DownloadItem(ModDownloadItem item, UIWorkshopDownload uiProgress);
+	internal void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress);
 
 	/////// Management of Dependencies ///////////////////////////////////////////
 

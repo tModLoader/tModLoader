@@ -168,7 +168,7 @@
  					UpdateItem();
  				}
  				else {
-@@ -212,14 +_,61 @@
+@@ -212,14 +_,63 @@
  
  			private void CreateItem()
  			{
@@ -186,7 +186,8 @@
 +					return;
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					// @TODO: This is blocking
++					SteamedWraps.ForceCallbacks().RunSynchronously();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
 +
@@ -196,7 +197,8 @@
 +				UpdateItem(creatingItem:true);
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					// @TODO: This is blocking
++					SteamedWraps.ForceCallbacks().RunSynchronously();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
  			}
@@ -270,7 +272,7 @@
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
  				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,76 @@
+@@ -262,22 +_,77 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -326,7 +328,8 @@
 +					return;
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					// @TODO: This is blocking
++					SteamedWraps.ForceCallbacks().RunSynchronously();
 +				}
 +				while (_updateCallback == EResult.k_EResultNone);
  			}
