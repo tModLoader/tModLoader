@@ -1482,7 +1482,15 @@
  		if (type == 13 || type == 14 || type == 15) {
  			DropEoWLoot();
  		}
-@@ -58799,6 +_,15 @@
+@@ -58761,6 +_,7 @@
+ 				break;
+ 		}
+ 
++		num10 = NPCID.Sets.InvasionSlotCount[type];
+ 		if (num10 > 0) {
+ 			Main.invasionSize -= num10;
+ 			if (Main.invasionSize < 0)
+@@ -58799,10 +_,20 @@
  		}
  	}
  
@@ -1498,6 +1506,51 @@
  	public static int GetNPCInvasionGroup(int npcID)
  	{
  		int result = 0;
+ 		switch (npcID) {
++			/*
+ 			case 26:
+ 			case 27:
+ 			case 28:
+@@ -58810,21 +_,30 @@
+ 			case 111:
+ 			case 471:
+ 			case 472:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npcID]:
+ 				result = 1;
+ 				break;
++			/*
+ 			case 143:
+ 			case 144:
+ 			case 145:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npcID]:
+ 				result = 2;
+ 				break;
++			/*
+ 			case 212:
+ 			case 213:
+ 			case 214:
+ 			case 215:
+ 			case 216:
+ 			case 491:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionPirate[npcID]:
+ 				result = 3;
+ 				break;
++			/*
+ 			case 381:
+ 			case 382:
+ 			case 383:
+@@ -58836,6 +_,8 @@
+ 			case 390:
+ 			case 391:
+ 			case 395:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npcID]:
+ 				result = 4;
+ 				break;
+ 			case 338:
 @@ -59211,7 +_,7 @@
  
  	public static void ResetKillCount()
