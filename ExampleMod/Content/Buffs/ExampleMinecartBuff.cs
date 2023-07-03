@@ -10,12 +10,12 @@ namespace ExampleMod.Content.Buffs
 	public class ExampleMinecartBuff : ModBuff
 	{
 		// Use the vanilla DisplayName ("Minecart")
-		//public override LocalizedText DisplayName => Language.GetText($"BuffName.MinecartLeft");
+		//public override LocalizedText DisplayName => Language.GetText("BuffName.MinecartLeft");
 		// But for the sake of example, we want to reuse the item name
 		public override LocalizedText DisplayName => ModContent.GetInstance<ExampleMinecart>().DisplayName;
 
 		// Use the vanilla Description
-		public override LocalizedText Description => Language.GetText($"BuffDescription.MinecartLeft");
+		public override LocalizedText Description => Language.GetText("BuffDescription.MinecartLeft");
 
 		public override void SetStaticDefaults() {
 			Main.buffNoTimeDisplay[Type] = true;
