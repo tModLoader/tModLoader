@@ -164,7 +164,7 @@
  		};
 +
 +		/// <summary>
-+		/// The order of boss NPC types (<see cref="NPC.type"/>) in thhe Bestiary.
++		/// The order of boss NPC types (<see cref="NPC.type"/>) in the Bestiary.
 +		/// </summary>
  		public static List<int> BossBestiaryPriority = new List<int> {
  			664,

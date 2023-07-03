@@ -30,7 +30,7 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public string LocalizationCategory => "InfoDisplays";
+	public virtual string LocalizationCategory => "InfoDisplays";
 
 	/// <summary>
 	/// This is the name that will show up when hovering over this info display.

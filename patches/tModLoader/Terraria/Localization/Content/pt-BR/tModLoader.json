@@ -125,6 +125,9 @@
 		"LoadError": "Ocorreu um erro ao carregar {0}",
 		"LoadErrorDisabled": "O(s) mod(s) foi(ram) desabilitado(s) automaticamente.",
 		"LoadErrorCulpritUnknown": "O mod responsável é desconhecido e o tModLoader deve ser reiniciado.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Foi detectado que este mod foi desenvolvido para o tModLoader v{0}\nNo entanto, você está usando {1}",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 ou mais recente é necessário para usar mods. Por favor, baixe o .NET Framework mais recente.",
 		"LoadErrorDependencyMissing": "Mod não encontrado: {0} necessário por {1}",
@@ -343,11 +346,11 @@
 		"MigrateIndividualWorldsHeader": "Migrar mundos individuais...",
 		"MigratingWorldsText": "Migrando...",
 		"ModsDifferentSinceLastPlay": "Os seguintes mods são diferentes desde a última vez que você jogou: ",
-		"Missing1Mod": "1 mod não foi encontrado.",
-		"MissingXMods": "{0} mods não foram encontrados.",
+		"Missing1Mod": "1 mod não foi encontrado",
+		"MissingXMods": "{0} mods não foram encontrados",
 		"MissingModsListing": "Mods não encontrados:\n{0}",
-		"New1Mod": "1 novo mod.",
-		"NewXMods": "{0} novos mods.",
+		"New1Mod": "1 novo mod",
+		"NewXMods": "{0} novos mods",
 		"NewModsListing": "Novos mods:\n{0}",
 		"PlayerCustomDataFail": "Foi encontrado um problema ao carregar dados personalizados para um jogador",
 		"PlayerLoadWorldFail": "Foi encontrado um problema ao tentar carregar um mundo",
@@ -481,9 +484,7 @@
 		"SteamAPIHashMismatch": "Incompatibilidade de hash da API do Steam, presumido como pirataria.\n\ntModLoader requer uma instalação legítima do Terraria para funcionar.",
 		"SteamInitFailed": "SteamAPI.Init falhou. Tente sair do Steam e reiniciá-lo.\n\nVerifique terrariasteamclient.log e Natives.Log para detalhes",
 		"TerrariaNotInstalled": "Terrara deve estar instalado no Steam para que o tModLoader seja executado.\n\nVocê precisará reiniciar seu cliente Steam para que o botão de instalação apareça no aplicativo do Terraria.\n\nInicie o Terraria pelo menos uma vez para garantir que as dependências sejam instaladas antes de iniciar o tModLoader novamente.",
-		"VanillaGOGNotFound": "{0} não foi encontrado.\r\n\r\nAs instalações do GOG devem ter o executável Terraria não modificado para funcionar. Esta versão do tModLoader espera a versão {1} do Terraria, pode ser preciso desatualizar ou atualizar o Terraria através do GOG Galaxy ou aguardar uma atualização do tModLoader.",
-		"GOGHashMismatch": "{0} não é o executável Terraria não modificado.\r\n\r\nAs instalações do GOG devem ter o executável Terraria não modificado para funcionar.\r\n\r\nSe você editou o .exe, você pode criar uma cópia do exe original e nomeá-lo \"Terraria_v<VERSÃO>.exe\"",
-		"GOGVersionHint": "Esta versão do tModLoader espera ser instalada juntamente com o Terraria v{0}. Se o Terraria foi atualizado recentemente, talvez seja necessário desatualizá-lo para esta versão anterior no GOG Galaxy.",
+		"GOGHashMismatch": "{0} não é o executável Terraria {1} não modificado.\r\n\r\nEsta versão do tModLoader espera ser instalada juntamente com o Terraria {1}. Se o Terraria foi atualizado recentemente, talvez seja necessário desatualizá-lo para esta versão anterior no GOG Galaxy.\r\n\r\nSe você editou o .exe, você pode criar uma cópia do exe original e nomeá-lo \"{2}\"",
 		"DefaultExtraMessage": "Por favor, restaure a instalação do Terraria e, em seguida, instale tModLoader no Steam ou seguindo as instruções README.txt para instalação manual.",
 		"LogPathHint": "Um arquivo {0} contendo informações de erro foi gerado em\n{1}\n(Você precisará compartilhar este arquivo se pedir ajuda)",
 		"OutOfMemoryHint": "Dica: Tente executar menos mods de uma vez ou determine se um mod está ocupando muita memória. Opcionalmente, instale o tModLoader 64 bits",
@@ -511,7 +512,7 @@
 		"TagsLang": "Suporte de Localização",
 		"TagsLangDescription": "Este mod tem suporte para vários idiomas",
 		"TagsGen": "Geração de Mundo Personalizada",
-		"TagsGenDescription": "Altera a forma como o mundo é gerado (por exemplo, minérios, novas estruturas, etc.)"
+		"TagsGenDescription": "Altera a forma como o mundo é gerado (por exemplo, minérios, novas estruturas, etc.)",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Próxima Página",
@@ -815,6 +816,15 @@
 		"Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Items.AprilFools.DisplayName": "April Fools Joke",
+		// "ModLoader.Items.StartBag.DisplayName": "Starting Bag",
+		// "ModLoader.Items.StartBag.Tooltip": "Some starting items couldn't fit in your inventory\n{$CommonItemTooltip.RightClickToOpen}",
+		// "ModLoader.Items.UnloadedItem.DisplayName": "Unloaded Item",
+		// "ModLoader.Items.UnloadedItem.Tooltip": "\n",
+		// "ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
+		// "ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry0": "Unloaded Chest",
+		// "ModLoader.Tiles.UnloadedChest.MapEntry1": "Locked Unloaded Chest",
 		"ModLoader.Items.Jofairden_Body.DisplayName": "Corpo de Andromedon",
 		"ModLoader.Items.Jofairden_Body.Tooltip": "O poder do Andrômedo flui dentro de você",
 		"ModLoader.Items.Jofairden_Head.DisplayName": "Cabeça de Andromedon",
@@ -854,6 +864,9 @@
 		"ModLoader.Items.Guildpack_Body.DisplayName": "Corpo de Guildpack",
 		"ModLoader.Items.Guildpack_Head.DisplayName": "Cabeça de Guildpack",
 		"ModLoader.Items.Guildpack_Legs.DisplayName": "Pernas de Guildpack",
+		// "ModLoader.Items.HER0zero_Body.DisplayName": "HER0zero's Body",
+		// "ModLoader.Items.HER0zero_Head.DisplayName": "HER0zero's Head",
+		// "ModLoader.Items.HER0zero_Legs.DisplayName": "HER0zero's Legs",
 		"ModLoader.Items.KittyKitCatCat_Body.DisplayName": "Corpo de KittyKitCatCat",
 		"ModLoader.Items.KittyKitCatCat_Head.DisplayName": "Cabeça de KittyKitCatCat",
 		"ModLoader.Items.KittyKitCatCat_Legs.DisplayName": "Pernas de KittyKitCatCat",
@@ -865,6 +878,10 @@
 		"ModLoader.Items.Linus_Legs.Tooltip": "'Um dos artigos padrão do traje de caçador, confeccionado na oficina.\nPermite que alguém persiga feras sem ser percebido, na calada da noite.'",
 		"ModLoader.Items.Linus_Wings.DisplayName": "Uma Chamada do Além",
 		"ModLoader.Items.Linus_Wings.Tooltip": "'Um dos ritos secretos do Coro.\nMas parece ter sido reaproveitado por Linus.'",
+		// "ModLoader.Items.Mayne_Body.DisplayName": "Mayne's Body",
+		// "ModLoader.Items.Mayne_Head.DisplayName": "Mayne's Head",
+		// "ModLoader.Items.Mayne_Legs.DisplayName": "Mayne's Legs",
+		// "ModLoader.Items.Mayne_Wings.DisplayName": "Mayne's Wings",
 		"ModLoader.Items.Orian_Body.DisplayName": "Corpo de Orian",
 		"ModLoader.Items.Orian_Head.DisplayName": "Cabeça de Orian",
 		"ModLoader.Items.Orian_Legs.DisplayName": "Pernas de Orian",
@@ -908,5 +925,9 @@
 		"ModLoader.Items.Zeph_Head.DisplayName": "Cabeça de Zeph",
 		"ModLoader.Items.Zeph_Legs.DisplayName": "Pernas de Zeph",
 		"ModLoader.Items.Zeph_Wings.DisplayName": "Asas de Zeph"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

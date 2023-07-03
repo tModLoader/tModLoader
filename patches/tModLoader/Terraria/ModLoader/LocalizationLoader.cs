@@ -167,7 +167,7 @@ public static class LocalizationLoader
 			return new();
 
 		try {
-			// Flatten JSON into dot seperated key and value
+			// Flatten JSON into dot separated key and value
 			var flattened = new List<(string, string)>();
 
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
@@ -348,7 +348,7 @@ public static class LocalizationLoader
 					// Check translationFile.Name instead of fixedFileName since this is used for modified and file cleanup.
 					if (!localizationFileContentsByPath.ContainsKey(translationFile.Name))
 						localizationFileContentsByPath[translationFile.Name] = translationFileContents;
-					// If the file exists, it's from a supplimentary mod, so the original file contents should be used for checks.
+					// If the file exists, it's from a supplementary mod, so the original file contents should be used for checks.
 				}
 
 				JsonValue jsonValueEng;
@@ -367,7 +367,7 @@ public static class LocalizationLoader
 				else {
 					// If file exists, then we are merging.
 					// Resulting entries will have new entries added
-					// Comments will be taken from 1st loaded english
+					// Comments will be taken from 1st loaded English
 					LocalizationFile localizationFile = fileList.First(x => x.path == fixedFileName);
 					foreach (var entry in entries) {
 						if (!localizationFile.Entries.Exists(x => x.key == entry.key)) {
@@ -458,7 +458,7 @@ public static class LocalizationLoader
 			}
 		}
 
-		// Clean up orphaned language files, if any. This should remove any hjson not present in english, and any english files without "en-US"
+		// Clean up orphaned language files, if any. This should remove any hjson not present in English, and any English files without "en-US"
 		var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
 		var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
 
@@ -506,7 +506,7 @@ public static class LocalizationLoader
 				string key = GetKeyFromFilePrefixAndEntry(baseFile, entry);
 				if (prefixCounts.TryGetValue(key, out var count) && count > 1) {
 					baseFile.Entries[i] = entry with { key = entry.key + ".$parentVal" };
-					// Note: Editing baseFile changes english as well. Undone when localizationsForCulture calculated populated
+					// Note: Editing baseFile changes English as well. Undone when localizationsForCulture calculated populated
 				}
 			}
 		}

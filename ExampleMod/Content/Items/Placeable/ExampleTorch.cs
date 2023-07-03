@@ -24,11 +24,23 @@ namespace ExampleMod.Content.Items.Placeable
 		}
 
 		public override void HoldItem(Player player) {
+			// This torch cannot be used in water, so it shouldn't spawn particles or light either
+			if (player.wet) {
+				return;
+			}
+
 			// Note that due to biome select torch god's favour, the player may not actually have an ExampleTorch in their inventory when this hook is called, so no modifications should be made to the item instance.
 
-			// Randomly spawn sparkles when the torch is held. Twice bigger chance to spawn them when swinging the torch.
-			if (Main.rand.NextBool(player.itemAnimation > 0 ? 40 : 80)) {
-				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
+			// Randomly spawn sparkles when the torch is held. Bigger chance to spawn them when swinging the torch.
+			if (Main.rand.NextBool(player.itemAnimation > 0 ? 7 : 30)) {
+				Dust dust = Dust.NewDustDirect(new Vector2(player.itemLocation.X + (player.direction == -1 ? -16f : 6f), player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>(), 0f, 0f, 100);
+				if (!Main.rand.NextBool(3)) {
+					dust.noGravity = true;
+				}
+
+				dust.velocity *= 0.3f;
+				dust.velocity.Y -= 1.5f;
+				dust.position = player.RotatedRelativePoint(dust.position);
 			}
 
 			// Create a white (1.0, 1.0, 1.0) light at the torch's approximate position, when the item is held.

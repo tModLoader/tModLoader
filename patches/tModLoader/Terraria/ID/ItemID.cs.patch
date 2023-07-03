@@ -519,19 +519,20 @@
 +		/// </summary>
 +		/*
  		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
+-		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
 +		*/
 +		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss);
 +
 +		/// <summary>
-+		/// Determines the number of minion slots a player needs to sacrifice to use this item.
-+		/// <br/> This is only used when <see cref="ProjectileID.Sets.MinionSacrificable"/>[<see cref="Item.shoot"/>] is <see langword="true"/> and when the player tries to summon a new minion.
-+		/// <br/> The retrieved value's worth of minion slots (<see cref="Projectile.minionSlots"/>) will be killed to make room for the projectile.
-+		/// <br/> Defaults to <c>1</c>.
++		/// How many minion slots one usage of this item will spawn.
++		/// <br/> This is only used when <see cref="ProjectileID.Sets.MinionSacrificable"/>[<see cref="Item.shoot"/>] and <see cref="Main.projPet"/> are <see langword="true"/> and when the player tries to summon a new minion.
++		/// <br/> The retrieved value's worth of minion slots (<see cref="Projectile.minionSlots"/>) will be killed, if necessary, to make room for the minion projectiles prior to spawning them.
++		/// <br/> Defaults to <c>1f</c>. If the value is greater than 1f, make sure to check <see cref="Player.maxMinions"/> in <see cref="ModItem.CanUseItem(Player)"/> as well.
 +		/// </summary>
 +		/// <remarks>
 +		/// The full process for sacrificing minions can be found at <see cref="Player.FreeUpPetsAndMinions(Item)"/>.
 +		/// </remarks>
- 		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
++		public static float[] StaffMinionSlotsRequired = Factory.CreateFloatSet(1f); // TML: changed from int to float.
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be traded with the <see cref="NPCID.DyeTrader"/> in exchange for strange dyes.

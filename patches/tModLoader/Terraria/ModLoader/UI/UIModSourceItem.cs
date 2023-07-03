@@ -131,7 +131,7 @@ internal class UIModSourceItem : UIPanel
 		Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 		spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 
-		// This code here rather than ctor since the delay for dozens of mod source folders is noticable.
+		// This code here rather than ctor since the delay for dozens of mod source folders is noticeable.
 		if (!_upgradePotentialChecked) {
 			_upgradePotentialChecked = true;
 			string modFolderName = Path.GetFileName(_mod);
@@ -201,7 +201,7 @@ internal class UIModSourceItem : UIPanel
 			}
 
 
-			// Display Run tModPorter for Windows when csproj is valid
+			// Display Run tModPorter for Windows when .csproj is valid
 			if (Platform.IsWindows && !projNeedsUpdate) {
 				var pIcon = UICommon.ButtonExclamationTexture;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {

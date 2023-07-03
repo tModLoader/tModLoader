@@ -229,6 +229,11 @@ public static partial class Config
 		RenameMethod("Terraria.UI.UIElement",			from: "DoubleClick",	to: "LeftDoubleClick");
 
 		AddWorldGenToGenVars();
+
+		RenameInstanceField("Terraria.DataStructures.EntitySource_BossSpawn", "Entity", "Target");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_FishedOut", "Entity", "Fisher");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStriking", "Attacker");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 	}
 
 	private static void AddTextureRenames() {

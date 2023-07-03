@@ -1,18 +1,26 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_ItemUse_WithAmmo.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_ItemUse_WithAmmo.cs
-@@ -1,11 +_,13 @@
+@@ -1,12 +_,19 @@
 +#nullable enable
++
++using Terraria.ID;
++using Terraria.ModLoader;
 +
  namespace Terraria.DataStructures;
  
  public class EntitySource_ItemUse_WithAmmo : EntitySource_ItemUse
  {
- 	public readonly int AmmoItemIdUsed;
+-	public readonly int AmmoItemIdUsed;
++	/// <summary>
++	/// A <see cref="ItemID"/> or <see cref="ModContent.ItemType{T}"/>
++	/// </summary>
++	public int AmmoItemIdUsed { get; }
  
 -	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed)
 -		: base(entity, item)
-+	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed, string? context = null)
-+		: base(entity, item, context)
++	public EntitySource_ItemUse_WithAmmo(Player player, Item item, int ammoItemId, string? context = null) : base(player, item, context)
  	{
- 		AmmoItemIdUsed = ammoItemIdUsed;
+-		AmmoItemIdUsed = ammoItemIdUsed;
++		AmmoItemIdUsed = ammoItemId;
  	}
+ }

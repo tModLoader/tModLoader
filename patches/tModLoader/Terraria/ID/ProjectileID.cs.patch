@@ -224,7 +224,7 @@
  		public static bool[] MinionTargettingFeature = Factory.CreateBoolSet(191, 192, 193, 194, 266, 317, 373, 375, 387, 388, 390, 393, 407, 423, 533, 613, 625, 755, 758, 759, 831, 833, 834, 835, 864, 946, 951, 963, 970, 377, 308, 643, 641, 663, 665, 667, 677, 678, 679, 688, 689, 690, 691, 692, 693, 966);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile can be sacrificed to summon other minions.
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then other minions will be sacrificed to make room to summon this minion.
 +		/// <br/> Used for all standard minions.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>

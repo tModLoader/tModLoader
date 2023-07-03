@@ -199,6 +199,79 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	}
 
 	/// <summary>
+	/// Used to keep vanilla and modded gravity effects working neatly
+	/// </summary>
+	private float vanillaGravity = 0.3f;
+
+	/// <summary>
+	/// Multiply this value in order to change the NPCs active gravity, this can be done in AI as gravity values are reset slightly beforehand, and used slightly after.
+	/// </summary>
+	public MultipliableFloat GravityMultiplier = MultipliableFloat.One;
+
+	/// <summary>
+	/// The current change in velocity due to gravity applied every frame. <br/>
+	/// Multiply <see cref="GravityMultiplier"/> to modify this value
+	/// </summary>
+	public float gravity {
+		get => vanillaGravity * GravityMultiplier.Value;
+		private set {
+			GravityMultiplier = MultipliableFloat.One;
+			vanillaGravity = value;
+		}
+	}
+
+	/// <summary>
+	/// Used to keep vanilla and modded gravity effects working neatly
+	/// </summary>
+	private float vanillaMaxFallSpeed = 10f;
+
+	/// <summary>
+	/// Multiply this value in order to change the NPCs active maxFallSpeed, this can be done in AI as gravity values are reset slightly beforehand
+	/// </summary>
+	public MultipliableFloat MaxFallSpeedMultiplier = MultipliableFloat.One;
+
+	/// <summary>
+	/// The current fall speed cap in velocity applied every frame. <br/>
+	/// Multiply <see cref="MaxFallSpeedMultiplier"/> to modify this value
+	/// </summary>
+	public float maxFallSpeed {
+		get => vanillaMaxFallSpeed * MaxFallSpeedMultiplier.Value;
+		private set {
+			MaxFallSpeedMultiplier = MultipliableFloat.One;
+			vanillaMaxFallSpeed = value;
+		}
+	}
+
+	/// <summary>
+	/// The effect of different liquids on NPC gravity. Provided for reference only, modifying these will have no effect. <br/>
+	/// Corresponds with wet, lavaWet, honetWet, and shimmerWet.
+	///	</summary>
+	public static float[] GravityWetMultipliers { get; } = new float[4] { 2f / 3f, 2f / 3f, 1f / 3f, 1.5f / 3f };
+
+	/// <summary>
+	/// The effect of different liquids on NPC maxFallSpeed. Provided for reference only, modifying these will have no effect. <br/>
+	/// Corresponds with wet, lavaWet, honetWet, and shimmerWet.
+	///	</summary>
+	public static float[] MaxFallSpeedWetMultipliers { get; } = new float[4] { 0.7f, 0.7f, 0.4f, 0.55f };
+
+	/// <summary>
+	/// Set to disable vanilla type and AI based NPC gravity calculations. <br/>
+	/// Affects types 258, 425, 576, 577, 427, 426, 541, and the aiStyle 7. <br/>
+	/// Use with caution
+	/// </summary>
+	public bool GravityIgnoresType = false;
+
+	/// <summary>
+	/// Set to disable the effect of being in space on NPC gravity.
+	/// </summary>
+	public bool GravityIgnoresSpace = false;
+
+	/// <summary>
+	/// Set to disable the effect of being submerged in liquid on NPC gravity. <br/>
+	/// Note that being submerged in liquid overrides both type and space effects.
+	/// </summary>
+	public bool GravityIgnoresLiquid = false;
+
 	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
 	/// </summary>
 	/// <param name="buffType"></param>
@@ -214,7 +287,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		}
 	}
 
-	/// <summary>
 	/// Clears all buffs on this NPC that the NPC is currently immune (<see cref="buffImmune"/>) to. The buff types and times will then be synced to clients. Use after manually changing <see cref="buffImmune"/> or using <see cref="BecomeImmuneTo(int)"/>.<br/><br/>
 	/// <paramref name="anyBuffsCleared"/> will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br/><br/>
 	/// This should not be called on multiplayer clients.
