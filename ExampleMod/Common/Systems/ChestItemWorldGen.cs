@@ -36,13 +36,13 @@ namespace ExampleMod.Common.Systems
 					if (WorldGen.genRand.NextBool(3))
 						continue;
 					// Next we need to find the first empty slot for our item
-					for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++) {
+					for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++) {
 						if (chest.item[inventoryIndex].type == ItemID.None) {
 							// Place the item
 							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInFrozenChests[itemsToPlaceInFrozenChestsChoice]);
 							// Decide on the next item that will be placed.
 							itemsToPlaceInFrozenChestsChoice = (itemsToPlaceInFrozenChestsChoice + 1) % itemsToPlaceInFrozenChests.Length;
-							// Alternate approach: Random instead of cyclical: chest.item[inventoryIndex].SetDefaults(Main.rand.Next(itemsToPlaceInFrozenChests));
+							// Alternate approach: Random instead of cyclical: chest.item[inventoryIndex].SetDefaults(WorldGen.genRand.Next(itemsToPlaceInFrozenChests));
 							itemsPlaced++;
 							break;
 						}
