@@ -281,6 +281,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 		for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
 			var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
+			// This could be sped up with a reverse lookup if this proves too slow.
 			if (buffsToInherit.Contains(buffType)) {
 				buffImmune[i] = true;
 			}

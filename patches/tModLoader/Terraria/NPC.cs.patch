@@ -867,7 +867,7 @@
 +				}
 +			}
 +
-+			// Apply all `GrantImmunityWith`  (if immune to OnFire, add OnFire3, keep in mind this is _any_ of the immunities in `[OnFire3]` list)
++			// Apply all `GrantImmunityWith` (if immune to OnFire, add OnFire3, keep in mind this is _any_ of the immunities in `[OnFire3]` list)
 +			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
 +				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
 +				foreach (var inheritableBuff in buffsToInherit) {
