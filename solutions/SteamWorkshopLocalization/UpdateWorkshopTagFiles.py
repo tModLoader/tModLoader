@@ -34,9 +34,9 @@ steamToLocalizationKey = {
 }
 
 # English will be updated directly, if ever needed.
-languages = ['de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
-steamLanguages = ['german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
-TagsCategoryLanguage = ['Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język'] # not in tModLoader.json, so just do it manually for simplicity
+languages = ['en-US', 'de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
+steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
+TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język'] # not in tModLoader.json, so just do it manually for simplicity
 
 # TODO: what to do about latam-spanishlatinamerica, sc_schinese-steamsimplifiedchinese, tchinese-traditionalchinese, portuguese-portugalportuguese?
 # should we copy the results from the similar language? Not sure why there are 3 chinese either, steam website only has 2 options.
