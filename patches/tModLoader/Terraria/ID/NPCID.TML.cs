@@ -56,10 +56,5 @@ public partial class NPCID
 		/// Note: This set DOES NOT DO ANYTHING if your NPC doesn't use the Vanilla TownNPC aiStyle (aiStyle == 7).
 		/// </remarks>
 		public static bool[] AllowDoorInteraction = Factory.CreateBoolSet();
-
-		/// <summary>
-		/// Associates an NPC type (<see cref="NPC.type"/>) with the index of its advanced transformation set (<see cref="ShimmerTransforms.AdvancedShimmerSets"/>), this is automatically set behind the scenes by <see cref="ShimmerTransforms.AddAdvancedNPCShimmerTransformation(NPCShimmerTransformation)"/>
-		/// </summary>
-		internal static int[] ShimmerAdvancedTransformIndex = Factory.CreateIntSet(-1); // TML: #AdvancedShimmerTransformations
 	}
 }

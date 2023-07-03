@@ -121,10 +121,5 @@ partial class ItemID
 			{ GoldOre, (3, 13) },
 			{ PlatinumOre, (3, 13) },
 		};
-
-		/// <summary>
-		/// Associates an Item type (<see cref="Item.type"/>) with the index of its advanced transformation set (<see cref="ShimmerTransformation.AdvancedShimmerSets"/>), this is automatically set behind the scenes by <see cref="ShimmerTransformation.Register()"/>
-		/// </summary>
-		internal static int[] ShimmerAdvancedTransformIndex = Factory.CreateIntSet(-1); // TML: #AdvancedShimmerTransformations
 	}
 }

@@ -9,20 +9,21 @@ namespace Terraria.ModLoader;
 // TML: #AdvancedShimmerTransformations
 public sealed class ShimmerTransformation
 {
-	public static List<ShimmerTransformation[]> ModShimmerSet { get; private set; } = new();
+	public static Dictionary<(ModShimmerTypeID, int), List<ShimmerTransformation>> ModShimmerTransformations { get; private set; } = new();
 
-	public ShimmerTransformation(NPC npc) : this(new ModShimmerSource(ModShimmerTypeID.NPC, npc.type))
+	public ShimmerTransformation(NPC npc) : this((ModShimmerTypeID.NPC, npc.type))
 	{ }
 
-	public ShimmerTransformation(Item item) : this(new ModShimmerSource(ModShimmerTypeID.Item, item.type))
+	public ShimmerTransformation(Item item) : this((ModShimmerTypeID.Item, item.type))
 	{ }
 
-	public ShimmerTransformation() : this(new ModShimmerSource(ModShimmerTypeID.Null, -1))
-	{ }
-
-	public ShimmerTransformation(ModShimmerSource shimmerSource)
+	private ShimmerTransformation((ModShimmerTypeID, int) entityIdentification)
 	{
-		Source = shimmerSource;
+		instantiatorEntity = entityIdentification;
+	}
+
+	public ShimmerTransformation()
+	{
 	}
 
 	/// <summary>
@@ -35,11 +36,11 @@ public sealed class ShimmerTransformation
 	/// </summary>
 	public List<ModShimmerResult> Results { get; private set; } = new();
 
-	public ModShimmerSource Source { get; private set; }
+	private (ModShimmerTypeID, int)? instantiatorEntity;
 	public bool TreatAsVanilla { get; private set; }
 
 	/// <summary>
-	/// Disallows transformation if a transformation result includes either a bone or a solar tablet fragment, when skeletron or golem are undefeated
+	/// Disallows if a transformation result includes either a bone or a solar tablet fragment, when skeletron or golem are undefeated respectively
 	/// </summary>
 	public bool CheckVanillaConstraints { get; private set; } = true;
 
@@ -66,7 +67,7 @@ public sealed class ShimmerTransformation
 	/// <summary>
 	/// Makes this shimmer operation use the vanilla code for shimmering, restricts shimmer operations to the following constraints:
 	/// <list type="bullet">
-	/// <item/> Requires the type of the transformation origin to be set via <see cref="SetAsNPCTransformation"/> or <see cref="SetAsItemTransformation"/>, this is already done if instantiated from an instance of <see cref="ModNPC"/> or <see cref="ModItem"/>
+	/// <item/> Requires the type of the transformation origin to be set via <see cref="SetTransformationSourceType"/> this is already done if instantiated from an instance of <see cref="ModNPC"/>, <see cref="ModItem"/>, or <see cref="ModProjectile"/>
 	/// <item/> NPCs can only transform into either one npc or one item
 	/// <item/> Items may transform into any combination of other items but can only transform into single npcs and will use release logic to do so
 	/// </list>
@@ -78,23 +79,17 @@ public sealed class ShimmerTransformation
 		return this;
 	}
 
-	public ShimmerTransformation SetAsNPCTransformation()
-	{
-		Source = new(ModShimmerTypeID.NPC, Source.Type);
-		return this;
-	}
-
-	public ShimmerTransformation SetAsItemTransformation()
-	{
-		Source = new(ModShimmerTypeID.Item, Source.Type);
-		return this;
-	}
+	//public ShimmerTransformation SetTransformationSourceType(ModShimmerTypeID modShimmerTypeID)
+	//{
+	//	Source = new(modShimmerTypeID, Source.Type);
+	//	return this;
+	//}
 
 	/// <summary>
 	///	Called in addition to conditions to check if the entity shimmers
 	/// </summary>
-	/// <param name="origin"> The entity that was shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
-	public delegate bool CanShimmerCallBack(Entity origin);
+	/// <param name="source"> The entity that was shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
+	public delegate bool CanShimmerCallBack(Entity source);
 
 	internal CanShimmerCallBack CanShimmerCallBacks;
 
@@ -105,17 +100,27 @@ public sealed class ShimmerTransformation
 	}
 
 	/// <summary>
-	/// By default just checks the conditions, when overriding in a derived class remember that you will have to check base.CanShimmer in order to preserve this behavior
+	/// Checks if the entity supplied can undergo a shimmer transformation
 	/// </summary>
-	/// <returns>True if the entity should proceed to transform</returns>
-	public bool CanShimmer(Entity entity) => Conditions.All((condition) => condition.IsMet()) && (CanShimmerCallBacks?.Invoke(entity) ?? true) && (!CheckVanillaConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
+	/// <param name="entity">The entity being shimmered</param>
+	/// <returns> true if:
+	/// <list type="bullet">
+	/// <item/> All <see cref="Conditions"/> return true
+	/// <item/> All <see cref="CanShimmerCallBacks"/> return true
+	/// <item/> All of the results do not contain bone or solar tablet fragments if <see cref="CheckVanillaConstraints"/> is true
+	/// </list>
+	/// </returns>
+	private bool CanShimmer(Entity entity)
+		=> Conditions.All((condition) => condition.IsMet())
+		&& (CanShimmerCallBacks?.Invoke(entity) ?? true)
+		&& (!CheckVanillaConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
 
 	/// <summary>
 	///	Called when the entity shimmers
 	/// </summary>
 	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
-	/// <param name="origin"> The entity that was shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
-	public delegate void OnShimmerCallBack(Entity origin, List<Entity> spawnedEntities);
+	/// <param name="source"> The entity that was shimmered </param>
+	public delegate void OnShimmerCallBack(Entity source, List<Entity> spawnedEntities);
 
 	internal OnShimmerCallBack OnShimmerCallBacks;
 
@@ -124,18 +129,23 @@ public sealed class ShimmerTransformation
 		OnShimmerCallBacks += callBack;
 		return this;
 	}
-
 	public void Register()
 	{
+		if (instantiatorEntity == null)
+			throw new InvalidOperationException("The Register() function must be passed a ModShimmerTypeID and an integer type for an entity if the transformation is not instantiated from a ModNPC/ModItem/ModProjectile type.");
+		Register(instantiatorEntity.Value.Item1, instantiatorEntity.Value.Item2);
+	}
+	public void Register(ModShimmerTypeID modShimmerType, int type)
+	{
 		if (TreatAsVanilla) {
-			switch (Source.EntityType) {
+			switch (modShimmerType) {
 				case ModShimmerTypeID.NPC:
 					if (Results.Count != 1)
 						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires there to be exactly 1 result");
 					if (Results[0].Count != 1)
 						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires the result to have a count of exactly 1");
-					if (Results[0].ResultType == ModShimmerTypeID.Custom)
-						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires its result not be Custom");
+					if (Results[0].ResultType == ModShimmerTypeID.Custom || Results[0].ResultType == ModShimmerTypeID.Projectile || Results[0].ResultType == ModShimmerTypeID.Null)
+						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires its result not be custom, null or projectile");
 					break;
 
 				case ModShimmerTypeID.Item:
@@ -148,64 +158,45 @@ public sealed class ShimmerTransformation
 			};
 		}
 
-		if (ShimmerAdvancedTransformIndex()[Source.Type] >= 0) {
-			ModShimmerSet[ShimmerAdvancedTransformIndex()[Source.Type]] = ModShimmerSet[ShimmerAdvancedTransformIndex()[Source.Type]].Append(this).ToArray();
-		}
-		else {
-			ModShimmerSet.Add(new ShimmerTransformation[] { this });
-			ShimmerAdvancedTransformIndex()[Source.Type] = ModShimmerSet.Count - 1;
-		}
+		if (!ModShimmerTransformations.TryAdd((modShimmerType, type), new() { this })) //Try add a new entry for the tuple
+			ModShimmerTransformations[(modShimmerType, type)].Add(this); // If it fails, entry exists, therefore add to list
 	}
 
-	private int[] ShimmerAdvancedTransformIndex() => ShimmerAdvancedTransformIndex(Source.EntityType);
+	public static bool DoModShimmer(NPC npc) => DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type));
 
-	private static int[] ShimmerAdvancedTransformIndex(ModShimmerTypeID shimmerTypeID)
+	public static bool DoModShimmer(Item item) => DoModShimmer(item, (ModShimmerTypeID.Item, item.type));
+
+	public static bool DoModShimmer(Projectile projectile) => DoModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
+
+	private static bool DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
 	{
-		return shimmerTypeID switch {
-			ModShimmerTypeID.NPC => NPCID.Sets.ShimmerAdvancedTransformIndex,
-			ModShimmerTypeID.Item => ItemID.Sets.ShimmerAdvancedTransformIndex,
-			_ => throw new NotImplementedException()
-		};
-	}
-
-	public static bool DoModShimmer(NPC npc) => DoModShimmer(npc, new(ModShimmerTypeID.NPC, npc.type));
-
-	public static bool DoModShimmer(Item item) => DoModShimmer(item, new(ModShimmerTypeID.Item, item.type));
-
-	public static bool DoModShimmer(Projectile projectile) => DoModShimmer(projectile, new(ModShimmerTypeID.Projectile, projectile.type));
-
-	private static bool DoModShimmer(Entity entity, ModShimmerSource shimmerSource)
-	{
-		if (ShimmerAdvancedTransformIndex(shimmerSource.EntityType)[shimmerSource.Type] < 0)
+		List<ShimmerTransformation> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
+		if (transformations.Count  == 0)
 			return false;
 
-		foreach (ShimmerTransformation transformation in ModShimmerSet[ShimmerAdvancedTransformIndex(ModShimmerTypeID.NPC)[shimmerSource.Type]]) { // Loops possible transformations
-			if (TryModShimmerTransformation(entity, transformation)) {
-				CleanupShimmerSource(shimmerSource.EntityType, entity);
+		foreach (ShimmerTransformation transformation in transformations) { // Loops possible transformations
+			if (transformation.Results.Count > 0 && transformation.CanShimmer(entity)) { // Checks conditions and callback in CanShimmer
+				SpawnModShimmerResults(entity, transformation);
+				CleanupShimmerSource(entityIdentification.Item1, entity);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private static bool TryModShimmerTransformation(Entity entity, ShimmerTransformation transformation)
+	private static void SpawnModShimmerResults(Entity entity, ShimmerTransformation transformation)
 	{
-		if (transformation.Results.Count > 0 && transformation.CanShimmer(entity)) { // Checks conditions and callback in CanShimmer
-			List<Entity> spawnedEntities = new();
+		List<Entity> spawnedEntities = new();
 
-			for (int resultIndex = 0; resultIndex < transformation.Results.Count; resultIndex++)
-				SpawnModShimmerResult(entity, transformation.Results[resultIndex], resultIndex);
+		for (int resultIndex = 0; resultIndex < transformation.Results.Count; resultIndex++)
+			SpawnModShimmerResult(entity, transformation.Results[resultIndex], resultIndex);
 
-			transformation.OnShimmerCallBacks?.Invoke(entity, spawnedEntities);
+		transformation.OnShimmerCallBacks?.Invoke(entity, spawnedEntities);
 
-			if (Main.netMode == 0)
-				Item.ShimmerEffect(entity.Center);
-			else
-				NetMessage.SendData(146, -1, -1, null, 0, (int)entity.Center.X, (int)entity.Center.Y); //Shimmer effect net side
-
-			return true;
-		}
-		return false;
+		if (Main.netMode == 0)
+			Item.ShimmerEffect(entity.Center);
+		else
+			NetMessage.SendData(146, -1, -1, null, 0, (int)entity.Center.X, (int)entity.Center.Y); //Shimmer effect net side
 	}
 
 	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, int resultIndex)
@@ -332,10 +323,3 @@ public sealed record ModShimmerResult(ModShimmerTypeID ResultType, int Type, int
 	public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true)
 	{ }
 }
-
-/// <summary>
-/// A record representing the type information of an entity that will transform in shimmer
-/// </summary>
-/// <param name="EntityType"> The type of entity to shimmer </param>
-/// <param name="Type"> The type of the entity to shimmer </param>
-public sealed record ModShimmerSource(ModShimmerTypeID EntityType, int Type);
