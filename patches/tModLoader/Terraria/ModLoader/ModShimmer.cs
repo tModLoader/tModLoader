@@ -37,7 +37,6 @@ public sealed class ShimmerTransformation
 	public List<ModShimmerResult> Results { get; private set; } = new();
 
 	private (ModShimmerTypeID, int)? instantiatorEntity;
-	public bool TreatAsVanilla { get; private set; }
 
 	/// <summary>
 	/// Disallows if a transformation result includes either a bone or a solar tablet fragment, when skeletron or golem are undefeated respectively
@@ -61,21 +60,6 @@ public sealed class ShimmerTransformation
 	public ShimmerTransformation AddResult(ModShimmerResult result)
 	{
 		Results.Add(result);
-		return this;
-	}
-
-	/// <summary>
-	/// Makes this shimmer operation use the vanilla code for shimmering, restricts shimmer operations to the following constraints:
-	/// <list type="bullet">
-	/// <item/> Requires the type of the transformation origin to be set via <see cref="SetTransformationSourceType"/> this is already done if instantiated from an instance of <see cref="ModNPC"/>, <see cref="ModItem"/>, or <see cref="ModProjectile"/>
-	/// <item/> NPCs can only transform into either one npc or one item
-	/// <item/> Items may transform into any combination of other items but can only transform into single npcs and will use release logic to do so
-	/// </list>
-	/// If these are not met <see cref="Register()"/> will throw an error
-	/// </summary>
-	public ShimmerTransformation SetTreatAsVanilla()
-	{
-		TreatAsVanilla = true;
 		return this;
 	}
 
@@ -129,49 +113,42 @@ public sealed class ShimmerTransformation
 		OnShimmerCallBacks += callBack;
 		return this;
 	}
+
 	public void Register()
 	{
 		if (instantiatorEntity == null)
 			throw new InvalidOperationException("The Register() function must be passed a ModShimmerTypeID and an integer type for an entity if the transformation is not instantiated from a ModNPC/ModItem/ModProjectile type.");
 		Register(instantiatorEntity.Value.Item1, instantiatorEntity.Value.Item2);
 	}
+
 	public void Register(ModShimmerTypeID modShimmerType, int type)
 	{
-		if (TreatAsVanilla) {
-			switch (modShimmerType) {
-				case ModShimmerTypeID.NPC:
-					if (Results.Count != 1)
-						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires there to be exactly 1 result");
-					if (Results[0].Count != 1)
-						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires the result to have a count of exactly 1");
-					if (Results[0].ResultType == ModShimmerTypeID.Custom || Results[0].ResultType == ModShimmerTypeID.Projectile || Results[0].ResultType == ModShimmerTypeID.Null)
-						throw new InvalidOperationException("Using TreatAsVannila with an NPC requires its result not be custom, null or projectile");
-					break;
-
-				case ModShimmerTypeID.Item:
-					if (Results.Any(result => result.ResultType != ModShimmerTypeID.Item))
-						throw new InvalidOperationException("Using TreatAsVannila with an Item requires all results have a type of Item");
-					break;
-
-				default:
-					throw new InvalidOperationException("Using TreatAsVannila requires the type of the transformation origin to be set via SetAsNPCTransformation() or SetAsItemTransformation()");
-			};
-		}
-
 		if (!ModShimmerTransformations.TryAdd((modShimmerType, type), new() { this })) //Try add a new entry for the tuple
 			ModShimmerTransformations[(modShimmerType, type)].Add(this); // If it fails, entry exists, therefore add to list
 	}
 
+	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
+	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
 	public static bool DoModShimmer(NPC npc) => DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type));
 
+	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
+	/// <param name="item"> The <see cref="Item"/> to be shimmered </param>
 	public static bool DoModShimmer(Item item) => DoModShimmer(item, (ModShimmerTypeID.Item, item.type));
 
+	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
+	/// <param name="projectile"> The <see cref="Projectile"/> to be shimmered </param>
 	public static bool DoModShimmer(Projectile projectile) => DoModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
 
+	/// <summary>
+	/// Shimmers the entity passed, do not call on multiplayer clients
+	/// </summary>
+	/// <param name="entity"> The <see cref="Entity"/> to be shimmered </param>
+	/// <param name="entityIdentification"> tag required information not included in <see cref="Entity"/> </param>
+	/// <returns> True if the transformation is successful</returns>
 	private static bool DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
 	{
 		List<ShimmerTransformation> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
-		if (transformations.Count  == 0)
+		if (transformations.Count == 0)
 			return false;
 
 		foreach (ShimmerTransformation transformation in transformations) { // Loops possible transformations
@@ -186,39 +163,53 @@ public sealed class ShimmerTransformation
 
 	private static void SpawnModShimmerResults(Entity entity, ShimmerTransformation transformation)
 	{
-		List<Entity> spawnedEntities = new();
+		List<Entity> spawnedEntities = new(); // List to be passed for onShimmerCallBacks
+		int resultSpawnCounter = 0; //Used to offset spawned stuff
 
-		for (int resultIndex = 0; resultIndex < transformation.Results.Count; resultIndex++)
-			SpawnModShimmerResult(entity, transformation.Results[resultIndex], resultIndex);
+		foreach (ModShimmerResult result in transformation.Results)
+			SpawnModShimmerResult(entity, result, ref resultSpawnCounter, spawnedEntities); //Spawns the individual result, adds it to the list
 
 		transformation.OnShimmerCallBacks?.Invoke(entity, spawnedEntities);
 
 		if (Main.netMode == 0)
 			Item.ShimmerEffect(entity.Center);
 		else
-			NetMessage.SendData(146, -1, -1, null, 0, (int)entity.Center.X, (int)entity.Center.Y); //Shimmer effect net side
+			NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)entity.Center.X, (int)entity.Center.Y);
 	}
 
-	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, int resultIndex)
+	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, ref int resultIndex, List<Entity> spawned)
 	{
+		int stackCounter = 1;
+		if (entity is Item) {
+			stackCounter = (entity as Item).stack;
+		}
+
 		switch (shimmerResult.ResultType) {
 			case ModShimmerTypeID.Item: {
-				int num = Item.NewItem(entity.GetSource_Misc(context: ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, entity.width, entity.height, shimmerResult.Type);
-				Main.item[num].stack = shimmerResult.Count;
-				Main.item[num].shimmerTime = 1f;
-				Main.item[num].shimmered = true;
-				Main.item[num].shimmerWet = true;
-				Main.item[num].wet = true;
-				Main.item[num].velocity *= 0.1f;
-				Main.item[num].playerIndexTheItemIsReservedFor = Main.myPlayer;
-				NetMessage.SendData(145, -1, -1, null, num, 1f);// net sync spawning the item
+				while (stackCounter > 0) { // Since DoShimmer excludes multiplayer, we're in server or single player code here 
+					Item item = Main.item[Item.NewItem(entity.GetSource_Misc(context: ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, entity.width, entity.height, shimmerResult.Type)];
+					item.stack = Math.Min(item.maxStack, stackCounter);
+					stackCounter -= item.stack;
+					item.shimmerTime = 1f;
+					item.shimmered = true;
+					item.shimmerWet = true;
+					item.wet = true;
+					item.velocity *= 0.1f;
+					item.playerIndexTheItemIsReservedFor = Main.myPlayer;
+					NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, item.whoAmI, 1f); // net sync spawning the item
 
-				//spawnedItems.Add(Main.item[num]); TODO fix with delegate
+					spawned.Add(item);
+					resultIndex++;
+				}
 				break;
 			}
 
 			case ModShimmerTypeID.NPC: {
-				for (int i = 0; i < shimmerResult.Count; i++) { // Loop spawn NPCs, will more than likely always be only one, but for the sake of completeness this is here
+				int spawnCount = Math.Min(NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(shimmerResult.Count * stackCounter, 200), 50);
+				// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set,
+				// technically can be violated because multiple NPCs can be put into the same transformation
+
+				for (int i = 0; i < spawnCount; i++) { // Loop spawn NPCs
 					if (Main.netMode != NetmodeID.MultiplayerClient) { // Else use the custom stuff and avoid spawning on multiplayer
 						NPC newNPC = NPC.NewNPCDirect(entity.GetSource_Misc(context: ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, shimmerResult.Type); //Should cause net update stuff
 
@@ -226,7 +217,6 @@ public sealed class ShimmerTransformation
 						if (entity is NPC && shimmerResult.KeepVanillaTransformationConventions) {
 							newNPC.extraValue = (entity as NPC).extraValue;
 							newNPC.CopyInteractions((entity as NPC));
-							newNPC.SpawnedFromStatue = (entity as NPC).SpawnedFromStatue;
 							newNPC.spriteDirection = (entity as NPC).spriteDirection;
 							newNPC.shimmerTransparency = (entity as NPC).shimmerTransparency;
 
@@ -237,12 +227,19 @@ public sealed class ShimmerTransformation
 								newNPC.buffTime[j] = (entity as NPC).buffTime[j];
 							}
 						}
-
-						newNPC.Center = entity.Center + new Vector2(25f * ((1 - shimmerResult.Count) / 2 + i), 0); //Vanilla does not do centering like this, but otherwise multiple NPCs stack
+						else {
+							newNPC.shimmerTransparency = 1f;
+						}
 						newNPC.velocity = entity.velocity;
-
-						//spawnedNPCs.Add(newNPC); fix with delegate
 						newNPC.TargetClosest();
+						spawned.Add(newNPC);
+
+						if (Main.netMode == 2) {
+							NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, newNPC.whoAmI);
+							NetMessage.SendData(MessageID.NPCBuffs, -1, -1, null, newNPC.whoAmI);
+							newNPC.netUpdate = true;
+						}
+						resultIndex++;
 					}
 				}
 
@@ -252,7 +249,13 @@ public sealed class ShimmerTransformation
 			case ModShimmerTypeID.Projectile:
 				throw new NotImplementedException();
 
+			case ModShimmerTypeID.CoinLuck: // Make sure to check this works right, if you're reading this while reviewing please remind me bc I def will forget
+				Main.player[Main.myPlayer].AddCoinLuck(entity.Center, stackCounter * shimmerResult.Count);
+				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, (int)entity.Center.X, (int)entity.Center.Y, stackCounter * shimmerResult.Count);
+				break;
+
 			case ModShimmerTypeID.Custom:
+				resultIndex += shimmerResult.Count;
 				break;
 
 			case ModShimmerTypeID.Null:
@@ -283,7 +286,7 @@ public sealed class ShimmerTransformation
 		if (Main.netMode == 2) {
 			npc.netSkip = -1;
 			npc.life = 0;
-			NetMessage.SendData(23, -1, -1, null, npc.whoAmI);
+			NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI);
 		}
 	}
 
@@ -307,6 +310,7 @@ public enum ModShimmerTypeID
 	NPC,
 	Item,
 	Projectile,
+	CoinLuck,
 	Custom,
 	Null,
 }
@@ -314,12 +318,18 @@ public enum ModShimmerTypeID
 /// <summary>
 /// A record representing the information to spawn and entity during a shimmer transformation
 /// </summary>
-/// <param name="ResultType"> The type of entity to spawn </param>
-/// <param name="Type"> The type of the entity to spawn </param>
-/// <param name="Count"> The number of this entity to spawn, if an item it will spawn in a stack </param>
-/// <param name="KeepVanillaTransformationConventions"> Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay spawned from a statue when shimmered </param>
-public sealed record ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count, bool KeepVanillaTransformationConventions)
+/// <param name="ResultType"> The type of shimmer operation this represents </param>
+/// <param name="Type"> The type of the entity to spawn, ignored when <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/> </param>
+/// <param name="Count"> The number of this entity to spawn, if <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck value, if custom, set this to the expected amount of physical entities spawned </param>
+/// <param name="KeepVanillaTransformationConventions"> Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay spawned from a statue when shimmered, if you don't know you need it, leave it true </param>
+public record struct ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count, bool KeepVanillaTransformationConventions)
 {
-	public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true)
-	{ }
+	/// <inheritdoc cref="ModShimmerResult"/>
+	public ModShimmerResult() : this(ModShimmerTypeID.Null, -1, -1, false) { }
+
+	/// <inheritdoc cref="ModShimmerResult"/>
+	/// <param name="ResultType"> The type of shimmer operation this represents </param>
+	/// <param name="Type"> The type of the entity to spawn, ignored when <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/> </param>
+	/// <param name="Count"> The number of this entity to spawn, if <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck value, if <see cref="ModShimmerTypeID.Custom"/>, set this to the expected amount of physical entities spawned as it affects the way the spawned entities are spread </param>
+	public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true) { }
 }
