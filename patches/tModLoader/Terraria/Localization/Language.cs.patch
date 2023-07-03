@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/Language.cs
 +++ src/tModLoader/Terraria/Localization/Language.cs
-@@ -1,23 +_,57 @@
+@@ -1,23 +_,60 @@
 +using System;
  using System.Text.RegularExpressions;
  using Terraria.Utilities;
@@ -10,6 +10,9 @@
 -public static class Language
 +public static partial class Language
  {
++	/// <summary>
++	/// The language the game is currently using.
++	/// </summary>
  	public static GameCulture ActiveCulture => LanguageManager.Instance.ActiveCulture;
  
 +	/// <summary>
