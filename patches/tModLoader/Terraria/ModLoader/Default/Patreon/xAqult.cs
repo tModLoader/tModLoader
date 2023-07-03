@@ -155,11 +155,12 @@ namespace Terraria.ModLoader.Default.Patreon
 			return new AfterParent(PlayerDrawLayers.Head);
 		}
 
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+			return drawInfo.drawPlayer.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face)
+				|| drawInfo.drawPlayer.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face);
+		}
+
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
-			if (drawInfo.drawPlayer.face != EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face) &&
-				drawInfo.drawPlayer.face != EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face)) {
-				return;
-			}
 			int insertIndex = -1;
 			for (int k = 0; k < drawInfo.DrawDataCache.Count; k++) {
 				if (drawInfo.DrawDataCache[k].texture == TextureAssets.Players[drawInfo.skinVar, 2].Value) {
@@ -198,11 +199,12 @@ namespace Terraria.ModLoader.Default.Patreon
 			return new AfterParent(PlayerDrawLayers.Wings);
         }
 
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+			return drawInfo.drawPlayer.wings == EquipLoader.GetEquipSlot(Mod, "xAqult_Wings", EquipType.Wings);
+		}
+
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			if (drawInfo.drawPlayer.dead) {
-				return;
-            }
-			if (drawInfo.drawPlayer.wings != EquipLoader.GetEquipSlot(Mod, "xAqult_Wings", EquipType.Wings)) {
 				return;
             }
 			DrawData? wingData = null;
