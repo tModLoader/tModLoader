@@ -193,6 +193,15 @@
  		if (_tileCounts[27] > 0)
  			HasSunflower = true;
  
+@@ -355,6 +_,8 @@
+ 
+ 	public int GetTileCount(ushort tileId) => _tileCounts[tileId];
+ 
++	public int GetLiquidCount(short liquidType) => _liquidCounts[liquidType];
++
+ 	public void Reset()
+ 	{
+ 		Array.Clear(_tileCounts, 0, _tileCounts.Length);
 @@ -388,6 +_,9 @@
  		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  		hasBanner = false;
