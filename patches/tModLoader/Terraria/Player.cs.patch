@@ -1511,11 +1511,15 @@
  	}
  
  	public void UpdateDyes()
-@@ -7002,12 +_,15 @@
+@@ -7002,12 +_,19 @@
  				int num = i % 10;
  				UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
  			}
-+			// Extra patch context.
++			// Needs to update modded slots between vanilla slots for proper ordering of dyes, so ModAccessorySlotPlayer doesn't override UpdateDyes and is manually called. Fixes #3061
++			if (i == 9)
++				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(false);
++			if (i == 19)
++				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(true);
  		}
 +
 +		PlayerLoader.UpdateDyes(this);
