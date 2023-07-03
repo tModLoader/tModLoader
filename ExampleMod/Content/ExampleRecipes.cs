@@ -41,7 +41,7 @@ namespace ExampleMod.Content
 			////////////////////////////////////////////////////////////////////////////////////
 
 			Recipe recipe = Recipe.Create(ModContent.ItemType<Items.ExampleItem>(), 999);
-			// This adds a requirement of 1 dirt block to the recipe.
+			// This adds a requirement of 1 stone block to the recipe.
 			recipe.AddIngredient(ItemID.StoneBlock);
 			// When you're done, call this to register the recipe.
 			recipe.Register();
@@ -66,7 +66,7 @@ namespace ExampleMod.Content
 				.AddIngredient(ItemID.Acorn, 10)
 				// We can also specify the current item as an ingredient
 				.AddIngredient(resultItem)
-				// Adds a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
+				// Adds a Mod Ingredient. Do not attempt ItemID.ExampleSword, it's not how it works.
 				.AddIngredient<Items.Weapons.ExampleSword>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower.
 				.AddIngredient(Mod, "ExampleSword")

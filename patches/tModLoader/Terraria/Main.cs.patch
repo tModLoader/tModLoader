@@ -392,7 +392,7 @@
 +	/// </summary>
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
  	public static bool[] tileTable = new bool[TileID.Count];
@@ -412,12 +412,16 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
-@@ -862,6 +_,8 @@
+@@ -861,7 +_,12 @@
+ 	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
-+	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that should preserve frame data should set this to true. </summary>
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
@@ -448,6 +452,17 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -972,6 +_,10 @@
+ 	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
+ 	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
+ 	public static List<int> itemAnimationsRegistered = new List<int>();
++	/// <summary>
++	/// The position of the top left corner of the screen in world coordinates. Modify in <see cref="ModSystem.ModifyScreenPosition"/> or <see cref="ModPlayer.ModifyScreenPosition"/>. Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.<br/><br/>
++	/// When manually drawing, subtracting Main.screenPosition from the world position of the thing being drawn will result in the correct screen coordinates for use in <see cref="SpriteBatch"/>.Draw methods. When drawing tiles or walls, an additional offset calculated as <c>Vector2 zero = Main.drawToScreen? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange);</c> needs to be added to the coordinates.
++	/// </summary>
+ 	public static Vector2 screenPosition;
+ 	public static Vector2 screenLastPosition;
+ 	public static int screenWidth = 1152;
 @@ -1026,6 +_,11 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -1666,6 +1681,75 @@
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  			int num2 = 5000;
  			for (int j = 0; j < 200; j++) {
+@@ -10219,12 +_,15 @@
+ 					case 131:
+ 						num3 = 1;
+ 						break;
++					/*
+ 					case 26:
+ 					case 27:
+ 					case 28:
+ 					case 29:
+ 					case 111:
+ 					case 471:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 11;
+ 						break;
+ 					case 113:
+@@ -10236,18 +_,24 @@
+ 					case 134:
+ 					case 135:
+ 					case 136:
++					/*
+ 					case 143:
+ 					case 144:
+ 					case 145:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 					case 266:
+ 						num3 = 3;
+ 						break;
++					/*
+ 					case 212:
+ 					case 213:
+ 					case 214:
+ 					case 215:
+ 					case 216:
+ 					case 491:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 8;
+ 						break;
+ 					case 245:
+@@ -10261,6 +_,7 @@
+ 					case 264:
+ 						num3 = 6;
+ 						break;
++					/*
+ 					case 381:
+ 					case 382:
+ 					case 383:
+@@ -10272,6 +_,9 @@
+ 					case 391:
+ 					case 395:
+ 					case 520:
++					*/
++					// No 387 tesla turret, handled via NoInvasionMusic below 
++					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 9;
+ 						break;
+ 					case 398:
+@@ -10309,6 +_,9 @@
+ 				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[j].type])
+ 					num3 = 12;
+ 
++				if (NPCID.Sets.NoInvasionMusic[npc[j].type] && NPC.GetNPCInvasionGroup(npc[j].type) != 0)
++					num3 = 0;
++
+ 				if (num3 == 0 && npc[j].boss)
+ 					num3 = 1;
+ 
 @@ -10320,6 +_,12 @@
  
  				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
@@ -1782,16 +1866,16 @@
  		else if (player[myPlayer].ZoneMeteor) {
  			newMusic = 2;
  		}
-@@ -10653,6 +_,9 @@
- 			else
- 				newMusic = 52;
+@@ -10590,6 +_,9 @@
+ 				newMusic = 14;
+ 			}
  		}
 +		else if (modPriority >= SceneEffectPriority.BiomeLow) {
 +			newMusic = modMusic;
 +		}
- 		else if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
- 			if (bloodMoon) {
- 				newMusic = 2;
+ 		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
+ 			if (player[myPlayer].ZoneHallow) {
+ 				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
@@ -5435,16 +5519,33 @@
  		if (num9 != undergroundBackground) {
  			oldUndergroundBackground = undergroundBackground;
  			undergroundBackground = num9;
+@@ -43390,6 +_,7 @@
+ 		int[] array = new int[7];
+ 		int[] array2 = new int[7];
+ 		for (int i = 0; i < 2; i++) {
++			// patch context, num10 below
+ 			int num10 = undergroundBackground;
+ 			if (i == 1)
+ 				num10 = oldUndergroundBackground;
 @@ -43580,6 +_,9 @@
  				array3[5] = 127;
  
  			array3[6] = 185 + hellBackStyle;
 +
-+			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num9, array3);
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num10, array3);
 +
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
  			LoadBackground(array3[2]);
+@@ -43698,7 +_,7 @@
+ 									Lighting.GetCornerColors(num24, num25, out var vertices);
+ 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+ 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+-									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 								}
+ 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+ 									Lighting.GetColor9Slice(num24, num25, ref slices);
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
@@ -5822,6 +5923,19 @@
  		if (!PlayerInput.Triggers.Current.MouseRight && !PlayerInput.Triggers.Current.MouseLeft && !preventStackSplitReset)
  			stackSplit = 0;
  
+@@ -51628,8 +_,12 @@
+ 		}
+ 
+ 		Vector2 value = screenPosition;
++		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
++		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
++		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
+ 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
+ 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
++		*/
+ 		Vector2 vector3 = Vector2.Zero;
+ 		float num2 = 0f;
+ 		float num3 = 0f;
 @@ -51684,6 +_,8 @@
  						else if (player.scope)
  							num5 = 0.5f;
@@ -5909,15 +6023,15 @@
  			}
  		}
  
-@@ -51852,6 +_,8 @@
+@@ -51850,6 +_,8 @@
+ 		}
+ 
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
- 		screenPosition.X = (int)screenPosition.X;
- 		screenPosition.Y = (int)screenPosition.Y;
 +		PlayerLoader.ModifyScreenPosition(LocalPlayer);
 +		SystemLoader.ModifyScreenPosition();
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
- 	}
- 
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
