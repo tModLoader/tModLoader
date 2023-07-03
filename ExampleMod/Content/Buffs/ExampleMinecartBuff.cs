@@ -1,8 +1,8 @@
-using Terraria.ModLoader;
-using ExampleMod.Content.Mounts;
+using Terraria.ID;
 using Terraria.Localization;
-using Terraria;
+using Terraria.ModLoader;
 using ExampleMod.Content.Items.Mounts;
+using ExampleMod.Content.Mounts;
 
 namespace ExampleMod.Content.Buffs
 {
@@ -18,14 +18,10 @@ namespace ExampleMod.Content.Buffs
 		public override LocalizedText Description => Language.GetText("BuffDescription.MinecartLeft");
 
 		public override void SetStaticDefaults() {
-			Main.buffNoTimeDisplay[Type] = true;
-			Main.buffNoSave[Type] = true;
-		}
-
-		public override void Update(Player player, ref int buffIndex) {
-			//TODO 1.4.5: review new Set for buff -> mount mapping, ExampleMountBuff too
-			player.mount.SetMount(ModContent.MountType<ExampleMinecartMount>(), player);
-			player.buffTime[buffIndex] = 10;
+			// Handles automatically mounting the player within Update, and setting Main.buffNoTimeDisplay/buffNoSave (no need to write yourself like in ExampleMountBuff)
+			BuffID.Sets.BasicMountData[Type] = new BuffID.Sets.BuffMountData() {
+				mountID = ModContent.MountType<ExampleMinecartMount>()
+			};
 		}
 	}
 }

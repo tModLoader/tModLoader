@@ -1425,6 +1425,31 @@
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
  		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
+@@ -7706,13 +_,24 @@
+ 		persistentBuff[77] = true;
+ 		persistentBuff[78] = true;
+ 		persistentBuff[79] = true;
++
++		Initialize_BuffDataFromMountData();
++		Initialize_TileAndNPCData1_Part2();
++	}
++
++	// Split so it can be called by TML separately
++	internal static void Initialize_BuffDataFromMountData()
++	{
+ 		for (int l = 0; l < BuffID.Sets.BasicMountData.Length; l++) {
+ 			if (BuffID.Sets.BasicMountData[l] != null) {
+ 				buffNoTimeDisplay[l] = true;
+ 				buffNoSave[l] = true;
+ 			}
+ 		}
++	}
+ 
++	private static void Initialize_TileAndNPCData1_Part2()
++	{
+ 		vanityPet[40] = true;
+ 		vanityPet[41] = true;
+ 		vanityPet[42] = true;
 @@ -9051,13 +_,21 @@
  	{
  	}
