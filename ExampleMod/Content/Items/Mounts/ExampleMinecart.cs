@@ -7,8 +7,7 @@ namespace ExampleMod.Content.Items.Mounts
 {
 	public class ExampleMinecart : ModItem
 	{
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Item.DefaultToMount(ModContent.MountType<ExampleMinecartMount>());
 			Item.width = 34;
 			Item.height = 22;

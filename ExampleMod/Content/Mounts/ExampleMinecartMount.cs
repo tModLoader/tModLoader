@@ -15,11 +15,9 @@ namespace ExampleMod.Content.Mounts
 			MountID.Sets.FacePlayersVelocity[Type] = true;
 
 			// Helper method setting many common properties for a minecart
-			// Notice that minecarts require two buffs, one for each side. They are manually created, hence why we can't use ModContent.BuffType
 			Mount.SetAsMinecart(
 				MountData,
-				Mod.Find<ModBuff>($"{nameof(ExampleMinecartBuff)}_Left").Type,
-				Mod.Find<ModBuff>($"{nameof(ExampleMinecartBuff)}_Right").Type,
+				ModContent.BuffType<ExampleMinecartBuff>(),
 				MountData.frontTexture
 			);
 

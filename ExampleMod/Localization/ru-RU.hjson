@@ -958,8 +958,6 @@ Mods: {
 				// DisplayName: Example Javelin Debuff
 				// Description: Losing life
 			}
-
-			ExampleMinecartBuff.DisplayName: "{$Items.ExampleMinecart.DisplayName}"
 		}
 
 		RecipeConditions.Night: С низким здоровьем
