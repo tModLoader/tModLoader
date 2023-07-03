@@ -516,7 +516,7 @@
 		"TagsVisualDescription": "Tweaks that change existing visualization (i.e. particle effects, etc.)",
 		"TagsLang": "Localization Support",
 		"TagsLangDescription": "This mod supports multiple languages",
-		"TagsGen": "Custom World Gen",
+		"TagsGen": "World Gen",
 		"TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)",
 		"TagsLanguage_English": "English",
 		"TagsLanguage_Spanish": "Spanish",

@@ -18,7 +18,7 @@
 +
 +		// TBD Grouping
 +		AddModTag("tModLoader.TagsLang", "Localization Support");
-+		AddModTag("tModLoader.TagsGen", "Custom World Gen");
++		AddModTag("tModLoader.TagsGen", "Custom World Gen"); // Note: Don't change internal name to "World Gen" here or on steam, it will most likely break legacy modders publishing updates. Unless we are sure the steam backend handles migrating from legacy internal names, keep the internal names consistent.
 +
 +		// Languages
 +		AddModTag("tModLoader.TagsLanguage_English", "English");
