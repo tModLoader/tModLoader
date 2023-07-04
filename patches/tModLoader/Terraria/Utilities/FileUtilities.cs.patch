@@ -17,3 +17,77 @@
  		}
  
  		public static string GetFullPath(string path, bool cloud) {
+@@ -38,10 +_,21 @@
+ 		}
+ 
+ 		public static void Copy(string source, string destination, bool cloud, bool overwrite = true) {
+-			if (!cloud)
++			if (!cloud) {
+ 				File.Copy(source, destination, overwrite);
+-			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+-				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
++				return;
++			}
++
++			// Sanitize the paths for Steam calls
++			string cloudPath = Social.Steam.CoreSocialModule.GetCloudSaveLocation();
++			destination = ConvertToRelativePath(cloudPath, destination);
++			source = ConvertToRelativePath(cloudPath, source);
++
++			if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination))) {
++				var bytes = SocialAPI.Cloud.Read(source);
++				SocialAPI.Cloud.Write(destination, bytes);
++			}
++				
+ 		}
+ 
+ 		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
+@@ -154,16 +_,24 @@
+ 			return match.Groups["path"].Value;
+ 		}
+ 
+-		public static void CopyFolder(string sourcePath, string destinationPath) {
++		public static void CopyFolder(string sourcePath, string destinationPath, bool isCloud = false, Regex excludeFilter = null) {
+ 			Directory.CreateDirectory(destinationPath);
+ 			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
+ 			for (int i = 0; i < directories.Length; i++) {
++				string relativePath = ConvertToRelativePath(sourcePath, directories[i]);
++				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
++					continue;
++
+ 				Directory.CreateDirectory(directories[i].Replace(sourcePath, destinationPath));
+ 			}
+ 
+ 			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
+ 			foreach (string obj in directories) {
++				string relativePath = ConvertToRelativePath(sourcePath, obj);
++				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
++					continue;
++
+-				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
++				Copy(obj, obj.Replace(sourcePath, destinationPath), isCloud, overwrite: true);
+ 			}
+ 		}
+ 
+@@ -176,6 +_,21 @@
+ 			finally {
+ 				Thread.CurrentThread.IsBackground = isBackground;
+ 			}
++		}
++
++		/// <summary>
++		/// Converts the full 'path' to remove the base path component.
++		/// Example: C://My Documents//Help Me I'm Hungry.txt is full 'path'
++		///		basePath is C://My Documents
++		///		Thus returns 'Help Me I'm Hungry.txt'
++		/// </summary>
++		public static string ConvertToRelativePath(string basePath, string fullPath) {
++			if (!fullPath.StartsWith(basePath)) {
++				ModLoader.Logging.tML.Debug($"string {fullPath} does not contain string {basePath}. Is this correct?");
++				return fullPath;
++			}
++
++			return fullPath.Substring(basePath.Length + 1);
+ 		}
+ 	}
+ }

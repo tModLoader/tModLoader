@@ -39,18 +39,18 @@ namespace Terraria
 			}
 		}
 
-		private static void PortOldSaveDirectories() {
+		private static void PortOldSaveDirectories(string savePath) {
 			// PortOldSaveDirectories should only run once no matter which branch is run first.
 
 			// Port old file format users
-			var oldBetas = Path.Combine(SavePath, "ModLoader", "Beta");
+			var oldBetas = Path.Combine(savePath, "ModLoader", "Beta");
 
 			if (!Directory.Exists(oldBetas))
 				return;
 
 			Logging.tML.Info($"Old tModLoader alpha folder \"{oldBetas}\" found, attempting folder migration");
 
-			var newPath = Path.Combine(SavePath, ReleaseFolder);
+			var newPath = Path.Combine(savePath, StableFolder);
 			if (Directory.Exists(newPath)){
 				Logging.tML.Warn($"Both \"{oldBetas}\" and \"{newPath}\" exist, assuming user launched old tModLoader alpha, aborting migration");
 				return;
@@ -71,12 +71,10 @@ namespace Terraria
 			Logging.tML.Info($"Folder Renames Success");
 		}
 
-		
-		private static void PortCommonFiles() {
-			/*
+		private static void PortCommonFilesToStagingBranches(string savePath) {
 			// Only create and port config files from stable if needed.
 			if(BuildInfo.IsDev || BuildInfo.IsPreview) {
-				var releasePath = Path.Combine(SavePath, ReleaseFolder);
+				var releasePath = Path.Combine(SavePath, StableFolder);
 				var newPath = Path.Combine(SavePath, BuildInfo.IsPreview ? PreviewFolder : DevFolder);
 				if (Directory.Exists(releasePath) && !Directory.Exists(newPath)) {
 					Directory.CreateDirectory(newPath);
@@ -86,18 +84,31 @@ namespace Terraria
 						File.Copy(Path.Combine(releasePath, "input profiles.json"), Path.Combine(newPath, "input profiles.json"));
 				}
 			}
-			*/
+		}
 
-			// Copy all current stable player files to 1.4.3-legacy during transition period
-			if (!Directory.Exists(Path.Combine(SavePath, ReleaseFolder)) && Directory.Exists(Path.Combine(SavePath, StableFolder))) {
-				Utilities.FileUtilities.CopyFolder(Path.Combine(SavePath, StableFolder), Path.Combine(SavePath, ReleaseFolder));
+		private static void Port143FilesFromStable(string savePath, bool isCloud) {
+			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
+
+			string newFolderPath = Path.Combine(savePath, Legacy143Folder);
+			string oldFolderPath = Path.Combine(savePath, StableFolder);
+
+			if (!Directory.Exists(newFolderPath) && Directory.Exists(oldFolderPath)) {
+				Utilities.FileUtilities.CopyFolder(oldFolderPath, newFolderPath, isCloud,
+					// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
+					excludeFilter: new System.Text.RegularExpressions.Regex("(Workshop|ModSources)($|/|\\))"));
 			}
 		}
 
+		internal static void PortFilesMaster(string savePath, bool isCloud) {
+			PortOldSaveDirectories(savePath);
+			PortCommonFilesToStagingBranches(savePath);
+			Port143FilesFromStable(savePath, isCloud);
+		}
 
-		public const string ReleaseFolder = "tModLoader-1.4.3";
+		public const string Legacy143Folder = "tModLoader-1.4.3";
 		public const string StableFolder = "tModLoader";
-		//public const string DevFolder = "tModLoader-dev";
+		public const string DevFolder = "tModLoader-dev";
+		public const string PreviewFolder = "tModLoader-preview";
 
 		private static void SetSavePath() {
 			SavePath =
@@ -109,19 +120,19 @@ namespace Terraria
 
 			// File migration is only attempted for the default save folder
 			if (!saveHere && !tmlSaveDirectoryParameterSet) {
-				PortOldSaveDirectories();
-				PortCommonFiles();
+				PortFilesMaster(SavePath, isCloud: false);
 			}
 
 			// 1.4.3 legacy custom statement - the legacy 143 folder
-			var fileFolder = ReleaseFolder;
+			var fileFolder = Legacy143Folder;
 
 			SavePath = Path.Combine(SavePath, fileFolder);
 
 			if (saveHere)
 				SavePath = fileFolder; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 
-			SavePathShared = Path.Combine(SavePath, "..", ReleaseFolder);
+			// Used for ModSources sharing across folders
+			SavePathShared = Path.Combine(SavePath, "..", StableFolder);
 
 			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
 			if (tmlSaveDirectoryParameterSet) {
