@@ -32,7 +32,7 @@
 +			// Sanitize the paths for Steam calls
 +			string cloudPath = Social.Steam.CoreSocialModule.GetCloudSaveLocation();
 +			destination = ConvertToRelativePath(cloudPath, destination);
-+			destination = ConvertToRelativePath(cloudPath, source);
++			source = ConvertToRelativePath(cloudPath, source);
 +
 +			if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination))) {
 +				var bytes = SocialAPI.Cloud.Read(source);
@@ -51,8 +51,8 @@
  			Directory.CreateDirectory(destinationPath);
  			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < directories.Length; i++) {
-+				string testStr = ConvertToRelativePath(sourcePath, directories[i]);
-+				if (excludeFilter != null && excludeFilter.IsMatch(testStr))
++				string relativePath = ConvertToRelativePath(sourcePath, directories[i]);
++				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
 +					continue;
 +
  				Directory.CreateDirectory(directories[i].Replace(sourcePath, destinationPath));
@@ -60,8 +60,8 @@
  
  			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
  			foreach (string obj in directories) {
-+				string testStr = ConvertToRelativePath(sourcePath, obj);
-+				if (excludeFilter != null && excludeFilter.IsMatch(testStr))
++				string relativePath = ConvertToRelativePath(sourcePath, obj);
++				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
 +					continue;
 +
 -				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
