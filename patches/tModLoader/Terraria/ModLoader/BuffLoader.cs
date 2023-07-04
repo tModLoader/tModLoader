@@ -99,6 +99,11 @@ public static class BuffLoader
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegateRightClick>(ref HookRightClick, globalBuffs, g => g.RightClick);
 	}
 
+	internal static void PostSetupContent()
+	{
+		Main.Initialize_BuffDataFromMountData();
+	}
+
 	internal static void FinishSetup()
 	{
 		foreach (ModBuff buff in buffs) {

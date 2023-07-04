@@ -816,6 +816,11 @@ Mods: {
 				// Tooltip: ""
 			}
 
+			ExampleMinecart: {
+				// DisplayName: Example Minecart
+				// Tooltip: ""
+			}
+
 			ExampleGravityDebuffBullet: {
 				// DisplayName: Example Gravity Debuff Bullet
 				// Tooltip: ""
