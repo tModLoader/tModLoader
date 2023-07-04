@@ -69,7 +69,7 @@
  			}
  		}
  
-@@ -176,6 +_,16 @@
+@@ -176,6 +_,21 @@
  			finally {
  				Thread.CurrentThread.IsBackground = isBackground;
  			}
@@ -82,7 +82,12 @@
 +		///		Thus returns 'Help Me I'm Hungry.txt'
 +		/// </summary>
 +		public static string ConvertToRelativePath(string basePath, string fullPath) {
-+			return fullPath.Replace(basePath + Path.DirectorySeparatorChar, "");
++			if (!fullPath.StartsWith(basePath)) {
++				ModLoader.Logging.tML.Debug($"string {fullPath} does not contain string {basePath}. Is this correct?");
++				return fullPath;
++			}
++
++			return fullPath.Substring(basePath.Length + 1);
  		}
  	}
  }
