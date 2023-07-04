@@ -1463,22 +1463,6 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -46845,6 +_,15 @@
- 		rare = (int)(num / 4f);
- 	}
- 
-+	/// <summary>
-+	/// This method sets a variety of Item values common to mount items.<br/>
-+	/// Specifically: <code>
-+	/// width = 36;
-+	/// height = 26;
-+	/// mountType = mount;
-+	/// </code>
-+	/// </summary>
-+	/// <param name="mount">The mount type</param>
- 	public void DefaultToMount(int mount)
- 	{
- 		width = 36;
 @@ -46852,7 +_,24 @@
  		mountType = mount;
  	}
