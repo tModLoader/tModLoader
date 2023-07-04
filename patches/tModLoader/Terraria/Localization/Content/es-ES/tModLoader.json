@@ -37,7 +37,7 @@
 		"SteamFamilyShareWarning": "Se ha detectado que estás utilizando una copia de Terraria compartida en familia.\nSteam no admite el préstamo familiar de tModLoader.\nSe ha cargado la solución experimental para ejecutar tModLoader.\nLas siguientes funciones no están disponibles:\n - Superposición de Steam\n - Multijugador de Steam",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
-		// "PleaseMoveTo143LegacyMessage": "tML will be updating to Terraria 1.4.4 soon, but many mods have not yet been ported.\n\nTo stay on Terraria 1.4.3 with your current mods, use the steam beta menu to switch to the 1.4.3-legacy branch of tModLoader.",
+		"PleaseMoveTo143LegacyMessage": "tModLoader actualizará a Terraria 1.4.4 pronto, pero muchos mods aún no han migrado.\n\nPara quedarte en terraria 1.4.3 con tus mods actuales, usa el menú de betas de steam para cambiar a la rama \"1.4.3-legacy\" de tModLoader.",
 		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
