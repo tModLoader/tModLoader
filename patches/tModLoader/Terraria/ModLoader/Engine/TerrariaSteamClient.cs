@@ -37,10 +37,7 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		internal static LaunchResult Launch() {
-			// SteammClient = 1 & SteamAppID = 128900 both set by steam client. Family share only sets SteamClient = 1
-			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1"
-				|| Environment.GetEnvironmentVariable("SteamAppId") != "") // temp condition for family share during off'ing test
-			{
+			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
 				Logger.Debug("Disabled. Launched outside steam client.");
 				return LaunchResult.Ok;
 			}
