@@ -307,7 +307,7 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="sightColor">The color this tile should glow with.</param>
+	/// <param name="sightColor">The color this tile should glow with, which defaults to <see cref="Color.White"/>.</param>
 	public virtual bool IsTileBiomeSightable(int i, int j, ref Color sightColor)
 	{
 		return false;

@@ -118,7 +118,7 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
-	/// <param name="sightColor">The color this tile should glow with.</param>
+	/// <param name="sightColor">The color this tile should glow with, which defaults to <see cref="Color.White"/>.</param>
 	public virtual bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
 	{
 		return null;
