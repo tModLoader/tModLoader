@@ -302,12 +302,13 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this tile glows white when the given player has the Biome Sight buff.
+	/// Allows you to determine whether this tile glows "sightColor" when the given player has the Biome Sight buff.
 	/// <br/>This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool IsTileBiomeSightable(int i, int j)
+	/// <param name="sightColor">The color this tile should glow with.</param>
+	public virtual bool IsTileBiomeSightable(int i, int j, ref Color sightColor)
 	{
 		return false;
 	}

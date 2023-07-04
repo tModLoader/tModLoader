@@ -118,7 +118,7 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
-	public virtual bool? IsTileBiomeSightable(int i, int j, int type)
+	public virtual bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
 	{
 		return null;
 	}

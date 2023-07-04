@@ -3180,7 +3180,7 @@
 -	public static bool IsTileBiomeSightable(ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
 +	internal static bool IsTileBiomeSightable(int tileX, int tileY, ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
  	{
-+		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type);
++		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type, ref sightColor);
 +		if (modded.HasValue)
 +			return modded.Value;
 +

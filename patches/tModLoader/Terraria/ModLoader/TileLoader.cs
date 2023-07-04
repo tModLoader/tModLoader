@@ -67,7 +67,8 @@ public static class TileLoader
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
-	private static Func<int, int, int, bool?>[] HookIsTileBiomeSightable;
+	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, ref Color sightColor);
+	private static DelegateIsTileBiomeSightable[] HookIsTileBiomeSightable;
 	private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
@@ -705,18 +706,18 @@ public static class TileLoader
 		return retVal;
 	}
 
-	public static bool? IsTileBiomeSightable(int i, int j, int type)
+	public static bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
 	{
 		bool? retVal = null;
 
 		ModTile modTile = GetTile(type);
 
-		if (modTile != null && modTile.IsTileBiomeSightable(i, j)) {
+		if (modTile != null && modTile.IsTileBiomeSightable(i, j, ref sightColor)) {
 			retVal = true;
 		}
 
 		foreach (var hook in HookIsTileBiomeSightable) {
-			bool? globalRetVal = hook(i, j, type);
+			bool? globalRetVal = hook(i, j, type, ref sightColor);
 			if (globalRetVal.HasValue) {
 				if (globalRetVal.Value) {
 					retVal = true;

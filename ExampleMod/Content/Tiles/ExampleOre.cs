@@ -31,7 +31,8 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// Example of how to enable the Biome Sight buff to highlight this tile
-		public override bool IsTileBiomeSightable(int i, int j) {
+		public override bool IsTileBiomeSightable(int i, int j, ref Color sightColor) {
+			sightColor = Color.Blue;
 			return true;
 		}
 	}
