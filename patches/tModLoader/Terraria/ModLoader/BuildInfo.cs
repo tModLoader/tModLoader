@@ -15,6 +15,7 @@ namespace Terraria.ModLoader
 		public static readonly string BuildIdentifier = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
 		public static readonly Version tMLVersion;
+		public static readonly Version stableVersion;
 		public static readonly BuildPurpose Purpose;
 		public static readonly string BranchName;
 		public static readonly string CommitSHA;
@@ -35,32 +36,21 @@ namespace Terraria.ModLoader
 		public static readonly string versionedNameDevFriendly;
 
 		static BuildInfo() {
-			var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('|');
-			tMLVersion = new Version(parts[0]);
-			if (parts.Length>=2) {
-				BranchName = parts[1];
-			}
-			else {
-				BranchName = "unknown";
-			}
-			if (parts.Length>=3) {
-				Enum.TryParse(parts[2], true, out Purpose);
-			}
-			if (parts.Length>=4) {
-				CommitSHA = parts[3];
-			}
-			else {
-				CommitSHA = "unknown";
-			}
-			if (parts.Length>=5) {
-				BuildDate = DateTime.FromBinary(long.Parse(parts[4])).ToLocalTime();
-			}
+			var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+') + 1).Split('|');
+			int i = 0;
+
+			tMLVersion = new Version(parts[i++]);
+			stableVersion = new Version(parts[i++]);
+			BranchName = parts[i++];
+			Enum.TryParse(parts[i++], true, out Purpose);
+			CommitSHA = parts[i++];
+			BuildDate = DateTime.FromBinary(long.Parse(parts[i++])).ToLocalTime();
 
 			// Version name for players
 			versionedName = $"tModLoader v{tMLVersion}";
 
 			if (!string.IsNullOrEmpty(BranchName) && BranchName != "unknown"
-				&& BranchName != "stable" && BranchName != "preview" && BranchName != "1.4")
+				&& BranchName != "stable" && BranchName != "preview" && BranchName != "1.4.3-legacy")
 				versionedName += $" {BranchName}";
 
 			if (Purpose != BuildPurpose.Stable)

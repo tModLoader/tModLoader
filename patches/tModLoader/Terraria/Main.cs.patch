@@ -304,10 +304,10 @@
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
  		public static string WorldPath = Path.Combine(SavePath, "Worlds");
 -		public static string CloudWorldPath = "worlds";
-+		public static string CloudWorldPath = (BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder) + "/worlds";
++		public static string CloudWorldPath = (Program.Legacy143Folder) + "/worlds";
  		public static string PlayerPath = Path.Combine(SavePath, "Players");
 -		public static string CloudPlayerPath = "players";
-+		public static string CloudPlayerPath = (BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder) + "/players";
++		public static string CloudPlayerPath = (Program.Legacy143Folder) + "/players";
  		public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  		public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  		public static KeyboardState inputText;

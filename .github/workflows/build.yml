@@ -209,11 +209,8 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Giving Purpose         
-          if [ ${{github.ref}} = 'refs/heads/stable' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/1.4.3-legacy' ] ; then
             export BUILDPURPOSE="Stable"
-          fi
-          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
-            export BUILDPURPOSE="Preview"
           fi
           echo ::endgroup::
           
@@ -258,6 +255,7 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TERRARIA_VERSION: 1436
           TMLVERSION: ${{ steps.version.outputs.new_version }}
+          STABLEVERSION: ${{ steps.stable.outputs.stable_version }}
                     
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
@@ -593,5 +591,8 @@ jobs:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
-          body: "Monthly Github Auto-release for stable"
+          makeLatest: false
+          prerelease: true
+          name: "1.4.3-Legacy Version Update: ${{ steps.version2.outputs.new_version }}"
+          body: "1.4.3-Legacy Github Auto-release"
           tag: ${{ steps.version2.outputs.new_version }}
