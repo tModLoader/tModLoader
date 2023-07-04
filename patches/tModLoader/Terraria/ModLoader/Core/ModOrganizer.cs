@@ -513,36 +513,23 @@ namespace Terraria.ModLoader.Core
 			// TODO: This logic is incorrect. I think sometimes we want to know every mod, and othertimes we want to know every mod with a version we can load.
 			// The tmods.Length == 1 check and the logic below contradict each other, sometimes returning null when no loadable mods and othertimes returning a mod path.
 			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length == 1)
-				return tmods[0];
-
-			string val = null;
-			Version currVersion = null;
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-
-				if (match.Success) {
-					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers > tmodVersion) {
-						if(testVers >= new Version(2023, 4))
-							modsReadyFor144.Add(Path.GetFileNameWithoutExtension(fileName));
-						continue;
-					}
-					else if (testVers == currVersion) {
-						val = fileName;
-					}
-					else if (testVers > currVersion) {
-						currVersion = testVers;
-						val = fileName;
-					}
-				}
-				else if (val == null) {
-					val = fileName;
-					currVersion = new Version(0, 12);
-				}
+			var information = AnalyzeWorkshopTmods(repo);
+			if (information == null) {
+				Logging.tML.Warn($"Unexpectedly missing .tMods in Workshop Folder {repo}");
+				return null;
 			}
-			return val;
+
+			var file144 = GetOrderedTmodWorkshopInfoForVersion(information, "1.4.4").FirstOrDefault().file;
+			if (file144 != null)
+				modsReadyFor144.Add(Path.GetFileNameWithoutExtension(file144));
+
+			var recommendedTmod = information.Where(t => t.tModVersion <= BuildInfo.tMLVersion).OrderByDescending(t => t.tModVersion).FirstOrDefault();
+			if (recommendedTmod == default) {
+				Logging.tML.Warn($"No .tMods found for this version in Workshop Folder {repo}. Defaulting to show newest");
+				return information.OrderByDescending(t => t.tModVersion).First().file;
+			}
+
+			return recommendedTmod.file;
 		}
 
 		// Delete in Mod Browsewr refactor - temp
@@ -557,17 +544,8 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo) {
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			HashSet<string> versions = new HashSet<string>();
-
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-				if (match.Success) {
-					versions.Add(GetBrowserVersionNumber(new Version(match.Groups[1].Value)));
-				}
-			}
-
-			return versions;
+			var summary = AnalyzeWorkshopTmods(repo);
+			return summary.Select(info => GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 		}
 
 		/// <summary>
@@ -579,43 +557,53 @@ namespace Terraria.ModLoader.Core
 			if (BuildInfo.IsPreview)
 				RemoveSkippablePreview(repo);
 
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length <= 3)
-				return;
-
 			// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
 			// we need to rollback to the last stable due to a significant bug.
 			// We also keep a 1.4.3 version from version 2022.9 prior
 
-			// Get the list of all tMod files on Workshop
-			List<(string file, Version tModVersion, bool isFolder)> information = new();
-			foreach (var filename in tmods) {
-				var match = PublishFolderMetadata.Match(filename);
-				if (match.Success) {
-					information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), isFolder: true));
-				}
-				else {
-					// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
-					// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
-					information.Add((filename, new Version(0, 12), isFolder: false));
-				}
-			}
+			var information = AnalyzeWorkshopTmods(repo);
+			if (information == null || information.Count() <= 3)
+				return;
 
 			(string browserVersion, int keepCount)[] keepRequirements =
 				{ ("1.4.3", 1), ("1.4.4", 3) };
 
 			foreach (var requirement in keepRequirements) {
 				// Get an ordered list for the particular version
-				var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
-					.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
+				var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
 
 				foreach (var item in mods) {
-					if (item.isFolder)
-						Directory.Delete(item.file, recursive: true);
+					if (item.isInFolder)
+						Directory.Delete(Path.GetDirectoryName(item.file), recursive: true);
 					else
 						File.Delete(item.file);
 				}
 			}
+		}
+
+		internal static IOrderedEnumerable<(string file, Version tModVersion, bool isInFolder)>
+			GetOrderedTmodWorkshopInfoForVersion(List<(string file, Version tModVersion, bool isInFolder)> information, string tmlVersion) {
+
+			return information.Where(t => GetBrowserVersionNumber(t.tModVersion) == tmlVersion).OrderByDescending(t => t.tModVersion);
+		}
+
+		internal static List<(string file, Version tModVersion, bool isInFolder)> AnalyzeWorkshopTmods(string repo) {
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+
+			// Get the list of all tMod files on Workshop
+			List<(string file, Version tModVersion, bool isInFolder)> information = new();
+			foreach (var filename in tmods) {
+				var match = PublishFolderMetadata.Match(filename);
+				if (match.Success) {
+					information.Add((filename, new Version(match.Groups[1].Value), isInFolder: true));
+				}
+				else {
+					// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
+					// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
+					information.Add((filename, new Version(0, 12), isInFolder: false));
+				}
+			}
+			return information;
 		}
 
 		// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6

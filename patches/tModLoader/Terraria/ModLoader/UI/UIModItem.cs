@@ -100,13 +100,12 @@ namespace Terraria.ModLoader.UI
 				Left = { Pixels = _modIconAdjust }
 			};
 			_uiModStateText.OnClick += ToggleEnabled;
-			Append(_uiModStateText);
 
-			if (!BuildInfo.IsDev && BuildInfo.tMLVersion < _mod.tModLoaderVersion) {
+			if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
 				string updateVersion = $"v{_mod.tModLoaderVersion}";
 				string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
-				bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
-				if (BuildInfo.IsStable && new Version(_mod.tModLoaderVersion.Major, _mod.tModLoaderVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
+
+				if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
 					updateVersion = $"Preview {updateVersion}";
 				if (ModOrganizer.GetBrowserVersionNumber(_mod.tModLoaderVersion) == "1.4.4") {
 					updateVersion = $"1.4.4 tModLoader";
@@ -124,6 +123,8 @@ namespace Terraria.ModLoader.UI
 				};
 				Append(tMLUpdateRequired);
 			}
+			else
+				Append(_uiModStateText);
 
 			int bottomRightRowOffset = -36;
 			_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
