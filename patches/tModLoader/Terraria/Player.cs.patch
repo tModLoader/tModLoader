@@ -1517,9 +1517,9 @@
  			}
 +			// Needs to update modded slots between vanilla slots for proper ordering of dyes, so ModAccessorySlotPlayer doesn't override UpdateDyes and is manually called. Fixes #3061
 +			if (i == 9)
-+				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(false);
++				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(socialSlots: false);
 +			if (i == 19)
-+				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(true);
++				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(socialSlots: true);
  		}
 +
 +		PlayerLoader.UpdateDyes(this);
