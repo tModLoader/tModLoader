@@ -302,7 +302,8 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this tile glows "sightColor" when the given player has the Biome Sight buff.
+	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the local player has the Biome Sight buff (https://terraria.wiki.gg/wiki/Biome_Sight_Potion).
+	/// <br/>Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
 	/// <br/>This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
