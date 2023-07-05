@@ -274,7 +274,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	string GetCommandToFindPathOfExecutable()
+	private static string GetCommandToFindPathOfExecutable()
 	{
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			return "where";
@@ -285,44 +285,49 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return "which";
 
 		Logging.tML.Debug("Getting command for finding path of the executable failed due to an unsupported operating system");
-
 		return null;
 	}
 
-	string GetSystemDotnetPath()
+	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
-		string commandToFindPathOfExecutable = GetCommandToFindPathOfExecutable();
-		if (commandToFindPathOfExecutable == null)
-			return null;
-
-		try {
-			string dotnetPath = Process.Start(new ProcessStartInfo {
-				FileName = commandToFindPathOfExecutable,
+		if (GetCommandToFindPathOfExecutable() is string cmd) {
+			yield return Process.Start(new ProcessStartInfo {
+				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Trim();
+		}
 
-			if (File.Exists(dotnetPath))
-				return dotnetPath;
+		// OSX fallback
+		var pathsFile = "/etc/paths.d/dotnet";
+		if (File.Exists(pathsFile)) {
+			var contents = File.ReadAllText(pathsFile).Trim();
+			Logging.tML.Debug($"Reading {pathsFile}: {contents}");
+			yield return contents + "/dotnet";
+		}
 
-			Logging.tML.Debug("Can't find dotnet on PATH");
+		// env var, often set on Linux
+		if (Environment.GetEnvironmentVariable("DOTNET_ROOT") is string dotnetRoot) {
+			Logging.tML.Debug($"Found env var DOTNET_ROOT: {dotnetRoot}");
+			yield return $"{dotnetRoot}/dotnet";
+		}
 
-			// Steam might be launched with insufficient PATH (currently known on OSX)
-			var pathsFile = "/etc/paths.d/dotnet";
-			if (File.Exists(pathsFile)) {
-				var contents = File.ReadAllText(pathsFile).Trim();
-				Logging.tML.Debug($"Reading {pathsFile}: {contents}");
-				dotnetPath = contents + "/dotnet";
+		// general unix fallback
+		yield return "/usr/bin/dotnet";
+	}
+
+	private static string GetSystemDotnetPath()
+	{
+		try {
+			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {
+				Logging.tML.Debug($"System dotnet install located at: {path}");
+				return path;
 			}
-
-			if (File.Exists(dotnetPath))
-				return dotnetPath;
 		}
-		catch (Exception e) {
-			Logging.tML.Debug("Finding dotnet on PATH failed: ", e);
-		}
+		catch (Exception) {}
 
+		Logging.tML.Debug("Finding dotnet on PATH failed");
 		return null;
 	}
 
