@@ -251,13 +251,20 @@
  		}
  	}
  
-@@ -99,81 +_,137 @@
+@@ -99,81 +_,144 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
 -		EnsureReloadActionExistsForType<T>();
 -		TotalAssets++;
 -		asset.SetToLoadingState();
++		// Don't hog the request lock when requesting an asset 'immediately' from a worker thread
++		// The only downside of this is that we have a thread here that could potentially do the deserialization, with lower latency than the thread pool
++		// In practice, the additional latency will be almost completely unnoticeable because
++		// assets can only be added to the repository by the main thread anyway, so we have to async and wait at some point regardless
++		if (mode == AssetRequestMode.ImmediateLoad && !IsMainThread)
++			mode = AssetRequestMode.AsyncLoad;
++
 +		var loadTask = LoadAssetWithPotentialAsync(asset, mode);
 +		asset.Wait = () => SafelyWaitForLoad(asset, loadTask, tracked: true);
 +	}
