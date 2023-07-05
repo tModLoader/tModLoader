@@ -16,6 +16,7 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
 using Terraria.Social.Steam;
 using Terraria.UI;
+using Terraria.Social;
 
 namespace Terraria.ModLoader.UI
 {
@@ -35,6 +36,7 @@ namespace Terraria.ModLoader.UI
 		//internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
+		internal const int infoMessageDelayedID = 10014;
 		//internal const int enterPassphraseMenuID = 10015;
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
@@ -55,6 +57,7 @@ namespace Terraria.ModLoader.UI
 		//internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
+		internal static UIForcedDelayInfoMessage infoMessageDelayed = new UIForcedDelayInfoMessage();
 		//internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
 		//internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
@@ -111,7 +114,7 @@ namespace Terraria.ModLoader.UI
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
 
-				if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+				else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
 					ModLoader.WarnedFamilyShare = true;
 					infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 				}
@@ -149,6 +152,15 @@ namespace Terraria.ModLoader.UI
 									Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
 								});
 					}
+				}
+				else if (ShouldShowMigrateTo143LegacyInstructions()) {
+					// 1.4.3 is being phased out. If the user is a stem user and is not on 1.4.3-legacy, then tell them to switch branches.
+					// GOG users don't update automatically, so no need.
+					// This is intended to show every launch.
+					infoMessageDelayed.Show(Language.GetTextValue("tModLoader.PleaseMoveTo143LegacyMessage"), Main.menuMode,
+						altButtonText: Language.GetTextValue("tModLoader.ViewInstructions"),
+						altButtonAction: () => Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches"));
+					infoMessageDelayed.Delay(10);
 				}
 				else if (ModLoader.PreviewFreezeNotification) {
 					ModLoader.PreviewFreezeNotification = false;
@@ -239,6 +251,10 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == infoMessageID) {
 				Main.MenuUI.SetState(infoMessage);
+				Main.menuMode = 888;
+			}
+			else if (Main.menuMode == infoMessageDelayedID) {
+				Main.MenuUI.SetState(infoMessageDelayed);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modPacksMenuID) {
@@ -450,6 +466,24 @@ namespace Terraria.ModLoader.UI
 				}
 			}
 			//Console.Clear();
+		}
+
+		internal static bool ShouldShowMigrateTo143LegacyInstructions() {
+			if (ModLoader.SeenMigrateTo143BranchMessage || SocialAPI.Mode != SocialMode.Steam)
+				return false;
+
+			bool OnBetaBranch = Steamworks.SteamApps.GetCurrentBetaName(out string branchName, 1000);
+			if (OnBetaBranch)
+				return false;
+
+			// User is on Stable. We need to check if this program is the actual one in the install dir or not.
+			string currentDirectory = Path.GetFullPath(Directory.GetCurrentDirectory());
+			Steamworks.SteamApps.GetAppInstallDir(Engine.Steam.TMLAppID_t, out string tModLoaderInstallLocation, 1000);
+
+			if(!string.Equals(currentDirectory, tModLoaderInstallLocation)) // TODO: Is there a better way?
+				return false;
+
+			return true; // User is using steam, hasn't seen the message, in on Stable branch, and is launching from the tmod install dir.
 		}
 	}
 }

@@ -34,7 +34,12 @@
 		"MenuModUpdatesAvailable": "（{0} 个模组可更新！）",
 		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
 		"13InfoButton": "使用tModLoader 1.3版本",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		"PleaseMoveTo143LegacyMessage": "tModLoader 很快将会移植至1.4.4，但是许多模组仍未被移植。\n\n请使用 steam beta 菜单切换 tModLoader 至 1.4.3-legacy 分支，以继续保持在 1.4.3 版本游玩您现有的模组",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",

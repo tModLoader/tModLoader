@@ -33,7 +33,12 @@
 		"MenuModUpdatesAvailable": "({0} {^0:atualização;atualizações} {^0:disponível;disponíveis}!)",
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
 		"13InfoButton": "Como Acessar o tModLoader 1.3",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		"PleaseMoveTo143LegacyMessage": "tModLoader irá atualizar para a versão 1.4.4 em breve, mas vários mods ainda não foram adaptados.\n\nPara ficar na versão 1.4.3 com os seus mods atuais, use o menu de betas da steam e mude para a versão \"1.4.3-legacy\" do tModLoader.",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "Lista de Mods",
@@ -162,6 +167,7 @@
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nEstimativa mais próxima: (Há um erro de ortografia ou de posicionamento da pasta?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Exceção Detectada Silenciosamente: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(veja {0} para o rastreamento completo)",
+		// "PlayerSaveFail": "An error occurred while saving the player",
 		"OpenLogs": "Abrir Registros",
 		"OpenWebHelp": "Abrir Ajuda na Web",
 		"SkipToMainMenu": "Pular o Carregamento de Mods",
