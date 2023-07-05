@@ -379,6 +379,7 @@
 		"MSPortToLatest": "运行tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "使用Visual Studio制作tModLoader模组现在需要安装.NET 6.0的SDK. 对此最简单的方案是安装Visual Studio 2022.\n\nGitHub上有教程（The Migration Guide）描述了关于将模组升级到1.4的必要变更, 也有关于如何使用tModPorter来自动完成很大一部分的变动.",
 		"DownloadNetSDK": "下载.NET软件开发工具包",
+		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
