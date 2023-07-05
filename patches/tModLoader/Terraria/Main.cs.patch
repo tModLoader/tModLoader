@@ -3263,6 +3263,24 @@
  		if (tileSpelunker[typeCache])
  			return true;
  
+@@ -17293,8 +_,16 @@
+ 		return false;
+ 	}
+ 
++	// TML: Added x/y to IsTileBiomeSightable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, Tile t, ref Microsoft.Xna.Framework.Color sightColor) =>
++		IsTileBiomeSightable(tileX, tileY, t.type, t.frameX, t.frameY, ref sightColor);
++
+-	public static bool IsTileBiomeSightable(ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
+ 	{
++		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type, ref sightColor);
++		if (modded.HasValue)
++			return modded.Value;
++
+ 		if (TileID.Sets.CorruptBiomeSight[type] || (remixWorld && type == 474)) {
+ 			sightColor = new Microsoft.Xna.Framework.Color(200, 100, 240);
+ 			return true;
 @@ -17325,19 +_,25 @@
  				continue;
  
