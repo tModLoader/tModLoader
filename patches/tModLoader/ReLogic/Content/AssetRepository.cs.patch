@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,64 +_,159 @@
+@@ -1,64 +_,149 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
@@ -53,16 +53,6 @@
 +			repository._assetTransferQueue.Enqueue(continuation);
 +			asset.Continuation = continuation;
 +		}
-+	}
-+
-+	private struct SafeToTransferAwaitable : INotifyCompletion
-+	{
-+		public ContinuationScheduler ContinuationScheduler { private get; init; }
-+		public SafeToTransferAwaitable GetAwaiter() => this;
-+		public void OnCompleted(Action action) => ContinuationScheduler.OnCompleted(action);
-+
-+		public bool IsCompleted => Monitor.IsEntered(ContinuationScheduler.repository._requestLock);
-+		public void GetResult() { }
 +	}
 +
 +	private static Thread _mainThread;
@@ -251,7 +241,7 @@
  		}
  	}
  
-@@ -99,81 +_,144 @@
+@@ -99,81 +_,149 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
@@ -277,12 +267,16 @@
 +			if (!Monitor.IsEntered(_requestLock))
 +				throw new Exception($"Asset load started without holding {nameof(_requestLock)}");
 +
++			// See comment above in LoadAsset. Don't want to hold the request lock during asset loading outside the main thread.
++			if (mode == AssetRequestMode.ImmediateLoad && !IsMainThread)
++				throw new Exception($"ImmediateLoad on non-main thread, should have been switched to AsyncLoad in {nameof(LoadAsset)}");
++
 +			TotalAssets++;
 +			asset.SetToLoadingState();
 +			Interlocked.Increment(ref _Remaining);
 +
 +			var rejectionReasons = new List<string>();
-+			var asyncCtx = new ContinuationScheduler(asset, this);
++			var mainThreadCtx = new MainThreadCreationContext(new (asset, this));
 +			foreach (var source in _sources) {
 +				if (source.Rejections.IsRejected(asset.Name) || source.GetExtension(asset.Name) is not string extension)
 +					continue;
@@ -293,12 +287,12 @@
 +				}
 +
 +				if (mode == AssetRequestMode.AsyncLoad)
-+					await Task.Yield(); // to the worker thread!
++					await Task.Yield(); // to the worker thread! (and release the lock)
 +
 +				T resultAsset;
 +				using (var stream = source.OpenStream(asset.Name + extension)) {
 +					try {
-+						resultAsset = await reader.FromStream<T>(stream, new MainThreadCreationContext() { ContinuationScheduler = asyncCtx });
++						resultAsset = await reader.FromStream<T>(stream, mainThreadCtx);
 +					} catch (Exception e) {
 +						source.Rejections.Reject(asset.Name, new ContentRejectionAssetReaderException(e));
 +						continue;
@@ -311,7 +305,8 @@
 +					continue;
 +				}
 +
-+				await new SafeToTransferAwaitable() { ContinuationScheduler = asyncCtx };
++				// Could just attempt to acquire the request lock here, but we don't want assets loading part-way through a frame
++				await mainThreadCtx;
 +				if (!Monitor.IsEntered(_requestLock)) // check async code is functioning as expected
 +					throw new Exception($"Asset transfer started without holding {nameof(_requestLock)}");
 +
@@ -452,7 +447,7 @@
 +		if (mode == AssetRequestMode.AsyncLoad)
 +			await Task.Yield(); // to the worker thread!
 +
-+		var mainThreadCtx = new MainThreadCreationContext() { ContinuationScheduler = new ContinuationScheduler(asset, this) };
++		var mainThreadCtx = new MainThreadCreationContext(new(asset, this));
 +		asset.SubmitLoadedContent(await reader.FromStream<T>(stream, mainThreadCtx), null);
  	}
  
