@@ -8,6 +8,8 @@ This directory contains utilities for a dedicated ***Linux*** or Docker server.
 
 [Management Script](#using-the-management-script)
 
+[Server Configuration](#server-configuration)
+
 ## Using The Management Script
 The `manage-tModLoaderServer.sh` script can be used to install tModLoader either directly from the GitHub release or from SteamCMD. The script is made to run fully standalone, so just download it to your server and run it. No other files from the repo are needed.
 
@@ -40,9 +42,6 @@ You can copy `enabled.json` and `install.txt` to your script directory and they 
 ### Launching
 To start a server, run `./manage-tModLoaderServer.sh --start`. The `--start` flag can be added to the installation process above to automatically start the server. Be sure to pass in `--folder` again if you used it during installation. The server can also be started by navigating to tModLoader's installation directory (Default `~/tModLoader` for GitHub, `~/Steam/steamapps/common/tModLoader` for SteamCMD) and running `./start-tModLoaderServer.sh`
 
-#### Automatically Selecting A World
-If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/serverconfig.txt) and change the settings how you like. Additional options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)
-
 ### Updating
 If an update for `manage-tModLoaderServer.sh` is available, a message will be printed letting you know one is available. It can be updated using `./manage-tModLoaderServer.sh --update-script`. An outdated script may contain bugs or lack features, so it is usually a good idea to update.
 
@@ -56,15 +55,13 @@ To install and run the container:
 * Install `docker` from your package manager or [Docker's Official Page](https://docs.docker.com/engine/install/)
   * **To check if Compose V2 is installed in this package**, run `docker compose version`. If the command errors, your manager still uses V1 and will need to additionally install the `docker-compose` package. All commands below assume Compose V2 is installed, so if you have V1 replace any `docker compose` commands with `docker-compose`
 * Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Dockerfile).
-* Next to those docker files, create a folder named `Terraria`, and place `enabled.json`, [install.txt](#obtaining-install.txt), [serverconfig.txt](#automatically-selecting-a-world), your worlds, and any `.tmod` files inside.
+* Next to those docker files, create a folder named `Terraria`, and place `enabled.json`, [install.txt](#obtaining-install.txt), [serverconfig.txt](#server-configuration), your worlds, and any `.tmod` files inside.
 * Edit `docker-compose.yml` with your GID and UID. These can be found by running `id`.
 * Run `docker compose build`
 * Run `docker compose up`
-  * To run without any interactivity, use `docker compose up -d`, and include [serverconfig.txt](#automatically-selecting-a-world) in the `Terraria` directory.
+  * To run without any interactivity, use `docker compose up -d`, and include [serverconfig.txt](#server-configuration) in the `Terraria` directory.
 
 The server will be available on port 7777.
-
-
 
 To attach to the server console, run `docker ps` to get the container ID and `docker attach CTID` to attach to it. To detach from the console press `Ctrl-P Ctrl-Q` to avoid shutting down or `Ctrl-C` to detach and shutdown the server.
 
@@ -73,3 +70,13 @@ To update, rebuild the container using `docker compose build` to update tModLoad
 
 ### Autostarting On Boot
 Add `restart: always` within `services.tml` inside of `docker-compose.yml`, then rebuild with `docker compose build`.
+
+## Server Configuration
+If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/serverconfig.txt) and change the settings how you like. Key options are defined below, and other options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)
+
+### World Name
+Setting `worldname` will change the default world name when creating a new world using [autocreate](#autocreate) **You do not need to include .wld in your world name**
+
+### Autocreate
+Set `autocreate=1` in your world to automatically make a new world if the path in `world` or a world with `worldname` does not exist.
+
