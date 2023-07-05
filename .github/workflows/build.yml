@@ -61,15 +61,13 @@ jobs:
           fi
           
           echo "Checking Version Updates"
-          if [[ "refs/heads/${{env.DevBranch}}" = $branch ]] ; then
+          newdt="$(date +%Y.%m)"
+          if [[ "refs/heads/${{env.DevBranch}}" = $branch && ! "$oldate" = "$newdt"]] ; then
             echo "Checking Version Updates for ${{env.DevBranch}}"
-             newdt="$(date +%Y.%m)"
-             if [[ ! "$oldate" = "$newdt" ]] ; then
-                echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
-                oldate="$newdt"
-                feature=1
-                patch=0
-             fi
+            echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
+            oldate="$newdt"
+            feature=1
+            patch=0
           elif [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
              echo "Checking Version Updates for Rollover"
              ((++feature))
