@@ -112,7 +112,7 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the local player has the Biome Sight buff (https://terraria.wiki.gg/wiki/Biome_Sight_Potion).
+	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
 	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default. 
 	/// <br/>This is only called on the local client.
 	/// </summary>
