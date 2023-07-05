@@ -21,6 +21,15 @@ if [ -d "$steamworksRename" ]; then
 	mv -v "$steamworksRename" "$root_dir/Libraries/steamworks.net" 2>&1 | tee -a "$LogFile"
 fi
 
+# For Linux Compatibility Tools that can mess with tModLoader running properly
+if [[ $LD_LIBRARY_PATH == *"SteamLinuxRuntime"* ]]; then
+	echo "Detected compatibility wrapper SteamLinuxRuntime." 2>&1 | tee -a "$LogFile"
+	export STEAM_COMPAT_SELECTED = "STEAM_LINUX_RUNTIME"
+elif [[ $LD_LIBRARY_PATH == *"Proton"* ]]; then
+	echo "Detected compatibility wrapper Proton." 2>&1 | tee -a "$LogFile"
+	export STEAM_COMPAT_SELECTED = "PROTON"
+fi
+
 if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
 	export DYLD_LIBRARY_PATH="$library_dir"

@@ -135,6 +135,7 @@ public static partial class Program
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 
 			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
+			CheckForLinuxCompatTool(); // Run after logs, but before gets too far to ensure message at least is shown and not crashes elsewise
 
 			SetSavePath();
 		
@@ -142,6 +143,7 @@ public static partial class Program
 				Logging.tML.Info("Developer mode enabled");
 
 			AttemptSupportHighDPI(isServer); // Can run anytime
+			
 
 		    if (!isServer) {
 		    	NativeLibraries.CheckNativeFAudioDependencies();
@@ -174,7 +176,18 @@ public static partial class Program
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
-		}
-			
+		}	
+	}
+
+	private static void CheckForLinuxCompatTool()
+	{
+		string compatTool = Environment.GetEnvironmentVariable("STEAM_COMPAT_SELECTED");
+		if (string.IsNullOrEmpty(compatTool))
+			return;
+
+		ErrorReporting.FatalExit($"At this time, tModLoader is fully featured to run native on Linux, without compatibility tools\n\n" +
+			$"Unfortunately, it is also unable to run with steam compatibility tools on Linux at full features.\n\n" +
+			$"Please relaunch with 'compatibility' set to none. \n\n" +
+			$"If this option isn't available, we recommend 'SteamPlayNone' to add this option.", new NotImplementedException());
 	}
 }
