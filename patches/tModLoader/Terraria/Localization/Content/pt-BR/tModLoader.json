@@ -378,6 +378,7 @@
 		"MSPortToLatest": "Executar tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET 6. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
 		"DownloadNetSDK": "Baixar SDK do .NET",
+		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Bibliotecas extras são necessárias para construir mods. (Pasta ModCompile não encontrada)",

@@ -35,7 +35,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private UILoaderAnimatedImage _uiLoader;
 	private UIElement _links;
 	private CancellationTokenSource _cts;
-	private bool dotnetSDKFound;
+	private static bool dotnetSDKFound;
 
 	public override void OnInitialize()
 	{
@@ -258,7 +258,13 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 
 		if (!IsCompatibleDotnetSdkAvailable()) {
-			ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+			if (IsRunningInSandbox()) {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
+			}
+			else {
+				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+			}
+
 			return true;
 		}
 
@@ -307,6 +313,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			yield return contents + "/dotnet";
 		}
 
+		// These fallbacks are generally pretty useless, since /usr/bin should almost always be on PATH
 		// env var, often set on Linux
 		if (Environment.GetEnvironmentVariable("DOTNET_ROOT") is string dotnetRoot) {
 			Logging.tML.Debug($"Found env var DOTNET_ROOT: {dotnetRoot}");
@@ -331,7 +338,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return null;
 	}
 
-	bool IsCompatibleDotnetSdkAvailable()
+	private static bool IsCompatibleDotnetSdkAvailable()
 	{
 		if (dotnetSDKFound)
 			return true;
@@ -358,6 +365,16 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 
 		return dotnetSDKFound;
+	}
+
+	private static bool IsRunningInSandbox()
+	{
+		if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("FLATPAK_SANDBOX_DIR"))) {
+			Logging.tML.Debug("Flatpak sandbox detected");
+			return true;
+		}
+
+		return false;
 	}
 
 	internal void Populate()
