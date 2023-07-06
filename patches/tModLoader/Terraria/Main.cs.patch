@@ -4951,13 +4951,15 @@
  						flag14 = true;
  						player[myPlayer].mouseInterface = true;
  						if (mouseLeft && mouseLeftRelease) {
-@@ -38384,23 +_,31 @@
+@@ -38384,23 +_,32 @@
  					if (player[myPlayer].hideInfo[num27])
  						color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  				}
 -				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {
+-					num2 = i;
 +				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !mouseText) {
- 					num2 = i;
++					//TML: 'i' replaced with 'drawnCount'.
++					num2 = drawnCount;
  					text = text3;
  					mouseText = true;
  				}
@@ -4986,7 +4988,16 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38436,8 +_,12 @@
+@@ -38429,15 +_,20 @@
+ 				if (n == 4)
+ 					color3 = infoTextColor;
+ 
++				//TML: 'i' replaced with 'drawnCount'.
+-				if (i > num2 && i < num2 + 2)
++				if (drawnCount > num2 && drawnCount < num2 + 2)
+ 					color3 = new Microsoft.Xna.Framework.Color((int)color3.R / 3, (int)color3.G / 3, (int)color3.B / 3, (int)color3.A / 3);
+ 
+ 				int num30 = 22;
  				if (screenHeight < 650)
  					num30 = 20;
  
