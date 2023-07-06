@@ -82,7 +82,7 @@ public static class ModNet
 	/// Update every time a change is pushed to stable which is incompatible between server and clients. Ignored if not updated each month.
 	/// </summary>
 	private static Version IncompatiblePatchVersion = new(2022, 1, 1, 1);
-	private static Version? StableNetVersion { get; } = !BuildInfo.IsStable ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
+	private static Version? StableNetVersion { get; } = !(BuildInfo.IsStable || BuildInfo.IsPreview) ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
 	internal static string NetVersionString { get; } = BuildInfo.versionedName + (StableNetVersion != null ? "!" + StableNetVersion : "");
 	static ModNet()
 	{
