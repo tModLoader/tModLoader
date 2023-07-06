@@ -148,7 +148,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 					int countOtherEntries;
 					localizationCounts.TryGetValue(culture, out countOtherEntries);
 					float localizationProgress = (float)countOtherEntries / countEnglishEntries;
-					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countEnglishEntries} {localizationProgress:P}");
+					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countEnglishEntries}, {localizationProgress:P0}, missing {countEnglishEntries - countOtherEntries}");
 
 					bool languageMostlyLocalized = localizationProgress > 0.75f; // Suitable threshold?
 

@@ -485,7 +485,7 @@ public static class LocalizationLoader
 			string translationsNeededPath = Path.Combine(sourceFolder, "Localization", "TranslationsNeeded.txt");
 			if (File.Exists(translationsNeededPath)) {
 				int englishCount = localizationCounts[GameCulture.DefaultCulture];
-				string neededText = string.Join('\n', localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name} {englishCount - x.Value}, {(float)x.Value/englishCount:P0}")); // wrong. subtraction.
+				string neededText = string.Join('\n', localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{englishCount}, {(float)x.Value/englishCount:P0}, missing {englishCount - x.Value}"));
 				File.WriteAllText(translationsNeededPath, neededText);
 			}
 		}
