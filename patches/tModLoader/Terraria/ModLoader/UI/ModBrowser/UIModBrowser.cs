@@ -135,8 +135,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private void CheckIfAnyModUpdateIsAvailable()
 	{
 		_rootElement.RemoveChild(_updateAllButton);
-		if (
-			SpecialModPackFilter == null &&
+
+		if (SpecialModPackFilter == null &&
 			SocialBackend.GetInstalledModDownloadItems().Where(item => { item.UpdateInstallState(); return item.NeedUpdate; }).Count() > 0
 		)
 			_rootElement.Append(_updateAllButton);
@@ -261,6 +261,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		base.OnActivate();
 		Main.clrInput();
 		if (_firstLoad) {
+			SocialBackend.Initialize(); // Note this is currently synchronous
 			PopulateModBrowser();
 		}
 

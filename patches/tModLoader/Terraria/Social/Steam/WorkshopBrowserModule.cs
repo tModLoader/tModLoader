@@ -33,7 +33,9 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	private void OnLocalModsChanged(HashSet<string> modSlugs)
 	{
 		InstalledItems = ModOrganizer.FindWorkshopMods();
-		CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
+
+		if (SteamedWraps.SteamAvailable)
+			CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
 	}
 
 	public IReadOnlyList<LocalMod> GetInstalledMods()
@@ -65,16 +67,18 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		if (installed.properties.version < webVersion)
 			return true;
 
-		if (SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
+		if (SteamedWraps.SteamAvailable && SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
 			return true;
 
 		return false;
 	}
 
+	// Assumes SteamAvailable
 	public bool DoesAppNeedRestartToReinstallItem(ModPubId_t modId) => SteamedWraps.IsWorkshopItemInstalled(GetId(modId));
 
 	// Downloading Items /////////////////////////
 
+	// assumes SteamAvailable
 	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
 		item.UpdateInstallState();
@@ -98,6 +102,9 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	{
 		// @TODO: "Solxan" was not used???
 		InstalledItems = GetInstalledMods();
+
+		if (!SteamedWraps.SteamAvailable)
+			yield break;
 
 		// Each filter has independent code for simplicity and readability
 		switch (queryParams.updateStatusFilter) {
@@ -141,8 +148,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
 	{
-		if (queryParams.searchModIds == null)
-			return null; // Should only be called if the above is filled in.
+		if (queryParams.searchModIds == null || !SteamedWraps.SteamAvailable)
+			return null; // Should only be called if the above is filled in & Steam is Available.
 
 		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).FastQueryItems();
 	}

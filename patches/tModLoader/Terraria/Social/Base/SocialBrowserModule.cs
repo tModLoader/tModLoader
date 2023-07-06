@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
@@ -9,7 +8,6 @@ using Terraria.ModLoader.UI.ModBrowser;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Terraria.Social.Base;
 

@@ -295,7 +295,10 @@ public partial class WorkshopHelper
 				for (int i = 0; i < numPages; i++) {
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) - 1));
 
-					TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(pageIds.Select(x => x.m_ModPubId).ToArray()));
+					if (!TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(pageIds.Select(x => x.m_ModPubId).ToArray()))) {
+						Logging.tML.Error($"Unexpectedly failed to query information reqarding items {pageIds}.");
+						return null;
+					}
 
 					for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
 						items[j] = GenerateModDownloadItemFromQuery((uint)j);

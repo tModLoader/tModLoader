@@ -57,6 +57,7 @@ public static class SteamedWraps
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
+			Logging.tML.Info("SteamBackend: Running standard Steam Desktop Client API");
 			return;
 		}
 
@@ -65,7 +66,7 @@ public static class SteamedWraps
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 		if (!Main.dedServ && !TryInitViaGameServer())
-			Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+			ModLoader.UI.Interface.errorMessage.Show("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
 	}
 
 	public static bool TryInitViaGameServer()
@@ -84,6 +85,7 @@ public static class SteamedWraps
 			return false;
 		}
 
+		Logging.tML.Info("SteamBackend: Running non-standard Steam GameServer API");
 		SteamAvailable = true;
 		return true;
 	}
