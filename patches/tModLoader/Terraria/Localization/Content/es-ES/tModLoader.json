@@ -495,6 +495,11 @@
 		"TypeInitializationHint": "Sugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader.",
 		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
 
+		// Tag categories are not displayed in game currently, but are shown on workshop
+		// "TagsCategoryModFeatures": "Mod Features",
+		// "TagsCategoryModSide": "Mod Side",
+		// "TagsCategoryTModLoaderVersion": "tModLoader Version",
+		// "TagsCategoryLanguage": "{$LegacyMenu.103}",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Nuevo contenido",
 		"TagsContentDescription": "Añaden nuevo contenido al juego (como objetos, armas, NPCs, etc.)",
@@ -513,7 +518,26 @@
 		"TagsLang": "Traducciones",
 		"TagsLangDescription": "Este mod soporta varios idiomas",
 		"TagsGen": "Generación de mundos",
-		"TagsGenDescription": "Cambian la forma en la que se generan nuevos mundos (añadiendo minerales, estructuras, etc.)"
+		"TagsGenDescription": "Cambian la forma en la que se generan nuevos mundos (añadiendo minerales, estructuras, etc.)",
+		"TagsLanguage_English": "Inglés",
+		"TagsLanguage_German": "Alemán",
+		"TagsLanguage_Italian": "Italiano",
+		"TagsLanguage_French": "Francés",
+		"TagsLanguage_Spanish": "Español",
+		"TagsLanguage_Russian": "Ruso",
+		"TagsLanguage_Chinese": "Chino simplificado",
+		"TagsLanguage_Portuguese": "Portugués de Brasil",
+		"TagsLanguage_Polish": "Polaco",
+		// "TagsLanguage_Description": "This mod is localized for this language.",
+		"TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",

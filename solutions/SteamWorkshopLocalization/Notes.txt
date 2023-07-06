@@ -1,0 +1,9 @@
+The tags and categories on the workshop can be localized. This script is used to update the steam tag localization files to be in sync with the tModLoader localization files. A tModLoader Team member will run this script and upload tags whenever new tags are added or whenever tag localizations are updated in any language. 
+
+1. If new tags are added to tModLoader, first download each of the tag localization files. 
+
+2. Run the script. 
+
+3. Upload each file to steam. It will take 30 minutes to be live. If any categories names were updated, make sure to publish in steam as well.
+
+TODO: Not sure what to do about similar languages: latin america spanish, traditional chinese, portugal portuguese
