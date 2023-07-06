@@ -21,9 +21,26 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	public static InfoDisplay DepthMeter { get; private set; } = new DepthMeterInfoDisplay();
 
 	/// <summary>
-	/// The color when no valuable information is displayed
+	/// The color when no valuable information is displayed.
 	/// </summary>
 	public static Color InactiveInfoTextColor => new(100, 100, 100, Main.mouseTextColor);
+
+	/// <summary>
+	/// The golden color variant of the displays text.<br/>
+	/// Used by the Lifeform Analyzer.
+	/// </summary>
+	public static Color GoldInfoTextColor => new(Main.OurFavoriteColor.R, Main.OurFavoriteColor.G, Main.OurFavoriteColor.B, Main.mouseTextColor);
+
+	/// <summary>
+	/// The golden color variant of the displays text shadow.<br/>
+	/// Used by the Lifeform Analyzer.
+	/// </summary>
+	public static Color GoldInfoTextShadowColor => new(Main.OurFavoriteColor.R / 10, Main.OurFavoriteColor.G / 10, Main.OurFavoriteColor.B / 10, Main.mouseTextColor);
+
+	/// <summary>
+	/// The path to the texture vanilla info displays use when hovering over an info display.
+	/// </summary>
+	public static string VanillaHoverTexture => "Terraria/Images/UI/InfoIcon_13";
 
 	/// <summary>
 	/// This is the internal ID of this InfoDisplay.
@@ -31,6 +48,8 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	public int Type { get; internal set; }
 
 	public virtual string LocalizationCategory => "InfoDisplays";
+
+	public virtual string HoverTexture => Texture + "_Hover";
 
 	/// <summary>
 	/// This is the name that will show up when hovering over this info display.
@@ -47,7 +66,8 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	/// <br/>Set <paramref name="displayColor"/> to <see cref="InactiveInfoTextColor"/> if your display value is "zero"/shows no valuable information.
 	/// </summary>
 	/// <param name="displayColor">The color the text is displayed as.</param>
-	public abstract string DisplayValue(ref Color displayColor);
+	/// <param name="displayShadowColor">The outline color text is displayed as.</param>
+	public abstract string DisplayValue(ref Color displayColor, ref Color displayShadowColor);
 
 	public sealed override void SetupContent()
 	{

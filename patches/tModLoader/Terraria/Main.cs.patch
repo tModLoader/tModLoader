@@ -4901,19 +4901,19 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,47 @@
+@@ -38346,27 +_,48 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
 +			else {
 +				num = info.Type;
-+				text2 = info.DisplayValue(ref infoTextColor);
++				text2 = info.DisplayValue(ref infoTextColor, ref infoTextShadowColor);
 +				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
-+			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor);
++			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor, ref infoTextShadowColor);
  
  			if (!(text2 != ""))
  				continue;
@@ -4940,6 +4940,7 @@
 +				Vector2 vector2 = new Vector2(X, Y + 74 + num26 * num3 + 52);
 +				int num27 = info.Type;
 +				Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
++				Texture2D iconHover = ModContent.Request<Texture2D>(info.HoverTexture).Value;
  
  				Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.White;
  				bool flag14 = false;
@@ -4950,19 +4951,13 @@
  						flag14 = true;
  						player[myPlayer].mouseInterface = true;
  						if (mouseLeft && mouseLeftRelease) {
-@@ -38384,14 +_,27 @@
+@@ -38384,23 +_,31 @@
  					if (player[myPlayer].hideInfo[num27])
  						color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  				}
 -				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {
 +				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !mouseText) {
-+					/*
  					num2 = i;
-+					*/
-+					num2 = num3;
-+					if (i >= 7)
-+						num2 += 1;
-+
  					text = text3;
  					mouseText = true;
  				}
@@ -4977,9 +4972,10 @@
 +				spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 +
  				if (flag14)
- 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(iconHover, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  
-@@ -38399,8 +_,9 @@
+ 				X += 20;
  			}
  
  			UILinkPointNavigator.Shortcuts.INFOACCCOUNT = num3;

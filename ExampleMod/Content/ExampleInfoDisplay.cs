@@ -12,13 +12,19 @@ namespace ExampleMod.Content
 	/// </summary>
 	public class ExampleInfoDisplay : InfoDisplay
 	{
+		// This line says that the outline texture used when hovering over an info display is the same as the one vanilla displays use
+		// Since we are using a custom one, this line will be commented out
+		// You will only need to use a custom hover texture if your info display icon doesn't perfectly match the shape that vanilla info displays use
+		// This info display has a square icon instead of a circular one, so we need to use a custom texture instead of the vanilla texture
+		// public override string HoverTexture => VanillaHoverTexture;
+
 		// This dictates whether or not this info display should be active
 		public override bool Active() {
 			return Main.LocalPlayer.GetModPlayer<ExampleInfoDisplayPlayer>().showMinionCount;
 		}
 
 		// Here we can change the value that will be displayed in the game
-		public override string DisplayValue(ref Color displayColor) {
+		public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor) {
 			// Counting how many minions we have
 			// This is the value that will show up when viewing this display in normal play, right next to the icon
 			int minionCount = 0;
@@ -35,7 +41,7 @@ namespace ExampleMod.Content
 				displayColor = InactiveInfoTextColor;
 			}
 
-			return !noInfo ? $"{minionCount} minions." : "No minions";
+			return !noInfo ? $"{minionCount} minions" : "No minions";
 		}
 	}
 
