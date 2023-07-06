@@ -34,7 +34,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	{
 		InstalledItems = ModOrganizer.FindWorkshopMods();
 		CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
-		bool dummy = false;
 	}
 
 	public IReadOnlyList<LocalMod> GetInstalledMods()
