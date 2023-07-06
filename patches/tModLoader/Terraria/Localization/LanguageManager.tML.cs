@@ -113,7 +113,7 @@ public partial class LanguageManager
 	}
 
 	private Dictionary<TextBinding, LocalizedText> boundTextCache = new();
-	private List<(TextBinding, LocalizedText)> boundTexts = new();
+	private List<LocalizedText> boundTexts = new();
 
 	internal void ResetBoundTexts()
 	{
@@ -127,25 +127,21 @@ public partial class LanguageManager
 		if (boundTextCache.TryGetValue(binding, out var text))
 			return text;
 
-		text = new LocalizedText(key, ComputeBoundTextValue(binding));
+		text = new LocalizedText(key, GetTextValue(key));
+		text.BindArgs(args);
+
 		boundTextCache[binding] = text;
-		boundTexts.Add((binding, text));
+		boundTexts.Add(text);
 		return text;
 	}
 
 	internal void RecalculateBoundTextValues()
 	{
-		foreach (var (binding, text) in boundTexts)
-			text.SetValue(ComputeBoundTextValue(binding));
-	}
-
-	private string ComputeBoundTextValue(TextBinding binding)
-	{
-		var value = GetTextValue(binding.key);
-		value = LocalizedText.ApplyPluralization(value, binding.args);
-
-		// TODO, consider if we should do partial binding, shifting the higher args down
-		return string.Format(value, binding.args);
+		foreach (var text in boundTexts) {
+			var args = text.BoundArgs;
+			text.SetValue(GetTextValue(text.Key));
+			text.BindArgs(args);
+		}
 	}
 	#endregion
 }

@@ -221,7 +221,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
 	/// </summary>
 	/// <param name="item">The item being researched</param>
 	public virtual bool CanResearch(Item item)
@@ -230,7 +230,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to create custom behaviour when an item is accepted by the Research function 
+	/// Allows you to create custom behavior when an item is accepted by the Research function 
 	/// </summary>
 	/// <param name="item">The item being researched</param>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
@@ -724,7 +724,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to add and modify the loot items that spawn from bag items when opened.
-	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
 	/// <br/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
 	/// <br/> This hook is not instanced.
 	/// </summary>
@@ -766,7 +766,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to <paramref name="destination"/></param>
 	public virtual void OnStack(Item destination, Item source, int numToTransfer)
 	{
 	}
@@ -987,7 +987,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.
 	/// </summary>
-	/// <param name="item">The item that is attepting to equip.</param>
+	/// <param name="item">The item that is attempting to equip.</param>
 	/// <param name="player">The player.</param>
 	/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
 	/// <param name="modded">If the inventory slot index is for modded slots.</param>

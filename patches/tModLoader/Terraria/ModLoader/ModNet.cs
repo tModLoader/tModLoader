@@ -82,7 +82,7 @@ public static class ModNet
 	/// Update every time a change is pushed to stable which is incompatible between server and clients. Ignored if not updated each month.
 	/// </summary>
 	private static Version IncompatiblePatchVersion = new(2022, 1, 1, 1);
-	private static Version? StableNetVersion { get; } = !BuildInfo.IsStable ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
+	private static Version? StableNetVersion { get; } = !(BuildInfo.IsStable || BuildInfo.IsPreview) ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
 	internal static string NetVersionString { get; } = BuildInfo.versionedName + (StableNetVersion != null ? "!" + StableNetVersion : "");
 	static ModNet()
 	{
@@ -484,7 +484,7 @@ public static class ModNet
 		}
 	}
 
-	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a bandaid until they fix their code.
+	// Some mods have expressed concern about read underflow exceptions conflicting with their ModPacket design, they can use reflection to set this bool as a band aid until they fix their code.
 	internal static bool ReadUnderflowBypass = false; // Remove by 0.11.7
 	internal static void HandleModPacket(BinaryReader reader, int whoAmI, int length)
 	{

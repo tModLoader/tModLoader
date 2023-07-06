@@ -6,6 +6,11 @@ partial class ItemID
 {
 	partial class Sets
 	{
+		/// <summary>
+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
+		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
+		/// <br/> Defaults to <see langword="false"/>.
+		/// </summary>
 		public static bool[] Glowsticks = Factory.CreateBoolSet(282, 286, 3002, 3112, 4776);
 
 		/// <summary>

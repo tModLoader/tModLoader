@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using Terraria.Localization;
-using Terraria.Social;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -18,8 +17,8 @@ public enum DistributionPlatform
 internal static class InstallVerifier
 {
 	private static string VanillaExe = "Terraria.exe";
-	private const string CheckExeVersion = "1.4.4.9";
-	private static string CheckExe = $"Terraria_{CheckExeVersion}.exe"; // This should match the hashes. {Main.versionNumber}
+	private const string TerrariaVersion = "1.4.4.9";
+	private static string CheckExe = $"Terraria_v{TerrariaVersion}.exe"; // This should match the hashes. {Main.versionNumber}
 	private static string vanillaExePath;
 
 	public static DistributionPlatform DistributionPlatform;
@@ -209,15 +208,8 @@ internal static class InstallVerifier
 	// Check if GOG install is correct
 	private static void CheckGoG()
 	{
-		if (!File.Exists(vanillaExePath)) {
-			if (Main.dedServ)
-				return;
-
-			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe));
-		}
-
 		if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
-			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath) + "\n\n" + Language.GetTextValue("tModLoader.GOGVersionHint", CheckExeVersion));
+			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath, TerrariaVersion, CheckExe));
 		}
 
 		if (Path.GetFileName(vanillaExePath) != CheckExe) {

@@ -22,7 +22,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>  Shorthand for Projectile.type; </summary>
 	public int Type => Projectile.type;
 
-	public string LocalizationCategory => "Projectiles";
+	public virtual string LocalizationCategory => "Projectiles";
 
 	/// <summary> The translations for the display name of this projectile. </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
@@ -307,7 +307,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// If this projectile is a bobber, allows you to modify the origin of the fisihing line that's connecting to the fishing pole, as well as the fishing line's color.
+	/// If this projectile is a bobber, allows you to modify the origin of the fishing line that's connecting to the fishing pole, as well as the fishing line's color.
 	/// </summary>
 	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
 	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>

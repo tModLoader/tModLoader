@@ -29,12 +29,19 @@ namespace ExampleMod.Content.Tiles
 			// MineResist = 4f;
 			// MinPick = 200;
 		}
+
+		// Example of how to enable the Biome Sight buff to highlight this tile. Biome Sight is technically intended to show "infected" tiles, so this example is purely for demonstration purposes.
+		public override bool IsTileBiomeSightable(int i, int j, ref Color sightColor) {
+			sightColor = Color.Blue;
+			return true;
+		}
 	}
 
 	public class ExampleOreSystem : ModSystem
 	{
+		// World generation is explained more in https://github.com/tModLoader/tModLoader/wiki/World-Generation
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.
+			// Because world generation is like layering several images on top of each other, we need to do some steps between the original world generation steps.
 
 			// Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
 			// First, we find out which step "Shinies" is.

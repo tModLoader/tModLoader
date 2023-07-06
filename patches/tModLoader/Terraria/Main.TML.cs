@@ -71,6 +71,15 @@ public partial class Main
 		return IsTileSpelunkable(tileX, tileY, tile.type, tile.frameX, tile.frameY);
 	}
 
+	/// <summary>
+	/// Checks if a tile at the given coordinates counts towards tile coloring from the Biome Sight buff.
+	/// </summary>
+	public static bool IsTileBiomeSightable(int tileX, int tileY, ref Color sightColor)
+	{
+		Tile tile = Main.tile[tileX, tileY];
+		return IsTileBiomeSightable(tileX, tileY, tile.type, tile.frameX, tile.frameY, ref sightColor);
+	}
+
 	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay)
 	{
 		startingDisplay = 0;

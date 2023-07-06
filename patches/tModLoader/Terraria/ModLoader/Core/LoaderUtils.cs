@@ -53,6 +53,7 @@ public static class LoaderUtils
 				action(t);
 			}
 			catch (Exception ex) {
+				ex.Data["contentType"] = t.GetType();
 				exceptions.Add(ex);
 			}
 		}

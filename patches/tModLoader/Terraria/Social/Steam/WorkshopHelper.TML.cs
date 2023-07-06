@@ -51,7 +51,7 @@ public partial class WorkshopHelper
 		installLoc ??= "."; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
 
 		var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop");
-		if (Directory.Exists(workshopLoc) && !Program.LaunchParameters.ContainsKey("-nosteam"))
+		if (Directory.Exists(workshopLoc) && !Program.LaunchParameters.ContainsKey("-nosteam") && !SteamedWraps.FamilyShared)
 			return workshopLoc;
 
 		// Load mods installed by GoG / Manually copied steamapps\workshop directories.

@@ -125,6 +125,9 @@
 		"LoadError": "Une erreur s'est produite lors en lançant {0}",
 		"LoadErrorDisabled": "Le(s) mod(s) ont été automatiquement désactivés.",
 		"LoadErrorCulpritUnknown": "Le Mod fautif n'est pas identifié et tModLoader doit être redémarré.",
+		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
+		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Il a été détecté que ce mod a été compilé pour la version de tModLoader {0}\nCependant, vous utilisez la version {1}",
 		"LoadErrorDotNet45Required": "La version de .NET Framework 4.5 ou plus est requise pour utiliser des Mods. Merci de télécharger la plus récente version de .NET Framework",
 		"LoadErrorDependencyMissing": "Mod manquant: {0} requis par {1}",
@@ -343,11 +346,11 @@
 		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		"MigratingWorldsText": "Migration en cours...",
 		"ModsDifferentSinceLastPlay": "Les Mods suivants sont différents depuis la dernière fois que vous avez joué : ",
-		"Missing1Mod": "1 Mod est manquant.",
-		"MissingXMods": "{0} Mods sont manquants.",
+		"Missing1Mod": "1 Mod est manquant",
+		"MissingXMods": "{0} Mods sont manquants",
 		"MissingModsListing": "Mods manquants :\n{0}",
-		"New1Mod": "1 nouveau Mod.",
-		"NewXMods": "{0} nouveaux Mods.",
+		"New1Mod": "1 nouveau Mod",
+		"NewXMods": "{0} nouveaux Mods",
 		"NewModsListing": "Nouveaux Mods :\n{0}",
 		"PlayerCustomDataFail": "Un problème a été rencontré pendant le chargement des données personnalisées d'un personnage",
 		"PlayerLoadWorldFail": "Un problème a été rencontré pendant le chargement du monde",
@@ -375,6 +378,7 @@
 		// "MSPortToLatest": "Run tModPorter",
 		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. After installing, you may need to restart tModLoader. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 		// "DownloadNetSDK": "Download .NET SDK",
+		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Des bibliothèques logicielles supplémentaires sont requises pour compiler des Mods. (Dossier ModCompile manquant)",
@@ -481,18 +485,21 @@
 		"SteamAPIHashMismatch": "Incompatibilité de hachage de l'API Steam, supposée piratée.\n\ntModLoader nécessite une installation Terraria légitime pour fonctionner.",
 		// "SteamInitFailed": "SteamAPI.Init failed. Try logging out of Steam and restarting it.\n\nCheck terrariasteamclient.log and Natives.Log for details",
 		// "TerrariaNotInstalled": "Terraria must be installed on steam for tModLoader to run.\n\nYou will need to re-start your steam client for the install button to appear in the Terraria app.\n\nStart Terraria at least once to ensure dependencies get installed before launching tModLoader again.",
-		"VanillaGOGNotFound": "{0} introuvable.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner. Cette version de tModLoader attend la version {1} de Terraria, vous devrez peut-être rétrograder ou mettre à niveau Terraria via GOG Galaxy, ou attendre que tModLoader se mette à jour.",
-		"GOGHashMismatch": "{0} n'est pas l'exécutable Terraria non modifié.\r\n\r\nLes installations de GOG doivent avoir l'exécutable Terraria non modifié pour fonctionner.\r\n\r\nSi vous avez patché le .exe, vous pouvez créer une copie de l'exe d'origine et le nommer \"Terraria_v<VERSION>.exe\"",
-		// "GOGVersionHint": "This release of tModLoader expects to be installed alongside Terraria v{0}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.",
+		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Veuillez restaurer votre installation de Terraria, puis installer tModLoader sur Steam ou en suivant les instructions README.txt pour une installation manuelle.",
 		"LogPathHint": "{0} fichier journal contenant des informations d'erreur a été généré dans\n{1}\n(Vous devrez partager ce fichier si vous demandez de l'aide)",
 		"OutOfMemoryHint": "Conseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire. En option, installez tModLoader 64 bits",
 		"ModExceptionHint": "Conseil: C'est probablement la faute d'un mod. Désactivez les mods un par un et vérifiez si le problème persiste",
 		"OneDriveHint": "Conseil: Essayez d'installer/activer OneDrive. Faites un clic droit sur votre dossier de documents et activez \"Toujours enregistrer sur cet appareil\"",
 		"AntivirusHint": "Conseil: Si vous avez un antivirus, essayez d’ajouter Terraria à sa liste blanche/d’exclusion",
-		"TypeInitializationHint": "Conseil: Redémarrez le jeu. Si ce problème persiste, essayez de désinstaller complètement Terraria, puis de réinstaller via Steam, puis de réinstaller tModLoader"
+		"TypeInitializationHint": "Conseil: Redémarrez le jeu. Si ce problème persiste, essayez de désinstaller complètement Terraria, puis de réinstaller via Steam, puis de réinstaller tModLoader",
 		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
 
+		// Tag categories are not displayed in game currently, but are shown on workshop
+		// "TagsCategoryModFeatures": "Mod Features",
+		// "TagsCategoryModSide": "Mod Side",
+		// "TagsCategoryTModLoaderVersion": "tModLoader Version",
+		// "TagsCategoryLanguage": "{$LegacyMenu.103}",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		// "TagsContent": "New Content",
 		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
@@ -510,8 +517,27 @@
 		// "TagsVisualDescription": "Tweaks that change existing visualization (i.e. particle effects, etc.)",
 		// "TagsLang": "Localization Support",
 		// "TagsLangDescription": "This mod supports multiple languages",
-		// "TagsGen": "Custom World Gen",
+		// "TagsGen": "World Gen",
 		// "TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)",
+		"TagsLanguage_English": "Anglais",
+		"TagsLanguage_German": "Allemand",
+		"TagsLanguage_Italian": "Italien",
+		"TagsLanguage_French": "Français",
+		"TagsLanguage_Spanish": "Espagnol",
+		"TagsLanguage_Russian": "Russe",
+		"TagsLanguage_Chinese": "Chinois simplifié",
+		"TagsLanguage_Portuguese": "Portugais (Brésil)",
+		"TagsLanguage_Polish": "Polonais",
+		// "TagsLanguage_Description": "This mod is localized for this language.",
+		"TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",
@@ -803,6 +829,17 @@
 	"TitleLinks": {
 		// "Patreon": "Patreon"
 	},
+	"Config": {
+		// "Color.Hue.Label": "Hue",
+		// "Color.Saturation.Label": "Saturation",
+		// "Color.Lightness.Label": "Lightness",
+		// "Color.Red.Label": "Red",
+		// "Color.Green.Label": "Green",
+		// "Color.Blue.Label": "Blue",
+		// "Color.Alpha.Label": "Alpha",
+		// "Vector2.X.Label": "X",
+		// "Vector2.Y.Label": "Y"
+	},
 	"Mods": {
 		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril",
 		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
@@ -852,6 +889,9 @@
 		// "ModLoader.Items.Guildpack_Body.DisplayName": "Guildpack's Body",
 		// "ModLoader.Items.Guildpack_Head.DisplayName": "Guildpack's Head",
 		// "ModLoader.Items.Guildpack_Legs.DisplayName": "Guildpack's Legs",
+		// "ModLoader.Items.HER0zero_Body.DisplayName": "HER0zero's Body",
+		// "ModLoader.Items.HER0zero_Head.DisplayName": "HER0zero's Head",
+		// "ModLoader.Items.HER0zero_Legs.DisplayName": "HER0zero's Legs",
 		// "ModLoader.Items.KittyKitCatCat_Body.DisplayName": "KittyKitCatCat's Body",
 		// "ModLoader.Items.KittyKitCatCat_Head.DisplayName": "KittyKitCatCat's Head",
 		// "ModLoader.Items.KittyKitCatCat_Legs.DisplayName": "KittyKitCatCat's Legs",
@@ -863,6 +903,10 @@
 		// "ModLoader.Items.Linus_Legs.Tooltip": "'One of the standard articles of hunter attire, fashioned at the workshop.\nAllows one to stalk beasts unannounced, by cover of night.'",
 		// "ModLoader.Items.Linus_Wings.DisplayName": "A Call Beyond",
 		// "ModLoader.Items.Linus_Wings.Tooltip": "'One of the secret rites of the Choir.\nBut it seems to have been repurposed by Linus.'",
+		// "ModLoader.Items.Mayne_Body.DisplayName": "Mayne's Body",
+		// "ModLoader.Items.Mayne_Head.DisplayName": "Mayne's Head",
+		// "ModLoader.Items.Mayne_Legs.DisplayName": "Mayne's Legs",
+		// "ModLoader.Items.Mayne_Wings.DisplayName": "Mayne's Wings",
 		// "ModLoader.Items.Orian_Body.DisplayName": "Orian's Body",
 		// "ModLoader.Items.Orian_Head.DisplayName": "Orian's Head",
 		// "ModLoader.Items.Orian_Legs.DisplayName": "Orian's Legs",
@@ -906,5 +950,9 @@
 		// "ModLoader.Items.Zeph_Head.DisplayName": "Zeph's Head",
 		// "ModLoader.Items.Zeph_Legs.DisplayName": "Zeph's Legs",
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
+	},
+	"TownNPCMood": {
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I like {NPCName}."
 	}
 }

@@ -137,14 +137,14 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			if (Player.head == EquipLoader.GetEquipSlot(Mod, "xAqult_Mask", EquipType.Head)) {
 				if (Player.face < 0) {
-					drawInfo.drawPlayer.face = (sbyte)EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face);
+					drawInfo.drawPlayer.face = EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face);
 				}
 				/*if (Player.direction == 1) {
 					drawInfo.drawPlayer.head = EquipLoader.GetEquipSlot(Mod, "xAqult_Mask_Scar", EquipType.Head);
 				}*/
 			}
 			if (Player.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face) && Player.direction == -1) {
-				drawInfo.drawPlayer.face = (sbyte)EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face);
+				drawInfo.drawPlayer.face = EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face);
 			}
 		}
 	}
@@ -155,11 +155,12 @@ namespace Terraria.ModLoader.Default.Patreon
 			return new AfterParent(PlayerDrawLayers.Head);
 		}
 
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+			return drawInfo.drawPlayer.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face)
+				|| drawInfo.drawPlayer.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face);
+		}
+
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
-			if (drawInfo.drawPlayer.face != EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face) &&
-				drawInfo.drawPlayer.face != EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face)) {
-				return;
-			}
 			int insertIndex = -1;
 			for (int k = 0; k < drawInfo.DrawDataCache.Count; k++) {
 				if (drawInfo.DrawDataCache[k].texture == TextureAssets.Players[drawInfo.skinVar, 2].Value) {
@@ -198,11 +199,12 @@ namespace Terraria.ModLoader.Default.Patreon
 			return new AfterParent(PlayerDrawLayers.Wings);
         }
 
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+			return drawInfo.drawPlayer.wings == EquipLoader.GetEquipSlot(Mod, "xAqult_Wings", EquipType.Wings);
+		}
+
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			if (drawInfo.drawPlayer.dead) {
-				return;
-            }
-			if (drawInfo.drawPlayer.wings != EquipLoader.GetEquipSlot(Mod, "xAqult_Wings", EquipType.Wings)) {
 				return;
             }
 			DrawData? wingData = null;

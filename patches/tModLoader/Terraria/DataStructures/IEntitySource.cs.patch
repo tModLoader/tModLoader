@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
 +++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
-@@ -1,5 +_,37 @@
-+using System.Collections.Generic;
+@@ -1,5 +_,39 @@
++using System;
++using Terraria.ID;
 +
 +#nullable enable
 +
@@ -15,26 +16,27 @@
  {
 +	// All members here were added by TML.
 +
-+	// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
-+	private static readonly Stack<IEntitySource> fallbacks = new();
-+
++	/// <summary>
++	/// Additional context identifier, particularly useful for set bonuses or accessory affects. See <see cref="ItemSourceID"/> and <see cref="ProjectileSourceID"/> for vanilla uses
++	/// </summary>
 +	string? Context { get; }
 +
-+	internal static IEntitySource? GetFallback()
++
++	// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
++	private static IEntitySource? _goreFallback;
++	internal static IEntitySource? GetGoreFallback() => _goreFallback;
++
++	internal struct FallbackSourceRef : IDisposable
 +	{
-+		if (fallbacks.TryPeek(out var result)) {
-+			return result;
++		private IEntitySource? prev;
++		public FallbackSourceRef(IEntitySource source)
++		{
++			prev = _goreFallback;
++			_goreFallback = source;
 +		}
 +
-+		return null;
++		public void Dispose() => _goreFallback = prev;
 +	}
 +
-+	internal static void PushFallback(IEntitySource source)
-+		=> fallbacks.Push(source);
-+
-+	internal static void PopFallback()
-+		=> fallbacks.Pop();
-+
-+	internal static void ClearFallbacks()
-+		=> fallbacks.Clear();
++	internal static FallbackSourceRef PushFallback(IEntitySource source) => new (source); 
  }

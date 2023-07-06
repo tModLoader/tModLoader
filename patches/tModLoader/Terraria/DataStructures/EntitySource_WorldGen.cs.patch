@@ -1,10 +1,13 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_WorldGen.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_WorldGen.cs
-@@ -1,5 +_,13 @@
+@@ -1,5 +_,16 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
  
++/// <summary>
++/// Used when spawning Town NPCs during world generation
++/// </summary>
  public class EntitySource_WorldGen : IEntitySource
  {
 +	public string? Context { get; }

@@ -255,7 +255,7 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="fail">If true, the tile won't be mined</param>
 	/// <param name="effectOnly">If true, only the dust visuals will happen</param>
-	/// <param name="noItem">If true, the corrsponding item won't drop</param>
+	/// <param name="noItem">If true, the corresponding item won't drop</param>
 	public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
 	{
 	}
@@ -297,6 +297,19 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="player">Main.LocalPlayer</param>
 	public virtual bool IsTileDangerous(int i, int j, Player player)
+	{
+		return false;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <br/>Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
+	/// <br/>This is only called on the local client.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="sightColor">The color this tile should glow with, which defaults to <see cref="Color.White"/>.</param>
+	public virtual bool IsTileBiomeSightable(int i, int j, ref Color sightColor)
 	{
 		return false;
 	}
@@ -403,11 +416,11 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.
+	/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targeting from happening. Returns false by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <returns>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.</returns>
+	/// <returns>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targeting from happening. Returns false by default.</returns>
 	public virtual bool RightClick(int i, int j)
 	{
 		return false;

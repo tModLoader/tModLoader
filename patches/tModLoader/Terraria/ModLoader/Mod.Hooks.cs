@@ -14,7 +14,8 @@ partial class Mod
 	}
 
 	/// <summary>
-	/// Override this method to add most of your content to your mod. Here you will call other methods such as AddItem. This is guaranteed to be called after all content has been autoloaded.
+	/// Override this method to run code after all content has been autoloaded. Here additional content can be manually loaded and Mod-wide tasks and setup can be done. For organization, it may be more suitable to split some things into various <see cref="ModType.Load"/> methods, such as in <see cref="ModSystem"/> classes, instead of doing everything here. <br/>
+	/// Beware that mod content has not finished loading here, things like ModContent lookup tables or ID Sets are not fully populated. Use <see cref="PostSetupContent"/> for any logic that needs to act on all content being fully loaded.
 	/// </summary>
 	public virtual void Load()
 	{

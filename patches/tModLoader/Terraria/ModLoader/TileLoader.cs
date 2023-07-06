@@ -67,6 +67,8 @@ public static class TileLoader
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, ref Color sightColor);
+	private static DelegateIsTileBiomeSightable[] HookIsTileBiomeSightable;
 	private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
@@ -219,6 +221,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
+		ModLoader.BuildGlobalHook(ref HookIsTileBiomeSightable, globalTiles, g => g.IsTileBiomeSightable);
 		ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
@@ -283,6 +286,9 @@ public static class TileLoader
 	//  and add && !checkStay to if statement that sets flag4
 	public static void CheckModTile(int i, int j, int type)
 	{
+		if(type <= TileID.Count) {
+			return;
+		}
 		if (WorldGen.destroyObject) {
 			return;
 		}
@@ -555,8 +561,8 @@ public static class TileLoader
 
 		// Various call sites to WorldGen.KillTile_DropItems expect different sets of tile drops to be retrieved:
 		// KillTile: All 1x1 tiles
-		// ReplaceTile: All 1x1 tiles, all supported multitiles
-		// CheckModTile: All modded tiles (except 1x1 tiles will drop from killtile)
+		// ReplaceTile: All 1x1 tiles, all supported multi-tiles
+		// CheckModTile: All modded tiles (except 1x1 tiles will drop from KillTile)
 		bool needDrops = false;
 		TileObjectData tileData = TileObjectData.GetTileData(tileCache.TileType, 0, 0);
 		if (tileData == null) {
@@ -570,7 +576,7 @@ public static class TileLoader
 		else if (includeAllModdedLargeObjectDrops)
 			needDrops = true;
 		else if (includeLargeObjectDrops) {
-			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type]) {
+			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfire[tileCache.type]) {
 				needDrops = true;
 			}
 		}
@@ -700,6 +706,31 @@ public static class TileLoader
 		return retVal;
 	}
 
+	public static bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
+	{
+		bool? retVal = null;
+
+		ModTile modTile = GetTile(type);
+
+		if (modTile != null && modTile.IsTileBiomeSightable(i, j, ref sightColor)) {
+			retVal = true;
+		}
+
+		foreach (var hook in HookIsTileBiomeSightable) {
+			bool? globalRetVal = hook(i, j, type, ref sightColor);
+			if (globalRetVal.HasValue) {
+				if (globalRetVal.Value) {
+					retVal = true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+
+		return retVal;
+	}
+
 	public static bool? IsTileSpelunkable(int i, int j, int type)
 	{
 		bool? retVal = null;
@@ -802,6 +833,7 @@ public static class TileLoader
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
+		// TODO: Pass in TileDrawInfo so mods don't need to replicate existing SetDrawPositions logic. For example, ExampleTorch repeated logic (SetDrawPositions/PostDraw)
 		GetTile(type)?.PostDraw(i, j, spriteBatch);
 
 		foreach (var hook in HookPostDraw) {
