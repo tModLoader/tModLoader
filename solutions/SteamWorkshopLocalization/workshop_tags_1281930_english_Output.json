@@ -4,6 +4,7 @@
     "category_0": "Mod Features",
     "category_1": "Mod Side",
     "category_2": "tModLoader Version",
+    "category_3": "Language",
     "tag_197618": "Quality Of Life",
     "tag_197621": "New Content",
     "tag_275098": "Library",
@@ -17,5 +18,14 @@
     "tag_307173": "Server",
     "tag_307174": "NoSync",
     "tag_348888": "1.4.4",
-    "tag_349568": "1.4.3"
+    "tag_349568": "1.4.3",
+    "tag_362262": "English",
+    "tag_362263": "German",
+    "tag_362264": "Italian",
+    "tag_362265": "French",
+    "tag_362266": "Spanish",
+    "tag_362267": "Russian",
+    "tag_362268": "Simplified Chinese",
+    "tag_362269": "Brazilian Portuguese",
+    "tag_362270": "Polish"
 }

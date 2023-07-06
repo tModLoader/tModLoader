@@ -30,10 +30,18 @@ steamToLocalizationKey = {
   #"tag_307174":"NoSync",
   #"tag_348888":"1.4.4",
   #"tag_349568":"1.4.3"
-  # TODO: Add entries for each language once they are in.
+  "tag_362262":"TagsLanguage_English",
+  "tag_362263":"TagsLanguage_German",
+  "tag_362264":"TagsLanguage_Italian",
+  "tag_362265":"TagsLanguage_French",
+  "tag_362266":"TagsLanguage_Spanish",
+  "tag_362267":"TagsLanguage_Russian",
+  "tag_362268":"TagsLanguage_Chinese",
+  "tag_362269":"TagsLanguage_Portuguese",
+  "tag_362270":"TagsLanguage_Polish",
 }
 
-# English will be updated directly, if ever needed.
+# English will be updated directly, if ever needed. -- actually, not sure what the website text input changes yet, internal or display.
 languages = ['en-US', 'de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
 steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
 TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język'] # not in tModLoader.json, so just do it manually for simplicity
@@ -65,7 +73,7 @@ for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)
         else:
             missing += 1
     
-    # uncomment once tag is live: steamTagData['category_3'] = TagsCategoryLanguage[index]
+    steamTagData['category_3'] = TagsCategoryLanguage[index]
 
     if missing > 0:
         missings.append( (language, missing) )
