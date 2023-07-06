@@ -18,17 +18,23 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	private PublishedFileId_t GetId(ModPubId_t modId) => new PublishedFileId_t(ulong.Parse(modId.m_ModPubId));
 
-	// For caching installed mods /////////////////////////
+	// For caching installed mods for performance and thread conflict management of Steam Queries /////////////////////////
 	public WorkshopBrowserModule()
 	{
 		ModOrganizer.OnLocalModsChanged += OnLocalModsChanged;
-		(this as SocialBrowserModule).GetInstalledModDownloadItems();
+	}
+
+	public bool Initialize()
+	{
+		OnLocalModsChanged(null);
+		return true;
 	}
 
 	private void OnLocalModsChanged(HashSet<string> modSlugs)
 	{
 		InstalledItems = ModOrganizer.FindWorkshopMods();
 		CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
+		bool dummy = false;
 	}
 
 	public IReadOnlyList<LocalMod> GetInstalledMods()

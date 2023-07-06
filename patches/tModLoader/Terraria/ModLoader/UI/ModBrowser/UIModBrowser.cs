@@ -277,6 +277,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		lock (modSlugsToUpdateInstallInfo) {
 			modSlugsToUpdateInstallInfo.UnionWith(modSlugs);
 		}
+		// Updates the 'Update All' button using cached data from GetInstalledModDownloadedItems
+		CheckIfAnyModUpdateIsAvailable();
 	}
 
 	public override void OnDeactivate()
@@ -302,6 +304,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			foreach (var item in ModList.ReceivedItems.Where(
 				d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName)
 			)) {
+				item.ModDownload.UpdateInstallState();
 				item.UpdateInstallInfo();
 			}
 			// @TODO: Shouldn't only delete processed slugs?

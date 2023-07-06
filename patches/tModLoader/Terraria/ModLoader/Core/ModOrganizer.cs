@@ -616,7 +616,7 @@ internal static class ModOrganizer
 
 		foreach (var requirement in keepRequirements) {
 			// Get an ordered list for the particular version
-			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
+			var mods = information.Where(t => SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
 				.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
 
 			foreach (var item in mods) {

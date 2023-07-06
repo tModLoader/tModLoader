@@ -72,14 +72,14 @@ public static class SteamedWraps
 	{
 		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
 		try {
-			if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+			if (!GameServer.Init(0, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
 				return false;
 
 			SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 			SteamGameServer.SetProduct(thisApp.ToString());
 			SteamGameServer.LogOnAnonymous();
 		}
-		catch (DllNotFoundException e) {
+		catch (Exception e) {
 			Logging.tML.Error(e);
 			return false;
 		}

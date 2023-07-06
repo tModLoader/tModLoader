@@ -27,6 +27,8 @@ public class SocialBrowserException : Exception
 
 public interface SocialBrowserModule
 {
+	public bool Initialize();
+
 	/////// Management of Browser Items ///////////////////////////////////////////
 
 #pragma warning disable CS8424 // I know [EnumeratorCancellation] has no effect, but it's placed here to remember to add it to async implementations

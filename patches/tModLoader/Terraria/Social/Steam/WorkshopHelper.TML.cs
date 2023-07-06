@@ -106,7 +106,7 @@ public partial class WorkshopHelper
 		foreach (var item in VersionSummaryToArray(versionSummary)) {
 			if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
 				selectVersion.modV = item.modVersion;
-				selectVersion.tmlV = item.tmlVersion.MajorMinor().ToString();
+				selectVersion.tmlV = item.tmlVersion.ToString(); //item.tmlVersion.MajorMinor().ToString();
 			}
 		}
 	}
@@ -285,7 +285,7 @@ public partial class WorkshopHelper
 			/////// Queries ////////////////////
 
 			/// <summary>
-			/// For direct information gathering of particular mod/workshop items
+			/// For direct information gathering of particular mod/workshop items. Synchronous
 			/// </summary>
 			internal ModDownloadItem[] FastQueryItems()
 			{
@@ -299,6 +299,7 @@ public partial class WorkshopHelper
 
 					for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
 						items[j] = GenerateModDownloadItemFromQuery((uint)j);
+						items[j].UpdateInstallState();
 					}
 
 					ReleaseWorkshopQuery();
