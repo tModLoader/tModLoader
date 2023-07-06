@@ -154,8 +154,8 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 					// Override existing selection or only set to true if true? Current behavior is override.
 					tagOption.SetCurrentOption(languageMostlyLocalized ? tagOption.OptionValue : null);
-					// We could also set a custom color indicating automatically set...
-					tagOption.SetColor(tagOption.IsSelected ? new Color(152, 175, 235) : Colors.InventoryDefaultColor, 1f);
+					// Automatically set option is slightly redder, indicating it was automaticly selected
+					tagOption.SetColor(tagOption.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
 				}
 			}
 		}
