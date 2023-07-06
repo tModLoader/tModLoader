@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Config;
@@ -62,6 +63,8 @@ public abstract class EntityDefinition : TagSerializable
 	public override string ToString()
 		=> $"{Mod}/{Name}";
 
+	public virtual string DisplayName => ToString();
+
 	public override int GetHashCode()
 		=> new { Mod, Name }.GetHashCode();
 
@@ -96,6 +99,8 @@ public class ItemDefinition : EntityDefinition
 
 	public static ItemDefinition Load(TagCompound tag)
 		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Items.UnloadedItem.DisplayName") : Lang.GetItemNameValue(Type);
 }
 
 [TypeConverter(typeof(ToFromStringConverter<ProjectileDefinition>))]
@@ -115,6 +120,9 @@ public class ProjectileDefinition : EntityDefinition
 
 	public static ProjectileDefinition Load(TagCompound tag)
 		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	// Projectile display names sometimes don't exist or sometimes are shared, it might be better to use Name for ModConfig in those situations?
+	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetProjectileName(Type).Value;
 }
 
 [TypeConverter(typeof(ToFromStringConverter<NPCDefinition>))]
@@ -135,6 +143,8 @@ public class NPCDefinition : EntityDefinition
 
 	public static NPCDefinition Load(TagCompound tag)
 		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetNPCNameValue(Type);
 }
 
 [TypeConverter(typeof(ToFromStringConverter<PrefixDefinition>))]
