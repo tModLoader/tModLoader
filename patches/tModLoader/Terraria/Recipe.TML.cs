@@ -59,7 +59,7 @@ public partial class Recipe
 	public (Recipe target, bool after) Ordering { get; internal set; }
 
 	/// <summary>
-	/// Any recipe with this flag won't be shown in game. Does not disable shimmer decrafting unless paired with <see cref="Recipe.notDecraftable"/>
+	/// Any recipe with this flag won't be shown in game.
 	/// </summary>
 	public bool Disabled { get; private set; }
 
@@ -288,20 +288,6 @@ public partial class Recipe
 			throw new RecipeException("A Recipe can only be disabled inside Recipe related methods.");
 
 		notDecraftable = true;
-		return this;
-	}
-
-	/// <summary>
-	/// Disables the recipe but keeps the shimmer decrafting ability, allows for both conditions and multi-item shimmer transformation without a corresponding crafting recipe.
-	/// </summary>
-	/// <exception cref="RecipeException">A Recipe can only be disabled inside Recipe related methods.</exception>
-
-	public Recipe DisableCraft()
-	{
-		if (!RecipeLoader.setupRecipes)
-			throw new RecipeException("A Recipe can only be disabled inside Recipe related methods.");
-
-		Disabled = true;
 		return this;
 	}
 

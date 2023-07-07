@@ -57,12 +57,6 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
 			.AddDecraftCondition(Condition.CrimsonWorld)
 			.Register();
-
-		//When the other three recipe do not have their conditions met, the item will transform in shimmer as listed here. Note this will not add a craftable recipe.
-		CreateRecipe()
-			.AddCustomShimmerResult<ExampleItem>(10)
-			.DisableCraft()
-			.Register();
 		
 		// Finally, the ApplyConditionsAsDecraftConditions method can be used to quickly mirror any crafting conditions onto the decrafting conditions.
 	}

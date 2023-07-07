@@ -140,16 +140,11 @@ public partial class Recipe
 
 	public bool RemoveShimmerCondition(Condition condition) => DecraftConditions.Remove(condition);
 
-	/// <summary>
-	/// Disables both crafting and decrafting of the recipe, essentially removes recipe
-	/// </summary>
-	/// <exception cref="RecipeException">A Recipe can only be deleted inside recipe related methods.</exception>
 	public void DisableRecipe()
 	{
 		if (!RecipeLoader.setupRecipes)
 			throw new RecipeException("A Recipe can only be deleted inside recipe related methods");
 		Disabled = true;
-		notDecraftable = true;
 	}
 	#endregion
 

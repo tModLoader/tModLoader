@@ -152,15 +152,15 @@
 +	/// <summary>
 +	/// Adds a custom shimmer result to the recipe, overrides actual recipe ingredients when decrafting
 +	/// </summary>
-+	/// <param name="item">The item.</param>
-+	/// <param name="stack">The stack.</param>
++	/// <param name="itemType"> The item type. </param>
++	/// <param name="itemStack"> The stack size. </param>
 +	/// <returns></returns>
 -	public Item AddCustomShimmerResult(int itemType, int itemStack = 1)
 +	public Recipe AddCustomShimmerResult(int itemType, int itemStack = 1)
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -120,9 +_,16 @@
+@@ -120,9 +_,14 @@
  		item.SetDefaults(itemType);
  		item.stack = itemStack;
  		customShimmerResults.Add(item);
@@ -168,12 +168,10 @@
 +		return this;
  	}
  
-+	/// <summary>
-+	/// Adds a custom shimmer result to the recipe, overrides actual recipe ingredients when decrafting
-+	/// </summary>
-+	/// <param name="stack">The stack.</param>
-+	public Recipe AddCustomShimmerResult<T>(int stack = 1) where T : ModItem
-+		=> AddCustomShimmerResult(ModContent.ItemType<T>(), stack);
++	/// <inheritdoc cref="AddCustomShimmerResult(int, int)"/>
++	/// <param name="itemStack"> The stack size. </param>
++	public Recipe AddCustomShimmerResult<T>(int itemStack = 1) where T : ModItem
++		=> AddCustomShimmerResult(ModContent.ItemType<T>(), itemStack);
 +	/*
  	public Recipe()
  	{
@@ -662,7 +660,7 @@
 +
 +			Recipe recipe = Main.recipe[i];
 +
-+			if (!recipe.notDecraftable)
++			if (!recipe.notDecraftable && !recipe.Disabled)
 +				(recipeLists[recipe.createItem.type] ??= new()).Add(i);
  		}
 +

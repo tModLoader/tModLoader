@@ -7,10 +7,6 @@ using Terraria.ModLoader.Utilities;
 using Terraria.DataStructures;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Buffs;
-using Terraria.GameContent;
-using ExampleMod.Content.Items;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -21,6 +17,7 @@ namespace ExampleMod.Content.NPCs
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
+
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
