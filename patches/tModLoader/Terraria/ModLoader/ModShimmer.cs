@@ -1,16 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
 // TML: #AdvancedShimmerTransformations
-public sealed class ShimmerTransformation
+public sealed record class ShimmerTransformation
 {
+	/// <summary>
+	/// Dictionary containing every <see cref="ShimmerTransformation"/> registered to tMod indexed by <see cref="ModShimmerTypeID"/> and the entities type
+	/// </summary>
 	public static Dictionary<(ModShimmerTypeID, int), List<ShimmerTransformation>> ModShimmerTransformations { get; } = new();
+
+	#region Constructors
 
 	public ShimmerTransformation(NPC npc) : this((ModShimmerTypeID.NPC, npc.type))
 	{ }
@@ -20,29 +23,67 @@ public sealed class ShimmerTransformation
 
 	private ShimmerTransformation((ModShimmerTypeID, int) entityIdentification)
 	{
-		instantiatorEntity = entityIdentification;
+		if (!entityIdentification.Item1.IsValidSourceType())
+			throw new ArgumentException("ModShimmerTypeID must be a valid source type, use parameterless constructor if an instantiation entity was not required here", nameof(entityIdentification));
+		InstantiationEntity = entityIdentification;
 	}
 
 	public ShimmerTransformation()
-	{
-	}
+	{ }
+
+	#endregion Constructors
+
+	#region FunctionalityVariables
+
+	/// <summary>
+	/// The entity that was used to create this transformation, does not have to be used when registering
+	/// </summary>
+	public (ModShimmerTypeID, int)? InstantiationEntity { get; init; }
 
 	/// <summary>
 	/// Every condition must be true for the transformation to occur
 	/// </summary>
-	public List<Condition> Conditions { get; private set; } = new();
+	public List<Condition> Conditions { get; init; } = new();
 
 	/// <summary>
 	/// The entities that the transformation produces.
 	/// </summary>
-	public List<ModShimmerResult> Results { get; private set; } = new();
-
-	private (ModShimmerTypeID, int)? instantiatorEntity;
+	public List<ModShimmerResult> Results { get; init; } = new();
 
 	/// <summary>
-	/// Disallows if a transformation result includes either a bone or a solar tablet fragment, when skeletron or golem are undefeated respectively
+	/// Vanilla disallows a transformation if the result includes either a bone or a solar tablet fragment, when skeletron or golem are undefeated respectively
 	/// </summary>
-	public bool CheckVanillaConstraints { get; private set; } = true;
+	public bool IgnoreVanillaItemConstraints { get; private set; }
+
+	/// <summary>
+	/// Makes this transformation allow other transformation to also spawn results, automatically sets this transformation to the highest priority
+	/// </summary>
+	public bool Additive { get; private set; }
+
+	/// <summary>
+	///	Called in addition to conditions to check if the entity shimmers
+	/// </summary>
+	/// <param name="transformation"> The transformation </param>
+	/// <param name="source"> The entity to be shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
+	public delegate bool CanShimmerCallBack(ShimmerTransformation transformation, Entity source);
+
+	/// <inheritdoc cref="CanShimmerCallBack"/>
+	public CanShimmerCallBack CanShimmerCallBacks { get; set; }
+
+	/// <summary>
+	///	Called when the entity shimmers
+	/// </summary>
+	/// <param name="transformation"> The transformation </param>
+	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
+	/// <param name="source"> The entity that was shimmered </param>
+	public delegate void OnShimmerCallBack(ShimmerTransformation transformation, Entity source, List<Entity> spawnedEntities);
+
+	/// <inheritdoc cref="OnShimmerCallBack"/>
+	public OnShimmerCallBack OnShimmerCallBacks { get; set; }
+
+	#endregion FunctionalityVariables
+
+	#region ControllerMethods
 
 	/// <summary>
 	/// Adds a condition to <see cref="Conditions"/>
@@ -54,12 +95,20 @@ public sealed class ShimmerTransformation
 		return this;
 	}
 
+	#region AddResultMethods
+
 	/// <summary>
 	/// Adds a result to <see cref="Results"/>
 	/// </summary>
 	/// <param name="result"> The result to be added </param>
+	/// <exception cref="ArgumentException"> thrown when <paramref name="result"/> does not have a valid spawn <see cref="ModShimmerTypeID"/> or has a <see cref="ModShimmerResult.Count"/> that is not greater than 0 </exception>
 	public ShimmerTransformation AddResult(ModShimmerResult result)
 	{
+		if (!result.ResultType.IsValidSpawnedType())
+			throw new ArgumentException("ModShimmerTypeID must be a valid spawn type, check Example Mod for details", nameof(result));
+		if (result.Count > 0)
+			throw new ArgumentException("A Count greater than 0 is required", nameof(result));
+
 		Results.Add(result);
 		return this;
 	}
@@ -87,16 +136,25 @@ public sealed class ShimmerTransformation
 	public ShimmerTransformation AddCoinLuckResult(int coinLuck)
 		=> AddResult(ModShimmerTypeID.CoinLuck, -1, coinLuck);
 
+	#endregion AddResultMethods
+
+	/// <inheritdoc cref="IgnoreVanillaItemConstraints"/>
+	public ShimmerTransformation DisableVanillaItemConstraints()
+	{
+		IgnoreVanillaItemConstraints = true;
+		return this;
+	}
+
+	public ShimmerTransformation SetAsAdditive()
+	{
+		Additive = true;
+		return this;
+	}
 
 	/// <summary>
-	///	Called in addition to conditions to check if the entity shimmers, is called before conditions, so they can be modified here if need be
+	/// Adds a delegate to <see cref="CanShimmerCallBacks"/> that will be called if the shimmer transformation succeeds
 	/// </summary>
-	/// <param name="transformation"> The transformation </param>
-	/// <param name="source"> The entity to be shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
-	public delegate bool CanShimmerCallBack(ShimmerTransformation transformation, Entity source);
-
-	internal CanShimmerCallBack CanShimmerCallBacks;
-
+	/// <param name="callBack"> The delegate to call </param>
 	public ShimmerTransformation AddCanShimmerCallBack(CanShimmerCallBack callBack)
 	{
 		CanShimmerCallBacks += callBack;
@@ -104,49 +162,54 @@ public sealed class ShimmerTransformation
 	}
 
 	/// <summary>
-	/// Checks if the entity supplied can undergo a shimmer transformation
+	/// Adds a delegate to <see cref="OnShimmerCallBacks"/> that will be called if the shimmer transformation succeeds
 	/// </summary>
-	/// <param name="entity">The entity being shimmered</param>
-	/// <returns> true if:
-	/// <list type="bullet">
-	/// <item/> All <see cref="Conditions"/> return true
-	/// <item/> All <see cref="CanShimmerCallBacks"/> return true
-	/// <item/> All of the results do not contain bone or solar tablet fragments if <see cref="CheckVanillaConstraints"/> is true
-	/// </list>
-	/// </returns>
-	private bool CanShimmer(Entity entity)
-		=> (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
-		&& Conditions.All((condition) => condition.IsMet())
-		&& (!CheckVanillaConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
-
-	/// <summary>
-	///	Called when the entity shimmers
-	/// </summary>
-	/// <param name="transformation"> The transformation </param>
-	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
-	/// <param name="source"> The entity that was shimmered </param>
-	public delegate void OnShimmerCallBack(ShimmerTransformation transformation, Entity source, List<Entity> spawnedEntities);
-
-	internal OnShimmerCallBack OnShimmerCallBacks;
-
+	/// <param name="callBack"> The delegate to call </param>
 	public ShimmerTransformation AddOnShimmerCallBack(OnShimmerCallBack callBack)
 	{
 		OnShimmerCallBacks += callBack;
 		return this;
 	}
 
+	/// <inheritdoc cref="Register(ModShimmerTypeID, int)"/>
+	/// <exception cref="InvalidOperationException"> Thrown if this <see cref="ShimmerTransformation"/> instance was not created from an Entity </exception>
 	public void Register()
 	{
-		if (instantiatorEntity == null)
-			throw new InvalidOperationException("The Register() function must be passed a ModShimmerTypeID and an integer type for an entity if the transformation is not instantiated from a ModNPC/ModItem/ModProjectile type.");
-		Register(instantiatorEntity.Value.Item1, instantiatorEntity.Value.Item2);
+		if (InstantiationEntity == null)
+			throw new InvalidOperationException("The transformation must be created from an entity for the parameterless Register() to be used.");
+		Register(InstantiationEntity.Value.Item1, InstantiationEntity.Value.Item2);
 	}
 
+	/// <summary>
+	/// Finalizes transformation, adds to <see cref="ModShimmerTransformations"/>
+	/// </summary>
 	public void Register(ModShimmerTypeID modShimmerType, int type)
 	{
+		if (!modShimmerType.IsValidSourceType())
+			throw new ArgumentException("A valid source type for ModShimmerTypeID must be passed here", nameof(modShimmerType));
 		if (!ModShimmerTransformations.TryAdd((modShimmerType, type), new() { this })) //Try add a new entry for the tuple
 			ModShimmerTransformations[(modShimmerType, type)].Add(this); // If it fails, entry exists, therefore add to list
 	}
+
+	#endregion ControllerMethods
+
+	#region Operation
+
+	/// <summary>
+	/// Checks if the entity supplied can undergo a shimmer transformation, should not alter game state / read only
+	/// </summary>
+	/// <param name="entity">The entity being shimmered</param>
+	/// <returns> true if the following are all true in order
+	/// <list type="number">
+	/// <item/> All <see cref="Conditions"/> return true
+	/// <item/> All added <see cref="CanShimmerCallBack"/> return true
+	/// <item/> None of the results contain bone or solar tablet fragments if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
+	/// </list>
+	/// </returns>
+	public bool CanShimmer(Entity entity)
+		=> Conditions.All((condition) => condition.IsMet())
+		&& (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
+		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
@@ -204,7 +267,7 @@ public sealed class ShimmerTransformation
 
 		switch (shimmerResult.ResultType) {
 			case ModShimmerTypeID.Item: {
-				while (stackCounter > 0) { // Since DoShimmer excludes multiplayer, we're in server or single player code here 
+				while (stackCounter > 0) { // Since DoShimmer excludes multiplayer, we're in server or single player code here
 					Item item = Main.item[Item.NewItem(entity.GetSource_Misc(context: ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, entity.width, entity.height, shimmerResult.Type)];
 					item.stack = Math.Min(item.maxStack, stackCounter);
 					stackCounter -= item.stack;
@@ -264,9 +327,6 @@ public sealed class ShimmerTransformation
 				break;
 			}
 
-			case ModShimmerTypeID.Projectile:
-				throw new NotImplementedException();
-
 			case ModShimmerTypeID.CoinLuck: // Make sure to check this works right, if you're reading this while reviewing please remind me bc I def will forget
 				Main.player[Main.myPlayer].AddCoinLuck(entity.Center, stackCounter * shimmerResult.Count);
 				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, (int)entity.Center.X, (int)entity.Center.Y, stackCounter * shimmerResult.Count);
@@ -275,9 +335,6 @@ public sealed class ShimmerTransformation
 			case ModShimmerTypeID.Custom:
 				resultIndex += shimmerResult.Count;
 				break;
-
-			case ModShimmerTypeID.Null:
-				throw new ArgumentException("The value for shimmerResult.ResultType should not be ShimmerTypeID.Null at this point, if behavior is being manually added please use ShimmerTypeID.Custom", nameof(shimmerResult));
 		}
 	}
 
@@ -328,6 +385,8 @@ public sealed class ShimmerTransformation
 	{
 		throw new NotImplementedException();
 	}
+
+	#endregion Operation
 }
 
 /// <summary>
@@ -336,12 +395,21 @@ public sealed class ShimmerTransformation
 /// </summary>
 public enum ModShimmerTypeID
 {
-	NPC,
-	Item,
-	Projectile,
-	CoinLuck,
-	Custom,
-	Null,
+	NPC, //Spawner Spawned
+	Item, // Spawner Spawned
+	Projectile, // None, might be added later
+	CoinLuck, // Spawned Type
+	Custom, // Spawned Type
+	Null, // None
+}
+
+public static class ModShimmerTypeIDExtensions
+{
+	public static bool IsValidSourceType(this ModShimmerTypeID id)
+	=> id == ModShimmerTypeID.NPC || id == ModShimmerTypeID.Item;
+
+	public static bool IsValidSpawnedType(this ModShimmerTypeID id)
+		=> id == ModShimmerTypeID.NPC || id == ModShimmerTypeID.Item || id == ModShimmerTypeID.CoinLuck || id == ModShimmerTypeID.Custom;
 }
 
 /// <summary>

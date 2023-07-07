@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Utilities;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace ExampleMod.Content.NPCs
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
 			// So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
-			// 1: if the npc is on the left side of the world then spawn 3 skeletons and 30 exampleitems, then shoot bullets from each skeleton
+			// 1: if the npc is on the left side of the world then spawn 3 skeletons and 30 example items, then shoot bullets from each skeleton
 			// 2: if Plantera has been defeated then spawn 10 example items
 			// 3: if an early game boss has been defeated then spawn the bride
 			// 4: if all other conditions fail, transform into a skeleton
@@ -28,6 +27,7 @@ namespace ExampleMod.Content.NPCs
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
 			CreateShimmerTransformation()
 				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((ShimmerTransformation transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8))
+				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((ShimmerTransformation transformation, Entity target) => true))
 				.AddModItemResult<ExampleItem>(30)
 				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.Skeleton, 3))
 				.AddOnShimmerCallBack(new ShimmerTransformation.OnShimmerCallBack(OnShimmerCallBack))
@@ -45,7 +45,7 @@ namespace ExampleMod.Content.NPCs
 				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.TheBride, 1))
 				.Register();
 
-			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method, overrides by ModShimmer unless all conditions fall through
 		}
 
 		public override void SetDefaults() {
