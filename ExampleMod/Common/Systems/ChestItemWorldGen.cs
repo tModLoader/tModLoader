@@ -1,8 +1,8 @@
 ﻿using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
-using ExampleMod.Content.Pets.ExampleLightPet;
 using ExampleMod.Content.Items.Mounts;
+using ExampleMod.Content.Pets.ExampleLightPet;
 
 namespace ExampleMod.Common.Systems
 {

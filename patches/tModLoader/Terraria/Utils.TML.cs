@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 using Terraria.Utilities;
 
 namespace Terraria;
@@ -176,11 +177,11 @@ partial class Utils
 		}
 	}
 
-	public static void ShowFancyErrorMessage(string message, int returnToMenu)
+	public static void ShowFancyErrorMessage(string message, int returnToMenu, UIState returnToState = null)
 	{
 		if (!Main.dedServ) {
 			Logging.tML.Error(message);
-			Interface.errorMessage.Show(message, returnToMenu);
+			Interface.errorMessage.Show(message, returnToMenu, returnToState);
 		}
 		else
 			LogAndConsoleErrorMessage(message);
