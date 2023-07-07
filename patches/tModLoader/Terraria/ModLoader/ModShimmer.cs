@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -9,7 +10,7 @@ namespace Terraria.ModLoader;
 // TML: #AdvancedShimmerTransformations
 public sealed class ShimmerTransformation
 {
-	public static Dictionary<(ModShimmerTypeID, int), List<ShimmerTransformation>> ModShimmerTransformations { get; private set; } = new();
+	public static Dictionary<(ModShimmerTypeID, int), List<ShimmerTransformation>> ModShimmerTransformations { get; } = new();
 
 	public ShimmerTransformation(NPC npc) : this((ModShimmerTypeID.NPC, npc.type))
 	{ }
@@ -63,17 +64,35 @@ public sealed class ShimmerTransformation
 		return this;
 	}
 
-	//public ShimmerTransformation SetTransformationSourceType(ModShimmerTypeID modShimmerTypeID)
-	//{
-	//	Source = new(modShimmerTypeID, Source.Type);
-	//	return this;
-	//}
+	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
+	/// <param name="resultType"> The type of shimmer operation this represents </param>
+	/// <param name="type"> The type of the entity to spawn, ignored when <paramref name="resultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/> </param>
+	/// <param name="count"> The number of this entity to spawn, if <paramref name="resultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck value, if <see cref="ModShimmerTypeID.Custom"/>, set this to the expected amount of physical entities spawned as it affects the way the spawned entities are spread </param>
+
+	public ShimmerTransformation AddResult(ModShimmerTypeID resultType, int type, int count)
+		=> AddResult(new ModShimmerResult(resultType, type, count));
+
+	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
+	/// <param name="stack"> The stack size to be added </param>
+	public ShimmerTransformation AddModItemResult<T>(int stack) where T : ModItem
+		=> AddResult(ModShimmerTypeID.Item, ModContent.ItemType<T>(), stack);
+
+	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
+	/// <param name="count"> The amount of NPCs to be added </param>
+	public ShimmerTransformation AddModNPCResult<T>(int count) where T : ModNPC
+		=> AddResult(ModShimmerTypeID.NPC, ModContent.NPCType<T>(), count);
+
+	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
+	/// <param name="coinLuck"> The amount of NPCs to be added </param>
+	public ShimmerTransformation AddCoinLuckResult(int coinLuck)
+		=> AddResult(ModShimmerTypeID.CoinLuck, -1, coinLuck);
+
 
 	/// <summary>
-	///	Called in addition to conditions to check if the entity shimmers
+	///	Called in addition to conditions to check if the entity shimmers, is called before conditions, so they can be modified here if need be
 	/// </summary>
 	/// <param name="transformation"> The transformation </param>
-	/// <param name="source"> The entity that was shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
+	/// <param name="source"> The entity to be shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
 	public delegate bool CanShimmerCallBack(ShimmerTransformation transformation, Entity source);
 
 	internal CanShimmerCallBack CanShimmerCallBacks;
@@ -96,8 +115,8 @@ public sealed class ShimmerTransformation
 	/// </list>
 	/// </returns>
 	private bool CanShimmer(Entity entity)
-		=> Conditions.All((condition) => condition.IsMet())
-		&& (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
+		=> (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
+		&& Conditions.All((condition) => condition.IsMet())
 		&& (!CheckVanillaConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
 
 	/// <summary>
@@ -334,9 +353,6 @@ public enum ModShimmerTypeID
 /// <param name="KeepVanillaTransformationConventions"> Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay spawned from a statue when shimmered, if you don't know you need it, leave it true </param>
 public record struct ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count, bool KeepVanillaTransformationConventions)
 {
-	/// <inheritdoc cref="ModShimmerResult"/>
-	public ModShimmerResult() : this(ModShimmerTypeID.Null, -1, -1, false) { }
-
 	/// <inheritdoc cref="ModShimmerResult"/>
 	/// <param name="ResultType"> The type of shimmer operation this represents </param>
 	/// <param name="Type"> The type of the entity to spawn, ignored when <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/> </param>
