@@ -510,8 +510,6 @@ namespace Terraria.ModLoader.Core
 		private static readonly Regex PublishFolderMetadata = new Regex(@"[/|\\]([0-9]{4}[.][0-9]{1,2})[/|\\]");
 
 		internal static string GetActiveTmodInRepo(string repo) {
-			// TODO: This logic is incorrect. I think sometimes we want to know every mod, and othertimes we want to know every mod with a version we can load.
-			// The tmods.Length == 1 check and the logic below contradict each other, sometimes returning null when no loadable mods and othertimes returning a mod path.
 			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 			var information = AnalyzeWorkshopTmods(repo);
 			if (information == null) {
@@ -519,9 +517,9 @@ namespace Terraria.ModLoader.Core
 				return null;
 			}
 
-			var file144 = GetOrderedTmodWorkshopInfoForVersion(information, "1.4.4").FirstOrDefault().file;
-			if (file144 != null)
-				modsReadyFor144.Add(Path.GetFileNameWithoutExtension(file144));
+			if (TryReadManifest(repo, out var info))
+				if (info.tags != null && info.tags.Contains("1.4.4"))
+					modsReadyFor144.Add(Path.GetFileNameWithoutExtension(information[0].file));
 
 			var recommendedTmod = information.Where(t => t.tModVersion <= BuildInfo.tMLVersion).OrderByDescending(t => t.tModVersion).FirstOrDefault();
 			if (recommendedTmod == default) {
@@ -640,7 +638,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info) {
 			info = null;
-			if (!parentDir.Contains(Path.Combine("steamapps", "workshop")))
+			if (!parentDir.Contains("workshop"))
 				return false;
 
 			string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";

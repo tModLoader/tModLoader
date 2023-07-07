@@ -35,7 +35,7 @@
 		"13InfoButton": "How to Access 1.3 tModLoader",
 		"SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		"SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
-		"WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		"WaitXSeconds": "Wait {0} seconds...",
 		"ViewInstructions": "View Instructions",
 		"PleaseMoveTo143LegacyMessage": "tModLoader will be updating to Terraria 1.4.4 soon, but many mods have not yet been ported.\n\nTo stay on Terraria 1.4.3 with your current mods, use the steam beta menu to switch to the 1.4.3-legacy branch of tModLoader.",
 		"ModReadyFor144": "This mod has been updated to 1.4.4",

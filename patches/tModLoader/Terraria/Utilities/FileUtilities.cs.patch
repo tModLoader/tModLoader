@@ -17,10 +17,18 @@
  		}
  
  		public static string GetFullPath(string path, bool cloud) {
-@@ -38,10 +_,21 @@
+@@ -38,10 +_,28 @@
  		}
  
  		public static void Copy(string source, string destination, bool cloud, bool overwrite = true) {
++			CopyExtended(source, destination, cloud, overwriteAlways: overwrite);
++		}
++
++		public static void CopyExtended(string source, string destination, bool cloud, bool overwriteAlways, bool overwriteOld = true) {
++			bool overwrite = DetermineIfShouldOverwrite(overwriteAlways, overwriteOld, source, destination);
++			if (!overwrite && File.Exists(destination))
++				return;
++
 -			if (!cloud)
 +			if (!cloud) {
  				File.Copy(source, destination, overwrite);
@@ -38,16 +46,17 @@
 +				var bytes = SocialAPI.Cloud.Read(source);
 +				SocialAPI.Cloud.Write(destination, bytes);
 +			}
-+				
  		}
  
  		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
-@@ -154,16 +_,24 @@
- 			return match.Groups["path"].Value;
+@@ -155,15 +_,27 @@
  		}
  
--		public static void CopyFolder(string sourcePath, string destinationPath) {
-+		public static void CopyFolder(string sourcePath, string destinationPath, bool isCloud = false, Regex excludeFilter = null) {
+ 		public static void CopyFolder(string sourcePath, string destinationPath) {
++			CopyFolderEXT(sourcePath, destinationPath, isCloud: false, overwriteAlways: true);
++		}
++
++		public static void CopyFolderEXT(string sourcePath, string destinationPath, bool isCloud = false, Regex excludeFilter = null, bool overwriteAlways = false, bool overwriteOld = false) {
  			Directory.CreateDirectory(destinationPath);
  			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < directories.Length; i++) {
@@ -60,16 +69,16 @@
  
  			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
  			foreach (string obj in directories) {
+-				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
 +				string relativePath = ConvertToRelativePath(sourcePath, obj);
 +				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
 +					continue;
 +
--				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
-+				Copy(obj, obj.Replace(sourcePath, destinationPath), isCloud, overwrite: true);
++				CopyExtended(obj, obj.Replace(sourcePath, destinationPath), isCloud, overwriteAlways, overwriteOld);
  			}
  		}
  
-@@ -176,6 +_,21 @@
+@@ -176,6 +_,42 @@
  			finally {
  				Thread.CurrentThread.IsBackground = isBackground;
  			}
@@ -88,6 +97,27 @@
 +			}
 +
 +			return fullPath.Substring(basePath.Length + 1);
++		}
++
++		/// <summary>
++		/// DEtermines if should overwrite the file at Destination with the file at Source
++		/// </summary>
++		private static bool DetermineIfShouldOverwrite(bool overwriteAlways, bool overwriteOld, string source, string destination) {
++			if (overwriteAlways)
++				return true;
++
++			// doesn't really matter
++			if (!File.Exists(destination))
++				return overwriteAlways;
++
++			// If file exists, and we aren't going to overwrite old versions
++			if (!overwriteOld)
++				return false;
++
++			var srcFile = File.GetLastWriteTimeUtc(source);
++			var dstFile = File.GetLastWriteTimeUtc(destination);
++
++			return dstFile < srcFile;
  		}
  	}
  }

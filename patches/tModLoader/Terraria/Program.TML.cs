@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
@@ -77,6 +79,7 @@ namespace Terraria
 				var releasePath = Path.Combine(SavePath, StableFolder);
 				var newPath = Path.Combine(SavePath, BuildInfo.IsPreview ? PreviewFolder : DevFolder);
 				if (Directory.Exists(releasePath) && !Directory.Exists(newPath)) {
+					Logging.tML.Info("Cloning common files from Stable to preview and dev.");
 					Directory.CreateDirectory(newPath);
 					if (File.Exists(Path.Combine(releasePath, "config.json")))
 						File.Copy(Path.Combine(releasePath, "config.json"), Path.Combine(newPath, "config.json"));
@@ -86,17 +89,30 @@ namespace Terraria
 			}
 		}
 
-		private static void Port143FilesFromStable(string savePath, bool isCloud) {
-			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
+		private static void Port143FilesFromStable(string superSavePath, bool isCloud) {
+			string newFolderPath = Path.Combine(superSavePath, Legacy143Folder);
+			string oldFolderPath = Path.Combine(superSavePath, StableFolder);
 
-			string newFolderPath = Path.Combine(savePath, Legacy143Folder);
-			string oldFolderPath = Path.Combine(savePath, StableFolder);
+			if (!Directory.Exists(oldFolderPath))
+				return;
 
-			if (!Directory.Exists(newFolderPath) && Directory.Exists(oldFolderPath)) {
-				Utilities.FileUtilities.CopyFolder(oldFolderPath, newFolderPath, isCloud,
-					// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
-					excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"));
+			// Verify that we are moving 2022.9 player data to 1.4.3 folder. Do so by checking for version <= 2022.9
+			string defaultSaveFolder = LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
+				Platform.Get<IPathService>().GetStoragePath($"Terraria");
+
+			string stableFolderConfig = Path.Combine(defaultSaveFolder, StableFolder, "config.json");
+			var configCollection = JsonNode.Parse(File.ReadAllText(stableFolderConfig));
+			string lastLaunchedTml = (string)configCollection!["LastLaunchedTModLoaderVersion"];
+			if (string.IsNullOrEmpty(lastLaunchedTml) || new Version(lastLaunchedTml).MajorMinor() > new Version("2022.9")) {
+				return;
 			}
+
+			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
+			Logging.tML.Info($"Cloning current Stable files to 1.4.3 save folder. Save Folder is Cloud? {isCloud}");
+			Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, newFolderPath, isCloud,
+				// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
+				excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
+				overwriteAlways: false, overwriteOld: true);
 		}
 
 		internal static void PortFilesMaster(string savePath, bool isCloud) {
