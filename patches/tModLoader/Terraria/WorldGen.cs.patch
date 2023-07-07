@@ -764,89 +764,24 @@
  		IsGeneratingHardMode = true;
  		TryProtectingSpawnedItems();
  		if (Main.rand == null)
-@@ -19358,35 +_,66 @@
- 			num3 = (int)((double)Main.maxTilesX * (1.0 - num2));
+@@ -19383,10 +_,30 @@
+ 			}
  		}
- 
--		if (Main.remixWorld) {
--			int num7 = Main.maxTilesX / 7;
--			int num8 = Main.maxTilesX / 14;
--			if (Main.dungeonX < Main.maxTilesX / 2) {
--				for (int i = Main.maxTilesX - num7 - num8; i < Main.maxTilesX; i++) {
--					for (int j = (int)Main.worldSurface + genRand.Next(-1, 2); j < Main.maxTilesY - 10; j++) {
--						if (i > Main.maxTilesX - num7)
--							Convert(i, j, 2, 1);
--						else if (TileID.Sets.Crimson[Main.tile[i, j].type] || TileID.Sets.Corrupt[Main.tile[i, j].type])
--							Convert(i, j, 2, 1);
--					}
--				}
--			}
--			else {
--				for (int k = 0; k < num7 + num8; k++) {
--					for (int l = (int)Main.worldSurface + genRand.Next(-1, 2); l < Main.maxTilesY - 10; l++) {
--						if (k < num7)
--							Convert(k, l, 2, 1);
--						else if (TileID.Sets.Crimson[Main.tile[k, l].type] || TileID.Sets.Corrupt[Main.tile[k, l].type])
--							Convert(k, l, 2, 1);
--					}
--				}
--			}
--		}
--		else {
--			GERunner(num3, 0, 3 * num5, 5.0);
--			GERunner(num4, 0, 3 * -num5, 5.0, good: false);
--		}
--
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Good", HardmodeGoodTask));
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Evil", HardmodeEvilTask));
+ 		else {
++			hardmodeTasks.Add(new PassLegacy("Hardmode Good", HardmodeGoodTask));
++			hardmodeTasks.Add(new PassLegacy("Hardmode Evil", HardmodeEvilTask));
++		}
 +
 +		void HardmodeGoodTask(GenerationProgress progress, GameConfiguration configuration)
 +		{
-+			if (Main.remixWorld)
-+			{
-+				int num7 = Main.maxTilesX / 7;
-+				int num8 = Main.maxTilesX / 14;
-+				if (Main.dungeonX < Main.maxTilesX / 2)
-+				{
-+					for (int i = Main.maxTilesX - num7 - num8; i < Main.maxTilesX; i++)
-+					{
-+						for (int j = (int)Main.worldSurface + genRand.Next(-1, 2); j < Main.maxTilesY - 10; j++)
-+						{
-+							if (i > Main.maxTilesX - num7)
-+								Convert(i, j, 2, 1);
-+							else if (TileID.Sets.Crimson[Main.tile[i, j].type] || TileID.Sets.Corrupt[Main.tile[i, j].type])
-+								Convert(i, j, 2, 1);
-+						}
-+					}
-+				}
-+				else
-+				{
-+					for (int k = 0; k < num7 + num8; k++)
-+					{
-+						for (int l = (int)Main.worldSurface + genRand.Next(-1, 2); l < Main.maxTilesY - 10; l++)
-+						{
-+							if (k < num7)
-+								Convert(k, l, 2, 1);
-+							else if (TileID.Sets.Crimson[Main.tile[k, l].type] || TileID.Sets.Corrupt[Main.tile[k, l].type])
-+								Convert(k, l, 2, 1);
-+						}
-+					}
-+				}
-+			}
-+			else
-+			{
-+				GERunner(num3, 0, 3 * num5, 5.0);
-+			}
+ 			GERunner(num3, 0, 3 * num5, 5.0);
 +		}
 +		
 +		void HardmodeEvilTask(GenerationProgress progress, GameConfiguration configuration)
 +		{
-+			if (!Main.remixWorld)
-+			{
-+				GERunner(num4, 0, 3 * -num5, 5.0, good: false);
-+			}
-+		}
-+
+ 			GERunner(num4, 0, 3 * -num5, 5.0, good: false);
+ 		}
+ 
 +		hardmodeTasks.Add(new PassLegacy("Hardmode Walls", HardmodeWallsTask));
 +		hardmodeTasks.Add(new PassLegacy("Hardmode Announcement", HardmodeAnnouncementTask));
 +
