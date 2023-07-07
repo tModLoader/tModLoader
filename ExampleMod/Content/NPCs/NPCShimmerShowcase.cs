@@ -27,7 +27,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
 			CreateShimmerTransformation()
-				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((Entity target) => target.Center.X <= Main.maxTilesX * 8))
+				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((ShimmerTransformation transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8))
 				.AddResult(new ModShimmerResult(ModShimmerTypeID.Item, ModContent.ItemType<ExampleItem>(), 30))
 				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.Skeleton, 3))
 				.AddOnShimmerCallBack(new ShimmerTransformation.OnShimmerCallBack(OnShimmerCallBack))
@@ -87,7 +87,7 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public static void OnShimmerCallBack(Entity origin, List<Entity> spawnedEntities) {
+		public static void OnShimmerCallBack(ShimmerTransformation transformation, Entity origin, List<Entity> spawnedEntities) {
 			foreach (Entity entity in spawnedEntities) {
 				Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * 10, ProjectileID.Bullet, 20, 1);
 				p.friendly = false;

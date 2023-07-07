@@ -20,6 +20,13 @@ public class ShimmerShowcaseConditions : ModItem
 {
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
+	public override void SetStaticDefaults() {
+		CreateShimmerTransformation()
+			.AddCondition(Condition.Christmas)
+			.AddResult(new ModShimmerResult(ModShimmerTypeID.Item, ItemID.Present, 2))
+			.Register();
+	}
+
 	public override void SetDefaults() {
 		Item.width = 20;
 		Item.height = 20;

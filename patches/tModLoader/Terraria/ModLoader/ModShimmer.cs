@@ -72,8 +72,9 @@ public sealed class ShimmerTransformation
 	/// <summary>
 	///	Called in addition to conditions to check if the entity shimmers
 	/// </summary>
+	/// <param name="transformation"> The transformation </param>
 	/// <param name="source"> The entity that was shimmered, either an <see cref="Item"/> or an <see cref="NPC"/></param>
-	public delegate bool CanShimmerCallBack(Entity source);
+	public delegate bool CanShimmerCallBack(ShimmerTransformation transformation, Entity source);
 
 	internal CanShimmerCallBack CanShimmerCallBacks;
 
@@ -96,15 +97,16 @@ public sealed class ShimmerTransformation
 	/// </returns>
 	private bool CanShimmer(Entity entity)
 		=> Conditions.All((condition) => condition.IsMet())
-		&& (CanShimmerCallBacks?.Invoke(entity) ?? true)
+		&& (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
 		&& (!CheckVanillaConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
 
 	/// <summary>
 	///	Called when the entity shimmers
 	/// </summary>
+	/// <param name="transformation"> The transformation </param>
 	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
 	/// <param name="source"> The entity that was shimmered </param>
-	public delegate void OnShimmerCallBack(Entity source, List<Entity> spawnedEntities);
+	public delegate void OnShimmerCallBack(ShimmerTransformation transformation, Entity source, List<Entity> spawnedEntities);
 
 	internal OnShimmerCallBack OnShimmerCallBacks;
 
@@ -148,7 +150,7 @@ public sealed class ShimmerTransformation
 	private static bool DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
 	{
 		List<ShimmerTransformation> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
-		if (transformations.Count == 0)
+		if (!(transformations?.Count > 0))
 			return false;
 
 		foreach (ShimmerTransformation transformation in transformations) { // Loops possible transformations
@@ -169,7 +171,7 @@ public sealed class ShimmerTransformation
 		foreach (ModShimmerResult result in transformation.Results)
 			SpawnModShimmerResult(entity, result, ref resultSpawnCounter, spawnedEntities); //Spawns the individual result, adds it to the list
 
-		transformation.OnShimmerCallBacks?.Invoke(entity, spawnedEntities);
+		transformation.OnShimmerCallBacks?.Invoke(transformation, entity, spawnedEntities);
 
 		if (Main.netMode == 0)
 			Item.ShimmerEffect(entity.Center);
@@ -179,10 +181,7 @@ public sealed class ShimmerTransformation
 
 	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, ref int resultIndex, List<Entity> spawned)
 	{
-		int stackCounter = 1;
-		if (entity is Item) {
-			stackCounter = (entity as Item).stack;
-		}
+		int stackCounter = shimmerResult.Count;
 
 		switch (shimmerResult.ResultType) {
 			case ModShimmerTypeID.Item: {
@@ -205,7 +204,7 @@ public sealed class ShimmerTransformation
 			}
 
 			case ModShimmerTypeID.NPC: {
-				int spawnCount = Math.Min(NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(shimmerResult.Count * stackCounter, 200), 50);
+				int spawnCount = Math.Min(NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(stackCounter, 200), 50);
 				// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set,
 				// technically can be violated because multiple NPCs can be put into the same transformation
 
@@ -292,7 +291,18 @@ public sealed class ShimmerTransformation
 
 	private static void CleanupShimmerSource(Item item)
 	{
-		throw new NotImplementedException();
+		item.shimmerTime = 0f;
+
+		if (Main.netMode == 0) {
+			Item.ShimmerEffect(item.Center);
+		}
+		else {
+			NetMessage.SendData(146, -1, -1, null, 0, (int)item.Center.X, (int)item.Center.Y);
+			NetMessage.SendData(145, -1, -1, null, item.whoAmI, 1f);
+		}
+
+		item.makeNPC = -1;
+		item.active = false;
 	}
 
 	private static void CleanupShimmerSource(Projectile projectile)
