@@ -1914,7 +1914,7 @@
  
  	private void GetShimmered()
  	{
-+		if (ShimmerTransformation.DoModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++		if (ModShimmer.DoModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
 +			return;
 +		}
 +

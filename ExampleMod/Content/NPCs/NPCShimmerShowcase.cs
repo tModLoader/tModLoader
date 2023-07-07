@@ -26,11 +26,11 @@ namespace ExampleMod.Content.NPCs
 
 			// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30 example items
 			CreateShimmerTransformation()
-				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((ShimmerTransformation transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8))
-				.AddCanShimmerCallBack(new ShimmerTransformation.CanShimmerCallBack((ShimmerTransformation transformation, Entity target) => true))
+				.AddCanShimmerCallBack(new ModShimmer.CanShimmerCallBack((ModShimmer transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8))
+				.AddCanShimmerCallBack(new ModShimmer.CanShimmerCallBack((ModShimmer transformation, Entity target) => true))
 				.AddModItemResult<ExampleItem>(30)
 				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.Skeleton, 3))
-				.AddOnShimmerCallBack(new ShimmerTransformation.OnShimmerCallBack(OnShimmerCallBack))
+				.AddOnShimmerCallBack(new ModShimmer.OnShimmerCallBack(OnShimmerCallBack))
 				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items
@@ -71,8 +71,8 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		// This is static and not an override, it is used to create an instance of ShimmerTransformation.OnShimmerCallBack, this is a delegate, delegates are essentially static methods stored as variables and need to be static
-		public static void OnShimmerCallBack(ShimmerTransformation transformation, Entity origin, List<Entity> spawnedEntities) {
+		// This is static and not an override, it is used to create an instance of ModShimmer.OnShimmerCallBack, this is a delegate, delegates are essentially static methods stored as variables and need to be static
+		public static void OnShimmerCallBack(ModShimmer transformation, Entity origin, List<Entity> spawnedEntities) {
 			foreach (Entity entity in spawnedEntities) {
 				Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
 				p.friendly = false;

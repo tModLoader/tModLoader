@@ -885,8 +885,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Creates a <see cref="ShimmerTransformation"/> resulting this ModItem. This method only creates the <see cref="ShimmerTransformation"/>, it does not register it into the game. Call this at the very beginning when creating a new <see cref="ShimmerTransformation"/>.<br/>
-	/// This method automatically sets <see cref="ShimmerTransformation.InstantiationEntity"/>
+	/// Creates a <see cref="ModShimmer"/> resulting this ModItem. This method only creates the <see cref="ModShimmer"/>, it does not register it into the game. Call this at the very beginning when creating a new <see cref="ModShimmer"/>.<br/>
+	/// This method automatically sets <see cref="ModShimmer.InstantiationEntity"/>
 	/// </summary>
-	public ShimmerTransformation CreateShimmerTransformation() => new(NPC);
+	public ModShimmer CreateShimmerTransformation() => new(NPC);
 }
