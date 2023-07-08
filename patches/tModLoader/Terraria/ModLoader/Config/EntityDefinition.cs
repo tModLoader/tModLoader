@@ -90,6 +90,7 @@ public class ItemDefinition : EntityDefinition
 	public override int Type => ItemID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
 
 	public ItemDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="ItemDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
 	public ItemDefinition(int type) : base(ItemID.Search.GetName(type)) { }
 	public ItemDefinition(string key) : base(key) { }
 	public ItemDefinition(string mod, string name) : base(mod, name) { }
@@ -111,6 +112,7 @@ public class ProjectileDefinition : EntityDefinition
 	public override int Type => ProjectileID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
 
 	public ProjectileDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="ProjectileDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
 	public ProjectileDefinition(int type) : base(ProjectileID.Search.GetName(type)) { }
 	public ProjectileDefinition(string key) : base(key) { }
 	public ProjectileDefinition(string mod, string name) : base(mod, name) { }
@@ -134,6 +136,7 @@ public class NPCDefinition : EntityDefinition
 	public override int Type => NPCID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
 
 	public NPCDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="NPCDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
 	public NPCDefinition(int type) : base(NPCID.Search.GetName(type)) { }
 	public NPCDefinition(string key) : base(key) { }
 	public NPCDefinition(string mod, string name) : base(mod, name) { }
@@ -152,9 +155,16 @@ public class PrefixDefinition : EntityDefinition
 {
 	public static readonly Func<TagCompound, PrefixDefinition> DESERIALIZER = Load;
 
-	public override int Type => PrefixID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
+	public override int Type {
+		get {
+			if (Mod == "Terraria" && Name == "None")
+				return 0;
+			return PrefixID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
+		}
+	}
 
 	public PrefixDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="PrefixDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
 	public PrefixDefinition(int type) : base(PrefixID.Search.GetName(type)) { }
 	public PrefixDefinition(string key) : base(key) { }
 	public PrefixDefinition(string mod, string name) : base(mod, name) { }
@@ -164,6 +174,16 @@ public class PrefixDefinition : EntityDefinition
 
 	public static PrefixDefinition Load(TagCompound tag)
 		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	public override string DisplayName {
+		get {
+			if (IsUnloaded)
+				return Language.GetTextValue("Mods.ModLoader.Unloaded");
+			if(Type == 0)
+				return Lang.inter[23].Value;
+			return Lang.prefix[Type].Value;
+		}
+	}
 }
 
 /// <summary>
