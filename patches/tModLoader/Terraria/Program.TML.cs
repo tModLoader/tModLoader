@@ -101,6 +101,9 @@ namespace Terraria
 				Platform.Get<IPathService>().GetStoragePath($"Terraria");
 
 			string stableFolderConfig = Path.Combine(defaultSaveFolder, StableFolder, "config.json");
+			if (!File.Exists(stableFolderConfig))
+				return;
+
 			var configCollection = JsonNode.Parse(File.ReadAllText(stableFolderConfig));
 			string lastLaunchedTml = (string)configCollection!["LastLaunchedTModLoaderVersion"];
 			if (string.IsNullOrEmpty(lastLaunchedTml) || new Version(lastLaunchedTml).MajorMinor() > new Version("2022.9")) {
