@@ -214,7 +214,7 @@ namespace Terraria.ModLoader.Setup
 			string tMLModTargetsContents = File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets");
 
 			string TMLVERSION = Environment.GetEnvironmentVariable("TMLVERSION");
-			if (!string.IsNullOrWhiteSpace(TMLVERSION) && branch == "stable") {
+			if (!string.IsNullOrWhiteSpace(TMLVERSION) && (branch == "stable" || branch == "1.4.3-legacy")) {
 				// Convert 2012.4.x to 2012_4
 				Console.WriteLine($"TMLVERSION found: {TMLVERSION}");
 				string TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
