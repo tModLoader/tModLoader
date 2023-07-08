@@ -512,7 +512,7 @@ namespace Terraria.ModLoader.Core
 		internal static string GetActiveTmodInRepo(string repo) {
 			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 			var information = AnalyzeWorkshopTmods(repo);
-			if (information == null) {
+			if (information == null || information.Count == 0) {
 				Logging.tML.Warn($"Unexpectedly missing .tMods in Workshop Folder {repo}");
 				return null;
 			}
