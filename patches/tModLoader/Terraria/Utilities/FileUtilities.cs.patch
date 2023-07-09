@@ -49,7 +49,7 @@
  		}
  
  		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
-@@ -155,15 +_,27 @@
+@@ -155,15 +_,29 @@
  		}
  
  		public static void CopyFolder(string sourcePath, string destinationPath) {
@@ -68,6 +68,8 @@
  			}
  
  			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
++			// Assumes each file is on average 0.5 MB and is moved at 15 MB/s.  - Solxan.
++			ModLoader.Logging.tML.Info($"Number of files to Copy: {directories.Length}. Estimated time for HDD @15 MB/s: {directories.Length / 30} seconds");
  			foreach (string obj in directories) {
 -				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
 +				string relativePath = ConvertToRelativePath(sourcePath, obj);

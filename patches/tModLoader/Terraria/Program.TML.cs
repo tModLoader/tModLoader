@@ -92,8 +92,10 @@ namespace Terraria
 		private static void Port143FilesFromStable(string superSavePath, bool isCloud) {
 			string newFolderPath = Path.Combine(superSavePath, Legacy143Folder);
 			string oldFolderPath = Path.Combine(superSavePath, StableFolder);
+			string cloudName = isCloud ? "Steam Cloud" : "Local Files";
+			string portCheckFile = Path.Combine(oldFolderPath, $"143ported{cloudName}.txt");
 
-			if (!Directory.Exists(oldFolderPath))
+			if (!Directory.Exists(oldFolderPath) || File.Exists(portCheckFile))
 				return;
 
 			// Verify that we are moving 2022.9 player data to 1.4.3 folder. Do so by checking for version <= 2022.9
@@ -111,11 +113,14 @@ namespace Terraria
 			}
 
 			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
-			Logging.tML.Info($"Cloning current Stable files to 1.4.3 save folder. Save Folder is Cloud? {isCloud}");
+			Logging.tML.Info($"Cloning current Stable files to 1.4.3 save folder. Ported {cloudName}." +
+				$"\nThis may take a few minutes for a large amount of files.");
 			Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, newFolderPath, isCloud,
 				// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
 				excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
 				overwriteAlways: false, overwriteOld: true);
+
+			File.Create(portCheckFile);
 		}
 
 		internal static void PortFilesMaster(string savePath, bool isCloud) {
