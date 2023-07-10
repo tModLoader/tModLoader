@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria.GameContent;
 
 namespace Terraria.DataStructures;
 
@@ -23,7 +24,7 @@ public struct TileRestingInfo
 	public Vector2 VisualOffset;
 
 	/// <summary>
-	/// Direction the entity is facing while resting.
+	/// Direction the entity is facing while resting. Is 0 by default for beds.
 	/// </summary>
 	public int TargetDirection;
 
@@ -37,6 +38,22 @@ public struct TileRestingInfo
 	/// </summary>
 	public Vector2 FinalOffset;
 
+	/// <summary>
+	/// Contains additional information, such as <see cref="ExtraSeatInfo.IsAToilet"/>.
+	/// </summary>
+	public ExtraSeatInfo ExtraInfo;
+
+	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset, Vector2 finalOffset, ExtraSeatInfo extraInfo)
+	{
+		RestingEntity = restingEntity;
+		AnchorTilePosition = anchorTilePosition;
+		VisualOffset = visualOffset;
+		TargetDirection = targetDirection;
+		DirectionOffset = directionOffset;
+		FinalOffset = finalOffset;
+		ExtraInfo = extraInfo;
+	}
+
 	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default)
 	{
 		RestingEntity = restingEntity;
@@ -45,6 +62,18 @@ public struct TileRestingInfo
 		TargetDirection = targetDirection;
 		DirectionOffset = directionOffset;
 		FinalOffset = finalOffset;
+		ExtraInfo = default;
+	}
+
+	public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset, out ExtraSeatInfo extraInfo)
+	{
+		restingEntity = RestingEntity;
+		anchorTilePosition = AnchorTilePosition;
+		visualOffset = VisualOffset;
+		targetDirection = TargetDirection;
+		directionOffset = DirectionOffset;
+		finalOffset = FinalOffset;
+		extraInfo = ExtraInfo;
 	}
 
 	public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset)
