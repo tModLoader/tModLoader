@@ -151,6 +151,8 @@ internal class UIModDownloadItem : UIPanel
 	{
 		Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", ModDownload.DisplayName), Interface.modBrowserID);
 	}
+
+	//TODO: Is this completely unused now in the new Mod Browser?
 	public override int CompareTo(object obj)
 	{
 		var item = obj as UIModDownloadItem;

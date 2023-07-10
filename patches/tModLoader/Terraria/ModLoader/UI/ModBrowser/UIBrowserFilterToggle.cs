@@ -14,6 +14,7 @@ public class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 		private set;
 	}
 
+	//TODO: Needs to update texture and logic
 	public UIBrowserFilterToggle(int textureOffsetX, int textureOffsetY, int padding = 2)
 		: base(Texture, Enum.GetValues(typeof(T)).Length, 32, 32, textureOffsetX, textureOffsetY, padding)
 	{

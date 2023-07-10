@@ -40,7 +40,9 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 	public override void OnInitialize()
 	{
 		base.OnInitialize();
-		_cancelButton.Remove(); // Why cannot cancel???
+		// We can't cancel in-progress workshop downloads without getting steam in to a deadlock state - Solxan
+		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
+		_cancelButton.Remove(); 
 	}
 
 	public override void Update(GameTime gameTime)

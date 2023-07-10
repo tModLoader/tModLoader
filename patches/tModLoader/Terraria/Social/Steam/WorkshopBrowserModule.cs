@@ -96,13 +96,11 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	// Query Items /////////////////////////
 
-	//TODO: Needs a refactor at some point, not the cleanest, but survivable 
-	//START SECTION
+	/// <summary>
+	/// Assumes Intialize has been run prior to use.
+	/// </summary>
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
-		// @TODO: "Solxan" was not used???
-		InstalledItems = GetInstalledMods();
-
 		if (!SteamedWraps.SteamAvailable)
 			yield break;
 
@@ -110,41 +108,28 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		switch (queryParams.updateStatusFilter) {
 			case UpdateFilter.All:
 				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
-					item.UpdateInstallState();
 					yield return item;
 				}
 				yield break;
 			case UpdateFilter.Available:
 				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
 					if (!CachedInstalledModDownloadItems.Contains(item)) {
-						item.UpdateInstallState(); // @TODO: Needed?
 						yield return item;
 					}
 				}
 				yield break;
 			case UpdateFilter.UpdateOnly:
-				// Special code for checking all mods installed. Can't use 'Subscribed' API query because GoG
-				// @TODO: Techinically DirectyQuery and derivates are blocking!
-				// @TODO: "Solxan" this was written so it WILL run even in case of All or
-				// Available filters, is it intended?
-				// Should be documented in case this method has interesting side effects
-				foreach (var item in (this as SocialBrowserModule).DirectQueryInstalledMDItems()) {
-					// @TODO: This too is blocking
-					item.UpdateInstallState();
-					if (item.NeedUpdate) // Needs update beforehand
-						yield return item;
+				foreach (var item in CachedInstalledModDownloadItems.Where(item => item.NeedUpdate)) {
+					yield return item;
 				}
 				yield break;
 			case UpdateFilter.InstalledOnly:
-				// Special code for checking all mods installed. Can't use 'Subscribed' API query because GoG
-				foreach (var item in (this as SocialBrowserModule).DirectQueryInstalledMDItems()) {
-					item.UpdateInstallState();
+				foreach (var item in CachedInstalledModDownloadItems) {
 					yield return item;
 				}
 				yield break;
 		}
 	}
-	//END SECTION
 
 	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
 	{

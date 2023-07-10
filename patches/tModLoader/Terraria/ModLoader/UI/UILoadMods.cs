@@ -12,6 +12,8 @@ internal class UILoadMods : UIProgress
 
 	private CancellationTokenSource _cts;
 
+	// Used for Mod Browser during updating mods - Solxan
+	// We need to release them properly, and enable them properly at two separate times.
 	internal bool suppressAutoLoad = false;
 
 	public override void OnActivate()

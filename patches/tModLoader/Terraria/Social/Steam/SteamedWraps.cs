@@ -182,6 +182,7 @@ public static class SteamedWraps
 
 		if (SteamClient)
 			SteamUGC.SetSearchText(qHandle, text);
+
 		else if (SteamAvailable)
 			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
@@ -204,9 +205,12 @@ public static class SteamedWraps
 		return new();
 	}
 
-	public static EUGCQuery CalculateQuerySort(ModBrowserSortMode reqSorting)
+	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		return (reqSorting) switch {
+		if (!string.IsNullOrEmpty(qParams.searchGeneric))
+			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
+
+		return (qParams.sortingParamater) switch {
 			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
 			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
 			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
@@ -217,7 +221,7 @@ public static class SteamedWraps
 	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP.sortingParamater), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
@@ -225,7 +229,7 @@ public static class SteamedWraps
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP.sortingParamater), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
