@@ -43,7 +43,7 @@ public struct TileRestingInfo
 	/// </summary>
 	public ExtraSeatInfo ExtraInfo;
 
-	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset, Vector2 finalOffset, ExtraSeatInfo extraInfo)
+	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default, ExtraSeatInfo extraInfo = default)
 	{
 		RestingEntity = restingEntity;
 		AnchorTilePosition = anchorTilePosition;
@@ -52,17 +52,6 @@ public struct TileRestingInfo
 		DirectionOffset = directionOffset;
 		FinalOffset = finalOffset;
 		ExtraInfo = extraInfo;
-	}
-
-	public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default)
-	{
-		RestingEntity = restingEntity;
-		AnchorTilePosition = anchorTilePosition;
-		VisualOffset = visualOffset;
-		TargetDirection = targetDirection;
-		DirectionOffset = directionOffset;
-		FinalOffset = finalOffset;
-		ExtraInfo = default;
 	}
 
 	public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset, out ExtraSeatInfo extraInfo)
@@ -74,15 +63,5 @@ public struct TileRestingInfo
 		directionOffset = DirectionOffset;
 		finalOffset = FinalOffset;
 		extraInfo = ExtraInfo;
-	}
-
-	public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset)
-	{
-		restingEntity = RestingEntity;
-		anchorTilePosition = AnchorTilePosition;
-		visualOffset = VisualOffset;
-		targetDirection = TargetDirection;
-		directionOffset = DirectionOffset;
-		finalOffset = FinalOffset;
 	}
 }
