@@ -126,7 +126,7 @@
 		"LoadErrorDisabled": "O(s) mod(s) foi(ram) desabilitado(s) automaticamente.",
 		"LoadErrorCulpritUnknown": "O mod responsável é desconhecido e o tModLoader deve ser reiniciado.",
 		"LoadErrorContentType": "Esse erro foi causado pela classe \"{0}\".",
-		"LoadErrorMissingModQualifier": "O caminho do recurso \"{0}\" está sem o qualificador de mod.  Os caminhos de recursos devem iniciar com o nome do mod ou \"Terraria\" seguido por uma barra (\"/\").",
+		"LoadErrorMissingModQualifier": "O caminho do recurso \"{0}\" está sem o qualificador de mod. Os caminhos de recursos devem iniciar com o nome do mod ou \"Terraria\" seguido por uma barra (\"/\").",
 		"LoadErrorModNotFoundDuringAsset": "Um mod chamado \"{0}\" não foi encontrado ao carregar o recurso com o caminho \"{1}\". Verifique se esse caminho inicia com o nome do mod correto.",
 		"LoadErrorVersionMessage": "Foi detectado que este mod foi desenvolvido para o tModLoader v{0}\nNo entanto, você está usando {1}",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 ou mais recente é necessário para usar mods. Por favor, baixe o .NET Framework mais recente.",
