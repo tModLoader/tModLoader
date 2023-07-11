@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.Engine
 			RecalculateAvailableSteamCloudStorage();
 			Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)lastAvailableSteamCloudStorage)} available");
 			bool OnBetaBranch = SteamApps.GetCurrentBetaName(out string branchName, 1000);
-			Logging.tML.Info($"Steam beta branch: {(OnBetaBranch ? "None" : branchName)}");
+			Logging.tML.Info($"Steam beta branch: {(OnBetaBranch ? branchName : "None")}");
 		}
 
 		public static string GetSteamTerrariaInstallDir() {
