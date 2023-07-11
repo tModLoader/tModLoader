@@ -837,7 +837,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.br/>
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
@@ -845,7 +845,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player.br/>
+	/// Allows you to create special effects when a hostile projectile hits this player. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
