@@ -97,7 +97,7 @@ public static class TagIO
 			v => (byte[]) v.Clone(),
 			() => Array.Empty<byte>()),
 		new ClassPayloadHandler<string>(
-			r => Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt16())),
+			r => Encoding.UTF8.GetString(r.BaseStream.ReadByteSpan(r.ReadInt16())),
 			(w, v) => {
 				var b = Encoding.UTF8.GetBytes(v);
 				w.Write((short)b.Length);
