@@ -189,6 +189,10 @@ public static class TagIO
 	{
 		ArgumentNullException.ThrowIfNull(value);
 
+		// some very quick checks which can save on heavier dict lookups
+		if (value is string or int or TagCompound or List<TagCompound>)
+			return value;
+
 		var type = value.GetType();
 
 		if (TagSerializer.TryGetSerializer(type, out TagSerializer? serializer))
