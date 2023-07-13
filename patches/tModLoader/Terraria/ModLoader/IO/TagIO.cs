@@ -336,7 +336,16 @@ public static class TagIO
 
 	public static TagCompound FromStream(Stream stream, bool compressed = true)
 	{
-		if (compressed) stream = new GZipStream(stream, CompressionMode.Decompress);
+		if (compressed) {
+			stream = new GZipStream(stream, CompressionMode.Decompress);
+
+			// Can cut parsing times by up to half
+			// The deserialized tag is stored in full memory anyway, so assume we have enough for the serialized representation too
+			var ms = new MemoryStream(1<<20);
+			stream.CopyTo(ms);
+			ms.Position = 0;
+			stream = ms;
+		}
 		return Read(new BigEndianReader(stream));
 	}
 
