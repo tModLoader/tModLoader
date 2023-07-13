@@ -47,4 +47,16 @@ public static class BinaryIO
 		stream.ReadBytes(buf);
 		return buf;
 	}
+
+	public static ReadOnlySpan<byte> ReadByteSpan(this Stream stream, int len)
+	{
+		if (stream is MemoryStream ms) {
+			var span = ms.GetBuffer().AsSpan().Slice((int)ms.Position, len);
+			ms.Seek(len, SeekOrigin.Current);
+			return span;
+		}
+
+		// consider using a [ThreadStatic] buffer for small reads
+		return ReadBytes(stream, len);
+	}
 }
