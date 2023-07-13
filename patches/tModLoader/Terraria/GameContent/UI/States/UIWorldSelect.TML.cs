@@ -17,15 +17,16 @@ partial class UIWorldSelect
 	private static bool _currentlyMigratingFiles;
 
 	// Individual
+	private static UIExpandablePanel _migrationPanel;
 
-	private void AddIndividualWorldMigrationButtons()
+	private void LoadMigratableWorlds()
 	{
-		UIExpandablePanel playerMigrationPanel = new UIExpandablePanel();
-		_worldList.Add(playerMigrationPanel);
+		_migrationPanel = new UIExpandablePanel();
+		_worldList.Add(_migrationPanel);
 
 		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualWorldsHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
-		playerMigrationPanel.Append(playerMigrationPanelTitle);
+		_migrationPanel.Append(playerMigrationPanelTitle);
 
 		ModLoader.Config.UI.NestedUIList migrateWorldList = new ModLoader.Config.UI.NestedUIList();
 		migrateWorldList.Width.Set(-22, 1f);
@@ -33,7 +34,7 @@ partial class UIWorldSelect
 		migrateWorldList.Top.Set(30, 0);
 		migrateWorldList.MinHeight.Set(300, 0f);
 		migrateWorldList.ListPadding = 5f;
-		playerMigrationPanel.VisibleWhenExpanded.Add(migrateWorldList);
+		_migrationPanel.VisibleWhenExpanded.Add(migrateWorldList);
 
 		UIScrollbar scrollbar = new UIScrollbar();
 		scrollbar.SetView(100f, 1000f);
@@ -44,7 +45,7 @@ partial class UIWorldSelect
 		migrateWorldList.SetScrollbar(scrollbar);
 		//DataListElement.Append(scrollbar);
 
-		playerMigrationPanel.VisibleWhenExpanded.Add(scrollbar);
+		_migrationPanel.VisibleWhenExpanded.Add(scrollbar);
 
 		// TODO: Do we need to do extra work for .wld files that have been renamed? Is that valid?
 		// Vanilla and 1.3 paths are defaults, 1.4 TML paths are relative to current savepath.
