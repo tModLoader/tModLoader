@@ -17,10 +17,14 @@
  		}
  
  		public static string GetFullPath(string path, bool cloud) {
-@@ -38,10 +_,28 @@
+@@ -38,10 +_,39 @@
  		}
  
  		public static void Copy(string source, string destination, bool cloud, bool overwrite = true) {
+-			if (!cloud)
+-				File.Copy(source, destination, overwrite);
+-			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+-				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
 +			CopyExtended(source, destination, cloud, overwriteAlways: overwrite);
 +		}
 +
@@ -29,11 +33,19 @@
 +			if (!overwrite && File.Exists(destination))
 +				return;
 +
--			if (!cloud)
 +			if (!cloud) {
- 				File.Copy(source, destination, overwrite);
--			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
--				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
++				try {
++					File.Copy(source, destination, overwrite);
++				}
++				catch (IOException ex) {
++					if (ex.GetType() != typeof(IOException))
++						throw;
++
++					// TER-827 - fallback for random File.Copy failures on Win11
++					using (var inputstream = File.OpenRead(source))
++					using (var outputstream = File.Create(destination))
++						inputstream.CopyTo(outputstream);
++				}
 +				return;
 +			}
 +
