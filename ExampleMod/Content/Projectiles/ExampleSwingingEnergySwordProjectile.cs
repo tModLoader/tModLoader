@@ -6,7 +6,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -37,11 +36,12 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ignoreWater = true;
 			Projectile.ownerHitCheck = true; // A line of sight check so the projectile can't deal damage through tiles.
 			Projectile.ownerHitCheckDistance = 300f; // The maximum range that the projectile can hit a target. 300 pixels is 18.75 tiles.
-			Projectile.usesOwnerMeleeHitCD = true;
+			Projectile.usesOwnerMeleeHitCD = true; // This will make the projectile apply the standard number of immunity frames as normal melee attacks.
 			// Normally, projectiles die after they have hit all the enemies they can.
 			// But, for this case, we want the projectile to continue to live so we can have the visuals of the swing.
 			Projectile.stopsDealingDamageAfterPenetrateHits = true;
 
+			// We will be using custom AI for this projectile. The original Excalibur uses aiStyle 190.
 			Projectile.aiStyle = -1;
 			// Projectile.aiStyle = ProjAIStyleID.NightsEdge; // 190
 			// AIType = ProjectileID.Excalibur;
@@ -86,14 +86,16 @@ namespace ExampleMod.Content.Projectiles
 			Vector2 dustPosition = Projectile.Center + dustRotation.ToRotationVector2() * 84f * Projectile.scale;
 			Vector2 dustVelocity = (dustRotation + Projectile.ai[0] * MathHelper.PiOver2).ToRotationVector2();
 			if (Main.rand.NextFloat() * 2f < Projectile.Opacity) {
-				Color dustColor = Color.Lerp(Color.SkyBlue, Color.White, Main.rand.NextFloat() * 0.3f); // Original Excalibur color: Color.Gold
+				// Original Excalibur color: Color.Gold, Color.White
+				Color dustColor = Color.Lerp(Color.SkyBlue, Color.White, Main.rand.NextFloat() * 0.3f);
 				Dust coloredDust = Dust.NewDustPerfect(Projectile.Center + dustRotation.ToRotationVector2() * (Main.rand.NextFloat() * 80f * Projectile.scale + 20f * Projectile.scale), DustID.FireworksRGB, dustVelocity * 1f, 100, dustColor, 0.4f);
 				coloredDust.fadeIn = 0.4f + Main.rand.NextFloat() * 0.15f;
 				coloredDust.noGravity = true;
 			}
 
 			if (Main.rand.NextFloat() * 1.5f < Projectile.Opacity) {
-				Dust.NewDustPerfect(dustPosition, DustID.TintableDustLighted, dustVelocity, 100, Color.White * Projectile.Opacity, 1.2f * Projectile.Opacity);
+				// Original Excalibur color: Color.White
+				Dust.NewDustPerfect(dustPosition, DustID.TintableDustLighted, dustVelocity, 100, Color.SkyBlue * Projectile.Opacity, 1.2f * Projectile.Opacity);
 			}
 
 			Projectile.scale *= Projectile.ai[2]; // Set the scale of the projectile to the scale of the item.
@@ -151,7 +153,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void CutTiles() {
-			// Here we calculate where the projectile and destroy grass, pots, Queen Bee Larva, etc.
+			// Here we calculate where the projectile can destroy grass, pots, Queen Bee Larva, etc.
 			Vector2 starting = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 60f * Projectile.scale;
 			Vector2 ending = (Projectile.rotation + MathHelper.PiOver4).ToRotationVector2() * 60f * Projectile.scale;
 			float width = 60f * Projectile.scale;
@@ -160,10 +162,15 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// Vanilla has several particles that can easily be used anywhere.
+			// The particles from the Particle Orchestra are predefined by vanilla and most can not be customized that much.
+			// Use auto complete to see the other ParticleOrchestraType types there are.
 			// Here we are spawning the Excalibur particle randomly inside of the target's hitbox.
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
 				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox) },
 				Projectile.owner);
+
+			// You could also spawn dusts at the enemy position. Here is simple an example:
+			// Dust.NewDust(Main.rand.NextVector2FromRectangle(target.Hitbox), 0, 0, ModContent.DustType<Content.Dusts.Sparkle>());
 
 			// Set the target's hit direction to away from the player so the knockback is in the correct direction.
 			hit.HitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
@@ -174,7 +181,7 @@ namespace ExampleMod.Content.Projectiles
 				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox) },
 				Projectile.owner);
 
-			info.HitDirection = ((Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1));
+			info.HitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
 		}
 
 		// Taken from Main.DrawProj_Excalibur()
@@ -182,10 +189,10 @@ namespace ExampleMod.Content.Projectiles
 		public override bool PreDraw(ref Color lightColor) {
 			Vector2 position = Projectile.Center - Main.screenPosition;
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
-			Rectangle sourceRectangle = texture.Frame(1, 4);
+			Rectangle sourceRectangle = texture.Frame(1, 4); // The sourceRectangle says which frame to use.
 			Vector2 origin = sourceRectangle.Size() / 2f;
 			float scale = Projectile.scale * 1.1f;
-			SpriteEffects spriteEffects = ((!(Projectile.ai[0] >= 0f)) ? SpriteEffects.FlipVertically : SpriteEffects.None);
+			SpriteEffects spriteEffects = ((!(Projectile.ai[0] >= 0f)) ? SpriteEffects.FlipVertically : SpriteEffects.None); // Flip the sprite based on the direction it is facing.
 			float percentageOfLife = Projectile.localAI[0] / Projectile.ai[1]; // The current time over the max time.
 			float lerpTime = Utils.Remap(percentageOfLife, 0f, 0.6f, 0f, 1f) * Utils.Remap(percentageOfLife, 0.6f, 1f, 1f, 0f);
 			float lightingColor = Lighting.GetColor(Projectile.Center.ToTileCoordinates()).ToVector3().Length() / (float)Math.Sqrt(3.0);
