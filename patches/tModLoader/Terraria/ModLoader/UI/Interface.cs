@@ -120,11 +120,13 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
+			/* For Major Updates that span multi-month
 			else if (!ModLoader.BetaUpgradeWelcomed144) {
 				ModLoader.BetaUpgradeWelcomed144 = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageUpgradeBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
+			*/
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
@@ -153,19 +155,17 @@ internal static class Interface
 							});
 				}
 			}
-			//SOLXAN:TODO: Re-enable for stabilization later
-			/*
+
 			else if (ModLoader.PreviewFreezeNotification) {
 				ModLoader.PreviewFreezeNotification = false;
 				ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-				infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 					() => {
 						SoundEngine.PlaySound(SoundID.MenuOpen);
 						Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
 					});
 				Main.SaveSettings();
 			}
-			*/
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
