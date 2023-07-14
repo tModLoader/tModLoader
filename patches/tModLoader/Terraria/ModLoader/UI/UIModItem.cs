@@ -335,6 +335,15 @@ internal class UIModItem : UIPanel
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = !_mod.Enabled;
+
+		if (!_mod.Enabled)
+			return;
+
+		foreach (string name in _modReferences) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			dep?.Enable();
+			dep?._uiModStateText.SetEnabled();
+		}
 	}
 
 	internal void Enable()
