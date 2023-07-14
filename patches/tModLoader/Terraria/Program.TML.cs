@@ -117,11 +117,15 @@ namespace Terraria
 				if (configCollection.TryGetValue("LastLaunchedTModLoaderVersion", out object lastLaunchedTmlObject))
 					lastLaunchedTml = (string)lastLaunchedTmlObject;
 			}
-			catch {	}
+			catch (Exception e){
+				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
+				ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{stableFolderConfig}\" file is corrupted.", e);
+			}
 
 			if (string.IsNullOrEmpty(lastLaunchedTml)) {
 				// It's unclear what we should do in this situation. Leave it up to the user.
-				Logging.tML.Info($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{stableFolderConfig}\" file is corrupted.");
+				// It is possible the user copied in their Terraria config.json.
+				Logging.tML.Info($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{stableFolderConfig}\" file is missing the \"LastLaunchedTModLoaderVersion\" entry. If porting is desired, follow the instructions at \"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#manually-port\"");
 				return;
 			}
 			if (new Version(lastLaunchedTml).MajorMinor() > new Version("2022.9")) {
@@ -132,10 +136,16 @@ namespace Terraria
 			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
 			Logging.tML.Info($"Cloning current Stable files to 1.4.3 save folder. Porting {cloudName}." +
 				$"\nThis may take a few minutes for a large amount of files.");
-			Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, isCloud ? newFolderPath : newFolderPathTemp, isCloud,
-				// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
-				excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
-				overwriteAlways: false, overwriteOld: true);
+			try {
+				Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, isCloud ? newFolderPath : newFolderPathTemp, isCloud,
+					// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
+					excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
+					overwriteAlways: false, overwriteOld: true);
+			}
+			catch (Exception e) {
+				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#migration-failed";
+				ErrorReporting.FatalExit($"Migration Failed, please consult the instructions in the \"Migration Failed\" section at \"{e.HelpLink}\" for more information.", e);
+			}
 
 			if (!isCloud) { 
 				// If everything goes well, rename the folder. Only local files use this atomic approach. This will prevent situations where a user ends the porting process from impatience and the port is half complete.
@@ -146,7 +156,7 @@ namespace Terraria
 				// In case there are no players and worlds, we don't want to keep attempting to port, since eventually that will port future stable files if they appear.
 				// We need at least 1 file in the directory, otherwise the directory will not exist.
 				if (Social.SocialAPI.Cloud != null) {
-					Social.SocialAPI.Cloud.Write(Path.Combine(Legacy143Folder, "ported.txt"), new byte[] { });
+					Social.SocialAPI.Cloud.Write(Path.Combine(Legacy143Folder, $"143ported_{cloudName}.txt"), new byte[] { });
 				}
 			}
 
