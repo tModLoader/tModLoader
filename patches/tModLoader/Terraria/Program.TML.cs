@@ -1,12 +1,12 @@
+using Newtonsoft.Json;
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
@@ -91,12 +91,28 @@ namespace Terraria
 
 		private static void Port143FilesFromStable(string superSavePath, bool isCloud) {
 			string newFolderPath = Path.Combine(superSavePath, Legacy143Folder);
+			string newFolderPathTemp = Path.Combine(superSavePath, Legacy143Folder + "-temp");
 			string oldFolderPath = Path.Combine(superSavePath, StableFolder);
 			string cloudName = isCloud ? "Steam Cloud" : "Local Files";
-			string portCheckFile = Path.Combine(oldFolderPath, $"143ported{cloudName}.txt");
+			// Previous code relied on "143portedLocal Files.txt" and "143portedSteam Cloud.txt" in oldFolderPath, this could potentially cause issues if a user clears out their stable folder in the future. Now we rely on the folder existing as the sole indicator.
 
-			if (!Directory.Exists(oldFolderPath) || File.Exists(portCheckFile))
+			// We need to port if:
+			// 1. We haven't already ported -> Check if tModLoader-1.4.3 folder exists.
+			// and
+			// 2. We have something to port -> Check if tModLoader folder exists and we that have no indication that the files in it are for a future version.
+
+			if (Directory.Exists(newFolderPath) || !Directory.Exists(oldFolderPath))
 				return;
+
+			// We need onedrive running if it is on Path
+			if (newFolderPath.Contains("OneDrive")) {
+				Logging.tML.Info("Ensuring OneDrive is running before starting to Migrate Files");
+				try {
+					Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe"));
+					Thread.Sleep(3000);
+				}
+				catch { }
+			}
 
 			// Verify that we are moving 2022.9 player data to 1.4.3 folder. Do so by checking for version <= 2022.9
 			string defaultSaveFolder = LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
@@ -106,21 +122,56 @@ namespace Terraria
 			if (!File.Exists(stableFolderConfig))
 				return;
 
-			var configCollection = JsonNode.Parse(File.ReadAllText(stableFolderConfig));
-			string lastLaunchedTml = (string)configCollection!["LastLaunchedTModLoaderVersion"];
-			if (string.IsNullOrEmpty(lastLaunchedTml) || new Version(lastLaunchedTml).MajorMinor() > new Version("2022.9")) {
+			string lastLaunchedTml = null;
+			try {
+				var configCollection = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(stableFolderConfig));
+				if (configCollection.TryGetValue("LastLaunchedTModLoaderVersion", out object lastLaunchedTmlObject))
+					lastLaunchedTml = (string)lastLaunchedTmlObject;
+			}
+			catch (Exception e){
+				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
+				ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{stableFolderConfig}\" file is corrupted.", e);
+			}
+
+			if (string.IsNullOrEmpty(lastLaunchedTml)) {
+				// It's unclear what we should do in this situation. Leave it up to the user.
+				// It is possible the user copied in their Terraria config.json.
+				Logging.tML.Info($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{stableFolderConfig}\" file is missing the \"LastLaunchedTModLoaderVersion\" entry. If porting is desired, follow the instructions at \"https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#manually-port\"");
+				return;
+			}
+			if (new Version(lastLaunchedTml).MajorMinor() > new Version("2022.9")) {
+				Logging.tML.Info($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, \"{lastLaunchedTml}\" is a newer version.");
 				return;
 			}
 
 			// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
-			Logging.tML.Info($"Cloning current Stable files to 1.4.3 save folder. Ported {cloudName}." +
+			Logging.tML.Info($"Cloning current Stable files to 1.4.3 save folder. Porting {cloudName}." +
 				$"\nThis may take a few minutes for a large amount of files.");
-			Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, newFolderPath, isCloud,
-				// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
-				excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
-				overwriteAlways: false, overwriteOld: true);
+			try {
+				Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, isCloud ? newFolderPath : newFolderPathTemp, isCloud,
+					// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
+					excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
+					overwriteAlways: false, overwriteOld: true);
+			}
+			catch (Exception e) {
+				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#migration-failed";
+				ErrorReporting.FatalExit($"Migration Failed, please consult the instructions in the \"Migration Failed\" section at \"{e.HelpLink}\" for more information.", e);
+			}
 
-			File.Create(portCheckFile);
+			if (!isCloud) { 
+				// If everything goes well, rename the folder. Only local files use this atomic approach. This will prevent situations where a user ends the porting process from impatience and the port is half complete.
+				Directory.Move(newFolderPathTemp, newFolderPath);
+			}
+			else {
+				// We need a way on the cloud of knowing if the porting has been done, since users might have multiple computers.
+				// In case there are no players and worlds, we don't want to keep attempting to port, since eventually that will port future stable files if they appear.
+				// We need at least 1 file in the directory, otherwise the directory will not exist.
+				if (Social.SocialAPI.Cloud != null) {
+					Social.SocialAPI.Cloud.Write(Path.Combine(Legacy143Folder, $"143ported_{cloudName}.txt"), new byte[] { });
+				}
+			}
+
+			Logging.tML.Info($"Porting {cloudName} finished");
 		}
 
 		internal static void PortFilesMaster(string savePath, bool isCloud) {

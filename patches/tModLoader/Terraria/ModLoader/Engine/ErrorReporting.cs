@@ -46,7 +46,8 @@ namespace Terraria.ModLoader.Engine
 			else if (e is InvalidOperationException || e is NullReferenceException || e is IndexOutOfRangeException || e is ArgumentNullException)
 				tip = Language.GetTextValue("tModLoader.ModExceptionHint");
 			else if (e is IOException && e.Message.Contains("cloud file provider")) {
-				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#save-data-file-issues";
+				if(string.IsNullOrEmpty(e.HelpLink))
+					e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#save-data-file-issues";
 				tip = Language.GetTextValue("tModLoader.OneDriveHint");
 				if (Language.ActiveCulture == null) // This error typically happens before localization is loaded, so fallback to english text.
 					tip = "Tip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"";
