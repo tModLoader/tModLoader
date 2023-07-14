@@ -1,5 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Utilities/FileUtilities.cs
 +++ src/tModLoader/Terraria/Utilities/FileUtilities.cs
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria.Utilities
+ {
+-	public static class FileUtilities
++	public static partial class FileUtilities
+ 	{
+ 		private static Regex FileNameRegex = new Regex("^(?<path>.*[\\\\\\/])?(?:$|(?<fileName>.+?)(?:(?<extension>\\.[^.]*$)|$))", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+ 
 @@ -20,14 +_,10 @@
  		public static void Delete(string path, bool cloud, bool forceDeleteFile = false) {
  			if (cloud && SocialAPI.Cloud != null)
@@ -17,121 +26,34 @@
  		}
  
  		public static string GetFullPath(string path, bool cloud) {
-@@ -38,10 +_,39 @@
+@@ -38,10 +_,13 @@
  		}
  
  		public static void Copy(string source, string destination, bool cloud, bool overwrite = true) {
--			if (!cloud)
--				File.Copy(source, destination, overwrite);
--			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
--				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
++			/*
+ 			if (!cloud)
+ 				File.Copy(source, destination, overwrite);
+ 			else if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+ 				SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
++			*/
 +			CopyExtended(source, destination, cloud, overwriteAlways: overwrite);
-+		}
-+
-+		public static void CopyExtended(string source, string destination, bool cloud, bool overwriteAlways, bool overwriteOld = true) {
-+			bool overwrite = DetermineIfShouldOverwrite(overwriteAlways, overwriteOld, source, destination);
-+			if (!overwrite && File.Exists(destination))
-+				return;
-+
-+			if (!cloud) {
-+				try {
-+					File.Copy(source, destination, overwrite);
-+				}
-+				catch (IOException ex) {
-+					if (ex.GetType() != typeof(IOException))
-+						throw;
-+
-+					// TER-827 - fallback for random File.Copy failures on Win11
-+					using (var inputstream = File.OpenRead(source))
-+					using (var outputstream = File.Create(destination))
-+						inputstream.CopyTo(outputstream);
-+				}
-+				return;
-+			}
-+
-+			// Sanitize the paths for Steam calls
-+			string cloudPath = Social.Steam.CoreSocialModule.GetCloudSaveLocation();
-+			destination = ConvertToRelativePath(cloudPath, destination);
-+			source = ConvertToRelativePath(cloudPath, source);
-+
-+			if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination))) {
-+				var bytes = SocialAPI.Cloud.Read(source);
-+				SocialAPI.Cloud.Write(destination, bytes);
-+			}
  		}
  
  		public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false) {
-@@ -155,15 +_,29 @@
+@@ -155,6 +_,7 @@
  		}
  
  		public static void CopyFolder(string sourcePath, string destinationPath) {
-+			CopyFolderEXT(sourcePath, destinationPath, isCloud: false, overwriteAlways: true);
-+		}
-+
-+		public static void CopyFolderEXT(string sourcePath, string destinationPath, bool isCloud = false, Regex excludeFilter = null, bool overwriteAlways = false, bool overwriteOld = false) {
++			/*
  			Directory.CreateDirectory(destinationPath);
  			string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < directories.Length; i++) {
-+				string relativePath = ConvertToRelativePath(sourcePath, directories[i]);
-+				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
-+					continue;
-+
- 				Directory.CreateDirectory(directories[i].Replace(sourcePath, destinationPath));
- 			}
- 
- 			directories = Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories);
-+			// Assumes each file is on average 0.5 MB and is moved at 15 MB/s.  - Solxan.
-+			ModLoader.Logging.tML.Info($"Number of files to Copy: {directories.Length}. Estimated time for HDD @15 MB/s: {directories.Length / 30} seconds");
+@@ -165,6 +_,8 @@
  			foreach (string obj in directories) {
--				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
-+				string relativePath = ConvertToRelativePath(sourcePath, obj);
-+				if (excludeFilter != null && excludeFilter.IsMatch(relativePath))
-+					continue;
-+
-+				CopyExtended(obj, obj.Replace(sourcePath, destinationPath), isCloud, overwriteAlways, overwriteOld);
+ 				File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
  			}
++			*/
++			CopyFolderEXT(sourcePath, destinationPath, isCloud: false, overwriteAlways: true);
  		}
  
-@@ -176,6 +_,42 @@
- 			finally {
- 				Thread.CurrentThread.IsBackground = isBackground;
- 			}
-+		}
-+
-+		/// <summary>
-+		/// Converts the full 'path' to remove the base path component.
-+		/// Example: C://My Documents//Help Me I'm Hungry.txt is full 'path'
-+		///		basePath is C://My Documents
-+		///		Thus returns 'Help Me I'm Hungry.txt'
-+		/// </summary>
-+		public static string ConvertToRelativePath(string basePath, string fullPath) {
-+			if (!fullPath.StartsWith(basePath)) {
-+				ModLoader.Logging.tML.Debug($"string {fullPath} does not contain string {basePath}. Is this correct?");
-+				return fullPath;
-+			}
-+
-+			return fullPath.Substring(basePath.Length + 1);
-+		}
-+
-+		/// <summary>
-+		/// DEtermines if should overwrite the file at Destination with the file at Source
-+		/// </summary>
-+		private static bool DetermineIfShouldOverwrite(bool overwriteAlways, bool overwriteOld, string source, string destination) {
-+			if (overwriteAlways)
-+				return true;
-+
-+			// doesn't really matter
-+			if (!File.Exists(destination))
-+				return overwriteAlways;
-+
-+			// If file exists, and we aren't going to overwrite old versions
-+			if (!overwriteOld)
-+				return false;
-+
-+			var srcFile = File.GetLastWriteTimeUtc(source);
-+			var dstFile = File.GetLastWriteTimeUtc(destination);
-+
-+			return dstFile < srcFile;
- 		}
- 	}
- }
+ 		public static void ProtectedInvoke(Action action) {
