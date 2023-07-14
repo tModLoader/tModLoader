@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -102,6 +103,16 @@ namespace Terraria
 
 			if (Directory.Exists(newFolderPath) || !Directory.Exists(oldFolderPath))
 				return;
+
+			// We need onedrive running if it is on Path
+			if (newFolderPath.Contains("OneDrive")) {
+				Logging.tML.Info("Ensuring OneDrive is running before starting to Migrate Files");
+				try {
+					Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe"));
+					Thread.Sleep(3000);
+				}
+				catch { }
+			}
 
 			// Verify that we are moving 2022.9 player data to 1.4.3 folder. Do so by checking for version <= 2022.9
 			string defaultSaveFolder = LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
