@@ -1,0 +1,5 @@
+Need to Remove "HowToAccessLEgacytModLaoderButton" localization
+Need to review added localizations to determine which ones are even relevant in 1.4.4
+Character/World Select Migration generalization/rework TODO
+
+Cleanup Program.tml.cs changes that aren't desireable

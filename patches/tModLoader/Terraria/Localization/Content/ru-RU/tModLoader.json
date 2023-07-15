@@ -34,7 +34,12 @@
 		"MenuModUpdatesAvailable": "(Доступно {0} {^0:обновление;обновления;обновлений}!)",
 		"AudioNotSupported": "Звуковое оборудование не найдено. Всё аудио будет отключено.",
 		"HowToAccessLegacytModLoaderButton": "Как установить устаревшие версии tModLoader",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		"SteamFamilyShareWarning": "Было обнаружено, что вы используете копию Terraria через Steam Family Share.\nSteam не поддерживает tModLoader из семейной библиотеки.\nПоэтому, был загружён экспериментальный обход Steam Family Share.\nБудут недоступны следующие функции:\n - Оверлей Steam\n - Мультиплеер через Steam",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		"PleaseMoveTo143LegacyMessage": "tModLoader скоро обновится до Terraria 1.4.4, но многие моды ещё не перенесены.\n\nЧтобы остаться на версии 1.4.3 с текущими версиями модов, переключитесь на ветку \"1.4.3-legacy\" через меню бета-версий в steam.",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "Список модов",

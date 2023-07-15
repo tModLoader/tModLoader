@@ -35,7 +35,12 @@
 		"MenuModUpdatesAvailable": "（{0} 个模组可更新！）",
 		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
 		"HowToAccessLegacytModLoaderButton": "使用tModLoader 1.3版本",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		"SteamFamilyShareWarning": "检测到Terraria为Steam家庭共享。\n由于Steam不支持家庭共享tModLoader，因此启用试验性方案。\n以下功能无法使用：\n - 游戏内 Steam 界面\n - Steam 多人",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		"PleaseMoveTo143LegacyMessage": "tModLoader 很快将会移植至1.4.4，但是许多模组仍未被移植。\n\n请使用 steam beta 菜单切换 tModLoader 至 1.4.3-legacy 分支，以继续保持在 1.4.3 版本游玩您现有的模组",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",

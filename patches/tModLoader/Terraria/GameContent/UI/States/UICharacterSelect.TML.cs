@@ -53,9 +53,10 @@ public partial class UICharacterSelect : UIState
 		var otherPaths = new (string path, string message, int stabilityLevel)[] {
 			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Players"), "Click to copy \"{0}\" over from Terraria", 0),
 			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", "Players"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
-			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Players"), "Click to copy \"{0}\" over from 1.4-stable", 1),
-			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Players"), "Click to copy \"{0}\" over from 1.4-preview", 2),
-			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Players"), "Click to copy \"{0}\" over from 1.4-dev", 3),
+			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Players"), "Click to copy \"{0}\" over from stable", 1),
+			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Players"), "Click to copy \"{0}\" over from preview", 2),
+			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Players"), "Click to copy \"{0}\" over from dev", 3),
+			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, "Players"), "Click to copy \"{0}\" over from 1.4.3-Legacy", 0),
 		};
 
 		int currentStabilityLevel = BuildInfo.Purpose switch {

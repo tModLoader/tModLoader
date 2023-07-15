@@ -34,7 +34,12 @@
 		"MenuModUpdatesAvailable": "({0} {^0:atualização;atualizações} {^0:disponível;disponíveis}!)",
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
 		"HowToAccessLegacytModLoaderButton": "Como acessar as versões antigas do tModLoader",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		"SteamFamilyShareWarning": "Foi detectado que você está usando uma cópia do Terraria de uma biblioteca compartilhada.\nO Steam não oferece suporte ao tModLoader em uma biblioteca compartilhada.\nA solução experimental para o tModLoader de bibliotecas compartilhadas foi carregada.\nOs seguintes recursos não estão disponíveis:\n - Overlay do Steam\n - Multijogador do Steam",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		"PleaseMoveTo143LegacyMessage": "tModLoader irá atualizar para a versão 1.4.4 em breve, mas vários mods ainda não foram adaptados.\n\nPara ficar na versão 1.4.3 com os seus mods atuais, use o menu de betas da steam e mude para a versão \"1.4.3-legacy\" do tModLoader.",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "Lista de Mods",

@@ -55,6 +55,7 @@ partial class UIWorldSelect
 			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-stable", 1),
 			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-preview", 2),
 			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-dev", 3),
+			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, "Worlds"), "Click to copy \"{0}\" over from 1.4.3-Legacy", 0),
 		};
 
 		int currentStabilityLevel = BuildInfo.Purpose switch {
