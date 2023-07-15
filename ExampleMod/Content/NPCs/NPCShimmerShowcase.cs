@@ -1,12 +1,12 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -49,7 +49,6 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetDefaults() {
-
 			NPC.CloneDefaults(NPCID.Zombie);
 			NPC.lifeMax = 200;
 			AIType = NPCID.Zombie;

@@ -6,6 +6,19 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
+public sealed class SafeIndexDictionary
+{
+	public static SafeIndexDictionary Instance = new();
+
+	public bool this[int type] {
+		get => ModShimmer.UseNPCSpawnedFromStatue.TryGetValue(type, out bool val) && !val;
+		set {
+			if (!ModShimmer.UseNPCSpawnedFromStatue.TryAdd(type, value)) //Try add a new entry
+				ModShimmer.UseNPCSpawnedFromStatue[type] = value; // If it fails, entry exists, therefore set
+		}
+	}
+}
+
 // TML: #AdvancedShimmerTransformations
 public sealed class ModShimmer
 {
@@ -13,6 +26,11 @@ public sealed class ModShimmer
 	/// Dictionary containing every <see cref="ModShimmer"/> registered to tMod indexed by <see cref="ModShimmerTypeID"/> and the entities type
 	/// </summary>
 	public static Dictionary<(ModShimmerTypeID, int), List<ModShimmer>> ModShimmerTransformations { get; } = new();
+
+	/// <summary>
+	/// False if the NPC should not despawn in shimmer if <see cref="NPC.SpawnedFromStatue"/> is true. Value is assumed to be true if there is no dictionary value
+	/// </summary>
+	public static Dictionary<int, bool> UseNPCSpawnedFromStatue { get; } = new();
 
 	#region Constructors
 
@@ -52,7 +70,7 @@ public sealed class ModShimmer
 	public List<ModShimmerResult> Results { get; init; } = new();
 
 	/// <summary>
-	/// Vanilla disallows a transformation if the result includes either a bone or a solar tablet fragment, when skeletron or golem are undefeated respectively
+	/// Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick, when skeletron or golem are undefeated respectively
 	/// </summary>
 	public bool IgnoreVanillaItemConstraints { get; private set; }
 
@@ -204,33 +222,35 @@ public sealed class ModShimmer
 	/// <list type="number">
 	/// <item/> All <see cref="Conditions"/> return true
 	/// <item/> All added <see cref="CanShimmerCallBack"/> return true
-	/// <item/> None of the results contain bone or solar tablet fragments if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
+	/// <item/> None of the results contain bone or lihzahrd brick if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
 	/// </list>
 	/// </returns>
 	public bool CanShimmer(Entity entity)
 		=> Conditions.All((condition) => condition.IsMet())
 		&& (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
-		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == 154 || result.Type == 1101)));
+		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == ItemID.Bone || result.Type == ItemID.LihzahrdBrick)));
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
-	public static bool DoModShimmer(NPC npc) => DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type));
+	public static bool? DoModShimmer(NPC npc) => npc.SpawnedFromStatue
+			? SafeIndexDictionary.Instance[npc.type] ? null : false
+			: DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type));
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="item"> The <see cref="Item"/> to be shimmered </param>
-	public static bool DoModShimmer(Item item) => DoModShimmer(item, (ModShimmerTypeID.Item, item.type));
+	public static bool? DoModShimmer(Item item) => DoModShimmer(item, (ModShimmerTypeID.Item, item.type));
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="projectile"> The <see cref="Projectile"/> to be shimmered </param>
-	public static bool DoModShimmer(Projectile projectile) => DoModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
+	public static bool? DoModShimmer(Projectile projectile) => DoModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
 
 	/// <summary>
 	/// Shimmers the entity passed, do not call on multiplayer clients
 	/// </summary>
 	/// <param name="entity"> The <see cref="Entity"/> to be shimmered </param>
 	/// <param name="entityIdentification"> tag required information not included in <see cref="Entity"/> </param>
-	/// <returns> True if the transformation is successful</returns>
-	private static bool DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
+	/// <returns> True if the transformation is successful, false if it is should fall through to vanilla as normal, and null if it should fall through ignoring if the NPC is a statue </returns>
+	private static bool? DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
 	{
 		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
 		if (!(transformations?.Count > 0))
@@ -253,12 +273,12 @@ public sealed class ModShimmer
 		int resultSpawnCounter = 0; //Used to offset spawned stuff
 
 		foreach (ModShimmerResult result in transformation.Results)
-			SpawnModShimmerResult(entity, result, ref resultSpawnCounter, spawnedEntities); //Spawns the individual result, adds it to the list
+			SpawnModShimmerResult(entity, result, ref resultSpawnCounter, ref spawnedEntities); //Spawns the individual result, adds it to the list
 
 		transformation.OnShimmerCallBacks?.Invoke(transformation, entity, spawnedEntities);
 	}
 
-	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, ref int resultIndex, List<Entity> spawned)
+	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, ref int resultIndex, ref List<Entity> spawned)
 	{
 		int stackCounter = shimmerResult.Count;
 
@@ -376,7 +396,6 @@ public sealed class ModShimmer
 		throw new NotImplementedException();
 	}
 
-
 	/// <summary>
 	/// Creates the shimmer effect, net syncs
 	/// </summary>
@@ -387,7 +406,6 @@ public sealed class ModShimmer
 			Item.ShimmerEffect(position);
 		else if (Main.netMode == NetmodeID.Server)
 			NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)position.X, (int)position.Y);
-
 	}
 
 	#endregion Operation

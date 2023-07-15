@@ -1910,13 +1910,12 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -47721,9 +_,15 @@
+@@ -47721,9 +_,14 @@
  
  	private void GetShimmered()
  	{
-+		if (ModShimmer.DoModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++		if (ModShimmer.DoModShimmer(this)) // TML: #AdvancedShimmerTransformations, includes all logic.
 +			return;
-+		}
 +
  		int shimmerEquivalentType = GetShimmerEquivalentType();
  		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);

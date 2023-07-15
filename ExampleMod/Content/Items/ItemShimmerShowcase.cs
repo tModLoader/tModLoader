@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
+﻿using ExampleMod.Content.NPCs;
+using ExampleMod.Content.Tiles.Furniture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,7 +8,7 @@ namespace ExampleMod.Content.Items;
 
 /*
 The items in this file showcase customizing the decrafting feature of the Shimmer liquid.
-By default, Shimmer will tranform crafted items back into their original recipe ingredients.
+By default, Shimmer will transform crafted items back into their original recipe ingredients.
 
 ShimmerShowcaseConditions showcases the ability to use conditions to change when shimmer transformations can happen, this includes crimson and corruption recipe variants.
 
@@ -67,13 +68,6 @@ public class ShimmerShowcaseCustomShimmerResult : ModItem
 {
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
-	public override void SetStaticDefaults() {
-		CreateShimmerTransformation()
-			.AddCondition(Condition.Christmas)
-			.AddResult(new ModShimmerResult(ModShimmerTypeID.Item, ItemID.Present, 2))
-			.Register();
-	}
-
 	public override void SetDefaults() {
 		Item.width = 20;
 		Item.height = 20;
@@ -94,6 +88,37 @@ public class ShimmerShowcaseCustomShimmerResult : ModItem
 			.AddTile<ExampleWorkbench>()
 			.AddCustomShimmerResult(ItemID.RottenEgg)
 			.AddCustomShimmerResult(ItemID.Chain, 3)
+			.Register();
+	}
+}
+
+public class ShimmerShowcaseAdvancedShimmerResult : ModItem
+{
+	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
+
+	public override void SetStaticDefaults() {
+		CreateShimmerTransformation()
+			.AddCondition(Condition.Christmas)
+			.AddResult(new ModShimmerResult(ModShimmerTypeID.Item, ItemID.Present, 2))
+			.Register();
+
+		CreateShimmerTransformation()
+			.AddModItemResult<ExampleItem>(30)
+			.AddModNPCResult<ExampleZombieThief>(2)
+			.Register();
+	}
+
+	public override void SetDefaults() {
+		Item.width = 20;
+		Item.height = 20;
+	}
+
+	public override void AddRecipes() {
+		CreateRecipe()
+			.AddIngredient<ExampleItem>(5)
+			.AddCondition(Condition.TimeDay)
+			.AddTile<ExampleWorkbench>()
+			.ApplyConditionsAsDecraftConditions()
 			.Register();
 	}
 }
