@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
-public sealed class SafeIndexDictionary
+public class SafeDictionary<TKey, TValue> : Dictionary<TKey, TValue>
 {
-	public static SafeIndexDictionary Instance = new();
-
-	public bool this[int type] {
-		get => ModShimmer.UseNPCSpawnedFromStatue.TryGetValue(type, out bool val) && !val;
+	public new TValue this[TKey type] {
+		get => this.GetValueOrDefault(type);
 		set {
-			if (!ModShimmer.UseNPCSpawnedFromStatue.TryAdd(type, value)) //Try add a new entry
-				ModShimmer.UseNPCSpawnedFromStatue[type] = value; // If it fails, entry exists, therefore set
+			if (!TryAdd(type, value)) //Try add a new entry
+				base[type] = value; // If it fails, entry exists, therefore set
 		}
 	}
 }
@@ -22,15 +21,22 @@ public sealed class SafeIndexDictionary
 // TML: #AdvancedShimmerTransformations
 public sealed class ModShimmer
 {
+	//public sealed class UseNPCSpawnedFromStatueIndexor
+	//{
+	//	public bool this[int type] {
+	//		get => IgnoreNPCSpawnedFromStatue.TryGetValue(type, out bool val) && !val;
+	//		set {
+	//			if (!IgnoreNPCSpawnedFromStatue.TryAdd(type, value)) //Try add a new entry
+	//				IgnoreNPCSpawnedFromStatue[type] = value; // If it fails, entry exists, therefore set
+	//		}
+	//	}
+	//	public static Dictionary<int, bool> WrappedDictionary => IgnoreNPCSpawnedFromStatue;
+	//}
+
 	/// <summary>
 	/// Dictionary containing every <see cref="ModShimmer"/> registered to tMod indexed by <see cref="ModShimmerTypeID"/> and the entities type
 	/// </summary>
 	public static Dictionary<(ModShimmerTypeID, int), List<ModShimmer>> ModShimmerTransformations { get; } = new();
-
-	/// <summary>
-	/// False if the NPC should not despawn in shimmer if <see cref="NPC.SpawnedFromStatue"/> is true. Value is assumed to be true if there is no dictionary value
-	/// </summary>
-	public static Dictionary<int, bool> UseNPCSpawnedFromStatue { get; } = new();
 
 	#region Constructors
 
@@ -196,19 +202,27 @@ public sealed class ModShimmer
 	{
 		if (InstantiationEntity == null)
 			throw new InvalidOperationException("The transformation must be created from an entity for the parameterless Register() to be used.");
-		Register(InstantiationEntity.Value.Item1, InstantiationEntity.Value.Item2);
+		Register(InstantiationEntity.Value);
 	}
+
+	/// <inheritdoc cref="Register(ModShimmerTypeID, int)"/>
+	public void Register(ModShimmerTypeID modShimmerType, int type)
+		=> Register((modShimmerType, type));
 
 	/// <summary>
 	/// Finalizes transformation, adds to <see cref="ModShimmerTransformations"/>
 	/// </summary>
-	public void Register(ModShimmerTypeID modShimmerType, int type)
+	/// <exception cref="ArgumentException"> Thrown if <paramref name="entityIdentifier"/> feild Item1 of type <see cref="ModShimmerTypeID"/> is an invalid source type </exception>
+	public void Register((ModShimmerTypeID, int) entityIdentifier)
 	{
-		if (!modShimmerType.IsValidSourceType())
-			throw new ArgumentException("A valid source type for ModShimmerTypeID must be passed here", nameof(modShimmerType));
-		if (!ModShimmerTransformations.TryAdd((modShimmerType, type), new() { this })) //Try add a new entry for the tuple
-			ModShimmerTransformations[(modShimmerType, type)].Add(this); // If it fails, entry exists, therefore add to list
+		if (!entityIdentifier.Item1.IsValidSourceType())
+			throw new ArgumentException("A valid source type for ModShimmerTypeID must be passed here", nameof(entityIdentifier));
+		if (!ModShimmerTransformations.TryAdd(entityIdentifier, new() { this })) //Try add a new entry for the tuple
+			ModShimmerTransformations[entityIdentifier].Add(this); // If it fails, entry exists, therefore add to list
 	}
+
+	public void Register((ModShimmerTypeID, int)[] identifiers)
+		=> Array.ForEach(identifiers, (ID) => Register(ID));
 
 	#endregion ControllerMethods
 
@@ -232,17 +246,20 @@ public sealed class ModShimmer
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
-	public static bool? DoModShimmer(NPC npc) => npc.SpawnedFromStatue
-			? SafeIndexDictionary.Instance[npc.type] ? null : false
-			: DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type));
+	public static bool? DoModShimmer(NPC npc)
+		=> npc.SpawnedFromStatue
+			? NPCID.Sets.IgnoreNPCSpawnedFromStatue[npc.type] // If spawned from a statue, check here
+				? DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type)) == false ? null : true // If we're ignoring, continue to shimmer, but override a false return value with null to prevent despawn in vanilla
+				: false // If not ignoring, fall straight to vanilla despawn code
+			: DoModShimmer(npc, (ModShimmerTypeID.NPC, npc.type)); // If not a statue, continue as normal
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="item"> The <see cref="Item"/> to be shimmered </param>
-	public static bool? DoModShimmer(Item item) => DoModShimmer(item, (ModShimmerTypeID.Item, item.type));
+	public static bool DoModShimmer(Item item) => DoModShimmer(item, (ModShimmerTypeID.Item, item.type));
 
 	/// <inheritdoc cref="DoModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
 	/// <param name="projectile"> The <see cref="Projectile"/> to be shimmered </param>
-	public static bool? DoModShimmer(Projectile projectile) => DoModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
+	public static bool DoModShimmer(Projectile projectile) => DoModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
 
 	/// <summary>
 	/// Shimmers the entity passed, do not call on multiplayer clients
@@ -250,7 +267,7 @@ public sealed class ModShimmer
 	/// <param name="entity"> The <see cref="Entity"/> to be shimmered </param>
 	/// <param name="entityIdentification"> tag required information not included in <see cref="Entity"/> </param>
 	/// <returns> True if the transformation is successful, false if it is should fall through to vanilla as normal, and null if it should fall through ignoring if the NPC is a statue </returns>
-	private static bool? DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
+	private static bool DoModShimmer(Entity entity, (ModShimmerTypeID, int) entityIdentification)
 	{
 		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
 		if (!(transformations?.Count > 0))

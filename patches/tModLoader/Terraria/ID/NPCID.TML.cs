@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria.ModLoader;
 
 namespace Terraria.ID;
@@ -106,5 +107,11 @@ public partial class NPCID
 		///	Note: Even though this defaults to 1, this set should only be checked if <see cref="NPC.GetNPCInvasionGroup(int)"/> is above 0 or if any BelongsToInvasion sets are <see langword="true"/>.
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
+
+
+		/// <summary>
+		/// True if the NPC should not despawn in shimmer if <see cref="NPC.SpawnedFromStatue"/> is true. Value is assumed to be false if there is no dictionary value
+		/// </summary>
+		public static readonly SafeDictionary<int, bool> IgnoreNPCSpawnedFromStatue = new();
 	}
 }

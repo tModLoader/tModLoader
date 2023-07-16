@@ -46,6 +46,7 @@ namespace ExampleMod.Content.NPCs
 				.Register();
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method, overrides by ModShimmer unless all conditions fall through
+			NPCID.Sets.IgnoreNPCSpawnedFromStatue[NPC.type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -57,26 +58,23 @@ namespace ExampleMod.Content.NPCs
 			BannerItem = Item.BannerToItem(Banner);
 		}
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			foreach (IItemDropRule zombieDropRule in Main.ItemDropsDB.GetRulesForNPCID(NPCID.Zombie, false))
-				npcLoot.Add(zombieDropRule);
-		}
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+			=> Main.ItemDropsDB.GetRulesForNPCID(NPCID.Zombie, false).ForEach((IItemDropRule zombieDropRule) => npcLoot.Add(zombieDropRule));
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+			=> bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
 				new FlavorTextBestiaryInfoElement("This zombie looks like a normal zombie but interacts with shimmer differently based on different conditions."),
 				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
 			});
-		}
 
-		// This is static and not an override, it is used to create an instance of ModShimmer.OnShimmerCallBack, this is a delegate, delegates are essentially static methods stored as variables and need to be static
-		public static void OnShimmerCallBack(ModShimmer transformation, Entity origin, List<Entity> spawnedEntities) {
-			foreach (Entity entity in spawnedEntities) {
-				Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
-				p.friendly = false;
-				p.hostile = true;
-			}
-		}
+		// This is static and not an override, it is used to create an instance of ModShimmer.OnShimmerCallBack, this is a delegate, delegates are essentially a reference to a method and as such need to be static
+		public static void OnShimmerCallBack(ModShimmer transformation, Entity origin, List<Entity> spawnedEntities)
+			=> spawnedEntities.ForEach((Entity entity)
+				=> {
+					Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+					p.friendly = false;
+					p.hostile = true;
+				});
 	}
 }
