@@ -288,7 +288,7 @@ public sealed class ModShimmer
 		}
 		return false;
 	}
-
+	// Since DoShimmer excludes multiplayer, we're in server or single player code here
 	private static void SpawnModShimmerResults(Entity entity, ModShimmer transformation)
 	{
 		List<Entity> spawnedEntities = new(); // List to be passed for onShimmerCallBacks
@@ -300,13 +300,14 @@ public sealed class ModShimmer
 		transformation.OnShimmerCallBacks?.Invoke(transformation, entity, spawnedEntities);
 	}
 
+	// Since DoShimmer excludes multiplayer, we're in server or single player code here
 	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, ref int resultIndex, ref List<Entity> spawned)
 	{
 		int stackCounter = shimmerResult.Count;
 
 		switch (shimmerResult.ResultType) {
 			case ModShimmerTypeID.Item: {
-				while (stackCounter > 0) { // Since DoShimmer excludes multiplayer, we're in server or single player code here
+				while (stackCounter > 0) { 
 					Item item = Main.item[Item.NewItem(entity.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, entity.width, entity.height, shimmerResult.Type)];
 					item.stack = Math.Min(item.maxStack, stackCounter);
 					stackCounter -= item.stack;
@@ -330,38 +331,36 @@ public sealed class ModShimmer
 				// technically can be violated because multiple NPCs can be put into the same transformation
 
 				for (int i = 0; i < spawnCount; i++) { // Loop spawn NPCs
-					if (Main.netMode != NetmodeID.MultiplayerClient) { // Else use the custom stuff and avoid spawning on multiplayer
-						NPC newNPC = NPC.NewNPCDirect(entity.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, shimmerResult.Type); //Should cause net update stuff
+					NPC newNPC = NPC.NewNPCDirect(entity.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, shimmerResult.Type); //Should cause net update stuff
 
-						//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
+					//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
 
-						if (entity is NPC nPC && shimmerResult.KeepVanillaTransformationConventions) {
-							newNPC.extraValue = nPC.extraValue;
-							newNPC.CopyInteractions(nPC);
-							newNPC.spriteDirection = nPC.spriteDirection;
-							newNPC.shimmerTransparency = nPC.shimmerTransparency;
+					if (entity is NPC nPC && shimmerResult.KeepVanillaTransformationConventions) {
+						newNPC.extraValue = nPC.extraValue;
+						newNPC.CopyInteractions(nPC);
+						newNPC.spriteDirection = nPC.spriteDirection;
+						newNPC.shimmerTransparency = nPC.shimmerTransparency;
 
-							if (nPC.value == 0f)
-								newNPC.value = 0f;
-							for (int j = 0; j < NPC.maxBuffs; j++) {
-								newNPC.buffType[j] = nPC.buffType[j];
-								newNPC.buffTime[j] = nPC.buffTime[j];
-							}
+						if (nPC.value == 0f)
+							newNPC.value = 0f;
+						for (int j = 0; j < NPC.maxBuffs; j++) {
+							newNPC.buffType[j] = nPC.buffType[j];
+							newNPC.buffTime[j] = nPC.buffTime[j];
 						}
-						else {
-							newNPC.shimmerTransparency = 1f;
-						}
-						newNPC.velocity = entity.velocity;
-						newNPC.TargetClosest();
-						spawned.Add(newNPC);
-
-						if (Main.netMode == 2) {
-							NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, newNPC.whoAmI);
-							NetMessage.SendData(MessageID.NPCBuffs, -1, -1, null, newNPC.whoAmI);
-							newNPC.netUpdate = true;
-						}
-						resultIndex++;
 					}
+					else {
+						newNPC.shimmerTransparency = 1f;
+					}
+					newNPC.velocity = entity.velocity;
+					newNPC.TargetClosest();
+					spawned.Add(newNPC);
+
+					if (Main.netMode == NetmodeID.Server) {
+						NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, newNPC.whoAmI);
+						NetMessage.SendData(MessageID.NPCBuffs, -1, -1, null, newNPC.whoAmI);
+						newNPC.netUpdate = true;
+					}
+					resultIndex++;
 				}
 
 				break;
@@ -398,7 +397,7 @@ public sealed class ModShimmer
 	private static void CleanupShimmerSource(NPC npc)
 	{
 		npc.active = false; // despawn this NPC
-		if (Main.netMode == 2) {
+		if (Main.netMode == NetmodeID.Server) {
 			npc.netSkip = -1;
 			npc.life = 0;
 			NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI);
@@ -425,7 +424,7 @@ public sealed class ModShimmer
 	/// <param name="position"> The position to create the effect </param>
 	public static void ShimmerEffect(Vector2 position)
 	{
-		if (Main.netMode == 0)
+		if (Main.netMode == NetmodeID.SinglePlayer)
 			Item.ShimmerEffect(position);
 		else if (Main.netMode == NetmodeID.Server)
 			NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)position.X, (int)position.Y);
