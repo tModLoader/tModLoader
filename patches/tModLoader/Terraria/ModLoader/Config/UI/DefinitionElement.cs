@@ -210,4 +210,6 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 
 		return Type.CompareTo(other.Type);
 	}
+
+	public override string ToString() => Definition.ToString();
 }

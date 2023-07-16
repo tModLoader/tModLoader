@@ -19,15 +19,16 @@ public partial class UICharacterSelect : UIState
 	private static bool _currentlyMigratingFiles;
 
 	// Individual
+	private static UIExpandablePanel _migrationPanel;
 
-	private void AddIndividualPlayerMigrationButtons()
+	// TODO, could be async
+	private void LoadMigratablePlayers()
 	{
-		UIExpandablePanel playerMigrationPanel = new UIExpandablePanel();
-		_playerList.Add(playerMigrationPanel);
+		_migrationPanel = new UIExpandablePanel();
 
 		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualPlayersHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
-		playerMigrationPanel.Append(playerMigrationPanelTitle);
+		_migrationPanel.Append(playerMigrationPanelTitle);
 
 		ModLoader.Config.UI.NestedUIList migratePlayerList = new ModLoader.Config.UI.NestedUIList();
 		migratePlayerList.Width.Set(-22, 1f);
@@ -35,7 +36,7 @@ public partial class UICharacterSelect : UIState
 		migratePlayerList.Top.Set(30, 0);
 		migratePlayerList.MinHeight.Set(300, 0f);
 		migratePlayerList.ListPadding = 5f;
-		playerMigrationPanel.VisibleWhenExpanded.Add(migratePlayerList);
+		_migrationPanel.VisibleWhenExpanded.Add(migratePlayerList);
 
 		UIScrollbar scrollbar = new UIScrollbar();
 		scrollbar.SetView(100f, 1000f);
@@ -44,7 +45,7 @@ public partial class UICharacterSelect : UIState
 		scrollbar.Left.Pixels -= 0;
 		scrollbar.HAlign = 1f;
 		migratePlayerList.SetScrollbar(scrollbar);
-		playerMigrationPanel.VisibleWhenExpanded.Add(scrollbar);
+		_migrationPanel.VisibleWhenExpanded.Add(scrollbar);
 
 		// TODO: Do we need to do extra work for .plr files that have been renamed? Is that valid?
 		// TODO: We could probably support cloud players as well, if we tried.
