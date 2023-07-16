@@ -223,8 +223,11 @@ public sealed class ModShimmer
 			ModShimmerTransformations[entityIdentifier].Add(this); // If it fails, entry exists, therefore add to list
 	}
 
-	public void Register((ModShimmerTypeID, int)[] identifiers)
-		=> Array.ForEach(identifiers, (ID) => Register(ID));
+	public void Register(IEnumerable<(ModShimmerTypeID, int)> identifiers)
+	{
+		foreach ((ModShimmerTypeID, int) ID in identifiers)
+			Register(ID);
+	}
 
 	#endregion ControllerMethods
 
