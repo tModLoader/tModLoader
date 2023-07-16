@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// Derives from <see cref="Dictionary{TKey, TValue}"/>, changes <see cref="this[TKey]"/> to return a default value if getter fails, and the setter overrites the item if index exists
+/// </summary>
 public class SafeDictionary<TKey, TValue> : Dictionary<TKey, TValue>
 {
 	public new TValue this[TKey type] {
@@ -329,17 +331,18 @@ public sealed class ModShimmer
 						NPC newNPC = NPC.NewNPCDirect(entity.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer)), (int)entity.position.X, (int)entity.position.Y, shimmerResult.Type); //Should cause net update stuff
 
 						//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
-						if (entity is NPC && shimmerResult.KeepVanillaTransformationConventions) {
-							newNPC.extraValue = (entity as NPC).extraValue;
-							newNPC.CopyInteractions((entity as NPC));
-							newNPC.spriteDirection = (entity as NPC).spriteDirection;
-							newNPC.shimmerTransparency = (entity as NPC).shimmerTransparency;
 
-							if ((entity as NPC).value == 0f)
+						if (entity is NPC nPC && shimmerResult.KeepVanillaTransformationConventions) {
+							newNPC.extraValue = nPC.extraValue;
+							newNPC.CopyInteractions(nPC);
+							newNPC.spriteDirection = nPC.spriteDirection;
+							newNPC.shimmerTransparency = nPC.shimmerTransparency;
+
+							if (nPC.value == 0f)
 								newNPC.value = 0f;
 							for (int j = 0; j < NPC.maxBuffs; j++) {
-								newNPC.buffType[j] = (entity as NPC).buffType[j];
-								newNPC.buffTime[j] = (entity as NPC).buffTime[j];
+								newNPC.buffType[j] = nPC.buffType[j];
+								newNPC.buffTime[j] = nPC.buffTime[j];
 							}
 						}
 						else {
@@ -362,8 +365,8 @@ public sealed class ModShimmer
 			}
 
 			case ModShimmerTypeID.CoinLuck: // Make sure to check this works right, if you're reading this while reviewing please remind me bc I def will forget
-				Main.player[Main.myPlayer].AddCoinLuck(entity.Center, stackCounter * shimmerResult.Count);
-				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, (int)entity.Center.X, (int)entity.Center.Y, stackCounter * shimmerResult.Count);
+				Main.player[Main.myPlayer].AddCoinLuck(entity.Center, shimmerResult.Count);
+				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, (int)entity.Center.X, (int)entity.Center.Y, shimmerResult.Count);
 				break;
 
 			case ModShimmerTypeID.Custom:
@@ -376,15 +379,15 @@ public sealed class ModShimmer
 	{
 		switch (modShimmerTypeID) {
 			case ModShimmerTypeID.NPC:
-				CleanupShimmerSource(entity as NPC);
+				CleanupShimmerSource((NPC)entity);
 				break;
 
 			case ModShimmerTypeID.Item:
-				CleanupShimmerSource(entity as Item);
+				CleanupShimmerSource((Item)entity);
 				break;
 
 			case ModShimmerTypeID.Projectile:
-				CleanupShimmerSource(entity as Projectile);
+				CleanupShimmerSource((Projectile)entity);
 				break;
 		}
 	}
