@@ -373,7 +373,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,16 +_,89 @@
+@@ -961,23 +_,96 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -464,6 +464,14 @@
  	public float lifeRegenTime;
  	public int manaRegen;
  	public int manaRegenCount;
+ 	public float manaRegenDelay;
+ 	public bool manaRegenBuff;
+ 	public bool noKnockback;
+-	private bool shimmerImmune;
++	public bool shimmerImmune;
+ 	public bool spaceGun;
+ 	public float gravDir = 1f;
+ 	public bool chloroAmmoCost80;
 @@ -993,6 +_,10 @@
  	public bool ammoBox;
  	public bool ammoPotion;
