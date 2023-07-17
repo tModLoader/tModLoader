@@ -30,7 +30,7 @@ namespace ExampleMod.Content.NPCs
 				.AddCanShimmerCallBack(new ModShimmer.CanShimmerCallBack((ModShimmer transformation, Entity target) => true))
 				.AddModItemResult<ExampleItem>(30)
 				.AddResult(new ModShimmerResult(ModShimmerTypeID.NPC, NPCID.Skeleton, 3))
-				.AddOnShimmerCallBack(new ModShimmer.OnShimmerCallBack(OnShimmerCallBack))
+				.AddOnShimmerCallBack(new ModShimmer.PostShimmerCallBack(OnShimmerCallBack))
 				.Register();
 
 			// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items

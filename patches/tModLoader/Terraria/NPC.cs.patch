@@ -2473,7 +2473,7 @@
  	private void GetShimmered()
  	{
 -		if (SpawnedFromStatue) {
-+		bool? modShimmerCheck = ModShimmer.DoModShimmer(this); // TML: #AdvancedShimmerTransformations
++		bool? modShimmerCheck = ModShimmer.TryModShimmer(this); // TML: #AdvancedShimmerTransformations
 +		if (modShimmerCheck == true) { 
 +			noSpawnCycle = true; // Here instead of in Helper due to protection level
 +			return;

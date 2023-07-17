@@ -37,8 +37,8 @@ public partial class Recipe
 	}
 
 	public readonly Mod Mod;
-	public readonly List<Condition> Conditions = new List<Condition>();
-	public readonly List<Condition> DecraftConditions = new List<Condition>();
+	public readonly List<Condition> Conditions = new();
+	public readonly List<Condition> DecraftConditions = new();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
