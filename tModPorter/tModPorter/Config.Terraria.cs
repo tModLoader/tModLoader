@@ -195,6 +195,33 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
 		RenameInstanceField("Terraria.Player",	from: "discount",			to: "discountAvailable");
 
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Cloud",              ExtraJumpField("CloudInABottle",     "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Sandstorm",          ExtraJumpField("SandstormInABottle", "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Blizzard",           ExtraJumpField("BlizzardInABottle",  "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Fart",               ExtraJumpField("FartInAJar",         "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Sail",               ExtraJumpField("TsunamiInABottle",   "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Unicorn",            ExtraJumpField("UnicornMount",       "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Santank",            ExtraJumpField("SantankMount",       "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_WallOfFleshGoat",    ExtraJumpField("GoatMount",          "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Basilisk",           ExtraJumpField("BasiliskMount",      "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Cloud",               ExtraJumpField("CloudInABottle",     "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sandstorm",           ExtraJumpField("SandstormInABottle", "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Blizzard",            ExtraJumpField("BlizzardInABottle",  "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Fart",                ExtraJumpField("FartInAJar",         "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sail",                ExtraJumpField("TsunamiInABottle",   "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Unicorn",             ExtraJumpField("UnicornMount",       "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Santank",             ExtraJumpField("SantankMount",       "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_WallOfFleshGoat",     ExtraJumpField("GoatMount",          "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Basilisk",            ExtraJumpField("BasiliskMount",      "JumpAvailable"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Cloud",           ExtraJumpField("CloudInABottle",     "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Sandstorm",       ExtraJumpField("SandstormInABottle", "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Blizzard",        ExtraJumpField("BlizzardInABottle",  "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Fart",            ExtraJumpField("FartInAJar",         "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Sail",            ExtraJumpField("TsunamiInABottle",   "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Unicorn",         ExtraJumpField("UnicornMount",       "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Santank",         ExtraJumpField("SantankMount",       "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_WallOfFleshGoat", ExtraJumpField("GoatMount",          "PerformingJump"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Basilisk",        ExtraJumpField("BasiliskMount",      "PerformingJump"));
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Item",		from: "DefaultToPlacableWall",	to: "DefaultToPlaceableWall");
