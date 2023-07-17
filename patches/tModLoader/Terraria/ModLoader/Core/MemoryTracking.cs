@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -67,6 +68,7 @@ internal static class MemoryTracking
 				.Where(val => val != null)
 				.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 		}
-		Logging.tML.Info($"RAM usage: {UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}, Total Computer RAM: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
+		long totalRamUsage = Process.GetProcesses().Sum(x => x.WorkingSet64);
+		Logging.tML.Info($"RAM: tModLoader usage: {UIMemoryBar.SizeSuffix(Process.GetCurrentProcess().WorkingSet64)}, All processes usage: {UIMemoryBar.SizeSuffix(totalRamUsage)}, Available: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory() - totalRamUsage)}, Total Installed: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
 	}
 }
