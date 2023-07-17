@@ -604,13 +604,17 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
 
-	internal Span<ExtraJumpState> ModdedExtraJumps => extraJumps[ExtraJumpLoader.DefaultExtraJumpCount..];
+	internal Span<ExtraJumpState> ModdedExtraJumps => extraJumps.AsSpan()[ExtraJumpLoader.DefaultExtraJumpCount..];
 
 	/// <summary>
-	/// When <see langword="true"/>, all extra jumps will be blocked like how Flipper swimming blocks extra jumps.
+	/// When <see langword="true"/>, all extra jumps will be blocked like how Flipper swimming blocks extra jumps.<br/>
+	/// Setting this field to <see langword="true"/> will not stop any currently active extra jumps.
 	/// </summary>
 	public bool blockExtraJumps;
 
+	/// <summary>
+	/// Returns <see langword="true"/> if any extra jump has both <see cref="ExtraJumpState.Enabled"/> and <see cref="ExtraJumpState.JumpAvailable"/> set to <see langword="true"/>.
+	/// </summary>
 	public bool AnyExtraJumpAvailable()
 	{
 		foreach (ExtraJumpState state in extraJumps) {
@@ -630,5 +634,23 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Cancels any extra jump in progress.<br/>
+	/// Sets all <see cref="ExtraJumpState.PerformingJump"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
+	/// Also sets <see cref="jump"/> to 0 if a an extra jump was active.<br/><br/>
+	///
+	/// Used by vanilla when performing an action which would cancel jumping, such as grappling, grabbing a rope or getting frozen.<br/><br/>
+	///
+	/// To prevent the use of remaining jumps, use <see cref="ConsumeAllExtraJumps"/> or <see cref="blockExtraJumps"/>.<br/>
+	/// To cancel a regular jump as well, do <c>Player.jump = 0;</c>
+	/// </summary>
+	public void StopExtraJumpInProgress()
+	{
+		ExtraJumpLoader.StopAllJumpVisuals(this, out bool anyJumpCancelled);
+
+		if (anyJumpCancelled)
+			jump = 0;
 	}
 }

@@ -186,6 +186,20 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
+@@ -621,7 +_,12 @@
+ 	public int infernoCounter;
+ 	public int insanityShadowCooldown;
+ 	public int starCloakCooldown;
+-	public bool sandStorm;
++	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behaviour
++	private bool _sandStormLogicEnabled;
++	public bool sandStorm {
++		get => _sandStormLogicEnabled && isPerformingJump_Sandstorm;
++		set => _sandStormLogicEnabled = value;
++	}
+ 	public bool crimsonRegen;
+ 	public bool ghostHeal;
+ 	public bool ghostHurt;
 @@ -635,11 +_,22 @@
  	public bool dangerSense;
  	public byte luckPotion;
@@ -630,31 +644,31 @@
 +	*/
 +	internal ref bool hasJumpOption_Cloud => ref GetJumpState<CloudInABottleJump>().Enabled;
 +	internal ref bool canJumpAgain_Cloud => ref GetJumpState<CloudInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Cloud => ref GetJumpState<CloudInABottleJump>().PerformingJump;
++	internal ref bool isPerformingJump_Cloud => ref GetJumpState<CloudInABottleJump>()._performingJump;
 +	internal ref bool hasJumpOption_Sandstorm => ref GetJumpState<SandstormInABottleJump>().Enabled;
 +	internal ref bool canJumpAgain_Sandstorm => ref GetJumpState<SandstormInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Sandstorm => ref GetJumpState<SandstormInABottleJump>().PerformingJump;
++	internal ref bool isPerformingJump_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._performingJump;
 +	internal ref bool hasJumpOption_Blizzard => ref GetJumpState<BlizzardInABottleJump>().Enabled;
 +	internal ref bool canJumpAgain_Blizzard => ref GetJumpState<BlizzardInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Blizzard => ref GetJumpState<BlizzardInABottleJump>().PerformingJump;
++	internal ref bool isPerformingJump_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._performingJump;
 +	internal ref bool hasJumpOption_Fart => ref GetJumpState<FartInAJarJump>().Enabled;
 +	internal ref bool canJumpAgain_Fart => ref GetJumpState<FartInAJarJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Fart => ref GetJumpState<FartInAJarJump>().PerformingJump;
++	internal ref bool isPerformingJump_Fart => ref GetJumpState<FartInAJarJump>()._performingJump;
 +	internal ref bool hasJumpOption_Sail => ref GetJumpState<TsunamiInABottleJump>().Enabled;
 +	internal ref bool canJumpAgain_Sail => ref GetJumpState<TsunamiInABottleJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Sail => ref GetJumpState<TsunamiInABottleJump>().PerformingJump;
++	internal ref bool isPerformingJump_Sail => ref GetJumpState<TsunamiInABottleJump>()._performingJump;
 +	internal ref bool hasJumpOption_Unicorn => ref GetJumpState<UnicornMountJump>().Enabled;
 +	internal ref bool canJumpAgain_Unicorn => ref GetJumpState<UnicornMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Unicorn => ref GetJumpState<UnicornMountJump>().PerformingJump;
++	internal ref bool isPerformingJump_Unicorn => ref GetJumpState<UnicornMountJump>()._performingJump;
 +	internal ref bool hasJumpOption_Santank => ref GetJumpState<SantankMountJump>().Enabled;
 +	internal ref bool canJumpAgain_Santank => ref GetJumpState<SantankMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Santank => ref GetJumpState<SantankMountJump>().PerformingJump;
++	internal ref bool isPerformingJump_Santank => ref GetJumpState<SantankMountJump>()._performingJump;
 +	internal ref bool hasJumpOption_WallOfFleshGoat => ref GetJumpState<GoatMountJump>().Enabled;
 +	internal ref bool canJumpAgain_WallOfFleshGoat => ref GetJumpState<GoatMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetJumpState<GoatMountJump>().PerformingJump;
++	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._performingJump;
 +	internal ref bool hasJumpOption_Basilisk => ref GetJumpState<BasiliskMountJump>().Enabled;
 +	internal ref bool canJumpAgain_Basilisk => ref GetJumpState<BasiliskMountJump>().JumpAvailable;
-+	internal ref bool isPerformingJump_Basilisk => ref GetJumpState<BasiliskMountJump>().PerformingJump;
++	internal ref bool isPerformingJump_Basilisk => ref GetJumpState<BasiliskMountJump>()._performingJump;
 +
  	public bool isPerformingPogostickTricks;
  	public bool autoJump;
@@ -2930,7 +2944,7 @@
  		hasLuck_LuckyCoin = false;
  		hasLuck_LuckyHorseshoe = false;
 +		blockExtraJumps = false;
-+		ExtraJumpLoader.ResetActiveFlags(this);
++		ExtraJumpLoader.ResetEnableFlags(this);
 +		/*
  		hasJumpOption_Cloud = false;
  		hasJumpOption_Sail = false;
@@ -3495,10 +3509,10 @@
 +	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
 +	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
 +	/// </summary>
-+	public void ClearAllExtraJumps()
++	public void ConsumeAllExtraJumps()
 +	{
-+		// Included to make clearing all extra jumps easier to write
-+		ExtraJumpLoader.ClearAllExtraJumps(this);
++		// Included to make consuming all extra jumps easier to write
++		ExtraJumpLoader.ConsumeAllExtraJumps(this);
  	}
  
  	public void StickyMovement()
@@ -3804,7 +3818,7 @@
  			movementAbilitiesCache.PasteInto(this);
  
  		if (mount.Active && mount.BlockExtraJumps) {
-+			ClearAllExtraJumps();
++			ConsumeAllExtraJumps();
 +			/*
  			canJumpAgain_Cloud = false;
  			canJumpAgain_Sandstorm = false;
@@ -3819,7 +3833,7 @@
  			RefreshDoubleJumps();
  		}
  		else {
-+			ExtraJumpLoader.ClearUnavailableExtraJumps(this);
++			ExtraJumpLoader.ConsumeUnavailableExtraJumps(this);
 +			/*
  			if (!hasJumpOption_Cloud)
  				canJumpAgain_Cloud = false;
@@ -4572,14 +4586,11 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
-@@ -28401,8 +_,10 @@
- 			rabbitOrderFrame.Update();
- 	}
+@@ -28403,6 +_,8 @@
  
--	private void CancelAllJumpVisualEffects()
-+	public void CancelAllJumpVisualEffects()
+ 	private void CancelAllJumpVisualEffects()
  	{
-+		ExtraJumpLoader.OnJumpEnded(this);
++		ExtraJumpLoader.StopAllJumpVisuals(this, out _);
 +		/*
  		isPerformingJump_Cloud = false;
  		isPerformingJump_Sandstorm = false;

@@ -118,7 +118,7 @@ public abstract partial class ExtraJump : ModType
 	public virtual void OnStarted(Player player, ref bool playSound) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.PerformingJump"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> in <see cref="Player.CancelAllJumpVisualEffects"/><br/>
+	/// This hook runs before the <see cref="ExtraJumpState.PerformingJump"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> when this extra jump's duration has expired<br/>
 	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
 	/// </summary>
 	/// <param name="player">The player that was performing the jump</param>

@@ -15,6 +15,7 @@ public struct ExtraJumpState
 	/// If you want to forcibly disable <b>all</b> extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
 	/// </summary>
 	public bool Enabled;
+
 	/// <summary>
 	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when the extra jump starts.<br/>
 	/// Setting this field to <see langword="false"/> will effectively make the game think that the player has already used this extra jump.<br/>
@@ -22,10 +23,13 @@ public struct ExtraJumpState
 	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this field should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/> since <see cref="ExtraJump.Visuals(Player)"/> only runs when <see cref="Enabled"/> and <see cref="PerformingJump"/> are true and this field is <see langword="false"/>.
 	/// </summary>
 	public bool JumpAvailable;
+
+	internal bool _performingJump;
+
 	/// <summary>
 	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out
 	/// </summary>
-	public bool PerformingJump;
+	public bool PerformingJump => _performingJump;
 
 	// Fields/properties for overriding state
 
