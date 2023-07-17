@@ -17,6 +17,7 @@ namespace Terraria.DataStructures;
 public struct ExtraJumpState
 {
 	internal bool _enabled;
+	internal bool _jumpAvailable;
 	internal bool _performingJump;
 	internal bool _disabled;
 
@@ -35,12 +36,27 @@ public struct ExtraJumpState
 	/// When checking this field, make sure to check <see cref="Enabled"/> first.<br/>
 	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this field should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/> since <see cref="ExtraJump.Visuals(Player)"/> only runs when <see cref="Enabled"/> and <see cref="PerformingJump"/> are <see langword="true"/> and this field is <see langword="false"/>.
 	/// </summary>
-	public bool JumpAvailable;
+	public bool JumpAvailable {
+		get {
+			// Ensure state validity
+			if (!_enabled)
+				_jumpAvailable = false;
+			return _jumpAvailable;
+		}
+		set => _jumpAvailable = value;
+	}
 
 	/// <summary>
 	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out
 	/// </summary>
-	public bool PerformingJump => _performingJump;
+	public bool PerformingJump {
+		get {
+			// Ensure state validity
+			if (!_enabled)
+				_performingJump = false;
+			return _performingJump;
+		}
+	}
 
 	/// <summary>
 	/// Sets this extra jump to usable for this game tick.<br/>

@@ -129,7 +129,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump moddedExtraJump in orderedJumps) {
 			ref ExtraJumpState extraJump = ref player.GetJumpState(moddedExtraJump);
-			if (extraJump.PerformingJump && extraJump.Enabled)
+			if (extraJump.Enabled && extraJump.PerformingJump)
 				moddedExtraJump.UpdateHorizontalSpeeds(player);
 		}
 	}
@@ -138,7 +138,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.PerformingJump && state.Enabled && !state.JumpAvailable && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
+			if (state.Enabled && state.PerformingJump && !state.JumpAvailable && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
 				jump.Visuals(player);
 				PlayerLoader.ExtraJumpVisuals(jump, player);
 			}
@@ -149,7 +149,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.JumpAvailable && !state._disabled) {
+			if (state.Enabled && state.JumpAvailable) {
 				state.JumpAvailable = false;
 				state._performingJump = true;
 				jump.PerformJump(player);
