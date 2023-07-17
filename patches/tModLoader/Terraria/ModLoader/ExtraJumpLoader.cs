@@ -33,6 +33,8 @@ public static class ExtraJumpLoader
 
 	private static ExtraJump[] orderedJumps;
 
+	public static IReadOnlyList<ExtraJump> OrderedJumps => orderedJumps;
+
 	static ExtraJumpLoader()
 	{
 		RegisterDefaultJumps();
@@ -62,7 +64,7 @@ public static class ExtraJumpLoader
 		// Between each vanilla extra jump, before the first jump and after the last jump exists a "slot"
 		// Modded jumps are added to a "slot", and then the slots are filled in load order by default
 		// Modders can use "ModExtraJump::GetModdedConstraints()" to facilitate sorting within a slot
-		List<int>[] sortingSlots = new List<int>[DefaultExtraJumpCount + 1];
+		var sortingSlots = new List<ExtraJump>[DefaultExtraJumpCount + 1];
 		for (int i = 0; i < sortingSlots.Length; i++)
 			sortingSlots[i] = new();
 
@@ -77,7 +79,7 @@ public static class ExtraJumpLoader
 
 					int afterParent = after.Target?.Type is { } afterType ? afterType + 1 : 0;
 
-					sortingSlots[afterParent].Add(jump.Type);
+					sortingSlots[afterParent].Add(jump);
 					break;
 				case ExtraJump.Before before:
 					if (before.Target is not null and not VanillaExtraJump)
@@ -85,23 +87,21 @@ public static class ExtraJumpLoader
 
 					int beforeParent = before.Target?.Type is { } beforeType ? beforeType : sortingSlots.Length - 1;
 
-					sortingSlots[beforeParent].Add(jump.Type);
+					sortingSlots[beforeParent].Add(jump);
 					break;
 				default:
 					throw new ArgumentException($"ExtraJump {jump} has unknown Position {position}");
 			}
 		}
 
-		// Cache the information for which additional constraints each modded extra jump has
-		var positions = ModdedExtraJumps.ToDictionary(static j => j.Type, static j => j.GetModdedConstraints()?.ToList() ?? new());
-
 		// Sort the modded jumps per slot
 		List<ExtraJump> sorted = new();
 
 		for (int i = 0; i < DefaultExtraJumpCount + 2; i++) {
-			var sort = new TopoSort<ExtraJump>(sortingSlots[i].Select(static t => ExtraJumps[t]),
-				j => positions[j.Type].OfType<ExtraJump.After>().Select(static a => a.Target).OfType<ExtraJump>(),
-				j => positions[j.Type].OfType<ExtraJump.Before>().Select(static b => b.Target).OfType<ExtraJump>());
+			var elements = sortingSlots[i];
+			var sort = new TopoSort<ExtraJump>(elements,
+				j => j.GetModdedConstraints()?.OfType<ExtraJump.After>().Select(static a => a.Target).Where(elements.Contains) ?? Array.Empty<ExtraJump>(),
+				j => j.GetModdedConstraints()?.OfType<ExtraJump.Before>().Select(static b => b.Target).Where(elements.Contains) ?? Array.Empty<ExtraJump>());
 
 			foreach (ExtraJump jump in sort.Sort()) {
 				sorted.Add(jump);
