@@ -129,7 +129,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump moddedExtraJump in orderedJumps) {
 			ref ExtraJumpState extraJump = ref player.GetJumpState(moddedExtraJump);
-			if (extraJump.PerformingJump)
+			if (extraJump.Active)
 				moddedExtraJump.UpdateHorizontalSpeeds(player);
 		}
 	}
@@ -138,7 +138,14 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.PerformingJump && !state.JumpAvailable && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
+
+			// Force the jump to stop early if unequipped or disabled
+			if (!state.Enabled && state._active) {
+				jump.OnEnded(player);
+				PlayerLoader.OnExtraJumpEnded(jump, player);
+				state._active = false;
+				player.jump = 0;
+			} else if (state.Active && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
 				jump.Visuals(player);
 				PlayerLoader.ExtraJumpVisuals(jump, player);
 			}
@@ -149,26 +156,26 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.JumpAvailable) {
-				state._jumpAvailable = false;
-				state._performingJump = true;
+			if (state.Available) {
+				state._available = false;
+				state._active = true;
 				jump.PerformJump(player);
 				break;
 			}
 		}
 
 		// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
-		player.GetJumpState(ExtraJump.BasiliskMount).JumpAvailable = false;
+		player.GetJumpState(ExtraJump.BasiliskMount).Available = false;
 	}
 
 	public static void RefreshExtraJumps(Player player)
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.Enabled) {
+			if (state._enabled) {
 				jump.OnRefreshed(player);
 				PlayerLoader.OnExtraJumpRefreshed(jump, player);
-				state._jumpAvailable = true;
+				state._available = true;
 			}
 		}
 	}
@@ -179,10 +186,10 @@ public static class ExtraJumpLoader
 
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.PerformingJump) {
+			if (state.Active) {
 				jump.OnEnded(player);
 				PlayerLoader.OnExtraJumpEnded(jump, player);
-				state._performingJump = false;
+				state._active = false;
 
 				anyJumpCancelled = true;
 			}
@@ -202,15 +209,15 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (!state.Enabled)
-				state._jumpAvailable = false;
+			if (!state._enabled)
+				state._available = false;
 		}
 	}
 
 	internal static void ConsumeAllExtraJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			player.GetJumpState(jump)._jumpAvailable = false;
+			player.GetJumpState(jump)._available = false;
 		}
 	}
 }

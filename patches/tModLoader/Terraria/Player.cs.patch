@@ -643,32 +643,32 @@
  	public bool isPerformingJump_Basilisk;
 +	*/
 +	internal ref bool hasJumpOption_Cloud => ref GetJumpState<CloudInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Cloud => ref GetJumpState<CloudInABottleJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Cloud => ref GetJumpState<CloudInABottleJump>()._performingJump;
++	internal ref bool canJumpAgain_Cloud => ref GetJumpState<CloudInABottleJump>()._available;
++	internal ref bool isPerformingJump_Cloud => ref GetJumpState<CloudInABottleJump>()._active;
 +	internal ref bool hasJumpOption_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._performingJump;
++	internal ref bool canJumpAgain_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._available;
++	internal ref bool isPerformingJump_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._active;
 +	internal ref bool hasJumpOption_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._performingJump;
++	internal ref bool canJumpAgain_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._available;
++	internal ref bool isPerformingJump_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._active;
 +	internal ref bool hasJumpOption_Fart => ref GetJumpState<FartInAJarJump>()._enabled;
-+	internal ref bool canJumpAgain_Fart => ref GetJumpState<FartInAJarJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Fart => ref GetJumpState<FartInAJarJump>()._performingJump;
++	internal ref bool canJumpAgain_Fart => ref GetJumpState<FartInAJarJump>()._available;
++	internal ref bool isPerformingJump_Fart => ref GetJumpState<FartInAJarJump>()._active;
 +	internal ref bool hasJumpOption_Sail => ref GetJumpState<TsunamiInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Sail => ref GetJumpState<TsunamiInABottleJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Sail => ref GetJumpState<TsunamiInABottleJump>()._performingJump;
++	internal ref bool canJumpAgain_Sail => ref GetJumpState<TsunamiInABottleJump>()._available;
++	internal ref bool isPerformingJump_Sail => ref GetJumpState<TsunamiInABottleJump>()._active;
 +	internal ref bool hasJumpOption_Unicorn => ref GetJumpState<UnicornMountJump>()._enabled;
-+	internal ref bool canJumpAgain_Unicorn => ref GetJumpState<UnicornMountJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Unicorn => ref GetJumpState<UnicornMountJump>()._performingJump;
++	internal ref bool canJumpAgain_Unicorn => ref GetJumpState<UnicornMountJump>()._available;
++	internal ref bool isPerformingJump_Unicorn => ref GetJumpState<UnicornMountJump>()._active;
 +	internal ref bool hasJumpOption_Santank => ref GetJumpState<SantankMountJump>()._enabled;
-+	internal ref bool canJumpAgain_Santank => ref GetJumpState<SantankMountJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Santank => ref GetJumpState<SantankMountJump>()._performingJump;
++	internal ref bool canJumpAgain_Santank => ref GetJumpState<SantankMountJump>()._available;
++	internal ref bool isPerformingJump_Santank => ref GetJumpState<SantankMountJump>()._active;
 +	internal ref bool hasJumpOption_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._enabled;
-+	internal ref bool canJumpAgain_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._performingJump;
++	internal ref bool canJumpAgain_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._available;
++	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._active;
 +	internal ref bool hasJumpOption_Basilisk => ref GetJumpState<BasiliskMountJump>()._enabled;
-+	internal ref bool canJumpAgain_Basilisk => ref GetJumpState<BasiliskMountJump>()._jumpAvailable;
-+	internal ref bool isPerformingJump_Basilisk => ref GetJumpState<BasiliskMountJump>()._performingJump;
++	internal ref bool canJumpAgain_Basilisk => ref GetJumpState<BasiliskMountJump>()._available;
++	internal ref bool isPerformingJump_Basilisk => ref GetJumpState<BasiliskMountJump>()._active;
 +
  	public bool isPerformingPogostickTricks;
  	public bool autoJump;
@@ -3486,7 +3486,7 @@
  	}
  
 +	/// <summary>
-+	/// For all extra jumps whose <see cref="ExtraJumpState.Enabled"/> flag is set to <see langword="true"/>, its <see cref="ExtraJumpState.JumpAvailable"/> flag is also set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// For all extra jumps whose <see cref="ExtraJumpState.Enabled"/> flag is set to <see langword="true"/>, its <see cref="ExtraJumpState.Available"/> flag is also set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
 +	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
 +	/// </summary>
 -	private void RefreshDoubleJumps()
@@ -3505,7 +3505,7 @@
 +	}
 +
 +	/// <summary>
-+	/// Sets the <see cref="ExtraJumpState.JumpAvailable"/> flag for all extra jumps to <see langword="false"/>.<br/>
++	/// Sets the <see cref="ExtraJumpState.Available"/> flag for all extra jumps to <see langword="false"/>.<br/>
 +	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
 +	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
 +	/// </summary>

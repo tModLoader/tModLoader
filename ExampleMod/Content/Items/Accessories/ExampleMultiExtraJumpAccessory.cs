@@ -111,12 +111,10 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// Decrement the jump counter
 			jumps--;
-		}
 
-		public override void OnEnded(Player player) {
 			// Allow the jump to be used again while the jump counter is > 0
-			if (player.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining > 0)
-				player.GetJumpState<MultipleUseExtraJump>().JumpAvailable = true;
+			if (jumps > 0)
+				player.GetJumpState<MultipleUseExtraJump>().Available = true;
 		}
 	}
 

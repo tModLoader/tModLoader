@@ -89,8 +89,8 @@ public class MemberUseRewriter : BaseRewriter {
 		memberName = memberName.WithIdentifier("GetJumpState");
 
 		if (op.Parent is IAssignmentOperation assign && assign.Target == op) {
-			if (stateFieldName == "PerformingJump") {
-				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Remove. PerformingJump cannot be assigned a value."));
+			if (stateFieldName == "Active") {
+				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Remove. Active cannot be assigned a value."));
 				return memberName;
 			}
 

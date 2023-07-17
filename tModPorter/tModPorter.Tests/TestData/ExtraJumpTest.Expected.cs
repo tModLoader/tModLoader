@@ -4,15 +4,15 @@ public class ExtraJumpTest : ModPlayer
 {
 	public void MethodA()
 	{
-		Player.GetJumpState(ExtraJump.CloudInABottle).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.SandstormInABottle).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.BlizzardInABottle).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.FartInAJar).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.TsunamiInABottle).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.UnicornMount).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.SantankMount).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.GoatMount).JumpAvailable = true;
-		Player.GetJumpState(ExtraJump.BasiliskMount).JumpAvailable = true;
+		Player.GetJumpState(ExtraJump.CloudInABottle).Available = true;
+		Player.GetJumpState(ExtraJump.SandstormInABottle).Available = true;
+		Player.GetJumpState(ExtraJump.BlizzardInABottle).Available = true;
+		Player.GetJumpState(ExtraJump.FartInAJar).Available = true;
+		Player.GetJumpState(ExtraJump.TsunamiInABottle).Available = true;
+		Player.GetJumpState(ExtraJump.UnicornMount).Available = true;
+		Player.GetJumpState(ExtraJump.SantankMount).Available = true;
+		Player.GetJumpState(ExtraJump.GoatMount).Available = true;
+		Player.GetJumpState(ExtraJump.BasiliskMount).Available = true;
 
 #if COMPILE_ERROR
 		// Cannot port assignment to hasJumpOption_X
@@ -27,18 +27,18 @@ public class ExtraJumpTest : ModPlayer
 		Player.GetJumpState(ExtraJump.BasiliskMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
 
 		// Cannot port assignment to isPerformingJump_X
-		Player.GetJumpState(ExtraJump.CloudInABottle).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.SandstormInABottle).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.BlizzardInABottle).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.FartInAJar).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.TsunamiInABottle).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.UnicornMount).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.SantankMount).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.GoatMount).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
-		Player.GetJumpState(ExtraJump.BasiliskMount).PerformingJump = true/* tModPorter Suggestion: Remove. PerformingJump cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.CloudInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.SandstormInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.BlizzardInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.FartInAJar).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.TsunamiInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.UnicornMount).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.SantankMount).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.GoatMount).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
+		Player.GetJumpState(ExtraJump.BasiliskMount).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
 
 		// Cannot port conditional setter, emit a suggestion
-		Player.GetJumpState(ExtraJump.CloudInABottle).JumpAvailable/* tModPorter Suggestion: Player.GetJumpState(ExtraJump.CloudInABottle).JumpAvailable = ... */ = 1 > 2;
+		Player.GetJumpState(ExtraJump.CloudInABottle).Available/* tModPorter Suggestion: Player.GetJumpState(ExtraJump.CloudInABottle).Available = ... */ = 1 > 2;
 #endif
 
 		bool hasJumpOption_Cloud = Player.GetJumpState(ExtraJump.CloudInABottle).Enabled;
@@ -51,25 +51,25 @@ public class ExtraJumpTest : ModPlayer
 		bool hasJumpOption_WallOfFleshGoat = Player.GetJumpState(ExtraJump.GoatMount).Enabled;
 		bool hasJumpOption_Basilisk = Player.GetJumpState(ExtraJump.BasiliskMount).Enabled;
 
-		bool canJumpAgain_Cloud = Player.GetJumpState(ExtraJump.CloudInABottle).JumpAvailable;
-		bool canJumpAgain_Sandstorm = Player.GetJumpState(ExtraJump.SandstormInABottle).JumpAvailable;
-		bool canJumpAgain_Blizzard = Player.GetJumpState(ExtraJump.BlizzardInABottle).JumpAvailable;
-		bool canJumpAgain_Fart = Player.GetJumpState(ExtraJump.FartInAJar).JumpAvailable;
-		bool canJumpAgain_Sail = Player.GetJumpState(ExtraJump.TsunamiInABottle).JumpAvailable;
-		bool canJumpAgain_Unicorn = Player.GetJumpState(ExtraJump.UnicornMount).JumpAvailable;
-		bool canJumpAgain_Santank = Player.GetJumpState(ExtraJump.SantankMount).JumpAvailable;
-		bool canJumpAgain_WallOfFleshGoat = Player.GetJumpState(ExtraJump.GoatMount).JumpAvailable;
-		bool canJumpAgain_Basilisk = Player.GetJumpState(ExtraJump.BasiliskMount).JumpAvailable;
+		bool canJumpAgain_Cloud = Player.GetJumpState(ExtraJump.CloudInABottle).Available;
+		bool canJumpAgain_Sandstorm = Player.GetJumpState(ExtraJump.SandstormInABottle).Available;
+		bool canJumpAgain_Blizzard = Player.GetJumpState(ExtraJump.BlizzardInABottle).Available;
+		bool canJumpAgain_Fart = Player.GetJumpState(ExtraJump.FartInAJar).Available;
+		bool canJumpAgain_Sail = Player.GetJumpState(ExtraJump.TsunamiInABottle).Available;
+		bool canJumpAgain_Unicorn = Player.GetJumpState(ExtraJump.UnicornMount).Available;
+		bool canJumpAgain_Santank = Player.GetJumpState(ExtraJump.SantankMount).Available;
+		bool canJumpAgain_WallOfFleshGoat = Player.GetJumpState(ExtraJump.GoatMount).Available;
+		bool canJumpAgain_Basilisk = Player.GetJumpState(ExtraJump.BasiliskMount).Available;
 
-		bool isPerformingJump_Cloud = Player.GetJumpState(ExtraJump.CloudInABottle).PerformingJump;
-		bool isPerformingJump_Sandstorm = Player.GetJumpState(ExtraJump.SandstormInABottle).PerformingJump;
-		bool isPerformingJump_Blizzard = Player.GetJumpState(ExtraJump.BlizzardInABottle).PerformingJump;
-		bool isPerformingJump_Fart = Player.GetJumpState(ExtraJump.FartInAJar).PerformingJump;
-		bool isPerformingJump_Sail = Player.GetJumpState(ExtraJump.TsunamiInABottle).PerformingJump;
-		bool isPerformingJump_Unicorn = Player.GetJumpState(ExtraJump.UnicornMount).PerformingJump;
-		bool isPerformingJump_Santank = Player.GetJumpState(ExtraJump.SantankMount).PerformingJump;
-		bool isPerformingJump_WallOfFleshGoat = Player.GetJumpState(ExtraJump.GoatMount).PerformingJump;
-		bool isPerformingJump_Basilisk = Player.GetJumpState(ExtraJump.BasiliskMount).PerformingJump;
+		bool isPerformingJump_Cloud = Player.GetJumpState(ExtraJump.CloudInABottle).Active;
+		bool isPerformingJump_Sandstorm = Player.GetJumpState(ExtraJump.SandstormInABottle).Active;
+		bool isPerformingJump_Blizzard = Player.GetJumpState(ExtraJump.BlizzardInABottle).Active;
+		bool isPerformingJump_Fart = Player.GetJumpState(ExtraJump.FartInAJar).Active;
+		bool isPerformingJump_Sail = Player.GetJumpState(ExtraJump.TsunamiInABottle).Active;
+		bool isPerformingJump_Unicorn = Player.GetJumpState(ExtraJump.UnicornMount).Active;
+		bool isPerformingJump_Santank = Player.GetJumpState(ExtraJump.SantankMount).Active;
+		bool isPerformingJump_WallOfFleshGoat = Player.GetJumpState(ExtraJump.GoatMount).Active;
+		bool isPerformingJump_Basilisk = Player.GetJumpState(ExtraJump.BasiliskMount).Active;
 	}
 
 	public void MethodB(AnotherPlayer other)

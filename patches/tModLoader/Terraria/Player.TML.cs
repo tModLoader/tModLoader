@@ -613,12 +613,12 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public bool blockExtraJumps;
 
 	/// <summary>
-	/// Returns <see langword="true"/> if any extra jump has both <see cref="ExtraJumpState.Enabled"/> and <see cref="ExtraJumpState.JumpAvailable"/> set to <see langword="true"/>.
+	/// Returns <see langword="true"/> if any extra jump has both <see cref="ExtraJumpState.Enabled"/> and <see cref="ExtraJumpState.Available"/> set to <see langword="true"/>.
 	/// </summary>
 	public bool AnyExtraJumpAvailable()
 	{
 		foreach (ExtraJumpState state in extraJumps) {
-			if (state.Enabled && state.JumpAvailable)
+			if (state.Enabled && state.Available)
 				return true;
 		}
 
@@ -627,7 +627,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	/// <summary>
 	/// Cancels any extra jump in progress.<br/>
-	/// Sets all <see cref="ExtraJumpState.PerformingJump"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
+	/// Sets all <see cref="ExtraJumpState.Active"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
 	/// Also sets <see cref="jump"/> to 0 if a an extra jump was active.<br/><br/>
 	///
 	/// Used by vanilla when performing an action which would cancel jumping, such as grappling, grabbing a rope or getting frozen.<br/><br/>

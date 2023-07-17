@@ -119,7 +119,7 @@ public abstract partial class ExtraJump : ModType
 	public virtual void OnStarted(Player player, ref bool playSound) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.PerformingJump"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> when this extra jump's duration has expired<br/>
+	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> when this extra jump's duration has expired<br/>
 	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
 	/// </summary>
 	/// <param name="player">The player that was performing the jump</param>
@@ -144,7 +144,7 @@ public abstract partial class ExtraJump : ModType
 	public virtual void UpdateHorizontalSpeeds(Player player) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.JumpAvailable"/> flag for this extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for this extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
 	/// This occurs at the start of the grounded jump and while the player is grounded.
 	/// </summary>
 	/// <param name="player">The player instance</param>

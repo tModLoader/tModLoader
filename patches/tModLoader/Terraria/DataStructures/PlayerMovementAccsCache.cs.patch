@@ -28,7 +28,7 @@
  			wingTime = player.wingTime;
 +			canJumpAgain ??= new bool[ExtraJumpLoader.ExtraJumpCount];
 +			foreach (ExtraJump jump in ExtraJumpLoader.ExtraJumps)
-+				canJumpAgain[jump.Type] = player.GetJumpState(jump).JumpAvailable;
++				canJumpAgain[jump.Type] = player.GetJumpState(jump).Available;
 +			/*
  			jumpAgainCloud = player.canJumpAgain_Cloud;
  			jumpAgainSandstorm = player.canJumpAgain_Sandstorm;
@@ -53,7 +53,7 @@
  				player.canJumpAgain_Unicorn = jumpAgainUnicorn;
 +				*/
 +				foreach (ExtraJump jump in ExtraJumpLoader.ExtraJumps)
-+					player.GetJumpState(jump).JumpAvailable = canJumpAgain[jump.Type];
++					player.GetJumpState(jump).Available = canJumpAgain[jump.Type];
  			}
  		}
  	}

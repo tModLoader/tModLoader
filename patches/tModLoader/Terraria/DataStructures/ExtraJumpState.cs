@@ -17,14 +17,14 @@ namespace Terraria.DataStructures;
 public struct ExtraJumpState
 {
 	internal bool _enabled;
-	internal bool _jumpAvailable;
-	internal bool _performingJump;
+	internal bool _available;
+	internal bool _active;
 	internal bool _disabled;
 
 	/// <summary>
 	/// Whether the extra jump can be used. This property is set by <see cref="Enable"/> and <see cref="Disable"/>.<br/>
 	/// This property is automatically set to <see langword="false"/> in ResetEffects.<br/>
-	/// When <see langword="false"/>, this property automatically sets <see cref="JumpAvailable"/> to <see langword="false"/> as well.<br/>
+	/// When <see langword="false"/>, this property automatically sets <see cref="Available"/> to <see langword="false"/> as well.<br/>
 	/// If you want to forcibly disable the extra jump, use <see cref="Disable"/>.<br/>
 	/// If you want to forcibly disable <b>all</b> extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
 	/// </summary>
@@ -36,16 +36,16 @@ public struct ExtraJumpState
 	/// This property also checks <see cref="Enabled"/> when read.<br/>
 	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this property should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/>.
 	/// </summary>
-	public bool JumpAvailable {
-		get => Enabled && _jumpAvailable;
-		set => _jumpAvailable = value;
+	public bool Available {
+		get => Enabled && _available;
+		set => _available = value;
 	}
 
 	/// <summary>
 	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out.<br/>
 	/// This property also checks <see cref="Enabled"/> when read.
 	/// </summary>
-	public bool PerformingJump => Enabled && _performingJump;
+	public bool Active => Enabled && _active;
 
 	/// <summary>
 	/// Sets this extra jump to usable for this game tick.<br/>
