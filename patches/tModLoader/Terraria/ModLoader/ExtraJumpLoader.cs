@@ -171,7 +171,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state._enabled) {
+			if (state.Enabled) {
 				jump.OnRefreshed(player);
 				PlayerLoader.OnExtraJumpRefreshed(jump, player);
 				state._available = true;
@@ -208,7 +208,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (!state._enabled)
+			if (!state.Enabled)
 				state._available = false;
 		}
 	}
