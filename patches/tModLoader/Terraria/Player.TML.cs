@@ -637,7 +637,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public void StopExtraJumpInProgress()
 	{
-		ExtraJumpLoader.StopAllJumpVisuals(this, out bool anyJumpCancelled);
+		ExtraJumpLoader.StopActiveJump(this, out bool anyJumpCancelled);
 
 		if (anyJumpCancelled)
 			jump = 0;

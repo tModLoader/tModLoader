@@ -168,7 +168,7 @@ public static class ExtraJumpLoader
 		player.GetJumpState(ExtraJump.BasiliskMount).Available = false;
 	}
 
-	public static void RefreshExtraJumps(Player player)
+	public static void RefreshJumps(Player player)
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
@@ -180,7 +180,7 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	internal static void StopAllJumpVisuals(Player player, out bool anyJumpCancelled)
+	internal static void StopActiveJump(Player player, out bool anyJumpCancelled)
 	{
 		anyJumpCancelled = false;
 
@@ -205,7 +205,7 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	internal static void ConsumeUnavailableExtraJumps(Player player)
+	internal static void ConsumeUnavailableJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
@@ -214,7 +214,7 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	internal static void ConsumeAllExtraJumps(Player player)
+	internal static void ConsumeAllJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
 			player.GetJumpState(jump)._available = false;

@@ -3492,7 +3492,7 @@
 -	private void RefreshDoubleJumps()
 +	public void RefreshDoubleJumps()
  	{
-+		ExtraJumpLoader.RefreshExtraJumps(this);
++		ExtraJumpLoader.RefreshJumps(this);
 +		/*
  		if (hasJumpOption_Cloud)
  			canJumpAgain_Cloud = true;
@@ -3512,7 +3512,7 @@
 +	public void ConsumeAllExtraJumps()
 +	{
 +		// Included to make consuming all extra jumps easier to write
-+		ExtraJumpLoader.ConsumeAllExtraJumps(this);
++		ExtraJumpLoader.ConsumeAllJumps(this);
  	}
  
  	public void StickyMovement()
@@ -3833,7 +3833,7 @@
  			RefreshDoubleJumps();
  		}
  		else {
-+			ExtraJumpLoader.ConsumeUnavailableExtraJumps(this);
++			ExtraJumpLoader.ConsumeUnavailableJumps(this);
 +			/*
  			if (!hasJumpOption_Cloud)
  				canJumpAgain_Cloud = false;
@@ -4590,7 +4590,7 @@
  
  	private void CancelAllJumpVisualEffects()
  	{
-+		ExtraJumpLoader.StopAllJumpVisuals(this, out _);
++		ExtraJumpLoader.StopActiveJump(this, out _);
 +		/*
  		isPerformingJump_Cloud = false;
  		isPerformingJump_Sandstorm = false;
