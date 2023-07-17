@@ -5,7 +5,8 @@ using Terraria.DataStructures;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// <see cref="ExtraJump"/> is a singleton type used to facilitate the logic for extra midair jumps
+/// <see cref="ExtraJump"/> is a singleton type used to facilitate the logic for extra midair jumps.<br/>
+/// The fields used to control extra jump logic can be found in <see cref="ExtraJumpState"/>
 /// </summary>
 public abstract partial class ExtraJump : ModType
 {

@@ -625,17 +625,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return false;
 	}
 
-	// An alternative more in line with the vanilla behavior
-	private bool AnyExtraJumpAvailableNoActiveCheck()
-	{
-		foreach (ExtraJumpState state in extraJumps) {
-			if (state.JumpAvailable)
-				return true;
-		}
-
-		return false;
-	}
-
 	/// <summary>
 	/// Cancels any extra jump in progress.<br/>
 	/// Sets all <see cref="ExtraJumpState.PerformingJump"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
