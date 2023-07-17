@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Core;
 
@@ -66,6 +67,6 @@ internal static class MemoryTracking
 				.Where(val => val != null)
 				.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 		}
-		Logging.tML.Info($"RAM usage: {UI.UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}");
+		Logging.tML.Info($"RAM usage: {UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}, Total Computer RAM: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
 	}
 }
