@@ -72,22 +72,28 @@ public static class ExtraJumpLoader
 
 			switch (position) {
 				case ExtraJump.After after:
+					if (after.Target is not null and not VanillaExtraJump)
+						throw new ArgumentException($"ExtraJump {jump} did not refer to a vanilla ExtraJump in GetDefaultPosition()");
+
 					int afterParent = after.Target?.Type is { } afterType ? afterType + 1 : 0;
 
 					sortingSlots[afterParent].Add(jump.Type);
 					break;
 				case ExtraJump.Before before:
+					if (before.Target is not null and not VanillaExtraJump)
+						throw new ArgumentException($"ExtraJump {jump} did not refer to a vanilla ExtraJump in GetDefaultPosition()");
+
 					int beforeParent = before.Target?.Type is { } beforeType ? beforeType : sortingSlots.Length - 1;
 
 					sortingSlots[beforeParent].Add(jump.Type);
 					break;
 				default:
-					throw new ArgumentException($"ModExtraJump {jump} has unknown Position {position}");
+					throw new ArgumentException($"ExtraJump {jump} has unknown Position {position}");
 			}
 		}
 
 		// Cache the information for which additional constraints each modded extra jump has
-		var positions = ModdedExtraJumps.ToDictionary(j => j.Type, j => j.GetModdedConstraints()?.Select(p => VerifyPositionType(j, p)).ToList() ?? new());
+		var positions = ModdedExtraJumps.ToDictionary(static j => j.Type, static j => j.GetModdedConstraints()?.ToList() ?? new());
 
 		// Sort the modded jumps per slot
 		List<ExtraJump> sorted = new();
@@ -106,13 +112,6 @@ public static class ExtraJumpLoader
 		}
 
 		orderedJumps = sorted.ToArray();
-	}
-
-	private static ExtraJump.Position VerifyPositionType(ExtraJump jump, ExtraJump.Position position) {
-		if (position is not ExtraJump.After and not ExtraJump.Before)
-			throw new ArgumentException($"ModExtraJump {jump} has unknown Position {position}");
-
-		return position;
 	}
 
 	internal static void RegisterDefaultJumps()
