@@ -6,21 +6,21 @@ partial class ExtraJump
 
 	public sealed class Before : Position
 	{
-		public ExtraJump Parent { get; }
+		public ExtraJump Target { get; }
 
 		public Before(ExtraJump parent)
 		{
-			Parent = parent;
+			Target = parent;
 		}
 	}
 
 	public sealed class After : Position
 	{
-		public ExtraJump Parent { get; }
+		public ExtraJump Target { get; }
 
 		public After(ExtraJump parent)
 		{
-			Parent = parent;
+			Target = parent;
 		}
 	}
 

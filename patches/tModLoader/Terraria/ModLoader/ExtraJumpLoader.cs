@@ -72,12 +72,12 @@ public static class ExtraJumpLoader
 
 			switch (position) {
 				case ExtraJump.After after:
-					int afterParent = after.Parent?.Type is { } afterType ? afterType + 1 : 0;
+					int afterParent = after.Target?.Type is { } afterType ? afterType + 1 : 0;
 
 					sortingSlots[afterParent].Add(jump.Type);
 					break;
 				case ExtraJump.Before before:
-					int beforeParent = before.Parent?.Type is { } beforeType ? beforeType : sortingSlots.Length - 1;
+					int beforeParent = before.Target?.Type is { } beforeType ? beforeType : sortingSlots.Length - 1;
 
 					sortingSlots[beforeParent].Add(jump.Type);
 					break;
@@ -94,8 +94,8 @@ public static class ExtraJumpLoader
 
 		for (int i = 0; i < DefaultExtraJumpCount + 2; i++) {
 			var sort = new TopoSort<ExtraJump>(sortingSlots[i].Select(static t => ExtraJumps[t]),
-				j => positions[j.Type].OfType<ExtraJump.After>().Select(static a => a.Parent).OfType<ExtraJump>(),
-				j => positions[j.Type].OfType<ExtraJump.Before>().Select(static b => b.Parent).OfType<ExtraJump>());
+				j => positions[j.Type].OfType<ExtraJump.After>().Select(static a => a.Target).OfType<ExtraJump>(),
+				j => positions[j.Type].OfType<ExtraJump.Before>().Select(static b => b.Target).OfType<ExtraJump>());
 
 			foreach (ExtraJump jump in sort.Sort()) {
 				sorted.Add(jump);
