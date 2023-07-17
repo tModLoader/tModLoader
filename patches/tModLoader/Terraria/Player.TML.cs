@@ -618,7 +618,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public bool AnyExtraJumpAvailable()
 	{
 		foreach (ExtraJumpState state in extraJumps) {
-			if (state.Enabled && state.Available)
+			if (state.Available)
 				return true;
 		}
 
