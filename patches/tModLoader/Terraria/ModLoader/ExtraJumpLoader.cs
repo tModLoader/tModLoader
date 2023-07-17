@@ -129,7 +129,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump moddedExtraJump in orderedJumps) {
 			ref ExtraJumpState extraJump = ref player.GetJumpState(moddedExtraJump);
-			if (extraJump.Enabled && extraJump.PerformingJump)
+			if (extraJump.PerformingJump)
 				moddedExtraJump.UpdateHorizontalSpeeds(player);
 		}
 	}
@@ -138,7 +138,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.Enabled && state.PerformingJump && !state.JumpAvailable && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
+			if (state.PerformingJump && !state.JumpAvailable && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
 				jump.Visuals(player);
 				PlayerLoader.ExtraJumpVisuals(jump, player);
 			}
@@ -149,8 +149,8 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.Enabled && state.JumpAvailable) {
-				state.JumpAvailable = false;
+			if (state.JumpAvailable) {
+				state._jumpAvailable = false;
 				state._performingJump = true;
 				jump.PerformJump(player);
 				break;
@@ -168,7 +168,7 @@ public static class ExtraJumpLoader
 			if (state.Enabled) {
 				jump.OnRefreshed(player);
 				PlayerLoader.OnExtraJumpRefreshed(jump, player);
-				state.JumpAvailable = true;
+				state._jumpAvailable = true;
 			}
 		}
 	}
@@ -203,14 +203,14 @@ public static class ExtraJumpLoader
 		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
 			if (!state.Enabled)
-				state.JumpAvailable = false;
+				state._jumpAvailable = false;
 		}
 	}
 
 	internal static void ConsumeAllExtraJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			player.GetJumpState(jump).JumpAvailable = false;
+			player.GetJumpState(jump)._jumpAvailable = false;
 		}
 	}
 }

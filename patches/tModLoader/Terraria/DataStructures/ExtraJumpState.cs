@@ -33,30 +33,19 @@ public struct ExtraJumpState
 	/// <summary>
 	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when the extra jump starts.<br/>
 	/// Setting this field to <see langword="false"/> will effectively make the game think that the player has already used this extra jump.<br/>
-	/// When checking this field, make sure to check <see cref="Enabled"/> first.<br/>
-	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this field should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/> since <see cref="ExtraJump.Visuals(Player)"/> only runs when <see cref="Enabled"/> and <see cref="PerformingJump"/> are <see langword="true"/> and this field is <see langword="false"/>.
+	/// This property also checks <see cref="Enabled"/> when read.<br/>
+	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this property should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/>.
 	/// </summary>
 	public bool JumpAvailable {
-		get {
-			// Ensure state validity
-			if (!_enabled)
-				_jumpAvailable = false;
-			return _jumpAvailable;
-		}
+		get => Enabled && _jumpAvailable;
 		set => _jumpAvailable = value;
 	}
 
 	/// <summary>
-	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out
+	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out.<br/>
+	/// This property also checks <see cref="Enabled"/> when read.
 	/// </summary>
-	public bool PerformingJump {
-		get {
-			// Ensure state validity
-			if (!_enabled)
-				_performingJump = false;
-			return _performingJump;
-		}
-	}
+	public bool PerformingJump => Enabled && _performingJump;
 
 	/// <summary>
 	/// Sets this extra jump to usable for this game tick.<br/>
