@@ -7,7 +7,7 @@ namespace Terraria.DataStructures;
 ///
 /// Valid states for an extra jump are as follows:
 /// <list type="bullet">
-/// <item>Enabled = <see langword="false"/>, JumpAvailable = <see langword="false"/>, PerformingJump = <see langword="false"/> | The extra jump cannot be used</item>
+/// <item>Enabled = <see langword="false"/> | The extra jump cannot be used.  JumpAvailable and PerformingJump will be <see langword="false"/></item>
 /// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="true"/>, PerformingJump = <see langword="false"/> | The extra jump is ready to be consumed, but hasn't been consumed yet</item>
 /// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="false"/>, PerformingJump = <see langword="true"/> | The extra jump has been consumed and is currently in progress</item>
 /// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="true"/>, PerformingJump = <see langword="true"/> | The extra jump has been consumed and is currently in progress, but can be re-used again after it ends</item>
