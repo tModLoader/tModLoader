@@ -128,7 +128,6 @@ public static class ExtraJumpLoader
 	public static void UpdateHorizontalSpeeds(Player player)
 	{
 		foreach (ExtraJump moddedExtraJump in orderedJumps) {
-			// Special case: Sandstorm in a Bottle uses a separate flag
 			ref ExtraJumpState extraJump = ref player.GetJumpState(moddedExtraJump);
 			if (extraJump.PerformingJump && extraJump.Enabled)
 				moddedExtraJump.UpdateHorizontalSpeeds(player);
