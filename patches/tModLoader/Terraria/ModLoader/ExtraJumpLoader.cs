@@ -193,7 +193,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			state.Enabled = false;
+			state._enabled = false;
 			state._disabled = false;
 		}
 	}

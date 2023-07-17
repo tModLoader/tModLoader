@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetJumpState<SimpleExtraJump>().Enabled = true;
+			player.GetJumpState<SimpleExtraJump>().Enable();
 		}
 
 		public override void AddRecipes() {

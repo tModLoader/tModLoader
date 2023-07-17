@@ -94,6 +94,11 @@ public class MemberUseRewriter : BaseRewriter {
 				return memberName;
 			}
 
+			if (stateFieldName == "Enabled") {
+				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Call Enable() if setting this to true, otherwise remove."));
+				return memberName;
+			}
+
 			var expr = assign.Syntax;
 			if (assign.Value is not ILiteralOperation { ConstantValue.Value: bool })
 				return memberName.WithBlockComment($"Suggestion: Player.GetJumpState(ExtraJump.{extraJumpName}).{stateFieldName} = ..."); // some other literal assignment

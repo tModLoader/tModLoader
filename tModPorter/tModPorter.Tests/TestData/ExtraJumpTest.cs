@@ -4,16 +4,6 @@ public class ExtraJumpTest : ModPlayer
 {
 	public void MethodA()
 	{
-		player.hasJumpOption_Cloud = true;
-		player.hasJumpOption_Sandstorm = true;
-		player.hasJumpOption_Blizzard = true;
-		player.hasJumpOption_Fart = true;
-		player.hasJumpOption_Sail = true;
-		player.hasJumpOption_Unicorn = true;
-		player.hasJumpOption_Santank = true;
-		player.hasJumpOption_WallOfFleshGoat = true;
-		player.hasJumpOption_Basilisk = true;
-
 		player.canJumpAgain_Cloud = true;
 		player.canJumpAgain_Sandstorm = true;
 		player.canJumpAgain_Blizzard = true;
@@ -23,6 +13,17 @@ public class ExtraJumpTest : ModPlayer
 		player.canJumpAgain_Santank = true;
 		player.canJumpAgain_WallOfFleshGoat = true;
 		player.canJumpAgain_Basilisk = true;
+
+		// Cannot port assignment to hasJumpOption_X
+		player.hasJumpOption_Cloud = true;
+		player.hasJumpOption_Sandstorm = true;
+		player.hasJumpOption_Blizzard = true;
+		player.hasJumpOption_Fart = true;
+		player.hasJumpOption_Sail = true;
+		player.hasJumpOption_Unicorn = true;
+		player.hasJumpOption_Santank = true;
+		player.hasJumpOption_WallOfFleshGoat = true;
+		player.hasJumpOption_Basilisk = true;
 
 		// Cannot port assignment to isPerformingJump_X
 		player.isPerformingJump_Cloud = true;
@@ -36,7 +37,7 @@ public class ExtraJumpTest : ModPlayer
 		player.isPerformingJump_Basilisk = true;
 
 		// Cannot port conditional setter, emit a suggestion
-		player.hasJumpOption_Cloud = 1 > 2;
+		player.canJumpAgain_Cloud = 1 > 2;
 
 		bool hasJumpOption_Cloud = player.hasJumpOption_Cloud;
 		bool hasJumpOption_Sandstorm = player.hasJumpOption_Sandstorm;

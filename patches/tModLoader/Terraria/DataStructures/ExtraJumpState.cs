@@ -16,14 +16,18 @@ namespace Terraria.DataStructures;
 /// </summary>
 public struct ExtraJumpState
 {
+	internal bool _enabled;
+	internal bool _performingJump;
+	internal bool _disabled;
+
 	/// <summary>
-	/// Whether the extra jump can be used. This field is what should be set by equipment in UpdateEquip or UpdateAccessory.<br/>
-	/// This field is automatically set to <see langword="false"/> in ResetEffects.<br/>
-	/// When set to <see langword="false"/>, this field does not cause <see cref="JumpAvailable"/> to be automatically set to <see langword="false"/> until the next game tick.<br/>
-	/// If you want to forcibly disable the extra jump, use <see cref="Disable"/> instead of setting this field to <see langword="false"/>.<br/>
+	/// Whether the extra jump can be used. This property is set by <see cref="Enable"/> and <see cref="Disable"/>.<br/>
+	/// This property is automatically set to <see langword="false"/> in ResetEffects.<br/>
+	/// When <see langword="false"/>, this property automatically sets <see cref="JumpAvailable"/> to <see langword="false"/> as well.<br/>
+	/// If you want to forcibly disable the extra jump, use <see cref="Disable"/>.<br/>
 	/// If you want to forcibly disable <b>all</b> extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
 	/// </summary>
-	public bool Enabled;
+	public bool Enabled => _enabled && !_disabled;
 
 	/// <summary>
 	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when the extra jump starts.<br/>
@@ -33,16 +37,16 @@ public struct ExtraJumpState
 	/// </summary>
 	public bool JumpAvailable;
 
-	internal bool _performingJump;
-
 	/// <summary>
 	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out
 	/// </summary>
 	public bool PerformingJump => _performingJump;
 
-	// Fields/properties for overriding state
-
-	internal bool _disabled;
+	/// <summary>
+	/// Sets this extra jump to usable for this game tick.<br/>
+	/// If you want to disable this extra jump, use <see cref="Disable"/>
+	/// </summary>
+	public void Enable() => _enabled = true;
 
 	/// <summary>
 	/// Forces this extra jump to be disabled for this game tick without modifying the state of <see cref="Enabled"/><br/>
