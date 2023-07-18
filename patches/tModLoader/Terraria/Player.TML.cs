@@ -605,7 +605,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
 
 	/// <summary>
-	/// When <see langword="true"/>, all extra jumps, including Flipper usage.<br/>
+	/// When <see langword="true"/>, all extra jumps will be blocked, including Flipper usage.<br/>
 	/// Setting this field to <see langword="true"/> will not stop any currently active extra jumps.
 	/// </summary>
 	public bool blockExtraJumps;
