@@ -134,6 +134,7 @@ internal class UIModItem : UIPanel
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 				Top = { Pixels = 42.5f }
 			};
+			// _modReferenceIcon.OnLeftClick += EnableDependencies;
 
 			Append(_modReferenceIcon);
 		}

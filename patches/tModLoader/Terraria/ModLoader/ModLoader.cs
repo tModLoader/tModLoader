@@ -307,7 +307,7 @@ public static class ModLoader
 		Logging.tML.Info($"{(active ? "Enabling" : "Disabling")} Mod: {modName}");
 		if (active)
 			EnabledMods.Add(modName);
-		else 
+		else
 			EnabledMods.Remove(modName);
 
 		ModOrganizer.SaveEnabledMods();
