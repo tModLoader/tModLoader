@@ -72,7 +72,7 @@ public class ExtraJumpTest : ModPlayer
 		bool isPerformingJump_Basilisk = Player.GetJumpState(ExtraJump.BasiliskMount).Active;
 	}
 
-	public void MethodB(AnotherPlayer other)
+	public void MethodB(AnotherPlayerClass other)
 	{
 #if COMPILE_ERROR
 		Player.GetJumpState(ExtraJump.CloudInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;

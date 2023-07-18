@@ -70,7 +70,7 @@ public class ExtraJumpTest : ModPlayer
 		bool isPerformingJump_Basilisk = player.isPerformingJump_Basilisk;
 	}
 
-	public void MethodB(AnotherPlayer other)
+	public void MethodB(AnotherPlayerClass other)
 	{
 		player.hasJumpOption_Cloud = true;
 
