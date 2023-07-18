@@ -45,25 +45,26 @@ public abstract partial class ExtraJump : ModType
 	/// <summary>
 	/// Returns this extra jump's default position in regard to the vanilla extra jumps.  Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an extra jump.<br/><br/>
 	///
-	/// Recommended values to use are BeforeMountJumps, MountJumpPosition, BeforeBottleJumps and AfterBottleJumps.<br/><br/>
+	/// Recommended using one of: <c>BeforeMountJumps, MountJumpPosition, BeforeBottleJumps, AfterBottleJumps</c><br/><br/>
 	/// 
 	/// <b>NOTE:</b> The position must specify a vanilla <see cref="ExtraJump"/> otherwise an exception will be thrown.
 	/// </summary>
 	public abstract Position GetDefaultPosition();
 
 	/// <summary>
-	/// Modded extra jumps are placed between vanilla jumps via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
-	/// This hook allows you to sort this extra jump before/after other modded extra jumps that were placed before/after the same vanilla extra jump.<br/>
+	/// Modded jumps are placed between vanilla jumps via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
+	/// This hook allows you to sort this jump before/after other modded jumps that were placed between the same two vanilla jumps.<br/>
 	/// Example:
 	/// <para>
 	/// <c>yield return new After(ModContent.GetInstance&lt;SimpleExtraJump&gt;());</c>
 	/// </para>
-	/// By default, this hook returns <see langword="null"/>, which indicates that this extra jump has no constraints.
+	/// By default, this hook returns <see langword="null"/>, which indicates that this jump has no modded ordering constraints.
 	/// </summary>
 	public virtual IEnumerable<Position> GetModdedConstraints() => null;
 
 	/// <summary>
-	/// Effects that should appear while the player is performing this extra jump should happen here.<br/>
+	/// Spawn effects that should appear while the player is performing this jump here.<br/>
+	/// Only runs while the jump is <see cref="ExtraJumpState.Active"/> <br/>
 	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
@@ -79,7 +80,7 @@ public abstract partial class ExtraJump : ModType
 	}
 
 	/// <summary>
-	/// Vanilla's extra jumps use the following values:
+	/// Vanilla's jumps use the following values:
 	/// <para>
 	/// Basilisk mount: 0.75<br/>
 	/// Blizzard in a Bottle: 1.5<br/>
@@ -93,34 +94,33 @@ public abstract partial class ExtraJump : ModType
 	/// </para>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
-	/// <returns>A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</returns>
+	/// <returns>A modifier to the player's jump height, which when combined effectively acts as the duration for the jump</returns>
 	public abstract float GetDurationMultiplier(Player player);
 
 	/// <summary>
-	/// An extra condition for whether this extra jump can be started.  Used by vanilla for flippers (<see cref="Entity.wet"/>).  Returns <see langword="true"/> by default.
-	/// </summary>
-	/// <param name="player">The player that would perform the jump</param>
-	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
-	public virtual bool CanStart(Player player) => true;
-
-	/// <summary>
-	/// Effects that should appear when the extra jump starts should happen here.<br/>
-	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
+	/// This hook runs when the player uses this jump via pressing the jump key<br/>
+	/// Effects that should appear when the jump starts can be spawned here.<br/>
+	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.<br/>
+	/// <br/>
+	/// To make the jump re-usable, set <see cref="ExtraJumpState.Available"/> to  <see langword="true"/> <br/>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
 	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
 	public virtual void OnStarted(Player player, ref bool playSound) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for this extra jump is set from <see langword="true"/> to <see langword="false"/> when this extra jump's duration has expired<br/>
-	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// This hook runs before <see cref="ExtraJumpState.Active"/> is set from <see langword="true"/> to <see langword="false"/><br/>
+	/// Jumps end when their duration expires or when <see cref="ExtraJumpState.Enabled"/> is no longer true. <br/>
+	/// Jumps may end early via <see cref="Player.StopExtraJumpInProgress"/>, called when a grappling hook is thrown, the player grabs onto a rope, or when the player is frozen, turned to stone or webbed.
 	/// </summary>
 	/// <param name="player">The player that was performing the jump</param>
 	public virtual void OnEnded(Player player) { }
 
 	/// <summary>
-	/// Modify the player's horizontal movement while performing this extra jump here.<br/>
-	/// Vanilla's extra jumps use the following values:
+	/// Modify the player's horizontal movement while performing this jump here.<br/>
+	/// Only runs while the jump is <see cref="ExtraJumpState.Active"/> <br/>
+	/// <br/>
+	/// Vanilla's jumps use the following values:
 	/// <para>
 	/// Basilisk mount: runAcceleration *= 3; maxRunSpeed *= 1.5;<br/>
 	/// Blizzard in a Bottle: runAcceleration *= 3; maxRunSpeed *= 1.5;<br/>
@@ -137,8 +137,8 @@ public abstract partial class ExtraJump : ModType
 	public virtual void UpdateHorizontalSpeeds(Player player) { }
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for this extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
-	/// This occurs at the start of the grounded jump and while the player is grounded.
+	/// This hook runs before <see cref="ExtraJumpState.Available"/> is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This occurs at the start of the grounded jump and while the player is grounded, or when jumping off a grappling hook/rope.
 	/// </summary>
 	/// <param name="player">The player instance</param>
 	public virtual void OnRefreshed(Player player) { }

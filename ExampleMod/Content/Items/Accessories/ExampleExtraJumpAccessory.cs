@@ -1,4 +1,4 @@
-using ExampleMod.Content.Tiles.Furniture;
+﻿using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Enums;
