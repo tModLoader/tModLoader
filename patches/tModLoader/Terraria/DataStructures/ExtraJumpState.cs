@@ -10,7 +10,7 @@ namespace Terraria.DataStructures;
 /// <item>Enabled = <see langword="false"/> | The extra jump cannot be used.  JumpAvailable and PerformingJump will be <see langword="false"/></item>
 /// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="true"/>, PerformingJump = <see langword="false"/> | The extra jump is ready to be consumed, but hasn't been consumed yet</item>
 /// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="false"/>, PerformingJump = <see langword="true"/> | The extra jump has been consumed and is currently in progress</item>
-/// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="true"/>, PerformingJump = <see langword="true"/> | The extra jump has been consumed and is currently in progress, but can be re-used again after it ends</item>
+/// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="true"/>, PerformingJump = <see langword="true"/> | The extra jump is currently in progress, but can be re-used again after it ends</item>
 /// <item>Enabled = <see langword="true"/>, JumpAvailable = <see langword="false"/>, PerformingJump = <see langword="false"/> | The extra jump has been consumed and cannot be used again until extra jumps are refreshed</item>
 /// </list>
 /// </summary>
@@ -24,9 +24,7 @@ public struct ExtraJumpState
 	/// <summary>
 	/// Whether the extra jump can be used. This property is set by <see cref="Enable"/> and <see cref="Disable"/>.<br/>
 	/// This property is automatically set to <see langword="false"/> in ResetEffects.<br/>
-	/// When <see langword="false"/>, this property automatically sets <see cref="Available"/> to <see langword="false"/> as well.<br/>
-	/// If you want to forcibly disable the extra jump, use <see cref="Disable"/>.<br/>
-	/// If you want to forcibly disable <b>all</b> extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
+	/// When <see langword="false"/>, <see cref="Available"/> and <see cref="Active"/> will also be <see langword="false"/>.<br/>
 	/// </summary>
 	public bool Enabled => _enabled && !_disabled;
 
@@ -34,7 +32,7 @@ public struct ExtraJumpState
 	/// <see langword="true"/> if the extra jump has not been consumed. Will be set to <see langword="false"/> when the extra jump starts.<br/>
 	/// Setting this field to <see langword="false"/> will effectively make the game think that the player has already used this extra jump.<br/>
 	/// This property also checks <see cref="Enabled"/> when read.<br/>
-	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this property should only be set to <see langword="true"/> in <see cref="ExtraJump.OnEnded(Player)"/>.
+	/// For a reusable jump (e.g. MultipleUseExtraJump from ExampleMod), this property should only be set to <see langword="true"/> in <see cref="ExtraJump.OnStarted"/>.
 	/// </summary>
 	public bool Available {
 		get => Enabled && _available;
