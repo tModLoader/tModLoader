@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
@@ -152,7 +152,7 @@ public sealed class UnicornMountJump : VanillaExtraJump
 		}
 	}
 
-	public override void Visuals(Player player)
+	public override void ShowVisuals(Player player)
 	{
 		Dust obj = Main.dust[Dust.NewDust(player.position, player.width, player.height, Utils.SelectRandom(Main.rand, 176, 177, 179))];
 		obj.velocity = Vector2.Zero;
@@ -173,7 +173,7 @@ public sealed class SandstormInABottleJump : VanillaExtraJump
 {
 	public override float GetDurationMultiplier(Player player) => 3f;
 
-	public override void Visuals(Player player)
+	public override void ShowVisuals(Player player)
 	{
 		int num3 = player.height;
 		if (player.gravDir == -1f)
@@ -205,7 +205,7 @@ public sealed class BlizzardInABottleJump : VanillaExtraJump
 {
 	public override float GetDurationMultiplier(Player player) => 1.5f;
 
-	public override void Visuals(Player player)
+	public override void ShowVisuals(Player player)
 	{
 		int num12 = player.height - 6;
 		if (player.gravDir == -1f)
@@ -280,7 +280,7 @@ public sealed class FartInAJarJump : VanillaExtraJump
 		Main.gore[num9].velocity.Y = Main.gore[num9].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
 
-	public override void Visuals(Player player)
+	public override void ShowVisuals(Player player)
 	{
 		int num7 = player.height;
 		if (player.gravDir == -1f)
@@ -325,7 +325,7 @@ public sealed class TsunamiInABottleJump : VanillaExtraJump
 		}
 	}
 
-	public override void Visuals(Player player)
+	public override void ShowVisuals(Player player)
 	{
 		int num9 = 1;
 		if (player.jump > 0)
@@ -384,7 +384,7 @@ public sealed class CloudInABottleJump : VanillaExtraJump
 		Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
 
-	public override void Visuals(Player player)
+	public override void ShowVisuals(Player player)
 	{
 		int num = player.height;
 		if (player.gravDir == -1f)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
@@ -67,10 +67,10 @@ public abstract partial class ExtraJump : ModType
 	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
-	public virtual void Visuals(Player player) { }
+	public virtual void ShowVisuals(Player player) { }
 
 	/// <summary>
-	/// Return <see langword="false"/> to prevent <see cref="Visuals(Player)"/> from executing.<br/>
+	/// Return <see langword="false"/> to prevent <see cref="ShowVisuals(Player)"/> from executing.<br/>
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>

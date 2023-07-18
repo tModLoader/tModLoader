@@ -1,4 +1,4 @@
-﻿using ExampleMod.Content.Tiles.Furniture;
+using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Enums;
@@ -77,7 +77,7 @@ namespace ExampleMod.Content.Items.Accessories
 			gore.velocity.Y = gore.velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 		}
 
-		public override void Visuals(Player player) {
+		public override void ShowVisuals(Player player) {
 			// Use this hook to trigger effects that should appear throughout the duration of the extra jump
 			// This example mimics the logic for spawning the dust from the Blizzard in a Bottle
 			int offsetY = player.height - 6;

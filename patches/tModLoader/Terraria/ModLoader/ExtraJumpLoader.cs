@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.Audio;
@@ -135,7 +135,7 @@ public static class ExtraJumpLoader
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
 			if (state.Active && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
-				jump.Visuals(player);
+				jump.ShowVisuals(player);
 				PlayerLoader.ExtraJumpVisuals(jump, player);
 			}
 		}

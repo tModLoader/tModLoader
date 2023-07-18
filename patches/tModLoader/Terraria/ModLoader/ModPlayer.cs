@@ -371,7 +371,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.Visuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
+	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.ShowVisuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
