@@ -185,8 +185,10 @@ internal static class Interface
 					}
 				};
 
-				if (!string.IsNullOrWhiteSpace(message))
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
 			}
 		}
 		if (Main.menuMode == modsMenuID) {
