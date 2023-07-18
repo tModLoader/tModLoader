@@ -98,6 +98,13 @@ public abstract partial class ExtraJump : ModType
 	public abstract float GetDurationMultiplier(Player player);
 
 	/// <summary>
+	/// An extra condition for whether this extra jump can be started.  Used by vanilla for flippers (<see cref="Entity.wet"/>).  Returns <see langword="true"/> by default.
+	/// </summary>
+	/// <param name="player">The player that would perform the jump</param>
+	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
+	public virtual bool CanStart(Player player) => true;
+
+	/// <summary>
 	/// This hook runs when the player uses this jump via pressing the jump key<br/>
 	/// Effects that should appear when the jump starts can be spawned here.<br/>
 	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.<br/>
