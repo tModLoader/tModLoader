@@ -241,6 +241,10 @@ namespace Terraria.ModLoader
 						continue;
 					}
 
+					// Due to comments, some objects can by empty
+					if (t is JObject obj && obj.Count == 0)
+						continue;
+
 					// Custom implementation of Path to allow "x.y" keys
 					string path = "";
 					JToken current = t;
