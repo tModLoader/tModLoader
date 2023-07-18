@@ -23,7 +23,8 @@ partial class ExtraJump
 		}
 	}
 
-	protected static Position BeforeFirstVanillaExtraJump => new Before(ExtraJumpLoader.FirstVanillaExtraJump);
-
-	protected static Position AfterLastVanillaExtraJump => new After(ExtraJumpLoader.LastVanillaExtraJump);
+	protected static readonly Position BeforeMountJumps = new Before(BasiliskMount);
+	protected static readonly Position MountJumpPosition = new After(BasiliskMount);
+	protected static readonly Position BeforeBottleJumps = new Before(SandstormInABottle);
+	protected static readonly Position AfterBottleJumps = new After(CloudInABottle);
 }

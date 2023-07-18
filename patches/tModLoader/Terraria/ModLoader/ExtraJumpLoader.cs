@@ -26,10 +26,6 @@ public static class ExtraJumpLoader
 
 	internal static readonly int DefaultExtraJumpCount = ExtraJumps.Count;
 
-	public static readonly ExtraJump FirstVanillaExtraJump = ExtraJumps[0];
-
-	public static readonly ExtraJump LastVanillaExtraJump = ExtraJumps[^1];
-
 	internal static IEnumerable<ExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
 
 	private static ExtraJump[] orderedJumps;
