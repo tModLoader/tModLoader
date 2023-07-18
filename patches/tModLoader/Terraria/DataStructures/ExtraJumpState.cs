@@ -41,6 +41,8 @@ public struct ExtraJumpState
 
 	/// <summary>
 	/// Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump, but before its duration runs out.<br/>
+	/// This property returns <see langword="true"/> while the extra jump is in progress, and returns <see langword="false"/> otherwise.<br/>
+	/// While an extra jump is in progress, <see cref="ExtraJump.UpdateHorizontalSpeeds"/> and <see cref="ExtraJump.ShowVisuals"/> will be executed.<br/>
 	/// This property also checks <see cref="Enabled"/> when read.
 	/// </summary>
 	public bool Active => Enabled && _active;
