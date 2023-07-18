@@ -24,9 +24,9 @@ public static class ExtraJumpLoader
 		ExtraJump.CloudInABottle
 	};
 
-	internal static readonly int DefaultExtraJumpCount = ExtraJumps.Count;
+	private static readonly int DefaultExtraJumpCount = ExtraJumps.Count;
 
-	internal static IEnumerable<ExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
+	private static IEnumerable<ExtraJump> ModdedExtraJumps => ExtraJumps.Skip(DefaultExtraJumpCount);
 
 	private static ExtraJump[] orderedJumps;
 
@@ -205,7 +205,7 @@ public static class ExtraJumpLoader
 		}
 	}
 
-	internal static void PerformJump(ExtraJump jump, Player player)
+	private static void PerformJump(ExtraJump jump, Player player)
 	{
 		// Set velocity and jump duration
 		float duration = jump.GetDurationMultiplier(player);
@@ -222,7 +222,7 @@ public static class ExtraJumpLoader
 			SoundEngine.PlaySound(16, (int)player.position.X, (int)player.position.Y);
 	}
 
-	internal static void StopJump(ExtraJump jump, Player player)
+	private static void StopJump(ExtraJump jump, Player player)
 	{
 		jump.OnEnded(player);
 		PlayerLoader.OnExtraJumpEnded(jump, player);

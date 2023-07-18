@@ -604,8 +604,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
 
-	internal Span<ExtraJumpState> ModdedExtraJumps => extraJumps.AsSpan()[ExtraJumpLoader.DefaultExtraJumpCount..];
-
 	/// <summary>
 	/// When <see langword="true"/>, all extra jumps will be blocked like how Flipper swimming blocks extra jumps.<br/>
 	/// Setting this field to <see langword="true"/> will not stop any currently active extra jumps.
