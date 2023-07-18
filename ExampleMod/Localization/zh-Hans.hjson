@@ -825,6 +825,20 @@ Mods: {
 				// DisplayName: Example Campfire
 				// Tooltip: "{$ItemTooltip.Campfire}"
 			}
+
+			ExampleExtraJumpAccessory: {
+				// DisplayName: Example Extra Jump Accessory
+				// Tooltip: Allows the user to perform an example mid-air extra jump
+			}
+
+			ExampleMultiExtraJumpAccessory: {
+				// DisplayName: Example Multiple-Use Extra Jump Accessory
+				/* Tooltip:
+					'''
+					Allows the user to perform an example mid-air extra jump
+					This accessory has {0} jumps remaning
+					''' */
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
