@@ -611,7 +611,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public bool blockExtraJumps;
 
 	/// <summary>
-	/// Returns <see langword="true"/> if any extra jump has both <see cref="ExtraJumpState.Enabled"/> and <see cref="ExtraJumpState.Available"/> set to <see langword="true"/>.
+	/// Returns <see langword="true"/> if any extra jump has <see cref="ExtraJumpState.Available"/> and <see cref="ExtraJump.CanStart"/>.
 	/// </summary>
 	public bool AnyExtraJumpAvailable()
 	{
