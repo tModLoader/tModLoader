@@ -842,7 +842,6 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
-		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis",
 		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
 		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
