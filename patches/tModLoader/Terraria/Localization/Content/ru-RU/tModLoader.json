@@ -54,6 +54,7 @@
 		"ModsOpenConfig": "Нажмите, чтобы открыть конфигурацию мода",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии. Включайте на свой страх и риск",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
 		"ModDidNotFullyUnloadWarning": "Мод не смог полностью выгрузиться\nво время последней выгрузки.\n(Это сообщение для разработчика мода)",
