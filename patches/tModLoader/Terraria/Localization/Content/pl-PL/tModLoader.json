@@ -54,6 +54,7 @@
 		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij, by włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
 		"ModDidNotFullyUnloadWarning": "Ten mod nie został w pełni rozładowany podczas ostatniego rozładunku.\n(To jest wiadomość dla twórcy moda)",
@@ -841,6 +842,7 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis",
 		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
 		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",

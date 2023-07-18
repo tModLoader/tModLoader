@@ -54,6 +54,7 @@
 		"ModsOpenConfig": "Klicken um Konfiguration zu öffnen",
 		"ModOldWarning": "Mod veraltet. Benutzung auf eigene Gefahr!",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "Dieser Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
 		"ModDidNotFullyUnloadWarning": "Dieser Mod wurde beim letzten Entladen nicht vollständig entladen.\n(Dies ist eine Nachricht für den Modentwickler)",
@@ -841,6 +842,7 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz",
 		"ModLoader.Items.StartBag.DisplayName": "Starterpaket",
 		"ModLoader.Items.StartBag.Tooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",

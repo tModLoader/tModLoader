@@ -55,6 +55,7 @@
 		"ModsOpenConfig": "点击打开配置",
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n(点击启用)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"ModDidNotFullyUnloadWarning": "该模组在上次卸载时未完全卸载.\n(这是给模组作者的信息)",
@@ -842,6 +843,7 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "愚人节玩笑",
 		"ModLoader.Items.StartBag.DisplayName": "起始包",
 		"ModLoader.Items.StartBag.Tooltip": "部分起始物品无法正常放入背包",

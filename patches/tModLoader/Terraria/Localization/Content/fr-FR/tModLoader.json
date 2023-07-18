@@ -54,6 +54,7 @@
 		"ModsOpenConfig": "Cliquez pour ouvrir la configuration",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		"ModDidNotFullyUnloadWarning": "Ce mod ne s'est pas complètement déchargé lors du dernier déchargement.\n(Ceci est un message pour le créateur du mod)",
@@ -841,6 +842,7 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril",
 		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
 		"ModLoader.Items.StartBag.Tooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",

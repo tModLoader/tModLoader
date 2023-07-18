@@ -305,29 +305,12 @@ public static class ModLoader
 			return;
 
 		Logging.tML.Info($"{(active ? "Enabling" : "Disabling")} Mod: {modName}");
-		if (active) {
+		if (active)
 			EnabledMods.Add(modName);
-			EnableModDependencies(modName);
-		}
-		else {
+		else 
 			EnabledMods.Remove(modName);
-		}
 
 		ModOrganizer.SaveEnabledMods();
-	}
-
-	internal static void EnableModDependencies(string modName)
-	{
-		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
-		var enabledMod = availableMods.FirstOrDefault(m => m.Name == modName);
-		if (enabledMod == null)
-			return;
-
-		var dependencies = enabledMod.properties.RefNames(true);
-		var availableDependencies = availableMods.Where(m => dependencies.Contains(m.Name));
-		foreach (var dependency in availableDependencies) {
-			EnableMod(dependency.Name);
-		}
 	}
 
 	internal static void DisableAllMods()
