@@ -98,7 +98,7 @@ public abstract partial class ExtraJump : ModType
 	public abstract float GetDurationMultiplier(Player player);
 
 	/// <summary>
-	/// An extra condition for whether this extra jump can be started.  Used by vanilla for flippers (<see cref="Entity.wet"/>).  Returns <see langword="true"/> by default.
+	/// An extra condition for whether this extra jump can be started.  Used by vanilla for flippers (<see cref="Entity.wet"/> &amp;&amp; <see cref="Player.accFlipper"/>).  Returns <see langword="true"/> by default.
 	/// </summary>
 	/// <param name="player">The player that would perform the jump</param>
 	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
