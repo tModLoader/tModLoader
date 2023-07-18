@@ -17,7 +17,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 /// </summary>
-public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
+public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType, IShimmerableEntity
 {
 	/// <summary> The NPC object that this ModNPC controls. </summary>
 	public NPC NPC => Entity;
@@ -889,4 +889,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// This method automatically sets <see cref="ModShimmer.InstantiationEntity"/>
 	/// </summary>
 	public ModShimmer CreateShimmerTransformation() => new(NPC);
+
+	public virtual bool CanShimmer() => true;
+	public virtual void OnShimmer() { }
 }

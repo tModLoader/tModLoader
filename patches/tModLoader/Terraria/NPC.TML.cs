@@ -212,7 +212,10 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// The current change in velocity due to gravity applied every frame. <br/>
 	/// Multiply <see cref="GravityMultiplier"/> to modify this value
 	/// </summary>
+#pragma warning disable IDE1006
 	public float gravity {
+#pragma warning restore IDE1006
+
 		get => vanillaGravity * GravityMultiplier.Value;
 		private set {
 			GravityMultiplier = MultipliableFloat.One;
@@ -234,7 +237,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// The current fall speed cap in velocity applied every frame. <br/>
 	/// Multiply <see cref="MaxFallSpeedMultiplier"/> to modify this value
 	/// </summary>
+	#pragma warning disable IDE1006
 	public float maxFallSpeed {
+	#pragma warning restore IDE1006
 		get => vanillaMaxFallSpeed * MaxFallSpeedMultiplier.Value;
 		private set {
 			MaxFallSpeedMultiplier = MultipliableFloat.One;
@@ -271,4 +276,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// Note that being submerged in liquid overrides both type and space effects.
 	/// </summary>
 	public bool GravityIgnoresLiquid = false;
+
+	public override bool? CanShimmer()
+		=> NPCLoader.CanShimmer(this);
+	public override void OnShimmer()
+		=> NPCLoader.OnShimmer(this);
 }

@@ -260,12 +260,14 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <list type="number">
 	/// <item/> All <see cref="Conditions"/> return true
 	/// <item/> All added <see cref="CanShimmerCallBack"/> return true
+	/// <item/> <see cref="Entity.CanShimmer"/> returns true (Calls <see cref="IShimmerableEntity.CanShimmer"/> and <see cref="IShimmerableEntityGlobal{TEntity}.CanShimmer(TEntity)"/>)
 	/// <item/> None of the results contain bone or lihzahrd brick if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
 	/// </list>
 	/// </returns>
 	public bool CanModShimmer(Entity entity) //TODO: check behaviour with multiple delegates added, from memory it just returns the last delegate result but recipe does it like thi so?
 		=> Conditions.All((condition) => condition.IsMet())
 		&& (CanShimmerCallBacks?.Invoke(this, entity) ?? true)
+		&& (entity.CanShimmer() ?? false /*throw new ArgumentException("Entity needs to be able to shimmer.", nameof(entity))*/) // I think it's fine we return false here, it should be caught on assignment and if not it will just return here
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == ItemID.Bone || result.Type == ItemID.LihzahrdBrick)));
 
 	/// <inheritdoc cref="TryModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
@@ -515,4 +517,22 @@ public record struct ModShimmerResult(ModShimmerTypeID ResultType, int Type, int
 
 	/// <inheritdoc cref="ModShimmerResult(ModShimmerTypeID, int, int, bool)" />
 	public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true) { }
+}
+
+public interface IShimmerableEntityGlobal<TEntity> where TEntity : Entity
+{
+	/// <inheritdoc cref="IShimmerableEntity.CanShimmer"/>
+	public abstract bool CanShimmer(TEntity entity);
+
+	/// <inheritdoc cref="IShimmerableEntity.OnShimmer"/>
+	public abstract void OnShimmer(TEntity entity);
+}
+
+public interface IShimmerableEntity
+{
+	/// <summary> Should not makes changes to the game state. consider read only </summary>
+	/// <returns> True if the entity can be shimmered false if not </returns>
+	public abstract bool CanShimmer();
+
+	public abstract void OnShimmer();
 }

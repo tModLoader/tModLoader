@@ -15,7 +15,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 /// </summary>
-public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
+public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>, IShimmerableEntityGlobal<NPC>
 {
 	protected override void ValidateType()
 	{
@@ -836,4 +836,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public virtual void LoadData(NPC npc, TagCompound tag)
 	{
 	}
+
+	public virtual bool CanShimmer(NPC npc) => true;
+
+	public virtual void OnShimmer(NPC npc) { }
 }

@@ -274,4 +274,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 				attackSpeedOnlyAffectsWeaponAnimation = true;
 		}
 	}
+
+	public override bool? CanShimmer() => base.CanShimmer();
+	public override void OnShimmer() => base.OnShimmer();
 }
