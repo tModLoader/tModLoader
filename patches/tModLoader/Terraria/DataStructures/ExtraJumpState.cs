@@ -54,7 +54,7 @@ public struct ExtraJumpState
 	public void Enable() => _enabled = true;
 
 	/// <summary>
-	/// Forces this extra jump to be disabled, consuming it and preventing the usage of it in the process.<br/>
+	/// Forces this extra jump to be disabled, consuming it and preventing the usage of it during the current game tick in the process.<br/>
 	/// If you want to disable all extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
 	/// </summary>
 	public void Disable() => _disabled = true;
