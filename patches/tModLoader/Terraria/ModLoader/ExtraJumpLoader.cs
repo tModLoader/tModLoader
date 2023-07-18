@@ -97,7 +97,7 @@ public static class ExtraJumpLoader
 		// Sort the modded jumps per slot
 		List<ExtraJump> sorted = new();
 
-		for (int i = 0; i < DefaultExtraJumpCount + 2; i++) {
+		for (int i = 0; i < DefaultExtraJumpCount + 1; i++) {
 			var elements = sortingSlots[i];
 			var sort = new TopoSort<ExtraJump>(elements,
 				j => j.GetModdedConstraints()?.OfType<ExtraJump.After>().Select(static a => a.Target).Where(elements.Contains) ?? Array.Empty<ExtraJump>(),
