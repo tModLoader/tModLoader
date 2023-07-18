@@ -3489,7 +3489,7 @@
 +	/// <summary>
 +	/// Sets the <see cref="ExtraJumpState.Available"/> flag for all extra jumps to <see langword="false"/>.<br/>
 +	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
-+	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
++	/// If you want to prevent extra jumps temporarily, without requiring the player to refresh them by landing use <see cref="blockExtraJumps"/> instead.
 +	/// </summary>
 +	public void ConsumeAllExtraJumps()
 +	{
