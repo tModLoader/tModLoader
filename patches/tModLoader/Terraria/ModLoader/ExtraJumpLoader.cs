@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.Audio;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
@@ -137,14 +138,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-
-			// Force the jump to stop early if unequipped or disabled
-			if (!state.Enabled && state._active) {
-				jump.OnEnded(player);
-				PlayerLoader.OnExtraJumpEnded(jump, player);
-				state._active = false;
-				player.jump = 0;
-			} else if (state.Active && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
+			if (state.Active && jump.CanShowVisuals(player) && PlayerLoader.CanShowExtraJumpVisuals(jump, player)) {
 				jump.Visuals(player);
 				PlayerLoader.ExtraJumpVisuals(jump, player);
 			}
@@ -156,15 +150,11 @@ public static class ExtraJumpLoader
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
 			if (state.Available) {
-				state._available = false;
-				state._active = true;
-				jump.PerformJump(player);
+				state.Start();
+				PerformJump(jump, player);
 				break;
 			}
 		}
-
-		// The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
-		player.GetJumpState(ExtraJump.BasiliskMount).Available = false;
 	}
 
 	public static void RefreshJumps(Player player)
@@ -174,7 +164,7 @@ public static class ExtraJumpLoader
 			if (state.Enabled) {
 				jump.OnRefreshed(player);
 				PlayerLoader.OnExtraJumpRefreshed(jump, player);
-				state._available = true;
+				state.Available = true;
 			}
 		}
 	}
@@ -186,10 +176,7 @@ public static class ExtraJumpLoader
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
 			if (state.Active) {
-				jump.OnEnded(player);
-				PlayerLoader.OnExtraJumpEnded(jump, player);
-				state._active = false;
-
+				StopJump(jump, player);
 				anyJumpCancelled = true;
 			}
 		}
@@ -198,25 +185,54 @@ public static class ExtraJumpLoader
 	internal static void ResetEnableFlags(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			state._enabled = false;
-			state._disabled = false;
+			player.GetJumpState(jump).ResetEnabled();
 		}
 	}
 
-	internal static void ConsumeUnavailableJumps(Player player)
+	internal static void ConsumeAndStopUnavailableJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (!state.Enabled)
-				state._available = false;
+			player.GetJumpState(jump).CommitEnabledState(out bool jumpEnded);
+
+			// Force the jump to stop early if unequipped or disabled
+			if (jumpEnded) {
+				StopJump(jump, player);
+				player.jump = 0;
+			}
 		}
 	}
 
 	internal static void ConsumeAllJumps(Player player)
 	{
 		foreach (ExtraJump jump in ExtraJumps) {
-			player.GetJumpState(jump)._available = false;
+			player.GetJumpState(jump).Available = false;
 		}
+	}
+
+	internal static void PerformJump(ExtraJump jump, Player player)
+	{
+		// Set velocity and jump duration
+		float duration = jump.GetDurationMultiplier(player);
+		PlayerLoader.ModifyExtraJumpDurationMultiplier(jump, player, ref duration);
+
+		player.velocity.Y = -Player.jumpSpeed * player.gravDir;
+		player.jump = (int)(Player.jumpHeight * duration);
+
+		bool playSound = true;
+		jump.OnStarted(player, ref playSound);
+		PlayerLoader.OnExtraJumpStarted(jump, player, ref playSound);
+
+		if (playSound)
+			SoundEngine.PlaySound(16, (int)player.position.X, (int)player.position.Y);
+
+		// Vanilla bug: The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
+		player.GetJumpState(ExtraJump.BasiliskMount).Available = false;
+	}
+
+	internal static void StopJump(ExtraJump jump, Player player)
+	{
+		jump.OnEnded(player);
+		PlayerLoader.OnExtraJumpEnded(jump, player);
+		player.GetJumpState(jump).Stop();
 	}
 }

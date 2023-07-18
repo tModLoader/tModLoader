@@ -16,10 +16,10 @@ namespace Terraria.DataStructures;
 /// </summary>
 public struct ExtraJumpState
 {
-	internal bool _enabled;
-	internal bool _available;
-	internal bool _active;
-	internal bool _disabled;
+	private bool _enabled;
+	private bool _available;
+	private bool _active;
+	private bool _disabled;
 
 	/// <summary>
 	/// Whether the extra jump can be used. This property is set by <see cref="Enable"/> and <see cref="Disable"/>.<br/>
@@ -58,4 +58,34 @@ public struct ExtraJumpState
 	/// If you want to disable all extra jumps, using <see cref="Player.blockExtraJumps"/> is preferred.
 	/// </summary>
 	public void Disable() => _disabled = true;
+
+	// Internal methods for state manipulation
+
+	internal void Start()
+	{
+		_available = false;
+		_active = true;
+	}
+
+	internal void Stop()
+	{
+		_active = false;
+	}
+
+	internal void ResetEnabled()
+	{
+		_enabled = false;
+		_disabled = false;
+	}
+
+	internal void CommitEnabledState(out bool jumpEnded)
+	{
+		jumpEnded = false;
+		if (Enabled)
+			return;
+
+		jumpEnded = _active;
+		_active = false;
+		_available = false;
+	}
 }

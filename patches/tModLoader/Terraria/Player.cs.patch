@@ -194,7 +194,7 @@
 +	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behaviour
 +	private bool _sandStormLogicEnabled;
 +	public bool sandStorm {
-+		get => _sandStormLogicEnabled && isPerformingJump_Sandstorm;
++		get => _sandStormLogicEnabled && GetJumpState<SandstormInABottleJump>().Active;
 +		set => _sandStormLogicEnabled = value;
 +	}
  	public bool crimsonRegen;
@@ -637,38 +637,19 @@
  	public bool hasJumpOption_Cloud;
  	public bool canJumpAgain_Cloud;
  	public bool isPerformingJump_Cloud;
-@@ -1327,10 +_,50 @@
+@@ -1327,10 +_,31 @@
  	public bool hasJumpOption_Basilisk;
  	public bool canJumpAgain_Basilisk;
  	public bool isPerformingJump_Basilisk;
 +	*/
-+	internal ref bool hasJumpOption_Cloud => ref GetJumpState<CloudInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Cloud => ref GetJumpState<CloudInABottleJump>()._available;
-+	internal ref bool isPerformingJump_Cloud => ref GetJumpState<CloudInABottleJump>()._active;
-+	internal ref bool hasJumpOption_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._available;
-+	internal ref bool isPerformingJump_Sandstorm => ref GetJumpState<SandstormInABottleJump>()._active;
-+	internal ref bool hasJumpOption_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._available;
-+	internal ref bool isPerformingJump_Blizzard => ref GetJumpState<BlizzardInABottleJump>()._active;
-+	internal ref bool hasJumpOption_Fart => ref GetJumpState<FartInAJarJump>()._enabled;
-+	internal ref bool canJumpAgain_Fart => ref GetJumpState<FartInAJarJump>()._available;
-+	internal ref bool isPerformingJump_Fart => ref GetJumpState<FartInAJarJump>()._active;
-+	internal ref bool hasJumpOption_Sail => ref GetJumpState<TsunamiInABottleJump>()._enabled;
-+	internal ref bool canJumpAgain_Sail => ref GetJumpState<TsunamiInABottleJump>()._available;
-+	internal ref bool isPerformingJump_Sail => ref GetJumpState<TsunamiInABottleJump>()._active;
-+	internal ref bool hasJumpOption_Unicorn => ref GetJumpState<UnicornMountJump>()._enabled;
-+	internal ref bool canJumpAgain_Unicorn => ref GetJumpState<UnicornMountJump>()._available;
-+	internal ref bool isPerformingJump_Unicorn => ref GetJumpState<UnicornMountJump>()._active;
-+	internal ref bool hasJumpOption_Santank => ref GetJumpState<SantankMountJump>()._enabled;
-+	internal ref bool canJumpAgain_Santank => ref GetJumpState<SantankMountJump>()._available;
-+	internal ref bool isPerformingJump_Santank => ref GetJumpState<SantankMountJump>()._active;
-+	internal ref bool hasJumpOption_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._enabled;
-+	internal ref bool canJumpAgain_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._available;
-+	internal ref bool isPerformingJump_WallOfFleshGoat => ref GetJumpState<GoatMountJump>()._active;
-+	internal ref bool hasJumpOption_Basilisk => ref GetJumpState<BasiliskMountJump>()._enabled;
-+	internal ref bool canJumpAgain_Basilisk => ref GetJumpState<BasiliskMountJump>()._available;
-+	internal ref bool isPerformingJump_Basilisk => ref GetJumpState<BasiliskMountJump>()._active;
++	internal bool hasJumpOption_Cloud { set { if (value) GetJumpState<CloudInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sandstorm { set { if (value) GetJumpState<SandstormInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Blizzard { set { if (value) GetJumpState<BlizzardInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Fart { set { if (value) GetJumpState<FartInAJarJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sail { set { if (value) GetJumpState<TsunamiInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Unicorn { set { if (value) GetJumpState<UnicornMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Santank { set { if (value) GetJumpState<SantankMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Basilisk { set { if (value) GetJumpState<BasiliskMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
 +
  	public bool isPerformingPogostickTricks;
  	public bool autoJump;
@@ -3833,7 +3814,7 @@
  			RefreshDoubleJumps();
  		}
  		else {
-+			ExtraJumpLoader.ConsumeUnavailableJumps(this);
++			ExtraJumpLoader.ConsumeAndStopUnavailableJumps(this);
 +			/*
  			if (!hasJumpOption_Cloud)
  				canJumpAgain_Cloud = false;

@@ -60,23 +60,6 @@ public abstract partial class ExtraJump : ModType
 	/// </summary>
 	public virtual IEnumerable<Position> GetModdedConstraints() => null;
 
-	// Moved out of ExtraJumpLoader.ProcessJumps to make it more readable
-	internal void PerformJump(Player player) {
-		// Set velocity and jump duration
-		float duration = GetDurationMultiplier(player);
-		PlayerLoader.ModifyExtraJumpDurationMultiplier(this, player, ref duration);
-
-		player.velocity.Y = -Player.jumpSpeed * player.gravDir;
-		player.jump = (int)(Player.jumpHeight * duration);
-
-		bool playSound = true;
-		OnStarted(player, ref playSound);
-		PlayerLoader.OnExtraJumpStarted(this, player, ref playSound);
-
-		if (playSound)
-			SoundEngine.PlaySound(16, (int)player.position.X, (int)player.position.Y);
-	}
-
 	/// <summary>
 	/// Effects that should appear while the player is performing this extra jump should happen here.<br/>
 	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
