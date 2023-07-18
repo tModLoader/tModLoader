@@ -44,7 +44,8 @@ public abstract partial class ExtraJump : ModType
 	public override string ToString() => Name;
 
 	/// <summary>
-	/// Returns this extra jump's default position in regard to the vanilla extra jumps.  Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an extra jump
+	/// Returns this extra jump's default position in regard to the vanilla extra jumps.  Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an extra jump.<br/>
+	/// <b>NOTE:</b> If a vanilla extra jump from <see cref="ExtraJump"/> is not returned here, an exception will be thrown.
 	/// </summary>
 	public abstract Position GetDefaultPosition();
 
