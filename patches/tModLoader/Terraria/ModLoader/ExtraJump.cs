@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Terraria.Audio;
 using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
@@ -10,9 +9,9 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract partial class ExtraJump : ModType
 {
-	public static ExtraJump GoatMount { get; private set; } = new GoatMountJump();
-
 	public static ExtraJump BasiliskMount { get; private set; } = new BasiliskMountJump();
+
+	public static ExtraJump GoatMount { get; private set; } = new GoatMountJump();
 
 	public static ExtraJump SantankMount { get; private set; } = new SantankMountJump();
 

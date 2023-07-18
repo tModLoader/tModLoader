@@ -13,6 +13,7 @@ public static class ExtraJumpLoader
 	// Order is the vanilla priority when consuming the extra jumps
 	internal static readonly List<ExtraJump> ExtraJumps = new List<ExtraJump>()
 	{
+		ExtraJump.BasiliskMount,
 		ExtraJump.GoatMount,
 		ExtraJump.SantankMount,
 		ExtraJump.UnicornMount,
@@ -20,7 +21,6 @@ public static class ExtraJumpLoader
 		ExtraJump.BlizzardInABottle,
 		ExtraJump.FartInAJar,
 		ExtraJump.TsunamiInABottle,
-		ExtraJump.BasiliskMount,
 		ExtraJump.CloudInABottle
 	};
 
@@ -224,9 +224,6 @@ public static class ExtraJumpLoader
 
 		if (playSound)
 			SoundEngine.PlaySound(16, (int)player.position.X, (int)player.position.Y);
-
-		// Vanilla bug: The Basilisk mount's extra jump is always "consumed", even if a higher-priority jump was performed
-		player.GetJumpState(ExtraJump.BasiliskMount).Available = false;
 	}
 
 	internal static void StopJump(ExtraJump jump, Player player)
