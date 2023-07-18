@@ -25,6 +25,9 @@ public class ExtraJumpTest : ModPlayer
 		player.hasJumpOption_WallOfFleshGoat = true;
 		player.hasJumpOption_Basilisk = true;
 
+		// Cannot port assignment to accFlipper
+		player.accFlipper = true;
+
 		// Cannot port assignment to isPerformingJump_X
 		player.isPerformingJump_Cloud = true;
 		player.isPerformingJump_Sandstorm = true;
