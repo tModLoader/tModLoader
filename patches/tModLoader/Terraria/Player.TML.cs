@@ -615,8 +615,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public bool AnyExtraJumpAvailable()
 	{
-		foreach (ExtraJumpState state in extraJumps) {
-			if (state.Available)
+		foreach (ExtraJump jump in ExtraJumpLoader.OrderedJumps) {
+			if (GetJumpState(jump).Available && jump.CanStart(this) && PlayerLoader.CanStartExtraJump(jump, this))
 				return true;
 		}
 
