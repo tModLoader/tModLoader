@@ -149,7 +149,7 @@ public static class ExtraJumpLoader
 	{
 		foreach (ExtraJump jump in orderedJumps) {
 			ref ExtraJumpState state = ref player.GetJumpState(jump);
-			if (state.Available) {
+			if (state.Available && jump.CanStart(player) && PlayerLoader.CanStartExtraJump(jump, player)) {
 				state.Start();
 				PerformJump(jump, player);
 				break;

@@ -325,6 +325,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// An extra condition for whether an extra jump can be started.  Returns <see langword="true"/> by default.
+	/// </summary>
+	/// <param name="jump">The jump that would be performed</param>
+	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
+	public virtual bool CanStartExtraJump(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Effects that should appear when the extra jump starts should happen here.<br/>
 	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
 	/// </summary>

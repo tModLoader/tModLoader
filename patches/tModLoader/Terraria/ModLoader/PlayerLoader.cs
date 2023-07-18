@@ -378,6 +378,20 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookCanStartExtraJump = AddHook<Func<ExtraJump, bool>>(p => p.CanStartExtraJump);
+
+	public static bool CanStartExtraJump(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookCanStartExtraJump.Enumerate(player)) {
+			try {
+				if (!modPlayer.CanStartExtraJump(jump))
+					return false;
+			} catch { }
+		}
+
+		return true;
+	}
+
 	private delegate void DelegateOnExtraJumpStarted(ExtraJump jump, ref bool playSound);
 	private static HookList HookOnExtraJumpStarted = AddHook<DelegateOnExtraJumpStarted>(p => p.OnExtraJumpStarted);
 
@@ -419,11 +433,14 @@ public static class PlayerLoader
 
 	public static bool CanShowExtraJumpVisuals(ExtraJump jump, Player player)
 	{
-		bool ret = true;
 		foreach (var modPlayer in HookCanShowExtraJumpVisuals.Enumerate(player)) {
-			try { ret &= modPlayer.CanShowExtraJumpVisuals(jump); } catch { }
+			try {
+				if (!modPlayer.CanShowExtraJumpVisuals(jump))
+					return false;
+			} catch { }
 		}
-		return ret;
+
+		return true;
 	}
 
 	private static HookList HookFrameEffects = AddHook<Action>(p => p.FrameEffects);
