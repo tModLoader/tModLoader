@@ -836,7 +836,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					Allows the user to perform an example mid-air extra jump
-					This accessory has {0} jumps remaning
+					This accessory has <JUMPS> jumps remaning
 					''' */
 			}
 		}

@@ -1,11 +1,11 @@
 ﻿using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Enums;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
@@ -13,8 +13,6 @@ namespace ExampleMod.Content.Items.Accessories
 	// Showcases a more complicated extra jump, where the player can jump mid-air with it three (3) times
 	public class ExampleMultiExtraJumpAccessory : ModItem
 	{
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Main.LocalPlayer.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining);
-
 		public override void SetDefaults() {
 			Item.DefaultToAccessory(20, 26);
 			Item.SetShopValues(ItemRarityColor.Orange3, Item.buyPrice(gold: 2));
@@ -29,6 +27,16 @@ namespace ExampleMod.Content.Items.Accessories
 				.AddIngredient<ExampleItem>(35)
 				.AddTile<ExampleWorkbench>()
 				.Register();
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			// Find the line that contains the dummy string from the localization text
+			int index = tooltips.FindIndex(static line => line.Text.Contains("<JUMPS>"));
+			if (index >= 0) {
+				// ... and then replace it
+				ref string text = ref tooltips[index].Text;
+				text = text.Replace("<JUMPS>", $"{Main.LocalPlayer.GetModPlayer<MultipleUseExtraJumpPlayer>().jumpsRemaining}");
+			}
 		}
 	}
 
