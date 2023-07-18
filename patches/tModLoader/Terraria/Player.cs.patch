@@ -629,8 +629,23 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
-@@ -1300,6 +_,7 @@
- 	public bool accFlipper;
+@@ -1297,9 +_,21 @@
+ 	public Item boneGloveItem;
+ 	public bool goldRing;
+ 	public bool accDivingHelm;
+-	public bool accFlipper;
++	//public bool accFlipper;
++	internal bool accFlipper {
++		set {
++			if (value) {
++				ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
++				state.Enable();
++				// Allow equipping flippers while "midair" to still let the player use them
++				state.Available = true;
++			} else
++				throw new ArgumentException("Forgot to comment out an accFlipper = false statement");
++		}
++	}
  	public bool hasLuck_LuckyCoin;
  	public bool hasLuck_LuckyHorseshoe;
 +	/*
@@ -2869,6 +2884,15 @@
  		hasFootball = false;
  		drawingFootball = false;
  		minionKB = 0f;
+@@ -14250,7 +_,7 @@
+ 		frogLegJumpBoost = false;
+ 		skyStoneEffects = false;
+ 		noFallDmg = false;
+-		accFlipper = false;
++		//accFlipper = false;
+ 		spawnMax = false;
+ 		spaceGun = false;
+ 		killGuide = false;
 @@ -14275,18 +_,33 @@
  
  		honeyCombItem = null;
@@ -3227,43 +3251,45 @@
  
  					nPC.immune[whoAmI] = 10;
  					velocity.Y = -10f;
+@@ -15987,8 +_,10 @@
+ 				autoJump = false;
+ 
+ 			bool flag = false;
++			/*
+ 			bool flag2 = wet && accFlipper;
+ 			bool flag3 = !mount.Active || !mount.Cart;
++			*/
+ 			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
+ 				wetSlime = 0;
+ 				flag = true;
 @@ -16012,7 +_,7 @@
  					}
  				}
  			}
 -			else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
-+			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpAvailable() || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
++			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpAvailable()) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
  				if (mount.Active && MountID.Sets.Cart[mount.Type])
  					position.Y -= 0.001f;
  
-@@ -16027,6 +_,7 @@
- 					flag4 = true;
- 				}
+@@ -16020,6 +_,7 @@
+ 					justJumped = true;
  
+ 				bool flag4 = false;
 +				/*
- 				bool flag5 = false;
- 				bool flag6 = false;
- 				bool flag7 = false;
-@@ -16035,7 +_,11 @@
- 				bool flag10 = false;
- 				bool flag11 = false;
- 				bool flag12 = false;
-+				*/
-+				bool attemptDoubleJumps = false;
- 				if (!flag2 && !flag) {
-+					attemptDoubleJumps = true;
-+					/*
- 					if (canJumpAgain_Basilisk) {
- 						flag12 = true;
- 						canJumpAgain_Basilisk = false;
-@@ -16072,6 +_,7 @@
- 					else {
+ 				if (wet && accFlipper) {
+ 					if (swimTime == 0)
+ 						swimTime = 30;
+@@ -16073,6 +_,10 @@
  						canJumpAgain_Cloud = false;
  					}
-+					*/
  				}
++				*/
++
++				// Patch context: flag
++				bool attemptDoubleJumps = !flag;
  
  				canRocket = false;
+ 				rocketRelease = false;
 @@ -16093,6 +_,10 @@
  					if (sliding)
  						velocity.X = 3 * -slideDir;
@@ -3489,7 +3515,7 @@
 +	/// <summary>
 +	/// Sets the <see cref="ExtraJumpState.Available"/> flag for all extra jumps to <see langword="false"/>.<br/>
 +	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
-+	/// If you want to prevent extra jumps temporarily, without requiring the player to refresh them by landing use <see cref="blockExtraJumps"/> instead.
++	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
 +	/// </summary>
 +	public void ConsumeAllExtraJumps()
 +	{

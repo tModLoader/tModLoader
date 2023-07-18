@@ -15,6 +15,29 @@ public abstract class VanillaExtraJump : ExtraJump
 	public sealed override IEnumerable<Position> GetModdedConstraints() => null;
 }
 
+public sealed class FlipperJump : VanillaExtraJump
+{
+	public override float GetDurationMultiplier(Player player) => 1f;
+
+	public override bool CanStart(Player player)
+	{
+		return (!player.mount.Active || !player.mount.Cart) && player.wet;
+	}
+
+	public override void OnStarted(Player player, ref bool playSound)
+	{
+		if (player.swimTime == 0)
+			player.swimTime = 30;
+
+		if (player.sliding)
+			player.velocity.X = 3 * -player.slideDir;
+
+		playSound = false;
+
+		player.GetJumpState(this).Available = true;
+	}
+}
+
 public sealed class GoatMountJump : VanillaExtraJump
 {
 	public override float GetDurationMultiplier(Player player) => 2f;

@@ -124,7 +124,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// Allow the jump to be used again while the jump counter is > 0
 			if (jumps > 0)
-				player.GetJumpState<MultipleUseExtraJump>().Available = true;
+				player.GetJumpState(this).Available = true;
 		}
 	}
 

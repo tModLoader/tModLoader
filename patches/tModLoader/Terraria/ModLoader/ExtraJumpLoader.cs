@@ -13,6 +13,7 @@ public static class ExtraJumpLoader
 	// Order is the vanilla priority when consuming the extra jumps
 	internal static readonly List<ExtraJump> ExtraJumps = new List<ExtraJump>()
 	{
+		ExtraJump.Flipper,
 		ExtraJump.BasiliskMount,
 		ExtraJump.GoatMount,
 		ExtraJump.SantankMount,
