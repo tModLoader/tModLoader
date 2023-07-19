@@ -74,6 +74,8 @@ Mods: {
 			MinionBossMinion.DisplayName: Minion Boss Minion
 			PartyZombie.DisplayName: Party Zombie
 			NPCShimmerShowcase.DisplayName: NPC Shimmer Showcase
+			CannotShimmerNPC.DisplayName: Cannot Shimmer N P C
+			OnShimmerNPC.DisplayName: On Shimmer N P C
 		}
 
 		Tiles: {
@@ -835,6 +837,31 @@ Mods: {
 			ExampleCampfire: {
 				DisplayName: Example Campfire
 				Tooltip: "{$ItemTooltip.Campfire}"
+			}
+
+			ItemShimmerShowcaseAdvancedShimmerResult: {
+				DisplayName: Item Shimmer Showcase Advanced Shimmer Result
+				Tooltip: ""
+			}
+
+			ItemShimmerShowcaseConditions: {
+				DisplayName: Item Shimmer Showcase Conditions
+				Tooltip: ""
+			}
+
+			CannotShimmerItem: {
+				DisplayName: Cannot Shimmer Item
+				Tooltip: ""
+			}
+
+			ItemShimmerShowcaseCustomShimmerResult: {
+				DisplayName: Item Shimmer Showcase Custom Shimmer Result
+				Tooltip: ""
+			}
+
+			OnShimmerItem: {
+				DisplayName: On Shimmer Item
+				Tooltip: ""
 			}
 		}
 

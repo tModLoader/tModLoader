@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
@@ -9,7 +10,7 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
-public partial class NPC : IEntityWithGlobals<GlobalNPC>
+public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerableEntity
 {
 	internal readonly IEntitySource thisEntitySourceCache;
 
@@ -212,7 +213,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// The current change in velocity due to gravity applied every frame. <br/>
 	/// Multiply <see cref="GravityMultiplier"/> to modify this value
 	/// </summary>
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006 // Name is vanilla
 	public float gravity {
 #pragma warning restore IDE1006
 
@@ -237,9 +238,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// The current fall speed cap in velocity applied every frame. <br/>
 	/// Multiply <see cref="MaxFallSpeedMultiplier"/> to modify this value
 	/// </summary>
-	#pragma warning disable IDE1006
+#pragma warning disable IDE1006 // Name is vanilla
 	public float maxFallSpeed {
-	#pragma warning restore IDE1006
+#pragma warning restore IDE1006
 		get => vanillaMaxFallSpeed * MaxFallSpeedMultiplier.Value;
 		private set {
 			MaxFallSpeedMultiplier = MultipliableFloat.One;
@@ -277,8 +278,18 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// </summary>
 	public bool GravityIgnoresLiquid = false;
 
-	public override bool? CanShimmer()
-		=> NPCLoader.CanShimmer(this);
-	public override void OnShimmer()
+	public bool CanShimmer()
+		=> NPCLoader.CanShimmer(this) // ModNPC and GlobalNPC
+		&& (NPCID.Sets.ShimmerTownTransform[type] // valid shimmer types
+		|| NPCID.Sets.ShimmerTransformToNPC[type] >= 0
+		|| NPCID.Sets.ShimmerTransformToItem[type] >= 0
+		|| !NPCID.Sets.IgnoreNPCSpawnedFromStatue[type] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering 
+		|| ModShimmer.AnyValidModShimmer(this));
+
+	public void OnShimmer()
 		=> NPCLoader.OnShimmer(this);
+
+	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.NPC;
+
+	public int ShimmerableEntityTypePassthrough => type;
 }

@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria;
 
-public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
+public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IShimmerableEntity
 {
 	public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
@@ -275,6 +275,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		}
 	}
 
-	public override bool? CanShimmer() => base.CanShimmer();
-	public override void OnShimmer() => base.OnShimmer();
+	public void OnShimmer() => ItemLoader.OnShimmer(this);
+
+	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.Item;
+	public int ShimmerableEntityTypePassthrough => type;
 }

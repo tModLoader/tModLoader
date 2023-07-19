@@ -29,13 +29,3 @@
  	}
  
  	public static bool IsItemTransformLocked(int type)
-@@ -35,6 +_,9 @@
- 			return true;
- 
- 		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[decraftingRecipeIndex])
-+			return true;
-+
-+		if (!RecipeLoader.DecraftAvailable(Main.recipe[decraftingRecipeIndex]))
- 			return true;
- 
- 		return false;

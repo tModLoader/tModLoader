@@ -1447,9 +1447,8 @@ public static class NPCLoader
 			return false;
 
 		foreach (var g in HookCanShimmer.Enumerate(npc)) {
-			if (!g.CanShimmer(npc)) {
+			if (!g.CanShimmer(npc))
 					return false;
-			}
 		}
 
 		return true;

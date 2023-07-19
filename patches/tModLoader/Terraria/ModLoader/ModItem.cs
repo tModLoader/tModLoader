@@ -21,7 +21,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 /// </summary>
-public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType, IShimmerableEntity
+public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 {
 	/// <summary>
 	/// The item object that this ModItem controls.
@@ -1329,8 +1329,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
 	/// <summary>
-	/// Creates a <see cref="ModShimmer"/> resulting this ModItem. This method only creates the <see cref="ModShimmer"/>, it does not register it into the game. Call this at the very beginning when creating a new <see cref="ModShimmer"/>.<br/>
-	/// This method automatically sets <see cref="ModShimmer.InstantiationEntity"/>
+	/// Creates a <see cref="ModShimmer"/> resulting this ModItem. This method only creates the <see cref="ModShimmer"/>, call <see cref="ModShimmer.Register()"/> to register it into the game.
+	/// <br/> This method automatically sets <see cref="ModShimmer.InstantiationEntity"/>
 	/// </summary>
 	public ModShimmer CreateShimmerTransformation() => new(Item);
 

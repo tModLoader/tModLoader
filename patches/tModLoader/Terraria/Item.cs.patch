@@ -1882,7 +1882,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -47649,7 +_,18 @@
+@@ -47649,11 +_,27 @@
  		return true;
  	}
  
@@ -1901,6 +1901,15 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public bool CanShimmer()
+ 	{
++		if (!ItemLoader.CanShimmer(this)) // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
++			return false;
++		if (ModShimmer.AnyValidModShimmer(this))
++			return true;
++
+ 		int shimmerEquivalentType = GetShimmerEquivalentType();
+ 		if (ShimmerTransforms.IsItemTransformLocked(shimmerEquivalentType))
+ 			return false;
 @@ -47668,7 +_,7 @@
  		if (type == 3461 || createTile == 139)
  			flag = true;
@@ -1910,12 +1919,14 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -47721,9 +_,14 @@
+@@ -47721,9 +_,16 @@
  
  	private void GetShimmered()
  	{
-+		if (ModShimmer.TryModShimmer(this)) // TML: #AdvancedShimmerTransformations, includes all logic.
++		if (ModShimmer.TryModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++			OnShimmer(); // ModItem and GlobalItem
 +			return;
++		}
 +
  		int shimmerEquivalentType = GetShimmerEquivalentType();
  		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
@@ -1944,6 +1955,14 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47930,6 +_,7 @@
+ 			makeNPC = -1;
+ 			active = false;
+ 		}
++		OnShimmer(); // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
+ 	}
+ 
+ 	public static void ShimmerEffect(Vector2 shimmerPositon)
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
