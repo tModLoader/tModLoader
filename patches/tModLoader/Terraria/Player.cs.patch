@@ -3502,14 +3502,14 @@
  		if (hasJumpOption_Basilisk)
  			canJumpAgain_Basilisk = true;
 +		*/
-+		RefreshAllExtraJumps();
++		RefreshExtraJumps();
 +	}
 +
 +	/// <summary>
-+	/// For all extra jumps whose <see cref="ExtraJumpState.Enabled"/> flag is set to <see langword="true"/>, its <see cref="ExtraJumpState.Available"/> flag is also set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// For each extra jump that is <see cref="ExtraJumpState.Enabled"/>, its <see cref="ExtraJumpState.Available"/> property set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
 +	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
 +	/// </summary>
-+	public void RefreshAllExtraJumps()
++	public void RefreshExtraJumps()
 +	{
 +		ExtraJumpLoader.RefreshJumps(this);
 +	}
