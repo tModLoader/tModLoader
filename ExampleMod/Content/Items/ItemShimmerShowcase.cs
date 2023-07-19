@@ -94,69 +94,21 @@ public class ItemShimmerShowcaseCustomShimmerResult : ModItem
 	}
 }
 
-public class ItemShimmerShowcaseAdvancedShimmerResult : ModItem
+public class ItemShimmerShowcaseModShimmer : ModItem
 {
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 	public override void SetStaticDefaults() {
-		CreateShimmerTransformation()
-			.AddCondition(Condition.Christmas)
+		CreateShimmerTransformation() // Using CreateShimmerTransformation we create an instance of ModShimmer
+			.AddCondition(Condition.Christmas) // Just like Recipe we can apply condition and item results
 			.AddItemResult(ItemID.Present, 2)
 			.Register();
 
 		CreateShimmerTransformation()
 			.AddModItemResult<ExampleItem>(30)
-			.AddModNPCResult<ExampleZombieThief>(2)
+			.AddModNPCResult<ExampleZombieThief>(2) // Unlike recipe we can spawn NPCs here, of any count, under conditions
+			.AddCoinLuckResult(2) // We can also add coin luck
 			.Register();
-	}
-
-	public override void SetDefaults() {
-		Item.width = 20;
-		Item.height = 20;
-	}
-
-	public override void AddRecipes() {
-		CreateRecipe()
-			.AddIngredient<ExampleItem>(5)
-			.AddCondition(Condition.TimeDay)
-			.AddTile<ExampleWorkbench>()
-			.ApplyConditionsAsDecraftConditions()
-			.Register();
-	}
-}
-
-public class CannotShimmerItem : ModItem
-{
-	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
-
-	public override void SetStaticDefaults() {
-		CreateShimmerTransformation()
-			.AddItemResult(ItemID.PaintingAcorns, 2)
-			.Register();
-	}
-
-	public override bool CanShimmer() {
-		return false;
-	}
-
-	public override void SetDefaults() {
-		Item.width = 20;
-		Item.height = 20;
-	}
-}
-
-public class OnShimmerItem : ModItem
-{
-	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
-
-	public override void SetStaticDefaults() {
-		CreateShimmerTransformation()
-			.AddItemResult(ItemID.PaintingAcorns, 2)
-			.Register();
-	}
-
-	public override void OnShimmer() {
-		Main.NewText(this + " Shimmered");
 	}
 
 	public override void SetDefaults() {

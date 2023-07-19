@@ -9,21 +9,6 @@ namespace Terraria.ModLoader;
 // TML: #AdvancedShimmerTransformations
 
 /// <summary>
-/// Derives from <see cref="Dictionary{TKey, TValue}"/>, changes <see cref="this[TKey]"/> to return a default value if getter fails, and the setter
-/// overrites the item if index exists
-/// </summary>
-public class SafeDictionary<TKey, TValue> : Dictionary<TKey, TValue>
-{
-	public new TValue this[TKey type] {
-		get => this.GetValueOrDefault(type);
-		set {
-			if (!TryAdd(type, value)) //Try add a new entry
-				base[type] = value; // If it fails, entry exists, therefore set
-		}
-	}
-}
-
-/// <summary>
 /// Represents the behaviour and output of a shimmer transformation, the Entity(s) that can use it are stored via <see
 /// cref="ModShimmerTransformations"/> which is updated via <see cref="Register()"/> and its overloads
 /// </summary>
@@ -77,7 +62,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public bool IgnoreVanillaItemConstraints { get; private set; }
 
 	/// <summary>
-	/// Gives a priotity to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, 100
+	/// Gives a priority to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, 100
 	/// </summary>
 	public int Priority { get; private set; } = 0;
 
@@ -119,7 +104,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	#region AddResultMethods
 
 	/// <summary>
-	/// Adds a result to <see cref="Results"/>, this will be spawned when the entity succesfully shimmers
+	/// Adds a result to <see cref="Results"/>, this will be spawned when the entity successfully shimmers
 	/// </summary>
 	/// <param name="result"> The result to be added </param>
 	/// <exception cref="ArgumentException">
@@ -290,7 +275,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	}
 
 	/// <summary>
-	/// Checks the condittions for this transformation
+	/// Checks the conditions for this transformation
 	/// </summary>
 	/// <returns>
 	/// true if the following are all true in order
@@ -526,12 +511,12 @@ public record class ModShimmer : IComparable<ModShimmer>
 [DefaultValue(Null)]
 public enum ModShimmerTypeID
 {
-	NPC, //Spawner Spawned
-	Item, // Spawner Spawned
-	Projectile, // None, might be added later
-	CoinLuck, // Spawned Type
-	Custom, // Spawned Type
-	Null, // None
+	NPC,
+	Item,
+	Projectile,
+	CoinLuck,
+	Custom,
+	Null,
 }
 
 /// <summary>

@@ -18,17 +18,19 @@ public class NPCShimmerShowcase : ModNPC
 	public override void SetStaticDefaults() {
 		Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
-		// So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
-		// 1: if the npc is on the left side of the world then spawn 3 skeletons and 30 example items, then shoot bullets from each skeleton
-		// 2: if Plantera has been defeated then spawn 10 example items
-		// 3: if an early game boss has been defeated then spawn the bride
-		// 4: if all other conditions fail, transform into a skeleton
-
+		/*
+		So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
+		1: if the npc is on the left side of the world then spawn 3 skeletons and 30 example items, then shoot bullets from each skeleton
+		2: if Plantera has been defeated then spawn 10 example items
+		3: if an early game boss has been defeated then spawn the bride
+		4: if all other conditions fail, transform into a skeleton
+		*/
 		// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30
-		// example items
+		// explosive bunny items
 		CreateShimmerTransformation()
+			// A shimmer callback applies to the on transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
 			.AddCanShimmerCallBack((ModShimmer transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8)
-			.AddModItemResult<ExampleItem>(30)
+			.AddItemResult(ItemID.ExplosiveBunny, 30)
 			.AddNPCResult(NPCID.Skeleton, 3)
 			.AddOnShimmerCallBack(OnShimmerCallBack)
 			.Register();
@@ -45,7 +47,10 @@ public class NPCShimmerShowcase : ModNPC
 			.AddNPCResult(NPCID.TheBride, 1)
 			.Register();
 
-		NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton; // Sets a basic npc transformation, this uses the vanilla method, overrides by ModShimmer unless all conditions fall through
+		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ModShimmer unless all conditions fall through
+		NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
+
+		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal
 		NPCID.Sets.IgnoreNPCSpawnedFromStatue[NPC.type] = true;
 	}
 
@@ -79,59 +84,5 @@ public class NPCShimmerShowcase : ModNPC
 				p.friendly = false;
 				p.hostile = true;
 			});
-	}
-}
-
-public class CannotShimmerNPC : ModNPC
-{
-	public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
-
-	public override void SetStaticDefaults() {
-		Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
-		NPCID.Sets.IgnoreNPCSpawnedFromStatue[NPC.type] = true;
-
-		CreateShimmerTransformation()
-			.AddItemResult(ItemID.ActuationRod, 2)
-			.Register();
-	}
-
-	public override void SetDefaults() {
-		NPC.CloneDefaults(NPCID.Zombie);
-		NPC.lifeMax = 200;
-		AIType = NPCID.Zombie;
-		AnimationType = NPCID.Zombie;
-		Banner = Item.NPCtoBanner(NPCID.Zombie);
-		BannerItem = Item.BannerToItem(Banner);
-	}
-
-	public override bool CanShimmer() {
-		return false;
-	}
-}
-
-public class OnShimmerNPC : ModNPC
-{
-	public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
-
-	public override void SetStaticDefaults() {
-		Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
-		NPCID.Sets.IgnoreNPCSpawnedFromStatue[NPC.type] = true;
-
-		CreateShimmerTransformation()
-			.AddItemResult(ItemID.ActuationRod, 2)
-			.Register();
-	}
-
-	public override void SetDefaults() {
-		NPC.CloneDefaults(NPCID.Zombie);
-		NPC.lifeMax = 200;
-		AIType = NPCID.Zombie;
-		AnimationType = NPCID.Zombie;
-		Banner = Item.NPCtoBanner(NPCID.Zombie);
-		BannerItem = Item.BannerToItem(Banner);
-	}
-
-	public override void OnShimmer() {
-		Main.NewText(this + " Shimmered");
 	}
 }
