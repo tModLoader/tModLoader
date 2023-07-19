@@ -3489,27 +3489,29 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
-@@ -17489,8 +_,14 @@
- 			RefreshDoubleJumps();
- 	}
+@@ -17491,6 +_,7 @@
  
-+	/// <summary>
-+	/// For all extra jumps whose <see cref="ExtraJumpState.Enabled"/> flag is set to <see langword="true"/>, its <see cref="ExtraJumpState.Available"/> flag is also set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
-+	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
-+	/// </summary>
--	private void RefreshDoubleJumps()
-+	public void RefreshDoubleJumps()
+ 	private void RefreshDoubleJumps()
  	{
-+		ExtraJumpLoader.RefreshJumps(this);
 +		/*
  		if (hasJumpOption_Cloud)
  			canJumpAgain_Cloud = true;
  
-@@ -17517,6 +_,18 @@
+@@ -17517,6 +_,28 @@
  
  		if (hasJumpOption_Basilisk)
  			canJumpAgain_Basilisk = true;
 +		*/
++		RefreshAllExtraJumps();
++	}
++
++	/// <summary>
++	/// For all extra jumps whose <see cref="ExtraJumpState.Enabled"/> flag is set to <see langword="true"/>, its <see cref="ExtraJumpState.Available"/> flag is also set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
++	/// </summary>
++	public void RefreshAllExtraJumps()
++	{
++		ExtraJumpLoader.RefreshJumps(this);
 +	}
 +
 +	/// <summary>
