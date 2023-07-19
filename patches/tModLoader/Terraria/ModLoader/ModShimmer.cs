@@ -77,9 +77,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public bool IgnoreVanillaItemConstraints { get; private set; }
 
 	/// <summary>
-	/// Makes this transformation allow other transformation to also spawn results, automatically sets this transformation to the highest priority
+	/// Gives a priotity to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, 100
 	/// </summary>
-	public bool Additive { get; private set; }
+	public int Priority { get; private set; } = 0;
 
 	/// <summary>
 	/// Called in addition to conditions to check if the entity shimmers
@@ -101,17 +101,6 @@ public record class ModShimmer : IComparable<ModShimmer>
 
 	/// <inheritdoc cref="PostShimmerCallBack"/>
 	public PostShimmerCallBack OnShimmerCallBacks { get; private set; }
-
-	/// <summary>
-	/// Called when the entity shimmers
-	/// </summary>
-	/// <param name="transformation"> The transformation </param>
-	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
-	/// <param name="source"> The entity that was shimmered </param>
-	public delegate void PreShimmerCallBack(ModShimmer transformation, Entity source, List<Entity> spawnedEntities);
-
-	/// <inheritdoc cref="PreShimmerCallBack"/>
-	public PreShimmerCallBack PreShimmerCallBacks { get; private set; }
 
 	#endregion FunctionalityVariables
 
@@ -182,9 +171,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 		return this;
 	}
 
-	public ModShimmer SetAsAdditive()
+	public ModShimmer SetPriority(int priority)
 	{
-		Additive = true;
+		Priority = Math.Min(priority, 10);
 		return this;
 	}
 
@@ -233,11 +222,11 @@ public record class ModShimmer : IComparable<ModShimmer>
 			throw new ArgumentException("A valid source type for ModShimmerTypeID must be passed here", nameof(entityIdentifier));
 		if (!ModShimmerTransformations.TryAdd(entityIdentifier, new() { this })) //Try add a new entry for the tuple
 			ModShimmerTransformations[entityIdentifier].Add(this); // If it fails, entry exists, therefore add to list
+
+		ModShimmerTransformations[entityIdentifier].Sort();
 	}
 
-	/// <summary>
-	/// Finalizes transformation, adds to <see cref="ModShimmerTransformations"/>
-	/// </summary>
+	/// <inheritdoc cref="Register(ModShimmerTypeID, int)"/>
 	public void Register(IEnumerable<(ModShimmerTypeID, int)> identifiers)
 	{
 		foreach ((ModShimmerTypeID, int) ID in identifiers)
@@ -350,7 +339,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public static bool TryModShimmer<TEntity>(TEntity entity, (ModShimmerTypeID, int) entityIdentification) where TEntity : Entity, IShimmerableEntity
 	{
 		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
-		if (!(transformations?.Count > 0))
+		if (transformations?.Count <= 0)
 			return false;
 
 		foreach (ModShimmer transformation in transformations) { // Loops possible transformations
@@ -513,15 +502,17 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public ModShimmer DeeperClone()
 		=> new() {
 			InstantiationEntity = InstantiationEntity, // Assigns by value
-			Additive = Additive, // Assigns by value
+			Priority = Priority,
 			Conditions = new List<Condition>(Conditions), // Condition is a reference type so the new list has the same items in it but Condition is immutable so this is cool
 			Results = new List<ModShimmerResult>(Results), // new list stores new values types but it is also immutable so it doesn't really matter
 			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
 			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks.Clone(), // Stored values are immutable
-			PreShimmerCallBacks = (PreShimmerCallBack)PreShimmerCallBacks.Clone(),
 			OnShimmerCallBacks = (PostShimmerCallBack)OnShimmerCallBacks.Clone(),
 		};
-	public int CompareTo(ModShimmer other) => throw new NotImplementedException();
+	public int CompareTo(ModShimmer other)
+	{
+		return Priority - other.Priority;
+	}
 
 	#endregion Operation
 }
