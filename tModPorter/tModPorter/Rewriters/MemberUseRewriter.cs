@@ -95,7 +95,7 @@ public class MemberUseRewriter : BaseRewriter {
 			}
 
 			if (stateFieldName == "Enabled") {
-				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Call Enable() if setting this to true, otherwise remove."));
+				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Call Enable() if setting this to true, otherwise call Disable()."));
 				return memberName;
 			}
 

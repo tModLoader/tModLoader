@@ -16,15 +16,15 @@ public class ExtraJumpTest : ModPlayer
 
 #if COMPILE_ERROR
 		// Cannot port assignment to hasJumpOption_X
-		Player.GetJumpState(ExtraJump.CloudInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.SandstormInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.BlizzardInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.FartInAJar).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.TsunamiInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.UnicornMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.SantankMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.GoatMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-		Player.GetJumpState(ExtraJump.BasiliskMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
+		Player.GetJumpState(ExtraJump.CloudInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.SandstormInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.BlizzardInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.FartInAJar).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.TsunamiInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.UnicornMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.SantankMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.GoatMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
+		Player.GetJumpState(ExtraJump.BasiliskMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
 
 		// Cannot port assignment to isPerformingJump_X
 		Player.GetJumpState(ExtraJump.CloudInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
@@ -75,7 +75,7 @@ public class ExtraJumpTest : ModPlayer
 	public void MethodB(AnotherPlayerClass other)
 	{
 #if COMPILE_ERROR
-		Player.GetJumpState(ExtraJump.CloudInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
+		Player.GetJumpState(ExtraJump.CloudInABottle).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise call Disable(). */;
 #endif
 
 		other.hasJumpOption_Cloud = true;
