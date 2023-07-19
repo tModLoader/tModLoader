@@ -204,7 +204,6 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Santank",            ExtraJumpField("SantankMount",       "Enabled"));
 		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_WallOfFleshGoat",    ExtraJumpField("GoatMount",          "Enabled"));
 		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Basilisk",           ExtraJumpField("BasiliskMount",      "Enabled"));
-		RefactorInstanceMember("Terraria.Player",       "accFlipper",                       ExtraJumpField("Flipper",            "Enabled"));
 		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Cloud",               ExtraJumpField("CloudInABottle",     "Available"));
 		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sandstorm",           ExtraJumpField("SandstormInABottle", "Available"));
 		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Blizzard",            ExtraJumpField("BlizzardInABottle",  "Available"));

@@ -26,9 +26,6 @@ public class ExtraJumpTest : ModPlayer
 		Player.GetJumpState(ExtraJump.GoatMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
 		Player.GetJumpState(ExtraJump.BasiliskMount).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
 
-		// Cannot port assignment to accFlipper
-		Player.GetJumpState(ExtraJump.Flipper).Enabled = true/* tModPorter Suggestion: Call Enable() if setting this to true, otherwise remove. */;
-
 		// Cannot port assignment to isPerformingJump_X
 		Player.GetJumpState(ExtraJump.CloudInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;
 		Player.GetJumpState(ExtraJump.SandstormInABottle).Active = true/* tModPorter Suggestion: Remove. Active cannot be assigned a value. */;

@@ -635,15 +635,15 @@
  	public bool accDivingHelm;
 -	public bool accFlipper;
 +	//public bool accFlipper;
-+	internal bool accFlipper {
++	public bool accFlipper {
 +		set {
++			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
 +			if (value) {
-+				ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
 +				state.Enable();
 +				// Allow equipping flippers while "midair" to still let the player use them
 +				state.Available = true;
 +			} else
-+				throw new ArgumentException("Forgot to comment out an accFlipper = false statement");
++				state.Disable();
 +		}
 +	}
  	public bool hasLuck_LuckyCoin;
