@@ -3267,7 +3267,7 @@
  				}
  			}
 -			else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
-+			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpAvailable()) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
++			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpUsable()) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
  				if (mount.Active && MountID.Sets.Cart[mount.Type])
  					position.Y -= 0.001f;
  
@@ -3400,7 +3400,7 @@
  	{
  		bool flag = false;
 -		if (grappling[0] == -1 && carpet && !canJumpAgain_Cloud && !canJumpAgain_Sandstorm && !canJumpAgain_Blizzard && !canJumpAgain_Fart && !canJumpAgain_Sail && !canJumpAgain_Unicorn && !canJumpAgain_Santank && !canJumpAgain_WallOfFleshGoat && !canJumpAgain_Basilisk && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
-+		if (grappling[0] == -1 && carpet && !AnyExtraJumpAvailable() && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
++		if (grappling[0] == -1 && carpet && !AnyExtraJumpUsable() && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
  			if (controlJump && canCarpet) {
  				canCarpet = false;
  				carpetTime = 300;
@@ -3911,7 +3911,7 @@
  					rocketTime = rocketTimeMax;
  
 -				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !canJumpAgain_Cloud) {
-+				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpAvailable()) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpUsable()) {
  					if (rocketTime > 0) {
  						rocketTime--;
  						rocketDelay = 10;

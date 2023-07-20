@@ -611,10 +611,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public bool blockExtraJumps;
 
 	/// <summary>
-	/// Returns <see langword="true"/> if any extra jump has <see cref="ExtraJumpState.Available"/> and <see cref="ExtraJump.CanStart"/>.
+	/// Returns <see langword="true"/> if any extra jump is <see cref="ExtraJumpState.Available"/> and <see cref="ExtraJump.CanStart"/>.<br/>
+	/// Setting <see cref="blockExtraJumps"/> will cause this method to return <see langword="false"/> instead.
 	/// </summary>
-	public bool AnyExtraJumpAvailable()
+	public bool AnyExtraJumpUsable()
 	{
+		if (blockExtraJumps)
+			return false;
+
 		foreach (ExtraJump jump in ExtraJumpLoader.OrderedJumps) {
 			if (GetJumpState(jump).Available && jump.CanStart(this) && PlayerLoader.CanStartExtraJump(jump, this))
 				return true;
