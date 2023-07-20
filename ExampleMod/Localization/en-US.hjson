@@ -815,6 +815,11 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleMinecart: {
+				DisplayName: Example Minecart
+				Tooltip: ""
+			}
+
 			ExampleGravityDebuffBullet: {
 				DisplayName: Example Gravity Debuff Bullet
 				Tooltip: ""
@@ -829,6 +834,25 @@ Mods: {
 			ExampleCampfire: {
 				DisplayName: Example Campfire
 				Tooltip: "{$ItemTooltip.Campfire}"
+			}
+
+			ExampleExtraJumpAccessory: {
+				DisplayName: Example Extra Jump Accessory
+				Tooltip: Allows the user to perform an example mid-air extra jump
+			}
+
+			ExampleMultiExtraJumpAccessory: {
+				DisplayName: Example Multiple-Use Extra Jump Accessory
+				Tooltip:
+					'''
+					Allows the user to perform an example mid-air extra jump
+					This accessory has <JUMPS> jumps remaining
+					'''
+			}
+
+			ExampleSwingingEnergySword: {
+				DisplayName: Example Swinging Energy Sword
+				Tooltip: ""
 			}
 		}
 
@@ -866,6 +890,7 @@ Mods: {
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
+			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 		}
 
 		Buffs: {
@@ -1046,6 +1071,7 @@ Mods: {
 		}
 
 		UI.ExampleResource: Example Resource: {0} / {1}
+		WorldGen.ExampleOrePassMessage: Example Mod Ores
 	}
 }
 

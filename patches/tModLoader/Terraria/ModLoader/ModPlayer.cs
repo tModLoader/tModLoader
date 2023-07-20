@@ -304,6 +304,91 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Use this hook to modify the jump duration from an extra jump.<br/>
+	/// Vanilla's extra jumps use the following values:
+	/// <para>
+	/// Basilisk mount: 0.75<br/>
+	/// Blizzard in a Bottle: 1.5<br/>
+	/// Cloud in a Bottle: 0.75<br/>
+	/// Fart in a Jar: 2<br/>
+	/// Goat mount: 2<br/>
+	/// Sandstorm in a Bottle: 3<br/>
+	/// Santank mount: 2<br/>
+	/// Tsunami in a Bottle: 1.25<br/>
+	/// Unicorn mount: 2
+	/// </para>
+	/// </summary>
+	/// <param name="jump">The jump being performed</param>
+	/// <param name="duration">A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</param>
+	public virtual void ModifyExtraJumpDurationMultiplier(ExtraJump jump, ref float duration)
+	{
+	}
+
+	/// <summary>
+	/// An extra condition for whether an extra jump can be started.  Returns <see langword="true"/> by default.
+	/// </summary>
+	/// <param name="jump">The jump that would be performed</param>
+	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
+	public virtual bool CanStartExtraJump(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Effects that should appear when the extra jump starts should happen here.<br/>
+	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
+	/// </summary>
+	/// <param name="jump">The jump being performed</param>
+	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
+	public virtual void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for an extra jump is set from <see langword="true"/> to <see langword="false"/> when the extra jump's duration has expired<br/>
+	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// </summary>
+	/// <param name="jump">The jump that was performed</param>
+	public virtual void OnExtraJumpEnded(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This occurs at the start of the grounded jump and while the player is grounded.
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual void OnExtraJumpRefreshed(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// Effects that should appear while the player is performing an extra jump should happen here.<br/>
+	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
+	/// </summary>
+	public virtual void ExtraJumpVisuals(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.ShowVisuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
+	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual bool CanShowExtraJumpVisuals(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="false"/>  in <see cref="Player.Update(int)"/> due to the jump being unavailable or when calling <see cref="Player.ConsumeAllExtraJumps"/> (vanilla calls it when a mount that blocks jumps is active)
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual void OnExtraJumpCleared(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
 	/// </summary>
 	public virtual void FrameEffects()
@@ -837,7 +922,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.br/>
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
@@ -845,7 +930,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player.br/>
+	/// Allows you to create special effects when a hostile projectile hits this player. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)

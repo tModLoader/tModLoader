@@ -102,7 +102,7 @@ public static partial class Logging
 				}
 			}
 
-			var stackTrace = new StackTrace(true);
+			var stackTrace = new StackTrace(skipFrames: 1, fNeedFileInfo: true);
 			var traceString = stackTrace.ToString();
 
 			if (!oom && ignoreContents.Any(s => MatchContents(traceString, s)))

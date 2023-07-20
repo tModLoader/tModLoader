@@ -5,7 +5,7 @@ env:
     StableBranch: stable
     PreviewBranch: preview
     IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
-    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
+    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable') || contains(github.ref, '1.4.4'))  }}
 
 # Controls when the action will run. 
 on:
@@ -61,15 +61,13 @@ jobs:
           fi
           
           echo "Checking Version Updates"
-          if [[ "refs/heads/${{env.DevBranch}}" = $branch ]] ; then
+          newdt="$(date +%Y.%m)"
+          if [[ "refs/heads/${{env.DevBranch}}" = $branch && ! "$oldate" = "$newdt" ]] ; then
             echo "Checking Version Updates for ${{env.DevBranch}}"
-             newdt="$(date +%Y.%m)"
-             if [[ ! "$oldate" = "$newdt" ]] ; then
-                echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
-                oldate="$newdt"
-                feature=1
-                patch=0
-             fi
+            echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
+            oldate="$newdt"
+            feature=1
+            patch=0
           elif [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
              echo "Checking Version Updates for Rollover"
              ((++feature))
@@ -462,7 +460,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: ${{ fromJSON('{"refs/heads/${{env.StableBranch}}":"docs/${{env.StableBranch}}", "refs/heads/${{env.PreviewBranch}}":"docs/${{env.PreviewBranch}}"}')[github.ref] }}
+          destination_dir: ${{ fromJSON(format('{{"refs/heads/{0}":"docs/{0}","refs/heads/{1}":"docs/{1}"}}', env.StableBranch, env.PreviewBranch))[github.ref] }}
           commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:

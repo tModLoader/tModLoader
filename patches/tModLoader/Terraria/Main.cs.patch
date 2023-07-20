@@ -1425,6 +1425,31 @@
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
  		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
+@@ -7706,13 +_,24 @@
+ 		persistentBuff[77] = true;
+ 		persistentBuff[78] = true;
+ 		persistentBuff[79] = true;
++
++		Initialize_BuffDataFromMountData();
++		Initialize_TileAndNPCData1_Part2();
++	}
++
++	// Split so it can be called by TML separately
++	internal static void Initialize_BuffDataFromMountData()
++	{
+ 		for (int l = 0; l < BuffID.Sets.BasicMountData.Length; l++) {
+ 			if (BuffID.Sets.BasicMountData[l] != null) {
+ 				buffNoTimeDisplay[l] = true;
+ 				buffNoSave[l] = true;
+ 			}
+ 		}
++	}
+ 
++	private static void Initialize_TileAndNPCData1_Part2()
++	{
+ 		vanityPet[40] = true;
+ 		vanityPet[41] = true;
+ 		vanityPet[42] = true;
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -3238,6 +3263,24 @@
  		if (tileSpelunker[typeCache])
  			return true;
  
+@@ -17293,8 +_,16 @@
+ 		return false;
+ 	}
+ 
++	// TML: Added x/y to IsTileBiomeSightable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, Tile t, ref Microsoft.Xna.Framework.Color sightColor) =>
++		IsTileBiomeSightable(tileX, tileY, t.type, t.frameX, t.frameY, ref sightColor);
++
+-	public static bool IsTileBiomeSightable(ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
+ 	{
++		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type, ref sightColor);
++		if (modded.HasValue)
++			return modded.Value;
++
+ 		if (TileID.Sets.CorruptBiomeSight[type] || (remixWorld && type == 474)) {
+ 			sightColor = new Microsoft.Xna.Framework.Color(200, 100, 240);
+ 			return true;
 @@ -17325,19 +_,25 @@
  				continue;
  

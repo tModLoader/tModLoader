@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ExtraSeatInfo.cs
++++ src/tModLoader/Terraria/GameContent/ExtraSeatInfo.cs
+@@ -2,5 +_,8 @@
+ 
+ public struct ExtraSeatInfo
+ {
++	/// <summary>
++	/// If true, player will generate <see cref="ID.ItemID.PoopBlock"/> after a short period of time while any tier of <see cref="ID.BuffID.WellFed"/> is active
++	/// </summary>
+ 	public bool IsAToilet;
+ }

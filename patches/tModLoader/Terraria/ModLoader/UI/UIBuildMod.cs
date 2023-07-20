@@ -94,7 +94,7 @@ internal class UIBuildMod : UIProgress, ModCompile.IBuildStatus
 			else
 				msg += $"\n\n{e}";
 
-			Interface.errorMessage.Show(msg, Interface.modSourcesID, e.HelpLink, retryAction: retry);
+			Interface.errorMessage.Show(msg, Interface.modSourcesID, webHelpURL: e.HelpLink, retryAction: retry);
 			return Task.FromResult(false);
 		}
 		return Task.FromResult(true);

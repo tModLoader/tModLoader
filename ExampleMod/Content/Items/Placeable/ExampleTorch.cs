@@ -61,6 +61,7 @@ namespace ExampleMod.Content.Items.Placeable
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				// .SortAfterFirstRecipesOf(ItemID.Torch) Uncomment this line to have this recipe appear after the Torch recipe. 
 				.Register();
 		}
 	}

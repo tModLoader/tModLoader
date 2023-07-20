@@ -302,6 +302,19 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <br/>Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
+	/// <br/>This is only called on the local client.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="sightColor">The color this tile should glow with, which defaults to <see cref="Color.White"/>.</param>
+	public virtual bool IsTileBiomeSightable(int i, int j, ref Color sightColor)
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
 	/// <br/>This is only called if Main.tileSpelunker[type] is false.
 	/// </summary>

@@ -67,6 +67,8 @@ public static class TileLoader
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, ref Color sightColor);
+	private static DelegateIsTileBiomeSightable[] HookIsTileBiomeSightable;
 	private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
@@ -219,6 +221,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
+		ModLoader.BuildGlobalHook<GlobalTile, DelegateIsTileBiomeSightable>(ref HookIsTileBiomeSightable, globalTiles, g => g.IsTileBiomeSightable);
 		ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
@@ -690,6 +693,31 @@ public static class TileLoader
 
 		foreach (var hook in HookIsTileDangerous) {
 			bool? globalRetVal = hook(i, j, type, player);
+			if (globalRetVal.HasValue) {
+				if (globalRetVal.Value) {
+					retVal = true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+
+		return retVal;
+	}
+
+	public static bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
+	{
+		bool? retVal = null;
+
+		ModTile modTile = GetTile(type);
+
+		if (modTile != null && modTile.IsTileBiomeSightable(i, j, ref sightColor)) {
+			retVal = true;
+		}
+
+		foreach (var hook in HookIsTileBiomeSightable) {
+			bool? globalRetVal = hook(i, j, type, ref sightColor);
 			if (globalRetVal.HasValue) {
 				if (globalRetVal.Value) {
 					retVal = true;

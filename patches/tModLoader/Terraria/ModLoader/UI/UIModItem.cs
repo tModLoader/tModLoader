@@ -130,11 +130,11 @@ internal class UIModItem : UIPanel
 		if (_modReferences.Length > 0 && !_mod.Enabled) {
 			string refs = string.Join(", ", _mod.properties.modReferences);
 			var icon = UICommon.ButtonExclamationTexture;
-			_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
+			_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyTooltip", refs)) {
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
 				Top = { Pixels = 42.5f }
 			};
-			_modReferenceIcon.OnLeftClick += EnableDependencies;
+			// _modReferenceIcon.OnLeftClick += EnableDependencies;
 
 			Append(_modReferenceIcon);
 		}
@@ -335,6 +335,11 @@ internal class UIModItem : UIPanel
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = !_mod.Enabled;
+
+		if (!_mod.Enabled)
+			return;
+
+		EnableDependencies();
 	}
 
 	internal void Enable()
@@ -353,13 +358,13 @@ internal class UIModItem : UIPanel
 		_uiModStateText.SetDisabled();
 	}
 
-	internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement)
+	internal void EnableDependencies()
 	{
 		var missingRefs = new List<string>();
 		EnableDepsRecursive(missingRefs);
 
 		if (missingRefs.Any()) {
-			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missingRefs)), Interface.modsMenuID);
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(", ", missingRefs)), Interface.modsMenuID);
 		}
 	}
 

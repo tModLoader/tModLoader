@@ -16,6 +16,7 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
 using Terraria.Social.Steam;
 using Terraria.UI;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader.UI;
 
@@ -185,8 +186,10 @@ internal static class Interface
 					}
 				};
 
-				if (!string.IsNullOrWhiteSpace(message))
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
 			}
 		}
 		if (Main.menuMode == modsMenuID) {
@@ -408,8 +411,39 @@ internal static class Interface
 				exit = true;
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
-				mods[value - 1].Enabled ^= true;
+				var mod = mods[value - 1];
+				mod.Enabled ^= true;
+
+				if (mod.Enabled) {
+					var missingRefs = new List<string>();
+					EnableDepsRecursive(mod, mods, missingRefs);
+
+					if (missingRefs.Any()) {
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(", ", missingRefs)) + "\n");
+						Console.ResetColor();
+					}
+				}
 			}
+		}
+	}
+
+	private static void EnableDepsRecursive(LocalMod mod, LocalMod[] mods, List<string> missingRefs)
+	{
+		string[] _modReferences = mod.properties.modReferences.Select(x => x.mod).ToArray();
+		foreach (var name in _modReferences) {
+			var dep = mods.FirstOrDefault(x => x.Name == name);
+			if (dep == null) {
+				missingRefs.Add(name);
+				continue;
+			}
+			EnableDepsRecursive(dep, mods, missingRefs);
+			if (!dep.Enabled) {
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.ResetColor();
+			}
+			dep.Enabled ^= true;
 		}
 	}
 
