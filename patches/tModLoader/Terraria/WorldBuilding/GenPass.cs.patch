@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/GenPass.cs
++++ src/tModLoader/Terraria/WorldBuilding/GenPass.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.WorldBuilding;
+ 
+-public abstract class GenPass : GenBase
++public abstract partial class GenPass : GenBase
+ {
+ 	public string Name;
+ 	public double Weight;
