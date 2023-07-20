@@ -52,11 +52,8 @@ namespace ExampleMod.Content.Items
 				}
 			}
 
-			// Another method of hiding can be done if you know the index of the tooltip:
-			// tooltips[index].Hide();
-
-			// You can also hide a specific line, if you have access to that object:
-			// tooltipLine.Hide();
+			// Another method of hiding can be done if you want to hide just one line.
+			// tooltips.FirstOrDefault(x => x.Mod == "ExampleMod" && x.Name == "Vertbose:RemoveMe")?.Hide();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
