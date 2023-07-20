@@ -849,6 +849,11 @@ Mods: {
 					This accessory has <JUMPS> jumps remaining
 					'''
 			}
+
+			ExampleSwingingEnergySword: {
+				DisplayName: Example Swinging Energy Sword
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -885,6 +890,7 @@ Mods: {
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
+			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 		}
 
 		Buffs: {
@@ -1065,6 +1071,7 @@ Mods: {
 		}
 
 		UI.ExampleResource: Example Resource: {0} / {1}
+		WorldGen.ExampleOrePassMessage: Example Mod Ores
 	}
 }
 
