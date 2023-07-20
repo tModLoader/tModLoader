@@ -18,6 +18,11 @@ public class TooltipLine
 	public readonly string Name;
 
 	/// <summary>
+	/// => $"{Mod}/{Name}"
+	/// </summary>
+	public string FullName => $"{Mod}/{Name}";
+
+	/// <summary>
 	/// The actual text that this tooltip displays.
 	/// </summary>
 	public string Text;
