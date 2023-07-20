@@ -89,7 +89,7 @@ public partial class NPCID
 			DefaultDebuffImmunity  = Factory.CreateBoolSet();
 			SpecificDebuffImmunity = Factory.CreateCustomSet<bool?[]>(null);
 			for (int type = 0; type < NPCLoader.NPCCount; type++) {
-				SpecificDebuffImmunity[type] = new bool?[BuffID.Count];
+				SpecificDebuffImmunity[type] = new bool?[BuffLoader.BuffCount];
 				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null) {
 					FullyImmuneToBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips && data.ImmuneToWhips;
 					DefaultDebuffImmunity[type] = data.ImmuneToAllBuffsThatAreNotWhips;				

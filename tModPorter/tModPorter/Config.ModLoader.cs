@@ -531,5 +531,7 @@ public static partial class Config
 
 		RenameStaticField("Terraria.ID.AmmoID.Sets", from: "IsRocket", to: "IsSpecialist");
 		RenameInstanceField("Terraria.Projectile", from: "ContinuouslyUpdateDamage", to: "ContinuouslyUpdateDamageStats");
+		RenameStaticField("Terraria.ID.BuffID.Sets", from: "IsAnNPCWhipDebuff", to: "IsATagBuff");
+		RefactorStaticMember("Terraria.ID.NPCID.Sets", "DebuffImmunitySets", Comment("Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453"));
 	}
 }

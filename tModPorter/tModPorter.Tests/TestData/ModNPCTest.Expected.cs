@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -91,6 +92,16 @@ public class ModNPCTest : ModNPC
 	public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)/* tModPorter Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type. */ {
 #if COMPILE_ERROR
 		closeness = 10;
+#endif
+	}
+
+	public override void SetStaticDefaults() {
+#if COMPILE_ERROR
+		NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData {
+			SpecificallyImmuneTo = new int[] {
+				BuffID.Poisoned
+			}
+		});
 #endif
 	}
 }
