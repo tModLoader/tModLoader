@@ -118,4 +118,8 @@ public class TooltipLine
 		Name = name;
 		Text = text;
 	}
+
+	public bool Visible { get; private set; } = true;
+
+	public void Hide() => Visible = false;
 }
