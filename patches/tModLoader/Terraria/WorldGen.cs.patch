@@ -566,7 +566,7 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13849,12 +_,35 @@
+@@ -13849,12 +_,33 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
@@ -582,8 +582,6 @@
 +	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
 +	{
 +		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
-+
-+		_generator._passes.RemoveAll(x => !x.Enabled);
  
  		_generator.GenerateWorld(customProgressObject);
  		ConsumePostGenActions(GenVars.structures);
@@ -797,7 +795,7 @@
  		double num9 = (double)Main.maxTilesX / 4200.0;
  		int num10 = (int)(25.0 * num9);
  		ShapeData shapeData = new ShapeData();
-@@ -19416,13 +_,30 @@
+@@ -19416,13 +_,28 @@
  				shapeData.Clear();
  			}
  		}
@@ -818,8 +816,6 @@
 +	private static void smCallback_End(List<GenPass> hardmodeTasks)
 +	{
 +		SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
-+
-+		hardmodeTasks.RemoveAll(x => !x.Enabled);
 +
 +		foreach (GenPass task in hardmodeTasks) {
 +			task.Apply(null, null);

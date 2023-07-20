@@ -431,6 +431,8 @@ public static partial class SystemLoader
 				throw;
 			}
 		}
+
+		passes.RemoveAll(x => !x.Enabled);
 	}
 
 	public static void PostWorldGen()
@@ -459,6 +461,8 @@ public static partial class SystemLoader
 		foreach (var system in HookModifyHardmodeTasks.Enumerate()) {
 			system.ModifyHardmodeTasks(passes);
 		}
+
+		passes.RemoveAll(x => !x.Enabled);
 	}
 
 	internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
