@@ -35,12 +35,10 @@
 		// "MenuModsEnabled": "{0} {^0:Mod;Mods} Enabled",
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
-		// "HowToAccessLegacytModLoaderButton": "How to Access legacy tModLoader versions",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
-		"PleaseMoveTo143LegacyMessage": "tModLoader si aggiornerà presto a Terraria 1.4.4, ma molte mod non sono ancora state trasferite.\n\nPer rimanere su Terraria 1.4.3 con le tue mod attuali, usa il menu beta di Steam per passare al ramo 1.4.3-legacy di tModLoader.",
 		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu

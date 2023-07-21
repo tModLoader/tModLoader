@@ -100,4 +100,19 @@ public static partial class FileUtilities
 
 		return dstFile < srcFile;
 	}
+
+	// TODO: Do we need to do extra work for .plr files that have been renamed? Is that valid?
+	// TODO: We could probably support cloud players as well, if we tried.
+	// Vanilla and 1.3 paths are defaults, 1.4 TML paths are relative to current savepath.
+	public static (string path, string message, int stabilityLevel)[] GetAlternateSavePathFiles(string folderName)
+	{
+		return new (string path, string message, int stabilityLevel)[] {
+			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), $"{folderName}"), "Click to copy \"{0}\" over from Terraria", 0),
+			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", $"{folderName}"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
+			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, $"{folderName}"), "Click to copy \"{0}\" over from stable", 1),
+			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, $"{folderName}"), "Click to copy \"{0}\" over from preview", 2),
+			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, $"{folderName}"), "Click to copy \"{0}\" over from dev", 3),
+			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, $"{folderName}"), "Click to copy \"{0}\" over from 1.4.3-Legacy", 0),
+		};
+	}
 }
