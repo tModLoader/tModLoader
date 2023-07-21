@@ -448,6 +448,17 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -972,6 +_,10 @@
+ 	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
+ 	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
+ 	public static List<int> itemAnimationsRegistered = new List<int>();
++	/// <summary>
++	/// The position of the top left corner of the screen in world coordinates. Modify in <see cref="ModSystem.ModifyScreenPosition"/> or <see cref="ModPlayer.ModifyScreenPosition"/>. Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.<br/><br/>
++	/// When manually drawing, subtracting Main.screenPosition from the world position of the thing being drawn will result in the correct screen coordinates for use in <see cref="SpriteBatch"/>.Draw methods. When drawing tiles or walls, an additional offset calculated as <c>Vector2 zero = Main.drawToScreen? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange);</c> needs to be added to the coordinates.
++	/// </summary>
+ 	public static Vector2 screenPosition;
+ 	public static Vector2 screenLastPosition;
+ 	public static int screenWidth = 1152;
 @@ -1026,6 +_,11 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -5435,16 +5446,33 @@
  		if (num9 != undergroundBackground) {
  			oldUndergroundBackground = undergroundBackground;
  			undergroundBackground = num9;
+@@ -43390,6 +_,7 @@
+ 		int[] array = new int[7];
+ 		int[] array2 = new int[7];
+ 		for (int i = 0; i < 2; i++) {
++			// patch context, num10 below
+ 			int num10 = undergroundBackground;
+ 			if (i == 1)
+ 				num10 = oldUndergroundBackground;
 @@ -43580,6 +_,9 @@
  				array3[5] = 127;
  
  			array3[6] = 185 + hellBackStyle;
 +
-+			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num9, array3);
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num10, array3);
 +
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
  			LoadBackground(array3[2]);
+@@ -43698,7 +_,7 @@
+ 									Lighting.GetCornerColors(num24, num25, out var vertices);
+ 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+ 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+-									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 								}
+ 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+ 									Lighting.GetColor9Slice(num24, num25, ref slices);
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);

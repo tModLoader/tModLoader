@@ -1872,6 +1872,16 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
+@@ -47623,6 +_,9 @@
+ 		return new Color(num, num2, num3, num4);
+ 	}
+ 
++	/// <summary>
++	/// Use to check if a mechanism is allowed to spawn an Item of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
++	/// </summary>
+ 	public static bool MechSpawn(float x, float y, int type)
+ 	{
+ 		int num = 0;
 @@ -47649,7 +_,18 @@
  		return true;
  	}

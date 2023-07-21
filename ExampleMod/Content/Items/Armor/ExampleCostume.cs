@@ -14,9 +14,8 @@ namespace ExampleMod.Content.Items.Armor
 	// Content.Items.Armor.BlockyHead (below) is an EquipTexture class. It spawns dust when active.
 	// ExampleCostume.Load() shows calling AddEquipTexture 3 times with appropriate parameters. This is how we register EquipTexture manually instead of the automatic pairing of ModItem and EquipTexture that other equipment uses.
 	// Buffs.Blocky is the Buff that is shown while in Blocky mode. The buff is responsible for the actual stat effects of the costume. It also needs to remove itself when not near town npcs.
-	// ExampleCostumePlayer has 5 bools. They manage the visibility and other things related to this effect.
+	// ExampleCostumePlayer has 6 bools. They manage the visibility and other things related to this effect.
 	// ExampleCostumePlayer.ResetEffects resets those bool, except blockyAccessoryPrevious which is special because of the order of hooks.
-	// ExampleCostumePlayer.UpdateVanityAccessories is responsible for forcing the visual effect of our costume if the item is in a vanity slot. Note that ModItem.UpdateVanitySet can't be used for this because it is called too late.
 	// ExampleCostumePlayer.UpdateEquips is responsible for applying the Blocky buff to the player if the conditions are met and the accessory is equipped.
 	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures.
 	// ExampleCostumePlayer.ModifyDrawInfo is for some fun effects for our costume.
@@ -80,6 +79,12 @@ namespace ExampleMod.Content.Items.Armor
 			var p = player.GetModPlayer<ExampleCostumePlayer>();
 			p.BlockyAccessory = true;
 			p.BlockyHideVanity = hideVisual;
+		}
+
+		public override void UpdateVanity(Player player) {
+			var p = player.GetModPlayer<ExampleCostumePlayer>();
+			p.BlockyHideVanity = false;
+			p.BlockyForceVanity = true;
 		}
 
 		// TODO: Fix this once new hook prior to FrameEffects added.
