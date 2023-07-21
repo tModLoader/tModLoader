@@ -100,8 +100,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Actuate</b> (i
 <tr class="memitem:abddd2cf0cd2968ee2f30c15edff5b121"><td class="memItemLeft" align="right" valign="top"><a id="abddd2cf0cd2968ee2f30c15edff5b121" name="abddd2cf0cd2968ee2f30c15edff5b121"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ActuateForced</b> (int i, int j)</td></tr>
 <tr class="separator:abddd2cf0cd2968ee2f30c15edff5b121"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7fbb5d56f7b478111edba34c4beeef9"><td class="memItemLeft" align="right" valign="top"><a id="ad7fbb5d56f7b478111edba34c4beeef9" name="ad7fbb5d56f7b478111edba34c4beeef9"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckMech</b> (int i, int j, int time)</td></tr>
+<tr class="memitem:ad7fbb5d56f7b478111edba34c4beeef9"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wiring.html#ad7fbb5d56f7b478111edba34c4beeef9">CheckMech</a> (int i, int j, int time)</td></tr>
+<tr class="memdesc:ad7fbb5d56f7b478111edba34c4beeef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the wiring cooldown has been reached for the provided tile coordinates. The <em>time</em>  parameter will set the cooldown if wiring cooldown has elapsed. Use larger values for less frequent activations. Use this method to limit how often mechanisms can be triggerd. <a class="el" href="class_item.html#ae1706b04dedde9a46cb5dee5f1f0e5d8" title="Use to check if a mechanism is allowed to spawn an Item of the provided type at the provided world co...">Item.MechSpawn(float, float, int)</a> and <a class="el" href="class_n_p_c.html#a0d67337f912be10c47f0c2b7f1e7ac37" title="Use to check if a mechanism is allowed to spawn an NPC of the provided type at the provided world coo...">NPC.MechSpawn(float, float, int)</a> should also be checked for mechanisms spawning items or <a class="el" href="class_n_p_c.html">NPC</a>, such as Statues.  <a href="class_wiring.html#ad7fbb5d56f7b478111edba34c4beeef9">More...</a><br /></td></tr>
 <tr class="separator:ad7fbb5d56f7b478111edba34c4beeef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c5f082dd759405c7924749e4e888d1b"><td class="memItemLeft" align="right" valign="top"><a id="a6c5f082dd759405c7924749e4e888d1b" name="a6c5f082dd759405c7924749e4e888d1b"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAll</b> ()</td></tr>
@@ -136,8 +136,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ReActive</b> (
 <tr class="memitem:ad13d225032b6ef71b4e8cc8b0550ea59"><td class="memItemLeft" align="right" valign="top"><a id="ad13d225032b6ef71b4e8cc8b0550ea59" name="ad13d225032b6ef71b4e8cc8b0550ea59"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCurrentUser</b> (int plr=-1)</td></tr>
 <tr class="separator:ad13d225032b6ef71b4e8cc8b0550ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36e7ef367ce2183e7f17a2203b6f1d89"><td class="memItemLeft" align="right" valign="top"><a id="a36e7ef367ce2183e7f17a2203b6f1d89" name="a36e7ef367ce2183e7f17a2203b6f1d89"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>SkipWire</b> (int x, int y)</td></tr>
+<tr class="memitem:a36e7ef367ce2183e7f17a2203b6f1d89"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89">SkipWire</a> (int x, int y)</td></tr>
+<tr class="memdesc:a36e7ef367ce2183e7f17a2203b6f1d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles to prevent a wire touching multiple tiles of the multi-tile from erroneously running wire code multiple times. In <a class="el" href="class_mod_tile.html#a5b1684845a6ec628f504c00f9a514c5c" title="Allows you to make something happen when a wire current passes through this tile. Both Wiring....">ModTile.HitWire(int, int)</a>, call SkipWire for all the coordinates the tile covers.  <a href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89">More...</a><br /></td></tr>
 <tr class="separator:a36e7ef367ce2183e7f17a2203b6f1d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e927d8b5fd1f4d376de9f0aa97d467a"><td class="memItemLeft" align="right" valign="top"><a id="a8e927d8b5fd1f4d376de9f0aa97d467a" name="a8e927d8b5fd1f4d376de9f0aa97d467a"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SkipWire</b> (<a class="el" href="struct_point16.html">Point16</a> point)</td></tr>
@@ -172,8 +172,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleLampPost
 <tr class="memitem:a41552f746690574563effb45a28c0934"><td class="memItemLeft" align="right" valign="top"><a id="a41552f746690574563effb45a28c0934" name="a41552f746690574563effb45a28c0934"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleTorch</b> (int i, int j, <a class="el" href="struct_tile.html">Tile</a> tileCache, bool? forcedStateWhereTrueIsOn)</td></tr>
 <tr class="separator:a41552f746690574563effb45a28c0934"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad92717ffc60287cbf5747237af64440e"><td class="memItemLeft" align="right" valign="top"><a id="ad92717ffc60287cbf5747237af64440e" name="ad92717ffc60287cbf5747237af64440e"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>TripWire</b> (int left, int top, int width, int height)</td></tr>
+<tr class="memitem:ad92717ffc60287cbf5747237af64440e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wiring.html#ad92717ffc60287cbf5747237af64440e">TripWire</a> (int left, int top, int width, int height)</td></tr>
+<tr class="memdesc:ad92717ffc60287cbf5747237af64440e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to send a single to wiring wired up to the specified area. The parameters represent the tile coordinates where wire signals will be sent. Mechanism tiles such as TileID.Switches, TileID.PressurePlates, TileID.Timers, and TileID.LogicSensor use this method as part of their interaction code.  <a href="class_wiring.html#ad92717ffc60287cbf5747237af64440e">More...</a><br /></td></tr>
 <tr class="separator:ad92717ffc60287cbf5747237af64440e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef25995a25734662e1a065a10429af77"><td class="memItemLeft" align="right" valign="top"><a id="aef25995a25734662e1a065a10429af77" name="aef25995a25734662e1a065a10429af77"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateMech</b> ()</td></tr>
@@ -227,6 +227,164 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>blockPlayerTel
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
 <tr class="separator:ac5b23018a7cc0bf681e26ecb03e85762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad7fbb5d56f7b478111edba34c4beeef9" name="ad7fbb5d56f7b478111edba34c4beeef9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7fbb5d56f7b478111edba34c4beeef9">&#9670;&nbsp;</a></span>CheckMech()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Wiring.CheckMech </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the wiring cooldown has been reached for the provided tile coordinates. The <em>time</em>  parameter will set the cooldown if wiring cooldown has elapsed. Use larger values for less frequent activations. Use this method to limit how often mechanisms can be triggerd. <a class="el" href="class_item.html#ae1706b04dedde9a46cb5dee5f1f0e5d8" title="Use to check if a mechanism is allowed to spawn an Item of the provided type at the provided world co...">Item.MechSpawn(float, float, int)</a> and <a class="el" href="class_n_p_c.html#a0d67337f912be10c47f0c2b7f1e7ac37" title="Use to check if a mechanism is allowed to spawn an NPC of the provided type at the provided world coo...">NPC.MechSpawn(float, float, int)</a> should also be checked for mechanisms spawning items or <a class="el" href="class_n_p_c.html">NPC</a>, such as Statues. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">time</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a36e7ef367ce2183e7f17a2203b6f1d89" name="a36e7ef367ce2183e7f17a2203b6f1d89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36e7ef367ce2183e7f17a2203b6f1d89">&#9670;&nbsp;</a></span>SkipWire()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Wiring.SkipWire </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles to prevent a wire touching multiple tiles of the multi-tile from erroneously running wire code multiple times. In <a class="el" href="class_mod_tile.html#a5b1684845a6ec628f504c00f9a514c5c" title="Allows you to make something happen when a wire current passes through this tile. Both Wiring....">ModTile.HitWire(int, int)</a>, call SkipWire for all the coordinates the tile covers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad92717ffc60287cbf5747237af64440e" name="ad92717ffc60287cbf5747237af64440e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad92717ffc60287cbf5747237af64440e">&#9670;&nbsp;</a></span>TripWire()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Wiring.TripWire </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used to send a single to wiring wired up to the specified area. The parameters represent the tile coordinates where wire signals will be sent. Mechanism tiles such as TileID.Switches, TileID.PressurePlates, TileID.Timers, and TileID.LogicSensor use this method as part of their interaction code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left</td><td></td></tr>
+    <tr><td class="paramname">top</td><td></td></tr>
+    <tr><td class="paramname">width</td><td></td></tr>
+    <tr><td class="paramname">height</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

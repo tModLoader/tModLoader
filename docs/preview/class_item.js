@@ -38,6 +38,7 @@ var class_item =
     [ "IsAPrefixableAccessory", "class_item.html#ace577cd592686d1120462312901fce6e", null ],
     [ "IsNetStateDifferent", "class_item.html#a48869b79002273c02f07e3b1c788bcd0", null ],
     [ "IsNotSameTypePrefixAndStack", "class_item.html#a2bc596de801f19e604933d65acf61392", null ],
+    [ "MechSpawn", "class_item.html#ae1706b04dedde9a46cb5dee5f1f0e5d8", null ],
     [ "NetStateChanged", "class_item.html#a0abcff6960b2553ccb6f3f07cdfd4a4c", null ],
     [ "NewItem", "class_item.html#a861d974bce4b638b0d0180a775da3e12", null ],
     [ "NewItem", "class_item.html#aee93c1f1a86db882300293a86afc3e67", null ],

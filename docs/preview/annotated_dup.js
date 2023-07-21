@@ -1425,7 +1425,7 @@ var annotated_dup =
     [ "WingStats", "struct_wing_stats.html", "struct_wing_stats" ],
     [ "WingStatsInitializer", "class_wing_stats_initializer.html", null ],
     [ "WiresUI", "class_wires_u_i.html", "class_wires_u_i" ],
-    [ "Wiring", "class_wiring.html", null ],
+    [ "Wiring", "class_wiring.html", "class_wiring" ],
     [ "WoodHouseBuilder", "class_wood_house_builder.html", null ],
     [ "WorkshopBranding", "class_workshop_branding.html", null ],
     [ "WorkshopHelper", "class_workshop_helper.html", "class_workshop_helper" ],

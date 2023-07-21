@@ -378,7 +378,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CommandForbiddenStorm
 <tr class="separator:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8894857f3ee4202362ac2d3947fc7e84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a8894857f3ee4202362ac2d3947fc7e84">ConsumeItem</a> (int type, bool reverseOrder=false, bool includeVoidBag=false)</td></tr>
 <tr class="memdesc:a8894857f3ee4202362ac2d3947fc7e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to consume a single item. The item does not have to be <a class="el" href="class_item.html#ac6ff27af31d1bf259434de86917579fb" title="Whether the item is consumed after use. If consumed, the item stack will decrease by 1....">Item.consumable</a>. <br  />
- Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the inventory by 1. <br  />
+ Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> by 1. <br  />
  Respects <a class="el" href="class_item_loader.html#af34577b89d0660a6b252315cb49f0521" title="If ModItem.ConsumeItem or any of the GlobalItem.ConsumeItem hooks returns false, sets consume to fals...">ItemLoader.ConsumeItem(Item, Player)</a>, so the item won't necessarily be consumed. <br  />
  To consume multiple of the item, first check <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem</a> to ensure that there are enough of the item, then use a for loop to call this method many times. <br  />
   <a href="class_player.html#a8894857f3ee4202362ac2d3947fc7e84">More...</a><br /></td></tr>
@@ -396,7 +396,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CountBuffs</b> ()</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Counterweight</b> (Vector2 hitPos, int dmg, float kb)</td></tr>
 <tr class="separator:a56a8375d038bcc5fe522b5e5d13bac1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20ef75ff3d503eb08673d5048e653858"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858">CountItem</a> (int type, int stopCountingAt=0)</td></tr>
-<tr class="memdesc:a20ef75ff3d503eb08673d5048e653858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts the total stack of the specified item type in this players inventory. <br  />
+<tr class="memdesc:a20ef75ff3d503eb08673d5048e653858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts the total stack of the specified item type in this players <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. <br  />
  Does not check Void Bag. <br  />
  Use <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">Player.HasItem(int)</a> to check if the player has the item at all. <br  />
   <a href="class_player.html#a20ef75ff3d503eb08673d5048e653858">More...</a><br /></td></tr>
@@ -766,14 +766,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasBuff</b> (int type
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasEnoughPickPowerToHurtTile</b> (int x, int y)</td></tr>
 <tr class="separator:a5e07c64c086c69b720beaf6cee7299d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9">HasItem</a> (int type)</td></tr>
-<tr class="memdesc:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player has the specified item in their inventory. <br  />
+<tr class="memdesc:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player has the specified item in their <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. <br  />
  Does not check Void Bag. <br  />
  Use <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem(int, int)</a> instead to count the total amount if needed. <br  />
   <a href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9">More...</a><br /></td></tr>
 <tr class="separator:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344519dc47381dd60771d75cb7660260"><td class="memItemLeft" align="right" valign="top"><a id="a344519dc47381dd60771d75cb7660260" name="a344519dc47381dd60771d75cb7660260"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItem</b> (int type, <a class="el" href="class_item.html">Item</a>[] collection)</td></tr>
-<tr class="memdesc:a344519dc47381dd60771d75cb7660260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">HasItem(int)</a>, but checks the provided <a class="el" href="class_item.html">Item</a>[] <em>collection</em>  for items instead. Useful for checking other <a class="el" href="class_item.html">Item</a> arrays, such as Player.armor or Player.bank. <br /></td></tr>
+<tr class="memdesc:a344519dc47381dd60771d75cb7660260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">HasItem(int)</a>, but checks the provided <a class="el" href="class_item.html">Item</a>[] <em>collection</em>  for items instead. Useful for checking other <a class="el" href="class_item.html">Item</a> arrays, such as <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">Player.armor</a> or Player.bank. <br /></td></tr>
 <tr class="separator:a344519dc47381dd60771d75cb7660260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bcd44e0fa2eacc3800a0f3c20e7330"><td class="memItemLeft" align="right" valign="top"><a id="a44bcd44e0fa2eacc3800a0f3c20e7330" name="a44bcd44e0fa2eacc3800a0f3c20e7330"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItemInAnyInventory</b> (int type)</td></tr>
@@ -966,7 +966,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenCanofWorms</b> (i
 <tr class="separator:ae3a5585fa80df5b52746a02c34dc4e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47aeb059525d84dbb57a764feaf36b29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a47aeb059525d84dbb57a764feaf36b29">OpenChest</a> (int x, int y, int newChest)</td></tr>
 <tr class="memdesc:a47aeb059525d84dbb57a764feaf36b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles boilerplate for gamepad and UI when opening or closing a container. <br  />
-Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates.  <a href="class_player.html#a47aeb059525d84dbb57a764feaf36b29">More...</a><br /></td></tr>
+Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html#ac20590051011862e88d28c6c96ec526d" title="Represents the chest the player currently has open. If -1, the player has no chest open....">Player.chest</a> to the given coordinates.  <a href="class_player.html#a47aeb059525d84dbb57a764feaf36b29">More...</a><br /></td></tr>
 <tr class="separator:a47aeb059525d84dbb57a764feaf36b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcb03efc4465ac3e7fa7b297337f010b"><td class="memItemLeft" align="right" valign="top"><a id="abcb03efc4465ac3e7fa7b297337f010b" name="abcb03efc4465ac3e7fa7b297337f010b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenFishingCrate</b> (int crateItemID)</td></tr>
@@ -1729,6 +1729,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>arcticDivingGear</b><
 <tr class="separator:a1a2e997ee08030fff0a7fd644a4a9dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9e90c695978482773b3a294c7f6c814"><td class="memItemLeft" align="right" valign="top"><a id="aa9e90c695978482773b3a294c7f6c814" name="aa9e90c695978482773b3a294c7f6c814"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>armor</b> = new <a class="el" href="class_item.html">Item</a>[20]</td></tr>
+<tr class="memdesc:aa9e90c695978482773b3a294c7f6c814"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br  />
+<br  />
+ Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how <a class="el" href="namespace_terraria.html">Terraria</a> is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <a class="el" href="class_mod_item.html#ac7af055d3befc9d7cd9bab9d63ad0b94" title="Allows you to give effects to this accessory. The hideVisual parameter is whether the player has mark...">ModItem.UpdateAccessory(Player, bool)</a> to set fields in a <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class, then use those values for gameplay effects. SimpleModPlayer.csshows the proper approach and explains this pattern.<br  />
+<br  />
+ The corresponding dye items are found in dye. The player's inventory is <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. For equipment, see <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> and miscDyes. trashItem is the trash slot.<br  />
+<br  />
+ <br /></td></tr>
 <tr class="separator:aa9e90c695978482773b3a294c7f6c814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a72bac6bf0613fe4c3e06dd57754ccd"><td class="memItemLeft" align="right" valign="top"><a id="a1a72bac6bf0613fe4c3e06dd57754ccd" name="a1a72bac6bf0613fe4c3e06dd57754ccd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>armorEffectDrawOutlines</b></td></tr>
@@ -2097,6 +2104,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>cHead</b></td></tr>
 <tr class="separator:af256236fe3e68c7a679f4e2439977ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac20590051011862e88d28c6c96ec526d"><td class="memItemLeft" align="right" valign="top"><a id="ac20590051011862e88d28c6c96ec526d" name="ac20590051011862e88d28c6c96ec526d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>chest</b> = -1</td></tr>
+<tr class="memdesc:ac20590051011862e88d28c6c96ec526d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the chest the player currently has open. If -1, the player has no chest open.<br  />
+ Positive values indicate the index of the chest in Main.chest the player currently has open.<br  />
+ Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5) <br /></td></tr>
 <tr class="separator:ac20590051011862e88d28c6c96ec526d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af66f424bd9c510140d217dcfef5453c4"><td class="memItemLeft" align="right" valign="top"><a id="af66f424bd9c510140d217dcfef5453c4" name="af66f424bd9c510140d217dcfef5453c4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>chestX</b></td></tr>
@@ -2921,6 +2931,9 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>instantMovementAcc
 <tr class="separator:a1fbf7df3ab91e4d5733c69d72bd43dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a590dce4227b207c8976811be19f2cf64"><td class="memItemLeft" align="right" valign="top"><a id="a590dce4227b207c8976811be19f2cf64" name="a590dce4227b207c8976811be19f2cf64"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>inventory</b> = new <a class="el" href="class_item.html">Item</a>[59]</td></tr>
+<tr class="memdesc:a590dce4227b207c8976811be19f2cf64"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventory, 50-53 are coin slots, 54-57 are ammo slots. Index 58 is used to store the mouse item in some situations.<br  />
+ Additional inventories are found in bank (Piggy Bank), bank2 (Safe), bank3 (Defender's Forge), and bank4 (Void Vault). For armor and accessories, see <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">armor</a> and dye. For equipment, see <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> and miscDyes. trashItem is the trash slot.<br  />
+ <br /></td></tr>
 <tr class="separator:a590dce4227b207c8976811be19f2cf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7be42c32dd31a507c65b4bbf6421435d"><td class="memItemLeft" align="right" valign="top"><a id="a7be42c32dd31a507c65b4bbf6421435d" name="a7be42c32dd31a507c65b4bbf6421435d"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>inventoryChestStack</b> = new bool[59]</td></tr>
@@ -3320,6 +3333,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>miscCounter</b></td></
 <tr class="separator:ad58357a17e414b8a111d613da003c5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af958e9a0ef3bc5f086a73028ae170113"><td class="memItemLeft" align="right" valign="top"><a id="af958e9a0ef3bc5f086a73028ae170113" name="af958e9a0ef3bc5f086a73028ae170113"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>miscEquips</b> = new <a class="el" href="class_item.html">Item</a>[5]</td></tr>
+<tr class="memdesc:af958e9a0ef3bc5f086a73028ae170113"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's equipment items. From indexes 0-4: Pet, Light Pet, <a class="el" href="class_minecart.html">Minecart</a>, <a class="el" href="class_mount.html">Mount</a>, and Hook. <br /></td></tr>
 <tr class="separator:af958e9a0ef3bc5f086a73028ae170113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98206d040327e91216f836163aa237bf"><td class="memItemLeft" align="right" valign="top"><a id="a98206d040327e91216f836163aa237bf" name="a98206d040327e91216f836163aa237bf"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>miscTimer</b></td></tr>
@@ -4798,6 +4812,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeTalkedTo</b><cod
 <tr class="separator:a0c5a015afac602260b585117376a55e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="memItemLeft" align="right" valign="top"><a id="a395bdfdd1cff8473a9b1ad4a3060b4ec" name="a395bdfdd1cff8473a9b1ad4a3060b4ec"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CCed</b><code> [get]</code></td></tr>
+<tr class="memdesc:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player is currently "crowd controlled", meaning the player is frozen, webbed, or stoned. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts. <br /></td></tr>
 <tr class="separator:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891ff74aeebeaff3aa620994f1c24553"><td class="memItemLeft" align="right" valign="top"><a id="a891ff74aeebeaff3aa620994f1c24553" name="a891ff74aeebeaff3aa620994f1c24553"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumedLifeCrystals</b><code> [get, set]</code></td></tr>
@@ -5547,7 +5562,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>Use to consume a single item. The item does not have to be <a class="el" href="class_item.html#ac6ff27af31d1bf259434de86917579fb" title="Whether the item is consumed after use. If consumed, the item stack will decrease by 1....">Item.consumable</a>. <br  />
- Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the inventory by 1. <br  />
+ Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> by 1. <br  />
  Respects <a class="el" href="class_item_loader.html#af34577b89d0660a6b252315cb49f0521" title="If ModItem.ConsumeItem or any of the GlobalItem.ConsumeItem hooks returns false, sets consume to fals...">ItemLoader.ConsumeItem(Item, Player)</a>, so the item won't necessarily be consumed. <br  />
  To consume multiple of the item, first check <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem</a> to ensure that there are enough of the item, then use a for loop to call this method many times. <br  />
  </p>
@@ -5589,7 +5604,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Counts the total stack of the specified item type in this players inventory. <br  />
+<p>Counts the total stack of the specified item type in this players <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. <br  />
  Does not check Void Bag. <br  />
  Use <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">Player.HasItem(int)</a> to check if the player has the item at all. <br  />
  </p>
@@ -6198,7 +6213,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Checks if the player has the specified item in their inventory. <br  />
+<p>Checks if the player has the specified item in their <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. <br  />
  Does not check Void Bag. <br  />
  Use <a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858" title="Counts the total stack of the specified item type in this players inventory.   Does not check Void Ba...">Player.CountItem(int, int)</a> instead to count the total amount if needed. <br  />
  </p>
@@ -6377,7 +6392,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>Handles boilerplate for gamepad and UI when opening or closing a container. <br  />
-Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates. </p>
+Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html#ac20590051011862e88d28c6c96ec526d" title="Represents the chest the player currently has open. If -1, the player has no chest open....">Player.chest</a> to the given coordinates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>The top-left X coordinate of the container.</td></tr>
@@ -6927,7 +6942,7 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 <p>The current health of this player. Capped at <a class="el" href="class_player.html#a6d60c82c9303000b6b36720705290b5a" title="The maximum health this player can have, adjusted by buffs and equipment.">statLifeMax2</a>. <br  />
  If you increase this value, be sure to respect the cap. </p>
 <p >If you want to heal the player with the green text effect, use <a class="el" href="class_player.html#af7afcea2d9b372abfd6486a008738526" title="Heals the player for a certain amount.">Player.Heal(int)</a>. <br  />
- If you want to hurt the player, use Hurt. </p>
+ If you want to hurt the player, use Hurt(PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float). </p>
 
 </div>
 </div>

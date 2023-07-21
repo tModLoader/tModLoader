@@ -36,6 +36,7 @@ var class_main =
     [ "projFrames", "class_main.html#ae81ceb8f5a3cca051abd73284a261efb", null ],
     [ "pvpBuff", "class_main.html#acdf515b495d7cd84bdb2142e67afcc19", null ],
     [ "rockLayer", "class_main.html#a879663e005dab5ec98f1e90ebb7236d8", null ],
+    [ "screenPosition", "class_main.html#a766fa818b5f5e63bea931f820c5d463b", null ],
     [ "tileAxe", "class_main.html#aa844b5324096225533879d1901aa9afe", null ],
     [ "tileCut", "class_main.html#a7e567c0a497197b2f49f009f2ba01f05", null ],
     [ "tileFlame", "class_main.html#abb7f16a068878aa07bcfb222d9002bed", null ],

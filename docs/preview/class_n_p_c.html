@@ -670,11 +670,11 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetEaterOfWorld
 <tr class="memitem:aa9a9449e335b5a5ea76a6d967c77cb63"><td class="memItemLeft" align="right" valign="top"><a id="aa9a9449e335b5a5ea76a6d967c77cb63" name="aa9a9449e335b5a5ea76a6d967c77cb63"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetEaterOfWorldsSegmentsCountByGamemode</b> (int gamemode)</td></tr>
 <tr class="separator:aa9a9449e335b5a5ea76a6d967c77cb63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95a4782b11f8b4df2a5f538259e68808"><td class="memItemLeft" align="right" valign="top"><a id="a95a4782b11f8b4df2a5f538259e68808" name="a95a4782b11f8b4df2a5f538259e68808"></a>
-static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetFirstNPCNameOrNull</b> (int npcType)</td></tr>
+<tr class="memitem:a95a4782b11f8b4df2a5f538259e68808"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a95a4782b11f8b4df2a5f538259e68808">GetFirstNPCNameOrNull</a> (int npcType)</td></tr>
+<tr class="memdesc:a95a4782b11f8b4df2a5f538259e68808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="class_n_p_c.html#ad62c146792525fde1c1fe891da3941a2" title="If this NPC has a given name, returns their given name; otherwise, returns their type name.">GivenOrTypeName</a> of the first active <a class="el" href="class_n_p_c.html">NPC</a> of the given type in the world. If not found, null is returned.  <a href="class_n_p_c.html#a95a4782b11f8b4df2a5f538259e68808">More...</a><br /></td></tr>
 <tr class="separator:a95a4782b11f8b4df2a5f538259e68808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0c0fec13f68fb0ec581f938f7d68708"><td class="memItemLeft" align="right" valign="top"><a id="ae0c0fec13f68fb0ec581f938f7d68708" name="ae0c0fec13f68fb0ec581f938f7d68708"></a>
-static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetFullnameByID</b> (int npcID)</td></tr>
+<tr class="memitem:ae0c0fec13f68fb0ec581f938f7d68708"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ae0c0fec13f68fb0ec581f938f7d68708">GetFullnameByID</a> (int npcID)</td></tr>
+<tr class="memdesc:ae0c0fec13f68fb0ec581f938f7d68708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="class_n_p_c.html#a2cbce6b8c41331e677323bf6e945a7c5" title="The FULL name of this NPC.  If the NPC doesn&#39;t have a given name, this will just return the type name...">FullName</a> of the first active <a class="el" href="class_n_p_c.html">NPC</a> of the given type in the world. If not found, the type name is returned instead.  <a href="class_n_p_c.html#ae0c0fec13f68fb0ec581f938f7d68708">More...</a><br /></td></tr>
 <tr class="separator:ae0c0fec13f68fb0ec581f938f7d68708"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a163958cc85ca081ca66b0ec7a5b58f72"><td class="memItemLeft" align="right" valign="top"><a id="a163958cc85ca081ca66b0ec7a5b58f72" name="a163958cc85ca081ca66b0ec7a5b58f72"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetMeleeCollisionData</b> (Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect)</td></tr>
@@ -714,6 +714,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>LadyBugKilled<
 <tr class="separator:a8492fce5486edc115ef53e42b99b2805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d67337f912be10c47f0c2b7f1e7ac37"><td class="memItemLeft" align="right" valign="top"><a id="a0d67337f912be10c47f0c2b7f1e7ac37" name="a0d67337f912be10c47f0c2b7f1e7ac37"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> (float x, float y, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>)</td></tr>
+<tr class="memdesc:a0d67337f912be10c47f0c2b7f1e7ac37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to check if a mechanism is allowed to spawn an <a class="el" href="class_n_p_c.html">NPC</a> of the provided type at the provided world coordinates. Checks nearby area to see if the Spawn Limitshave been reached. <br /></td></tr>
 <tr class="separator:a0d67337f912be10c47f0c2b7f1e7ac37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf651a9efe17586226f6f66bfa648258"><td class="memItemLeft" align="right" valign="top"><a id="abf651a9efe17586226f6f66bfa648258" name="abf651a9efe17586226f6f66bfa648258"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearSpikeBall</b> (int x, int y)</td></tr>
@@ -2245,6 +2246,76 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a95a4782b11f8b4df2a5f538259e68808" name="a95a4782b11f8b4df2a5f538259e68808"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95a4782b11f8b4df2a5f538259e68808">&#9670;&nbsp;</a></span>GetFirstNPCNameOrNull()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string NPC.GetFirstNPCNameOrNull </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>npcType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the <a class="el" href="class_n_p_c.html#ad62c146792525fde1c1fe891da3941a2" title="If this NPC has a given name, returns their given name; otherwise, returns their type name.">GivenOrTypeName</a> of the first active <a class="el" href="class_n_p_c.html">NPC</a> of the given type in the world. If not found, null is returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npcType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae0c0fec13f68fb0ec581f938f7d68708" name="ae0c0fec13f68fb0ec581f938f7d68708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0c0fec13f68fb0ec581f938f7d68708">&#9670;&nbsp;</a></span>GetFullnameByID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string NPC.GetFullnameByID </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>npcID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the <a class="el" href="class_n_p_c.html#a2cbce6b8c41331e677323bf6e945a7c5" title="The FULL name of this NPC.  If the NPC doesn&#39;t have a given name, this will just return the type name...">FullName</a> of the first active <a class="el" href="class_n_p_c.html">NPC</a> of the given type in the world. If not found, the type name is returned instead. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npcID</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

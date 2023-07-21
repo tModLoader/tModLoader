@@ -147,7 +147,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHardmod
 <tr class="separator:ae035a1e33bdcbb5286c9c1fafd2d0c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4a785428edb069c76907e01e66bfa3a"><td class="memItemLeft" align="right" valign="top"><a id="ae4a785428edb069c76907e01e66bfa3a" name="ae4a785428edb069c76907e01e66bfa3a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyScreenPosition</b> ()</td></tr>
-<tr class="memdesc:ae4a785428edb069c76907e01e66bfa3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place. <br /></td></tr>
+<tr class="memdesc:ae4a785428edb069c76907e01e66bfa3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this hook to modify <a class="el" href="class_main.html#a766fa818b5f5e63bea931f820c5d463b" title="The position of the top left corner of the screen in world coordinates. Modify in ModSystem....">Main.screenPosition</a> after weapon zoom and camera lerp have taken place. <br  />
+ Also consider using <code>Main.instance.CameraModifiers.Add(CameraModifier);</code> as shown in ExampleMods MinionBossBody for screen shakes. <br /></td></tr>
 <tr class="separator:ae4a785428edb069c76907e01e66bfa3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8c0698f1cdd3074ba8e265d9c167a46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#ae8c0698f1cdd3074ba8e265d9c167a46">ModifySunLightColor</a> (ref Color tileColor, ref Color backgroundColor)</td></tr>
 <tr class="memdesc:ae8c0698f1cdd3074ba8e265d9c167a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify color of light the sun emits.  <a href="class_mod_system.html#ae8c0698f1cdd3074ba8e265d9c167a46">More...</a><br /></td></tr>

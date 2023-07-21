@@ -144,7 +144,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int
 <tr class="memdesc:a5b78b88d68fb1b0fc11cc70371a87320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a player stands on the given type of tile. For example, you can make the player slide as if on ice.  <a href="class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320">More...</a><br /></td></tr>
 <tr class="separator:a5b78b88d68fb1b0fc11cc70371a87320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac0b41a49c4d1eeb01f99d4aa258e64e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#aac0b41a49c4d1eeb01f99d4aa258e64e">HitWire</a> (int i, int j, int type)</td></tr>
-<tr class="memdesc:aac0b41a49c4d1eeb01f99d4aa258e64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile. Both Wiring.SkipWire(int, int) and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
+<tr class="memdesc:aac0b41a49c4d1eeb01f99d4aa258e64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile. Both <a class="el" href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89" title="Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles ...">Wiring.SkipWire(int, int)</a> and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
 Only called on the server and single player. All wiring happens on the world, not multiplayer clients.  <a href="class_global_tile.html#aac0b41a49c4d1eeb01f99d4aa258e64e">More...</a><br /></td></tr>
 <tr class="separator:aac0b41a49c4d1eeb01f99d4aa258e64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab40cdeb72ef161dde8abf61ab2486f57"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#ab40cdeb72ef161dde8abf61ab2486f57">IsTileDangerous</a> (int i, int j, int type, <a class="el" href="class_player.html">Player</a> player)</td></tr>
@@ -906,7 +906,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make something happen when a wire current passes through any tile. Both Wiring.SkipWire(int, int) and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
+<p>Allows you to make something happen when a wire current passes through any tile. Both <a class="el" href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89" title="Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles ...">Wiring.SkipWire(int, int)</a> and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
 Only called on the server and single player. All wiring happens on the world, not multiplayer clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

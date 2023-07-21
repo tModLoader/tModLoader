@@ -1,5 +1,15 @@
 var NAVTREEINDEX17 =
 {
+"class_sand_mound.html":[3,0,1044],
+"class_sandstorm.html":[3,0,1045],
+"class_sandstorm.html#a1ecac80afb8244aa560cef293b08a901":[3,0,1045,0],
+"class_sandstorm.html#a53f7d43afa6b4f30f687d98080754f97":[3,0,1045,1],
+"class_sandstorm_shader.html":[3,0,1046],
+"class_sandstorm_shader_data.html":[3,0,1047],
+"class_sandstorm_sky.html":[3,0,1048],
+"class_say_chat_command.html":[3,0,1049],
+"class_scene_effect_loader.html":[3,0,1050],
+"class_scene_effect_loader_1_1_scene_effect_instance.html":[3,0,1050,0],
 "class_scene_metrics.html":[3,0,1051],
 "class_screen_darkness.html":[3,0,1053],
 "class_screen_effect_initializer.html":[3,0,1054],
@@ -239,15 +249,5 @@ var NAVTREEINDEX17 =
 "class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4":[3,0,1197,0,41],
 "class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77":[3,0,1197,0,49],
 "class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6":[3,0,1197,0,35],
-"class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c":[3,0,1197,0,5],
-"class_tile_i_d_1_1_sets.html#a304253e883fca925c1e09382f562b50d":[3,0,1197,0,23],
-"class_tile_i_d_1_1_sets.html#a38c57298977bbdfc47182befc869a9e2":[3,0,1197,0,30],
-"class_tile_i_d_1_1_sets.html#a3f3e2e8c8926d9e5ad8c550b434659f3":[3,0,1197,0,19],
-"class_tile_i_d_1_1_sets.html#a40fcb33e079653d8b942406323a72370":[3,0,1197,0,26],
-"class_tile_i_d_1_1_sets.html#a4caff834296122a8aadb0b343003a793":[3,0,1197,0,14],
-"class_tile_i_d_1_1_sets.html#a612fadd9d5e3f24c17c1052fdf9b6ebe":[3,0,1197,0,29],
-"class_tile_i_d_1_1_sets.html#a627678a41ae21731ed608c9569e34b3b":[3,0,1197,0,32],
-"class_tile_i_d_1_1_sets.html#a6330ee450e15a47d8d8fc6060523552f":[3,0,1197,0,20],
-"class_tile_i_d_1_1_sets.html#a6464e0fabefdd9369974628b6d3ad6b6":[3,0,1197,0,48],
-"class_tile_i_d_1_1_sets.html#a680cd9e90674289770da5b892b770228":[3,0,1197,0,18]
+"class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c":[3,0,1197,0,5]
 };

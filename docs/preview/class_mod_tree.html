@@ -128,7 +128,8 @@ abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bot
 abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTreeFoliageSettings</b> (<a class="el" href="struct_tile.html">Tile</a> tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)</td></tr>
 <tr class="separator:a75937cfe38bcb8f183069336448936a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70f2e0bb1e09ebfc1a8d3f9c0b795a1c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#a70f2e0bb1e09ebfc1a8d3f9c0b795a1c">Shake</a> (int x, int y, ref bool createLeaves)</td></tr>
-<tr class="memdesc:a70f2e0bb1e09ebfc1a8d3f9c0b795a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on tree shake, return false to skip vanilla tree shake drops  <a href="class_mod_tree.html#a70f2e0bb1e09ebfc1a8d3f9c0b795a1c">More...</a><br /></td></tr>
+<tr class="memdesc:a70f2e0bb1e09ebfc1a8d3f9c0b795a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on tree shake, return false to skip vanilla tree shake drops.<br  />
+ The x and y coordinates correspond to the top of the tree, where items usually spawn.  <a href="class_mod_tree.html#a70f2e0bb1e09ebfc1a8d3f9c0b795a1c">More...</a><br /></td></tr>
 <tr class="separator:a70f2e0bb1e09ebfc1a8d3f9c0b795a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61ccfa03e735ae06fd1532de2795ffe7"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#a61ccfa03e735ae06fd1532de2795ffe7">TreeLeaf</a> ()</td></tr>
 <tr class="memdesc:a61ccfa03e735ae06fd1532de2795ffe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default  <a href="class_mod_tree.html#a61ccfa03e735ae06fd1532de2795ffe7">More...</a><br /></td></tr>
@@ -414,7 +415,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 </table>
 </div><div class="memdoc">
 
-<p>Executed on tree shake, return false to skip vanilla tree shake drops </p>
+<p>Executed on tree shake, return false to skip vanilla tree shake drops.<br  />
+ The x and y coordinates correspond to the top of the tree, where items usually spawn. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 <p>Implements <a class="el" href="interface_i_tree.html">ITree</a>.</p>
