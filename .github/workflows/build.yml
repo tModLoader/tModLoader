@@ -528,7 +528,7 @@ jobs:
         shell: bash
         run: |
           echo Copying over config.vdf authentication file
-          echo "$STEAM_CONFIG_VDF" | base64 -d > ./config/config.vdf"
+          echo "$STEAM_CONFIG_VDF" | base64 -d > "./config/config.vdf"
         env:
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
