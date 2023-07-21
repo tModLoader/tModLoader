@@ -530,8 +530,16 @@ jobs:
           echo Copying over config.vdf authentication file
           echo "Steam is installed in: $STEAMCMDDIR"
           echo pwd is: ${PWD}
-          mkdir -p "$STEAMCMDDIR/config"
-          echo "$STEAM_CONFIG_VDF" | base64 -d > "$STEAMCMDDIR/config/config.vdf"
+          cd ~/Steam
+          echo pwd is: ${PWD}
+          ls -alhR
+          mkdir config
+          cd config
+          ls -alhR
+          echo "$STEAM_CONFIG_VDF" | base64 -d > "config.vdf"
+          ls -alhR
+          chmod 777 "config.vdf"
+          ls -alhR
         env:
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
