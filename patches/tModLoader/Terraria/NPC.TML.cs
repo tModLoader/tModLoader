@@ -215,7 +215,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerableEntity
 #pragma warning disable IDE1006 // Name is vanilla
 	public float gravity {
 #pragma warning restore IDE1006
-
 		get => vanillaGravity * GravityMultiplier.Value;
 		private set {
 			GravityMultiplier = MultipliableFloat.One;
@@ -282,7 +281,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerableEntity
 		&& (NPCID.Sets.ShimmerTownTransform[type] // valid shimmer types
 		|| NPCID.Sets.ShimmerTransformToNPC[type] >= 0
 		|| NPCID.Sets.ShimmerTransformToItem[type] >= 0
-		|| !NPCID.Sets.IgnoreNPCSpawnedFromStatue[type] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering 
+		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
 		|| ModShimmer.AnyValidModShimmer(this));
 
 	public void OnShimmer()

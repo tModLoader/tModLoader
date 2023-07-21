@@ -15,27 +15,36 @@ namespace Terraria.ModLoader;
 public record class ModShimmer : IComparable<ModShimmer>
 {
 	/// <summary>
-	/// Dictionary containing every <see cref="ModShimmer"/> registered to tMod indexed by <see cref="ModShimmerTypeID"/> and the entities type
+	/// Dictionary containing every <see cref="ModShimmer"/> registered to tMod indexed by <see cref="ModShimmerTypeID"/> and the entities type, automatically done in <see cref="Register()"/> and its overloads
 	/// </summary>
 	public static Dictionary<(ModShimmerTypeID, int), List<ModShimmer>> ModShimmerTransformations { get; } = new();
 
 	#region Constructors
 
+	/// <inheritdoc cref="ModShimmer(ValueTuple{ModShimmerTypeID, int})"/>
+	/// <param name="npc"><inheritdoc cref="ModShimmer(ValueTuple{ModShimmerTypeID, int})"/></param>
+
 	public ModShimmer(NPC npc) : this((ModShimmerTypeID.NPC, npc.type))
 	{ }
 
+	/// <inheritdoc cref="ModShimmer(ValueTuple{ModShimmerTypeID, int})"/>
+	/// <param name="item"><inheritdoc cref="ModShimmer(ValueTuple{ModShimmerTypeID, int})"/></param>
 	public ModShimmer(Item item) : this((ModShimmerTypeID.Item, item.type))
 	{ }
 
+	/// <inheritdoc cref="ModShimmer(ValueTuple{ModShimmerTypeID, int})"/>
+	public ModShimmer()
+	{ }
+
+	/// <inheritdoc cref="ModShimmer"/>
+	/// <param name="entityIdentification"> Assigned to <see cref="InstantiationEntity"/> for use with the parameterless <see cref="Register()"/> </param>
+	/// <exception cref="ArgumentException"> Thrown when <paramref name="entityIdentification"/> is not <see cref="ModShimmerTypeID.NPC"/> or <see cref="ModShimmerTypeID.Item"/> </exception>
 	private ModShimmer((ModShimmerTypeID, int) entityIdentification)
 	{
 		if (!entityIdentification.Item1.IsValidSourceType())
 			throw new ArgumentException("ModShimmerTypeID must be a valid source type, use parameterless constructor if an instantiation entity was not required here", nameof(entityIdentification));
 		InstantiationEntity = entityIdentification;
 	}
-
-	public ModShimmer()
-	{ }
 
 	#endregion Constructors
 
@@ -52,17 +61,17 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public List<Condition> Conditions { get; init; } = new();
 
 	/// <summary>
-	/// The entities that the transformation produces.
+	/// The results that the transformation produces.
 	/// </summary>
 	public List<ModShimmerResult> Results { get; init; } = new();
 
 	/// <summary>
-	/// Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick, when skeletron or golem are undefeated respectively
+	/// Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick when skeletron or golem are undefeated respectively
 	/// </summary>
 	public bool IgnoreVanillaItemConstraints { get; private set; }
 
 	/// <summary>
-	/// Gives a priority to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, 100
+	/// Gives a priority to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, caps at 10
 	/// </summary>
 	public int Priority { get; private set; } = 0;
 
@@ -92,7 +101,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	#region ControllerMethods
 
 	/// <summary>
-	/// Adds a condition to <see cref="Conditions"/>
+	/// Adds a condition to <see cref="Conditions"/>. <inheritdoc cref="Conditions"/>
 	/// </summary>
 	/// <param name="condition"> The condition to be added </param>
 	public ModShimmer AddCondition(Condition condition)
@@ -115,7 +124,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	{
 		if (!result.ResultType.IsValidSpawnedType())
 			throw new ArgumentException("ModShimmerTypeID must be a valid spawn type, check Example Mod for details", nameof(result));
-		if (result.Count < 0)
+		if (result.Count <= 0)
 			throw new ArgumentException("A Count greater than 0 is required", nameof(result));
 
 		Results.Add(result);
@@ -156,6 +165,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 		return this;
 	}
 
+	/// <inheritdoc cref="Priority"/>
 	public ModShimmer SetPriority(int priority)
 	{
 		Priority = Math.Min(priority, 10);
@@ -165,7 +175,6 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <summary>
 	/// Adds a delegate to <see cref="CanShimmerCallBacks"/> that will be called if the shimmer transformation succeeds
 	/// </summary>
-	/// <param name="callBack"> The delegate to call </param>
 	public ModShimmer AddCanShimmerCallBack(CanShimmerCallBack callBack)
 	{
 		CanShimmerCallBacks += callBack;
@@ -175,7 +184,6 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <summary>
 	/// Adds a delegate to <see cref="OnShimmerCallBacks"/> that will be called if the shimmer transformation succeeds
 	/// </summary>
-	/// <param name="callBack"> The delegate to call </param>
 	public ModShimmer AddOnShimmerCallBack(PostShimmerCallBack callBack)
 	{
 		OnShimmerCallBacks += callBack;
@@ -199,7 +207,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// Finalizes transformation, adds to <see cref="ModShimmerTransformations"/>
 	/// </summary>
 	/// <exception cref="ArgumentException">
-	/// Thrown if <paramref name="entityIdentifier"/> feild Item1 of type <see cref="ModShimmerTypeID"/> is an invalid source type
+	/// Thrown if <paramref name="entityIdentifier"/> field Item1 of type <see cref="ModShimmerTypeID"/> is an invalid source type
 	/// </exception>
 	public void Register((ModShimmerTypeID, int) entityIdentifier)
 	{
@@ -234,7 +242,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <item/>
 	/// All added <see cref="CanShimmerCallBack"/> return true
 	/// <item/>
-	/// <see cref="IShimmerableEntity.CanShimmer"/> returns true
+	/// <see cref="IShimmerableEntityGlobal{TEntity}.CanShimmer"/> returns true
+	/// <item/>
+	/// <see cref="ModNPC.CanShimmer"/> or <see cref="ModItem.CanShimmer"/> returns true or unused
 	/// <item/>
 	/// None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is
 	/// false (default)
@@ -243,36 +253,6 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public bool CanModShimmer<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
 		=> CanModShimmer_Transformation(entity)
 		&& entity.CanShimmer();
-
-	public bool CheckCanShimmerCallBacks(Entity entity)
-	{
-		if (CanShimmerCallBacks == null)
-			return true;
-		foreach (CanShimmerCallBack callBack in CanShimmerCallBacks.GetInvocationList().Cast<CanShimmerCallBack>()) {
-			if (!callBack.Invoke(this, entity))
-				return false;
-		}
-		return true;
-	}
-
-	/// <summary>
-	/// Checks every <see cref="ModShimmer"/> for this entity and returns true when if finds one that passes <see
-	/// cref="CanModShimmer_Transformation{TEntity}(TEntity)"/><br/> Does not check <see cref="IShimmerableEntity.CanShimmer"/>
-	/// </summary>
-	/// <returns> True if there is a mod transformation this entity could undergo </returns>
-	public static bool AnyValidModShimmer<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
-	{
-		ArgumentNullException.ThrowIfNull(entity, nameof(entity));
-		if (!ModShimmerTransformations.ContainsKey((entity.ModShimmerTypeID, entity.ShimmerableEntityTypePassthrough)))
-			return false;
-
-		foreach (ModShimmer modShimmer in ModShimmerTransformations[(entity.ModShimmerTypeID, entity.ShimmerableEntityTypePassthrough)]) {
-			if (modShimmer.CanModShimmer_Transformation(entity))
-				return true;
-		}
-
-		return false;
-	}
 
 	/// <summary>
 	/// Checks the conditions for this transformation
@@ -289,15 +269,46 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// false (default)
 	/// </list>
 	/// </returns>
-	public bool CanModShimmer_Transformation<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
+	private bool CanModShimmer_Transformation<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
 		=> Conditions.All((condition) => condition.IsMet())
 		&& (CheckCanShimmerCallBacks(entity))
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ResultType == ModShimmerTypeID.Item && (result.Type == ItemID.Bone && !NPC.downedBoss3 || result.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)));
 
+	private bool CheckCanShimmerCallBacks(Entity entity)
+	{
+		if (CanShimmerCallBacks == null)
+			return true;
+		foreach (CanShimmerCallBack callBack in CanShimmerCallBacks.GetInvocationList().Cast<CanShimmerCallBack>()) {
+			if (!callBack.Invoke(this, entity))
+				return false;
+		}
+		return true;
+	}
+
+	/// <summary>
+	/// Checks every <see cref="ModShimmer"/> for this entity and returns true when if finds one that passes <see cref="CanModShimmer_Transformation{TEntity}(TEntity)"/>.
+	/// <br/> Does not check <see cref="IShimmerableEntity.CanShimmer"/>
+	/// </summary>
+	/// <returns> True if there is a mod transformation this entity could undergo </returns>
+	public static bool AnyValidModShimmer<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
+	{
+		ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+		if (!ModShimmerTransformations.ContainsKey((entity.ModShimmerTypeID, entity.ShimmerableEntityTypePassthrough)))
+			return false;
+
+		foreach (ModShimmer modShimmer in ModShimmerTransformations[(entity.ModShimmerTypeID, entity.ShimmerableEntityTypePassthrough)]) {
+			if (modShimmer.CanModShimmer_Transformation(entity))
+				return true;
+		}
+
+		return false;
+	}
+
 	/// <inheritdoc cref="TryModShimmer{TEntity}(TEntity, ValueTuple{ModShimmerTypeID, int})"/>
+	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
 	public static bool? TryModShimmer(NPC npc)
 		=> npc.SpawnedFromStatue
-			? NPCID.Sets.IgnoreNPCSpawnedFromStatue[npc.type] // If spawned from a statue, check here
+			? NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[npc.type] // If spawned from a statue, check here
 				? TryModShimmer(npc, (ModShimmerTypeID.NPC, npc.type)) == false ? null : true // If we're ignoring, continue to shimmer, but override a false return value with null to prevent despawn in vanilla
 				: false // If not ignoring, fall straight to vanilla despawn code
 			: TryModShimmer(npc, (ModShimmerTypeID.NPC, npc.type)); // If not a statue, continue as normal
@@ -324,7 +335,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public static bool TryModShimmer<TEntity>(TEntity entity, (ModShimmerTypeID, int) entityIdentification) where TEntity : Entity, IShimmerableEntity
 	{
 		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
-		if (transformations?.Count <= 0)
+		if (!(transformations?.Count > 0)) // Invers to catch null
 			return false;
 
 		foreach (ModShimmer transformation in transformations) { // Loops possible transformations
@@ -442,9 +453,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 				CleanupShimmerSource((Item)entity);
 				break;
 
-			case ModShimmerTypeID.Projectile:
-				CleanupShimmerSource((Projectile)entity);
-				break;
+				//case ModShimmerTypeID.Projectile:
+				//	CleanupShimmerSource((Projectile)entity);
+				//	break;
 		}
 	}
 
@@ -467,13 +478,13 @@ public record class ModShimmer : IComparable<ModShimmer>
 		item.active = false;
 	}
 
-	private static void CleanupShimmerSource(Projectile projectile)
-	{
-		throw new NotImplementedException();
-	}
+	//private static void CleanupShimmerSource(Projectile projectile)
+	//{
+	//	throw new NotImplementedException();
+	//}
 
 	/// <summary>
-	/// Creates the shimmer effect, net syncs
+	/// Creates the shimmer effect checking either singleplayer or server
 	/// </summary>
 	/// <param name="position"> The position to create the effect </param>
 	public static void ShimmerEffect(Vector2 position)
@@ -484,16 +495,24 @@ public record class ModShimmer : IComparable<ModShimmer>
 			NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)position.X, (int)position.Y);
 	}
 
-	public ModShimmer DeeperClone()
+	/// <summary>
+	/// Creates a new instance of <see cref="ModShimmer"/>. Not a true deep clone as the new instance will share some values with the old instance but any values
+	/// still shared cannot be edited. (e.g. A new <see cref="List{T}"/> of <see cref="Condition"/> that shares the immutable conditions inside it)
+	/// </summary>
+	public ModShimmer DeepClone()
 		=> new() {
 			InstantiationEntity = InstantiationEntity, // Assigns by value
 			Priority = Priority,
-			Conditions = new List<Condition>(Conditions), // Condition is a reference type so the new list has the same items in it but Condition is immutable so this is cool
-			Results = new List<ModShimmerResult>(Results), // new list stores new values types but it is also immutable so it doesn't really matter
+			Conditions = new List<Condition>(Conditions), // List is new, Condition is a record type
+			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a structure type
 			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
 			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks.Clone(), // Stored values are immutable
 			OnShimmerCallBacks = (PostShimmerCallBack)OnShimmerCallBacks.Clone(),
 		};
+
+	/// <summary>
+	/// Compares using <see cref="Priority"/>
+	/// </summary>
 	public int CompareTo(ModShimmer other)
 	{
 		return Priority - other.Priority;
@@ -513,7 +532,8 @@ public enum ModShimmerTypeID
 {
 	NPC,
 	Item,
-	Projectile,
+
+	//Projectile,
 	CoinLuck,
 	Custom,
 	Null,

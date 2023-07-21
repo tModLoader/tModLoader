@@ -108,25 +108,9 @@ public partial class NPCID
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
 
-
 		/// <summary>
 		/// True if the NPC should not despawn in shimmer if <see cref="NPC.SpawnedFromStatue"/> is true. Defaults to false
 		/// </summary>
-		public static readonly SafeDictionary<int, bool> IgnoreNPCSpawnedFromStatue = new();
-	}
-}
-
-/// <summary>
-/// Derives from <see cref="Dictionary{TKey, TValue}"/>, changes <see cref="this[TKey]"/> to return a default value if getter fails, and create a new item if the setter fails.
-/// <br/> Uses new so when upcasted to <see cref="Dictionary{TKey, TValue}"/> it is identical to <see cref="Dictionary{TKey, TValue}"/>
-/// </summary>
-public class SafeDictionary<TKey, TValue> : Dictionary<TKey, TValue>
-{
-	public new TValue this[TKey type] {
-		get => this.GetValueOrDefault(type);
-		set {
-			if (!TryAdd(type, value))
-				base[type] = value;
-		}
+		public static bool[] ShimmerIgnoreNPCSpawnedFromStatue = Factory.CreateBoolSet();
 	}
 }

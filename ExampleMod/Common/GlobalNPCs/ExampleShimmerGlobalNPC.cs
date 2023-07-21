@@ -1,5 +1,4 @@
-﻿using ExampleMod.Common.Commands;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,7 +19,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				.AddCondition(Condition.InBeach) // On the beach
 				.Register(transformationFor); // Registers for every entity passed within the array
 
-			NPCID.Sets.IgnoreNPCSpawnedFromStatue[NPCID.Goldfish] = true; // The goldfish statue spawns can undergo any shimmer operation
+			NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[NPCID.Goldfish] = true; // The goldfish statue spawns can undergo any shimmer operation
 		}
 
 		public override void OnShimmer(NPC npc) {

@@ -7,6 +7,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace ExampleMod.Content.NPCs;
 
@@ -20,13 +21,12 @@ public class NPCShimmerShowcase : ModNPC
 
 		/*
 		So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
-		1: if the npc is on the left side of the world then spawn 3 skeletons and 30 example items, then shoot bullets from each skeleton
-		2: if Plantera has been defeated then spawn 10 example items
-		3: if an early game boss has been defeated then spawn the bride
+		1: if the npc is on the left side of the world then transform into 3 skeletons and 30 explosive bunnies, then shoot bullets from each skeleton
+		2: if Plantera has been defeated then transform into 10 example items
+		3: if an early game boss has been defeated then transform into the bride
 		4: if all other conditions fail, transform into a skeleton
 		*/
-		// Here we set up a shimmer transformation for the npc where if the NPC is on the left half of the world, it spawns three skeletons and 30
-		// explosive bunny items
+
 		CreateShimmerTransformation()
 			// A shimmer callback applies to the on transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
 			.AddCanShimmerCallBack((ModShimmer transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8)
@@ -35,13 +35,11 @@ public class NPCShimmerShowcase : ModNPC
 			.AddOnShimmerCallBack(OnShimmerCallBack)
 			.Register();
 
-		// Here we set up a shimmer transformation for the npc where if Plantera has been killed, it spawns 20 example items
 		CreateShimmerTransformation()
 			.AddCondition(Condition.DownedPlantera)
 			.AddModItemResult<ExampleItem>(20)
 			.Register();
 
-		// Here we set up a shimmer transformation for the npc where if an early game boss has been killed, it spawns one the bride
 		CreateShimmerTransformation()
 			.AddCondition(Condition.DownedEarlygameBoss)
 			.AddNPCResult(NPCID.TheBride, 1)
@@ -49,9 +47,8 @@ public class NPCShimmerShowcase : ModNPC
 
 		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ModShimmer unless all conditions fall through
 		NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
-
 		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal
-		NPCID.Sets.IgnoreNPCSpawnedFromStatue[NPC.type] = true;
+		NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[NPC.type] = true;
 	}
 
 	public override void SetDefaults() {
@@ -74,8 +71,11 @@ public class NPCShimmerShowcase : ModNPC
 				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
 			});
 	}
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
+	}
 
-	// This is static and not an override, it is used to create an instance of ModShimmer.OnShimmerCallBack, this is a delegate, delegates are
+	// This is static and not an override, it is used earlier to pass as a ModShimmer.OnShimmerCallBack, this is a delegate, delegates are
 	// essentially a reference to a method and as such need to be static
 	public static void OnShimmerCallBack(ModShimmer transformation, Entity origin, List<Entity> spawnedEntities) {
 		spawnedEntities.ForEach((Entity entity)
