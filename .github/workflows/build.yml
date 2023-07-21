@@ -532,7 +532,7 @@ jobs:
           echo pwd is: ${PWD}
           cd ~/Steam
           echo pwd is: ${PWD}
-          mkdir config
+          mkdir -p config
           cd config
           echo pwd is: ${PWD}
           ls -alhR
