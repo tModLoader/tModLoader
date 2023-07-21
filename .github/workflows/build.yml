@@ -532,13 +532,17 @@ jobs:
           echo pwd is: ${PWD}
           cd ~/Steam
           echo pwd is: ${PWD}
-          ls -alhR
           mkdir config
           cd config
+          echo pwd is: ${PWD}
           ls -alhR
+          echo Attempting to populate config.vdf
           echo "$STEAM_CONFIG_VDF" | base64 -d > "config.vdf"
+          echo done
           ls -alhR
+          echo Attempting to chmod config.vdf
           chmod 777 "config.vdf"
+          echo chmod done
           ls -alhR
         env:
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
