@@ -527,10 +527,10 @@ jobs:
       - name: Setup Authentication Files
         shell: bash
         run: |
-          echo Decrypting Authentication Files
-          gpg --quiet --batch --yes --decrypt --passphrase="$STEAM_SENTRY_PASSPHRASE" --output ~/Steam/ssfn2592666017656020661 ./solutions/Manifests/secret.gpg
+          echo Copying over config.vdf authentication file
+          echo "$STEAM_CONFIG_VDF" | base64 -d > ./config/config.vdf"
         env:
-          STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
+          STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
       
       - name: Get Version tag for Release
@@ -566,7 +566,7 @@ jobs:
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
@@ -604,7 +604,7 @@ jobs:
           cat Workshop/workshop.json
           
           echo "Publishing ExampleMod"
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${PWD}/publish.vdf" +quit
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" +workshop_build_item "${PWD}/publish.vdf" +quit
           echo publish.vdf contents:
           cat publish.vdf
           echo Done
