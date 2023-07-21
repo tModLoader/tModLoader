@@ -1,0 +1,59 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/PlayerMovementAccsCache.cs
++++ src/tModLoader/Terraria/DataStructures/PlayerMovementAccsCache.cs
+@@ -1,3 +_,5 @@
++using Terraria.ModLoader;
++
+ namespace Terraria.DataStructures;
+ 
+ public struct PlayerMovementAccsCache
+@@ -9,12 +_,15 @@
+ 	private float wingTime;
+ 	private int rocketDelay;
+ 	private int rocketDelay2;
++	/*
+ 	private bool jumpAgainCloud;
+ 	private bool jumpAgainSandstorm;
+ 	private bool jumpAgainBlizzard;
+ 	private bool jumpAgainFart;
+ 	private bool jumpAgainSail;
+ 	private bool jumpAgainUnicorn;
++	*/
++	private bool[] canJumpAgain;
+ 
+ 	public void CopyFrom(Player player)
+ 	{
+@@ -26,12 +_,17 @@
+ 			rocketDelay = player.rocketDelay;
+ 			rocketDelay2 = player.rocketDelay2;
+ 			wingTime = player.wingTime;
++			canJumpAgain ??= new bool[ExtraJumpLoader.ExtraJumpCount];
++			foreach (ExtraJump jump in ExtraJumpLoader.ExtraJumps)
++				canJumpAgain[jump.Type] = player.GetJumpState(jump).Available;
++			/*
+ 			jumpAgainCloud = player.canJumpAgain_Cloud;
+ 			jumpAgainSandstorm = player.canJumpAgain_Sandstorm;
+ 			jumpAgainBlizzard = player.canJumpAgain_Blizzard;
+ 			jumpAgainFart = player.canJumpAgain_Fart;
+ 			jumpAgainSail = player.canJumpAgain_Sail;
+ 			jumpAgainUnicorn = player.canJumpAgain_Unicorn;
++			*/
+ 		}
+ 	}
+ 
+@@ -47,12 +_,16 @@
+ 			}
+ 
+ 			if (_mountPreventedExtraJumps) {
++				/*
+ 				player.canJumpAgain_Cloud = jumpAgainCloud;
+ 				player.canJumpAgain_Sandstorm = jumpAgainSandstorm;
+ 				player.canJumpAgain_Blizzard = jumpAgainBlizzard;
+ 				player.canJumpAgain_Fart = jumpAgainFart;
+ 				player.canJumpAgain_Sail = jumpAgainSail;
+ 				player.canJumpAgain_Unicorn = jumpAgainUnicorn;
++				*/
++				foreach (ExtraJump jump in ExtraJumpLoader.ExtraJumps)
++					player.GetJumpState(jump).Available = canJumpAgain[jump.Type];
+ 			}
+ 		}
+ 	}

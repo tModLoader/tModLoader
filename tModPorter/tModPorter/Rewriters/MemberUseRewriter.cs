@@ -75,4 +75,35 @@ public class MemberUseRewriter : BaseRewriter {
 
 		return memberName.WithIdentifier(methodName);
 	};
+
+	public static RewriteMemberUse ExtraJumpField(string extraJumpName, string stateFieldName) => (rw, op, memberName) => {
+		var extraJumpExpr = MemberAccessExpression(rw.UseType("Terraria.ModLoader.ExtraJump"), extraJumpName);
+
+		var rootExpr = (ExpressionSyntax)op.Syntax;
+		rw.RegisterAction<ExpressionSyntax>(rootExpr, n => {
+			n = InvocationExpression(n.WithoutTrivia(), extraJumpExpr).WithTriviaFrom(n);
+			n = MemberAccessExpression(n.WithoutTrivia(), stateFieldName).WithTriviaFrom(n);
+			return n;
+		});
+
+		memberName = memberName.WithIdentifier("GetJumpState");
+
+		if (op.Parent is IAssignmentOperation assign && assign.Target == op) {
+			if (stateFieldName == "Active") {
+				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Remove. Active cannot be assigned a value."));
+				return memberName;
+			}
+
+			if (stateFieldName == "Enabled") {
+				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Call Enable() if setting this to true, otherwise call Disable()."));
+				return memberName;
+			}
+
+			var expr = assign.Syntax;
+			if (assign.Value is not ILiteralOperation { ConstantValue.Value: bool })
+				return memberName.WithBlockComment($"Suggestion: Player.GetJumpState(ExtraJump.{extraJumpName}).{stateFieldName} = ..."); // some other literal assignment
+		}
+
+		return memberName;
+	};
 }

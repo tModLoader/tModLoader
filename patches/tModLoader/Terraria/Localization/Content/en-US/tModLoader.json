@@ -54,6 +54,7 @@
 		"ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Old mod, enable at own risk",
 		"ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		"ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		"ModDependencyModsNotFound": "The following mods were not found: {0}",
 		"ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",

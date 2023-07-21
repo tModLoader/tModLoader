@@ -210,6 +210,7 @@ internal static class ModOrganizer
 		// For convenience, convert to dict
 		var currMods = FindWorkshopMods().ToDictionary(mod => mod.Name, mod => mod);
 
+		Logging.tML.Info("3 most recently changed workshop mods: " + string.Join(", ", currMods.OrderByDescending(x => x.Value.lastModified).Take(3).Select(x => $"{x.Value.Name} v{x.Value.properties.version} {x.Value.lastModified:d}")));
 
 		// trycatch the read in case users manually modify the file
 		try {
