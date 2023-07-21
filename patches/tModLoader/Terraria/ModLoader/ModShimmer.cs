@@ -152,7 +152,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 		=> AddResult(new(ModShimmerTypeID.NPC, type, count));
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
-	/// <param name="coinLuck"> The amount of coinluck to be added </param>
+	/// <param name="coinLuck"> The amount of coin luck to be added </param>
 	public ModShimmer AddCoinLuckResult(int coinLuck)
 		=> AddResult(new(ModShimmerTypeID.CoinLuck, -1, coinLuck));
 
@@ -304,57 +304,46 @@ public record class ModShimmer : IComparable<ModShimmer>
 		return false;
 	}
 
-	/// <inheritdoc cref="TryModShimmer{TEntity}(TEntity, ValueTuple{ModShimmerTypeID, int})"/>
+	/// <inheritdoc cref="TryModShimmer{TEntity}(TEntity)"/>
 	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
 	public static bool? TryModShimmer(NPC npc)
 		=> npc.SpawnedFromStatue
 			? NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[npc.type] // If spawned from a statue, check here
-				? TryModShimmer(npc, (ModShimmerTypeID.NPC, npc.type)) == false ? null : true // If we're ignoring, continue to shimmer, but override a false return value with null to prevent despawn in vanilla
+				? TryModShimmer<NPC>(npc) == false ? null : true // If we're ignoring, continue to shimmer, but override a false return value with null to prevent despawn in vanilla
 				: false // If not ignoring, fall straight to vanilla despawn code
-			: TryModShimmer(npc, (ModShimmerTypeID.NPC, npc.type)); // If not a statue, continue as normal
-
-	/// <inheritdoc cref="TryModShimmer{TEntity}(TEntity, ValueTuple{ModShimmerTypeID, int})"/>
-	/// <param name="item"> The <see cref="Item"/> to be shimmered </param>
-	public static bool TryModShimmer(Item item) => TryModShimmer(item, (ModShimmerTypeID.Item, item.type));
-
-	/*
-	<inheritdoc cref="TryModShimmer(Entity, ValueTuple{ModShimmerTypeID, int})"/>
-	<param name="projectile"> The <see cref="Projectile"/> to be shimmered </param>
-	public static bool TryModShimmer(Projectile projectile) => TryModShimmer(projectile, (ModShimmerTypeID.Projectile, projectile.type));
-	*/
+			: TryModShimmer<NPC>(npc); // If not a statue, continue as normal
 
 	/// <summary>
 	/// Tries to complete a shimmer operation on the entity passed, should not be called on multiplayer clients
 	/// </summary>
 	/// <param name="entity"> The <see cref="Entity"/> to be shimmered </param>
-	/// <param name="entityIdentification"> tag required information not included in <see cref="Entity"/> </param>
 	/// <returns>
 	/// True if the transformation is successful, false if it is should fall through to vanilla as normal, and null if it should fall through ignoring
 	/// if the NPC is a statue ( <see cref="NPC"/> Override only)
 	/// </returns>
-	public static bool TryModShimmer<TEntity>(TEntity entity, (ModShimmerTypeID, int) entityIdentification) where TEntity : Entity, IShimmerableEntity
+	public static bool TryModShimmer<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
 	{
-		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault(entityIdentification);
+		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault((entity.ModShimmerTypeID, entity.ShimmerableEntityTypePassthrough));
 		if (!(transformations?.Count > 0)) // Invers to catch null
 			return false;
 
 		foreach (ModShimmer transformation in transformations) { // Loops possible transformations
 			if (transformation.Results.Count > 0 && transformation.CanModShimmer(entity)) { // Checks conditions and callback in CanShimmer
-				DoModShimmer(entity, entityIdentification, transformation);
+				DoModShimmer(entity, transformation);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static void DoModShimmer<TEntity>(TEntity entity, (ModShimmerTypeID, int) entityIdentification, ModShimmer transformation) where TEntity : Entity, IShimmerableEntity
+	public static void DoModShimmer<TEntity>(TEntity entity, ModShimmer transformation) where TEntity : Entity, IShimmerableEntity
 	{
 		SpawnModShimmerResults(entity, transformation);
-		CleanupShimmerSource(entityIdentification.Item1, entity);
+		CleanupShimmerSource(entity);
 		ShimmerEffect(entity.Center);
 	}
 
-	private static void SpawnModShimmerResults(Entity entity, ModShimmer transformation)
+	private static void SpawnModShimmerResults<TEntity>(TEntity entity, ModShimmer transformation) where TEntity : Entity, IShimmerableEntity
 	{
 		List<Entity> spawnedEntities = new(); // List to be passed for onShimmerCallBacks
 		int resultSpawnCounter = 0; //Used to offset spawned stuff
@@ -365,8 +354,8 @@ public record class ModShimmer : IComparable<ModShimmer>
 		transformation.OnShimmerCallBacks?.Invoke(transformation, entity, spawnedEntities);
 	}
 
-	private static void SpawnModShimmerResult(Entity entity, ModShimmerResult shimmerResult, ref int resultIndex, ref List<Entity> spawned)
-	{
+	private static void SpawnModShimmerResult<TEntity>(TEntity entity, ModShimmerResult shimmerResult, ref int resultIndex, ref List<Entity> spawned) where TEntity : Entity, IShimmerableEntity
+	{// TODO: Implement spawn offsets from item 
 		int stackCounter = shimmerResult.Count;
 
 		switch (shimmerResult.ResultType) {
@@ -405,7 +394,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 						newNPC.spriteDirection = nPC.spriteDirection;
 						newNPC.shimmerTransparency = nPC.shimmerTransparency;
 
-						if (nPC.value == 0f) // I'm pretty sure this is just for statues
+						if (nPC.value == 0f) // I think this is just for statues
 							newNPC.value = 0f;
 
 						newNPC.SpawnedFromStatue = nPC.SpawnedFromStatue;
@@ -431,7 +420,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 				break;
 			}
 
-			case ModShimmerTypeID.CoinLuck: // Make sure to check this works right, if you're reading this while reviewing please remind me bc I def will forget
+			case ModShimmerTypeID.CoinLuck: // TODO: Test
 				Main.player[Main.myPlayer].AddCoinLuck(entity.Center, shimmerResult.Count);
 				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, (int)entity.Center.X, (int)entity.Center.Y, shimmerResult.Count);
 				break;
@@ -442,20 +431,16 @@ public record class ModShimmer : IComparable<ModShimmer>
 		}
 	}
 
-	private static void CleanupShimmerSource(ModShimmerTypeID modShimmerTypeID, Entity entity)
+	private static void CleanupShimmerSource<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
 	{
-		switch (modShimmerTypeID) {
+		switch (entity.ModShimmerTypeID) {
 			case ModShimmerTypeID.NPC:
-				CleanupShimmerSource((NPC)entity);
+				CleanupShimmerSource(entity as NPC);
 				break;
 
 			case ModShimmerTypeID.Item:
-				CleanupShimmerSource((Item)entity);
+				CleanupShimmerSource(entity as Item);
 				break;
-
-				//case ModShimmerTypeID.Projectile:
-				//	CleanupShimmerSource((Projectile)entity);
-				//	break;
 		}
 	}
 
@@ -471,20 +456,15 @@ public record class ModShimmer : IComparable<ModShimmer>
 
 	private static void CleanupShimmerSource(Item item)
 	{
+		item.makeNPC = -1;
+		item.active = false;
 		item.shimmerTime = 0f;
 		if (Main.netMode == NetmodeID.Server)
 			NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, item.whoAmI, 1f);
-		item.makeNPC = -1;
-		item.active = false;
 	}
 
-	//private static void CleanupShimmerSource(Projectile projectile)
-	//{
-	//	throw new NotImplementedException();
-	//}
-
 	/// <summary>
-	/// Creates the shimmer effect checking either singleplayer or server
+	/// Creates the shimmer effect checking either single player or server
 	/// </summary>
 	/// <param name="position"> The position to create the effect </param>
 	public static void ShimmerEffect(Vector2 position)
@@ -532,8 +512,6 @@ public enum ModShimmerTypeID
 {
 	NPC,
 	Item,
-
-	//Projectile,
 	CoinLuck,
 	Custom,
 	Null,

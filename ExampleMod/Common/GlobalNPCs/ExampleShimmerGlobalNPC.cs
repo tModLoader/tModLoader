@@ -23,7 +23,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		}
 
 		public override void OnShimmer(NPC npc) {
-			if (Main.rand.NextBool(100)) {
+			if (Main.rand.NextBool(100)) { // One is every 100 shimmer operations we randomly spawn a bee hat
 				int itemIndex = Item.NewItem(npc.GetSource_Misc("shimmer"), npc.Center, ItemID.BeeHat, 1);
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
