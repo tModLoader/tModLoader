@@ -528,6 +528,9 @@ jobs:
         shell: bash
         run: |
           echo Copying over config.vdf authentication file
+          ls -alhR
+          mkdir "~/Steam/config/"
+          ls -alhR
           echo "$STEAM_CONFIG_VDF" | base64 -d > "~/Steam/config/config.vdf"
         env:
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
