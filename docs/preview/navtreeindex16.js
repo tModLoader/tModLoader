@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_proj_a_i_style_i_d.html#abe6294229688ea73c1571dbf396708fa":[3,0,987,105],
 "class_proj_a_i_style_i_d.html#abe99399ea58795f72f9de75c0c5ef495":[3,0,987,184],
 "class_proj_a_i_style_i_d.html#abf81c594118ceea84b83f8351e5d361d":[3,0,987,97],
 "class_proj_a_i_style_i_d.html#ac08c102e49830a9f2f1ed2400a2f056f":[3,0,987,39],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_rgb_device.html":[3,0,1038],
 "class_rgb_keyboard.html":[3,0,1039],
 "class_rich_presence_state.html":[3,0,1040],
-"class_rock_paper_scissors_command.html":[3,0,1041],
-"class_roll_command.html":[3,0,1042]
+"class_rock_paper_scissors_command.html":[3,0,1041]
 };

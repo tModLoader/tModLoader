@@ -363,7 +363,7 @@ var annotated_dup =
     [ "FileBrowser", "class_file_browser.html", null ],
     [ "FileData", "class_file_data.html", null ],
     [ "FileMetadata", "class_file_metadata.html", null ],
-    [ "FileUtilities", "class_file_utilities.html", null ],
+    [ "FileUtilities", "class_file_utilities.html", "class_file_utilities" ],
     [ "Film", "class_film.html", null ],
     [ "Filter", "class_filter.html", null ],
     [ "FilteredArrayEnumerator", "struct_filtered_array_enumerator.html", null ],

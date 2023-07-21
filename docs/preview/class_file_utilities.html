@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('class_file_utilities.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_file_utilities-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FileUtilities Class Reference</div></div>
 </div><!--header-->
@@ -93,12 +94,22 @@ $(document).ready(function(){initNavTree('class_file_utilities.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a52326b317f487061a491dc474577ce76"><td class="memItemLeft" align="right" valign="top"><a id="a52326b317f487061a491dc474577ce76" name="a52326b317f487061a491dc474577ce76"></a>
+static string&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertToRelativePath</b> (string basePath, string fullPath)</td></tr>
+<tr class="memdesc:a52326b317f487061a491dc474577ce76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the full 'path' to remove the base path component. Example: C://My Documents//Help Me I'm Hungry.txt is full 'path' basePath is C://My Documents Thus returns 'Help Me I'm Hungry.txt' <br /></td></tr>
+<tr class="separator:a52326b317f487061a491dc474577ce76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf439690f8567932277663b168b007ac"><td class="memItemLeft" align="right" valign="top"><a id="acf439690f8567932277663b168b007ac" name="acf439690f8567932277663b168b007ac"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Copy</b> (string source, string destination, bool cloud, bool overwrite=true)</td></tr>
 <tr class="separator:acf439690f8567932277663b168b007ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86770776c355a10eb0df09dbb7e73a3d"><td class="memItemLeft" align="right" valign="top"><a id="a86770776c355a10eb0df09dbb7e73a3d" name="a86770776c355a10eb0df09dbb7e73a3d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyExtended</b> (string source, string destination, bool cloud, bool overwriteAlways, bool overwriteOld=true)</td></tr>
+<tr class="separator:a86770776c355a10eb0df09dbb7e73a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a972a9c3a5b0b31ad9fe759d72a60eada"><td class="memItemLeft" align="right" valign="top"><a id="a972a9c3a5b0b31ad9fe759d72a60eada" name="a972a9c3a5b0b31ad9fe759d72a60eada"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyFolder</b> (string sourcePath, string destinationPath)</td></tr>
 <tr class="separator:a972a9c3a5b0b31ad9fe759d72a60eada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d0eb3797ad3b6d5fc8c9dcb72d2d05f"><td class="memItemLeft" align="right" valign="top"><a id="a7d0eb3797ad3b6d5fc8c9dcb72d2d05f" name="a7d0eb3797ad3b6d5fc8c9dcb72d2d05f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyFolderEXT</b> (string sourcePath, string destinationPath, bool isCloud=false, Regex excludeFilter=null, bool overwriteAlways=false, bool overwriteOld=false)</td></tr>
+<tr class="separator:a7d0eb3797ad3b6d5fc8c9dcb72d2d05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13eff6351590b585a26f6cf9e3db26a7"><td class="memItemLeft" align="right" valign="top"><a id="a13eff6351590b585a26f6cf9e3db26a7" name="a13eff6351590b585a26f6cf9e3db26a7"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CopyToLocal</b> (string cloudPath, string localPath)</td></tr>
 <tr class="separator:a13eff6351590b585a26f6cf9e3db26a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,6 +119,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Delete</b> (st
 <tr class="memitem:a0b411f162c0fe82cc3b885c754f47596"><td class="memItemLeft" align="right" valign="top"><a id="a0b411f162c0fe82cc3b885c754f47596" name="a0b411f162c0fe82cc3b885c754f47596"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Exists</b> (string path, bool cloud)</td></tr>
 <tr class="separator:a0b411f162c0fe82cc3b885c754f47596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcaaf1e32a04be543b3c61b911cc326a"><td class="memItemLeft" align="right" valign="top"><a id="afcaaf1e32a04be543b3c61b911cc326a" name="afcaaf1e32a04be543b3c61b911cc326a"></a>
+static string string int stabilityLevel[]&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlternateSavePathFiles</b> (string folderName)</td></tr>
+<tr class="separator:afcaaf1e32a04be543b3c61b911cc326a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6da222b83159de0f7581f5bd6f19d34"><td class="memItemLeft" align="right" valign="top"><a id="ad6da222b83159de0f7581f5bd6f19d34" name="ad6da222b83159de0f7581f5bd6f19d34"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetFileName</b> (string path, bool includeExtension=true)</td></tr>
 <tr class="separator:ad6da222b83159de0f7581f5bd6f19d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,6 +161,15 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (str
 <tr class="memitem:ac91f3f5b9f26e54da75e108204ec59a7"><td class="memItemLeft" align="right" valign="top"><a id="ac91f3f5b9f26e54da75e108204ec59a7" name="ac91f3f5b9f26e54da75e108204ec59a7"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAllBytes</b> (string path, byte[] data, bool cloud)</td></tr>
 <tr class="separator:ac91f3f5b9f26e54da75e108204ec59a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ace402fb7ea069abd413bca6e46655716"><td class="memItemLeft" align="right" valign="top"><a id="ace402fb7ea069abd413bca6e46655716" name="ace402fb7ea069abd413bca6e46655716"></a>
+static string string&#160;</td><td class="memItemRight" valign="bottom"><b>message</b></td></tr>
+<tr class="separator:ace402fb7ea069abd413bca6e46655716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b18f0feffd14f54639e5bb79e82819a"><td class="memItemLeft" align="right" valign="top"><a id="a5b18f0feffd14f54639e5bb79e82819a" name="a5b18f0feffd14f54639e5bb79e82819a"></a>
+static string&#160;</td><td class="memItemRight" valign="bottom"><b>path</b></td></tr>
+<tr class="separator:a5b18f0feffd14f54639e5bb79e82819a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

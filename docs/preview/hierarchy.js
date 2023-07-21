@@ -1867,6 +1867,7 @@ var hierarchy =
       [ "CloudSocialModule", "class_cloud_social_module.html", null ],
       [ "CoreSocialModule", "class_core_social_module.html", null ],
       [ "CoreSocialModule", "class_core_social_module.html", null ],
+      [ "CoreSocialModule", "class_core_social_module.html", null ],
       [ "FriendsSocialModule", "class_friends_social_module.html", null ],
       [ "NetSocialModule", "class_net_social_module.html", [
         [ "NetClientSocialModule", "class_net_client_social_module.html", null ],

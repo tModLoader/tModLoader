@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6":[3,0,1197,0,35],
 "class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c":[3,0,1197,0,5],
 "class_tile_i_d_1_1_sets.html#a304253e883fca925c1e09382f562b50d":[3,0,1197,0,23],
 "class_tile_i_d_1_1_sets.html#a38c57298977bbdfc47182befc869a9e2":[3,0,1197,0,30],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "class_unloaded_non_solid_tile.html":[3,0,1362],
 "class_unloaded_non_solid_tile.html#aae5bc2c98b0a722a2c6bc4e8d1d64ab1":[3,0,1362,0],
 "class_unloaded_player.html":[3,0,1363],
-"class_unloaded_player.html#a0274f0c5d4b9f37fbd3c3dacc7c755de":[3,0,1363,2],
-"class_unloaded_player.html#a2c8656d7f772a35fbda3f625ddd36c40":[3,0,1363,0]
+"class_unloaded_player.html#a0274f0c5d4b9f37fbd3c3dacc7c755de":[3,0,1363,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"interface_i_bestiary_entry_display_index.html":[3,0,491],
 "interface_i_bestiary_entry_filter.html":[3,0,492],
 "interface_i_bestiary_info_element.html":[3,0,493],
 "interface_i_bestiary_prioritized_element.html":[3,0,494],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "struct_n_p_c_1_1_hit_modifiers.html":[3,0,860,1],
 "struct_n_p_c_1_1_hit_modifiers.html#a00625b9d69366bef28de62b6b15e1804":[3,0,860,1,9],
 "struct_n_p_c_1_1_hit_modifiers.html#a05bb280b449f6b6caced58296875901b":[3,0,860,1,3],
-"struct_n_p_c_1_1_hit_modifiers.html#a1002e87a8ffb6ac37e486edb9b9e9f9a":[3,0,860,1,10],
-"struct_n_p_c_1_1_hit_modifiers.html#a1877b3584118b32c9ad35e504bf67161":[3,0,860,1,2]
+"struct_n_p_c_1_1_hit_modifiers.html#a1002e87a8ffb6ac37e486edb9b9e9f9a":[3,0,860,1,10]
 };

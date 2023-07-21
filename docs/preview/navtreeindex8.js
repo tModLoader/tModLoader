@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_lunar_pillar_big_progess_bar.html":[3,0,705],
 "class_m_p3_audio_track.html":[3,0,814],
 "class_m_p3_reader.html":[3,0,815],
 "class_magic_damage_class.html":[3,0,706],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a":[3,0,760,1],
 "class_mod_config.html#a9f7c968276ef6b016e02104f4bff5d89":[3,0,760,7],
 "class_mod_config.html#ab4c38f315a3842027514394336a342be":[3,0,760,6],
-"class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9":[3,0,760,2],
-"class_mod_config.html#af02ded51ef3c98534476412ea117d179":[3,0,760,4]
+"class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9":[3,0,760,2]
 };
