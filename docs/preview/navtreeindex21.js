@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"struct_n_p_c_1_1_hit_modifiers.html#a2a299a33d0fbe711818cf22c6d561fec":[3,0,860,1,0],
 "struct_n_p_c_1_1_hit_modifiers.html#a3559cbc95072314a723c58c10e014a0f":[3,0,860,1,1],
 "struct_n_p_c_1_1_hit_modifiers.html#a3fc834bc782b2655794b91d30067800d":[3,0,860,1,13],
 "struct_n_p_c_1_1_hit_modifiers.html#a48d9a5e8569df3d0f5fed4c428cf2321":[3,0,860,1,18],

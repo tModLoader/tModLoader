@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_unloaded_player.html#a4637432a257bc6911b04d249db218047":[3,0,1363,1],
 "class_unloaded_semi_solid_tile.html":[3,0,1364],
 "class_unloaded_semi_solid_tile.html#a405369d429d59cc76994c7a4de65e76b":[3,0,1364,0],
 "class_unloaded_solid_tile.html":[3,0,1365],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "interface_i_ball_contact_listener.html":[3,0,488],
 "interface_i_bestiary_background_image_path_and_color_provider.html":[3,0,489],
 "interface_i_bestiary_background_overlay_and_color_provider.html":[3,0,490],
-"interface_i_bestiary_entry_display_index.html":[3,0,491],
-"interface_i_bestiary_entry_filter.html":[3,0,492]
+"interface_i_bestiary_entry_display_index.html":[3,0,491]
 };

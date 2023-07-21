@@ -225,7 +225,7 @@ var annotated_dup =
     [ "CustomSky", "class_custom_sky.html", null ],
     [ "DamageClass", "class_damage_class.html", "class_damage_class" ],
     [ "DamageClassData", "class_damage_class_data.html", null ],
-    [ "DamageClassLoader", "class_damage_class_loader.html", null ],
+    [ "DamageClassLoader", "class_damage_class_loader.html", "class_damage_class_loader" ],
     [ "DD2Event", "class_d_d2_event.html", null ],
     [ "DD2Film", "class_d_d2_film.html", null ],
     [ "DD2Shader", "class_d_d2_shader.html", null ],

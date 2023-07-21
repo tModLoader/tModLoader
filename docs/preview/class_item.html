@@ -676,6 +676,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>createWall</b> = -1</t
 <tr class="memitem:a885130c63118f0397f3f5f1c61c7f068"><td class="memItemLeft" align="right" valign="top"><a id="a885130c63118f0397f3f5f1c61c7f068" name="a885130c63118f0397f3f5f1c61c7f068"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>crit</b></td></tr>
 <tr class="memdesc:a885130c63118f0397f3f5f1c61c7f068"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base critical chance for this item. Remember that the player has a base crit chance of 4. <br  />
+ Use <a class="el" href="class_mod_item.html#ad54d410325aebfedcaac6b2e823fc397" title="Allows you to dynamically modify a weapon&#39;s crit chance based on player and item conditions....">ModItem.ModifyWeaponCrit(Player, ref float)</a> for dynamic crit values. <br  />
  Defaults to 0 <br /></td></tr>
 <tr class="separator:a885130c63118f0397f3f5f1c61c7f068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26d10a605b43706b07db3f314be4c0a0"><td class="memItemLeft" align="right" valign="top"><a id="a26d10a605b43706b07db3f314be4c0a0" name="a26d10a605b43706b07db3f314be4c0a0"></a>
@@ -830,7 +831,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>makeNPC</b></td></tr>
 <tr class="separator:a15ee11cea8fa8a34361bf437ba32f987"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58c1d23d287efddbfcf7c208af3b2395"><td class="memItemLeft" align="right" valign="top"><a id="a58c1d23d287efddbfcf7c208af3b2395" name="a58c1d23d287efddbfcf7c208af3b2395"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mana</b></td></tr>
-<tr class="memdesc:a58c1d23d287efddbfcf7c208af3b2395"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of mana this item consumes on use. Use <a class="el" href="class_mod_item.html#afa73b2dbff8baf2bfc93110ffbd60123" title="Allows you to temporarily modify the amount of mana this item will consume on use,...">ModItem.ModifyManaCost(Player, ref float, ref float)</a> for dynamic mana costs. <br  />
+<tr class="memdesc:a58c1d23d287efddbfcf7c208af3b2395"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of mana this item consumes on use. <br  />
+ Use <a class="el" href="class_mod_item.html#afa73b2dbff8baf2bfc93110ffbd60123" title="Allows you to temporarily modify the amount of mana this item will consume on use,...">ModItem.ModifyManaCost(Player, ref float, ref float)</a> for dynamic mana costs. <br  />
  Defaults to 0. <br /></td></tr>
 <tr class="separator:a58c1d23d287efddbfcf7c208af3b2395"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d4e0e43de9c4f2fa2efdb6b5905ea6"><td class="memItemLeft" align="right" valign="top"><a id="a25d4e0e43de9c4f2fa2efdb6b5905ea6" name="a25d4e0e43de9c4f2fa2efdb6b5905ea6"></a>
@@ -973,6 +975,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>reuseDelay</b></td></t
 <tr class="memitem:a514343cc52a2b9e69b46c7db6aaddb22"><td class="memItemLeft" align="right" valign="top"><a id="a514343cc52a2b9e69b46c7db6aaddb22" name="a514343cc52a2b9e69b46c7db6aaddb22"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> = 1f</td></tr>
 <tr class="memdesc:a514343cc52a2b9e69b46c7db6aaddb22"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size multiplier of the item's sprite while the item is being used. Also increases range for melee weapons. <br  />
+ Use <a class="el" href="class_mod_item.html#a3b29a745953cba81629bd0ba8f032e4d" title="Allows you to dynamically modify this item&#39;s size for the given player, similarly to the effect of th...">ModItem.ModifyItemScale(Player, ref float)</a> for dynamic scale values. <br  />
  Defaults to 1f. <br /></td></tr>
 <tr class="separator:a514343cc52a2b9e69b46c7db6aaddb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c40fe8dc29fadd6a4a57d041a2fb07e"><td class="memItemLeft" align="right" valign="top"><a id="a7c40fe8dc29fadd6a4a57d041a2fb07e" name="a7c40fe8dc29fadd6a4a57d041a2fb07e"></a>

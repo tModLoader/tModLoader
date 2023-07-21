@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_m_p3_audio_track.html":[3,0,814],
 "class_m_p3_reader.html":[3,0,815],
 "class_magic_damage_class.html":[3,0,706],
 "class_magic_summon_hybrid_damage_class.html":[3,0,708],
@@ -147,8 +148,8 @@ var NAVTREEINDEX8 =
 "class_mod_accessory_slot.html#acc2c2beed3a04e82ea640c7647b1e269":[3,0,747,3],
 "class_mod_accessory_slot_player.html":[3,0,748],
 "class_mod_accessory_slot_player.html#a13dc6bc4adea95d0cacab31575d0200a":[3,0,748,6],
+"class_mod_accessory_slot_player.html#a16fe26d7e5a4430326ae3f6c9bb6500a":[3,0,748,5],
 "class_mod_accessory_slot_player.html#a26b15485a8ce0c2c191df0e06d608d33":[3,0,748,4],
-"class_mod_accessory_slot_player.html#a55c36ec1e6d10bebb945600278fd71e6":[3,0,748,5],
 "class_mod_accessory_slot_player.html#a9e7da16b8540c42840b643b558a8bc94":[3,0,748,0],
 "class_mod_accessory_slot_player.html#a9fe7124a5804742c7f57c1383a2c393d":[3,0,748,8],
 "class_mod_accessory_slot_player.html#aa0b12810101f656a43295b3d5b1d3088":[3,0,748,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_config.html#a9f7c968276ef6b016e02104f4bff5d89":[3,0,760,7],
 "class_mod_config.html#ab4c38f315a3842027514394336a342be":[3,0,760,6],
 "class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9":[3,0,760,2],
-"class_mod_config.html#af02ded51ef3c98534476412ea117d179":[3,0,760,4],
-"class_mod_content.html":[3,0,761]
+"class_mod_config.html#af02ded51ef3c98534476412ea117d179":[3,0,760,4]
 };

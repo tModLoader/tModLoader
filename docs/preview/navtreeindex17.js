@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_salamander_shelly_dad_u_i_collection_info_provider.html":[3,0,1043],
 "class_sand_mound.html":[3,0,1044],
 "class_sandstorm.html":[3,0,1045],
 "class_sandstorm.html#a1ecac80afb8244aa560cef293b08a901":[3,0,1045,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638":[3,0,1197,0,46],
 "class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4":[3,0,1197,0,41],
 "class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77":[3,0,1197,0,49],
-"class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6":[3,0,1197,0,35],
-"class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c":[3,0,1197,0,5]
+"class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6":[3,0,1197,0,35]
 };

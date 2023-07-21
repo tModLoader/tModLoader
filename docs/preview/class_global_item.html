@@ -312,10 +312,14 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitPvp<
  This hook is not instanced.  <a href="class_global_item.html#ad8b7d0051cbaf9c1079f849ab5d2ee23">More...</a><br /></td></tr>
 <tr class="separator:ad8b7d0051cbaf9c1079f849ab5d2ee23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeeac6e6d72e62af7895451a603ed3a9d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#aeeac6e6d72e62af7895451a603ed3a9d">ModifyItemScale</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref float scale)</td></tr>
-<tr class="memdesc:aeeac6e6d72e62af7895451a603ed3a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.  <a href="class_global_item.html#aeeac6e6d72e62af7895451a603ed3a9d">More...</a><br /></td></tr>
+<tr class="memdesc:aeeac6e6d72e62af7895451a603ed3a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a514343cc52a2b9e69b46c7db6aaddb22" title="The size multiplier of the item&#39;s sprite while the item is being used. Also increases range for melee...">Item.scale</a>, modify the <em>scale</em>  parameter.  <a href="class_global_item.html#aeeac6e6d72e62af7895451a603ed3a9d">More...</a><br /></td></tr>
 <tr class="separator:aeeac6e6d72e62af7895451a603ed3a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab00a91bfb0344bd88eb8aff517390c4d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#ab00a91bfb0344bd88eb8aff517390c4d">ModifyManaCost</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref float reduce, ref float mult)</td></tr>
-<tr class="memdesc:ab00a91bfb0344bd88eb8aff517390c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.  <a href="class_global_item.html#ab00a91bfb0344bd88eb8aff517390c4d">More...</a><br /></td></tr>
+<tr class="memdesc:ab00a91bfb0344bd88eb8aff517390c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a58c1d23d287efddbfcf7c208af3b2395" title="The amount of mana this item consumes on use.   Use ModItem.ModifyManaCost(Player,...">Item.mana</a>, modify the <em>reduce</em>  and <em>mult</em>  parameters.  <a href="class_global_item.html#ab00a91bfb0344bd88eb8aff517390c4d">More...</a><br /></td></tr>
 <tr class="separator:ab00a91bfb0344bd88eb8aff517390c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4b7e0f3fd5409ec669a99c512cd2bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a0f4b7e0f3fd5409ec669a99c512cd2bd">ModifyResearchSorting</a> (<a class="el" href="class_item.html">Item</a> item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup)</td></tr>
 <tr class="memdesc:a0f4b7e0f3fd5409ec669a99c512cd2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.  <a href="class_global_item.html#a0f4b7e0f3fd5409ec669a99c512cd2bd">More...</a><br /></td></tr>
@@ -329,13 +333,19 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTooltip
 <tr class="memdesc:ae2abd595858ff6162e2a69f733cbd473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify all the tooltips that display for the given item. See here for information about <a class="el" href="class_tooltip_line.html" title="This class serves as a way to store information about a line of tooltip for an item....">TooltipLine</a>. <br /></td></tr>
 <tr class="separator:ae2abd595858ff6162e2a69f733cbd473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37708aaedc3801a748eaa0d1b606a33f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a37708aaedc3801a748eaa0d1b606a33f">ModifyWeaponCrit</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref float crit)</td></tr>
-<tr class="memdesc:a37708aaedc3801a748eaa0d1b606a33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's crit chance based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer.  <a href="class_global_item.html#a37708aaedc3801a748eaa0d1b606a33f">More...</a><br /></td></tr>
+<tr class="memdesc:a37708aaedc3801a748eaa0d1b606a33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's crit chance based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a885130c63118f0397f3f5f1c61c7f068" title="The base critical chance for this item. Remember that the player has a base crit chance of 4....">Item.crit</a>, modify the <em>crit</em>  parameter.  <a href="class_global_item.html#a37708aaedc3801a748eaa0d1b606a33f">More...</a><br /></td></tr>
 <tr class="separator:a37708aaedc3801a748eaa0d1b606a33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a392840d367f8029c8c7d66b49fc5ce51"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a392840d367f8029c8c7d66b49fc5ce51">ModifyWeaponDamage</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref <a class="el" href="struct_stat_modifier.html">StatModifier</a> damage)</td></tr>
-<tr class="memdesc:a392840d367f8029c8c7d66b49fc5ce51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's damage based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer.  <a href="class_global_item.html#a392840d367f8029c8c7d66b49fc5ce51">More...</a><br /></td></tr>
+<tr class="memdesc:a392840d367f8029c8c7d66b49fc5ce51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's damage based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a26d10a605b43706b07db3f314be4c0a0" title="The base damage inflicted by this item. The List of weapons wiki pagecan be a useful guide for decidi...">Item.damage</a>, modify the <em>damage</em>  parameter.  <a href="class_global_item.html#a392840d367f8029c8c7d66b49fc5ce51">More...</a><br /></td></tr>
 <tr class="separator:a392840d367f8029c8c7d66b49fc5ce51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb12cdf6ee953bdcc6ee0baf80c336e9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#aeb12cdf6ee953bdcc6ee0baf80c336e9">ModifyWeaponKnockback</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref <a class="el" href="struct_stat_modifier.html">StatModifier</a> knockback)</td></tr>
-<tr class="memdesc:aeb12cdf6ee953bdcc6ee0baf80c336e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer.  <a href="class_global_item.html#aeb12cdf6ee953bdcc6ee0baf80c336e9">More...</a><br /></td></tr>
+<tr class="memdesc:aeb12cdf6ee953bdcc6ee0baf80c336e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a98c6c332c5aa30e68e8d366571d87c95" title="The force of the knock back. Max value is 20. The Knockback wiki pagehas info on existing values....">Item.knockBack</a>, modify the <em>knockback</em>  parameter.  <a href="class_global_item.html#aeb12cdf6ee953bdcc6ee0baf80c336e9">More...</a><br /></td></tr>
 <tr class="separator:aeb12cdf6ee953bdcc6ee0baf80c336e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b84026237a348162d582af8efb69b86"><td class="memItemLeft" align="right" valign="top"><a id="a2b84026237a348162d582af8efb69b86" name="a2b84026237a348162d582af8efb69b86"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>NeedsAmmo</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
@@ -2104,7 +2114,9 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove. </p>
+<p>Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a514343cc52a2b9e69b46c7db6aaddb22" title="The size multiplier of the item&#39;s sprite while the item is being used. Also increases range for melee...">Item.scale</a>, modify the <em>scale</em>  parameter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item to modify the scale of.</td></tr>
@@ -2163,7 +2175,9 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value. </p>
+<p>Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a58c1d23d287efddbfcf7c208af3b2395" title="The amount of mana this item consumes on use.   Use ModItem.ModifyManaCost(Player,...">Item.mana</a>, modify the <em>reduce</em>  and <em>mult</em>  parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used.</td></tr>
@@ -2342,7 +2356,9 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to dynamically modify a weapon's crit chance based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. </p>
+<p>Allows you to dynamically modify a weapon's crit chance based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a885130c63118f0397f3f5f1c61c7f068" title="The base critical chance for this item. Remember that the player has a base crit chance of 4....">Item.crit</a>, modify the <em>crit</em>  parameter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used.</td></tr>
@@ -2394,7 +2410,9 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to dynamically modify a weapon's damage based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. </p>
+<p>Allows you to dynamically modify a weapon's damage based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a26d10a605b43706b07db3f314be4c0a0" title="The base damage inflicted by this item. The List of weapons wiki pagecan be a useful guide for decidi...">Item.damage</a>, modify the <em>damage</em>  parameter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used.</td></tr>
@@ -2446,7 +2464,9 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. </p>
+<p>Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has to offer. <br  />
+<br  />
+ <b>Do not</b> modify <a class="el" href="class_item.html#a98c6c332c5aa30e68e8d366571d87c95" title="The force of the knock back. Max value is 20. The Knockback wiki pagehas info on existing values....">Item.knockBack</a>, modify the <em>knockback</em>  parameter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used.</td></tr>

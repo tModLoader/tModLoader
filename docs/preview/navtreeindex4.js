@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"class_game_tip_i_d.html#ad769b21f3d469105d22e705d8377dd81":[3,0,408,1],
 "class_game_tip_i_d.html#ad85fdb0d3007c60d44414ad61694b6fa":[3,0,408,25],
 "class_game_tip_i_d.html#adb4f130c8d44b5fc3937488a3967aa05":[3,0,408,46],
 "class_game_tip_i_d.html#adbd21ef626bdf31746bfb6fdb80454ac":[3,0,408,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "class_global_n_p_c.html#a9993c8cb10cc64f69fe437f982ebc14f":[3,0,437,46],
 "class_global_n_p_c.html#a9a2c4748629a5ab96841d881cd59b0af":[3,0,437,5],
 "class_global_n_p_c.html#a9d71a5bb73ece554295de555c345bfee":[3,0,437,14],
-"class_global_n_p_c.html#a9e6faf26813e7925b90554e9f92923f8":[3,0,437,54],
-"class_global_n_p_c.html#a9facc782cf01267bb84c214e19628f41":[3,0,437,17]
+"class_global_n_p_c.html#a9e6faf26813e7925b90554e9f92923f8":[3,0,437,54]
 };

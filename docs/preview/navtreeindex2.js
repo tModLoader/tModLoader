@@ -114,6 +114,7 @@ var NAVTREEINDEX2 =
 "class_damage_class.html#af73ff3cb3f79309368ad6a09924c2af9":[3,0,223,14],
 "class_damage_class_data.html":[3,0,224],
 "class_damage_class_loader.html":[3,0,225],
+"class_damage_class_loader.html#a221801c4da12ec95a30e463b09590319":[3,0,225,0],
 "class_dead_mans_chest_biome.html":[3,0,229],
 "class_death_command.html":[3,0,230],
 "class_death_shader.html":[3,0,231],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_entity_source___hit_effect.html":[3,0,308],
 "class_entity_source___item_open.html":[3,0,309],
 "class_entity_source___item_open.html#a8002f4a933406b3b55430eb4013b80e1":[3,0,309,0],
-"class_entity_source___item_open.html#ac34bf38246fc93d31e4d90d7f43eb31b":[3,0,309,2],
-"class_entity_source___item_open.html#af4abcad5e531864385c79e4c3a054f4f":[3,0,309,1]
+"class_entity_source___item_open.html#ac34bf38246fc93d31e4d90d7f43eb31b":[3,0,309,2]
 };

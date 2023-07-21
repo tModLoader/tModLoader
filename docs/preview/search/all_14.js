@@ -150,7 +150,7 @@ var searchData=
   ['updatebadliferegen_147',['UpdateBadLifeRegen',['../class_mod_player.html#a3677653797230c347c635eff2ee5fdb5',1,'ModPlayer']]],
   ['updatechestframes_148',['UpdateChestFrames',['../class_chest.html#a2d0df9024707905cced22ff229efb5a6',1,'Chest']]],
   ['updatedead_149',['UpdateDead',['../class_mod_player.html#a0a73016c97f920cc3022e4c45fc9470c',1,'ModPlayer']]],
-  ['updatedyes_150',['UpdateDyes',['../class_mod_accessory_slot_player.html#a55c36ec1e6d10bebb945600278fd71e6',1,'ModAccessorySlotPlayer.UpdateDyes()'],['../class_mod_player.html#a8d77d1bdb7cddaa8a3b4b42dbf90e65d',1,'ModPlayer.UpdateDyes()']]],
+  ['updatedyes_150',['UpdateDyes',['../class_mod_accessory_slot_player.html#a16fe26d7e5a4430326ae3f6c9bb6500a',1,'ModAccessorySlotPlayer.UpdateDyes()'],['../class_mod_player.html#a8d77d1bdb7cddaa8a3b4b42dbf90e65d',1,'ModPlayer.UpdateDyes()']]],
   ['updateeffects_151',['UpdateEffects',['../class_mod_mount.html#a15763914665b07b40eaacc17ae915db5',1,'ModMount']]],
   ['updateequip_152',['UpdateEquip',['../class_global_item.html#ad562bf64d6639a7fc19954c2a9f44a68',1,'GlobalItem.UpdateEquip()'],['../class_item_loader.html#aa006913902010bfb48f013e20ff40e07',1,'ItemLoader.UpdateEquip()'],['../class_mod_item.html#aba46b7861cb531ddf4e9aeaea3f827ba',1,'ModItem.UpdateEquip()']]],
   ['updateequips_153',['UpdateEquips',['../class_mod_accessory_slot_player.html#a13dc6bc4adea95d0cacab31575d0200a',1,'ModAccessorySlotPlayer.UpdateEquips()'],['../class_mod_player.html#a30ab09c83949610bf3601f8e0310f93c',1,'ModPlayer.UpdateEquips()']]],
