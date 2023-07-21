@@ -14,6 +14,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
 
@@ -35,6 +36,7 @@ internal static class Interface
 	//internal const int managePublishedID = 10011;
 	internal const int updateMessageID = 10012;
 	internal const int infoMessageID = 10013;
+	internal const int infoMessageDelayedID = 10014;
 	//internal const int enterPassphraseMenuID = 10015;
 	internal const int modPacksMenuID = 10016;
 	internal const int tModLoaderSettingsID = 10017;
@@ -52,6 +54,7 @@ internal static class Interface
 	internal static UIErrorMessage errorMessage = new UIErrorMessage();
 	internal static UIModBrowser modBrowser = new UIModBrowser();
 	internal static UIModInfo modInfo = new UIModInfo();
+	internal static UIForcedDelayInfoMessage infoMessageDelayed = new UIForcedDelayInfoMessage();
 	//internal static UIManagePublished managePublished = new UIManagePublished();
 	internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 	internal static UIInfoMessage infoMessage = new UIInfoMessage();
