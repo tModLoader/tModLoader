@@ -557,13 +557,6 @@ internal static class ModOrganizer
 			return null;
 		}
 
-		// This was from the 1.4.3-Legacy transition to 1.4.4. Used to show a mod has a 1.4.4 version based on the tag "1.4.4"
-		/*
-		if (TryReadManifest(repo, out var info))
-			if (info.tags != null && info.tags.Contains("1.4.3"))
-				modsReadyFor144.Add(Path.GetFileNameWithoutExtension(information[0].file));
-		*/
-
 		var recommendedTmod = information.Where(t => t.tModVersion <= BuildInfo.tMLVersion).OrderByDescending(t => t.tModVersion).FirstOrDefault();
 		if (recommendedTmod == default) {
 			Logging.tML.Warn($"No .tMods found for this version in Workshop Folder {repo}. Defaulting to show newest");
@@ -583,6 +576,35 @@ internal static class ModOrganizer
 			return "1.4.3";
 
 		return "1.4.4";
+	}
+
+	public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion)
+	{
+		string thisVersion = GetBrowserVersionNumber(BuildInfo.tMLVersion);
+		modBrowserVersion = thisVersion;
+
+		// If Can't Read Manifest, assume local build and thus must be compatible
+		if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
+			return true;
+
+		// If Tags is null, it would be a pre-1.4 release mod. IE "1.4-alpha". 
+		if (info.tags == null) {
+			modBrowserVersion = "1.4.3";
+			return modBrowserVersion == thisVersion;
+		}
+
+		// Attempt checking if it's supported on this version, if so, then it's for this duh.
+		if (info.tags.Contains(thisVersion))
+			return true;
+
+		// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
+		modBrowserVersion = GetBrowserVersionNumber(mod.tModLoaderVersion);
+		if (info.tags.Contains(modBrowserVersion))
+			return false;
+
+		// Version unknown. Assume 1.4.3
+		modBrowserVersion = "1.4.3";
+		return false;
 	}
 
 

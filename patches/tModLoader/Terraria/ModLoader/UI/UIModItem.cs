@@ -103,13 +103,23 @@ internal class UIModItem : UIPanel
 		_uiModStateText.OnLeftClick += ToggleEnabled;
 
 		// Don't show the Enable/Disable button if there is no loadable version
-		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
-			string updateVersion = $"v{_mod.tModLoaderVersion}";
-			string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
+		string updateVersion = null;
+		string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
 
+		// Detect if it's for a preview version ahead of our time
+		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
+			updateVersion = $"v{_mod.tModLoaderVersion}";
+			
 			if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
 				updateVersion = $"Preview {updateVersion}";
+		}
 
+		// Detect if it's for a different browser version entirely
+		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion))
+			updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
+
+		// Hide the Enabled button if it's not for this built version
+		if (updateVersion != null) {
 			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 			tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
 			tMLUpdateRequired.Top.Pixels = 40;
