@@ -217,6 +217,9 @@ public static partial class Program
 			SavePath = SaveFolderName;
 		}
 		else {
+			// Needs to run as early as possible, given exception handler depends on ModCompile, and Porting carries exception risk
+			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
+
 			// File migration is only attempted for the default save folder
 			try {
 				PortFilesMaster(SavePath, isCloud: false);
@@ -224,8 +227,7 @@ public static partial class Program
 			catch (Exception e) {
 				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
 			}
-
-			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
+			
 			SavePath = Path.Combine(SavePath, SaveFolderName);
 		}
 		
