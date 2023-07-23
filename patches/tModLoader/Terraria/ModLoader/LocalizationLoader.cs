@@ -229,7 +229,13 @@ namespace Terraria.ModLoader
 				var culture = GameCulture.FromPath(translationFile.Name);
 
 				// Parse HJSON and convert to standard JSON
-				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
+				string jsonString;
+				try {
+					jsonString = HjsonValue.Parse(translationFileContents).ToString();
+				}
+				catch (Exception e) {
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+				}
 
 				// Parse JSON
 				var jsonObject = JObject.Parse(jsonString);
