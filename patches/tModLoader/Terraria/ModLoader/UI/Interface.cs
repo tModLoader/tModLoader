@@ -158,7 +158,7 @@ internal static class Interface
 
 			else if (ModLoader.PreviewFreezeNotification) {
 				ModLoader.PreviewFreezeNotification = false;
-				ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 					() => {
 						SoundEngine.PlaySound(SoundID.MenuOpen);
