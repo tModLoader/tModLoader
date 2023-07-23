@@ -7,6 +7,7 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.Utilities;
 
 namespace Terraria.GameContent.UI.States;
 
@@ -49,13 +50,7 @@ partial class UIWorldSelect
 
 		// TODO: Do we need to do extra work for .wld files that have been renamed? Is that valid?
 		// Vanilla and 1.3 paths are defaults, 1.4 TML paths are relative to current savepath.
-		var otherPaths = new (string path, string message, int stabilityLevel)[] {
-			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Worlds"), "Click to copy \"{0}\" over from Terraria", 0),
-			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", "Worlds"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
-			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-stable", 1),
-			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-preview", 2),
-			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-dev", 3),
-		};
+		var otherPaths = FileUtilities.GetAlternateSavePathFiles("Worlds");
 
 		int currentStabilityLevel = BuildInfo.Purpose switch {
 			BuildInfo.BuildPurpose.Stable => 1,

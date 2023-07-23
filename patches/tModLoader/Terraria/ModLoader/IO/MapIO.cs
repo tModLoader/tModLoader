@@ -42,12 +42,8 @@ internal static class MapIO
 		if (!FileUtilities.Exists(path, isCloudSave)) {
 			return;
 		}
-		byte[] buffer = FileUtilities.ReadAllBytes(path, isCloudSave);
-		using (MemoryStream stream = new MemoryStream(buffer)) {
-			using (BinaryReader reader = new BinaryReader(stream)) {
-				ReadModMap(reader);
-			}
-		}
+
+		ReadModMap(new BinaryReader(FileUtilities.ReadAllBytes(path, isCloudSave).ToMemoryStream()));
 	}
 
 	internal static bool WriteModMap(BinaryWriter writer)

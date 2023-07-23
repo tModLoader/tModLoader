@@ -34,8 +34,11 @@
 		"MenuModsEnabled": "{0} {^0:Mod Activé;Mods Activés}",
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "Aucun matériel audio trouvé. Désactivation de tout l’audio.",
-		// "HowToAccessLegacytModLoaderButton": "How to Access legacy tModLoader versions",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",
@@ -55,6 +58,7 @@
 		"ModsOpenConfig": "Cliquez pour ouvrir la configuration",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		"ModDidNotFullyUnloadWarning": "Ce mod ne s'est pas complètement déchargé lors du dernier déchargement.\n(Ceci est un message pour le créateur du mod)",
@@ -538,7 +542,7 @@
 		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",

@@ -35,8 +35,11 @@
 		"MenuModsEnabled": "{0} 个模组已启用",
 		"MenuModUpdatesAvailable": "（{0} 个模组可更新！）",
 		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
-		"HowToAccessLegacytModLoaderButton": "使用tModLoader 1.3版本",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		"SteamFamilyShareWarning": "检测到Terraria为Steam家庭共享。\n由于Steam不支持家庭共享tModLoader，因此启用试验性方案。\n以下功能无法使用：\n - 游戏内 Steam 界面\n - Steam 多人",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -56,6 +59,7 @@
 		"ModsOpenConfig": "点击打开配置",
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n(点击启用)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"ModDidNotFullyUnloadWarning": "该模组在上次卸载时未完全卸载.\n(这是给模组作者的信息)",

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -122,7 +123,14 @@ internal static class LogArchiver
 		try {
 			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
 				using (var stream = File.OpenRead(logFile)) {
-					zip.AddEntry(entryName, stream);
+					if (stream.Length > 10_000_000) {
+						// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
+						Logging.tML.Error($"The log file {logFile} exceeds 10MB, it will be truncated for the logs archive.");
+						zip.AddEntry(entryName, stream.ReadBytes(10_000_000));
+					}
+					else {
+						zip.AddEntry(entryName, stream);
+					}
 					zip.Save();
 				}
 			}
