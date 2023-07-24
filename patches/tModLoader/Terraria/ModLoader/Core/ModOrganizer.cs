@@ -551,36 +551,19 @@ internal static class ModOrganizer
 
 	internal static string GetActiveTmodInRepo(string repo)
 	{
-		Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-		if (tmods.Length == 1)
-			return tmods[0];
-
-		string val = null;
-		Version currVersion = null;
-		foreach (string fileName in tmods) {
-			var match = PublishFolderMetadata.Match(fileName);
-
-			if (match.Success) {
-				Version testVers = new Version(match.Groups[1].Value);
-				if (testVers > tmodVersion) {
-					continue;
-				}
-				else if (testVers == currVersion) {
-					val = fileName;
-					break;
-				}
-				else if (testVers > currVersion) {
-					currVersion = testVers;
-					val = fileName;
-				}
-			}
-			else if (val == null) {
-				val = fileName;
-				currVersion = new Version(0, 12);
-			}
+		var information = AnalyzeWorkshopTmods(repo);
+		if (information == null || information.Count == 0) {
+			Logging.tML.Warn($"Unexpectedly missing .tMods in Workshop Folder {repo}");
+			return null;
 		}
-		return val;
+
+		var recommendedTmod = information.Where(t => t.tModVersion <= BuildInfo.tMLVersion).OrderByDescending(t => t.tModVersion).FirstOrDefault();
+		if (recommendedTmod == default) {
+			Logging.tML.Warn($"No .tMods found for this version in Workshop Folder {repo}. Defaulting to show newest");
+			return information.OrderByDescending(t => t.tModVersion).First().file;
+		}
+
+		return recommendedTmod.file;
 	}
 
 	// Delete in Mod Browser refactor - temp
@@ -595,20 +578,40 @@ internal static class ModOrganizer
 		return "1.4.4";
 	}
 
+	public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion)
+	{
+		string thisVersion = GetBrowserVersionNumber(BuildInfo.tMLVersion);
+		modBrowserVersion = thisVersion;
+
+		// If Can't Read Manifest, assume local build and thus must be compatible
+		if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
+			return true;
+
+		// If Tags is null, it would be a pre-1.4 release mod. IE "1.4-alpha". 
+		if (info.tags == null) {
+			modBrowserVersion = "1.4.3";
+			return modBrowserVersion == thisVersion;
+		}
+
+		// Attempt checking if it's supported on this version, if so, then it's for this duh.
+		if (info.tags.Contains(thisVersion))
+			return true;
+
+		// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
+		modBrowserVersion = GetBrowserVersionNumber(mod.tModLoaderVersion);
+		if (info.tags.Contains(modBrowserVersion))
+			return false;
+
+		// Version unknown. Assume 1.4.3
+		modBrowserVersion = "1.4.3";
+		return false;
+	}
+
 
 	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
 	{
-		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-		HashSet<string> versions = new HashSet<string>();
-
-		foreach (string fileName in tmods) {
-			var match = PublishFolderMetadata.Match(fileName);
-			if (match.Success) {
-				versions.Add(GetBrowserVersionNumber(new Version(match.Groups[1].Value)));
-			}
-		}
-
-		return versions;
+		var summary = AnalyzeWorkshopTmods(repo);
+		return summary.Select(info => GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 	}
 
 	/// <summary>
@@ -629,35 +632,50 @@ internal static class ModOrganizer
 		// we need to rollback to the last stable due to a significant bug.
 		// We also keep a 1.4.3 version from version 2022.9 prior
 
-		// Get the list of all tMod files on Workshop
-		List<(string file, Version tModVersion, bool isFolder)> information = new();
-		foreach (var filename in tmods) {
-			var match = PublishFolderMetadata.Match(filename);
-			if (match.Success) {
-				information.Add((Directory.GetParent(filename).ToString(), new Version(match.Groups[1].Value), isFolder: true));
-			}
-			else {
-				// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
-				// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
-				information.Add((filename, new Version(0, 12), isFolder: false));
-			}
-		}
+		var information = AnalyzeWorkshopTmods(repo);
+		if (information == null || information.Count() <= 3)
+			return;
 
 		(string browserVersion, int keepCount)[] keepRequirements =
 			{ ("1.4.3", 1), ("1.4.4", 3) };
 
 		foreach (var requirement in keepRequirements) {
 			// Get an ordered list for the particular version
-			var mods = information.Where(t => GetBrowserVersionNumber(t.tModVersion) == requirement.browserVersion)
-				.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
+			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
 
 			foreach (var item in mods) {
-				if (item.isFolder)
-					Directory.Delete(item.file, recursive:true);
+				if (item.isInFolder)
+					Directory.Delete(Path.GetDirectoryName(item.file), recursive: true);
 				else
 					File.Delete(item.file);
 			}
 		}
+	}
+
+	internal static IOrderedEnumerable<(string file, Version tModVersion, bool isInFolder)>
+			GetOrderedTmodWorkshopInfoForVersion(List<(string file, Version tModVersion, bool isInFolder)> information, string tmlVersion)
+	{
+		return information.Where(t => GetBrowserVersionNumber(t.tModVersion) == tmlVersion).OrderByDescending(t => t.tModVersion);
+	}
+
+	internal static List<(string file, Version tModVersion, bool isInFolder)> AnalyzeWorkshopTmods(string repo)
+	{
+		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+
+		// Get the list of all tMod files on Workshop
+		List<(string file, Version tModVersion, bool isInFolder)> information = new();
+		foreach (var filename in tmods) {
+			var match = PublishFolderMetadata.Match(filename);
+			if (match.Success) {
+				information.Add((filename, new Version(match.Groups[1].Value), isInFolder: true));
+			}
+			else {
+				// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
+				// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
+				information.Add((filename, new Version(0, 12), isInFolder: false));
+			}
+		}
+		return information;
 	}
 
 	// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
