@@ -367,7 +367,7 @@
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSUpgradeCSProj": "Обновить .csproj файл",
 		"MSUpgradeLangFiles": "Обновить .lang файлы до .hjson (будут сделаны резервные копии)",
-		"MSRebuildRequired": "Требуется рекомпиляция",
+		"MSRebuildRequired": "Требуется перекомпиляция",
 		"MSLocalizationFilesChangedCantPublish": "В файлы локализации были внесены изменения,\nперед публикацией необходимо пересобрать мод.",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Управление опубликованными",
