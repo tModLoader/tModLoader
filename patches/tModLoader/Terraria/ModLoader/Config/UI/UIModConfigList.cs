@@ -1,5 +1,6 @@
+using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -23,7 +24,7 @@ internal class UIModConfigList : UIState
 	{
 		uIElement = new UIElement {
 			Width = { Percent = 0.8f },
-			MaxWidth = UICommon.MaxPanelWidth,
+			MaxWidth = { Pixels = 800, Percent = 0f },
 			Top = { Pixels = 220 },
 			Height = { Pixels = -220, Percent = 1f },
 			HAlign = 0.5f,
@@ -156,18 +157,32 @@ internal class UIModConfigList : UIState
 	{
 		modList?.Clear();
 
-		foreach (var mod in ModLoader.Mods) {
+		// Have to sort by display name because normally mods are sorted by internal names
+		var mods = ModLoader.Mods.ToList();
+		mods.Sort((x, y) => x.DisplayName.CompareTo(y.DisplayName));
+
+		foreach (var mod in mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
 				var modPanel = new UITextPanel<string>(mod.DisplayName) {
 					HAlign = 0.5f
 				};
+
 				modPanel.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 				};
+
 				modPanel.OnUpdate += delegate (UIElement affectedElement) {
-					modPanel.BackgroundColor = selectedMod == mod ? UICommon.DefaultUIBlue : UICommon.DefaultUIBlueMouseOver;
-					modPanel.BorderColor = modPanel.IsMouseHovering ? UICommon.DefaultUIBorderMouseOver : UICommon.DefaultUIBorder;
+					bool selected = selectedMod == mod;
+					if (modPanel.IsMouseHovering) {
+						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlue : UICommon.MainPanelBackground * (1 / 0.8f);// Can't divide a colour so have to multiply by 1/x
+						modPanel.BorderColor = UICommon.DefaultUIBorderMouseOver;
+					}
+					else {
+						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlueMouseOver : UICommon.MainPanelBackground;
+						modPanel.BorderColor = UICommon.DefaultUIBorder;
+					}
 				};
+
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					selectedMod = mod;
@@ -187,11 +202,17 @@ internal class UIModConfigList : UIState
 			return;
 		}
 
+		// Have to sort by display name because normally configs are sorted by internal names
+		configs.Sort((x, y) => x.DisplayName.Value.CompareTo(y.DisplayName.Value));
+
 		foreach (var config in configs) {
+			float indicatorOffset = 20;
 			var configPanel = new UITextPanel<LocalizedText>(config.DisplayName) {
 				HAlign = 0.5f,
 			};
+			configPanel.PaddingRight += indicatorOffset;
 			configPanel.WithFadedMouseOver();
+
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 
@@ -203,11 +224,28 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 				}
 			};
-			configPanel.OnUpdate += delegate (UIElement affectedElement) {
-				if (configPanel.IsMouseHovering)
-					Main.instance.MouseText(Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide"));
-			};
 			configList.Add(configPanel);
+
+			// ConfigScope indicator
+			var serverColor = Colors.RarityRed;
+			var clientColor = Colors.RarityCyan;
+			var texture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
+			var sideIndicator = new UIImageFramed(texture, texture.Frame(2, 1, 1, 0)) {
+				VAlign = 0.5f,
+				HAlign = 1f,
+				Color = config.Mode == ConfigScope.ServerSide ? serverColor : clientColor,
+			};
+			sideIndicator.MarginRight = -indicatorOffset;
+
+			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
+				if (sideIndicator.IsMouseHovering) {
+					string colourCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
+					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
+					Main.instance.MouseText($"[c/{colourCode}:{hoverText}]");
+				}
+			};
+
+			configPanel.Append(sideIndicator);
 		}
 	}
 }
