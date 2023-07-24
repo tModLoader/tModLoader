@@ -1,6 +1,10 @@
+using System;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -70,23 +74,45 @@ public abstract class ModConfig : ILocalizedModType
 	public virtual ModConfig Clone() => (ModConfig)MemberwiseClone();
 
 	/// <summary>
-	/// Whether or not a reload is required. The default implementation compares properties and fields annotated with the ReloadRequiredAttribute. Unlike the other ModConfig hooks, this method is called on a clone of the ModConfig that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.
+	/// Whether or not a reload is required. The default implementation compares properties and fields annotated with the ReloadRequiredAttribute. Unlike the other ModConfig hooks, this method is called on a clone of the ModConfig that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.<br/>
+	/// Has a max depth of 10.
 	/// </summary>
 	/// <param name="pendingConfig">The other instance of ModConfig to compare against, it contains the values that are pending to take effect</param>
 	/// <returns></returns>
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this)) {
-			var reloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(variable, this, null);
+		return ObjectNeedsReload(this, pendingConfig);
+	}
 
-			if (reloadRequired == null) {
-				continue;
-			}
+	/// <summary>
+	/// Recursively checks an object to see if it has any fields that are changed and would require a reload.
+	/// </summary>
+	/// <param name="currentConfig"></param>
+	/// <param name="pendingConfig"></param>
+	/// <param name="depth"></param>
+	/// <param name="checkSubField"></param>
+	/// <returns></returns>
+	protected static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool> checkSubField = default)
+	{
+		if (checkSubField == default)
+			checkSubField = (field) => true;
 
-			// Do we need to implement nested ReloadRequired? Right now only top level fields will trigger it.
-			if (!ConfigManager.ObjectEquals(variable.GetValue(this), variable.GetValue(pendingConfig))) {
+		// Recursive limit check
+		if (depth <= 0)
+			return false;
+
+		// Loop over every field to check if they have been changed
+		foreach (var field in ConfigManager.GetFieldsAndProperties(currentConfig)) {
+			// If it has a reload required attribute and the field values don't match, then return true
+			bool doesntHaveJsonIgnore = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonIgnoreAttribute>(field, currentConfig, null) == null;
+			bool hasReloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(field, currentConfig, null) != null;
+			bool dontEqual = !ConfigManager.ObjectEquals(field.GetValue(currentConfig), field.GetValue(pendingConfig));
+			if (doesntHaveJsonIgnore && hasReloadRequired && dontEqual)
 				return true;
-			}
+
+			// Otherwise if it's a sub config, then check that as well
+			if (checkSubField(field) && ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1))
+				return true;
 		}
 
 		return false;
