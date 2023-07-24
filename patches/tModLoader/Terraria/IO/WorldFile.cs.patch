@@ -73,6 +73,14 @@
  				if (num3 != 0)
  					WorldGen.loadFailed = true;
  				else
+@@ -557,6 +_,7 @@
+ 			return;
+ 		}
+ 
++		TileFrameCache.InitializeTileFramer();
+ 		if (WorldFile.OnWorldLoad != null)
+ 			WorldFile.OnWorldLoad();
+ 	}
 @@ -652,6 +_,9 @@
  		if (Main.worldPathName == null)
  			return;
