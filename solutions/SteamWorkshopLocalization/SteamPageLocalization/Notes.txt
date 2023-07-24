@@ -1,4 +1,4 @@
-This folder is intended for Localizations for the Various Steam Languages for Workshop Text.
+This folder is intended for Localizations for the Various Steam Languages for Page Text.
 
 This may be moved later; for now, provides opportunity to start collecting them.
 
