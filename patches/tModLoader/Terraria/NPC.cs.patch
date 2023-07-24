@@ -2468,7 +2468,7 @@
  		if (wet) {
  			if (shimmerWet) {
  				gravity = 0.15f;
-@@ -73348,7 +_,14 @@
+@@ -73348,7 +_,10 @@
  
  	private void GetShimmered()
  	{
@@ -2476,19 +2476,18 @@
 +		if (!CanShimmer()) // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC
 +			return;
 +
-+		bool? modShimmerCheck = ModShimmer.TryModShimmer(this);  // ModShimmer Logic
-+		if (modShimmerCheck == true) {
-+			noSpawnCycle = true; // Here instead of in TryModShimmer due to protection level
-+		}
-+		else if (SpawnedFromStatue && modShimmerCheck == false) {
++		if (SpawnedFromStatue && NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
  			if (Main.netMode == 0)
  				Item.ShimmerEffect(base.Center);
  			else
-@@ -73361,6 +_,7 @@
+@@ -73361,6 +_,10 @@
  				life = 0;
  				NetMessage.SendData(23, -1, -1, null, whoAmI);
  			}
 +			return;
++		}
++		else if (ModShimmer.TryModShimmer(this)) {
++			noSpawnCycle = true; // Here instead of in TryModShimmer due to protection level
  		}
  		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
  			Transform(NPCID.Sets.ShimmerTransformToNPC[type]);

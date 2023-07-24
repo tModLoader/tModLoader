@@ -19,6 +19,8 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// </summary>
 	public static Dictionary<(ModShimmerTypeID, int), List<ModShimmer>> ModShimmerTransformations { get; } = new();
 
+	public static List<(CustomShimmerableSpawner, ModShimmer)> CustomShimmerables { get; } = new();
+
 	#region Constructors
 
 	/// <inheritdoc cref="ModShimmer(ValueTuple{ModShimmerTypeID, int})"/>
@@ -64,6 +66,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// The results that the transformation produces.
 	/// </summary>
 	public List<ModShimmerResult> Results { get; init; } = new();
+
+	public List<CustomShimmerableSpawned> CustomResults { get; init; } = new();
+	public CustomShimmerableSpawner CustomSource{ get; init; }
 
 	/// <summary>
 	/// Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick when skeletron or golem are undefeated respectively
@@ -304,22 +309,12 @@ public record class ModShimmer : IComparable<ModShimmer>
 		return false;
 	}
 
-	/// <inheritdoc cref="TryModShimmer{TEntity}(TEntity)"/>
-	/// <param name="npc"> The <see cref="NPC"/> to be shimmered </param>
-	public static bool? TryModShimmer(NPC npc)
-		=> npc.SpawnedFromStatue
-			? NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[npc.type] // If spawned from a statue, check here
-				? TryModShimmer<NPC>(npc) == false ? null : true // If we're ignoring, continue to shimmer, but override a false return value with null to prevent despawn in vanilla
-				: false // If not ignoring, fall straight to vanilla despawn code
-			: TryModShimmer<NPC>(npc); // If not a statue, continue as normal
-
 	/// <summary>
 	/// Tries to complete a shimmer operation on the entity passed, should not be called on multiplayer clients
 	/// </summary>
 	/// <param name="entity"> The <see cref="Entity"/> to be shimmered </param>
 	/// <returns>
-	/// True if the transformation is successful, false if it is should fall through to vanilla as normal, and null if it should fall through ignoring
-	/// if the NPC is a statue ( <see cref="NPC"/> Override only)
+	/// True if the transformation is successful, false if it is should fall through to vanilla as normal
 	/// </returns>
 	public static bool TryModShimmer<TEntity>(TEntity entity) where TEntity : Entity, IShimmerableEntity
 	{
@@ -334,6 +329,16 @@ public record class ModShimmer : IComparable<ModShimmer>
 			}
 		}
 		return false;
+	}
+
+	public static void CheckShimmers()
+	{
+		foreach ((CustomShimmerableSpawner, ModShimmer) spawnerTuple in CustomShimmerables) {
+			if (spawnerTuple.Item1.CanShimmer()) {
+				spawnerTuple.Item1.ShimmerDespawnSelf();
+			}
+				
+		}
 	}
 
 	public static void DoModShimmer<TEntity>(TEntity entity, ModShimmer transformation) where TEntity : Entity, IShimmerableEntity
@@ -355,7 +360,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	}
 
 	private static void SpawnModShimmerResult<TEntity>(TEntity entity, ModShimmerResult shimmerResult, ref int resultIndex, ref List<Entity> spawned) where TEntity : Entity, IShimmerableEntity
-	{// TODO: Implement spawn offsets from item 
+	{// TODO: Implement spawn offsets from item
 		int stackCounter = shimmerResult.Count;
 
 		switch (shimmerResult.ResultType) {
@@ -425,7 +430,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, (int)entity.Center.X, (int)entity.Center.Y, shimmerResult.Count);
 				break;
 
-			case ModShimmerTypeID.Custom:
+			case ModShimmerTypeID.Empty:
 				resultIndex += shimmerResult.Count;
 				break;
 		}
@@ -499,10 +504,29 @@ public record class ModShimmer : IComparable<ModShimmer>
 	}
 
 	#endregion Operation
+
+}
+
+public abstract class CustomShimmerableSpawner
+{
+	public abstract void OnShimmer();
+
+	public abstract void ShimmerDespawnSelf();
+
+	public abstract bool CanShimmer();
+}
+
+public abstract class CustomShimmerableSpawned
+{
+	public abstract void ShimmerSpawnSelf();
+
+	public abstract void OnShimmer();
+
+	public const ModShimmerTypeID ModShimmerType = ModShimmerTypeID.Custom;
 }
 
 /// <summary>
-/// Value used by <see cref="ModShimmerResult"/> to identify what type of entity to spawn. <br/> The <see cref="Custom"/> value simply sets the
+/// Value used by <see cref="ModShimmerResult"/> to identify what type of entity to spawn. <br/> The <see cref="Empty"/> value simply sets the
 /// shimmer as successful, spawns nothing, for if you desire entirely custom behavior to be defined in <see
 /// cref="ModShimmer.AddOnShimmerCallBack(ModShimmer.PostShimmerCallBack)"/> but do not want to include the item or NPC spawn that would usually count
 /// as a "successful" transformation
@@ -513,8 +537,9 @@ public enum ModShimmerTypeID
 	NPC,
 	Item,
 	CoinLuck,
-	Custom,
+	Empty,
 	Null,
+	Custom,
 }
 
 /// <summary>
@@ -526,7 +551,7 @@ public static class ModShimmerTypeIDExtensions
 		=> id == ModShimmerTypeID.NPC || id == ModShimmerTypeID.Item;
 
 	public static bool IsValidSpawnedType(this ModShimmerTypeID id)
-		=> id == ModShimmerTypeID.NPC || id == ModShimmerTypeID.Item || id == ModShimmerTypeID.CoinLuck || id == ModShimmerTypeID.Custom;
+		=> id == ModShimmerTypeID.NPC || id == ModShimmerTypeID.Item || id == ModShimmerTypeID.CoinLuck || id == ModShimmerTypeID.Empty;
 }
 
 /// <summary>
@@ -534,7 +559,7 @@ public static class ModShimmerTypeIDExtensions
 /// </summary>
 /// <param name="ResultType"> The type of shimmer operation this represents </param>
 /// <param name="Type">
-/// The type of the entity to spawn, ignored when <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/>
+/// The type of the entity to spawn, ignored when <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Empty"/>
 /// </param>
 /// <param name="Count">
 /// The number of this entity to spawn, if <paramref name="ResultType"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck value, if
