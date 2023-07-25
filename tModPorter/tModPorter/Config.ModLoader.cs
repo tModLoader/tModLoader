@@ -533,5 +533,6 @@ public static partial class Config
 		RenameInstanceField("Terraria.Projectile", from: "ContinuouslyUpdateDamage", to: "ContinuouslyUpdateDamageStats");
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "IsAnNPCWhipDebuff", to: "IsATagBuff");
 		RefactorStaticMember("Terraria.ID.NPCID.Sets", "DebuffImmunitySets", Comment("Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453"));
+		RefactorStaticMember("Terraria.ID.NPCID.Sets", "ShimmerImmunity", Comment("Removed: Change to Terraria.ID.NPCID.Sets[Type][BuffID.Shimmer] = value;"));
 	}
 }

@@ -79,5 +79,7 @@ public class ModNPCTest : ModNPC
 				BuffID.Poisoned
 			}
 		});
+
+		NPCID.Sets.ShimmerImmunity[Type] = true;
 	}
 }
