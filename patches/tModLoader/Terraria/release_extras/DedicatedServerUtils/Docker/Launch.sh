@@ -3,7 +3,7 @@
 
 # Installing/updating mods
 mkdir -p ~/.local/share/Terraria
-./manage-tModLoaderServer.sh -u --mods-only --check-dir ~/.local/share/Terraria --folder ~/.local/share/Terraria/wsmods
+./manage-tModLoaderServer.sh update --skip-tml --folder ~/.local/share/Terraria/wsmods
 
 # Symlink tML's local dotnet install so that it can persist through runs
 mkdir -p ~/.local/share/Terraria/dotnet
