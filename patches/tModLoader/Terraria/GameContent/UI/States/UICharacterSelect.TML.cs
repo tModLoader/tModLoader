@@ -87,7 +87,7 @@ public partial class UICharacterSelect : UIState
 
 				if (stabilityLevel > currentStabilityLevel) {
 					// TODO: Not necessarily newer...
-					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This player is from a newer tModLoader, it might not work") {
+					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.PlayerFromNewerTModMightNotWork")) {
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -100,7 +100,7 @@ public partial class UICharacterSelect : UIState
 				var playerWithSameName = Main.PlayerList.FirstOrDefault(x => x.Name == fileData.Name);
 
 				if (playerWithSameName != null) {
-					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "A player with this name exists, it will be overwritten") {
+					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.PlayerWithThisNameExistsWillBeOverwritten")) {
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -110,7 +110,7 @@ public partial class UICharacterSelect : UIState
 					left += warningImage.Width.Pixels + 6;
 
 					if (File.GetLastWriteTime(playerWithSameName.Path) > File.GetLastWriteTime(files[i])) {
-						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "The existing player was last played more recently") {
+						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.ExistingPlayerPlayedMoreRecently")) {
 							Left = { Pixels = left },
 							Top = { Pixels = 3 }
 						};
