@@ -95,7 +95,7 @@ public abstract class ModConfig : ILocalizedModType
 	protected static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool> checkSubField = default)
 	{
 		if (checkSubField == default)
-			checkSubField = (field) => true;
+			checkSubField = (field) => field.Type.IsClass;
 
 		// Recursive limit check
 		if (depth <= 0)
@@ -111,8 +111,8 @@ public abstract class ModConfig : ILocalizedModType
 				return true;
 
 			// Otherwise if it's a sub config, then check that as well
-			if (checkSubField(field) && ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1))
-				return true;
+			if (checkSubField(field))
+				return ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1);
 		}
 
 		return false;

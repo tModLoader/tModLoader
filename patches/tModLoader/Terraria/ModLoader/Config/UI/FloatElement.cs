@@ -18,4 +18,15 @@ public class FloatElement : PrimitiveRangeElement<float>
 		Max = 1;
 		Increment = 0.01f;
 	}
+
+	public override void OnBind()
+	{
+		base.OnBind();
+		
+		TextDisplayFunction = () => MemberInfo.Name + ": " + (decimal)GetValue();
+
+		if (Label != null) {
+			TextDisplayFunction = () => Label + ": " + (decimal)GetValue();
+		}
+	}
 }
