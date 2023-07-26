@@ -550,7 +550,7 @@ internal static class ModOrganizer
 
 	public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion)
 	{
-		string thisVersion = GetBrowserVersionNumber(BuildInfo.tMLVersion);
+		string thisVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
 		modBrowserVersion = thisVersion;
 		// If Can't Read Manifest, assume local build and thus must be compatible
 		if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
@@ -567,7 +567,7 @@ internal static class ModOrganizer
 			return true;
 
 		// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
-		modBrowserVersion = GetBrowserVersionNumber(mod.tModLoaderVersion);
+		modBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(mod.tModLoaderVersion);
 		if (info.tags.Contains(modBrowserVersion))
 			return false;
 
@@ -580,7 +580,7 @@ internal static class ModOrganizer
 	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
 	{
 		var summary = AnalyzeWorkshopTmods(repo);
-		return summary.Select(info => GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
+		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 	}
 
 	/// <summary>
@@ -610,7 +610,6 @@ internal static class ModOrganizer
 
 		foreach (var requirement in keepRequirements) {
 			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
-				.OrderByDescending(t => t.tModVersion).Skip(requirement.keepCount);
 
 			foreach (var item in mods) {
 				if (item.isInFolder)
@@ -624,7 +623,7 @@ internal static class ModOrganizer
 	internal static IOrderedEnumerable<(string file, Version tModVersion, bool isInFolder)>
 			GetOrderedTmodWorkshopInfoForVersion(List<(string file, Version tModVersion, bool isInFolder)> information, string tmlVersion)
 	{
-		return information.Where(t => GetBrowserVersionNumber(t.tModVersion) == tmlVersion).OrderByDescending(t => t.tModVersion);
+		return information.Where(t => SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion) == tmlVersion).OrderByDescending(t => t.tModVersion);
 	}
 
 	internal static List<(string file, Version tModVersion, bool isInFolder)> AnalyzeWorkshopTmods(string repo)
