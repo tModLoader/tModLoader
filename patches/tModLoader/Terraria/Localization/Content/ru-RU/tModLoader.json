@@ -124,7 +124,7 @@
 		"UpdateItem": "Обновление {0}",
 		"PublishItem": "Попытка публикации {0}",
 		"SteamDownloader": "Постановка скачивания в очередь менеджера загрузок Steam...",
-		"DownloadProgress": "Скачано {0} %",
+		"DownloadProgress": "Скачано {0}%",
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
@@ -446,7 +446,7 @@
 
 		// Tooltip lines
 		"NoAttackSpeedScaling": "Не получает бонус от скорости атаки",
-		"SpecialAttackSpeedScaling": "Получает {0} % от суммарного бонуса скорости атаки",
+		"SpecialAttackSpeedScaling": "Получает {0}% от суммарного бонуса скорости атаки",
 		"ModifiedByModsHoldSHIFT": "Изменён модом (удерж. SHIFT - информация)",
 		"ModifiedByMods": "Изменён модами: ",
 
@@ -551,56 +551,56 @@
 		"LastInfoAccPage": "Перейти на последнюю страницу"
 	},
 	"CommonItemTooltip": {
-		"IncreasesDefenseBy": "Увеличивает защиту на {0}",
-		"IncreasesArmorPenBy": "Увеличивает пробивание брони на {0}",
+		"IncreasesDefenseBy": "Увеличивает защиту на {0} ед.",
+		"IncreasesArmorPenBy": "Увеличивает пробивную способность на {0} ед.",
 
-		"IncreasesMaxLifeBy": "Увеличивает максимальный уровень здоровья на {0} ед.",
-		"IncreasesMaxManaBy": "Увеличивает максимальный уровень маны на {0} ед.",
-		"IncreasesMaxLifeByPercent": "Увеличивает максимальный уровень здоровья на {0} %",
-		"IncreasesMaxManaByPercent": "Увеличивает максимум уровень маны на {0} %",
+		"IncreasesMaxLifeBy": "Увеличивает максимальный запас здоровья на {0} ед.",
+		"IncreasesMaxManaBy": "Увеличивает максимальный запас маны на {0} ед.",
+		"IncreasesMaxLifeByPercent": "Увеличивает максимальный запас здоровья на {0}%",
+		"IncreasesMaxManaByPercent": "Увеличивает максимум запас маны на {0}%",
 
-		"IncreasesBowDamageByPercent": "Увеличивает урон от стрел на {0} %",
-		"IncreasesGunDamageByPercent": "Увеличивает урон от пушек на {0} %",
-		"IncreasesSpecialistDamageByPercent": "Увеличивает урон от особого дальнобойного оружия на {0} %",
+		"IncreasesBowDamageByPercent": "Увеличивает урон от луков на {0}%",
+		"IncreasesGunDamageByPercent": "Увеличивает урон от огнестрельного оружия на {0}%",
+		"IncreasesSpecialistDamageByPercent": "Увеличивает урон от особых видов оружия дальнего боя на {0}%",
 
-		"IncreasesWhipRangeByPercent": "Увеличивает дальность удара кнутом на {0} %",
-		"IncreasesMaxMinionsBy": "Увеличивает максимальное число ваших прислужников на {0}",
-		"IncreasesMaxSentriesBy": "Увеличивает урон призываемых существ на {0}",
+		"IncreasesWhipRangeByPercent": "Увеличивает дальность хлыста на {0}%",
+		"IncreasesMaxMinionsBy": "Увеличивает максимальное количество последователей на {0}",
+		"IncreasesMaxSentriesBy": "Увеличивает максимальное количество стражей на {0}",
 
-		"IncreasesFishingPowerBy": "Увеличивает мастерство рыбалки на {0}",
+		"IncreasesFishingPowerBy": "Увеличивает навык рыбной ловли на {0} ед.",
 
-		"PermanentlyIncreasesMaxLifeBy": "Навсегда увеличивает максимальный уровень здоровья на {0} ед.",
-		"PermanentlyIncreasesMaxManaBy": "Навсегда увеличивает максимальный уровень маны на {0} ед.",
+		"PermanentlyIncreasesMaxLifeBy": "Навсегда увеличивает максимальный запас здоровья на {0} ед.",
+		"PermanentlyIncreasesMaxManaBy": "Навсегда увеличивает максимальный запас маны на {0} ед.",
 
-		"ReducesDamageTakenByPercent": "Получаемый урон снижен на {0} %",
+		"ReducesDamageTakenByPercent": "Снижает получаемый урон на {0}%",
 
-		"PercentChanceToSaveAmmo": "Шанс {0} % сохранить боеприпасы",
-		"PercentReducedManaCost": "Уменьшает стоимость в мане на {0} %",
+		"PercentChanceToSaveAmmo": "{0}%-ный шанс сэкономить боеприпасы",
+		"PercentReducedManaCost": "{0}%-ное снижение расхода маны",
 
-		"PercentIncreasedMiningSpeed": "Увеличивает скорость добычи на {0} %",
-		"PercentIncreasedMovementSpeed": "Увеличивает скорость движения на {0} %",
+		"PercentIncreasedMiningSpeed": "{0}%-ное увеличение скорости добычи",
+		"PercentIncreasedMovementSpeed": "{0}%-ное увеличение скорости передвижения",
 
-		"ArmorPenetration": "{0} пробивания брони",
-		"PercentIncreasedDamage": "Увеличивает урон на {0} %",
-		"PercentIncreasedCritChance": "Увеличивает шанс критического удара на {0} %",
-		"PercentIncreasedDamageCritChance": "Увеличивает на {0} % урон и шанс критического удара",
+		"ArmorPenetration": "{0} ед. пробивной способности",
+		"PercentIncreasedDamage": "{0}%-ное увеличение урона",
+		"PercentIncreasedCritChance": "{0}-ное увеличение шанса нанести критический удар",
+		"PercentIncreasedDamageCritChance": "{0}%-ное увеличение урона и шанса нанести критический удар",
 
-		"PercentIncreasedMagicDamage": "Увеличивает магический урон на {0} %",
-		"PercentIncreasedMagicCritChance": "Увеличивает шанс критического магического урона на {0} %",
-		"PercentIncreasedMagicDamageCritChance": "Увеличивает на {0} % магический урон и шанс критического удара",
+		"PercentIncreasedMagicDamage": "{0}%-ное увеличение магического урона",
+		"PercentIncreasedMagicCritChance": "{0}-ное увеличение шанса нанести критический удар магией",
+		"PercentIncreasedMagicDamageCritChance": "{0}%-ное увеличение магического урона и шанса нанести критический удар",
 
-		"PercentIncreasedMeleeDamage": "Увеличивает урон в ближнем бою на {0} %",
-		"PercentIncreasedMeleeCritChance": "Увеличивает шанс критического урона в ближнем бою на {0} %",
-		"PercentIncreasedMeleeDamageCritChance": "Увеличивает на {0} % урон в ближнем бою и шанс критического удара",
-		"PercentIncreasedMeleeSpeed": "Увеличивает скорость ближнего боя на {0} %",
+		"PercentIncreasedMeleeDamage": "{0}%-ное увеличение урона в ближнем бою",
+		"PercentIncreasedMeleeCritChance": "{0}%-ное увеличение шанса нанести критический удар в ближнем бою",
+		"PercentIncreasedMeleeDamageCritChance": "{0}%-ное увеличение урона в ближнем бою и шанса нанести критический удар",
+		"PercentIncreasedMeleeSpeed": "{0}%-ное увеличение скорости ближнего боя",
 
-		"PercentIncreasedRangedDamage": "Увеличивает дистанционный урон на {0} %",
-		"PercentIncreasedRangedCritChance": "Увеличивает шанс критического дистанционного урона на {0} %",
-		"PercentIncreasedRangedDamageCritChance": "Увеличивает на {0} % дистанционный урон и шанс критического удара",
+		"PercentIncreasedRangedDamage": "{0}%-ное увеличение урона в дальнем бою",
+		"PercentIncreasedRangedCritChance": "{0}%-ное увеличение шанса нанести критический удар в дальнем бою",
+		"PercentIncreasedRangedDamageCritChance": "{0}%-ное увеличение урона в дальнем бою и шанса нанести критический удар",
 
-		"PercentIncreasedSummonDamage": "Увеличивает урон призываемых существ на {0} %",
-		"SummonTagDamage": "Увеличивает урон призываемых существ на {0} ед.",
-		"PercentSummonTagCritChance": "Увеличивает шанс критического удара призываемых существ на {0} %"
+		"PercentIncreasedSummonDamage": "{0}%-ное увеличение урона, наносимого последователями",
+		"SummonTagDamage": "{0} ед. дополнительного урона, наносимого последователями",
+		"PercentSummonTagCritChance": "{0}%-ное увеличение дополнительного шанса нанести критический удар последователями"
 	},
 	"Bestiary_ItemDropConditions": {
 		"SimpleCondition": "Предметы: {0}"
@@ -780,7 +780,7 @@
 		"AtleastXMana": "Когда у игрока не менее {0} ед. максимальной маны",
 		"PlatinumCoin": "Когда в инвентаре не менее 1 платиновой монеты",
 		"GolfScoreOver": "Когда игрок набирает {0} или более очков в гольфе",
-		"BestiaryPercentage": "Когда бестиарий заполнен хотя бы на {0} %",
+		"BestiaryPercentage": "Когда бестиарий заполнен хотя бы на {0}%",
 		"BestiaryFull": "Когда бестиарий полностью заполнен",
 		"BestiaryWinx": "Когда бестиарий содержит записи для всех трёх фей",
 		"InMultiplayer": "В многопольз. игре",
