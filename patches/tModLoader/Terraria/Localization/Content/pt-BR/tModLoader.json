@@ -868,7 +868,7 @@
 		"ModLoader.Items.UnloadedItem.DisplayName": "Item Descarregado",
 		"ModLoader.Items.UnloadedItem.Tooltip": "\n",
 		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
-		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}"
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}",
 		"ModLoader.Tiles.UnloadedChest.MapEntry0": "Baú Descarregado",
 		"ModLoader.Tiles.UnloadedChest.MapEntry1": "Baú Descarregado Bloqueado",
 		"ModLoader.Items.Jofairden_Body.DisplayName": "Corpo de Andromedon",
