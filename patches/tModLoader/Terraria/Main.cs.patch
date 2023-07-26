@@ -552,6 +552,20 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
+@@ -3198,12 +_,13 @@
+ 
+ 		protected void CheckBunny() {
+ 			try {
+-#if WINDOWS //TODO: <https://www.nuget.org/packages/Microsoft.Win32.Registry/>?
++				if (!OperatingSystem.IsWindows())
++					return;
++
+ 				RegistryKey currentUser = Registry.CurrentUser;
+ 				currentUser = currentUser.CreateSubKey("Software\\Terraria");
+ 				if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
+ 					runningCollectorsEdition = true;
+-#endif
+ 			}
  			catch {
  				runningCollectorsEdition = false;
 @@ -3230,6 +_,9 @@
