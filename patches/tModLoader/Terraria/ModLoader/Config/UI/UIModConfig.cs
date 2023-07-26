@@ -45,7 +45,7 @@ internal class UIModConfig : UIState
 	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
 	private readonly Stack<UIPanel> configPanelStack = new();
 	private readonly Stack<string> subPageStack = new();
-	
+
 	private Mod mod;
 	private List<ModConfig> modConfigs;
 	private ModConfig modConfig; // This is from ConfigManager.Configs
@@ -55,7 +55,7 @@ internal class UIModConfig : UIState
 	private bool pendingChanges;
 	private bool pendingChangesUIUpdate;
 	private bool netUpdate;
-	
+
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement {
@@ -193,8 +193,16 @@ internal class UIModConfig : UIState
 			Color = new Color(0, 0, 0, 0),
 			ScaleToFit = true,
 		};
-		modalInputBlocker.OnLeftClick += ClearMessage; 
+		modalInputBlocker.OnLeftClick += ClearMessage;
 		// Don't append
+	}
+
+	public override void ScrollWheel(UIScrollWheelEvent evt)
+	{
+		base.ScrollWheel(evt);
+
+		if (!mainConfigList.ContainsPoint(Main.MouseScreen))
+			uIScrollbar.ViewPosition -= evt.ScrollWheelValue;
 	}
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
