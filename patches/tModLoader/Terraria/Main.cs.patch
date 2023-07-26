@@ -552,6 +552,8 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
+ 			catch {
+ 				runningCollectorsEdition = false;
 @@ -3230,6 +_,9 @@
  
  			IsInTheMiddleOfLoadingSettings = true;
