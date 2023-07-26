@@ -104,6 +104,14 @@
 		"ModConfigRestoreDefaults": "Restablecer valores",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando al servidor aceptar los cambios...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "No se puede guardar porque los cambios requieren recargar el mod",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
@@ -360,6 +368,12 @@
 		"PlayerCustomDataFail": "Se ha producido un problema al cargar los datos personalizados de un jugador",
 		"PlayerLoadWorldFail": "Se ha producido un problema al cargar un mundo",
 		"CloudWarning": "No queda almacenamiento disponible en Steam Cloud, no puede moverse a la nube",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "Construir",
@@ -367,6 +381,7 @@
 		"MSBuildAll": "Construir todo",
 		"MSBuildReloadAll": "Construir y recargar todo",
 		"MSUpgradeCSProj": "Actualizar archivo .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Actualizar archivos .lang a .hjson (no destructivo)",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",

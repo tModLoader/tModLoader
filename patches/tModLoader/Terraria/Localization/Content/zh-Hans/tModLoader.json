@@ -105,6 +105,14 @@
 		"ModConfigRestoreDefaults": "重设为默认",
 		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "由于需要重载模组而无法保存改动（请从主菜单进入模组列表以调整配置）",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Boss血条样式: {0}",
@@ -361,6 +369,12 @@
 		"PlayerCustomDataFail": "加载人物自定义数据时遇到问题",
 		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
 		"CloudWarning": "云存档剩余空间不足, 无法保存至云端",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "生成",
@@ -368,6 +382,7 @@
 		"MSBuildAll": "生成全部",
 		"MSBuildReloadAll": "生成并重新加载全部模组",
 		"MSUpgradeCSProj": "更新[.csproj]文件",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "升级 .lang 文件至 .hjson （您将不会丢失任何数据）",
 		"MSRebuildRequired": "需要重新生成",
 		"MSLocalizationFilesChangedCantPublish": "本地化文件已被修改\n发布前需要重新生成",

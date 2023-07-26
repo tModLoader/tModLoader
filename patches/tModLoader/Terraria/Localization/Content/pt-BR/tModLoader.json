@@ -104,6 +104,14 @@
 		"ModConfigRestoreDefaults": "Restaurar Padrões",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando ao servidor para aceitar as mudanças...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Não foi possível salvar pois as mudanças exigiriam um recarregamento",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Estilo da Barra de Chefe: {0}",
@@ -360,6 +368,12 @@
 		"PlayerCustomDataFail": "Foi encontrado um problema ao carregar dados personalizados para um jogador",
 		"PlayerLoadWorldFail": "Foi encontrado um problema ao tentar carregar um mundo",
 		"CloudWarning": "Limite de armazenamento na nuvem atingido, não é possível mover para a nuvem",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "Construir",
@@ -367,6 +381,7 @@
 		"MSBuildAll": "Construir Todos",
 		"MSBuildReloadAll": "Construir + Recarregar Todos",
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Atualizar arquivos .lang para .hjson (não destrutivo)",
 		"MSRebuildRequired": "Reconstrução Necessária",
 		"MSLocalizationFilesChangedCantPublish": "Mudanças foram feitas nos arquivos de localização,\numa reconstrução é necessária antes da publicação",

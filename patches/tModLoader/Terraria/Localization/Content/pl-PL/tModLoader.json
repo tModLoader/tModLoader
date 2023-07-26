@@ -104,6 +104,14 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
@@ -360,6 +368,12 @@
 		"PlayerCustomDataFail": "Wystąpił problem podczas ładowania niestandardowych danych dla gracza",
 		"PlayerLoadWorldFail": "Wystąpił problem podczas próby załadowania świata",
 		"CloudWarning": "Osiągnięto limit przestrzeni dyskowej w chmurze, nie można przenieść do chmury",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "Zbuduj",
@@ -367,6 +381,7 @@
 		"MSBuildAll": "Zbuduj wszystkie",
 		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
 		"MSUpgradeCSProj": "Uaktualnij plik .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Aktualizuj pliki .lang do .hjson (niedestrukcyjnie)",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",

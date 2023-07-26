@@ -104,6 +104,14 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Style de Barre de Patron: {0}",
@@ -360,6 +368,12 @@
 		"PlayerCustomDataFail": "Un problème a été rencontré pendant le chargement des données personnalisées d'un personnage",
 		"PlayerLoadWorldFail": "Un problème a été rencontré pendant le chargement du monde",
 		"CloudWarning": "Limite de stockage cloud atteinte, impossible de passer au cloud",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "Compiler",
@@ -367,6 +381,7 @@
 		"MSBuildAll": "Tout compiler",
 		"MSBuildReloadAll": "Tout compiler + Tout relancer",
 		"MSUpgradeCSProj": "Mettre à jour le fichier .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Mettre à niveau les fichiers .lang à .hjson (non destructif)",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
