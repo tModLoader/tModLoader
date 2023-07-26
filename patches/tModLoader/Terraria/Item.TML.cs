@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria;
 
-public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IShimmerableEntity
+public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IShimmerable
 {
 	public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
@@ -276,7 +276,10 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, ISh
 	}
 
 	public void OnShimmer() => ItemLoader.OnShimmer(this);
-
+	public void ShimmerDespawnSelf() => throw new NotImplementedException();
+	public IEntitySource GetSource_FromShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
+	public Vector2 GetShimmerVelocity() => velocity;
+	public Vector2 Dimensions { get => new(width, height); set { width = (int)value.X; height = (int)value.Y; } }
 	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.Item;
-	public int ShimmerableEntityTypePassthrough => type;
+	public int ShimmerType => type;
 }

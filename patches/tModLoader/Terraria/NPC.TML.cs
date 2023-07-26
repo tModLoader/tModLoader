@@ -9,7 +9,7 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
-public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerableEntity
+public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerable
 {
 	internal readonly IEntitySource thisEntitySourceCache;
 
@@ -287,7 +287,15 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerableEntity
 	public void OnShimmer()
 		=> NPCLoader.OnShimmer(this);
 
+	// Should go unused, only for modder's shimmer
+	public void ShimmerDespawnSelf() => throw new NotImplementedException();
+
+	public IEntitySource GetSource_FromShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
+
+	public Vector2 GetShimmerVelocity() => velocity;
+
+	public Vector2 Dimensions { get => new(width, height); set { width = (int)value.X; height = (int)value.Y; } }
 	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.NPC;
 
-	public int ShimmerableEntityTypePassthrough => type;
+	public int ShimmerType => type;
 }

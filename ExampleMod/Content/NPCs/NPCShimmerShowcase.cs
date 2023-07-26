@@ -29,7 +29,7 @@ public class NPCShimmerShowcase : ModNPC
 
 		CreateShimmerTransformation()
 			// A shimmer callback applies to the on transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
-			.AddCanShimmerCallBack((ModShimmer transformation, Entity target) => target.Center.X <= Main.maxTilesX * 8)
+			.AddCanShimmerCallBack((ModShimmer transformation, IShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
 			.AddItemResult(ItemID.ExplosiveBunny, 30)
 			.AddNPCResult(NPCID.Skeleton, 3)
 			.AddOnShimmerCallBack(OnShimmerCallBack)
@@ -71,13 +71,14 @@ public class NPCShimmerShowcase : ModNPC
 				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
 			});
 	}
+
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 		return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 	}
 
 	// This is static and not an override, it is used earlier to pass as a ModShimmer.OnShimmerCallBack, this is a delegate, delegates are
 	// essentially a reference to a method and as such need to be static
-	public static void OnShimmerCallBack(ModShimmer transformation, Entity origin, List<Entity> spawnedEntities) {
+	public static void OnShimmerCallBack(ModShimmer transformation, IShimmerable origin, List<Entity> spawnedEntities) {
 		spawnedEntities.ForEach((Entity entity)
 			=> {
 				Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
