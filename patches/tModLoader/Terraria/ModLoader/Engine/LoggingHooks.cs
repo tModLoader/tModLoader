@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using MonoMod.RuntimeDetour;
 using System;
 using System.Diagnostics;
@@ -54,7 +55,14 @@ internal static class LoggingHooks
 	private delegate void hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e);
 
 	private static void Hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e) {
-		orig(self, skipFrames, fNeedFileInfo, e);
+		// avoid including the hook frames in manually captured stack traces. Note that 2 frames are from the hook, and the System.Diagnostics frame is normally trimmed by CalculateFramesToSkip in StackTrace.CoreCLR.cs
+		//
+		//    at Hook<System.Void Terraria.ModLoader.Engine.LoggingHooks::Hook_StackTrace_CaptureStackTrace(Terraria.ModLoader.Engine.LoggingHooks+orig_StackTrace_CaptureStackTrace,System.Diagnostics.StackTrace,System.Int32,System.Boolean,System.Exception)>(StackTrace , Int32 , Boolean , Exception )
+		//    at SyncProxy<System.Void System.Diagnostics.StackTrace:CaptureStackTrace(System.Int32, System.Boolean, System.Exception) > (StackTrace, Int32, Boolean, Exception)
+		//    at System.Diagnostics.StackTrace..ctor(Boolean fNeedFileInfo)
+		int skipHookFrames = e == null ? 3 : 0;
+
+		orig(self, skipFrames + skipHookFrames, fNeedFileInfo, e);
 
 		if (fNeedFileInfo)
 			Logging.PrettifyStackTraceSources(self.GetFrames());
