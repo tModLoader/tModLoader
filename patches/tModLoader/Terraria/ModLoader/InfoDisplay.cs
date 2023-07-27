@@ -49,7 +49,10 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 
 	public virtual string LocalizationCategory => "InfoDisplays";
 
-	public virtual string HoverTexture => Texture + "_Hover";
+	/// <summary>
+	/// The outline texture drawn when the icon is hovered and toggleable. By default a circular outline texture is used. Override this method and return <c>Texture + "_Hover"</c> or any other texture path to specify a custom outline texture for use with icons that are not circular.
+	/// </summary>
+	public virtual string HoverTexture => VanillaHoverTexture;
 
 	/// <summary>
 	/// This is the name that will show up when hovering over this info display.

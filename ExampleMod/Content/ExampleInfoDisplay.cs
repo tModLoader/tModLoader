@@ -14,11 +14,10 @@ namespace ExampleMod.Content
 	{
 		public static Color RedInfoTextColor => new(255, 19, 19, Main.mouseTextColor);
 
-		// This line says that the outline texture used when hovering over an info display is the same as the one vanilla displays use
-		// Since we are using a custom one, this line will be commented out
+		// By default, the vanilla circular outline texture will be used. 
+		// This info display has a square icon instead of a circular one, so we need to use a custom outline texture instead of the vanilla outline texture.
 		// You will only need to use a custom hover texture if your info display icon doesn't perfectly match the shape that vanilla info displays use
-		// This info display has a square icon instead of a circular one, so we need to use a custom texture instead of the vanilla texture
-		// public override string HoverTexture => VanillaHoverTexture;
+		public override string HoverTexture => Texture + "_Hover";
 
 		// This dictates whether or not this info display should be active
 		public override bool Active() {
