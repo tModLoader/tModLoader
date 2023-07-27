@@ -73,6 +73,23 @@ public class ModDownloadItem
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(this.PublishId);
 	}
 
+	public override bool Equals(object obj) => this.Equals(obj as ModDownloadItem);
+
+	// Custom Equality for Mod Browser efficiency
+	public bool Equals(ModDownloadItem item)
+	{
+		if (this.ModName != item.ModName)
+			return false;
+
+		if (this.PublishId.m_ModPubId != item.PublishId.m_ModPubId)
+			return false;
+
+		if (this.Version != item.Version)
+			return false;
+
+		return true;
+	}
+
 	internal Task InnerDownloadWithDeps()
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };

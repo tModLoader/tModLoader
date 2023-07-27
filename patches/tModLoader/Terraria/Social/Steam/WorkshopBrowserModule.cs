@@ -108,6 +108,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		switch (queryParams.updateStatusFilter) {
 			case UpdateFilter.All:
 				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
+					if (CachedInstalledModDownloadItems.Contains(item))
+						item.UpdateInstallState();
 					yield return item;
 				}
 				yield break;
