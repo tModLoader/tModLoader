@@ -102,7 +102,7 @@
  	public int[] buffTime = new int[maxBuffs];
 +
 +	/// <summary>
-+	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.FullyImmuneToBuffs"/>, <see cref="NPCID.Sets.DefaultDebuffImmunity"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>. 
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>. 
 +	/// </summary>
 -	public bool[] buffImmune = new bool[BuffID.Count];
 +	public bool[] buffImmune = new bool[BuffLoader.BuffCount];
@@ -822,12 +822,12 @@
  			catchItem = 2121;
  		}
 +		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.  
-+		if (NPCID.Sets.FullyImmuneToBuffs[type])
++		if (NPCID.Sets.ImmuneToAllBuffs[type])
 +			Array.Fill(buffImmune, true);
 +
-+		if (NPCID.Sets.DefaultDebuffImmunity[type] || NPCID.Sets.FullyImmuneToBuffs[type]) {
++		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToAllBuffs[type]) {
 +			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
-+			if (!NPCID.Sets.FullyImmuneToBuffs[type]) {
++			if (!NPCID.Sets.ImmuneToAllBuffs[type]) {
 +				for (int i = 0; i < buffImmune.Length; i++) {
 +					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
 +				}

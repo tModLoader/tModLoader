@@ -7,7 +7,7 @@
  namespace Terraria.DataStructures;
  
 +/// <summary>
-+/// <b>Unused:</b> Replaced by <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, <see cref="NPCID.Sets.FullyImmuneToBuffs "/>, and <see cref="NPCID.Sets.DefaultDebuffImmunity"/><br/><br/>
++/// <b>Unused:</b> Replaced by <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, <see cref="NPCID.Sets.ImmuneToAllBuffs "/>, and <see cref="NPCID.Sets.ImmuneToRegularBuffs"/><br/><br/>
 +/// Determines the default debuff immunities of an <see cref="NPC"/>.
 +/// </summary>
  public class NPCDebuffImmunityData

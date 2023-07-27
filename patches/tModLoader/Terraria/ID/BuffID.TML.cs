@@ -18,7 +18,7 @@ public partial class BuffID
 
 		/// <summary>
 		/// An NPC will automatically become immune (<see cref="NPC.buffImmune"/>) to the indexed buff type if it is already immune to any buff in the corresponding List. <br/>
-		/// For NPCs with <see cref="NPCID.Sets.FullyImmuneToBuffs"/> or <see cref="NPCID.Sets.DefaultDebuffImmunity"/> set to true, the reverse of that logic is used to automatically set the NPC as vulnerable: The NPC will automatically become vulnerable to the indexed buff type if it is specifically vulnerable to all of the buffs in the corresponding List.<br/><br/>
+		/// For NPCs with <see cref="NPCID.Sets.ImmuneToAllBuffs"/> or <see cref="NPCID.Sets.ImmuneToRegularBuffs"/> set to true, the reverse of that logic is used to automatically set the NPC as vulnerable: The NPC will automatically become vulnerable to the indexed buff type if it is specifically vulnerable to all of the buffs in the corresponding List.<br/><br/>
 		/// This set helps standardize several buff immunity inheritance rules that are effectively present in Terraria while providing modders the ability to do the same. For example, all NPC with immunity to <see cref="OnFire"/> are also immune to <see cref="OnFire3"/> (aka, "On Fire!" and "Hellfire").<br/>
 		/// Modders can use this set to create buffs that act as variants of existing buffs, and should inherit the immunity value of those existing buffs. NPC from Terraria and other mods will automatically have these immunity rules applied, regardless of mod load order.
 		/// </summary>
