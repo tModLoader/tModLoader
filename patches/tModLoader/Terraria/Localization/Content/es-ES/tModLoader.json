@@ -491,7 +491,7 @@
 		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Restaura tu instalación de Terraria e instala tModLoader por Steam o siguiendo las instrucciones de README.txt para la instalación manual.",
 		"LogPathHint": "Se ha generado un archivo {0} con información sobre los errores en\n{1}\n(Tendrás que compartir este archivo si pides ayuda)",
-		"OutOfMemoryHint": "Sugerencia: Intenta ejecutar menos mods a la vez o determina si uno de ellos está ocupando demasiada memoria. Opcionalmente, puedes instalar tModLoader 64 bits.",
+		"OutOfMemoryHint": "Sugerencia: Intenta ejecutar menos mods a la vez o determina si uno de ellos está ocupando demasiada memoria.",
 		"ModExceptionHint": "Sugerencia: Esto es probablemente culpa de un mod. Desactiva los mods uno por uno y comprueba si el problema persiste.",
 		"OneDriveHint": "Sugerencia: Intenta instalar y activar OneDrive. Haz clic con el botón derecho del ratón en tu carpeta de Documentos y activa \"Guardar siempre en este dispositivo\".",
 		"AntivirusHint": "Sugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
