@@ -12,6 +12,8 @@ namespace ExampleMod.Content
 	/// </summary>
 	public class ExampleInfoDisplay : InfoDisplay
 	{
+		public static Color RedInfoTextColor => new(255, 19, 19, Main.mouseTextColor);
+
 		// This line says that the outline texture used when hovering over an info display is the same as the one vanilla displays use
 		// Since we are using a custom one, this line will be commented out
 		// You will only need to use a custom hover texture if your info display icon doesn't perfectly match the shape that vanilla info displays use
@@ -40,6 +42,17 @@ namespace ExampleMod.Content
 				// If "No minions" will be displayed, grey out the text color, similar to DPS Meter or Radar
 				displayColor = InactiveInfoTextColor;
 			}
+			else if (minionCount < Main.LocalPlayer.maxMinions) {
+				// This red color serves as a warning that the player has not summoned all their minions.
+				displayColor = RedInfoTextColor;
+			}
+			/* 
+			else if (minionCount == Main.LocalPlayer.maxMinions) {
+				// The gold text color used for gold critters by the Lifeform Analyzer is easily accessible if needed
+				displayColor = GoldInfoTextColor;
+				displayShadowColor = GoldInfoTextShadowColor;
+			}
+			*/
 
 			return !noInfo ? $"{minionCount} minions" : "No minions";
 		}
