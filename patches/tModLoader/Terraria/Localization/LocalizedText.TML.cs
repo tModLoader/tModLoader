@@ -106,6 +106,7 @@ public partial class LocalizedText
 	///<br/>
 	/// The resulting LocalizedText should be stored statically. Should not be used to create 'throwaway' LocalizedText instances. <br/>
 	/// Use <see cref="Format(object[])"/> instead for repeated on-demand formatting with different args.
+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">Localization Guide</see> teaches more about using placeholders in localization.
 	/// </summary>
 	/// <param name="args">The substitution args</param>
 	/// <returns></returns>

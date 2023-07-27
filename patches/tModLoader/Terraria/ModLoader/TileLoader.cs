@@ -221,7 +221,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
-		ModLoader.BuildGlobalHook(ref HookIsTileBiomeSightable, globalTiles, g => g.IsTileBiomeSightable);
+		ModLoader.BuildGlobalHook<GlobalTile, DelegateIsTileBiomeSightable>(ref HookIsTileBiomeSightable, globalTiles, g => g.IsTileBiomeSightable);
 		ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);

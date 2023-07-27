@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/Language.cs
 +++ src/tModLoader/Terraria/Localization/Language.cs
-@@ -1,23 +_,60 @@
+@@ -1,23 +_,61 @@
 +using System;
  using System.Text.RegularExpressions;
  using Terraria.Utilities;
@@ -41,6 +41,7 @@
  	public static string GetTextValueWith(string key, object obj) => LanguageManager.Instance.GetText(key).FormatWith(obj);
 +	/// <summary>
 +	/// Checks if a LocalizedText with the provided key has been registered or not. This can be used to avoid retrieving dummy values from <see cref="GetText(string)"/> and <see cref="GetTextValue(string)"/> and instead load a fallback value or do other logic. If the key should be created if it doesn't exist, <see cref="GetOrRegister(string, Func{string})"/> can be used instead.
++	/// <br/><br/> Note that modded keys will be registered during mod loading and <see cref="ModLoader.Mod.SetupContent"/> is the earliest point where all keys should be registered with values loaded for the current language.
 +	/// </summary>
 +	/// <param name="key"></param>
 +	/// <returns></returns>
