@@ -22,7 +22,6 @@ Also note that critter items (Item.makeNPC > 0) will also not attempt to decraft
 public class ItemShimmerShowcaseConditions : ModItem
 {
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
-
 	public override void SetDefaults() {
 		Item.width = 20;
 		Item.height = 20;

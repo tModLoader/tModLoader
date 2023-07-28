@@ -78,10 +78,10 @@ public class NPCShimmerShowcase : ModNPC
 
 	// This is static and not an override, it is used earlier to pass as a ModShimmer.OnShimmerCallBack, this is a delegate, delegates are
 	// essentially a reference to a method and as such need to be static
-	public static void OnShimmerCallBack(ModShimmer transformation, IShimmerable origin, List<Entity> spawnedEntities) {
-		spawnedEntities.ForEach((Entity entity)
+	public static void OnShimmerCallBack(ModShimmer transformation, IShimmerable origin, List<IShimmerable> spawnedShimmerables) {
+		spawnedShimmerables.ForEach((IShimmerable spawnedShimmerable)
 			=> {
-				Projectile p = Projectile.NewProjectileDirect(entity.GetSource_Misc("Shimmer"), entity.position, entity.velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.VelocityWrapper + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
 				p.friendly = false;
 				p.hostile = true;
 			});

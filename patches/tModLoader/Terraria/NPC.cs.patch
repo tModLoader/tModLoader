@@ -2496,7 +2496,7 @@
  				DelBuff(num2);
  		}
 +
-+		OnShimmer(); // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC
++		OnShimmer(); // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC, should always shimmer when CanShimmer returns trrue
  	}
  
  	private void UpdateNPC_BuffApplyDOTs()

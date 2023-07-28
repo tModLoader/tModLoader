@@ -14,7 +14,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 /// </summary>
-public abstract class GlobalItem : GlobalType<Item, GlobalItem>, IShimmerableEntityGlobal<Item>
+public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 {
 	protected override void ValidateType()
 	{

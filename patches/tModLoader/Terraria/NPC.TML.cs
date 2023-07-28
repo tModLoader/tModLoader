@@ -284,18 +284,19 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IShimmerable
 		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
 		|| ModShimmer.AnyValidModShimmer(this));
 
-	public void OnShimmer()
-		=> NPCLoader.OnShimmer(this);
-
-	// Should go unused, only for modder's shimmer
-	public void ShimmerDespawnSelf() => throw new NotImplementedException();
-
-	public IEntitySource GetSource_FromShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
-
-	public Vector2 GetShimmerVelocity() => velocity;
-
-	public Vector2 Dimensions { get => new(width, height); set { width = (int)value.X; height = (int)value.Y; } }
+	public void OnShimmer() => NPCLoader.OnShimmer(this);
+	public void RemoveAfterShimmer()
+	{
+		active = false;
+		if (Main.netMode == NetmodeID.Server) {
+			netSkip = -1;
+			life = 0;
+			NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, whoAmI);
+		}
+	}
+	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
+	public Vector2 VelocityWrapper { get => velocity; set => velocity = value; }
+	public Point Dimensions { get => new(width, height); set { width = value.X; height = value.Y; } }
 	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.NPC;
-
 	public int ShimmerType => type;
 }
