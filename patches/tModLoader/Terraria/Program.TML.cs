@@ -130,7 +130,7 @@ public static partial class Program
 			return;
 
 		// Backwards compat line for 1.4.3-legacy, intended for use when is not Atomic Lockable
-		string portFilePath = Path.Combine(destination, maxVersionOfSource == "2022.9" ? $"143ported_{cloudName}.txt" : $"{maxVersionOfSource}{destination}ported_{cloudName}.txt");
+		string portFilePath = Path.Combine(superSavePath, destination, maxVersionOfSource == "2022.9" ? $"143ported_{cloudName}.txt" : $"{maxVersionOfSource}{destination}ported_{cloudName}.txt");
 
 		if (isAtomicLockable && Directory.Exists(newFolderPath) || !isAtomicLockable && File.Exists(portFilePath))
 			return;
@@ -150,8 +150,10 @@ public static partial class Program
 			Platform.Get<IPathService>().GetStoragePath($"Terraria");
 
 		string sourceFolderConfig = Path.Combine(defaultSaveFolder, source, "config.json");
-		if (!File.Exists(sourceFolderConfig))
+		if (!File.Exists(sourceFolderConfig)) {
+			Logging.tML.Info($"No config.json found at {sourceFolderConfig}\nAssuming nothing to port");
 			return;
+		}	
 
 		string lastLaunchedTml = null;
 		try {
@@ -199,7 +201,7 @@ public static partial class Program
 				// In case there are no players and worlds, we don't want to keep attempting to port, since eventually that will port future stable files if they appear.
 				// We also need at least 1 file in the directory, otherwise the directory will not exist.
 				if (Social.SocialAPI.Cloud != null) {
-					Social.SocialAPI.Cloud.Write(Path.Combine(destination, portFilePath), new byte[] { });
+					Social.SocialAPI.Cloud.Write(Utilities.FileUtilities.ConvertToRelativePath(superSavePath, portFilePath), new byte[] { });
 				}
 			}
 			else {
