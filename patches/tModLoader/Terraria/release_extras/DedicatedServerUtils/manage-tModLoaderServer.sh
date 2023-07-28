@@ -39,22 +39,65 @@ function update_script {
 	exit
 }
 
-function get_latest_release {
-	local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
-	local latest_release=$({
-		curl -s "$release_url" 2>/dev/null || wget -q -O- "$release_url";
-	} | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
-	echo "$latest_release" # So functions calling this can consume the result since you can't return strings in bash :)
+function verify_steamcmd {
+	# Check PATH and flags for required commands
+	if $steamcmd; then
+		if [[ -v steamcmd_path ]]; then
+			if [[ -f "$steamcmd_path" ]]; then
+				# TODO: Should any checks be done here?
+				steam_cmd="$steamcmd_path"
+				echo "steamcmd found in folder..."
+			else
+				echo "steamcmd.sh was not found at the provided path, please make sure it exists"
+				exit 1
+			fi
+		else
+			steam_cmd=$(command -v steamcmd)
+			if [[ -z "$steam_cmd" ]]; then
+				echo "steamcmd could not be found in PATH, please install steamcmd or provide --steamcmdpath"
+				exit 1
+			else
+				echo "steamcmd found in PATH..."
+			fi
+		fi
+	else
+		if ! command -v unzip &> /dev/null; then
+			echo "unzip could not be found on the PATH, please install unzip"
+			exit 1
+		else
+			echo "unzip found..."
+		fi
+	fi
+}
+
+# Gets version of TML to install from github, prioritizing --tml-version and tmlversion.txt
+function get_version {
+	if [[ -v tmlversion ]]; then
+		echo "$tmlversion"
+	elif [[ -r "$folder/tmlversion.txt" ]]; then
+		echo "v$(cat $folder/tmlversion.txt | sed -E "s/\.([0-9])\./\.0\1\./g")"
+	else
+		# Get the latest release if no other options are provided
+		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
+		local latest_release
+		latest_release=$({
+			curl -s "$release_url" 2>/dev/null || wget -q -O- "$release_url";
+		} | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
+		echo "$latest_release" # So functions calling this can consume the result since you can't return strings in bash :)
+	fi
+
+	
 }
 
 # Takes version number as first parameter
 function down_release {
 	local down_url="https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
-	if [[ -v tmlversion ]]; then
-		set -- "$tmlversion"
-	fi
 	echo "Downloading version $1"
 	curl -s -LJO "$down_url" 2>/dev/null || wget -q --content-disposition "$down_url"
+	echo "Unzipping tModLoader.zip"
+	unzip -q tModLoader.zip
+	rm tModLoader.zip
+	echo "$1" > .ver
 }
 
 function update_tml_github {
@@ -64,49 +107,46 @@ function update_tml_github {
 		pushd ~/tModLoader
 	fi
 
-	if [[ -r ".ver" ]]; then
-		local ver
-		ver=$(get_latest_release)
-		oldver=$(cat .ver)
-		if [[ $ver == "$oldver" ]]; then
-			echo "No new version of tModLoader available"
-			return
-		fi
-
-		echo "New version of tModLoader $ver is available, current version is $oldver"
-
-		# Backup old tML versions in case something implodes
-		mkdir "$oldver"
-		for file in ./*;
-		do
-			if ! [[ "$file" == v.* ]] && ! [[ "$file" == manage-tModLoaderServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]; then
-				mv "$file" "$oldver"
-			fi
-		done
-
-		echo "Compressing $oldver backup"
-		tar czf "$oldver".tar.gz "$oldver"/*
-		rm -r "$oldver"
-
-		down_release "$ver"
-		echo "Unzipping tModLoader.zip"
-		unzip -q tModLoader.zip
-		rm tModLoader.zip
-		echo "$ver" > .ver
-
-		# Delete all backups but the most recent
-		echo "Removing old backups"
-		for file in ./v*.tar.gz;
-		do
-			if ! [[ "$file" == ./$oldver.tar.gz ]]; then
-				rm "$file"
-				echo "Removed $file"
-			fi
-		done
-	else
+	if ! [[ -r ".ver" ]]; then
 		echo "tModLoader is not installed"
 		exit 1
 	fi
+
+	local ver
+	ver=$(get_version)
+	local oldver
+	oldver=$(cat .ver)
+	if [[ "$ver" == "$oldver" ]]; then
+		echo "No version change of tModLoader available"
+		return
+	fi
+
+	echo "New version of tModLoader $ver is available, current version is $oldver"
+
+	# Backup old tML versions in case something implodes
+	mkdir "$oldver"
+	for file in ./*;
+	do
+		if ! [[ "$file" == v.* ]] && ! [[ "$file" == "./$oldver" ]] && ! [[ "$file" == manage-tModLoaderServer.sh ]] && ! [[ "$file" == *.tar.gz ]]; then
+			mv "$file" "$oldver"
+		fi
+	done
+
+	echo "Compressing $oldver backup"
+	tar czf "$oldver".tar.gz "$oldver"/*
+	rm -r "$oldver"
+
+	down_release "$ver"
+
+	# Delete all backups but the most recent
+	echo "Removing old backups"
+	for file in ./v*.tar.gz;
+	do
+		if ! [[ "$file" == ./$oldver.tar.gz ]]; then
+			rm "$file"
+			echo "Removed $file"
+		fi
+	done
 
 	popd
 }
@@ -141,49 +181,63 @@ function install_tml_github {
 		pushd ~/tModLoader
 	fi
 
-	dir_contents=$(shopt -s nullglob dotglob; echo ./*)
-	if (( ${#dir_contents} )); then
-		echo "Install directory not empty, please choose an empty directory to install tML to using --install_dir or update an existing installation using --update"
+	if [[ -n "$(ls -A)" ]]; then
+		echo "Install directory not empty, please choose an empty directory to install tML to using --install-dir or run update to update an existing installation"
 		exit 1
 	fi
 
 	# Install tml from github, leave some file containing what version
-	local ver
-	ver=$(get_latest_release)
-	down_release "$ver"
-	echo "Unzipping tModLoader.zip"
-	unzip -q tModLoader.zip
-	rm tModLoader.zip
-	echo "$ver" > .ver
+	down_release "$(get_version)"
 
 	popd
 }
 
 function install_workshop_mods {
-	if [[ ! -v steam_cmd ]]; then
+	pushd "$folder"
+
+	if ! [[ -v steam_cmd ]]; then
 		echo "SteamCMD not found, no workshop mods will be installed or updated"
 		return
 	fi
 
-	if [[ -r "install.txt" ]]; then
-		echo Installing workshop mods
-
-		if [[ -v install_dir ]]; then
-			steamcmd_command="+force_install_dir $install_dir"
-		fi
-
-		steamcmd_command="$steamcmd_command +login anonymous"
-
-		lines=$(cat install.txt)
-		for line in $lines
-		do
-			steamcmd_command="$steamcmd_command +workshop_download_item 1281930 $line"
-		done
-
-		eval "$steam_cmd $steamcmd_command +quit"
-	else
+	if ! [[ -r "install.txt" ]]; then
 		echo "No workshop mods to install"
+		return
 	fi
+
+	echo Installing workshop mods
+
+	if [[ -v install_dir ]]; then
+		steamcmd_command="+force_install_dir $install_dir"
+	fi
+
+	steamcmd_command="$steamcmd_command +login anonymous"
+
+	lines=$(cat install.txt)
+	for line in $lines
+	do
+		steamcmd_command="$steamcmd_command +workshop_download_item 1281930 $line"
+	done
+
+	eval "$steam_cmd $steamcmd_command +quit"
+	popd
+}
+
+function copy_config {
+	pushd "$folder"
+
+	if [[ -f "serverconfig.txt" ]]; then
+		echo "Copying serverconfig.txt to the install directory"
+		if [[ -v install_dir ]]; then
+			cp -f serverconfig.txt "$install_dir"
+		elif $steamcmd; then
+			cp -f serverconfig.txt ~/Steam/steamapps/common/tModLoader
+		else
+			cp -f serverconfig.txt ~/tModLoader
+		fi
+	fi
+
+	popd
 }
 
 function install_mods {
@@ -201,29 +255,20 @@ function install_mods {
 	if [[ -d "Mods" ]]; then
 		local count
 		count=$(ls -1 Mods/*.tmod 2>/dev/null | wc -l)
-		if [ $count != 0 ]; then
+		if [[ "$count" -ne "0" ]]; then
 			mkdir -p "$mods_path"
 			echo "Copying .tmod files to the mods directory"
-			cp Mods/*.tmod "$mods_path"
+			cp -f Mods/*.tmod "$mods_path"
 		fi
 	fi
 
 	# Move enabled.json to the right place
 	if [[ -f "enabled.json" ]]; then
 		echo "Copying enabled.json to the mods directory"
-		cp enabled.json "$mods_path"
+		cp -f enabled.json "$mods_path"
 	fi
 
-	if [[ -f "serverconfig.txt" ]]; then
-		echo "Copying serverconfig.txt to the install directory"
-		if [[ -v install_dir ]]; then
-			cp serverconfig.txt "$install_dir"
-		elif $steamcmd; then
-			cp serverconfig.txt ~/Steam/steamapps/common/tModLoader
-		else
-			cp serverconfig.txt ~/tModLoader
-		fi
-	fi
+	copy_config
 
 	popd
 }
@@ -234,20 +279,13 @@ function copy_worlds {
 	if [[ -d "Worlds" ]]; then
 		local count
 		count=$(ls -1 Worlds/*.wld 2>/dev/null | wc -l)
-		if [ $count != 0 ]; then
+		if [[ "$count" -ne "0" ]]; then
 			echo "Copying .wld and .twld files to the worlds directory"
 			mkdir -p ~/.local/share/Terraria/tModLoader/Worlds && cp Worlds/*.wld Worlds/*.twld "$_"
 		fi
 	fi
 
 	popd
-
-	# for file in *.wld; do
-	# 	[ -f "$file" ] || break
-	# 	twld="$(basename "$file" .wld).twld"
-	# 	echo "Copying $file and $twld"
-	# 	mkdir -p ~/.local/share/Terraria/tModLoader/Worlds && cp $file $twld $_
-	# done
 }
 
 function print_version {
@@ -336,6 +374,7 @@ while [[ $# -gt 0 ]]; do
 			;;
 		--tml-version)
 			tmlversion="$2"
+			steamcmd=false
 			shift; shift
 			;;
 		--skip-tml)
@@ -358,38 +397,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Set folder to the script's folder if it isn't set
-if [[ -v folder ]]; then
+if ! [[ -v folder ]]; then
+	echo "Setting folder to current directory"
 	script_path=$(realpath "$0")
 	folder="$(dirname "$script_path")"
-fi
-
-# Check PATH and flags for required commands
-if $steamcmd; then
-	if [[ -v steamcmd_path ]]; then
-		if [[ -f "$steamcmd_path" ]]; then
-			# TODO: Should any checks be done here?
-			steam_cmd="$steamcmd_path"
-			echo "steamcmd found in folder..."
-		else
-			echo "steamcmd.sh was not found at the provided path, please make sure it exists"
-			exit 1
-		fi
-	else
-		steam_cmd=$(command -v steamcmd)
-		if [[ -z "$steam_cmd" ]]; then
-			echo "steamcmd could not be found in PATH, please install steamcmd or provide --steamcmdpath"
-			exit 1
-		else
-			echo "steamcmd found in PATH..."
-		fi
-	fi
-else
-	if ! command -v unzip &> /dev/null; then
-		echo "unzip could not be found on the PATH, please install unzip"
-		exit 1
-	else
-		echo "unzip found..."
-	fi
 fi
 
 case $cmd in
@@ -397,6 +408,8 @@ case $cmd in
 		print_help
 		;;
 	install|update)
+		verify_steamcmd
+
 		if ! $skip_tml; then
 			if $steamcmd; then
 				install_tml_steam
@@ -417,6 +430,7 @@ case $cmd in
 		update_script
 		;;
 	start)
+		copy_config
 		if [[ -v install_dir ]]; then
 			cd "$install_dir" || exit
 		elif $steamcmd; then

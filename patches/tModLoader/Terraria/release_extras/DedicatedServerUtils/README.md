@@ -48,6 +48,7 @@ The `manage-tModLoaderServer.sh` script can be used to install tModLoader either
 * Run `./manage-tModLoaderServer.sh install --github`.
 * By default, tModLoader will be installed to `~/tModLoader`. To specify an installation directory, use `--install-dir /path/to/install`.
 * This will install the latest GitHub release, which is the same version as released on Steam.
+* You can also include `tmlversion.txt` from your modpack to force the same TML version on github install and update. This means **your version will not change if this file exists.**
 
 ### Installing Mods
 Mods will be automatically installed during the tModLoader installation step, but can also be installed separately using the `--skip-tml` argument. Place `install.txt` for workshop mods, and `enabled.json` into the same directory as the script, along with a `Mods` folder containing any `.tmod` files for local mods. **You do not need to make a `Mods` folder if you are only downloading workshop mods** Additionally, you can avoid updating or installing mods with the `--skip-mods` argument.
@@ -97,11 +98,18 @@ Add `restart: always` in the `services.tml` section of `docker-compose.yml`, the
 If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/serverconfig.txt) and change the settings how you like. Key options are defined below, and other options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)
 
 ### World Name
-Setting `worldname` will change the default world name when creating a new world using [autocreate](#autocreate) **You do not need to include .wld in your world name**
+Setting `worldname` will change the default world name when creating a new world using [autocreate](#autocreate) **You do not need to include .wld in your world name**. This setting **will not** work with an existing world, set `path=worldpath/to/your/world` in the server config.
 
 ### Autocreate
-Set `autocreate=1` in your world to automatically make a new world if the path in `world` or a world with `worldname` does not exist.
+Set `autocreate=1` in your world to automatically make a new world if the path in `world` does not exist or is empty.
 
 
 ## 1.4.4 Migration
-The 1.4.4 script introduces a new [folder structure](#folder-structure) that both the management script and the Docker container need to conform to. Additionally, the management script has moved from flags to commands for things like installing, updating and starting the server. Run `./manage-tModLoaderServer.sh help` to see a list of available commands.
+The 1.4.4 script is a **backwards-incompatible update** that introduces a new [folder structure](#folder-structure) that both the management script and the Docker container need to conform to. Additionally, the management script has moved from flags to commands for things like installing, updating and starting the server. Run `./manage-tModLoaderServer.sh help` to see a list of available commands.
+
+## Running legacy tModLoader
+Currently any previous verison of TML can be run, but only via the github installation method. To do this, pass a `tml-version` flag matching up with a [github release](https://github.com/tModLoader/tModLoader/releases)
+
+Ex. `./manage-tModLoaderServer.sh install --tml-version v2022.09.47.80`
+
+Currently providing this flag implies `--github` since legacy is only supported via Github
