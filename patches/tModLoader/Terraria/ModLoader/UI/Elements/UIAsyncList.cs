@@ -47,7 +47,7 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 	public UIAsyncList() : base()
 	{
 		// Make sure not to sort
-		this.ManualSortMethod = (l) => { };
+		ManualSortMethod = (l) => { };
 	}
 
 	/**
@@ -63,10 +63,7 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 	 */
 	public void SetProvider(AsyncProvider<TResource> provider = null)
 	{
-		if (Provider is not null) {
-			Provider.Cancel();
-		}
-
+		Provider?.Cancel();
 		ProviderChanged = true;
 		Provider = provider;
 	}
@@ -87,8 +84,8 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 
 		// Before normal update add extra elements
 		if (ProviderChanged) {
-			this.Clear();
-			this.Add(EndItem);
+			Clear();
+			Add(EndItem);
 			ProviderChanged = false;
 
 			// Force a state change in case of changed provider so it's clear a change happened
@@ -106,9 +103,9 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 		if (Provider is not null) {
 			var uiels = Provider.GetData().Select(GenElement).ToArray();
 			if (uiels.Length > 0) {
-				this.Remove(EndItem);
-				this.AddRange(uiels);
-				this.Add(EndItem);
+				Remove(EndItem);
+				AddRange(uiels);
+				Add(EndItem);
 			}
 		}
 
@@ -119,13 +116,13 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 			UpdateRequested = false;
 		}
 
-		providerState = this.State;
+		providerState = State;
 		if (providerState != LastProviderState) {
 			InternalOnUpdateState(providerState);
 			endItemTextNeedUpdate = true;
 		}
 		if (endItemTextNeedUpdate)
-			EndItem.SetText(this.GetEndItemText());
+			EndItem.SetText(GetEndItemText());
 
 		base.Update(gameTime);
 	}
@@ -144,7 +141,7 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 	{
 		base.OnInitialize();
 
-		EndItem = new UIText(this.GetEndItemText()) {
+		EndItem = new UIText(GetEndItemText()) {
 			HAlign = 0.5f
 		}.WithPadding(15f);
 		Add(EndItem);
@@ -152,11 +149,11 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 
 	protected virtual string GetEndItemText()
 	{
-		switch (this.LastProviderState) {
+		switch (LastProviderState) {
 			case AsyncProviderState.Loading:
 				return Language.GetTextValue("tModLoader.ALLoading");
 			case AsyncProviderState.Completed:
-				return this.ReceivedItems.Count() > 0 ? "" : Language.GetTextValue("tModLoader.ALNoEntries");
+				return ReceivedItems.Count() > 0 ? "" : Language.GetTextValue("tModLoader.ALNoEntries");
 			case AsyncProviderState.Canceled:
 				// @TODO: Maybe distinguish aborted for cancel and aborted for error
 				return Language.GetTextValue("tModLoader.ALAborted");

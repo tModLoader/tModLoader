@@ -65,26 +65,26 @@ public class ModDownloadItem
 
 		// Check against installed mods for updates.
 		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
-		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(this.ModName);
+		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
-		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(this.PublishId, Installed, new System.Version(this.Version));
+		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, new System.Version(Version));
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
-		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(this.PublishId);
+		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);
 	}
 
-	public override bool Equals(object obj) => this.Equals(obj as ModDownloadItem);
+	public override bool Equals(object obj) => Equals(obj as ModDownloadItem);
 
 	// Custom Equality for Mod Browser efficiency
 	public bool Equals(ModDownloadItem item)
 	{
-		if (this.ModName != item.ModName)
+		if (ModName != item.ModName)
 			return false;
 
-		if (this.PublishId.m_ModPubId != item.PublishId.m_ModPubId)
+		if (PublishId.m_ModPubId != item.PublishId.m_ModPubId)
 			return false;
 
-		if (this.Version != item.Version)
+		if (Version != item.Version)
 			return false;
 
 		return true;

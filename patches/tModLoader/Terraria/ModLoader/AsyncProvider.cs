@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Iced.Intel;
-using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader;
 
@@ -40,12 +38,12 @@ public class AsyncProvider<T>
 	 * </remarks>
 	 */
 	public AsyncProvider(IAsyncEnumerable<T> provider, bool forceSeparateThread = false) {
-		this._Channel = Channel.CreateUnbounded<T>();
+		_Channel = Channel.CreateUnbounded<T>();
 		TokenSource = new CancellationTokenSource();
 		var taskRunner = async () => {
-			var writer = this._Channel.Writer;
+			var writer = _Channel.Writer;
 			try {
-				await foreach (var item in provider.WithCancellation(this.TokenSource.Token)) {
+				await foreach (var item in provider.WithCancellation(TokenSource.Token)) {
 					await writer.WriteAsync(item);
 				}
 				writer.Complete();
@@ -64,10 +62,10 @@ public class AsyncProvider<T>
 
 	public void Cancel()
 	{
-		this.TokenSource.Cancel();
+		TokenSource.Cancel();
 	}
 
-	public bool IsCancellationRequested => this.TokenSource.IsCancellationRequested;
+	public bool IsCancellationRequested => TokenSource.IsCancellationRequested;
 	public AsyncProviderState State {
 		get {
 			var completion = _Channel.Reader.Completion;
@@ -80,12 +78,11 @@ public class AsyncProvider<T>
 			return AsyncProviderState.Completed;
 		}
 	}
-	public Exception Exception => this._Channel.Reader.Completion.Exception;
+	public Exception Exception => _Channel.Reader.Completion.Exception;
 
 	public IEnumerable<T> GetData()
 	{
-		T item;
-		while (this._Channel.Reader.TryRead(out item)) {
+		while (_Channel.Reader.TryRead(out T item)) {
 			yield return item;
 		}
 	}
