@@ -120,7 +120,11 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		for (int i = 0; i < 20; i++) {
 			Thread.Sleep(500);
 
+			//TODO: GetActivetmod... returns null if workshop folder is empty. Needs Handling added - Solxan
 			var fileName = ModOrganizer.GetActiveTmodInRepo(itemFolder);
+			if (string.IsNullOrEmpty(fileName))
+				continue;
+
 			var modFile = new TmodFile(fileName);
 
 			using (modFile.Open()) {

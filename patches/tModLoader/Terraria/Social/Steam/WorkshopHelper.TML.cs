@@ -81,9 +81,9 @@ public partial class WorkshopHelper
 	}
 
 	/////// Workshop Version Calculation Helpers ////////////////////
-	private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
+	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
 	{
-		(System.Version modV, string tmlV) selectVersion = new(new System.Version(metadata["version"].Replace("v", "")), metadata["modloaderversion"]);
+		(System.Version modV, System.Version tmlV) selectVersion = new(new System.Version(metadata["version"].Replace("v", "")), new System.Version(metadata["modloaderversion"].Replace("tModLoader v", "")));
 		// Backwards compat after metadata version change
 		if (!metadata["versionsummary"].Contains(':'))
 			return selectVersion;
@@ -101,12 +101,15 @@ public partial class WorkshopHelper
 	}
 
 	// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
-	private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary)
+	private static void InnerCalculateRelevantVersion(ref (System.Version modV, System.Version tmlV) selectVersion, string versionSummary)
 	{
 		foreach (var item in VersionSummaryToArray(versionSummary)) {
-			if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
+			if (item.tmlVersion.MajorMinor() > BuildInfo.tMLVersion.MajorMinor())
+				continue;
+
+			if (selectVersion.modV < item.modVersion || selectVersion.tmlV.MajorMinor() < item.tmlVersion.MajorMinor()) {
 				selectVersion.modV = item.modVersion;
-				selectVersion.tmlV = item.tmlVersion.ToString(); //item.tmlVersion.MajorMinor().ToString();
+				selectVersion.tmlV = item.tmlVersion; //item.tmlVersion.MajorMinor().ToString();
 			}
 		}
 	}

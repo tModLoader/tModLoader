@@ -308,7 +308,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				d => modSlugsToUpdateInstallInfo.Contains(d.ModDownload.ModName)
 			)) {
 				item.ModDownload.UpdateInstallState();
-				item.UpdateInstallInfo();
+				item.UpdateInstallDisplayState();
 			}
 			// @TODO: Shouldn't only delete processed slugs?
 			modSlugsToUpdateInstallInfo.Clear();

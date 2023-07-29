@@ -80,7 +80,7 @@ internal class UIModDownloadItem : UIPanel
 		_moreInfoButton.OnLeftClick += ViewModInfo;
 		Append(_moreInfoButton);
 
-		var modBuildVersion = new Version(ModDownload.ModloaderVersion.Replace("tModLoader v", ""));
+		var modBuildVersion = ModDownload.ModloaderVersion;
 		tMLNeedUpdate = !BuildInfo.IsDev && BuildInfo.tMLVersion < modBuildVersion;
 		if (tMLNeedUpdate) {
 			string updateVersion = $"v{modBuildVersion}";
@@ -120,10 +120,10 @@ internal class UIModDownloadItem : UIPanel
 
 		OnLeftDoubleClick += ViewModInfo;
 
-		UpdateInstallInfo();
+		UpdateInstallDisplayState();
 	}
 
-	public void UpdateInstallInfo()
+	public void UpdateInstallDisplayState()
 	{
 		if (tMLNeedUpdate)
 			return;

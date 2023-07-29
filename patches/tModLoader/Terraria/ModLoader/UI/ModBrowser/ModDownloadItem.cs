@@ -29,16 +29,16 @@ public class ModDownloadItem
 	public readonly int Downloads;
 	public readonly int Hot;
 	public readonly string Homepage;
-	public readonly string ModloaderVersion;
+	public readonly Version ModloaderVersion;
 
-	private LocalMod Installed; // Shoudn't be internal
+	internal LocalMod Installed;
 	public bool NeedUpdate { get; private set; }
 	public bool AppNeedRestartToReinstall { get; private set; }
 
 	public bool IsInstalled => Installed != null;
 	public bool IsEnabled => IsInstalled && Installed.Enabled;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string[] referencesById)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
 		ModName = name;
 		DisplayName = displayName;
