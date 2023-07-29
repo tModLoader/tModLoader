@@ -76,18 +76,19 @@ public class ModDownloadItem
 	public override bool Equals(object obj) => Equals(obj as ModDownloadItem);
 
 	// Custom Equality for Mod Browser efficiency
+	private (string, string, string) GetComparable()
+	{
+		return (ModName, PublishId.m_ModPubId, Version);
+	}
 	public bool Equals(ModDownloadItem item)
 	{
-		if (ModName != item.ModName)
+		if (item is null)
 			return false;
-
-		if (PublishId.m_ModPubId != item.PublishId.m_ModPubId)
-			return false;
-
-		if (Version != item.Version)
-			return false;
-
-		return true;
+		return GetComparable() == item.GetComparable();
+	}
+	public override int GetHashCode()
+	{
+		return GetComparable().GetHashCode();
 	}
 
 	internal Task InnerDownloadWithDeps()

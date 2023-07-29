@@ -119,6 +119,8 @@ internal class UIModDownloadItem : UIPanel
 		}
 
 		OnLeftDoubleClick += ViewModInfo;
+
+		UpdateInstallInfo();
 	}
 
 	public void UpdateInstallInfo()

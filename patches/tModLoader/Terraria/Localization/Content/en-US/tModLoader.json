@@ -249,7 +249,7 @@
 		// UIAsyncList
 		"ALLoading": "Loading...",
 		"ALNoEntries": "No matching entries",
-		"ALCancel": "Loading calcelled, refresh to see all entries",
+		"ALCancel": "Loading cancelled, refresh to see all entries",
 		"ALError": "An error occurred, try refreshing",
 
 		// Mod Browser

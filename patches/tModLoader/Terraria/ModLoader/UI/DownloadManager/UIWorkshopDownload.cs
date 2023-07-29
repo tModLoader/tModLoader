@@ -22,6 +22,7 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 		public long bytesReceived;
 		public long totalBytesNeeded;
 		public bool reset;
+		public bool done;
 	}
 	private ProgressData progressData;
 	private bool needToUpdateProgressData = false;
@@ -42,12 +43,12 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 		base.OnInitialize();
 		// We can't cancel in-progress workshop downloads without getting steam in to a deadlock state - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
-		_cancelButton.Remove(); 
+		_cancelButton.Remove();
 	}
 
 	public override void Update(GameTime gameTime)
 	{
-		if (needToUpdateProgressData) {
+		if (needToUpdateProgressData) { // Lock only when needed
 			ProgressData localProgressData;
 			lock (this) {
 				localProgressData = progressData; // Make local to release the lock
@@ -60,13 +61,15 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			if (localProgressData.reset) {
 				_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", localProgressData.displayName);
 				downloadTimer.Restart();
-				Main.MenuUI.RefreshState();
 			}
 			// Update progress
 			_progressBar.UpdateProgress(localProgressData.progress);
 			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
 			double speed = elapsedSeconds > 0.0 ? localProgressData.bytesReceived / elapsedSeconds : 0.0;
 			SubProgressText = $"{UIMemoryBar.SizeSuffix(localProgressData.bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(localProgressData.totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
+
+			if (localProgressData.done)
+				ReturnToPreviousMenu();
 		}
 		base.Update(gameTime);
 	}
@@ -82,6 +85,7 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			progressData.bytesReceived = 0;
 			progressData.totalBytesNeeded = 0;
 			progressData.reset = true;
+			progressData.done = false;
 
 			needToUpdateProgressData = true;
 		};
@@ -97,6 +101,7 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			progressData.progress = progress;
 			progressData.bytesReceived = bytesReceived;
 			progressData.totalBytesNeeded = totalBytesNeeded;
+			progressData.done = false;
 
 			needToUpdateProgressData = true;
 		};
@@ -106,8 +111,11 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 	*/
 	public void DownloadCompleted()
 	{
-		// @TODO: Is this ok in a thread?
-		ReturnToPreviousMenu();
+		lock (this) {
+			progressData.done = true;
+
+			needToUpdateProgressData = true;
+		}
 	}
 
 	public void ReturnToPreviousMenu()

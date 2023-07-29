@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -30,9 +31,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		protected override UIModDownloadItem GenElement(ModDownloadItem resource)
 		{
-			var element = new UIModDownloadItem(resource);
-			element.UpdateInstallInfo();
-			return element;
+			return new UIModDownloadItem(resource);
 		}
 	}
 
@@ -61,13 +60,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	private HashSet<string> modSlugsToUpdateInstallInfo = new();
 
-	public const int DEBOUNCE_MS = 100;
+	// Debouncing to avoid sending unnecessary amount of start and abort queries
+	// to Steam mainly when typing fast in the search bar
+	public TimeSpan MinTimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
 	private Stopwatch DebounceTimer = null;
 	internal bool UpdateNeeded;
 	public UIState PreviousUIState { get; set; }
 
 	/* Filters */
-	public QueryParameters FilterParameters => new() {
+	private QueryParameters FilterParameters => new() {
 		searchTags = new string[] { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) },
 		searchModIds = SpecialModPackFilter?.ToArray(),
 		searchModSlugs = null,
@@ -132,8 +133,14 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		_rootElement.RemoveChild(_updateAllButton);
 
+		// MUST update all install states of installed mods so that
+		// update will not leave some mods not updated @TODO: ???
+		var imods = SocialBackend.GetInstalledModDownloadItems();
+		foreach (var mod in imods) {
+			mod.UpdateInstallState();
+		}
 		if (SpecialModPackFilter == null &&
-			SocialBackend.GetInstalledModDownloadItems().Where(item => { item.UpdateInstallState(); return item.NeedUpdate; }).Count() > 0
+			imods.Any(item => item.NeedUpdate)
 		)
 			_rootElement.Append(_updateAllButton);
 	}
@@ -144,24 +151,21 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			.Where(item => item.NeedUpdate)
 			.Select(item => item.PublishId)
 			.ToList();
-		DownloadMods(relevantMods);
-
-		CheckIfAnyModUpdateIsAvailable();
+		DownloadMods(relevantMods).ConfigureAwait(false).GetAwaiter().OnCompleted(
+			CheckIfAnyModUpdateIsAvailable
+		);
 	}
 
 	private void ClearTextFilters(UIMouseEvent @event, UIElement element)
 	{
-		// These and already done in PopulateModBrowser
-		//SpecialModPackFilter = null;
-		//SpecialModPackFilterTitle = null;
-
 		PopulateModBrowser();
 		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
 
 	private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element)
 	{
-		DownloadMods(SpecialModPackFilter);
+		// @TODO: Don't await, leave pending, could be problematic if exits UI?
+		DownloadMods(SpecialModPackFilter).ConfigureAwait(false).GetAwaiter();
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -310,7 +314,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		if (
 			(DebounceTimer is not null) &&
-			(DebounceTimer.ElapsedMilliseconds >= DEBOUNCE_MS)
+			(DebounceTimer.Elapsed >= MinTimeBetweenUpdates)
 		) {
 			// No need to count more
 			DebounceTimer.Stop();
@@ -348,8 +352,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// <summary>
 	///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 	/// </summary>
-	internal void DownloadMods(List<ModPubId_t> modIds)
+	internal async Task DownloadMods(List<ModPubId_t> modIds)
 	{
+		// @TODO: This too should become a Task since blocking
 		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() });
 
 		for (int i = 0; i < modIds.Count(); i++) {
@@ -364,8 +369,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (downloadShortList.Count() <= 0)
 			return;
 
-		SocialBackend.SetupDownload(downloadShortList.ToList(), Interface.modBrowserID);
+		await SocialBackend.SetupDownload(downloadShortList.ToList(), Interface.modBrowserID);
 
+		// @TODO: Should not do UI stuff... :(
 		if (_missingMods.Count > 0) {
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
 			_missingMods.Clear();
