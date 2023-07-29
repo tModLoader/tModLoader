@@ -835,6 +835,7 @@ Mods: {
 			ItemShimmerShowcaseModShimmer: {
 				// DisplayName: Item Shimmer Showcase: ModShimmer
 				// Tooltip: Shimmer showcase for ModShimmer on items
+			}
 
 			ExampleExtraJumpAccessory: {
 				// DisplayName: Example Extra Jump Accessory

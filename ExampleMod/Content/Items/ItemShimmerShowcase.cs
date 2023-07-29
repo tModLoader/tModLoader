@@ -99,7 +99,7 @@ public class ItemShimmerShowcaseModShimmer : ModItem
 
 	public override void SetStaticDefaults() {
 		CreateShimmerTransformation() // Using CreateShimmerTransformation we create an instance of ModShimmer
-			.AddCondition(Condition.Christmas) // Just like Recipe we can apply condition and item results
+			//.AddCondition(Condition.Christmas) // Just like Recipe we can apply condition and item results
 			.AddItemResult(ItemID.Present, 2)
 			.Register();
 
@@ -107,6 +107,17 @@ public class ItemShimmerShowcaseModShimmer : ModItem
 			.AddModItemResult<ExampleItem>(30)
 			.AddModNPCResult<ExampleZombieThief>(2) // Unlike recipe we can spawn NPCs here, of any count, under conditions
 			.AddCoinLuckResult(2) // We can also add coin luck
+			.Register();
+
+		CreateShimmerTransformation()
+			.AddModItemResult<ExampleItem>(30)
+			.AddItemResult(ItemID.DirtBlock, 20)
+			.AddItemResult(ItemID.StoneBlock, 20)
+			.AddItemResult(ItemID.SandBlock, 20)
+			.AddItemResult(ItemID.Grasshopper, 20)
+			.AddItemResult(ItemID.Cascade, 20)
+			.AddItemResult(ItemID.FireFeather, 20)
+			.SetPriority(10)
 			.Register();
 	}
 
