@@ -87,7 +87,7 @@ partial class UIWorldSelect
 
 				if (stabilityLevel > currentStabilityLevel) {
 					// TODO: Not necessarily newer...
-					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This world is from a newer tModLoader, it might not work") {
+					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.WorldFromNewerTModMightNotWork")) {
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -100,7 +100,7 @@ partial class UIWorldSelect
 				var worldWithSameName = Main.WorldList.FirstOrDefault(x => x.Name == fileData.Name);
 
 				if (worldWithSameName != null) {
-					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "A world with this name exists, it will be overwritten") {
+					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.WorldWithThisNameExistsWillBeOverwritten")) {
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -110,7 +110,7 @@ partial class UIWorldSelect
 					left += warningImage.Width.Pixels + 6;
 
 					if (File.GetLastWriteTime(worldWithSameName.Path) > File.GetLastWriteTime(files[i])) {
-						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "The existing world was last played more recently") {
+						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.ExistingWorldPlayedMoreRecently")) {
 							Left = { Pixels = left },
 							Top = { Pixels = 3 }
 						};
