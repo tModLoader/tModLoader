@@ -17,23 +17,21 @@ namespace Terraria.ModLoader.UI.Elements;
 public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIElement : UIElement
 {
 	private bool ProviderChanged = false;
-	private bool UpdateRequested = false;
 	private AsyncProvider<TResource> Provider = null;
 
 	protected abstract TUIElement GenElement(TResource resource);
-	protected virtual void UpdateElement(TUIElement element) { }
 
 	// Graphical elements set on OnInitialize
 	private UIText EndItem = null;
-	// null Provider is empty so completed
-	private AsyncProviderState LastProviderState = AsyncProviderState.Completed;
 
 	// null Provider is empty so completed
-	public AsyncProviderState State => Provider?.State ?? AsyncProviderState.Completed;
+	public AsyncProviderState State { get; private set; } = AsyncProviderState.Completed; // Expose only syncronous state
+	private AsyncProviderState RealtimeState => Provider?.State ?? AsyncProviderState.Completed;
 
 	public delegate void StateDelegate(AsyncProviderState state);
+	public delegate void StateDelegateWithException(AsyncProviderState state, Exception e);
 	public event StateDelegate OnStartLoading;
-	public event StateDelegate OnFinished;
+	public event StateDelegateWithException OnFinished;
 
 	public IEnumerable<TUIElement> ReceivedItems {
 		get {
@@ -68,10 +66,10 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 		Provider = provider;
 	}
 
-	public void SetEnumerable(IAsyncEnumerable<TResource> enumerable = null, bool forceSeparateThread = false)
+	public void SetEnumerable(IAsyncEnumerable<TResource> enumerable = null)
 	{
 		if (enumerable is not null) {
-			SetProvider(new(enumerable, forceSeparateThread));
+			SetProvider(new(enumerable));
 		} else {
 			SetProvider(null);
 		}
@@ -88,14 +86,6 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 			Add(EndItem);
 			ProviderChanged = false;
 
-			// Force a state change in case of changed provider so it's clear a change happened
-			// In general you'd have a cancelled if was not finished, then a loading state (GUARANTEED)
-			// And in case the completion if already finished (handled automatically later in Update
-			// given that LastProviderState is changed)
-			/*
-			if (!LastProviderState.IsFinished())
-				InternalOnUpdateState(AsyncProviderState.Canceled);
-			*/
 			InternalOnUpdateState(AsyncProviderState.Loading);
 			endItemTextNeedUpdate = true;
 		}
@@ -103,21 +93,15 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 		if (Provider is not null) {
 			var uiels = Provider.GetData().Select(GenElement).ToArray();
 			if (uiels.Length > 0) {
+				// Use AddRange because it's the only *Range that works correctly on UIList
 				Remove(EndItem);
 				AddRange(uiels);
 				Add(EndItem);
 			}
 		}
 
-		if (UpdateRequested) {
-			foreach (var item in ReceivedItems) {
-				UpdateElement(item);
-			}
-			UpdateRequested = false;
-		}
-
-		providerState = State;
-		if (providerState != LastProviderState) {
+		providerState = RealtimeState;
+		if (providerState != State) {
 			InternalOnUpdateState(providerState);
 			endItemTextNeedUpdate = true;
 		}
@@ -129,11 +113,11 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 
 	private void InternalOnUpdateState(AsyncProviderState state)
 	{
-		LastProviderState = state;
-		if (LastProviderState.IsFinished()) {
-			OnFinished(LastProviderState);
+		State = state;
+		if (State.IsFinished()) {
+			OnFinished(State, Provider?.Exception);
 		} else {
-			OnStartLoading(LastProviderState);
+			OnStartLoading(State);
 		}
 	}
 
@@ -149,16 +133,15 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 
 	protected virtual string GetEndItemText()
 	{
-		switch (LastProviderState) {
+		switch (State) {
 			case AsyncProviderState.Loading:
 				return Language.GetTextValue("tModLoader.ALLoading");
 			case AsyncProviderState.Completed:
-				return ReceivedItems.Count() > 0 ? "" : Language.GetTextValue("tModLoader.ALNoEntries");
+				return ReceivedItems.Any() ? "" : Language.GetTextValue("tModLoader.ALNoEntries");
 			case AsyncProviderState.Canceled:
-				// @TODO: Maybe distinguish aborted for cancel and aborted for error
-				return Language.GetTextValue("tModLoader.ALAborted");
+				return Language.GetTextValue("tModLoader.ALCancel");
 			case AsyncProviderState.Aborted:
-				return Language.GetTextValue("tModLoader.ALAborted");
+				return Language.GetTextValue("tModLoader.ALError");
 		}
 		return "Invalid state";
 	}
@@ -166,10 +149,5 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 	public void Cancel()
 	{
 		Provider?.Cancel();
-	}
-
-	public void UpdateData()
-	{
-		UpdateRequested = true;
 	}
 }

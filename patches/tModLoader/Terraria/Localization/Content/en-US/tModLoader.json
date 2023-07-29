@@ -247,9 +247,10 @@
 		"MPPacketTooLarge": "Packet too large {0} > {1}",
 
 		// UIAsyncList
-		"ALLoading": "Still loading...",
-		"ALNoEntries": "Loading completed, but no entries found",
-		"ALAborted": "Loading aborted, reload to see all data",
+		"ALLoading": "Loading...",
+		"ALNoEntries": "No matching entries",
+		"ALCancel": "Loading calcelled, refresh to see all entries",
+		"ALError": "An error occurred, try refreshing",
 
 		// Mod Browser
 		"MBDownload": "Download",

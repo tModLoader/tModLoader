@@ -34,10 +34,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			element.UpdateInstallInfo();
 			return element;
 		}
-		protected override void UpdateElement(UIModDownloadItem element)
-		{
-			element.UpdateInstallInfo();
-		}
 	}
 
 	public static bool AvoidGithub;
@@ -250,7 +246,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		_browserStatus.SetCurrentState(state);
 		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
 	}
-	private void ModListFinished(AsyncProviderState state)
+	private void ModListFinished(AsyncProviderState state, Exception e)
 	{
 		_browserStatus.SetCurrentState(state);
 		_reloadButton.SetText(Language.GetText("tModLoader.MBReloadBrowser"));

@@ -18,6 +18,7 @@ using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using System.Collections.Generic;
+using Microsoft.Build.Framework;
 
 namespace Terraria.ModLoader.UI;
 
@@ -184,6 +185,7 @@ internal static class Interface
 
 				Action downloadAction = () => {
 					if (promptDepDownloads) {
+						HashSet<ModDownloadItem> downloads = new();
 						foreach (var slug in missingDeps) {
 							var item = WorkshopHelper.GetModDownloadItem(slug);
 							if (item == null) {
@@ -191,8 +193,18 @@ internal static class Interface
 								continue;
 							}
 
-							item.InnerDownloadWithDeps();
+							downloads.Add(item);
 						}
+
+						modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
+
+						modBrowser.SocialBackend.SetupDownload(
+							ModDownloadItem.FilterOutInstalled(downloads).ToList(),
+							Interface.modBrowserID
+						).ConfigureAwait(false).GetAwaiter().GetResult(); // ????
+						// @TODO: This is a big problem since infoMessage WILL switch to `_gotoMenu`
+						// on action end, but this conflicts with the SetupDownload messing with UI state
+						// on a thread, making this sync will not break but freeze UI :(
 					}
                 };
 

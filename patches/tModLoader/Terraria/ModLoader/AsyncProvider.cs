@@ -32,12 +32,9 @@ public class AsyncProvider<T>
 	 *   Remember to provide your enumerator with
 	 *   `[EnumeratorCancellation] CancellationToken token = default`
 	 *   as argument to allow cancellation notification.
-	 *   And in case the provider is partially syncronous use `forceSeparateThread`
-	 *   to make sure it doesn't get scheduled in the main thread (should not be needed
-	 *   if the method is written appropriately).
 	 * </remarks>
 	 */
-	public AsyncProvider(IAsyncEnumerable<T> provider, bool forceSeparateThread = false) {
+	public AsyncProvider(IAsyncEnumerable<T> provider) {
 		_Channel = Channel.CreateUnbounded<T>();
 		TokenSource = new CancellationTokenSource();
 		var taskRunner = async () => {
@@ -53,11 +50,7 @@ public class AsyncProvider<T>
 			}
 		};
 		// No need to store the task, the completion event is present in the channel itself
-		if (forceSeparateThread) {
-			Task.Run(taskRunner);
-		} else {
-			taskRunner();
-		}
+		taskRunner();
 	}
 
 	public void Cancel()
