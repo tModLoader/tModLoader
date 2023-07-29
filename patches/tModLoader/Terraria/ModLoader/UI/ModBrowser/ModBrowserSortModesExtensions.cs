@@ -7,8 +7,8 @@ public static class ModBrowserSortModesExtensions
 	public static string ToFriendlyString(this ModBrowserSortMode sortmode)
 	{
 		switch (sortmode) {
-			case ModBrowserSortMode.DisplayNameAtoZ:
-				return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
+			//case ModBrowserSortMode.DisplayNameAtoZ:
+				//return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
 			//case ModBrowserSortMode.DisplayNameZtoA:
 				//return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
 			case ModBrowserSortMode.DownloadsDescending:

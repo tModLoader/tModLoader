@@ -196,7 +196,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				}
 
 				UICommon.DrawHoverStringInBounds(spriteBatch, text);
-				// @TEMP: Was return here, it did "block" _updateAvailable processing
 				break;
 			}
 	}
@@ -292,6 +291,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		base.Update(gameTime);
 
+		/* Old Code for Triggering an Update to tModLoader based on detecting a mod is for a newer version.
+		 * Unfortunately, this is broken as of the revampt of ModBrowser under PR #3346, and not sure how to-readd relative to current environment
 		if (_updateAvailable) {
 			_updateAvailable = false;
 			Interface.updateMessage.SetMessage(_updateText);
@@ -300,6 +301,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			Interface.updateMessage.SetAutoUpdateURL(_autoUpdateUrl);
 			Main.menuMode = Interface.updateMessageID;
 		}
+		*/
 
 		lock (modSlugsToUpdateInstallInfo) {
 			foreach (var item in ModList.ReceivedItems.Where(
@@ -363,7 +365,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				_missingMods.Add(modIds[i].m_ModPubId);
 		}
 
-		var downloadShortList = ModDownloadItem.FilterOutInstalled(downloadsQueried);
+		var downloadShortList = ModDownloadItem.NeedsInstallOrUpdate(downloadsQueried);
 
 		// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
 		if (downloadShortList.Count() <= 0)

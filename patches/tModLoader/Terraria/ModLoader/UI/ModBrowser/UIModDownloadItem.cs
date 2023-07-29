@@ -161,8 +161,8 @@ internal class UIModDownloadItem : UIPanel
 		switch (Interface.modBrowser.SortMode) {
 			default:
 				return base.CompareTo(obj);
-			case ModBrowserSortMode.DisplayNameAtoZ:
-				return string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
+			//case ModBrowserSortMode.DisplayNameAtoZ:
+				//return string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
 			//case ModBrowserSortMode.DisplayNameZtoA:
 				//return -1 * string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
 			//case ModBrowserSortMode.DownloadsAscending:

@@ -16,7 +16,7 @@ public class ModDownloadItem
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 	public readonly ModPubId_t PublishId;
 	public readonly string OwnerId;
-	public readonly string Version;
+	public readonly Version Version;
 
 	public readonly string Author;
 	public readonly string ModIconUrl;
@@ -38,7 +38,7 @@ public class ModDownloadItem
 	public bool IsInstalled => Installed != null;
 	public bool IsEnabled => IsInstalled && Installed.Enabled;
 
-	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string[] referencesById)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, string modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -67,7 +67,7 @@ public class ModDownloadItem
 		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
-		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, new System.Version(Version));
+		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);
@@ -76,16 +76,20 @@ public class ModDownloadItem
 	public override bool Equals(object obj) => Equals(obj as ModDownloadItem);
 
 	// Custom Equality for Mod Browser efficiency
-	private (string, string, string) GetComparable()
+	private (string, string, Version) GetComparable()
 	{
 		return (ModName, PublishId.m_ModPubId, Version);
 	}
+
+	// Explicit Equals was required due to a bizarre issue where two ModDownloadItems with equal properties 
+	//	were not found equal in CachedInstalledModDownloadItems.Contains(item). - Solxan 2023-07-29
 	public bool Equals(ModDownloadItem item)
 	{
 		if (item is null)
 			return false;
 		return GetComparable() == item.GetComparable();
 	}
+
 	public override int GetHashCode()
 	{
 		return GetComparable().GetHashCode();
@@ -98,10 +102,10 @@ public class ModDownloadItem
 		if (ModReferenceByModId.Length > 0)
 			Interface.modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
 
-		return Interface.modBrowser.SocialBackend.SetupDownload(FilterOutInstalled(downloads).ToList(), Interface.modBrowserID);
+		return Interface.modBrowser.SocialBackend.SetupDownload(NeedsInstallOrUpdate(downloads).ToList(), Interface.modBrowserID);
 	}
 
-	public static IEnumerable<ModDownloadItem> FilterOutInstalled(IEnumerable<ModDownloadItem> downloads)
+	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)
 	{
 		return downloads.Where(item => {
 			if (item == null)

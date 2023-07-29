@@ -122,10 +122,6 @@ public interface SocialBrowserModule
 		foreach (var item in items) {
 			DownloadItem(item, uiProgress);
 
-			// Due to issues with Steam moving files from downloading folder to installed folder,
-			// there can be some latency in detecting it's installed. Fine tune if it's giving issues - Solxan
-			Thread.Sleep(2500);
-
 			// Add installed info to the downloaded item
 			changedModsSlugs.Add(item.ModName);
 		}

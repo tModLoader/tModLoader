@@ -1,10 +1,12 @@
 ﻿using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -89,6 +91,45 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		uiProgress?.DownloadStarted(item.DisplayName);
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
+
+		// Due to issues with Steam moving files from downloading folder to installed folder,
+		// there can be some latency in detecting it's installed. Fine tune if it's giving issues - Solxan
+		EnsureInstallationComplete(item);
+	}
+
+	public void EnsureInstallationComplete(ModDownloadItem item)
+	{
+		Logging.tML.Info("Validating Installation Has Completed: Step 1 / 2");
+		string workshopFolder = WorkshopHelper.GetWorkshopFolder(ModLoader.Engine.Steam.TMLAppID_t);
+		string itemFolder = Path.Combine(workshopFolder, "content", ModLoader.Engine.Steam.TMLAppID_t.ToString(), item.PublishId.m_ModPubId.ToString());
+
+		// Await for the directory to be made for a new install, and assume all the .tmods are in it once completed
+		for (int i = 0; i < 20; i++) {
+			Thread.Sleep(500);
+
+			if (Directory.Exists(itemFolder))
+				break;
+
+			Logging.tML.Info($"Workshop Folder Missing. Awaiting. Attempt {i} / 20");
+		}
+
+		// If this is an update, we also need to check that the new .tmod matches the ModDownloadItem
+		Logging.tML.Info("Validating Installation Has Completed: Step 2 / 2");
+
+		// Cap at waiting for 10 seconds
+		for (int i = 0; i < 20; i++) {
+			Thread.Sleep(500);
+
+			var fileName = ModOrganizer.GetActiveTmodInRepo(itemFolder);
+			var modFile = new TmodFile(fileName);
+
+			using (modFile.Open()) {
+				if (modFile.Version == item.Version)
+					return;
+			}
+
+			Logging.tML.Info($"Mod Update Not Received. Awaiting. Attempt {i} / 20");
+		}	
 	}
 
 	// More Info for Items /////////////////////////
