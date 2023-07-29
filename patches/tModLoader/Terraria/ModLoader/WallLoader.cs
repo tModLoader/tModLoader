@@ -329,7 +329,7 @@ public static class WallLoader
 	{
 		for (int k = 0; k < ItemLoader.ItemCount; k++) {
 			Item item = ContentSamples.ItemsByType[k];
-			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
+			if (item.ModItem != null && !ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
 				if (item.createWall > -1) {
 					// TryAdd won't override existing value if present. Existing ModWall.RegisterItemDrop entries take precedence
 					WallLoader.wallTypeToItemType.TryAdd(item.createWall, item.type);
