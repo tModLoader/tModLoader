@@ -288,4 +288,9 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, ISh
 	public Point Dimensions { get => new(width, height); set { width = value.X; height = value.Y; } }
 	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.Item;
 	public int ShimmerType => type;
+	public int Stack => stack;
+	public void RemoveFromStack(int amount)
+	{
+		stack -= amount;
+	}
 }

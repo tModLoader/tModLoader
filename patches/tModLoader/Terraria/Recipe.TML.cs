@@ -36,6 +36,20 @@ public partial class Recipe
 		};
 	}
 
+	public static class ShimmerConsumptionRules
+	{
+		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => {
+			int amountUsed = 0;
+
+			for (int i = 0; i < amount; i++) {
+				if (!Main.rand.NextBool(3))
+					amountUsed++;
+			}
+
+			amount = amountUsed;
+		};
+	}
+
 	public readonly Mod Mod;
 	public readonly List<Condition> Conditions = new List<Condition>();
 	public readonly List<Condition> DecraftConditions = new List<Condition>();
@@ -45,6 +59,7 @@ public partial class Recipe
 
 	internal OnCraftCallback OnCraftHooks { get; private set; }
 	internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
+	internal ConsumeItemCallback ShimmerConsumeItemHooks { get; private set; }
 
 	private void AddGroup(int id)
 	{
@@ -311,6 +326,16 @@ public partial class Recipe
 		return this;
 	}
 
+	/// <summary>
+	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
+	/// </summary>
+	public Recipe AddShimmerConsumeItemCallback(ConsumeItemCallback callback)
+	{
+		ShimmerConsumeItemHooks += callback;
+
+		return this;
+	}
+
 	#region Ordering
 
 	/// <summary>
@@ -413,6 +438,7 @@ public partial class Recipe
 
 		clone.OnCraftHooks = OnCraftHooks;
 		clone.ConsumeItemHooks = ConsumeItemHooks;
+		clone.ShimmerConsumeItemHooks = ShimmerConsumeItemHooks;
 		foreach (Condition condition in Conditions) {
 			clone.AddCondition(condition);
 		}
@@ -425,6 +451,8 @@ public partial class Recipe
 		// it here to not have multiple duplicate hooks.
 		if (clone.requiredTile.Contains(TileID.Bottles))
 			clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
+		if (clone.requiredTile.Contains(TileID.Bottles))
+			clone.ShimmerConsumeItemHooks -= ShimmerConsumptionRules.Alchemy;
 
 		return clone;
 	}
@@ -443,6 +471,8 @@ public partial class Recipe
 
 		if (requiredTile.Contains(TileID.Bottles))
 			AddConsumeItemCallback(ConsumptionRules.Alchemy);
+		if (requiredTile.Contains(TileID.Bottles))
+			AddShimmerConsumeItemCallback(ShimmerConsumptionRules.Alchemy);
 
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;

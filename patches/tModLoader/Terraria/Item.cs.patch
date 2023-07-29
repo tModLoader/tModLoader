@@ -1958,6 +1958,15 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47876,6 +_,8 @@
+ 					}
+ 				}
+ 
++				RecipeLoader.ShimmerConsumeItem(recipe, item2.type, ref num16);
++
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+ 					if (num18 > 9999)
 @@ -47930,6 +_,7 @@
  			makeNPC = -1;
  			active = false;
