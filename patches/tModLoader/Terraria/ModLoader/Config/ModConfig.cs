@@ -94,6 +94,9 @@ public abstract class ModConfig : ILocalizedModType
 	/// <returns></returns>
 	protected static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool> checkSubField = default)
 	{
+		if (currentConfig is null || pendingConfig is null || currentConfig.GetType() != pendingConfig.GetType())
+			return false;
+
 		if (checkSubField == default)
 			checkSubField = (field) => field.Type.IsClass;
 
