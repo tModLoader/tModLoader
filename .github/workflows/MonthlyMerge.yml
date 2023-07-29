@@ -9,7 +9,7 @@ env:
 # Controls when the action will run. 
 on:
   # This workflow runs on the first of every month at midnight UTC
-  #schedule:
+  schedule:
     - cron: '0 0 1 * *'
   
   # Allows you to manually run the workflow
