@@ -471,7 +471,24 @@ internal static class Interface
 
 	internal static void ServerModBrowserMenu()
 	{
-		//TODO: Broke this, again. I don't think ever really worked in 1.4
+		//TODO: Broke this, again. I don't think ever really worked in 1.4. To be left broken for later reconsideration if a different host is used.
+		//	In Place of fixing, we rely on ModPack Menu for exporting .tmod files and SteamCMD paired with install.txt from ModPack menu
+
+		/*
+		if (!SteamedWraps.SteamAvailable) {
+			if (!SteamedWraps.TryInitViaGameServer()) {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
+				throw new SocialBrowserException("No Workshop Access");
+			}
+
+			// lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
+			var stopwatch = Stopwatch.StartNew();
+			while (!SteamGameServer.BLoggedOn() && stopwatch.Elapsed.TotalSeconds < 5) {
+				await SteamedWraps.ForceCallbacks(token);
+			}
+		}
+		*/
+
 		/*
 		bool exit = false;
 		Console.Clear();

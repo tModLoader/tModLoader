@@ -381,7 +381,7 @@ internal class UIModPackItem : UIPanel
 		}
 
 		var query = new QueryParameters() { searchModSlugs = _mods };
-		WorkshopHelper.QueryHelper.TryGetPublishIdByInternalName(query, out var modIds);
+		WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds);
 
 		var output = new List<ModPubId_t>();
 		foreach (var item in modIds) {

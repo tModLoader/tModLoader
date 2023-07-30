@@ -154,7 +154,9 @@ public interface SocialBrowserModule
 
 	public void GetDependenciesRecursive(ref HashSet<ModDownloadItem> set)
 	{
-		//TODO: What if the same mod is a dependency twice, but different versions?
+		//NOTE: What if the same mod is a dependency twice, but different versions?
+		// In The Steam Workshop implementation, this is not tracked. Dependencies are by slug/ID only
+		// If we change backends, and we re-add the capability to have concurrent versions in a folder, may be significant work involved
 		var fullList = set.Select(x => x.PublishId).ToHashSet();
 		var iterationList = new HashSet<ModPubId_t>();
 

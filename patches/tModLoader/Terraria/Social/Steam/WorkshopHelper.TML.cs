@@ -80,6 +80,33 @@ public partial class WorkshopHelper
 		return true;
 	}
 
+	/////// Used for Publishing ////////////////////
+	internal static bool TryGetPublishIdByInternalName(QueryParameters query, out List<string> modIds)
+	{
+		modIds = new List<string>();
+
+		var queryHandle = new QueryHelper.AQueryInstance(query);
+		if (!queryHandle.TrySearchByInternalName(out List<ModDownloadItem> items))
+			return false;
+
+		for (int i = 0; i < query.searchModSlugs.Length; i++) {
+			if (items[i] is null) {
+				Logging.tML.Info($"Unable to find the PublishID for {query.searchModSlugs[i]}");
+				modIds.Add("0");
+			}
+			else
+				modIds.Add(items[i].PublishId.m_ModPubId);
+		}
+
+		return true;
+	}
+
+	internal static ulong GetSteamOwner(string modId)
+	{
+		var mods = new QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = new ModPubId_t[] { new ModPubId_t() { m_ModPubId = modId } } }).QueryItemsSynchronously();
+		return ulong.Parse(mods[0].OwnerId);
+	}
+
 	/////// Workshop Version Calculation Helpers ////////////////////
 	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
 	{
@@ -183,58 +210,15 @@ public partial class WorkshopHelper
 
 	internal static class QueryHelper
 	{
-		/////// Workshop Special Statics ////////////////////
-
-		internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
-
-
-		/////// Used for Publishing ////////////////////
-		internal static bool TryGetPublishIdByInternalName(QueryParameters query, out List<string> modIds)
-		{
-			modIds = new List<string>();
-
-			var queryHandle = new AQueryInstance(query);
-			if (!queryHandle.TrySearchByInternalName(out List<ModDownloadItem> items))
-				return false;
-
-			for (int i = 0; i < query.searchModSlugs.Length; i++) {
-				modIds.Add(items[i] == null ? "0" : items[i].PublishId.m_ModPubId);
-			}
-
-			return true;
-		}
-
-		internal static ulong GetSteamOwner(string modId)
-		{
-			var mods = new AQueryInstance(new QueryParameters() { searchModIds = new ModPubId_t[] { new ModPubId_t() { m_ModPubId = modId } } } ).FastQueryItems();
-			return ulong.Parse(mods[0].OwnerId);
-		}
-
 		/////// Used for Mod Browser ////////////////////
 
-		// Yield returns null if an error happens and the result is cut short
 		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token)
 		{
-			// @TODO: "Solxan" This code will be moved to another place
-			if (!SteamedWraps.SteamAvailable) {
-				if (!SteamedWraps.TryInitViaGameServer()) {
-					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
-					throw new SocialBrowserException("No Workshop Access");
-				}
-
-				// lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
-				var stopwatch = Stopwatch.StartNew();
-				while (!SteamGameServer.BLoggedOn() && stopwatch.Elapsed.TotalSeconds < 5) {
-					await SteamedWraps.ForceCallbacks(token);
-				}
-			}
-
 			var queryHandle = new AQueryInstance(queryParams);
 
 			await foreach (var item in queryHandle.QueryAllWorkshopItems(token)) {
 				if (item is not null)
-					queryHandle.Items.Add(item);
-				yield return item;
+					yield return item;
 			}
 		}
 
@@ -246,17 +230,11 @@ public partial class WorkshopHelper
 			protected UGCQueryHandle_t _primaryUGCHandle;
 			protected EResult _primaryQueryResult;
 			protected uint _queryReturnCount;
-			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
 			internal QueryParameters queryParameters;
 
-			internal int IncompleteModCount;
-			internal int HiddenModCount;
-			internal uint TotalItemsQueried;
-
-			/////// Used for making code hear easier on common calls ////////////////////
-			internal List<ModDownloadItem> Items = new List<ModDownloadItem>();
-			internal IReadOnlyList<LocalMod> InstalledMods => WorkshopBrowserModule.Instance.InstalledItems;
+			internal int numberPages = 0;
+			internal uint totalItemsQueried = 0;
 
 			/////// Query basic implemenatation ////////////////////
 
@@ -271,10 +249,12 @@ public partial class WorkshopHelper
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
-				_nextCursor = pCallback.m_rgchNextCursor;
 
-				if (TotalItemsQueried == 0 && pCallback.m_unTotalMatchingResults > 0)
-					TotalItemsQueried = pCallback.m_unTotalMatchingResults;
+				if (totalItemsQueried == 0 && pCallback.m_unTotalMatchingResults > 0) {
+					totalItemsQueried = pCallback.m_unTotalMatchingResults;
+					numberPages = ((int)totalItemsQueried / Constants.kNumUGCResultsPerPage) + 1; 
+				}
+					
 			}
 
 			/// <summary>
@@ -288,23 +268,29 @@ public partial class WorkshopHelper
 			/////// Queries ////////////////////
 
 			/// <summary>
-			/// For direct information gathering of particular mod/workshop items. Synchronous
+			/// For direct information gathering of particular mod/workshop items. Synchronous.
+			/// Array Sizes are left One To One. If the Mod is not found, the array space is filled with a null.
 			/// </summary>
-			internal ModDownloadItem[] FastQueryItems()
+			internal ModDownloadItem[] QueryItemsSynchronously()
 			{
 				var numPages = Math.Ceiling(queryParameters.searchModIds.Length / (float)Constants.kNumUGCResultsPerPage);
 				var items = new ModDownloadItem[queryParameters.searchModIds.Length];
 
 				for (int i = 0; i < numPages; i++) {
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) - 1));
+					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
-					if (!TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(pageIds.Select(x => x.m_ModPubId).ToArray()))) {
-						Logging.tML.Error($"Unexpectedly failed to query information reqarding items {pageIds}.");
-						return null;
+					if (!TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(idArray))) {
+						throw new Exception($"Unexpectedly failed to query information reqarding items {pageIds}.");
 					}
 
 					for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
 						items[j] = GenerateModDownloadItemFromQuery((uint)j);
+						if (items[j] is null) {
+							Logging.tML.Info($"Unable to find Mod with ID {idArray[j]}");
+							continue;
+						}
+
 						items[j].UpdateInstallState();
 					}
 
@@ -316,20 +302,17 @@ public partial class WorkshopHelper
 
 			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
 			{
+				uint currentPage = 1;
 				do {
 					token.ThrowIfCancellationRequested();
 
-					// Appx. 0.5 seconds per page of 50 items during testing. No way to parallelize.
-					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
-
-					string currentPage = _nextCursor;
-					if (!await TryRunQueryAsync(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
+					if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token)) {
 						ReleaseWorkshopQuery();
 
 						// If it failed, make a second attempt after 100 ms
 						await Task.Delay(100, token);
 						// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
-						if (!await TryRunQueryAsync(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters))) {
+						if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token)) {
 							ReleaseWorkshopQuery();
 							// Exit for error fetching stuff
 							throw new SocialBrowserException("Workshop Query Failed");
@@ -340,11 +323,7 @@ public partial class WorkshopHelper
 						yield return item;
 
 					ReleaseWorkshopQuery();
-
-					if (string.IsNullOrEmpty(_nextCursor))
-						break;
-
-				} while (TotalItemsQueried > Items.Count + IncompleteModCount + HiddenModCount);
+				} while (++currentPage <= numberPages);
 			}
 
 			private IEnumerable<ModDownloadItem> ProcessPageResult()
@@ -359,20 +338,25 @@ public partial class WorkshopHelper
 				}
 			}
 
-			// Only use if we don't have a guaranteed PublishID source
+			/// <summary>
+			/// Only Use if we don't have a PublishID source.
+			/// Outputs a List of ModDownloadItems of equal length to QueryParameters.SearchModSlugs
+			/// Uses null entries to fill gaps to ensure length consistency
+			/// </summary>
 			internal bool TrySearchByInternalName(out List<ModDownloadItem> items)
 			{
-				string currentPage = _nextCursor;
 				items = new List<ModDownloadItem>();
 
 				foreach (var slug in queryParameters.searchModSlugs) {
 					// If Query Fails, we can't publish.
-					if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, queryParameters, internalName: slug))) {
+					if (!TryRunQuery(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug))) {
 						ReleaseWorkshopQuery();
+						
 						return false;
 					}
 
 					if (_queryReturnCount == 0) {
+						Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
 						items.Add(null);
 						ReleaseWorkshopQuery();
 						continue;
@@ -419,17 +403,8 @@ public partial class WorkshopHelper
 				if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
 					return true;
 
-				if (eResult == EResult.k_EResultAccessDenied) {
-					Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
-				}
-				else if (eResult == EResult.k_EResultTimeout) {
-					Utils.ShowFancyErrorMessage("Error: Operation Timed Out. No callback received from Steam Servers.", 0);
-				}
-				else {
-					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
-					SteamedWraps.ReportCheckSteamLogs();
-				}
-				return false;
+				SteamedWraps.ReportCheckSteamLogs();
+				throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {eResult}");
 			}
 
 			/////// Process Query Result per Item ////////////////////
@@ -442,13 +417,11 @@ public partial class WorkshopHelper
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
 				if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic) {
-					HiddenModCount++;
 					return null;
 				}
 
 				if (pDetails.m_eResult != EResult.k_EResultOK) {
 					Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
-					HiddenModCount++;
 					return null;
 				}
 
@@ -468,13 +441,11 @@ public partial class WorkshopHelper
 
 				if (missingKeys.Length != 0) {
 					Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
-					IncompleteModCount++;
 					return null;
 				}
 
 				if (string.IsNullOrWhiteSpace(metadata["name"])) {
 					Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
-					IncompleteModCount++;
 					return null;
 				}
 

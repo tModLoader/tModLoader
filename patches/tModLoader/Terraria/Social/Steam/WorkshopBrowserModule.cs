@@ -52,7 +52,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	// Cache to minimize heavy costs associated with scanning over 50+ mods installed. Test anytime after big optimization to see if can remove
 	// last test Jun 23 2023 - Solxan
-	public IReadOnlyList<LocalMod> InstalledItems { get; set; }
+	private IReadOnlyList<LocalMod> InstalledItems { get; set; }
 
 	// Managing Installs /////////////////////////
 
@@ -183,7 +183,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		if (queryParams.searchModIds == null || !SteamedWraps.SteamAvailable)
 			return null; // Should only be called if the above is filled in & Steam is Available.
 
-		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).FastQueryItems();
+		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).QueryItemsSynchronously();
 	}
 }
 

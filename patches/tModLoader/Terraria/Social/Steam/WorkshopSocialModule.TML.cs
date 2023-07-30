@@ -25,7 +25,7 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.QueryHelper.TryGetPublishIdByInternalName(query, out List<string> modIds)) {
+		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out List<string> modIds)) {
 			base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
@@ -62,7 +62,7 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID.ToString());
+			ulong existingID = WorkshopHelper.GetSteamOwner(currPublishID.ToString());
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
@@ -158,7 +158,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			WorkshopHelper.QueryHelper.TryGetPublishIdByInternalName(query, out var modIds);
+			WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds);
 
 			foreach (string modRef in modIds) {
 				if (modRef != "0")
