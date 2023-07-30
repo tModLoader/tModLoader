@@ -312,6 +312,7 @@ public partial class WorkshopHelper
 						// If it failed, make a second attempt after 100 ms
 						await Task.Delay(100, token);
 						// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
+
 						if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token)) {
 							ReleaseWorkshopQuery();
 							// Exit for error fetching stuff
@@ -338,6 +339,7 @@ public partial class WorkshopHelper
 				}
 			}
 
+			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
 			/// Outputs a List of ModDownloadItems of equal length to QueryParameters.SearchModSlugs
@@ -409,6 +411,7 @@ public partial class WorkshopHelper
 
 			/////// Process Query Result per Item ////////////////////
 
+			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
 			internal ModDownloadItem GenerateModDownloadItemFromQuery(uint i)
 			{
 				// Item Result call data

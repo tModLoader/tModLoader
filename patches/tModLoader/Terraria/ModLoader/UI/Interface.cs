@@ -200,8 +200,9 @@ internal static class Interface
 
 						modBrowser.SocialBackend.SetupDownload(
 							ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
-							Interface.modBrowserID
-						).ConfigureAwait(false).GetAwaiter().GetResult(); // ????
+							Main.menuMode
+						).ConfigureAwait(false).GetAwaiter().GetResult();
+
 						// @TODO: This is a big problem since infoMessage WILL switch to `_gotoMenu`
 						// on action end, but this conflicts with the SetupDownload messing with UI state
 						// on a thread, making this sync will not break but freeze UI :(
@@ -210,6 +211,8 @@ internal static class Interface
 
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
+					infoMessage.preventMenuChangeFromAltAction = promptDepDownloads;
+
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 				}
 			}

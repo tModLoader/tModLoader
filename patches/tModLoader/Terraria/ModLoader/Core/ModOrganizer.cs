@@ -27,7 +27,9 @@ internal static class ModOrganizer
 	internal static event LocalModsChangedDelegate PostLocalModsChanged;
 	internal static void LocalModsChanged(HashSet<string> modSlugs)
 	{
+		// On is intended to be used to update Caches of Installed Items. Such as Workshop LocalMod caches etc.
 		OnLocalModsChanged?.Invoke(modSlugs);
+		// Post is intended to be used to update anything that depends on caches of installed items. Such as UI in Mod Browser
 		PostLocalModsChanged?.Invoke(modSlugs);
 	}
 

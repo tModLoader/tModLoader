@@ -51,7 +51,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (!BuildInfo.IsDev) {
+		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
