@@ -104,6 +104,14 @@
 		"ModConfigRestoreDefaults": "Restaurar Padrões",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando ao servidor para aceitar as mudanças...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Não foi possível salvar pois as mudanças exigiriam um recarregamento",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Estilo da Barra de Chefe: {0}",
@@ -360,6 +368,12 @@
 		"PlayerCustomDataFail": "Foi encontrado um problema ao carregar dados personalizados para um jogador",
 		"PlayerLoadWorldFail": "Foi encontrado um problema ao tentar carregar um mundo",
 		"CloudWarning": "Limite de armazenamento na nuvem atingido, não é possível mover para a nuvem",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "Construir",
@@ -367,6 +381,7 @@
 		"MSBuildAll": "Construir Todos",
 		"MSBuildReloadAll": "Construir + Recarregar Todos",
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Atualizar arquivos .lang para .hjson (não destrutivo)",
 		"MSRebuildRequired": "Reconstrução Necessária",
 		"MSLocalizationFilesChangedCantPublish": "Mudanças foram feitas nos arquivos de localização,\numa reconstrução é necessária antes da publicação",
@@ -493,7 +508,7 @@
 		"GOGHashMismatch": "{0} não é o executável Terraria {1} não modificado.\r\n\r\nEsta versão do tModLoader espera ser instalada juntamente com o Terraria {1}. Se o Terraria foi atualizado recentemente, talvez seja necessário desatualizá-lo para esta versão anterior no GOG Galaxy.\r\n\r\nSe você editou o .exe, você pode criar uma cópia do exe original e nomeá-lo \"{2}\"",
 		"DefaultExtraMessage": "Por favor, restaure a instalação do Terraria e, em seguida, instale tModLoader no Steam ou seguindo as instruções README.txt para instalação manual.",
 		"LogPathHint": "Um arquivo {0} contendo informações de erro foi gerado em\n{1}\n(Você precisará compartilhar este arquivo se pedir ajuda)",
-		"OutOfMemoryHint": "Dica: Tente executar menos mods de uma vez ou determine se um mod está ocupando muita memória. Opcionalmente, instale o tModLoader 64 bits",
+		"OutOfMemoryHint": "Dica: Tente executar menos mods de uma vez ou determine se um mod está ocupando muita memória.",
 		"ModExceptionHint": "Dica: Isto provavelmente é culpa de um mod. Desative os mods um por um e verifique se o problema persiste",
 		"OneDriveHint": "Dica: Tente instalar/ativar o OneDrive. Clique com o botão direito na pasta Documentos e ative \"Manter sempre neste dispositivo\"",
 		"AntivirusHint": "Dica: Se você tiver um antivírus, tente adicionar Terraria à sua lista de permissão/lista de exclusão",
@@ -853,7 +868,7 @@
 		"ModLoader.Items.UnloadedItem.DisplayName": "Item Descarregado",
 		"ModLoader.Items.UnloadedItem.Tooltip": "\n",
 		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
-		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}"
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Item: {0}",
 		"ModLoader.Tiles.UnloadedChest.MapEntry0": "Baú Descarregado",
 		"ModLoader.Tiles.UnloadedChest.MapEntry1": "Baú Descarregado Bloqueado",
 		"ModLoader.Items.Jofairden_Body.DisplayName": "Corpo de Andromedon",

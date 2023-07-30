@@ -474,16 +474,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
+	/// This hook is called whenever the player is about to be killed after reaching 0 health.<br/><br/>
+	/// Set the <paramref name="playSound"/> parameter to false to stop the death sound from playing. Set the <paramref name="genDust"/> parameter to false to stop the dust from being created. These are useful for creating your own sound or dust to replace the normal death effects, such as how the Frost armor set spawns <see cref="DustID.IceTorch"/> instead of <see cref="DustID.Blood"/>. For mod compatibility, it is recommended to check if these values are true before setting them to true and spawning dust or playing sounds to avoid overlapping sounds and dust effects.<br/><br/>
+	/// Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
 	/// </summary>
 	/// <param name="damage"></param>
 	/// <param name="hitDirection"></param>
 	/// <param name="pvp"></param>
 	/// <param name="playSound"></param>
-	/// <param name="genGore"></param>
+	/// <param name="genDust"></param>
 	/// <param name="damageSource"></param>
 	/// <returns></returns>
-	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore,
+	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust,
 		ref PlayerDeathReason damageSource)
 	{
 		return true;

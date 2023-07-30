@@ -106,8 +106,9 @@ public static partial class Program
 	/// Source is of variety StableFolder, PreviewFolder... etc
 	/// Destination is of variety StableFolder, PreviewFolder... etc
 	/// maxVersionOfSource is used to determine if we even should port the files. Example: 1.4.3-Legacy has maxVersion of 2022.9
+	/// isAtomicLockable could be expressed as CopyToNewlyCreatedDestinationFolderViaTempFolder if that makes more sense to the reader.
 	/// </summary>
-	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud)
+	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable)
 	{
 		string newFolderPath = Path.Combine(superSavePath, destination);
 		string newFolderPathTemp = Path.Combine(superSavePath, destination + "-temp");
@@ -118,11 +119,20 @@ public static partial class Program
 		// Now we rely on the folder existing as the sole indicator.
 
 		// We need to port if:
-		// 1. We haven't already ported -> Check if destination folder exists.
+		// 1. We haven't already ported -> Check if destination folder exists if Atomic Lockable, or Porting File exists if not.
 		// and
 		// 2. We have something to port -> Check if source folder exists and we that have no indication that the files in it are for a future version.
 
-		if (Directory.Exists(newFolderPath) || !Directory.Exists(oldFolderPath))
+		// Note that non-atomic lockable file ports carry some risk as the Porting File could be deleted.
+		// CopyFolderEXT must thus be called with prudence and any pre-checks we can, such as the version check included
+
+		if (!Directory.Exists(oldFolderPath))
+			return;
+
+		// Backwards compat line for 1.4.3-legacy, intended for use when is not Atomic Lockable
+		string portFilePath = Path.Combine(superSavePath, destination, maxVersionOfSource == "2022.9" ? $"143ported_{cloudName}.txt" : $"{maxVersionOfSource}{destination}ported_{cloudName}.txt");
+
+		if (isAtomicLockable && Directory.Exists(newFolderPath) || !isAtomicLockable && File.Exists(portFilePath))
 			return;
 
 		// We need onedrive running if it is on Path
@@ -140,8 +150,10 @@ public static partial class Program
 			Platform.Get<IPathService>().GetStoragePath($"Terraria");
 
 		string sourceFolderConfig = Path.Combine(defaultSaveFolder, source, "config.json");
-		if (!File.Exists(sourceFolderConfig))
+		if (!File.Exists(sourceFolderConfig)) {
+			Logging.tML.Info($"No config.json found at {sourceFolderConfig}\nAssuming nothing to port");
 			return;
+		}	
 
 		string lastLaunchedTml = null;
 		try {
@@ -169,7 +181,7 @@ public static partial class Program
 		Logging.tML.Info($"Cloning current {source} files to {destination} save folder. Porting {cloudName}." +
 			$"\nThis may take a few minutes for a large amount of files.");
 		try {
-			Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, isCloud ? newFolderPath : newFolderPathTemp, isCloud,
+			Utilities.FileUtilities.CopyFolderEXT(oldFolderPath, isAtomicLockable ? newFolderPathTemp : newFolderPath, isCloud,
 				// Exclude the ModSources folder that exists only on Stable, and exclude the temporary 'Workshop' folder created during first time Mod Publishing
 				excludeFilter: new System.Text.RegularExpressions.Regex(@"(Workshop|ModSources)($|/|\\)"),
 				overwriteAlways: false, overwriteOld: true);
@@ -179,18 +191,21 @@ public static partial class Program
 			ErrorReporting.FatalExit($"Migration Failed, please consult the instructions in the \"Migration Failed\" section at \"{e.HelpLink}\" for more information.", e);
 		}
 
-		if (!isCloud) {
+		if (isAtomicLockable) {
 			// If everything goes well, rename the folder. Only local files use this atomic approach. This will prevent situations where a user ends the porting process from impatience and the port is half complete.
 			Directory.Move(newFolderPathTemp, newFolderPath);
 		}
 		else {
-			// We need a way on the cloud of knowing if the porting has been done, since users might have multiple computers.
-			// In case there are no players and worlds, we don't want to keep attempting to port, since eventually that will port future stable files if they appear.
-			// We also need at least 1 file in the directory, otherwise the directory will not exist.
-			if (Social.SocialAPI.Cloud != null) {
-				// Backwards compat line for 1.4.3-legacy
-				string portFileName = maxVersionOfSource == "2022.9" ? $"143ported_{cloudName}.txt" : $"{maxVersionOfSource}{destination}ported_{cloudName}.txt";
-				Social.SocialAPI.Cloud.Write(Path.Combine(destination, portFileName), new byte[] { });
+			if (isCloud) {
+				// We need a way on the cloud of knowing if the porting has been done, since users might have multiple computers.
+				// In case there are no players and worlds, we don't want to keep attempting to port, since eventually that will port future stable files if they appear.
+				// We also need at least 1 file in the directory, otherwise the directory will not exist.
+				if (Social.SocialAPI.Cloud != null) {
+					Social.SocialAPI.Cloud.Write(Utilities.FileUtilities.ConvertToRelativePath(superSavePath, portFilePath), new byte[] { });
+				}
+			}
+			else {
+				File.Create(portFilePath);
 			}
 		}
 
@@ -199,9 +214,20 @@ public static partial class Program
 
 	internal static void PortFilesMaster(string savePath, bool isCloud)
 	{
+		// Moving from ModLoader-Beta to 1.4+ file system
 		PortOldSaveDirectories(savePath);
 		PortCommonFilesToStagingBranches(savePath);
-		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud);
+
+		// Establishing 1.4.3-Legacy branch
+		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud);
+		// Local: This is supposed to create a new 1.4.3 folder if it doesn't exist, and ignore it if it does. (already migrated)
+		// Steam: Move files if canary file doesn't exist.
+
+		// Moving files from 1.4.4-preview (beta) to 1.4.4-stable - August 1st 2023 steam release
+		if (BuildInfo.IsStable)
+			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false);
+			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
+			// Steam: Move files if canary file doesn't exist.
 	}
 
 	private static void SetSavePath()
