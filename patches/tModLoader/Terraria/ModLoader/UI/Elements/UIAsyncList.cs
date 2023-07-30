@@ -131,7 +131,7 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 		Add(EndItem);
 	}
 
-	protected virtual string GetEndItemText()
+	public virtual string GetEndItemText()
 	{
 		switch (State) {
 			case AsyncProviderState.Loading:

@@ -108,7 +108,7 @@ internal partial class UIModBrowser
 		}.WithPadding(15f);
 		_backgroundElement.Append(HeaderTextPanel);
 
-		_reloadButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBGettingData")) {
+		_reloadButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBCancelLoading")) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 25 },
 			VAlign = 1f,

@@ -271,6 +271,7 @@
 		"MBUpdateAll": "Update All",
 		"MBReloadBrowser": "Reload browser",
 		"MBGettingData": "Getting data...",
+		"MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Populating browser...",
 		"MBSortByRecentlyUpdated": "Sort by recently updated",
 		"MBSortByPopularity": "Sort by popularity",

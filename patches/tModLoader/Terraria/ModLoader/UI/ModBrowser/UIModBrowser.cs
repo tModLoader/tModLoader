@@ -201,6 +201,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				UICommon.DrawHoverStringInBounds(spriteBatch, text);
 				break;
 			}
+		if (_browserStatus.IsMouseHovering && ModList.State != AsyncProviderState.Completed) {
+			UICommon.DrawHoverStringInBounds(spriteBatch, ModList.GetEndItemText());
+		}
 	}
 
 	public void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -250,7 +253,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private void ModListStartLoading(AsyncProviderState state)
 	{
 		_browserStatus.SetCurrentState(state);
-		_reloadButton.SetText(Language.GetText("tModLoader.MBGettingData"));
+		_reloadButton.SetText(Language.GetText("tModLoader.MBCancelLoading"));
 	}
 	private void ModListFinished(AsyncProviderState state, Exception e)
 	{
