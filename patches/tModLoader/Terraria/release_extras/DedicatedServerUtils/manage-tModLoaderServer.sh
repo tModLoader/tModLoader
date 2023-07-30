@@ -39,7 +39,7 @@ function update_script {
 	exit
 }
 
-function verify_steamcmd {
+function verify_download_tools {
 	# Check PATH and flags for required commands
 	if $steamcmd; then
 		if [[ -v steamcmd_path ]]; then
@@ -88,7 +88,7 @@ function get_version {
 }
 
 # Takes version number as first parameter
-function down_release {
+function download_release {
 	local down_url="https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
 	echo "Downloading version $1"
 	curl -s -LJO "$down_url" 2>/dev/null || wget -q --content-disposition "$down_url"
@@ -134,7 +134,7 @@ function update_tml_github {
 	tar czf "$oldver".tar.gz "$oldver"/*
 	rm -r "$oldver"
 
-	down_release "$ver"
+	download_release "$ver"
 
 	# Delete all backups but the most recent
 	echo "Removing old backups"
@@ -185,7 +185,7 @@ function install_tml_github {
 	fi
 
 	# Install tml from github, leave some file containing what version
-	down_release "$(get_version)"
+	download_release "$(get_version)"
 
 	popd
 }
@@ -408,7 +408,7 @@ case $cmd in
 		print_help
 		;;
 	install|update)
-		verify_steamcmd
+		verify_download_tools
 
 		if ! $skip_tml; then
 			if $steamcmd; then
@@ -428,7 +428,7 @@ case $cmd in
 		update_script
 		;;
 	docker)
-		verify_steamcmd
+		verify_download_tools
 		install_mods
 
 		# Set --github and fallthrough so the server can be started properly
@@ -455,17 +455,17 @@ case $cmd in
 		;;
 esac
 
-# TODO: Disable this in docker?
-if check_update; then
-	read -t 5 -p "Script update available! Update now? (y/n): " update_now
+# # TODO: Disable this in docker?
+# if check_update; then
+# 	read -t 5 -p "Script update available! Update now? (y/n): " update_now
 
-	case $update_now in
-		[Yy]*)
-			echo "Updating now"
-			update_script
-			;;
-		*)
-			echo "Not updating"
-			;;
-	esac
-fi
+# 	case $update_now in
+# 		[Yy]*)
+# 			echo "Updating now"
+# 			update_script
+# 			;;
+# 		*)
+# 			echo "Not updating"
+# 			;;
+# 	esac
+# fi
