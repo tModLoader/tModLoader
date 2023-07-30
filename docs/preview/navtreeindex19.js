@@ -1,5 +1,14 @@
 var NAVTREEINDEX19 =
 {
+"class_unloaded_item.html#a8ecf3536a3f8ecd368746eb540e8b254":[3,0,1361,5],
+"class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab":[3,0,1361,6],
+"class_unloaded_item.html#ae55673c8d05024e98d89a2dcb87a327e":[3,0,1361,2],
+"class_unloaded_item.html#af9a5e2d5ab6b9da46f1f55eb39336eae":[3,0,1361,4],
+"class_unloaded_item.html#afc5f9791ed834c179419c609800ea7c7":[3,0,1361,7],
+"class_unloaded_non_solid_tile.html":[3,0,1362],
+"class_unloaded_non_solid_tile.html#aae5bc2c98b0a722a2c6bc4e8d1d64ab1":[3,0,1362,0],
+"class_unloaded_player.html":[3,0,1363],
+"class_unloaded_player.html#a0274f0c5d4b9f37fbd3c3dacc7c755de":[3,0,1363,2],
 "class_unloaded_player.html#a2c8656d7f772a35fbda3f625ddd36c40":[3,0,1363,0],
 "class_unloaded_player.html#a4637432a257bc6911b04d249db218047":[3,0,1363,1],
 "class_unloaded_semi_solid_tile.html":[3,0,1364],
@@ -240,14 +249,5 @@ var NAVTREEINDEX19 =
 "interface_actions_1_1_players_1_1_i_player_action.html":[3,0,16,13,1],
 "interface_actions_1_1_sprites_1_1_i_sprite_action.html":[3,0,16,24,2],
 "interface_command_caller.html":[3,0,162],
-"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[3,0,162,1],
-"interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[3,0,162,0],
-"interface_i_achievement_tracker.html":[3,0,482],
-"interface_i_animation_segment.html":[3,0,483],
-"interface_i_animation_segment_action.html":[3,0,484],
-"interface_i_audio_system.html":[3,0,486],
-"interface_i_audio_track.html":[3,0,487],
-"interface_i_ball_contact_listener.html":[3,0,488],
-"interface_i_bestiary_background_image_path_and_color_provider.html":[3,0,489],
-"interface_i_bestiary_background_overlay_and_color_provider.html":[3,0,490]
+"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[3,0,162,1]
 };

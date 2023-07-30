@@ -17,6 +17,7 @@ var searchData=
   ['visualoffset_14',['VisualOffset',['../struct_tile_resting_info.html#ada30d8bdeb7ed59797958a2368df7e76',1,'TileRestingInfo']]],
   ['voidbag_15',['VoidBag',['../class_proj_a_i_style_i_d.html#a955f25aefb8903743ed350653bc00e43',1,'ProjAIStyleID']]],
   ['voidbagusage_16',['VoidBagUsage',['../class_game_tip_i_d.html#a4e674c84acfc85161d656355626466c6',1,'GameTipID']]],
-  ['vortex_17',['Vortex',['../class_proj_a_i_style_i_d.html#a525acc528c7c82aee71ea07ed6d6ea68',1,'ProjAIStyleID']]],
-  ['vulture_18',['Vulture',['../class_n_p_c_a_i_style_i_d.html#abb4c572f223ba5a0109cd85ca3c4bc75',1,'NPCAIStyleID']]]
+  ['volcano_17',['Volcano',['../class_proj_a_i_style_i_d.html#af2a4279983f0fdec823bab99e7292519',1,'ProjAIStyleID']]],
+  ['vortex_18',['Vortex',['../class_proj_a_i_style_i_d.html#a525acc528c7c82aee71ea07ed6d6ea68',1,'ProjAIStyleID']]],
+  ['vulture_19',['Vulture',['../class_n_p_c_a_i_style_i_d.html#abb4c572f223ba5a0109cd85ca3c4bc75',1,'NPCAIStyleID']]]
 ];

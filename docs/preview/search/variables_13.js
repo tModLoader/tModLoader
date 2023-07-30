@@ -62,7 +62,7 @@ var searchData=
   ['townnpcsframinggroups_59',['TownNPCsFramingGroups',['../class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93',1,'NPCID::Sets']]],
   ['toxicbubble_60',['ToxicBubble',['../class_proj_a_i_style_i_d.html#ad0199038e44647a09c6f42aaf627861e',1,'ProjAIStyleID']]],
   ['toxiccloud_61',['ToxicCloud',['../class_proj_a_i_style_i_d.html#aa1f8160e9cb6d4ca80ae0569a5a93d76',1,'ProjAIStyleID']]],
-  ['trailcachelength_62',['TrailCacheLength',['../class_n_p_c_i_d_1_1_sets.html#a5c130ae4488340d4ad3988d7768a7421',1,'NPCID.Sets.TrailCacheLength()'],['../class_projectile_i_d_1_1_sets.html#a2fb1255b117b4126d431066578112795',1,'ProjectileID.Sets.TrailCacheLength()']]],
+  ['trailcachelength_62',['TrailCacheLength',['../class_projectile_i_d_1_1_sets.html#a2fb1255b117b4126d431066578112795',1,'ProjectileID.Sets.TrailCacheLength()'],['../class_n_p_c_i_d_1_1_sets.html#a5c130ae4488340d4ad3988d7768a7421',1,'NPCID.Sets.TrailCacheLength()']]],
   ['trailingmode_63',['TrailingMode',['../class_n_p_c_i_d_1_1_sets.html#a482354c3d6d28fff9f9736fc7f1e8569',1,'NPCID.Sets.TrailingMode()'],['../class_projectile_i_d_1_1_sets.html#a89d12d510e9b6479e20ec4a40680675f',1,'ProjectileID.Sets.TrailingMode()']]],
   ['trap_64',['trap',['../class_projectile.html#a246379dc8ed501ac730e304d2d883c38',1,'Projectile']]],
   ['trapsigned_65',['TrapSigned',['../class_item_i_d_1_1_sets.html#a589be2d5c744e3859ece45abeab3b821',1,'ItemID::Sets']]],
@@ -72,8 +72,9 @@ var searchData=
   ['treasuregrabrange_69',['treasureGrabRange',['../class_item.html#af52ce60113a3c46eff0114c1d0e13017',1,'Item']]],
   ['treesapling_70',['TreeSapling',['../class_tile_i_d_1_1_sets.html#a6464e0fabefdd9369974628b6d3ad6b6',1,'TileID::Sets']]],
   ['trueeyeofcthulhu_71',['TrueEyeOfCthulhu',['../class_n_p_c_a_i_style_i_d.html#afaf5f07937dedf82dade38b819d53a87',1,'NPCAIStyleID']]],
-  ['turretfeature_72',['TurretFeature',['../class_projectile_i_d_1_1_sets.html#a9b198deaa42177d92c97866b91141149',1,'ProjectileID::Sets']]],
-  ['twilightlance_73',['TwilightLance',['../class_proj_a_i_style_i_d.html#a9436129d4fb14a07f9067dc36899fa3b',1,'ProjAIStyleID']]],
-  ['type_74',['type',['../class_item.html#af79ba8b09813fd867fa3da24a4e31e51',1,'Item.type()'],['../class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b',1,'NPC.type()'],['../class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c',1,'Projectile.type()']]],
-  ['typhoon_75',['Typhoon',['../class_proj_a_i_style_i_d.html#acad6c1ce7c05b42f374eae899d852ddb',1,'ProjAIStyleID']]]
+  ['truenightsedge_72',['TrueNightsEdge',['../class_proj_a_i_style_i_d.html#ab7f0b379c09671410e9f2d41aff42d71',1,'ProjAIStyleID']]],
+  ['turretfeature_73',['TurretFeature',['../class_projectile_i_d_1_1_sets.html#a9b198deaa42177d92c97866b91141149',1,'ProjectileID::Sets']]],
+  ['twilightlance_74',['TwilightLance',['../class_proj_a_i_style_i_d.html#a9436129d4fb14a07f9067dc36899fa3b',1,'ProjAIStyleID']]],
+  ['type_75',['type',['../class_item.html#af79ba8b09813fd867fa3da24a4e31e51',1,'Item.type()'],['../class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b',1,'NPC.type()'],['../class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c',1,'Projectile.type()']]],
+  ['typhoon_76',['Typhoon',['../class_proj_a_i_style_i_d.html#acad6c1ce7c05b42f374eae899d852ddb',1,'ProjAIStyleID']]]
 ];

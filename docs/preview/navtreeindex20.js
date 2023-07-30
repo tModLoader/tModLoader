@@ -1,5 +1,14 @@
 var NAVTREEINDEX20 =
 {
+"interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[3,0,162,0],
+"interface_i_achievement_tracker.html":[3,0,482],
+"interface_i_animation_segment.html":[3,0,483],
+"interface_i_animation_segment_action.html":[3,0,484],
+"interface_i_audio_system.html":[3,0,486],
+"interface_i_audio_track.html":[3,0,487],
+"interface_i_ball_contact_listener.html":[3,0,488],
+"interface_i_bestiary_background_image_path_and_color_provider.html":[3,0,489],
+"interface_i_bestiary_background_overlay_and_color_provider.html":[3,0,490],
 "interface_i_bestiary_entry_display_index.html":[3,0,491],
 "interface_i_bestiary_entry_filter.html":[3,0,492],
 "interface_i_bestiary_info_element.html":[3,0,493],
@@ -240,14 +249,5 @@ var NAVTREEINDEX20 =
 "struct_n_p_c_1_1_hit_info.html":[3,0,860,0],
 "struct_n_p_c_1_1_hit_info.html#a16c23b1dcd8362b8dbbb9fc9ea6b4658":[3,0,860,0,2],
 "struct_n_p_c_1_1_hit_info.html#a50b2b8b4f089677bd4af9b36adb7cc25":[3,0,860,0,1],
-"struct_n_p_c_1_1_hit_info.html#a64a141aaff6e37f74cfd7fc42ce8537b":[3,0,860,0,7],
-"struct_n_p_c_1_1_hit_info.html#a71c50577f292eee3ca2ff89df2af5f3d":[3,0,860,0,3],
-"struct_n_p_c_1_1_hit_info.html#a83883a578dcb6ab13807bcade71bc962":[3,0,860,0,5],
-"struct_n_p_c_1_1_hit_info.html#ab9260c7cbef7fa28576ac191ece076ea":[3,0,860,0,0],
-"struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47":[3,0,860,0,4],
-"struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886":[3,0,860,0,6],
-"struct_n_p_c_1_1_hit_modifiers.html":[3,0,860,1],
-"struct_n_p_c_1_1_hit_modifiers.html#a00625b9d69366bef28de62b6b15e1804":[3,0,860,1,9],
-"struct_n_p_c_1_1_hit_modifiers.html#a05bb280b449f6b6caced58296875901b":[3,0,860,1,3],
-"struct_n_p_c_1_1_hit_modifiers.html#a1002e87a8ffb6ac37e486edb9b9e9f9a":[3,0,860,1,10]
+"struct_n_p_c_1_1_hit_info.html#a64a141aaff6e37f74cfd7fc42ce8537b":[3,0,860,0,7]
 };

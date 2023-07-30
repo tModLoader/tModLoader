@@ -26,7 +26,7 @@ var searchData=
   ['hide_23',['hide',['../class_n_p_c.html#ab559bbc9e10d0286b2e5ca809a93c60b',1,'NPC.hide()'],['../class_projectile.html#a2101c172912b39aac39b6c064ee064f0',1,'Projectile.hide()']]],
   ['hidecombattext_24',['HideCombatText',['../struct_n_p_c_1_1_hit_info.html#a16c23b1dcd8362b8dbbb9fc9ea6b4658',1,'NPC::HitInfo']]],
   ['hidesarms_25',['HidesArms',['../class_armor_i_ds_1_1_body_1_1_sets.html#affedc55a96647b3541649b44b3ac927a',1,'ArmorIDs::Body::Sets']]],
-  ['hidesbottomskin_26',['HidesBottomSkin',['../class_armor_i_ds_1_1_legs_1_1_sets.html#a7979154ea568906b3a0beedfa9355f9b',1,'ArmorIDs.Legs.Sets.HidesBottomSkin()'],['../class_armor_i_ds_1_1_body_1_1_sets.html#a1094829fe2df36565e1a4e06509b0f42',1,'ArmorIDs.Body.Sets.HidesBottomSkin()']]],
+  ['hidesbottomskin_26',['HidesBottomSkin',['../class_armor_i_ds_1_1_body_1_1_sets.html#a1094829fe2df36565e1a4e06509b0f42',1,'ArmorIDs.Body.Sets.HidesBottomSkin()'],['../class_armor_i_ds_1_1_legs_1_1_sets.html#a7979154ea568906b3a0beedfa9355f9b',1,'ArmorIDs.Legs.Sets.HidesBottomSkin()']]],
   ['hideshands_27',['HidesHands',['../class_armor_i_ds_1_1_body_1_1_sets.html#ac36b4708f10224a9edcccf5e101e4eda',1,'ArmorIDs::Body::Sets']]],
   ['hidestopskin_28',['HidesTopSkin',['../class_armor_i_ds_1_1_body_1_1_sets.html#a076b36fdf542fd320e453f54a59f330d',1,'ArmorIDs.Body.Sets.HidesTopSkin()'],['../class_armor_i_ds_1_1_legs_1_1_sets.html#ac293a180e3292ae9ec0e794ae5d33de3',1,'ArmorIDs.Legs.Sets.HidesTopSkin()']]],
   ['hitdirection_29',['HitDirection',['../struct_n_p_c_1_1_hit_info.html#a71c50577f292eee3ca2ff89df2af5f3d',1,'NPC.HitInfo.HitDirection()'],['../struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c',1,'Player.HurtInfo.HitDirection()']]],
@@ -43,9 +43,10 @@ var searchData=
   ['hook_40',['Hook',['../class_proj_a_i_style_i_d.html#ad88193fc029830942a9a11af60774ace',1,'ProjAIStyleID']]],
   ['horizontalray_41',['HorizontalRay',['../class_proj_a_i_style_i_d.html#a61dcbe99c1ddaef1d18a7a3baaf78f28',1,'ProjAIStyleID']]],
   ['hornet_42',['Hornet',['../class_proj_a_i_style_i_d.html#a1e70f6c9082dd4be7765fd717ed72eb4',1,'ProjAIStyleID']]],
-  ['hostile_43',['hostile',['../class_projectile.html#a7fb8914d4756cec3186cdb39dd0679b5',1,'Projectile']]],
-  ['housescanhaveplatformfloors_44',['HousesCanHavePlatformFloors',['../class_game_tip_i_d.html#ac6bcc83aa1ab71cd8124d60102262be3',1,'GameTipID']]],
-  ['housinguiinequipmentmenu_45',['HousingUIInEquipmentMenu',['../class_game_tip_i_d.html#a9b28e6679d124474f35e89cbf94af8db',1,'GameTipID']]],
-  ['hoveringfighter_46',['HoveringFighter',['../class_n_p_c_a_i_style_i_d.html#aed416394b90812be02a66c71b53af301',1,'NPCAIStyleID']]],
-  ['hurtingbees_47',['HurtingBees',['../class_n_p_c_i_d_1_1_sets.html#af91b19ed47a3c0ba3b3404e8f1865890',1,'NPCID::Sets']]]
+  ['horsemanpumpkin_43',['HorsemanPumpkin',['../class_proj_a_i_style_i_d.html#a743711a25ac0a68c8ab26957c27c0a24',1,'ProjAIStyleID']]],
+  ['hostile_44',['hostile',['../class_projectile.html#a7fb8914d4756cec3186cdb39dd0679b5',1,'Projectile']]],
+  ['housescanhaveplatformfloors_45',['HousesCanHavePlatformFloors',['../class_game_tip_i_d.html#ac6bcc83aa1ab71cd8124d60102262be3',1,'GameTipID']]],
+  ['housinguiinequipmentmenu_46',['HousingUIInEquipmentMenu',['../class_game_tip_i_d.html#a9b28e6679d124474f35e89cbf94af8db',1,'GameTipID']]],
+  ['hoveringfighter_47',['HoveringFighter',['../class_n_p_c_a_i_style_i_d.html#aed416394b90812be02a66c71b53af301',1,'NPCAIStyleID']]],
+  ['hurtingbees_48',['HurtingBees',['../class_n_p_c_i_d_1_1_sets.html#af91b19ed47a3c0ba3b3404e8f1865890',1,'NPCID::Sets']]]
 ];

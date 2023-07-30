@@ -1,5 +1,14 @@
 var NAVTREEINDEX17 =
 {
+"class_resource_overlay_loader.html":[3,0,1033],
+"class_resource_overlay_loader.html#a6551c6239e6df82eb715e9674a7d7616":[3,0,1033,0],
+"class_resource_pack.html":[3,0,1034],
+"class_resource_pack_content_validator.html":[3,0,1035],
+"class_resource_pack_list.html":[3,0,1036],
+"class_rgb_device.html":[3,0,1038],
+"class_rgb_keyboard.html":[3,0,1039],
+"class_rich_presence_state.html":[3,0,1040],
+"class_rock_paper_scissors_command.html":[3,0,1041],
 "class_roll_command.html":[3,0,1042],
 "class_salamander_shelly_dad_u_i_collection_info_provider.html":[3,0,1043],
 "class_sand_mound.html":[3,0,1044],
@@ -240,14 +249,5 @@ var NAVTREEINDEX17 =
 "class_tile_entry.html":[3,0,1194],
 "class_tile_font.html":[3,0,1195],
 "class_tile_golf_physics.html":[3,0,1196],
-"class_tile_i_d.html":[3,0,1197],
-"class_tile_i_d_1_1_sets.html":[3,0,1197,0],
-"class_tile_i_d_1_1_sets.html#a0347fa6ea917b42871e43464d607b5cd":[3,0,1197,0,43],
-"class_tile_i_d_1_1_sets.html#a0c566028cc2f0e464e4f630bd73d20e4":[3,0,1197,0,8],
-"class_tile_i_d_1_1_sets.html#a0f582e990e384a90b10710091f9f6e26":[3,0,1197,0,6],
-"class_tile_i_d_1_1_sets.html#a0ffb8223f3a721bbeaeee866d909e781":[3,0,1197,0,42],
-"class_tile_i_d_1_1_sets.html#a1358ffd200656f7e6cc8f472ac4f2409":[3,0,1197,0,13],
-"class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638":[3,0,1197,0,46],
-"class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4":[3,0,1197,0,41],
-"class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77":[3,0,1197,0,49]
+"class_tile_i_d.html":[3,0,1197]
 };
