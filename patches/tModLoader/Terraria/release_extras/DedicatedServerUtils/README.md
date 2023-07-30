@@ -1,5 +1,5 @@
 # Dedicated Server Utils
-This directory contains utilities for a dedicated server on Linux or Docker.
+This directory contains utilities for a dedicated server on Linux or ~~Docker~~ **Currently the docker container is not avaliable**..
 
 ### Installation Options
 **Currently ARM support does not exist for the Docker installation, so the management script must be used**. While both the Docker container and the management script can install and update tModLoader and any mods, there are a few key differences. Docker isolates tModLoader from your host system, allowing for less manual management and increased security. The management script allows for direct access to your server and increased control as a result.
