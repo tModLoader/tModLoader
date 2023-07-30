@@ -50,10 +50,13 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	private bool _firstLoad = true;
 
+	/* See: Old Code for Triggering an Update to tModLoader based on detecting a mod is for a newer version.
+	 * broken as of PR #3346
 	private bool _updateAvailable;
 	private string _updateText;
 	private string _updateUrl;
 	private string _autoUpdateUrl;
+	*/
 	private string _specialModPackFilterTitle;
 	private List<ModPubId_t> _specialModPackFilter;
 	private readonly List<string> _missingMods = new List<string>();

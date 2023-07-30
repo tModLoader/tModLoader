@@ -311,8 +311,7 @@ public partial class WorkshopHelper
 
 						// If it failed, make a second attempt after 100 ms
 						await Task.Delay(100, token);
-						// @TODO: "Solxan" This code blocks because is not an `await` and doesn't use async sleeps
-
+						
 						if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token)) {
 							ReleaseWorkshopQuery();
 							// Exit for error fetching stuff
