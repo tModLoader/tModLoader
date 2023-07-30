@@ -2478,6 +2478,15 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -58741,7 +_,7 @@
+ 			Main.tile[x, y + 1] = new Tile();
+ 
+ 		switch (Main.tile[x, y].type) {
+-			case 10:
++			case ushort _ when TileLoader.IsClosedDoor(Main.tile[x, y].type):
+ 			case 48:
+ 			case 137:
+ 			case 138:
 @@ -58764,6 +_,7 @@
  				}
  				if (Main.tile[x, y - 1].active()) {

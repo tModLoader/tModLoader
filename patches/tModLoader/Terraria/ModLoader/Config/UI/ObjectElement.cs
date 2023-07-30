@@ -6,6 +6,7 @@ using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -145,7 +146,7 @@ internal class ObjectElement : ConfigElement<object>
 			// drawLabel = false; TODO uncomment
 		}
 
-		initializeButton = new UIModConfigHoverImage(PlayTexture, "Initialize");
+		initializeButton = new UIModConfigHoverImage(PlayTexture, Language.GetTextValue("tModLoader.ModConfigInitialize"));
 		initializeButton.Top.Pixels += 4;
 		initializeButton.Left.Pixels -= 3;
 		initializeButton.HAlign = 1f;
@@ -171,7 +172,7 @@ internal class ObjectElement : ConfigElement<object>
 			Interface.modConfig.SetPendingChanges();
 		};
 
-		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
+		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-52, 1f);
 		expandButton.OnLeftClick += (a, b) => {
@@ -179,7 +180,7 @@ internal class ObjectElement : ConfigElement<object>
 			pendingChanges = true;
 		};
 
-		deleteButton = new UIModConfigHoverImage(DeleteTexture, "Clear");
+		deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigClear"));
 		deleteButton.Top.Set(4, 0f);
 		deleteButton.Left.Set(-25, 1f);
 		deleteButton.OnLeftClick += (a, b) => {
@@ -233,12 +234,12 @@ internal class ObjectElement : ConfigElement<object>
 					Append(expandButton);
 				if (expanded) {
 					Append(dataList);
-					expandButton.HoverText = "Collapse";
+					expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigCollapse");
 					expandButton.SetImage(ExpandedTexture);
 				}
 				else {
 					RemoveChild(dataList);
-					expandButton.HoverText = "Expand";
+					expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigExpand");
 					expandButton.SetImage(CollapsedTexture);
 				}
 			}

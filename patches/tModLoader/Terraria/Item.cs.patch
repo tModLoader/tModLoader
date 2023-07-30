@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,449 @@
+@@ -37,78 +_,450 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -453,6 +453,7 @@
 +
 +	/// <summary>
 +	/// The size multiplier of the item's sprite while the item is being used. Also increases range for melee weapons.
++	/// <br/> Use <see cref="ModItem.ModifyItemScale(Player, ref float)"/> for dynamic scale values.
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -478,7 +479,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,240 @@
+@@ -121,49 +_,242 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -549,7 +550,8 @@
  	public bool buyOnce;
 +
 +	/// <summary>
-+	/// The amount of mana this item consumes on use. Use <see cref="ModItem.ModifyManaCost(Player, ref float, ref float)"/> for dynamic mana costs.
++	/// The amount of mana this item consumes on use.
++	/// <br/> Use <see cref="ModItem.ModifyManaCost(Player, ref float, ref float)"/> for dynamic mana costs.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int mana;
@@ -653,6 +655,7 @@
 +
 +	/// <summary>
 +	/// The base critical chance for this item. Remember that the player has a base crit chance of 4.
++	/// <br/> Use <see cref="ModItem.ModifyWeaponCrit(Player, ref float)"/> for dynamic crit values.
 +	/// <br/> Defaults to 0
 +	/// </summary>
  	public int crit;

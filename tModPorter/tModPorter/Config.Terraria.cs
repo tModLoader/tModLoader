@@ -195,6 +195,33 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
 		RenameInstanceField("Terraria.Player",	from: "discount",			to: "discountAvailable");
 
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Cloud",              ExtraJumpField("CloudInABottle",     "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Sandstorm",          ExtraJumpField("SandstormInABottle", "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Blizzard",           ExtraJumpField("BlizzardInABottle",  "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Fart",               ExtraJumpField("FartInAJar",         "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Sail",               ExtraJumpField("TsunamiInABottle",   "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Unicorn",            ExtraJumpField("UnicornMount",       "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Santank",            ExtraJumpField("SantankMount",       "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_WallOfFleshGoat",    ExtraJumpField("GoatMount",          "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Basilisk",           ExtraJumpField("BasiliskMount",      "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Cloud",               ExtraJumpField("CloudInABottle",     "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sandstorm",           ExtraJumpField("SandstormInABottle", "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Blizzard",            ExtraJumpField("BlizzardInABottle",  "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Fart",                ExtraJumpField("FartInAJar",         "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sail",                ExtraJumpField("TsunamiInABottle",   "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Unicorn",             ExtraJumpField("UnicornMount",       "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Santank",             ExtraJumpField("SantankMount",       "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_WallOfFleshGoat",     ExtraJumpField("GoatMount",          "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Basilisk",            ExtraJumpField("BasiliskMount",      "Available"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Cloud",           ExtraJumpField("CloudInABottle",     "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Sandstorm",       ExtraJumpField("SandstormInABottle", "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Blizzard",        ExtraJumpField("BlizzardInABottle",  "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Fart",            ExtraJumpField("FartInAJar",         "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Sail",            ExtraJumpField("TsunamiInABottle",   "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Unicorn",         ExtraJumpField("UnicornMount",       "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Santank",         ExtraJumpField("SantankMount",       "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_WallOfFleshGoat", ExtraJumpField("GoatMount",          "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Basilisk",        ExtraJumpField("BasiliskMount",      "Active"));
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Item",		from: "DefaultToPlacableWall",	to: "DefaultToPlaceableWall");

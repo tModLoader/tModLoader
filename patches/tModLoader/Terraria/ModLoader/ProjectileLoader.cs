@@ -236,7 +236,7 @@ public static class ProjectileLoader
 
 	public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI)
 	{
-		using var stream = new MemoryStream(extraAI);
+		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
 		projectile.ModProjectile?.ReceiveExtraAI(modReader);

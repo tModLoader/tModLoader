@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Terraria.ModLoader;
@@ -68,4 +67,11 @@ public static class DamageClassLoader
 			ModTypeLookup<DamageClass>.Register(damageClass);
 		}
 	}
+
+	/// <summary>
+	/// Gets the DamageClass instance corresponding to the specified type
+	/// </summary>
+	/// <param name="type">The <see cref="DamageClass.Type"/> of the damage class</param>
+	/// <returns>The DamageClass instance, null if not found.</returns>
+	public static DamageClass GetDamageClass(int type) => type < DamageClasses.Count ? DamageClasses[type] : null;
 }
