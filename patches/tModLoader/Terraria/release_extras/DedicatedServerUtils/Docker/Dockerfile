@@ -29,10 +29,6 @@ RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patche
  && ./manage-tModLoaderServer.sh install --github --skip-mods \
  && chmod u+x $HOME/tModLoader/start-tModLoaderServer.sh
 
-# Download entrypoint script
-RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Launch.sh \
- && chmod u+x Launch.sh
-
 EXPOSE 7777
 
-ENTRYPOINT [ "/bin/bash", "-c", "./Launch.sh" ]
+ENTRYPOINT [ "/bin/bash", "-c", "./manage-tModLoaderServer.sh docker --folder /terraria" ]

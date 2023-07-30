@@ -78,15 +78,13 @@ function get_version {
 		echo "v$(cat $folder/tmlversion.txt | sed -E "s/\.([0-9])\./\.0\1\./g")"
 	else
 		# Get the latest release if no other options are provided
-		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
+		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases"
 		local latest_release
 		latest_release=$({
 			curl -s "$release_url" 2>/dev/null || wget -q -O- "$release_url";
-		} | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
+		} | grep '"tag_name":' | sort | tail -1 | sed -E 's/.*"([^"]+)".*/\1/') # Get latest release from github's api
 		echo "$latest_release" # So functions calling this can consume the result since you can't return strings in bash :)
 	fi
-
-	
 }
 
 # Takes version number as first parameter
@@ -249,14 +247,15 @@ function install_mods {
 		mods_path=$XDG_DATA_HOME/Terraria/tModLoader/Mods
 	else
 		mods_path=~/.local/share/Terraria/tModLoader/Mods
-	fi	
+	fi
+
+	mkdir -p "$mods_path"
 
 	# If someone has local .tmod files this will install them
 	if [[ -d "Mods" ]]; then
 		local count
 		count=$(ls -1 Mods/*.tmod 2>/dev/null | wc -l)
 		if [[ "$count" -ne "0" ]]; then
-			mkdir -p "$mods_path"
 			echo "Copying .tmod files to the mods directory"
 			cp -f Mods/*.tmod "$mods_path"
 		fi
@@ -322,9 +321,10 @@ Options:
 Commands:
  help                Equivalent to --help.
  install             Installs tModLoader and any mods provided. Will copy any world files, will not overwrite any existing ones.
- update              Updates an existing tModLoader installation and its mods
- start               Launches the server with no updating or installing of mods. This should be run after one of the above commands
+ update              Updates an existing tModLoader installation and its mods.
+ start               Launches the server with no updating or installing of mods. This should be run after one of the above commands.
  update-script       Update the script to the latest version on Github.
+ docker              Runs the Docker-specific management command. It is not recommended to run this manually.
 
 When running install or update, Folders 'Mods' and 'Worlds' as well as files enabled.json and install.txt will be checked for in the location of the script or in the directory specified by --folder."
 	exit
@@ -423,14 +423,21 @@ case $cmd in
 		if ! $skip_mods; then
 			install_mods
 		fi
-
-		copy_worlds
 		;;
 	update-script)
 		update_script
 		;;
+	docker)
+		verify_steamcmd
+		install_mods
+
+		# Set --github and fallthrough so the server can be started properly
+		steamcmd=false
+		;&
 	start)
+		copy_worlds
 		copy_config
+
 		if [[ -v install_dir ]]; then
 			cd "$install_dir" || exit
 		elif $steamcmd; then
@@ -440,7 +447,7 @@ case $cmd in
 		fi
 
 		chmod u+x start-tModLoaderServer.sh
-		./start-tModLoaderServer.sh
+		./start-tModLoaderServer.sh -nosteam
 		;;
 	*)
 		echo "Invalid Command: $1"

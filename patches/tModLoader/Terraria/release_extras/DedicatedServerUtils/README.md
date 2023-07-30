@@ -98,11 +98,10 @@ Add `restart: always` in the `services.tml` section of `docker-compose.yml`, the
 If you want to run tModLoader without needing any input on startup (such as from an init system), then all you need to do is copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/serverconfig.txt) and change the settings how you like. Key options are defined below, and other options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)
 
 ### World Name
-Setting `worldname` will change the default world name when creating a new world using [autocreate](#autocreate) **You do not need to include .wld in your world name**. This setting **will not** work with an existing world, set `path=worldpath/to/your/world` in the server config.
+Setting `worldname` will change the default world name when creating a new world using [autocreate](#autocreate) **You do not need to include .wld in your world name**. This setting **will not** work with an existing world, set `world=worldpath/to/your/world` in the server config.
 
 ### Autocreate
 Set `autocreate=1` in your world to automatically make a new world if the path in `world` does not exist or is empty.
-
 
 ## 1.4.4 Migration
 The 1.4.4 script is a **backwards-incompatible update** that introduces a new [folder structure](#folder-structure) that both the management script and the Docker container need to conform to. Additionally, the management script has moved from flags to commands for things like installing, updating and starting the server. Run `./manage-tModLoaderServer.sh help` to see a list of available commands.
