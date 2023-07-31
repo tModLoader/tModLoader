@@ -46,13 +46,6 @@ internal class ErrorReporting
 
 	public static void FatalExit(string message, Exception e)
 	{
-		if (e.HelpLink != null) {
-			try {
-				Utils.OpenToURL(e.HelpLink);
-			}
-			catch { }
-		}
-
 		string tip = null;
 		if (e is OutOfMemoryException)
 			tip = Language.GetTextValue("tModLoader.OutOfMemoryHint");
