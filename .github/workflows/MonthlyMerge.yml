@@ -67,4 +67,4 @@ jobs:
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
             git reset --hard origin/${{env.DevBranch}}
-            git push --force origin ${[env.PreviewBranch}}
+            git push --force origin ${{env.PreviewBranch}}
