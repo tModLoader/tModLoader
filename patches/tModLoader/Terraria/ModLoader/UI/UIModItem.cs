@@ -104,7 +104,8 @@ internal class UIModItem : UIPanel
 
 		// Don't show the Enable/Disable button if there is no loadable version
 		string updateVersion = null;
-		string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
+		string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+		Color updateColor = Color.Orange;
 
 		// Detect if it's for a preview version ahead of our time
 		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
@@ -115,13 +116,15 @@ internal class UIModItem : UIPanel
 		}
 
 		// Detect if it's for a different browser version entirely
-		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion))
+		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion)) {
 			updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
+			updateColor = Color.Yellow;
+		}
 
 		// Hide the Enabled button if it's not for this built version
 		if (updateVersion != null) {
-			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
-			tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
+			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(updateColor, updateColor * 0.7f);
+			tMLUpdateRequired.BackgroundColor = updateColor * 0.7f;
 			tMLUpdateRequired.Top.Pixels = 40;
 			tMLUpdateRequired.Width.Pixels = 280;
 			tMLUpdateRequired.Height.Pixels = 36;
@@ -347,7 +350,7 @@ internal class UIModItem : UIPanel
 				_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
 		}
 		else if (tMLUpdateRequired?.IsMouseHovering == true) {
-			_tooltip = Language.GetTextValue("tModLoader.MBClickToUpdate");
+			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
 	}
 
