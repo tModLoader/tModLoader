@@ -73,7 +73,7 @@ var searchData=
   ['highlighttexture_70',['HighlightTexture',['../class_mod_tile.html#ae12810d265c604e5a4941b299859fa85',1,'ModTile']]],
   ['hijackgetdata_71',['HijackGetData',['../class_mod_system.html#a9b117373c4a4f0cf900e7935d1e55785',1,'ModSystem']]],
   ['hijacksenddata_72',['HijackSendData',['../class_mod_system.html#a5888a1efc913620528bb24cd6c1b631d',1,'ModSystem']]],
-  ['hitdirection_73',['HitDirection',['../struct_n_p_c_1_1_hit_modifiers.html#a5391fd24824e040dc7dc7931c3b01ed9',1,'NPC.HitModifiers.HitDirection()'],['../struct_n_p_c_1_1_hit_info.html#a71c50577f292eee3ca2ff89df2af5f3d',1,'NPC.HitInfo.HitDirection()'],['../struct_player_1_1_hurt_modifiers.html#a45de05587597f4746aa93b9325f5ec6c',1,'Player.HurtModifiers.HitDirection()'],['../struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c',1,'Player.HurtInfo.HitDirection()']]],
+  ['hitdirection_73',['HitDirection',['../struct_player_1_1_hurt_modifiers.html#a45de05587597f4746aa93b9325f5ec6c',1,'Player.HurtModifiers.HitDirection()'],['../struct_n_p_c_1_1_hit_modifiers.html#a5391fd24824e040dc7dc7931c3b01ed9',1,'NPC.HitModifiers.HitDirection()'],['../struct_n_p_c_1_1_hit_info.html#a71c50577f292eee3ca2ff89df2af5f3d',1,'NPC.HitInfo.HitDirection()'],['../struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c',1,'Player.HurtInfo.HitDirection()']]],
   ['hitdirectionoverride_74',['HitDirectionOverride',['../struct_player_1_1_hurt_modifiers.html#a873d28ec48235b3cc3c4489cd9629133',1,'Player.HurtModifiers.HitDirectionOverride()'],['../struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf',1,'NPC.HitModifiers.HitDirectionOverride()']]],
   ['hiteffect_75',['HitEffect',['../class_mod_n_p_c.html#a9ac8099138100a46319697f4aa247e41',1,'ModNPC.HitEffect()'],['../class_global_n_p_c.html#ab615151eee3cfcc10172db52a80703a6',1,'GlobalNPC.HitEffect()']]],
   ['hitinfo_76',['HitInfo',['../struct_n_p_c_1_1_hit_info.html',1,'NPC']]],
@@ -94,8 +94,8 @@ var searchData=
   ['holdoutoffset_91',['HoldoutOffset',['../class_global_item.html#a4bf0d984170399031d2d7a2b0f3ccd34',1,'GlobalItem.HoldoutOffset()'],['../class_mod_item.html#a9937b34fda42a0379b91f882eb692f5d',1,'ModItem.HoldoutOffset()']]],
   ['holdoutorigin_92',['HoldoutOrigin',['../class_global_item.html#ad1cc4da8630d50e48c451ab708a3699a',1,'GlobalItem.HoldoutOrigin()'],['../class_mod_item.html#a6a56afe3bdc2a9376ab59b2e02e4dfc8',1,'ModItem.HoldoutOrigin()']]],
   ['holdradio_93',['HoldRadio',['../class_item_hold_style_i_d.html#a3a5ff236bbd8f96d7dde2e5993b77ccc',1,'ItemHoldStyleID']]],
-  ['holdstyle_94',['HoldStyle',['../class_global_item.html#af9f36ea9939bcb7c7c969f3b878346d3',1,'GlobalItem.HoldStyle()'],['../class_item_loader.html#a6c0192d8bbc6f5b52eb648dcb28a18e9',1,'ItemLoader.HoldStyle()'],['../class_mod_item.html#a495f88a149980511c598b049a11d6290',1,'ModItem.HoldStyle()']]],
-  ['holdstyle_95',['holdStyle',['../class_item.html#ab442988b55e45d07c89dfe6296ed5590',1,'Item']]],
+  ['holdstyle_94',['holdStyle',['../class_item.html#ab442988b55e45d07c89dfe6296ed5590',1,'Item']]],
+  ['holdstyle_95',['HoldStyle',['../class_global_item.html#af9f36ea9939bcb7c7c969f3b878346d3',1,'GlobalItem.HoldStyle()'],['../class_item_loader.html#a6c0192d8bbc6f5b52eb648dcb28a18e9',1,'ItemLoader.HoldStyle()'],['../class_mod_item.html#a495f88a149980511c598b049a11d6290',1,'ModItem.HoldStyle()']]],
   ['holdup_96',['HoldUp',['../class_item_hold_style_i_d.html#a8e55e8fdd56ee975f5a8f1d9d7e59345',1,'ItemHoldStyleID.HoldUp()'],['../class_item_use_style_i_d.html#a0e7e02364fba2377be5fa3665142fcfa',1,'ItemUseStyleID.HoldUp()']]],
   ['honeycombitem_97',['honeyCombItem',['../class_player.html#a1b4a5e4d390abd02a6ef49e543afa46b',1,'Player']]],
   ['honeypatchbiome_98',['HoneyPatchBiome',['../class_honey_patch_biome.html',1,'']]],
@@ -118,8 +118,9 @@ var searchData=
   ['hoveringfighter_115',['HoveringFighter',['../class_n_p_c_a_i_style_i_d.html#aed416394b90812be02a66c71b53af301',1,'NPCAIStyleID']]],
   ['hovername_116',['HoverName',['../class_item.html#a2344c936885a4f4b07e3c7055118f070',1,'Item']]],
   ['hoverslot_117',['HoverSlot',['../class_mod_player.html#a5d9f891f665434805a4e6e3b8fabd4f0',1,'ModPlayer']]],
-  ['hurtinfo_118',['HurtInfo',['../struct_player_1_1_hurt_info.html',1,'Player']]],
-  ['hurtingbees_119',['HurtingBees',['../class_n_p_c_i_d_1_1_sets.html#af91b19ed47a3c0ba3b3404e8f1865890',1,'NPCID::Sets']]],
-  ['hurtmodifiers_120',['HurtModifiers',['../struct_player_1_1_hurt_modifiers.html',1,'Player']]],
-  ['hurttile_121',['HurtTile',['../struct_collision_1_1_hurt_tile.html',1,'Collision']]]
+  ['hovertexture_118',['HoverTexture',['../class_info_display.html#a8eabe8c9419823d27aca515d12e6030b',1,'InfoDisplay']]],
+  ['hurtinfo_119',['HurtInfo',['../struct_player_1_1_hurt_info.html',1,'Player']]],
+  ['hurtingbees_120',['HurtingBees',['../class_n_p_c_i_d_1_1_sets.html#af91b19ed47a3c0ba3b3404e8f1865890',1,'NPCID::Sets']]],
+  ['hurtmodifiers_121',['HurtModifiers',['../struct_player_1_1_hurt_modifiers.html',1,'Player']]],
+  ['hurttile_122',['HurtTile',['../struct_collision_1_1_hurt_tile.html',1,'Collision']]]
 ];

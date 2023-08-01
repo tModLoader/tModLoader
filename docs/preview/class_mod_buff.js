@@ -13,6 +13,6 @@ var class_mod_buff =
     [ "Update", "class_mod_buff.html#a03f24b9c5cfae72b1217c156e4e80d7a", null ],
     [ "Description", "class_mod_buff.html#a110207af4d8835966b0aae2e9e3b66c9", null ],
     [ "DisplayName", "class_mod_buff.html#a4afe137031293a85527798944e486e86", null ],
-    [ "LocalizationCategory", "class_mod_buff.html#a15593b99f4c4e9688eca6ef34a24fa17", null ],
+    [ "LocalizationCategory", "class_mod_buff.html#a69b692e7f93356abca6ea9bad3296b55", null ],
     [ "Type", "class_mod_buff.html#a705a2414c30f16d38da6580afd576882", null ]
 ];

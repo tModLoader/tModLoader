@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -144,6 +144,27 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>AttackTime</b
  For <code>3</code>, this <a class="el" href="class_n_p_c.html">NPC</a> will swing a weapon. <br  />
  Defaults to <code>-1</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a00330581d37514acedb24a24afda2a4f">More...</a><br /></td></tr>
 <tr class="separator:a00330581d37514acedb24a24afda2a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e5110e221fd9c6a429a19a9f0b2782"><td class="memItemLeft" align="right" valign="top"><a id="ab8e5110e221fd9c6a429a19a9f0b2782" name="ab8e5110e221fd9c6a429a19a9f0b2782"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionFrostLegion</b> = Factory.CreateBoolSet(143, 144, 145)</td></tr>
+<tr class="memdesc:ab8e5110e221fd9c6a429a19a9f0b2782"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Frost Legion invasion. <br  />
+ During the Frost Legion invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Boss 3 music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:ab8e5110e221fd9c6a429a19a9f0b2782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce00df6aa862fd11ebf2458ba1113c8"><td class="memItemLeft" align="right" valign="top"><a id="a6ce00df6aa862fd11ebf2458ba1113c8" name="a6ce00df6aa862fd11ebf2458ba1113c8"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionGoblinArmy</b> = Factory.CreateBoolSet(26, 27, 28, 29, 111, 471, 472)</td></tr>
+<tr class="memdesc:a6ce00df6aa862fd11ebf2458ba1113c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Goblin Army invasion. <br  />
+ During the Goblin Army invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Goblin Army music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a6ce00df6aa862fd11ebf2458ba1113c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10fa9399de5feda78813e1c543c43da1"><td class="memItemLeft" align="right" valign="top"><a id="a10fa9399de5feda78813e1c543c43da1" name="a10fa9399de5feda78813e1c543c43da1"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionMartianMadness</b> = Factory.CreateBoolSet(381, 382, 383, 385, 386, 387, 388, 389, 390, 391, 395, 520)</td></tr>
+<tr class="memdesc:a10fa9399de5feda78813e1c543c43da1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Martian Madness invasion. <br  />
+ During the Martian Madness invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Martian Madness music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a10fa9399de5feda78813e1c543c43da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7de67559dee090ce476ea630b6fd3c47"><td class="memItemLeft" align="right" valign="top"><a id="a7de67559dee090ce476ea630b6fd3c47" name="a7de67559dee090ce476ea630b6fd3c47"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionOldOnesArmy</b> = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 548, 549, 564, 565, 574, 575, 551, 578)</td></tr>
 <tr class="memdesc:a7de67559dee090ce476ea630b6fd3c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Old One's Army event. <br  />
@@ -151,6 +172,13 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInv
  NPCs in this set will target the DD2EterniaCrystal if it is alive (using Utilities.NPCUtils.TargetClosestOldOnesInvasion(NPC, bool, Vector2?)). <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a7de67559dee090ce476ea630b6fd3c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc643349a501d0e3e326ae62e54fe444"><td class="memItemLeft" align="right" valign="top"><a id="acc643349a501d0e3e326ae62e54fe444" name="acc643349a501d0e3e326ae62e54fe444"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionPirate</b> = Factory.CreateBoolSet(212, 213, 214, 215, 216, 491)</td></tr>
+<tr class="memdesc:acc643349a501d0e3e326ae62e54fe444"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Pirate invasion. <br  />
+ During the Pirate invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Pirate Invasion music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:acc643349a501d0e3e326ae62e54fe444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f2f3b2f5345490fdd06752c5eef8480"><td class="memItemLeft" align="right" valign="top"><a id="a3f2f3b2f5345490fdd06752c5eef8480" name="a3f2f3b2f5345490fdd06752c5eef8480"></a>
 static <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BossBestiaryPriority</b></td></tr>
 <tr class="memdesc:a3f2f3b2f5345490fdd06752c5eef8480"><td class="mdescLeft">&#160;</td><td class="mdescRight">The order of boss <a class="el" href="class_n_p_c.html">NPC</a> types (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) in the Bestiary. <br /></td></tr>
@@ -259,6 +287,10 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>HurtingBees<
 <tr class="memdesc:af91b19ed47a3c0ba3b3404e8f1865890"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is a bee that will hurt other non-bee NPCs on contact. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:af91b19ed47a3c0ba3b3404e8f1865890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a716a915355776a0d8cf1f2bb294237f0"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0">InvasionSlotCount</a> = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0)</td></tr>
+<tr class="memdesc:a716a915355776a0d8cf1f2bb294237f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If above 0 for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), and its associated invasion is NOT a wave-based one, then that <a class="el" href="class_n_p_c.html">NPC</a> will decrement Main.invasionSize by that amount when killed. <br  />
+ If this <a class="el" href="class_n_p_c.html">NPC</a>'s entry is 0, it won't play its associated invasion's music when alive.  <a href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0">More...</a><br /></td></tr>
+<tr class="separator:a716a915355776a0d8cf1f2bb294237f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71f6e0f48654fbfd02617d9a3ef69d73"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73">IsDragonfly</a> = Factory.CreateBoolSet(595, 596, 597, 598, 599, 600, 601)</td></tr>
 <tr class="memdesc:a71f6e0f48654fbfd02617d9a3ef69d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is categorized as a dragonfly. <br  />
  Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73">More...</a><br /></td></tr>
@@ -302,6 +334,12 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NoEarlymodeL
 <tr class="memdesc:aad5305202f4d313bb5084dae67f92151"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will not drop loot in pre-hardmode. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aad5305202f4d313bb5084dae67f92151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc99a9e61b7e69850e692359ee0b7aa"><td class="memItemLeft" align="right" valign="top"><a id="addc99a9e61b7e69850e692359ee0b7aa" name="addc99a9e61b7e69850e692359ee0b7aa"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NoInvasionMusic</b> = Factory.CreateBoolSet(387)</td></tr>
+<tr class="memdesc:addc99a9e61b7e69850e692359ee0b7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> will not play its associated invasion music. <br  />
+ By default, alive NPCs in any BelongsToInvasion set will automatically play the associated invasion music if <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:addc99a9e61b7e69850e692359ee0b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af612a2c9d58d51a1606f2212ff6abbe4"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#af612a2c9d58d51a1606f2212ff6abbe4">NoMultiplayerSmoothingByAI</a> = Factory.CreateBoolSet(6, 8, 37)</td></tr>
 <tr class="memdesc:af612a2c9d58d51a1606f2212ff6abbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <b><a class="el" href="class_n_p_c_a_i_style_i_d.html">NPCAIStyleID</a></b> (<a class="el" href="class_n_p_c.html#aaf900063a620a46f2408436b8ab1bbdb" title="Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the NPCA...">NPC.aiStyle</a>), then that AI style will not smooth its visual position in multiplayer. <br  />
  Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#af612a2c9d58d51a1606f2212ff6abbe4">More...</a><br /></td></tr>
@@ -774,6 +812,32 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 <p>The vertical offset, in pixels, that an <a class="el" href="class_n_p_c.html">NPC</a>'s party hat will draw with. <br  />
  Defaults to <code>0</code>. </p>
 <p ><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93" title="The vertical offset, in pixels, that this NPC&#39;s party hat will draw. Indexed using values from NPCFra...">TownNPCsFramingGroups</a> applies a specific offset per frame, this applies the same offset to all frames.</p>
+
+</div>
+</div>
+<a id="a716a915355776a0d8cf1f2bb294237f0" name="a716a915355776a0d8cf1f2bb294237f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a716a915355776a0d8cf1f2bb294237f0">&#9670;&nbsp;</a></span>InvasionSlotCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] NPCID.Sets.InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If above 0 for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), and its associated invasion is NOT a wave-based one, then that <a class="el" href="class_n_p_c.html">NPC</a> will decrement Main.invasionSize by that amount when killed. <br  />
+ If this <a class="el" href="class_n_p_c.html">NPC</a>'s entry is 0, it won't play its associated invasion's music when alive. </p>
+<p >Note: Even though this defaults to 1, this set should only be checked if <a class="el" href="class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5" title="Gets the InvasionID associated with the given NPC type (NPC.type).">NPC.GetNPCInvasionGroup(int)</a> is above 0 or if any BelongsToInvasion sets are <code>true</code>. </p>
 
 </div>
 </div>

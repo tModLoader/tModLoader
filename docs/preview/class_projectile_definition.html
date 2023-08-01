@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -100,6 +100,7 @@ $(document).ready(function(){initNavTree('class_projectile_definition.html','');
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5a03a912f82ba68c417c06fcf4684127"><td class="memItemLeft" align="right" valign="top"><a id="a5a03a912f82ba68c417c06fcf4684127" name="a5a03a912f82ba68c417c06fcf4684127"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ProjectileDefinition</b> (int type)</td></tr>
+<tr class="memdesc:a5a03a912f82ba68c417c06fcf4684127"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Note: </b>As <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> loads before other content, make sure to only use <a class="el" href="class_projectile_definition.html">ProjectileDefinition(string, string)</a> for modded content in <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> classes. <br /></td></tr>
 <tr class="separator:a5a03a912f82ba68c417c06fcf4684127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abca89427ecdfd6226dc8e724988e4b97"><td class="memItemLeft" align="right" valign="top"><a id="abca89427ecdfd6226dc8e724988e4b97" name="abca89427ecdfd6226dc8e724988e4b97"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ProjectileDefinition</b> (string key)</td></tr>
@@ -146,10 +147,16 @@ static readonly Func&lt; <a class="el" href="class_tag_compound.html">TagCompoun
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a81ab5207fae539c07ac3fd82c50e9dba"><td class="memItemLeft" align="right" valign="top"><a id="a81ab5207fae539c07ac3fd82c50e9dba" name="a81ab5207fae539c07ac3fd82c50e9dba"></a>
+override string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayName</b><code> [get]</code></td></tr>
+<tr class="separator:a81ab5207fae539c07ac3fd82c50e9dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36efef22c056bb0c763cff0f0aaa9df9"><td class="memItemLeft" align="right" valign="top"><a id="a36efef22c056bb0c763cff0f0aaa9df9" name="a36efef22c056bb0c763cff0f0aaa9df9"></a>
 override int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
 <tr class="separator:a36efef22c056bb0c763cff0f0aaa9df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_entity_definition"><td colspan="2" onclick="javascript:toggleInherit('properties_class_entity_definition')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_entity_definition.html">EntityDefinition</a></td></tr>
+<tr class="memitem:a36938ca6081e5ee96366e551677201e2 inherit properties_class_entity_definition"><td class="memItemLeft" align="right" valign="top"><a id="a36938ca6081e5ee96366e551677201e2" name="a36938ca6081e5ee96366e551677201e2"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayName</b><code> [get]</code></td></tr>
+<tr class="separator:a36938ca6081e5ee96366e551677201e2 inherit properties_class_entity_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3dbf4400504e290e07b0c4bc1300720 inherit properties_class_entity_definition"><td class="memItemLeft" align="right" valign="top"><a id="ad3dbf4400504e290e07b0c4bc1300720" name="ad3dbf4400504e290e07b0c4bc1300720"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsUnloaded</b><code> [get]</code></td></tr>
 <tr class="separator:ad3dbf4400504e290e07b0c4bc1300720 inherit properties_class_entity_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>

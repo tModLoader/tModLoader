@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -147,6 +147,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int
 <tr class="memdesc:aac0b41a49c4d1eeb01f99d4aa258e64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile. Both <a class="el" href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89" title="Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles ...">Wiring.SkipWire(int, int)</a> and NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType) are usually required in the logic used in this method to correctly work. <br  />
 Only called on the server and single player. All wiring happens on the world, not multiplayer clients.  <a href="class_global_tile.html#aac0b41a49c4d1eeb01f99d4aa258e64e">More...</a><br /></td></tr>
 <tr class="separator:aac0b41a49c4d1eeb01f99d4aa258e64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2dd1c766d28f39ac2217e3d6b2717c"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#aaa2dd1c766d28f39ac2217e3d6b2717c">IsTileBiomeSightable</a> (int i, int j, int type, ref Color sightColor)</td></tr>
+<tr class="memdesc:aaa2dd1c766d28f39ac2217e3d6b2717c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize whether this tile glows <em>sightColor</em>  while the local player has the Biome Sight buff. <br  />
+Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default. <br  />
+This is only called on the local client.  <a href="class_global_tile.html#aaa2dd1c766d28f39ac2217e3d6b2717c">More...</a><br /></td></tr>
+<tr class="separator:aaa2dd1c766d28f39ac2217e3d6b2717c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab40cdeb72ef161dde8abf61ab2486f57"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#ab40cdeb72ef161dde8abf61ab2486f57">IsTileDangerous</a> (int i, int j, int type, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ab40cdeb72ef161dde8abf61ab2486f57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows red when the given player has the Dangersense buff. <br  />
 Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default. <br  />
@@ -913,6 +918,67 @@ Only called on the server and single player. All wiring happens on the world, no
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aaa2dd1c766d28f39ac2217e3d6b2717c" name="aaa2dd1c766d28f39ac2217e3d6b2717c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2dd1c766d28f39ac2217e3d6b2717c">&#9670;&nbsp;</a></span>IsTileBiomeSightable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool GlobalTile.IsTileBiomeSightable </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>sightColor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to customize whether this tile glows <em>sightColor</em>  while the local player has the Biome Sight buff. <br  />
+Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default. <br  />
+This is only called on the local client. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
+    <tr><td class="paramname">sightColor</td><td>The color this tile should glow with, which defaults to Color.White.</td></tr>
   </table>
   </dd>
 </dl>

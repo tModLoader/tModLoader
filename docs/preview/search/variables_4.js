@@ -19,7 +19,7 @@ var searchData=
   ['everlastingrainbow_16',['EverlastingRainbow',['../class_proj_a_i_style_i_d.html#a833614840454b25f8e998166b42992a8',1,'ProjAIStyleID']]],
   ['exoticplantsfordyetrade_17',['ExoticPlantsForDyeTrade',['../class_item_i_d_1_1_sets.html#acfbbf6149ab9b530243b438002903fa4',1,'ItemID::Sets']]],
   ['expert_18',['Expert',['../class_item_rarity_i_d.html#a90c854025485842d7020cef3f5382af2',1,'ItemRarityID']]],
-  ['expert_19',['expert',['../class_popup_text.html#afb747bdf661a7f32c183607663c3acab',1,'PopupText.expert()'],['../class_item.html#ab9726ea3c9d55ca764de569027578479',1,'Item.expert()']]],
+  ['expert_19',['expert',['../class_item.html#ab9726ea3c9d55ca764de569027578479',1,'Item.expert()'],['../class_popup_text.html#afb747bdf661a7f32c183607663c3acab',1,'PopupText.expert()']]],
   ['expertdamagedealt_20',['ExpertDamageDealt',['../struct_item_i_d_1_1_banner_effect.html#a9caec4582bd6bac8e1940cc433fb41c9',1,'ItemID::BannerEffect']]],
   ['expertdamagereceived_21',['ExpertDamageReceived',['../struct_item_i_d_1_1_banner_effect.html#a4d02bf4d90579faf43f6993217783505',1,'ItemID::BannerEffect']]],
   ['expertmodechallenge_22',['ExpertModeChallenge',['../class_game_tip_i_d.html#a8e174e50f2206dc3135b2a0c0f9351a2',1,'GameTipID']]],
@@ -33,9 +33,10 @@ var searchData=
   ['extractinatormode_30',['ExtractinatorMode',['../class_item_i_d_1_1_sets.html#af0737632d94e0a1506f93cb062be8935',1,'ItemID::Sets']]],
   ['extrafall_31',['extraFall',['../class_player.html#a23faed31e665fce3f3e2c418374b1eb5',1,'Player']]],
   ['extraframescount_32',['ExtraFramesCount',['../class_n_p_c_i_d_1_1_sets.html#a1f8cab6d7197eeddf58f343478747171',1,'NPCID::Sets']]],
-  ['extraplatformorwallconversion_33',['ExtraPlatformOrWallConversion',['../class_game_tip_i_d.html#abc424fb069b1addd4b193b2d6c233edc',1,'GameTipID']]],
-  ['extratexturecount_34',['ExtraTextureCount',['../class_n_p_c_i_d_1_1_sets.html#a77e7574396ab5a7e9c93ae439e088729',1,'NPCID::Sets']]],
-  ['extraupdates_35',['extraUpdates',['../class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f',1,'Projectile']]],
-  ['eyebrellacloud_36',['EyebrellaCloud',['../class_player_draw_layers.html#ad2d993e5ac1b51f510a49e6005f81d5c',1,'PlayerDrawLayers']]],
-  ['eyeofcthulhu_37',['EyeOfCthulhu',['../class_n_p_c_a_i_style_i_d.html#a1b4e7df4a855afe8aca85c6177516c01',1,'NPCAIStyleID']]]
+  ['extrainfo_33',['ExtraInfo',['../struct_tile_resting_info.html#a6c6556bd4ea8b6ac4c49063ed83713c8',1,'TileRestingInfo']]],
+  ['extraplatformorwallconversion_34',['ExtraPlatformOrWallConversion',['../class_game_tip_i_d.html#abc424fb069b1addd4b193b2d6c233edc',1,'GameTipID']]],
+  ['extratexturecount_35',['ExtraTextureCount',['../class_n_p_c_i_d_1_1_sets.html#a77e7574396ab5a7e9c93ae439e088729',1,'NPCID::Sets']]],
+  ['extraupdates_36',['extraUpdates',['../class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f',1,'Projectile']]],
+  ['eyebrellacloud_37',['EyebrellaCloud',['../class_player_draw_layers.html#ad2d993e5ac1b51f510a49e6005f81d5c',1,'PlayerDrawLayers']]],
+  ['eyeofcthulhu_38',['EyeOfCthulhu',['../class_n_p_c_a_i_style_i_d.html#a1b4e7df4a855afe8aca85c6177516c01',1,'NPCAIStyleID']]]
 ];

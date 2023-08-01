@@ -87,7 +87,7 @@ var class_mod_n_p_c =
     [ "DisplayName", "class_mod_n_p_c.html#a6e58015c1877da49930f0de7d4dbbf68", null ],
     [ "DrawOffsetY", "class_mod_n_p_c.html#a4a447f89174f9cf5f1e82b0eaef5928a", null ],
     [ "HeadTexture", "class_mod_n_p_c.html#ac9494535ea8899abfcf31cef2af42c14", null ],
-    [ "LocalizationCategory", "class_mod_n_p_c.html#a4b152f865665597b06629faf59d40fd0", null ],
+    [ "LocalizationCategory", "class_mod_n_p_c.html#ade14960009e2f97c6f997210d2d875ea", null ],
     [ "Music", "class_mod_n_p_c.html#a549e73e1a27d710b62f18401ff26bd18", null ],
     [ "NPC", "class_mod_n_p_c.html#a5154725c3ed7237d6f17fec7e44c67f7", null ],
     [ "SceneEffectPriority", "class_mod_n_p_c.html#a9dc3a99a1280fc2fdcf6c0588a52d08f", null ],

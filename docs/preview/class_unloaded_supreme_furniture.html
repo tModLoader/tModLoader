@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -192,6 +192,11 @@ Only called on the server and single player. All wiring happens on the world, no
 <tr class="memitem:a34781632344a7dbd94b386994be42349 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a34781632344a7dbd94b386994be42349">IsLockedChest</a> (int i, int j)</td></tr>
 <tr class="memdesc:a34781632344a7dbd94b386994be42349 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if this <a class="el" href="struct_tile.html">Tile</a> corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.  <a href="class_mod_tile.html#a34781632344a7dbd94b386994be42349">More...</a><br /></td></tr>
 <tr class="separator:a34781632344a7dbd94b386994be42349 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab78796b53df1fbe7b4a3888e523668f0 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#ab78796b53df1fbe7b4a3888e523668f0">IsTileBiomeSightable</a> (int i, int j, ref Color sightColor)</td></tr>
+<tr class="memdesc:ab78796b53df1fbe7b4a3888e523668f0 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows <em>sightColor</em>  while the local player has the Biome Sight buff. <br  />
+Return true and assign to <em>sightColor</em>  to allow this tile to glow. <br  />
+This is only called on the local client.  <a href="class_mod_tile.html#ab78796b53df1fbe7b4a3888e523668f0">More...</a><br /></td></tr>
+<tr class="separator:ab78796b53df1fbe7b4a3888e523668f0 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af551fdea1eb13d886fd6b09151f58612 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#af551fdea1eb13d886fd6b09151f58612">IsTileDangerous</a> (int i, int j, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:af551fdea1eb13d886fd6b09151f58612 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows red when the given player has the Dangersense buff. <br  />
 This is only called on the local client.  <a href="class_mod_tile.html#af551fdea1eb13d886fd6b09151f58612">More...</a><br /></td></tr>
@@ -235,7 +240,7 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
 <tr class="separator:a5d51258e65d17bdb13cfe225fd44aea9 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="a225cb3ba315b70347fd305b049ffa497" name="a225cb3ba315b70347fd305b049ffa497"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetDefaults</b> ()</td></tr>
-<tr class="memdesc:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override some default properties of this tile, such as Main.tileNoSunLight and Main.tileObsidianKill. <br /></td></tr>
+<tr class="memdesc:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override some default properties of this tile, such as Main.tileNoSunLight and <a class="el" href="class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5" title="If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it...">Main.tileObsidianKill</a>. <br /></td></tr>
 <tr class="separator:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f80b7cf1635e81f45a31d7ca4d3d98a inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="a3f80b7cf1635e81f45a31d7ca4d3d98a" name="a3f80b7cf1635e81f45a31d7ca4d3d98a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTileMerge</b> ()</td></tr>

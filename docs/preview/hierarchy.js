@@ -434,6 +434,8 @@ var hierarchy =
     ] ],
     [ "ExtensionFilter", "struct_extension_filter.html", null ],
     [ "ExtraBestiaryInfoPageInformation", "struct_extra_bestiary_info_page_information.html", null ],
+    [ "ExtraJumpLoader", "class_extra_jump_loader.html", null ],
+    [ "ExtraJumpState", "struct_extra_jump_state.html", null ],
     [ "ExtraSeatInfo", "struct_extra_seat_info.html", null ],
     [ "ExtrasID", "class_extras_i_d.html", null ],
     [ "ArmorIDs.Face", "class_armor_i_ds_1_1_face.html", null ],
@@ -1367,6 +1369,20 @@ var hierarchy =
               [ "ThrowingDamageClass", "class_throwing_damage_class.html", null ]
             ] ]
           ] ],
+          [ "ExtraJump", "class_extra_jump.html", [
+            [ "VanillaExtraJump", "class_vanilla_extra_jump.html", [
+              [ "BasiliskMountJump", "class_basilisk_mount_jump.html", null ],
+              [ "BlizzardInABottleJump", "class_blizzard_in_a_bottle_jump.html", null ],
+              [ "CloudInABottleJump", "class_cloud_in_a_bottle_jump.html", null ],
+              [ "FartInAJarJump", "class_fart_in_a_jar_jump.html", null ],
+              [ "FlipperJump", "class_flipper_jump.html", null ],
+              [ "GoatMountJump", "class_goat_mount_jump.html", null ],
+              [ "SandstormInABottleJump", "class_sandstorm_in_a_bottle_jump.html", null ],
+              [ "SantankMountJump", "class_santank_mount_jump.html", null ],
+              [ "TsunamiInABottleJump", "class_tsunami_in_a_bottle_jump.html", null ],
+              [ "UnicornMountJump", "class_unicorn_mount_jump.html", null ]
+            ] ]
+          ] ],
           [ "GlobalBackgroundStyle", "class_global_background_style.html", null ],
           [ "GlobalBlockType", "class_global_block_type.html", [
             [ "GlobalTile", "class_global_tile.html", null ],
@@ -2144,6 +2160,10 @@ var hierarchy =
     [ "PortalHelper", "class_portal_helper.html", null ],
     [ "PosData< T >", "struct_pos_data.html", null ],
     [ "PosData< ushort >", "struct_pos_data.html", null ],
+    [ "ExtraJump.Position", "class_extra_jump_1_1_position.html", [
+      [ "ExtraJump.After", "class_extra_jump_1_1_after.html", null ],
+      [ "ExtraJump.Before", "class_extra_jump_1_1_before.html", null ]
+    ] ],
     [ "PlayerDrawLayer.Position", "class_player_draw_layer_1_1_position.html", [
       [ "PlayerDrawLayer.AfterParent", "class_player_draw_layer_1_1_after_parent.html", null ],
       [ "PlayerDrawLayer.BeforeParent", "class_player_draw_layer_1_1_before_parent.html", null ],

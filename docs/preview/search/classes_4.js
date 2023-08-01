@@ -78,8 +78,11 @@ var searchData=
   ['extendsfrommodattribute_75',['ExtendsFromModAttribute',['../class_extends_from_mod_attribute.html',1,'']]],
   ['extensionfilter_76',['ExtensionFilter',['../struct_extension_filter.html',1,'']]],
   ['extrabestiaryinfopageinformation_77',['ExtraBestiaryInfoPageInformation',['../struct_extra_bestiary_info_page_information.html',1,'']]],
-  ['extraseatinfo_78',['ExtraSeatInfo',['../struct_extra_seat_info.html',1,'']]],
-  ['extrasid_79',['ExtrasID',['../class_extras_i_d.html',1,'']]],
-  ['eyeballshader_80',['EyeballShader',['../class_eyeball_shader.html',1,'']]],
-  ['eyeofcthulhushader_81',['EyeOfCthulhuShader',['../class_eye_of_cthulhu_shader.html',1,'']]]
+  ['extrajump_78',['ExtraJump',['../class_extra_jump.html',1,'']]],
+  ['extrajumploader_79',['ExtraJumpLoader',['../class_extra_jump_loader.html',1,'']]],
+  ['extrajumpstate_80',['ExtraJumpState',['../struct_extra_jump_state.html',1,'']]],
+  ['extraseatinfo_81',['ExtraSeatInfo',['../struct_extra_seat_info.html',1,'']]],
+  ['extrasid_82',['ExtrasID',['../class_extras_i_d.html',1,'']]],
+  ['eyeballshader_83',['EyeballShader',['../class_eyeball_shader.html',1,'']]],
+  ['eyeofcthulhushader_84',['EyeOfCthulhuShader',['../class_eye_of_cthulhu_shader.html',1,'']]]
 ];

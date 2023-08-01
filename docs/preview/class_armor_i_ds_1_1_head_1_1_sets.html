@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -121,6 +121,10 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>FrontToBackID
  For example, wearing DogEars will also display DogEarsBack. <br  />
  Defaults to <code>-1</code>. <br /></td></tr>
 <tr class="separator:adc5918654ada97e2c7abffadf8572027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2760b8117235bcccf0c3c0fe1bab78f1"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_armor_i_ds_1_1_head_1_1_sets.html#a2760b8117235bcccf0c3c0fe1bab78f1">IsTallHat</a> = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180)</td></tr>
+<tr class="memdesc:a2760b8117235bcccf0c3c0fe1bab78f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a>, then that equip will allow a taller hat to render. <br  />
+ Defaults to <code>false</code>.  <a href="class_armor_i_ds_1_1_head_1_1_sets.html#a2760b8117235bcccf0c3c0fe1bab78f1">More...</a><br /></td></tr>
+<tr class="separator:a2760b8117235bcccf0c3c0fe1bab78f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb0c8f301617512ad8d2ab35178798d"><td class="memItemLeft" align="right" valign="top"><a id="a5cb0c8f301617512ad8d2ab35178798d" name="a5cb0c8f301617512ad8d2ab35178798d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventBeardDraw</b> = Factory.CreateBoolSet(false, 118, 119, 107, 129, 127, 125, 136, 162, 168, 210, 213, 28, 135, 31, 17, 261, 169, 186, 47, 22, 105, 102, 120, 137, 199, 207, 260, 132, 155, 179, 108, 153, 164, 172, 208, 241, 271, 48, 154, 188, 187, 209, 46, 123, 269, 185, 276)</td></tr>
 <tr class="memdesc:a5cb0c8f301617512ad8d2ab35178798d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a>, then that equip will hide the player's beard when equipped. <br  />
@@ -160,6 +164,32 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>UseAltFaceHe
 <p>If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a>, then that equip will show the player's hat hair when equipped. <br  />
  Defaults to <code>false</code>. </p>
 <p >Hat hair textures can be accessed through GameContent.TextureAssets.PlayerHairAlt. </p>
+
+</div>
+</div>
+<a id="a2760b8117235bcccf0c3c0fe1bab78f1" name="a2760b8117235bcccf0c3c0fe1bab78f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2760b8117235bcccf0c3c0fe1bab78f1">&#9670;&nbsp;</a></span>IsTallHat</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] ArmorIDs.Head.Sets.IsTallHat = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code>true</code> for a given <a class="el" href="class_armor_i_ds_1_1_head.html">Head</a>, then that equip will allow a taller hat to render. <br  />
+ Defaults to <code>false</code>. </p>
+<p >This is used by, for example, wizard hats and gladiator helmet. Without this setting, some animation frames would render cropped at the top. </p>
 
 </div>
 </div>

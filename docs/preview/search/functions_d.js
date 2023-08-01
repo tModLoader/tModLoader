@@ -24,11 +24,12 @@ var searchData=
   ['next_21',['Next',['../class_unified_random.html#ac104338db126a82928eddeb57a12dba1',1,'UnifiedRandom.Next(int minValue, int maxValue)'],['../class_unified_random.html#a4040681602b93f1eed92662395230f13',1,'UnifiedRandom.Next(int maxValue)']]],
   ['next_3c_20t_20_3e_22',['Next&lt; T &gt;',['../class_utils.html#a20b08c978c09a4c4046fd34c2510df05',1,'Utils.Next&lt; T &gt;(this UnifiedRandom r, T[] array)'],['../class_utils.html#a89069d24f25560e0c9d565dd55e2187f',1,'Utils.Next&lt; T &gt;(this UnifiedRandom r, IList&lt; T &gt; list)']]],
   ['nextbool_23',['NextBool',['../class_utils.html#a0f5347faf5b45c4175e236b265168370',1,'Utils.NextBool(this UnifiedRandom r)'],['../class_utils.html#a2329af94a9cdcceb142f65637c4014e4',1,'Utils.NextBool(this UnifiedRandom r, int consequent)'],['../class_utils.html#a9520b43c1a1bee5f8e8a765fa6c3967a',1,'Utils.NextBool(this UnifiedRandom r, int antecedent, int consequent)']]],
-  ['nextfloat_24',['NextFloat',['../class_utils.html#aaea2b895939eccbeee9d0486fc3a35df',1,'Utils.NextFloat(this UnifiedRandom r)'],['../class_utils.html#a1534059d7f850e4f2763b6e254ef97f1',1,'Utils.NextFloat(this UnifiedRandom r, float minValue, float maxValue)'],['../class_utils.html#a6165040d42a1c8e5cd839b0125e89c60',1,'Utils.NextFloat(this UnifiedRandom r, float maxValue)']]],
+  ['nextfloat_24',['NextFloat',['../class_utils.html#a6165040d42a1c8e5cd839b0125e89c60',1,'Utils.NextFloat(this UnifiedRandom r, float maxValue)'],['../class_utils.html#a1534059d7f850e4f2763b6e254ef97f1',1,'Utils.NextFloat(this UnifiedRandom r, float minValue, float maxValue)'],['../class_utils.html#aaea2b895939eccbeee9d0486fc3a35df',1,'Utils.NextFloat(this UnifiedRandom r)']]],
   ['npcbestiarydrawmodifiers_25',['NPCBestiaryDrawModifiers',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
-  ['npctobanner_26',['NPCtoBanner',['../class_item.html#afe440f52db2e08b1c5f421d4cbff70d4',1,'Item']]],
-  ['npctobossbar_27',['NpcToBossBar',['../class_boss_bar_loader.html#a14f46ce35973cb73308ca5c49f4c424d',1,'BossBarLoader']]],
-  ['npctype_3c_20t_20_3e_28',['NPCType&lt; T &gt;',['../class_mod_content.html#a8f04cb26f4f80f8ac4b12c9817a28848',1,'ModContent']]],
-  ['numdust_29',['NumDust',['../class_global_block_type.html#aeddddc5e9e34999affd400c97412ff9b',1,'GlobalBlockType.NumDust()'],['../class_mod_block_type.html#a610e14bb1f6b38d5879fa1913b90e24f',1,'ModBlockType.NumDust()']]],
-  ['numgrapplehooks_30',['NumGrappleHooks',['../class_global_projectile.html#a6dcdd60cd89fbd36fdf5762123b8ce92',1,'GlobalProjectile.NumGrappleHooks()'],['../class_mod_projectile.html#a4a3d5cffc4eebfe0398e7dd29c4b3d54',1,'ModProjectile.NumGrappleHooks()']]]
+  ['npcdefinition_26',['NPCDefinition',['../class_n_p_c_definition.html#a66b580671aeb9bf4e9415057c0ed1220',1,'NPCDefinition']]],
+  ['npctobanner_27',['NPCtoBanner',['../class_item.html#afe440f52db2e08b1c5f421d4cbff70d4',1,'Item']]],
+  ['npctobossbar_28',['NpcToBossBar',['../class_boss_bar_loader.html#a14f46ce35973cb73308ca5c49f4c424d',1,'BossBarLoader']]],
+  ['npctype_3c_20t_20_3e_29',['NPCType&lt; T &gt;',['../class_mod_content.html#a8f04cb26f4f80f8ac4b12c9817a28848',1,'ModContent']]],
+  ['numdust_30',['NumDust',['../class_global_block_type.html#aeddddc5e9e34999affd400c97412ff9b',1,'GlobalBlockType.NumDust()'],['../class_mod_block_type.html#a610e14bb1f6b38d5879fa1913b90e24f',1,'ModBlockType.NumDust()']]],
+  ['numgrapplehooks_31',['NumGrappleHooks',['../class_global_projectile.html#a6dcdd60cd89fbd36fdf5762123b8ce92',1,'GlobalProjectile.NumGrappleHooks()'],['../class_mod_projectile.html#a4a3d5cffc4eebfe0398e7dd29c4b3d54',1,'ModProjectile.NumGrappleHooks()']]]
 ];
