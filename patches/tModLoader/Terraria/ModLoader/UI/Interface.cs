@@ -123,11 +123,13 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
+			/*
 			else if (!ModLoader.BetaUpgradeWelcomed144) {
 				ModLoader.BetaUpgradeWelcomed144 = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageUpgradeBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
+			*/
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
