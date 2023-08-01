@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria;
 
-public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IShimmerable
+public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IModShimmerable
 {
 	public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
@@ -275,22 +275,26 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, ISh
 		}
 	}
 
-	public void OnShimmer() => ItemLoader.OnShimmer(this);
-	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
-	public void RemoveAfterShimmer()
-	{
-		active = false;
-		shimmerTime = 0f;
-		if (Main.netMode == NetmodeID.Server)
-			NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, whoAmI, 1f);
-	}
-	public Vector2 VelocityWrapper { get => velocity; set => velocity = value; }
+	public Vector2 ShimmerVelocity { get => velocity; set => velocity = value; }
 	public Point Dimensions { get => new(width, height); set { width = value.X; height = value.Y; } }
 	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.Item;
 	public int ShimmerType => type;
 	public int Stack => stack;
-	public void RemoveFromStack(int amount)
+	public void Remove(int amount)
 	{
 		stack -= amount;
+
+		if (stack <= 0) {
+			active = false;
+			shimmerTime = 0f;
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, whoAmI, 1f);
+		}
 	}
+
+	/// <summary> <inheritdoc/> <br/>
+	/// For this <see cref="Item"/> override, calls <see cref="ItemLoader.OnShimmer(Item)"/>
+	/// </summary>
+	public void OnShimmer() => ItemLoader.OnShimmer(this);
+	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
 }

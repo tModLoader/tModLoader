@@ -9,46 +9,89 @@ namespace Terraria.ModLoader;
 // TML: #AdvancedShimmerTransformations
 
 /// <summary>
-/// Represents the behaviour and output of a shimmer transformation, the <see cref="IShimmerable"/>(s) that can use it are stored via <see
-/// cref="ModShimmerTransformations"/> which is updated via <see cref="Register()"/> and its overloads
+/// Represents the behaviour and output of a shimmer transformation, the <see cref="IModShimmerable"/>(s) that can use it are stored via <see
+/// cref="Transformations"/> which is updated via <see cref="Register()"/> and its overloads. Uses a similar syntax to <see cref="Recipe"/>,
+/// usually starting with <see cref="ModNPC.CreateShimmerTransformation"/> or <see cref="ModItem.CreateShimmerTransformation"/>
 /// </summary>
-public record class ModShimmer : IComparable<ModShimmer>
+public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 {
+	#region Managers
+
 	/// <summary>
 	/// Dictionary containing every <see cref="ModShimmer"/> registered to tMod indexed by <see cref="ModShimmerTypeID"/> and the entities type, automatically done in <see cref="Register()"/> and its overloads
 	/// </summary>
-	public static Dictionary<(ModShimmerTypeID, int), List<ModShimmer>> ModShimmerTransformations { get; } = new();
+	public static Dictionary<(ModShimmerTypeID, int), List<ModShimmer>> Transformations { get; } = new();
 
 	/// <summary>
 	/// Incremented for every transformation with type <see cref="ModShimmerTypeID.Custom"/>
 	/// </summary>
-	private static int lastCustom = 1;
+	private static int customShimmerTypeCounter = 1;
 
 	/// <summary>
-	/// Use this to get type for use with <see cref="ModShimmerTypeID.Custom"/>, is used as the key for <see cref="ModShimmerTransformations"/> when registering, and also needs to be assigned to <see cref="IShimmerable.ShimmerType"/> using <see cref="TryModShimmer(IShimmerable)"/>
+	/// Use this to get the id type for use with <see cref="ModShimmerTypeID.Custom"/>. Only for custom type implementations of <see cref="IModShimmerable"/>, where an integer maps to a specific set of <see cref="ModShimmer"/> transformations
 	/// </summary>
 	public static int GetNextCustomShimmerID()
 	{
-		lastCustom++;
-		return lastCustom;
+		customShimmerTypeCounter++;
+		return customShimmerTypeCounter;
 	}
 
 	internal static void Unload()
 	{
-		ModShimmerTransformations.Clear();
-		lastCustom = -1;
+		Transformations.Clear();
+		customShimmerTypeCounter = -1;
 	}
+
+	#endregion Managers
+
+	#region Redirects
+
+	public static Dictionary<(ModShimmerTypeID, int), (ModShimmerTypeID, int)> Redirects { get; } = new();
+
+	public static void AddRedirect(IModShimmerable redirectFrom, (ModShimmerTypeID, int) redirectTo)
+		=> AddRedirect(redirectFrom.StorageKey, redirectTo);
+
+	public static void AddRedirect((ModShimmerTypeID, int) redirectFrom, (ModShimmerTypeID, int) redirectTo)
+	=> Redirects.Add(redirectFrom, redirectTo);
+
+	/// <summary>
+	/// First <see cref="Redirects"/> is checked for an entry, if one exists it is applied over <paramref name="source"/>, then if <paramref name="source"/> is <see cref="ModShimmerTypeID.Item"/>, it checks <see cref="ItemID.Sets.ShimmerCountsAsItem"/>
+	/// <br/> Is not recursive
+	/// </summary>
+	public static (ModShimmerTypeID, int) GetRedirectedKey((ModShimmerTypeID, int) source)
+	{
+		if (Redirects.TryGetValue(source, out (ModShimmerTypeID, int) value))
+			source = value;
+		if (source.Item1 == ModShimmerTypeID.Item && ItemID.Sets.ShimmerCountsAsItem[source.Item2] > 0)
+			source = source with { Item2 = ItemID.Sets.ShimmerCountsAsItem[source.Item2] };
+		return source;
+	}
+
+	/// <summary>
+	/// First <see cref="Redirects"/> is checked for an entry, if one exists and it has the same <see cref="ModShimmerTypeID"/> it is applied over <paramref name="source"/>, then if <paramref name="source"/> is <see cref="ModShimmerTypeID.Item"/>, it checks <see cref="ItemID.Sets.ShimmerCountsAsItem"/>
+	/// <br/> Is not recursive
+	/// </summary>
+	public static int GetRedirectedKeySameShimmerID((ModShimmerTypeID, int) source)
+	{
+		if (Redirects.TryGetValue(source, out (ModShimmerTypeID, int) value) && value.Item1 == source.Item1)
+			source = value;
+		if (source.Item1 == ModShimmerTypeID.Item && ItemID.Sets.ShimmerCountsAsItem[source.Item2] > 0)
+			source = source with { Item2 = ItemID.Sets.ShimmerCountsAsItem[source.Item2] };
+		return source.Item2;
+	}
+
+	#endregion Redirects
 
 	#region Constructors
 
 	/// <inheritdoc cref="ModShimmer"/>
-	/// <param name="source"> Assigned to <see cref="Instantiator"/> for use with the parameterless <see cref="Register()"/> </param>
-	public ModShimmer(IShimmerable source)
+	/// <param name="source"> Assigned to <see cref="SourceStorageKey"/> for use with the parameterless <see cref="Register()"/> </param>
+	public ModShimmer(IModShimmerable source)
 	{
-		Instantiator = (source.ModShimmerTypeID, source.ShimmerType);
+		SourceStorageKey = source.StorageKey;
 	}
 
-	/// <inheritdoc cref="ModShimmer(IShimmerable)"/>
+	/// <inheritdoc cref="ModShimmer"/>
 	public ModShimmer()
 	{ }
 
@@ -57,9 +100,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 	#region FunctionalityVariables
 
 	/// <summary>
-	/// The <see cref="IShimmerable"/> that was used to create this transformation, does not have to be used when registering
+	/// The <see cref="IModShimmerable"/> that was used to create this transformation, does not have to be used when registering
 	/// </summary>
-	public (ModShimmerTypeID, int)? Instantiator { get; init; }
+	private (ModShimmerTypeID, int)? SourceStorageKey { get; init; } // Private as it has no Modder use
 
 	/// <summary>
 	/// Every condition must be true for the transformation to occur
@@ -82,31 +125,32 @@ public record class ModShimmer : IComparable<ModShimmer>
 	public int Priority { get; private set; } = 0;
 
 	/// <summary>
-	/// Called in addition to conditions to check if the <see cref="IShimmerable"/> shimmers
+	/// Called in addition to conditions to check if the <see cref="IModShimmerable"/> shimmers
 	/// </summary>
 	/// <param name="transformation"> The transformation </param>
-	/// <param name="source"> The <see cref="IShimmerable"/> to be shimmered </param>
-	public delegate bool CanShimmerCallBack(ModShimmer transformation, IShimmerable source);
+	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
+	public delegate bool CanShimmerCallBack(ModShimmer transformation, IModShimmerable source);
 
 	/// <inheritdoc cref="CanShimmerCallBack"/>
 	public CanShimmerCallBack CanShimmerCallBacks { get; private set; }
 
 	/// <summary>
-	/// Called once before a transformation, use this to edit the transformation beforehand
+	/// Called once before a transformation, use this to edit the transformation or source beforehand
 	/// </summary>
 	/// <param name="transformation"> The transformation, editing this does not change the stored transformation, only this time </param>
-	/// <param name="source"> The <see cref="IShimmerable"/> to be shimmered </param>
-	public delegate void PreShimmerCallBack(ModShimmer transformation, IShimmerable source);
+	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
+	public delegate void PreShimmerCallBack(ModShimmer transformation, IModShimmerable source);
 
 	/// <inheritdoc cref="PreShimmerCallBack"/>
 	public PreShimmerCallBack PreShimmerCallBacks { get; private set; }
+
 	/// <summary>
-	/// Called after <see cref="IShimmerable"/> shimmers
+	/// Called after <see cref="IModShimmerable"/> shimmers
 	/// </summary>
 	/// <param name="transformation"> The transformation </param>
 	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
-	/// <param name="source"> The <see cref="IShimmerable"/> that was shimmered </param>
-	public delegate void OnShimmerCallBack(ModShimmer transformation, IShimmerable source, List<IShimmerable> spawnedEntities);
+	/// <param name="source"> The <see cref="IModShimmerable"/> that was shimmered </param>
+	public delegate void OnShimmerCallBack(ModShimmer transformation, IModShimmerable source, List<IModShimmerable> spawnedEntities);
 
 	/// <inheritdoc cref="OnShimmerCallBack"/>
 	public OnShimmerCallBack OnShimmerCallBacks { get; private set; }
@@ -128,7 +172,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	#region AddResultMethods
 
 	/// <summary>
-	/// Adds a result to <see cref="Results"/>, this will be spawned when the <see cref="IShimmerable"/> successfully shimmers
+	/// Adds a result to <see cref="Results"/>, this will be spawned when the <see cref="IModShimmerable"/> successfully shimmers
 	/// </summary>
 	/// <param name="result"> The result to be added </param>
 	/// <exception cref="ArgumentException">
@@ -172,11 +216,11 @@ public record class ModShimmer : IComparable<ModShimmer>
 		=> AddResult(new(ModShimmerTypeID.CoinLuck, -1, coinLuck));
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
-	/// <param name="count"> The number of times <see cref="ModShimmerResult.customSpawner"/> will be called </param>
+	/// <param name="count"> The number of times <see cref="ModShimmerResult.CustomSpawner"/> will be called </param>
 	/// <param name="spawnShimmer"> custom shimmer spawn function </param>
 	/// <param name="customShimmerType"> unused by tModLoader, will still be in <see cref="ModShimmerResult"/> so can be used in <paramref name="spawnShimmer"/> </param>
 	public ModShimmer AddCustomShimmerResult(int count = 1, ModShimmerResult.SpawnShimmer spawnShimmer = null, int customShimmerType = -1)
-		=> AddResult(new ModShimmerResult(ModShimmerTypeID.Custom, customShimmerType, count) { customSpawner = spawnShimmer });
+		=> AddResult(new ModShimmerResult(ModShimmerTypeID.Custom, customShimmerType, count) { CustomSpawner = spawnShimmer });
 
 	#endregion AddResultMethods
 
@@ -206,7 +250,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <summary>
 	/// Adds a delegate to <see cref="PreShimmerCallBacks"/> that will be called before the transformation
 	/// </summary>
-	public ModShimmer PreCanShimmerCallBack(PreShimmerCallBack callBack)
+	public ModShimmer AddPreShimmerCallBack(PreShimmerCallBack callBack)
 	{
 		PreShimmerCallBacks += callBack;
 		return this;
@@ -225,9 +269,9 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <exception cref="InvalidOperationException"> Thrown if this <see cref="ModShimmer"/> instance was not created from an Entity </exception>
 	public void Register()
 	{
-		if (Instantiator == null)
+		if (SourceStorageKey == null)
 			throw new InvalidOperationException("The transformation must be created from an entity for the parameterless Register() to be used.");
-		Register(Instantiator.Value);
+		Register(SourceStorageKey.Value);
 	}
 
 	/// <inheritdoc cref="Register(ValueTuple{ModShimmerTypeID, int})"/>
@@ -242,7 +286,7 @@ public record class ModShimmer : IComparable<ModShimmer>
 	}
 
 	/// <summary>
-	/// Finalizes transformation, adds to <see cref="ModShimmerTransformations"/>
+	/// Finalizes transformation, adds to <see cref="Transformations"/>
 	/// </summary>
 	/// <exception cref="ArgumentException">
 	/// Thrown if <paramref name="shimmerableID"/> field Item1 of type <see cref="ModShimmerTypeID"/> is an invalid source type
@@ -252,20 +296,20 @@ public record class ModShimmer : IComparable<ModShimmer>
 		if (!shimmerableID.Item1.IsValidSourceType())
 			throw new ArgumentException("A valid source type for ModShimmerTypeID must be passed here", nameof(shimmerableID));
 
-		if (!ModShimmerTransformations.TryAdd(shimmerableID, new() { this })) //Try add a new entry for the tuple
-			ModShimmerTransformations[shimmerableID].Add(this); // If it fails, entry exists, therefore add to list
+		if (!Transformations.TryAdd(shimmerableID, new() { this })) //Try add a new entry for the tuple
+			Transformations[shimmerableID].Add(this); // If it fails, entry exists, therefore add to list
 
-		ModShimmerTransformations[shimmerableID].Sort();
+		Transformations[shimmerableID].Sort();
 	}
 
 	#endregion ControllerMethods
 
-	#region Operation
+	#region Shimmering
 
 	/// <summary>
-	/// Checks if the <see cref="IShimmerable"/> supplied can undergo a shimmer transformation, should not alter game state / read only
+	/// Checks if the <see cref="IModShimmerable"/> supplied can undergo a shimmer transformation, should not alter game state / read only
 	/// </summary>
-	/// <param name="shimmerable"> The <see cref="IShimmerable"/> being shimmered </param>
+	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> being shimmered </param>
 	/// <returns>
 	/// true if the following are all true in order
 	/// <list type="number">
@@ -274,13 +318,13 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// <item/>
 	/// All added <see cref="CanShimmerCallBack"/> return true
 	/// <item/>
-	/// <see cref="IShimmerable.CanShimmer"/> returns true for <paramref name="shimmerable"/>
+	/// <see cref="IModShimmerable.CanShimmer"/> returns true for <paramref name="shimmerable"/>
 	/// <item/>
 	/// None of the <see cref="Item"/> results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is
 	/// false (default)
 	/// </list>
 	/// </returns>
-	public bool CanModShimmer(IShimmerable shimmerable)
+	public bool CanModShimmer(IModShimmerable shimmerable)
 		=> CanModShimmer_Transformation(shimmerable)
 		&& shimmerable.CanShimmer();
 
@@ -299,39 +343,36 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// false (default)
 	/// </list>
 	/// </returns>
-	private bool CanModShimmer_Transformation(IShimmerable shimmerable)
+	private bool CanModShimmer_Transformation(IModShimmerable shimmerable)
 		=> Conditions.All((condition) => condition.IsMet())
 		&& (CheckCanShimmerCallBacks(shimmerable))
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ModShimmerTypeID == ModShimmerTypeID.Item && (result.Type == ItemID.Bone && !NPC.downedBoss3 || result.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)));
 
 	/// <summary>
-	/// Checks all of <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/>
+	/// Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="source"/>
 	/// </summary>
-	/// <returns> Returns true if all delegates in return true </returns>
-	private bool CheckCanShimmerCallBacks(IShimmerable shimmerable)
+	/// <returns> Returns true if all delegates in <see cref="CanShimmerCallBacks"/> return true </returns>
+	private bool CheckCanShimmerCallBacks(IModShimmerable source)
 	{
-		if (CanShimmerCallBacks == null)
-			return true;
-		foreach (CanShimmerCallBack callBack in CanShimmerCallBacks.GetInvocationList().Cast<CanShimmerCallBack>()) {
-			if (!callBack.Invoke(this, shimmerable))
+		foreach (CanShimmerCallBack callBack in CanShimmerCallBacks?.GetInvocationList()?.Cast<CanShimmerCallBack>() ?? Array.Empty<CanShimmerCallBack>()) {
+			if (!callBack.Invoke(this, source))
 				return false;
 		}
 		return true;
 	}
 
 	/// <summary>
-	/// Checks every <see cref="ModShimmer"/> for this <see cref="IShimmerable"/> and returns true when if finds one that passes <see cref="CanModShimmer_Transformation(IShimmerable)"/>.
-	/// <br/> Does not check <see cref="IShimmerable.CanShimmer"/>
+	/// Checks every <see cref="ModShimmer"/> for this <see cref="IModShimmerable"/> and returns true when if finds one that passes <see cref="CanModShimmer_Transformation(IModShimmerable)"/>.
+	/// <br/> Does not check <see cref="IModShimmerable.CanShimmer"/>
 	/// </summary>
-	/// <returns> True if there is a mod transformation this <see cref="IShimmerable"/> could undergo </returns>
-	public static bool AnyValidModShimmer(IShimmerable shimmerable)
+	/// <returns> True if there is a mod transformation this <see cref="IModShimmerable"/> could undergo </returns>
+	public static bool AnyValidModShimmer(IModShimmerable source)
 	{
-		ArgumentNullException.ThrowIfNull(shimmerable, nameof(shimmerable));
-		if (!ModShimmerTransformations.ContainsKey((shimmerable.ModShimmerTypeID, shimmerable.ShimmerType)))
+		if (!Transformations.ContainsKey(source.RedirectedStorageKey))
 			return false;
 
-		foreach (ModShimmer modShimmer in ModShimmerTransformations[(shimmerable.ModShimmerTypeID, shimmerable.ShimmerType)]) {
-			if (modShimmer.CanModShimmer_Transformation(shimmerable))
+		foreach (ModShimmer modShimmer in Transformations[source.RedirectedStorageKey]) {
+			if (modShimmer.CanModShimmer_Transformation(source))
 				return true;
 		}
 
@@ -339,22 +380,22 @@ public record class ModShimmer : IComparable<ModShimmer>
 	}
 
 	/// <summary>
-	/// Tries to complete a shimmer operation on the <see cref="IShimmerable"/> passed, should not be called on multiplayer clients
+	/// Tries to complete a shimmer operation on the <see cref="IModShimmerable"/> passed, should not be called on multiplayer clients
 	/// </summary>
-	/// <param name="source"> The <see cref="IShimmerable"/> to be shimmered </param>
+	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
 	/// <returns>
 	/// True if the transformation is successful, false if it is should fall through to vanilla as normal
 	/// </returns>
-	public static bool TryModShimmer(IShimmerable source)
+	public static bool TryModShimmer(IModShimmerable source)
 	{
-		List<ModShimmer> transformations = ModShimmerTransformations.GetValueOrDefault((source.ModShimmerTypeID, source.ShimmerType));
+		List<ModShimmer> transformations = Transformations.GetValueOrDefault(source.RedirectedStorageKey);
 		if (!(transformations?.Count > 0)) // Invers to catch null
 			return false;
 
 		foreach (ModShimmer transformation in transformations) { // Loops possible transformations
 			if (transformation.Results.Count > 0 && transformation.CanModShimmer(source)) { // Checks conditions and callback in CanShimmer
-				ModShimmer copy = transformation.DeepClone();
-				copy.PreShimmerCallBacks(copy, source);
+				ModShimmer copy = (ModShimmer)transformation.Clone(); // Make a copy
+				copy.PreShimmerCallBacks?.Invoke(copy, source); // As to not be effected by any changes made here
 				DoModShimmer(source, transformation);
 				return true;
 			}
@@ -362,63 +403,59 @@ public record class ModShimmer : IComparable<ModShimmer>
 		return false;
 	}
 
-	/// <summary>
-	/// Called by <see cref="TryModShimmer(IShimmerable)"/>
-	/// </summary>
-	public static void DoModShimmer(IShimmerable source, ModShimmer transformation)
-	{
-		int adjustedStack = SpawnModShimmerResults(source, transformation, out List<IShimmerable> spawned); // Spawn results, output amount used
-		if (adjustedStack >= source.Stack)
-			source.RemoveAfterShimmer();
-		else
-			source.RemoveFromStack(adjustedStack); // Removed amount used
+	public const int SingleShimmerNPCSpawnCap = 50;
 
+	/// <summary>
+	/// Called by <see cref="TryModShimmer(IModShimmerable)"/> once it finds a valid transformation
+	/// </summary>
+	public static void DoModShimmer(IModShimmerable source, ModShimmer transformation)
+	{
+		// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set
+		int npcSpawnsPerStacked = transformation.Results.Sum((ModShimmerResult result) => result.ModShimmerTypeID == ModShimmerTypeID.NPC ? result.Count : 0);
+		int usableStack = npcSpawnsPerStacked != 0 ? Math.Min((int)MathF.Floor(NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200) / (float)npcSpawnsPerStacked), source.Stack) : source.Stack;
+
+		SpawnModShimmerResults(source, transformation, usableStack, out List<IModShimmerable> spawned); // Spawn results, output stack amount used
+		source.Remove(usableStack); // Removed amount used
 		transformation.OnShimmerCallBacks?.Invoke(transformation, source, spawned);
+
 		ShimmerEffect(source.Center);
 	}
 
-	public const int NPCSpawnCap = 50;
-
-	private static int SpawnModShimmerResults(IShimmerable source, ModShimmer transformation, out List<IShimmerable> spawned)
+	private static void SpawnModShimmerResults(IModShimmerable source, ModShimmer transformation, int stackUsed, out List<IModShimmerable> spawned)
 	{
-		int spawnsPerStacked = transformation.Results.Sum((ModShimmerResult result) => result.ModShimmerTypeID == ModShimmerTypeID.NPC ? result.Count : 0);
-		// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set
-		int adjustedStack = (int)MathF.Floor(NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(50, 200) / (float)spawnsPerStacked);
-
-		int resultSpawnCounter = 0; //Used to offset spawned stuff
+		int physicalSpawnedCount = 0; // Used to offset spawned stuff
 		spawned = new(); // List to be passed for onShimmerCallBacks
 		foreach (ModShimmerResult result in transformation.Results)
-			SpawnModShimmerResult(source, result, adjustedStack, ref resultSpawnCounter, ref spawned); //Spawns the individual result, adds it to the list
-		return adjustedStack;
+			SpawnModShimmerResult(source, result, stackUsed, ref physicalSpawnedCount, ref spawned); //Spawns the individual result, adds it to the list
 	}
 
-	private static Vector2 GetSpawnVelocityMod(int index)
-		=> new(index * (1f + index * 0.05f) * ((index % 2 == 0) ? -1 : 1), 0);
+	private static Vector2 GetSpawnVelocityModifier(int count)
+		=> new(count * (1f + count * 0.05f) * ((count % 2 == 0) ? -1 : 1), 0);
 
-	private static void SpawnModShimmerResult(IShimmerable source, ModShimmerResult shimmerResult, int adjustedStack, ref int resultIndex, ref List<IShimmerable> spawned)
+	private static void SpawnModShimmerResult(IModShimmerable source, ModShimmerResult shimmerResult, int stackUsed, ref int physicalSpawnedCount, ref List<IModShimmerable> spawned)
 	{
-		int stackCounter = shimmerResult.Count * adjustedStack;
+		int spawnTotal = shimmerResult.Count * stackUsed;
 		switch (shimmerResult.ModShimmerTypeID) {
 			case ModShimmerTypeID.Item: {
-				while (stackCounter > 0) {
+				while (spawnTotal > 0) {
 					Item item = Main.item[Item.NewItem(source.GetSource_ForShimmer(), source.Center, source.Dimensions.ToVector2(), shimmerResult.Type)];
-					item.stack = Math.Min(item.maxStack, stackCounter);
+					item.stack = Math.Min(item.maxStack, spawnTotal);
 					item.shimmerTime = 1f;
 					item.shimmered = item.shimmerWet = item.wet = true;
-					item.velocity = source.VelocityWrapper + GetSpawnVelocityMod(resultIndex);
+					item.velocity = source.ShimmerVelocity + GetSpawnVelocityModifier(physicalSpawnedCount);
 					item.playerIndexTheItemIsReservedFor = Main.myPlayer;
 					NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, item.whoAmI, 1f); // net sync spawning the item
 
 					spawned.Add(item);
-					resultIndex++;
-					stackCounter -= item.stack;
+					physicalSpawnedCount++;
+					spawnTotal -= item.stack;
 				}
 				break;
 			}
 
 			case ModShimmerTypeID.NPC: {
-				while (stackCounter > 0) {
-					NPC newNPC = NPC.NewNPCDirect(source.GetSource_ForShimmer(), source.Center, shimmerResult.Type); //Should cause net update stuff
+				while (spawnTotal > 0) {
+					NPC newNPC = NPC.NewNPCDirect(source.GetSource_ForShimmer(), source.Center, shimmerResult.Type);
 
 					//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
 					if (source is NPC nPC && shimmerResult.KeepVanillaTransformationConventions) {
@@ -426,18 +463,17 @@ public record class ModShimmer : IComparable<ModShimmer>
 						newNPC.CopyInteractions(nPC);
 						newNPC.spriteDirection = nPC.spriteDirection;
 
-						if (nPC.value == 0f) // I think this is just for statues
+						if (nPC.value == 0f) // Statue stuff
 							newNPC.value = 0f;
-
 						newNPC.SpawnedFromStatue = nPC.SpawnedFromStatue;
-
+						newNPC.shimmerTransparency = nPC.shimmerTransparency;
 						newNPC.buffType = nPC.buffType[..]; // Pretty sure the manual way vanilla does it is actually the slowest way that isn't LINQ
 						newNPC.buffTime = nPC.buffTime[..];
 					}
 					else {
 						newNPC.shimmerTransparency = 1f;
 					}
-					newNPC.velocity = source.VelocityWrapper + GetSpawnVelocityMod(resultIndex);
+					newNPC.velocity = source.ShimmerVelocity + GetSpawnVelocityModifier(physicalSpawnedCount);
 					newNPC.TargetClosest();
 
 					if (Main.netMode == NetmodeID.Server) {
@@ -447,23 +483,22 @@ public record class ModShimmer : IComparable<ModShimmer>
 					}
 
 					spawned.Add(newNPC);
-					resultIndex++;
-					stackCounter--;
+					physicalSpawnedCount++;
+					spawnTotal--;
 				}
 
 				break;
 			}
 
 			case ModShimmerTypeID.CoinLuck:
-				Main.player[Main.myPlayer].AddCoinLuck(source.Center, stackCounter);
-				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, source.Center.X, source.Center.Y, stackCounter);
+				Main.player[Main.myPlayer].AddCoinLuck(source.Center, spawnTotal);
+				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, source.Center.X, source.Center.Y, spawnTotal);
 				break;
 
 			case ModShimmerTypeID.Custom:
-				while (shimmerResult.Count > 0) {
-					shimmerResult.customSpawner.Invoke(source, shimmerResult, source.VelocityWrapper + GetSpawnVelocityMod(resultIndex), ref spawned);
-					resultIndex++;
-					shimmerResult.Count--;
+				for (int i = 0; i < shimmerResult.Count; i++) {
+					shimmerResult.CustomSpawner.Invoke(source, shimmerResult, source.ShimmerVelocity + GetSpawnVelocityModifier(physicalSpawnedCount), ref spawned);
+					physicalSpawnedCount++;
 				}
 				break;
 		}
@@ -485,29 +520,27 @@ public record class ModShimmer : IComparable<ModShimmer>
 	/// Creates a new instance of <see cref="ModShimmer"/>. Not a true deep clone as the new instance will share some values with the old instance but any values
 	/// still shared cannot be edited. (e.g. A new <see cref="List{T}"/> of <see cref="Condition"/> that shares the immutable conditions inside it)
 	/// </summary>
-	public ModShimmer DeepClone()
-		=> new() {
-			Instantiator = Instantiator, // Assigns by value
+	public object Clone()
+		=> new ModShimmer() {
+			SourceStorageKey = SourceStorageKey, // Assigns by value
 			Priority = Priority,
 			Conditions = new List<Condition>(Conditions), // List is new, Condition is a record type
 			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a structure type
 			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
-			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks.Clone(), // Stored values are immutable
-			PreShimmerCallBacks = (PreShimmerCallBack)PreShimmerCallBacks.Clone(),
-			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks.Clone(),
+			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks?.Clone(), // Stored values are immutable
+			PreShimmerCallBacks = (PreShimmerCallBack)PreShimmerCallBacks?.Clone(),
+			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
 		};
 
 	public int CompareTo(ModShimmer other)
-	{
-		return other.Priority - Priority;
-	}
+		=> other.Priority - Priority;
 
-	#endregion Operation
+	#endregion Shimmering
 }
 
 /// <summary>
-/// Value used by <see cref="ModShimmerResult"/> to identify what type of <see cref="IShimmerable"/> to spawn.
-/// <br/> When <see cref="Custom"/> will try a null checked call to the delegate <see cref="ModShimmerResult.customSpawner"/>
+/// Value used by <see cref="ModShimmerResult"/> to identify what type of <see cref="IModShimmerable"/> to spawn.
+/// <br/> When <see cref="Custom"/> it will try a null checked call to the delegate <see cref="ModShimmerResult.CustomSpawner"/>
 /// </summary>
 public enum ModShimmerTypeID
 {
@@ -536,23 +569,23 @@ public static class ModShimmerTypeIDExtensions
 }
 
 /// <summary>
-/// A record representing the information to spawn an <see cref="IShimmerable"/> during a shimmer transformation
+/// A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation
 /// </summary>
 /// <param name="ModShimmerTypeID"> The type of shimmer operation this represents </param>
 /// <param name="Type">
-/// The type of the <see cref="IShimmerable"/> to spawn, ignored when <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/> although it is passed into <see cref="customSpawner"/> so can be used for custom logic
+/// The type of the <see cref="IModShimmerable"/> to spawn, ignored when <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or <see cref="ModShimmerTypeID.Custom"/> although it is passed into <see cref="CustomSpawner"/> so can be used for custom logic
 /// </param>
 /// <param name="Count">
-/// The number of this <see cref="IShimmerable"/> to spawn, if <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck value, if
-/// <see cref="ModShimmerTypeID.Custom"/>, this is the amount of times <see cref="customSpawner"/> will be called
+/// The number of this <see cref="IModShimmerable"/> to spawn, if <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck value, if
+/// <see cref="ModShimmerTypeID.Custom"/>, this is the amount of times <see cref="CustomSpawner"/> will be called
 /// </param>
 /// <param name="KeepVanillaTransformationConventions">
 /// Keeps <see cref="ModShimmer"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay keep their
 /// spawned NPCs from a statue when shimmered, if you have no reason to disable, don't
 /// </param>
-public record struct ModShimmerResult(ModShimmerTypeID ModShimmerTypeID, int Type, int Count, bool KeepVanillaTransformationConventions)
+public readonly record struct ModShimmerResult(ModShimmerTypeID ModShimmerTypeID, int Type, int Count, bool KeepVanillaTransformationConventions)
 {
-	public SpawnShimmer customSpawner = null;
+	public SpawnShimmer CustomSpawner { get; init; } = null;
 
 	/// <inheritdoc cref="ModShimmerResult(ModShimmerTypeID, int, int, bool)"/>
 	public ModShimmerResult() : this(default, default, default, default) { }
@@ -563,27 +596,18 @@ public record struct ModShimmerResult(ModShimmerTypeID ModShimmerTypeID, int Typ
 	/// <summary>
 	/// Called when an instance of <see cref="ModShimmerResult"/> is set as <see cref="ModShimmerTypeID.Custom"/>
 	/// </summary>
-	/// <param name="spawner"> The <see cref="IShimmerable"/> that caused this transformation </param>
+	/// <param name="spawner"> The <see cref="IModShimmerable"/> that caused this transformation </param>
 	/// <param name="shimmerResult"> The <see cref="ModShimmerResult"/> that caused this </param>
-	/// <param name="velocity"> The center of </param>
-	/// <param name="spawned"> A <see cref="List{T}"/> of <see cref="IShimmerable"/> that should be added to on spawn </param>
-	public delegate void SpawnShimmer(IShimmerable spawner, ModShimmerResult shimmerResult, Vector2 velocity, ref List<IShimmerable> spawned);
+	/// <param name="velocity"> The velocity to spawn the new instance at </param>
+	/// <param name="spawned"> A <see cref="List{T}"/> of <see cref="IModShimmerable"/> that the new instance of <see cref="IModShimmerable"/> should be added to </param>
+	public delegate void SpawnShimmer(IModShimmerable spawner, ModShimmerResult shimmerResult, Vector2 velocity, ref List<IModShimmerable> spawned);
 }
 
-public interface IShimmerable
+/// <summary>
+/// Marks a class to be used with <see cref="ModShimmer"/> as a source, most implementations for <see cref="NPC"/> and <see cref="Item"/> wrap normal values, <see cref="ModShimmer.TryModShimmer(IModShimmerable)"/> must be called manually for implementing types
+/// </summary>
+public interface IModShimmerable
 {
-	/// <summary>
-	/// Checks if this <see cref="IShimmerable"/> can currently undergo a shimmer transformation. This includes both vanilla and <br/> Should not makes changes to game
-	/// state. consider read only
-	/// </summary>
-	/// <returns> True if the <see cref="IShimmerable"/> currently has a valid shimmer operation it can use. </returns>
-	public virtual bool CanShimmer() => true;
-
-	/// <summary>
-	/// Called at the end of shimmer
-	/// </summary>
-	public virtual void OnShimmer() { }
-
 	/// <inheritdoc cref="Entity.Center"/>
 	public abstract Vector2 Center { get; set; }
 
@@ -593,22 +617,12 @@ public interface IShimmerable
 	public abstract Point Dimensions { get; set; }
 
 	/// <summary>
-	/// Returns <see cref="Entity.GetSource_Misc(string)"/> with passed value "shimmer" in vanilla
-	/// </summary>
-	public abstract IEntitySource GetSource_ForShimmer();
-
-	/// <summary>
-	/// Called when this instance is shimmered to despawn
-	/// </summary>
-	public abstract void RemoveAfterShimmer();
-
-	/// <summary>
 	/// Wraps <see cref="Entity.velocity"/>
 	/// </summary>
-	public abstract Vector2 VelocityWrapper { get; set; }
+	public abstract Vector2 ShimmerVelocity { get; set; }
 
 	/// <summary>
-	/// Internal as types implementing outside tModLoader should always use <see cref="ModShimmerTypeID.Custom"/>
+	/// Internal as types implementing outside tModLoader should always use <see cref="ModShimmerTypeID.Custom"/>, use <see cref="StorageKey"/> for modder access
 	/// </summary>
 	internal virtual ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.Custom;
 
@@ -617,9 +631,39 @@ public interface IShimmerable
 	/// </summary>
 	public abstract int ShimmerType { get; }
 
+	/// <summary>
+	/// Used as the key when both setting and retrieving for this <see cref="IModShimmerable"/> from <see cref="ModShimmer.Transformations"/>
+	/// </summary>
+	public (ModShimmerTypeID, int) StorageKey => (ModShimmerTypeID, ShimmerType);
+
+	public (ModShimmerTypeID, int) RedirectedStorageKey => ModShimmer.GetRedirectedKey(StorageKey);
+
+	/// <summary>
+	/// When this undergoes a <see cref="ModShimmer"/> this is the amount contained within one instance of the type, returns 1 for <see cref="NPC"/>, and <see cref="Item.stack"/> for <see cref="Item"/>
+	/// <br/> returns 1 by default
+	/// </summary>
 	public virtual int Stack => 1;
 
-	public virtual void RemoveFromStack(int amount)
-	{
-	}
+	/// <summary>
+	/// Checks if this <see cref="IModShimmerable"/> can currently undergo a shimmer transformation. This includes both vanilla and <br/> Should not makes changes to game
+	/// state.
+	/// <br/> Treat as read only.
+	/// </summary>
+	/// <returns> True if the <see cref="IModShimmerable"/> currently has a valid shimmer operation it can use. </returns>
+	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Called at the end of shimmer
+	/// </summary>
+	public virtual void OnShimmer() { }
+
+	/// <summary>
+	/// Called once an entity Shimmers, handles despawning when <see cref="Stack"/> reaches 0
+	/// </summary>
+	public abstract void Remove(int amount);
+
+	/// <summary>
+	/// Returns <see cref="Entity.GetSource_Misc(string)"/> with passed value "shimmer" in for <see cref="NPC"/> and <see cref="Item"/>, used only for <see cref="ModShimmer"/>
+	/// </summary>
+	public abstract IEntitySource GetSource_ForShimmer();
 }

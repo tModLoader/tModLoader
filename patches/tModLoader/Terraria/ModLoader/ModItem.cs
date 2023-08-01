@@ -1335,7 +1335,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Creates a <see cref="ModShimmer"/> resulting this ModItem. This method only creates the <see cref="ModShimmer"/>, call <see cref="ModShimmer.Register()"/> to register it into the game.
-	/// <br/> This method automatically sets <see cref="ModShimmer.Instantiator"/>
+	/// <br/> This method automatically sets <see cref="ModShimmer.SourceStorageKey"/>
 	/// </summary>
 	public ModShimmer CreateShimmerTransformation() => new(Item);
 

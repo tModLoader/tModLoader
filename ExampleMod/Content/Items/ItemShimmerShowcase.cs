@@ -23,8 +23,8 @@ public class ItemShimmerShowcaseConditions : ModItem
 {
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 	public override void SetDefaults() {
-		Item.width = 20;
-		Item.height = 20;
+		Item.width = Item.height = 20;
+		Item.maxStack = Item.CommonMaxStack;
 	}
 
 	public override void AddRecipes() {
@@ -68,8 +68,8 @@ public class ItemShimmerShowcaseCustomShimmerResult : ModItem
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 	public override void SetDefaults() {
-		Item.width = 20;
-		Item.height = 20;
+		Item.width = Item.height = 20;
+		Item.maxStack = Item.CommonMaxStack;
 	}
 
 	public override void AddRecipes() {
@@ -105,25 +105,16 @@ public class ItemShimmerShowcaseModShimmer : ModItem
 
 		CreateShimmerTransformation()
 			.AddModItemResult<ExampleItem>(30)
+			// Changes the value of the first result to a random number inclusive between 20 - 40
+			.AddPreShimmerCallBack((ModShimmer transformation, IModShimmerable source) => transformation.Results[0] = transformation.Results[0] with { Count = Main.rand.Next(20, 41) })
 			.AddModNPCResult<ExampleZombieThief>(2) // Unlike recipe we can spawn NPCs here, of any count, under conditions
 			.AddCoinLuckResult(2) // We can also add coin luck
-			.SetPriority(9)
-			.Register();
-
-		CreateShimmerTransformation()
-			.AddModItemResult<ExampleItem>(9999)
-			.AddItemResult(ItemID.DirtBlock, 9999)
-			.AddItemResult(ItemID.StoneBlock, 9999)
-			.AddItemResult(ItemID.SandBlock, 9999)
-			.AddItemResult(ItemID.Grasshopper, 9999)
-			.AddItemResult(ItemID.FireFeather, 9999)
-			.SetPriority(10)
+			.SetPriority(1)
 			.Register();
 	}
 
 	public override void SetDefaults() {
-		Item.width = 20;
-		Item.height = 20;
+		Item.width = Item.height = 20;
 		Item.maxStack = Item.CommonMaxStack;
 	}
 }

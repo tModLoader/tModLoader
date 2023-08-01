@@ -2468,35 +2468,33 @@
  		if (wet) {
  			if (shimmerWet) {
  				gravity = 0.15f;
-@@ -73348,7 +_,10 @@
+@@ -73348,7 +_,11 @@
  
  	private void GetShimmered()
  	{
 -		if (SpawnedFromStatue) {
 +		if (!CanShimmer()) // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC
 +			return;
++		int type = ModShimmer.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey);
 +
 +		if (SpawnedFromStatue && NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
  			if (Main.netMode == 0)
  				Item.ShimmerEffect(base.Center);
  			else
-@@ -73361,6 +_,10 @@
- 				life = 0;
+@@ -73362,6 +_,7 @@
  				NetMessage.SendData(23, -1, -1, null, whoAmI);
  			}
-+			return;
-+		}
-+		else if (ModShimmer.TryModShimmer(this)) {
-+			noSpawnCycle = true; // Here instead of in TryModShimmer due to protection level
  		}
++		else if (ModShimmer.TryModShimmer(this)) { } // TML: #AdvancedShimmerTransformations
  		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
  			Transform(NPCID.Sets.ShimmerTransformToNPC[type]);
+ 			if (Main.netMode == 0)
 @@ -73403,6 +_,8 @@
  			if (num2 != -1)
  				DelBuff(num2);
  		}
 +
-+		OnShimmer(); // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC, should always shimmer when CanShimmer returns trrue
++		OnShimmer(); // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC, always called as this should always shimmer once CanShimmer returns true
  	}
  
  	private void UpdateNPC_BuffApplyDOTs()

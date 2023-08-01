@@ -1885,7 +1885,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -47649,11 +_,27 @@
+@@ -47649,11 +_,38 @@
  		return true;
  	}
  
@@ -1903,6 +1903,17 @@
 +	/// <returns>The converted value.</returns>
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
++	/// <summary> <inheritdoc/> <br/>
++	/// For this <see cref="Item"/> override it checks for <see cref="ItemLoader.CanShimmer(Item)"/> and for any of the following:
++	/// <list type="number">
++	/// <item/> <see cref="ModShimmer.AnyValidModShimmer"/>
++	/// <item/> (type == 1326 || type == 779 || type == 3031 || type == 5364) and NPC.downedMoonlord
++	/// <item/> (type == 4986 and !NPC.unlockedSlimeRainbowSpawn)
++	/// <item/> (type == 3461 || createTile == 139)
++	/// <item/> ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] is less than or equal to 0 and FindDecraftAmount() is less than or equal to 0 and ItemID.Sets.CoinLuckValue[type] is less than or equal to 0 and makeNPC is greater than 0
++	/// </list>
++	/// </summary>
++	/// <inheritdoc/>
  	public bool CanShimmer()
  	{
 +		if (!ItemLoader.CanShimmer(this)) // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
@@ -1922,7 +1933,18 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -47721,9 +_,16 @@
+@@ -47713,17 +_,27 @@
+ 
+ 	private int GetShimmerEquivalentType()
+ 	{
++		/*
+ 		if (ItemID.Sets.ShimmerCountsAsItem[type] != -1)
+ 			return ItemID.Sets.ShimmerCountsAsItem[type];
+ 
+ 		return type;
++		*/
++		return ModShimmer.GetRedirectedKeySameShimmerID((ModShimmerTypeID, type)); // TML: #AdvancedShimmerTransformations, does ModShimmer redirects first
+ 	}
  
  	private void GetShimmered()
  	{

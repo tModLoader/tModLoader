@@ -15,21 +15,18 @@ namespace ExampleMod.Content.NPCs;
 public class NPCShimmerShowcase : ModNPC
 {
 	public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
-
 	public override void SetStaticDefaults() {
 		Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
-		/*
-		So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
-		1: if the npc is on the left side of the world then transform into 3 skeletons and 30 explosive bunnies, then shoot bullets from each skeleton
-		2: if Plantera has been defeated then transform into 10 example items
-		3: if an early game boss has been defeated then transform into the bride
-		4: if all other conditions fail, transform into a skeleton
-		*/
+		//So on the proceeding lines we set four possible shimmer results with conditions in the following in the priority order:
+		//1: if the npc is on the left side of the world then transform into 3 skeletons and 30 explosive bunnies, then shoot bullets from each skeleton
+		//2: if Plantera has been defeated then transform into 10 example items
+		//3: if an early game boss has been defeated then transform into the bride
+		//4: if all other conditions fail, transform into a skeleton
 
 		CreateShimmerTransformation()
-			// A shimmer callback applies to the on transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
-			.AddCanShimmerCallBack((ModShimmer transformation, IShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
+			// A shimmer callback applies to the one transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
+			.AddCanShimmerCallBack((ModShimmer transformation, IModShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
 			.AddItemResult(ItemID.ExplosiveBunny, 30)
 			.AddNPCResult(NPCID.Skeleton, 3)
 			.AddOnShimmerCallBack(OnShimmerCallBack)
@@ -47,7 +44,7 @@ public class NPCShimmerShowcase : ModNPC
 
 		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ModShimmer unless all conditions fall through
 		NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
-		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal
+		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal, this NPC does not have a statue, but this would be used if it did
 		NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[NPC.type] = true;
 	}
 
@@ -76,12 +73,12 @@ public class NPCShimmerShowcase : ModNPC
 		return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 	}
 
-	// This is static and not an override, it is used earlier to pass as a ModShimmer.OnShimmerCallBack, this is a delegate, delegates are
-	// essentially a reference to a method and as such need to be static
-	public static void OnShimmerCallBack(ModShimmer transformation, IShimmerable origin, List<IShimmerable> spawnedShimmerables) {
-		spawnedShimmerables.ForEach((IShimmerable spawnedShimmerable)
+	// This is static and not an override, it is used earlier to pass as a ModShimmer.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a method.
+	// While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based, use "origin"
+	public static void OnShimmerCallBack(ModShimmer transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
+		spawnedShimmerables.ForEach((IModShimmerable spawnedShimmerable)
 			=> {
-				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.VelocityWrapper + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.ShimmerVelocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
 				p.friendly = false;
 				p.hostile = true;
 			});

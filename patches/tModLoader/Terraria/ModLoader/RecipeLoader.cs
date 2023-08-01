@@ -207,7 +207,7 @@ public static class RecipeLoader
 	}
 
 	/// <summary>
-	/// Allows to edit the amount of item the player uses in a recipe.
+	/// Allows to edit the amount of item the player recieves when this recipe is decrafted, applies to <see cref="Recipe.customShimmerResults"/> as well
 	/// </summary>
 	/// <param name="recipe">The recipe used for the craft.</param>
 	/// <param name="type">Type of the ingredient.</param>
