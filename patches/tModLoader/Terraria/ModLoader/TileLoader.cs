@@ -1215,7 +1215,7 @@ public static class TileLoader
 	{
 		for (int k = 0; k < ItemLoader.ItemCount; k++) {
 			Item item = ContentSamples.ItemsByType[k];
-			if (item.ModItem != null && !ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
+			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
 				if (item.createTile > -1) {
 					// TryAdd won't override existing value if present. Existing ModTile.RegisterItemDrop entries take precedence
 					tileTypeAndTileStyleToItemType.TryAdd((item.createTile, item.placeStyle), item.type);
