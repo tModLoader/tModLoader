@@ -102,7 +102,12 @@
  					NetMessage.TrySendData(6);
  					if (Netplay.Connection.State == 2)
  						Netplay.Connection.State = 3;
-@@ -235,7 +_,7 @@
+@@ -231,11 +_,11 @@
+ 				player14.skinVariant = reader.ReadByte();
+ 				player14.skinVariant = (int)MathHelper.Clamp(player14.skinVariant, 0f, PlayerVariantID.Count - 1);
+ 				player14.hair = reader.ReadByte();
+-				if (player14.hair >= 165)
++				if (player14.hair >= HairLoader.Count)
  					player14.hair = 0;
  
  				player14.name = reader.ReadString().Trim().Trim();
