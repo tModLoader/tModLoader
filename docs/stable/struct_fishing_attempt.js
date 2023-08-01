@@ -1,0 +1,25 @@
+var struct_fishing_attempt =
+[
+    [ "atmo", "struct_fishing_attempt.html#a7871aa1440c78af896981e8417440ea3", null ],
+    [ "bobberType", "struct_fishing_attempt.html#a3f037a213631f1d00c9d5c04423d9c8c", null ],
+    [ "CanFishInLava", "struct_fishing_attempt.html#af584ab58562bb81fffbb2689f8bd0b14", null ],
+    [ "chumsInWater", "struct_fishing_attempt.html#a6f4f01333d489fb12f14e4d7bb4eca26", null ],
+    [ "common", "struct_fishing_attempt.html#a22881fb4004685c1f30107fc846fd94b", null ],
+    [ "crate", "struct_fishing_attempt.html#af1057cc2e35a526b1d588cd3c9a08f28", null ],
+    [ "fishingLevel", "struct_fishing_attempt.html#afd71021b28ef076b070f2935b9b33fcd", null ],
+    [ "heightLevel", "struct_fishing_attempt.html#ab3f35e1b44fc5b5bea54743d48cde014", null ],
+    [ "inHoney", "struct_fishing_attempt.html#abe27f0c0e5f46b25433d9f9f801c1524", null ],
+    [ "inLava", "struct_fishing_attempt.html#a232f8607f62b645e58b1f6c2897d9c83", null ],
+    [ "legendary", "struct_fishing_attempt.html#a1e0c1a71099e8a46efe14fb99d493966", null ],
+    [ "questFish", "struct_fishing_attempt.html#a1a0a82d339c8b6e80a97bf6524a96884", null ],
+    [ "rare", "struct_fishing_attempt.html#aaad0f3e4826aca58a725b5f6e2657c3f", null ],
+    [ "rolledEnemySpawn", "struct_fishing_attempt.html#ab7a3c6407ef96aa356a8a20388a93992", null ],
+    [ "rolledItemDrop", "struct_fishing_attempt.html#a0bf19447a860097836fd278923495634", null ],
+    [ "uncommon", "struct_fishing_attempt.html#a61f2e17c1fe53537ac4aad347832b906", null ],
+    [ "veryrare", "struct_fishing_attempt.html#a3f4e0630707a2080e8ab7e96f86a9276", null ],
+    [ "waterNeededToFish", "struct_fishing_attempt.html#aed7f28b54ca72c9a95a001b21a5cbb83", null ],
+    [ "waterQuality", "struct_fishing_attempt.html#a43afb052e5eaec1da6b079e5ab74f906", null ],
+    [ "waterTilesCount", "struct_fishing_attempt.html#a4b66b8bf9ed952929a73168c5e4474d1", null ],
+    [ "X", "struct_fishing_attempt.html#a9a5ac7b17958cda66c180a411d49af23", null ],
+    [ "Y", "struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a", null ]
+];

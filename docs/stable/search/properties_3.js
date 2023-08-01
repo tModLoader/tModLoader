@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['damage_0',['Damage',['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()'],['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()']]],
+  ['damagesource_1',['DamageSource',['../struct_player_1_1_hurt_modifiers.html#ad1fc5a57a28b9b5ac20822156c001262',1,'Player::HurtModifiers']]],
+  ['damagetype_2',['DamageType',['../class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1',1,'Item.DamageType()'],['../struct_n_p_c_1_1_hit_modifiers.html#a48d9a5e8569df3d0f5fed4c428cf2321',1,'NPC.HitModifiers.DamageType()'],['../class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4',1,'Projectile.DamageType()']]],
+  ['default_3',['Default',['../class_damage_class.html#aeb1da59c707bbc5621253ac7c15ad56f',1,'DamageClass']]],
+  ['defenseiconposition_4',['DefenseIconPosition',['../class_accessory_slot_loader.html#aea203924566177e9a9c0277deb489627',1,'AccessorySlotLoader']]],
+  ['description_5',['Description',['../class_mod_command.html#af7aaf933950868c1e9c6c0e24dba7e5a',1,'ModCommand.Description()'],['../class_mod_buff.html#a110207af4d8835966b0aae2e9e3b66c9',1,'ModBuff.Description()']]],
+  ['disabled_6',['Disabled',['../class_recipe.html#ae9bf3267c476541e9827aab485a3e244',1,'Recipe']]],
+  ['displayedname_7',['DisplayedName',['../class_mod_resource_display_set.html#ad2403e42b4234886d1fd01d4cb8dd564',1,'ModResourceDisplaySet']]],
+  ['displayname_8',['DisplayName',['../class_mod_boss_bar_style.html#a163a3330a3cf0fa00be6d6a6c8ae7743',1,'ModBossBarStyle.DisplayName()'],['../class_mod_resource_display_set.html#a3c59316eb7c01221da873ef2ce72949d',1,'ModResourceDisplaySet.DisplayName()'],['../class_mod_projectile.html#aac5223d9c5925a081a727535131f67fa',1,'ModProjectile.DisplayName()'],['../class_mod_n_p_c.html#a6e58015c1877da49930f0de7d4dbbf68',1,'ModNPC.DisplayName()'],['../class_mod_menu.html#aa949e673babbe63f2ef9dd5263adb756',1,'ModMenu.DisplayName()'],['../class_mod_item.html#adf748ca73e805eeb4ad1ec42d7f102d8',1,'ModItem.DisplayName()'],['../class_mod_buff.html#a4afe137031293a85527798944e486e86',1,'ModBuff.DisplayName()'],['../class_mod_biome.html#ab727aa7efb5f1428de536388e0342a35',1,'ModBiome.DisplayName()'],['../class_mod.html#aef45efd720eec50524fba05d7466f5d7',1,'Mod.DisplayName()'],['../class_info_display.html#ae84cd7f72e3961efdaa6b6e4b8d76983',1,'InfoDisplay.DisplayName()'],['../class_damage_class.html#ab1146bc8248cf1960ed4d53e96c4912f',1,'DamageClass.DisplayName()']]],
+  ['displayset_9',['DisplaySet',['../struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1',1,'ResourceOverlayDrawContext']]],
+  ['dodgeable_10',['Dodgeable',['../struct_player_1_1_hurt_modifiers.html#a32fd83a16f941de2d034462d26f76ee1',1,'Player::HurtModifiers']]],
+  ['drawheldprojinfrontofhelditemandarms_11',['DrawHeldProjInFrontOfHeldItemAndArms',['../class_mod_projectile.html#a5b3ee9c49ae4759e7ac230692e7c5329',1,'ModProjectile']]],
+  ['drawoffsetx_12',['DrawOffsetX',['../class_mod_projectile.html#a8640501699f56f3fdf3468f30338eb71',1,'ModProjectile']]],
+  ['drawoffsety_13',['DrawOffsetY',['../class_mod_n_p_c.html#a4a447f89174f9cf5f1e82b0eaef5928a',1,'ModNPC']]],
+  ['draworiginoffsetx_14',['DrawOriginOffsetX',['../class_mod_projectile.html#a996ee9f31263fcf9d384237537eff592',1,'ModProjectile']]],
+  ['draworiginoffsety_15',['DrawOriginOffsetY',['../class_mod_projectile.html#a03cbd1be6a2b2595c3d972cf8eddce10',1,'ModProjectile']]],
+  ['drawverticalalignment_16',['DrawVerticalAlignment',['../class_accessory_slot_loader.html#a5a76ad789c8fa80b92f6447a02c7b927',1,'AccessorySlotLoader']]],
+  ['dusttype_17',['DustType',['../class_mod_block_type.html#aa83de9a9f6db248a1d359918cf8a5b9a',1,'ModBlockType']]]
+];
