@@ -91,6 +91,13 @@ partial class TileID
 		/// </summary>
 		public static bool?[] BlockMergesWithMergeAllBlockOverride = Factory.CreateCustomSet<bool?>(null, 10, false, 387, false, 541, false);
 
+		// Values taken from Player.PlaceThing_Tiles_BlockPlacementForAssortedThings()
+		/// <summary>
+		/// Allows non-solid tiles to be placed on each other. (Tiles that are non-solid cannot normally be placed on each other.)
+		/// <br>Used by: Cobweb, Coin Piles, Living Fire Blocks, Smoke Blocks, Bubble Blocks</br>
+		/// </summary>
+		public static bool[] NonSolidCanPlaceOnEachOther = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble);
+
 		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
 		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
 		public static int[] HallowBiome = Factory.CreateIntSet(0, 109, 1, 492, 1, 110, 1, 113, 1, 117, 1, 116, 1, 164, 1, 403, 1, 402, 1);
