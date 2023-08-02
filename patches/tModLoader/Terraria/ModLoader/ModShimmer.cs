@@ -25,7 +25,7 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 	/// <summary>
 	/// Incremented for every transformation with type <see cref="ModShimmerTypeID.Custom"/>
 	/// </summary>
-	private static int customShimmerTypeCounter = 1;
+	private static int customShimmerTypeCounter = -1;
 
 	/// <summary>
 	/// Use this to get the id type for use with <see cref="ModShimmerTypeID.Custom"/>. Only for custom type implementations of <see cref="IModShimmerable"/>, where an integer maps to a specific set of <see cref="ModShimmer"/> transformations
@@ -275,13 +275,13 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 	}
 
 	/// <inheritdoc cref="Register(ValueTuple{ModShimmerTypeID, int})"/>
-	public void Register(ModShimmerTypeID modShimmerType, int type)
-		=> Register((modShimmerType, type));
+	public void Register(ModShimmerTypeID modShimmerTypeID, int type)
+		=> Register((modShimmerTypeID, type));
 
 	/// <inheritdoc cref="Register(ModShimmerTypeID, int)"/>
-	public void Register(IEnumerable<(ModShimmerTypeID, int)> identifiers)
+	public void Register(IEnumerable<(ModShimmerTypeID, int)> sourceKeys)
 	{
-		foreach ((ModShimmerTypeID, int) ID in identifiers)
+		foreach ((ModShimmerTypeID, int) ID in sourceKeys)
 			Register(ID);
 	}
 
@@ -289,17 +289,17 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 	/// Finalizes transformation, adds to <see cref="Transformations"/>
 	/// </summary>
 	/// <exception cref="ArgumentException">
-	/// Thrown if <paramref name="shimmerableID"/> field Item1 of type <see cref="ModShimmerTypeID"/> is an invalid source type
+	/// Thrown if <paramref name="sourceKey"/> field Item1 of type <see cref="ModShimmerTypeID"/> is an invalid source type
 	/// </exception>
-	public void Register((ModShimmerTypeID, int) shimmerableID)
+	public void Register((ModShimmerTypeID, int) sourceKey)
 	{
-		if (!shimmerableID.Item1.IsValidSourceType())
-			throw new ArgumentException("A valid source type for ModShimmerTypeID must be passed here", nameof(shimmerableID));
+		if (!sourceKey.Item1.IsValidSourceType())
+			throw new ArgumentException("A valid source key for ModShimmerTypeID must be passed here", nameof(sourceKey));
 
-		if (!Transformations.TryAdd(shimmerableID, new() { this })) //Try add a new entry for the tuple
-			Transformations[shimmerableID].Add(this); // If it fails, entry exists, therefore add to list
+		if (!Transformations.TryAdd(sourceKey, new() { this })) //Try add a new entry for the tuple
+			Transformations[sourceKey].Add(this); // If it fails, entry exists, therefore add to list
 
-		Transformations[shimmerableID].Sort();
+		Transformations[sourceKey].Sort();
 	}
 
 	#endregion ControllerMethods
@@ -349,13 +349,13 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ModShimmerTypeID == ModShimmerTypeID.Item && (result.Type == ItemID.Bone && !NPC.downedBoss3 || result.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)));
 
 	/// <summary>
-	/// Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="source"/>
+	/// Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/>
 	/// </summary>
 	/// <returns> Returns true if all delegates in <see cref="CanShimmerCallBacks"/> return true </returns>
-	private bool CheckCanShimmerCallBacks(IModShimmerable source)
+	private bool CheckCanShimmerCallBacks(IModShimmerable shimmerable)
 	{
 		foreach (CanShimmerCallBack callBack in CanShimmerCallBacks?.GetInvocationList()?.Cast<CanShimmerCallBack>() ?? Array.Empty<CanShimmerCallBack>()) {
-			if (!callBack.Invoke(this, source))
+			if (!callBack.Invoke(this, shimmerable))
 				return false;
 		}
 		return true;
@@ -366,13 +366,13 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 	/// <br/> Does not check <see cref="IModShimmerable.CanShimmer"/>
 	/// </summary>
 	/// <returns> True if there is a mod transformation this <see cref="IModShimmerable"/> could undergo </returns>
-	public static bool AnyValidModShimmer(IModShimmerable source)
+	public static bool AnyValidModShimmer(IModShimmerable shimmerable)
 	{
-		if (!Transformations.ContainsKey(source.RedirectedStorageKey))
+		if (!Transformations.ContainsKey(shimmerable.RedirectedStorageKey))
 			return false;
 
-		foreach (ModShimmer modShimmer in Transformations[source.RedirectedStorageKey]) {
-			if (modShimmer.CanModShimmer_Transformation(source))
+		foreach (ModShimmer modShimmer in Transformations[shimmerable.RedirectedStorageKey]) {
+			if (modShimmer.CanModShimmer_Transformation(shimmerable))
 				return true;
 		}
 
@@ -421,7 +421,7 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 		ShimmerEffect(source.Center);
 	}
 
-	private static void SpawnModShimmerResults(IModShimmerable source, ModShimmer transformation, int stackUsed, out List<IModShimmerable> spawned)
+	public static void SpawnModShimmerResults(IModShimmerable source, ModShimmer transformation, int stackUsed, out List<IModShimmerable> spawned)
 	{
 		int physicalSpawnedCount = 0; // Used to offset spawned stuff
 		spawned = new(); // List to be passed for onShimmerCallBacks
@@ -429,10 +429,10 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 			SpawnModShimmerResult(source, result, stackUsed, ref physicalSpawnedCount, ref spawned); //Spawns the individual result, adds it to the list
 	}
 
-	private static Vector2 GetSpawnVelocityModifier(int count)
+	public static Vector2 GetSpawnVelocityModifier(int count)
 		=> new(count * (1f + count * 0.05f) * ((count % 2 == 0) ? -1 : 1), 0);
 
-	private static void SpawnModShimmerResult(IModShimmerable source, ModShimmerResult shimmerResult, int stackUsed, ref int physicalSpawnedCount, ref List<IModShimmerable> spawned)
+	public static void SpawnModShimmerResult(IModShimmerable source, ModShimmerResult shimmerResult, int stackUsed, ref int physicalSpawnedCount, ref List<IModShimmerable> spawned)
 	{
 		int spawnTotal = shimmerResult.Count * stackUsed;
 		switch (shimmerResult.ModShimmerTypeID) {
@@ -636,6 +636,9 @@ public interface IModShimmerable
 	/// </summary>
 	public (ModShimmerTypeID, int) StorageKey => (ModShimmerTypeID, ShimmerType);
 
+	/// <summary>
+	/// <see cref="StorageKey"/> passed through <see cref="ModShimmer.GetRedirectedKey(ValueTuple{ModShimmerTypeID, int})"/>
+	/// </summary>
 	public (ModShimmerTypeID, int) RedirectedStorageKey => ModShimmer.GetRedirectedKey(StorageKey);
 
 	/// <summary>
