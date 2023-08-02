@@ -115,9 +115,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		AddLink(Language.GetText("tModLoader.VersionUpgrade"), 0.5f, 0f, "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 		AddLink(Language.GetText("tModLoader.WikiLink"), 0f, 0.5f, "https://github.com/tModLoader/tModLoader/wiki/");
-		string exampleModBranch = BuildInfo.IsStable ? "stable" : "1.4.4";
+		string exampleModBranch = BuildInfo.IsStable ? "stable" : (BuildInfo.IsPreview ? "preview" : "1.4.4");
 		AddLink(Language.GetText("tModLoader.ExampleModLink"), 1f, 0.5f, $"https://github.com/tModLoader/tModLoader/tree/{exampleModBranch}/ExampleMod");
-		string docsURL = BuildInfo.IsStable ? "1.4-stable" : "preview";
+		string docsURL = BuildInfo.IsStable ? "stable" : "preview";
 		AddLink(Language.GetText("tModLoader.DocumentationLink"), 0f, 1f, $"https://docs.tmodloader.net/docs/{docsURL}/annotated.html");
 		AddLink(Language.GetText("tModLoader.DiscordLink"), 1f, 1f, "https://tmodloader.net/discord");
 
