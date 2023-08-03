@@ -142,6 +142,7 @@ namespace ExampleMod.Content
 				.AddIngredient(ItemID.StoneBlock, 10)
 				.AddIngredient(ItemID.Chain)
 				.AddConsumeItemCallback(ExampleRecipeCallbacks.DontConsumeChain)
+				.AddShimmerConsumeItemCallback(ExampleRecipeCallbacks.DontConsumeChain) // Added to shimmer as well, else any shimmer operation will still spawn chains
 				.AddTile(TileID.HeavyWorkBench)
 				.Register();
 

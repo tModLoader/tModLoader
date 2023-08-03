@@ -60,7 +60,7 @@
 -	public bool anyFragment;
 +	internal bool anyFragment;
 -	public bool alchemy;
-+	internal bool alchemy;
++	//internal bool alchemy; TML: Recipe.alchemy is unused due to being replaced by consume item hooks
 -	public bool needSnowBiome;
 +	internal bool needSnowBiome;
 -	public bool needGraveyardBiome;
@@ -176,7 +176,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -131,17 +_,23 @@
+@@ -131,18 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -204,14 +204,18 @@
 -
 +		foreach (Item item2 in requiredItem) {
  			int num = item2.stack;
++			/* TML: Recipe.alchemy is unused due to being replaced by consume item hooks
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
-@@ -158,25 +_,36 @@
+ 					int num2 = 0;
+@@ -157,26 +_,38 @@
+ 					num = 0;
  				}
  			}
- 
-+			RecipeLoader.ConsumeItem(this, item2.type, ref num);
++			*/
 +
++			RecipeLoader.ConsumeItem(this, item2.type, ref num);
+ 
  			if (num <= 0)
  				continue;
  
@@ -739,7 +743,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,77 @@
+@@ -15821,12 +_,80 @@
  
  	private static void AddRecipe()
  	{
@@ -752,9 +756,12 @@
  		numRecipes++;
 +		*/
 +
++
 +		//TML: The whole method is rewritten.
-+		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
++		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles) {
 +			currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
++			currentRecipe.AddShimmerConsumeItemCallback(DecraftConsumptionRules.Alchemy);
++		}
 +
 +		static void ReplaceCondition(ref bool field, Condition cond)
 +		{

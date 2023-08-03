@@ -104,7 +104,7 @@ public class ItemShimmerShowcaseModShimmer : ModItem
 			.Register();
 
 		CreateShimmerTransformation()
-			.AddModItemResult<ExampleItem>(30)
+			.AddModItemResult<ExampleDye>(30)
 			// Changes the value of the first result to a random number inclusive between 20 - 40
 			.AddPreShimmerCallBack((ModShimmer transformation, IModShimmerable source) => transformation.Results[0] = transformation.Results[0] with { Count = Main.rand.Next(20, 41) })
 			.AddModNPCResult<ExampleZombieThief>(2) // Unlike recipe we can spawn NPCs here, of any count, under conditions

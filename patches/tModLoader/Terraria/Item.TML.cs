@@ -283,12 +283,19 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IMo
 	public void Remove(int amount)
 	{
 		stack -= amount;
+		shimmerWet = true;
+		wet = true;
+		velocity *= 0.1f;
+		shimmered = true;
 
 		if (stack <= 0) {
 			active = false;
 			shimmerTime = 0f;
 			if (Main.netMode == NetmodeID.Server)
 				NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, whoAmI, 1f);
+		}
+		else {
+			shimmerTime = 1f;
 		}
 	}
 

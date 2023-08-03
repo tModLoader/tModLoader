@@ -1,6 +1,10 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
+#All
+[*]
+spelling_languages = en-us # Spellcheck langauge
+
 # JSON files
 [*.json]
 	indent_style = tab

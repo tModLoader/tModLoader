@@ -2475,7 +2475,7 @@
 -		if (SpawnedFromStatue) {
 +		if (!CanShimmer()) // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC
 +			return;
-+		int type = ModShimmer.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey);
++		int type = ModShimmer.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey); // TML
 +
 +		if (SpawnedFromStatue && NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
  			if (Main.netMode == 0)
