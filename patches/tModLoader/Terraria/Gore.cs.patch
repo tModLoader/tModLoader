@@ -77,21 +77,25 @@
  			int num = 600;
  			for (int i = 0; i < 600; i++) {
  				if (!Main.gore[i].active) {
-@@ -1035,6 +_,13 @@
+@@ -1035,6 +_,7 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
 +
+ 			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
+ 				Main.gore[num].type = Main.rand.Next(11, 14);
+ 				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+@@ -1145,10 +_,22 @@
+ 				Main.gore[num].timeLeft = 480;
+ 			}
+ 
 +			var gore = Main.gore[num];
 +			gore.ResetNewFields();
 +
 +			gore.ModGore = GoreLoader.GetModGore(gore.type);
 +			gore.ModGore?.OnSpawn(gore, source);
 +
- 			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
- 				Main.gore[num].type = Main.rand.Next(11, 14);
- 				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
-@@ -1149,6 +_,12 @@
+ 			return num;
  		}
  
  		public Color GetAlpha(Color newColor) {
