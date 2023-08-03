@@ -116,11 +116,18 @@
  			return 600;
  
  		int num = 600;
-@@ -1074,6 +_,16 @@
+@@ -1074,6 +_,7 @@
  		Main.gore[num].alpha = 0;
  		Main.gore[num].rotation = 0f;
  		Main.gore[num].scale = Scale;
 +
+ 		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
+ 			Main.gore[num].type = Main.rand.Next(11, 14);
+ 			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+@@ -1186,6 +_,15 @@
+ 			Main.gore[num].timeLeft = 480;
+ 		}
+ 
 +		var gore = Main.gore[num];
 +
 +		// Reset TML's added fields to reuse the gore instance.
@@ -130,9 +137,9 @@
 +		gore.ModGore = GoreLoader.GetModGore(gore.type);
 +		gore.ModGore?.OnSpawn(gore, source ?? IEntitySource.GetGoreFallback());
 +
- 		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
- 			Main.gore[num].type = Main.rand.Next(11, 14);
- 			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+ 		if (Main.gore[num].DeactivateIfOutsideOfWorld())
+ 			return 600;
+ 
 @@ -1194,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
