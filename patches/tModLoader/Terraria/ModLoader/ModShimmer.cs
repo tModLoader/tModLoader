@@ -142,10 +142,10 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 	/// </summary>
 	/// <param name="transformation"> The transformation, editing this does not change the stored transformation, only this time </param>
 	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
-	public delegate void PreShimmerCallBack(ModShimmer transformation, IModShimmerable source);
+	public delegate void ModifyShimmerCallBack(ModShimmer transformation, IModShimmerable source);
 
-	/// <inheritdoc cref="PreShimmerCallBack"/>
-	public PreShimmerCallBack PreShimmerCallBacks { get; private set; }
+	/// <inheritdoc cref="ModifyShimmerCallBack"/>
+	public ModifyShimmerCallBack ModifyShimmerCallBacks { get; private set; }
 
 	/// <summary>
 	/// Called after <see cref="IModShimmerable"/> shimmers
@@ -251,11 +251,11 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 	}
 
 	/// <summary>
-	/// Adds a delegate to <see cref="PreShimmerCallBacks"/> that will be called before the transformation
+	/// Adds a delegate to <see cref="ModifyShimmerCallBacks"/> that will be called before the transformation
 	/// </summary>
-	public ModShimmer AddPreShimmerCallBack(PreShimmerCallBack callBack)
+	public ModShimmer AddModifyShimmerCallBack(ModifyShimmerCallBack callBack)
 	{
-		PreShimmerCallBacks += callBack;
+		ModifyShimmerCallBacks += callBack;
 		return this;
 	}
 
@@ -388,7 +388,7 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 		foreach (ModShimmer transformation in transformations) { // Loops possible transformations
 			if (transformation.Results.Count > 0 && transformation.CanModShimmer(source)) { // Checks conditions and callback in CanShimmer
 				ModShimmer copy = (ModShimmer)transformation.Clone(); // Make a copy
-				copy.PreShimmerCallBacks?.Invoke(copy, source); // As to not be effected by any changes made here
+				copy.ModifyShimmerCallBacks?.Invoke(copy, source); // As to not be effected by any changes made here
 				DoModShimmer(source, copy);
 				return true;
 			}
@@ -534,7 +534,7 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
 			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
 			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks?.Clone(), // Stored values are immutable
-			PreShimmerCallBacks = (PreShimmerCallBack)PreShimmerCallBacks?.Clone(),
+			ModifyShimmerCallBacks = (ModifyShimmerCallBack)ModifyShimmerCallBacks?.Clone(),
 			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
 		};
 
