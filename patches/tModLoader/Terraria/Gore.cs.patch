@@ -65,6 +65,18 @@
  			if (Main.netMode == 2)
  				return 600;
  
+@@ -1011,6 +_,11 @@
+ 			if (Main.rand == null)
+ 				Main.rand = new UnifiedRandom();
+ 
++			// Backported from 1.4.4.
++			if (Type <= 0) {
++				return 600;
++			}
++
+ 			int num = 600;
+ 			for (int i = 0; i < 600; i++) {
+ 				if (!Main.gore[i].active) {
 @@ -1035,6 +_,13 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
