@@ -68,7 +68,7 @@ public readonly partial struct Tile
 	internal void halfBrick(bool halfBrick) => IsHalfBlock = halfBrick;
 
 	/// <summary>
-	/// Legacy code, use <code>tile1.Slope == tile2.Slope</code> instead.
+	/// Legacy code, use <c>tile1.Slope == tile2.Slope</c> instead.
 	/// </summary>
 	/// <param name="tile"></param>
 	/// <returns></returns>
@@ -151,7 +151,7 @@ public readonly partial struct Tile
 	internal void liquidType(int liquidType) => LiquidType = liquidType;
 
 	/// <summary>
-	/// Legacy code, use <code>tile.LiquidType == LiquidID.Lava</code> instead.
+	/// Legacy code, use <c>tile.LiquidType == LiquidID.Lava</c> instead.
 	/// </summary>
 	/// <returns></returns>
 	internal bool lava() => LiquidType == LiquidID.Lava;
@@ -159,7 +159,7 @@ public readonly partial struct Tile
 	internal void lava(bool lava) => SetIsLiquidType(LiquidID.Lava, lava);
 
 	/// <summary>
-	/// Legacy code, use <code>tile.LiquidType == LiquidID.Honey</code> instead.
+	/// Legacy code, use <c>tile.LiquidType == LiquidID.Honey</c> instead.
 	/// </summary>
 	/// <returns></returns>
 	internal bool honey() => LiquidType == LiquidID.Honey;
@@ -167,7 +167,7 @@ public readonly partial struct Tile
 	internal void honey(bool honey) => SetIsLiquidType(LiquidID.Honey, honey);
 
 	/// <summary>
-	/// Legacy code, use <code>tile.LiquidType == LiquidID.Shimmer</code> instead.
+	/// Legacy code, use <c>tile.LiquidType == LiquidID.Shimmer</c> instead.
 	/// </summary>
 	/// <returns></returns>
 	internal bool shimmer() => LiquidType == LiquidID.Shimmer;

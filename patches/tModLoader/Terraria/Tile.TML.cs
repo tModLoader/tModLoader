@@ -36,14 +36,21 @@ public readonly partial struct Tile
 	public ref ushort WallType => ref Get<WallTypeData>().Type;
 
 	/// <summary>
-	/// Whether a cell contains a tile.<br/>
-	/// Legacy/vanilla equivalent is <see cref="active"/> or <see cref="active(bool)"/>.
+	/// Whether a cell contains a tile. Check this whenever you are accessing data from a tile to avoid getting data from an empty tile.<br/>
+	/// Legacy/vanilla equivalent is <see cref="active()"/> or <see cref="active(bool)"/>.
 	/// </summary>
+	/// <remarks>
+	/// Actuated tiles are not solid, so use <see cref="HasUnactuatedTile"/> instead of <see cref="HasTile"/> for collision checks.<br/>
+	/// This only corresponds to a tile in a cell, which means a wall can exist without a tile. To check if a wall exists, use <c>tile.WallType != WallID.None</c>.
+	/// </remarks>
 	public bool HasTile { get => Get<TileWallWireStateData>().HasTile; set => Get<TileWallWireStateData>().HasTile = value; }
 	/// <summary>
 	/// Whether a cell is actuated by an actuator.<br/>
 	/// Legacy/vanilla equivalent is <see cref="inActive()"/> or <see cref="inActive(bool)"/>.
 	/// </summary>
+	/// <remarks>
+	/// Actuated tiles are <strong>not</strong> solid.
+	/// </remarks>
 	public bool IsActuated { get => Get<TileWallWireStateData>().IsActuated; set => Get<TileWallWireStateData>().IsActuated = value; }
 	/// <summary>
 	/// Whether a cell contains an actuator.<br/>
@@ -54,10 +61,14 @@ public readonly partial struct Tile
 	/// Whether a cell contains a tile that isn't actuated.<br/>
 	/// Legacy/vanilla equivalent is <see cref="nactive"/>.
 	/// </summary>
+	/// <remarks>
+	/// Actuated tiles are not solid, so use <see cref="HasUnactuatedTile"/> instead of <see cref="HasTile"/> for collision checks.<br/>
+	/// When checking if a tile exists, use <see cref="HasTile"/> instead of <see cref="HasUnactuatedTile"/>.
+	/// </remarks>
 	public bool HasUnactuatedTile => HasTile && !IsActuated;
 
 	// Slopes
-
+	
 	/// <summary>
 	/// The slope shape of the tile.<br/>
 	/// Legacy/vanilla equivalent is <see cref="slope()"/> or <see cref="slope(byte)"/>.
@@ -132,12 +143,12 @@ public readonly partial struct Tile
 	// Color
 
 	/// <summary>
-	/// The color of the tile.<br/>
+	/// The <see cref="PaintID"/> this tile is painted with. Is <see cref="PaintID.None"/> if not painted.<br/>
 	/// Legacy/vanilla equivalent is <see cref="color()"/> or <see cref="color(byte)"/>.
 	/// </summary>
 	public byte TileColor { get => Get<TileWallWireStateData>().TileColor; set => Get<TileWallWireStateData>().TileColor = value; }
 	/// <summary>
-	/// The color of the wall.<br/>
+	/// The <see cref="PaintID"/> this wall is painted with. Is <see cref="PaintID.None"/> if not painted.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wallColor()"/> or <see cref="wallColor(byte)"/>.
 	/// </summary>
 	public byte WallColor { get => Get<TileWallWireStateData>().WallColor; set => Get<TileWallWireStateData>().WallColor = value; }
@@ -184,7 +195,7 @@ public readonly partial struct Tile
 	// Invisibility
 
 	/// <summary>
-	/// Whether a tile is invisible.<br/>
+	/// Whether a tile is invisible. Used by <see cref="ItemID.EchoCoating"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="invisibleBlock()"/> or <see cref="invisibleBlock(bool)"/>.
 	/// </summary>
 	public bool IsTileInvisible {
@@ -192,7 +203,7 @@ public readonly partial struct Tile
 		set => Get<TileWallBrightnessInvisibilityData>().IsTileInvisible = value;
 	}
 	/// <summary>
-	/// Whether a wall is invisible.<br/>
+	/// Whether a wall is invisible. Used by <see cref="ItemID.EchoCoating"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="invisibleWall()"/> or <see cref="invisibleWall(bool)"/>.
 	/// </summary>
 	public bool IsWallInvisible {
@@ -203,7 +214,7 @@ public readonly partial struct Tile
 	// Fullbright
 
 	/// <summary>
-	/// Whether a tile is fully illuminated.<br/>
+	/// Whether a tile is fully illuminated. Used by <see cref="ItemID.GlowPaint"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="fullbrightBlock()"/> or <see cref="fullbrightBlock(bool)"/>.
 	/// </summary>
 	public bool IsTileFullbright {
@@ -211,7 +222,7 @@ public readonly partial struct Tile
 		set => Get<TileWallBrightnessInvisibilityData>().IsTileFullbright = value;
 	}
 	/// <summary>
-	/// Whether a wall is fully illuminated.<br/>
+	/// Whether a wall is fully illuminated. Used by <see cref="ItemID.GlowPaint"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="fullbrightWall()"/> or <see cref="fullbrightWall(bool)"/>.
 	/// </summary>
 	public bool IsWallFullbright {
@@ -236,10 +247,10 @@ public readonly partial struct Tile
 #endif
 
 	/// <summary>
-	/// Used to get a reference to a tile's <see cref="ITileData"/> .
+	/// Used to get a reference to a cell's <see cref="ITileData"/> .
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <returns></returns>
+	/// <typeparam name="T">The <see cref="ITileData"/> to get.</typeparam>
+	/// <returns>The <see cref="ITileData"/> of type <typeparamref name="T"/> that this cell contains.</returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public unsafe ref T Get<T>() where T : unmanaged, ITileData
 		=> ref TileData<T>.ptr[TileId];
