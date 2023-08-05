@@ -212,10 +212,13 @@ public class PackageModFile : TaskBase
 	}
 
 	private BuildProperties GetModProperties() {
-		string buildInfoFile = Path.Combine(ProjectDirectory, "build.txt");
-		if (File.Exists(buildInfoFile)) {
-			Log.LogWarning("Using deprecated build.txt file");
-			return BuildProperties.ReadBuildInfo(buildInfoFile);
+		if (ModProperties.Length == 0) {
+			Log.LogMessage(MessageImportance.Low, "No mod properties found in csproj.");
+			string buildInfoFile = Path.Combine(ProjectDirectory, "build.txt");
+			if (File.Exists(buildInfoFile)) {
+				Log.LogWarning("Using deprecated build.txt file");
+				return BuildProperties.ReadBuildInfo(buildInfoFile);
+			}
 		}
 
 		BuildProperties properties = BuildProperties.ReadTaskItems(ModProperties);
