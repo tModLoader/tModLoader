@@ -11,6 +11,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<AdditionalFiles Include="**/*.hjson" />
+		<AdditionalFiles Include="**/*.txt" />
+		<AdditionalFiles Include="**/*.png" />
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
 		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />

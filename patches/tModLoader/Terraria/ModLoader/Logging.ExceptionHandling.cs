@@ -102,7 +102,7 @@ public static partial class Logging
 				}
 			}
 
-			var stackTrace = new StackTrace(true);
+			var stackTrace = new StackTrace(skipFrames: 1, fNeedFileInfo: true);
 			var traceString = stackTrace.ToString();
 
 			if (!oom && ignoreContents.Any(s => MatchContents(traceString, s)))
@@ -128,7 +128,8 @@ public static partial class Logging
 				Console.WriteLine(msg);
 				Console.ResetColor();
 			}
-			else if (ModCompile.activelyModding && !Main.gameMenu) {
+			// Solxan: We are using Program.SavePathShared == null as a flag to indicate ModCompile CCtor can't run. 
+			else if (Program.SavePathShared != null && ModCompile.activelyModding && !Main.gameMenu) {
 				AddChatMessage(msg);
 			}
 

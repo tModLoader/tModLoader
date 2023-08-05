@@ -61,7 +61,7 @@ internal static class WorldIO
 			return;
 		}
 
-		var tag = TagIO.FromStream(new MemoryStream(buf));
+		var tag = TagIO.FromStream(buf.ToMemoryStream());
 		TileIO.LoadBasics(tag.GetCompound("tiles"));
 		TileIO.LoadContainers(tag.GetCompound("containers"));
 		LoadNPCs(tag.GetList<TagCompound>("npcs"));

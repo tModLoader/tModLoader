@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/Graphics/SpriteViewMatrix.cs
++++ src/tModLoader/Terraria/Graphics/SpriteViewMatrix.cs
+@@ -111,6 +_,10 @@
+ 		_zoomMatrix = Matrix.CreateTranslation(0f - translation.X, 0f - translation.Y, 0f) * Matrix.CreateScale(_zoom.X, _zoom.Y, 1f);
+ 		_effectMatrix = identity;
+ 		_transformationMatrix = identity * _zoomMatrix;
++		// Backport fix for odd screen resolutions causing pixel gaps in waterfalls/multitiles/trees/etc.
++		var perspectiveFixAmount = 1 / 256f;
++		var perspectiveFix = Matrix.CreateTranslation(perspectiveFixAmount, perspectiveFixAmount, 0.0f);
++		_transformationMatrix = perspectiveFix * _transformationMatrix;
+ 		_normalizedTransformationMatrix = Matrix.Invert(identity) * _zoomMatrix * matrix;
+ 		_needsRebuild = false;
+ 	}

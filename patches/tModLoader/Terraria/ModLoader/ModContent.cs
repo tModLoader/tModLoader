@@ -302,6 +302,7 @@ public static class ModContent
 
 		ContentSamples.Initialize();
 		TileLoader.PostSetupContent();
+		BuffLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -354,6 +355,7 @@ public static class ModContent
 	{
 		EffectsTracker.CacheVanillaState();
 		DamageClassLoader.RegisterDefaultClasses();
+		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
 	}
 
@@ -462,6 +464,7 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
@@ -515,6 +518,7 @@ public static class ModContent
 	private static void ResizeArrays(bool unloading = false)
 	{
 		DamageClassLoader.ResizeArrays();
+		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
 		EquipLoader.ResizeAndFillArrays();
 		PrefixLoader.ResizeArrays();

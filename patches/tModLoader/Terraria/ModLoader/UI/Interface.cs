@@ -14,8 +14,10 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
+using System.Collections.Generic;
 
 namespace Terraria.ModLoader.UI;
 
@@ -35,6 +37,7 @@ internal static class Interface
 	//internal const int managePublishedID = 10011;
 	internal const int updateMessageID = 10012;
 	internal const int infoMessageID = 10013;
+	internal const int infoMessageDelayedID = 10014;
 	//internal const int enterPassphraseMenuID = 10015;
 	internal const int modPacksMenuID = 10016;
 	internal const int tModLoaderSettingsID = 10017;
@@ -52,6 +55,7 @@ internal static class Interface
 	internal static UIErrorMessage errorMessage = new UIErrorMessage();
 	internal static UIModBrowser modBrowser = new UIModBrowser();
 	internal static UIModInfo modInfo = new UIModInfo();
+	internal static UIForcedDelayInfoMessage infoMessageDelayed = new UIForcedDelayInfoMessage();
 	//internal static UIManagePublished managePublished = new UIManagePublished();
 	internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 	internal static UIInfoMessage infoMessage = new UIInfoMessage();
@@ -120,11 +124,13 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
+			/* For Major Updates that span multi-month
 			else if (!ModLoader.BetaUpgradeWelcomed144) {
 				ModLoader.BetaUpgradeWelcomed144 = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageUpgradeBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
+			*/
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
@@ -153,19 +159,17 @@ internal static class Interface
 							});
 				}
 			}
-			//SOLXAN:TODO: Re-enable for stabilization later
-			/*
+
 			else if (ModLoader.PreviewFreezeNotification) {
 				ModLoader.PreviewFreezeNotification = false;
-				ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-				infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
+				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 					() => {
 						SoundEngine.PlaySound(SoundID.MenuOpen);
 						Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
 					});
 				Main.SaveSettings();
 			}
-			*/
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
@@ -185,8 +189,10 @@ internal static class Interface
 					}
 				};
 
-				if (!string.IsNullOrWhiteSpace(message))
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
 			}
 		}
 		if (Main.menuMode == modsMenuID) {
@@ -408,8 +414,39 @@ internal static class Interface
 				exit = true;
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
-				mods[value - 1].Enabled ^= true;
+				var mod = mods[value - 1];
+				mod.Enabled ^= true;
+
+				if (mod.Enabled) {
+					var missingRefs = new List<string>();
+					EnableDepsRecursive(mod, mods, missingRefs);
+
+					if (missingRefs.Any()) {
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(", ", missingRefs)) + "\n");
+						Console.ResetColor();
+					}
+				}
 			}
+		}
+	}
+
+	private static void EnableDepsRecursive(LocalMod mod, LocalMod[] mods, List<string> missingRefs)
+	{
+		string[] _modReferences = mod.properties.modReferences.Select(x => x.mod).ToArray();
+		foreach (var name in _modReferences) {
+			var dep = mods.FirstOrDefault(x => x.Name == name);
+			if (dep == null) {
+				missingRefs.Add(name);
+				continue;
+			}
+			EnableDepsRecursive(dep, mods, missingRefs);
+			if (!dep.Enabled) {
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.ResetColor();
+			}
+			dep.Enabled ^= true;
 		}
 	}
 

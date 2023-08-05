@@ -10,6 +10,11 @@ public partial class LocalizedText
 {
 	private bool? _hasPlurals;
 
+	/// <summary>
+	/// Returns the args used with <see cref="WithFormatArgs"/> to create this text, if any.
+	/// </summary>
+	public object[] BoundArgs { get; private set; }
+
 	// https://www.unicode.org/cldr/charts/43/supplemental/language_plural_rules.html
 	// implementations extracted from build of https://github.com/xyzsd/cldr-plural-rules
 	// English, German, Italian, Spanish, Portugese, French
@@ -101,8 +106,16 @@ public partial class LocalizedText
 	///<br/>
 	/// The resulting LocalizedText should be stored statically. Should not be used to create 'throwaway' LocalizedText instances. <br/>
 	/// Use <see cref="Format(object[])"/> instead for repeated on-demand formatting with different args.
+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">Localization Guide</see> teaches more about using placeholders in localization.
 	/// </summary>
 	/// <param name="args">The substitution args</param>
 	/// <returns></returns>
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
+
+	internal void BindArgs(object[] args)
+	{
+		// TODO, consider if we should do partial binding, shifting the higher args down
+		SetValue(Format(args));
+		BoundArgs = args;
+	}
 }

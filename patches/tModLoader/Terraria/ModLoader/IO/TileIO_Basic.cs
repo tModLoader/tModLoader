@@ -81,7 +81,7 @@ internal static partial class TileIO
 				return;
 			}
 
-			using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
+			using var reader = new BinaryReader(tag.GetByteArray(dataKey).ToMemoryStream());
 			var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
 
 			for (int x = 0; x < Main.maxTilesX; x++) {

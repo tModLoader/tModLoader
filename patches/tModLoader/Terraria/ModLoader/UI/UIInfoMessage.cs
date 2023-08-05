@@ -10,9 +10,9 @@ namespace Terraria.ModLoader.UI;
 
 internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 {
-	private UIElement _area;
+	protected UIElement _area;
 	private UIMessageBox _messageBox;
-	private UITextPanel<string> _button;
+	protected UITextPanel<string> _button;
 	private UITextPanel<string> _buttonAlt;
 	private UIState _gotoState;
 	private string _message;
