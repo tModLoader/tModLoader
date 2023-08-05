@@ -176,8 +176,7 @@ public class PackageModFile : TaskBase
 			string? nugetPackageId = referencePath.GetMetadata("NuGetPackageId");
 			string? nugetPackageVersion = referencePath.GetMetadata("NuGetPackageVersion");
 
-			if (string.IsNullOrEmpty(nugetPackageId)) continue;
-			if (!nugetLookup.ContainsKey(nugetPackageId)) continue;
+			if (string.IsNullOrEmpty(nugetPackageId) || !nugetLookup.ContainsKey(nugetPackageId)) continue;
 
 			Log.LogMessage(MessageImportance.Normal, $"{nugetPackageId} - v{nugetPackageVersion} - Found at: {hintPath}");
 			nugetReferences.Add(referencePath);
@@ -193,14 +192,14 @@ public class PackageModFile : TaskBase
 	private List<ITaskItem> GetModReferences() {
 		List<ITaskItem> modReferences = new List<ITaskItem>();
 		foreach (ITaskItem modReference in ModReferences) {
-			string? modPath = modReference.GetMetadata("HintPath");
-			if (string.IsNullOrEmpty(modPath))
+			string modPath = modReference.GetMetadata("HintPath");
+			if (modPath.Length == 0)
 				modPath = modReference.GetMetadata("ProjectPath");
-			string? modName = modReference.GetMetadata("Identity");
-			string? weakRef = modReference.GetMetadata("Weak");
+			string modName = modReference.GetMetadata("Identity");
+			string weakRef = modReference.GetMetadata("Weak");
 			bool isWeak = string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase);
 
-			if (string.IsNullOrEmpty(modName))
+			if (modName.Length == 0)
 				throw new Exception("A mod reference must have an identity (Include=\"ModName\"). It should match the internal name of the mod you are referencing.");
 
 			Log.LogMessage(MessageImportance.Normal, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");
