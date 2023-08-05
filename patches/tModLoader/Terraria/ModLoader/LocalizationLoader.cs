@@ -485,7 +485,7 @@ public static class LocalizationLoader
 			string translationsNeededPath = Path.Combine(sourceFolder, "Localization", "TranslationsNeeded.txt");
 			if (File.Exists(translationsNeededPath)) {
 				int englishCount = localizationCounts[GameCulture.DefaultCulture];
-				string neededText = string.Join('\n', localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{englishCount}, {(float)x.Value/englishCount:0%}, missing {englishCount - x.Value}"));
+				string neededText = string.Join(Environment.NewLine, localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{englishCount}, {(float)x.Value/englishCount:0%}, missing {englishCount - x.Value}")) + Environment.NewLine;
 				if (File.ReadAllText(translationsNeededPath).ReplaceLineEndings() != neededText.ReplaceLineEndings()) {
 					File.WriteAllText(translationsNeededPath, neededText);
 				}
@@ -580,7 +580,7 @@ public static class LocalizationLoader
 			}
 		}
 
-		return rootObject.ToFancyHjsonString();
+		return rootObject.ToFancyHjsonString() + Environment.NewLine;
 
 		static void PlaceCommentAboveNewEntry(LocalizationEntry entry, CommentedWscJsonObject parent)
 		{
