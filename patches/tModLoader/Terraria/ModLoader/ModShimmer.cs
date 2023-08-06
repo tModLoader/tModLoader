@@ -54,7 +54,7 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 		=> AddRedirect(redirectFrom.StorageKey, redirectTo);
 
 	public static void AddRedirect((ModShimmerTypeID, int) redirectFrom, (ModShimmerTypeID, int) redirectTo)
-	=> Redirects.Add(redirectFrom, redirectTo);
+		=> Redirects.Add(redirectFrom, redirectTo);
 
 	/// <summary>
 	/// First <see cref="Redirects"/> is checked for an entry, if one exists it is applied over <paramref name="source"/>, then if <paramref name="source"/> is
