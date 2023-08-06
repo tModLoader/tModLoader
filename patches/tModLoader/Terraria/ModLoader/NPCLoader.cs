@@ -1014,7 +1014,8 @@ public static class NPCLoader
 		foreach (int type in pool.Keys) {
 			float weight = pool[type];
 			if (choice < weight) {
-				return type;
+				return NPCID.Sets.GoldCritterRedirect[type] < 0 ? type //Check if the NPC has a gold critter value.
+					: (spawnInfo.Player.RollLuck(NPC.goldCritterChance) == 0 ? NPCID.Sets.GoldCritterRedirect[type] : type); // If it does, roll luck to check type return
 			}
 			choice -= weight;
 		}

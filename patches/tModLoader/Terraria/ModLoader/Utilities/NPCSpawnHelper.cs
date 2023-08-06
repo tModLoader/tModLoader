@@ -35,7 +35,7 @@ internal static class NPCSpawnHelper
 public class SpawnCondition
 {
 	private readonly Func<NPCSpawnInfo, bool> condition;
-	private readonly List<SpawnCondition> children;
+	private readonly List<SpawnCondition> children = new();
 	private float blockWeight;
 	internal Func<float> WeightFunc;
 
@@ -43,23 +43,21 @@ public class SpawnCondition
 	private bool active;
 
 	internal IEnumerable<SpawnCondition> Children => children;
-	internal float BlockWeight => blockWeight;
+	public float BlockWeight => blockWeight;
 
 	public float Chance => chance;
 	public bool Active => active;
 
-	internal SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
+	public SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
 	{
 		this.condition = condition;
-		children = new List<SpawnCondition>();
 		this.blockWeight = blockWeight;
 		NPCSpawnHelper.conditions.Add(this);
 	}
 
-	internal SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
+	public SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
 	{
 		this.condition = condition;
-		children = new List<SpawnCondition>();
 		this.blockWeight = blockWeight;
 		parent.children.Add(this);
 	}
@@ -122,6 +120,10 @@ public class SpawnCondition
 	public static readonly SpawnCondition DefaultWaterCritter;
 	public static readonly SpawnCondition BoundCaveNPC;
 	public static readonly SpawnCondition TownCritter;
+	public static readonly SpawnCondition TownGraveyardCritter;
+	public static readonly SpawnCondition TownGraveyardWaterCritter; // No vanilla relation
+	public static readonly SpawnCondition TownBeachCritter; // Just Seagull
+	public static readonly SpawnCondition TownBeachWaterCritter;
 	public static readonly SpawnCondition TownWaterCritter;
 	public static readonly SpawnCondition TownOverworldWaterCritter;
 	public static readonly SpawnCondition TownOverworldWaterSurfaceCritter;
@@ -187,37 +189,59 @@ public class SpawnCondition
 	public static readonly SpawnCondition Underworld;
 	public static readonly SpawnCondition Cavern;
 
+	public static readonly SpawnCondition Gnome;
+	public static readonly SpawnCondition Ghost;
+
 	static SpawnCondition()
 	{
+		// Pillars
 		NebulaTower = new SpawnCondition((info) => info.Player.ZoneTowerNebula);
 		VortexTower = new SpawnCondition((info) => info.Player.ZoneTowerVortex);
 		StardustTower = new SpawnCondition((info) => info.Player.ZoneTowerStardust);
 		SolarTower = new SpawnCondition((info) => info.Player.ZoneTowerSolar);
+
+		//Sky
 		Sky = new SpawnCondition((info) => info.Sky);
+
+		//Invasions
 		Invasion = new SpawnCondition((info) => info.Invasion);
 		GoblinArmy = new SpawnCondition(Invasion, (info) => Main.invasionType == 1);
 		FrostLegion = new SpawnCondition(Invasion, (info) => Main.invasionType == 2);
 		Pirates = new SpawnCondition(Invasion, (info) => Main.invasionType == 3);
 		MartianMadness = new SpawnCondition(Invasion, (info) => Main.invasionType == 4);
+
+		//Bartender
 		Bartender = new SpawnCondition((info) => !NPC.savedBartender && DD2Event.ReadyToFindBartender
 			&& !NPC.AnyNPCs(NPCID.BartenderUnconscious) && !info.Water, 1f / 80f);
+
 		SpiderCave = new SpawnCondition((info) => GetTile(info).wall == WallID.SpiderUnsafe || info.SpiderCave);
+
 		DesertCave = new SpawnCondition((info) => (WallID.Sets.Conversion.HardenedSand[GetTile(info).wall]
 			|| WallID.Sets.Conversion.Sandstone[GetTile(info).wall] || info.DesertCave)
 			&& WorldGen.checkUnderground(info.SpawnTileX, info.SpawnTileY));
+
+		//Hardmode Water
 		HardmodeJungleWater = new SpawnCondition((info) => Main.hardMode && info.Water && info.Player.ZoneJungle, 2f / 3f);
 		HardmodeCrimsonWater = new SpawnCondition((info) => Main.hardMode && info.Water && info.Player.ZoneCrimson, 8f / 9f);
-		Ocean = new SpawnCondition((info) => info.Water && (info.SpawnTileX < 250 || info.SpawnTileX > Main.maxTilesX - 250)
+
+		//Ocean
+		Ocean = new SpawnCondition((info) => info.Water && (info.SpawnTileX < WorldGen.oceanDistance || info.SpawnTileX > Main.maxTilesX - WorldGen.oceanDistance)
 			&& Main.tileSand[info.SpawnTileType] && info.SpawnTileY < Main.rockLayer);
 		OceanAngler = new SpawnCondition(Ocean, (info) => !NPC.savedAngler && !NPC.AnyNPCs(NPCID.SleepingAngler)
 			&& WaterSurface(info));
 		OceanMonster = new SpawnCondition(Ocean, (info) => true);
+
+		//Beach
 		BeachAngler = new SpawnCondition((info) => !info.Water && !NPC.savedAngler && !NPC.AnyNPCs(NPCID.SleepingAngler)
-			&& (info.SpawnTileX < 340 || info.SpawnTileX > Main.maxTilesX - 340) && Main.tileSand[info.SpawnTileType]
+			&& (info.SpawnTileX < WorldGen.beachDistance || info.SpawnTileX > Main.maxTilesX - WorldGen.beachDistance) && Main.tileSand[info.SpawnTileType]
 			&& info.SpawnTileY < Main.worldSurface);
+
+		//Misc Water
 		JungleWater = new SpawnCondition((info) => info.Water && info.SpawnTileType == TileID.JungleGrass);
 		CavePiranha = new SpawnCondition((info) => info.Water && info.SpawnTileY > Main.rockLayer, 0.5f);
 		CaveJellyfish = new SpawnCondition((info) => info.Water && info.SpawnTileY > Main.worldSurface, 1f / 3f);
+
+		// Water Critters
 		WaterCritter = new SpawnCondition((info) => info.Water, 0.25f);
 		CorruptWaterCritter = new SpawnCondition(WaterCritter, (info) => info.Player.ZoneCorrupt);
 		OverworldWaterCritter = new SpawnCondition(WaterCritter, (info) => info.SpawnTileY < Main.worldSurface
@@ -225,9 +249,20 @@ public class SpawnCondition
 		OverworldWaterSurfaceCritter = new SpawnCondition(OverworldWaterCritter, WaterSurface);
 		OverworldUnderwaterCritter = new SpawnCondition(OverworldWaterCritter, (info) => true);
 		DefaultWaterCritter = new SpawnCondition(WaterCritter, (info) => true);
+
+		// Tinkerer/Wizard
 		BoundCaveNPC = new SpawnCondition((info) => !info.Water && info.SpawnTileY >= Main.rockLayer
 			&& info.SpawnTileY < Main.maxTilesY - 210, 1f / 20f);
+
+		// Town Critters
 		TownCritter = new SpawnCondition((info) => info.PlayerInTown);
+		// Graveyard
+		TownGraveyardCritter = new SpawnCondition(TownCritter, (info) => info.Player.ZoneGraveyard);
+		TownGraveyardWaterCritter = new SpawnCondition(TownGraveyardCritter, (info) => info.Water);
+		// Beach
+		TownBeachCritter = new SpawnCondition(TownCritter, (info) => !info.SafeRangeX && CritterBeach(info));
+		TownBeachWaterCritter = new SpawnCondition(TownBeachCritter, (info) => info.Water);
+		// Water General
 		TownWaterCritter = new SpawnCondition(TownCritter, (info) => info.Water);
 		TownOverworldWaterCritter = new SpawnCondition(TownWaterCritter, (info) => info.SpawnTileY < Main.worldSurface
 			&& info.SpawnTileY > 50 && Main.dayTime, 2f / 3f);
@@ -239,24 +274,34 @@ public class SpawnCondition
 		TownJungleCritter = new SpawnCondition(TownCritter, (info) => info.SpawnTileType == TileID.JungleGrass);
 		TownGeneralCritter = new SpawnCondition(TownCritter, (info) => info.SpawnTileType == TileID.Grass
 			|| info.SpawnTileType == TileID.HallowedGrass || info.SpawnTileY > Main.worldSurface);
+
+		// Dungeon
 		Dungeon = new SpawnCondition((info) => info.Player.ZoneDungeon);
-		DungeonGuardian = new SpawnCondition(Dungeon, (info) => !NPC.downedBoss3);
+		DungeonGuardian = new SpawnCondition(Dungeon, (info) => !NPC.downedBoss3 && (!Main.drunkWorld || (info.Player.position.Y / 16f < (Main.dungeonY + 40))));
 		DungeonNormal = new SpawnCondition(Dungeon, (info) => true);
+
+		// Meteor
 		Meteor = new SpawnCondition((info) => info.Player.ZoneMeteor);
+
+		// Events
 		OldOnesArmy = new SpawnCondition((info) => DD2Event.Ongoing && info.Player.ZoneOldOneArmy);
 		FrostMoon = new SpawnCondition((info) => info.SpawnTileY <= Main.worldSurface && !Main.dayTime && Main.snowMoon);
 		PumpkinMoon = new SpawnCondition((info) => info.SpawnTileY <= Main.worldSurface
 			&& !Main.dayTime && Main.pumpkinMoon);
 		SolarEclipse = new SpawnCondition((info) => info.SpawnTileY <= Main.worldSurface && Main.dayTime && Main.eclipse);
+
+		// Mushroom
 		HardmodeMushroomWater = new SpawnCondition((info) => Main.hardMode && info.SpawnTileType == TileID.MushroomGrass
 			&& info.Water);
 		OverworldMushroom = new SpawnCondition((info) => info.SpawnTileType == TileID.MushroomGrass
 			&& info.SpawnTileY <= Main.worldSurface, 2f / 3f);
 		UndergroundMushroom = new SpawnCondition((info) => info.SpawnTileType == TileID.MushroomGrass
 			&& Main.hardMode && info.SpawnTileY >= Main.worldSurface, 2f / 3f);
+
+		// Misc
 		CorruptWorm = new SpawnCondition((info) => info.Player.ZoneCorrupt && !info.PlayerSafe, 1f / 65f);
 		UndergroundMimic = new SpawnCondition((info) => Main.hardMode && info.SpawnTileY > Main.worldSurface, 1f / 70f);
-		OverworldMimic = new((info) => Main.hardMode && GetTile(info).wall == WallID.DirtUnsafe, 0.05f);
+		OverworldMimic = new SpawnCondition((info) => Main.hardMode && GetTile(info).wall == WallID.DirtUnsafe, 0.05f);
 		Wraith = new SpawnCondition((info) => Main.hardMode && info.SpawnTileY <= Main.worldSurface
 			&& !Main.dayTime, 0.05f) {
 			WeightFunc = () => {
@@ -272,6 +317,8 @@ public class SpawnCondition
 		DoctorBones = new SpawnCondition((info) => info.SpawnTileType == TileID.JungleGrass && !Main.dayTime, 0.002f);
 		LacBeetle = new SpawnCondition((info) => info.SpawnTileType == TileID.JungleGrass
 			&& info.SpawnTileY > Main.worldSurface, 1f / 60f);
+
+		// Critters
 		WormCritter = new SpawnCondition((info) => info.SpawnTileY > Main.worldSurface
 			&& info.SpawnTileY < Main.maxTilesY - 210 && !info.Player.ZoneSnow && !info.Player.ZoneCrimson
 			&& !info.Player.ZoneCorrupt && !info.Player.ZoneJungle && !info.Player.ZoneHallow, 1f / 8f);
@@ -282,6 +329,8 @@ public class SpawnCondition
 			&& info.SpawnTileY < (Main.rockLayer + Main.maxTilesY) / 2 && !info.Player.ZoneSnow
 			&& !info.Player.ZoneCrimson && !info.Player.ZoneCorrupt && !info.Player.ZoneHallow, 1f / 13f);
 		FrogCritter = new SpawnCondition((info) => info.SpawnTileY < Main.worldSurface && info.Player.ZoneJungle, 1f / 9f);
+
+		// Jungle
 		HardmodeJungle = new SpawnCondition((info) => info.SpawnTileType == TileID.JungleGrass && Main.hardMode, 2f / 3f);
 		JungleTemple = new SpawnCondition((info) => info.SpawnTileType == TileID.LihzahrdBrick && info.Lihzahrd);
 		UndergroundJungle = new SpawnCondition((info) => info.SpawnTileType == TileID.JungleGrass
@@ -290,10 +339,14 @@ public class SpawnCondition
 		SandstormEvent = new SpawnCondition((info) => Sandstorm.Happening && info.Player.ZoneSandstorm
 			&& TileID.Sets.Conversion.Sand[info.SpawnTileType]
 			&& NPC.Spawning_SandstoneCheck(info.SpawnTileX, info.SpawnTileY));
+
+		// Mummy
 		Mummy = new SpawnCondition((info) => Main.hardMode && info.SpawnTileType == TileID.Sand, 1f / 3f);
 		DarkMummy = new SpawnCondition((info) => Main.hardMode && (info.SpawnTileType == TileID.Ebonsand
 			|| info.SpawnTileType == TileID.Crimsand), 0.5f);
 		LightMummy = new SpawnCondition((info) => Main.hardMode && info.SpawnTileType == TileID.Pearlsand, 0.5f);
+
+		// Hallow
 		OverworldHallow = new SpawnCondition((info) => Main.hardMode && !info.Water && info.SpawnTileY < Main.rockLayer
 			&& (info.SpawnTileType == TileID.Pearlsand || info.SpawnTileType == TileID.Pearlstone
 			|| info.SpawnTileType == TileID.HallowedGrass || info.SpawnTileType == TileID.HallowedIce));
@@ -301,13 +354,23 @@ public class SpawnCondition
 			&& info.SpawnTileY >= Main.rockLayer && (info.SpawnTileType == TileID.Pearlsand
 			|| info.SpawnTileType == TileID.Pearlstone || info.SpawnTileType == TileID.HallowedGrass
 			|| info.SpawnTileType == TileID.HallowedIce), 0.02f);
+
+		// Crimson
 		Crimson = new SpawnCondition((info) => (info.SpawnTileType == TileID.Crimtane && info.Player.ZoneCrimson)
 			|| info.SpawnTileType == TileID.CrimsonGrass || info.SpawnTileType == TileID.FleshIce
-			|| info.SpawnTileType == TileID.Crimstone || info.SpawnTileType == TileID.Crimsand);
+			|| info.SpawnTileType == TileID.Crimstone || info.SpawnTileType == TileID.Crimsand
+			|| info.SpawnTileType == TileID.CrimsonJungleGrass);
+
+		// Corruption
 		Corruption = new SpawnCondition((info) => (info.SpawnTileType == TileID.Demonite && info.Player.ZoneCorrupt)
 			|| info.SpawnTileType == TileID.CorruptGrass || info.SpawnTileType == TileID.Ebonstone
-			|| info.SpawnTileType == TileID.Ebonsand || info.SpawnTileType == TileID.CorruptIce);
+			|| info.SpawnTileType == TileID.Ebonsand || info.SpawnTileType == TileID.CorruptIce
+			|| info.SpawnTileType == TileID.CorruptJungleGrass);
+
+		// Overworld
 		Overworld = new SpawnCondition((info) => info.SpawnTileY <= Main.worldSurface);
+
+		// Overworld Misc
 		IceGolem = new SpawnCondition(Overworld, (info) => info.Player.ZoneSnow && Main.hardMode
 			&& Main.cloudAlpha > 0f && !NPC.AnyNPCs(NPCID.IceGolem), 0.05f);
 		RainbowSlime = new SpawnCondition(Overworld, (info) => info.Player.ZoneHallow && Main.hardMode
@@ -324,6 +387,8 @@ public class SpawnCondition
 				return 1f - inverseChance;
 			}
 		};
+
+		// Overworld Typical
 		OverworldDay = new SpawnCondition(Overworld, (info) => Main.dayTime);
 		OverworldDaySnowCritter = new SpawnCondition(OverworldDay, (info) => InnerThird(info)
 			&& (GetTile(info).type == TileID.SnowBlock || GetTile(info).type == TileID.IceBlock), 1f / 15f);
@@ -336,10 +401,15 @@ public class SpawnCondition
 		OverworldDayBirdCritter = new SpawnCondition(OverworldDay, (info) => InnerThird(info)
 			&& (GetTile(info).type == TileID.Grass || GetTile(info).type == TileID.HallowedGrass
 			|| GetTile(info).type == TileID.SnowBlock), 1f / 15f);
+
+		// King Slime (Overworld)
 		KingSlime = new SpawnCondition(OverworldDay, (info) => OuterThird(info) && GetTile(info).type == TileID.Grass
 			&& !NPC.AnyNPCs(NPCID.KingSlime), 1f / 300f);
+
 		OverworldDayDesert = new SpawnCondition(OverworldDay, (info) => GetTile(info).type == TileID.Sand
 			&& !info.Water, 0.2f);
+
+		// Overworld Goblin Scout
 		GoblinScout = new SpawnCondition(OverworldDay, (info) => OuterThird(info), 1f / 15f) {
 			WeightFunc = () => {
 				float inverseChance = 14f / 15f;
@@ -349,17 +419,26 @@ public class SpawnCondition
 				return 1f - inverseChance;
 			}
 		};
+
+		// Overworld Typical
 		OverworldDayRain = new SpawnCondition(OverworldDay, (info) => Main.raining, 2f / 3f);
 		OverworldDaySlime = new SpawnCondition(OverworldDay, (info) => true);
 		OverworldNight = new SpawnCondition(Overworld, (info) => true);
 		OverworldFirefly = new SpawnCondition(OverworldNight, (info) => GetTile(info).type == TileID.Grass
 			|| GetTile(info).type == TileID.HallowedGrass, 0.1f) {
-			WeightFunc = () => 1f / (float)NPC.fireFlyChance
+			WeightFunc = () => 1f / NPC.fireFlyChance
 		};
+
+		//Overworld Monsters
 		OverworldNightMonster = new SpawnCondition(OverworldNight, (info) => true);
+
+		// Underground
 		Underground = new SpawnCondition((info) => info.SpawnTileY <= Main.rockLayer);
 		Underworld = new SpawnCondition((info) => info.SpawnTileY > Main.maxTilesY - 190);
 		Cavern = new SpawnCondition((info) => true);
+
+		// Ghosts
+		Ghost = new SpawnCondition((info) => (!info.PlayerSafe && (Main.halloween || info.Player.ZoneGraveyard)));
 	}
 
 	private static Tile GetTile(NPCSpawnInfo info)
@@ -381,19 +460,50 @@ public class SpawnCondition
 		return false;
 	}
 
-	private static bool MartianProbeHelper(NPCSpawnInfo info)
+	/// <summary>
+	/// Checks if a martian probe can spawn
+	/// </summary>
+	public static bool MartianProbeHelper(NPCSpawnInfo info)
 	{
-		return (float)Math.Abs(info.SpawnTileX - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f
+		return MathF.Abs(info.SpawnTileX - Main.maxTilesX / 2) / (Main.maxTilesX / 2) > 0.33f
 			&& !NPC.AnyDanger();
 	}
 
-	private static bool InnerThird(NPCSpawnInfo info)
+	/// <summary>
+	/// Checks if the spawn tile is in the middle third of the map
+	/// </summary>
+	public static bool InnerThird(NPCSpawnInfo info)
 	{
 		return Math.Abs(info.SpawnTileX - Main.spawnTileX) < Main.maxTilesX / 3;
 	}
 
-	private static bool OuterThird(NPCSpawnInfo info)
+	/// <summary>
+	/// Checks if the spawn tile is in either of the outer sixths of the map
+	/// </summary>
+	public static bool OuterThird(NPCSpawnInfo info)
 	{
 		return Math.Abs(info.SpawnTileX - Main.spawnTileX) > Main.maxTilesX / 3;
 	}
+
+	/// <summary>
+	/// Checks if the spawn tile is in an area counted as beach
+	/// </summary>
+	public static bool CritterBeach(NPCSpawnInfo info)
+	{
+		bool value = info.SpawnTileY <= Main.worldSurface && (info.SpawnTileX < WorldGen.beachDistance || info.SpawnTileX > Main.maxTilesX - WorldGen.beachDistance);
+
+		if (info.Player.ZoneCorrupt || info.Player.ZoneCrimson) {
+			value = false;
+		}
+
+		if (info.SpawnTileX < Main.maxTilesX * 0.43 || info.SpawnTileX > Main.maxTilesX * 0.57 && Main.remixWorld) {
+			if (info.SpawnTileY > Main.rockLayer - 200.0 && info.SpawnTileY < Main.maxTilesY - 200 && Main.rand.Next(2) == 0)
+				value = true;
+		}
+
+		return value;
+	}
+
+	public static bool StormyOrRemixEquivilent() // From NPC.SpawnNPC() as Flag 24
+		=> Main.remixWorld ? Main.raining : Main.cloudAlpha > 0f;
 }
