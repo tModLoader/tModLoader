@@ -304,6 +304,7 @@ namespace Terraria.ModLoader.IO
 		public static void WriteTag(string name, object tag, BinaryWriter w) {
 			int id = GetPayloadId(tag.GetType());
 			w.Write((byte)id);
+
 			StringHandler.writer(w, name);
 			PayloadHandlers[id].Write(w, tag);
 		}
@@ -342,9 +343,12 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void ToStream(TagCompound root, Stream stream, bool compress = true) {
-			if (compress) stream = new GZipStream(stream, CompressionMode.Compress, true);
+			if (compress)
+				stream = new GZipStream(stream, CompressionMode.Compress, true);
+
 			Write(root, new BigEndianWriter(stream));
-			if (compress) stream.Close();
+			if (compress)
+				stream.Close();
 		}
 
 		public static void Write(TagCompound root, BinaryWriter writer) => WriteTag("", root, writer);
