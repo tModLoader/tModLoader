@@ -75,50 +75,13 @@ public abstract class ModConfig : ILocalizedModType
 
 	/// <summary>
 	/// Whether or not a reload is required. The default implementation compares properties and fields annotated with the ReloadRequiredAttribute. Unlike the other ModConfig hooks, this method is called on a clone of the ModConfig that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.<br/>
-	/// Has a max depth of 10.
+	/// Has a max depth of 10 fields.
 	/// </summary>
 	/// <param name="pendingConfig">The other instance of ModConfig to compare against, it contains the values that are pending to take effect</param>
-	/// <returns></returns>
+	/// <returns>Whether a reload is required.</returns>
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
-		return ObjectNeedsReload(this, pendingConfig);
-	}
-
-	/// <summary>
-	/// Recursively checks an object to see if it has any fields that are changed and would require a reload.
-	/// </summary>
-	/// <param name="currentConfig"></param>
-	/// <param name="pendingConfig"></param>
-	/// <param name="depth"></param>
-	/// <param name="checkSubField"></param>
-	/// <returns></returns>
-	protected static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool> checkSubField = default)
-	{
-		if (currentConfig is null || pendingConfig is null || currentConfig.GetType() != pendingConfig.GetType())
-			return false;
-
-		if (checkSubField == default)
-			checkSubField = (field) => field.Type.IsClass;
-
-		// Recursive limit check
-		if (depth <= 0)
-			return false;
-
-		// Loop over every field to check if they have been changed
-		foreach (var field in ConfigManager.GetFieldsAndProperties(currentConfig)) {
-			// If it has a reload required attribute and the field values don't match, then return true
-			bool doesntHaveJsonIgnore = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonIgnoreAttribute>(field, currentConfig, null) == null;
-			bool hasReloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(field, currentConfig, null) != null;
-			bool dontEqual = !ConfigManager.ObjectEquals(field.GetValue(currentConfig), field.GetValue(pendingConfig));
-			if (doesntHaveJsonIgnore && hasReloadRequired && dontEqual)
-				return true;
-
-			// Otherwise if it's a sub config, then check that as well
-			if (checkSubField(field))
-				return ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1);
-		}
-
-		return false;
+		return ConfigManager.ObjectNeedsReload(this, pendingConfig);
 	}
 
 	/// <summary>
@@ -142,5 +105,10 @@ public abstract class ModConfig : ILocalizedModType
 
 			Main.InGameUI.SetState(Interface.modConfig);
 		}
+	}
+
+	public bool Save(bool sendFailureMessages, bool syncIfServerConfig)
+	{
+		return false;
 	}
 }

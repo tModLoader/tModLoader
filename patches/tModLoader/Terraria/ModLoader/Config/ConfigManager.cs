@@ -536,6 +536,43 @@ public static class ConfigManager
 
 		return header;
 	}
+
+
+	/// <summary>
+	/// Recursively checks a config to see if it has any fields that are changed and would require a reload.
+	/// </summary>
+	/// <param name="currentConfig">The config instance containg the default values. Should be <see langword="this"/>.</param>
+	/// <param name="pendingConfig">The config instance with changed values. Should be <c>pendingConfig</c>.</param>
+	/// <param name="depth">The maximum number of fields that will be recursively searched. Defaults to 10.</param>
+	/// <param name="checkSubField">A delegate that takes in a <see cref="PropertyFieldWrapper"/> and returns whether that member should be searched for members with reload required.</param>
+	/// <returns>Whether the object has any changes made to reload required fields and needs a reload.</returns>
+	public static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool>? checkSubField = null)
+	{
+		if (currentConfig is null || pendingConfig is null || currentConfig.GetType() != pendingConfig.GetType())
+			return false;
+
+		checkSubField ??= (field) => field.Type.IsClass;// TODO: causes problems?
+
+		// Recursive limit check
+		if (depth <= 0)
+			return false;
+
+		// Loop over every field to check if they have been changed
+		foreach (var field in GetFieldsAndProperties(currentConfig)) {
+			// If it has a reload required attribute and the field values don't match, then return true
+			bool doesntHaveJsonIgnore = GetCustomAttributeFromMemberThenMemberType<JsonIgnoreAttribute>(field, currentConfig, null) == null;
+			bool hasReloadRequired = GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(field, currentConfig, null) != null;
+			bool dontEqual = !ObjectEquals(field.GetValue(currentConfig), field.GetValue(pendingConfig));
+			if (doesntHaveJsonIgnore && hasReloadRequired && dontEqual)
+				return true;
+
+			// Otherwise if it's a sub config, then check that as well
+			if (checkSubField(field))
+				return ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1);
+		}
+
+		return false;
+	}
 }
 
 /// <summary>
