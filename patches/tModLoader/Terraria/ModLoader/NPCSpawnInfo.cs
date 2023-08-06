@@ -116,4 +116,16 @@ public struct NPCSpawnInfo
 	/// Whether or not the NPC is horizontally within the range near the player in which NPCs cannot spawn. If this is true, it also means that it is vertically outside of the range near the player in which NPCs cannot spawn.
 	/// </summary>
 	public bool SafeRangeX;
+
+	public bool OverWorld;
+
+	public bool UnderGround;
+
+	public bool Beach;
+
+	public bool Caverns;
+
+	public int ProperGroundTileType;
+
+	public int WallTileType;
 }
