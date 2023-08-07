@@ -84,6 +84,16 @@
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));
  		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  		uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
+@@ -140,7 +_,8 @@
+ 		};
+ 
+ 		uIElement.Append(uIImage);
++		if (!_isMod)
+-		uIElement.Append(element);
++			uIElement.Append(element);
+ 		_previewImageUIElement = uIImage;
+ 		UICharacterNameButton uICharacterNameButton = new UICharacterNameButton(Language.GetText("Workshop.PreviewImagePathTitle"), Language.GetText("Workshop.PreviewImagePathEmpty"), Language.GetText("Workshop.PreviewImagePathDescription")) {
+ 			Width = StyleDimension.FromPixelsAndPercent(0f - num, 1f),
 @@ -169,10 +_,14 @@
  			}
  		}
