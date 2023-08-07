@@ -14,6 +14,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ internal static class Interface
 	//internal const int managePublishedID = 10011;
 	internal const int updateMessageID = 10012;
 	internal const int infoMessageID = 10013;
+	internal const int infoMessageDelayedID = 10014;
 	//internal const int enterPassphraseMenuID = 10015;
 	internal const int modPacksMenuID = 10016;
 	internal const int tModLoaderSettingsID = 10017;
@@ -53,6 +55,7 @@ internal static class Interface
 	internal static UIErrorMessage errorMessage = new UIErrorMessage();
 	internal static UIModBrowser modBrowser = new UIModBrowser();
 	internal static UIModInfo modInfo = new UIModInfo();
+	internal static UIForcedDelayInfoMessage infoMessageDelayed = new UIForcedDelayInfoMessage();
 	//internal static UIManagePublished managePublished = new UIManagePublished();
 	internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 	internal static UIInfoMessage infoMessage = new UIInfoMessage();
@@ -121,11 +124,13 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
+			/* For Major Updates that span multi-month
 			else if (!ModLoader.BetaUpgradeWelcomed144) {
 				ModLoader.BetaUpgradeWelcomed144 = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageUpgradeBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
+			*/
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
@@ -154,19 +159,17 @@ internal static class Interface
 							});
 				}
 			}
-			//SOLXAN:TODO: Re-enable for stabilization later
-			/*
+
 			else if (ModLoader.PreviewFreezeNotification) {
 				ModLoader.PreviewFreezeNotification = false;
-				ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-				infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
+				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 					() => {
 						SoundEngine.PlaySound(SoundID.MenuOpen);
 						Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
 					});
 				Main.SaveSettings();
 			}
-			*/
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 

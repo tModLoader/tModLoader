@@ -7823,6 +7823,15 @@
  		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
+@@ -42834,7 +_,7 @@
+ 	{
+ 		for (int i = 3; i < 10; i++) {
+ 			Item item = armorArray[i];
+-			if (item.IsAir)
++			if (item.IsAir || item._globals.Length > 0)
+ 				continue;
+ 
+ 			for (int j = i + 1; j < 10; j++) {
 @@ -42856,7 +_,29 @@
  	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
  	{

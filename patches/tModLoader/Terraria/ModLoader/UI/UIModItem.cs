@@ -31,6 +31,7 @@ internal class UIModItem : UIPanel
 	private UIImage _configButton;
 	private UIText _modName;
 	private UIModStateText _uiModStateText;
+	private UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 	private UIHoverImage _modReferenceIcon;
 	private UIImage _deleteModButton;
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
@@ -100,22 +101,58 @@ internal class UIModItem : UIPanel
 			Left = { Pixels = _modIconAdjust }
 		};
 		_uiModStateText.OnLeftClick += ToggleEnabled;
-		Append(_uiModStateText);
 
+		// Don't show the Enable/Disable button if there is no loadable version
+		string updateVersion = null;
+		string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+		Color updateColor = Color.Orange;
+
+		// Detect if it's for a preview version ahead of our time
+		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
+			updateVersion = $"v{_mod.tModLoaderVersion}";
+			
+			if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
+				updateVersion = $"Preview {updateVersion}";
+		}
+
+		// Detect if it's for a different browser version entirely
+		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion)) {
+			updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
+			updateColor = Color.Yellow;
+		}
+
+		// Hide the Enabled button if it's not for this built version
+		if (updateVersion != null) {
+			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(updateColor, updateColor * 0.7f);
+			tMLUpdateRequired.BackgroundColor = updateColor * 0.7f;
+			tMLUpdateRequired.Top.Pixels = 40;
+			tMLUpdateRequired.Width.Pixels = 280;
+			tMLUpdateRequired.Height.Pixels = 36;
+			tMLUpdateRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
+			tMLUpdateRequired.OnLeftClick += (a, b) => {
+				Utils.OpenToURL(updateURL);
+			};
+			Append(tMLUpdateRequired);
+		}
+		else
+			Append(_uiModStateText);
+
+		int bottomRightRowOffset = -36;
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
 			Width = { Pixels = 36 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = -36, Precent = 1 },
+			Left = { Pixels = bottomRightRowOffset, Precent = 1 },
 			Top = { Pixels = 40 }
 		};
 		_moreInfoButton.OnLeftClick += ShowMoreInfo;
 		Append(_moreInfoButton);
 
 		if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
+			bottomRightRowOffset -= 36;
 			_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36f },
-				Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1f },
+				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1f },
 				Top = { Pixels = 40f }
 			};
 			_configButton.OnLeftClick += OpenConfig;
@@ -209,10 +246,11 @@ internal class UIModItem : UIPanel
 		};
 
 		if (!_loaded) {
+			bottomRightRowOffset -= 36;
 			_deleteModButton = new UIImage(TextureAssets.Trash) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
-				Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1 },
+				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
 				Top = { Pixels = 42.5f }
 			};
 			_deleteModButton.OnLeftClick += QuickModDelete;
@@ -310,6 +348,9 @@ internal class UIModItem : UIPanel
 				_tooltip = Language.GetTextValue("tModLoader.ModAddedSinceLastLaunchMessage");
 			else
 				_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
+		}
+		else if (tMLUpdateRequired?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
 	}
 

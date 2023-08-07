@@ -9,8 +9,8 @@ env:
 # Controls when the action will run. 
 on:
   # This workflow runs on the first of every month at midnight UTC
-  #schedule:
-  #  - cron: '0 0 1 * *'
+  schedule:
+    - cron: '0 0 1 * *'
   
   # Allows you to manually run the workflow
   workflow_dispatch:
@@ -67,4 +67,4 @@ jobs:
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
             git reset --hard origin/${{env.DevBranch}}
-            git push --force origin ${[env.PreviewBranch}}
+            git push --force origin ${{env.PreviewBranch}}
