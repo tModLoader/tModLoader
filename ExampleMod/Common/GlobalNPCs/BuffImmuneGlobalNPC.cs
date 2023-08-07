@@ -16,7 +16,7 @@ namespace ExampleMod.Common.GlobalNPCs
 	public class BuffImmuneGlobalNPC : GlobalNPC
 	{
 		public override void SetStaticDefaults() {
-			// DONT apply to NPCID.Sets.ImmuneToDebuffs, that's not the point.
+			// DONT apply to NPCID.Sets.SpecificDebuffImmunity, that's not the point.
 
 			// This example does 2 things.
 			// Firstly, it links together existing debuffs with modded debuffs. These links ensure that any NPC immune to an existing debuff will automatically be immune to the modded debuff. See ExampleJavelinDebuff.cs for another examples of this concept.
@@ -33,7 +33,7 @@ namespace ExampleMod.Common.GlobalNPCs
 
 			// NPC Buff Immunity Changes:
 
-			// IchorSticker is already immune to Ichor, but not the others. It will automatically become immune to BetsysCurse and ExampleDefenseDebuff due to IsADefenseReductionDebuff.
+			// IchorSticker is already immune to Ichor, but not the others. It will automatically become immune to BetsysCurse and ExampleDefenseDebuff due to GrantImmunityWith.
 
 			// DesertGhoulCrimson inflicts Ichor, so this mod changes it to be immune to Ichor, which in turn will cause it to be immune to BetsysCurse and ExampleDefenseDebuff as well.
 			NPCID.Sets.SpecificDebuffImmunity[NPCID.DesertGhoulCrimson][BuffID.Ichor] = true;

@@ -23,10 +23,13 @@ public partial class BuffID
 		/// Modders can use this set to create buffs that act as variants of existing buffs, and should inherit the immunity value of those existing buffs. NPC from Terraria and other mods will automatically have these immunity rules applied, regardless of mod load order.
 		/// </summary>
 		public static List<int>[] GrantImmunityWith = Factory.CreateCustomSet<List<int>>(null,
-			OnFire3, new List<int>() { OnFire },
-			Frostburn2, new List<int>() { Frostburn },
-			Poisoned, new List<int>() { Venom }
-			// Ichor, new List<int>() { BetsysCurse }
+			OnFire3, new List<int>() { OnFire }, // 48
+			OnFire, new List<int>() { OnFire3 },
+			Frostburn2, new List<int>() { Frostburn }, // 28
+			Frostburn, new List<int>() { Frostburn2 },
+			// These are not fully reciprocal. If immune to Venom, then immune to Poisoned, but not necessarily the other way.
+			Poisoned, new List<int>() { Venom } // 5
+		    // Ichor, new List<int>() { BetsysCurse } // 3
 		);
 
 		static Sets()
