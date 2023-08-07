@@ -121,6 +121,8 @@ public struct NPCSpawnInfo
 
 	public bool UnderGround;
 
+	public bool Ocean;
+
 	public bool Beach;
 
 	public bool Caverns;

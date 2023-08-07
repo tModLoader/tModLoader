@@ -1859,7 +1859,7 @@
  									flag13 = true;
  							}
  						}
-@@ -61258,9 +_,44 @@
+@@ -61258,9 +_,45 @@
  			}
  
  			num49 = SpawnNPC_TryFindingProperGroundTileType(num49, num, num2);
@@ -1887,6 +1887,7 @@
 +			spawnInfo.UnderGround = flag17;
 +			spawnInfo.OverWorld = flag20;
 +			spawnInfo.Caverns = flag21;
++			spawnInfo.Ocean = flag22;
 +			spawnInfo.Beach = flag23;
 +
  			int newNPC = 200;
@@ -1928,6 +1929,24 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[k].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -63610,7 +_,7 @@
+ 		return 639;
+ 	}
+ 
+-	private static bool SpawnNPC_CheckToSpawnRockGolem(int spawnTileX, int spawnTileY, int plr, int tileType)
++	internal static bool SpawnNPC_CheckToSpawnRockGolem(int spawnTileX, int spawnTileY, int plr, int tileType)
+ 	{
+ 		if (!Main.hardMode || (tileType != 1 && !TileID.Sets.Conversion.Moss[tileType]) || Main.player[plr].ZoneSnow)
+ 			return false;
+@@ -63624,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	private static bool SpawnNPC_CheckToSpawnUndergroundFairy(int spawnTileX, int spawnTileY, int plr)
++	internal static bool SpawnNPC_CheckToSpawnUndergroundFairy(int spawnTileX, int spawnTileY, int plr)
+ 	{
+ 		if (!fairyLog)
+ 			return false;
 @@ -64272,6 +_,23 @@
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
  	}
