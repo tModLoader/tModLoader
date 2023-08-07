@@ -8,15 +8,14 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -20,17 +_,34 @@
+@@ -20,17 +_,33 @@
  		private int _unusedYoyoLogo;
  		private int _unusedResearchLine;
  		private string _search;
 +		
-+		// Added by TML. [[
++		// Added by TML.
 +		private string[] _toolTipNames = new string[30];
-+		private int _prefixLine = -1;
-+		// ]]
++		//
  
  		public bool FitsFilter(Item entry)
  		{
@@ -32,8 +31,8 @@
  			int numLines = 1;
  			float knockBack = entry.knockBack;
 -			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines);
-+			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines, _toolTipNames, out _prefixLine);
-+			var modifiedTooltipLines = ItemLoader.ModifyTooltips(entry, ref numLines, _toolTipNames, ref _toolTipLines, ref _unusedPrefixLine, ref _unusedBadPrefixLines, ref _unusedYoyoLogo, out _, _prefixLine);
++			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines, _toolTipNames, out _);
++			var modifiedTooltipLines = ItemLoader.ModifyTooltips(entry, ref numLines, _toolTipNames, ref _toolTipLines, ref _unusedPrefixLine, ref _unusedBadPrefixLines, ref _unusedYoyoLogo, out _, -1);
 +
 +			/*
  			for (int i = 0; i < numLines; i++) {
