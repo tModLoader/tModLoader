@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -92,5 +93,17 @@ public class ModNPCTest : ModNPC
 #if COMPILE_ERROR
 		closeness = 10;
 #endif
+	}
+
+	public override void SetStaticDefaults() {
+#if COMPILE_ERROR
+		NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData {
+			SpecificallyImmuneTo = new int[] {
+				BuffID.Poisoned
+			}
+		});
+#endif
+
+		NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Shimmer] = true;
 	}
 }
