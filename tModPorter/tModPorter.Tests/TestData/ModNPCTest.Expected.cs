@@ -102,8 +102,8 @@ public class ModNPCTest : ModNPC
 				BuffID.Poisoned
 			}
 		});
-
-		NPCID.Sets.ShimmerImmunity/* tModPorter Removed: Change to Terraria.ID.NPCID.Sets[Type][BuffID.Shimmer] = value; */[Type] = true;
 #endif
+
+		NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Shimmer] = true;
 	}
 }
