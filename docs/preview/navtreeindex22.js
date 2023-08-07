@@ -1,5 +1,9 @@
 var NAVTREEINDEX22 =
 {
+"struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[3,0,978,3],
+"struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[3,0,978,6],
+"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc":[3,0,978,5],
+"struct_pos_data.html#a7c60ea2da5d803f3c2574f5e65cd66e2":[3,0,978,7],
 "struct_pos_data.html#a944d81baa10077208a21e6e2bb4b612c":[3,0,978,8],
 "struct_pos_data.html#ab9a1efd082ec2fb25609e06677347e19":[3,0,978,9],
 "struct_pos_data.html#ac88465266a438788d12582053b9f9932":[3,0,978,2],

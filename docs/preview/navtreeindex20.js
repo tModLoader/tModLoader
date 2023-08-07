@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"class_world_sections.html":[3,0,1459],
+"class_world_u_i_anchor.html":[3,0,1460],
+"class_world_utils.html":[3,0,1461],
+"class_world_workshop_entry.html":[3,0,1462],
 "class_worm_shader.html":[3,0,1463],
 "class_wsc_json_object.html":[3,0,1464],
 "classes.html":[3,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "struct_ball_step_result.html":[3,0,70],
 "struct_bestiary_u_i_collection_info.html":[3,0,77],
 "struct_bestiary_unlock_progress_report.html":[3,0,78],
-"struct_big_progress_bar_cache.html":[3,0,82],
-"struct_big_progress_bar_info.html":[3,0,84],
-"struct_binary_writer_helper.html":[3,0,87],
-"struct_bits64.html":[3,0,93],
-"struct_bits_byte.html":[3,0,94]
+"struct_big_progress_bar_cache.html":[3,0,82]
 };

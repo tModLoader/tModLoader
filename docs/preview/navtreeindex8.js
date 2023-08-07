@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_language.html#aaf03bb2bbbb9b5f19cf12ca449e16078":[3,0,664,5],
 "class_language.html#ab29445df6a42420ac4794550a084d521":[3,0,664,11],
 "class_language.html#ac8d9b980c93eddf3589cc778348bf8cd":[3,0,664,9],
 "class_language.html#adeb7406a52fd6c027ecf54bb38159bd3":[3,0,664,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_mod_biome.html#afd14c5c9e4e11f438500cfa6105c1e0b":[3,0,760,3],
 "class_mod_biome_bestiary_info_element.html":[3,0,761],
 "class_mod_block_type.html":[3,0,762],
-"class_mod_block_type.html#a0882d4dd4a783cfa37fd1e2003e65aaa":[3,0,762,11],
-"class_mod_block_type.html#a1263f5a6ef3d7c7e477465c4acaa7674":[3,0,762,17]
+"class_mod_block_type.html#a0882d4dd4a783cfa37fd1e2003e65aaa":[3,0,762,11]
 };

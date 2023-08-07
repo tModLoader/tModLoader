@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['paint_0',['Paint',['../class_dust_i_d.html#a6dc00d9651fc67dd11c9c95195604e08',1,'DustID']]],
-  ['paint_1',['paint',['../class_item.html#a46323b4a0918abe281a296534a19f37f',1,'Item']]],
+  ['paint_0',['paint',['../class_item.html#a46323b4a0918abe281a296534a19f37f',1,'Item']]],
+  ['paint_1',['Paint',['../class_dust_i_d.html#a6dc00d9651fc67dd11c9c95195604e08',1,'DustID']]],
   ['paintedfallingleaf_2',['PaintedFallingLeaf',['../class_gore_i_d_1_1_sets.html#aeac5c82e6adf955634ef8015353a66e0',1,'GoreID::Sets']]],
   ['painterneedsothernpcstomovein_3',['PainterNeedsOtherNPCsToMoveIn',['../class_game_tip_i_d.html#a95a459b52f25c093c8bda5e592610041',1,'GameTipID']]],
   ['paperplane_4',['PaperPlane',['../class_proj_a_i_style_i_d.html#a35778fae8b47009a32c924dcf9021ca0',1,'ProjAIStyleID']]],

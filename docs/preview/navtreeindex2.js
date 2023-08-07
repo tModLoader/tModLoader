@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_config_args_attribute.html":[3,0,181],
 "class_config_element.html":[3,0,182],
 "class_config_element.html#a933b184e27c22fa41d1f592e46a1360c":[3,0,182,0],
 "class_config_key_attribute.html":[3,0,183],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652":[3,0,302,0],
 "class_entity_source___catch_entity.html":[3,0,303],
 "class_entity_source___caught.html":[3,0,304],
-"class_entity_source___caught.html#a8923c2a0de7b28a808dac608b80d7676":[3,0,304,0],
-"class_entity_source___death.html":[3,0,305]
+"class_entity_source___caught.html#a8923c2a0de7b28a808dac608b80d7676":[3,0,304,0]
 };

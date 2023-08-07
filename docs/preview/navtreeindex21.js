@@ -1,5 +1,9 @@
 var NAVTREEINDEX21 =
 {
+"struct_big_progress_bar_info.html":[3,0,84],
+"struct_binary_writer_helper.html":[3,0,87],
+"struct_bits64.html":[3,0,93],
+"struct_bits_byte.html":[3,0,94],
 "struct_boss_bar_draw_params.html":[3,0,103],
 "struct_boss_bar_draw_params.html#a0840c3ca6303cfb7c95e9da0a54a444b":[3,0,103,10],
 "struct_boss_bar_draw_params.html#a0f4c99ca0b7ecb15fd2db3b7bb39eb9a":[3,0,103,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX21 =
 "struct_player_stats_snapshot.html#a3c6d069841594f539f7663a68bff60a4":[3,0,969,0],
 "struct_point16.html":[3,0,973],
 "struct_portable_stool_usage.html":[3,0,976],
-"struct_pos_data.html":[3,0,978],
-"struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[3,0,978,3],
-"struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[3,0,978,6],
-"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc":[3,0,978,5],
-"struct_pos_data.html#a7c60ea2da5d803f3c2574f5e65cd66e2":[3,0,978,7]
+"struct_pos_data.html":[3,0,978]
 };

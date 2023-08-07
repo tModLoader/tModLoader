@@ -1,5 +1,9 @@
 var NAVTREEINDEX19 =
 {
+"class_u_i_colored_slider_simple.html":[3,0,1285],
+"class_u_i_common.html":[3,0,1286],
+"class_u_i_common.html#ae5d01f7b8213dfe546b0b210b19d446b":[3,0,1286,0],
+"class_u_i_create_mod.html":[3,0,1287],
 "class_u_i_creative_infinite_items_display.html":[3,0,1288],
 "class_u_i_creative_items_infinite_filtering_options.html":[3,0,1289],
 "class_u_i_creative_power_button.html":[3,0,1290],
@@ -245,9 +249,5 @@ var NAVTREEINDEX19 =
 "class_world_gen_configuration.html":[3,0,1455],
 "class_world_gen_range.html":[3,0,1457],
 "class_world_generator.html":[3,0,1456],
-"class_world_map.html":[3,0,1458],
-"class_world_sections.html":[3,0,1459],
-"class_world_u_i_anchor.html":[3,0,1460],
-"class_world_utils.html":[3,0,1461],
-"class_world_workshop_entry.html":[3,0,1462]
+"class_world_map.html":[3,0,1458]
 };
