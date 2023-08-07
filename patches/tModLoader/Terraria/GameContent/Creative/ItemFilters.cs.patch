@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -20,6 +_,9 @@
+@@ -20,17 +_,32 @@
  		private int _unusedYoyoLogo;
  		private int _unusedResearchLine;
  		private string _search;
@@ -18,15 +18,30 @@
  
  		public bool FitsFilter(Item entry)
  		{
-@@ -28,7 +_,7 @@
+ 			if (_search == null)
+ 				return true;
  
++			// Have to reinitialize because ItemLoader.ModifyTooltips resizes the arrays
++			_toolTipNames = new string[30];
++			_toolTipLines = new string[30];
++			_unusedPrefixLine = new bool[30];
++			_unusedBadPrefixLines = new bool[30];
++
  			int numLines = 1;
  			float knockBack = entry.knockBack;
 -			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines);
 +			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedPrefixLine, _unusedBadPrefixLines, _toolTipNames, out _);
++			var modifiedTooltipLines = ItemLoader.ModifyTooltips(entry, ref numLines, _toolTipNames, ref _toolTipLines, ref _unusedPrefixLine, ref _unusedBadPrefixLines, ref _unusedYoyoLogo, out _, -1);
++
++			/*
  			for (int i = 0; i < numLines; i++) {
  				if (_toolTipLines[i].ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
++			*/
++			foreach (var line in modifiedTooltipLines) {
++				if (line.Text.ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  					return true;
+ 			}
+ 
 @@ -354,7 +_,7 @@
  
  		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst)
