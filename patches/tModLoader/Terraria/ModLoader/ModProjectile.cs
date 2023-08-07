@@ -22,7 +22,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>  Shorthand for Projectile.type; </summary>
 	public int Type => Projectile.type;
 
-	public string LocalizationCategory => "Projectiles";
+	public virtual string LocalizationCategory => "Projectiles";
 
 	/// <summary> The translations for the display name of this projectile. </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);

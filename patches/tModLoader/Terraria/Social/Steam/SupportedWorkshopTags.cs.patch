@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/SupportedWorkshopTags.cs
 +++ src/tModLoader/Terraria/Social/Steam/SupportedWorkshopTags.cs
-@@ -30,5 +_,20 @@
+@@ -30,5 +_,31 @@
  		AddResourcePackTag("WorkshopTags.Overhaul", "Overhaul");
  		AddResourcePackTag("WorkshopTags.Tweaks", "Tweaks");
  		AddResourcePackTag("WorkshopTags.OtherResourcePacks", "Other Packs");
@@ -17,7 +17,18 @@
 +		AddModTag("tModLoader.TagsVisual", "Visual Tweaks");
 +
 +		// TBD Grouping
-+		AddModTag("tModLoader.TagsLang", "Localization Support");
-+		AddModTag("tModLoader.TagsGen", "Custom World Gen");
++		//AddModTag("tModLoader.TagsLang", "Localization Support");
++		AddModTag("tModLoader.TagsGen", "Custom World Gen"); // Note: Don't change internal name to "World Gen" here or on steam, it will most likely break legacy modders publishing updates. Unless we are sure the steam backend handles migrating from legacy internal names, keep the internal names consistent.
++
++		// Languages
++		AddModTag("tModLoader.TagsLanguage_English", "English");
++		AddModTag("tModLoader.TagsLanguage_German", "German");
++		AddModTag("tModLoader.TagsLanguage_Italian", "Italian");
++		AddModTag("tModLoader.TagsLanguage_French", "French");
++		AddModTag("tModLoader.TagsLanguage_Spanish", "Spanish");
++		AddModTag("tModLoader.TagsLanguage_Russian", "Russian");
++		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
++		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
++		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
  	}
  }

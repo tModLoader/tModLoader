@@ -47,8 +47,7 @@ internal class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 		var passed = new List<DefinitionOptionElement<PrefixDefinition>>();
 
 		foreach (var option in Options) {
-			// Should this be the localized Prefix name?
-			if (Lang.prefix[option.Type].Value.IndexOf(ChooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+			if (option.Definition.DisplayName.IndexOf(ChooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 				continue;
 
 			string modname = option.Definition.Mod;
@@ -75,7 +74,7 @@ internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDef
 		Width.Set(150 * scale, 0f);
 		Height.Set(40 * scale, 0f);
 
-		text = new UIAutoScaleTextTextPanel<string>(Type == 0 ? "None" : Lang.prefix[Type].Value) {
+		text = new UIAutoScaleTextTextPanel<string>(Definition.DisplayName) {
 			Width = { Percent = 1f },
 			Height = { Percent = 1f },
 		};
@@ -86,7 +85,7 @@ internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDef
 	{
 		base.SetItem(item);
 
-		text?.SetText(Type == 0 ? "None" : Lang.prefix[Type].Value);
+		text?.SetText(item.DisplayName);
 	}
 
 	public override void SetScale(float scale)

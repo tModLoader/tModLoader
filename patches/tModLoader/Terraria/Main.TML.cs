@@ -42,7 +42,13 @@ public partial class Main
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
+	/// <summary>
+	/// A color that cycles through the colors like Rainbow Brick does.
+	/// </summary>
 	public static Color DiscoColor => new Color(DiscoR, DiscoG, DiscoB);
+	/// <summary>
+	/// The typical pulsing white color used for much of the text shown in-game.
+	/// </summary>
 	public static Color MouseTextColorReal => new Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
 	public static bool PlayerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
 
@@ -69,6 +75,15 @@ public partial class Main
 	{
 		Tile tile = Main.tile[tileX, tileY];
 		return IsTileSpelunkable(tileX, tileY, tile.type, tile.frameX, tile.frameY);
+	}
+
+	/// <summary>
+	/// Checks if a tile at the given coordinates counts towards tile coloring from the Biome Sight buff.
+	/// </summary>
+	public static bool IsTileBiomeSightable(int tileX, int tileY, ref Color sightColor)
+	{
+		Tile tile = Main.tile[tileX, tileY];
+		return IsTileBiomeSightable(tileX, tileY, tile.type, tile.frameX, tile.frameY, ref sightColor);
 	}
 
 	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay)

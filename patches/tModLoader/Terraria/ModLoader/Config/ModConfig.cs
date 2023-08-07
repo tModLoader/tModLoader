@@ -33,7 +33,7 @@ public abstract class ModConfig : ILocalizedModType
 	public string FullName => $"{Mod.Name}/{Name}";
 
 	[JsonIgnore]
-	public string LocalizationCategory => "Configs";
+	public virtual string LocalizationCategory => "Configs";
 
 	[JsonIgnore]
 	public virtual LocalizedText DisplayName => Language.GetOrRegister(this.GetLocalizationKey(nameof(DisplayName)), () => ConfigManager.GetLegacyLabelAttribute(GetType())?.LocalizationEntry ?? Regex.Replace(Name, "([A-Z])", " $1").Trim());

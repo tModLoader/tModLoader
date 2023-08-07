@@ -25,7 +25,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> Shorthand for NPC.type; </summary>
 	public int Type => NPC.type;
 
-	public string LocalizationCategory => "NPCs";
+	public virtual string LocalizationCategory => "NPCs";
 
 	/// <summary> The translations for the display name of this NPC. </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
@@ -52,7 +52,12 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	public int AnimationType { get; set; }
 
-	/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
+	/// <summary>
+	/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
+	/// </summary>
+	/// <remarks>
+	/// Note: This property gets ignored if the game would not play music for this NPC by default (i.e. it's not a boss, or it doesn't belong to an invasion)
+	/// </remarks>
 	/// Will be superseded by ModSceneEffect. Kept for legacy.
 	public int Music { get; set; } = -1;
 

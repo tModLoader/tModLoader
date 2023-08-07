@@ -230,11 +230,13 @@ Mods: {
 			ExampleHelmet: {
 				DisplayName: Example Helmet
 				Tooltip: This is a modded helmet.
+				SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
+				SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
 			}
 
 			ExampleLeggings: {
@@ -249,6 +251,11 @@ Mods: {
 			ExampleRobe: {
 				DisplayName: Example Robe
 				Tooltip: ""
+			}
+
+			ExampleTallHelmet: {
+				DisplayName: Example Tall Helmet
+				Tooltip: This is a tall modded helmet.
 			}
 
 			MinionBossMask: {
@@ -810,6 +817,11 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleMinecart: {
+				DisplayName: Example Minecart
+				Tooltip: ""
+			}
+
 			ExampleGravityDebuffBullet: {
 				DisplayName: Example Gravity Debuff Bullet
 				Tooltip: ""
@@ -824,6 +836,25 @@ Mods: {
 			ExampleCampfire: {
 				DisplayName: Example Campfire
 				Tooltip: "{$ItemTooltip.Campfire}"
+			}
+
+			ExampleExtraJumpAccessory: {
+				DisplayName: Example Extra Jump Accessory
+				Tooltip: Allows the user to perform an example mid-air extra jump
+			}
+
+			ExampleMultiExtraJumpAccessory: {
+				DisplayName: Example Multiple-Use Extra Jump Accessory
+				Tooltip:
+					'''
+					Allows the user to perform an example mid-air extra jump
+					This accessory has <JUMPS> jumps remaining
+					'''
+			}
+
+			ExampleSwingingEnergySword: {
+				DisplayName: Example Swinging Energy Sword
+				Tooltip: ""
 			}
 		}
 
@@ -861,6 +892,7 @@ Mods: {
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
+			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 		}
 
 		Buffs: {
@@ -1041,6 +1073,7 @@ Mods: {
 		}
 
 		UI.ExampleResource: Example Resource: {0} / {1}
+		WorldGen.ExampleOrePassMessage: Example Mod Ores
 	}
 }
 

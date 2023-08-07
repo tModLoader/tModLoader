@@ -106,11 +106,38 @@
  	{
  		if (Main.netMode == 2)
  			return 600;
-@@ -1074,6 +_,16 @@
+@@ -1047,7 +_,8 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom();
+ 
+-		if (Type == -1)
++		// Changed from '== -1'.
++		if (Type <= 0)
+ 			return 600;
+ 
+ 		int num = 600;
+@@ -1074,6 +_,7 @@
  		Main.gore[num].alpha = 0;
  		Main.gore[num].rotation = 0f;
  		Main.gore[num].scale = Scale;
 +
+ 		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
+ 			Main.gore[num].type = Main.rand.Next(11, 14);
+ 			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+@@ -1126,7 +_,8 @@
+ 		int num2 = GoreID.Sets.SpecialAI[Type];
+ 		if (num2 == 3) {
+ 			Main.gore[num].velocity = new Vector2((Main.rand.NextFloat() - 0.5f) * 1f, Main.rand.NextFloat() * ((float)Math.PI * 2f));
+-			bool flag = (Type >= 910 && Type <= 925) || (Type >= 1113 && Type <= 1121) || (Type >= 1248 && Type <= 1255) || Type == 1257 || Type == 1278;
++			//bool flag = (Type >= 910 && Type <= 925) || (Type >= 1113 && Type <= 1121) || (Type >= 1248 && Type <= 1255) || Type == 1257 || Type == 1278;
++			bool flag = GoreID.Sets.PaintedFallingLeaf[Type];
+ 			Gore obj = Main.gore[num];
+ 			SpriteFrame spriteFrame = new SpriteFrame((byte)((!flag) ? 1u : 32u), 8) {
+ 				CurrentRow = (byte)Main.rand.Next(8)
+@@ -1186,6 +_,15 @@
+ 			Main.gore[num].timeLeft = 480;
+ 		}
+ 
 +		var gore = Main.gore[num];
 +
 +		// Reset TML's added fields to reuse the gore instance.
@@ -120,9 +147,9 @@
 +		gore.ModGore = GoreLoader.GetModGore(gore.type);
 +		gore.ModGore?.OnSpawn(gore, source ?? IEntitySource.GetGoreFallback());
 +
- 		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
- 			Main.gore[num].type = Main.rand.Next(11, 14);
- 			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+ 		if (Main.gore[num].DeactivateIfOutsideOfWorld())
+ 			return 600;
+ 
 @@ -1194,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)

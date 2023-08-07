@@ -1,0 +1,6 @@
+de-DE 3
+it-IT 11
+fr-FR 11
+es-ES 3
+zh-Hans 3
+pl-PL 3

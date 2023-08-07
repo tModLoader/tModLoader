@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Hjson;
 using Newtonsoft.Json.Linq;
 using Terraria.Localization;
@@ -469,6 +470,27 @@ public static class LocalizationLoader
 			if (File.Exists(originalPath)) // File might have already been deleted
 				File.Move(originalPath, newPath);
 		}
+
+		// Update LocalizationCounts and optionally TranslationsNeeded.txt
+		if (specificCulture == null) {
+			var localizationCounts = new Dictionary<GameCulture, int>();
+			foreach (var culture in targetCultures) {
+				var localizationEntries = localizationFilesByCulture[culture].SelectMany(f => f.Entries).ToList();
+				// Only count only non-"" entries. Also ignore entries that are just substitutions.
+				int countNonTrivialEntries = localizationEntries.Where(x => HasTextThatNeedsLocalization(x.value)).Count();
+				localizationCounts.Add(culture, countNonTrivialEntries);
+			}
+			localizationEntriesCounts[mod.Name] = localizationCounts;
+
+			string translationsNeededPath = Path.Combine(sourceFolder, "Localization", "TranslationsNeeded.txt");
+			if (File.Exists(translationsNeededPath)) {
+				int englishCount = localizationCounts[GameCulture.DefaultCulture];
+				string neededText = string.Join(Environment.NewLine, localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{englishCount}, {(float)x.Value/englishCount:0%}, missing {englishCount - x.Value}")) + Environment.NewLine;
+				if (File.ReadAllText(translationsNeededPath).ReplaceLineEndings() != neededText.ReplaceLineEndings()) {
+					File.WriteAllText(translationsNeededPath, neededText);
+				}
+			}
+		}
 	}
 
 	private static string GetPathForCulture(LocalizationFile file, GameCulture culture) => file.path.Replace("en-US", culture.CultureInfo.Name);
@@ -558,7 +580,7 @@ public static class LocalizationLoader
 			}
 		}
 
-		return rootObject.ToFancyHjsonString();
+		return rootObject.ToFancyHjsonString() + Environment.NewLine;
 
 		static void PlaceCommentAboveNewEntry(LocalizationEntry entry, CommentedWscJsonObject parent)
 		{
@@ -710,6 +732,37 @@ public static class LocalizationLoader
 
 		UpdateLocalizationFilesForMod(mod, dir, Language.ActiveCulture);
 		Utils.OpenFolder(dir);
+		return true;
+	}
+
+	private static readonly Dictionary<string, Dictionary<GameCulture, int>> localizationEntriesCounts = new();
+	internal static Dictionary<GameCulture, int> GetLocalizationCounts(Mod mod)
+	{
+		if (localizationEntriesCounts.TryGetValue(mod.Name, out var results)) {
+			return results;
+		}
+
+		results = new Dictionary<GameCulture, int>();
+		foreach (var culture in GameCulture.KnownCultures) {
+			var localizationEntries = LoadTranslations(mod, culture);
+			// Only count only non-"" entries. Also ignore entries that are just substitutions.
+			int countNonTrivialEntries = localizationEntries.Where(x => HasTextThatNeedsLocalization(x.value)).Count();
+			results.Add(culture, countNonTrivialEntries);
+		}
+		localizationEntriesCounts[mod.Name] = results;
+		return results;
+	}
+
+	private static Regex referenceRegex = new Regex(@"{\$([\w\.]+)(?:@(\d+))?}", RegexOptions.Compiled); // copied from ProcessCopyCommandsInTexts method
+	private static bool HasTextThatNeedsLocalization(string value)
+	{
+		if (string.IsNullOrWhiteSpace(value))
+			return false;
+
+		string final = referenceRegex.Replace(value, "");
+		if (string.IsNullOrWhiteSpace(final))
+			return false;
+
 		return true;
 	}
 

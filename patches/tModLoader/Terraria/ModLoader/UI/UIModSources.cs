@@ -35,7 +35,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private UILoaderAnimatedImage _uiLoader;
 	private UIElement _links;
 	private CancellationTokenSource _cts;
-	private bool dotnetSDKFound;
+	private static bool dotnetSDKFound;
 
 	public override void OnInitialize()
 	{
@@ -115,9 +115,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		AddLink(Language.GetText("tModLoader.VersionUpgrade"), 0.5f, 0f, "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
 		AddLink(Language.GetText("tModLoader.WikiLink"), 0f, 0.5f, "https://github.com/tModLoader/tModLoader/wiki/");
-		string exampleModBranch = BuildInfo.IsStable ? "stable" : "1.4.4";
+		string exampleModBranch = BuildInfo.IsStable ? "stable" : (BuildInfo.IsPreview ? "preview" : "1.4.4");
 		AddLink(Language.GetText("tModLoader.ExampleModLink"), 1f, 0.5f, $"https://github.com/tModLoader/tModLoader/tree/{exampleModBranch}/ExampleMod");
-		string docsURL = BuildInfo.IsStable ? "1.4-stable" : "preview";
+		string docsURL = BuildInfo.IsStable ? "stable" : "preview";
 		AddLink(Language.GetText("tModLoader.DocumentationLink"), 0f, 1f, $"https://docs.tmodloader.net/docs/{docsURL}/annotated.html");
 		AddLink(Language.GetText("tModLoader.DiscordLink"), 1f, 1f, "https://tmodloader.net/discord");
 
@@ -258,7 +258,13 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 
 		if (!IsCompatibleDotnetSdkAvailable()) {
-			ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+			if (IsRunningInSandbox()) {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
+			}
+			else {
+				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+			}
+
 			return true;
 		}
 
@@ -274,7 +280,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		});
 	}
 
-	string GetCommandToFindPathOfExecutable()
+	private static string GetCommandToFindPathOfExecutable()
 	{
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			return "where";
@@ -285,48 +291,54 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return "which";
 
 		Logging.tML.Debug("Getting command for finding path of the executable failed due to an unsupported operating system");
-
 		return null;
 	}
 
-	string GetSystemDotnetPath()
+	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
-		string commandToFindPathOfExecutable = GetCommandToFindPathOfExecutable();
-		if (commandToFindPathOfExecutable == null)
-			return null;
-
-		try {
-			string dotnetPath = Process.Start(new ProcessStartInfo {
-				FileName = commandToFindPathOfExecutable,
+		if (GetCommandToFindPathOfExecutable() is string cmd) {
+			yield return Process.Start(new ProcessStartInfo {
+				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Trim();
+		}
 
-			if (File.Exists(dotnetPath))
-				return dotnetPath;
+		// OSX fallback
+		var pathsFile = "/etc/paths.d/dotnet";
+		if (File.Exists(pathsFile)) {
+			var contents = File.ReadAllText(pathsFile).Trim();
+			Logging.tML.Debug($"Reading {pathsFile}: {contents}");
+			yield return contents + "/dotnet";
+		}
 
-			Logging.tML.Debug("Can't find dotnet on PATH");
+		// These fallbacks are generally pretty useless, since /usr/bin should almost always be on PATH
+		// env var, often set on Linux
+		if (Environment.GetEnvironmentVariable("DOTNET_ROOT") is string dotnetRoot) {
+			Logging.tML.Debug($"Found env var DOTNET_ROOT: {dotnetRoot}");
+			yield return $"{dotnetRoot}/dotnet";
+		}
 
-			// Steam might be launched with insufficient PATH (currently known on OSX)
-			var pathsFile = "/etc/paths.d/dotnet";
-			if (File.Exists(pathsFile)) {
-				var contents = File.ReadAllText(pathsFile).Trim();
-				Logging.tML.Debug($"Reading {pathsFile}: {contents}");
-				dotnetPath = contents + "/dotnet";
+		// general unix fallback
+		yield return "/usr/bin/dotnet";
+	}
+
+	private static string GetSystemDotnetPath()
+	{
+		try {
+			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {
+				Logging.tML.Debug($"System dotnet install located at: {path}");
+				return path;
 			}
-
-			if (File.Exists(dotnetPath))
-				return dotnetPath;
 		}
-		catch (Exception e) {
-			Logging.tML.Debug("Finding dotnet on PATH failed: ", e);
-		}
+		catch (Exception) {}
 
+		Logging.tML.Debug("Finding dotnet on PATH failed");
 		return null;
 	}
 
-	bool IsCompatibleDotnetSdkAvailable()
+	private static bool IsCompatibleDotnetSdkAvailable()
 	{
 		if (dotnetSDKFound)
 			return true;
@@ -353,6 +365,16 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 
 		return dotnetSDKFound;
+	}
+
+	private static bool IsRunningInSandbox()
+	{
+		if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("FLATPAK_SANDBOX_DIR"))) {
+			Logging.tML.Debug("Flatpak sandbox detected");
+			return true;
+		}
+
+		return false;
 	}
 
 	internal void Populate()

@@ -33,7 +33,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public int Type => Item.type;
 
-	public string LocalizationCategory => "Items";
+	public virtual string LocalizationCategory => "Items";
 
 	/// <summary>
 	/// The translations for the display name of this item.
@@ -265,6 +265,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
@@ -296,6 +297,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
@@ -339,6 +341,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
@@ -349,6 +352,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
@@ -543,6 +547,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
 	/// </summary>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="scale">

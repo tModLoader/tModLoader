@@ -506,7 +506,7 @@
 +		/// </summary>
 +		/// <remarks>
 +		/// You can modify most aspects of a town NPC's attack, including the item used and projectile shot, using any of the "TownNPCAttack" or "TownAttack" hooks in <see cref="ModNPC"/> or <see cref="GlobalNPC"/>.
-+		/// <br/> You can change the color of a magic (<c>3</c>) NPC's aura using <see cref="MagicAuraColor"/>.
++		/// <br/> You can change the color of a magic (<c>2</c>) NPC's aura using <see cref="MagicAuraColor"/>.
 +		/// </remarks>
  		public static int[] AttackType = Factory.CreateIntSet(-1, 38, 0, 17, 0, 107, 0, 19, 1, 22, 1, 124, 0, 228, 1, 178, 1, 18, 0, 229, 1, 209, 1, 54, 2, 108, 2, 160, 2, 20, 2, 369, 0, 453, 0, 368, 1, 207, 3, 227, 1, 208, 0, 142, 0, 441, 3, 353, 3, 633, 0, 550, 0, 588, 0, 663, 2, 638, -1, 637, -1, 656, -1, 670, -1, 678, -1, 679, -1, 680, -1, 681, -1, 682, -1, 683, -1, 684, -1);
 +

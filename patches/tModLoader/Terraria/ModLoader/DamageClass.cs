@@ -54,7 +54,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public string LocalizationCategory => "DamageClasses";
+	public virtual string LocalizationCategory => "DamageClasses";
 
 	/// <summary>
 	/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.

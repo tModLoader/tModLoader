@@ -15,7 +15,7 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -65,8 +_,22 @@
+@@ -65,19 +_,52 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
  	public Vector2 netOffset = Vector2.Zero;
@@ -38,8 +38,19 @@
 +	/// </summary>
  	public int rarity;
  	public static bool taxCollector = false;
++	/// <summary>
++	/// Tracks which <see cref="Player"/>s have damaged this NPC. Damaging boss minions or other parts of a boss is usually counted as damaging the main body of the boss. Used to determine which players participated in a boss fight and should receive a boss bag.<br/><br/>
++	/// Indexed by each players <see cref="Entity.whoAmI"/> (or <see cref="Main.myPlayer"/> for code running locally).<br/><br/>
++	/// <see cref="lastInteraction"/> tracks which player was the last player to damage this NPC. <see cref="AnyInteractions"/> can be used to easily check if any player has damaged the NPC.
++	/// </summary>
  	public bool[] playerInteraction = new bool[256];
-@@ -75,9 +_,18 @@
++	/// <summary>
++	/// The <see cref="Entity.whoAmI"/> of the <see cref="Player"/> that last damaged this NPC. Used to award Banner items to the player that killed the NPC, but can be used for many other effects.<br/><br/>
++	/// The default value is 255. If the value is 255, the NPC has not been damaged by any <see cref="Player"/>.<br/><br/>
++	/// The <see cref="playerInteraction"/> array tracks all players that have damaged this NPC.
++	/// </summary>
+ 	public int lastInteraction = 255;
+ 	public float takenDamageMultiplier = 1f;
  	public static bool freeCake = false;
  	private static int spawnSpaceX = 3;
  	private static int spawnSpaceY = 3;
@@ -533,6 +544,18 @@
  				return true;
  
  			return townNPC;
+@@ -726,6 +_,11 @@
+ 		return array;
+ 	}
+ 
++	/// <summary>
++	/// Returns the <see cref="FullName"/> of the first active NPC of the given type in the world. If not found, the type name is returned instead.
++	/// </summary>
++	/// <param name="npcID"></param>
++	/// <returns></returns>
+ 	public static string GetFullnameByID(int npcID)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
 @@ -863,7 +_,10 @@
  
  		for (int i = 0; i < 255; i++) {
@@ -608,14 +631,30 @@
  	public static string firstNPCName(int npcType)
  	{
  		for (int i = 0; i < 200; i++) {
-@@ -1188,6 +_,7 @@
+@@ -1188,7 +_,13 @@
  
  		return getNewNPCName(npcType);
  	}
 +	*/
  
++	/// <summary>
++	/// Returns the <see cref="GivenOrTypeName"/> of the first active NPC of the given type in the world. If not found, null is returned.
++	/// </summary>
++	/// <param name="npcType"></param>
++	/// <returns></returns>
  	public static string GetFirstNPCNameOrNull(int npcType)
  	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -1199,6 +_,9 @@
+ 		return null;
+ 	}
+ 
++	/// <summary>
++	/// Use to check if a mechanism is allowed to spawn an NPC of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
++	/// </summary>
+ 	public static bool MechSpawn(float x, float y, int type)
+ 	{
+ 		int num = 0;
 @@ -1345,7 +_,10 @@
  			case 684:
  				return 53;
@@ -1454,7 +1493,15 @@
  		if (type == 13 || type == 14 || type == 15) {
  			DropEoWLoot();
  		}
-@@ -58799,6 +_,15 @@
+@@ -58761,6 +_,7 @@
+ 				break;
+ 		}
+ 
++		num10 = NPCID.Sets.InvasionSlotCount[type];
+ 		if (num10 > 0) {
+ 			Main.invasionSize -= num10;
+ 			if (Main.invasionSize < 0)
+@@ -58799,10 +_,20 @@
  		}
  	}
  
@@ -1470,7 +1517,52 @@
  	public static int GetNPCInvasionGroup(int npcID)
  	{
  		int result = 0;
-@@ -59211,7 +_,7 @@
+ 		switch (npcID) {
++			/*
+ 			case 26:
+ 			case 27:
+ 			case 28:
+@@ -58810,21 +_,30 @@
+ 			case 111:
+ 			case 471:
+ 			case 472:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npcID]:
+ 				result = 1;
+ 				break;
++			/*
+ 			case 143:
+ 			case 144:
+ 			case 145:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npcID]:
+ 				result = 2;
+ 				break;
++			/*
+ 			case 212:
+ 			case 213:
+ 			case 214:
+ 			case 215:
+ 			case 216:
+ 			case 491:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionPirate[npcID]:
+ 				result = 3;
+ 				break;
++			/*
+ 			case 381:
+ 			case 382:
+ 			case 383:
+@@ -58836,6 +_,8 @@
+ 			case 390:
+ 			case 391:
+ 			case 395:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npcID]:
+ 				result = 4;
+ 				break;
+ 			case 338:
+@@ -59211,11 +_,15 @@
  
  	public static void ResetKillCount()
  	{
@@ -1479,6 +1571,14 @@
  			killCount[i] = 0;
  		}
  	}
+ 
++	/// <summary>
++	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly. Use <see cref="GetWereThereAnyInteractions"/> if <see cref="realLife"/> might be in use.
++	/// </summary>
++	/// <returns></returns>
+ 	public bool AnyInteractions()
+ 	{
+ 		if (Main.netMode == 0) {
 @@ -59279,7 +_,7 @@
  
  	public void NPCLoot()
@@ -1572,6 +1672,17 @@
  
  	public bool ExcludedFromDeathTally()
  	{
+@@ -60029,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly.
++	/// </summary>
++	/// <returns></returns>
+ 	public bool GetWereThereAnyInteractions()
+ 	{
+ 		bool flag = false;
 @@ -60090,7 +_,8 @@
  		return false;
  	}
@@ -2164,6 +2275,42 @@
  			for (int num96 = 0; num96 < 6; num96++) {
  				int num97 = Gore.NewGore(base.Center - new Vector2(10f), Vector2.UnitY.RotatedByRandom(6.2831854820251465) * 5f, 728 + num96);
  			}
+@@ -72123,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns the number of active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="Type"></param>
++	/// <returns></returns>
+ 	public static int CountNPCS(int Type)
+ 	{
+ 		int num = 0;
+@@ -72144,6 +_,11 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if there are any active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="Type"></param>
++	/// <returns></returns>
+ 	public static bool AnyNPCs(int Type)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -72154,6 +_,11 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Returns the index within <see cref="Main.npc"/> of the the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="Type"></param>
++	/// <returns></returns>
+ 	public static int FindFirstNPC(int Type)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
 @@ -72191,6 +_,14 @@
  		return -1;
  	}
