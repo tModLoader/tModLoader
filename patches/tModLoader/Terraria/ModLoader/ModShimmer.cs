@@ -448,7 +448,7 @@ public sealed class ModShimmer : IComparable<ModShimmer>, ICloneable
 		switch (shimmerResult.ModShimmerTypeID) {
 			case ModShimmerTypeID.Item: {
 				while (spawnTotal > 0) {
-					Item item = Main.item[Item.NewItem(source.GetSource_ForShimmer(), source.Center, source.Dimensions.ToVector2(), shimmerResult.Type)];
+					Item item = Main.item[Item.NewItem(source.GetSource_ForShimmer(), source.Center, shimmerResult.Type)];
 					item.stack = Math.Min(item.maxStack, spawnTotal);
 					item.shimmerTime = 1f;
 					item.shimmered = item.shimmerWet = item.wet = true;
@@ -638,10 +638,8 @@ public interface IModShimmerable
 	/// <inheritdoc cref="Entity.Center"/>
 	public abstract Vector2 Center { get; set; }
 
-	/// <summary>
-	/// Wraps <see cref="Entity.width"/> and <see cref="Entity.height"/>
-	/// </summary>
-	public abstract Point Dimensions { get; set; }
+	/// <inheritdoc cref="Entity.Hitbox"/>
+	public abstract Rectangle Hitbox { get; set; }
 
 	/// <summary>
 	/// Wraps <see cref="Entity.velocity"/>

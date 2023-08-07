@@ -277,7 +277,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	public bool GravityIgnoresLiquid = false;
 
 	public Vector2 ShimmerVelocity { get => velocity; set => velocity = value; }
-	public Point Dimensions { get => new(width, height); set { width = value.X; height = value.Y; } }
 	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.NPC;
 	public int ShimmerType => type;
 
