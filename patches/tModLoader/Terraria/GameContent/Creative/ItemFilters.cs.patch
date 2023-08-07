@@ -8,14 +8,13 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -20,17 +_,33 @@
+@@ -20,17 +_,32 @@
  		private int _unusedYoyoLogo;
  		private int _unusedResearchLine;
  		private string _search;
 +		
 +		// Added by TML.
 +		private string[] _toolTipNames = new string[30];
-+		//
  
  		public bool FitsFilter(Item entry)
  		{
