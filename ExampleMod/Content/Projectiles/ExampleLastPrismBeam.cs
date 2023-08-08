@@ -238,7 +238,7 @@ namespace ExampleMod.Content.Projectiles
 			// Alternatively, if you want the beam to ignore tiles, just set it to be the max beam length with the following line.
 			// return MaxBeamLength;
 			float[] laserScanResults = new float[NumSamplePoints];
-			Collision.LaserScan(samplingPoint, Projectile.velocity, BeamTileCollisionWidth * Projectile.scale, MaxBeamLength, laserScanResults);
+			Collision.LaserScan(samplingPoint, Projectile.velocity, 0 * Projectile.scale, MaxBeamLength, laserScanResults);
 			float averageLengthSample = 0f;
 			for (int i = 0; i < laserScanResults.Length; ++i) {
 				averageLengthSample += laserScanResults[i];

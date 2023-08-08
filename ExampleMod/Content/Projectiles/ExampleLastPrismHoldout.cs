@@ -64,6 +64,9 @@ namespace ExampleMod.Content.Projectiles
 			// Signals to Terraria that this Projectile requires a unique identifier beyond its index in the Projectile array.
 			// This prevents the issue with the vanilla Last Prism where the beams are invisible in multiplayer.
 			ProjectileID.Sets.NeedsUUID[Projectile.type] = true;
+
+			// Prevents jitter when steping up and down blocks and half blocks
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 
 		public override void SetDefaults() {
