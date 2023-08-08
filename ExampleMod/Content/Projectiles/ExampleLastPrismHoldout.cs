@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.Audio;
 using Terraria.GameContent;
 
@@ -16,7 +15,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// The vanilla Last Prism is an animated item with 5 frames of animation. We copy that here.
 		private const int NumAnimationFrames = 5;
-		
+
 		// This controls how many individual beams are fired by the Prism.
 		public const int NumBeams = 10;
 
@@ -59,8 +58,7 @@ namespace ExampleMod.Content.Projectiles
 			set => Projectile.localAI[0] = value;
 		}
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Main.projFrames[Projectile.type] = NumAnimationFrames;
 
 			// Signals to Terraria that this Projectile requires a unique identifier beyond its index in the Projectile array.
@@ -68,14 +66,12 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.NeedsUUID[Projectile.type] = true;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			// Use CloneDefaults to clone all basic Projectile statistics from the vanilla Last Prism.
 			Projectile.CloneDefaults(ProjectileID.LastPrism);
 		}
 
-		public override void AI()
-		{
+		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 			Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
 
@@ -93,8 +89,7 @@ namespace ExampleMod.Content.Projectiles
 			UpdatePlayerVisuals(player, rrp);
 
 			// Update the Prism's behavior: project beams on frame 1, consume mana, and despawn if out of mana.
-			if (Projectile.owner == Main.myPlayer)
-			{
+			if (Projectile.owner == Main.myPlayer) {
 				// Slightly re-aim the Prism every frame so that it gradually sweeps to point towards the mouse.
 				UpdateAim(rrp, player.HeldItem.shootSpeed);
 
@@ -121,13 +116,11 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.timeLeft = 2;
 		}
 
-		private void UpdateDamageForManaSickness(Player player)
-		{
+		private void UpdateDamageForManaSickness(Player player) {
 			Projectile.damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(player.HeldItem.damage);
 		}
 
-		private void UpdateAnimation()
-		{
+		private void UpdateAnimation() {
 			Projectile.frameCounter++;
 
 			// As the Prism charges up and focuses the beams, its animation plays faster.
@@ -142,8 +135,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		private void PlaySounds()
-		{
+		private void PlaySounds() {
 			// The Prism makes sound intermittently while in use, using the vanilla Projectile variable soundDelay.
 			if (Projectile.soundDelay <= 0) {
 				Projectile.soundDelay = SoundInterval;
@@ -155,8 +147,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)
-		{
+		private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos) {
 			// Place the Prism directly into the player's hand at all times.
 			Projectile.Center = playerHandPos;
 			// The beams emit from the tip of the Prism, not the side. As such, rotate the sprite by pi/2 (90 degrees).
@@ -174,11 +165,9 @@ namespace ExampleMod.Content.Projectiles
 			player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
 		}
 
-		private bool ShouldConsumeMana()
-		{
+		private bool ShouldConsumeMana() {
 			// If the mana consumption timer hasn't been initialized yet, initialize it and consume mana on frame 1.
-			if (ManaConsumptionRate == 0f)
-			{
+			if (ManaConsumptionRate == 0f) {
 				NextManaFrame = ManaConsumptionRate = MaxManaConsumptionDelay;
 				return true;
 			}
@@ -187,8 +176,7 @@ namespace ExampleMod.Content.Projectiles
 			bool consume = FrameCounter == NextManaFrame;
 
 			// If mana is being consumed this frame, update the rate of mana consumption and write down the next frame mana will be consumed.
-			if(consume)
-			{
+			if (consume) {
 				// MathHelper.Clamp(X,A,B) guarantees that A <= X <= B. If X is outside the range, it will be set to A or B accordingly.
 				ManaConsumptionRate = MathHelper.Clamp(ManaConsumptionRate - 1f, MinManaConsumptionDelay, MaxManaConsumptionDelay);
 				NextManaFrame += ManaConsumptionRate;
@@ -196,8 +184,7 @@ namespace ExampleMod.Content.Projectiles
 			return consume;
 		}
 
-		private void UpdateAim(Vector2 source, float speed)
-		{
+		private void UpdateAim(Vector2 source, float speed) {
 			// Get the player's current aiming direction as a normalized vector.
 			Vector2 aim = Vector2.Normalize(Main.MouseWorld - source);
 			if (aim.HasNaNs()) {
@@ -214,8 +201,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.velocity = aim;
 		}
 
-		private void FireBeams()
-		{
+		private void FireBeams() {
 			// If for some reason the beam velocity can't be correctly normalized, set it to a default value.
 			Vector2 beamVelocity = Vector2.Normalize(Projectile.velocity);
 			if (beamVelocity.HasNaNs()) {
@@ -228,16 +214,15 @@ namespace ExampleMod.Content.Projectiles
 			int damage = Projectile.damage;
 			float knockback = Projectile.knockBack;
 			for (int b = 0; b < NumBeams; ++b) {
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ProjectileType<ExampleLastPrismBeam>(), damage, knockback, Projectile.owner, b, uuid);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ModContent.ProjectileType<ExampleLastPrismBeam>(), damage, knockback, Projectile.owner, b, uuid);
 			}
 
 			// After creating the beams, mark the Prism as having an important network event. This will make Terraria sync its data to other players ASAP.
 			Projectile.netUpdate = true;
 		}
 
-        // Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
-        public override bool PreDraw(ref Color lightColor)
-		{
+		// Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
+		public override bool PreDraw(ref Color lightColor) {
 			SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 			int frameHeight = texture.Height / Main.projFrames[Projectile.type];
