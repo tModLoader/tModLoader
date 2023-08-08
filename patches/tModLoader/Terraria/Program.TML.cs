@@ -108,7 +108,13 @@ namespace Terraria
 			if (newFolderPath.Contains("OneDrive")) {
 				Logging.tML.Info("Ensuring OneDrive is running before starting to Migrate Files");
 				try {
-					Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe"));
+					var oneDrivePath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\OneDrive\\OneDrive.exe");
+					var oneDrivePath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe");
+					if (File.Exists(oneDrivePath1))
+						Process.Start(oneDrivePath1);
+					else if (File.Exists(oneDrivePath2))
+						Process.Start(oneDrivePath2);
+
 					Thread.Sleep(3000);
 				}
 				catch { }
@@ -193,21 +199,21 @@ namespace Terraria
 			bool saveHere = File.Exists("savehere.txt");
 			bool tmlSaveDirectoryParameterSet = LaunchParameters.ContainsKey("-tmlsavedirectory");
 
-			// File migration is only attempted for the default save folder
-			if (!saveHere && !tmlSaveDirectoryParameterSet) {
-				PortFilesMaster(SavePath, isCloud: false);
-			}
-
+			var savePathCopy = SavePath;
 			// 1.4.3 legacy custom statement - the legacy 143 folder
 			var fileFolder = Legacy143Folder;
-
 			SavePath = Path.Combine(SavePath, fileFolder);
-
-			if (saveHere)
-				SavePath = fileFolder; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 
 			// Used for ModSources sharing across folders
 			SavePathShared = Path.Combine(SavePath, "..", StableFolder);
+
+			// File migration is only attempted for the default save folder
+			if (!saveHere && !tmlSaveDirectoryParameterSet) {
+				PortFilesMaster(savePathCopy, isCloud: false);
+			}
+
+			if (saveHere)
+				SavePath = fileFolder; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 
 			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
 			if (tmlSaveDirectoryParameterSet) {
