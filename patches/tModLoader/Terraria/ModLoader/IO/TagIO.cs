@@ -304,7 +304,6 @@ namespace Terraria.ModLoader.IO
 		public static void WriteTag(string name, object tag, BinaryWriter w) {
 			int id = GetPayloadId(tag.GetType());
 			w.Write((byte)id);
-
 			StringHandler.writer(w, name);
 			PayloadHandlers[id].Write(w, tag);
 		}

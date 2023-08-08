@@ -54,10 +54,11 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  				if (!flag) {
  					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -356,6 +_,8 @@
+@@ -356,6 +_,9 @@
  							CheckSavedOreTiers();
  							binaryReader.Close();
  							memoryStream.Close();
++							// tML Added
 +							SystemLoader.OnWorldLoad();
 +							WorldIO.Load(Main.worldPathName, flag);
  							if (num3 != 0)
@@ -73,17 +74,12 @@
  			new Stopwatch().Start();
  			int num;
  			byte[] array;
-@@ -551,6 +_,13 @@
+@@ -551,6 +_,8 @@
  
  			if (text != null && array2 != null)
  				FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
-+			try {
-+				WorldIO.Save(Main.worldPathName, useCloudSaving);
-+			}
-+			catch (Exception e) {
-+				Utils.ShowFancyErrorMessage(e.Message, 0);
-+			}
-+			
++
++			WorldIO.Save(Main.worldPathName, useCloudSaving);
  		}
  
  		private static void DoRollingBackups(string backupWorldWritePath) {

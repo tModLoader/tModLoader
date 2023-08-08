@@ -38,16 +38,7 @@ namespace Terraria.ModLoader.IO
 				["alteredVanillaFields"] = SaveAlteredVanillaFields()
 			};
 
-			var stream = new MemoryStream();
-			TagIO.ToStream(tag, stream);
-
-			var data = stream.ToArray();
-			if (data[0] != 0x1F || data[1] != 0x8B) {
-				FileUtilities.Write(path + ".corr", data, data.Length, isCloudSave);
-				throw new IOException("Detected Corrupted Save Attempt. Aborting to avoid world corruption.\nYour last successful save will be kept. ERROR: Missing NBT Header.");
-			}
-
-			FileUtilities.Write(path, data, data.Length, isCloudSave);
+			FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 		}
 
 		//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
@@ -61,10 +52,7 @@ namespace Terraria.ModLoader.IO
 			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				throw new CustomModDataException(null, ".twld File Corrupted during Last Save Step. Aborting...", new Exception("Missing NBT Header"));
-
-				//LegacyLoad()
-				return;
+				throw new IOException($"{path} File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
