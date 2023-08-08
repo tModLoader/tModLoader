@@ -1,5 +1,7 @@
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Terraria.ModLoader.IO;
 using Terraria.Social;
 
 namespace Terraria.Utilities;
@@ -114,5 +116,34 @@ public static partial class FileUtilities
 			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, $"{folderName}"), "Click to copy \"{0}\" over from dev", 3),
 			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, $"{folderName}"), "Click to copy \"{0}\" over from 1.4.3-Legacy", 0),
 		};
+	}
+
+	internal static bool WriteTagCompound(string path, bool isCloud, TagCompound tag)
+	{
+		var stream = new MemoryStream();
+		TagIO.ToStream(tag, stream);
+
+		var data = stream.ToArray();
+		var fileName = Path.GetFileName(path);
+
+		if (data[0] != 0x1F || data[1] != 0x8B) {
+			Write(path + ".corr", data, data.Length, isCloud);
+			throw new IOException($"Detected Corrupted Save Stream attempt.\nAborting to avoid {fileName} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
+		}
+
+		// Attempt 1: Write
+		Write(path, data, data.Length, isCloud);
+		if (Enumerable.SequenceEqual(ReadAllBytes(path, isCloud), data))
+			return true;
+
+		// Attempt 2: Write
+		ModLoader.Logging.tML.Warn($"Detected failed save for {fileName}. Re-attempting after 2 seconds");
+		System.Threading.Thread.Sleep(2000);
+
+		Write(path, data, data.Length, isCloud);
+		if (!Enumerable.SequenceEqual(ReadAllBytes(path, isCloud), data))
+			throw new IOException($"Unable to save current progress.\nAborting to avoid {fileName} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
+
+		return true;
 	}
 }
