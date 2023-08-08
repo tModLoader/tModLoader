@@ -92,15 +92,10 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,56 @@
+@@ -147,23 +_,51 @@
  		}
  	}
  
-+	public const string PreviewFolder = "tModLoader-preview";
-+	public const string ReleaseFolder = "tModLoader";
-+	public const string DevFolder = "tModLoader-dev";
-+	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
-+
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
  	public static void LaunchGame(string[] args, bool monoArgs = false)

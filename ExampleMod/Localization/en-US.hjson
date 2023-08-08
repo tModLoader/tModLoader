@@ -239,11 +239,13 @@ Mods: {
 			ExampleHelmet: {
 				DisplayName: Example Helmet
 				Tooltip: This is a modded helmet.
+				SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
+				SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
 			}
 
 			ExampleLeggings: {

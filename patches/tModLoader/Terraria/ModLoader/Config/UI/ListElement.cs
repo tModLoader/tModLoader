@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -49,7 +50,7 @@ internal class ListElement : CollectionElement
 				wrapped.Item2.Width.Pixels -= 30;
 
 				// Add delete button.
-				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, "Remove");
+				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigRemove"));
 				deleteButton.VAlign = 0.5f;
 				deleteButton.OnLeftClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
 				wrapped.Item1.Append(deleteButton);

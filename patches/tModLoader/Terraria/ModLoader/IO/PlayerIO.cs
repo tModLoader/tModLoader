@@ -105,7 +105,7 @@ internal static class PlayerIO
 			return false;
 		}
 
-		tag = TagIO.FromStream(new MemoryStream(buf));
+		tag = TagIO.FromStream(buf.ToMemoryStream());
 		return true;
 	}
 

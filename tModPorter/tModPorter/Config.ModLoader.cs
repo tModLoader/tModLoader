@@ -498,6 +498,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
 		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
 		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
+		ChangeHookSignature("Terraria.ModLoader.GlobalInfoDisplay", "ModifyDisplayColor");
 
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile", "Drop", comment: "Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation.");
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
@@ -531,5 +532,8 @@ public static partial class Config
 
 		RenameStaticField("Terraria.ID.AmmoID.Sets", from: "IsRocket", to: "IsSpecialist");
 		RenameInstanceField("Terraria.Projectile", from: "ContinuouslyUpdateDamage", to: "ContinuouslyUpdateDamageStats");
+		RenameStaticField("Terraria.ID.BuffID.Sets", from: "IsAnNPCWhipDebuff", to: "IsATagBuff");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShimmerImmunity", to: "SpecificDebuffImmunity").FollowBy(AccessShimmerBuffIDElem());
+		RefactorStaticMember("Terraria.ID.NPCID.Sets", "DebuffImmunitySets", Comment("Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453"));
 	}
 }

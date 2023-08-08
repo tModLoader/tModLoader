@@ -2088,7 +2088,7 @@
  		}
  
 -		if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
-+		if (itemToClone != null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
++		if (itemToClone == null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}

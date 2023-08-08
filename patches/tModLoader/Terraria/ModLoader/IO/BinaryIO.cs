@@ -23,7 +23,7 @@ public static class BinaryIO
 	public static void SafeRead(this BinaryReader reader, Action<BinaryReader> read)
 	{
 		int length = reader.Read7BitEncodedInt();
-		var ms = new MemoryStream(reader.ReadBytes(length));
+		var ms = reader.ReadBytes(length).ToMemoryStream();
 		read(new BinaryReader(ms));
 		if (ms.Position != length)
 			throw new IOException("Read underflow " + ms.Position + " of " + length + " bytes");
@@ -48,10 +48,15 @@ public static class BinaryIO
 		return buf;
 	}
 
+	public static MemoryStream ToMemoryStream(this byte[] bytes, bool writeable = false)
+	{
+		return new MemoryStream(bytes, 0, bytes.Length, writeable, publiclyVisible: true);
+	}
+
 	public static ReadOnlySpan<byte> ReadByteSpan(this Stream stream, int len)
 	{
-		if (stream is MemoryStream ms) {
-			var span = ms.GetBuffer().AsSpan().Slice((int)ms.Position, len);
+		if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf)) {
+			var span = buf.AsSpan().Slice((int)ms.Position, len);
 			ms.Seek(len, SeekOrigin.Current);
 			return span;
 		}

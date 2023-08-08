@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
@@ -9,6 +10,14 @@ namespace ExampleMod.Content.Items.Armor
 	[AutoloadEquip(EquipType.Head)]
 	public class ExampleHood : ModItem
 	{
+		public static readonly int ManaCostReductionPercent = 10;
+
+		public static LocalizedText SetBonusText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(ManaCostReductionPercent);
+		}
+
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
@@ -24,8 +33,8 @@ namespace ExampleMod.Content.Items.Armor
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			player.setBonus = "reduces mana cost by 10%";  // This is the setbonus tooltip
-			player.manaCost -= 0.1f; // Reduces mana cost by 10%
+			player.setBonus = SetBonusText.Value; // This is the setbonus tooltip: "10% reduced mana cost"
+			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
