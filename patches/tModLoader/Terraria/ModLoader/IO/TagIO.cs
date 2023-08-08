@@ -342,9 +342,12 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void ToStream(TagCompound root, Stream stream, bool compress = true) {
-			if (compress) stream = new GZipStream(stream, CompressionMode.Compress, true);
+			if (compress)
+				stream = new GZipStream(stream, CompressionMode.Compress, true);
+
 			Write(root, new BigEndianWriter(stream));
-			if (compress) stream.Close();
+			if (compress)
+				stream.Close();
 		}
 
 		public static void Write(TagCompound root, BinaryWriter writer) => WriteTag("", root, writer);
