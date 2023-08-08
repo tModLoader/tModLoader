@@ -68,6 +68,7 @@ internal static class Interface
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+	internal static UIStartServer startServer = new UIStartServer();
 
 	// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 	//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
