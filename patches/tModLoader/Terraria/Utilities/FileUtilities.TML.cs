@@ -104,10 +104,11 @@ namespace Terraria.Utilities
 			TagIO.ToStream(tag, stream);
 
 			var data = stream.ToArray();
+			var fileName = Path.GetFileName(path);
 
 			if (data[0] != 0x1F || data[1] != 0x8B) {
 				Write(path + ".corr", data, data.Length, isCloud);
-				throw new IOException($"Detected Corrupted Save Stream attempt.\nAborting to avoid {path} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
+				throw new IOException($"Detected Corrupted Save Stream attempt.\nAborting to avoid {fileName} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
 			}
 
 			// Attempt 1: Write
@@ -116,12 +117,12 @@ namespace Terraria.Utilities
 				return true;
 
 			// Attempt 2: Write
-			ModLoader.Logging.tML.Warn($"Detected failed save for {path}. Re-attempting after 2 seconds");
+			ModLoader.Logging.tML.Warn($"Detected failed save for {fileName}. Re-attempting after 2 seconds");
 			System.Threading.Thread.Sleep(2000);
 
 			Write(path, data, data.Length, isCloud);
 			if (!Enumerable.SequenceEqual(ReadAllBytes(path, isCloud), data))
-				throw new IOException($"Unable to save current progress.\nAborting to avoid {path} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
+				throw new IOException($"Unable to save current progress.\nAborting to avoid {fileName} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
 
 			return true;
 		}

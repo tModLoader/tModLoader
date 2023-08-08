@@ -52,7 +52,7 @@ namespace Terraria.ModLoader.IO
 			byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 			if (buf[0] != 0x1F || buf[1] != 0x8B) {
-				throw new IOException($"{path} File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
+				throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 			}
 
 			var tag = TagIO.FromStream(new MemoryStream(buf));
