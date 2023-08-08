@@ -30,8 +30,8 @@ internal static class LogArchiver
 	internal static void ArchiveLogs()
 	{
 		SetupLogDirs();
-            MoveZipsToArchiveDir();
-		MoveOldLogs();
+		MoveZipsToArchiveDir();
+		Archive();
 		DeleteOldArchives();
 	}
 
@@ -87,15 +87,11 @@ internal static class LogArchiver
 		}
 	}
 
-	private static void MoveOldLogs()
+	private static void Archive()
 	{
-		foreach (string log in GetOldLogs()) {
-			Archive(log, Path.GetFileNameWithoutExtension(log));
-		}
-	}
-
-	private static void Archive(string logFile, string entryName)
-	{
+		var logFiles = GetOldLogs();
+		var logFile = logFiles.First();
+		var entryName = Path.GetFileName(logFile);
 
 		DateTime time;
 		try {

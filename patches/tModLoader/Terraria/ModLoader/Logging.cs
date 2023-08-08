@@ -128,6 +128,14 @@ public static partial class Logging
 		BasicConfigurator.Configure(appenders.ToArray());
 	}
 
+	private static void MarkLogFilesAsOld(LogFile logFile)
+	{
+		if (logFile == LogFile.TerrariaSteamClient)
+			return;
+
+
+	}
+
 	private static string GetNewLogFile(string baseName)
 	{
 		var pattern = new Regex($"{baseName}(\\d*)\\.log$");
