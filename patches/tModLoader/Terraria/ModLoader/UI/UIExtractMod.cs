@@ -14,7 +14,8 @@ internal class UIExtractMod : UIProgress
 {
 	private const string LOG_NAME = "extract.log";
 	private LocalMod mod;
-	private static readonly IList<string> codeExtensions = new List<string>(ModCompile.sourceExtensions) {
+	private static IList<string> SourceExtensions => ModCompile.sourceExtensions;
+	private static readonly IList<string> CompiledCodeExtensions = new List<string> {
 		".dll", ".pdb"
 	};
 
@@ -59,9 +60,7 @@ internal class UIExtractMod : UIProgress
 
 			log = new StreamWriter(Path.Combine(dir, LOG_NAME)) { AutoFlush = true };
 
-			if (mod.properties.hideCode)
-				log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideCodeMessage"));
-			else if (!mod.properties.includeSource)
+			if (!mod.properties.includeSource)
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractNoSourceCodeMessage"));
 			if (mod.properties.hideResources)
 				log.WriteLine(Language.GetTextValue("tModLoader.ExtractHideResourcesMessage"));
@@ -82,9 +81,11 @@ internal class UIExtractMod : UIProgress
 				if (name == LOG_NAME)
 					continue;
 
-				bool hidden = codeExtensions.Contains(Path.GetExtension(name))
-					? mod.properties.hideCode
+				bool hidden = SourceExtensions.Contains(Path.GetExtension(name))
+					? !mod.properties.includeSource
 					: mod.properties.hideResources;
+				if (CompiledCodeExtensions.Contains(Path.GetExtension(name)))
+					hidden = false;
 
 				if (hidden) {
 					log.Write($"[hidden] {name}");
@@ -110,7 +111,7 @@ internal class UIExtractMod : UIProgress
 					File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.dll"), true);
 					log?.WriteLine($"You can find this mod's .dll files under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");
 				}
-				if (name == $"{mod.Name}.xml" && !mod.properties.hideCode) {
+				if (name == $"{mod.Name}.xml") {
 					Directory.CreateDirectory(modReferencesPath);
 					File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.xml"), true);
 					log?.WriteLine($"You can find this mod's documentation .xml file under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");

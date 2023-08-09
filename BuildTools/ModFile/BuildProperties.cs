@@ -20,7 +20,6 @@ public class BuildProperties
 	public Version Version = new(1, 0);
 	public string DisplayName = "";
 	public bool NoCompile = false;
-	public bool HideCode = false;
 	public bool HideResources = false;
 	public bool IncludeSource = false;
 	public bool PlayableOnPreview = true;
@@ -113,9 +112,6 @@ public class BuildProperties
 			case "noCompile":
 				properties.NoCompile = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
-			case "hideCode":
-				properties.HideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
-				break;
 			case "hideResources":
 				properties.HideResources = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
@@ -196,9 +192,6 @@ public class BuildProperties
 		}
 		if (NoCompile) {
 			writer.Write("noCompile");
-		}
-		if (!HideCode) {
-			writer.Write("!hideCode");
 		}
 		if (!HideResources) {
 			writer.Write("!hideResources");
