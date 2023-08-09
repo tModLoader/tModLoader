@@ -53,7 +53,7 @@ namespace ExampleMod.Content.Items
 			}
 
 			// Another method of hiding can be done if you want to hide just one line.
-			// tooltips.FirstOrDefault(x => x.Mod == "ExampleMod" && x.Name == "Vertbose:RemoveMe")?.Hide();
+			// tooltips.FirstOrDefault(x => x.Mod == "ExampleMod" && x.Name == "Verbose:RemoveMe")?.Hide();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
