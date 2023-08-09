@@ -423,7 +423,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Ocorreu um erro ao extrair {0}",
-		"ExtractHideCodeMessage": "O desenvolvedor do mod optou por esconder o código do tModReader.",
 		"ExtractNoSourceCodeMessage": "O desenvolvedor do mod optou por não incluir o seu código fonte.",
 		"ExtractHideResourcesMessage": "O desenvolvedor do mod optou por esconder recursos (ex. imagens) do tModReader.",
 		"ExtractFileListing": "Arquivos:",

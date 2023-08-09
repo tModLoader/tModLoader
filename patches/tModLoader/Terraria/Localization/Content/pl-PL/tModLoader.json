@@ -423,7 +423,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Wystąpił błąd podczas wypakowywania {0}",
-		"ExtractHideCodeMessage": "Modder zdecydował się ukryć kod źródłowy przed tModReader.",
 		"ExtractNoSourceCodeMessage": "Modder nie zdecydował się na dołączenie swojego kodu źródłowego.",
 		"ExtractHideResourcesMessage": "Modder zdecydował się ukryć zasoby (np. obrazy) przed tModReaderem.",
 		"ExtractFileListing": "Pliki:",

@@ -425,7 +425,6 @@
 
 		// Extract Mod
 		// "ExtractErrorWhileExtractingMod": "An error occurred while extracting {0}",
-		// "ExtractHideCodeMessage": "The modder has chosen to hide the code from tModReader.",
 		// "ExtractNoSourceCodeMessage": "The modder has not chosen to include their source code.",
 		// "ExtractHideResourcesMessage": "The modder has chosen to hide resources (ie. images) from tModReader.",
 		// "ExtractFileListing": "Files:",

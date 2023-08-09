@@ -423,7 +423,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Произошла ошибка во время извлечения мода {0}",
-		"ExtractHideCodeMessage": "Разработчик мода решил скрыть исходный код от tModReader.",
 		"ExtractNoSourceCodeMessage": "Разработчик мода решил не предоставлять свой исходный код.",
 		"ExtractHideResourcesMessage": "Разработчик мода решил скрыть ресурсы (т.е. изображения) от tModReader.",
 		"ExtractFileListing": "Список файлов:",

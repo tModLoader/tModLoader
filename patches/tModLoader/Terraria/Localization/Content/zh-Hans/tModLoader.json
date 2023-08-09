@@ -424,7 +424,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
-		"ExtractHideCodeMessage": "该模组的作者选择对[tModReader]隐藏其源代码.",
 		"ExtractNoSourceCodeMessage": "该模组的作者选择不包含模组源代码.",
 		"ExtractHideResourcesMessage": "该模组的作者选择对[tModReader]隐藏其资源文件(如图像、音效等)。",
 		"ExtractFileListing": "文件:",
