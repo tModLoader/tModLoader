@@ -55,7 +55,7 @@ internal class BuildProperties
 	internal Version version = new Version(1, 0);
 	internal string displayName = "";
 	internal bool noCompile = false;
-	internal bool hideResources = false;
+	internal bool hideResources = true;
 	internal bool includeSource = false;
 	internal string eacPath = "";
 	// This .tmod was built against a beta release, preventing publishing.

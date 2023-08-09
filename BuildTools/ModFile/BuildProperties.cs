@@ -20,7 +20,7 @@ public class BuildProperties
 	public Version Version = new(1, 0);
 	public string DisplayName = "";
 	public bool NoCompile = false;
-	public bool HideResources = false;
+	public bool HideResources = true;
 	public bool IncludeSource = false;
 	public bool PlayableOnPreview = true;
 	public bool TranslationMod = false;
