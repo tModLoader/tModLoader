@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
+using System.Net;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 
@@ -40,7 +40,12 @@ public partial class WorkshopSocialModule
 	public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
 	{
 		if (!SteamedWraps.SteamClient) {
-			base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
+			IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
+			return false;
+		}
+		
+		if (modFile.TModLoaderVersion != BuildInfo.tMLVersion) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
 		}
 
@@ -53,7 +58,7 @@ public partial class WorkshopSocialModule
 		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
 		buildData["trueversion"] = buildData["version"];
-
+		
 		if (currPublishID != 0) {
 			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
 			var currID = Steamworks.SteamUser.GetSteamID();
