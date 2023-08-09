@@ -53,7 +53,7 @@ internal static class LogArchiver
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
-                return Enumerable.Empty<string>();
+			return Enumerable.Empty<string>();
 		}
 	}
 
@@ -89,13 +89,14 @@ internal static class LogArchiver
 
 	private static void Archive()
 	{
-		var logFiles = GetOldLogs();
-		var referenceLogFile = logFiles.First();
+		var logFiles = GetOldLogs().ToList();
+		if (!logFiles.Any())
+			return;
 
 		// Get the Creation Time to use for the Zip.
 		DateTime time;
 		try {
-			time = File.GetCreationTime(referenceLogFile);
+			time = logFiles.Select(File.GetCreationTime).Min();
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
@@ -127,7 +128,7 @@ internal static class LogArchiver
 					using (var stream = File.OpenRead(logFile)) {
 						if (stream.Length > 10_000_000) {
 							// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
-							Logging.tML.Error($"The log file {logFile} exceeds 10MB, it will be truncated for the logs archive.");
+							Logging.tML.Warn($"{logFile} exceeds 10MB, it will be truncated for the logs archive.");
 							zip.AddEntry(entryName, stream.ReadBytes(10_000_000));
 						}
 						else {
