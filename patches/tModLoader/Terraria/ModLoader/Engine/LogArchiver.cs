@@ -90,12 +90,12 @@ internal static class LogArchiver
 	private static void Archive()
 	{
 		var logFiles = GetOldLogs();
-		var logFile = logFiles.First();
-		var entryName = Path.GetFileName(logFile);
+		var referenceLogFile = logFiles.First();
 
+		// Get the Creation Time to use for the Zip.
 		DateTime time;
 		try {
-			time = File.GetCreationTime(logFile);
+			time = File.GetCreationTime(referenceLogFile);
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
@@ -103,35 +103,42 @@ internal static class LogArchiver
 		}
 		int n = 1;
 
+		// Check if other Zips exist already for today
 		var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
-		string[] existingLogs = new string[0];
+		string[] existingLogArchives = new string[0];
 		try {
-			existingLogs = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToArray();
+			existingLogArchives = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToArray();
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
 			return;
 		}
 
-		if (existingLogs.Length > 0)
-			n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
+		// Calculate what the new index should be if already exists for today
+		if (existingLogArchives.Length > 0)
+			n = existingLogArchives.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
 
+
+		// Initiate the ZIP.
 		try {
 			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
-				using (var stream = File.OpenRead(logFile)) {
-					if (stream.Length > 10_000_000) {
-						// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
-						Logging.tML.Error($"The log file {logFile} exceeds 10MB, it will be truncated for the logs archive.");
-						zip.AddEntry(entryName, stream.ReadBytes(10_000_000));
+				foreach (var logFile in logFiles) {
+					var entryName = Path.GetFileNameWithoutExtension(logFile); // Note this gives client.log from client.log.old
+					using (var stream = File.OpenRead(logFile)) {
+						if (stream.Length > 10_000_000) {
+							// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
+							Logging.tML.Error($"The log file {logFile} exceeds 10MB, it will be truncated for the logs archive.");
+							zip.AddEntry(entryName, stream.ReadBytes(10_000_000));
+						}
+						else {
+							zip.AddEntry(entryName, stream);
+						}
+						zip.Save();
 					}
-					else {
-						zip.AddEntry(entryName, stream);
-					}
-					zip.Save();
+
+					File.Delete(logFile);
 				}
 			}
-
-			File.Delete(logFile);
 		}
 		catch (Exception e) {
 			// Problem either in File.OpenRead, zip.Save or File.Delete IO ops

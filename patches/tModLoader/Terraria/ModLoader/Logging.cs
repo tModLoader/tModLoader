@@ -53,6 +53,7 @@ public static partial class Logging
 		// This is the first file we attempt to use.
 		Utils.TryCreatingDirectory(LogDir);
 		try {
+			MarkCommonLogFilesAsOld(logFile);
 			ConfigureAppenders(logFile);
 		}
 		catch (Exception e) {
@@ -116,7 +117,7 @@ public static partial class Logging
 
 		var fileAppender = new FileAppender {
 			Name = "FileAppender",
-			File = LogPath = Path.Combine(LogDir, GetNewLogFile(logFile.ToString().ToLowerInvariant())),
+			File = LogPath = Path.Combine(LogDir, GetNewLogFileAndMarkOld(logFile.ToString().ToLowerInvariant())),
 			AppendToFile = false,
 			Encoding = encoding,
 			Layout = layout
@@ -128,15 +129,24 @@ public static partial class Logging
 		BasicConfigurator.Configure(appenders.ToArray());
 	}
 
-	private static void MarkLogFilesAsOld(LogFile logFile)
+	private static void MarkCommonLogFilesAsOld(LogFile logFile)
 	{
+		// Launch.log is for the current run, so don't mark as old. Only needed for startup issues
+		// Environment.log is old, will be replaced with new one during Logging.LogStartup
+		// TerrariaSteamClient.Log is a log for the client that will be replaced with a new one during later tML Startup.
+
 		if (logFile == LogFile.TerrariaSteamClient)
 			return;
 
+		GetNewLogFileAndMarkOld("environment");
+		GetNewLogFileAndMarkOld(logFile.ToString().ToLowerInvariant());
 
+		if (logFile == LogFile.Client) {
+			GetNewLogFileAndMarkOld(LogFile.TerrariaSteamClient.ToString().ToLowerInvariant());
+		}
 	}
 
-	private static string GetNewLogFile(string baseName)
+	private static string GetNewLogFileAndMarkOld(string baseName)
 	{
 		var pattern = new Regex($"{baseName}(\\d*)\\.log$");
 		var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
