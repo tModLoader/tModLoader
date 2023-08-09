@@ -37,6 +37,7 @@ public static partial class Logging
 	private static readonly Regex statusRegex = new(@"(.+?)[: \d]*%$");
 
 	public static string LogPath { get; private set; }
+	private static string MainLogName { get; set; }
 
 	/// <summary> Available for logging when Mod.Logging is not available, such as field initialization </summary>
 	public static ILog PublicLogger { get; } = LogManager.GetLogger("PublicLogger");
@@ -138,9 +139,10 @@ public static partial class Logging
 		if (logFile == LogFile.TerrariaSteamClient)
 			return;
 
-		GetNewLogFileAndMarkOld("environment");
-		GetNewLogFileAndMarkOld(logFile.ToString().ToLowerInvariant());
+		string mainLogFile = logFile.ToString().ToLowerInvariant();
+		MainLogName = GetNewLogFileAndMarkOld(mainLogFile).Replace(".log", "");
 
+		GetNewLogFileAndMarkOld(GetEnvironmentLogName());
 		if (logFile == LogFile.Client) {
 			GetNewLogFileAndMarkOld(LogFile.TerrariaSteamClient.ToString().ToLowerInvariant());
 		}
@@ -238,7 +240,7 @@ public static partial class Logging
 	private static void DumpEnvVars()
 	{
 		try {
-			using var f = File.OpenWrite(Path.Combine(LogDir, "environment.log"));
+			using var f = File.OpenWrite(Path.Combine(LogDir, GetEnvironmentLogName() + ".log"));
 			using var w = new StreamWriter(f);
 			foreach (var key in Environment.GetEnvironmentVariables().Keys) {
 				w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");
@@ -248,4 +250,6 @@ public static partial class Logging
 			tML.Error("Failed to dump env vars", e);
 		}
 	}
+
+	private static string GetEnvironmentLogName() => $"environment-{MainLogName}";
 }
