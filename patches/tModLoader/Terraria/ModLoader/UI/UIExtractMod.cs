@@ -90,7 +90,7 @@ internal class UIExtractMod : UIProgress
 					hidden = false;
 
 				if (hidden) {
-					log.Write($"[hidden] {name}");
+					log.WriteLine($"[hidden] {name}");
 					continue;
 				} else {
 					log.WriteLine(name);
