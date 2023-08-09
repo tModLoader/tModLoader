@@ -2162,7 +2162,7 @@
  		}
  
  		if (armorPiece.type == 792 || armorPiece.type == 793 || armorPiece.type == 794) {
-+			allDamage += 0.02f;
++			allDamage += 0.03f;
 +			/*
  			meleeDamage += 0.03f;
  			rangedDamage += 0.03f;
