@@ -37,7 +37,6 @@ public static partial class Logging
 	private static readonly Regex statusRegex = new(@"(.+?)[: \d]*%$");
 
 	public static string LogPath { get; private set; }
-	private static string MainLogName { get; set; }
 
 	/// <summary> Available for logging when Mod.Logging is not available, such as field initialization </summary>
 	public static ILog PublicLogger { get; } = LogManager.GetLogger("PublicLogger");
@@ -118,7 +117,7 @@ public static partial class Logging
 
 		var fileAppender = new FileAppender {
 			Name = "FileAppender",
-			File = LogPath = Path.Combine(LogDir, GetNewLogFileAndMarkOld(logFile.ToString().ToLowerInvariant())),
+			File = LogPath,
 			AppendToFile = false,
 			Encoding = encoding,
 			Layout = layout
@@ -140,7 +139,7 @@ public static partial class Logging
 			return;
 
 		string mainLogFile = logFile.ToString().ToLowerInvariant();
-		MainLogName = GetNewLogFileAndMarkOld(mainLogFile).Replace(".log", "");
+		LogPath = Path.Combine(LogDir, GetNewLogFileAndMarkOld(mainLogFile));
 
 		GetNewLogFileAndMarkOld(GetEnvironmentLogName());
 		if (logFile == LogFile.Client) {
@@ -251,5 +250,5 @@ public static partial class Logging
 		}
 	}
 
-	private static string GetEnvironmentLogName() => $"environment-{MainLogName}";
+	private static string GetEnvironmentLogName() => $"environment-{Path.GetFileNameWithoutExtension(LogPath)}";
 }
