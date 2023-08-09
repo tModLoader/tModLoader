@@ -1566,7 +1566,10 @@ public static class ItemLoader
 	public static void SplitStack(Item destination, Item source, int numToTransfer)
 	{
 		destination.stack = 0;
-		destination.favorited = false;
+		if (source.favorited) {
+			destination.favorited = true;
+			source.favorited = false;
+		}
 
 		foreach (var g in HookSplitStack.Enumerate(destination)) {
 			g.SplitStack(destination, source, numToTransfer);
