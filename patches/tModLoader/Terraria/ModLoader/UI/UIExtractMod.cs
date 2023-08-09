@@ -18,6 +18,7 @@ internal class UIExtractMod : UIProgress
 	private static readonly IList<string> CompiledCodeExtensions = new List<string> {
 		".dll", ".pdb"
 	};
+	private static readonly IList<string> LocalizationExtensions = new List<string> { ".hjson" };
 
 	private CancellationTokenSource _cts;
 
@@ -81,10 +82,11 @@ internal class UIExtractMod : UIProgress
 				if (name == LOG_NAME)
 					continue;
 
-				bool hidden = SourceExtensions.Contains(Path.GetExtension(name))
+				string extension = Path.GetExtension(name);
+				bool hidden = SourceExtensions.Contains(extension)
 					? !mod.properties.includeSource
 					: mod.properties.hideResources;
-				if (CompiledCodeExtensions.Contains(Path.GetExtension(name)))
+				if (CompiledCodeExtensions.Contains(extension) || LocalizationExtensions.Contains(extension))
 					hidden = false;
 
 				if (hidden) {
