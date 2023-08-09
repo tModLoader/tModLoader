@@ -25,6 +25,7 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.minionDamageMult *= 0.08f;
 		player.thrownDamageMult *= 0.08f;
 
+		player.allCrit += 1;
 		player.meleeCrit *= 5;
 		player.rangedCrit *= 5;
 		player.magicCrit *= 5;
