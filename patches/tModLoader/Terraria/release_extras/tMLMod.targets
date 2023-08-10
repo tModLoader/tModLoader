@@ -49,7 +49,6 @@
 			<ModProperty Include="DisplayName" Value="$(DisplayName)" Condition="$(DisplayName) != ''" />
 			<ModProperty Include="Author" Value="$(Author)" Condition="$(Author) != ''" />
 			<ModProperty Include="Homepage" Value="$(Homepage)" Condition="$(Homepage) != ''" />
-			<ModProperty Include="HideCode" Value="$(HideCode)" Condition="$(HideCode) != ''" />
 			<ModProperty Include="HideResources" Value="$(HideResources)" Condition="$(HideResources) != ''" />
 			<ModProperty Include="IncludeSource" Value="$(IncludeSource)" Condition="$(IncludeSource) != ''" />
 			<ModProperty Include="BuildIgnore" Value="$(BuildIgnore)" Condition="$(BuildIgnore) != ''" />

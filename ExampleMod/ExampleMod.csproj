@@ -12,7 +12,6 @@
     <DisplayName>Example Mod</DisplayName>
     <Author>TML Team</Author>
     <Homepage>https://tmodloader.net/</Homepage>
-    <HideCode>false</HideCode>
     <HideResources>false</HideResources>
     <IncludeSource>true</IncludeSource>
     <BuildIgnore>*.csproj, *.user, obj\*, bin\*, .vs\*, Old\*</BuildIgnore>
