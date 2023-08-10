@@ -1747,7 +1747,7 @@
  		}
 +
 +		// Patch note: End of Projectile.Kill().
-+		ProjectileLoader.Kill(this, num);
++		ProjectileLoader.OnKill(this, num);
  
  		active = false;
  	}

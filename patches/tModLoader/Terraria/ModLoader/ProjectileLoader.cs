@@ -364,14 +364,14 @@ public static class ProjectileLoader
 		return result;
 	}
 
-	private static HookList HookKill = AddHook<Action<Projectile, int>>(g => g.Kill);
+	private static HookList HookOnKill = AddHook<Action<Projectile, int>>(g => g.OnKill);
 
-	public static void Kill(Projectile projectile, int timeLeft)
+	public static void OnKill(Projectile projectile, int timeLeft)
 	{
-		projectile.ModProjectile?.Kill(timeLeft);
+		projectile.ModProjectile?.OnKill(timeLeft);
 
-		foreach (var g in HookKill.Enumerate(projectile)) {
-			g.Kill(projectile, timeLeft);
+		foreach (var g in HookOnKill.Enumerate(projectile)) {
+			g.OnKill(projectile, timeLeft);
 		}
 	}
 
