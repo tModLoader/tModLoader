@@ -252,9 +252,8 @@ public partial class WorkshopHelper
 
 				if (totalItemsQueried == 0 && pCallback.m_unTotalMatchingResults > 0) {
 					totalItemsQueried = pCallback.m_unTotalMatchingResults;
-					numberPages = ((int)totalItemsQueried / Constants.kNumUGCResultsPerPage) + 1; 
+					numberPages = (int)Math.Ceiling((double)totalItemsQueried / Constants.kNumUGCResultsPerPage);
 				}
-					
 			}
 
 			/// <summary>
