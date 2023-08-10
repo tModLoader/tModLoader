@@ -44,7 +44,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 		
-		if (modFile.TModLoaderVersion != BuildInfo.tMLVersion) {
+		if (modFile.TModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor()) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
 		}
@@ -58,7 +58,7 @@ public partial class WorkshopSocialModule
 		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
 		buildData["trueversion"] = buildData["version"];
-		
+
 		if (currPublishID != 0) {
 			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
 			var currID = Steamworks.SteamUser.GetSteamID();
