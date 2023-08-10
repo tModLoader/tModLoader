@@ -388,14 +388,12 @@ public partial class WorkshopHelper
 
 				Stopwatch stopwatch = Stopwatch.StartNew();
 				do {
+					if (stopwatch.Elapsed.TotalSeconds >= 10)
+						throw new TimeoutException("No response from steam workshop query");
+
 					await SteamedWraps.ForceCallbacks(token);
-				} while (
-					(_primaryQueryResult == EResult.k_EResultNone) &&
-					(stopwatch.Elapsed.TotalSeconds < 10)
-				);
-				if (_primaryQueryResult == EResult.k_EResultNone) {
-					_primaryQueryResult = EResult.k_EResultTimeout;
-				}
+
+				} while (_primaryQueryResult == EResult.k_EResultNone);
 				
 				if (_primaryQueryResult != EResult.k_EResultOK) {
 					SteamedWraps.ReportCheckSteamLogs();
