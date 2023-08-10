@@ -32,7 +32,7 @@ internal class UIModDownloadItem : UIPanel
 
 	private const int MaxImgurFails = 3;
 	private static int ModIconDownloadFailCount = 0;
-	private bool HasModIcon => ModDownload.ModIconUrl != null;
+	private bool HasModIcon => !string.IsNullOrEmpty(ModDownload.ModIconUrl);
 	private float ModIconAdjust => 85f;
 	private bool UpdateIsDowngrade = false;
 
