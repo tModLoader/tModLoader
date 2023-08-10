@@ -26,7 +26,7 @@ public partial class WorkshopSocialModule
 		};
 
 		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out List<string> modIds)) {
-			base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
@@ -46,8 +46,19 @@ public partial class WorkshopSocialModule
 
 	public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
 	{
+		try {
+			return _PublishMod(modFile, buildData, settings);
+		}
+		catch {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+			return false;
+		}
+	}
+
+	private bool _PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
+	{
 		if (!SteamedWraps.SteamClient) {
-			base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
+			IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
 			return false;
 		}
 
@@ -98,7 +109,10 @@ public partial class WorkshopSocialModule
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
 		tagsList.Add(buildData["modside"]);
 
-		CalculateWorkshopDeps(ref buildData);
+		if (!TryCalculateWorkshopDeps(ref buildData)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+			return false;
+		}
 		
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
@@ -152,13 +166,14 @@ public partial class WorkshopSocialModule
 			return new LocalMod(sModFile);
 	}
 
-	private static void CalculateWorkshopDeps(ref NameValueCollection buildData)
+	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
 	{
 		string workshopDeps = "";
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds);
+			if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+				return false;
 
 			foreach (string modRef in modIds) {
 				if (modRef != "0")
@@ -167,6 +182,7 @@ public partial class WorkshopSocialModule
 		}
 
 		buildData["workshopdeps"] = workshopDeps;
+		return true;
 	}
 
 	public static void FixErrorsInWorkshopFolder(string workshopFolderPath)

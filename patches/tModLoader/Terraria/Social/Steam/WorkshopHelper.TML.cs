@@ -59,14 +59,16 @@ public partial class WorkshopHelper
 	}
 
 	/////// Others ////////////////////
-
-	internal static ModDownloadItem GetModDownloadItem(string modSlug)
+	internal static bool TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
 	{
+		item = null;
+
 		var query = new QueryHelper.AQueryInstance(new QueryParameters() { searchModSlugs = new string[] { modSlug } });
 		if (!query.TrySearchByInternalName(out var items))
-			return null;
+			return false;
 
-		return items[0];
+		item = items[0];
+		return item != null; // TODO, return value is ambiguous between a connection error and the mod not existing on workshop, currently both are logged as an error and the item is skipped
 	}
 
 	// Should this be in SteamedWraps or here?
@@ -355,7 +357,6 @@ public partial class WorkshopHelper
 				items = new List<ModDownloadItem>();
 
 				foreach (var slug in queryParameters.searchModSlugs) {
-					// If Query Fails, we can't publish.
 					try {
 						WaitForQueryResult(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug));
 
@@ -368,7 +369,7 @@ public partial class WorkshopHelper
 						items.Add(GenerateModDownloadItemFromQuery(0));
 					}
 					catch {
-						// mm silent exception suppression
+						// If Query Fails, we can't publish
 						return false;
 					}
 					finally {

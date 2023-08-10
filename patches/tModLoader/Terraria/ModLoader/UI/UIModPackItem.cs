@@ -381,7 +381,8 @@ internal class UIModPackItem : UIPanel
 		}
 
 		var query = new QueryParameters() { searchModSlugs = _mods };
-		WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds);
+		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+			return new List<ModPubId_t>(); // query failed. TODO, actually show an error UI instead
 
 		var output = new List<ModPubId_t>();
 		foreach (var item in modIds) {

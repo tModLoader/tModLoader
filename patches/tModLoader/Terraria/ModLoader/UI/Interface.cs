@@ -187,8 +187,7 @@ internal static class Interface
 					if (promptDepDownloads) {
 						HashSet<ModDownloadItem> downloads = new();
 						foreach (var slug in missingDeps) {
-							var item = WorkshopHelper.GetModDownloadItem(slug);
-							if (item == null) {
+							if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
 								Utils.LogAndConsoleInfoMessage($"Could not find required mod dependency on Workshop: {slug}");
 								continue;
 							}
