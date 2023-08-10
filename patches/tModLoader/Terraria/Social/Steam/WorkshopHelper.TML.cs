@@ -279,21 +279,25 @@ public partial class WorkshopHelper
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) - 1));
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
-					if (!TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(idArray))) {
-						throw new Exception($"Unexpectedly failed to query information reqarding items {pageIds}.");
-					}
-
-					for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
-						items[j] = GenerateModDownloadItemFromQuery((uint)j);
-						if (items[j] is null) {
-							Logging.tML.Info($"Unable to find Mod with ID {idArray[j]}");
-							continue;
+					try {
+						if (!TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(idArray))) {
+							throw new Exception($"Unexpectedly failed to query information reqarding items {pageIds}.");
 						}
 
-						items[j].UpdateInstallState();
+						for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
+							items[j] = GenerateModDownloadItemFromQuery((uint)j);
+							if (items[j] is null) {
+								Logging.tML.Info($"Unable to find Mod with ID {idArray[j]}");
+								continue;
+							}
+
+							items[j].UpdateInstallState();
+						}
+					}
+					finally {
+						ReleaseWorkshopQuery();
 					}
 
-					ReleaseWorkshopQuery();
 				}
 				
 				return items;
@@ -302,26 +306,32 @@ public partial class WorkshopHelper
 			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
 			{
 				uint currentPage = 1;
+				int currentPageAttempts = 0;
 				do {
 					token.ThrowIfCancellationRequested();
-
-					if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token)) {
-						ReleaseWorkshopQuery();
-
-						// If it failed, make a second attempt after 100 ms
-						await Task.Delay(100, token);
-						
-						if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token)) {
-							ReleaseWorkshopQuery();
-							// Exit for error fetching stuff
-							throw new SocialBrowserException("Workshop Query Failed");
+					try {
+						try {
+							if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token))
+								throw new SocialBrowserException("Workshop Query Failed");
 						}
+						catch {
+							if (currentPageAttempts == 1)
+								throw;
+
+							await Task.Delay(100, token);
+							currentPage--;
+							currentPageAttempts++;
+							continue;
+						}
+
+						foreach (var item in await Task.Run(ProcessPageResult))
+							yield return item;
+					}
+					finally {
+						ReleaseWorkshopQuery();
 					}
 
-					foreach (var item in await Task.Run(ProcessPageResult))
-						yield return item;
-
-					ReleaseWorkshopQuery();
+					currentPageAttempts = 0;
 				} while (++currentPage <= numberPages);
 			}
 
@@ -349,21 +359,21 @@ public partial class WorkshopHelper
 
 				foreach (var slug in queryParameters.searchModSlugs) {
 					// If Query Fails, we can't publish.
-					if (!TryRunQuery(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug))) {
-						ReleaseWorkshopQuery();
-						
-						return false;
-					}
+					try {
+						if (!TryRunQuery(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug)))
+							return false;
 
-					if (_queryReturnCount == 0) {
-						Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
-						items.Add(null);
-						ReleaseWorkshopQuery();
-						continue;
-					}
+						if (_queryReturnCount == 0) {
+							Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
+							items.Add(null);
+							continue;
+						}
 
-					items.Add(GenerateModDownloadItemFromQuery(0));
-					ReleaseWorkshopQuery();
+						items.Add(GenerateModDownloadItemFromQuery(0));
+					}
+					finally {
+						ReleaseWorkshopQuery();
+					}
 				}
 
 				return true;
