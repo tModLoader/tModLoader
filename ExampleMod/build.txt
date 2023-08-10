@@ -1,6 +1,0 @@
-author = TML Team
-displayName = Example Mod
-homepage = https://tmodloader.net/
-hideResources = false
-includeSource = true
-buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, Old\*
