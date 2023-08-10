@@ -280,9 +280,7 @@ public partial class WorkshopHelper
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
 					try {
-						if (!TryRunQuery(SteamedWraps.GenerateDirectItemsQuery(idArray))) {
-							throw new Exception($"Unexpectedly failed to query information reqarding items {pageIds}.");
-						}
+						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray));
 
 						for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
 							items[j] = GenerateModDownloadItemFromQuery((uint)j);
@@ -311,8 +309,7 @@ public partial class WorkshopHelper
 					token.ThrowIfCancellationRequested();
 					try {
 						try {
-							if (!await TryRunQueryAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token))
-								throw new SocialBrowserException("Workshop Query Failed");
+							await WaitForQueryResultAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token);
 						}
 						catch {
 							if (currentPageAttempts == 1)
@@ -360,8 +357,7 @@ public partial class WorkshopHelper
 				foreach (var slug in queryParameters.searchModSlugs) {
 					// If Query Fails, we can't publish.
 					try {
-						if (!TryRunQuery(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug)))
-							return false;
+						WaitForQueryResult(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug));
 
 						if (_queryReturnCount == 0) {
 							Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
@@ -370,6 +366,10 @@ public partial class WorkshopHelper
 						}
 
 						items.Add(GenerateModDownloadItemFromQuery(0));
+					}
+					catch {
+						// mm silent exception suppression
+						return false;
 					}
 					finally {
 						ReleaseWorkshopQuery();
@@ -381,7 +381,7 @@ public partial class WorkshopHelper
 
 			/////// Run Queries ////////////////////
 
-			internal async Task<bool> TryRunQueryAsync(SteamAPICall_t query, CancellationToken token = default)
+			internal async Task WaitForQueryResultAsync(SteamAPICall_t query, CancellationToken token = default)
 			{
 				_primaryQueryResult = EResult.k_EResultNone;
 				_queryHook.Set(query);
@@ -396,25 +396,17 @@ public partial class WorkshopHelper
 				if (_primaryQueryResult == EResult.k_EResultNone) {
 					_primaryQueryResult = EResult.k_EResultTimeout;
 				}
-
-				// @TODO: HandleError calls show fancy page and UI stuff, is this ok since it is scheduled?
-				// Also shouldn't all the UI and handling happen in the browser and not in Workshop methods?
-				return HandleError(_primaryQueryResult);
+				
+				if (_primaryQueryResult != EResult.k_EResultOK) {
+					SteamedWraps.ReportCheckSteamLogs();
+					throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {_primaryQueryResult}");
+				}
 			}
 
 			[Obsolete("Should not be used because it hides syncronous waiting")]
-			internal bool TryRunQuery(SteamAPICall_t query)
+			internal void WaitForQueryResult(SteamAPICall_t query)
 			{
-				return TryRunQueryAsync(query).GetAwaiter().GetResult();
-			}
-
-			internal static bool HandleError(EResult eResult)
-			{
-				if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
-					return true;
-
-				SteamedWraps.ReportCheckSteamLogs();
-				throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {eResult}");
+				WaitForQueryResultAsync(query).GetAwaiter().GetResult();
 			}
 
 			/////// Process Query Result per Item ////////////////////
