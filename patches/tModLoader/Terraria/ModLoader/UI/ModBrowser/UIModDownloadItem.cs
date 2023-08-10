@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -30,7 +32,7 @@ internal class UIModDownloadItem : UIPanel
 	private UIImage _modIcon;
 	internal string tooltip;
 
-	private const int MaxImgurFails = 3;
+	private static int MaxFails = 3;
 	private static int ModIconDownloadFailCount = 0;
 	private bool HasModIcon => !string.IsNullOrEmpty(ModDownload.ModIconUrl);
 	private float ModIconAdjust => 85f;
@@ -214,11 +216,8 @@ internal class UIModDownloadItem : UIPanel
 	{
 		base.DrawSelf(spriteBatch);
 
-		if (HasModIcon && ModIconStatus == ModIconStatus.UNKNOWN) {
-			ModIconStatus = ModIconStatus.WANTED;
-			if (ModIconDownloadFailCount >= MaxImgurFails)
-				AdjustPositioningFailedIcon();
-		}
+		if (HasModIcon && ModIconStatus == ModIconStatus.UNKNOWN)
+			RequestModIcon();
 
 		CalculatedStyle innerDimensions = GetInnerDimensions();
 		float leftOffset = HasModIcon ? ModIconAdjust : 0f;
@@ -265,72 +264,50 @@ internal class UIModDownloadItem : UIPanel
 	{
 		base.Update(gameTime);
 
-		switch (ModIconStatus) {
-			case ModIconStatus.WANTED:
-				RequestModIcon();
-				break;
-			case ModIconStatus.READY:
-				AppendModIcon();
-				break;
+		if (ModIconStatus == ModIconStatus.READY) {
+			if (_modIcon == null)
+				AdjustPositioningFailedIcon();
+			else
+				Append(_modIcon);
+
+			ModIconStatus = ModIconStatus.DISPLAYED_OR_FAILED;
 		}
 	}
 
-	private void RequestModIcon()
+	private async void RequestModIcon()
 	{
-		ModIconStatus = ModIconStatus.REQUESTED;
-		using (var client = new WebClient()) {
-			client.DownloadDataCompleted += IconDownloadComplete;
-			client.DownloadDataAsync(new Uri(ModDownload.ModIconUrl));
+		if (ModIconDownloadFailCount < MaxFails) {
+			ModIconStatus = ModIconStatus.REQUESTED;
+			_modIcon = await DownloadImage(ModDownload.ModIconUrl); // returns null on failure
 		}
+
+		ModIconStatus = ModIconStatus.READY;
 	}
 
-	private void AppendModIcon()
+	private static async Task<UIImage?> DownloadImage(string url)
 	{
-		ModIconStatus = ModIconStatus.APPENDED;
-		Append(_modIcon);
-	}
-
-	private void IconDownloadComplete(object sender, DownloadDataCompletedEventArgs e)
-	{
-		bool success = false;
-
 		try {
-			if (!e.Cancelled && e.Error == null) {
-				byte[] data = e.Result;
-				using (var buffer = new MemoryStream(data)) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(buffer, ".png");
-
-					_modIcon = new UIImage(iconTexture) {
-						Left = { Percent = 0f },
-						Top = { Percent = 0f },
-						MaxWidth = { Pixels = 80f, Percent = 0f },
-						MaxHeight = { Pixels = 80f, Percent = 0f },
-						ScaleToFit = true
-					};
-					ModIconStatus = ModIconStatus.READY;
-					success = true;
-				}
-			}
+			var data = await new WebClient().DownloadDataTaskAsync(url);
+			var texture = Main.Assets.CreateUntracked<Texture2D>(new MemoryStream(data), ".png");
+			return new UIImage(texture) {
+				Left = { Percent = 0f },
+				Top = { Percent = 0f },
+				MaxWidth = { Pixels = 80f, Percent = 0f },
+				MaxHeight = { Pixels = 80f, Percent = 0f },
+				ScaleToFit = true
+			};
 		}
 		catch {
-			// country- wide imgur blocks, cannot load icon
-		}
-
-		if (!success) {
-			AdjustPositioningFailedIcon();
-			ModIconDownloadFailCount++;
-
-			if(ModIconDownloadFailCount == MaxImgurFails)
-				Logging.tML.Error("tModLoader has repeatedly failed to connect to imgur.com to download mod icons. If you know imgur is not accessibile in your country, you can set AvoidImgur found in config.json to true to avoid attempting to download mod icons in the future.");
+			Interlocked.Increment(ref ModIconDownloadFailCount);
+			return null;
 		}
 	}
 
 	private void AdjustPositioningFailedIcon()
 	{
-		ModIconStatus = ModIconStatus.APPENDED;
 		_modName.Left.Pixels -= ModIconAdjust;
 		_moreInfoButton.Left.Pixels -= ModIconAdjust;
-		if(_updateButton != null)
+		if (_updateButton != null)
 			_updateButton.Left.Pixels -= ModIconAdjust;
 		if (_updateWithDepsButton != null)
 			_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
