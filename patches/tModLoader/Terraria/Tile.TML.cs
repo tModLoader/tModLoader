@@ -68,40 +68,42 @@ public readonly partial struct Tile
 	public bool HasUnactuatedTile => HasTile && !IsActuated;
 
 	// Slopes
-	
+
 	/// <summary>
-	/// The slope shape of the tile.<br/>
+	/// The slope shape of the tile, which can be changed by hammering.<br/>
+	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool)"/> and <see cref="BlockType"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="slope()"/> or <see cref="slope(byte)"/>.
 	/// </summary>
 	public SlopeType Slope { get => Get<TileWallWireStateData>().Slope; set => Get<TileWallWireStateData>().Slope = value; }
 	/// <summary>
-	/// The block shape of the tile. The block shape is the shape of the tile that can be changed through hammering.<br/>
+	/// The <see cref="Slope"/> and <see cref="IsHalfBlock"/> of this tile combined, which can be changed by hammering.<br/>
 	/// Legacy/vanilla equivalent is <see cref="blockType"/>.
 	/// </summary>
 	public BlockType BlockType { get => Get<TileWallWireStateData>().BlockType; set => Get<TileWallWireStateData>().BlockType = value; }
 	/// <summary>
-	/// Whether a tile is a half block shape.<br/>
+	/// Whether a tile is a half block shape, which can be changed by hammering.<br/>
+	/// Used by <see cref="WorldGen.PoundTile(int, int)"/> and <see cref="BlockType"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="halfBrick()"/> or <see cref="halfBrick(bool)"/>.
 	/// </summary>
 	public bool IsHalfBlock { get => Get<TileWallWireStateData>().IsHalfBlock; set => Get<TileWallWireStateData>().IsHalfBlock = value; }
 
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> is a top slope.<br/>
+	/// Whether a tile's <see cref="Slope"/> has a solid top side (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeDownRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="topSlope"/>.
 	/// </summary>
 	public bool TopSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeDownRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> is a bottom slope.<br/>
+	/// Whether a tile's <see cref="Slope"/> has a solid bottom side (<see cref="SlopeType.SlopeUpLeft"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="bottomSlope"/>.
 	/// </summary>
 	public bool BottomSlope => Slope == SlopeType.SlopeUpLeft || Slope == SlopeType.SlopeUpRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> is a left slope.<br/>
+	/// Whether a tile's <see cref="Slope"/> has a solid left side (<see cref="SlopeType.SlopeDownRight"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="leftSlope"/>.
 	/// </summary>
 	public bool LeftSlope => Slope == SlopeType.SlopeDownRight || Slope == SlopeType.SlopeUpRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> is a right slope.<br/>
+	/// Whether a tile's <see cref="Slope"/> has a solid right side (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeUpLeft"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="rightSlope"/>.
 	/// </summary>
 	public bool RightSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeUpLeft;
