@@ -111,33 +111,33 @@ public readonly partial struct Tile
 	// Framing
 
 	/// <summary>
-	/// The x frame coordinate of the tile.<br/>
+	/// The X coordinate of the top left of this cell's tile in it's spritesheet.<br/>
 	/// Legacy/vanilla equivalent is <see cref="frameX"/>.
 	/// </summary>
 	public ref short TileFrameX => ref Get<TileWallWireStateData>().TileFrameX;
 	/// <summary>
-	/// The y frame coordinate of the tile.<br/>
+	/// The Y coordinate of the top left of this cell's tile in it's spritesheet.<br/>
 	/// Legacy/vanilla equivalent is <see cref="frameY"/>.
 	/// </summary>
 	public ref short TileFrameY => ref Get<TileWallWireStateData>().TileFrameY;
 
 	/// <summary>
-	/// The x frame coordinate of the wall.<br/>
+	/// The X coordinate of the top left of this cell's wall in it's spritesheet.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wallFrameX()"/> or <see cref="wallFrameX(int)"/>.
 	/// </summary>
 	public int WallFrameX { get => Get<TileWallWireStateData>().WallFrameX; set => Get<TileWallWireStateData>().WallFrameX = value; }
 	/// <summary>
-	/// The y frame coordinate of the wall.<br/>
+	/// The Y coordinate of the top left of this cell's wall in it's spritesheet.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wallFrameY()"/> or <see cref="wallFrameY(int)"/>.
 	/// </summary>
 	public int WallFrameY { get => Get<TileWallWireStateData>().WallFrameY; set => Get<TileWallWireStateData>().WallFrameY = value; }
 	/// <summary>
-	/// The frame number of the tile.<br/>
+	/// The random style number this cell's tile has, which is random number between 0 and 2 (inclusive).<br/>
 	/// Legacy/vanilla equivalent is <see cref="frameNumber()"/> or <see cref="frameNumber(byte)"/>.
 	/// </summary>
 	public int TileFrameNumber { get => Get<TileWallWireStateData>().TileFrameNumber; set => Get<TileWallWireStateData>().TileFrameNumber = value; }
 	/// <summary>
-	/// The frame number of the wall.<br/>
+	/// The random style number this cell's wall has, which is a random number between 0 and 2 (inclusive).<br/>
 	/// Legacy/vanilla equivalent is <see cref="wallFrameNumber()"/> or <see cref="wallFrameNumber(byte)"/>.
 	/// </summary>
 	public int WallFrameNumber { get => Get<TileWallWireStateData>().WallFrameNumber; set => Get<TileWallWireStateData>().WallFrameNumber = value; }
