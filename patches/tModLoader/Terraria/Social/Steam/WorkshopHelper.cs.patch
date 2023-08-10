@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,14 +_,18 @@
+@@ -1,14 +_,19 @@
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
 +using System.Linq;
++using System.Threading;
  using Steamworks;
  using Terraria.IO;
 +using Terraria.Localization;
@@ -182,8 +183,8 @@
 +					return;
 +
 +				do {
-+					// NOTE: This is essentially synchronous
-+					SteamedWraps.ForceCallbacks().ConfigureAwait(false).GetAwaiter().GetResult();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
 +
@@ -193,8 +194,8 @@
 +				UpdateItem(creatingItem:true);
 +
 +				do {
-+					// @TODO: This is blocking
-+					SteamedWraps.ForceCallbacks().ConfigureAwait(false).GetAwaiter().GetResult();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
  			}
@@ -327,8 +328,8 @@
 +					return;
 +
 +				do {
-+					// NOTE: This is essentially synchronous
-+					SteamedWraps.ForceCallbacks().ConfigureAwait(false).GetAwaiter().GetResult();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_updateCallback == EResult.k_EResultNone);
  			}

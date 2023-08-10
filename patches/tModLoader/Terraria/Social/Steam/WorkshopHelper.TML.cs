@@ -386,14 +386,17 @@ public partial class WorkshopHelper
 				_primaryQueryResult = EResult.k_EResultNone;
 				_queryHook.Set(query);
 
-				Stopwatch stopwatch = Stopwatch.StartNew();
-				do {
+				var stopwatch = Stopwatch.StartNew();
+				while (true) {
+					SteamedWraps.RunCallbacks();
+					if (_primaryQueryResult != EResult.k_EResultNone)
+						break;
+
 					if (stopwatch.Elapsed.TotalSeconds >= 10)
 						throw new TimeoutException("No response from steam workshop query");
 
-					await SteamedWraps.ForceCallbacks(token);
-
-				} while (_primaryQueryResult == EResult.k_EResultNone);
+					await Task.Delay(1, token);
+				}
 				
 				if (_primaryQueryResult != EResult.k_EResultOK) {
 					SteamedWraps.ReportCheckSteamLogs();

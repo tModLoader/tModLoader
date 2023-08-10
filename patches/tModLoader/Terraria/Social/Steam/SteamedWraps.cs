@@ -290,11 +290,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static async Task ForceCallbacks(CancellationToken token = default)
+	public static void RunCallbacks()
 	{
-		// @TODO: Updated to a more reasonable time
-		await Task.Delay(1, token);
-
 		if (SteamClient)
 			SteamAPI.RunCallbacks();
 		else if (SteamAvailable)
