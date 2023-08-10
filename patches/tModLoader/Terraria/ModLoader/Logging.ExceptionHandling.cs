@@ -53,6 +53,7 @@ public static partial class Logging
 		"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
 		"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 		"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
+		"System.Threading.CancellationTokenSource.Cancel", // an operation (task) was deliberately cancelled
 	};
 
 	private static Exception previousException;
