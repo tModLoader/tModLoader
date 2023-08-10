@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -47,6 +48,8 @@ internal class UIModDownloadItem : UIPanel
 		: Language.GetTextValue("tModLoader.MBDownloadWithDependencies");
 
 	private readonly bool tMLNeedUpdate;
+
+	private static ConcurrentDictionary<string, Texture2D> TextureDownloadCache = new();
 
 	public UIModDownloadItem(ModDownloadItem modDownloadItem)
 	{
@@ -216,24 +219,32 @@ internal class UIModDownloadItem : UIPanel
 	{
 		if (ModIconDownloadFailCount < MaxFails) {
 			ModIconStatus = ModIconStatus.REQUESTED;
-			_modIcon = await DownloadImage(ModDownload.ModIconUrl); // returns null on failure
+			if (await GetOrDownloadTextureAsync(ModDownload.ModIconUrl) is Texture2D texture) {
+				_modIcon = new UIImage(texture) {
+					Left = { Percent = 0f },
+					Top = { Percent = 0f },
+					MaxWidth = { Pixels = 80f, Percent = 0f },
+					MaxHeight = { Pixels = 80f, Percent = 0f },
+					ScaleToFit = true
+				};
+			}
 		}
 
 		ModIconStatus = ModIconStatus.READY;
 	}
 
-	private static async Task<UIImage?> DownloadImage(string url)
+	private static async Task<Texture2D?> GetOrDownloadTextureAsync(string url)
 	{
+		if (TextureDownloadCache.TryGetValue(url, out var texture))
+			return texture;
+
 		try {
+#pragma warning disable SYSLIB0014 // WebClient is obsolete, but it saves us pooling HttpClient ourselves, and seems to have more reliable TLS headers
 			var data = await new WebClient().DownloadDataTaskAsync(url);
-			var texture = Main.Assets.CreateUntracked<Texture2D>(new MemoryStream(data), ".png");
-			return new UIImage(texture) {
-				Left = { Percent = 0f },
-				Top = { Percent = 0f },
-				MaxWidth = { Pixels = 80f, Percent = 0f },
-				MaxHeight = { Pixels = 80f, Percent = 0f },
-				ScaleToFit = true
-			};
+#pragma warning restore SYSLIB0014
+			texture = Main.Assets.CreateUntracked<Texture2D>(new MemoryStream(data), ".png").Value;
+			TextureDownloadCache.TryAdd(url, texture);
+			return texture;
 		}
 		catch {
 			Interlocked.Increment(ref ModIconDownloadFailCount);
