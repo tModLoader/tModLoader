@@ -40,12 +40,6 @@ internal class UIModDownloadItem : UIPanel
 
 	private string ViewModInfoText => Language.GetTextValue("tModLoader.ModsMoreInfo");
 
-	private string UpdateText => ModDownload.NeedUpdate
-		? UpdateIsDowngrade
-			? Language.GetTextValue("tModLoader.MBDowngrade")
-			: Language.GetTextValue("tModLoader.MBUpdate")
-		: Language.GetTextValue("tModLoader.MBDownload");
-
 	private string UpdateWithDepsText => ModDownload.NeedUpdate
 		? UpdateIsDowngrade
 			? Language.GetTextValue("tModLoader.MBDowngradeWithDependencies")
@@ -155,62 +149,6 @@ internal class UIModDownloadItem : UIPanel
 	{
 		Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", ModDownload.DisplayName), Interface.modBrowserID);
 	}
-
-	//TODO: Is this completely unused now in the new Mod Browser?
-	public override int CompareTo(object obj)
-	{
-		var item = obj as UIModDownloadItem;
-		switch (Interface.modBrowser.SortMode) {
-			default:
-				return base.CompareTo(obj);
-			//case ModBrowserSortMode.DisplayNameAtoZ:
-				//return string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
-			//case ModBrowserSortMode.DisplayNameZtoA:
-				//return -1 * string.Compare(ModDownload.DisplayNameClean, item?.ModDownload.DisplayNameClean, StringComparison.Ordinal);
-			//case ModBrowserSortMode.DownloadsAscending:
-				//return ModDownload.Downloads.CompareTo(item?.ModDownload.Downloads);
-			case ModBrowserSortMode.DownloadsDescending:
-				return -1 * ModDownload.Downloads.CompareTo(item?.ModDownload.Downloads);
-			case ModBrowserSortMode.RecentlyUpdated:
-				return -1 * ModDownload.TimeStamp.CompareTo(item?.ModDownload.TimeStamp);
-			case ModBrowserSortMode.Hot:
-				return -1 * ModDownload.Hot.CompareTo(item?.ModDownload.Hot);
-		}
-	}
-
-	/* Legacy 1.3 Browser Code to Be Removed - Solxan
-	public bool PassFilters()
-	{
-		if (Interface.modBrowser.SpecialModPackFilter != null && !Interface.modBrowser.SpecialModPackFilter.Contains(ModDownload.PublishId))
-			return false;
-
-		if (!string.IsNullOrEmpty(Interface.modBrowser.Filter)) {
-			if (Interface.modBrowser.SearchFilterMode == SearchFilter.Author) {
-				if (ModDownload.Author.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
-					return false;
-			}
-			else if (ModDownload.DisplayNameClean.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1
-				&& ModDownload.ModName.IndexOf(Interface.modBrowser.Filter, StringComparison.OrdinalIgnoreCase) == -1)
-				return false;
-		}
-
-		if (Interface.modBrowser.ModSideFilterMode != ModSideFilter.All
-			&& (int)ModDownload.ModSide != (int)Interface.modBrowser.ModSideFilterMode - 1)
-			return false;
-
-		switch (Interface.modBrowser.UpdateFilterMode) {
-			default:
-			case UpdateFilter.All:
-				return true;
-			case UpdateFilter.Available:
-				return ModDownload.NeedUpdate || !ModDownload.IsInstalled;
-			case UpdateFilter.UpdateOnly:
-				return ModDownload.NeedUpdate;
-			case UpdateFilter.InstalledOnly:
-				return ModDownload.IsInstalled;
-		}
-	}
-	*/
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
