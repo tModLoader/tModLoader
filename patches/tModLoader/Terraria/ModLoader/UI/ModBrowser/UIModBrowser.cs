@@ -59,7 +59,6 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	*/
 	private string _specialModPackFilterTitle;
 	private List<ModPubId_t> _specialModPackFilter;
-	private readonly List<string> _missingMods = new List<string>();
 
 	private HashSet<string> modSlugsToUpdateInstallInfo = new();
 
@@ -142,21 +141,20 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		foreach (var mod in imods) {
 			mod.UpdateInstallState();
 		}
-		if (SpecialModPackFilter == null &&
-			imods.Any(item => item.NeedUpdate)
-		)
+
+		if (SpecialModPackFilter == null && imods.Any(item => item.NeedUpdate))
 			_rootElement.Append(_updateAllButton);
 	}
 
-	private void UpdateAllMods(UIMouseEvent @event, UIElement element)
+	private async void UpdateAllMods(UIMouseEvent @event, UIElement element)
 	{
 		var relevantMods = SocialBackend.GetInstalledModDownloadItems()
 			.Where(item => item.NeedUpdate)
 			.Select(item => item.PublishId)
 			.ToList();
-		DownloadMods(relevantMods).ConfigureAwait(false).GetAwaiter().OnCompleted(
-			CheckIfAnyModUpdateIsAvailable
-		);
+
+		await DownloadMods(relevantMods);
+		Main.QueueMainThreadAction(CheckIfAnyModUpdateIsAvailable);
 	}
 
 	private void ClearTextFilters(UIMouseEvent @event, UIElement element)
@@ -165,10 +163,10 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
 
-	private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element)
+	private async void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element)
 	{
-		// @TODO: Don't await, leave pending, could be problematic if exits UI?
-		DownloadMods(SpecialModPackFilter).ConfigureAwait(false).GetAwaiter();
+		await DownloadMods(SpecialModPackFilter);
+		// can do extra UI work here with a Main.QueueMainThreadAction
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -367,26 +365,21 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		// @TODO: This too should become a Task since blocking
 		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() });
-
+		var missingMods = new List<string>();
 		for (int i = 0; i < modIds.Count(); i++) {
 			if (downloadsQueried[i] == null)
 				//TODO: Would be nice if this was name/slug, not ID
-				_missingMods.Add(modIds[i].m_ModPubId);
+				missingMods.Add(modIds[i].m_ModPubId);
 		}
 
 		var downloadShortList = ModDownloadItem.NeedsInstallOrUpdate(downloadsQueried);
 
 		// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
-		if (downloadShortList.Count() <= 0)
-			return;
+		if (downloadShortList.Any())
+			await SocialBackend.SetupDownload(downloadShortList.ToList(), Interface.modBrowserID);
 
-		await SocialBackend.SetupDownload(downloadShortList.ToList(), Interface.modBrowserID);
-
-		// @TODO: Should not do UI stuff... :(
-		if (_missingMods.Count > 0) {
-			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
-			_missingMods.Clear();
-		}
+		if (missingMods.Any())
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", missingMods)), Interface.modBrowserID);
 	}
 
 	private void SetHeading(LocalizedText heading)

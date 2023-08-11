@@ -37,7 +37,6 @@ internal partial class UIModBrowser
 	internal void Reset()
 	{
 		ModList?.SetEnumerable(null);
-		_missingMods?.Clear();
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
