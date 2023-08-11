@@ -91,6 +91,12 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 
 	internal void Show(string message, int gotoMenu, UIState gotoState = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
 	{
+		if (!Program.IsMainThread) {
+			// in some cases it would be better to block on this, but in other cases that might be a deadlock. Better to assume that letting the thread continue is the right choice
+			Main.QueueMainThreadAction(() => Show(message, gotoMenu, gotoState, altButtonText, altButtonAction, okButtonText));
+			return;
+		}
+
 		_message = message;
 		_gotoMenu = gotoMenu;
 		_gotoState = gotoState;
