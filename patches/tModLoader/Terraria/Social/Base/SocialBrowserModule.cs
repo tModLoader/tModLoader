@@ -115,6 +115,7 @@ public interface SocialBrowserModule
 		if (!Main.dedServ) {
 			// Create UIWorkshopDownload
 			var ui = new UIWorkshopDownload(previousMenuId);
+			Main.menuMode = 888;
 			Main.MenuUI.SetState(ui);
 			progress = ui;
 		}

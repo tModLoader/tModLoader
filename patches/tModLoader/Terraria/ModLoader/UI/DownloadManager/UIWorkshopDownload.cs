@@ -35,7 +35,6 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 	{
 		downloadTimer = new Stopwatch();
 		PreviousMenuMode = previousMenuMode;
-		Main.menuMode = 888;
 	}
 
 	public override void OnInitialize()
