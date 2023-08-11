@@ -178,24 +178,22 @@ internal static class Interface
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
 
 				Action downloadAction = () => {
-					if (promptDepDownloads) {
-						HashSet<ModDownloadItem> downloads = new();
-						foreach (var slug in missingDeps) {
-							if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
-								Utils.LogAndConsoleInfoMessage($"Could not find required mod dependency on Workshop: {slug}");
-								continue;
-							}
-
-							downloads.Add(item);
+					HashSet<ModDownloadItem> downloads = new();
+					foreach (var slug in missingDeps) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
+							continue;
 						}
 
-						modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
-
-						modBrowser.SocialBackend.SetupDownload(
-							ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
-							loadModsID
-						);
+						downloads.Add(item);
 					}
+
+					modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
+
+					modBrowser.SocialBackend.SetupDownload(
+						ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
+						loadModsID
+					);
                 };
 
 				if (!string.IsNullOrWhiteSpace(message)) {
