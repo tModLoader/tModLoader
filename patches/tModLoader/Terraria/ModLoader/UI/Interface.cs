@@ -199,7 +199,7 @@ internal static class Interface
 
 						modBrowser.SocialBackend.SetupDownload(
 							ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
-							Main.menuMode
+							loadModsID
 						).ConfigureAwait(false).GetAwaiter().GetResult();
 
 						// @TODO: This is a big problem since infoMessage WILL switch to `_gotoMenu`

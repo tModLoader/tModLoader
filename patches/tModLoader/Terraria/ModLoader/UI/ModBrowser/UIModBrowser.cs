@@ -279,6 +279,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	private void CbLocalModsChanged(HashSet<string> modSlugs)
 	{
+		if (_firstLoad)
+			return;
+
 		// Can be called outside main thread
 		lock (modSlugsToUpdateInstallInfo) {
 			modSlugsToUpdateInstallInfo.UnionWith(modSlugs);

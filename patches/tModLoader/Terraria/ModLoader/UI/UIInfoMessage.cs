@@ -121,7 +121,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	private void AltClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(10);
-		_altAction?.Invoke();
+		System.Threading.Tasks.Task.Run(() => _altAction.Invoke());
 		if (!preventMenuChangeFromAltAction)
 			Main.menuMode = _gotoMenu;
 
