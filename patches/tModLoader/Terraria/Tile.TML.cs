@@ -168,7 +168,15 @@ public readonly partial struct Tile
 	/// Legacy/vanilla equivalent is <see cref="liquidType()"/> or <see cref="liquidType(int)"/>.
 	/// </summary>
 	public int LiquidType { get => Get<LiquidData>().LiquidType; set => Get<LiquidData>().LiquidType = value; }
+	/// <summary>
+	/// Whether the liquid in this cell should skip updating for 1 tick.<br/>
+	/// Legacy/vanilla equivalent is <see cref="skipLiquid()"/> or <see cref="skipLiquid(bool)"/>.
+	/// </summary>
 	public bool SkipLiquid { get => Get<LiquidData>().SkipLiquid; set => Get<LiquidData>().SkipLiquid = value; }
+	/// <summary>
+	/// Whether this cell contains liquid.<br/>
+	/// Legacy/vanilla equivalent is <see cref="checkingLiquid()"/> or <see cref="checkingLiquid(bool)"/>.
+	/// </summary>
 	public bool CheckingLiquid { get => Get<LiquidData>().CheckingLiquid; set => Get<LiquidData>().CheckingLiquid = value; }
 
 	// Wires
