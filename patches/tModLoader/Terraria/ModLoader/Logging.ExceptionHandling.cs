@@ -123,7 +123,8 @@ public static partial class Logging
 			previousException = args.Exception;
 
 			string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
-			if (Main.dedServ) { // TODO, sometimes console write fails on unix clients. Hopefully it doesn't happen on servers? System.IO.IOException: Input/output error at System.ConsolePal.Write
+			// Solxan: We are using Program.SavePathShared == null as a flag to indicate Main CCtor can't run. 
+			if (Program.SavePathShared == null || Main.dedServ) { // TODO, sometimes console write fails on unix clients. Hopefully it doesn't happen on servers? System.IO.IOException: Input/output error at System.ConsolePal.Write
 				Console.ForegroundColor = ConsoleColor.DarkMagenta;
 				Console.WriteLine(msg);
 				Console.ResetColor();
