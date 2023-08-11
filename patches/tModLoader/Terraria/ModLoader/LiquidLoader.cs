@@ -24,7 +24,11 @@ public static class LiquidLoader
 
 	internal static int ReserveLiquidID()
 	{
-		return nextLiquid++;
+		if (ModNet.AllowVanillaClients) 
+			throw new Exception("Adding liquid breaks vanilla client compatibility");
+		int reserveId = nextLiquid;
+		nextLiquid++;
+		return reserveId;
 	}
 
 	internal static void ResizeArrays(bool unloading = false)

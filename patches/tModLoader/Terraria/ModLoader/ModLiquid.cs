@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Terraria.ModLoader;
+﻿namespace Terraria.ModLoader;
 
 public abstract class ModLiquid : ModBlockType
 {
@@ -30,7 +24,7 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	public byte WaveMaskStrength { get; set; } = 0;
-
+	
 	public byte ViscosityMask { get; set; } = 0;
 
 	public override string LocalizationCategory => "Liquids";

@@ -6,7 +6,7 @@ using Terraria.Localization;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This is the superclass for ModTile and ModWall, combining common code
+/// This is the superclass for ModTile, ModWall and ModLiquid, combining common code
 /// </summary>
 public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 {
