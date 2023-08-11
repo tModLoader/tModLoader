@@ -187,9 +187,9 @@ public class SpawnCondition : SpawnTreeParent // Better name: ConditionalSpawnPa
 	public static readonly EntrySumChance BoundCaveNPC = new(BoundGoblin, BoundWizard, BoundOldShakingChest);
 	public static readonly SpawnCondition TownCritter;
 	public static readonly SpawnCondition TownGraveyardCritter;
-	public static readonly SpawnCondition TownGraveyardWaterCritter; // No vanilla relation
+	public static readonly WeightedSpawnCondition TownGraveyardWaterCritter; // No vanilla relation
 	public static readonly SpawnCondition TownBeachCritter; // Just Seagull
-	public static readonly SpawnCondition TownBeachWaterCritter;
+	public static readonly WeightedSpawnCondition TownBeachWaterCritter;
 	public static readonly SpawnCondition TownWaterCritter;
 	public static readonly SpawnCondition TownOverworldWaterCritter;
 	public static readonly WeightedSpawnCondition TownOverworldWaterSurfaceCritter;
@@ -271,8 +271,8 @@ public class SpawnCondition : SpawnTreeParent // Better name: ConditionalSpawnPa
 	public static readonly SpawnTreeParent OverworldNight;
 	public static readonly CalculatedSpawnCondition OverworldFirefly;
 	public static readonly WeightedSpawnCondition OverworldNightMonster;
-	public static readonly SpawnCondition Underground;
-	public static readonly SpawnCondition Underworld;
+	public static readonly WeightedSpawnCondition Underground;
+	public static readonly WeightedSpawnCondition Underworld;
 	public static readonly SpawnTreeParent Cavern;
 	public static readonly WeightedSpawnCondition RockGolem;
 	public static readonly WeightedSpawnCondition DyeBeetle;
@@ -407,10 +407,10 @@ public class SpawnCondition : SpawnTreeParent // Better name: ConditionalSpawnPa
 			TownSnowCritter = new((info) => info.SpawnTileType == TileID.SnowBlock || info.SpawnTileType == TileID.IceBlock),
 			TownJungleCritter = new((info) => info.SpawnTileType == TileID.JungleGrass),
 			TownDesertCritter = new((info) => info.SpawnTileType == TileID.Sand),
-			TownGrassCritter = new SpawnCondition((info) => info.SpawnTileY > Main.worldSurface
+			TownGrassCritter = new((info) => info.SpawnTileY > Main.worldSurface
 				|| info.SpawnTileType == TileID.Grass || info.SpawnTileType == TileID.GolfGrass
 				|| info.SpawnTileType == TileID.HallowedGrass || info.SpawnTileType == TileID.GolfGrassHallowed),
-				TownRainingUnderGroundCritter = new SpawnCondition((info) => Main.raining && info.PlayerFloorY <= Main.UnderworldLayer,
+				TownRainingUnderGroundCritter = new((info) => Main.raining && info.PlayerFloorY <= Main.UnderworldLayer,
 					TownGemSquirrel = new((info) => info.Caverns, 0.2f),
 					TownGemBunny = new((info) => info.Caverns, 0.2f),
 					TownGeneralCritter = new(),
@@ -419,7 +419,7 @@ public class SpawnCondition : SpawnTreeParent // Better name: ConditionalSpawnPa
 
 
 		// Dungeon
-		baseCondition += Dungeon = new SpawnCondition((info) => info.Player.ZoneDungeon,
+		baseCondition += Dungeon = new((info) => info.Player.ZoneDungeon,
 			DungeonGuardian = new((info) => !NPC.downedBoss3 && (!Main.drunkWorld || (info.Player.position.Y / 16f < (Main.dungeonY + 40)))),
 			DungeonNormal = new());
 
@@ -591,11 +591,11 @@ public class SpawnCondition : SpawnTreeParent // Better name: ConditionalSpawnPa
 			ExpertSkeletons = new((info) => Main.expertMode, 1f / 3f),
 			NormalSkeletons = new());
 	}
-
+	/// <summary>
+	/// Shorthand for "Main.tile[info.SpawnTileX, info.SpawnTileY]"
+	/// </summary>
 	public static Tile GetTile(NPCSpawnInfo info)
-	{
-		return Main.tile[info.SpawnTileX, info.SpawnTileY];
-	}
+		=> Main.tile[info.SpawnTileX, info.SpawnTileY];
 
 	private static int GetWaterSurface_Unchecked(NPCSpawnInfo info, int extraHeight = 2, int maxHeight = 50, int airGapHeight = 3)
 	{
