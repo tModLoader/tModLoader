@@ -1,3 +1,4 @@
+# help pls
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using System.Linq;
