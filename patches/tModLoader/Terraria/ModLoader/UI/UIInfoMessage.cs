@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -93,11 +94,11 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		_area.AddOrRemoveChild(_buttonAlt, showAlt);
 	}
 
-	internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
+	internal void Show(string message, int gotoMenu, UIState gotoState = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
 	{
 		_message = message;
 		_gotoMenu = gotoMenu;
-		_gotoState = state;
+		_gotoState = gotoState;
 		_altText = altButtonText;
 		_altAction = altButtonAction;
 		_okText = okButtonText;
@@ -112,7 +113,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()
 	{
-		SoundEngine.PlaySound(10);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Main.menuMode = _gotoMenu;
 		if (_gotoState != null)
 			Main.MenuUI.SetState(_gotoState);
@@ -120,7 +121,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 
 	private void AltClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(10);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		System.Threading.Tasks.Task.Run(() => _altAction.Invoke());
 		if (!preventMenuChangeFromAltAction)
 			Main.menuMode = _gotoMenu;
