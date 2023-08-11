@@ -106,9 +106,4 @@ public abstract class ModConfig : ILocalizedModType
 			Main.InGameUI.SetState(Interface.modConfig);
 		}
 	}
-
-	public bool Save(bool sendFailureMessages, bool syncIfServerConfig)
-	{
-		return false;
-	}
 }
