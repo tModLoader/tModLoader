@@ -194,11 +194,7 @@ internal static class Interface
 						modBrowser.SocialBackend.SetupDownload(
 							ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
 							loadModsID
-						).ConfigureAwait(false).GetAwaiter().GetResult();
-
-						// @TODO: This is a big problem since infoMessage WILL switch to `_gotoMenu`
-						// on action end, but this conflicts with the SetupDownload messing with UI state
-						// on a thread, making this sync will not break but freeze UI :(
+						);
 					}
                 };
 

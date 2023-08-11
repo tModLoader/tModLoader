@@ -117,7 +117,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	private void AltClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		HandleBackButtonUsage();
-		System.Threading.Tasks.Task.Run(() => _altAction.Invoke());
+		_altAction();
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
