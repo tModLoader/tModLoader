@@ -204,8 +204,6 @@ internal static class Interface
 
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
-					infoMessage.preventMenuChangeFromAltAction = promptDepDownloads;
-
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 				}
 			}

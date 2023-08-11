@@ -22,11 +22,6 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	private string _altText;
 	private string _okText;
 
-	// This has to be modified by the _AltAction via Interface.infoMessage.preventMenuChangeFromAltAction
-	// NOTE: We have done it this way as opposed to modifying the signature of Show to avoid impacting mods from PR #3346.
-	//	To be replaced as an optional param in Show after PR merge.
-	internal bool preventMenuChangeFromAltAction = false;
-
 	public UIState PreviousUIState { get; set; }
 
 	public override void OnInitialize()
@@ -121,13 +116,8 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 
 	private void AltClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
+		HandleBackButtonUsage();
 		System.Threading.Tasks.Task.Run(() => _altAction.Invoke());
-		if (!preventMenuChangeFromAltAction)
-			Main.menuMode = _gotoMenu;
-
-		// Cleanup for the next user. Per Comment on field: Remove after adding it to .Show
-		preventMenuChangeFromAltAction = false;
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
