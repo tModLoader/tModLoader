@@ -44,9 +44,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	// TODO maybe we can refactor this as a "BrowserState" enum
 	public bool Loading => !ModList.State.IsFinished();
-	public bool anEnabledModUpdated;
-	public bool aDisabledModUpdated;
-	public bool aNewModDownloaded;
+	public bool reloadOnExit;
+	public bool newModInstalled;
 
 	private bool _firstLoad = true;
 
@@ -204,37 +203,23 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()	
 	{
-		bool reloadModsNeeded = aNewModDownloaded && ModLoader.autoReloadAndEnableModsLeavingModBrowser || anEnabledModUpdated;
-		bool enableModsReminder = aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable;
-		bool reloadModsReminder = aDisabledModUpdated && !ModLoader.dontRemindModBrowserUpdateReload;
-		anEnabledModUpdated = false;
-		aNewModDownloaded = false;
-		aDisabledModUpdated = false;
+		try {
+			if (reloadOnExit) {
+				Main.menuMode = Interface.reloadModsID;
+				return;
+			}
 
-		if (reloadModsNeeded) {
-			Main.menuMode = Interface.reloadModsID;
-			return;
+			if (newModInstalled && PreviousUIState == null) { // assume we'd prefer to go back to the previous ui state if there is one (mod packs menu)
+				Main.menuMode = Interface.modsMenuID;
+				return;
+			}
+
+			IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 		}
-
-		if (enableModsReminder || reloadModsReminder) {
-			string text = "";
-			if(enableModsReminder)
-				text += Language.GetTextValue("tModLoader.EnableModsReminder") + "\n\n";
-			if (reloadModsReminder)
-				text += Language.GetTextValue("tModLoader.ReloadModsReminder");
-			Interface.infoMessage.Show(text,
-				0, null, Language.GetTextValue("tModLoader.DontShowAgain"),
-				() => {
-					if(enableModsReminder)
-						ModLoader.dontRemindModBrowserDownloadEnable = true;
-					if (reloadModsReminder)
-						ModLoader.dontRemindModBrowserUpdateReload = true;
-					Main.SaveSettings();
-				});
-			return;
+		finally {
+			reloadOnExit = false;
+			newModInstalled = false;
 		}
-
-		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	private void ReloadList(UIMouseEvent evt, UIElement listeningElement)
@@ -388,13 +373,20 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	internal Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods)
 	{
-		return DownloadMods(mods, Interface.modBrowserID, () => anEnabledModUpdated = true);
+		return DownloadMods(mods, Interface.modBrowserID, () => reloadOnExit = true,
+			mod => {
+				newModInstalled = true;
+				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+					ModLoader.EnableMod(mod.ModName);
+					reloadOnExit = true;
+				}
+			});
 	}
 
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal static async Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods, int previousMenuId, Action setReloadRequred)
+	internal static async Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods, int previousMenuId, Action setReloadRequred = null, Action<ModDownloadItem> onNewModInstalled = null)
 	{
 		var set = mods.ToHashSet();
 		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(set);
@@ -411,15 +403,20 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			await Task.Yield(); // to the worker thread!
 
 			foreach (var mod in fullList) {
+				bool wasInstalled = mod.IsInstalled;
+
 				if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
 					loadedMod.Close();
 
 					// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
 					mod.Installed = null;
-					setReloadRequred();
+					setReloadRequred?.Invoke();
 				}
 
 				Interface.modBrowser.SocialBackend.DownloadItem(mod, ui);
+				if (!wasInstalled)
+					onNewModInstalled?.Invoke(mod);
+
 				ModOrganizer.LocalModsChanged(new HashSet<string>() { mod.ModName });
 			}
 

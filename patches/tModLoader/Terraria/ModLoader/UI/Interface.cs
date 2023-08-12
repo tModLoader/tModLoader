@@ -190,8 +190,7 @@ internal static class Interface
 
 					_ = UIModBrowser.DownloadMods(
 						downloads,
-						loadModsID,
-						setReloadRequred: () => { });
+						loadModsID);
                 };
 
 				if (!string.IsNullOrWhiteSpace(message)) {
