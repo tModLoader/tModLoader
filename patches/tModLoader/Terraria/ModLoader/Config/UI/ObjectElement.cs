@@ -25,8 +25,10 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
-	private UIPanel separatePagePanel;
+	internal UIPanel separatePagePanel;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
+	internal UIList uIList;
+	internal UIFocusInputTextField search;
 
 	// Label:
 	//  Members
@@ -88,7 +90,7 @@ internal class ObjectElement : ConfigElement<object>
 			//e.Recalculate();
 			//elementHeight = (int)e.GetOuterDimensions().Height;
 			separatePageButton.OnLeftClick += (a, c) => {
-				UIModConfig.SwitchToSubConfig(this.separatePagePanel);
+				UIModConfig.SwitchToSubConfig(this);
 				/*	Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 					Interface.modConfig.uIElement.Append(separateListPanel);
 					Interface.modConfig.configPanelStack.Push(separateListPanel);*/
@@ -257,7 +259,7 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
-				separatePagePanel = UIModConfig.MakeSeparateListPanel(Item, data, MemberInfo, List, Index, AbridgedTextDisplayFunction);
+				(separatePagePanel, uIList, search) = UIModConfig.MakeSeparateListPanel(Item, data, MemberInfo, List, Index, AbridgedTextDisplayFunction);
 			}
 			else {
 				int order = 0;

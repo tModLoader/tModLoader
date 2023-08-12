@@ -49,6 +49,9 @@ internal class UIModConfig : UIState
 	private List<ModConfig> modConfigs;
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	internal ModConfig pendingConfig; // The clone we modify.
+	private UIList subConfigList;
+	private UIFocusInputTextField subConfigSearch;
+	private List<Tuple<UIElement, UIElement>> subConfigItems = new();
 	private bool updateNeeded;
 	private bool openedFromModder = false;
 	private bool pendingChanges;
@@ -223,6 +226,7 @@ internal class UIModConfig : UIState
 	{
 		mainConfigList?.Clear();
 		mainConfigItems?.Clear();
+		subConfigItems?.Clear();
 		mod = null;
 		modConfigs = null;
 		modConfig = null;
@@ -384,11 +388,14 @@ internal class UIModConfig : UIState
 
 		updateNeeded = false;
 
-		mainConfigList.Clear();
+		var list = subConfigList ?? mainConfigList;
+		var items = subConfigItems ?? mainConfigItems;
+		var textField = subConfigSearch ?? filterTextField;
+		list.Clear();
 
-		mainConfigList.AddRange(mainConfigItems.Where(item => {
+		list.AddRange(items.Where(item => {
 			if (item.Item2 is ConfigElement configElement) {
-				return configElement.TextDisplayFunction().IndexOf(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
+				return configElement.TextDisplayFunction().IndexOf(textField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
 			}
 			return true;
 		}).Select(x => x.Item1));
@@ -457,10 +464,12 @@ internal class UIModConfig : UIState
 		uIElement.RemoveChild(revertConfigButton);
 		uIElement.RemoveChild(configPanelStack.Peek());
 		uIElement.Append(uIPanel);
+		// Stop header getting overlapped by the main panel
 		uIElement.RemoveChild(headerTextPanel);
 		uIElement.Append(headerTextPanel);
 
 		mainConfigItems.Clear();
+		subConfigItems.Clear();
 		mainConfigList.Clear();
 		configPanelStack.Clear();
 		configPanelStack.Push(uIPanel);
@@ -642,6 +651,9 @@ internal class UIModConfig : UIState
 			if (parent == Interface.modConfig.mainConfigList) {
 				Interface.modConfig.mainConfigItems.Add(tuple);
 			}
+			else {
+				Interface.modConfig.subConfigItems?.Add(tuple);
+			}
 
 			return tuple;
 		}
@@ -658,7 +670,7 @@ internal class UIModConfig : UIState
 		return container;
 	}
 
-	internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction)
+	internal static (UIPanel, UIList, UIFocusInputTextField) MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction)
 	{
 		UIPanel uIPanel = new UIPanel();
 		uIPanel.CopyStyle(Interface.modConfig.uIPanel);
@@ -670,21 +682,34 @@ internal class UIModConfig : UIState
 			uIPanel.BackgroundColor = bca.Color;
 		}
 
-		//uIElement.Append(uIPanel);
+		// Copied from the OnInitialize method
+		var textBoxBackground = new UIPanel {
+			Width = { Pixels = 175 },
+			Height = { Pixels = 30 },
+			Top = { Pixels = 10 },
+			HAlign = 1f,
+		}.WithPadding(0f);
+		uIPanel.Append(textBoxBackground);
+
+		var filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions")) {// TODO: localize
+			Top = { Pixels = 5 },
+			Left = { Pixels = 10 },
+			Width = { Pixels = -20, Percent = 1f },
+			Height = { Pixels = 20 },
+		};
+		filterTextField.OnTextChange += (a, b) => Interface.modConfig.updateNeeded = true;
+		filterTextField.OnRightClick += (a, b) => filterTextField.SetText("");
+		filterTextField.SetText("");
+		textBoxBackground.Append(filterTextField);
+		// End of Ctrl + V
 
 		UIList separateList = new UIList();
 		separateList.CopyStyle(Interface.modConfig.mainConfigList);
-		separateList.Height.Set(-40f, 1f);
-		separateList.Top.Set(40f, 0f);
 		uIPanel.Append(separateList);
-		int i = 0;
-		int top = 0;
 
 		UIScrollbar uIScrollbar = new UIScrollbar();
+		uIScrollbar.CopyStyle(Interface.modConfig.uIScrollbar);
 		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(-40f, 1f);
-		uIScrollbar.Top.Set(40f, 0f);
-		uIScrollbar.HAlign = 1f;
 		uIPanel.Append(uIScrollbar);
 		separateList.SetScrollbar(uIScrollbar);
 
@@ -697,41 +722,35 @@ internal class UIModConfig : UIState
 
 		name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
 
-		UITextPanel<string> heading = new UITextPanel<string>(name); // TODO: ToString as well. Separate label?
-		heading.HAlign = 0f;
-		//heading.Width.Set(-10, 0.5f);
-		//heading.Left.Set(60, 0f);
-		heading.Top.Set(-6, 0);
-		heading.Height.Set(40, 0);
-		//var headingContainer = GetContainer(heading, i++);
-		//headingContainer.Height.Pixels = 40;
+		UITextPanel<string> heading = new UITextPanel<string>(name) {
+			Left = { Pixels = 65 },
+			Height = { Pixels = 20 },
+			HAlign = 0f,
+		}; // TODO: ToString as well. Separate label?
 		uIPanel.Append(heading);
-		//headingText.Top.Set(6, 0);
-		//headingText.Left.Set(0, .5f);
-		//headingText.HAlign = .5f;
-		//uIPanel.Append(headingText);
-		//top += 40;
 
-		UITextPanel<string> back = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack")) {
-			HAlign = 1f
+		var back = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigBack")) {
+			Width = { Pixels = 50 },
+			Height = { Pixels = 20 },
+			HAlign = 0f,
 		};
-
-		back.Width.Set(50, 0f);
-		back.Top.Set(-6, 0);
-
-		//top += 40;
-		//var capturedCurrent = Interface.modConfig.currentConfigList;
-
 		back.OnLeftClick += (a, c) => {
 			Interface.modConfig.uIElement.RemoveChild(uIPanel);
 			Interface.modConfig.configPanelStack.Pop();
 			Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());
+
+			Interface.modConfig.subConfigSearch = null;
+			Interface.modConfig.subConfigList = null;
+			Interface.modConfig.subConfigItems = null;
+			Interface.modConfig.updateNeeded = true;
+
+			// Stop header getting overlapped by the main panel
+			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.headerTextPanel);
+			Interface.modConfig.uIElement.Append(Interface.modConfig.headerTextPanel);
 			//Interface.modConfig.configPanelStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
 			//Interface.modConfig.currentConfigList = capturedCurrent;
 		};
 		back.WithFadedMouseOver();
-		//var backContainer = GetContainer(back, i++);
-		//backContainer.Height.Pixels = 40;
 		uIPanel.Append(back);
 
 		//var b = new UIText("Test");
@@ -760,15 +779,6 @@ internal class UIModConfig : UIState
 				container.Height.Pixels = (int)display.GetOuterDimensions().Height;
 				separateList.Add(container);
 			}
-
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-					continue;
-
-				HandleHeader(separateList, ref top, ref order, variable);
-
-				WrapIt(separateList, ref top, variable, subitem, order++);
-			}
 		}
 		else {
 			//ignoreSeparatePage just to simplify ToString label--> had some issues.
@@ -776,7 +786,7 @@ internal class UIModConfig : UIState
 		}
 
 		Interface.modConfig.subPageStack.Pop();
-		return uIPanel;
+		return (uIPanel, separateList, filterTextField);
 	}
 
 	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
@@ -789,10 +799,32 @@ internal class UIModConfig : UIState
 		}
 	}
 
-	internal static void SwitchToSubConfig(UIPanel separateListPanel)
+	internal static void SwitchToSubConfig(ObjectElement element)
 	{
+		var separateListPanel = element.separatePagePanel;
+		Interface.modConfig.subConfigList = element.uIList;
+		Interface.modConfig.subConfigSearch = element.search;
+		Interface.modConfig.subConfigItems = new();
+		Interface.modConfig.subConfigList.Clear();
+		Interface.modConfig.subConfigSearch.SetText("");
+		Interface.modConfig.filterTextField.SetText("");
+
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(element.Value)) {
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+				continue;
+
+			int top = 0;
+			int order = 0;
+			HandleHeader(element.uIList, ref top, ref order, variable);
+
+			WrapIt(element.uIList, ref top, variable, element.Value, order++);
+		}
+
 		Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 		Interface.modConfig.uIElement.Append(separateListPanel);
 		Interface.modConfig.configPanelStack.Push(separateListPanel);
+		// Stop header getting overlapped by the main panel
+		Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.headerTextPanel);
+		Interface.modConfig.uIElement.Append(Interface.modConfig.headerTextPanel);
 	}
 }
