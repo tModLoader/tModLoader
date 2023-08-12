@@ -395,6 +395,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (!fullList.Any())
 			return true;
 
+		var downloadedList = new HashSet<string>();
+
 		try {
 			var ui = new UIWorkshopDownload();
 			Main.menuMode = MenuID.FancyUI;
@@ -417,7 +419,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				if (!wasInstalled)
 					onNewModInstalled?.Invoke(mod);
 
-				ModOrganizer.LocalModsChanged(new HashSet<string>() { mod.ModName });
+				downloadedList.Add(mod.ModName);
 			}
 
 			// don't go to previous menu, because the caller may want to do something on success
@@ -426,6 +428,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		catch (Exception ex) {
 			LogModBrowserException(ex, previousMenuId);
 			return false;
+		}
+		finally {
+			ModOrganizer.LocalModsChanged(downloadedList);
 		}
 	}
 
