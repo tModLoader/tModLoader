@@ -83,7 +83,7 @@ public partial class WorkshopHelper
 		var bp = mod.properties;
 
 		if (bp.buildVersion != modFile.TModLoaderVersion)
-			throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
+			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
 
 		var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
 		string changeLog;
