@@ -247,6 +247,12 @@
 		"MPErrorModDownloadError": "Wystąpił błąd podczas pobierania {0}",
 		"MPPacketTooLarge": "Pakiet za duży {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Pobierz",
 		"MBDownloadAll": "Pobierz wszystkie",
@@ -266,6 +272,7 @@
 		"MBUpdateAll": "Zaktualizuj wszystkie",
 		"MBReloadBrowser": "Odśwież",
 		"MBGettingData": "Pobieranie danych...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Wypełnianie bazy przeglądarki...",
 		"MBSortByRecentlyUpdated": "Sortuj po dacie aktualizacji",
 		"MBSortByPopularity": "Sortuj po popularności",
@@ -344,8 +351,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatyczne włączaj i ponowne przeładuj mody po opuszczeniu przeglądarki modów: Wyłączone",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatycznie przeładuj wymagane mody po opuszczeniu przeglądarki modów: Włączone",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatycznie przeładuj wymagane mody po opuszczeniu przeglądarki modów: Wyłączone",
-		"ReloadModsReminder": "Zaktualizowałeś moda. Pamiętaj by przeładować mody aby zmiany zaczęły obowiązywać.",
-		"EnableModsReminder": "Twoje ostatnio pobrane mody są wyłączone. Pamiętaj by włączyć je i przeładować jeśli zamierzasz ich użyć.",
 		"DontShowAgain": "Nie pokazuj więcej",
 		"ModControls": "Mody - sterowanie",
 

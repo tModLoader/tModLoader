@@ -247,6 +247,12 @@
 		"MPErrorModDownloadError": "Une erreur est apparue en téléchargeant {0}",
 		"MPPacketTooLarge": "Paquets supérieurs en nombre {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Télécharger",
 		"MBDownloadAll": "Tout télécharger",
@@ -266,6 +272,7 @@
 		"MBUpdateAll": "Tout mettre à jour",
 		"MBReloadBrowser": "Relancer le navigateur",
 		"MBGettingData": "Obtention des données...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Remplissage du navigateur...",
 		"MBSortByRecentlyUpdated": "Trier par date de mise à jour",
 		"MBSortByPopularity": "Trier par popularité",
@@ -344,8 +351,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Activer et relancer automatiquement les Mods en quittant le navigateur : Non",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
-		"ReloadModsReminder": "Vous avez mis à jour un Mod. N'oubliez pas de relancer les Mods pour que cela prenne effet.",
-		"EnableModsReminder": "Vos Mods téléchargés récemment sont actuallement désactivés. N'oubliez pas de les activer et de les relancer si vous comptez les utiliser.",
 		"DontShowAgain": "Ne pas montrer de nouveau",
 		"ModControls": "Contrôles pour les Mods",
 
