@@ -94,11 +94,12 @@ public class ModDownloadItem
 		return GetComparable().GetHashCode();
 	}
 
-	internal Task InnerDownloadWithDeps()
+	internal async Task InnerDownloadWithDeps()
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
 		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
-		return Interface.modBrowser.DownloadMods(NeedsInstallOrUpdate(downloads).ToList());
+		await Interface.modBrowser.DownloadMods(NeedsInstallOrUpdate(downloads).ToList());
+		Main.QueueMainThreadAction(() => Main.menuMode = Interface.modBrowserID);
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)

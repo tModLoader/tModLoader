@@ -303,7 +303,7 @@ internal class UIModSourceItem : UIPanel
 			WorkshopHelper.PublishMod(_builtMod, icon);
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
@@ -325,7 +325,7 @@ internal class UIModSourceItem : UIPanel
 			pending.WaitForExit();
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 

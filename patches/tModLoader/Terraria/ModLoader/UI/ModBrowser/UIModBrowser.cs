@@ -147,15 +147,14 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			_rootElement.Append(_updateAllButton);
 	}
 
-	private async void UpdateAllMods(UIMouseEvent @event, UIElement element)
+	private void UpdateAllMods(UIMouseEvent @event, UIElement element)
 	{
 		var relevantMods = SocialBackend.GetInstalledModDownloadItems()
 			.Where(item => item.NeedUpdate)
 			.Select(item => item.PublishId)
 			.ToList();
 
-		await DownloadMods(relevantMods);
-		Main.QueueMainThreadAction(CheckIfAnyModUpdateIsAvailable);
+		DownloadModsAndReturnToBrowser(relevantMods);
 	}
 
 	private void ClearTextFilters(UIMouseEvent @event, UIElement element)
@@ -164,10 +163,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
 
-	private async void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element)
+	private void DownloadAllFilteredMods(UIMouseEvent @event, UIElement element)
 	{
-		await DownloadMods(SpecialModPackFilter);
-		// can do extra UI work here with a Main.QueueMainThreadAction
+		DownloadModsAndReturnToBrowser(SpecialModPackFilter);
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -364,7 +362,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// <summary>
 	///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 	/// </summary>
-	internal async Task DownloadMods(List<ModPubId_t> modIds)
+	internal async void DownloadModsAndReturnToBrowser(List<ModPubId_t> modIds)
 	{
 		// @TODO: This too should become a Task since blocking
 		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() });
@@ -376,65 +374,60 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 
 		var downloadShortList = ModDownloadItem.NeedsInstallOrUpdate(downloadsQueried);
+		bool success = await DownloadMods(downloadShortList.ToList());
+		if (!success)
+			return; // error ui already displayed
 
-		// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
-		if (downloadShortList.Any())
-			await DownloadMods(downloadShortList.ToList());
+		if (missingMods.Any()) {
+			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", missingMods)), Interface.modBrowserID);
+			return;
+		}
 
-		if (missingMods.Any())
-			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", missingMods)), Interface.modBrowserID);
+		Main.QueueMainThreadAction(() => Main.menuMode = Interface.modBrowserID);
 	}
 
-	internal Task DownloadMods(List<ModDownloadItem> mods)
+	internal Task<bool> DownloadMods(List<ModDownloadItem> mods)
 	{
-		var t = SetupDownload(mods, Interface.modBrowserID, out bool needsReload);
-		if (needsReload)
-			anEnabledModUpdated = true;
-
-		return t;
+		return DownloadMods(mods, Interface.modBrowserID, () => anEnabledModUpdated = true);
 	}
 
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId, out bool needsReload)
+	internal static async Task<bool> DownloadMods(List<ModDownloadItem> items, int previousMenuId, Action setReloadRequred)
 	{
-		needsReload = false;
-		foreach (var mod in items) {
-			if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
-				loadedMod.Close();
-				needsReload = true;
+		if (!items.Any())
+			return true;
 
-				// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
-				mod.Installed = null;
+		try {
+			foreach (var mod in items) {
+				if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
+					loadedMod.Close();
+
+					// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
+					// What happens if we set one of these to Installed = null, but then an exception is thrown before downloading finishes?
+					mod.Installed = null;
+					setReloadRequred();
+				}
 			}
-		}
 
-		IDownloadProgress progress = null;
-		if (!Main.dedServ) {
-			// Create UIWorkshopDownload
-			var ui = new UIWorkshopDownload(previousMenuId);
-			Main.menuMode = 888;
+			var ui = new UIWorkshopDownload();
+			Main.menuMode = MenuID.FancyUI;
 			Main.MenuUI.SetState(ui);
-			progress = ui;
+
+			await Task.Yield(); // to the worker thread!
+			foreach (var item in items)
+				Interface.modBrowser.SocialBackend.DownloadItem(item, ui);
+
+			ModOrganizer.LocalModsChanged(items.Select(m => m.ModName).ToHashSet());
+
+			// don't go to previous menu, because the caller may want to do something on success
+			return true;
 		}
-
-		return Task.Run(() => InnerDownload(progress, items));
-	}
-
-	private void InnerDownload(IDownloadProgress uiProgress, List<ModDownloadItem> items)
-	{
-		var changedModsSlugs = new HashSet<string>();
-
-		foreach (var item in items) {
-			SocialBackend.DownloadItem(item, uiProgress);
-
-			// Add installed info to the downloaded item
-			changedModsSlugs.Add(item.ModName);
+		catch (Exception ex) {
+			LogModBrowserException(ex, previousMenuId);
+			return false;
 		}
-
-		ModOrganizer.LocalModsChanged(changedModsSlugs);
-		uiProgress?.DownloadCompleted();
 	}
 
 	private void SetHeading(LocalizedText heading)
@@ -443,8 +436,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		HeaderTextPanel.Recalculate();
 	}
 
-	internal static void LogModBrowserException(Exception e)
+	internal static void LogModBrowserException(Exception e, int returnToMenu)
 	{
-		Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", 0);
+		Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.MBBrowserError")}\n\n{e.Message}\n{e.StackTrace}", returnToMenu);
 	}
 }

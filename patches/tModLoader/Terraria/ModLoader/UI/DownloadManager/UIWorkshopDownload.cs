@@ -1,7 +1,5 @@
-using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Terraria.Audio;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.DownloadManager;
@@ -9,7 +7,6 @@ namespace Terraria.ModLoader.UI.DownloadManager;
 public interface IDownloadProgress
 {
 	public void DownloadStarted(string displayName);
-	public void DownloadCompleted();
 	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded);
 }
 
@@ -22,19 +19,15 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 		public long bytesReceived;
 		public long totalBytesNeeded;
 		public bool reset;
-		public bool done;
 	}
 	private ProgressData progressData;
 	private bool needToUpdateProgressData = false;
 
 	private Stopwatch downloadTimer;
 
-	public int PreviousMenuMode { get; set; } = -1;
-
-	public UIWorkshopDownload(int previousMenuMode)
+	public UIWorkshopDownload()
 	{
 		downloadTimer = new Stopwatch();
-		PreviousMenuMode = previousMenuMode;
 	}
 
 	public override void OnInitialize()
@@ -66,9 +59,6 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
 			double speed = elapsedSeconds > 0.0 ? localProgressData.bytesReceived / elapsedSeconds : 0.0;
 			SubProgressText = $"{UIMemoryBar.SizeSuffix(localProgressData.bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(localProgressData.totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
-
-			if (localProgressData.done)
-				ReturnToPreviousMenu();
 		}
 		base.Update(gameTime);
 	}
@@ -84,7 +74,6 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			progressData.bytesReceived = 0;
 			progressData.totalBytesNeeded = 0;
 			progressData.reset = true;
-			progressData.done = false;
 
 			needToUpdateProgressData = true;
 		};
@@ -100,34 +89,8 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			progressData.progress = progress;
 			progressData.bytesReceived = bytesReceived;
 			progressData.totalBytesNeeded = totalBytesNeeded;
-			progressData.done = false;
 
 			needToUpdateProgressData = true;
 		};
-	}
-	/**
-	* <remarks>This will be called from a thread!</remarks>
-	*/
-	public void DownloadCompleted()
-	{
-		lock (this) {
-			progressData.done = true;
-
-			needToUpdateProgressData = true;
-		}
-	}
-
-	public void ReturnToPreviousMenu()
-	{
-		if (PreviousMenuMode == -1) {
-			Main.menuMode = 0;
-			return;
-		}
-
-		if (PreviousMenuMode != -1) {
-			Main.menuMode = PreviousMenuMode;
-		}
-
-		SoundEngine.PlaySound(11);
 	}
 }

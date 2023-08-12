@@ -190,11 +190,10 @@ internal static class Interface
 
 					modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
 
-					modBrowser.SocialBackend.SetupDownload(
+					_ = UIModBrowser.DownloadMods(
 						ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
 						loadModsID,
-						out _
-					);
+						setReloadRequred: () => { });
                 };
 
 				if (!string.IsNullOrWhiteSpace(message)) {
