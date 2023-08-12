@@ -188,10 +188,8 @@ internal static class Interface
 						downloads.Add(item);
 					}
 
-					modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
-
 					_ = UIModBrowser.DownloadMods(
-						ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
+						downloads,
 						loadModsID,
 						setReloadRequred: () => { });
                 };

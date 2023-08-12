@@ -14,7 +14,6 @@ using Terraria.ModLoader.UI.Elements;
 using Terraria.Social.Base;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-
 namespace Terraria.ModLoader.UI.ModBrowser;
 
 internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
@@ -364,6 +363,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// </summary>
 	internal async void DownloadModsAndReturnToBrowser(List<ModPubId_t> modIds)
 	{
+		// This whole 'does the item exist on the browser' code belongs somewhere mod-pack specific. This is the browser, surely, it can be handled when populating the visible entries or something.
+
 		// @TODO: This too should become a Task since blocking
 		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() });
 		var missingMods = new List<string>();
@@ -373,8 +374,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				missingMods.Add(modIds[i].m_ModPubId);
 		}
 
-		var downloadShortList = ModDownloadItem.NeedsInstallOrUpdate(downloadsQueried);
-		bool success = await DownloadMods(downloadShortList.ToList());
+		bool success = await DownloadMods(downloadsQueried);
 		if (!success)
 			return; // error ui already displayed
 
@@ -386,7 +386,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		Main.QueueMainThreadAction(() => Main.menuMode = Interface.modBrowserID);
 	}
 
-	internal Task<bool> DownloadMods(List<ModDownloadItem> mods)
+	internal Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods)
 	{
 		return DownloadMods(mods, Interface.modBrowserID, () => anEnabledModUpdated = true);
 	}
@@ -394,32 +394,35 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal static async Task<bool> DownloadMods(List<ModDownloadItem> items, int previousMenuId, Action setReloadRequred)
+	internal static async Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods, int previousMenuId, Action setReloadRequred)
 	{
-		if (!items.Any())
+		var set = mods.ToHashSet();
+		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(set);
+		
+		var fullList = ModDownloadItem.NeedsInstallOrUpdate(set).ToList();
+		if (!fullList.Any())
 			return true;
 
 		try {
-			foreach (var mod in items) {
-				if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
-					loadedMod.Close();
-
-					// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
-					// What happens if we set one of these to Installed = null, but then an exception is thrown before downloading finishes?
-					mod.Installed = null;
-					setReloadRequred();
-				}
-			}
-
 			var ui = new UIWorkshopDownload();
 			Main.menuMode = MenuID.FancyUI;
 			Main.MenuUI.SetState(ui);
 
 			await Task.Yield(); // to the worker thread!
-			foreach (var item in items)
-				Interface.modBrowser.SocialBackend.DownloadItem(item, ui);
 
-			ModOrganizer.LocalModsChanged(items.Select(m => m.ModName).ToHashSet());
+			foreach (var mod in fullList) {
+				if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
+					loadedMod.Close();
+
+					// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
+					mod.Installed = null;
+					setReloadRequred();
+				}
+
+				Interface.modBrowser.SocialBackend.DownloadItem(mod, ui);
+			}
+
+			ModOrganizer.LocalModsChanged(fullList.Select(m => m.ModName).ToHashSet());
 
 			// don't go to previous menu, because the caller may want to do something on success
 			return true;

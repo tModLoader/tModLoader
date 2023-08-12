@@ -86,7 +86,7 @@ public interface SocialBrowserModule
 
 	/////// Management of Dependencies ///////////////////////////////////////////
 
-	public void GetDependenciesRecursive(ref HashSet<ModDownloadItem> set)
+	public void GetDependenciesRecursive(HashSet<ModDownloadItem> set)
 	{
 		//NOTE: What if the same mod is a dependency twice, but different versions?
 		// In The Steam Workshop implementation, this is not tracked. Dependencies are by slug/ID only

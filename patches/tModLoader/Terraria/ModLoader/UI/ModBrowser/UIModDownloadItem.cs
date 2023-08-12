@@ -301,11 +301,13 @@ internal class UIModDownloadItem : UIPanel
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 	}
 
-	private void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement)
+	private async void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
-		ModDownload.InnerDownloadWithDeps();
 
+		bool success = await Interface.modBrowser.DownloadMods(new[] { ModDownload });
+		if (success)
+			Main.QueueMainThreadAction(() => Main.menuMode = Interface.modBrowserID);
 		//TODO: Some code to add the 'Installed' item to the UIModDownloaditem and redraw?
 	}
 
