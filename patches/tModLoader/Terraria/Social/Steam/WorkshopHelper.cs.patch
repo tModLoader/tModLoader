@@ -270,7 +270,7 @@
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
  				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,83 @@
+@@ -262,22 +_,91 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -290,16 +290,24 @@
 +					}
 +
 +					patchNotes = _entryData.ChangeNotes;
-+					if (string.IsNullOrEmpty(patchNotes)) {
-+						patchNotes = "Version {0} has been published to {3} tModLoader v{2}";
-+						if (!string.IsNullOrEmpty(_entryData.BuildData["homepage"]))
-+							patchNotes += ", learn more at {1}";
++					// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
++					if (string.IsNullOrWhiteSpace(patchNotes)) {
++						patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
++						if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
++							patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
 +					}
-+					// {0} to mod version, {1} to mod homepage, {2} to tModLoader version, {3} to tModLoader build purpose
-+					patchNotes = string.Format(patchNotes, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"], BuildInfo.tMLVersion.MajorMinor(), BuildInfo.Purpose);
++
++					// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
++					// This allows us to use substitution keys such as {ModVersion}
++					patchNotes = Language.GetText(patchNotes).FormatWith(new {
++						ModVersion      = _entryData.BuildData["trueversion"],
++						ModHomepage     = _entryData.BuildData["homepage"],
++						tMLVersion      = BuildInfo.tMLVersion.MajorMinor().ToString(),
++						tMLBuildPurpose = BuildInfo.Purpose.ToString(),
++					});
 +
 +					string refs = _entryData.BuildData["workshopdeps"];
-+					
++
 +					if (!string.IsNullOrWhiteSpace(refs)) {
 +						Logging.tML.Info("Adding dependencies to Workshop Upload");
 +						string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
