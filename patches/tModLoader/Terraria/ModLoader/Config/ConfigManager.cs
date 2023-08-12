@@ -548,7 +548,6 @@ public static class ConfigManager
 	/// <returns>Whether the object has any changes made to reload required fields and needs a reload.</returns>
 	public static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool>? checkSubField = null)
 	{
-		return false;// TODO: temporary
 		if (currentConfig is null || pendingConfig is null || currentConfig.GetType() != pendingConfig.GetType())
 			return false;
 
