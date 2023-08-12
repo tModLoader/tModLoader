@@ -420,9 +420,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				}
 
 				Interface.modBrowser.SocialBackend.DownloadItem(mod, ui);
+				ModOrganizer.LocalModsChanged(new HashSet<string>() { mod.ModName });
 			}
-
-			ModOrganizer.LocalModsChanged(fullList.Select(m => m.ModName).ToHashSet());
 
 			// don't go to previous menu, because the caller may want to do something on success
 			return true;
