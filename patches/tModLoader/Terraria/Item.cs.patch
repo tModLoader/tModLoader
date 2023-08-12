@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,450 @@
+@@ -37,78 +_,455 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -161,7 +161,7 @@
 +	/// <summary>
 +	/// The numerical ID of the armor shader in <see cref="GameShaders.Armor"/> this item activates when worn in a dye slot.<br/>
 +	/// If greater than 0, then this item can be equipped into dye slots.<br/>
-+	/// Defaults to -1.<br/>
++	/// Defaults to 0.<br/>
 +	/// </summary>
 +	public int dye; //TML: Changed from byte to int.
 +
@@ -244,6 +244,11 @@
 +	/// </summary>
  	public bool isAShopItem;
 -	public short hairDye = -1;
++	/// <summary>
++	/// The numerical ID of the hair shader in <see cref="GameShaders.Hair"/> this item will apply to the player when used.<br/>
++	/// If greater than -1, then this item is a hair dye.<br/>
++	/// Defaults to -1.<br/>
++	/// </summary>
 +	public int hairDye = -1; //TML: Changed from short to int.
 +
 +	/// <summary>
@@ -2088,7 +2093,7 @@
  		}
  
 -		if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
-+		if (itemToClone != null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
++		if (itemToClone == null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}

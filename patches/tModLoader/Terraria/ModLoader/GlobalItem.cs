@@ -1107,7 +1107,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to modify all the tooltips that display for the given item. See here for information about TooltipLine.
+	/// Allows you to modify all the tooltips that display for the given item. See here for information about TooltipLine. To hide tooltips, please use <see cref="TooltipLine.Hide"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 	{

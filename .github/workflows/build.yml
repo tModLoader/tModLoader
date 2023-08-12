@@ -576,6 +576,7 @@ jobs:
           fi
           if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
             manifesto=$manifesto/${{env.PreviewBranch}}.vdf
+            sed -i -e "s/1.4.4-preview/Preview-${version:0:8}/g" $manifesto
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto

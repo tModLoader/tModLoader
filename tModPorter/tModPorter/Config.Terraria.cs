@@ -108,7 +108,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"magicDamageMult",	DamageModifier("Magic",		"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"minionDamageMult",	DamageModifier("Summon",	"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"thrownDamageMult",	DamageModifier("Throwing",	"GetDamage"));
-		RefactorInstanceMember("Terraria.Player",		"meleeCrit",		DamageModifier("Generic",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"allCrit",			DamageModifier("Generic",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"meleeCrit",		DamageModifier("Melee",		"GetCritChance"));
 		RefactorInstanceMember("Terraria.Player",		"rangedCrit",		DamageModifier("Ranged",	"GetCritChance"));
 		RefactorInstanceMember("Terraria.Player",		"magicCrit",		DamageModifier("Magic",		"GetCritChance"));
 		RefactorInstanceMember("Terraria.Player",		"thrownCrit",		DamageModifier("Throwing",	"GetCritChance"));

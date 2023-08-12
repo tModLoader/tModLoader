@@ -34,7 +34,18 @@ public partial class WorkshopHelper
 		protected override void PrepareContentForUpdate() { }
 	}
 
-	/////// Workshop Mod Download Location ////////////////////
+	/// <summary>
+	/// Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found
+	/// If SteamClient is true (ie it is a steam user running a client or host&play),
+	///		InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir
+	///		WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop)
+	///	If SteamClient is false, SteamAvailable = True -> Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed
+	///		InstallDir: anywhere, manual.
+	///		WorkshopFolder: InstallDir/Steamapps/workshop
+	///	If Main.DedServ is true
+	///		Use SteamClient reference path if it exists && Not "-nosteam" supplied
+	///		Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists
+	/// </summary>
 	public static string GetWorkshopFolder(AppId_t app)
 	{
 		if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
@@ -44,17 +55,15 @@ public partial class WorkshopHelper
 			Logging.tML.Warn("-steamworkshopfolder path not found: " + workshopLocCustom);
 		}
 
-		string installLoc = null;
-		if (SteamedWraps.SteamClient) // get app install dir if possible
-			SteamApps.GetAppInstallDir(app, out installLoc, 1000);
+		string steamClientPath = null; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
+		if (SteamedWraps.SteamClient)
+			SteamApps.GetAppInstallDir(app, out steamClientPath, 1000);
+		steamClientPath ??= ".";
+		steamClientPath = Path.Combine(steamClientPath, "..", "..", "workshop");
 
-		installLoc ??= "."; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
+		if (SteamedWraps.SteamClient || !SteamedWraps.SteamAvailable && !Program.LaunchParameters.ContainsKey("-nosteam") && Directory.Exists(steamClientPath))
+			return steamClientPath;
 
-		var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop");
-		if (Directory.Exists(workshopLoc) && !Program.LaunchParameters.ContainsKey("-nosteam") && !SteamedWraps.FamilyShared)
-			return workshopLoc;
-
-		// Load mods installed by GoG / Manually copied steamapps\workshop directories.
 		return Path.Combine("steamapps", "workshop");
 	}
 
@@ -155,7 +164,7 @@ public partial class WorkshopHelper
 		var bp = mod.properties;
 
 		if (bp.buildVersion != modFile.TModLoaderVersion)
-			throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
+			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
 
 		var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
 		string changeLog;

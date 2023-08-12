@@ -59,6 +59,7 @@
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		"ModDidNotFullyUnloadWarning": "Ce mod ne s'est pas complètement déchargé lors du dernier déchargement.\n(Ceci est un message pour le créateur du mod)",

@@ -60,6 +60,7 @@
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n(点击启用)",
 		"ModDependencyModsNotFound": "未找到下列模组: {0}",
 		"ModDidNotFullyUnloadWarning": "该模组在上次卸载时未完全卸载.\n(这是给模组作者的信息)",
