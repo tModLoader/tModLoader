@@ -234,7 +234,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			return;
 		}
 
-		((IHaveBackButtonCommand)this).HandleBackButtonUsage();
+		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	private void ReloadList(UIMouseEvent evt, UIElement listeningElement)
