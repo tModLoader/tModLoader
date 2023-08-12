@@ -82,52 +82,6 @@ public interface SocialBrowserModule
 
 	/////// Management of Downloads ///////////////////////////////////////////
 
-	/// <summary>
-	/// Downloads all UIModDownloadItems provided.
-	/// </summary>
-	internal async Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
-	{
-		bool needsReload = false;
-		foreach (var mod in items) {
-			if (ModLoader.ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
-				loadedMod.Close();
-				needsReload = true;
-
-				// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
-				mod.Installed = null;
-			}
-		}
-
-		IDownloadProgress progress = null;
-		if (!Main.dedServ) {
-			// Create UIWorkshopDownload
-			var ui = new UIWorkshopDownload(previousMenuId);
-			Main.menuMode = 888;
-			Main.MenuUI.SetState(ui);
-			progress = ui;
-		}
-
-		await Task.Run(() => InnerDownload(progress, items));
-
-		// gracefully return to previous menu
-		// set needs reload
-	}
-
-	private void InnerDownload(IDownloadProgress uiProgress, List<ModDownloadItem> items)
-	{
-		var changedModsSlugs = new HashSet<string>();
-
-		foreach (var item in items) {
-			DownloadItem(item, uiProgress);
-
-			// Add installed info to the downloaded item
-			changedModsSlugs.Add(item.ModName);
-		}
-
-		ModOrganizer.LocalModsChanged(changedModsSlugs);
-		uiProgress?.DownloadCompleted();
-	}
-
 	internal void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress);
 
 	/////// Management of Dependencies ///////////////////////////////////////////

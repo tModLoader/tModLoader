@@ -9,6 +9,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.Social.Base;
 using Terraria.UI;
@@ -386,11 +387,54 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	internal Task DownloadMods(List<ModDownloadItem> mods)
 	{
-		var t = SocialBackend.SetupDownload(mods, Interface.modBrowserID, out bool needsReload);
+		var t = SetupDownload(mods, Interface.modBrowserID, out bool needsReload);
 		if (needsReload)
 			anEnabledModUpdated = true;
 
 		return t;
+	}
+
+	/// <summary>
+	/// Downloads all UIModDownloadItems provided.
+	/// </summary>
+	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId, out bool needsReload)
+	{
+		needsReload = false;
+		foreach (var mod in items) {
+			if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
+				loadedMod.Close();
+				needsReload = true;
+
+				// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
+				mod.Installed = null;
+			}
+		}
+
+		IDownloadProgress progress = null;
+		if (!Main.dedServ) {
+			// Create UIWorkshopDownload
+			var ui = new UIWorkshopDownload(previousMenuId);
+			Main.menuMode = 888;
+			Main.MenuUI.SetState(ui);
+			progress = ui;
+		}
+
+		return Task.Run(() => InnerDownload(progress, items));
+	}
+
+	private void InnerDownload(IDownloadProgress uiProgress, List<ModDownloadItem> items)
+	{
+		var changedModsSlugs = new HashSet<string>();
+
+		foreach (var item in items) {
+			SocialBackend.DownloadItem(item, uiProgress);
+
+			// Add installed info to the downloaded item
+			changedModsSlugs.Add(item.ModName);
+		}
+
+		ModOrganizer.LocalModsChanged(changedModsSlugs);
+		uiProgress?.DownloadCompleted();
 	}
 
 	private void SetHeading(LocalizedText heading)
