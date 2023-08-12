@@ -373,18 +373,20 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	internal Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods)
 	{
-		return DownloadMods(mods, Interface.modBrowserID, () => reloadOnExit = true,
-			mod => {
+		return DownloadMods(mods, Interface.modBrowserID, setReloadRequred: () => reloadOnExit = true,
+			onNewModInstalled: mod => {
 				newModInstalled = true;
 				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
+					/* TODO: Do we want this re-added?
 					ModLoader.EnableMod(mod.ModName);
 					reloadOnExit = true;
+					*/
 				}
 			});
 	}
 
 	/// <summary>
-	/// Downloads all UIModDownloadItems provided.
+	/// Downloads all ModDownloadItems provided.
 	/// </summary>
 	internal static async Task<bool> DownloadMods(IEnumerable<ModDownloadItem> mods, int previousMenuId, Action setReloadRequred = null, Action<ModDownloadItem> onNewModInstalled = null)
 	{
