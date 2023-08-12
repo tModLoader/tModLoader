@@ -192,7 +192,8 @@ internal static class Interface
 
 					modBrowser.SocialBackend.SetupDownload(
 						ModDownloadItem.NeedsInstallOrUpdate(downloads).ToList(),
-						loadModsID
+						loadModsID,
+						out _
 					);
                 };
 

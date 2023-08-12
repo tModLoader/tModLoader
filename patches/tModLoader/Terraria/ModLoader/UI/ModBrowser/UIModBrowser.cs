@@ -204,16 +204,21 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	public void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	public void HandleBackButtonUsage()	
 	{
 		bool reloadModsNeeded = aNewModDownloaded && ModLoader.autoReloadAndEnableModsLeavingModBrowser || anEnabledModUpdated;
 		bool enableModsReminder = aNewModDownloaded && !ModLoader.dontRemindModBrowserDownloadEnable;
 		bool reloadModsReminder = aDisabledModUpdated && !ModLoader.dontRemindModBrowserUpdateReload;
+		anEnabledModUpdated = false;
+		aNewModDownloaded = false;
+		aDisabledModUpdated = false;
 
 		if (reloadModsNeeded) {
 			Main.menuMode = Interface.reloadModsID;
+			return;
 		}
-		else if (enableModsReminder || reloadModsReminder) {
+
+		if (enableModsReminder || reloadModsReminder) {
 			string text = "";
 			if(enableModsReminder)
 				text += Language.GetTextValue("tModLoader.EnableModsReminder") + "\n\n";
@@ -228,13 +233,10 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 						ModLoader.dontRemindModBrowserUpdateReload = true;
 					Main.SaveSettings();
 				});
+			return;
 		}
 
-		anEnabledModUpdated = false;
-		aNewModDownloaded = false;
-		aDisabledModUpdated = false;
-
-		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		((IHaveBackButtonCommand)this).HandleBackButtonUsage();
 	}
 
 	private void ReloadList(UIMouseEvent evt, UIElement listeningElement)
@@ -376,10 +378,19 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		// If no download detected for some reason (e.g. empty modpack filter), prevent switching UI
 		if (downloadShortList.Any())
-			await SocialBackend.SetupDownload(downloadShortList.ToList(), Interface.modBrowserID);
+			await DownloadMods(downloadShortList.ToList());
 
 		if (missingMods.Any())
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", missingMods)), Interface.modBrowserID);
+	}
+
+	internal Task DownloadMods(List<ModDownloadItem> mods)
+	{
+		var t = SocialBackend.SetupDownload(mods, Interface.modBrowserID, out bool needsReload);
+		if (needsReload)
+			anEnabledModUpdated = true;
+
+		return t;
 	}
 
 	private void SetHeading(LocalizedText heading)

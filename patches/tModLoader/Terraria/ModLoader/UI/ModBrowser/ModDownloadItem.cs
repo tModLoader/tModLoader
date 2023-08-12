@@ -36,7 +36,6 @@ public class ModDownloadItem
 	public bool AppNeedRestartToReinstall { get; private set; }
 
 	public bool IsInstalled => Installed != null;
-	public bool IsEnabled => IsInstalled && Installed.Enabled;
 
 	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
@@ -98,11 +97,8 @@ public class ModDownloadItem
 	internal Task InnerDownloadWithDeps()
 	{
 		var downloads = new HashSet<ModDownloadItem>() { this };
-
-		if (ModReferenceByModId.Length > 0)
-			Interface.modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
-
-		return Interface.modBrowser.SocialBackend.SetupDownload(NeedsInstallOrUpdate(downloads).ToList(), Interface.modBrowserID);
+		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(ref downloads);
+		return Interface.modBrowser.DownloadMods(NeedsInstallOrUpdate(downloads).ToList());
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)

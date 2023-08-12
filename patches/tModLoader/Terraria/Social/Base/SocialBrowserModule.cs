@@ -85,33 +85,20 @@ public interface SocialBrowserModule
 	/// <summary>
 	/// Downloads all UIModDownloadItems provided.
 	/// </summary>
-	internal Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
+	internal async Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
 	{
-		// Can't update enabled items due to in-use file access constraints
-		// Mod unloading needs to occur off the main thread o avoid UI impacts/soft-freeze
-		var needFreeInUseMods = items.Where(item => { item.UpdateInstallState(); return item.IsEnabled; });
+		bool needsReload = false;
+		foreach (var mod in items) {
+			if (ModLoader.ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
+				loadedMod.Close();
+				needsReload = true;
 
-		var needsEnableFormerInUseMods = needFreeInUseMods.Select(item => item.Installed.Name);
-		Task downloadRunner = DownloadRunner(items, previousMenuId, needsEnableFormerInUseMods);
-
-		if (needFreeInUseMods.Count() > 0) {
-			foreach (var item in needFreeInUseMods) {
-				item.Installed.Enabled = false;
 				// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
-				item.Installed = null;
+				mod.Installed = null;
 			}
-
-			ModLoader.ModLoader.OnSuccessfulLoad += delegate { downloadRunner.Start(); };
-			return new Task(() => { Main.menuMode = Interface.loadModsID; } );
 		}
 
-		return downloadRunner;
-	}
-
-	private Task DownloadRunner(List<ModDownloadItem> items, int previousMenuId, IEnumerable<string> needsEnableFormerInUseMods)
-	{
 		IDownloadProgress progress = null;
-
 		if (!Main.dedServ) {
 			// Create UIWorkshopDownload
 			var ui = new UIWorkshopDownload(previousMenuId);
@@ -120,10 +107,13 @@ public interface SocialBrowserModule
 			progress = ui;
 		}
 
-		return Task.Run(() => InnerDownload(progress, items, needsEnableFormerInUseMods));
+		await Task.Run(() => InnerDownload(progress, items));
+
+		// gracefully return to previous menu
+		// set needs reload
 	}
 
-	private void InnerDownload(IDownloadProgress uiProgress, List<ModDownloadItem> items, IEnumerable<string> needsEnableFormerInUseMods)
+	private void InnerDownload(IDownloadProgress uiProgress, List<ModDownloadItem> items)
 	{
 		var changedModsSlugs = new HashSet<string>();
 
@@ -135,18 +125,7 @@ public interface SocialBrowserModule
 		}
 
 		ModOrganizer.LocalModsChanged(changedModsSlugs);
-
 		uiProgress?.DownloadCompleted();
-
-		// Set all mods that were previously enabled to be enabled, but let the player choose when to reload them.
-		if (needsEnableFormerInUseMods.Count() > 0) {
-			var installedMods = GetInstalledMods();
-			foreach (var slug in needsEnableFormerInUseMods) {
-				var mod = installedMods.Where(item => item.Name == slug).FirstOrDefault();
-				if (mod != null)
-					mod.Enabled = true;
-			}
-		}	
 	}
 
 	internal void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress);

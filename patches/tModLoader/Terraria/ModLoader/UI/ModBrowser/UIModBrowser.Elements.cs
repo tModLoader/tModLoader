@@ -51,7 +51,7 @@ internal partial class UIModBrowser
 	private void InitializeInteractions()
 	{
 		_reloadButton.OnLeftClick += ReloadList;
-		_backButton.OnLeftClick += BackClick;
+		_backButton.OnLeftClick += (_, _) => HandleBackButtonUsage();
 		_clearButton.OnLeftClick += ClearTextFilters;
 		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
 		_updateAllButton.OnLeftClick += UpdateAllMods;
