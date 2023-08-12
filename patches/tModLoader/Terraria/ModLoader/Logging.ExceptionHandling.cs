@@ -24,6 +24,7 @@ public static partial class Logging
 	private static readonly HashSet<string> pastExceptions = new();
 	private static readonly HashSet<string> ignoreTypes = new() {
 		"ReLogic.Peripherals.RGB.DeviceInitializationException",
+		"System.Threading.Tasks.TaskCanceledException",
 	};
 	private static readonly HashSet<string> ignoreSources = new() {
 		"MP3Sharp",
@@ -38,6 +39,7 @@ public static partial class Logging
 		"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 		"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
 		"UwUPnP", // UPnP does a lot of trial and error
+		"System.Threading.CancellationTokenSource.Cancel", // an operation (task) was deliberately cancelled
 	};
 	// There are a couple of annoying messages that happen during cancellation of asynchronous downloads, and they have no other useful info to suppress by
 	private static readonly List<string> ignoreMessages = new() {
@@ -53,7 +55,6 @@ public static partial class Logging
 		"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
 		"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 		"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
-		"System.Threading.CancellationTokenSource.Cancel", // an operation (task) was deliberately cancelled
 	};
 
 	private static Exception previousException;
