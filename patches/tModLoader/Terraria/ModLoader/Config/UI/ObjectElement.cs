@@ -20,7 +20,7 @@ internal class ObjectElement : ConfigElement<object>
 	//private object data;
 	private bool separatePage;
 	private bool pendingChanges;
-	private bool expanded = true;
+	private bool expanded = false;
 	private NestedUIList dataList;
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;

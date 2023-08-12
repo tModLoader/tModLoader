@@ -18,7 +18,7 @@ internal abstract class CollectionElement : ConfigElement
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
 	private UIModConfigHoverImageSplit upDownButton;
-	private bool expanded = true;
+	private bool expanded = false;
 	private bool pendingChanges = false;
 
 	protected object Data { get; set; }

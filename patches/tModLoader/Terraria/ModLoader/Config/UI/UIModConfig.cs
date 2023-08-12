@@ -19,7 +19,6 @@ using Terraria.GameContent;
 namespace Terraria.ModLoader.Config.UI;
 
 // TODO: Revert individual button.
-// TODO: Collapse All button, or default to collapsed?
 internal class UIModConfig : UIState
 {
 	public int UpdateCount { get; set; }
@@ -443,7 +442,7 @@ internal class UIModConfig : UIState
 		SetMessage("", "", Color.White);
 		updateNeeded = false;
 
-		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// TODO: Hacky, but works
+		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// Hacky, but works
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		pendingChanges = pendingRevertDefaults;
 
