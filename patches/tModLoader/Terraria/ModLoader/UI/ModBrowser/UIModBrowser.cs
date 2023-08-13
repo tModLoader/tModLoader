@@ -353,21 +353,14 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	/// </summary>
 	internal async void DownloadModsAndReturnToBrowser(List<ModPubId_t> modIds)
 	{
-		// This whole 'does the item exist on the browser' code belongs somewhere mod-pack specific. This is the browser, surely, it can be handled when populating the visible entries or something.
-
 		// @TODO: This too should become a Task since blocking
-		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() });
-		var missingMods = new List<string>();
-		for (int i = 0; i < modIds.Count(); i++) {
-			if (downloadsQueried[i] == null)
-				//TODO: Would be nice if this was name/slug, not ID
-				missingMods.Add(modIds[i].m_ModPubId);
-		}
+		var downloadsQueried = SocialBackend.DirectQueryItems(new QueryParameters() { searchModIds = modIds.ToArray() }, out List<string> missingMods);
 
 		bool success = await DownloadMods(downloadsQueried);
 		if (!success)
 			return; // error ui already displayed
 
+		// This whole 'does the item exist on the browser' code belongs somewhere mod-pack specific. This is the browser, surely, it can be handled when populating the visible entries or something.
 		if (missingMods.Any()) {
 			Interface.errorMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", missingMods)), Interface.modBrowserID);
 			return;

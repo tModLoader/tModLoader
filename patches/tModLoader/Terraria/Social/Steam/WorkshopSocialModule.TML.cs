@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 using Terraria.Utilities;
@@ -15,8 +17,8 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
+	private ulong existingAuthorID = 0;
 
-	//TODO: Revisit this. Creates a lot of 'slowness' when publishing due to needing to jump through re-querying the mod browser.
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
@@ -25,15 +27,16 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out List<string> modIds)) {
+		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods)) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
-		currPublishID = ulong.Parse(modIds[0]);
-
-		if (currPublishID == 0)
+		if (!mods.Any())
 			return false;
+
+		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
+		existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		SteamedWraps.Download(new Steamworks.PublishedFileId_t(currPublishID), forceUpdate: true);
@@ -78,11 +81,10 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			ulong existingID = WorkshopHelper.GetSteamOwner(currPublishID.ToString());
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (existingID != currID.m_SteamID) {
+			if (existingAuthorID != currID.m_SteamID) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
 				return false;
 			}

@@ -96,8 +96,7 @@ public partial class WorkshopHelper
 	{
 		modIds = new List<string>();
 
-		var queryHandle = new QueryHelper.AQueryInstance(query);
-		if (!queryHandle.TrySearchByInternalName(out List<ModDownloadItem> items))
+		if (!TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> items))
 			return false;
 
 		for (int i = 0; i < query.searchModSlugs.Length; i++) {
@@ -112,10 +111,13 @@ public partial class WorkshopHelper
 		return true;
 	}
 
-	internal static ulong GetSteamOwner(string modId)
+	internal static bool TryGetModDownloadItemsByInternalName(QueryParameters query, out List<ModDownloadItem> mods)
 	{
-		var mods = new QueryHelper.AQueryInstance(new QueryParameters() { searchModIds = new ModPubId_t[] { new ModPubId_t() { m_ModPubId = modId } } }).QueryItemsSynchronously();
-		return ulong.Parse(mods[0].OwnerId);
+		var queryHandle = new QueryHelper.AQueryInstance(query);
+		if (!queryHandle.TrySearchByInternalName(out mods))
+			return false;
+
+		return true;
 	}
 
 	/////// Workshop Version Calculation Helpers ////////////////////
@@ -279,12 +281,14 @@ public partial class WorkshopHelper
 
 			/// <summary>
 			/// For direct information gathering of particular mod/workshop items. Synchronous.
-			/// Array Sizes are left One To One. If the Mod is not found, the array space is filled with a null.
+			/// Note that the List size is 1 to 1 with the provided array.
+			/// If the Mod is not found, the space is filled with a null.
 			/// </summary>
-			internal ModDownloadItem[] QueryItemsSynchronously()
+			internal List<ModDownloadItem> QueryItemsSynchronously(out List<string> missingMods)
 			{
 				var numPages = Math.Ceiling(queryParameters.searchModIds.Length / (float)Constants.kNumUGCResultsPerPage);
-				var items = new ModDownloadItem[queryParameters.searchModIds.Length];
+				var items = new List<ModDownloadItem>();
+				missingMods = new List<string>();
 
 				for (int i = 0; i < numPages; i++) {
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) ));
@@ -295,14 +299,16 @@ public partial class WorkshopHelper
 
 						for (int j = 0; j < _queryReturnCount; j++) {
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
-							items[itemsIndex] = GenerateModDownloadItemFromQuery((uint)j);
-							if (items[itemsIndex] is null) {
-								//TODO: This could happen if a mod you are subbed to goes to hidden visibility.
-								// Needs better exception handling
-								throw new DataMisalignedException($"Unable to find Mod with ID {idArray[j]}");
+							var item = GenerateModDownloadItemFromQuery((uint)j);
+							if (item is null) {
+								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
+								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
+								missingMods.Add(idArray[j]);
+								continue;
 							}
 
-							items[j].UpdateInstallState();
+							item.UpdateInstallState();
+							items.Add(item);
 						}
 					}
 					finally {

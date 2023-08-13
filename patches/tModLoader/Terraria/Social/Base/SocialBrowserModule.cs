@@ -33,7 +33,7 @@ public interface SocialBrowserModule
 	public IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default);
 #pragma warning restore CS8424
 
-	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams);
+	public List<ModDownloadItem> DirectQueryItems(QueryParameters queryParams, out List<string> missingMods);
 
 	/////// Display of Browser Items ///////////////////////////////////////////
 
@@ -43,9 +43,9 @@ public interface SocialBrowserModule
 	public bool GetModIdFromLocalFiles(TmodFile modFile, out ModPubId_t item);
 
 	// Needed for ensuring that the 'Update All' button works correctly. Without caching the mod browser locks out on the update all button
-	internal ModDownloadItem[] CachedInstalledModDownloadItems { get; set; }
+	internal List<ModDownloadItem> CachedInstalledModDownloadItems { get; set; }
 
-	public ModDownloadItem[] DirectQueryInstalledMDItems(QueryParameters qParams = new QueryParameters()) {
+	public List<ModDownloadItem> DirectQueryInstalledMDItems(QueryParameters qParams = new QueryParameters()) {
 		var mods = GetInstalledMods();
 		var listIds = new List<ModPubId_t>();
 
@@ -56,10 +56,10 @@ public interface SocialBrowserModule
 
 		qParams.searchModIds = listIds.ToArray();
 
-		return DirectQueryItems(qParams);
+		return DirectQueryItems(qParams, out _);
 	}
 
-	public ModDownloadItem[] GetInstalledModDownloadItems()
+	public List<ModDownloadItem> GetInstalledModDownloadItems()
 	{
 		if (CachedInstalledModDownloadItems == null) {
 			CachedInstalledModDownloadItems = DirectQueryInstalledMDItems();
@@ -110,7 +110,10 @@ public interface SocialBrowserModule
 				return;
 
 			// Get the ModDownloadItems for the new IDs
-			iterationSet = DirectQueryItems(new QueryParameters() { searchModIds = iterationList.ToArray() }).ToHashSet();
+			iterationSet = DirectQueryItems(new QueryParameters() { searchModIds = iterationList.ToArray() }, out var notFoundMods).ToHashSet();
+
+			if (notFoundMods.Any())
+				notFoundMods = notFoundMods; //TODO: Do we care here if a dependency isn't found?
 
 			// Add the net-new publish IDs & ModDownLoadItems to the full list
 			fullList.UnionWith(iterationList);

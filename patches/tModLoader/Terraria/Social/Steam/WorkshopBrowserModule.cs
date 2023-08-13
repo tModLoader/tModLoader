@@ -48,7 +48,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		return InstalledItems;
 	}
 
-	public ModDownloadItem[] CachedInstalledModDownloadItems { get; set; }
+	public List<ModDownloadItem> CachedInstalledModDownloadItems { get; set; }
 
 	// Cache to minimize heavy costs associated with scanning over 50+ mods installed. Test anytime after big optimization to see if can remove
 	// last test Jun 23 2023 - Solxan
@@ -151,7 +151,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 		// Special Mod Pack Filter. Needs rework.
 		if (queryParams.searchModIds != null && queryParams.searchModIds.Any()) {
-			foreach (var item in DirectQueryItems(queryParams))
+			foreach (var item in DirectQueryItems(queryParams, out _))
 				yield return item;
 			yield break;
 		}
@@ -185,12 +185,12 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		}
 	}
 
-	public ModDownloadItem[] DirectQueryItems(QueryParameters queryParams)
+	public List<ModDownloadItem> DirectQueryItems(QueryParameters queryParams, out List<string> missingMods)
 	{
 		if (queryParams.searchModIds == null || !SteamedWraps.SteamAvailable)
-			return null; // Should only be called if the above is filled in & Steam is Available.
+			throw new Exception("Unexpected Call of DirectQueryItems while either Steam is not initialized or query parameters.searchModIds is null"); // Should only be called if the above is filled in & Steam is Available.
 
-		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).QueryItemsSynchronously();
+		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).QueryItemsSynchronously(out missingMods);
 	}
 }
 
