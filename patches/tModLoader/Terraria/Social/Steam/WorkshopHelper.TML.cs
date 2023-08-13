@@ -287,17 +287,19 @@ public partial class WorkshopHelper
 				var items = new ModDownloadItem[queryParameters.searchModIds.Length];
 
 				for (int i = 0; i < numPages; i++) {
-					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) - 1));
+					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) ));
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
 					try {
 						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray));
 
-						for (int j = 0; j < i * Constants.kNumUGCResultsPerPage + _queryReturnCount; j++) {
-							items[j] = GenerateModDownloadItemFromQuery((uint)j);
-							if (items[j] is null) {
-								Logging.tML.Info($"Unable to find Mod with ID {idArray[j]}");
-								continue;
+						for (int j = 0; j < _queryReturnCount; j++) {
+							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
+							items[itemsIndex] = GenerateModDownloadItemFromQuery((uint)j);
+							if (items[itemsIndex] is null) {
+								//TODO: This could happen if a mod you are subbed to goes to hidden visibility.
+								// Needs better exception handling
+								throw new DataMisalignedException($"Unable to find Mod with ID {idArray[j]}");
 							}
 
 							items[j].UpdateInstallState();
@@ -306,7 +308,6 @@ public partial class WorkshopHelper
 					finally {
 						ReleaseWorkshopQuery();
 					}
-
 				}
 				
 				return items;
