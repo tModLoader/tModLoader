@@ -149,6 +149,13 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		if (!SteamedWraps.SteamAvailable)
 			yield break;
 
+		// Special Mod Pack Filter. Needs rework.
+		if (queryParams.searchModIds != null && queryParams.searchModIds.Any()) {
+			foreach (var item in DirectQueryItems(queryParams))
+				yield return item;
+			yield break;
+		}
+
 		// Each filter has independent code for simplicity and readability
 		switch (queryParams.updateStatusFilter) {
 			case UpdateFilter.All:

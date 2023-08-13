@@ -127,6 +127,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			}
 
 			_specialModPackFilter = value;
+			// NOTE: This is untested if called before the browser has done first loading. Needs additional work
+			if (!_firstLoad)
+				ModList.SetEnumerable(SocialBackend.QueryBrowser(FilterParameters));
+			else
+				throw new NotImplementedException("The ModPack 'View In Browser' option is only valid after one-time opening of Mod Browser");
 		}
 	}
 
