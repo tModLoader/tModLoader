@@ -1020,7 +1020,7 @@
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
 +				Console.WriteLine("m\t\tMods Menu");
-+				Console.WriteLine("b\t\tMod Browser");
++				//Console.WriteLine("b\t\tMod Browser"); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
@@ -1078,7 +1078,7 @@
  					while (flag2) {
  						Console.WriteLine("");
  						Console.Write(Language.GetTextValue("CLI.EnterSeed"));
-@@ -4431,6 +_,19 @@
+@@ -4431,6 +_,22 @@
  
  					continue;
  				}
@@ -1091,10 +1091,13 @@
 +
 +					continue;
 +				}
++				// Not functional in the 1.4 Steam Workshop Environment
++				/*
 +				else if (text2 == "b" || text2 == "b") {
 +					Interface.ServerModBrowserMenu();
 +					continue;
 +				}
++				*/
  
  				try {
  					int num3 = Convert.ToInt32(text2);

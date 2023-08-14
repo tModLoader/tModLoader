@@ -1,8 +1,6 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Threading;
 using Terraria.Localization;
-using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader.UI;
 
@@ -17,6 +15,7 @@ internal class UILoadMods : UIProgress
 	public override void OnActivate()
 	{
 		base.OnActivate();
+
 		_cts = new CancellationTokenSource();
 		OnCancel += () => {
 			SetLoadStage("Loading Cancelled");
