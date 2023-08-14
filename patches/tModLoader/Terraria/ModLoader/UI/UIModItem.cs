@@ -71,19 +71,17 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
+		var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
+		_modIconAdjust += 85;
+
 		if (_mod.modFile.HasFile("icon.png")) {
 			try {
 				using (_mod.modFile.Open())
 				using (var s = _mod.modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png").Value;
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
 
-					if (iconTexture.Width == 80 && iconTexture.Height == 80) {
-						_modIcon = new UIImage(iconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						Append(_modIcon);
-						_modIconAdjust += 85;
+					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
+						modIcon = iconTexture;
 					}
 				}
 			}
@@ -91,6 +89,15 @@ internal class UIModItem : UIPanel
 				Logging.tML.Error("Unknown error", e);
 			}
 		}
+
+		_modIcon = new UIImage(modIcon) {
+			Left = { Percent = 0f },
+			Top = { Percent = 0f },
+			Width = { Pixels = 80 },
+			Height = { Pixels = 80 },
+			ScaleToFit = true,
+		};
+		Append(_modIcon);
 
 		_modName = new UIText(text) {
 			Left = new StyleDimension(_modIconAdjust, 0f),
