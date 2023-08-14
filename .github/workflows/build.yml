@@ -334,7 +334,7 @@ jobs:
           mkdir -p $ModloaderDir
           
           if [ ${{env.IsRelease}} = 'true' ] ; then
-            ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+            ciprep="-ciprep \"Automatic update from GitHub for tModLoader v{tMLVersion}: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           else
             ciprep=""
           fi
