@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.Utilities;
@@ -97,6 +98,8 @@ public static class PrefixLoader
 			if (Item.GetVanillaPrefixes(category).Contains(prefix))
 				return true;
 		}
+		if (PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type] && prefix == PrefixID.Legendary2) // Fix #3688
+			return true;
 
 		return false;
 	}
@@ -126,6 +129,9 @@ public static class PrefixLoader
 
 		foreach (int pre in Item.GetVanillaPrefixes(category))
 			wr.Add(pre, 1);
+
+		if(PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type]) // Fix #3688, Rather than mess with the PrefixCategory enum and Item.GetPrefixCategory at this time and risk compatibility issues, manually support this until a redesign.
+			wr.Add(PrefixID.Legendary2, 1);
 
 		AddCategory(category);
 		if (IsWeaponSubCategory(category))
