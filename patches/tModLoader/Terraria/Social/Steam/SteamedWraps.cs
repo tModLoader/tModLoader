@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam;
 
@@ -54,6 +57,7 @@ public static class SteamedWraps
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
+			Logging.tML.Info("SteamBackend: Running standard Steam Desktop Client API");
 			return;
 		}
 
@@ -62,25 +66,26 @@ public static class SteamedWraps
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 		if (!Main.dedServ && !TryInitViaGameServer())
-			Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
 	}
 
 	public static bool TryInitViaGameServer()
 	{
 		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
 		try {
-			if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+			if (!GameServer.Init(0, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
 				return false;
 
 			SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 			SteamGameServer.SetProduct(thisApp.ToString());
 			SteamGameServer.LogOnAnonymous();
 		}
-		catch (DllNotFoundException e) {
+		catch (Exception e) {
 			Logging.tML.Error(e);
 			return false;
 		}
 
+		Logging.tML.Info("SteamBackend: Running non-standard Steam GameServer API");
 		SteamAvailable = true;
 		return true;
 	}
@@ -113,31 +118,39 @@ public static class SteamedWraps
 		return deps;
 	}
 
-	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, bool returnChildInfo = false, bool returnLongDesc = false, bool returnKeyValueTags = false, bool returnPlaytimeStats = false)
+	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
+		FilterByText(ref qHandle, qP.searchGeneric);
+		FilterByTags(ref qHandle, qP.searchTags);
+		FilterModSide(ref qHandle, qP.modSideFilter);
+
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-			SteamUGC.SetReturnLongDescription(qHandle, returnLongDesc);
-			SteamUGC.SetReturnChildren(qHandle, returnChildInfo);
-			SteamUGC.SetReturnKeyValueTags(qHandle, returnKeyValueTags);
-			if (returnPlaytimeStats)
-				SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+			SteamUGC.SetReturnChildren(qHandle, true);
+			SteamUGC.SetReturnKeyValueTags(qHandle, true);
+			SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 		}
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-			SteamGameServerUGC.SetReturnLongDescription(qHandle, returnLongDesc);
-			SteamGameServerUGC.SetReturnChildren(qHandle, returnChildInfo);
-			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, returnKeyValueTags);
-			if (returnPlaytimeStats)
-				SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+			SteamGameServerUGC.SetReturnChildren(qHandle, true);
+			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
+			SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 		}
 	}
 
-	private static void FilterByTags(ref UGCQueryHandle_t qHandle, List<string> tags)
+	private static void FilterModSide(ref UGCQueryHandle_t qHandle, ModSideFilter side)
+	{
+		if (side == ModSideFilter.All)
+			return;
+
+		FilterByTags(ref qHandle, new string[] { side.ToString() });
+	}
+
+	private static void FilterByTags(ref UGCQueryHandle_t qHandle, string[] tags)
 	{
 		if (tags == null)
 			return;
@@ -162,35 +175,65 @@ public static class SteamedWraps
 			SteamGameServerUGC.AddRequiredKeyValueTag(qHandle, "name", internalName);
 	}
 
-	public static SteamAPICall_t GenerateSingleItemQuery(ulong publishId)
+	private static void FilterByText(ref UGCQueryHandle_t qHandle, string text)
 	{
+		if (string.IsNullOrEmpty(text))
+			return;
+
+		if (SteamClient)
+			SteamUGC.SetSearchText(qHandle, text);
+
+		else if (SteamAvailable)
+			SteamGameServerUGC.SetSearchText(qHandle, text);
+	}
+
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	{
+		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
+
 		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
-			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle, new QueryParameters());
 			return SteamUGC.SendQueryUGCRequest(qHandle);
-		} else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
-			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
+		}
+		else if (SteamAvailable) {
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle, new QueryParameters());
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
 		return new();
 	}
 
-	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, List<string> tags = null, string internalName = null)
+	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
+	{
+		if (!string.IsNullOrEmpty(qParams.searchGeneric))
+			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
+
+		return (qParams.sortingParamater) switch {
+			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
+			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
+			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
+			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch
+		};
+	}
+
+	public static SteamAPICall_t GenerateAndSubmitModBrowserQuery(uint page, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
-			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
-			FilterByTags(ref qHandle, tags);
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
+
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
-			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
-			FilterByTags(ref qHandle, tags);
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
+			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
@@ -247,10 +290,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static void ForceCallbacks()
+	public static void RunCallbacks()
 	{
-		Thread.Sleep(5);
-
 		if (SteamClient)
 			SteamAPI.RunCallbacks();
 		else if (SteamAvailable)
@@ -415,7 +456,7 @@ public static class SteamedWraps
 	/// <summary>
 	/// Updates and/or Downloads the Item specified by publishId
 	/// </summary>
-	internal static void Download(PublishedFileId_t publishId, UIWorkshopDownload uiProgress = null, bool forceUpdate = false)
+	internal static void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
 	{
 		if (!SteamAvailable)
 			return;
@@ -447,7 +488,7 @@ public static class SteamedWraps
 		}
 	}
 
-	private static void InnerDownloadHandler(UIWorkshopDownload uiProgress, PublishedFileId_t publishId)
+	private static void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
 	{
 		ulong dlBytes, totalBytes;
 
@@ -474,8 +515,7 @@ public static class SteamedWraps
 				}
 			}
 
-			if (uiProgress != null)
-				uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+			uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
 
 			int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
 

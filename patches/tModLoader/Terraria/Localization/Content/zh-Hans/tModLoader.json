@@ -248,6 +248,12 @@
 		"MPErrorModDownloadError": "下载时发生错误 {0}",
 		"MPPacketTooLarge": "数据包太大 {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "下载",
 		"MBDownloadAll": "下载全部",
@@ -267,6 +273,7 @@
 		"MBUpdateAll": "更新全部",
 		"MBReloadBrowser": "重新加载浏览器",
 		"MBGettingData": "获取数据中...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "填充浏览器中...",
 		"MBSortByRecentlyUpdated": "按最近更新时间排序",
 		"MBSortByPopularity": "按热度排序",
@@ -345,8 +352,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "离开模组浏览器时自动启用并重新加载模组: 关闭",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "离开模组列表时自动重新加载需要加载的的模组: 开启",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "离开模组列表时自动重新加载需要加载的模组: 关闭",
-		"ReloadModsReminder": "你已更新一些模组,记得重新加载以使其生效.",
-		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
 
