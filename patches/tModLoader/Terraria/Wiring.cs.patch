@@ -90,6 +90,24 @@
  	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
+@@ -376,7 +_,7 @@
+ 			if (liquid <= 0)
+ 				continue;
+ 
+-			byte b = Main.tile[num, num2].liquidType();
++			ushort b = Main.tile[num, num2].liquidType();
+ 			for (int j = 0; j < _numOutPump; j++) {
+ 				int num3 = _outPumpX[j];
+ 				int num4 = _outPumpY[j];
+@@ -384,7 +_,7 @@
+ 				if (liquid2 >= 255)
+ 					continue;
+ 
+-				byte b2 = Main.tile[num3, num4].liquidType();
++				ushort b2 = Main.tile[num3, num4].liquidType();
+ 				if (liquid2 == 0)
+ 					b2 = b;
+ 
 @@ -410,7 +_,14 @@
  		}
  	}

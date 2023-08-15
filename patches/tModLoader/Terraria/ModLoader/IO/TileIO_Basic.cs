@@ -211,16 +211,16 @@ internal static partial class TileIO
 
 		protected override IEnumerable<ModLiquid> LoadedBlocks => LiquidLoader.liquids;
 
-		protected override WallEntry ConvertBlockToEntry(ModLiquid wall) => new LiquidEntry(wall);
-		protected override ushort GetModBlockType(Tile tile) => tile.wall >= Liquid.Count ? tile.liquidType : (ushort)0;
+		protected override LiquidEntry ConvertBlockToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
+		protected override ushort GetModBlockType(Tile tile) => tile.wall >= LiquidID.Count ? tile.liquidType() : (ushort)0;
 
-		protected override void ReadData(Tile tile, WallEntry entry, BinaryReader reader)
+		protected override void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
 		{
-			tile.liquidType = entry.loadedType;
-			tile.LiquidAmount(reader.ReadByte());
+			tile.liquidType(entry.loadedType);
+			tile.LiquidAmount = reader.ReadByte();
 		}
 
-		protected override void WriteData(BinaryWriter writer, Tile tile, WallEntry entry)
+		protected override void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
 		{
 			writer.Write(entry.type);
 			writer.Write(tile.LiquidAmount);
