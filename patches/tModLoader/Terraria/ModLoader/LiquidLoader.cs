@@ -39,7 +39,7 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, nextLiquid + 1);
 		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid + 1);
 
-		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - 3);
+		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - LiquidID.Count);
 
 		if (!unloading) {
 			loaded = true;
