@@ -203,30 +203,6 @@ internal static partial class TileIO
 		}
 	}
 
-	public class LiquidIOImpl : IOImpl<ModLiquid, LiquidEntry>
-	{
-		public LiquidIOImpl() : base("liquidMap", "liquidData") { }
-
-		protected override int LoadedBlockCount => LiquidLoader.LiquidCount;
-
-		protected override IEnumerable<ModLiquid> LoadedBlocks => LiquidLoader.liquids;
-
-		protected override LiquidEntry ConvertBlockToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
-		protected override ushort GetModBlockType(Tile tile) => tile.wall >= LiquidID.Count ? tile.liquidType() : (ushort)0;
-
-		protected override void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
-		{
-			tile.liquidType(entry.loadedType);
-			tile.LiquidAmount = reader.ReadByte();
-		}
-
-		protected override void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
-		{
-			writer.Write(entry.type);
-			writer.Write(tile.LiquidAmount);
-		}
-	}
-
 	public class WallIOImpl : IOImpl<ModWall, WallEntry>
 	{
 		public WallIOImpl() : base("wallMap", "wallData") { }
@@ -248,6 +224,30 @@ internal static partial class TileIO
 		{
 			writer.Write(entry.type);
 			writer.Write(tile.wallColor());
+		}
+	}
+
+	public class LiquidIOImpl : IOImpl<ModLiquid, LiquidEntry>
+	{
+		public LiquidIOImpl() : base("liquidMap", "liquidData") { }
+
+		protected override int LoadedBlockCount => LiquidLoader.LiquidCount;
+
+		protected override IEnumerable<ModLiquid> LoadedBlocks => LiquidLoader.liquids;
+
+		protected override LiquidEntry ConvertBlockToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
+		protected override ushort GetModBlockType(Tile tile) => tile.wall >= LiquidID.Count ? tile.liquidType() : (ushort)0;
+
+		protected override void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
+		{
+			tile.liquidType(entry.loadedType);
+			tile.LiquidAmount = reader.ReadByte();
+		}
+
+		protected override void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
+		{
+			writer.Write(entry.type);
+			writer.Write(tile.LiquidAmount);
 		}
 	}
 

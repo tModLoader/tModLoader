@@ -25,7 +25,7 @@ public class WaterStylesLoader : SceneEffectLoader<ModWaterStyle>
 	internal override void ResizeArrays()
 	{
 		//Textures
-		Array.Resize(ref TextureAssets.Liquid, TotalCount);
+		//Array.Resize(ref TextureAssets.Liquid, TotalCount);
 		Array.Resize(ref TextureAssets.LiquidSlope, TotalCount);
 		Array.Resize(ref LiquidRenderer.Instance._liquidTextures, TotalCount);
 
