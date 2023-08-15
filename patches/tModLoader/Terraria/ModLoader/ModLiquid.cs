@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.Localization;
@@ -41,13 +43,16 @@ public abstract class ModLiquid : ModBlockType
 
 	protected sealed override void Register()
 	{
-		ModTypeLookup<ModLiquid>.Register(this);
 		Type = (ushort)LiquidLoader.ReserveLiquidID();
+
+		ModTypeLookup<ModLiquid>.Register(this);
 		LiquidLoader.liquids.Add(this);
 	}
 
 	public sealed override void SetupContent()
 	{
+		TextureAssets.Liquid[14 + Type - LiquidID.Count] = ModContent.Request<Texture2D>(Texture);
+
 		SetStaticDefaults();
 
 		LiquidID.Search.Add(FullName, Type);

@@ -1,5 +1,34 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
+@@ -33,8 +_,8 @@
+ 		public float VisibleRightWall;
+ 		public float VisibleBottomWall;
+ 		public float VisibleTopWall;
+-		public byte Type;
++		public ushort Type;
+-		public byte VisibleType;
++		public ushort VisibleType;
+ 	}
+ 
+ 	private struct LiquidDrawCache
+@@ -43,7 +_,7 @@
+ 		public Vector2 LiquidOffset;
+ 		public bool IsVisible;
+ 		public float Opacity;
+-		public byte Type;
++		public ushort Type;
+ 		public bool IsSurfaceLiquid;
+ 		public bool HasWall;
+ 	}
+@@ -56,7 +_,7 @@
+ 		public Vector2 LiquidOffset;
+ 		public bool IsVisible;
+ 		public float Opacity;
+-		public byte Type;
++		public ushort Type;
+ 		public bool IsSurfaceLiquid;
+ 		public bool HasWall;
+ 	}
 @@ -64,20 +_,20 @@
  	private const int ANIMATION_FRAME_COUNT = 16;
  	private const int CACHE_PADDING = 2;

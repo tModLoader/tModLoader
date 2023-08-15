@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Liquid.cs
++++ src/tModLoader/Terraria/Liquid.cs
+@@ -121,7 +_,7 @@
+ 		bool flag = tile.honey();
+ 		bool flag2 = tile.shimmer();
+ 		int num3 = tile.liquid;
+-		byte b = tile.liquidType();
++		ushort b = tile.liquidType();
+ 		tile.liquid = 0;
+ 		bool flag3 = true;
+ 		while (true) {

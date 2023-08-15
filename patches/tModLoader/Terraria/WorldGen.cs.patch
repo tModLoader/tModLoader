@@ -17,6 +17,15 @@
  {
  	public static class WorldSize
  	{
+@@ -1054,7 +_,7 @@
+ 		if (tile == null)
+ 			return false;
+ 
+-		byte b = tile.liquidType();
++		ushort b = tile.liquidType();
+ 		if (tile.nactive() && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type])
+ 			return false;
+ 
 @@ -1284,7 +_,7 @@
  			}
  		}

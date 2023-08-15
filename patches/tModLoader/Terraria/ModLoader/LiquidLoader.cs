@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 
@@ -37,6 +38,8 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, nextLiquid);
 		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, nextLiquid + 1);
 		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid + 1);
+
+		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - 3);
 
 		if (!unloading) {
 			loaded = true;

@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Default
 {
     internal class UnloadedLiquid : ModLiquid
     {
-        public override System.String Texture => "ModLoader/UnloadLiquid";
+        public override string Texture => "ModLoader/UnloadedLiquid";
 
         public override void SetStaticDefaults()
         {
