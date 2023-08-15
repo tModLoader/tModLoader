@@ -199,7 +199,7 @@ public readonly partial struct Tile
 	internal bool wire() => RedWire;
 	/// <inheritdoc cref="wire()"/>
 	internal void wire(bool wire) => RedWire = wire;
-
+	
 	/// <summary>
 	/// Legacy code, use <see cref="BlueWire"/> instead.
 	/// </summary>
@@ -207,7 +207,7 @@ public readonly partial struct Tile
 	internal bool wire2() => BlueWire;
 	/// <inheritdoc cref="wire2()"/>
 	internal void wire2(bool wire2) => BlueWire = wire2;
-
+	
 	/// <summary>
 	/// Legacy code, use <see cref="GreenWire"/> instead.
 	/// </summary>
@@ -233,7 +233,7 @@ public readonly partial struct Tile
 	internal bool invisibleBlock() => IsTileInvisible;
 	/// <inheritdoc cref="invisibleBlock()"/>
 	internal void invisibleBlock(bool invisibleBlock) => IsTileInvisible = invisibleBlock;
-
+	
 	/// <summary>
 	/// Legacy code, use <see cref="IsWallInvisible"/> instead.
 	/// </summary>
