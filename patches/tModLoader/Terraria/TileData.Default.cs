@@ -37,11 +37,11 @@ public struct LiquidData : ITileData
 	// c = checking liquid
 	// s = skip liquid
 	// l = liquid id
-	private byte typeAndFlags;
+	private ushort typeAndFlags;
 
-	public int LiquidType		{ get => Unpack(typeAndFlags, 0, 6); set => typeAndFlags = (byte)Pack(value, typeAndFlags, 0, 6); }
-	public bool SkipLiquid		{ get => GetBit(typeAndFlags, 6); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 6); }
-	public bool CheckingLiquid	{ get => GetBit(typeAndFlags, 7); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 7); }
+	public int LiquidType		{ get => Unpack(typeAndFlags, 0, 13); set => typeAndFlags = (byte)Pack(value, typeAndFlags, 0, 10); }
+	public bool SkipLiquid		{ get => GetBit(typeAndFlags, 14); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 11); }
+	public bool CheckingLiquid	{ get => GetBit(typeAndFlags, 15); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 12); }
 }
 
 public struct TileWallBrightnessInvisibilityData : ITileData
