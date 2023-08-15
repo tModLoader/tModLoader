@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-    internal class UnloadedLiquid : ModLiquid
+    public class UnloadedLiquid : ModLiquid
     {
         public override string Texture => "ModLoader/UnloadedLiquid";
 
