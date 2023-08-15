@@ -38,6 +38,8 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, nextLiquid);
 		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, nextLiquid + 1);
 		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid + 1);
+		Array.Resize(ref Main.SceneMetrics._liquidCounts, nextLiquid);
+		Array.Resize(ref Main.PylonSystem._sceneMetrics._liquidCounts, nextLiquid);
 
 		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - LiquidID.Count);
 
