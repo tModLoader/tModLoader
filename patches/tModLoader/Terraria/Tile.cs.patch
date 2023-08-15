@@ -51,7 +51,7 @@
  	public object Clone() => MemberwiseClone();
  
 +	/// <summary>
-+	/// Resets all of the data in this cell.<br/>
++	/// Resets all of the data at this position.<br/>
 +	/// To only remove the tile data, use <see cref="ClearTile"/>.
 +	/// </summary>
  	public void ClearEverything()
@@ -70,7 +70,7 @@
  	}
  
 +	/// <summary>
-+	/// Resets the tile data in this cell.<br/>
++	/// Resets the tile data at this position.<br/>
 +	/// Sets <see cref="HasTile"/> and <see cref="IsActuated"/> to <see langword="false"/> and sets the <see cref="BlockType"/> to <see cref="ID.BlockType.Solid"/>.
 +	/// </summary>
 +	/// <remarks>
@@ -84,9 +84,9 @@
  	}
  
 +	/// <summary>
-+	/// Copies all data from the given cell to this cell.
++	/// Copies all data from the given position to this position.
 +	/// </summary>
-+	/// <param name="from">The cell to copy the data from.</param>
++	/// <param name="from">The position to copy the data from.</param>
  	public void CopyFrom(Tile from)
  	{
 +		TileData.CopySingle(from.TileId, TileId);
@@ -173,7 +173,7 @@
 +	*/
  
 +	/// <summary>
-+	/// Reset all data related to this cell except for <see cref="WallType"/> and sets <see cref="TileType"/> to <paramref name="type"/>. 
++	/// Resets all of the data at this position except for the <see cref="WallType"/>, and sets <see cref="TileType"/> to <paramref name="type"/>. 
 +	/// </summary>
 +	/// <param name="type">The <see cref="ID.TileID"/> to set this tile to.</param>
  	public void ResetToType(ushort type)
@@ -292,7 +292,7 @@
 +	*/
  
 +	/// <summary>
-+	/// Clears the specified data from the cell based on the given <see cref="TileDataType"/>.
++	/// Clears the specified data at this position based on the given <see cref="TileDataType"/>.
 +	/// </summary>
 +	/// <param name="types">The <see cref="TileDataType"/> to clear.</param>
  	public void Clear(TileDataType types)
@@ -329,9 +329,9 @@
  	}
  
 +	/// <summary>
-+	/// Gets the paint and coating information of this cell's tile as a <see cref="TileColorCache"/>.
++	/// Gets the paint and coating information from the tile at this position as a <see cref="TileColorCache"/>.
 +	/// </summary>
-+	/// <returns>A <see cref="TileColorCache"/> representing this cell's tile's paint and coatings.</returns>
++	/// <returns>A <see cref="TileColorCache"/> representing the paint and coatings on the tile at this position.</returns>
  	public TileColorCache BlockColorAndCoating()
  	{
  		TileColorCache result = default(TileColorCache);
@@ -340,9 +340,9 @@
  	}
  
 +	/// <summary>
-+	/// Gets the paint and coating information of this cell's wall as a <see cref="TileColorCache"/>.
++	/// Gets the paint and coating information from the wall at this position as a <see cref="TileColorCache"/>.
 +	/// </summary>
-+	/// <returns>A <see cref="TileColorCache"/> representing this cell's wall's paint and coatings.</returns>
++	/// <returns>A <see cref="TileColorCache"/> representing the paint and coatings on the wall at this position.</returns>
  	public TileColorCache WallColorAndCoating()
  	{
  		TileColorCache result = default(TileColorCache);
@@ -351,7 +351,7 @@
  	}
  
 +	/// <summary>
-+	/// Sets the paint and coating of this cell's tile based on the given <see cref="TileColorCache"/>.
++	/// Sets the paint and coating of the tile at this position based on the given <see cref="TileColorCache"/>.
 +	/// </summary>
 +	/// <param name="cache">The <see cref="TileColorCache"/> to apply.</param>
  	public void UseBlockColors(TileColorCache cache)
@@ -360,7 +360,7 @@
  	}
  
 +	/// <summary>
-+	/// Sets the paint and coating of this cell's wall based on the given <see cref="TileColorCache"/>.
++	/// Sets the paint and coating of the wall at this position based on the given <see cref="TileColorCache"/>.
 +	/// </summary>
 +	/// <param name="cache">The <see cref="TileColorCache"/> to apply.</param>
  	public void UseWallColors(TileColorCache cache)
@@ -369,7 +369,7 @@
  	}
  
 +	/// <summary>
-+	/// Clears any paint or coating on this cell's tile.
++	/// Clears any paint or coating on the tile at this position.
 +	/// </summary>
  	public void ClearBlockPaintAndCoating()
  	{
@@ -379,7 +379,7 @@
  	}
  
 +	/// <summary>
-+	/// Clears any paint or coating on this cell's wall.
++	/// Clears any paint or coating on the wall at this position.
 +	/// </summary>
  	public void ClearWallPaintAndCoating()
  	{
