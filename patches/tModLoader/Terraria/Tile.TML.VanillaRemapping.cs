@@ -108,7 +108,7 @@ public readonly partial struct Tile
 	internal byte frameNumber() => (byte)TileFrameNumber;
 	/// <inheritdoc cref="frameNumber()"/>
 	internal void frameNumber(byte frameNumber) => TileFrameNumber = frameNumber;
-
+	
 	/// <summary>
 	/// Legacy code, use <see cref="WallFrameNumber"/> instead.
 	/// </summary>
