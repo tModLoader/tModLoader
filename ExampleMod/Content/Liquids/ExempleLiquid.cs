@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Liquids
 {
-	internal class ExempleLiquid : ModLiquid
+	public class ExempleLiquid : ModLiquid
 	{
 	}
 }
