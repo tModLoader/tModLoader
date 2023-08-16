@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items
 		public override void SetDefaults() {
 			Item.width = 24;
 			Item.height = 22;
-			Item.maxStack = 99;
+			Item.maxStack = 9999;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useTime = 100;
 			Item.useAnimation = 1;
