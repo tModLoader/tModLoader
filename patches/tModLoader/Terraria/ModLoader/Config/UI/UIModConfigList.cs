@@ -11,14 +11,13 @@ namespace Terraria.ModLoader.Config.UI;
 
 internal class UIModConfigList : UIState
 {
-	public Mod modToSelect;
+	public Mod SelectedMod;
 
 	private UIElement uIElement;
 	private UIPanel uIPanel;
-	private UITextPanel<LocalizedText> buttonBack;
+	private UITextPanel<LocalizedText> backButton;
 	private UIList modList;
 	private UIList configList;
-	private Mod selectedMod;
 
 	public override void OnInitialize()
 	{
@@ -108,52 +107,44 @@ internal class UIModConfigList : UIState
 		configList.SetScrollbar(configListScrollbar);
 		configListPanel.Append(configListScrollbar);
 
-		buttonBack = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true) {
+		backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true) {
 			Width = { Pixels = -10f, Percent = 0.5f },
 			Height = { Pixels = 50f },
 			Top = { Pixels = -45f },
 			VAlign = 1f,
 			HAlign = 0.5f,
 		}.WithFadedMouseOver();
-		buttonBack.OnLeftClick += BackClick;
-		uIElement.Append(buttonBack);
-	}
+		backButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(SoundID.MenuClose);
+			SelectedMod = null;
 
-	private static void BackClick(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(11, -1, -1, 1);
+			if (Main.gameMenu)
+				Main.menuMode = Interface.modsMenuID;
+			else
+				IngameFancyUI.Close();
+		};
 
-		if (Main.gameMenu) {
-			Main.menuMode = Interface.modsMenuID;
-		}
-		else {
-			IngameFancyUI.Close();
-		}
+		uIElement.Append(backButton);
 	}
 
 	internal void Unload()
 	{
 		modList?.Clear();
 		configList?.Clear();
-		selectedMod = null;
+		SelectedMod = null;
 	}
 
 	public override void OnActivate()
 	{
-		Main.clrInput();
-		modList.Clear();
+		modList?.Clear();
 		configList?.Clear();
-		selectedMod = null;
 		PopulateMods();
 
-		if (modToSelect != null) {
-			selectedMod = modToSelect;
+		if (SelectedMod != null)
 			PopulateConfigs();
-			modToSelect = null;
-		}
 	}
 
-	internal void PopulateMods()
+	private void PopulateMods()
 	{
 		modList?.Clear();
 
@@ -161,8 +152,10 @@ internal class UIModConfigList : UIState
 		var mods = ModLoader.Mods.ToList();
 		mods.Sort((x, y) => x.DisplayName.CompareTo(y.DisplayName));
 
-		foreach (var mod in mods) {
-			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
+		foreach (var mod in mods)
+		{
+			if (ConfigManager.Configs.TryGetValue(mod, out _))
+			{
 				var modPanel = new UITextPanel<string>(mod.DisplayName) {
 					HAlign = 0.5f
 				};
@@ -172,20 +165,23 @@ internal class UIModConfigList : UIState
 				};
 
 				modPanel.OnUpdate += delegate (UIElement affectedElement) {
-					bool selected = selectedMod == mod;
-					if (modPanel.IsMouseHovering) {
-						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlue : UICommon.MainPanelBackground * (1 / 0.8f);// Can't divide a colour so have to multiply by 1/x
+					bool selected = SelectedMod == mod;
+					if (modPanel.IsMouseHovering)
+					{
+						// Can't divide a colour so have to multiply by 1/x
+						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlue : UICommon.MainPanelBackground * (1 / 0.8f);
 						modPanel.BorderColor = UICommon.DefaultUIBorderMouseOver;
 					}
-					else {
+					else
+					{
 						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlueMouseOver : UICommon.MainPanelBackground;
 						modPanel.BorderColor = UICommon.DefaultUIBorder;
 					}
 				};
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-					SoundEngine.PlaySound(SoundID.MenuOpen);
-					selectedMod = mod;
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					SelectedMod = mod;
 					PopulateConfigs();
 				};
 
@@ -194,19 +190,20 @@ internal class UIModConfigList : UIState
 		}
 	}
 
-	internal void PopulateConfigs()
+	private void PopulateConfigs()
 	{
 		configList?.Clear();
 
-		if (!ConfigManager.Configs.TryGetValue(selectedMod, out var configs)) {
+		if (SelectedMod == null || !ConfigManager.Configs.TryGetValue(SelectedMod, out var configs))
 			return;
-		}
 
 		// Have to sort by display name because normally configs are sorted by internal names
 		configs.Sort((x, y) => x.DisplayName.Value.CompareTo(y.DisplayName.Value));
 
-		foreach (var config in configs) {
+		foreach (var config in configs)
+		{
 			float indicatorOffset = 20;
+
 			var configPanel = new UITextPanel<LocalizedText>(config.DisplayName) {
 				HAlign = 0.5f,
 			};
@@ -216,13 +213,11 @@ internal class UIModConfigList : UIState
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 
-				Interface.modConfig.SetMod(selectedMod, config);
-				if (Main.gameMenu) {
+				Interface.modConfig.SetMod(SelectedMod, config);
+				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
-				}
-				else {
+				else
 					Main.InGameUI.SetState(Interface.modConfig);
-				}
 			};
 			configList.Add(configPanel);
 
@@ -234,11 +229,12 @@ internal class UIModConfigList : UIState
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = config.Mode == ConfigScope.ServerSide ? serverColor : clientColor,
+				MarginRight = -indicatorOffset
 			};
-			sideIndicator.MarginRight = -indicatorOffset;
 
 			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
-				if (sideIndicator.IsMouseHovering) {
+				if (sideIndicator.IsMouseHovering)
+				{
 					string colourCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
 					Main.instance.MouseText($"[c/{colourCode}:{hoverText}]");

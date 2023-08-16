@@ -431,7 +431,7 @@ internal class UIModItem : UIPanel
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfigList.modToSelect = ModLoader.GetMod(ModName);
+		Interface.modConfigList.SelectedMod = ModLoader.GetMod(ModName);
 		Main.menuMode = Interface.modConfigListID;
 	}
 
