@@ -13,6 +13,8 @@ namespace Terraria.ModLoader.Default
 
         public override void SetStaticDefaults()
         {
+			this.WaterfallLength = 0;
+			this.DefaultOpacity = 1;
 			TileIO.Liquids.unloadedTypes.Add(Type);
 		}
     }

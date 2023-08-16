@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
@@ -34,14 +35,19 @@ public static class LiquidLoader
 
 	internal static void ResizeArrays(bool unloading = false)
 	{
+		//Texture
+		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - LiquidID.Count);
+
+		//Sets
+		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
+
+		//Etc
 		Array.Resize(ref LiquidRenderer.WATERFALL_LENGTH, nextLiquid);
 		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, nextLiquid);
 		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, nextLiquid + 1);
 		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid + 1);
 		Array.Resize(ref Main.SceneMetrics._liquidCounts, nextLiquid);
 		Array.Resize(ref Main.PylonSystem._sceneMetrics._liquidCounts, nextLiquid);
-
-		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - LiquidID.Count);
 
 		if (!unloading) {
 			loaded = true;
@@ -52,7 +58,6 @@ public static class LiquidLoader
 	{
 		loaded = false;
 		nextLiquid = LiquidID.Count;
-
 		liquids.Clear();
 	}
 }
