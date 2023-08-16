@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
+using Terraria.UI.Chat;
 
 namespace Terraria;
 
@@ -163,6 +165,83 @@ public partial class Main
 
 			if (hovering)
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
+		}
+	}
+	
+	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
+		startIndex = 0;
+		endIndex = activeToggles;
+		moveDownForButton = false;
+		string text = "";
+
+		if (activeToggles > 12) {
+			startIndex = 12 * BuilderToggleLoader.BuilderTogglePage;
+
+			if (activeToggles - startIndex < 12)
+				endIndex = activeToggles;
+			else if (startIndex == 0)
+				endIndex = startIndex + 12;
+			else
+				endIndex = startIndex + 11;
+
+			Texture2D buttonTexture = UICommon.InfoDisplayPageArrowTexture.Value;
+			bool hover = false;
+			Vector2 buttonPosition = new Vector2(3, startY - 6f);
+
+			if (BuilderToggleLoader.BuilderTogglePage != 0) {
+				moveDownForButton = true;
+
+				spriteBatch.Draw(buttonTexture, buttonPosition + new Vector2(0, 13f), new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, -(float)Math.PI / 2, default, 1f, SpriteEffects.None, 0f);
+				if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
+					hover = true;
+
+					player[myPlayer].mouseInterface = true;
+					text = "Previous Page";
+					mouseText = true;
+
+					if (mouseLeft && mouseLeftRelease) {
+						SoundEngine.PlaySound(SoundID.MenuTick);
+						mouseLeftRelease = false;
+
+						if (BuilderToggleLoader.BuilderTogglePage > 0)
+							BuilderToggleLoader.BuilderTogglePage--;
+					}
+
+					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition + new Vector2(0, 17) - Vector2.One * 2f, null, OurFavoriteColor, -(float)Math.PI / 2, default, 1f, SpriteEffects.None, 0f);
+				}
+			}
+
+			buttonPosition = new Vector2(3, startY + ((endIndex - startIndex) + (BuilderToggleLoader.BuilderTogglePage != 0).ToInt()) * 24f - 6f);
+
+			if (BuilderToggleLoader.BuilderTogglePage != activeToggles / 12) {
+				spriteBatch.Draw(buttonTexture, buttonPosition + new Vector2(0, 12f), new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, (float)Math.PI / 2, new Vector2(buttonTexture.Width, buttonTexture.Height), 1f, SpriteEffects.None, 0f);
+
+				if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
+					hover = true;
+
+					player[myPlayer].mouseInterface = true;
+					text = "Next Page";
+					mouseText = true;
+
+					if (mouseLeft && mouseLeftRelease) {
+						SoundEngine.PlaySound(SoundID.MenuTick);
+						mouseLeftRelease = false;
+
+						if (BuilderToggleLoader.BuilderTogglePage < activeToggles / 12)
+							BuilderToggleLoader.BuilderTogglePage++;
+					}
+
+					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition + new Vector2(4, 12) - Vector2.One * 2f, null, OurFavoriteColor, (float)Math.PI / 2, new Vector2(buttonTexture.Width, buttonTexture.Height), 1f, SpriteEffects.None, 0f);
+				}
+			}
+
+			if (mouseText && hover) {
+				float colorByte = (float)mouseTextColor / 255f;
+				Color textColor = new Color(colorByte, colorByte, colorByte);
+
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(mouseX + 14, mouseY + 14), textColor, 0f, Vector2.Zero, Vector2.One);
+				mouseText = false;
+			}
 		}
 	}
 
