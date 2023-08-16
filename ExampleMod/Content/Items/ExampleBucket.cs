@@ -10,8 +10,9 @@ using ExampleMod.Content.Liquids;
 
 namespace ExampleMod.Content.Items
 {
-	internal class ExempleBucket : ModItem
+	internal class ExampleBucket : ModItem
 	{
+
 		public override void SetDefaults() {
 			Item.width = 24;
 			Item.height = 22;

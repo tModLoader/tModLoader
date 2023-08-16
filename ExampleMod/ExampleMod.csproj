@@ -16,7 +16,7 @@
     <None Remove="Old\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Content\Items\ExempleBucket.png" />
+    <None Remove="Content\Items\ExampleBucket.png" />
     <None Remove="Content\Liquids\ExempleLiquid.png" />
   </ItemGroup>
 </Project>
