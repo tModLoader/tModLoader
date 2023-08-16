@@ -15,13 +15,13 @@ namespace ExampleMod.Content
 		public override int NumberOfStates => 4;
 		public override string DisplayValue() {
 			string text = "Color: ";
-			string[] textMessages = new[] {"Red", "Blue", "Green", "Yellow"};
+			string[] textMessages = new[] { "Red", "Blue", "Green", "Yellow" };
 
 			return text + textMessages[CurrentState];
 		}
 
 		public override Color DisplayColorTexture() {
-			Color[] colors = new[] {Color.Red, Color.Blue, Color.Green, Color.Yellow};
+			Color[] colors = new[] { Color.Red, Color.Blue, Color.Green, Color.Yellow };
 
 			return colors[CurrentState];
 		}
@@ -54,6 +54,14 @@ namespace ExampleMod.Content
 			if (builderToggle == BuilderToggle.RulerGrid) {
 				if (builderToggle.CurrentState == 2) {
 					displayValue = "This text was modified by Example Mod!";
+				}
+			}
+		}
+
+		public override void ModifyDisplayColor(BuilderToggle builderToggle, ref Color displayColor) {
+			if (builderToggle == BuilderToggle.RulerGrid) {
+				if (builderToggle.CurrentState == 2) {
+					displayColor = Color.OrangeRed;
 				}
 			}
 		}
