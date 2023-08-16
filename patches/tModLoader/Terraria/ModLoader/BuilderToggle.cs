@@ -7,6 +7,10 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.<para/>
+/// The <see cref="Active"/> property determines if the BuilderToggle should be shown to the user and is usually reliant on player-specific values. The <see cref="CurrentState"/> property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have <see cref="NumberOfStates"/> values.
+/// </summary>
 public abstract class BuilderToggle : ModTexturedType
 {
 	public static BuilderToggle RulerLine { get; private set; } = new RulerLineBuilderToggle();
@@ -23,24 +27,27 @@ public abstract class BuilderToggle : ModTexturedType
 	public static BuilderToggle TorchBiome { get; private set; } = new TorchBiomeBuilderToggle();
 
 	/// <summary>
-	/// This is the internal ID of this builder toggle.
+	/// This is the internal ID of this builder toggle.<para/>
+	/// Also serves as the index for <see cref="Player.builderAccStatus"/>.
 	/// </summary>
 	public int Type { get; internal set; }
 
 	/// <summary>
-	/// This dictates whether or not this builder toggle should be active (displayed).
+	/// This dictates whether or not this builder toggle should be active (displayed).<para/>
+	/// This is usually determined by player-specific values, typically set in <see cref="ModItem.UpdateInventory"/>.
 	/// </summary>
 	public virtual bool Active() => false;
 
 	/// <summary>
-	/// This is the number of different functionalities your builder toggle will have.
-	/// For a toggle that has an On and Off state, you'd need 2 states!
+	/// This is the number of different functionalities your builder toggle will have.<br/>
+	/// For a toggle that has an On and Off state, you'd need 2 states!<para/>
 	/// </summary>
 	/// <value>Default value is 2</value>
 	public virtual int NumberOfStates { get; internal set; } = 2;
 
 	/// <summary>
-	/// This is the current state of this builder toggle. Every time the toggle is clicked, it will change.
+	/// This is the current state of this builder toggle. Every time the toggle is clicked, it will change.<para/>
+	/// The default state is 0. The state will be saved and loaded for the player to be consistent.
 	/// </summary>
 	public int CurrentState => Main.player[Main.myPlayer].builderAccStatus[Type];
 

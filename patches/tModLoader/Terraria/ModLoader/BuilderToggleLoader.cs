@@ -24,7 +24,7 @@ public static class BuilderToggleLoader
 		BuilderToggle.YellowWireVisibility
 	};
 
-	private static readonly int DefaultDisplayCount = BuilderToggles.Count;
+	internal static readonly int DefaultDisplayCount = BuilderToggles.Count;
 
 	public static int BuilderTogglePage = 0;
 

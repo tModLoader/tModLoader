@@ -24,7 +24,7 @@ public class GlobalBuilderToggle : ModType
 	///	Allows you to modify how many states a given BuilderToggle has. Each state can allow for different textures, display names, etc..
 	/// </summary>
 	/// <param name="builderToggle">The builder toggle you're modifying the display value for.</param>
-	/// <param name="displayValue">The number of states the builder toggle has</param>
+	/// <param name="numberOfStates">The number of states the builder toggle has</param>
 	public virtual void ModifyNumberOfStates(BuilderToggle builderToggle, ref int numberOfStates) { }
 
 	/// <summary>

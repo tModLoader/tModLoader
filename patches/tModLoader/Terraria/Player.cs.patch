@@ -7784,6 +7784,15 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
+@@ -42139,7 +_,7 @@
+ 			fileIO.Write(newPlayer.DpadRadial.Bindings[num8]);
+ 		}
+ 
+-		for (int num9 = 0; num9 < newPlayer.builderAccStatus.Length; num9++) {
++		for (int num9 = 0; num9 < BuilderToggleLoader.DefaultDisplayCount; num9++) {
+ 			fileIO.Write(newPlayer.builderAccStatus[num9]);
+ 		}
+ 
 @@ -42272,6 +_,10 @@
  
  		Player player = new Player();

@@ -4,6 +4,10 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content
 {
+	// The examples in this file don't actually affect anything, they just show typical approaches for the BuilderToggle half of the effect.
+	// A full example would have code doing something, such as drawing an overlay, after checking ModContent.GetInstance<YourBuilderToggle>().Active and ModContent.GetInstance<YourBuilderToggle>().CurrentState.
+	// That code is highly dependent on what you want to accomplish.
+
 	public class ExampleBuilderToggle : BuilderToggle
 	{
 		public override bool Active() => Main.LocalPlayer.HeldItem.IsAir;
