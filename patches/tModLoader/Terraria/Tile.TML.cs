@@ -7,8 +7,8 @@ using Terraria.ID;
 namespace Terraria;
 
 /// <summary>
-/// A data structure used for accessing information about tiles, walls, wires, and liquids at a single position in the world.<br/>
-/// Vanilla tile code and a mods tile code will be quite different, since tModLoader reworked how tiles function to improve performance. This means that copying vanilla code will leave you with many errors.<br/>
+/// A data structure used for accessing information about tiles, walls, wires, and liquids at a single position in the world.<para/>
+/// Vanilla tile code and a mods tile code will be quite different, since tModLoader reworked how tiles function to improve performance. This means that copying vanilla code will leave you with many errors. Running the code through tModPorter will fix most of the issues, however.<para/>
 /// For your sanity, all of the changes are well documented to make it easier to port vanilla code.
 /// </summary>
 #if TILE_X_Y
@@ -26,11 +26,13 @@ public readonly partial struct Tile
 
 	/// <summary>
 	/// The <see cref="TileID"/> of the tile at this position.<br/>
+	/// This value is only valid if <see cref="HasTile"/> is true.<br/>
 	/// Legacy/vanilla equivalent is <see cref="type"/>.
 	/// </summary>
 	public ref ushort TileType => ref Get<TileTypeData>().Type;
 	/// <summary>
 	/// The <see cref="WallID"/> of the wall at this position.<br/>
+	/// A value of 0 indicates no wall.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wall"/>.
 	/// </summary>
 	public ref ushort WallType => ref Get<WallTypeData>().Type;
@@ -111,33 +113,39 @@ public readonly partial struct Tile
 	// Framing
 
 	/// <summary>
-	/// The X coordinate of the top left of the tile at this position in it's spritesheet.<br/>
+	/// The X coordinate of the top left corner of the area in the spritesheet for the <see cref="TileType"/> to be used to draw the tile at this position.<para/>
+	/// For a Framed tile, this value is set automatically according to the framing logic as the world loads or other tiles are placed or mined nearby. See <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#framed-vs-frameimportant-tiles">Framed vs FrameImportant</see> for more info. For <see cref="Main.tileFrameImportant"/> tiles, this value will not change due to tile framing and will be saved and synced in Multiplayer. In either case, <see cref="TileFrameX"/> and <see cref="TileFrameY"/> correspond to the coordinates of the top left corner of the area in the spritesheet corresponding to the <see cref="TileType"/> that should be drawn at this position. Custom drawing logic can adjust these values.<para/>
+	/// Some tiles such as Christmas Tree and Weapon Rack use the higher bits of these fields to do tile-specific behaviors. Modders should not attempt to do similar approaches, but should use <see cref="ModLoader.ModTileEntity"/>s.<para/>
 	/// Legacy/vanilla equivalent is <see cref="frameX"/>.
 	/// </summary>
 	public ref short TileFrameX => ref Get<TileWallWireStateData>().TileFrameX;
 	/// <summary>
-	/// The Y coordinate of the top left of the tile at this position in it's spritesheet.<br/>
+	/// The Y coordinate of the top left corner of the area in the spritesheet for the <see cref="TileType"/> to be used to draw the tile at this position.<para/>
+	/// For a Framed tile, this value is set automatically according to the framing logic as the world loads or other tiles are placed or mined nearby. See <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#framed-vs-frameimportant-tiles">Framed vs FrameImportant</see> for more info. For <see cref="Main.tileFrameImportant"/> tiles, this value will not change due to tile framing and will be saved and synced in Multiplayer. In either case, <see cref="TileFrameX"/> and <see cref="TileFrameY"/> correspond to the coordinates of the top left corner of the area in the spritesheet corresponding to the <see cref="TileType"/> that should be drawn at this position. Custom drawing logic can adjust these values.<para/>
+	/// Some tiles such as Christmas Tree and Weapon Rack use the higher bits of these fields to do tile-specific behaviors. Modders should not attempt to do similar approaches, but should use <see cref="ModLoader.ModTileEntity"/>s.<para/>
 	/// Legacy/vanilla equivalent is <see cref="frameY"/>.
 	/// </summary>
 	public ref short TileFrameY => ref Get<TileWallWireStateData>().TileFrameY;
 
 	/// <summary>
-	/// The X coordinate of the top left of the wall at this position in it's spritesheet.<br/>
+	/// The X coordinate of the top left corner of the area in the spritesheet for the <see cref="WallType"/> to be used to draw the wall at this position.<para/>
 	/// Legacy/vanilla equivalent is <see cref="wallFrameX()"/> or <see cref="wallFrameX(int)"/>.
 	/// </summary>
 	public int WallFrameX { get => Get<TileWallWireStateData>().WallFrameX; set => Get<TileWallWireStateData>().WallFrameX = value; }
 	/// <summary>
-	/// The Y coordinate of the top left of the wall at this position in it's spritesheet.<br/>
+	/// The Y coordinate of the top left corner of the area in the spritesheet for the <see cref="WallType"/> to be used to draw the wall at this position.<para/>
 	/// Legacy/vanilla equivalent is <see cref="wallFrameY()"/> or <see cref="wallFrameY(int)"/>.
 	/// </summary>
 	public int WallFrameY { get => Get<TileWallWireStateData>().WallFrameY; set => Get<TileWallWireStateData>().WallFrameY = value; }
 	/// <summary>
 	/// The random style number the tile at this position has, which is random number between 0 and 2 (inclusive).<br/>
+	/// This is used in non-<see cref="Main.tileFrameImportant"/> tiles (aka "Terrain" tiles) to provide visual variation and is not synced in multiplayer nor will it be preserved when saving and loading the world.<br/>
 	/// Legacy/vanilla equivalent is <see cref="frameNumber()"/> or <see cref="frameNumber(byte)"/>.
 	/// </summary>
 	public int TileFrameNumber { get => Get<TileWallWireStateData>().TileFrameNumber; set => Get<TileWallWireStateData>().TileFrameNumber = value; }
 	/// <summary>
 	/// The random style number the wall at this position has, which is a random number between 0 and 2 (inclusive).<br/>
+	/// This is used to provide visual variation and is not synced in multiplayer nor will it be preserved when saving and loading the world.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wallFrameNumber()"/> or <see cref="wallFrameNumber(byte)"/>.
 	/// </summary>
 	public int WallFrameNumber { get => Get<TileWallWireStateData>().WallFrameNumber; set => Get<TileWallWireStateData>().WallFrameNumber = value; }
@@ -159,12 +167,14 @@ public readonly partial struct Tile
 
 	/// <summary>
 	/// The amount of liquid at this position.<br/>
+	/// Ranges from 0, no liquid, to 255, filled with liquid.<br/>
 	/// Legacy/vanilla equivalent is <see cref="liquid"/>.
 	/// </summary>
 	public ref byte LiquidAmount => ref Get<LiquidData>().Amount;
 
 	/// <summary>
 	/// The <see cref="LiquidID"/> of the liquid at this position.<br/>
+	/// Make sure to check that <see cref="LiquidAmount"/> is greater than 0.<br/>
 	/// Legacy/vanilla equivalent is <see cref="liquidType()"/> or <see cref="liquidType(int)"/>.
 	/// </summary>
 	public int LiquidType { get => Get<LiquidData>().LiquidType; set => Get<LiquidData>().LiquidType = value; }
