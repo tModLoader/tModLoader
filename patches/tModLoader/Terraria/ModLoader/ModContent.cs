@@ -452,6 +452,7 @@ public static class ModContent
 		TileLoader.Unload();
 		PylonLoader.Unload();
 		WallLoader.Unload();
+		LiquidLoader.Unload();
 		ProjectileLoader.Unload();
 
 		NPCLoader.Unload();
