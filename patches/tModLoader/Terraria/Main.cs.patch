@@ -5072,7 +5072,7 @@
  		int num = 0;
  		Player player = Main.player[myPlayer];
  		int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
-@@ -38700,6 +_,81 @@
+@@ -38700,6 +_,85 @@
  		}
  
  		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
@@ -5098,8 +5098,10 @@
 +			int numberOfStates = builderToggle.NumberOfStates;
 +			int toggleType = builderToggle.Type;
 +
++			/*
 +			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
 +			BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
++			*/
 +
 +			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
 +			bool click = hover && mouseLeft && mouseLeftRelease;
@@ -5115,8 +5117,10 @@
 +			else
 +				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
 +
++			/*
 +			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
 +			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
++			*/
 +
 +			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
 +

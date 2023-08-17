@@ -41,29 +41,4 @@ namespace ExampleMod.Content
 			return CurrentState == 0 ? Color.White : new Color(127, 127, 127);
 		}
 	}
-
-	public class GlobalToggle : GlobalBuilderToggle
-	{
-		public override void ModifyNumberOfStates(BuilderToggle builderToggle, ref int numberOfStates) {
-			if (builderToggle == BuilderToggle.RulerGrid) {
-				numberOfStates = 3;
-			}
-		}
-
-		public override void ModifyDisplayValue(BuilderToggle builderToggle, ref string displayValue) {
-			if (builderToggle == BuilderToggle.RulerGrid) {
-				if (builderToggle.CurrentState == 2) {
-					displayValue = "This text was modified by Example Mod!";
-				}
-			}
-		}
-
-		public override void ModifyDisplayColor(BuilderToggle builderToggle, ref Color displayColor) {
-			if (builderToggle == BuilderToggle.RulerGrid) {
-				if (builderToggle.CurrentState == 2) {
-					displayColor = Color.OrangeRed;
-				}
-			}
-		}
-	}
 }

@@ -4,6 +4,7 @@ using System;
 
 namespace Terraria.ModLoader;
 
+/* Would need a redesign, no way to correctly use ModifyNumberOfStates with multiple mods.
 /// <summary>
 /// A class that is used to modify existing building toggles (i.e. the ruler line and mechanical ruler toggles).
 /// All vanilla toggles can be accessed using BuilderToggle.(name of item).
@@ -50,3 +51,4 @@ public class GlobalBuilderToggle : ModType
 	/// <returns></returns>
 	public virtual void ModifyDisplayTexture(BuilderToggle builderToggle, ref Texture2D texture, ref Rectangle rectangle) { }
 }
+*/

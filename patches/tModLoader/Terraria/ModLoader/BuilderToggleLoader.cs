@@ -28,7 +28,7 @@ public static class BuilderToggleLoader
 
 	public static int BuilderTogglePage = 0;
 
-	internal static readonly IList<GlobalBuilderToggle> globalBuilderToggles = new List<GlobalBuilderToggle>();
+	// internal static readonly IList<GlobalBuilderToggle> globalBuilderToggles = new List<GlobalBuilderToggle>();
 
 	static BuilderToggleLoader() {
 		RegisterDefaultToggles();
@@ -41,7 +41,7 @@ public static class BuilderToggleLoader
 
 	internal static void Unload() {
 		BuilderToggles.RemoveRange(DefaultDisplayCount, BuilderToggles.Count - DefaultDisplayCount);
-		globalBuilderToggles.Clear();
+		// globalBuilderToggles.Clear();
 	}
 
 	internal static void RegisterDefaultToggles() {
@@ -66,22 +66,27 @@ public static class BuilderToggleLoader
 
 	public static int ActiveBuilderToggles() => ActiveBuilderTogglesList().Count;
 
+	/*
 	public static void AddGlobalBuilderToggles(GlobalBuilderToggle globalBuilderToggle)
 	{
 		globalBuilderToggles.Add(globalBuilderToggle);
 		ModTypeLookup<GlobalBuilderToggle>.Register(globalBuilderToggle);
 	}
+	*/
 
 	public static bool Active(BuilderToggle builderToggle) {
 		bool active = builderToggle.Active();
+		/*
 		foreach (GlobalBuilderToggle global in globalBuilderToggles) {
 			if (global.Active(builderToggle).HasValue)
 				active &= global.Active(builderToggle).Value;
 		}
+		*/
 
 		return active;
 	}
 
+	/*
 	public static void ModifyNumberOfStates(BuilderToggle builderToggle, ref int numberOfStates) {
 		foreach (GlobalBuilderToggle global in globalBuilderToggles) {
 			global.ModifyNumberOfStates(builderToggle, ref numberOfStates);
@@ -105,4 +110,5 @@ public static class BuilderToggleLoader
 			global.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
 		}
 	}
+	*/
 }
