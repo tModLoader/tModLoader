@@ -6,14 +6,14 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.LootSimulation
+ namespace Terraria.GameContent.LootSimulation;
+ 
+ public class LootSimulationItemCounter
  {
- 	public class LootSimulationItemCounter
- 	{
--		private long[] _itemCountsObtained = new long[5125];
-+		private long[] _itemCountsObtained = new long[ItemLoader.ItemCount];
--		private long[] _itemCountsObtainedExpert = new long[5125];
-+		private long[] _itemCountsObtainedExpert = new long[ItemLoader.ItemCount];
- 		private long _totalTimesAttempted;
- 		private long _totalTimesAttemptedExpert;
+-	private long[] _itemCountsObtained = new long[ItemID.Count];
++	private long[] _itemCountsObtained = new long[ItemLoader.ItemCount];
+-	private long[] _itemCountsObtainedExpert = new long[ItemID.Count];
++	private long[] _itemCountsObtainedExpert = new long[ItemLoader.ItemCount];
+ 	private long _totalTimesAttempted;
+ 	private long _totalTimesAttemptedExpert;
  

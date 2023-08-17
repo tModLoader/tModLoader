@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/ResourceSets/IPlayerResourcesDisplaySet.cs
 +++ src/tModLoader/Terraria/GameContent/UI/ResourceSets/IPlayerResourcesDisplaySet.cs
-@@ -4,6 +_,8 @@
- {
- 	public interface IPlayerResourcesDisplaySet : IConfigKeyHolder
- 	{
-+		string DisplayedName { get; }
-+
- 		void Draw();
+@@ -4,6 +_,9 @@
  
- 		void TryToHover();
+ public interface IPlayerResourcesDisplaySet : IConfigKeyHolder
+ {
++	// Added by TML.
++	string DisplayedName { get; }
++
+ 	void Draw();
+ 
+ 	void TryToHover();

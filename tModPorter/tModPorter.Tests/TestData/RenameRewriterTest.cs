@@ -44,7 +44,6 @@ public class SimpleIdentifiersTest : Mod
 		((Func<int, int, bool>)modTile.NewRightClick)?.Invoke(0, 0);
 	}
 
-#if COMPILE_ERROR
 	public void NoChangeCompileErrors()
 	{
 		projectile.FieldA = 1;
@@ -52,7 +51,6 @@ public class SimpleIdentifiersTest : Mod
 		player.FieldA = 1;
 		item.FieldA = 1;
 	}
-#endif
 
 	public void NoChangeOtherIdentifiers()
 	{

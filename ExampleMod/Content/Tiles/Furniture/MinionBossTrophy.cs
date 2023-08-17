@@ -22,9 +22,5 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(120, 85, 60), Language.GetText("MapObject.Trophy"));
 			DustType = 7;
 		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>());
-		}
 	}
 }

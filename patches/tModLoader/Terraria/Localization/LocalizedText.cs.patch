@@ -1,104 +1,89 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,3 +_,4 @@
+@@ -1,15 +_,30 @@
 +using System;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
  
-@@ -8,10 +_,19 @@
- 		public static readonly LocalizedText Empty = new LocalizedText("", "");
- 		private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
- 		public readonly string Key;
-+		public LocalizedText Override;
-+		private string value;
+ namespace Terraria.Localization;
  
- 		public string Value {
--			get;
--			private set;
-+			get {
-+				if (Override != null)
-+					return Override.Value;
-+
-+				return value;
-+			}
-+			private set {
-+				this.value = value;
-+			}
- 		}
- 
- 		internal LocalizedText(string key, string text) {
-@@ -62,10 +_,73 @@
- 			return text.Value;
- 		}
- 
-+		/*
- 		public string Format(object arg0) => string.Format(Value, arg0);
- 		public string Format(object arg0, object arg1) => string.Format(Value, arg0, arg1);
- 		public string Format(object arg0, object arg1, object arg2) => string.Format(Value, arg0, arg1, arg2);
--		public string Format(params object[] args) => string.Format(Value, args);
-+		*/
-+		
-+		private static readonly Regex PluralizationPatternRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // "{0} {^0:item,items}"
-+
-+		public string Format(params object[] args) {
-+			string value = Value;
-+
-+			value = PluralizationPatternRegex.Replace(value, delegate (Match match) {
-+				int argIndex = Convert.ToInt32(match.Groups[1].Value);
-+				string[] options = match.Groups[2].Value.Split(';');
-+
-+				if(args[argIndex] is int count) {
-+					int pluralNumber = 0;
-+
-+					switch (Language.ActiveCulture.LegacyId) {
-+						// https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localization_and_Plurals
-+						case (int)GameCulture.CultureName.Russian: // Plural rule 7
-+							int lN = count % 10;
-+
-+							if (lN == 1)
-+								pluralNumber = 0;
-+
-+							if (lN > 1 && lN < 5)
-+								pluralNumber = 1;
-+
-+							if ((lN > 4 && lN < 10) || lN == 0 || (count % 100 > 10 && count % 100 < 20))
-+								pluralNumber = 2;
-+
-+							break;
-+						case (int)GameCulture.CultureName.English: // Rule 1
-+						case (int)GameCulture.CultureName.German:
-+						case (int)GameCulture.CultureName.Italian:
-+						case (int)GameCulture.CultureName.Spanish:
-+						case (int)GameCulture.CultureName.Portuguese:
-+							pluralNumber = count == 1 ? 0 : 1;
-+							break;
-+						case (int)GameCulture.CultureName.French: // Rule 2
-+							pluralNumber = count == 0 || count == 1 ? 0 : 1;
-+							break;
-+						case (int)GameCulture.CultureName.Polish: // Rule 9
-+							int lastDigit = count % 10;
-+
-+							if (lastDigit == 1 && count != 11)
-+								pluralNumber = 0;
-+							else if (lastDigit >= 2 && lastDigit <= 4 && count != 12 && count != 13 && count != 14)
-+								pluralNumber = 1;
-+							else
-+								pluralNumber = 2;
-+
-+							break;
-+						default: // Chinese, plural rule 0 (no need to pluralize)
-+							break;
-+					}
-+
-+					return options[pluralNumber];
-+				}
-+
-+				return match.ToString();
-+			});
-+
-+			return string.Format(value, args);
+-public class LocalizedText
++public partial class LocalizedText
+ {
+ 	public static readonly LocalizedText Empty = new LocalizedText("", "");
+ 	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
+ 	public readonly string Key;
+-
++	
++	/*
+ 	public string Value { get; private set; }
++	*/
++	private string _value;
++	/// <summary>
++	/// Retrieves the text value. This is the actual text the user should see.
++	/// </summary>
++	public string Value {
++		get => _value;
++		private set {
++			_value = value;
++			_hasPlurals = null;
++			BoundArgs = null;
 +		}
-+
- 		public override string ToString() => Value;
++	}
+ 
+ 	internal LocalizedText(string key, string text)
+ 	{
+@@ -22,6 +_,13 @@
+ 		Value = text;
  	}
+ 
++	/// <summary>
++	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="obj"/> parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/>, the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br/><br/>
++	/// When used in conjuction with <see cref="Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom)"/> and <see cref="Lang.CreateDialogFilter(string, object)"/>, simple boolean conditions expressed in each LocalizedText can be used to filter a collection of LocalizedText.  <br/><br/>
++	/// <see cref="Format(object[])"/> is more commonly used to format LocalizedText placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided.
++	/// </summary>
++	/// <param name="obj"></param>
++	/// <returns></returns>
+ 	public string FormatWith(object obj)
+ 	{
+ 		string value = Value;
+@@ -36,6 +_,13 @@
+ 		});
+ 	}
+ 
++	/// <summary>
++	/// Checks if the conditions embedded in this LocalizedText are satisfied by the <paramref name="obj"/> argument.
++	/// For example when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/> as the <paramref name="obj"/> argument, "{?Rain}" at the start of a LocalizedText value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br/>
++	/// The method is typically used indirectly by using <see cref="Lang.CreateDialogFilter(string, object)"/>.
++	/// </summary>
++	/// <param name="obj"></param>
++	/// <returns></returns>
+ 	public bool CanFormatWith(object obj)
+ 	{
+ 		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+@@ -56,7 +_,12 @@
+ 		return true;
+ 	}
+ 
++	/*
+ 	public NetworkText ToNetworkText() => NetworkText.FromKey(Key);
++	*/
++	/// <summary> Convert this <see cref="LocalizedText"/> to a <see cref="NetworkText"/> for use in various network code applications. Non-chat messages sent to other players should be sent as <see cref="NetworkText"/> to facilitate localization. </summary>
++	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? Array.Empty<object>());
++	/// <inheritdoc cref="ToNetworkText()"/>
+ 	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
+ 
+ 	public static explicit operator string(LocalizedText text)
+@@ -64,9 +_,12 @@
+ 		return text.Value;
+ 	}
+ 
++	/*
+ 	public string Format(object arg0) => string.Format(Value, arg0);
+ 	public string Format(object arg0, object arg1) => string.Format(Value, arg0, arg1);
+ 	public string Format(object arg0, object arg1, object arg2) => string.Format(Value, arg0, arg1, arg2);
+ 	public string Format(params object[] args) => string.Format(Value, args);
++	*/
++
+ 	public override string ToString() => Value;
  }

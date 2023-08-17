@@ -1,42 +1,55 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -6,24 +_,33 @@
+@@ -6,25 +_,52 @@
  using Terraria.GameContent;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameInput;
 +using Terraria.ModLoader;
  using Terraria.UI;
  
- namespace Terraria.Map
- {
- 	public class TeleportPylonsMapLayer : IMapLayer
- 	{
-+		public bool Visible { get; set; } = true;
-+
- 		public void Draw(ref MapOverlayDrawContext context, ref string text) {
--			List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
-+			IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
--			float num = 1f;
--			float scaleIfSelected = num * 2f;
- 			Texture2D value = TextureAssets.Extra[182].Value;
- 			bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer);
--			Color color = Color.White;
--			if (!num2)
--				color = Color.Gray * 0.5f;
+ namespace Terraria.Map;
  
- 			for (int i = 0; i < pylons.Count; i++) {
- 				TeleportPylonInfo info = pylons[i];
-+				float num = 1f;
-+				float scaleIfSelected = num * 2f;
-+				Color color = Color.White;
-+				if (!num2)
-+					color = Color.Gray * 0.5f;
-+				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected))
-+					continue;
-+				if (info.ModPylon is ModPylon pylon) {
-+					pylon.DrawMapIcon(ref context, ref text, info, num2, color, num, scaleIfSelected);
-+					continue;
-+				}
- 				if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
- 					PaddingY = 0
- 				}, num, scaleIfSelected, Alignment.Center).IsMouseOver) {
+ public class TeleportPylonsMapLayer : IMapLayer
+ {
++	// Added by TML.
++	public bool Visible { get; set; } = true;
++
+ 	public void Draw(ref MapOverlayDrawContext context, ref string text)
+ 	{
++		/*
+ 		List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
+ 		float num = 1f;
+ 		float scaleIfSelected = num * 2f;
++		*/
++		IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
++
+ 		Texture2D value = TextureAssets.Extra[182].Value;
+ 		bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer) && (Main.DroneCameraTracker == null || !Main.DroneCameraTracker.IsInUse());
++
++		/*
+ 		Color color = Color.White;
+ 		if (!num2)
+ 			color = Color.Gray * 0.5f;
++		*/
+ 
+ 		for (int i = 0; i < pylons.Count; i++) {
+ 			TeleportPylonInfo info = pylons[i];
++
++			float num = 1f;
++			float scaleIfSelected = num * 2f;
++			Color color = Color.White;
++
++			if (!num2)
++				color = Color.Gray * 0.5f;
++
++			if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected))
++				continue;
++
++			if (info.ModPylon is ModPylon pylon) {
++				pylon.DrawMapIcon(ref context, ref text, info, num2, color, num, scaleIfSelected);
++				continue;
++			}
++
+ 			if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
+ 				PaddingY = 0
+ 			}, num, scaleIfSelected, Alignment.Center).IsMouseOver) {

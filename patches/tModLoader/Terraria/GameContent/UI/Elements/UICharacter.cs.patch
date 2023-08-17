@@ -1,20 +1,32 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
-@@ -30,6 +_,8 @@
- 		}
+@@ -45,7 +_,8 @@
+ 	{
+ 		if (!_player.hideMisc[0]) {
+ 			Item item = _player.miscEquips[0];
+-			if (!item.IsAir) {
++			// TML: Restrict to items that are accepted by the vanity pet slot (conditions found in ItemSlot) to counteract unloaded item/modder changing the pet item to something else
++			if (!item.IsAir && item.buffType > 0 && Main.vanityPet[item.buffType] && !Main.lightPet[item.buffType]) {
+ 				int shoot = item.shoot;
+ 				_petProjectiles = new Projectile[1] {
+ 					PreparePetProjectiles_CreatePetProjectileDummy(shoot)
+@@ -64,6 +_,9 @@
  
- 		public override void Update(GameTime gameTime) {
-+			using var _currentPlr = new Main.CurrentPlayerOverride(_player);
+ 	public override void Update(GameTime gameTime)
+ 	{
++		// Override the current player reference until the end of this method.
++		using var _currentPlr = new Main.CurrentPlayerOverride(_player);
 +
- 			_player.ResetEffects();
- 			_player.ResetVisibleAccessories();
- 			_player.UpdateMiscCounter();
-@@ -53,6 +_,8 @@
- 		}
+ 		_player.ResetEffects();
+ 		_player.ResetVisibleAccessories();
+ 		_player.UpdateMiscCounter();
+@@ -89,6 +_,9 @@
  
- 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-+			using var _currentPlr = new Main.CurrentPlayerOverride(_player);
+ 	protected override void DrawSelf(SpriteBatch spriteBatch)
+ 	{
++		// Override the current player reference until the end of this method.
++		using var _currentPlr = new Main.CurrentPlayerOverride(_player);
 +
- 			CalculatedStyle dimensions = GetDimensions();
- 			if (_drawsBackPanel)
- 				spriteBatch.Draw(_texture.Value, dimensions.Position(), Color.White);
+ 		CalculatedStyle dimensions = GetDimensions();
+ 		if (_drawsBackPanel)
+ 			spriteBatch.Draw(_texture.Value, dimensions.Position(), Color.White);

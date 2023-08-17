@@ -22,10 +22,6 @@ namespace ExampleMod.Content.Projectiles
 
 		private Color FishingLineColor => PossibleLineColors[fishingLineColorIndex];
 
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Bobber");
-		}
-
 		public override void SetDefaults() {
 			// These are copied through the CloneDefaults method
 			// Projectile.width = 14;

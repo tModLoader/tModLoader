@@ -1,31 +1,31 @@
 --- src/TerrariaNetCore/Terraria/GameContent/AssetSourceController.cs
 +++ src/tModLoader/Terraria/GameContent/AssetSourceController.cs
 @@ -11,6 +_,8 @@
+ 
+ public class AssetSourceController
  {
- 	public class AssetSourceController
- 	{
-+		internal IContentSource StaticSource => _staticSources.Single();
++	internal IContentSource StaticSource => _staticSources.Single();
 +
- 		private readonly List<IContentSource> _staticSources;
- 		private readonly IAssetRepository _assetRepository;
+ 	private readonly List<IContentSource> _staticSources;
+ 	private readonly IAssetRepository _assetRepository;
  
 @@ -39,6 +_,10 @@
- 			if (this.OnResourcePackChange != null)
- 				this.OnResourcePackChange(resourcePacks);
+ 		if (this.OnResourcePackChange != null)
+ 			this.OnResourcePackChange(resourcePacks);
  
-+			if (resourcePacks.EnabledPacks.Any()) {
-+				ModLoader.Logging.tML.Info("Loading the following resource packs: " + string.Join(", ", resourcePacks.EnabledPacks.Select(x => x.Name)));
-+			}
++		if (resourcePacks.EnabledPacks.Any()) {
++			ModLoader.Logging.tML.Info("Loading the following resource packs: " + string.Join(", ", resourcePacks.EnabledPacks.Select(x => x.Name)));
++		}
 +
- 			ActiveResourcePackList = resourcePacks;
- 			List<IContentSource> list = new List<IContentSource>(from pack in resourcePacks.EnabledPacks
- 																 orderby pack.SortingOrder
+ 		ActiveResourcePackList = resourcePacks;
+ 		List<IContentSource> list = new List<IContentSource>(from pack in resourcePacks.EnabledPacks
+ 															 orderby pack.SortingOrder
 @@ -46,7 +_,7 @@
  
- 			list.AddRange(_staticSources);
- 			foreach (IContentSource item in list) {
--				item.ClearRejections();
-+				item.Rejections.Clear();
- 			}
+ 		list.AddRange(_staticSources);
+ 		foreach (IContentSource item in list) {
+-			item.ClearRejections();
++			item.Rejections.Clear();
+ 		}
  
- 			List<IContentSource> list2 = new List<IContentSource>();
+ 		List<IContentSource> list2 = new List<IContentSource>();

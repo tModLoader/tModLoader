@@ -11,7 +11,6 @@ namespace ExampleMod.Content.Walls
 			Main.wallHouse[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleWall>();
 
 			AddMapEntry(new Color(150, 150, 150));
 		}

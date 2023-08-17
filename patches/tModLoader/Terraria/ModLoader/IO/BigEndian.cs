@@ -1,44 +1,33 @@
-﻿using System;
+using System;
+using System.Buffers.Binary;
 using System.IO;
-using System.Linq;
 
-namespace Terraria.ModLoader.IO
+namespace Terraria.ModLoader.IO;
+
+public class BigEndianWriter : BinaryWriter
 {
-	public class BigEndianWriter : BinaryWriter
-	{
-		public BigEndianWriter(Stream output) : base(output) { }
+	public BigEndianWriter(Stream output) : base(output) { }
 
-		private void WriteBigEndian(byte[] bytes) {
-			if (BitConverter.IsLittleEndian)
-				bytes = bytes.Reverse().ToArray();
+	public override void Write(short value) { Span<byte> buf = stackalloc byte[2]; BinaryPrimitives.WriteInt16BigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(ushort value) { Span<byte> buf = stackalloc byte[2]; BinaryPrimitives.WriteUInt16BigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(int value) { Span<byte> buf = stackalloc byte[4]; BinaryPrimitives.WriteInt32BigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(uint value) { Span<byte> buf = stackalloc byte[4]; BinaryPrimitives.WriteUInt32BigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(long value) { Span<byte> buf = stackalloc byte[8]; BinaryPrimitives.WriteInt64BigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(ulong value) { Span<byte> buf = stackalloc byte[8]; BinaryPrimitives.WriteUInt64BigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(float value) { Span<byte> buf = stackalloc byte[4]; BinaryPrimitives.WriteSingleBigEndian(buf, value); OutStream.Write(buf); }
+	public override void Write(double value) { Span<byte> buf = stackalloc byte[8]; BinaryPrimitives.WriteDoubleBigEndian(buf, value); OutStream.Write(buf); }
+}
 
-			Write(bytes);
-		}
+public class BigEndianReader : BinaryReader
+{
+	public BigEndianReader(Stream input) : base(input) {}
 
-		public override void Write(short value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(ushort value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(int value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(uint value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(long value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(ulong value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(float value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-		public override void Write(double value) { WriteBigEndian(BitConverter.GetBytes(value)); }
-	}
-
-	public class BigEndianReader : BinaryReader
-	{
-		public BigEndianReader(Stream input) : base(input) { }
-
-		private byte[] ReadBigEndian(int len) =>
-			BitConverter.IsLittleEndian ? ReadBytes(len).Reverse().ToArray() : ReadBytes(len);
-
-		public override short ReadInt16() => BitConverter.ToInt16(ReadBigEndian(2), 0);
-		public override ushort ReadUInt16() => BitConverter.ToUInt16(ReadBigEndian(2), 0);
-		public override int ReadInt32() => BitConverter.ToInt32(ReadBigEndian(4), 0);
-		public override uint ReadUInt32() => BitConverter.ToUInt32(ReadBigEndian(4), 0);
-		public override long ReadInt64() => BitConverter.ToInt64(ReadBigEndian(8), 0);
-		public override ulong ReadUInt64() => BitConverter.ToUInt64(ReadBigEndian(8), 0);
-		public override float ReadSingle() => BitConverter.ToSingle(ReadBigEndian(4), 0);
-		public override double ReadDouble() => BitConverter.ToDouble(ReadBigEndian(8), 0);
-	}
+	public override short ReadInt16() => BinaryPrimitives.ReadInt16BigEndian(BaseStream.ReadByteSpan(2));
+	public override ushort ReadUInt16() => BinaryPrimitives.ReadUInt16BigEndian(BaseStream.ReadByteSpan(2));
+	public override int ReadInt32() => BinaryPrimitives.ReadInt32BigEndian(BaseStream.ReadByteSpan(4));
+	public override uint ReadUInt32() => BinaryPrimitives.ReadUInt32BigEndian(BaseStream.ReadByteSpan(4));
+	public override long ReadInt64() => BinaryPrimitives.ReadInt64BigEndian(BaseStream.ReadByteSpan(8));
+	public override ulong ReadUInt64() => BinaryPrimitives.ReadUInt64BigEndian(BaseStream.ReadByteSpan(8));
+	public override float ReadSingle() => BinaryPrimitives.ReadSingleBigEndian(BaseStream.ReadByteSpan(4));
+	public override double ReadDouble() => BinaryPrimitives.ReadDoubleBigEndian(BaseStream.ReadByteSpan(8));
 }

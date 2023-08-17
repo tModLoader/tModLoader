@@ -1,5 +1,5 @@
+using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
-using ExampleMod.Content;
 using System;
 using Terraria;
 using Terraria.ModLoader;

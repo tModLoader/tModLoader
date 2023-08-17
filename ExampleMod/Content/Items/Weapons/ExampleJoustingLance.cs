@@ -1,24 +1,15 @@
 using Terraria;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
 using Terraria.Enums;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleJoustingLance : ModItem
 	{
-		public override void SetStaticDefaults() {
-			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
-			Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nThis is a modded jousting lance.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
-		}
-
 		public override void SetDefaults() {
-
 			// A special method that sets a variety of item parameters that make the item act like a spear weapon.
-			// To see everything DefaultToSpear() does, right click the method in Visual Studios and choose "Go To Definition" (or press F12).
+			// To see everything DefaultToSpear() does, right click the method in Visual Studios and choose "Go To Definition" (or press F12). You can also hover over DefaultToSpear to see the documentation.
 			// The shoot speed will affect how far away the projectile spawns from the player's hand.
 			// If you are using the custom AI in your projectile (and not aiStyle 19 and AIType = ProjectileID.JoustingLance), the standard value is 1f.
 			// If you are using aiStyle 19 and AIType = ProjectileID.JoustingLance, then multiply the value by about 3.5f.

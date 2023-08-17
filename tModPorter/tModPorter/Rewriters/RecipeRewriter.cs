@@ -104,7 +104,7 @@ namespace tModPorter.Rewriters
 			}
 
 			var itemExpr = resultArgs.Arguments[0].Expression;
-			if (model.GetOperation(itemExpr) is IOperation op && op.Type.InheritsFrom("Terraria.ModLoader.ModItem")) {
+			if (model.GetOperation(itemExpr) is IOperation { Type: ITypeSymbol type } && type.InheritsFrom("Terraria.ModLoader.ModItem")) {
 				resultArgs = resultArgs.ReplaceNode(itemExpr, MemberAccessExpression(itemExpr, "Type"));
 			}
 

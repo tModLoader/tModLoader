@@ -1,19 +1,24 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Bestiary/NPCWasChatWithTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/NPCWasChatWithTracker.cs
-@@ -1,3 +_,4 @@
-+using System.Linq;
+@@ -1,5 +_,6 @@
  using System.Collections.Generic;
  using System.IO;
++using System.Linq;
  using Terraria.GameContent.NetModules;
-@@ -41,8 +_,9 @@
- 
- 		public void Save(BinaryWriter writer) {
- 			lock (_entryCreationLock) {
-+				var vanillaOnly = _chattedWithPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
--				writer.Write(_chattedWithPlayer.Count);
-+				writer.Write(vanillaOnly.Count());
--				foreach (string item in _chattedWithPlayer) {
-+				foreach (string item in vanillaOnly) {
- 					writer.Write(item);
- 				}
+ using Terraria.ID;
+ using Terraria.Net;
+@@ -46,8 +_,12 @@
+ 	public void Save(BinaryWriter writer)
+ 	{
+ 		lock (_entryCreationLock) {
+-			writer.Write(_chattedWithPlayer.Count);
+-			foreach (string item in _chattedWithPlayer) {
++			var vanillaOnly = _chattedWithPlayer
++				.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
++
++			writer.Write(vanillaOnly.Count());
++
++			foreach (string item in vanillaOnly) {
+ 				writer.Write(item);
  			}
+ 		}

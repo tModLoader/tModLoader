@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -17,7 +18,7 @@ namespace ExampleMod.Content.Items
 		public float durability;
 
 		public override void SetDefaults() {
-			Item.maxStack = 99; // This item is stackable, otherwise the example wouldn't work
+			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
 			Item.width = 8;
 			Item.height = 8;
 		}
@@ -64,15 +65,15 @@ namespace ExampleMod.Content.Items
 			return (durability1 * stack1 + durability2 * stack2) / (stack1 + stack2);
 		}
 
-		public override void OnStack(Item decrease, int numberToBeTransfered) {
-			var incomingDurability = ((ExampleStackableDurabilityItem)decrease.ModItem).durability;
-			durability = WeightedAverage(durability, Item.stack, incomingDurability, numberToBeTransfered);
+		public override void OnStack(Item source, int numToTransfer) {
+			var incomingDurability = ((ExampleStackableDurabilityItem)source.ModItem).durability;
+			durability = WeightedAverage(durability, Item.stack, incomingDurability, numToTransfer);
 		}
 
 		//SplitStack:  This example does not need to use SplitStack because durability will be the intended value from being cloned.
 
-		public override void OnCreate(ItemCreationContext context) {
-			if (context is RecipeCreationContext) {
+		public override void OnCreated(ItemCreationContext context) {
+			if (context is RecipeItemCreationContext) {
 				durability = Main.rand.NextFloat();
 			}
 		}

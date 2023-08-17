@@ -8,122 +8,197 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -38,15 +_,29 @@
- 		private UICharacterNameButton _previewImagePathPlate;
- 		private Texture2D _previewImageTransientTexture;
- 		private UIImage _previewImageUIElement;
--		private string _previewImagePath;
-+		protected string _previewImagePath;
- 		private Asset<Texture2D> _defaultPreviewImageTexture;
- 		private UIElement _steamDisclaimerButton;
--		private UIText _disclaimerText;
-+		protected UIText _disclaimerText;
- 		private UIGamepadHelper _helper;
+@@ -34,20 +_,36 @@
+ 	private UIElement _publishButton;
+ 	private WorkshopItemPublicSettingId _optionPublicity = WorkshopItemPublicSettingId.Public;
+ 	private GroupOptionButton<WorkshopItemPublicSettingId>[] _publicityOptions;
+-	private List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
++	protected List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
+ 	private UICharacterNameButton _previewImagePathPlate;
+ 	private Texture2D _previewImageTransientTexture;
+ 	private UIImage _previewImageUIElement;
+-	private string _previewImagePath;
++	protected string _previewImagePath;
+ 	private Asset<Texture2D> _defaultPreviewImageTexture;
+ 	private UIElement _steamDisclaimerButton;
+-	private UIText _disclaimerText;
++	protected UIText _disclaimerText;
+ 	private UIGamepadHelper _helper;
  
-+		// Added by TML [
-+		protected UIText _tMLDisclaimerText;
-+		protected UIElement _tMLDisclaimerButton;
-+		private bool _isMod = false;
++	// Added by TML [[
++	protected UIText _tMLDisclaimerText;
++	protected UIElement _tMLDisclaimerButton;
 +
-+		public UIState PreviousUIState {
-+			get => _previousUIState;
-+			set => _previousUIState = value;
++	private bool _isMod;
++
++	public UIState PreviousUIState {
++		get => _previousUIState;
++		set => _previousUIState = value;
++	}
++	// ]]
++
+ 	public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject)
+ 	{
+ 		_previousUIState = stateToGoBackTo;
+ 		_dataObject = dataObject;
++
++		if (dataObject is TmodFile) {
++			_isMod = true;
 +		}
-+		// ]
+ 	}
+ 
+ 	public override void OnInitialize()
+@@ -80,13 +_,23 @@
+ 
+ 	private void SetDefaultOptions()
+ 	{
++		// Moved from below.
++		SetTagsFromFoundEntry();
 +
- 		public AWorkshopPublishInfoState(UIState stateToGoBackTo, TPublishedObjectType dataObject) {
- 			_previousUIState = stateToGoBackTo;
- 			_dataObject = dataObject;
-+			if (dataObject is TmodFile) {
-+				_isMod = true;
-+			}
++		// Seemingly moved to SetTagsFromFoundEntry
++		/*
+ 		_optionPublicity = WorkshopItemPublicSettingId.Public;
++		*/
++
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+ 		for (int i = 0; i < publicityOptions.Length; i++) {
+ 			publicityOptions[i].SetCurrentOption(_optionPublicity);
  		}
  
- 		public override void OnInitialize() {
-@@ -77,13 +_,12 @@
- 		}
++		/*
+ 		SetTagsFromFoundEntry();
++		*/
++
+ 		UpdateImagePreview();
+ 	}
  
- 		private void SetDefaultOptions() {
--			_optionPublicity = WorkshopItemPublicSettingId.Public;
--			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
--			for (int i = 0; i < publicityOptions.Length; i++) {
--				publicityOptions[i].SetCurrentOption(_optionPublicity);
--			}
--
- 			SetTagsFromFoundEntry();
-+			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
-+			for (int i = 0; i < publicityOptions.Length; i++) {
-+				publicityOptions[i].SetCurrentOption(_optionPublicity);
-+			}
+@@ -100,6 +_,11 @@
+ 		uIElement.SetPadding(0f);
+ 		uiList.Add(uIElement);
+ 		uiList.Add(CreateSteamDisclaimer("disclaimer"));
 +
- 			UpdateImagePreview();
- 		}
++		// Added by tML
++		if (_isMod)
++			uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
++
+ 		uiList.Add(CreatePreviewImageSelectionPanel("image"));
+ 		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
+ 		uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
+@@ -124,7 +_,10 @@
+ 		uIElement.SetPadding(0f);
+ 		obj.Append(uIElement);
+ 		float num = 86f;
++		if (!_isMod)
+-		_defaultPreviewImageTexture = Main.Assets.Request<Texture2D>("Images/UI/Workshop/DefaultPreviewImage");
++			_defaultPreviewImageTexture = Main.Assets.Request<Texture2D>("Images/UI/Workshop/DefaultPreviewImage");
++		else
++			_defaultPreviewImageTexture = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon");
+ 		UIImage uIImage = new UIImage(_defaultPreviewImageTexture) {
+ 			Width = new StyleDimension(-4f, 1f),
+ 			Height = new StyleDimension(-4f, 1f),
+@@ -140,7 +_,8 @@
+ 		};
  
-@@ -96,6 +_,11 @@
- 			uIElement.SetPadding(0f);
- 			uiList.Add(uIElement);
- 			uiList.Add(CreateSteamDisclaimer("disclaimer"));
-+
-+			// Added by tML
-+			if (_isMod)
-+				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
-+
- 			uiList.Add(CreatePreviewImageSelectionPanel("image"));
- 			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
- 			uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
-@@ -163,10 +_,7 @@
- 				}
+ 		uIElement.Append(uIImage);
++		if (!_isMod)
+-		uIElement.Append(element);
++			uIElement.Append(element);
+ 		_previewImageUIElement = uIImage;
+ 		UICharacterNameButton uICharacterNameButton = new UICharacterNameButton(Language.GetText("Workshop.PreviewImagePathTitle"), Language.GetText("Workshop.PreviewImagePathEmpty"), Language.GetText("Workshop.PreviewImagePathDescription")) {
+ 			Width = StyleDimension.FromPixelsAndPercent(0f - num, 1f),
+@@ -169,10 +_,14 @@
  			}
- 
--			GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
--			for (int i = 0; i < publicityOptions.Length; i++) {
--				publicityOptions[i].SetCurrentOption(info.publicity);
--			}
-+			_optionPublicity = info.publicity;
  		}
  
- 		protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
-@@ -232,7 +_,7 @@
++		/*
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
+ 		for (int i = 0; i < publicityOptions.Length; i++) {
+ 			publicityOptions[i].SetCurrentOption(info.publicity);
  		}
++		*/
++
++		_optionPublicity = info.publicity;
+ 	}
  
- 		private void steamDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) {
--			ProcessStart("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
-+			Utils.OpenToURL("https://steamcommunity.com/sharedfiles/workshoplegalagreement");
- 		}
+ 	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
+@@ -382,18 +_,41 @@
+ 	{
+ 		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
+ 		int num = 3;
+-		int num2 = (int)Math.Ceiling((float)tagsToShow.Count / (float)num);
++		int num2 = (int)Math.Ceiling((float)tagsToShow.Count / (float)num) + 1;
+ 		int num3 = heightPerRow * num2;
+ 		CreateStylizedCategoryPanel(num3, "Workshop.CategoryTitleTags", out var entirePanel, out var innerPanel);
+ 		float num4 = 0.98f;
++		int additionalIOffset = 0;
+ 		List<GroupOptionButton<WorkshopTagOption>> list = new List<GroupOptionButton<WorkshopTagOption>>();
+ 		for (int i = 0; i < tagsToShow.Count; i++) {
+ 			WorkshopTagOption workshopTagOption = tagsToShow[i];
+ 			GroupOptionButton<WorkshopTagOption> groupOptionButton = new GroupOptionButton<WorkshopTagOption>(workshopTagOption, Language.GetText(workshopTagOption.NameKey), Language.GetText(workshopTagOption.NameKey + "Description"), Color.White, null, 1f, 0.5f, 16f);
+ 			groupOptionButton.ShowHighlightWhenSelected = false;
+ 			groupOptionButton.SetCurrentOption(null);
+-			int num5 = i / num;
+-			int num6 = i - num5 * num;
++			int num5 = (i + additionalIOffset) / num;
++			if (workshopTagOption.InternalNameForAPIs == "English") {
++				num5++;
++				if ((i + additionalIOffset) % num != 0) {
++					additionalIOffset += 3;
++					num5++;
++				}
++				additionalIOffset += 3 - ((i + additionalIOffset) % num);
++				AddHorizontalSeparator(entirePanel, 44 + num5 * heightPerRow, 4);
++				UIText uIText = new UIText(Language.GetText("tModLoader.TagsCategoryLanguage")) {
++					HAlign = 0f,
++					VAlign = 0f,
++					Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
++					Height = StyleDimension.FromPixelsAndPercent(44, 0f),
++					Top = StyleDimension.FromPixelsAndPercent(5f + num5 * heightPerRow, 0f)
++				};
++				uIText.PaddingLeft = 20f;
++				uIText.PaddingRight = 20f;
++				uIText.PaddingTop = 6f;
++				uIText.IsWrapped = false;
++				entirePanel.Append(uIText);
++			}
++			num5 = (i + additionalIOffset) / num;
++			int num6 = (i + additionalIOffset) % num;
+ 			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (num - 1), 1f / (float)num * num4);
+ 			groupOptionButton.HAlign = (float)num6 / (float)(num - 1);
+ 			groupOptionButton.Left = StyleDimension.FromPercent((1f - num4) * (1f - groupOptionButton.HAlign * 2f));
+@@ -538,14 +_,14 @@
+ 		container.Append(uISlicedImage);
+ 		UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
+ 			HAlign = 0f,
+-			VAlign = 1f,
++			VAlign = 0.5f, // 1f,
+ 			Width = new StyleDimension(0f, 1f),
+ 			Height = new StyleDimension(0f, 1f)
+ 		};
  
- 		public static void ProcessStart(string path) {
-@@ -529,14 +_,14 @@
- 			container.Append(uISlicedImage);
- 			UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
- 				HAlign = 0f,
--				VAlign = 1f,
-+				VAlign = 0.5f, // 1f,
- 				Width = new StyleDimension(0f, 1f),
- 				Height = new StyleDimension(0f, 1f)
- 			};
+ 		uIText.PaddingLeft = 4f;
+ 		uIText.PaddingRight = 4f;
+-		uIText.PaddingTop = 4f;
++		uIText.PaddingTop = 24f; // 4f;
+ 		uIText.IsWrapped = true;
+ 		uISlicedImage.Append(uIText);
+ 		_descriptionText = uIText;
+@@ -643,7 +_,9 @@
+ 			UsedTags = (from x in _tagOptions
+ 						where x.IsSelected
+ 						select x.OptionValue).ToArray(),
+-			PreviewImagePath = _previewImagePath
++			PreviewImagePath = _previewImagePath,
++			// Introduced by TML:
++			ChangeNotes = (this as WorkshopPublishInfoStateForMods).changeNotes,
+ 		};
+ 	}
  
- 			uIText.PaddingLeft = 4f;
- 			uIText.PaddingRight = 4f;
--			uIText.PaddingTop = 4f;
-+			uIText.PaddingTop = 24f; // 4f;
- 			uIText.IsWrapped = true;
- 			uISlicedImage.Append(uIText);
- 			_descriptionText = uIText;
-@@ -625,7 +_,8 @@
- 				UsedTags = (from x in _tagOptions
- 							where x.IsSelected
- 							select x.OptionValue).ToArray(),
--				PreviewImagePath = _previewImagePath
-+				PreviewImagePath = _previewImagePath,
-+				ChangeNotes = (this as WorkshopPublishInfoStateForMods).changeNotes,
- 			};
- 		}
+@@ -653,6 +_,7 @@
+ 			new ExtensionFilter("Image files", "png", "jpg", "jpeg")
+ 		};
  
-@@ -634,6 +_,7 @@
- 				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
- 			};
- 
-+			// TODO: support default folder, set default folder to mod source folder for mods.
- 			string text = FileBrowser.OpenFilePanel("Open icon", extensions);
- 			if (text != null) {
- 				_previewImagePath = text;
++		// TODO: Support default folder, set default folder to mod source folder for mods.
+ 		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
+ 		if (text != null) {
+ 			_previewImagePath = text;

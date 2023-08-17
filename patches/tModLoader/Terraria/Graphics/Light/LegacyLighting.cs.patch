@@ -1,44 +1,53 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -5,6 +_,7 @@
- using System.Diagnostics;
+@@ -4,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using ReLogic.Threading;
  using Terraria.DataStructures;
- using Terraria.Utilities;
 +using Terraria.ModLoader;
+ using Terraria.Utilities;
  
- namespace Terraria.Graphics.Light
- {
-@@ -575,6 +_,7 @@
- 			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
- 			for (int m = num; m < num2; m++) {
- 				LightingState[] array3 = _states[m - _expandedRectLeft];
-+				//patch file: n, num17
- 				for (int n = num3; n < num4; n++) {
- 					LightingState lightingState2 = array3[n - _expandedRectTop];
- 					Tile tile = Main.tile[m, n];
-@@ -743,6 +_,8 @@
- 							_wetLightB = 0f;
- 							break;
- 					}
-+
-+					LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, _negLight * _blueWave, ref _wetLightR, ref _wetLightG, ref _wetLightB);
- 				}
- 				else {
- 					_negLight = 0.9f;
-@@ -769,6 +_,8 @@
- 					_negLight *= 0.85f;
- 					_negLight2 *= 0.85f;
+ namespace Terraria.Graphics.Light;
+@@ -584,6 +_,7 @@
+ 			ScanOreFinderData = Main.LocalPlayer.accOreFinder
+ 		});
+ 
++		// Extra patch context.
+ 		_tileScanner.Update();
+ 		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
+ 			DrawInvisibleWalls = Main.ShouldShowInvisibleWalls()
+@@ -591,6 +_,7 @@
+ 
+ 		for (int m = num; m < num2; m++) {
+ 			LightingState[] array3 = _states[m - _expandedRectLeft];
++			//patch file: n, num17
+ 			for (int n = num3; n < num4; n++) {
+ 				LightingState lightingState2 = array3[n - _expandedRectTop];
+ 				Tile tile = Main.tile[m, n];
+@@ -760,6 +_,8 @@
+ 						_wetLightB = 0f;
+ 						break;
  				}
 +
-+				SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
++				LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, _negLight * _blueWave, ref _wetLightR, ref _wetLightG, ref _wetLightB);
  			}
  			else {
- 				_negLight = 0.04f;
-@@ -793,6 +_,7 @@
- 					_negLight2 += 0.18f;
- 				}
- 
-+				SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
- 				_wetLightR = _negLight * 1.2f;
- 				_wetLightG = _negLight * 1.1f;
+ 				_negLight = 0.9f;
+@@ -786,6 +_,8 @@
+ 				_negLight *= 0.85f;
+ 				_negLight2 *= 0.85f;
  			}
++
++			SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
+ 		}
+ 		else {
+ 			_negLight = 0.04f;
+@@ -809,6 +_,8 @@
+ 				_negLight += 0.09f;
+ 				_negLight2 += 0.18f;
+ 			}
++
++			SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
+ 
+ 			_wetLightR = _negLight * 1.2f;
+ 			_wetLightG = _negLight * 1.1f;

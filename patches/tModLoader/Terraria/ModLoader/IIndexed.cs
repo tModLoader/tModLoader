@@ -1,7 +1,6 @@
-﻿namespace Terraria.ModLoader
+namespace Terraria.ModLoader;
+
+public interface IIndexed
 {
-	public interface IIndexed
-	{
-		ushort Index { get; }
-	}
+	ushort Index { get; }
 }

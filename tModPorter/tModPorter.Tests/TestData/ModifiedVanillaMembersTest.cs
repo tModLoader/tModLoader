@@ -7,7 +7,6 @@ public class ModifiedVanillaMembersTest
 		player.talkNPC = 1; // set changed
 		int talkNPC = player.talkNPC; // get unchanged
 
-#if COMPILE_ERROR
 		player.Spawn();
 
 		player.SporeSac();
@@ -15,6 +14,5 @@ public class ModifiedVanillaMembersTest
 		ItemText.NewText(null, 0, false, false);
 
 		var height = Main.NPCAddHeight(123);
-#endif
 	}
 }

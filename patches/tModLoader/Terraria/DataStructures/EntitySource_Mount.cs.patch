@@ -1,22 +1,30 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Mount.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_Mount.cs
-@@ -1,3 +_,5 @@
+@@ -1,13 +_,22 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_Mount : IEntitySource
-@@ -5,9 +_,12 @@
- 		public readonly Entity Entity;
- 		public readonly int MountId;
- 
--		public EntitySource_Mount(Entity entity, int mountId) {
-+		public string? Context { get; }
++using Terraria.ID;
++using Terraria.ModLoader;
 +
-+		public EntitySource_Mount(Entity entity, int mountId, string? context = null) {
- 			Entity = entity;
- 			MountId = mountId;
-+			Context = context;
- 		}
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Used for a effects from a mounted player
++/// </summary>
+-public class EntitySource_Mount : IEntitySource
++public class EntitySource_Mount : EntitySource_Parent
+ {
+-	public readonly Entity Entity;
+-	public readonly int MountId;
++	/// <summary>
++	/// A <see cref="MountID"/> or <see cref="ModContent.MountType{T}"/>
++	/// </summary>
++	public int MountId { get; }
+ 
+-	public EntitySource_Mount(Entity entity, int mountId)
++	public EntitySource_Mount(Player player, int mountId, string? context = null) : base(player, context)
+ 	{
+-		Entity = entity;
+ 		MountId = mountId;
  	}
  }

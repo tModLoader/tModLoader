@@ -1,7 +1,7 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
 {
@@ -10,12 +10,9 @@ namespace ExampleMod.Content.Items.Armor
 	[AutoloadEquip(EquipType.Legs)]
 	public class ExampleLeggings : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded leg armor."
-				+ "\n5% increased movement speed");
+		public static readonly int MoveSpeedBonus = 5;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MoveSpeedBonus);
 
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item
@@ -26,7 +23,7 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void UpdateEquip(Player player) {
-			player.moveSpeed += 0.05f; // Increase the movement speed of the player
+			player.moveSpeed += MoveSpeedBonus / 100f; // Increase the movement speed of the player
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -1,188 +1,214 @@
 --- src/TerrariaNetCore/Terraria/SceneMetrics.cs
 +++ src/tModLoader/Terraria/SceneMetrics.cs
 @@ -2,6 +_,7 @@
- using System;
  using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
  using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.WorldBuilding;
  
- namespace Terraria
-@@ -28,7 +_,7 @@
- 		public bool CanPlayCreditsRoll;
- 		public bool[] NPCBannerBuff = new bool[289];
- 		public bool hasBanner;
--		private readonly int[] _tileCounts = new int[625];
-+		internal int[] _tileCounts = new int[TileLoader.TileCount];
- 		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
- 		public int bestOre;
+ namespace Terraria;
+@@ -29,12 +_,13 @@
+ 	public bool CanPlayCreditsRoll;
+ 	public bool[] NPCBannerBuff = new bool[290];
+ 	public bool hasBanner;
+-	private readonly int[] _tileCounts = new int[TileID.Count];
++	internal int[] _tileCounts = new int[TileLoader.TileCount];
+ 	private readonly int[] _liquidCounts = new int[LiquidID.Count];
+ 	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
+ 	public int bestOre;
  
-@@ -59,47 +_,47 @@
++	//TML: Made setters public for the following properties
+-	public Point? ClosestOrePosition { get; private set; }
++	public Point? ClosestOrePosition { get; set; }
  
- 		public int SandTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+ 	public int ShimmerTileCount { get; set; }
  
- 		public int MushroomTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+@@ -46,55 +_,55 @@
  
- 		public int SnowTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+ 	public int ActiveMusicBox { get; set; }
  
- 		public int WaterCandleCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int SandTileCount { get; private set; }
++	public int SandTileCount { get; set; }
  
- 		public int PeaceCandleCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int MushroomTileCount { get; private set; }
++	public int MushroomTileCount { get; set; }
  
- 		public int PartyMonolithCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int SnowTileCount { get; private set; }
++	public int SnowTileCount { get; set; }
  
- 		public int MeteorTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int WaterCandleCount { get; private set; }
++	public int WaterCandleCount { get; set; }
  
- 		public int BloodTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int PeaceCandleCount { get; private set; }
++	public int PeaceCandleCount { get; set; }
  
- 		public int JungleTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int ShadowCandleCount { get; private set; }
++	public int ShadowCandleCount { get; set; }
  
- 		public int DungeonTileCount {
-@@ -109,32 +_,32 @@
+-	public int PartyMonolithCount { get; private set; }
++	public int PartyMonolithCount { get; set; }
  
- 		public bool HasSunflower {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int MeteorTileCount { get; private set; }
++	public int MeteorTileCount { get; set; }
  
- 		public bool HasGardenGnome {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int BloodTileCount { get; private set; }
++	public int BloodTileCount { get; set; }
  
- 		public bool HasClock {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int JungleTileCount { get; private set; }
++	public int JungleTileCount { get; set; }
  
- 		public bool HasCampfire {
- 			get;
--			private set;
-+			set;
- 		}
+-	public int DungeonTileCount { get; private set; }
++	public int DungeonTileCount { get; set; }
  
- 		public bool HasStarInBottle {
- 			get;
--			private set;
-+			set;
- 		}
+-	public bool HasSunflower { get; private set; }
++	public bool HasSunflower { get; set; }
  
- 		public bool HasHeartLantern {
- 			get;
--			private set;
-+			set;
- 		}
+-	public bool HasGardenGnome { get; private set; }
++	public bool HasGardenGnome { get; set; }
  
- 		public int ActiveFountainColor {
-@@ -159,12 +_,12 @@
+-	public bool HasClock { get; private set; }
++	public bool HasClock { get; set; }
  
- 		public bool HasCatBast {
- 			get;
--			private set;
-+			set;
- 		}
+-	public bool HasCampfire { get; private set; }
++	public bool HasCampfire { get; set; }
  
- 		public int GraveyardTileCount {
- 			get;
--			private set;
-+			set;
- 		}
+-	public bool HasStarInBottle { get; private set; }
++	public bool HasStarInBottle { get; set; }
  
- 		public bool EnoughTilesForJungle => JungleTileCount >= JungleTileThreshold;
-@@ -196,6 +_,8 @@
- 			if (settings.ScanOreFinderData)
- 				_oreFinderTileLocations.Clear();
+-	public bool HasHeartLantern { get; private set; }
++	public bool HasHeartLantern { get; set; }
  
-+			SystemLoader.ResetNearbyTileEffects();
+-	public int ActiveFountainColor { get; private set; }
++	public int ActiveFountainColor { get; set; }
+ 
+-	public int ActiveMonolithType { get; private set; }
++	public int ActiveMonolithType { get; set; }
+ 
+-	public bool BloodMoonMonolith { get; private set; }
++	public bool BloodMoonMonolith { get; set; }
+ 
+-	public bool MoonLordMonolith { get; private set; }
++	public bool MoonLordMonolith { get; set; }
+ 
+-	public bool EchoMonolith { get; private set; }
++	public bool EchoMonolith { get; set; }
+ 
+-	public int ShimmerMonolithState { get; private set; }
++	public int ShimmerMonolithState { get; set; }
+ 
+-	public bool HasCatBast { get; private set; }
++	public bool HasCatBast { get; set; }
+ 
+-	public int GraveyardTileCount { get; private set; }
++	public int GraveyardTileCount { get; set; }
+ 
+ 	public bool EnoughTilesForShimmer => ShimmerTileCount >= ShimmerTileThreshold;
+ 
+@@ -130,6 +_,8 @@
+ 		if (settings.ScanOreFinderData)
+ 			_oreFinderTileLocations.Clear();
+ 
++		SystemLoader.ResetNearbyTileEffects();
 +
- 			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
- 				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
- 				Rectangle tileRectangle = new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
-@@ -250,6 +_,8 @@
+ 		if (settings.BiomeScanCenterPositionInWorld.HasValue) {
+ 			Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
+ 			Rectangle tileRectangle = new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+@@ -194,6 +_,8 @@
  
- 						if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
- 							_oreFinderTileLocations.Add(new Point(i, j));
+ 					if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
+ 						_oreFinderTileLocations.Add(new Point(i, j));
 +
-+						TileLoader.NearbyEffects(i, j, tile.type, false);
- 					}
++					TileLoader.NearbyEffects(i, j, tile.type, false);
  				}
  			}
-@@ -262,7 +_,7 @@
- 						if (tile2 == null || !tile2.active())
- 							continue;
+ 		}
+@@ -206,7 +_,7 @@
+ 					if (tile2 == null || !tile2.active())
+ 						continue;
  
--						if (tile2.type == 104)
-+						if (TileID.Sets.Clock[tile2.type])
- 							HasClock = true;
+-					if (tile2.type == 104)
++					if (TileID.Sets.Clock[tile2.type])
+ 						HasClock = true;
  
- 						switch (tile2.type) {
-@@ -323,6 +_,12 @@
- 									BloodMoonMonolith = true;
- 								break;
+ 					switch (tile2.type) {
+@@ -267,16 +_,24 @@
+ 							if (tile2.frameY >= 54)
+ 								BloodMoonMonolith = true;
+ 							break;
++						// Extra extra patch context.
+ 						case 657:
+ 							if (tile2.frameY >= 54)
+ 								EchoMonolith = true;
+ 							break;
++						// Extra patch context.
+ 						case 658: {
+ 							int shimmerMonolithState = tile2.frameY / 54;
+ 							ShimmerMonolithState = shimmerMonolithState;
+ 							break;
  						}
-+
-+						// This does not use TileLoader.IsModMusicBox because it needs the *exact* frameY for the second dict lookup
-+						if (MusicLoader.tileToMusic.ContainsKey(tile2.type) && MusicLoader.tileToMusic[tile2.type].ContainsKey(tile2.frameY) && tile2.frameX == 36)
-+							ActiveMusicBox = MusicLoader.tileToMusic[tile2.type][tile2.frameY];
-+
-+						TileLoader.NearbyEffects(k, l, tile2.type, true);
  					}
++
++					// This does not use TileLoader.IsModMusicBox because it needs the *exact* frameY for the second dict lookup
++					if (MusicLoader.tileToMusic.ContainsKey(tile2.type) && MusicLoader.tileToMusic[tile2.type].ContainsKey(tile2.frameY) && tile2.frameX == 36)
++						ActiveMusicBox = MusicLoader.tileToMusic[tile2.type][tile2.frameY];
++
++					TileLoader.NearbyEffects(k, l, tile2.type, true);
  				}
  			}
-@@ -333,6 +_,8 @@
- 			CanPlayCreditsRoll = (ActiveMusicBox == 85);
- 			if (settings.ScanOreFinderData)
- 				UpdateOreFinderData();
+ 		}
+@@ -288,6 +_,8 @@
+ 		CanPlayCreditsRoll = ActiveMusicBox == 85;
+ 		if (settings.ScanOreFinderData)
+ 			UpdateOreFinderData();
 +
-+			SystemLoader.TileCountsAvailable(_tileCounts);
++		SystemLoader.TileCountsAvailable(_tileCounts);
+ 	}
+ 
+ 	private void ExportTileCountsToMain()
+@@ -300,6 +_,7 @@
+ 
+ 		ShimmerTileCount = _liquidCounts[3];
+ 		HoneyBlockCount = _tileCounts[229];
++		/*
+ 		HolyTileCount = _tileCounts[109] + _tileCounts[492] + _tileCounts[110] + _tileCounts[113] + _tileCounts[117] + _tileCounts[116] + _tileCounts[164] + _tileCounts[403] + _tileCounts[402];
+ 		SnowTileCount = _tileCounts[147] + _tileCounts[148] + _tileCounts[161] + _tileCounts[162] + _tileCounts[164] + _tileCounts[163] + _tileCounts[200];
+ 		if (Main.remixWorld) {
+@@ -314,12 +_,18 @@
  		}
  
- 		private void ExportTileCountsToMain() {
-@@ -419,6 +_,8 @@
- 			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
- 			hasBanner = false;
- 			CanPlayCreditsRoll = false;
-+			if(NPCBannerBuff.Length<ModLoader.NPCLoader.NPCCount)
-+				Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
- 		}
+ 		MushroomTileCount = _tileCounts[70] + _tileCounts[71] + _tileCounts[72] + _tileCounts[528];
++		*/
+ 		MeteorTileCount = _tileCounts[37];
++		/*
+ 		DungeonTileCount = _tileCounts[41] + _tileCounts[43] + _tileCounts[44] + _tileCounts[481] + _tileCounts[482] + _tileCounts[483];
+ 		SandTileCount = _tileCounts[53] + _tileCounts[112] + _tileCounts[116] + _tileCounts[234] + _tileCounts[397] + _tileCounts[398] + _tileCounts[402] + _tileCounts[399] + _tileCounts[396] + _tileCounts[400] + _tileCounts[403] + _tileCounts[401];
++		*/
+ 		PartyMonolithCount = _tileCounts[455];
+ 		GraveyardTileCount = _tileCounts[85];
+ 		GraveyardTileCount -= _tileCounts[27] / 2;
++
++		TileLoader.RecountTiles(this);
++
+ 		if (_tileCounts[27] > 0)
+ 			HasSunflower = true;
  
- 		private void UpdateOreFinderData() {
+@@ -355,6 +_,8 @@
+ 
+ 	public int GetTileCount(ushort tileId) => _tileCounts[tileId];
+ 
++	public int GetLiquidCount(short liquidType) => _liquidCounts[liquidType];
++
+ 	public void Reset()
+ 	{
+ 		Array.Clear(_tileCounts, 0, _tileCounts.Length);
+@@ -388,6 +_,9 @@
+ 		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
+ 		hasBanner = false;
+ 		CanPlayCreditsRoll = false;
++
++		if (NPCBannerBuff.Length < ModLoader.NPCLoader.NPCCount)
++			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
+ 	}
+ 
+ 	private void UpdateOreFinderData()

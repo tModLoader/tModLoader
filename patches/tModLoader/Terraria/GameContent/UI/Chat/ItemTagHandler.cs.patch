@@ -1,112 +1,120 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
-@@ -1,6 +_,9 @@
+@@ -1,7 +_,10 @@
++using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
-+using System.Linq;
+ using Terraria.ID;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -22,6 +_,7 @@
- 				Main.instance.MouseText(_item.Name, _item.rare, 0);
- 			}
- 
-+			//TODO possibly allow modders to custom draw here
- 			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
- 				float num = 1f;
- 				float num2 = 1f;
-@@ -34,19 +_,16 @@
- 						value.Frame();
- 				}
- 
--				num2 *= scale;
--				num *= num2;
--				if (num > 0.75f)
--					num = 0.75f;
--
-+				num = scale * 0.75f;
-+				// removed double application of scale
- 				if (!justCheckingString && color != Color.Black) {
- 					float inventoryScale = Main.inventoryScale;
--					Main.inventoryScale = scale * num;
-+					Main.inventoryScale = num;
--					ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * scale * num, Color.White);
-+					ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * num, Color.White);
- 					Main.inventoryScale = inventoryScale;
- 				}
- 
--				size = new Vector2(32f) * scale * num;
-+				size = new Vector2(32f) * num;
- 				return true;
- 			}
- 
-@@ -55,20 +_,30 @@
- 
- 		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
- 			Item item = new Item();
--			if (int.TryParse(text, out int result))
-+			if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
-+				item.netDefaults(result);
-+
-+			// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
-+			if(ID.ItemID.Search.TryGetId(text, out result))
- 				item.netDefaults(result);
- 
- 			if (item.type <= 0)
- 				return new TextSnippet(text);
- 
- 			item.stack = 1;
-+			// options happen here, we add MID (=ModItemData) options
- 			if (options != null) {
-+				// don't know why all these options here in vanilla,
-+				// since it only assumed one option (stack OR prefix, since prefixed items don't stack)
- 				string[] array = options.Split(',');
- 				for (int i = 0; i < array.Length; i++) {
- 					if (array[i].Length == 0)
- 						continue;
- 
- 					switch (array[i][0]) {
-+						case 'd': // MID is present, we will override
-+							item = ItemIO.FromBase64(array[i].Substring(1));
-+							break;
- 						case 's':
- 						case 'x': {
- 								if (int.TryParse(array[i].Substring(1), out int result3))
-@@ -78,7 +_,7 @@
- 							}
- 						case 'p': {
- 								if (int.TryParse(array[i].Substring(1), out int result2))
--									item.Prefix((byte)Utils.Clamp(result2, 0, 85));
-+									item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
- 
- 								break;
- 							}
-@@ -97,13 +_,25 @@
- 			};
+@@ -25,6 +_,7 @@
+ 			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
-+		// we do not alter vanilla ways of doing things
-+		// this can lead to trouble in future patches
- 		public static string GenerateTag(Item I) {
- 			string str = "[i";
-+			// assuming we have modded data, simply write the item as base64
-+			// do not write other option, base64 holds all the info.
-+			if (I.ModItem != null || I.globalItems.Any()) {
-+				str = str + "/d" + ItemIO.ToBase64(I);
-+
-+				goto End;
-+			}
-+
- 			if (I.prefix != 0)
- 				str = str + "/p" + I.prefix;
++		//TODO: Possibly allow modders to custom draw here
+ 		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
+ 		{
+ 			float num = 1f;
+@@ -38,19 +_,25 @@
+ 					value.Frame();
+ 			}
  
- 			if (I.stack != 1)
- 				str = str + "/s" + I.stack;
 +
-+			End:
++			/*
+ 			num2 *= scale;
+ 			num *= num2;
+ 			if (num > 0.75f)
+ 				num = 0.75f;
++			*/
++			num = scale * 0.75f;
  
- 			return str + ":" + I.netID + "]";
++			// removed double application of scale from use of the above local below.
+-			if (!justCheckingString && color != Color.Black) {
++			// if (!justCheckingString && color != Color.Black) {
++			if (!justCheckingString && (color.R != 0 || color.G != 0 || color.B != 0)) { // TML: One of the DrawColorCodedStringWithShadow overloads uses `new Color(0, 0, 0, baseColor.A)` rather than Black. Since I am not sure of the implications of changing that, change the check here to prevent item tags in item tooltips from drawing shadow versions.
+ 				float inventoryScale = Main.inventoryScale;
+-				Main.inventoryScale = scale * num;
++				Main.inventoryScale = num;
+-				ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * scale * num, Color.White);
++				ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * num, Color.White);
+ 				Main.inventoryScale = inventoryScale;
+ 			}
+ 
+-			size = new Vector2(32f) * scale * num;
++			size = new Vector2(32f) * num;
+ 			return true;
  		}
+ 
+@@ -60,20 +_,30 @@
+ 	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
+ 	{
+ 		Item item = new Item();
+-		if (int.TryParse(text, out var result))
++		if (int.TryParse(text, out var result) && result < ItemLoader.ItemCount)
++			item.netDefaults(result);
++
++		// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
++		if (ID.ItemID.Search.TryGetId(text, out result))
+ 			item.netDefaults(result);
+ 
+ 		if (item.type <= 0)
+ 			return new TextSnippet(text);
+ 
+ 		item.stack = 1;
++		// Options happen here, we add MID (=ModItemData) options
+ 		if (options != null) {
++			// Don't know why all these options are here in vanilla,
++			// Since it only assumed one option (stack OR prefix, since prefixed items don't stack)
+ 			string[] array = options.Split(',');
+ 			for (int i = 0; i < array.Length; i++) {
+ 				if (array[i].Length == 0)
+ 					continue;
+ 
+ 				switch (array[i][0]) {
++					case 'd': // MID is present, we will override
++						item = ItemIO.FromBase64(array[i].Substring(1));
++						break;
+ 					case 's':
+ 					case 'x': {
+ 						if (int.TryParse(array[i].Substring(1), out var result3))
+@@ -83,7 +_,7 @@
+ 					}
+ 					case 'p': {
+ 						if (int.TryParse(array[i].Substring(1), out var result2))
+-							item.Prefix((byte)Utils.Clamp(result2, 0, PrefixID.Count));
++							item.Prefix((byte)Utils.Clamp(result2, 0, PrefixLoader.PrefixCount));
+ 
+ 						break;
+ 					}
+@@ -102,14 +_,27 @@
+ 		};
+ 	}
+ 
++	// We do not alter vanilla ways of doing things
++	// This can lead to trouble in future patches
+ 	public static string GenerateTag(Item I)
+ 	{
+ 		string text = "[i";
++		// Assuming we have modded data, simply write the item as base64.
++		// Do not write the other option, base64 holds all the info.
++		// Yes, doubling up on SaveGlobals isn't the best for performance, but oh well
++		if (ItemLoader.NeedsModSaving(I) || ItemIO.SaveGlobals(I) != null) {
++			text = text + "/d" + ItemIO.ToBase64(I);
++
++			goto End;
++		}
++
+ 		if (I.prefix != 0)
+ 			text = text + "/p" + I.prefix;
+ 
+ 		if (I.stack != 1)
+ 			text = text + "/s" + I.stack;
++
++		End:
+ 
+ 		return text + ":" + I.netID + "]";
+ 	}

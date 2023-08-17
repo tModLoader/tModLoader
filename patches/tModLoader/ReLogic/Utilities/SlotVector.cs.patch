@@ -2,20 +2,11 @@
 +++ src/tModLoader/ReLogic/Utilities/SlotVector.cs
 @@ -4,7 +_,8 @@
  
- namespace ReLogic.Utilities
+ namespace ReLogic.Utilities;
+ 
++// See SlotVector.TML.cs too.
+-public sealed class SlotVector<T> : IEnumerable<SlotVector<T>.ItemPair>, IEnumerable
++public sealed partial class SlotVector<T> : IEnumerable<SlotVector<T>.ItemPair>, IEnumerable
  {
-+	// See SlotVector.TML.cs too.
--	public sealed class SlotVector<T> : IEnumerable<SlotVector<T>.ItemPair>, IEnumerable
-+	public sealed partial class SlotVector<T> : IEnumerable<SlotVector<T>.ItemPair>, IEnumerable
+ 	public sealed class Enumerator : IEnumerator<ItemPair>, IDisposable, IEnumerator
  	{
- 		public sealed class Enumerator : IEnumerator<ItemPair>, IDisposable, IEnumerator
- 		{
-@@ -159,7 +_,7 @@
- 		}
- 
- 		public bool Has(int index) {
--			if (index < 0 || index >= _array.Length)
-+			if (index < 0 || index >= Count || index >= _array.Length)
- 				return false;
- 
- 			if (!_array[index].Id.IsActive)

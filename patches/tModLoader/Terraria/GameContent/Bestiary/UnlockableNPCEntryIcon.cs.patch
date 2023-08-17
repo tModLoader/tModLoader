@@ -6,23 +6,23 @@
  using Terraria.Localization;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.Bestiary
- {
-@@ -58,7 +_,7 @@
- 					positionOffsetCache.Y = value.PortraitPositionYOverride.Value;
+ namespace Terraria.GameContent.Bestiary;
  
- 				if (value.CustomTexturePath != null)
--					asset = Main.Assets.Request<Texture2D>(value.CustomTexturePath);
-+					asset = ModContent.Request<Texture2D>(value.CustomTexturePath);
+@@ -60,7 +_,7 @@
+ 				positionOffsetCache.Y = value.PortraitPositionYOverride.Value;
  
- 				if (asset != null && asset.IsLoaded)
- 					_customTexture = asset;
-@@ -162,7 +_,7 @@
- 				return;
- 			}
+ 			if (value.CustomTexturePath != null)
+-				asset = Main.Assets.Request<Texture2D>(value.CustomTexturePath);
++				asset = ModContent.Request<Texture2D>(value.CustomTexturePath);
  
--			if (_npcCache.townNPC && TownNPCProfiles.Instance.GetProfile(_npcCache.type, out ITownNPCProfile profile))
-+			if (_npcCache.townNPC && TownNPCProfiles.Instance.GetProfile(_npcCache, out ITownNPCProfile profile))
- 				TextureAssets.Npc[_npcCache.type] = profile.GetTextureNPCShouldUse(_npcCache);
+ 			if (asset != null && asset.IsLoaded)
+ 				_customTexture = asset;
+@@ -171,7 +_,7 @@
+ 			return;
+ 		}
  
- 			Main.instance.DrawNPCDirect(spriteBatch, _npcCache, _npcCache.behindTiles, Vector2.Zero);
+-		if (_npcCache.townNPC && TownNPCProfiles.Instance.GetProfile(_npcCache.type, out var profile))
++		if (_npcCache.townNPC && TownNPCProfiles.Instance.GetProfile(_npcCache, out var profile))
+ 			TextureAssets.Npc[_npcCache.type] = profile.GetTextureNPCShouldUse(_npcCache);
+ 
+ 		Main.instance.DrawNPCDirect(spriteBatch, _npcCache, _npcCache.behindTiles, Vector2.Zero);

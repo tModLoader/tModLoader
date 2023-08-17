@@ -10,23 +10,21 @@
 +using System.Runtime.Loader;
  using Terraria;
  
- internal static class MonoLaunch
-@@ -11,6 +_,7 @@
- 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+ namespace Terraria;
+@@ -13,6 +_,9 @@
  
- 	private static void Main(string[] args) {
-+		/*
+ 	private static void Main(string[] args)
+ 	{
++#if NETCORE
++		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
++#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -23,9 +_,55 @@
+@@ -25,9 +_,47 @@
  				return Assembly.Load(array);
  			}
  		};
-+		*/
-+
-+#if NETCORE
-+		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
 +#endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -35,6 +33,7 @@
 +
 +#if NETCORE
 +	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);
++
 +	private static string NativePlatformDir =>
 +		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
 +		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
@@ -45,30 +44,25 @@
 +
 +	// Note: AssemblyLoadContext.Default.ResolvingUnmanagedDll is only called if the dll is not found on PATH
 +	// In a production environment, you need to prepend to PATH prioritise your shipped libraries, making this logging mostly useless.
-+	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name) {
++	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
++	{
++		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario.
 +		lock (resolverLock) {
-+			try {
-+				if (assemblies.TryGetValue(name, out var handle)) {
-+					return handle;
-+				}
++			if (assemblies.TryGetValue(name, out var handle))
++				return handle;
 +
-+				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
++			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
 +
-+				var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
-+				var match = files.FirstOrDefault();
-+
-+				if (match is null) {
-+					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(NativesDir, name + ".dll")}");
-+				}
-+
-+				Console.WriteLine($"\tattempting load {match}");
-+				handle = NativeLibrary.Load(match);
-+				Console.WriteLine("\tsuccess");
-+				return assemblies[name] = handle;
++			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			if (files.FirstOrDefault() is not string path) {
++				Console.WriteLine("\tnot found");
++				return IntPtr.Zero;
 +			}
-+			catch (DirectoryNotFoundException e) {
-+				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
-+			}
++
++			Console.WriteLine($"\tattempting load {path}");
++			handle = NativeLibrary.Load(path);
++			Console.WriteLine("\tsuccess");
++			return assemblies[name] = handle;
 +		}
 +	}
 +#endif

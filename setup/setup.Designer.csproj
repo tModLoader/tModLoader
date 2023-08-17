@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <!-- Import common setup values -->
-  <Import Project="setup.Common.targets" />
-  
-  <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-    <UseWindowsForms>True</UseWindowsForms>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Reference Include="XnaToFna" HintPath="lib\XnaToFna.exe" />
-  </ItemGroup>
+
+	<!-- Import common setup values -->
+	<Import Project="setup.Common.targets" />
+
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
+		<OutputType>WinExe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="XnaToFna" HintPath="lib\XnaToFna.exe" />
+	</ItemGroup>
+
 </Project>

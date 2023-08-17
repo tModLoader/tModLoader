@@ -1,16 +1,21 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_RevengeSystem.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_RevengeSystem.cs
-@@ -1,6 +_,13 @@
+@@ -1,5 +_,18 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_RevengeSystem : IEntitySource
- 	{
-+		public string? Context { get; }
++using Terraria.GameContent;
 +
-+		public EntitySource_RevengeSystem(string? context = null) {
-+			Context = context;
-+		}
- 	}
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Used when an NPC is respawned from the <see cref="CoinLossRevengeSystem"/>
++/// </summary>
+ public class EntitySource_RevengeSystem : IEntitySource
+ {
++	public string? Context { get; }
++
++	public EntitySource_RevengeSystem(string? context = null)
++	{
++		Context = context;
++	}
  }

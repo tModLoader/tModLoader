@@ -58,9 +58,10 @@ namespace ExampleMod.Content.Projectiles
 			return false; // Prevent the vanilla whip AI from running.
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
+			Projectile.damage = (int)(Projectile.damage * 0.5f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.
@@ -105,15 +106,16 @@ namespace ExampleMod.Content.Projectiles
 			for (int i = 0; i < list.Count - 1; i++) {
 				// These two values are set to suit this projectile's sprite, but won't necessarily work for your own.
 				// You can change them if they don't!
-				Rectangle frame = new Rectangle(0, 0, 10, 26);
-				Vector2 origin = new Vector2(5, 8);
+				Rectangle frame = new Rectangle(0, 0, 10, 26); // The size of the Handle (measured in pixels)
+				Vector2 origin = new Vector2(5, 8); // Offset for where the player's hand will start measured from the top left of the image.
 				float scale = 1;
 
 				// These statements determine what part of the spritesheet to draw for the current segment.
 				// They can also be changed to suit your sprite.
 				if (i == list.Count - 2) {
-					frame.Y = 74;
-					frame.Height = 18;
+					// This is the head of the whip. You need to measure the sprite to figure out these values.
+					frame.Y = 74; // Distance from the top of the sprite to the start of the frame.
+					frame.Height = 18; // Height of the frame.
 
 					// For a more impactful look, this scales the tip of the whip up when fully extended, and down when curled up.
 					Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out int _, out float _);
@@ -121,14 +123,17 @@ namespace ExampleMod.Content.Projectiles
 					scale = MathHelper.Lerp(0.5f, 1.5f, Utils.GetLerpValue(0.1f, 0.7f, t, true) * Utils.GetLerpValue(0.9f, 0.7f, t, true));
 				}
 				else if (i > 10) {
+					// Third segment
 					frame.Y = 58;
 					frame.Height = 16;
 				}
 				else if (i > 5) {
+					// Second Segment
 					frame.Y = 42;
 					frame.Height = 16;
 				}
 				else if (i > 0) {
+					// First Segment
 					frame.Y = 26;
 					frame.Height = 16;
 				}

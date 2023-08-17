@@ -1,22 +1,19 @@
-﻿using System;
-using System.IO;
+using System;
 using System.Runtime.CompilerServices;
-using System.Threading;
 
-namespace ReLogic.Content
+namespace ReLogic.Content;
+
+public readonly struct MainThreadCreationContext : INotifyCompletion
 {
-	public struct MainThreadCreationContext : INotifyCompletion
+	private readonly AssetRepository.ContinuationScheduler _continuationScheduler;
+
+	internal MainThreadCreationContext(AssetRepository.ContinuationScheduler continuationScheduler)
 	{
-		internal AssetRepository.ContinuationScheduler ContinuationScheduler { private get; init; }
-
-		public MainThreadCreationContext GetAwaiter() => this;
-
-		public void OnCompleted(Action action) {
-			ContinuationScheduler.OnCompleted(action);
-		}
-
-		public bool IsCompleted => AssetRepository.IsMainThread;
-
-		public void GetResult() { }
+		_continuationScheduler = continuationScheduler;
 	}
+
+	public MainThreadCreationContext GetAwaiter() => this;
+	public void OnCompleted(Action action) => _continuationScheduler.OnCompleted(action);
+	public bool IsCompleted => AssetRepository.IsMainThread;
+	public void GetResult() { }
 }

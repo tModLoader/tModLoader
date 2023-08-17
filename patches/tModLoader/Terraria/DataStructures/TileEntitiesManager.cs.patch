@@ -1,11 +1,23 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntitiesManager.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntitiesManager.cs
-@@ -3,7 +_,7 @@
+@@ -3,10 +_,11 @@
  
- namespace Terraria.DataStructures
+ namespace Terraria.DataStructures;
+ 
+-public class TileEntitiesManager
++public partial class TileEntitiesManager
  {
--	public class TileEntitiesManager
-+	public partial class TileEntitiesManager
- 	{
- 		private int _nextEntityID;
- 		private Dictionary<int, TileEntity> _types = new Dictionary<int, TileEntity>();
+ 	private int _nextEntityID;
+ 	private Dictionary<int, TileEntity> _types = new Dictionary<int, TileEntity>();
++	public static int VanillaTypeCount;
+ 
+ 	private int AssignNewID() => _nextEntityID++;
+ 
+@@ -28,6 +_,7 @@
+ 		Register(new TEHatRack());
+ 		Register(new TEFoodPlatter());
+ 		Register(new TETeleportationPylon());
++		VanillaTypeCount = _nextEntityID;
+ 	}
+ 
+ 	public void Register(TileEntity entity)

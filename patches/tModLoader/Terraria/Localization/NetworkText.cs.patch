@@ -1,0 +1,31 @@
+--- src/TerrariaNetCore/Terraria/Localization/NetworkText.cs
++++ src/tModLoader/Terraria/Localization/NetworkText.cs
+@@ -28,11 +_,14 @@
+ 	{
+ 		NetworkText[] array = new NetworkText[substitutions.Length];
+ 		for (int i = 0; i < substitutions.Length; i++) {
++			/*
+ 			NetworkText networkText = substitutions[i] as NetworkText;
+ 			if (networkText == null)
+ 				networkText = FromLiteral(substitutions[i].ToString());
+ 
+ 			array[i] = networkText;
++			*/
++			array[i] = From(substitutions[i]);
+ 		}
+ 
+ 		return array;
+@@ -53,6 +_,13 @@
+ 			_substitutions = ConvertSubstitutionsToNetworkText(substitutions)
+ 		};
+ 	}
++
++	// Added
++	public static NetworkText From(object o) => o switch {
++		NetworkText networkText => networkText,
++		LocalizedText localizedText => localizedText.ToNetworkText(),
++		_ => FromLiteral(o.ToString())
++	};
+ 
+ 	public int GetMaxSerializedSize()
+ 	{

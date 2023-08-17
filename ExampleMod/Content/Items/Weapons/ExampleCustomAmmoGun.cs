@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Content.Items.Ammo;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,11 +10,6 @@ namespace ExampleMod.Content.Items.Weapons
 	// You can see the description of other parameters in the ExampleGun class and at https://github.com/tModLoader/tModLoader/wiki/Item-Class-Documentation
 	public class ExampleCustomAmmoGun : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Uses ExampleCustomAmmo as ammo and shooting HomingProjectiles");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 		public override void SetDefaults() {
 			Item.width = 42; // The width of item hitbox
 			Item.height = 30; // The height of item hitbox

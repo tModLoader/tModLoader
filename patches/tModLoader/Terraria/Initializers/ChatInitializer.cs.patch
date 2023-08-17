@@ -10,25 +10,12 @@
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
  
- namespace Terraria.Initializers
+ namespace Terraria.Initializers;
+ 
++//TODO: If need be, we can register tag handlers here
+ public static class ChatInitializer
  {
-+	// @todo: if need be, we can add register tag handlers here
- 	public static class ChatInitializer
- 	{
- 		public static void Load() {
-@@ -24,10 +_,12 @@
- 				"name"
- 			});
- 
-+			/* AchievementTagHandler removed since achievements also removed
- 			ChatManager.Register<AchievementTagHandler>(new string[2] {
- 				"a",
- 				"achievement"
- 			});
-+			*/
- 
- 			ChatManager.Register<GlyphTagHandler>(new string[2] {
- 				"g",
+ 	public static void Load()
 @@ -50,6 +_,12 @@
  				string name = EmoteID.Search.GetName(i);
  				string key = "EmojiCommand." + name;

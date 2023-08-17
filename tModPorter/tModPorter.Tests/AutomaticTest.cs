@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
@@ -30,9 +31,6 @@ public class AutomaticTest {
 			if (doc == pDoc)
 				break;
 		}
-
-		if (doc.Project == _project)
-			Assert.Fail("No content change!");
 
 		await AssertFixed(doc);
 	}
@@ -102,16 +100,44 @@ public class AutomaticTest {
 	}
 
 	private static async Task AssertFixed(Document doc) {
-		var result = (await doc.GetTextAsync()).ToString();
+		var result = (await doc.GetTextAsync()).ToString().ReplaceLineEndings().TrimEnd();
 
 		string fixedFilePath = Path.ChangeExtension(doc.FilePath!, ".Expected.cs");
 		Assert.True(File.Exists(fixedFilePath), $"File '{fixedFilePath}' doesn't exist.");
 
-		string fixedContent = await File.ReadAllTextAsync(fixedFilePath);
-		if (!string.Equals(fixedContent, result))
-			await File.WriteAllTextAsync(Path.ChangeExtension(doc.FilePath!, ".Out.cs"), result);
+		string fixedContent = StripNotYetImplemented(await File.ReadAllLinesAsync(fixedFilePath));
+		if (doc.Project == _project) {
+			if (fixedContent.Length == 0)
+				return;
+
+			Assert.Fail($"{doc.Name}: No content change!");
+		}
+
+		var outFilePath = Path.ChangeExtension(doc.FilePath!, ".Out.cs");
+		if (fixedContent != result)
+			await File.WriteAllTextAsync(outFilePath, result);
+		else if (File.Exists(outFilePath))
+			File.Delete(outFilePath);
 
 		FileAssert.Equal(doc.Name, fixedContent, result);
+	}
+
+	private static string StripNotYetImplemented(string[] lines) {
+		StringBuilder sb = new StringBuilder();
+		bool ignoring = false;
+		foreach (var line in lines) {
+			var s = line.Trim();
+			if (s == "// not-yet-implemented") {
+				ignoring = true;
+			}
+			else if (s == "// instead-expect") {
+				ignoring = false;
+			}
+			else if (!ignoring && !s.StartsWith('#')) {
+				sb.AppendLine(line);
+			}
+		}
+		return sb.ToString().TrimEnd();
 	}
 
 	private static Project? _project;
@@ -120,7 +146,7 @@ public class AutomaticTest {
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
 		workspace.WorkspaceFailed += (o, e) => {
-			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure)
+			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.ToString().Contains("This mismatch may cause runtime failures"))
 				throw new Exception(e.Diagnostic.ToString());
 
 			Console.Error.WriteLine(e.Diagnostic.ToString());

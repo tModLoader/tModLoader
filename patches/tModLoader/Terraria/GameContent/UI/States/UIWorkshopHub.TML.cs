@@ -1,75 +1,120 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
-using Terraria.Social.Steam;
 using Terraria.UI;
 
-namespace Terraria.GameContent.UI.States
+namespace Terraria.GameContent.UI.States;
+
+partial class UIWorkshopHub : IHaveBackButtonCommand
 {
-	partial class UIWorkshopHub
+	private UIElement _buttonMods;
+	private UIElement _buttonModSources;
+	private UIElement _buttonModBrowser;
+	private UIElement _buttonModPack;
+
+	public UIState PreviousUIState { get; set; }
+
+	private void AppendTmlElements(UIElement uiElement)
 	{
-		private UIElement _buttonMods;
-		private UIElement _buttonModSources;
-		private UIElement _buttonModBrowser;
-		private UIElement _buttonModPack;
+		var modsMenu = MakeButton_OpenModsMenu();
+		modsMenu.HAlign = 0f;
+		modsMenu.VAlign = 0f;
+		uiElement.Append(modsMenu);
 
-		private UIElement MakeButton_OpenModsMenu() {
-			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubManageMods", "tModLoader.MenuManageMods");
-			uIElement.OnClick += Click_OpenModsMenu;
-			_buttonMods = uIElement;
-			return uIElement;
-		}
+		var modSources = MakeButton_OpenModSourcesMenu();
+		modSources.HAlign = 1f;
+		modSources.VAlign = 0f;
+		uiElement.Append(modSources);
 
-		private void Click_OpenModsMenu(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
-			Interface.modsMenu.PreviousUIState = this;
-			Main.MenuUI.SetState(Interface.modsMenu);
-		}
+		var modBrowser = MakeButton_OpenModBrowserMenu();
+		modBrowser.HAlign = 0f;
+		modBrowser.VAlign = 0.5f;
+		uiElement.Append(modBrowser);
 
-		private UIElement MakeButton_OpenModSourcesMenu() {
-			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDevelopMods", "tModLoader.MenuDevelopMods");
-			uIElement.OnClick += Click_OpenModSourcesMenu;
-			_buttonModSources = uIElement;
-			return uIElement;
-		}
+		var tbd = MakeButton_ModPackMenu();
+		tbd.HAlign = 1f;
+		tbd.VAlign = 0.5f;
+		uiElement.Append(tbd);
+	}
 
-		private void Click_OpenModSourcesMenu(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
-			Interface.modSources.PreviousUIState = this;
-			Main.MenuUI.SetState(Interface.modSources);
-		}
+	private void OnChooseOptionDescription(UIElement listeningElement, ref LocalizedText localizedText)
+	{
+		if (listeningElement == _buttonMods)
+			localizedText = Language.GetText("tModLoader.MenuManageModsDescription");
 
-		private UIElement MakeButton_OpenModBrowserMenu() {
-			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDownloadMods", "tModLoader.MenuDownloadMods");
-			uIElement.OnClick += Click_OpenModBrowserMenu;
-			_buttonModBrowser = uIElement;
-			return uIElement;
-		}
+		if (listeningElement == _buttonModSources)
+			localizedText = Language.GetText("tModLoader.MenuDevelopModsDescription");
 
-		private void Click_OpenModBrowserMenu(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
-			Interface.modBrowser.PreviousUIState = this;
-			Main.MenuUI.SetState(Interface.modBrowser);
-		}
+		if (listeningElement == _buttonModBrowser)
+			localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
 
-		private UIElement MakeButton_ModPackMenu() {
-			UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubModPacks", "tModLoader.ModsModPacks");
-			uIElement.OnClick += Click_OpenModPackMenu;
-			_buttonModPack = uIElement;
-			return uIElement;
-		}
+		if (listeningElement == _buttonModPack)
+			localizedText = Language.GetText("tModLoader.MenuModPackDescription");
+	}
 
-		private void Click_OpenModPackMenu(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
-			Interface.modPacksMenu.PreviousUIState = this;
-			Main.MenuUI.SetState(Interface.modPacksMenu);
-		}
+	private UIElement MakeButton_OpenModsMenu()
+	{
+		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubManageMods", "tModLoader.MenuManageMods");
+		uIElement.OnLeftClick += Click_OpenModsMenu;
+		_buttonMods = uIElement;
+		return uIElement;
+	}
 
-		private UIElement MakeFancyButtonMod(string path, string textKey) {
-			return MakeFancyButtonInner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
-		}
+	private void Click_OpenModsMenu(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10);
+		Interface.modsMenu.PreviousUIState = this;
+		Main.MenuUI.SetState(Interface.modsMenu);
+	}
+
+	private UIElement MakeButton_OpenModSourcesMenu()
+	{
+		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDevelopMods", "tModLoader.MenuDevelopMods");
+		uIElement.OnLeftClick += Click_OpenModSourcesMenu;
+		_buttonModSources = uIElement;
+		return uIElement;
+	}
+
+	private void Click_OpenModSourcesMenu(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10);
+		Interface.modSources.PreviousUIState = this;
+		Main.MenuUI.SetState(Interface.modSources);
+	}
+
+	private UIElement MakeButton_OpenModBrowserMenu()
+	{
+		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubDownloadMods", "tModLoader.MenuDownloadMods");
+		uIElement.OnLeftClick += Click_OpenModBrowserMenu;
+		_buttonModBrowser = uIElement;
+		return uIElement;
+	}
+
+	private void Click_OpenModBrowserMenu(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10);
+		Interface.modBrowser.PreviousUIState = this;
+		Main.MenuUI.SetState(Interface.modBrowser);
+	}
+
+	private UIElement MakeButton_ModPackMenu()
+	{
+		UIElement uIElement = MakeFancyButtonMod($"Terraria.GameContent.UI.States.HubModPacks", "tModLoader.ModsModPacks");
+		uIElement.OnLeftClick += Click_OpenModPackMenu;
+		_buttonModPack = uIElement;
+		return uIElement;
+	}
+
+	private void Click_OpenModPackMenu(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10);
+		Interface.modPacksMenu.PreviousUIState = this;
+		Main.MenuUI.SetState(Interface.modPacksMenu);
+	}
+
+	private UIElement MakeFancyButtonMod(string path, string textKey)
+	{
+		return MakeFancyButton_Inner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
 	}
 }

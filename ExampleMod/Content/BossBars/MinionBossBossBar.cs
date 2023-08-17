@@ -23,7 +23,7 @@ namespace ExampleMod.Content.BossBars
 			return null;
 		}
 
-		public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float lifePercent, ref float shieldPercent) {
+		public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float life, ref float lifeMax, ref float shield, ref float shieldMax) {
 			// Here the game wants to know if to draw the boss bar or not. Return false whenever the conditions don't apply.
 			// If there is no possibility of returning false (or null) the bar will get drawn at times when it shouldn't, so write defensive code!
 
@@ -34,11 +34,13 @@ namespace ExampleMod.Content.BossBars
 			// We assign bossHeadIndex here because we need to use it in GetIconTexture
 			bossHeadIndex = npc.GetBossHeadTextureIndex();
 
-			lifePercent = Utils.Clamp(npc.life / (float)npc.lifeMax, 0f, 1f);
+			life = npc.life;
+			lifeMax = npc.lifeMax;
 
 			if (npc.ModNPC is MinionBossBody body) {
 				// We did all the calculation work on RemainingShields inside the body NPC already so we just have to fetch the value again
-				shieldPercent = Utils.Clamp(body.RemainingShields, 0f, 1f);
+				shield = body.MinionHealthTotal;
+				shieldMax = body.MinionMaxHealthTotal;
 			}
 
 			return true;

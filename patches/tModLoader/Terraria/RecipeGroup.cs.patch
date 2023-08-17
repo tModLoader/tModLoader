@@ -1,34 +1,32 @@
 --- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
-@@ -5,9 +_,11 @@
- {
- 	public class RecipeGroup
- 	{
-+		public int ID;
- 		public Func<string> GetText;
- 		public HashSet<int> ValidItems;
- 		public int IconicItemId;
-+		internal bool[] ValidItemsLookup;
- 		public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
- 		public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
- 		public static int nextRecipeGroupIndex;
-@@ -19,10 +_,18 @@
- 		}
+@@ -13,6 +_,8 @@
+ 	public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
+ 	public static int nextRecipeGroupIndex;
  
- 		public static int RegisterGroup(string name, RecipeGroup rec) {
--			int num = nextRecipeGroupIndex++;
-+			// tModLoader: Handle registering to an existing group by merging items and keeping the original group
-+			if(recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
-+				recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
-+				return existingRecipeGroup;
-+			}
++	internal bool[] ValidItemsLookup; // Added by TML.
 +
-+			int num = rec.ID = nextRecipeGroupIndex++;
- 			recipeGroups.Add(num, rec);
- 			recipeGroupIDs.Add(name, num);
- 			return num;
- 		}
+ 	public RecipeGroup(Func<string> getName, params int[] validItems)
+ 	{
+ 		GetText = getName;
+@@ -22,11 +_,20 @@
+ 
+ 	public static int RegisterGroup(string name, RecipeGroup rec)
+ 	{
++		// TML: Handle registering to an existing group by merging items and keeping the original group.
++		if (recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
++			recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
++			return existingRecipeGroup;
++		}
 +
-+		public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
+ 		int num = (rec.RegisteredId = nextRecipeGroupIndex++);
+ 		recipeGroups.Add(num, rec);
+ 		recipeGroupIDs.Add(name, num);
+ 		return num;
  	}
- }
++
++	// Added by TML.
++	public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
+ 
+ 	public int CountUsableItems(Dictionary<int, int> itemStacksAvailable)
+ 	{

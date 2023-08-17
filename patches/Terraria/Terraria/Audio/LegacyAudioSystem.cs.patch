@@ -1,26 +1,18 @@
 --- src/decompiled/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
-@@ -58,6 +_,11 @@
- 		private IAudioTrack FindReplacementTrack(List<IContentSource> sources, string assetPath) {
- 			IAudioTrack audioTrack = null;
- 			for (int i = 0; i < sources.Count; i++) {
-+				if (Main.dedServ) {
-+					sources[i].HasAsset(assetPath);
-+					continue;
-+				}
-+
- 				IContentSource contentSource = sources[i];
- 				if (!contentSource.HasAsset(assetPath))
- 					continue;
-@@ -96,7 +_,11 @@
- 			Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
- 			SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
- 			Engine.Update();
-+#if XNA
- 			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
-+#else
-+			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb");
+@@ -66,6 +_,7 @@
+ 			if (!contentSource.HasAsset(assetPath))
+ 				continue;
+ 
++#if !SERVER
+ 			string extension = contentSource.GetExtension(assetPath);
+ 			try {
+ 				IAudioTrack audioTrack2 = null;
+@@ -91,6 +_,7 @@
+ 				Main.IssueReporter.AddReport(textToShow);
+ 				Main.IssueReporterIndicator.AttemptLettingPlayerKnow();
+ 			}
 +#endif
- 			Engine.Update();
- 			AudioTracks = new IAudioTrack[91];
- 			TrackNamesByIndex = new Dictionary<int, string>();
+ 		}
+ 
+ 		return audioTrack;

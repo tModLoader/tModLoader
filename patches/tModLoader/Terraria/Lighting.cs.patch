@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Lighting.cs
 +++ src/tModLoader/Terraria/Lighting.cs
 @@ -14,8 +_,8 @@
- 		[Old]
- 		public static int OffScreenTiles = 45;
- 		private static LightMode _mode = LightMode.Color;
--		private static readonly LightingEngine NewEngine = new LightingEngine();
-+		internal static readonly LightingEngine NewEngine = new LightingEngine();
--		private static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
-+		public static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
- 		private static ILightingEngine _activeEngine;
+ 	[Old]
+ 	public static int OffScreenTiles = 45;
+ 	private static LightMode _mode = LightMode.Color;
+-	private static readonly LightingEngine NewEngine = new LightingEngine();
++	internal static readonly LightingEngine NewEngine = new LightingEngine();
+-	private static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
++	public static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
+ 	private static ILightingEngine _activeEngine;
  
- 		public static float GlobalBrightness {
+ 	public static float GlobalBrightness { get; set; }

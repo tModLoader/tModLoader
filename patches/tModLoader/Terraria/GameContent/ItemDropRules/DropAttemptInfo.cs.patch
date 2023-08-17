@@ -1,10 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/DropAttemptInfo.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropAttemptInfo.cs
 @@ -5,6 +_,7 @@
- 	public struct DropAttemptInfo
- 	{
- 		public NPC npc;
-+		public int item;
- 		public Player player;
- 		public UnifiedRandom rng;
- 		public bool IsInSimulation;
+ public struct DropAttemptInfo
+ {
+ 	public NPC npc;
++	public int item; // Added by TML.
+ 	public Player player;
+ 	public UnifiedRandom rng;
+ 	public bool IsInSimulation;

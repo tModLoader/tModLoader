@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.IO;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,10 +11,6 @@ namespace ExampleMod.Content.Items
 	public class UseStyleShowcase : ModItem
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword";
-
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This item showcases each UseStyle.\n<right> to cycle through UseStyles.");
-		}
 
 		public override void SetDefaults() {
 			Item.width = 40;
@@ -27,6 +24,14 @@ namespace ExampleMod.Content.Items
 			Item.UseSound = SoundID.Item1;
 		}
 
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write((byte)Item.useStyle);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			Item.useStyle = reader.ReadByte();
+		}
+
 		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
@@ -38,6 +43,8 @@ namespace ExampleMod.Content.Items
 					Item.useStyle = ItemUseStyleID.Swing;
 				}
 				Main.NewText($"Switching to ItemUseStyleID #{Item.useStyle}");
+				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync. 
+				Item.NetStateChanged();
 			}
 			else {
 				Main.NewText($"This is ItemUseStyleID #{Item.useStyle}");

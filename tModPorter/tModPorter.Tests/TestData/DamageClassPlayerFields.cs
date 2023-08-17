@@ -16,6 +16,7 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.magicDamage += 2;
 		player.minionDamage += 0.1f;
 		player.thrownDamage += 0.1f;
+		player.rocketDamage += 0.3f;
 
 		player.allDamageMult *= 0.08f;
 		player.meleeDamageMult *= 0.08f;
@@ -24,13 +25,12 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.minionDamageMult *= 0.08f;
 		player.thrownDamageMult *= 0.08f;
 
+		player.allCrit += 1;
 		player.meleeCrit *= 5;
 		player.rangedCrit *= 5;
 		player.magicCrit *= 5;
 		player.thrownCrit *= 5;
-#if COMPILE_ERROR
 		player.minionDamage = 8;
-#endif
 	}
 
 	public void MethodB(Player player) {

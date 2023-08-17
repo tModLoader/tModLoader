@@ -1,16 +1,24 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCHeadID.cs
 +++ src/tModLoader/Terraria/ID/NPCHeadID.cs
-@@ -1,10 +_,12 @@
+@@ -1,10 +_,20 @@
 +using Terraria.ModLoader;
 +
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
+ public class NPCHeadID
  {
- 	public class NPCHeadID
+ 	public static class Sets
  	{
- 		public static class Sets
- 		{
--			public static SetFactory Factory = new SetFactory(46);
-+			public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
- 			public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21);
- 		}
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC head ID, then that NPC head will never be drawn in the housing UI.
++		/// </summary>
++		/// <remarks>
++		/// <see cref="ModNPC"/>s with <see cref="ModNPC.TownNPCStayingHomeless"/> set to <see langword="true"/> will also not draw their heads in the housing UI.
++		/// <br/> You can get an NPC's head ID using <see cref="GameContent.TownNPCProfiles.GetHeadIndexSafe(NPC)"/> and <see cref="ContentSamples.NpcsByNetId"/>.
++		/// </remarks>
+ 		public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21, 80);
+ 	}
  

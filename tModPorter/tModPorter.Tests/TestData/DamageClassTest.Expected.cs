@@ -1,7 +1,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-public class DamageClassTest
+public class DamageClassTest : DamageClass
 {
 	public void MethodA()
 	{
@@ -39,5 +39,10 @@ public class DamageClassTest
 
 		int melee = 0;
 		melee = 1;
+	}
+
+	public override void SetStaticDefaults()
+	{
+		// DisplayName.SetDefault("MyDamageClass");
 	}
 }

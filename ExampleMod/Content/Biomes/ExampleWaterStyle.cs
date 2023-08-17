@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Biomes
 	public class ExampleWaterStyle : ModWaterStyle
 	{
 		public override int ChooseWaterfallStyle() {
-			return ModContent.Find<ModWaterfallStyle>("ExampleMod/ExampleWaterfallStyle").Slot;
+			return ModContent.GetInstance<ExampleWaterfallStyle>().Slot;
 		}
 
 		public override int GetSplashDust() {

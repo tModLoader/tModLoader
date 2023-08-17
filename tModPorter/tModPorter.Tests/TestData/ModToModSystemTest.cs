@@ -9,7 +9,6 @@ using Terraria.UI;
 // Do not rename Mod to ModSystem, that would cause 0 Mod classes in the mod. Instead, give suggestions
 public class ModToModSystemTest : Mod
 {
-#if COMPILE_ERROR
 	public override void UpdateMusic(ref int music) { /* Empty */ }
 
 	public override void UpdateMusic(ref int music, ref MusicPriority priority) { /* Empty */ }
@@ -51,5 +50,4 @@ public class ModToModSystemTest : Mod
 	public override void PostUpdateInput() { /* Empty */ }
 
 	public override void PreSaveAndQuit() { /* Empty */ }
-#endif
 }

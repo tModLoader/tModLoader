@@ -35,14 +35,14 @@ namespace ExampleMod.Common.Players
 			exampleManaCrystals = reader.ReadByte();
 		}
 
-		public override void clientClone(ModPlayer clientClone) {
-			ExampleStatIncreasePlayer clone = clientClone as ExampleStatIncreasePlayer;
+		public override void CopyClientState(ModPlayer targetCopy) {
+			ExampleStatIncreasePlayer clone = (ExampleStatIncreasePlayer)targetCopy;
 			clone.exampleLifeFruits = exampleLifeFruits;
 			clone.exampleManaCrystals = exampleManaCrystals;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			ExampleStatIncreasePlayer clone = clientPlayer as ExampleStatIncreasePlayer;
+			ExampleStatIncreasePlayer clone = (ExampleStatIncreasePlayer)clientPlayer;
 
 			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals)
 				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);

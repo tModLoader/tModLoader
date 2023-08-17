@@ -20,8 +20,6 @@ namespace ExampleMod.Content.NPCs
 		public int StolenItems = 0;
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Zombie Thief");
-
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {

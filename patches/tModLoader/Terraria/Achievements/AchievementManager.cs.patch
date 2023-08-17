@@ -1,23 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Achievements/AchievementManager.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
-@@ -51,6 +_,7 @@
- 		}
+@@ -33,7 +_,8 @@
  
- 		private void Save(string path, bool cloud) {
-+			if (SocialAPI.Mode == SocialMode.Steam) return;
- 			lock (_ioLock) {
- 				if (SocialAPI.Achievements != null)
- 					SocialAPI.Achievements.StoreStats();
-@@ -76,10 +_,12 @@
- 		public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
- 
- 		public void Load() {
-+			if (SocialAPI.Mode == SocialMode.Steam) return;
- 			Load(_savePath, _isCloudSave);
- 		}
- 
- 		private void Load(string path, bool cloud) {
-+			if (SocialAPI.Mode == SocialMode.Steam) return;
- 			bool flag = false;
- 			lock (_ioLock) {
- 				if (!FileUtilities.Exists(path, cloud))
+ 	public AchievementManager()
+ 	{
+-		if (SocialAPI.Achievements != null) {
++		//Solxan: Ensures achievements are saved
++		if (false /*SocialAPI.Achievements != null*/) {
+ 			_savePath = SocialAPI.Achievements.GetSavePath();
+ 			_isCloudSave = true;
+ 			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();

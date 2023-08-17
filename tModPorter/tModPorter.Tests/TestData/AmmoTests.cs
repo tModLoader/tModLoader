@@ -7,10 +7,8 @@ public class AmmoModItemTest : ModItem
 	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 	}
 
-#if COMPILE_ERROR
 	public override void PickAmmo(Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 	}
-#endif
 
 	public override bool ConsumeAmmo(Player player) { return true; /* Empty */ }
 
@@ -22,10 +20,8 @@ public class AmmoGlobalItemTest : GlobalItem
 	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 	}
 
-#if COMPILE_ERROR
 	public override void PickAmmo(Item item, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 	}
-#endif
 
 	// item -> weapon
 	public override bool ConsumeAmmo(Item item, Player player) { return true; /* Empty */ }

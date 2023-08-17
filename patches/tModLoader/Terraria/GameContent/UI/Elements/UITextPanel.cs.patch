@@ -7,16 +7,20 @@
  using Terraria.UI;
 +using Terraria.UI.Chat;
  
- namespace Terraria.GameContent.UI.Elements
- {
-@@ -70,7 +_,9 @@
- 		}
+ namespace Terraria.GameContent.UI.Elements;
  
- 		public virtual void SetText(T text, float textScale, bool large) {
--			Vector2 textSize = new Vector2((large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value).MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
-+			DynamicSpriteFont dynamicSpriteFont = large ? FontAssets.DeathText.Value :FontAssets.MouseText.Value;
-+			Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(textScale));
-+			textSize.Y = (large ? 32f : 16f) * textScale;
- 			_text = text;
- 			_textScale = textScale;
- 			_textSize = textSize;
+@@ -74,7 +_,14 @@
+ 
+ 	public virtual void SetText(T text, float textScale, bool large)
+ 	{
++		/*
+ 		Vector2 textSize = new Vector2((large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value).MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
++		*/
++
++		DynamicSpriteFont dynamicSpriteFont = large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
++		Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(textScale));
++		textSize.Y = (large ? 32f : 16f) * textScale;
++
+ 		_text = text;
+ 		_textScale = textScale;
+ 		_textSize = textSize;

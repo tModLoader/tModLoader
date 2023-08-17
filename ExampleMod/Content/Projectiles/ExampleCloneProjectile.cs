@@ -13,10 +13,6 @@ namespace ExampleMod.Content.Projectiles
 	/// </summary>
 	public class ExampleCloneProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Meowmere V2");
-		}
-
 		public override void SetDefaults() {
 			// This method right here is the backbone of what we're doing here; by using this method, we copy all of
 			// the Meowmere Projectile's SetDefault stats (such as projectile.friendly and projectile.penetrate) on to our projectile,

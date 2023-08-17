@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIManageControls.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIManageControls.cs
-@@ -11,6 +_,8 @@
+@@ -11,12 +_,14 @@
  using Terraria.ID;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -9,209 +9,116 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -18,6 +_,10 @@
- {
- 	public class UIManageControls : UIState
- 	{
-+		// Added by TML.
-+		private const string ResetModKeybinds = "ResetModKeybinds";
-+		private const string ClearModKeybinds = "ClearModKeybinds";
-+
- 		public static int ForceMoveTo = -1;
- 		private const float PanelTextureHeight = 30f;
- 		private static List<string> _BindingsFullLine = new List<string> {
-@@ -39,15 +_,21 @@
- 			"sp10",
- 			"sp11",
- 			"sp12",
--			"sp13"
-+			"sp13",
-+			ResetModKeybinds,
-+			ClearModKeybinds
- 		};
- 		private static List<string> _BindingsHalfSingleLine = new List<string> {
- 			"sp9",
- 			"sp10",
- 			"sp11",
- 			"sp12",
--			"sp13"
-+			"sp13",
-+			ResetModKeybinds,
-+			ClearModKeybinds
- 		};
-+		private static List<string> _ModBindings = new List<string>();
-+		private static List<string> _ModNames = new List<string>();
- 		private bool OnKeyboard = true;
- 		private bool OnGameplay = true;
- 		private List<UIElement> _bindsKeyboard = new List<UIElement>();
-@@ -209,6 +_,9 @@
- 			List<string> bindings = new List<string> {
- 				"MouseLeft",
- 				"MouseRight",
-+				"MouseMiddle",
-+				"MouseXButton1",
-+				"MouseXButton2",
- 				"Up",
- 				"Down",
- 				"Left",
-@@ -232,6 +_,9 @@
- 			List<string> bindings2 = new List<string> {
- 				"MouseLeft",
- 				"MouseRight",
-+				"MouseMiddle",
-+				"MouseXButton1",
-+				"MouseXButton2",
- 				"Up",
- 				"Down",
- 				"Left",
-@@ -300,26 +_,48 @@
- 				"sp13"
- 			};
+ namespace Terraria.GameContent.UI.States;
  
-+			_BindingsFullLine.RemoveAll(x => x.Contains('/'));
-+			_ModBindings.Clear();
-+			_ModNames.Clear();
+-public class UIManageControls : UIState
++public partial class UIManageControls : UIState
+ {
+ 	public static int ForceMoveTo = -1;
+ 	private const float PanelTextureHeight = 30f;
+@@ -215,6 +_,10 @@
+ 		List<string> bindings = new List<string> {
+ 			"MouseLeft",
+ 			"MouseRight",
++			// Extra mouse buttons support
++			TriggerNames.MouseMiddle,
++			TriggerNames.MouseXButton1,
++			TriggerNames.MouseXButton2,
+ 			"Up",
+ 			"Down",
+ 			"Left",
+@@ -242,6 +_,10 @@
+ 		List<string> bindings2 = new List<string> {
+ 			"MouseLeft",
+ 			"MouseRight",
++			// Extra mouse buttons support
++			TriggerNames.MouseMiddle,
++			TriggerNames.MouseXButton1,
++			TriggerNames.MouseXButton2,
+ 			"Up",
+ 			"Down",
+ 			"Left",
+@@ -313,6 +_,8 @@
+ 			"sp19",
+ 			"sp13"
+ 		};
++		
++		OnAssembleBindPanels();
+ 
+ 		InputMode currentInputMode = InputMode.Keyboard;
+ 		_bindsKeyboard.Add(CreateBindingGroup(0, bindings, currentInputMode));
+@@ -334,6 +_,8 @@
+ 		_bindsGamepadUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
+ 		_bindsGamepadUI.Add(CreateBindingGroup(3, bindings5, currentInputMode));
+ 		_bindsGamepadUI.Add(CreateBindingGroup(4, bindings6, currentInputMode));
 +
-+			Mod currentMod = null;
-+			foreach (var keybind in KeybindLoader.Keybinds) {
-+				if (currentMod != keybind.Mod) {
-+					currentMod = keybind.Mod;
-+					_ModBindings.Add(keybind.Mod.DisplayName);
-+					_ModNames.Add(keybind.Mod.DisplayName);
-+				}
-+				_ModBindings.Add(keybind.FullName);
-+				_BindingsFullLine.Add(keybind.FullName);
++		AddModBindingGroups();
+ 	}
+ 
+ 	private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode)
+@@ -372,6 +_,10 @@
+ 			case 4:
+ 				uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
+ 				break;
++			// Color for mod-introduced keybinds.
++			case TmlBindingGroupId:
++				uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Yellow, 0.18f);
++				break;
+ 		}
+ 
+ 		CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
+@@ -393,6 +_,10 @@
+ 			case 4:
+ 				text = Lang.menu[198];
+ 				break;
++			// Text for mod-introduced keybinds.
++			case TmlBindingGroupId:
++				text = Language.GetText("tModLoader.ModControls");
++				break;
+ 		}
+ 
+ 		UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
+@@ -436,6 +_,16 @@
+ 				continue;
+ 			}
+ 
++			// TML code.
++			if (_ModNames.Contains(bindings[i])) {
++				UIElement header = new HeaderElement(bindings[i]);
++				header.Width.Set(0f, 1f);
++				header.Height.Set(0f, 1f);
++				header.SetSnapPoint("Wide", SnapPointIndex++);
++				uISortableElement.Append(header);
++				continue;
 +			}
 +
-+			_ModBindings.Add(ResetModKeybinds);
-+			_ModBindings.Add(ClearModKeybinds);
-+
- 			InputMode currentInputMode = InputMode.Keyboard;
- 			_bindsKeyboard.Add(CreateBindingGroup(0, bindings, currentInputMode));
- 			_bindsKeyboard.Add(CreateBindingGroup(1, bindings4, currentInputMode));
- 			_bindsKeyboard.Add(CreateBindingGroup(2, bindings3, currentInputMode));
-+			_bindsKeyboard.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
- 			currentInputMode = InputMode.XBoxGamepad;
- 			_bindsGamepad.Add(CreateBindingGroup(0, bindings2, currentInputMode));
- 			_bindsGamepad.Add(CreateBindingGroup(1, bindings4, currentInputMode));
- 			_bindsGamepad.Add(CreateBindingGroup(2, bindings3, currentInputMode));
- 			_bindsGamepad.Add(CreateBindingGroup(3, bindings5, currentInputMode));
- 			_bindsGamepad.Add(CreateBindingGroup(4, bindings6, currentInputMode));
-+			_bindsGamepad.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
- 			currentInputMode = InputMode.KeyboardUI;
- 			_bindsKeyboardUI.Add(CreateBindingGroup(0, bindings, currentInputMode));
- 			_bindsKeyboardUI.Add(CreateBindingGroup(1, bindings4, currentInputMode));
- 			_bindsKeyboardUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
-+			_bindsKeyboardUI.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
- 			currentInputMode = InputMode.XBoxGamepadUI;
- 			_bindsGamepadUI.Add(CreateBindingGroup(0, bindings2, currentInputMode));
- 			_bindsGamepadUI.Add(CreateBindingGroup(1, bindings4, currentInputMode));
- 			_bindsGamepadUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
- 			_bindsGamepadUI.Add(CreateBindingGroup(3, bindings5, currentInputMode));
- 			_bindsGamepadUI.Add(CreateBindingGroup(4, bindings6, currentInputMode));
-+			_bindsGamepadUI.Add(CreateBindingGroup(5, _ModBindings, currentInputMode));
- 		}
- 
- 		private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode) {
-@@ -357,6 +_,9 @@
- 				case 4:
- 					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
- 					break;
-+				case 5:
-+					uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Yellow, 0.18f);
-+					break;
- 			}
- 
- 			CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
-@@ -378,6 +_,9 @@
- 				case 4:
- 					text = Lang.menu[198];
- 					break;
-+				case 5:
-+					text = Language.GetText("tModLoader.ModControls");
-+					break;
- 			}
- 
- 			UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
-@@ -420,6 +_,15 @@
- 					continue;
- 				}
- 
-+				if (_ModNames.Contains(bindings[i])) {
-+					UIElement header = new HeaderElement(bindings[i]);
-+					header.Width.Set(0f, 1f);
-+					header.Height.Set(0f, 1f);
-+					header.SetSnapPoint("Wide", SnapPointIndex++);
-+					uISortableElement.Append(header);
-+					continue;
+ 			UIElement uIElement3 = CreatePanel(bindings[i], currentInputMode, color);
+ 			uIElement3.Width.Set(-5f, 0.5f);
+ 			uIElement3.Height.Set(0f, 1f);
+@@ -619,12 +_,26 @@
+ 					}
+ 				}, 1008, color);
+ 			default:
++				var tmlResult = HandlePanelCreation(bind, currentInputMode, color);
++				
++				if (tmlResult != null) {
++					return tmlResult;
 +				}
 +
- 				UIElement uIElement3 = CreatePanel(bindings[i], currentInputMode, color);
- 				uIElement3.Width.Set(-5f, 0.5f);
- 				uIElement3.Height.Set(0f, 1f);
-@@ -530,6 +_,25 @@
- 
- 						return uIKeybindingSimpleListItem4;
- 					}
-+				case ResetModKeybinds: {
-+						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value, color);
-+						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+							string copyableProfileName = GetCopyableProfileName();
-+							PlayerInput.CurrentProfile.CopyModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode);
-+						};
-+
-+						return uIElement7;
-+					}
-+				case ClearModKeybinds: {
-+						UIElement uIElement7 = new UIKeybindingSimpleListItem(() => "Clear", color);
-+						uIElement7.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+							foreach (var modKeybind in KeybindLoader.Keybinds) {
-+								PlayerInput.CurrentProfile.InputModes[currentInputMode].KeyStatus[modKeybind.FullName].Clear();
-+							}
-+						};
-+
-+						return uIElement7;
-+					}
- 				case "sp14": {
- 						UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
- 						uIKeybindingToggleListItem.OnClick += delegate {
-@@ -602,11 +_,39 @@
- 						}
- 					}, 1008, color);
- 				default:
-+					if (_ModBindings.Contains(bind)) {
-+						string defaultKey = KeybindLoader.modKeybinds[bind].DefaultBinding;
-+						UIElement container = new UIElement();
-+						var left = new UIKeybindingListItem(bind, currentInputMode, color);
-+						left.Width.Precent = 0.58f;
-+						left.Height.Precent = 1f;
-+						container.Append(left);
-+						// TODO: Clear instead of Reset to Defaults if no default specified.
-+						var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
-+						right.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-+							string copyableProfileName = GetCopyableProfileName();
-+							PlayerInput.CurrentProfile.CopyIndividualModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
-+						};
-+
-+						right.Left.Precent = 0.6f;
-+						right.Width.Precent = 0.4f;
-+						right.Height.Precent = 1f;
-+						container.Append(right);
-+						return container;
-+					}
-+
- 					return new UIKeybindingListItem(bind, currentInputMode, color);
- 			}
+ 				return new UIKeybindingListItem(bind, currentInputMode, color);
  		}
+ 	}
  
- 		public override void OnActivate() {
-+			// TODO, only if new mod controls -- seems to be cause of bug on reload.
-+			_bindsKeyboard.Clear();
-+			_bindsGamepad.Clear();
-+			_bindsKeyboardUI.Clear();
-+			_bindsGamepadUI.Clear();
-+			AssembleBindPanels();
-+			FillList();
- 			if (Main.gameMenu) {
- 				_outerContainer.Top.Set(220f, 0f);
- 				_outerContainer.Height.Set(-220f, 1f);
+ 	public override void OnActivate()
+ 	{
++		//TODO: Only if new mod controls -- seems to be cause of bug on reload.
++		_bindsKeyboard.Clear();
++		_bindsGamepad.Clear();
++		_bindsKeyboardUI.Clear();
++		_bindsGamepadUI.Clear();
++		AssembleBindPanels();
++		FillList();
++
+ 		if (Main.gameMenu) {
+ 			_outerContainer.Top.Set(220f, 0f);
+ 			_outerContainer.Height.Set(-220f, 1f);

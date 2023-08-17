@@ -1,19 +1,28 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIText.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIText.cs
-@@ -4,6 +_,7 @@
- using System;
- using Terraria.Localization;
- using Terraria.UI;
-+using Terraria.UI.Chat;
+@@ -35,6 +_,8 @@
+ 		}
+ 		set {
+ 			_isWrapped = value;
++			if(value)
++				MinWidth.Set(0, 0); // TML: IsWrapped when true should prevent changing MinWidth, otherwise can't shrink in width due to CreateWrappedText+GetInnerDimensions logic. IsWrapped is false in ctor, so need to undo changes.
+ 			InternalSetText(_text, _textScale, _isLarge);
+ 		}
+ 	}
+@@ -149,9 +_,14 @@
+ 		else
+ 			_visibleText = _lastTextReference;
  
- namespace Terraria.GameContent.UI.Elements
- {
-@@ -132,7 +_,7 @@
- 			else
- 				_visibleText = _lastTextReference;
- 
--			Vector2 vector = dynamicSpriteFont.MeasureString(_visibleText);
-+			Vector2 vector = ChatManager.GetStringSize(dynamicSpriteFont, _visibleText, new Vector2(1)); // TML: Changed to use ChatManager.GetStringSize() since using DynamicSpriteFont.MeasureString() ignores chat tags, giving the UI element a much larger calculated size than it should have.
- 			Vector2 vector2 = _textSize = ((!IsWrapped) ? (new Vector2(vector.X, large ? 32f : 16f) * textScale) : (new Vector2(vector.X, vector.Y + WrappedTextBottomPadding) * textScale));
- 			MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);
- 			MinHeight.Set(vector2.Y + PaddingTop + PaddingBottom, 0f);
+-		Vector2 vector = dynamicSpriteFont.MeasureString(_visibleText);
++		// TML: Changed to use ChatManager.GetStringSize() since using DynamicSpriteFont.MeasureString() ignores chat tags,
++		// giving the UI element a much larger calculated size than it should have.
++		Vector2 vector = ChatManager.GetStringSize(dynamicSpriteFont, _visibleText, new Vector2(1));
++	
+ 		Vector2 vector2 = (_textSize = ((!IsWrapped) ? (new Vector2(vector.X, large ? 32f : 16f) * textScale) : (new Vector2(vector.X, vector.Y + WrappedTextBottomPadding) * textScale)));
++		if (!IsWrapped) { // TML: IsWrapped when true should prevent changing MinWidth, otherwise can't shrink in width due to logic.
+-		MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);
++			MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);
++		}
+ 		MinHeight.Set(vector2.Y + PaddingTop + PaddingBottom, 0f);
+ 		if (this.OnInternalTextChange != null)
+ 			this.OnInternalTextChange();

@@ -1,17 +1,14 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleBuffPotion : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Gives a light defense buff.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
+			Item.ResearchUnlockCount = 20;
 
 			// Dust that will appear in these colors when the item with ItemUseStyleID.DrinkLiquid is used
 			ItemID.Sets.DrinkParticleColors[Type] = new Color[3] {

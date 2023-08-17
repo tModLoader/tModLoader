@@ -1,38 +1,42 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
 +++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
-@@ -1,6 +_,35 @@
-+using System.Collections.Generic;
+@@ -1,5 +_,39 @@
++using System;
++using Terraria.ID;
 +
 +#nullable enable
 +
- namespace Terraria.DataStructures
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// This object encapsulates context information about the source of a particular spawning event of an Item/Projectile/NPC/etc. Aids in facilitating many modding situations and used in various OnSpawn hooks.<br/>
++/// The <see href="https://github.com/tModLoader/tModLoader/wiki/IEntitySource">IEntitySource Guide</see> teaches how and why to use this.
++/// </summary>
+ public interface IEntitySource
  {
++	// All members here were added by TML.
++
 +	/// <summary>
-+	/// This object encapsulates context information about the source of a particular spawning event of an Item/Projectile/NPC/etc. Aids in facilitating many modding situations and used in various OnSpawn hooks.<br/>
-+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/IEntitySource">IEntitySource Guide</see> teaches how and why to use this.
++	/// Additional context identifier, particularly useful for set bonuses or accessory affects. See <see cref="ItemSourceID"/> and <see cref="ProjectileSourceID"/> for vanilla uses
 +	/// </summary>
- 	public interface IEntitySource
- 	{
-+		// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
-+		private static readonly Stack<IEntitySource> fallbacks = new();
++	string? Context { get; }
 +
-+		string? Context { get; }
 +
-+		internal static IEntitySource? GetFallback() {
-+			if (fallbacks.TryPeek(out var result)) {
-+				return result;
-+			}
++	// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
++	private static IEntitySource? _goreFallback;
++	internal static IEntitySource? GetGoreFallback() => _goreFallback;
 +
-+			return null;
++	internal struct FallbackSourceRef : IDisposable
++	{
++		private IEntitySource? prev;
++		public FallbackSourceRef(IEntitySource source)
++		{
++			prev = _goreFallback;
++			_goreFallback = source;
 +		}
 +
-+		internal static void PushFallback(IEntitySource source)
-+			=> fallbacks.Push(source);
++		public void Dispose() => _goreFallback = prev;
++	}
 +
-+		internal static void PopFallback()
-+			=> fallbacks.Pop();
-+
-+		internal static void ClearFallbacks()
-+			=> fallbacks.Clear();
- 	}
++	internal static FallbackSourceRef PushFallback(IEntitySource source) => new (source); 
  }

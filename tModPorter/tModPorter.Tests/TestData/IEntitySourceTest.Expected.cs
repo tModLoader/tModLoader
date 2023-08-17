@@ -1,3 +1,4 @@
+// not-yet-implemented
 using Microsoft.Xna.Framework;
 using Terraria;
 
@@ -20,7 +21,6 @@ public class IEntitySourceTest
 		Player player = new Player();
 		player.QuickSpawnItem(/* tModPorter Suggestion: player/npc/projectile.GetSource_... */, 1, 2);
 		player.QuickSpawnItem(/* tModPorter Suggestion: player/npc/projectile.GetSource_... */, new Item(), 2);
-		player.QuickSpawnClonedItem(/* tModPorter Suggestion: player/npc/projectile.GetSource_... */, new Item(), 2);
 
 		Projectile.NewProjectile(/* tModPorter Suggestion: player/npc/projectile.GetSource_... */, new Vector2(), new Vector2(), 3, 4, 5, 6, 7, 8); // vec2 both
 		Projectile.NewProjectile(/* tModPorter Suggestion: player/npc/projectile.GetSource_... */, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // full coords

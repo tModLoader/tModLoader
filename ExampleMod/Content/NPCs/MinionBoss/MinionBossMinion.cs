@@ -23,12 +23,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		public bool HasParent => ParentIndex > -1;
 
-		public int PositionIndex {
-			get => (int)NPC.ai[1] - 1;
-			set => NPC.ai[1] = value + 1;
+		public float PositionOffset {
+			get => NPC.ai[1];
+			set => NPC.ai[1] = value;
 		}
-
-		public bool HasPosition => PositionIndex > -1;
 
 		public const float RotationTimerMax = 360;
 		public ref float RotationTimer => ref NPC.ai[2];
@@ -39,7 +37,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss Minion");
 			Main.npcFrameCount[Type] = 1;
 
 			// By default enemies gain health and attack if hardmode is reached. this NPC should not be affected by that
@@ -49,15 +46,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 
 			// Optional: If you don't want this NPC to show on the bestiary (if there is no reason to show a boss minion separately)
 			// Make sure to remove SetBestiary code aswell
@@ -108,7 +99,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return true;
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals
 
@@ -137,7 +128,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 		private bool Despawn() {
 			if (Main.netMode != NetmodeID.MultiplayerClient &&
-				(!HasPosition || !HasParent || !Main.npc[ParentIndex].active || Main.npc[ParentIndex].type != BodyType())) {
+				(!HasParent || !Main.npc[ParentIndex].active || Main.npc[ParentIndex].type != BodyType())) {
 				// * Not spawned by the boss body (didn't assign a position and parent) or
 				// * Parent isn't active or
 				// * Parent isn't the body
@@ -165,7 +156,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// This basically turns the NPCs PositionIndex into a number between 0f and TwoPi to determine where around
 			// the main body it is positioned at
-			float rad = (float)PositionIndex / MinionBossBody.MinionCount() * MathHelper.TwoPi;
+			float rad = (float)PositionOffset * MathHelper.TwoPi;
 
 			// Add some slight uniform rotation to make the eyes move, giving a chance to touch the player and thus helping melee players
 			RotationTimer += 0.5f;

@@ -1,84 +1,94 @@
 --- src/TerrariaNetCore/ReLogic/Content/Asset.cs
 +++ src/tModLoader/ReLogic/Content/Asset.cs
-@@ -1,5 +_,7 @@
- using ReLogic.Content.Sources;
+@@ -1,4 +_,6 @@
  using System;
 +using System.Threading;
 +using System.Threading.Tasks;
+ using ReLogic.Content.Sources;
  
- namespace ReLogic.Content
+ namespace ReLogic.Content;
+@@ -7,6 +_,12 @@
  {
-@@ -7,6 +_,10 @@
+ 	public static readonly Asset<T> Empty = new Asset<T>("");
+ 
++	// Added by TML: [[
++	public static T DefaultValue { get; set; }
++
++	private T ownValue;
++	// ]]
++
+ 	public string Name { get; private set; }
+ 
+ 	public bool IsLoaded => State == AssetState.Loaded;
+@@ -17,7 +_,18 @@
+ 
+ 	public IContentSource Source { get; private set; }
+ 
++	/*
+ 	public T Value { get; private set; }
++	*/
++	public T Value => IsLoaded ? ownValue : DefaultValue;
++
++	// Added by TML: [[
++	internal Action Continuation { get; set; }
++	
++	Action IAsset.Continuation { set => Continuation = value; }
++
++	public Action Wait { get; internal set; }
++	// ]]
+ 
+ 	internal Asset(string name)
  	{
- 		public static readonly Asset<T> Empty = new Asset<T>("");
+@@ -32,11 +_,10 @@
  
-+		public static T DefaultValue { get; set; }
-+
-+		private T ownValue;
-+
- 		public string Name {
- 			get;
- 			private set;
-@@ -29,10 +_,12 @@
- 			private set;
- 		}
+ 	internal void Unload()
+ 	{
+-		if (Value is IDisposable disposable)
+-			disposable.Dispose();
++		(ownValue as IDisposable)?.Dispose();
  
--		public T Value {
--			get;
--			private set;
--		}
-+		public T Value => IsLoaded ? ownValue : DefaultValue;
-+
-+		internal Action Continuation { get; set; }
-+		Action IAsset.Continuation { set => Continuation = value; }
-+
-+		public Action Wait { get; internal set; }
+ 		State = AssetState.NotLoaded;
+-		Value = null;
++		ownValue = null;
+ 		Source = null;
+ 	}
  
- 		internal Asset(string name) {
- 			State = AssetState.NotLoaded;
-@@ -44,9 +_,9 @@
- 		}
+@@ -45,15 +_,19 @@
+ 		if (value == null)
+ 			throw new ArgumentNullException("value");
  
- 		internal void Unload() {
--			(Value as IDisposable)?.Dispose();
-+			(ownValue as IDisposable)?.Dispose();
- 			State = AssetState.NotLoaded;
++		/*
+ 		if (source == null)
+ 			throw new ArgumentNullException("source");
+ 
+ 		if (Value is IDisposable disposable)
+ 			disposable.Dispose();
++		*/
+ 
+-		State = AssetState.Loaded;
+-		Value = value;
++		(ownValue as IDisposable)?.Dispose();
++		ownValue = value;
+ 		Source = source;
++		Thread.MemoryBarrier();
++		State = AssetState.Loaded;
+ 	}
+ 
+ 	internal void SetToLoadingState()
+@@ -66,12 +_,13 @@
+ 		if (IsDisposed)
+ 			return;
+ 
++		//TML: 'Value' changed to 'ownValue'.
+-		if (disposing && Value != null) {
++		if (disposing && ownValue != null) {
+-			IDisposable disposable = Value as IDisposable;
++			IDisposable disposable = ownValue as IDisposable;
+ 			if (IsLoaded)
+ 				disposable?.Dispose();
+ 
 -			Value = null;
 +			ownValue = null;
- 			Source = null;
  		}
  
-@@ -54,13 +_,11 @@
- 			if (value == null)
- 				throw new ArgumentNullException("value");
- 
--			if (source == null)
--				throw new ArgumentNullException("source");
--
--			(Value as IDisposable)?.Dispose();
-+			(ownValue as IDisposable)?.Dispose();
--			State = AssetState.Loaded;
--			Value = value;
-+			ownValue = value;
- 			Source = source;
-+			Thread.MemoryBarrier();
-+			State = AssetState.Loaded;
- 		}
- 
- 		internal void SetToLoadingState() {
-@@ -71,12 +_,12 @@
- 			if (IsDisposed)
- 				return;
- 
--			if (disposing && Value != null) {
-+			if (disposing && ownValue != null) {
--				IDisposable disposable = Value as IDisposable;
-+				IDisposable disposable = ownValue as IDisposable;
- 				if (IsLoaded)
- 					disposable?.Dispose();
- 
--				Value = null;
-+				ownValue = null;
- 			}
- 
- 			IsDisposed = true;
+ 		IsDisposed = true;

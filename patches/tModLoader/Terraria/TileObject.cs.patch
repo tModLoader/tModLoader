@@ -1,29 +1,40 @@
 --- src/TerrariaNetCore/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
-@@ -138,7 +_,7 @@
- 			return true;
- 		}
+@@ -139,7 +_,8 @@
+ 		return true;
+ 	}
  
--		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false) {
-+		public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, bool checkStay = false) {
- 			TileObjectData tileData = TileObjectData.GetTileData(type, style);
- 			objectData = Empty;
- 			if (tileData == null)
-@@ -281,7 +_,7 @@
- 				for (int i = 0; i < tileData2.Width; i++) {
- 					for (int j = 0; j < tileData2.Height; j++) {
- 						Tile tileSafely = Framing.GetTileSafely(num8 + i, num9 + j);
--						bool flag2 = !tileData2.LiquidPlace(tileSafely);
-+						bool flag2 = !tileData2.LiquidPlace(tileSafely, checkStay);
- 						bool flag3 = false;
- 						if (tileData2.AnchorWall) {
- 							num25 += 1f;
-@@ -292,7 +_,7 @@
- 						}
++	//TML: Added 'checkStay' parameter.
+-	public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null)
++	public static bool CanPlace(int x, int y, int type, int style, int dir, out TileObject objectData, bool onlyCheck = false, int? forcedRandom = null, bool checkStay = false)
+ 	{
+ 		TileObjectData tileData = TileObjectData.GetTileData(type, style);
+ 		objectData = Empty;
+@@ -283,7 +_,7 @@
+ 			for (int i = 0; i < tileData2.Width; i++) {
+ 				for (int j = 0; j < tileData2.Height; j++) {
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + i, num9 + j);
+-					bool flag2 = !tileData2.LiquidPlace(tileSafely);
++					bool flag2 = !tileData2.LiquidPlace(tileSafely, checkStay);
+ 					bool flag3 = false;
+ 					if (tileData2.AnchorWall) {
+ 						num25 += 1f;
+@@ -294,7 +_,7 @@
+ 					}
  
- 						bool flag4 = false;
--						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type])
-+						if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type] && !checkStay)
- 							flag4 = true;
+ 					bool flag4 = false;
+-					if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484 || tileSafely.type == 654) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type])
++					if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484 || tileSafely.type == 654) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type] && !checkStay)
+ 						flag4 = true;
  
- 						if (flag4 || flag2 || flag3) {
+ 					if (flag4 || flag2 || flag3) {
+@@ -565,6 +_,9 @@
+ 			}
+ 
+ 			float num33 = num24 / num25;
++			// Backport a fix for tiles with no anchors: if (totalAnchorCount == 0) anchorPercent = 1;
++			if (num25 == 0)
++				num33 = 1;
+ 			float num34 = num22 / num23;
+ 			if (num34 == 1f && num25 == 0f) {
+ 				num23 = 1f;

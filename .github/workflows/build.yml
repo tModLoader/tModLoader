@@ -1,13 +1,21 @@
 name: Build tModLoader
 
+env:
+    DevBranch: 1.4.4
+    StableBranch: stable
+    PreviewBranch: preview
+    IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
+    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable') || contains(github.ref, '1.4.4'))  }}
+
 # Controls when the action will run. 
 on:
-  # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
+  # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
-    branches: [1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable, 1.4]
+    # note these cannot use the env.Branch variables
+    branches: [gh_actions_test, stable, preview, 1.4.4]
   pull_request_target:
     types: [labeled]
-    branches: [1.4-preview, 1.4-stable, 1.4, 1.4_mergedtesting]
+    branches: [preview, stable, 1.4.4]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -29,14 +37,16 @@ jobs:
           ref: ${{github.ref}}
           persist-credentials: false
           fetch-depth: 0
-
+      
+      # Re-calculate the versioning of tModLoader
       - name: Update Versioning
         id: version
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        if: env.IsVersioned == 'true'
         shell: bash
         run: |
           echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
+          
           echo "Previous Version is: $version"
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
@@ -49,47 +59,52 @@ jobs:
             echo "Previous version '$version' is not a valid version"
             exit 1
           fi
-          echo "Applying verison updates"
-          if [[ "refs/heads/1.4-stable" = $branch ]] ; then
-             echo "Rolling Forward the Patch #..."
-             ((++patch))   
-          fi
-          if [[ "refs/heads/1.4-preview" = $branch ]] ; then
-            echo "Rolling Forward the Feature #..."
+          
+          echo "Checking Version Updates"
+          newdt="$(date +%Y.%m)"
+          if [[ "refs/heads/${{env.DevBranch}}" = $branch && ! "$oldate" = "$newdt" ]] ; then
+            echo "Checking Version Updates for ${{env.DevBranch}}"
+            echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
+            oldate="$newdt"
+            feature=1
+            patch=0
+          elif [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
+             echo "Checking Version Updates for Rollover"
              ((++feature))
-             newdt="$(date +%Y.%m)"
-             if [[ ! "$oldate" = "$newdt" ]] ; then
-                echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
-                oldate="$newdt"
-                feature=0
-                patch=0
-             fi
+             patch=0
+          else
+            echo "Rolling Forward the Patch #..."
+            ((++patch))
           fi
+          
           version="$oldate.$feature.$patch"
           echo "New version is '$version'"
           echo "::set-output name=new_version::$version"
         env:
           branch: ${{github.ref}}
-          
+        
+        # Apply new Tag for the current commit
       - uses: mathieudutour/github-tag-action@v6.0
         if: ${{ steps.version.outputs.new_version != null}}
         with:
            custom_tag: ${{ steps.version.outputs.new_version }}
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Check out stable branch
+      # Grab a Copy of Stable for determing what is the current stable version
+      - name: Check out ${{env.StableBranch}} branch
         uses: actions/checkout@v2
         with:
-          ref: "1.4-stable"
+          ref: "${{env.StableBranch}}"
           persist-credentials: false
           fetch-depth: 0
       
-      - name: stable Version Fetch
-        id: stable
+      # Determine current stable version
+      - name: Stable Version Fetch
+        id: StableVer
         if: github.event_name == 'push'
         shell: bash
         run: |
-          echo "Fetching the stable version of tmodloader"
+          echo "Fetching the ${{env.StableBranch}} version of tmodloader"
           version=$(git describe --tags --abbrev=0)
           
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
@@ -98,15 +113,16 @@ jobs:
             month="${BASH_REMATCH[2]}"
             feature="${BASH_REMATCH[3]}"
             patch="${BASH_REMATCH[4]}"
-            stable="$year.$month"
+            stableVer="$year.$month"
           else
             echo "Previous version '$version' is not a valid version"
             exit 1
           fi
           
-          echo "stable is '$stable'"
-          echo "::set-output name=stable_version::$stable"
+          echo "Stable Version is '$stableVer'"
+          echo "::set-output name=stable_version::$stableVer"
       
+      # Get the base branch for build steps
       - name: Re:Check out base branch
         uses: actions/checkout@v2
         with:
@@ -144,7 +160,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1436-D
+          key: 1449-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -165,7 +181,7 @@ jobs:
       - name: Install .NET SDKs
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.301'
+          dotnet-version: '6.0.406'
 
       # Runs a set of commands using the runners shell
       - name: Build script
@@ -209,10 +225,10 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Giving Purpose         
-          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
             export BUILDPURPOSE="Stable"
           fi
-          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
             export BUILDPURPOSE="Preview"
           fi
           echo ::endgroup::
@@ -256,9 +272,9 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          TERRARIA_VERSION: 1436
+          TERRARIA_VERSION: 1449
           TMLVERSION: ${{ steps.version.outputs.new_version }}
-          STABLEVERSION: ${{ steps.stable.outputs.stable_version }}
+          STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
                     
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
@@ -275,12 +291,13 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        if: env.IsVersioned == 'true'
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
-          
+      
+      #Used for CI pushes of ExampleMod. Has to utilized during the build steps
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
@@ -316,10 +333,10 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          if [ ${{github.ref}} = 'refs/heads/1.4' ] || [ ${{github.ref}} = 'refs/heads/1.4_mergedtesting' ] ; then
-            ciprep=""
+          if [ ${{env.IsRelease}} = 'true' ] ; then
+            ciprep="-ciprep \"Automatic update from GitHub for tModLoader v{tMLVersion}: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           else
-            ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+            ciprep=""
           fi
           
           export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
@@ -373,9 +390,9 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
-    # Documentation generated on successful builds of pushes to 1.4-stable and 1.4-preview
+    # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+    if: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -384,10 +401,12 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+          
       - name: Download temporary encrypted src artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: temporary-src
+          
       - name: Restore tModLoader folder from artifact
         shell: bash
         run: |
@@ -401,6 +420,7 @@ jobs:
           cd ..
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          
       - name: Update version in Doxyfile
         shell: bash
         run: |
@@ -418,32 +438,36 @@ jobs:
         working-directory: solutions/documentation
         env:
           branch: ${{github.ref}}
+          
       - name: Generate Documentation
         uses: mattnotmitt/doxygen-action@v1.9.4
         with:
           working-directory: 'solutions/documentation/'
           doxyfile-path: 'Doxyfile'
+          
       - name: View resulting files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: solutions/documentation
+        
       - uses: geekyeggo/delete-artifact@v1
         with:
           name: temporary-src
+          
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: ${{ fromJSON('{"refs/heads/1.4-stable":"docs/1.4-stable", "refs/heads/1.4-preview":"docs/1.4-preview"}')[github.ref] }}
+          destination_dir: ${{ fromJSON(format('{{"refs/heads/{0}":"docs/{0}","refs/heads/{1}":"docs/{1}"}}', env.StableBranch, env.PreviewBranch))[github.ref] }}
           commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
     needs: build
-    # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable')
-    name: Deploy to Steam Alpha Branch
+    # We push a release only on push events to the stable/preview branch that build correctly
+    if: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
+    name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -492,17 +516,34 @@ jobs:
           ls -alhR
         working-directory: artifacts/Build
         
+        # needed for publishing tML, ExampleMod
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
         
+        # for logging in to Steam CMD
       - name: Setup Authentication Files
         shell: bash
         run: |
-          echo Decrypting Authentication Files
-          gpg --quiet --batch --yes --decrypt --passphrase="$STEAM_SENTRY_PASSPHRASE" --output ~/Steam/ssfn2592666017656020661 ./solutions/Manifests/secret.gpg
+          echo Copying over config.vdf authentication file
+          echo "Steam is installed in: $STEAMCMDDIR"
+          echo pwd is: ${PWD}
+          cd ~/Steam
+          echo pwd is: ${PWD}
+          mkdir -p config
+          cd config
+          echo pwd is: ${PWD}
+          ls -alhR
+          echo Attempting to populate config.vdf
+          echo "$STEAM_CONFIG_VDF" | base64 -d > "config.vdf"
+          echo done
+          ls -alhR
+          echo Attempting to chmod config.vdf
+          chmod 777 "config.vdf"
+          echo chmod done
+          ls -alhR
         env:
-          STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
+          STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
       
       - name: Get Version tag for Release
@@ -516,6 +557,7 @@ jobs:
         env:
           branch: ${{github.ref}}
       
+      # Publish new version of tModLoader to Steam
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
@@ -529,15 +571,16 @@ jobs:
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
           manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
-          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
-            manifesto=$manifesto/stable.vdf
+          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
+            manifesto=$manifesto/${{env.StableBranch}}.vdf
           fi
-          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
-            manifesto=$manifesto/preview.vdf
+          if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
+            manifesto=$manifesto/${{env.PreviewBranch}}.vdf
+            sed -i -e "s/1.4.4-preview/Preview-${version:0:8}/g" $manifesto
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
@@ -560,6 +603,7 @@ jobs:
           ls -alhR
         working-directory: artifacts/ExampleMod
         
+        # Publish new version of ExampleMod using files from Build Output
       - name: Attempt workshop_build_item 
         shell: bash
         run: |
@@ -567,33 +611,41 @@ jobs:
           echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
           echo pwd is: ${PWD}
                  
-          echo "Attempting to publish ExampleMod"
+          echo "Review Contents for publish ExampleMod"
           echo publish.vdf contents:
           cat publish.vdf
           echo workshop.json contents:
           cat Workshop/workshop.json
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${PWD}/publish.vdf" +quit
+          
+          echo "Publishing ExampleMod"
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" +workshop_build_item "${PWD}/publish.vdf" +quit
           echo publish.vdf contents:
           cat publish.vdf
           echo Done
         working-directory: artifacts/ExampleMod
-
-      - name: Install Zip
-        if: github.ref == 'refs/heads/1.4-stable'
-        uses: montudor/action-zip@v1
         
+      # Zip for making a Release Zip
+      - name: Install Zip
+        if: env.IsRelease == 'true'
+        uses: montudor/action-zip@v1
+      
+      # Zip all files for Releases
       - name: Zip Artifacts
         working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
         run: |
           cd ExampleMod; zip -qq -r ../ExampleMod.zip .; cd ..
           cd Build; zip -qq -r ../tModLoader.zip .; cd ..
       
+      # Make a Release on Github
       - name: Make a release
-        if: github.ref == 'refs/heads/1.4-stable'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
-          body: "Monthly Github Auto-release for 1.4-stable"
+          name: "1.4.4-${{github.ref}} Version Update: ${{ steps.version2.outputs.new_version }}"
+          body: "Monthly Github Auto-release for ${{github.ref}}"
           tag: ${{ steps.version2.outputs.new_version }}
+          prerelease: ${{ contains(github.ref, 'preview') }}
+          makeLatest: ${{ contains(github.ref, 'stable') }}
+          

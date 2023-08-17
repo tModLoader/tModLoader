@@ -6,60 +6,62 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.ItemDropRules
+ namespace Terraria.GameContent.ItemDropRules;
+ 
+-public class ItemDropDatabase
++public partial class ItemDropDatabase
  {
--	public class ItemDropDatabase
-+	public partial class ItemDropDatabase
+-	private List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
++	internal List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
+ 	private Dictionary<int, List<IItemDropRule>> _entriesByNpcNetId = new Dictionary<int, List<IItemDropRule>>();
+ 	private Dictionary<int, List<int>> _npcNetIdsByType = new Dictionary<int, List<int>>();
+ 	private int _masterModeDropRng = 4;
+@@ -60,7 +_,7 @@
+ 		return entry;
+ 	}
+ 
+-	private void RegisterToNPCNetId(int npcNetId, IItemDropRule entry)
++	public void RegisterToNPCNetId(int npcNetId, IItemDropRule entry)
  	{
--		private List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
- 		private Dictionary<int, List<IItemDropRule>> _entriesByNpcNetId = new Dictionary<int, List<IItemDropRule>>();
- 		private Dictionary<int, List<int>> _npcNetIdsByType = new Dictionary<int, List<int>>();
- 		private int _masterModeDropRng = 4;
-@@ -55,7 +_,7 @@
- 			return entry;
- 		}
+ 		if (!_entriesByNpcNetId.ContainsKey(npcNetId))
+ 			_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
+@@ -95,7 +_,7 @@
+ 		return entry;
+ 	}
  
--		private void RegisterToNPCNetId(int npcNetId, IItemDropRule entry) {
-+		public void RegisterToNPCNetId(int npcNetId, IItemDropRule entry) {
- 			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
- 				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
- 
-@@ -70,7 +_,8 @@
- 			return entry;
- 		}
- 
-+		//TML: Made public
--		private void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry) {
-+		public void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry) {
- 			if (_entriesByNpcNetId.ContainsKey(npcNetId))
- 				_entriesByNpcNetId[npcNetId].Remove(entry);
- 		}
-@@ -114,6 +_,27 @@
- 			RegisterMimic();
- 			RegisterEclipse();
- 			RegisterBloodMoonFishing();
+-	private void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry)
++	public void RemoveFromNPCNetId(int npcNetId, IItemDropRule entry)
+ 	{
+ 		if (_entriesByNpcNetId.ContainsKey(npcNetId))
+ 			_entriesByNpcNetId[npcNetId].Remove(entry);
+@@ -143,6 +_,30 @@
+ 		RegisterMimic();
+ 		RegisterEclipse();
+ 		RegisterBloodMoonFishing();
 +
-+			RegisterBossBags();
-+			RegisterCrateDrops();
-+			RegisterObsidianLockbox();
-+			RegisterLockbox();
-+			RegisterHerbBag();
-+			RegisterGoodieBag();
-+			RegisterPresent();
-+			RegisterCanOfWorms();
-+			RegisterOyster();
-+			RegisterCapricorns();
++		// TML code: [[
++		RegisterBossBags();
++		RegisterCrateDrops();
++		RegisterObsidianLockbox();
++		RegisterLockbox();
++		RegisterHerbBag();
++		RegisterGoodieBag();
++		RegisterPresent();
++		RegisterCanOfWorms();
++		RegisterOyster();
++		RegisterCapricorns();
 +
-+			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
++		NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
-+			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
-+				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
-+			}
-+			foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
-+				ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
-+			}
++		foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
++			NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
++		}
 +
- 			TrimDuplicateRulesForNegativeIDs();
- 		}
++		foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
++			ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
++		}
++		// ]]
++
+ 		TrimDuplicateRulesForNegativeIDs();
+ 	}
  

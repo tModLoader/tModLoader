@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
@@ -13,16 +14,17 @@ namespace ExampleMod.Content.Buffs
 	public class AnimatedBuff : ModBuff
 	{
 		// Some constants we define to make our life easier.
-		public const int FrameCount = 4; // Amount of frames we have on our animation spritesheet.
-		public const int AnimationSpeed = 60; // In ticks.
-		public const string AnimationSheetPath = "ExampleMod/Content/Buffs/AnimatedBuff_Animation";
+		public static readonly int FrameCount = 4; // Amount of frames we have on our animation spritesheet.
+		public static readonly int AnimationSpeed = 60; // In ticks.
+		public static readonly string AnimationSheetPath = "ExampleMod/Content/Buffs/AnimatedBuff_Animation";
+
+		public static readonly int DamageBonus = 10;
 
 		private Asset<Texture2D> animatedTexture;
 
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Animated Buff");
-			Description.SetDefault("Animates and increases all damage by 10%.");
+		public override LocalizedText Description => base.Description.WithFormatArgs(DamageBonus);
 
+		public override void SetStaticDefaults() {
 			if (Main.netMode != NetmodeID.Server) {
 				// Do NOT load textures on the server!
 				animatedTexture = ModContent.Request<Texture2D>(AnimationSheetPath);
@@ -76,7 +78,7 @@ namespace ExampleMod.Content.Buffs
 
 		public override void Update(Player player, ref int buffIndex) {
 			// Increase all damage by 10%
-			player.GetDamage<GenericDamageClass>() += 0.1f;
+			player.GetDamage<GenericDamageClass>() += DamageBonus / 100f;
 		}
 	}
 }

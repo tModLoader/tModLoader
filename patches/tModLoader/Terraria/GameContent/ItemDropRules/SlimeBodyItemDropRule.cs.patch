@@ -1,11 +1,47 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
-@@ -23,7 +_,7 @@
- 		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
- 			int itemId = (int)info.npc.ai[1];
- 			GetDropInfo(itemId, out int amountDroppedMinimum, out int amountDroppedMaximum);
--			CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
-+			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
- 			ItemDropAttemptResult result = default(ItemDropAttemptResult);
- 			result.State = ItemDropAttemptResultState.Success;
- 			return result;
+@@ -15,7 +_,7 @@
+ 	public bool CanDrop(DropAttemptInfo info)
+ 	{
+ 		if (info.npc.type == 1 && info.npc.ai[1] > 0f)
+-			return info.npc.ai[1] < (float)ItemID.Count;
++			return info.npc.ai[1] < (float)Terraria.ModLoader.ItemLoader.ItemCount;
+ 
+ 		return false;
+ 	}
+@@ -24,7 +_,7 @@
+ 	{
+ 		int itemId = (int)info.npc.ai[1];
+ 		GetDropInfo(itemId, out var amountDroppedMinimum, out var amountDroppedMaximum);
+-		CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
++		CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
+ 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
+ 		result.State = ItemDropAttemptResultState.Success;
+ 		return result;
+@@ -47,6 +_,7 @@
+ 				amountDroppedMinimum = 20;
+ 				amountDroppedMaximum = 45;
+ 				break;
++			/*
+ 			case 11:
+ 			case 12:
+ 			case 13:
+@@ -58,6 +_,7 @@
+ 				amountDroppedMinimum = 3;
+ 				amountDroppedMaximum = 13;
+ 				break;
++			*/
+ 			case 71:
+ 				amountDroppedMinimum = 50;
+ 				amountDroppedMaximum = 99;
+@@ -75,6 +_,10 @@
+ 				amountDroppedMinimum = 2;
+ 				amountDroppedMaximum = 5;
+ 				break;
++		}
++		if (ItemID.Sets.OreDropsFromSlime.TryGetValue(itemId, out var minMaxStack)) { // TML
++			amountDroppedMinimum = minMaxStack.minStack;
++			amountDroppedMaximum = minMaxStack.maxStack;
+ 		}
+ 	}
+ 

@@ -1,11 +1,14 @@
 --- src/TerrariaNetCore/Terraria/nativefiledialog.cs
 +++ src/tModLoader/Terraria/nativefiledialog.cs
-@@ -69,7 +_,7 @@
+@@ -72,7 +_,10 @@
  		nfdresult_t result = INTERNAL_NFD_OpenDialog(intPtr, ptr, out outPath2);
- 		Marshal.FreeHGlobal((IntPtr)(void*)intPtr);
- 		Marshal.FreeHGlobal((IntPtr)(void*)ptr);
+ 		Marshal.FreeHGlobal((IntPtr)intPtr);
+ 		Marshal.FreeHGlobal((IntPtr)ptr);
++
++		// freePtr was changed to false to prevent AccessViolations. Questionable.
 -		outPath = UTF8_ToManaged(outPath2, freePtr: true);
-+		outPath = UTF8_ToManaged(outPath2, freePtr: false); // freePtr was changed to false to prevent AccessViolations. Questionable.
++		outPath = UTF8_ToManaged(outPath2, freePtr: false);
++
  		return result;
  	}
  

@@ -58,7 +58,6 @@ public class ModItemAddRecipes : ModItem
 	}
 
 	public void UnableToFindAssignment(bool setting) {
-#if COMPILE_ERROR
 		var recipe = new ModRecipe(mod);
 		if (setting) {
 			recipe = new ModRecipe(mod);
@@ -66,7 +65,6 @@ public class ModItemAddRecipes : ModItem
 		}
 		recipe.SetResult(this);
 		recipe.AddRecipe();
-#endif
 	}
 }
 
@@ -88,7 +86,6 @@ public class ModAddRecipes : Mod
 		recipe.AddRecipe();
 	}
 
-#if COMPILE_ERROR
 	public ModRecipe MakeRecipe() => new ModRecipe(this);
 
 	public void AddRecipeViaAnotherCall(ModItem item) {
@@ -101,7 +98,6 @@ public class ModAddRecipes : Mod
 		recipe.SetResult(item, 2);
 		recipe.AddRecipe();
 	}
-#endif
 
 	public Action InLambda() => () => {
 		var recipe = new ModRecipe(this);
@@ -140,5 +136,10 @@ public class ModAddRecipes : Mod
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.AddRecipe();
+	}
+
+	public void NewRecipeMethodConditionRefactors(Recipe recipe) {
+		recipe.AddCondition(Recipe.Condition.TimeDay);
+		recipe.AddCondition(Recipe.Condition.InGraveyardBiome);
 	}
 }

@@ -1,7 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.Players;
+using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
-using ExampleMod.Common.Players;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -10,13 +11,13 @@ namespace ExampleMod.Content.Items.Consumables
 	// The overlay used to display the custom life fruit can be found in Common/UI/ResourceDisplay/VanillaLifeOverlay.cs
 	internal class ExampleLifeFruit : ModItem
 	{
-		public const int MaxExampleLifeFruits = 10;
-		public const int LifePerFruit = 10;
+		public static readonly int MaxExampleLifeFruits = 10;
+		public static readonly int LifePerFruit = 10;
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(LifePerFruit, MaxExampleLifeFruits);
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
-
-			SacrificeTotal = 10;
+			Item.ResearchUnlockCount = 10;
 		}
 
 		public override void SetDefaults() {

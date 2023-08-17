@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Dyes;
-using Terraria.GameContent.Creative;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,17 +19,17 @@ namespace ExampleMod.Content.Items
 				);
 			}
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+			Item.ResearchUnlockCount = 3;
 		}
 
 		public override void SetDefaults() {
 			Item.width = 20;
 			Item.height = 26;
-			Item.maxStack = 99;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.buyPrice(gold: 5);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item3;
-			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.useTurn = true;
 			Item.useAnimation = 17;
 			Item.useTime = 17;

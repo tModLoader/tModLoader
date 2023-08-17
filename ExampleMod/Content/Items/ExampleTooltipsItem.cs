@@ -1,6 +1,5 @@
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,12 +10,6 @@ namespace ExampleMod.Content.Items
 	public class ExampleTooltipsItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			// See here for help on using Tags: http://terraria.gamepedia.com/Chat#Tags
-			Tooltip.SetDefault("How are you feeling today?"
-				+ $"\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{Item.type}][i:{ModContent.ItemType<ExampleMountItem>()}][i/s123:{ItemID.Ectoplasm}]");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(30, 4));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
 
@@ -51,15 +44,16 @@ namespace ExampleMod.Content.Items
 				}
 			}
 
-			// Here we will remove all tooltips whose title end with ':RemoveMe'
+			// Here we will hide all tooltips whose title end with ':RemoveMe'
 			// One like that is added at the start of this method
-			tooltips.RemoveAll(l => l.Name.EndsWith(":RemoveMe"));
+			foreach (var l in tooltips) {
+				if (l.Name.EndsWith(":RemoveMe")) {
+					l.Hide();
+				}
+			}
 
-			// Another method of removal can be done if you know the index of the tooltip:
-			// tooltips.RemoveAt(index);
-
-			// You can also remove a specific line, if you have access to that object:
-			// tooltips.Remove(tooltipLine);
+			// Another method of hiding can be done if you want to hide just one line.
+			// tooltips.FirstOrDefault(x => x.Mod == "ExampleMod" && x.Name == "Verbose:RemoveMe")?.Hide();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

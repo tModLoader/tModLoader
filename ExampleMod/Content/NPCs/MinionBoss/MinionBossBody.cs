@@ -13,6 +13,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,6 +45,13 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
+		public int MinionMaxHealthTotal {
+			get => (int)NPC.ai[3];
+			set => NPC.ai[3] = value;
+		}
+
+		public int MinionHealthTotal { get; set; }
+
 		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
 		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
 
@@ -57,8 +65,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		private const int FirstStageTimerMax = 90;
 		// This is a reference property. It lets us write FirstStageTimer as if it's NPC.localAI[1], essentially giving it our own name
 		public ref float FirstStageTimer => ref NPC.localAI[1];
-
-		public ref float RemainingShields => ref NPC.localAI[2];
 
 		// We could also repurpose FirstStageTimer since it's unused in the second stage, or write "=> ref FirstStageTimer", but then we have to reset the timer when the state switch happens
 		public ref float SecondStageTimer_SpawnEyes => ref NPC.localAI[3];
@@ -101,7 +107,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Minion Boss");
 			Main.npcFrameCount[Type] = 6;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
@@ -109,15 +114,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			// This boss also becomes immune to OnFire and all buffs that inherit OnFire immunity during the second half of the fight. See the ApplySecondStageBuffImmunities method.
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -144,9 +144,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.boss = true;
 			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
-			// Don't set immunities like this as of 1.4:
-			// NPC.buffImmune[BuffID.Confused] = true;
-			// immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
+			// Default buff immunities should be set in SetStaticDefaults through the NPCID.Sets.ImmuneTo{X} arrays.
+			// To dynamically adjust immunities of an active NPC, NPC.buffImmune[] can be changed in AI: NPC.buffImmune[BuffID.OnFire] = true;
+			// This approach, however, will not preserve buff immunities. To preserve buff immunities, use the NPC.BecomeImmuneTo and NPC.ClearImmuneToBuffs methods instead, as shown in the ApplySecondStageBuffImmunities method below.
 
 			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
 			NPC.aiStyle = -1;
@@ -263,7 +263,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// If the NPC dies, spawn gore and play a sound
 			if (Main.netMode == NetmodeID.Server) {
 				// We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
@@ -283,6 +283,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
+
+				// This adds a screen shake (screenshake) similar to Deerclops
+				PunchCameraModifier modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
+				Main.instance.CameraModifiers.Add(modifier);
 			}
 		}
 
@@ -334,46 +338,49 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			int count = MinionCount();
 			var entitySource = NPC.GetSource_FromAI();
 
+			MinionMaxHealthTotal = 0;
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
-				NPC minionNPC = Main.npc[index];
+				NPC minionNPC = NPC.NewNPCDirect(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				if (minionNPC.whoAmI == Main.maxNPCs)
+					continue; // spawn failed due to spawn cap
 
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
 				// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
+				MinionBossMinion minion = (MinionBossMinion)minionNPC.ModNPC;
+				minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
+				minion.PositionOffset = i / (float) count; // Give it a separate position offset
 
-				if (minionNPC.ModNPC is MinionBossMinion minion) {
-					// This checks if our spawned NPC is indeed the minion, and casts it so we can access its variables
-					minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
-					minion.PositionIndex = i; // Give it the iteration index so each minion has a separate one, used for movement
-				}
+				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield texxt
 
 				// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-				if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs) {
-					NetMessage.SendData(MessageID.SyncNPC, number: index);
+				if (Main.netMode == NetmodeID.Server) {
+					NetMessage.SendData(MessageID.SyncNPC, number: minionNPC.whoAmI);
 				}
+			}
+
+			// sync MinionMaxHealthTotal
+			if (Main.netMode == NetmodeID.Server) {
+				NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
 			}
 		}
 
 		private void CheckSecondStage() {
+			MinionHealthTotal = 0;
 			if (SecondStage) {
 				// No point checking if the NPC is already in its second stage
 				return;
 			}
 
-			float remainingShieldsSum = 0f;
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC otherNPC = Main.npc[i];
 				if (otherNPC.active && otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
 					if (minion.ParentIndex == NPC.whoAmI) {
-						remainingShieldsSum += (float)otherNPC.life / otherNPC.lifeMax;
+						MinionHealthTotal += otherNPC.life;
 					}
 				}
 			}
 
-			// We reference this in the MinionBossBossBar
-			RemainingShields = remainingShieldsSum / MinionCount();
-
-			if (RemainingShields <= 0 && Main.netMode != NetmodeID.MultiplayerClient) {
+			if (MinionHealthTotal <= 0 && Main.netMode != NetmodeID.MultiplayerClient) {
 				// If we have no shields (aka "no minions alive"), we initiate the second stage, and notify other players that this NPC has reached its second stage
 				// by setting NPC.netUpdate to true in this tick. It will send important data like position, velocity and the NPC.ai[] array to all connected clients
 
@@ -447,12 +454,17 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.damage = 0;
 
 			// Fade in based on remaining total minion life
-			NPC.alpha = (int)(RemainingShields * 255);
+			float remainingShields = MinionHealthTotal / (float)MinionMaxHealthTotal;
+			NPC.alpha = (int)(remainingShields * 255);
 
 			NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver2;
 		}
 
 		private void DoSecondStage(Player player) {
+			if (NPC.life < NPC.lifeMax * 0.5f) {
+				ApplySecondStageBuffImmunities();
+			}
+
 			Vector2 toPlayer = player.Center - NPC.Center;
 
 			float offsetX = 200f;
@@ -513,6 +525,40 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				var entitySource = NPC.GetSource_FromAI();
 
 				Projectile.NewProjectile(entitySource, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+			}
+		}
+
+		private void ApplySecondStageBuffImmunities() {
+			if (NPC.buffImmune[BuffID.OnFire]) {
+				return;
+			}
+			// Halfway through stage 2, this boss becomes immune to the OnFire buff.
+			// This code will only run once because of the !NPC.buffImmune[BuffID.OnFire] check.
+			// If you make a similar check for just a life percentage in a boss, you will need to use a bool to track if the corresponding code has run yet or not.
+			NPC.BecomeImmuneTo(BuffID.OnFire);
+
+			// Finally, this boss will clear all the buffs it currently has that it is now immune to. ClearImmuneToBuffs should not be run on multiplayer clients, the server has authority over buffs.
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
+				NPC.ClearImmuneToBuffs(out bool anyBuffsCleared);
+
+				if (anyBuffsCleared) {
+					// Since we cleared some fire related buffs, spawn some smoke to communicate that the fire buffs have been extinguished.
+					// This example is commented out because it would require a ModPacket to manually sync in order to work in multiplayer.
+					/* for (int g = 0; g < 8; g++) {
+						Gore gore = Gore.NewGoreDirect(NPC.GetSource_FromThis(), NPC.Center, default, Main.rand.Next(61, 64), 1f);
+						gore.scale = 1.5f;
+						gore.velocity += new Vector2(1.5f, 0).RotatedBy(g * MathHelper.PiOver2);
+					}*/
+				}
+			}
+
+			// Spawn a ring of dust to communicate the change.
+			for (int loops = 0; loops < 2; loops++) {
+				for (int i = 0; i < 50; i++) {
+					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+					Dust d = Dust.NewDustPerfect(NPC.Center, DustID.BlueCrystalShard, speed * 10 * (loops + 1), Scale: 1.5f);
+					d.noGravity = true;
+				}
 			}
 		}
 	}

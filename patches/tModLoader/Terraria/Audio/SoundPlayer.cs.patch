@@ -1,146 +1,141 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,77 @@
+@@ -2,24 +_,84 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
- using System.Collections.Generic;
-+using System.Diagnostics.CodeAnalysis;
- #if FNA
- using System.Threading;
-+using System.Threading.Tasks;
- #endif
  
- namespace Terraria.Audio
++#nullable enable
++
+ namespace Terraria.Audio;
+ 
+-public class SoundPlayer
++// Also see SoundPlayer.TML.cs
++public partial class SoundPlayer
  {
--	public class SoundPlayer
-+	// Also see SoundPlayer.TML.cs
-+	public partial class SoundPlayer
+ 	private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
+ 
+-	public SlotId Play(SoundStyle style, Vector2 position)
++	//TML: Position parameter made nullable, SoundUpdateCallback parameter merged in, with changed type.
++	public SlotId Play(in SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
  	{
- 		private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
++		/*
+ 		if (Main.dedServ || style == null || !style.IsTrackable)
++		*/
++		if (Main.dedServ)
+ 			return SlotId.Invalid;
  
--		public SlotId Play(SoundStyle style, Vector2 position) {
--			if (Main.dedServ || style == null || !style.IsTrackable)
-+		//TML: Position parameter made nullable.
-+		public SlotId Play(in SoundStyle style, Vector2? position = null) {
-+			if (Main.dedServ)
- 				return SlotId.Invalid;
- 
-+			/*
- 			if (Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position) > 100000000f)
- 				return SlotId.Invalid;
-+			*/
++		/*
+ 		if (Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position) > 100000000f)
+ 			return SlotId.Invalid;
++		*/
 +
-+			if (position.HasValue && Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position.Value) > 100000000f)
-+				return SlotId.Invalid;
++		if (position.HasValue && Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position.Value) > 100000000f)
++			return SlotId.Invalid;
 +
-+			// Handle PlayOnlyIfFocused
-+			if (style.PlayOnlyIfFocused && !Main.hasFocus)
-+				return SlotId.Invalid;
++		// Handle PlayOnlyIfFocused
++		if (style.PlayOnlyIfFocused && !Main.hasFocus)
++			return SlotId.Invalid;
 +
-+			// If not on the main thread - queue a main thread action, and wait for it to complete
-+			if (!Program.IsMainThread) {
-+				var styleCopy = style;
-+				return Main.RunOnMainThread(() => Play_Inner(styleCopy, position)).GetAwaiter().GetResult();
-+			}
-+			
-+			return Play_Inner(in style, position);
++		// If not on the main thread - queue a main thread action, and wait for it to complete
++		if (!Program.IsMainThread) {
++			var styleCopy = style;
++			return Main.RunOnMainThread(() => Play_Inner(styleCopy, position, updateCallback)).GetAwaiter().GetResult();
 +		}
++		
++		return Play_Inner(in style, position, updateCallback);
++	}
 +
-+		private SlotId Play_Inner(in SoundStyle style, Vector2? position) {
-+			// Handle the MaxInstances & RestartIfPlaying properties
-+			int maxInstances = style.MaxInstances;
++	// The part that HAS to run on the main thread.
++	private SlotId Play_Inner(in SoundStyle style, Vector2? position, SoundUpdateCallback? updateCallback)
++	{
++		// Handle the MaxInstances & RestartIfPlaying properties
++		int maxInstances = style.MaxInstances;
 +
-+			if (maxInstances > 0) {
-+				int instanceCount = 0;
++		if (maxInstances > 0) {
++			int instanceCount = 0;
 +
-+				foreach (var pair in _trackedSounds) {
-+					var activeSound = pair.Value;
++			foreach (var pair in _trackedSounds) {
++				var activeSound = pair.Value;
 +
-+					if (!activeSound.IsPlaying || !style.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
-+						continue;
-+					}
-+
-+					switch (style.SoundLimitBehavior) {
-+						case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
-+							activeSound.Sound.Stop(true);
-+							break;
-+						default:
-+							return SlotId.Invalid;
-+					}
++				if (!activeSound.IsPlaying || !style.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
++					continue;
 +				}
-+			}
 +
-+			SoundStyle styleCopy = style;
-+
-+			// Handle 'UsesMusicPitch'.. This property is a weird solution for keeping vanilla's old instruments' behavior alive, and is currently internal.
-+			if (style.UsesMusicPitch) {
-+				styleCopy.Pitch += Main.musicPitch;
-+			}
- 
--			ActiveSound value = new ActiveSound(style, position);
-+			ActiveSound value = new ActiveSound(styleCopy, position);
- 			return _trackedSounds.Add(value);
- 		}
- 
-@@ -26,20 +_,28 @@
- 			StopAll();
- 		}
- 
-+		//TML: Merged into the above method.
-+		/*
--		public SlotId Play(SoundStyle style) {
-+		public SlotId Play(ISoundStyle style) {
--			if (Main.dedServ || style == null || !style.IsTrackable)
-+			if (Main.dedServ || style == null)
- 				return SlotId.Invalid;
- 
- 			ActiveSound value = new ActiveSound(style);
- 			return _trackedSounds.Add(value);
- 		}
-+		*/
- 
-+		//TML: Implementation internalized, moved to SoundPlayer.TML.cs for nullability reasons.
-+		internal ActiveSound GetActiveSound(SlotId id)
-+			=> TryGetActiveSound(id, out var result) ? result : null;
-+		/*
- 		public ActiveSound GetActiveSound(SlotId id) {
- 			if (!_trackedSounds.Has(id))
- 				return null;
- 
- 			return _trackedSounds[id];
- 		}
-+		*/
- 
- 		public void PauseAll() {
- 			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
-@@ -61,6 +_,21 @@
- 			_trackedSounds.Clear();
- 		}
- 
-+		public void StopAll(in SoundStyle style) {
-+			List<SlotVector<ActiveSound>.ItemPair> stopped = new();
-+
-+			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
-+				if (style.IsTheSameAs(item.Value.Style)) {
-+					item.Value.Stop();
-+					stopped.Add(item);
++				switch (style.SoundLimitBehavior) {
++					case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
++						activeSound.Sound?.Stop(true);
++						break;
++					default:
++						return SlotId.Invalid;
 +				}
-+			}
-+
-+			foreach (var item in stopped) {
-+				_trackedSounds.Remove(item.Id);
 +			}
 +		}
 +
- 		public void Update() {
- #if FNA
- 			Monitor.Enter(SoundEngine.AudioLock);
-@@ -80,7 +_,7 @@
- #endif
- 		}
++		SoundStyle styleCopy = style;
++
++		// Handle 'UsesMusicPitch'.. This property is a weird solution for keeping vanilla's old instruments' behavior alive, and is currently internal.
++		if (style.UsesMusicPitch) {
++			styleCopy.Pitch += Main.musicPitch;
++		}
  
--		public ActiveSound FindActiveSound(SoundStyle style) {
-+		public ActiveSound FindActiveSound(in SoundStyle style) {
- 			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
- 				if (item.Value.Style == style)
- 					return item.Value;
+-		ActiveSound value = new ActiveSound(style, position);
++		ActiveSound value = new ActiveSound(styleCopy, position, updateCallback);
+ 		return _trackedSounds.Add(value);
+ 	}
+ 
++	//TML: Merged into the above method.
++	/*
+ 	public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition)
+ 	{
+ 		if (Main.dedServ || style == null || !style.IsTrackable)
+@@ -29,14 +_,19 @@
+ 			return SlotId.Invalid;
+ 
+ 		ActiveSound value = new ActiveSound(style, position, loopingCondition);
++
+ 		return _trackedSounds.Add(value);
+ 	}
++	*/
+ 
+ 	public void Reload()
+ 	{
+ 		StopAll();
+ 	}
+ 
++	//TML: Merged into the above method.
++	/*
++	{
+ 	public SlotId Play(SoundStyle style)
+ 	{
+ 		if (Main.dedServ || style == null || !style.IsTrackable)
+@@ -45,7 +_,13 @@
+ 		ActiveSound value = new ActiveSound(style);
+ 		return _trackedSounds.Add(value);
+ 	}
++	*/
+ 
++	//TML: Made internal, mods should use TryGetActiveSound
++	internal ActiveSound? GetActiveSound(SlotId id)
++		=> TryGetActiveSound(id, out var result) ? result : null;
++
++	/*
+ 	public ActiveSound GetActiveSound(SlotId id)
+ 	{
+ 		if (!_trackedSounds.Has(id))
+@@ -53,6 +_,7 @@
+ 
+ 		return _trackedSounds[id];
+ 	}
++	*/
+ 
+ 	public void PauseAll()
+ 	{
+@@ -91,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public ActiveSound FindActiveSound(SoundStyle style)
++	public ActiveSound? FindActiveSound(in SoundStyle style)
+ 	{
+ 		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+ 			if (item.Value.Style == style)

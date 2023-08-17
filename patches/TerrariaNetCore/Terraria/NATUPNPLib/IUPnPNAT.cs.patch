@@ -1,25 +1,26 @@
 --- src/Terraria/Terraria/NATUPNPLib/IUPnPNAT.cs
 +++ src/TerrariaNetCore/Terraria/NATUPNPLib/IUPnPNAT.cs
-@@ -1,9 +_,9 @@
+@@ -1,9 +_,11 @@
 -#if SERVER
++/*
  using System.Runtime.CompilerServices;
  using System.Runtime.InteropServices;
++*/
  
- namespace NATUPNPLib
- {
-+	/*
- 	[ComImport]
- 	[CompilerGenerated]
- 	[Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
-@@ -18,5 +_,10 @@
- 			get;
- 		}
+ namespace NATUPNPLib;
+ 
++/*
+ [ComImport]
+ [CompilerGenerated]
+ [Guid("B171C812-CC76-485A-94D8-B6B3A2794E99")]
+@@ -18,4 +_,9 @@
+ 		get;
  	}
-+	*/
-+
-+	public interface IUPnPNAT
-+	{
-+		public abstract IStaticPortMappingCollection StaticPortMappingCollection { get; }
-+	}
  }
 -#endif
++*/
++
++public interface IUPnPNAT
++{
++	public abstract IStaticPortMappingCollection StaticPortMappingCollection { get; }
++}

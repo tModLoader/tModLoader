@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup
 {
 	internal class HookGenTask : SetupOperation
 	{
-		private const string dotnetSdkVersion = "6.0.3";
+		private const string dotnetSdkVersion = "6.0.14";
 		private const string libsPath = "src/tModLoader/Terraria/Libraries";
 		private const string binLibsPath = "src/tModLoader/Terraria/bin/Release/net6.0/Libraries";
 		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Release/net6.0/tModLoader.dll";
@@ -81,10 +81,26 @@ namespace Terraria.ModLoader.Setup
 			gen.Generate();
 
 			RemoveModLoaderTypes(gen.OutputModule);
+			AdjustNamespaceStyle(gen.OutputModule);
 
 			gen.OutputModule.Write(outputPath);
 
 			return true;
+		}
+
+
+		// convert
+		//   On.Namespace.Type -> Namespace.On_Type
+		//   IL.Namespace.Type -> Namespace.IL_Type
+		private static void AdjustNamespaceStyle(ModuleDefinition module)
+		{
+			foreach (var type in module.Types) {
+				if (string.IsNullOrEmpty(type.Namespace))
+					continue;
+
+				type.Name = type.Namespace[..2] + '_' + type.Name;
+				type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
+			}
 		}
 
 		private static void RemoveModLoaderTypes(ModuleDefinition module)

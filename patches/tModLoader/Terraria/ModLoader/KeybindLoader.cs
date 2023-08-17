@@ -1,57 +1,53 @@
-﻿using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Terraria.ModLoader
+namespace Terraria.ModLoader;
+
+public sealed class KeybindLoader : Loader
 {
-	public sealed class KeybindLoader : Loader
+	internal static readonly IDictionary<string, ModKeybind> modKeybinds = new Dictionary<string, ModKeybind>();
+
+	internal static IEnumerable<ModKeybind> Keybinds => modKeybinds.Values;
+
+	internal override void Unload()
 	{
-		internal static readonly IDictionary<string, ModKeybind> modKeybinds = new Dictionary<string, ModKeybind>();
+		modKeybinds.Clear();
+	}
 
-		internal static IEnumerable<ModKeybind> Keybinds => modKeybinds.Values;
+	/// <summary>
+	/// Registers a keybind with a <paramref name="name"/> and <paramref name="defaultBinding"/>. Use the returned <see cref="ModKeybind"/> to detect when buttons are pressed.
+	/// </summary>
+	/// <param name="mod"> The mod that this keybind will belong to. Usually, this would be your mod instance. </param>
+	/// <param name="name"> The internal name of the keybind. The localization key "Mods.{ModName}.Keybinds.{KeybindName}.DisplayName" will be used for the display name. <br/>It is recommended that this not have any spaces. </param>
+	/// <param name="defaultBinding"> The default binding. </param>
+	public static ModKeybind RegisterKeybind(Mod mod, string name, Keys defaultBinding)
+		=> RegisterKeybind(mod, name, defaultBinding.ToString());
 
-		internal override void Unload() {
-			modKeybinds.Clear();
-		}
+	/// <summary>
+	/// Registers a keybind with a <paramref name="name"/> and <paramref name="defaultBinding"/>. Use the returned <see cref="ModKeybind"/> to detect when buttons are pressed.
+	/// </summary>
+	/// <param name="mod"> The mod that this keybind will belong to. Usually, this would be your mod instance. </param>
+	/// <param name="name"> The internal name of the keybind. The localization key "Mods.{ModName}.Keybinds.{KeybindName}.DisplayName" will be used for the display name. <br/>It is recommended that this not have any spaces. </param>
+	/// <param name="defaultBinding"> The default binding. </param>
+	public static ModKeybind RegisterKeybind(Mod mod, string name, string defaultBinding)
+	{
+		if (mod == null)
+			throw new ArgumentNullException(nameof(mod));
 
-		/// <summary>
-		/// Registers a keybind with a <paramref name="name"/> and <paramref name="defaultBinding"/>. Use the returned <see cref="ModKeybind"/> to detect when buttons are pressed.
-		/// </summary>
-		/// <param name="mod"> The mod that this keybind will belong to. Usually, this would be your mod instance. </param>
-		/// <param name="name"> The internal name of the keybind. The localization key "Mods.{ModName}.Keybind.{KeybindName}" will be used for the display name. </param>
-		/// <param name="defaultBinding"> The default binding. </param>
-		public static ModKeybind RegisterKeybind(Mod mod, string name, Keys defaultBinding)
-			=> RegisterKeybind(mod, name, defaultBinding.ToString());
+		if (string.IsNullOrWhiteSpace(name))
+			throw new ArgumentNullException(nameof(name));
 
-		/// <summary>
-		/// Registers a keybind with a <paramref name="name"/> and <paramref name="defaultBinding"/>. Use the returned <see cref="ModKeybind"/> to detect when buttons are pressed.
-		/// </summary>
-		/// <param name="mod"> The mod that this keybind will belong to. Usually, this would be your mod instance. </param>
-		/// <param name="name"> The internal name of the keybind. The localization key "Mods.{ModName}.Keybind.{KeybindName}" will be used for the display name. </param>
-		/// <param name="defaultBinding"> The default binding. </param>
-		public static ModKeybind RegisterKeybind(Mod mod, string name, string defaultBinding) {
-			if (mod == null)
-				throw new ArgumentNullException(nameof(mod));
+		if (string.IsNullOrWhiteSpace(defaultBinding))
+			throw new ArgumentNullException(nameof(defaultBinding));
 
-			if (string.IsNullOrWhiteSpace(name))
-				throw new ArgumentNullException(nameof(name));
+		return RegisterKeybind(new ModKeybind(mod, name, defaultBinding));
+	}
 
-			if (string.IsNullOrWhiteSpace(defaultBinding))
-				throw new ArgumentNullException(nameof(defaultBinding));
+	private static ModKeybind RegisterKeybind(ModKeybind keybind)
+	{
+		modKeybinds[keybind.FullName] = keybind;
 
-			return RegisterKeybind(new ModKeybind(mod, name, defaultBinding));
-		}
-
-		private static ModKeybind RegisterKeybind(ModKeybind keybind) {
-			modKeybinds[keybind.FullName] = keybind;
-
-			return keybind;
-		}
-
-		internal static void SetupContent() {
-			foreach (var modKebind in modKeybinds.Values) {
-				modKebind.SetupContent();
-			}
-		}
+		return keybind;
 	}
 }

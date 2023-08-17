@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromOptionsNotScaledWithLuckDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsNotScaledWithLuckDropRule.cs
-@@ -25,7 +_,7 @@
- 		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
- 			ItemDropAttemptResult result;
- 			if (info.rng.Next(chanceDenominator) < chanceNumerator) {
--				CommonCode.DropItemFromNPC(info.npc, dropIds[info.rng.Next(dropIds.Length)], 1);
-+				CommonCode.DropItem(info, dropIds[info.rng.Next(dropIds.Length)], 1);
- 				result = default(ItemDropAttemptResult);
- 				result.State = ItemDropAttemptResultState.Success;
- 				return result;
+@@ -24,7 +_,7 @@
+ 	{
+ 		ItemDropAttemptResult result;
+ 		if (info.rng.Next(chanceDenominator) < chanceNumerator) {
+-			CommonCode.DropItemFromNPC(info.npc, dropIds[info.rng.Next(dropIds.Length)], 1);
++			CommonCode.DropItem(info, dropIds[info.rng.Next(dropIds.Length)], 1);
+ 			result = default(ItemDropAttemptResult);
+ 			result.State = ItemDropAttemptResultState.Success;
+ 			return result;

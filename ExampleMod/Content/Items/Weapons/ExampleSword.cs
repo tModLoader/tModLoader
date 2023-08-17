@@ -2,19 +2,12 @@ using ExampleMod.Content.Rarities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleSword : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded sword."); // The (English) text shown below your weapon's name.
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 40; // The item texture's width.
 			Item.height = 40; // The item texture's height.
@@ -41,7 +34,7 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 		}
 
-		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			// Inflict the OnFire debuff for 1 second onto any NPC/Monster that this hits.
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 60);

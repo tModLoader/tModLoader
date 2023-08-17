@@ -1,51 +1,67 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/WallDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
 @@ -3,13 +_,14 @@
- using System.Diagnostics;
+ using Microsoft.Xna.Framework.Graphics;
  using Terraria.Graphics;
  using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent.Drawing
+ namespace Terraria.GameContent.Drawing;
+ 
+ public class WallDrawing
  {
- 	public class WallDrawing
- 	{
- 		private static VertexColors _glowPaintColors = new VertexColors(Color.White);
--		private Tile[,] _tileArray;
-+		private Tilemap _tileArray;
- 		private TilePaintSystemV2 _paintSystem;
+ 	private static VertexColors _glowPaintColors = new VertexColors(Color.White);
+-	private Tile[,] _tileArray;
++	private Tilemap _tileArray;
+ 	private TilePaintSystemV2 _paintSystem;
+ 	private bool _shouldShowInvisibleWalls;
  
- 		public WallDrawing(TilePaintSystemV2 paintSystem) {
-@@ -61,8 +_,9 @@
- 			Rectangle value2 = new Rectangle(0, 0, 32, 32);
- 			int underworldLayer = Main.UnderworldLayer;
- 			Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
-+			// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
--			for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
-+			for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
--				for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
-+				for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
- 					Tile tile = _tileArray[j, i];
- 					if (tile == null) {
- 						tile = new Tile();
-@@ -73,6 +_,10 @@
- 					if (wall <= 0 || FullTile(j, i))
- 						continue;
+@@ -58,6 +_,7 @@
  
-+					if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
-+						goto PostDraw;
-+					}
+ 		int num5 = (int)((screenPosition.X - vector.X) / 16f - 1f);
+ 		int num6 = (int)((screenPosition.X + (float)screenWidth + vector.X) / 16f) + 2;
++		// Patch note: These locals are used below.
+ 		int num7 = (int)((screenPosition.Y - vector.Y) / 16f - 1f);
+ 		int num8 = (int)((screenPosition.Y + (float)screenHeight + vector.Y) / 16f) + 5;
+ 		int num9 = offScreenRange / 16;
+@@ -78,8 +_,12 @@
+ 		Rectangle value = new Rectangle(0, 0, 32, 32);
+ 		int underworldLayer = Main.UnderworldLayer;
+ 		Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
 +
- 					Color color = Lighting.GetColor(j, i);
- 					if (tile.wallColor() == 31)
- 						color = Color.White;
-@@ -129,6 +_,9 @@
- 						if (flag3)
- 							spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + value, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
- 					}
-+
-+					PostDraw:
-+					WallLoader.PostDraw(j, i, wall, spriteBatch);
++		// TML:
++		// Swapped loop iteration order to improve memory access linearity.
++		// Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
+-		for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
++		for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
+-			for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
++			for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
+ 				Tile tile = _tileArray[j, i];
+ 				if (tile == null) {
+ 					tile = new Tile();
+@@ -87,9 +_,15 @@
  				}
+ 
+ 				ushort wall = tile.wall;
++				//TML: Prior to 1.4.4, the check was just the line below. Should PreDraw be called for "invisible walls"?
++				//if (wall <= 0 || FullTile(j, i))
+ 				if (wall <= 0 || FullTile(j, i) || (wall == 318 && !_shouldShowInvisibleWalls) || (tile.invisibleWall() && !_shouldShowInvisibleWalls))
+ 					continue;
+ 
++				if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
++					goto PostDraw;
++				}
++
+ 				Color color = Lighting.GetColor(j, i);
+ 				if (tile.fullbrightWall())
+ 					color = Color.White;
+@@ -159,6 +_,9 @@
+ 					if (flag3)
+ 						spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + vector, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				}
++
++				PostDraw:
++				WallLoader.PostDraw(j, i, wall, spriteBatch);
  			}
+ 		}
  

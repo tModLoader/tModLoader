@@ -1,0 +1,32 @@
+--- src/Terraria/Terraria/Net/Sockets/SocialSocket.cs
++++ src/TerrariaNetCore/Terraria/Net/Sockets/SocialSocket.cs
+@@ -1,4 +_,5 @@
+ using System.Threading;
++using System.Threading.Tasks;
+ using Terraria.Social;
+ 
+ namespace Terraria.Net.Sockets;
+@@ -37,7 +_,11 @@
+ 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
+ 	{
+ 		SocialAPI.Network.Send(_remoteAddress, data, size);
++#if NETCORE
++		Task.Run(() => callback.Invoke(state));
++#else
+ 		callback.BeginInvoke(state, null, null);
++#endif
+ 	}
+ 
+ 	private void ReadCallback(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
+@@ -52,7 +_,11 @@
+ 
+ 	void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
+ 	{
++#if NETCORE
++		Task.Run(() => new InternalReadCallback(ReadCallback).Invoke(data, offset, size, callback, state));
++#else
+ 		new InternalReadCallback(ReadCallback).BeginInvoke(data, offset, size, callback, state, null, null);
++#endif
+ 	}
+ 
+ 	void ISocket.SendQueuedPackets()

@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/Social/WeGame/CoreSocialModule.cs
++++ src/TerrariaNetCore/Terraria/Social/WeGame/CoreSocialModule.cs
+@@ -62,12 +_,15 @@
+ 
+ 	public void Shutdown()
+ 	{
++#if !NETCORE
+ 		if (Platform.IsWindows) {
+ 			Application.ApplicationExit += delegate {
+ 				isRailValid = false;
+ 			};
+ 		}
+-		else {
++		else
++#endif
++		{
+ 			isRailValid = false;
+ 			AppDomain.CurrentDomain.ProcessExit += delegate {
+ 				isRailValid = false;

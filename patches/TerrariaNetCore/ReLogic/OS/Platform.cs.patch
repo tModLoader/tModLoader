@@ -1,0 +1,34 @@
+--- src/Terraria/ReLogic/OS/Platform.cs
++++ src/TerrariaNetCore/ReLogic/OS/Platform.cs
+@@ -1,25 +_,19 @@
+ using System;
+ using System.Runtime.InteropServices;
+-#if WINDOWS
+-using ReLogic.OS.Windows;
+-#elif LINUX
+ using ReLogic.OS.Linux;
+-#elif MAC
+ using ReLogic.OS.OSX;
+-#endif
++using ReLogic.OS.Windows;
+ using ReLogic.Utilities;
+ 
+ namespace ReLogic.OS;
+ 
+ public abstract class Platform : IDisposable
+ {
+-#if WINDOWS
+-	public static readonly Platform Current = new WindowsPlatform();
+-#elif LINUX
+-	public static readonly Platform Current = new LinuxPlatform();
+-#elif MAC
+-	public static readonly Platform Current = new OsxPlatform();
+-#endif
++	public static readonly Platform Current =
++		OperatingSystem.IsWindows() ? new WindowsPlatform() :
++		OperatingSystem.IsMacOS() ? new OsxPlatform()
++		: new LinuxPlatform();
++
+ 	public readonly PlatformType Type;
+ 	private TypeInstanceCollection<object> _services = new TypeInstanceCollection<object>();
+ 	private bool _disposedValue;

@@ -1,20 +1,29 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_FishedOut.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_FishedOut.cs
-@@ -1,11 +_,16 @@
+@@ -1,11 +_,22 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_FishedOut : IEntitySource
- 	{
- 		public readonly Entity Entity;
+ namespace Terraria.DataStructures;
  
--		public EntitySource_FishedOut(Entity entity) {
-+		public string? Context { get; }
++/// <summary>
++/// Used when an NPC spawns as a result of fishing.
++/// </summary>
+ public class EntitySource_FishedOut : IEntitySource
+ {
+-	public readonly Entity Entity;
+-
+-	public EntitySource_FishedOut(Entity entity)
++	/// <summary>
++	/// The entity which was fishing. Normally a <see cref="Player"/>
++	/// </summary>
++	public Entity Fisher { get; }
 +
-+		public EntitySource_FishedOut(Entity entity, string? context = null) {
- 			Entity = entity;
-+			Context = context;
- 		}
++	public string? Context { get; }
++
++	public EntitySource_FishedOut(Entity fisher, string? context = null)
+ 	{
+-		Entity = entity;
++		Fisher = fisher;
++		Context = context;
  	}
  }

@@ -3,36 +3,38 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.UI.ModBrowser
+namespace Terraria.ModLoader.UI.ModBrowser;
+
+public class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
 {
-	internal class UIBrowserFilterToggle<T> : UICycleImage where T : struct, Enum
+	private static Asset<Texture2D> Texture => UICommon.ModBrowserIconsTexture;
+
+	public T State {
+		get;
+		private set;
+	}
+
+	//TODO: Needs to update texture and logic
+	public UIBrowserFilterToggle(int textureOffsetX, int textureOffsetY, int padding = 2)
+		: base(Texture, Enum.GetValues(typeof(T)).Length, 32, 32, textureOffsetX, textureOffsetY, padding)
 	{
-		private static Asset<Texture2D> Texture => UICommon.ModBrowserIconsTexture;
+		OnLeftClick += UpdateToNext;
+		OnRightClick += UpdateToPrevious;
+	}
 
-		public T State {
-			get;
-			private set;
-		}
+	public void SetCurrentState(T @enum)
+	{
+		State = @enum;
+		base.SetCurrentState((int)(object)State);
+	}
 
-		public UIBrowserFilterToggle(int textureOffsetX, int textureOffsetY, int padding = 2)
-			: base(Texture, Enum.GetValues(typeof(T)).Length, 32, 32, textureOffsetX, textureOffsetY, padding) {
-			OnClick += UpdateToNext;
-			OnRightClick += UpdateToPrevious;
-		}
+	private void UpdateToNext(UIMouseEvent @event, UIElement element)
+	{
+		SetCurrentState(State.NextEnum());
+	}
 
-		public void SetCurrentState(T @enum) {
-			State = @enum;
-			base.SetCurrentState((int)(object)State);
-		}
-
-		private void UpdateToNext(UIMouseEvent @event, UIElement element) {
-			SetCurrentState(State.NextEnum());
-			Interface.modBrowser.UpdateNeeded = true;
-		}
-
-		private void UpdateToPrevious(UIMouseEvent @event, UIElement element) {
-			SetCurrentState(State.PreviousEnum());
-			Interface.modBrowser.UpdateNeeded = true;
-		}
+	private void UpdateToPrevious(UIMouseEvent @event, UIElement element)
+	{
+		SetCurrentState(State.PreviousEnum());
 	}
 }

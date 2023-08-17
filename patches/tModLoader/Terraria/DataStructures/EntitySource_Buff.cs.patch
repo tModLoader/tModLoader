@@ -1,24 +1,39 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Buff.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_Buff.cs
-@@ -1,3 +_,5 @@
+@@ -1,14 +_,29 @@
 +#nullable enable
 +
- namespace Terraria.DataStructures
- {
- 	public class EntitySource_Buff : IEntitySource
-@@ -5,11 +_,14 @@
- 		public readonly Entity Entity;
- 		public readonly int BuffId;
- 		public readonly int BuffIndex;
-+		
-+		public string? Context { get; }
++using Terraria.ID;
++using Terraria.ModLoader;
++
+ namespace Terraria.DataStructures;
  
--		public EntitySource_Buff(Entity entity, int buffId, int buffIndex) {
-+		public EntitySource_Buff(Entity entity, int buffId, int buffIndex, string? context = null) {
- 			Entity = entity;
- 			BuffId = buffId;
- 			BuffIndex = buffIndex;
-+			Context = context;
- 		}
++/// <summary>
++/// Intended for mods to use when spawning projectiles periodically from buffs. <br/><br/>
++///
++/// Note that this can be used for both NPCs and Players
++/// </summary>
+-public class EntitySource_Buff : IEntitySource
++public class EntitySource_Buff : EntitySource_Parent
+ {
+-	public readonly Entity Entity;
+-	public readonly int BuffId;
+-	public readonly int BuffIndex;
+-
+-	public EntitySource_Buff(Entity entity, int buffId, int buffIndex)
++	/// <summary>
++	/// The type of the buff (<see cref="BuffID"/> or <see cref="ModContent.BuffType"/>)
++	/// </summary>
++	public int BuffId { get; }
++
++	/// <summary>
++	/// The index of the buff in the entity's <c>buffType</c> and <c>buffTime</c> arrays.
++	/// </summary>
++	public int BuffIndex { get; }
++
++	public EntitySource_Buff(Entity entity, int buffId, int buffIndex, string? context = null) : base(entity, context)
+ 	{
+-		Entity = entity;
+ 		BuffId = buffId;
+ 		BuffIndex = buffIndex;
  	}
- }

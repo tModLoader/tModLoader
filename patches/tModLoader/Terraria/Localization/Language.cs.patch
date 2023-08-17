@@ -1,0 +1,65 @@
+--- src/TerrariaNetCore/Terraria/Localization/Language.cs
++++ src/tModLoader/Terraria/Localization/Language.cs
+@@ -1,23 +_,61 @@
++using System;
+ using System.Text.RegularExpressions;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.Localization;
+ 
+-public static class Language
++public static partial class Language
+ {
++	/// <summary>
++	/// The language the game is currently using.
++	/// </summary>
+ 	public static GameCulture ActiveCulture => LanguageManager.Instance.ActiveCulture;
+ 
++	/// <summary>
++	/// Retrieves a LocalizedText object for a specified localization key. The actual text value can be retrieved from LocalizedText by accessing the <see cref="LocalizedText.Value"/> property or by using the <see cref="GetTextValue(string)"/> method directly.<br/><br/>
++	/// Using LocalizedText instead of string is prefered when the value is stored. If the user switches languages or if resource packs or mods change text, the LocalizedText will automatically receive the new value. In turn, mods using those LocalizedText will also start displaying the updated values.<br/><br/>
++	/// 
++	/// </summary>
++	/// <param name="key"></param>
++	/// <returns></returns>
+ 	public static LocalizedText GetText(string key) => LanguageManager.Instance.GetText(key);
++	/// <summary>
++	/// Retrieves the text value for a specified localization key. The text returned will be for the currently selected language.
++	/// </summary>
++	/// <param name="key"></param>
++	/// <returns></returns>
+ 	public static string GetTextValue(string key) => LanguageManager.Instance.GetTextValue(key);
++	/// <inheritdoc cref="LocalizedText.Format(object[])"/>
+ 	public static string GetTextValue(string key, object arg0) => LanguageManager.Instance.GetTextValue(key, arg0);
++	/// <inheritdoc cref="LocalizedText.Format(object[])"/>
+ 	public static string GetTextValue(string key, object arg0, object arg1) => LanguageManager.Instance.GetTextValue(key, arg0, arg1);
++	/// <inheritdoc cref="LocalizedText.Format(object[])"/>
+ 	public static string GetTextValue(string key, object arg0, object arg1, object arg2) => LanguageManager.Instance.GetTextValue(key, arg0, arg1, arg2);
++	/// <inheritdoc cref="LocalizedText.Format(object[])"/>
+ 	public static string GetTextValue(string key, params object[] args) => LanguageManager.Instance.GetTextValue(key, args);
++	/// <inheritdoc cref="LocalizedText.FormatWith(object)"/>
+ 	public static string GetTextValueWith(string key, object obj) => LanguageManager.Instance.GetText(key).FormatWith(obj);
++	/// <summary>
++	/// Checks if a LocalizedText with the provided key has been registered or not. This can be used to avoid retrieving dummy values from <see cref="GetText(string)"/> and <see cref="GetTextValue(string)"/> and instead load a fallback value or do other logic. If the key should be created if it doesn't exist, <see cref="GetOrRegister(string, Func{string})"/> can be used instead.
++	/// <br/><br/> Note that modded keys will be registered during mod loading and <see cref="ModLoader.Mod.SetupContent"/> is the earliest point where all keys should be registered with values loaded for the current language.
++	/// </summary>
++	/// <param name="key"></param>
++	/// <returns></returns>
+ 	public static bool Exists(string key) => LanguageManager.Instance.Exists(key);
+ 	public static int GetCategorySize(string key) => LanguageManager.Instance.GetCategorySize(key);
+ 	public static LocalizedText[] FindAll(Regex regex) => LanguageManager.Instance.FindAll(regex);
++	/// <summary>
++	/// Finds all LocalizedText that satisfy the <paramref name="filter"/> parameter. Typically used with <see cref="Lang.CreateDialogFilter(string)"/> or <see cref="Lang.CreateDialogFilter(string, object)"/> as the <paramref name="filter"/> argument to find all LocalizedText that have a specific key prefix and satisfy provided conditions.
++	/// </summary>
++	/// <param name="filter"></param>
++	/// <returns></returns>
+ 	public static LocalizedText[] FindAll(LanguageSearchFilter filter) => LanguageManager.Instance.FindAll(filter);
++	/// <summary>
++	/// Selects a single random LocalizedText that satisfies the <paramref name="filter"/> parameter. Typically used with <see cref="Lang.CreateDialogFilter(string)"/> or <see cref="Lang.CreateDialogFilter(string, object)"/> as the <paramref name="filter"/> argument to find a random LocalizedText that has a specific key prefix and satisfies the provided conditions.
++	/// </summary>
++	/// <param name="filter"></param>
++	/// <param name="random"></param>
++	/// <returns></returns>
+ 	public static LocalizedText SelectRandom(LanguageSearchFilter filter, UnifiedRandom random = null) => LanguageManager.Instance.SelectRandom(filter, random);
+ 	public static LocalizedText RandomFromCategory(string categoryName, UnifiedRandom random = null) => LanguageManager.Instance.RandomFromCategory(categoryName, random);
+ }

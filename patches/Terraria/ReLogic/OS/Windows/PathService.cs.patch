@@ -1,13 +1,11 @@
 --- src/decompiled/ReLogic/OS/Windows/PathService.cs
 +++ src/Terraria/ReLogic/OS/Windows/PathService.cs
-@@ -6,6 +_,10 @@
+@@ -7,7 +_,7 @@
+ 
+ internal class PathService : ReLogic.OS.Base.PathService
  {
- 	internal class PathService : ReLogic.OS.Base.PathService
+-	public override string GetStoragePath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games");
++	public override string GetStoragePath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
+ 
+ 	public override void OpenURL(string url)
  	{
-+#if WINDOWS
- 		public override string GetStoragePath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "My Games");
-+#else
-+		public override string GetStoragePath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
-+#endif
- 	}
- }

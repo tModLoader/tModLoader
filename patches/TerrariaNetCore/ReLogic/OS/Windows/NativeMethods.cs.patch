@@ -1,0 +1,43 @@
+--- src/Terraria/ReLogic/OS/Windows/NativeMethods.cs
++++ src/TerrariaNetCore/ReLogic/OS/Windows/NativeMethods.cs
+@@ -1,6 +_,8 @@
+ using System;
+ using System.Runtime.InteropServices;
++#if !NETCORE
+ using System.Windows.Forms;
++#endif
+ 
+ namespace ReLogic.OS.Windows;
+ 
+@@ -97,7 +_,8 @@
+ 		FO_RENAME
+ 	}
+ 
++	//TML: Removed packing, as it would cause crashes.
+-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
++	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto /*, Pack = 1*/)]
+ 	private struct SHFILEOPSTRUCT
+ 	{
+ 		public IntPtr hwnd;
+@@ -115,11 +_,21 @@
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 
++#if NETCORE
++	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
++	public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
++#else
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
++#endif
+ 
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
++
++#if NETCORE
++	[DllImport("user32.dll")]
++	public static extern IntPtr GetDC(IntPtr hWnd);
++#endif
+ 
+ 	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+ 	public static extern bool TranslateMessage(ref Message message);

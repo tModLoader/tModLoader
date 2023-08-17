@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 using System;
 using System.Collections;
@@ -19,7 +19,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	public Type ElementType { get; }
 	public int ArrayRank { get; }
 
-	public MultiDimArraySerializer(Type arrayType) {
+	public MultiDimArraySerializer(Type arrayType)
+	{
 		ArgumentNullException.ThrowIfNull(arrayType);
 
 		if (!arrayType.IsArray) {
@@ -31,7 +32,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		ArrayRank = arrayType.GetArrayRank();
 	}
 
-	public override TagCompound Serialize(Array array) {
+	public override TagCompound Serialize(Array array)
+	{
 		ArgumentNullException.ThrowIfNull(array);
 
 		if (array.Length == 0) {
@@ -46,13 +48,15 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return tagCompound;
 	}
 
-	public override Array Deserialize(TagCompound tag) {
+	public override Array Deserialize(TagCompound tag)
+	{
 		ArgumentNullException.ThrowIfNull(tag);
 
 		return FromTagCompound(tag, ArrayType, e => TagIO.Deserialize(ElementType, e));
 	}
 
-	public override IList SerializeList(IList list) {
+	public override IList SerializeList(IList list)
+	{
 		ArgumentNullException.ThrowIfNull(list);
 
 		var serializedList = new List<TagCompound>(list.Count);
@@ -64,7 +68,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return serializedList;
 	}
 
-	public override IList DeserializeList(IList list) {
+	public override IList DeserializeList(IList list)
+	{
 		ArgumentNullException.ThrowIfNull(list);
 
 		var listT = (IList<TagCompound>)list;
@@ -77,7 +82,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return deserializedList;
 	}
 
-	public static TagCompound ToTagCompound(Array array, Type? elementType = null, Converter? converter = null) {
+	public static TagCompound ToTagCompound(Array array, Type? elementType = null, Converter? converter = null)
+	{
 		ArgumentNullException.ThrowIfNull(array);
 
 		int[] ranks = new int[array.Rank];
@@ -91,7 +97,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		};
 	}
 
-	public static IList ToList(Array array, Type? elementType = null, Converter? converter = null) {
+	public static IList ToList(Array array, Type? elementType = null, Converter? converter = null)
+	{
 		ArgumentNullException.ThrowIfNull(array);
 
 		var arrayType = array.GetType();
@@ -105,7 +112,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return list;
 	}
 
-	public static Array FromTagCompound(TagCompound tag, Type arrayType, Converter? converter = null) {
+	public static Array FromTagCompound(TagCompound tag, Type arrayType, Converter? converter = null)
+	{
 		ArgumentNullException.ThrowIfNull(tag);
 		ArgumentNullException.ThrowIfNull(arrayType);
 		if (!arrayType.IsArray) {
@@ -124,7 +132,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return FromList(list, ranks, elementType, converter);
 	}
 
-	public static Array FromList(IList list, int[] arrayRanks, Type? elementType = null, Converter? converter = null) {
+	public static Array FromList(IList list, int[] arrayRanks, Type? elementType = null, Converter? converter = null)
+	{
 		ArgumentNullException.ThrowIfNull(list);
 		ArgumentNullException.ThrowIfNull(arrayRanks);
 

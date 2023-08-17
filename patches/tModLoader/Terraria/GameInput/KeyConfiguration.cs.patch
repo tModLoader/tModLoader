@@ -5,60 +5,82 @@
  using System.Linq;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameInput
+ namespace Terraria.GameInput;
+ 
+ public class KeyConfiguration
  {
- 	public class KeyConfiguration
++	//TML: Made readonly so that dicts aren't set to null or whatever, .Clear() is allowed.
+-	public Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
++	public readonly Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
++	public readonly Dictionary<string, List<string>> UnloadedModKeyStatus = new Dictionary<string, List<string>>();
+ 
+ 	public bool DoGrappleAndInteractShareTheSameKey {
+ 		get {
+@@ -22,6 +_,11 @@
+ 		foreach (string knownTrigger in PlayerInput.KnownTriggers) {
+ 			KeyStatus.Add(knownTrigger, new List<string>());
+ 		}
++
++		// Add mod keybinds
++		foreach (var current in KeybindLoader.Keybinds) {
++			KeyStatus.Add(current.FullName, new List<string>());
++		}
+ 	}
+ 
+ 	public void Processkey(TriggersSet set, string newKey, InputMode mode)
+@@ -47,7 +_,10 @@
+ 
+ 	public void ReadPreferences(Dictionary<string, List<string>> dict)
  	{
-+		// Make readonly so dicts aren't set to null or whatever, .Clear() is allowed
--		public Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
-+		public readonly Dictionary<string, List<string>> KeyStatus = new Dictionary<string, List<string>>();
-+		public readonly Dictionary<string, List<string>> UnloadedModKeyStatus = new Dictionary<string, List<string>>();
- 
- 		public bool DoGrappleAndInteractShareTheSameKey {
- 			get {
-@@ -21,6 +_,10 @@
- 			foreach (string knownTrigger in PlayerInput.KnownTriggers) {
- 				KeyStatus.Add(knownTrigger, new List<string>());
- 			}
++		UnloadedModKeyStatus.Clear();
 +
-+			foreach (var current in KeybindLoader.Keybinds) {
-+				KeyStatus.Add(current.FullName, new List<string>());
-+			}
- 		}
+ 		foreach (KeyValuePair<string, List<string>> item in dict) {
++			/*
+ 			if (!KeyStatus.ContainsKey(item.Key))
+ 				continue;
  
- 		public void Processkey(TriggersSet set, string newKey, InputMode mode) {
-@@ -43,22 +_,24 @@
- 		}
- 
- 		public void ReadPreferences(Dictionary<string, List<string>> dict) {
-+			UnloadedModKeyStatus.Clear();
- 			foreach (KeyValuePair<string, List<string>> item in dict) {
--				if (!KeyStatus.ContainsKey(item.Key))
--					continue;
--
--				KeyStatus[item.Key].Clear();
--				foreach (string item2 in item.Value) {
--					KeyStatus[item.Key].Add(item2);
--				}
-+				if (KeyStatus.ContainsKey(item.Key))
-+					KeyStatus[item.Key] = new List<string>(item.Value);
-+				else if (item.Key.Contains(":")) // This preserves unloaded mod keybind values
+@@ -55,15 +_,44 @@
+ 			foreach (string item2 in item.Value) {
+ 				KeyStatus[item.Key].Add(item2);
+ 			}
++			*/
++
++			if (KeyStatus.ContainsKey(item.Key))
++				KeyStatus[item.Key] = new List<string>(item.Value);
++			// This preserves unloaded mod keybind values
++			else if (item.Key.Contains('/')) {
++				if (!UnloadedModKeyStatus.TryGetValue(item.Key, out var existing) || existing.Count < item.Value.Count) {
 +					UnloadedModKeyStatus[item.Key] = new List<string>(item.Value);
- 			}
++				}
++			}
++			// Handle legacy entries
++			else if (item.Key.Contains(": ")) {
++				string newKey = item.Key.Replace(": ", "/");
++
++				if (!KeyStatus.ContainsKey(newKey) && !UnloadedModKeyStatus.ContainsKey(newKey)) {
++					UnloadedModKeyStatus[newKey] = new List<string>(item.Value);
++				}
++			}
+ 		}
+ 	}
+ 
+ 	public Dictionary<string, List<string>> WritePreferences()
+ 	{
+ 		Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
++		/*
+ 		foreach (KeyValuePair<string, List<string>> item in KeyStatus) {
+ 			if (item.Value.Count > 0)
+ 				dictionary.Add(item.Key, item.Value.ToList());
++		}
++		*/
++
++		// Make sure to use indexer and not dict.Add, as some keys are sometimes already added (Vanilla bug, problem for modded)
++		foreach (KeyValuePair<string, List<string>> item in KeyStatus.Where(x => x.Value.Count > 0)) {
++			dictionary[item.Key] = item.Value.ToList();
++		}
++
++		foreach (KeyValuePair<string, List<string>> item in UnloadedModKeyStatus.Where(x => x.Value.Count > 0)) {
++			dictionary[item.Key] = item.Value.ToList();
  		}
  
- 		public Dictionary<string, List<string>> WritePreferences() {
- 			Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
--			foreach (KeyValuePair<string, List<string>> item in KeyStatus) {
--				if (item.Value.Count > 0)
--					dictionary.Add(item.Key, item.Value.ToList());
-+			// Make sure to use indexer and not dict.Add, as some keys are sometimes already added (Vanilla bug, problem for modded)
-+			foreach (KeyValuePair<string, List<string>> item in KeyStatus.Where(x => x.Value.Count > 0)) {
-+				dictionary[item.Key] = item.Value.ToList();
-+			}
-+
-+			foreach (KeyValuePair<string, List<string>> item in UnloadedModKeyStatus.Where(x => x.Value.Count > 0)) {
-+				dictionary[item.Key] = item.Value.ToList();
- 			}
- 
- 			if (!dictionary.ContainsKey("MouseLeft") || dictionary["MouseLeft"].Count == 0) {
+ 		if (!dictionary.ContainsKey("MouseLeft") || dictionary["MouseLeft"].Count == 0) {

@@ -2,7 +2,6 @@
 using System.Linq;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -10,14 +9,18 @@ namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleHealingPotion : ModItem
 	{
+		public static LocalizedText RestoreLifeText { get; private set; }
+
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 30;
+			RestoreLifeText = this.GetLocalization(nameof(RestoreLifeText));
+
+			Item.ResearchUnlockCount = 30;
 		}
 
 		public override void SetDefaults() {
 			Item.width = 20;
 			Item.height = 26;
-			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.useAnimation = 17;
 			Item.useTime = 17;
 			Item.useTurn = true;
@@ -38,7 +41,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			if (line != null) {
 				// Change the text to 'Heals max/2 (max/4 when quick healing) life'
-				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", $"{Main.LocalPlayer.statLifeMax2 / 2} ({Main.LocalPlayer.statLifeMax2 / 4} when quick healing)");
+				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", RestoreLifeText.Format(Main.LocalPlayer.statLifeMax2 / 2, Main.LocalPlayer.statLifeMax2 / 4));
 			}
 		}
 

@@ -1,0 +1,61 @@
+--- src/Terraria/ReLogic/Threading/FastParallel.cs
++++ src/TerrariaNetCore/ReLogic/Threading/FastParallel.cs
+@@ -24,10 +_,21 @@
+ 
+ 		public void Invoke()
+ 		{
++			/*
+ 			if (_fromInclusive != _toExclusive)
+ 				_action(_fromInclusive, _toExclusive, _context);
+ 
+ 			_countdown.Signal();
++			*/
++
++			// Included this try finally block to prevent barely debuggable freezes.
++			try {
++				if (_fromInclusive != _toExclusive)
++					_action(_fromInclusive, _toExclusive, _context);
++			}
++			finally {
++				_countdown.Signal();
++			}
+ 		}
+ 	}
+ 
+@@ -48,8 +_,14 @@
+ 		if (ForceTasksOnCallingThread)
+ 			num2 = 1;
+ 
++		// #2659 and #3593
++		//  Setting thread priority is determinetal under high CPU contention on Windows
++		//  With low CPU contention, there is no need to set priority, because this thread will not be yielded.
++		/*
+ 		ThreadPriority priority = Thread.CurrentThread.Priority;
+ 		Thread.CurrentThread.Priority = ThreadPriority.Highest;
++		*/
++		
+ 		int num3 = num / num2;
+ 		int num4 = num % num2;
+ 		CountdownEvent countdownEvent = new CountdownEvent(num2);
+@@ -69,10 +_,21 @@
+ 				ThreadPool.QueueUserWorkItem(InvokeTask, rangeTask);
+ 		}
+ 
++		// Vanilla uses a while loop because in XNA, the main thread is [STAThread] which means WaitForSingleObject() calls (from WaitHandle.Wait) will run the message pump, potentially delaying the frame for an undesired amount of time
++		// FNA has no need for this, and in fact, in the case of high CPU contention, it is desirable to yield to one of the thread pool threads.
++		// CountdownEvent.Wait uses ManualResetEventSlim which has a good general purpose SpinWait -> Yield -> Sleep(0) -> Sleep(1) policy, so lets use that like normal
++		/*
+ 		while (countdownEvent.CurrentCount != 0) {
+ 		}
+ 
+ 		Thread.CurrentThread.Priority = priority;
++		*/
++		if (!countdownEvent.Wait(10000)) {
++			// #2659, throw an exception instead of freezing the process forever.
++			// After removing the thread priority changes, this will probably no-longer happen, but may as well leave it in to see.
++			ThreadPool.GetAvailableThreads(out int workerThreads, out _);
++			throw new Exception($"Fatal Deadlock in FastParallelFor. pending: {ThreadPool.PendingWorkItemCount}. avail: {workerThreads}");
++		}
+ 	}
+ 
+ 	private static void InvokeTask(object context)

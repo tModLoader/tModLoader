@@ -1,80 +1,71 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/FileSystemContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
-@@ -4,16 +_,10 @@
+@@ -4,13 +_,17 @@
  
- namespace ReLogic.Content.Sources
+ namespace ReLogic.Content.Sources;
+ 
++//TML: Now derives from ContentSource instead of IContentSource
+-public class FileSystemContentSource : IContentSource
++public class FileSystemContentSource : ContentSource
  {
--	public class FileSystemContentSource : IContentSource
-+	public class FileSystemContentSource : ContentSource
+ 	private readonly string _basePath;
+ 	private readonly Dictionary<string, string> _nameToAbsolutePath = new Dictionary<string, string>();
++
++	/*
+ 	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
+ 
+ 	public IContentValidator ContentValidator { get; set; }
++	*/
+ 
+ 	public int FileCount => _nameToAbsolutePath.Count;
+ 
+@@ -21,8 +_,12 @@
+ 			_basePath += Path.DirectorySeparatorChar;
+ 
+ 		BuildNameToAbsolutePathDictionary();
++
++		// Added by TML.
++		SetAssetNames(_nameToAbsolutePath.Keys);
+ 	}
+ 
++	/*
+ 	public bool HasAsset(string assetName)
  	{
- 		private readonly string _basePath;
- 		private readonly Dictionary<string, string> _nameToAbsolutePath = new Dictionary<string, string>();
--		private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
--
--		public IContentValidator ContentValidator {
--			get;
--			set;
--		}
+ 		if (_rejections.IsRejected(assetName))
+@@ -49,8 +_,9 @@
  
- 		public int FileCount => _nameToAbsolutePath.Count;
+ 		return Path.GetExtension(value) ?? "";
+ 	}
++	*/
  
-@@ -23,33 +_,10 @@
- 				_basePath += Path.DirectorySeparatorChar;
- 
- 			BuildNameToAbsolutePathDictionary();
--		}
--
--		public bool HasAsset(string assetName) {
--			if (_rejections.IsRejected(assetName))
--				return false;
--
--			return _nameToAbsolutePath.ContainsKey(assetName);
--		}
--
--		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
--			List<string> list = new List<string>();
--			foreach (string key in _nameToAbsolutePath.Keys) {
--				if (key.ToLower().StartsWith(assetNameStart))
--					list.Add(key);
--			}
--
--			return list;
--		}
--
--		public string GetExtension(string assetName) {
--			if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
--				throw AssetLoadException.FromMissingAsset(assetName);
--
--			return Path.GetExtension(value) ?? "";
-+			SetAssetNames(_nameToAbsolutePath.Keys);
- 		}
- 
--		public Stream OpenStream(string assetName) {
-+		public override Stream OpenStream(string assetName) {
- 			if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
- 				throw AssetLoadException.FromMissingAsset(assetName);
- 
-@@ -69,22 +_,11 @@
- 				string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
- 				for (int i = 0; i < files.Length; i++) {
- 					string fullPath = Path.GetFullPath(files[i]);
--					string text = Path.GetExtension(fullPath) ?? "";
--					string path = fullPath.Substring(_basePath.Length, fullPath.Length - text.Length - _basePath.Length);
-+					string path = fullPath.Substring(_basePath.Length);
- 					path = AssetPathHelper.CleanPath(path);
- 					_nameToAbsolutePath[path] = fullPath;
- 				}
+-	public Stream OpenStream(string assetName)
++	public override Stream OpenStream(string assetName)
+ 	{
+ 		if (!_nameToAbsolutePath.TryGetValue(assetName, out var value))
+ 			throw AssetLoadException.FromMissingAsset(assetName);
+@@ -72,14 +_,19 @@
+ 			string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
+ 			for (int i = 0; i < files.Length; i++) {
+ 				string fullPath = Path.GetFullPath(files[i]);
++				/*
+ 				string text = Path.GetExtension(fullPath) ?? "";
+ 				string path = fullPath.Substring(_basePath.Length, fullPath.Length - text.Length - _basePath.Length);
++				*/
++
++				string path = fullPath.Substring(_basePath.Length);
+ 				path = AssetPathHelper.CleanPath(path);
+ 				_nameToAbsolutePath[path] = fullPath;
  			}
  		}
--
--		public void RejectAsset(string assetName, IRejectionReason reason) {
--			_rejections.Reject(assetName, reason);
--		}
--
--		public void ClearRejections() {
--			_rejections.Clear();
--		}
--
--		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
  	}
+ 
++	/*
+ 	public void RejectAsset(string assetName, IRejectionReason reason)
+ 	{
+ 		_rejections.Reject(assetName, reason);
+@@ -91,4 +_,5 @@
+ 	}
+ 
+ 	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
++	*/
  }

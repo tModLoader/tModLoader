@@ -1,10 +1,50 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/CustomCurrencyManager.cs
 +++ src/tModLoader/Terraria/GameContent/UI/CustomCurrencyManager.cs
-@@ -12,6 +_,7 @@
+@@ -13,6 +_,7 @@
+ 	public static void Initialize()
+ 	{
+ 		_nextCurrencyIndex = 0;
++		_currencies.Clear(); // Added by TML.
+ 		CustomCurrencyID.DefenderMedals = RegisterCurrency(new CustomCurrencySingleCoin(3817, 999L));
+ 	}
  
- 		public static void Initialize() {
- 			_nextCurrencyIndex = 0;
-+			_currencies.Clear();
- 			CustomCurrencyID.DefenderMedals = RegisterCurrency(new CustomCurrencySingleCoin(3817, 999L));
- 		}
+@@ -63,6 +_,13 @@
  
+ 	public static bool BuyItem(Player player, long price, int currencyIndex)
+ 	{
++		if (CanAfford(player, price, currencyIndex))
++			return PayCurrency(player, price, currencyIndex);
++		return false;
++	}
++
++	public static bool CanAfford(Player player, long price, int currencyIndex = -1)
++	{
+ 		CustomCurrencySystem customCurrencySystem = _currencies[currencyIndex];
+ 		bool overFlowing;
+ 		long num = customCurrencySystem.CountCurrency(out overFlowing, player.inventory, 58, 57, 56, 55, 54);
+@@ -72,7 +_,12 @@
+ 		long num5 = customCurrencySystem.CountCurrency(out overFlowing, player.bank4.item);
+ 		if (customCurrencySystem.CombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
+ 			return false;
++		return true;
++	}
+ 
++	public static bool PayCurrency(Player player, long price, int currencyIndex = -1)
++	{
++		CustomCurrencySystem customCurrencySystem = _currencies[currencyIndex];
+ 		List<Item[]> list = new List<Item[]>();
+ 		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
+ 		List<Point> list2 = new List<Point>();
+@@ -138,4 +_,12 @@
+ 	{
+ 		_currencies[item.shopSpecialCurrency].GetItemExpectedPrice(item, out calcForSelling, out calcForBuying);
+ 	}
++
++	/// <summary>
++	/// Attempts to retrieve a CustomCurrencySystem object with the specified id from the _currencies dictionary.
++	/// </summary>
++	/// <param name="id">The id of the currency system to retrieve.</param>
++	/// <param name="system">When this method returns, contains the retrieved CustomCurrencySystem object, or null if the retrieval failed.</param>
++	/// <returns>true if the retrieval was successful; otherwise, false.</returns>
++	public static bool TryGetCurrencySystem(int id, out CustomCurrencySystem system) => _currencies.TryGetValue(id, out system); // Requested in #3133	
+ }

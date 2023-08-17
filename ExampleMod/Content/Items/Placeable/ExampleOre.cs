@@ -1,5 +1,5 @@
-﻿using Terraria.ID;
-using Terraria.GameContent.Creative;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -7,19 +7,16 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleOre : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+			Item.ResearchUnlockCount = 100;
 			ItemID.Sets.SortingPriorityMaterials[Item.type] = 58;
+
+			// This ore can spawn in slime bodies like other pre-boss ores. (copper, tin, iron, etch)
+			// It will drop in amount from 3 to 13.
+			ItemID.Sets.OreDropsFromSlime[Type] = (3, 13);
 		}
 
 		public override void SetDefaults() {
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTurn = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.autoReuse = true;
-			Item.maxStack = 999;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleOre>();
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleOre>());
 			Item.width = 12;
 			Item.height = 12;
 			Item.value = 3000;

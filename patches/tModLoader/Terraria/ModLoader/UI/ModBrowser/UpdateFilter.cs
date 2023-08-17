@@ -1,10 +1,10 @@
-﻿namespace Terraria.ModLoader.UI.ModBrowser
+namespace Terraria.ModLoader.UI.ModBrowser;
+
+// Order is important for UI and texture placement
+public enum UpdateFilter
 {
-	public enum UpdateFilter
-	{
-		All,
-		Available,
-		UpdateOnly,
-		InstalledOnly
-	}
+	All,
+	Available,
+	UpdateOnly,
+	InstalledOnly
 }

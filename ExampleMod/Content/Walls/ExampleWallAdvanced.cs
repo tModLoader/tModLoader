@@ -14,7 +14,6 @@ namespace ExampleMod.Content.Walls
 			Main.wallHouse[Type] = true;
 
 			DustType = DustID.Stone;
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleWallAdvanced>();
 
 			AddMapEntry(new Color(68, 68, 68));
 		}

@@ -1,77 +1,29 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -18,10 +_,12 @@
+@@ -18,10 +_,15 @@
+ 
+ public static class Program
  {
- 	public static class Program
- 	{
-+		/* hide unused consts
- 		public const bool IsServer = false;
- 		public const bool IsXna = true;
- 		public const bool IsFna = false;
- 		public const bool IsDebug = false;
-+		*/
- 		public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
- 		private static int ThingsToLoad;
- 		private static int ThingsLoaded;
-@@ -56,10 +_,18 @@
- 		private static void ForceJITOnAssembly(Assembly assembly) {
- 			Type[] types = assembly.GetTypes();
- 			for (int i = 0; i < types.Length; i++) {
-+#if WINDOWS || NETCORE
- 				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
++#if XNA
+ 	public static bool IsXna = true;
+ 	public static bool IsFna = false;
 +#else
-+				MethodInfo[] methods = types[i].GetMethods();
++	public static bool IsXna = false;
++	public static bool IsFna = true;
 +#endif
- 				foreach (MethodInfo methodInfo in methods) {
- 					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
-+#if WINDOWS || NETCORE
- 						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
-+#else
-+						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
-+#endif
- 				}
+ 	public static bool IsMono = Type.GetType("Mono.Runtime") != null;
+-	public const bool IsDebug = false;
++	// public const bool IsDebug = false;
+ 	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
+ 	public static string SavePath;
+ 	public const string TerrariaSaveFolderPath = "Terraria";
+@@ -153,6 +_,9 @@
  
- 				ThingsLoaded++;
-@@ -114,7 +_,7 @@
- 		}
- 
- 		private static void InitializeConsoleOutput() {
--			if (Debugger.IsAttached)
-+			if (!Main.dedServ && Debugger.IsAttached)
- 				return;
- 
- 			try {
-@@ -140,6 +_,11 @@
- 			}
- 
- 			LaunchParameters = Utils.ParseArguements(args);
+ 		LaunchParameters = Utils.ParseArguements(args);
+ 		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
 +#if SERVER
-+			Main.dedServ = true;
-+#else
-+			Main.dedServ = LaunchParameters.ContainsKey("-server");
++		Main.dedServ = true;
 +#endif
- 			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
- 			InitializeConsoleOutput();
-@@ -151,7 +_,10 @@
- 					SocialAPI.Initialize();
- 					LaunchInitializer.LoadParameters(main);
- 					Main.OnEnginePreload += StartForceLoad;
-+					if (!Main.dedServ)
--					main.Run();
-+						main.Run();
-+					else
-+						main.DedServ();
- 				}
- 				catch (Exception e) {
- 					DisplayException(e);
-@@ -188,6 +_,9 @@
- 					streamWriter.WriteLine(text);
- 					streamWriter.WriteLine("");
- 				}
-+
-+				if (Main.dedServ)
-+					Console.WriteLine(Language.GetTextValue("Error.ServerCrash"), DateTime.Now, e);
- 
- 				MessageBox.Show(text, "Terraria: Error");
- 			}
+ 		ThreadPool.SetMinThreads(8, 8);
+ 		InitializeConsoleOutput();
+ 		SetupLogging();

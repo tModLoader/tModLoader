@@ -1,436 +1,579 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 
-namespace Terraria.ModLoader.Config
+namespace Terraria.ModLoader.Config;
+
+/// <summary>
+/// Specifies a background color to be used for the property, field, or class in the ModConfig UI.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class BackgroundColorAttribute : Attribute
 {
-	/// <summary>
-	/// Specifies a background color to be used for the property, field, or class in the ModConfig UI.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-	public class BackgroundColorAttribute : Attribute
+	public Color Color { get; }
+
+	public BackgroundColorAttribute(int r, int g, int b, int a = 255)
 	{
-		public Color Color { get; }
-
-		public BackgroundColorAttribute(int r, int g, int b, int a = 255) {
-			Color = new Color(r, g, b, a);
-		}
+		Color = new Color(r, g, b, a);
 	}
-
-	/// <summary>
-	/// Specifies a slider color for ModConfig elements that use a slider. The default color is white.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-	public class SliderColorAttribute : Attribute
-	{
-		public Color Color { get; }
-
-		public SliderColorAttribute(int r, int g, int b, int a = 255) {
-			Color = new Color(r, g, b, a);
-		}
-	}
-
-	/// <summary>
-	/// This attribute hints that changing the value of the annotated property or field will put the config in a state that requires a reload. An overridden ModConfig.NeedsReload can further validate if more complex logic is needed.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class ReloadRequiredAttribute : Attribute
-	{
-	}
-
-	/// <summary>
-	/// This attribute sets a label for the property, field, or class for use in the ModConfig UI.
-	/// Starting the label with $ means the label should be interpreted as a Localization key.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-	public class LabelAttribute : Attribute
-	{
-		private readonly string label;
-
-		public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
-
-		public LabelAttribute(string label) {
-			this.label = label;
-		}
-	}
-
-	/// <summary>
-	/// This attribute sets a hover tooltip for the annotated property or field to be shown in the ModConfig UI. This can be longer and more descriptive than Label.
-	/// Starting the tooltip with $ means the tooltip should be interpreted as a Localization key.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class TooltipAttribute : Attribute
-	{
-		private readonly string tooltip;
-
-		public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
-
-		public TooltipAttribute(string tooltip) {
-			this.tooltip = tooltip;
-		}
-	}
-
-	/// <summary>
-	/// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config.
-	/// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class HeaderAttribute : Attribute
-	{
-		private readonly string header;
-
-		public string Header => header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
-
-		public HeaderAttribute(string header) {
-			this.header = header;
-		}
-	}
-
-	/// <summary>
-	/// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Enum)]
-	public class CustomModConfigItemAttribute : Attribute
-	{
-		public Type Type { get; }
-
-		public CustomModConfigItemAttribute(Type type) {
-			Type = type;
-		}
-	}
-
-	/// <summary>
-	/// Similar to DefaultValueAttribute but for reference types. It uses a json string that will be used populate this element when initialized. Defines the default value, expressed as json, to be used to populate an object with the NullAllowed attribute. Modders should only use this in conjuction with NullAllowed, as simply initializing the field with a default value is preferred.
-	/// </summary>
-	public class JsonDefaultValueAttribute : Attribute
-	{
-		public string Json { get; }
-
-		public JsonDefaultValueAttribute(string json) {
-			Json = json;
-		}
-	}
-
-	/// <summary>
-	/// Defines the default value to be added when using the ModConfig UI to add elements to a Collection (List, Set, or Dictionary value). Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class DefaultListValueAttribute : Attribute
-	{
-		private object value;
-
-		public virtual object Value => value;
-
-		public DefaultListValueAttribute(Type type, string value) {
-			try {
-				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
-			}
-			catch {
-				Logging.tML.Error("Default value attribute of type " + type.FullName + " threw converting from the string '" + value + "'.");
-			}
-		}
-
-		public DefaultListValueAttribute(char value) => this.value = value;
-		public DefaultListValueAttribute(byte value) => this.value = value;
-		public DefaultListValueAttribute(short value) => this.value = value;
-		public DefaultListValueAttribute(int value) => this.value = value;
-		public DefaultListValueAttribute(long value) => this.value = value;
-		public DefaultListValueAttribute(float value) => this.value = value;
-		public DefaultListValueAttribute(double value) => this.value = value;
-		public DefaultListValueAttribute(bool value) => this.value = value;
-		public DefaultListValueAttribute(string value) => this.value = value;
-		public DefaultListValueAttribute(object value) => this.value = value;
-
-		public override bool Equals(object obj) {
-			if (obj == this) {
-				return true;
-			}
-			var other = obj as DefaultListValueAttribute;
-			if (other != null) {
-				if (Value != null) {
-					return Value.Equals(other.Value);
-				}
-				else {
-					return (other.Value == null);
-				}
-			}
-			return false;
-		}
-
-		public override int GetHashCode() => base.GetHashCode();
-
-		protected void SetValue(object value) {
-			this.value = value;
-		}
-	}
-
-	/// <summary>
-	/// Defines the default key value to be added when using the ModConfig UI to add elements to a Dictionary. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it. This attribute compliments DefaultListValueAttribute when used annotating a Dictionary.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class DefaultDictionaryKeyValueAttribute : Attribute
-	{
-		private object value;
-
-		public virtual object Value => value;
-
-		public DefaultDictionaryKeyValueAttribute(Type type, string value) {
-			try {
-				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
-			}
-			catch {
-				Logging.tML.Error("Default value attribute of type " + type.FullName + " threw converting from the string '" + value + "'.");
-			}
-		}
-
-		public DefaultDictionaryKeyValueAttribute(char value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(byte value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(short value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(int value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(long value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(float value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(double value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(bool value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(string value) => this.value = value;
-		public DefaultDictionaryKeyValueAttribute(object value) => this.value = value;
-
-		public override bool Equals(object obj) {
-			if (obj == this) {
-				return true;
-			}
-			var other = obj as DefaultDictionaryKeyValueAttribute;
-			if (other != null) {
-				if (Value != null) {
-					return Value.Equals(other.Value);
-				}
-				else {
-					return (other.Value == null);
-				}
-			}
-			return false;
-		}
-
-		public override int GetHashCode() => base.GetHashCode();
-
-		protected void SetValue(object value) {
-			this.value = value;
-		}
-	}
-
-	/// <summary>
-	/// Similar to DefaultListValueAttribute but for reference types. It uses a json string that will be used populate new instances list elements. Defines the default value, expressed as json, to be added when using the ModConfig UI to add elements to a Collection (List, Set, or Dictionary value).
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class JsonDefaultListValueAttribute : Attribute
-	{
-		public string Json { get; }
-
-		public JsonDefaultListValueAttribute(string json) {
-			Json = json;
-		}
-	}
-
-	/* TODO: Implement this
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class CustomAddMethodAttribute : Attribute
-	{
-		public string methodName;
-		public CustomAddMethodAttribute(string methodName) {
-			this.methodName = methodName;
-		}
-	}
-	*/
-
-	/// <summary>
-	/// Similar to JsonDefaultListValueAttribute, but for assigning to the Dictionary Key rather than the Value.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class JsonDefaultDictionaryKeyValueAttribute : Attribute
-	{
-		public string Json { get; }
-
-		public JsonDefaultDictionaryKeyValueAttribute(string json) {
-			Json = json;
-		}
-	}
-
-	/// <summary>
-	/// By default, string fields will provide the user with a text input field. Use this attribute to restrict strings to a selection of options.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class OptionStringsAttribute : Attribute
-	{
-		public string[] OptionLabels { get; set; }
-
-		public OptionStringsAttribute(string[] optionLabels) {
-			OptionLabels = optionLabels;
-		}
-	}
-
-	/// <summary>
-	/// Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
-	/// Defaults are: float: 0.01f - byte/int/uint: 1
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class IncrementAttribute : Attribute
-	{
-		public object Increment { get; }
-
-		public IncrementAttribute(int increment) {
-			Increment = increment;
-		}
-
-		public IncrementAttribute(float increment) {
-			Increment = increment;
-		}
-
-		public IncrementAttribute(uint increment) {
-			Increment = increment;
-		}
-
-		public IncrementAttribute(byte increment) {
-			Increment = increment;
-		}
-	}
-
-	/// <summary>
-	/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class RangeAttribute : Attribute
-	{
-		public object Min { get; }
-		public object Max { get; }
-
-		public RangeAttribute(int min, int max) {
-			Min = min;
-			Max = max;
-		}
-
-		public RangeAttribute(float min, float max) {
-			Min = min;
-			Max = max;
-		}
-
-		public RangeAttribute(uint min, uint max) {
-			Min = min;
-			Max = max;
-		}
-
-		public RangeAttribute(byte min, byte max) {
-			Min = min;
-			Max = max;
-		}
-	}
-
-	/// <summary>
-	/// Affects whether this data will be presented as a slider or an input field. Add this attribute to use a slider. Currently only affects data of type int.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class SliderAttribute : Attribute
-	{
-
-	}
-
-	/// <summary>
-	/// Add this attribute and the sliders will show white tick marks at each increment.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class DrawTicksAttribute : Attribute
-	{
-
-	}
-
-	/// <summary>
-	/// Add this attribute to a Color item and Alpha will not be presented in the UI and will remain as 255 unless manually edited.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class ColorNoAlphaAttribute : Attribute
-	{
-
-	}
-
-	/// <summary>
-	/// Add this attribute to a Color item and the UI will present a Hue, Saturation, and Lightness sliders rather than Red, Green, and Blue sliders. Pass in false to skip Saturation and Lightness.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class ColorHSLSliderAttribute : Attribute
-	{
-		public bool ShowSaturationAndLightness { get; }
-
-		public ColorHSLSliderAttribute(bool showSaturationAndLightness = true) {
-			ShowSaturationAndLightness = showSaturationAndLightness;
-		}
-	}
-
-	/// <summary>
-	/// This specifies that the annotated item will appear as a button that leads to a separate page in the UI. Use this to organize hierarchies.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-	public class SeparatePageAttribute : Attribute
-	{
-
-	}
-
-	/// <summary>
-	/// This attribute means the annotated item can possibly be null. This will allow the UI to make the item null. It is up to the modder to make sure the item isn't null in the ModConfig constructor and nested classes.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-	public class NullAllowedAttribute : Attribute
-	{
-
-	}
-
-	/// <summary>
-	/// Affects whether this data will be expanded by default. The default value currently is true. Use the constructor with 2 parameters to control if list elements should be collapsed or expanded.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
-	public class ExpandAttribute : Attribute
-	{
-		public bool Expand { get; }
-		public bool? ExpandListElements  { get; }
-
-		// bool? not allowed in attribute ctor, so 2 ctors
-		public ExpandAttribute(bool expand = true) {
-			Expand = expand;
-			ExpandListElements = null;
-		}
-
-		public ExpandAttribute(bool expand = true, bool expandListElements = true) {
-			Expand = expand;
-			ExpandListElements = expandListElements;
-		}
-	}
-
-	// Unimplemented ideas below:
-	/*
-
-	// Hide or Disable this item while in game.
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class HideInGameAttribute : Attribute { }
-
-	// Hide or Disable this item while a client?
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class HideForClientAttribute : Attribute { }
-
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
-	public class StringRepresentationAttribute : Attribute
-	{
-		public Func<string> StringRepresentation { get; set; }
-
-		public StringRepresentationAttribute(Type delegateType, string delegateName) {
-			StringRepresentation = (Func<string>)Delegate.CreateDelegate(delegateType, delegateType.GetMethod(delegateName));
-		}
-	}
-
-	[StringRepresentation(typeof(TestDelegate), "GetConnection")]
-	public class Test { }
-
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	public class StringRepresentationAttribute : Attribute
-	{
-		public Func<string> SomeProperty { get; set; }
-	}
-
-	*/
 }
+
+/// <summary>
+/// Specifies a slider color for ModConfig elements that use a slider. The default color is white.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class SliderColorAttribute : Attribute
+{
+	public Color Color { get; }
+
+	public SliderColorAttribute(int r, int g, int b, int a = 255)
+	{
+		Color = new Color(r, g, b, a);
+	}
+}
+
+/// <summary>
+/// This attribute hints that changing the value of the annotated property or field will put the config in a state that requires a reload. An overridden ModConfig.NeedsReload can further validate if more complex logic is needed.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class ReloadRequiredAttribute : Attribute
+{
+}
+
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public abstract class ConfigKeyAttribute : Attribute
+{
+	internal readonly string key;
+	internal readonly bool malformed;
+
+	public ConfigKeyAttribute(string key)
+	{
+		if (!key.StartsWith("$"))
+		{
+			malformed = true;
+			this.key = key;
+		}
+		else
+		{
+			this.key = key.Substring(1);
+		}
+	}
+}
+
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public abstract class ConfigArgsAttribute : Attribute
+{
+	internal readonly object[] args;
+
+	public ConfigArgsAttribute(params object[] args)
+	{
+		this.args = args;
+	}
+}
+
+/// <summary>
+/// A label is the text shown to the user in the ModConfig UI. <br/>
+/// This attribute sets a custom localization key for the label of the annotated property, field, or class. <br/>
+/// The provided localization key must start with "$". <br/>
+/// Without this attribute, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Label" will be assumed for members of ModConfig classes. <br/>
+/// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, otherwise they will appear as the member name directly. <br/>
+/// If the translation value of a property or field that is an object is an empty string, the label of the class will be used instead. <br/>
+/// Values can be interpolated into the resulting label text using <see cref="LabelArgsAttribute"/>. <br/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class LabelKeyAttribute : ConfigKeyAttribute
+{
+	public LabelKeyAttribute(string key) : base(key)
+	{
+	}
+}
+
+[Obsolete("Labels are now automatically localized in localization files. Use LabelKeyAttribute to customize the key or use the autogenerated translation key instead. The functionality for showing this field or property in the ModConfig UI despite using [JsonIgnore] is now done through [ShowDespiteJsonIgnoreAttribute]")]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class LabelAttribute : Attribute
+{
+	private readonly string label;
+
+	public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
+	public string LocalizationEntry => label.StartsWith("$") ? $"{{{label}}}" : label;
+
+	public LabelAttribute(string label)
+	{
+		this.label = label;
+	}
+}
+
+/// <summary>
+/// Use to provide values to be interpolated into the label of the annotated property or field.<br/>
+/// string arguments starting with "$" are interpreted as localization keys.<br/>
+/// Interpolating values can be useful for reusing common labels to keep localization files clean and organized.<br/>
+/// For example, if a mod provides toggles for several features, a common label could be used for each with only the provided value being different.<br/>
+/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">string formatting section of the Localization wiki page</see> explains this concept further.<br/>
+/// <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#scope-simplification">Scope simplification</see> can be used to shorten localization keys passed in.<br/>
+/// </summary>
+public class LabelArgsAttribute : ConfigArgsAttribute
+{
+	public LabelArgsAttribute(params object[] args) : base(args)
+	{
+	}
+}
+
+/// <summary>
+/// A tooltip is the text shown to the user in the ModConfig UI next to the cursor when they hover over the annotated member (property, field, or class). This can be longer and more descriptive than the Label. <br/>
+/// This attribute sets a custom localization key for the tooltip of the annotated property, field, or class. <br/>
+/// The provided localization key must start with "$". <br/>
+/// Without this attribute, the localization key "Mods.{ModName}.Configs.{ConfigName}.{MemberName}.Tooltip" will be assumed for members of ModConfig classes. <br/>
+/// Annotations on members of non-ModConfig classes need to supply a custom localization key using this attribute to be localized, no localization key is assumed.
+/// If the translation value of a property or field that is an object is an empty string, the tooltip of the class will be used instead.
+/// Passing in just "$" will result in no tooltip entry being added to the localization files.<br/>
+/// Values can be interpolated into the resulting label text using <see cref="TooltipArgsAttribute"/>. <br/>
+/// </summary>
+public class TooltipKeyAttribute : ConfigKeyAttribute
+{
+	public TooltipKeyAttribute(string key) : base(key)
+	{
+	}
+}
+
+[Obsolete("Tooltips are now automatically localized in localization files. Use TooltipKeyAttribute to customize the key or use the autogenerated translation key instead.")]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class TooltipAttribute : Attribute
+{
+	private readonly string tooltip;
+
+	public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
+	public string LocalizationEntry => tooltip.StartsWith("$") ? $"{{{tooltip}}}" : tooltip;
+
+	public TooltipAttribute(string tooltip)
+	{
+		this.tooltip = tooltip;
+	}
+}
+
+/// <summary>
+/// Use to provide values to be interpolated into the tooltip of the annotated property or field.<br/>
+/// string arguments starting with "$" are interpreted as localization keys.<br/>
+/// Interpolating values can be useful for reusing common tooltips to keep localization files clean and organized.<br/>
+/// For example, if a mod provides toggles for several features, a common tooltip could be used for each with only the provided value being different.<br/>
+/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">string formatting section of the Localization wiki page</see> explains this concept further.<br/>
+/// <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#scope-simplification">Scope simplification</see> can be used to shorten localization keys passed in.<br/>
+/// </summary>
+public class TooltipArgsAttribute : ConfigArgsAttribute
+{
+	public TooltipArgsAttribute(params object[] args) : base(args)
+	{
+	}
+}
+
+/// <summary>
+/// This attribute indicates that the field or property should be shown in the ModConfig UI despite having a <see cref="JsonIgnoreAttribute"/> annotation.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class ShowDespiteJsonIgnoreAttribute : Attribute { }
+
+/// <summary>
+/// This attribute adds a label above this property or field in the ModConfig UI that acts as a header. Use this to delineate sections within your config. <br/>
+/// Note that fields will be in order, and properties will be in order, but fields and properties will not be interleaved together in the source code order. <br/>
+/// <br/>
+/// Header accept either a translation key or an identifier. <br/>
+/// To use a translation key, the value passed in must start with "$". <br/>
+/// A value passed in that does not start with "$" is interpreted as an identifier. The identifier is used to construct the localization key "Mods.{ModName}.Configs.{ConfigName}.Headers.{Identifier}" <br/>
+/// No spaces are allowed in translation keys, so avoid spaces <br/>
+/// Annotations on members of non-ModConfig classes need to supply a localization key using this attribute to be localized, no localization key can be correctly assumed using just an identifier. <br/>
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class HeaderAttribute : Attribute
+{
+	internal string key;
+	internal string identifier;
+	internal readonly bool malformed;
+
+	public bool IsIdentifier => identifier != null;
+
+	public string Header => Localization.Language.GetTextValue(key);
+
+	public HeaderAttribute(string identifierOrKey)
+	{
+		if (string.IsNullOrWhiteSpace(identifierOrKey) || identifierOrKey.Contains(' ')) {
+			malformed = true;
+			return;
+		}
+		if (!identifierOrKey.StartsWith("$")) {
+			identifier = identifierOrKey;
+		}
+		else {
+			key = identifierOrKey.Substring(1);
+		}
+	}
+}
+
+/// <summary>
+/// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Enum)]
+public class CustomModConfigItemAttribute : Attribute
+{
+	public Type Type { get; }
+
+	public CustomModConfigItemAttribute(Type type)
+	{
+		Type = type;
+	}
+}
+
+/// <summary>
+/// Similar to DefaultValueAttribute but for reference types. It uses a json string that will be used populate this element when initialized. Defines the default value, expressed as json, to be used to populate an object with the NullAllowed attribute. Modders should only use this in conjuction with NullAllowed, as simply initializing the field with a default value is preferred.
+/// </summary>
+public class JsonDefaultValueAttribute : Attribute
+{
+	public string Json { get; }
+
+	public JsonDefaultValueAttribute(string json)
+	{
+		Json = json;
+	}
+}
+
+/// <summary>
+/// Defines the default value to be added when using the ModConfig UI to add elements to a Collection (List, Set, or Dictionary value). Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class DefaultListValueAttribute : Attribute
+{
+	private object value;
+
+	public virtual object Value => value;
+
+	public DefaultListValueAttribute(Type type, string value)
+	{
+		try {
+			this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+		}
+		catch {
+			Logging.tML.Error("Default value attribute of type " + type.FullName + " threw converting from the string '" + value + "'.");
+		}
+	}
+
+	public DefaultListValueAttribute(char value) => this.value = value;
+	public DefaultListValueAttribute(byte value) => this.value = value;
+	public DefaultListValueAttribute(short value) => this.value = value;
+	public DefaultListValueAttribute(int value) => this.value = value;
+	public DefaultListValueAttribute(long value) => this.value = value;
+	public DefaultListValueAttribute(float value) => this.value = value;
+	public DefaultListValueAttribute(double value) => this.value = value;
+	public DefaultListValueAttribute(bool value) => this.value = value;
+	public DefaultListValueAttribute(string value) => this.value = value;
+	public DefaultListValueAttribute(object value) => this.value = value;
+
+	public override bool Equals(object obj)
+	{
+		if (obj == this) {
+			return true;
+		}
+		var other = obj as DefaultListValueAttribute;
+		if (other != null) {
+			if (Value != null) {
+				return Value.Equals(other.Value);
+			}
+			else {
+				return (other.Value == null);
+			}
+		}
+		return false;
+	}
+
+	public override int GetHashCode() => base.GetHashCode();
+
+	protected void SetValue(object value)
+	{
+		this.value = value;
+	}
+}
+
+/// <summary>
+/// Defines the default key value to be added when using the ModConfig UI to add elements to a Dictionary. Works the same as System.ComponentModel.DefaultValueAttribute, but can't inherit from it because it would break when deserializing any data structure annotated with it. This attribute compliments DefaultListValueAttribute when used annotating a Dictionary.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class DefaultDictionaryKeyValueAttribute : Attribute
+{
+	private object value;
+
+	public virtual object Value => value;
+
+	public DefaultDictionaryKeyValueAttribute(Type type, string value)
+	{
+		try {
+			this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+		}
+		catch {
+			Logging.tML.Error("Default value attribute of type " + type.FullName + " threw converting from the string '" + value + "'.");
+		}
+	}
+
+	public DefaultDictionaryKeyValueAttribute(char value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(byte value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(short value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(int value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(long value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(float value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(double value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(bool value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(string value) => this.value = value;
+	public DefaultDictionaryKeyValueAttribute(object value) => this.value = value;
+
+	public override bool Equals(object obj)
+	{
+		if (obj == this) {
+			return true;
+		}
+		var other = obj as DefaultDictionaryKeyValueAttribute;
+		if (other != null) {
+			if (Value != null) {
+				return Value.Equals(other.Value);
+			}
+			else {
+				return (other.Value == null);
+			}
+		}
+		return false;
+	}
+
+	public override int GetHashCode() => base.GetHashCode();
+
+	protected void SetValue(object value)
+	{
+		this.value = value;
+	}
+}
+
+/// <summary>
+/// Similar to DefaultListValueAttribute but for reference types. It uses a json string that will be used populate new instances list elements. Defines the default value, expressed as json, to be added when using the ModConfig UI to add elements to a Collection (List, Set, or Dictionary value).
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class JsonDefaultListValueAttribute : Attribute
+{
+	public string Json { get; }
+
+	public JsonDefaultListValueAttribute(string json)
+	{
+		Json = json;
+	}
+}
+
+/* TODO: Implement this
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class CustomAddMethodAttribute : Attribute
+{
+	public string methodName;
+	public CustomAddMethodAttribute(string methodName) {
+		this.methodName = methodName;
+	}
+}
+*/
+
+/// <summary>
+/// Similar to JsonDefaultListValueAttribute, but for assigning to the Dictionary Key rather than the Value.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class JsonDefaultDictionaryKeyValueAttribute : Attribute
+{
+	public string Json { get; }
+
+	public JsonDefaultDictionaryKeyValueAttribute(string json)
+	{
+		Json = json;
+	}
+}
+
+/// <summary>
+/// By default, string fields will provide the user with a text input field. Use this attribute to restrict strings to a selection of options.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class OptionStringsAttribute : Attribute
+{
+	public string[] OptionLabels { get; set; }
+
+	public OptionStringsAttribute(string[] optionLabels)
+	{
+		OptionLabels = optionLabels;
+	}
+}
+
+/// <summary>
+/// Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
+/// Defaults are: float: 0.01f - byte/int/uint: 1
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class IncrementAttribute : Attribute
+{
+	public object Increment { get; }
+
+	public IncrementAttribute(int increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(float increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(uint increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(byte increment)
+	{
+		Increment = increment;
+	}
+}
+
+/// <summary>
+/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class RangeAttribute : Attribute
+{
+	public object Min { get; }
+	public object Max { get; }
+
+	public RangeAttribute(int min, int max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(float min, float max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(uint min, uint max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(byte min, byte max)
+	{
+		Min = min;
+		Max = max;
+	}
+}
+
+/// <summary>
+/// Affects whether this data will be presented as a slider or an input field. Add this attribute to use a slider. Currently only affects data of type int.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class SliderAttribute : Attribute
+{
+
+}
+
+/// <summary>
+/// Add this attribute and the sliders will show white tick marks at each increment.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class DrawTicksAttribute : Attribute
+{
+
+}
+
+/// <summary>
+/// Add this attribute to a Color item and Alpha will not be presented in the UI and will remain as 255 unless manually edited.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class ColorNoAlphaAttribute : Attribute
+{
+
+}
+
+/// <summary>
+/// Add this attribute to a Color item and the UI will present a Hue, Saturation, and Lightness sliders rather than Red, Green, and Blue sliders. Pass in false to skip Saturation and Lightness.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class ColorHSLSliderAttribute : Attribute
+{
+	public bool ShowSaturationAndLightness { get; }
+
+	public ColorHSLSliderAttribute(bool showSaturationAndLightness = true)
+	{
+		ShowSaturationAndLightness = showSaturationAndLightness;
+	}
+}
+
+/// <summary>
+/// This specifies that the annotated item will appear as a button that leads to a separate page in the UI. Use this to organize hierarchies.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class SeparatePageAttribute : Attribute
+{
+
+}
+
+/// <summary>
+/// This attribute means the annotated item can possibly be null. This will allow the UI to make the item null. It is up to the modder to make sure the item isn't null in the ModConfig constructor and nested classes.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class NullAllowedAttribute : Attribute
+{
+
+}
+
+/// <summary>
+/// Affects whether this data will be expanded by default. The default value currently is true. Use the constructor with 2 parameters to control if list elements should be collapsed or expanded.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
+public class ExpandAttribute : Attribute
+{
+	public bool Expand { get; }
+	public bool? ExpandListElements  { get; }
+
+	// bool? not allowed in attribute ctor, so 2 ctors
+	public ExpandAttribute(bool expand = true)
+	{
+		Expand = expand;
+		ExpandListElements = null;
+	}
+
+	public ExpandAttribute(bool expand = true, bool expandListElements = true)
+	{
+		Expand = expand;
+		ExpandListElements = expandListElements;
+	}
+}
+
+// Unimplemented ideas below:
+/*
+
+// Hide or Disable this item while in game.
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class HideInGameAttribute : Attribute { }
+
+// Hide or Disable this item while a client?
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class HideForClientAttribute : Attribute { }
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
+public class StringRepresentationAttribute : Attribute
+{
+	public Func<string> StringRepresentation { get; set; }
+
+	public StringRepresentationAttribute(Type delegateType, string delegateName) {
+		StringRepresentation = (Func<string>)Delegate.CreateDelegate(delegateType, delegateType.GetMethod(delegateName));
+	}
+}
+
+[StringRepresentation(typeof(TestDelegate), "GetConnection")]
+public class Test { }
+
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public class StringRepresentationAttribute : Attribute
+{
+	public Func<string> SomeProperty { get; set; }
+}
+
+*/

@@ -1,4 +1,4 @@
-version: "1.0"
+version: "2.0"
 services:
   tml:
     build:
@@ -6,7 +6,9 @@ services:
       args:
         UID: 1000
         GID: 1000
+    tty: true
+    stdin_open: true
     ports:
       - 7777:7777
     volumes:
-      - "./Terraria:/home/tml/.local/share/Terraria"
+      - "./Terraria:/terraria"

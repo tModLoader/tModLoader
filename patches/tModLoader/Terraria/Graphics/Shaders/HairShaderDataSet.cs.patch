@@ -1,48 +1,56 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Shaders/HairShaderDataSet.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/HairShaderDataSet.cs
-@@ -7,27 +_,31 @@
+@@ -7,21 +_,29 @@
+ 
+ public class HairShaderDataSet
  {
- 	public class HairShaderDataSet
++	//TML: 'protected' -> 'protected internal'.
+-	protected List<HairShaderData> _shaderData = new List<HairShaderData>();
++	protected internal List<HairShaderData> _shaderData = new List<HairShaderData>();
+-	protected Dictionary<int, short> _shaderLookupDictionary = new Dictionary<int, short>();
++	protected internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
+-	protected byte _shaderDataCount;
++	protected internal int _shaderDataCount;
++	
++	// Added by TML.
++	internal Dictionary<int, int> _reverseShaderLookupDictionary = new Dictionary<int, int>();
+ 
+ 	public T BindShader<T>(int itemId, T shaderData) where T : HairShaderData
  	{
--		protected List<HairShaderData> _shaderData = new List<HairShaderData>();
-+		internal List<HairShaderData> _shaderData = new List<HairShaderData>();
--		protected Dictionary<int, short> _shaderLookupDictionary = new Dictionary<int, short>();
-+		internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
--		protected byte _shaderDataCount;
-+		internal Dictionary<int, int> _reverseShaderLookupDictionary = new Dictionary<int, int>();
-+		internal int _shaderDataCount;
++		/*
+ 		if (_shaderDataCount == byte.MaxValue)
+ 			throw new Exception("Too many shaders bound.");
++		*/
  
- 		public T BindShader<T>(int itemId, T shaderData) where T : HairShaderData {
-+			/*
- 			if (_shaderDataCount == byte.MaxValue)
- 				throw new Exception("Too many shaders bound.");
-+			*/
+ 		_shaderLookupDictionary[itemId] = ++_shaderDataCount;
++		_reverseShaderLookupDictionary[_shaderLookupDictionary[itemId]] = itemId;
+ 		_shaderData.Add(shaderData);
+ 		return shaderData;
+ 	}
  
- 			_shaderLookupDictionary[itemId] = ++_shaderDataCount;
-+			_reverseShaderLookupDictionary[_shaderLookupDictionary[itemId]] = itemId;
- 			_shaderData.Add(shaderData);
- 			return shaderData;
- 		}
++	//TML: 'shaderId' expanded to int.
+-	public void Apply(short shaderId, Player player, DrawData? drawData = null)
++	public void Apply(int shaderId, Player player, DrawData? drawData = null)
+ 	{
+ 		if (shaderId != 0 && shaderId <= _shaderDataCount)
+ 			_shaderData[shaderId - 1].Apply(player, drawData);
+@@ -29,7 +_,8 @@
+ 			Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+ 	}
  
--		public void Apply(short shaderId, Player player, DrawData? drawData = null) {
-+		public void Apply(int shaderId, Player player, DrawData? drawData = null) {
- 			if (shaderId != 0 && shaderId <= _shaderDataCount)
- 				_shaderData[shaderId - 1].Apply(player, drawData);
- 			else
- 				Main.pixelShader.CurrentTechnique.Passes[0].Apply();
- 		}
++	//TML: 'shaderId' expanded to int.
+-	public Color GetColor(short shaderId, Player player, Color lightColor)
++	public Color GetColor(int shaderId, Player player, Color lightColor)
+ 	{
+ 		if (shaderId != 0 && shaderId <= _shaderDataCount)
+ 			return _shaderData[shaderId - 1].GetColor(player, lightColor);
+@@ -45,7 +_,8 @@
+ 		return null;
+ 	}
  
--		public Color GetColor(short shaderId, Player player, Color lightColor) {
-+		public Color GetColor(int shaderId, Player player, Color lightColor) {
- 			if (shaderId != 0 && shaderId <= _shaderDataCount)
- 				return _shaderData[shaderId - 1].GetColor(player, lightColor);
- 
-@@ -41,7 +_,7 @@
- 			return null;
- 		}
- 
--		public short GetShaderIdFromItemId(int type) {
-+		public int GetShaderIdFromItemId(int type) {
- 			if (_shaderLookupDictionary.ContainsKey(type))
- 				return _shaderLookupDictionary[type];
- 
++	//TML: Return value changed from 'short' to 'int'.
+-	public short GetShaderIdFromItemId(int type)
++	public int GetShaderIdFromItemId(int type)
+ 	{
+ 		if (_shaderLookupDictionary.ContainsKey(type))
+ 			return _shaderLookupDictionary[type];

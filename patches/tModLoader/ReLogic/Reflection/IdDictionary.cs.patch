@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/ReLogic/Reflection/IdDictionary.cs
++++ src/tModLoader/ReLogic/Reflection/IdDictionary.cs
+@@ -56,6 +_,7 @@
+ 		IdDictionary dictionary = new IdDictionary(num);
+ 		(from f in idClass.GetFields(BindingFlags.Static | BindingFlags.Public)
+ 		 where f.FieldType == idType
++		 where f.GetCustomAttribute<ObsoleteAttribute>() == null
+ 		 select f).ToList().ForEach(delegate (FieldInfo field) {
+ 			 int num2 = Convert.ToInt32(field.GetValue(null));
+ 			 if (num2 < dictionary.Count)

@@ -1,41 +1,11 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/Point16.cs
 +++ src/tModLoader/Terraria/DataStructures/Point16.cs
-@@ -24,9 +_,38 @@
- 			this.Y = Y;
- 		}
+@@ -2,7 +_,7 @@
  
-+		public Point16(int size) {
-+			X = (short)size;
-+			Y = (short)size;
-+		}
-+
-+		public Point16(short size) {
-+			X = size;
-+			Y = size;
-+		}
-+
- 		public static Point16 Max(int firstX, int firstY, int secondX, int secondY) => new Point16((firstX > secondX) ? firstX : secondX, (firstY > secondY) ? firstY : secondY);
- 		public Point16 Max(int compareX, int compareY) => new Point16((X > compareX) ? X : compareX, (Y > compareY) ? Y : compareY);
- 		public Point16 Max(Point16 compareTo) => new Point16((X > compareTo.X) ? X : compareTo.X, (Y > compareTo.Y) ? Y : compareTo.Y);
-+
-+		public static Point16 operator +(Point16 first, Point16 second) {
-+			return new Point16(first.X + second.X, first.Y + second.Y);
-+		}
-+
-+		public static Point16 operator -(Point16 first, Point16 second) {
-+			return new Point16(first.X - second.X, first.Y - second.Y);
-+		}
-+
-+		public static Point16 operator *(Point16 first, Point16 second) {
-+			return new Point16(first.X * second.X, first.Y * second.Y);
-+		}
-+		public static Point16 operator /(Point16 first, Point16 second) {
-+			return new Point16(first.X / second.X, first.Y / second.Y);
-+		}
-+
-+		public static Point16 operator %(Point16 first, int num) {
-+			return new Point16(first.X % num, first.Y % num);
-+		}
+ namespace Terraria.DataStructures;
  
- 		public static bool operator ==(Point16 first, Point16 second) {
- 			if (first.X == second.X)
+-public struct Point16
++public partial struct Point16
+ {
+ 	public readonly short X;
+ 	public readonly short Y;

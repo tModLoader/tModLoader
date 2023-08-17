@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Buffs
 	public class Blocky : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Blocky");
-			Description.SetDefault("Jumping power is increased");
 			Main.debuff[Type] = true;
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
@@ -33,12 +31,12 @@ namespace ExampleMod.Content.Buffs
 				player.extraFall += 45;
 
 				// Some other effects:
-				//player.lifeRegen++;
-				//player.meleeCrit += 2;
-				//player.meleeDamage += 0.051f;
-				//player.meleeSpeed += 0.051f;
-				//player.statDefense += 3;
-				//player.moveSpeed += 0.05f;
+				// player.lifeRegen++;
+				// player.GetCritChance(DamageClass.Melee) += 2;
+				// player.GetDamage(DamageClass.Melee) += 0.051f;
+				// player.GetAttackSpeed(DamageClass.Melee) += 0.051f;
+				// player.statDefense += 3;
+				// player.moveSpeed += 0.05f;
 			}
 			else {
 				player.DelBuff(buffIndex);

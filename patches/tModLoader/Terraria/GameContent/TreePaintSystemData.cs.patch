@@ -1,60 +1,61 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TreePaintSystemData.cs
 +++ src/tModLoader/Terraria/GameContent/TreePaintSystemData.cs
-@@ -1,4 +_,5 @@
- using System;
+@@ -1,3 +_,6 @@
++using System;
 +using Terraria.ModLoader;
++
+ namespace Terraria.GameContent;
  
- namespace Terraria.GameContent
- {
-@@ -206,6 +_,11 @@
- 				case 5:
- 					switch (tileStyle) {
- 						default:
-+							int lookup = Math.Abs(tileStyle) - ModTree.VanillaStyleCount;
-+							var tree = PlantLoader.Get<ModTree>(5, lookup);
-+							if (tree != null)
-+								return tree.TreeShaderSettings;
-+
- 							return WoodPurity;
- 						case 0:
- 							return WoodCorruption;
-@@ -225,6 +_,11 @@
- 				case 323:
- 					switch (tileStyle) {
- 						default:
-+							int lookup = Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount;
-+							var palm = PlantLoader.Get<ModPalmTree>(323, lookup);
-+							if (palm != null)
-+								return palm.TreeShaderSettings;
-+								
- 							return WoodPurity;
- 						case 0:
- 						case 4:
-@@ -265,6 +_,27 @@
- 		public static TreePaintingSettings GetTreeFoliageSettings(int foliageIndex, int foliageStyle) {
- 			switch (foliageIndex) {
- 				default:
-+					if (foliageIndex >= ModTree.VanillaTopTextureCount) {
-+						int lookup = foliageIndex - ModTree.VanillaTopTextureCount;
-+
-+						var tree = PlantLoader.Get<ModTree>(5, lookup);
+ public static class TreePaintSystemData
+@@ -214,6 +_,11 @@
+ 			case 5:
+ 				switch (tileStyle) {
+ 					default:
++						int lookup = Math.Abs(tileStyle) - ModTree.VanillaStyleCount;
++						var tree = PlantLoader.Get<ModTree>(tileType, lookup);
 +						if (tree != null)
 +							return tree.TreeShaderSettings;
-+					}
-+					else if (foliageIndex < 0) {
-+						int lookup = -1 * foliageIndex;
 +
-+						bool isOcean = lookup % 2 == 0;
-+						if (isOcean)
-+							lookup = lookup / 2;
-+						else
-+							lookup = (lookup - 1) / 2;
+ 						return WoodPurity;
+ 					case 0:
+ 						return WoodCorruption;
+@@ -233,6 +_,11 @@
+ 			case 323:
+ 				switch (tileStyle) {
+ 					default:
++						int lookup = Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount;
++						var palm = PlantLoader.Get<ModPalmTree>(tileType, lookup);
++						if (palm != null)
++							return palm.TreeShaderSettings;
 +
-+						var tree = PlantLoader.Get<ModPalmTree>(323, lookup);
-+						if (tree != null)
-+							return tree.TreeShaderSettings;
-+					}
+ 						return WoodPurity;
+ 					case 0:
+ 					case 4:
+@@ -276,6 +_,27 @@
+ 	{
+ 		switch (foliageIndex) {
+ 			default:
++				if (foliageIndex >= ModTree.VanillaTopTextureCount) {
++					int lookup = foliageIndex - ModTree.VanillaTopTextureCount;
 +
- 					return DefaultDirt;
- 				case 0:
- 				case 6:
++					var tree = PlantLoader.Get<ModTree>(5, lookup);
++					if (tree != null)
++						return tree.TreeShaderSettings;
++				}
++				else if (foliageIndex < 0) {
++					int lookup = -1 * foliageIndex;
++
++					bool isOcean = lookup % 2 == 0;
++					if (isOcean)
++						lookup = lookup / 2;
++					else
++						lookup = (lookup - 1) / 2;
++
++					var tree = PlantLoader.Get<ModPalmTree>(323, lookup);
++					if (tree != null)
++						return tree.TreeShaderSettings;
++				}
++
+ 				return DefaultDirt;
+ 			case 0:
+ 			case 6:

@@ -9,7 +9,6 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.IsAGolfBall[Type] = true; // Allows the projectile to be placed on the tee.
 			ProjectileID.Sets.TrailingMode[Type] = 0; // Creates a trail behind the golf ball.
 			ProjectileID.Sets.TrailCacheLength[Type] = 20; // Sets the length of the trail.
-			DisplayName.SetDefault("Example Golf Ball"); // Note that the classname will appear in chat when the golf ball is sunk if you don't set a display name.
 		}
 
 		public override void SetDefaults() {

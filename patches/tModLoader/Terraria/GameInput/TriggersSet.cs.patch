@@ -1,64 +1,55 @@
 --- src/TerrariaNetCore/Terraria/GameInput/TriggersSet.cs
 +++ src/tModLoader/Terraria/GameInput/TriggersSet.cs
 @@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework;
  using System.Collections.Generic;
  using System.Linq;
+ using Microsoft.Xna.Framework;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameInput
- {
-@@ -30,6 +_,33 @@
- 			}
+ namespace Terraria.GameInput;
+ 
+@@ -30,6 +_,23 @@
  		}
+ 	}
  
-+		public bool MouseMiddle {
-+			get {
-+				return KeyStatus["MouseMiddle"];
-+			}
-+			set {
-+				KeyStatus["MouseMiddle"] = value;
-+			}
-+		}
++	// Extra mouse buttons: [[
++	public bool MouseMiddle {
++		get => KeyStatus[TriggerNames.MouseMiddle];
++		set => KeyStatus[TriggerNames.MouseMiddle] = value;
++	}
 +
-+		public bool MouseXButton1 {
-+			get {
-+				return KeyStatus["MouseXButton1"];
-+			}
-+			set {
-+				KeyStatus["MouseXButton1"] = value;
-+			}
-+		}
++	public bool MouseXButton1 {
++		get => KeyStatus[TriggerNames.MouseXButton1];
++		set => KeyStatus[TriggerNames.MouseXButton1] = value;
++	}
 +
-+		public bool MouseXButton2 {
-+			get {
-+				return KeyStatus["MouseXButton2"];
-+			}
-+			set {
-+				KeyStatus["MouseXButton2"] = value;
-+			}
-+		}
++	public bool MouseXButton2 {
++		get => KeyStatus[TriggerNames.MouseXButton2];
++		set => KeyStatus[TriggerNames.MouseXButton2] = value;
++	}
++	// ]]
 +
- 		public bool Up {
- 			get {
- 				return KeyStatus["Up"];
-@@ -506,6 +_,10 @@
- 			foreach (string knownTrigger in PlayerInput.KnownTriggers) {
- 				KeyStatus.Add(knownTrigger, value: false);
- 			}
-+
-+			foreach (var keybind in KeybindLoader.Keybinds) {
-+				KeyStatus.Add(keybind.FullName, false);
-+			}
+ 	public bool Up {
+ 		get {
+ 			return KeyStatus["Up"];
+@@ -545,6 +_,11 @@
+ 		foreach (string knownTrigger in PlayerInput.KnownTriggers) {
+ 			KeyStatus.Add(knownTrigger, value: false);
  		}
- 
- 		public Vector2 GetNavigatorDirections() {
-@@ -571,6 +_,8 @@
- 
- 			if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
- 				HotbarScrollCD--;
 +
-+			PlayerLoader.ProcessTriggers(p, this);
- 		}
++		// Add mod keys' status
++		foreach (var keybind in KeybindLoader.Keybinds) {
++			KeyStatus.Add(keybind.FullName, false);
++		}
+ 	}
  
- 		public void CopyIntoDuringChat(Player p) {
+ 	public Vector2 GetNavigatorDirections()
+@@ -621,6 +_,8 @@
+ 
+ 		if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
+ 			HotbarScrollCD--;
++
++		PlayerLoader.ProcessTriggers(p, this);
+ 	}
+ 
+ 	public void CopyIntoDuringChat(Player p)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -21,17 +22,12 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addTile(Type);
 
 			// Etc
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Crate"); //Vanilla has no lang entry for this
+			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
 		public override bool CreateDust(int i, int j, ref int type) {
 			return false;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Consumables.ExampleFishingCrate>());
 		}
 	}
 }

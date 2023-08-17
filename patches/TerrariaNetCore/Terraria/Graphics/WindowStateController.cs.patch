@@ -1,0 +1,28 @@
+--- src/Terraria/Terraria/Graphics/WindowStateController.cs
++++ src/TerrariaNetCore/Terraria/Graphics/WindowStateController.cs
+@@ -1,11 +_,19 @@
++#if !NETCORE
+ using System.Drawing;
+ using System.Windows.Forms;
+ using ReLogic.OS;
++#endif
+ 
+ namespace Terraria.Graphics;
+ 
+ public class WindowStateController
+ {
++#if NETCORE
++	public bool CanMoveWindowAcrossScreens => false;
++	public string ScreenDeviceName => "";
++
++	public void TryMovingToScreen(string screenDeviceName) { }
++#else
+ 	public bool CanMoveWindowAcrossScreens => Platform.IsWindows;
+ 
+ 	public string ScreenDeviceName {
+@@ -58,4 +_,5 @@
+ 
+ 		return false;
+ 	}
++#endif
+ }

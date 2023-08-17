@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Common.Players;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
@@ -10,13 +11,13 @@ namespace ExampleMod.Content.Items.Consumables
 	// The overlay used to display the custom mana crystals can be found in Common/UI/ResourceDisplay/VanillaManaOverlay.cs
 	internal class ExampleManaCrystal : ModItem
 	{
-		public const int MaxExampleManaCrystals = 10;
-		public const int ManaPerCrystal = 10;
+		public static readonly int MaxExampleManaCrystals = 10;
+		public static readonly int ManaPerCrystal = 10;
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(ManaPerCrystal, MaxExampleManaCrystals);
 
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault($"Permanently increases maximum mana by {ManaPerCrystal}\nUp to {MaxExampleManaCrystals} can be used");
-
-			SacrificeTotal = 10;
+			Item.ResearchUnlockCount = 10;
 		}
 
 		public override void SetDefaults() {

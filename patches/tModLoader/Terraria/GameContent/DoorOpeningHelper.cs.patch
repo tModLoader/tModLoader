@@ -1,73 +1,71 @@
 --- src/TerrariaNetCore/Terraria/GameContent/DoorOpeningHelper.cs
 +++ src/tModLoader/Terraria/GameContent/DoorOpeningHelper.cs
 @@ -2,6 +_,8 @@
- using System;
  using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
  using Terraria.GameInput;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  
- namespace Terraria.GameContent
- {
-@@ -82,15 +_,20 @@
- 				if (playerInfo.hitboxToOpenDoor.Top < rectangle.Top || playerInfo.hitboxToOpenDoor.Bottom > rectangle.Bottom)
- 					return false;
+ namespace Terraria.GameContent;
  
-+				int originalClosedDoorType = TileID.ClosedDoor;
-+				ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
-+				if (modTile != null && modTile.OpenDoorID > 0)
-+					originalClosedDoorType = modTile.Type;
-+
- 				WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
--				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
-+				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
--					NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
-+					NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
- 					return true;
- 				}
- 
- 				WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
--				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
-+				if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
--					NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
-+					NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
- 					return true;
- 				}
- 
-@@ -100,8 +_,7 @@
- 			public DoorCloseAttemptResult TryCloseDoor(DoorOpenCloseTogglingInfo info, PlayerInfoForClosingDoors playerInfo) {
- 				Point tileCoordsForToggling = info.tileCoordsForToggling;
- 				Tile tile = Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y];
--				if (!tile.active() || tile.type != 11)
--					return DoorCloseAttemptResult.DoorIsInvalidated;
-+				if (!tile.active() || TileLoader.IsClosedDoor(tile)) return DoorCloseAttemptResult.DoorIsInvalidated;
- 
- 				int num = tile.frameX % 72 / 18;
- 				Rectangle value = new Rectangle(tileCoordsForToggling.X * 16, tileCoordsForToggling.Y * 16, 16, 48);
-@@ -196,7 +_,7 @@
- 		public static DoorAutoOpeningPreference PreferenceSettings = DoorAutoOpeningPreference.EnabledForEverything;
- 		private Dictionary<int, DoorAutoHandler> _handlerByTileType = new Dictionary<int, DoorAutoHandler> {
- 			{ 10, new CommonDoorOpeningInfoProvider() },
--			{ 388, new TallGateOpeningInfoProvider() }		};
-+			{ 388, new TallGateOpeningInfoProvider() } }; // TODO: Support other door types?
- 		private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
- 		private int _timeWeCanOpenDoorsUsingVelocityAlone;
- 
-@@ -315,11 +_,12 @@
- 			Tile tile = Main.tile[tileCoords.X, tileCoords.Y];
- 			if (tile == null)
+@@ -84,15 +_,20 @@
+ 			if (playerInfo.hitboxToOpenDoor.Top < rectangle.Top || playerInfo.hitboxToOpenDoor.Bottom > rectangle.Bottom)
  				return false;
--
--			if (!_handlerByTileType.TryGetValue(tile.type, out infoProvider))
--				return false;
--
--			return true;
-+			int type = tile.type;
+ 
++			int originalClosedDoorType = TileID.ClosedDoor;
++			ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
++			if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
++				originalClosedDoorType = modTile.Type;
 +
-+			ModTile modTile = ModContent.GetModTile(type);
-+			if (modTile != null && modTile.OpenDoorID > 0) type = TileID.ClosedDoor;
-+
-+			return _handlerByTileType.TryGetValue(type, out infoProvider);
- 		}
+ 			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
+-			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
++			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
+-				NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
++				NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
+ 				return true;
+ 			}
+ 
+ 			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
+-			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
++			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
+-				NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
++				NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
+ 				return true;
+ 			}
+ 
+@@ -101,9 +_,10 @@
+ 
+ 		public DoorCloseAttemptResult TryCloseDoor(DoorOpenCloseTogglingInfo info, PlayerInfoForClosingDoors playerInfo)
+ 		{
++			// Extra patch comtext.
+ 			Point tileCoordsForToggling = info.tileCoordsForToggling;
+ 			Tile tile = Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y];
+-			if (!tile.active() || tile.type != 11)
++			if (!tile.active() || TileLoader.IsClosedDoor(tile))
+ 				return DoorCloseAttemptResult.DoorIsInvalidated;
+ 
+ 			int num = tile.frameX % 72 / 18;
+@@ -202,6 +_,7 @@
+ 	public static DoorAutoOpeningPreference PreferenceSettings = DoorAutoOpeningPreference.EnabledForEverything;
+ 	private Dictionary<int, DoorAutoHandler> _handlerByTileType = new Dictionary<int, DoorAutoHandler> {
+ 		{ 10, new CommonDoorOpeningInfoProvider() },
++		// TODO: Support other door types?
+ 		{ 388, new TallGateOpeningInfoProvider() }
+ 	};
+ 	private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
+@@ -333,9 +_,11 @@
+ 		if (tile == null)
+ 			return false;
+ 
+-		if (!_handlerByTileType.TryGetValue(tile.type, out infoProvider))
+-			return false;
++		int type = tile.type;
++		ModTile modTile = ModContent.GetModTile(type);
++		if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
++			type = TileID.ClosedDoor;
+ 
+-		return true;
++		return _handlerByTileType.TryGetValue(type, out infoProvider);
  	}
  }

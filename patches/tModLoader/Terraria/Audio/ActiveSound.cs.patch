@@ -1,149 +1,186 @@
 --- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -1,15 +_,14 @@
--#if FNA
--using System.Threading;
--#endif
+@@ -1,34 +_,58 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
 +using System;
-+using System.Threading.Tasks;
++
++#nullable enable
  
- namespace Terraria.Audio
+ namespace Terraria.Audio;
+ 
++//TML: Expanded, moved and renamed version of vanilla's LoopedPlayCondition.
++/// <summary>
++/// <see cref="ActiveSound"/>'s update callback.
++/// <br/> Returning false here will force the sound to end abruptly.
++/// <br/> Tip: Use <see cref="ProjectileAudioTracker.IsActiveAndInGame"/> to tie sounds to projectiles.
++/// </summary>
++/// <param name="soundInstance"> The sound object instance. </param>
++/// <returns> Whether the sound effect should continue to play. </returns>
++public delegate bool SoundUpdateCallback(ActiveSound soundInstance);
++
+ public class ActiveSound
  {
- 	public class ActiveSound
++	/*
+ 	public delegate bool LoopedPlayCondition();
+ 
+ 	public readonly bool IsGlobal;
+-	public Vector2 Position;
++	*/
++
++	public Vector2? Position; //TML: Made nullable
+ 	public float Volume;
+ 	public float Pitch;
++	public SoundUpdateCallback? Callback;
++	/*
+ 	public LoopedPlayCondition Condition;
++	*/
+ 
+-	public SoundEffectInstance Sound { get; private set; }
++	public SoundEffectInstance? Sound { get; private set; }
+ 
+ 	public SoundStyle Style { get; private set; }
+ 
+-	public bool IsPlaying => Sound.State == SoundState.Playing;
++	public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing; //TML: Made error-safe
+ 
+-	public ActiveSound(SoundStyle style, Vector2 position)
++	//TML: Position parameter made nullable, SoundUpdateCallback added with changed type.
++	public ActiveSound(SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
  	{
--		public readonly bool IsGlobal;
--		public Vector2 Position;
-+		//public readonly bool IsGlobal;
-+		public Vector2? Position; //TML: Made nullable
- 		public float Volume;
- 
- 		public SoundEffectInstance Sound {
-@@ -22,22 +_,20 @@
- 			private set;
- 		}
- 
--		public bool IsPlaying => Sound.State == SoundState.Playing;
-+		public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing;
- 
--		public ActiveSound(SoundStyle style, Vector2 position) {
--#if FNA
--			Monitor.Enter(SoundEngine.AudioLock);
--#endif
-+		//TML: Position parameter made nullable.
-+		public ActiveSound(SoundStyle style, Vector2? position = null) {
- 			Position = position;
- 			Volume = 1f;
--			IsGlobal = false;
-+			//IsGlobal = false;
- 			Style = style;
-+			
- 			Play();
--#if FNA
--			Monitor.Exit(SoundEngine.AudioLock);
--#endif
- 		}
- 
-+		//TML: Merged with the above constructor.
-+		/*
- 		public ActiveSound(SoundStyle style) {
- #if FNA
- 			Monitor.Enter(SoundEngine.AudioLock);
-@@ -51,10 +_,17 @@
- 			Monitor.Exit(SoundEngine.AudioLock);
- #endif
- 		}
-+		*/
- 
- 		private void Play() {
-+			if (!Program.IsMainThread) {
-+				RunOnMainThreadAndWait(Play);
-+				return;
-+			}
-+
- 			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
- 			soundEffectInstance.Pitch += Style.GetRandomPitch();
-+			soundEffectInstance.IsLooped = Style.IsLooped;
- 			soundEffectInstance.Play();
- 			SoundInstanceGarbageCollector.Track(soundEffectInstance);
- 			Sound = soundEffectInstance;
-@@ -62,29 +_,52 @@
- 		}
- 
- 		public void Stop() {
-+			if (!Program.IsMainThread) {
-+				RunOnMainThreadAndWait(Stop);
-+				return;
-+			}
-+			
- 			if (Sound != null)
- 				Sound.Stop();
- 		}
- 
- 		public void Pause() {
-+			if (!Program.IsMainThread) {
-+				RunOnMainThreadAndWait(Pause);
-+				return;
-+			}
-+			
- 			if (Sound != null && Sound.State == SoundState.Playing)
- 				Sound.Pause();
- 		}
- 
- 		public void Resume() {
-+			if (!Program.IsMainThread) {
-+				RunOnMainThreadAndWait(Resume);
-+				return;
-+			}
-+			
- 			if (Sound != null && Sound.State == SoundState.Paused)
- 				Sound.Resume();
- 		}
- 
- 		public void Update() {
--			if (Sound != null) {
-+			if (!Program.IsMainThread) {
-+				RunOnMainThreadAndWait(Update);
-+				return;
-+			}
-+			
-+			if (Sound != null && !Sound.IsDisposed) {
- 				Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
- 				float num = 1f;
-+				/*
- 				if (!IsGlobal) {
-+				*/
-+				if (Position.HasValue) {
--					float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
-+					float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
- 					value2 = MathHelper.Clamp(value2, -1f, 1f);
- 					Sound.Pan = value2;
--					float num2 = Vector2.Distance(Position, value);
-+					float num2 = Vector2.Distance(Position.Value, value);
- 					num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
- 				}
- 
-@@ -95,6 +_,12 @@
- 						break;
- 					case SoundType.Ambient:
- 						num *= Main.ambientVolume;
-+
-+						// Added by TML to mimic the behavior of the LegacySoundPlayer code.
-+						if (Main.gameInactive) {
-+							num = 0f;
-+						}
-+
- 						break;
- 					case SoundType.Music:
- 						num *= Main.musicVolume;
-@@ -105,5 +_,9 @@
- 				Sound.Volume = num;
- 			}
- 		}
-+
-+		// Added by TML.
-+		// As the name states, runs code on the main thread and waits for it to finish.
-+		private static void RunOnMainThreadAndWait(Action action) => Main.RunOnMainThread(action).GetAwaiter().GetResult();
+ 		Position = position;
+ 		Volume = 1f;
+ 		Pitch = style.PitchVariance;
+-		IsGlobal = false;
++		//IsGlobal = false;
+ 		Style = style;
++		Callback = updateCallback;
++		
+ 		Play();
  	}
+ 
++	//TML: Merged with the above constructor.
++	/*
+ 	public ActiveSound(SoundStyle style)
+ 	{
+ 		Position = Vector2.Zero;
+@@ -48,18 +_,26 @@
+ 		Style = style;
+ 		PlayLooped(condition);
+ 	}
++	*/
+ 
+ 	private void Play()
+ 	{
++		if (!Program.IsMainThread) {
++			RunOnMainThreadAndWait(Play);
++			return;
++		}
++
+ 		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+ 		soundEffectInstance.Pitch += Style.GetRandomPitch();
+ 		Pitch = soundEffectInstance.Pitch;
++		soundEffectInstance.IsLooped = Style.IsLooped;
+ 		soundEffectInstance.Play();
+ 		SoundInstanceGarbageCollector.Track(soundEffectInstance);
+ 		Sound = soundEffectInstance;
+ 		Update();
+ 	}
+ 
++	/*
+ 	private void PlayLooped(LoopedPlayCondition condition)
+ 	{
+ 		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+@@ -72,21 +_,37 @@
+ 		Sound = soundEffectInstance;
+ 		Update();
+ 	}
++	*/
+ 
+ 	public void Stop()
+ 	{
++		if (!Program.IsMainThread) {
++			RunOnMainThreadAndWait(Stop);
++			return;
++		}
++		
+ 		if (Sound != null)
+ 			Sound.Stop();
+ 	}
+ 
+ 	public void Pause()
+ 	{
++		if (!Program.IsMainThread) {
++			RunOnMainThreadAndWait(Pause);
++			return;
++		}
++		
+ 		if (Sound != null && Sound.State == SoundState.Playing)
+ 			Sound.Pause();
+ 	}
+ 
+ 	public void Resume()
+ 	{
++		if (!Program.IsMainThread) {
++			RunOnMainThreadAndWait(Resume);
++			return;
++		}
++		
+ 		if (Sound != null && Sound.State == SoundState.Paused)
+ 			Sound.Resume();
+ 	}
+@@ -96,18 +_,27 @@
+ 		if (Sound == null)
+ 			return;
+ 
+-		if (Condition != null && !Condition()) {
++		if (!Program.IsMainThread) {
++			RunOnMainThreadAndWait(Update);
++			return;
++		}
++
++		if (Sound.IsDisposed)
++			return;
++
++		if (Callback?.Invoke(this) == false) {
+ 			Sound.Stop(immediate: true);
+ 			return;
+ 		}
+ 
+ 		Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+ 		float num = 1f;
++		//if (!IsGlobal) {
+-		if (!IsGlobal) {
++		if (Position.HasValue) {
+-			float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
++			float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
+ 			value2 = MathHelper.Clamp(value2, -1f, 1f);
+ 			Sound.Pan = value2;
+-			float num2 = Vector2.Distance(Position, value);
++			float num2 = Vector2.Distance(Position.Value, value);
+ 			num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
+ 		}
+ 
+@@ -118,6 +_,12 @@
+ 				break;
+ 			case SoundType.Ambient:
+ 				num *= Main.ambientVolume;
++
++				// Added by TML to mimic the behavior of the LegacySoundPlayer code.
++				if (Main.gameInactive) {
++					num = 0f;
++				}
++
+ 				break;
+ 			case SoundType.Music:
+ 				num *= Main.musicVolume;
+@@ -128,4 +_,9 @@
+ 		Sound.Volume = num;
+ 		Sound.Pitch = Pitch;
+ 	}
++
++	// Added by TML.
++	// As the name states, runs code on the main thread and waits for it to finish.
++	private static void RunOnMainThreadAndWait(Action action)
++		=> Main.RunOnMainThread(action).GetAwaiter().GetResult();
  }

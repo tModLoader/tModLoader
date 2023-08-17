@@ -24,10 +24,6 @@ namespace ExampleMod.Content.Projectiles
 			set => Projectile.ai[0] = value;
 		}
 
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Shortsword");
-		}
-
 		public override void SetDefaults() {
 			Projectile.Size = new Vector2(18); // This sets width and height to the same value (important when projectiles can rotate)
 			Projectile.aiStyle = -1; // Use our own AI to customize how it behaves, if you don't want that, keep this at ProjAIStyleID.ShortSword. You would still need to use the code in SetVisualOffsets() though

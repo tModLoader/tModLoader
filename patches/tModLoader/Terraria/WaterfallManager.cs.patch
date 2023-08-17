@@ -1,80 +1,78 @@
 --- src/TerrariaNetCore/Terraria/WaterfallManager.cs
 +++ src/tModLoader/Terraria/WaterfallManager.cs
-@@ -4,6 +_,7 @@
- using System;
+@@ -5,6 +_,7 @@
+ using Terraria.GameContent.Liquid;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader;
  
- namespace Terraria
- {
-@@ -20,12 +_,12 @@
- 		private const int minWet = 160;
- 		private const int maxWaterfallCountDefault = 1000;
- 		private const int maxLength = 100;
--		private const int maxTypes = 24;
-+		internal const int maxTypes = 24;
- 		public int maxWaterfallCount = 1000;
- 		private int qualityMax;
- 		private int currentMax;
- 		private WaterfallData[] waterfalls;
--		private Asset<Texture2D>[] waterfallTexture = new Asset<Texture2D>[24];
-+		internal Asset<Texture2D>[] waterfallTexture = new Asset<Texture2D>[24];
- 		private int wFallFrCounter;
- 		private int regularFrame;
- 		private int wFallFrCounter2;
-@@ -208,7 +_,7 @@
- 			}
+ namespace Terraria;
+ 
+@@ -21,12 +_,12 @@
+ 	private const int minWet = 160;
+ 	private const int maxWaterfallCountDefault = 1000;
+ 	private const int maxLength = 100;
+-	private const int maxTypes = 26;
++	internal const int maxTypes = 26;
+ 	public int maxWaterfallCount = 1000;
+ 	private int qualityMax;
+ 	private int currentMax;
+ 	private WaterfallData[] waterfalls = new WaterfallData[1000];
+-	private Asset<Texture2D>[] waterfallTexture = new Asset<Texture2D>[26];
++	internal Asset<Texture2D>[] waterfallTexture = new Asset<Texture2D>[26];
+ 	private int wFallFrCounter;
+ 	private int regularFrame;
+ 	private int wFallFrCounter2;
+@@ -218,7 +_,7 @@
  		}
+ 	}
  
--		private void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f) {
-+		internal void DrawWaterfall(SpriteBatch spriteBatch, int Style = 0, float Alpha = 1f) {
- 			Main.tileSolid[546] = false;
- 			float num = 0f;
- 			float num2 = 99999f;
-@@ -357,6 +_,7 @@
- 					if (num29 >= 2)
- 						continue;
- 
-+					//patch file: num12
- 					switch (num12) {
- 						case 1: {
- 								float r;
-@@ -422,6 +_,8 @@
- 								break;
- 							}
- 					}
-+					if (num12 >= maxTypes)
-+						LoaderManager.Get<WaterFallStylesLoader>().Get(num12).AddLight(num13, num14);
- 
- 					int num31 = 0;
- 					int num32 = 0;
-@@ -531,6 +_,9 @@
- 							num12 = 15 + num36 - 262;
- 							break;
- 					}
-+					if(num36 != -1) {
-+						TileLoader.ChangeWaterfallStyle(num36, ref num12);
-+					}
- 
- 					if (WorldGen.SolidTile(tile5) && !tile3.halfBrick())
- 						num11 = 8;
-@@ -586,6 +_,9 @@
- 							break;
- 					}
- 
-+					if (num12 >= maxTypes)
-+						LoaderManager.Get<WaterFallStylesLoader>().Get(num12).ColorMultiplier(ref num38, ref num39, ref num40, num37);
+-	private void DrawWaterfall(int Style = 0, float Alpha = 1f)
++	internal void DrawWaterfall(int Style = 0, float Alpha = 1f)
+ 	{
+ 		Main.tileSolid[546] = false;
+ 		float num = 0f;
+@@ -480,8 +_,12 @@
+ 					case 267:
+ 					case 268:
+ 						num12 = 15 + num34 - 262;
++						// Patch note: ^ Both are used below.
+ 						break;
+ 				}
 +
- 					color5 = new Color((int)num38, (int)num39, (int)num40, (int)num41);
- 					if (num12 == 1) {
- 						float num42 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
-@@ -841,6 +_,8 @@
++				if (num34 != -1)
++					TileLoader.ChangeWaterfallStyle(num34, ref num12);
  
- 			if (Main.liquidAlpha[12] > 0f)
- 				DrawWaterfall(spriteBatch, 23, Main.liquidAlpha[12]);
-+
-+			LoaderManager.Get<WaterStylesLoader>().DrawWaterfall(this, spriteBatch);
+ 				Color color5 = Lighting.GetColor(num13, num14);
+ 				if (k > 50)
+@@ -746,8 +_,12 @@
+ 				num = 255f * alpha;
+ 				num2 = 255f * alpha;
+ 				num3 = 255f * alpha;
++				// Patch note: ^ All 3 are used below.
+ 				break;
  		}
++
++		if (waterfallType >= maxTypes)
++			LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).ColorMultiplier(ref num, ref num2, ref num3, alpha);
+ 
+ 		aColor = new Color((int)num, (int)num2, (int)num3, (int)num4);
+ 		return aColor;
+@@ -796,6 +_,9 @@
+ 
+ 	private static void AddLight(int waterfallType, int x, int y)
+ 	{
++		if (waterfallType >= maxTypes)
++			LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).AddLight(x, y);
++		
+ 		switch (waterfallType) {
+ 			case 1: {
+ 				float r;
+@@ -913,5 +_,7 @@
+ 
+ 		if (Main.liquidAlpha[13] > 0f)
+ 			DrawWaterfall(24, Main.liquidAlpha[13]);
++
++		LoaderManager.Get<WaterStylesLoader>().DrawWaterfall(this);
  	}
  }

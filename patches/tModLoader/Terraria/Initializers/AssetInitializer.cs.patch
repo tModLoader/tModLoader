@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,21 +_,30 @@
+@@ -11,22 +_,45 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.IO;
@@ -8,41 +8,51 @@
 +using Terraria.ModLoader.UI;
  using Terraria.Utilities;
  
- namespace Terraria.Initializers
- {
- 	public static class AssetInitializer
- 	{
-+		internal static AssetReaderCollection assetReaderCollection;
-+
- 		public static void CreateAssetServices(GameServiceContainer services) {
--			AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
-+			assetReaderCollection = new AssetReaderCollection();
- 			assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
- 			assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
--			AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
--			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
--			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
--			asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
--			IAssetRepository provider = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
-+			assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
-+			assetReaderCollection.RegisterReader(new WavReader(), ".wav");
-+			assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
-+			assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
-+			XnbReader.LoadOnMainThread<Texture2D>.Value = true;
-+			XnbReader.LoadOnMainThread<DynamicSpriteFont>.Value = true;
-+			XnbReader.LoadOnMainThread<SpriteFont>.Value = true;
-+			XnbReader.LoadOnMainThread<Effect>.Value = true;
-+			AssetRepository.SetMainThread();
-+			var provider = new AssetRepository(assetReaderCollection);
- 			services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
- 			services.AddService(typeof(IAssetRepository), provider);
- 		}
-@@ -597,6 +_,8 @@
- 			Main.ResourceSetsManager.LoadContent(mode);
- 			Main.MinimapFrameManagerInstance.LoadContent(mode);
- 			Main.AchievementAdvisor.LoadContent();
-+
-+			UICommon.LoadTextures(); // Added by TML.
- 		}
+ namespace Terraria.Initializers;
  
- 		private static Asset<T> LoadAsset<T>(string assetName, AssetRequestMode mode) where T : class => Main.Assets.Request<T>(assetName, mode);
+ public static class AssetInitializer
+ {
++	// Added by TML.
++	internal static AssetReaderCollection assetReaderCollection;
++
+ 	public static void CreateAssetServices(GameServiceContainer services)
+ 	{
+-		AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
++		assetReaderCollection = new AssetReaderCollection();
+ 		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
+ 		assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
++
++		// TML readers
++		assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
++		assetReaderCollection.RegisterReader(new WavReader(), ".wav");
++		assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
++		assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
++
++		/*
+ 		AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(SpriteFont));
++		*/
++		XnbReader.LoadOnMainThread<Texture2D>.Value = true;
++		XnbReader.LoadOnMainThread<DynamicSpriteFont>.Value = true;
++		XnbReader.LoadOnMainThread<SpriteFont>.Value = true;
++		XnbReader.LoadOnMainThread<Effect>.Value = true;
++		AssetRepository.SetMainThread();
++
++		/*
+ 		IAssetRepository provider = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
++		*/
++		var provider = new AssetRepository(assetReaderCollection);
+ 		services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
+ 		services.AddService(typeof(IAssetRepository), provider);
+ 	}
+@@ -614,6 +_,8 @@
+ 		Main.ResourceSetsManager.LoadContent(mode);
+ 		Main.MinimapFrameManagerInstance.LoadContent(mode);
+ 		Main.AchievementAdvisor.LoadContent();
++
++		UICommon.LoadTextures(); // Added by TML.
+ 	}
+ 
+ 	private static Asset<T> LoadAsset<T>(string assetName, AssetRequestMode mode) where T : class => Main.Assets.Request<T>(assetName, mode);

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Animations/Segments.cs
++++ src/tModLoader/Terraria/GameContent/Animations/Segments.cs
+@@ -232,7 +_,7 @@
+ 			ProcessActions(_npc, localTimeForObject);
+ 			if (_npc.alpha < 255) {
+ 				_npc.FindFrame();
+-				if (TownNPCProfiles.Instance.GetProfile(_npc.type, out var profile))
++				if (TownNPCProfiles.Instance.GetProfile(_npc, out var profile))
+ 					TextureAssets.Npc[_npc.type] = profile.GetTextureNPCShouldUse(_npc);
+ 
+ 				_npc.Opacity *= info.DisplayOpacity;

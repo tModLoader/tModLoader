@@ -1,24 +1,26 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
+﻿using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
 {
 	// This is an example bug net designed to demonstrate the use cases for various hooks related to catching NPCs such as critters with items.
 	public class ExampleBugNet : ModItem
 	{
+		public static readonly int LavaCatchChance = 20;
+		public static readonly int WarmthLavaCatchChance = 50;
+		public static readonly int BonusCritterChance = 5;
+
 		public override string Texture => $"Terraria/Images/Item_{ItemID.BugNet}";
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(LavaCatchChance, WarmthLavaCatchChance, BonusCritterChance);
 
 		public override void SetStaticDefaults() {
 			// This set is needed to define an item as a tool for catching NPCs at all.
 			// An additional set exists called LavaproofCatchingTool which will allow your item to freely catch the Underworld's lava critters. Use it accordingly.
 			ItemID.Sets.CatchingTool[Item.type] = true;
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -45,7 +47,7 @@ namespace ExampleMod.Content.Items.Tools
 			// If you're unsure what to return, return null.
 			// For this example, we'll give our example bug net a 20% chance to catch lava critters successfully (50% with a Warmth Potion buff active).
 			if (ItemID.Sets.IsLavaBait[target.catchItem]) {
-				if (Main.rand.NextBool(player.resistCold ? 2 : 5)) {
+				if (Main.rand.NextBool(player.resistCold ? WarmthLavaCatchChance : LavaCatchChance, 100)) {
 					return true;
 				}
 			}
@@ -67,13 +69,13 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleCatchItemModification : GlobalItem
 	{
 		public override void OnSpawn(Item item, IEntitySource source) {
-			if (source is not EntitySource_CatchEntity catchEntity) {
+			if (source is not EntitySource_Caught catchEntity) {
 				return;
 			}
 
 			if (catchEntity.Entity is Player player) {
 				// Gives a 5% chance for the Example Bug Net to duplicate caught NPCs.
-				if (player.HeldItem.type == ModContent.ItemType<ExampleBugNet>() && Main.rand.NextBool(20)) {
+				if (player.HeldItem.type == ModContent.ItemType<ExampleBugNet>() && Main.rand.NextBool(ExampleBugNet.BonusCritterChance, 100)) {
 					item.stack *= 2;
 				}
 			}

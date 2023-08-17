@@ -8,77 +8,121 @@
  using Terraria.UI;
  using Terraria.Utilities;
  
-@@ -34,15 +_,15 @@
- 		[Old("Lang arrays have been replaced with the new Language.GetText system.")]
- 		public static LocalizedText[] chestType2 = new LocalizedText[14];
- 		public static LocalizedText[] prefix = new LocalizedText[85];
--		public static LocalizedText[] _mapLegendCache;
-+		public static MapLegend _mapLegendCache;
--		private static LocalizedText[] _itemNameCache = new LocalizedText[5125];
-+		internal static LocalizedText[] _itemNameCache = new LocalizedText[ItemID.Count];
--		private static LocalizedText[] _projectileNameCache = new LocalizedText[972];
-+		internal static LocalizedText[] _projectileNameCache = new LocalizedText[ProjectileID.Count];
--		private static LocalizedText[] _npcNameCache = new LocalizedText[670];
-+		internal static LocalizedText[] _npcNameCache = new LocalizedText[NPCID.Count];
- 		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
--		private static LocalizedText[] _buffNameCache = new LocalizedText[338];
-+		internal static LocalizedText[] _buffNameCache = new LocalizedText[BuffID.Count];
--		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[338];
-+		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
--		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5125];
-+		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
--		private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
-+		internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
- 
- 		public static string GetMapObjectName(int id) {
- 			if (_mapLegendCache != null)
-@@ -116,7 +_,7 @@
- 		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
- 
- 		public static LocalizedText GetNPCName(int netID) {
--			if (netID > 0 && netID < 670)
-+			if (netID > 0 && netID < _npcNameCache.Length)
- 				return _npcNameCache[netID];
- 
- 			if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -128,15 +_,17 @@
- 		public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
- 
- 		public static LocalizedText GetItemName(int id) {
-+			if (id < 0)
--			id = ItemID.FromNetId((short)id);
-+				id = ItemID.FromNetId((short)id);
+@@ -34,14 +_,20 @@
+ 	[Old("Lang arrays have been replaced with the new Language.GetText system.")]
+ 	public static LocalizedText[] chestType2 = new LocalizedText[17];
+ 	public static LocalizedText[] prefix = new LocalizedText[PrefixID.Count];
++	public static MapLegend _mapLegendCache; // Type changed from LocalizedText[]
 +
--			if (id > 0 && id < 5125 && _itemNameCache[id] != null)
-+			if (id > 0 && id < _itemNameCache.Length && _itemNameCache[id] != null)
- 				return _itemNameCache[id];
- 
- 			return LocalizedText.Empty;
- 		}
- 
- 		public static LocalizedText GetEmojiName(int id) {
--			if (id >= 0 && id < 151 && _emojiNameCache[id] != null)
-+			if (id >= 0 && id < _emojiNameCache.Length && _emojiNameCache[id] != null)
- 				return _emojiNameCache[id];
- 
- 			return LocalizedText.Empty;
-@@ -282,6 +_,10 @@
- 				return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
- 
- 			int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
-+			string modText = ItemLoader.AnglerChat(id);
-+			if (modText != null)
-+				return modText;
+-	public static LocalizedText[] _mapLegendCache;
++	//TML: Made internal.
+-	private static LocalizedText[] _itemNameCache = new LocalizedText[ItemID.Count];
++	internal static LocalizedText[] _itemNameCache = new LocalizedText[ItemID.Count];
+-	private static LocalizedText[] _projectileNameCache = new LocalizedText[ProjectileID.Count];
++	internal static LocalizedText[] _projectileNameCache = new LocalizedText[ProjectileID.Count];
+-	private static LocalizedText[] _npcNameCache = new LocalizedText[NPCID.Count];
++	internal static LocalizedText[] _npcNameCache = new LocalizedText[NPCID.Count];
 +
- 			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
- 		}
+ 	private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
++
++	//TML: Made internal.
+-	private static LocalizedText[] _buffNameCache = new LocalizedText[BuffID.Count];
++	internal static LocalizedText[] _buffNameCache = new LocalizedText[BuffID.Count];
+-	private static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
++	internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
+-	private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
++	internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
++
+- 	private static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
++ 	internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
  
-@@ -420,7 +_,7 @@
- 		public static void BuildMapAtlas() {
- 			if (Main.dedServ)
- 				return;
--			_mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
-+			_mapLegendCache = new MapLegend(MapHelper.LookupCount());
- 			for (int i = 0; i < _mapLegendCache.Length; i++) {
- 				_mapLegendCache[i] = LocalizedText.Empty;
- 			}
+ 	public static string GetMapObjectName(int id)
+@@ -116,11 +_,13 @@
+ 
+ 	[Old("dialog is deprecated. Please use Language.GetText instead.")]
+ 	public static string dialog(int l, bool english = false) => Language.GetTextValueWith("LegacyDialog." + l, CreateDialogSubstitutionObject());
++	/// <summary> Gets the display name of the provided npc type (<see cref="NPC.type"/>) as a string. </summary>
+ 	public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
+ 
++	/// <summary> Gets the display name of the provided npc type (<see cref="NPC.type"/>) as a <see cref="LocalizedText"/>. </summary>
+ 	public static LocalizedText GetNPCName(int netID)
+ 	{
+-		if (netID > 0 && netID < NPCID.Count)
++		if (netID > 0 && netID < _npcNameCache.Length)
+ 			return _npcNameCache[netID];
+ 
+ 		if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
+@@ -131,10 +_,14 @@
+ 
+ 	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
+ 
++	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a <see cref="LocalizedText"/>. </summary>
+ 	public static LocalizedText GetItemName(int id)
+ 	{
++		// Check added by TML. FromNetId was always called in vanilla.
++		if (id < 0)
+-		id = ItemID.FromNetId((short)id);
++			id = ItemID.FromNetId((short)id);
++
+-		if (id > 0 && id < ItemID.Count && _itemNameCache[id] != null)
++		if (id > 0 && id < _itemNameCache.Length && _itemNameCache[id] != null)
+ 			return _itemNameCache[id];
+ 
+ 		return LocalizedText.Empty;
+@@ -148,8 +_,11 @@
+ 		return LocalizedText.Empty;
+ 	}
+ 
++	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a string. </summary>
+ 	public static string GetItemNameValue(int id) => GetItemName(id).Value;
++	/// <summary> Gets the display name of the provided buff type (<see cref="BuffID"/>) as a string. </summary>
+ 	public static string GetBuffName(int id) => _buffNameCache[id].Value;
++	/// <summary> Gets the description of the provided buff type (<see cref="BuffID"/>) as a string. </summary>
+ 	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
+ 
+ 	public static string GetDryadWorldStatusDialog(out bool worldIsEntirelyPure)
+@@ -326,7 +_,20 @@
+ 		return npc.FullName;
+ 	}
+ 
++	/// <summary>
++	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter and if the conditions embedded into the LocalizedText are all satisfied by the data in <paramref name="substitutions"/>. See <see cref="LocalizedText.CanFormatWith(object)"/> for more information about conditions embedded in localization text. <br/><br/>
++	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> that satisfy <paramref name="substitutions"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> that satisfies <paramref name="substitutions"/> will be returned.<br/><br/>
++	/// </summary>
++	/// <param name="startsWith"></param>
++	/// <param name="substitutions"></param>
++	/// <returns></returns>
+ 	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.CanFormatWith(substitutions);
++	/// <summary>
++	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter.<br/><br/>
++	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>
++	/// </summary>
++	/// <param name="startsWith"></param>
++	/// <returns></returns>
+ 	public static LanguageSearchFilter CreateDialogFilter(string startsWith) => (string key, LocalizedText text) => key.StartsWith(startsWith);
+ 
+ 	public static string AnglerQuestChat(bool turnIn = false)
+@@ -339,9 +_,14 @@
+ 			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
+ 
+ 		int id = (Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest]);
++
++		if (ItemLoader.AnglerChat(id) is string modText)
++			return modText;
++
+ 		return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
+ 	}
+ 
++	/// <summary> Gets the display name of the provided projectile type (<see cref="Projectile.type"/>) as a <see cref="LocalizedText"/>. </summary>
+ 	public static LocalizedText GetProjectileName(int type)
+ 	{
+ 		if (type >= 0 && type < _projectileNameCache.Length && _projectileNameCache[type] != null)
+@@ -484,7 +_,7 @@
+ 		if (Main.dedServ)
+ 			return;
+ 
+-		_mapLegendCache = new LocalizedText[MapHelper.LookupCount()];
++		_mapLegendCache = new MapLegend(MapHelper.LookupCount());
+ 		for (int i = 0; i < _mapLegendCache.Length; i++) {
+ 			_mapLegendCache[i] = LocalizedText.Empty;
+ 		}

@@ -57,6 +57,7 @@ namespace Terraria.ModLoader.Setup
             this.fuzzyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonDiffTerrariaNetCore = new System.Windows.Forms.Button();
             this.buttonPatchTerrariaNetCore = new System.Windows.Forms.Button();
+            this.labelWorkingDirectory = new System.Windows.Forms.Label();
             this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -360,11 +361,21 @@ namespace Terraria.ModLoader.Setup
             this.buttonPatchTerrariaNetCore.UseVisualStyleBackColor = true;
             this.buttonPatchTerrariaNetCore.Click += new System.EventHandler(this.buttonTask_Click);
             // 
+            // labelWorkingDirectory
+            // 
+            this.labelWorkingDirectory.AutoSize = true;
+            this.labelWorkingDirectory.Location = new System.Drawing.Point(12, 30);
+            this.labelWorkingDirectory.Name = "labelWorkingDirectory";
+            this.labelWorkingDirectory.Size = new System.Drawing.Size(106, 15);
+            this.labelWorkingDirectory.TabIndex = 12;
+            this.labelWorkingDirectory.Text = "Working Directory Here";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(407, 428);
+            this.Controls.Add(this.labelWorkingDirectory);
             this.Controls.Add(this.buttonPatchTerrariaNetCore);
             this.Controls.Add(this.buttonDiffTerrariaNetCore);
             this.Controls.Add(this.buttonDiffModLoader);
@@ -420,6 +431,7 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem menuItemTmlPath;
 		private System.Windows.Forms.Button buttonDiffTerrariaNetCore;
 		private System.Windows.Forms.Button buttonPatchTerrariaNetCore;
+		private System.Windows.Forms.Label labelWorkingDirectory;
 	}
 }
 

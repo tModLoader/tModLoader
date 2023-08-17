@@ -1,6 +1,5 @@
 using ExampleMod.Content.Projectiles;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -12,12 +11,6 @@ namespace ExampleMod.Content.Items.Weapons
 	/// </summary>
 	public class ExampleCloneWeapon : ModItem
 	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Meowmere V2");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
 		public override void SetDefaults() {
 			// This method right here is the backbone of what we're doing here; by using this method, we copy all of
 			// the meowmere's SetDefault stats (such as Item.melee and Item.shoot) on to our item, so we don't have to

@@ -1,12 +1,11 @@
-﻿namespace Terraria.ID
+namespace Terraria.ID;
+
+public enum BlockType
 {
-	public enum BlockType
-	{
-		Solid,
-		HalfBlock,
-		SlopeDownLeft,
-		SlopeDownRight,
-		SlopeUpLeft,
-		SlopeUpRight,
-	}
+	Solid,
+	HalfBlock,
+	SlopeDownLeft,
+	SlopeDownRight,
+	SlopeUpLeft,
+	SlopeUpRight,
 }

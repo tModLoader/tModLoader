@@ -1,0 +1,31 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/FlowerPacketInfo.cs
++++ src/tModLoader/Terraria/DataStructures/FlowerPacketInfo.cs
+@@ -2,10 +_,28 @@
+ 
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Determines the styles of <see cref="ID.TileID.Plants"/> that an <see cref="Item"/> creates on certain types of grass.
++/// </summary>
+ public class FlowerPacketInfo
+ {
++	/// <summary>
++	/// The tile styles created on pure grass or in planters (<see cref="ID.TileID.Grass"/>, <see cref="ID.TileID.ClayPot"/>, <see cref="ID.TileID.PlanterBox"/>, <see cref="ID.TileID.GolfGrass"/>, <see cref="ID.TileID.RockGolemHead"/>).
++	/// </summary>
+ 	public List<int> stylesOnPurity = new List<int>();
++
++	/// <summary>
++	/// <strong>Unused.</strong>
++	/// </summary>
+ 	public List<int> stylesOnCorruption = new List<int>();
++
++	/// <summary>
++	/// <strong>Unused.</strong>
++	/// </summary>
+ 	public List<int> stylesOnCrimson = new List<int>();
++
++	/// <summary>
++	/// <strong>Unused.</strong>
++	/// </summary>
+ 	public List<int> stylesOnHallow = new List<int>();
+ }

@@ -1,185 +1,730 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -8,6 +_,7 @@
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Terraria.Audio;
+@@ -8,34 +_,130 @@
+ using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
- using Terraria.ObjectData;
++using Terraria.Localization;
 +using Terraria.ModLoader;
+ using Terraria.ObjectData;
  
- namespace Terraria
+ namespace Terraria;
+ 
++/// <summary>
++/// Represents a non-<see cref="Player"/> inventory, such as chests, portable storage, or NPC shops.
++/// </summary>
+ public class Chest : IFixLoadedData
  {
-@@ -193,12 +_,15 @@
- 			return list;
++	/// <summary>
++	/// The maximum distance, in world coordinates, that a player can quick-stack items into chests.
++	/// </summary>
+ 	public const float chestStackRange = 600f;
++
++	/// <summary>
++	/// The number of vanilla chest styles contained in <see cref="TileID.Containers"/>.
++	/// </summary>
+ 	public const int maxChestTypes = 52;
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over. Differs from <see cref="chestItemSpawn"/> to show key items for locked chest styles.
++	/// <br/> <see cref="maxChestTypes"/> elements long.
++	/// </summary>
+ 	public static int[] chestTypeToIcon = new int[52];
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
++	/// <br/> <see cref="maxChestTypes"/> elements long.
++	/// </summary>
+ 	public static int[] chestItemSpawn = new int[52];
++
++	/// <summary>
++	/// The number of vanilla chest styles contained in <see cref="TileID.Containers2"/>.
++	/// </summary>
+ 	public const int maxChestTypes2 = 17;
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over.
++	/// <br/> <see cref="maxChestTypes2"/> elements long. Differs from <see cref="chestItemSpawn2"/> to show key items for locked chest styles.
++	/// </summary>
+ 	public static int[] chestTypeToIcon2 = new int[17];
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
++	/// <br/> <see cref="maxChestTypes2"/> elements long.
++	/// </summary>
+ 	public static int[] chestItemSpawn2 = new int[17];
++
++	/// <summary>
++	/// The number of vanilla dresser styles contained in <see cref="TileID.Dressers"/>.
++	/// </summary>
+ 	public const int maxDresserTypes = 43;
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is shown when the dresser is moused over.
++	/// <br/> <see cref="maxDresserTypes"/> elements long.
++	/// </summary>
+ 	public static int[] dresserTypeToIcon = new int[43];
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
++	/// <br/> <see cref="maxDresserTypes"/> elements long.
++	/// </summary>
+ 	public static int[] dresserItemSpawn = new int[43];
++
++	/// <summary>
++	/// The maximum number of items chests can contain.
++	/// </summary>
+ 	public const int maxItems = 40;
++
++	/// <summary>
++	/// The maximum length that <see cref="name"/> is allowed to be.
++	/// </summary>
+ 	public const int MaxNameLength = 20;
++
++	/// <summary>
++	/// The items this chest contains.
++	/// <br/> <see cref="maxItems"/> elements long.
++	/// </summary>
+ 	public Item[] item;
++
++	/// <summary>
++	/// The x-coordinate of this chest in the world, in tile coordinates. (Top left corner tile)
++	/// </summary>
+ 	public int x;
++
++	/// <summary>
++	/// The y-coordinate of this chest in the world, in tile coordinates. (Top left corner tile)
++	/// </summary>
+ 	public int y;
++
++	/// <summary>
++	/// <strong>Unused.</strong>
++	/// <br/> If <see langword="true"/>, this chest is a portable storage (such as <see cref="ItemID.PiggyBank"/>) linked to a player.
++	/// </summary>
+ 	public bool bankChest;
++
++	/// <summary>
++	/// The player-assigned name of this chest. May not exceed <see cref="MaxNameLength"/> characters in length.
++	/// </summary>
+ 	public string name;
++
++	/// <summary>
++	/// The number of ticks this chest has been on its current <see cref="frame"/> value.
++	/// </summary>
+ 	public int frameCounter;
++
++	/// <summary>
++	/// The current frame of this chest's animation.
++	/// </summary>
+ 	public int frame;
++
++	/// <summary>
++	/// The duration of this chest's eating animation in ticks.
++	/// <br/> The eating animation plays when an item is quick-stacked into this chest.
++	/// </summary>
+ 	public int eatingAnimationTime;
+ 	private static HashSet<int> _chestInUse = new HashSet<int>();
+ 
++	/// <summary>
++	/// Create a new <see cref="Chest"/> with no name.
++	/// </summary>
+ 	public Chest(bool bank = false)
+ 	{
+ 		item = new Item[40];
+@@ -195,6 +_,11 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Gets a list of currently-open chests in the world.
++	/// <br/> Never called on <see cref="NetmodeID.MultiplayerClient"/>.
++	/// </summary>
++	/// <returns>A <see cref="List{T}"/> containing the indices in <see cref="Main.chest"/> of all chests any active <see cref="Player"/> has open.</returns>
+ 	public static List<int> GetCurrentlyOpenChests()
+ 	{
+ 		List<int> list = new List<int>();
+@@ -206,13 +_,27 @@
+ 		return list;
+ 	}
+ 
++	/// <summary>
++	/// Determines if the chest at <see cref="Main.tile"/>[<paramref name="x"/>, <paramref name="y"/>] is locked.
++	/// </summary>
++	/// <param name="x">The x-coordinate of the chest to check, in tile coordinates.</param>
++	/// <param name="y">The y-coordinate of the chest to check, in tile coordinates.</param>
++	/// <returns><see langword="true"/> if the chest is locked, <see langword="false"/> otherwise.</returns>
+-	public static bool IsLocked(int x, int y) => IsLocked(Main.tile[x, y]);
++	public static bool IsLocked(int x, int y) => IsLocked(x, y, Main.tile[x, y]);
+ 
+-	public static bool IsLocked(Tile t)
++	//TML: Added x & y parameters.
++	/// <inheritdoc cref="IsLocked(int, int)"/>
++	/// <param name="x"><inheritdoc cref="IsLocked(int, int)"/></param>
++	/// <param name="y"><inheritdoc cref="IsLocked(int, int)"/></param>
++	/// <param name="t">The <see cref="Tile"/> at <see cref="Main.tile"/>[<paramref name="x"/>, <paramref name="y"/>]</param>
++	public static bool IsLocked(int x, int y, Tile t)
+ 	{
+ 		if (t == null)
+ 			return true;
+ 
++		if (t.type >= TileID.Count)
++			return TileLoader.IsLockedChest(x, y, t.type);
++
+ 		if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
+ 			return true;
+ 
+@@ -222,6 +_,20 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to move the item in <paramref name="plr"/>'s inventory or Void Vault into nearby chests.
++	/// <br/> Only called on <see cref="NetmodeID.Server"/>.
++	/// </summary>
++	/// <param name="plr">The index of the <see cref="Player"/> in <see cref="Main.player"/> to try moving an item for.</param>
++	/// <param name="slot">
++	/// The <see cref="PlayerItemSlotID"/> to move an item from.
++	/// <br/> If <c><paramref name="slot"/> &lt; 58</c>, then that slot of <paramref name="plr"/>'s inventory is moved.
++	/// <br/> If <c><paramref name="slot"/> >= <see cref="PlayerItemSlotID.Bank4_0"/> &amp;&amp; <paramref name="slot"/> &lt; <see cref="PlayerItemSlotID.Bank4_0"/> + 40</c>, then that slot (minus <see cref="PlayerItemSlotID.Bank4_0"/>) of <paramref name="plr"/>'s Void Vault is moved.
++	/// <br/> Otherwise, no item is moved.
++	/// </param>
++	/// <remarks>
++	/// It's recommended to use <see cref="Player.QuickStackAllChests"/> to handle this automatically.
++	/// </remarks>
+ 	public static void ServerPlaceItem(int plr, int slot)
+ 	{
+ 		if (slot >= PlayerItemSlotID.Bank4_0 && slot < PlayerItemSlotID.Bank4_0 + 40) {
+@@ -235,6 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to move the given item into any chests near the given position. Cannot place items into a chest if <see cref="IsPlayerInChest(int)"/> or  if that chest <see cref="IsLocked(int, int)"/>
++	/// </summary>
++	/// <param name="item">The item to attempt moving.</param>
++	/// <param name="position">The position to attempt moving from.</param>
++	/// <returns>
++	/// If on <see cref="NetmodeID.MultiplayerClient"/>, <paramref name="item"/> without modification.
++	/// <br/> Otherwise, <paramref name="item"/> after being quick-stacked into any nearby chests. May be <see cref="Item.IsAir"/>.
++	/// </returns>
+ 	public static Item PutItemInNearbyChest(Item item, Vector2 position)
+ 	{
+ 		if (Main.netMode == 1)
+@@ -257,6 +_,19 @@
+ 				}
+ 				else if (item.IsTheSameAs(Main.chest[i].item[j])) {
+ 					flag2 = true;
++					// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
++					if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int numTransfered))
++						continue;
++
++					if(numTransfered > 0)
++						VisualizeChestTransfer(position, vector, item, numTransfered);
++
++					if (item.stack <= 0) {
++						item.SetDefaults();
++						return item;
++					}
++
++					/* #OnStackHook
+ 					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
+ 					if (num > 0) {
+ 						if (num > item.stack)
+@@ -268,11 +_,13 @@
+ 							Main.chest[i].item[j].stack += num;
+ 						}
+ 
++						// Extra context.
+ 						if (item.stack <= 0) {
+ 							item.SetDefaults();
+ 							return item;
+ 						}
+ 					}
++					*/
+ 				}
+ 				else {
+ 					flag3 = true;
+@@ -298,6 +_,14 @@
+ 		return item;
+ 	}
+ 
++	/// <summary>
++	/// Visually moves <paramref name="item"/> from <paramref name="position"/> to <paramref name="chestPosition"/>.
++	/// <br/> If called on <see cref="NetmodeID.MultiplayerClient"/>, sync the transfer to all clients.
++	/// </summary>
++	/// <param name="position">The original position of <paramref name="item"/> in world coordinates.</param>
++	/// <param name="chestPosition">The position of the destination chest in world coordinates.</param>
++	/// <param name="item">The item to move. Only <see cref="Item.type"/> is read.</param>
++	/// <param name="amountMoved"><strong>Unused.</strong></param>
+ 	public static void VisualizeChestTransfer(Vector2 position, Vector2 chestPosition, Item item, int amountMoved)
+ 	{
+ 		ParticleOrchestrator.BroadcastOrRequestParticleSpawn(ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings {
+@@ -307,6 +_,13 @@
+ 		});
+ 	}
+ 
++	/// <summary>
++	/// Visually moves <paramref name="coinsMoved"/> worth of coins from <paramref name="position"/> to <paramref name="chestPosition"/>.
++	/// <br/> If called on <see cref="NetmodeID.MultiplayerClient"/>, sync the transfer to all clients.
++	/// </summary>
++	/// <param name="position">The original position of the coins in world coordinates.</param>
++	/// <param name="chestPosition">The position of the destination chest in world coordinates.</param>
++	/// <param name="coinsMoved">The value of the coins moved in copper coins.</param>
+ 	public static void VisualizeChestTransfer_CoinsBatch(Vector2 position, Vector2 chestPosition, long coinsMoved)
+ 	{
+ 		int[] array = Utils.CoinsSplit(coinsMoved);
+@@ -323,6 +_,12 @@
+ 
+ 	public object Clone() => MemberwiseClone();
+ 
++	/// <summary>
++	/// Unlocks a locked chest.
++	/// </summary>
++	/// <param name="X">The x-coordinate of the locked chest, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate of the locked chest, in tile coordinates.</param>
++	/// <returns><see langword="true"/> if the chest successfully unlocked, <see langword="false"/> otherwise.</returns>
+ 	public static bool Unlock(int X, int Y)
+ 	{
+ 		if (Main.tile[X, Y] == null || Main.tile[X + 1, Y] == null || Main.tile[X, Y + 1] == null || Main.tile[X + 1, Y + 1] == null)
+@@ -333,6 +_,24 @@
+ 		Tile tileSafely = Framing.GetTileSafely(X, Y);
+ 		int type2 = tileSafely.type;
+ 		int num2 = tileSafely.frameX / 36;
++
++		// Handle mod chests
++		if (Main.tile[X, Y].type >= TileID.Count) {
++			num = -36;
++			type = 11;
++			bool manual = false;
++
++			if (!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num, ref type, ref manual))
++				return false;
++
++			if (manual)
++				return true;
++
++			num *= -1;
++
++			goto PostVanillaChests;
++		}
++
+ 		switch (type2) {
+ 			case 21:
+ 				switch (num2) {
+@@ -379,13 +_,19 @@
+ 				return false;
  		}
  
--		public static bool IsLocked(int x, int y) => IsLocked(Main.tile[x, y]);
-+		public static bool IsLocked(int x, int y) => IsLocked(x, y, Main.tile[x, y]);
- 
--		public static bool IsLocked(Tile t) {
-+		public static bool IsLocked(int x, int y, Tile t) {
- 			if (t == null)
- 				return true;
- 
-+			if (t.type >= TileID.Count)
-+				return TileLoader.IsLockedChest(x, y, t.type);
++		PostVanillaChests:
 +
- 			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
- 				return true;
- 
-@@ -229,6 +_,16 @@
- 							continue;
- 
- 						flag = true;
-+						// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
-+						if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out _))
-+							continue;
+ 		SoundEngine.PlaySound(22, X * 16, Y * 16);
+ 		for (int i = X; i <= X + 1; i++) {
+ 			for (int j = Y; j <= Y + 1; j++) {
+ 				Tile tileSafely2 = Framing.GetTileSafely(i, j);
+ 				if (tileSafely2.type == type2) {
+ 					tileSafely2.frameX -= num;
 +
-+						if (item.stack <= 0) {
-+							item.SetDefaults();
-+							return item;
-+						}
++					/*
+ 					Main.tile[i, j] = tileSafely2;
++					*/
 +
-+						/* TML: #OnStackHook
- 						int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
- 						if (num > 0) {
- 							if (num > item.stack)
-@@ -241,6 +_,7 @@
- 								return item;
- 							}
- 						}
-+						*/
+ 					for (int k = 0; k < 4; k++) {
+ 						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
- 					else {
- 						flag2 = true;
-@@ -273,6 +_,17 @@
- 			Tile tileSafely = Framing.GetTileSafely(X, Y);
- 			int type2 = tileSafely.type;
- 			int num2 = tileSafely.frameX / 36;
-+			if (Main.tile[X, Y].type >= TileID.Count) {
-+				num = -36;
-+				type = 11;
-+				bool manual = false;
-+				if(!TileLoader.UnlockChest(X, Y, Main.tile[X, Y].type, ref num, ref type, ref manual))
-+					return false;
-+				if (manual)
-+					return true;
-+				num *= -1;
-+				goto PostVanillaChests;
-+			}
- 			switch (type2) {
+@@ -396,6 +_,12 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Locks an unlocked chest.
++	/// </summary>
++	/// <param name="X">The x-coordinate of the unlocked chest, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate of the unlocked chest, in tile coordinates.</param>
++	/// <returns><see langword="true"/> if the chest successfully locked, <see langword="false"/> otherwise.</returns>
+ 	public static bool Lock(int X, int Y)
+ 	{
+ 		if (Main.tile[X, Y] == null || Main.tile[X + 1, Y] == null || Main.tile[X, Y + 1] == null || Main.tile[X + 1, Y + 1] == null)
+@@ -405,6 +_,21 @@
+ 		Tile tileSafely = Framing.GetTileSafely(X, Y);
+ 		int type = tileSafely.type;
+ 		int num2 = tileSafely.frameX / 36;
++
++		// Handle mod chests
++		if (Main.tile[X, Y].type >= TileID.Count) {
++			num = 36;
++			bool manual = false;
++
++			if (!TileLoader.LockChest(X, Y, Main.tile[X, Y].type, ref num, ref manual))
++				return false;
++
++			if (manual)
++				return true;
++
++			goto PostVanillaChests;
++		}
++
+ 		switch (type) {
+ 			case 21:
+ 				switch (num2) {
+@@ -444,13 +_,17 @@
+ 				return false;
+ 		}
+ 
++		PostVanillaChests:
++
+ 		SoundEngine.PlaySound(22, X * 16, Y * 16);
+ 		for (int i = X; i <= X + 1; i++) {
+ 			for (int j = Y; j <= Y + 1; j++) {
+ 				Tile tileSafely2 = Framing.GetTileSafely(i, j);
+ 				if (tileSafely2.type == type) {
+ 					tileSafely2.frameX += num;
++					/*
+ 					Main.tile[i, j] = tileSafely2;
++					*/
+ 				}
+ 			}
+ 		}
+@@ -458,6 +_,11 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Gets the <see cref="Player"/> currently using the given chest, if any.
++	/// </summary>
++	/// <param name="i">The index of the chest in <see cref="Main.chest"/> to check.</param>
++	/// <returns>The index in <see cref="Main.player"/> of the <see cref="Player"/> using this chest, or <c>-1</c> if no player is using this chest.</returns>
+ 	public static int UsingChest(int i)
+ 	{
+ 		if (Main.chest[i] != null) {
+@@ -470,6 +_,15 @@
+ 		return -1;
+ 	}
+ 
++	/// <summary>
++	/// Tries to find a <see cref="Chest"/> located at (<paramref name="X"/>, <paramref name="Y"/>) (tile coordinates).
++	/// </summary>
++	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
++	/// <returns>The index in <see cref="Main.chest"/> of the chest at (<paramref name="X"/>, <paramref name="Y"/>), or <c>-1</c> if one doesn't exist.</returns>
++	/// <remarks>
++	/// If you don't have the top-left corner of the chest tile, use <see cref="FindChestByGuessing(int, int)"/>.
++	/// </remarks>
+ 	public static int FindChest(int X, int Y)
+ 	{
+ 		for (int i = 0; i < 8000; i++) {
+@@ -480,6 +_,15 @@
+ 		return -1;
+ 	}
+ 
++	/// <summary>
++	/// Tries to find the <see cref="Chest"/> associated with the tile at (<paramref name="X"/>, <paramref name="Y"/>) (tile coordinates).
++	/// </summary>
++	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
++	/// <returns>The index in <see cref="Main.chest"/> of the chest associated with the tile at (<paramref name="X"/>, <paramref name="Y"/>), or <c>-1</c> if one doesn't exist.</returns>
++	/// <remarks>
++	/// If you have the top-left corner of the chest tile, use <see cref="FindChest(int, int)"/>.
++	/// </remarks>
+ 	public static int FindChestByGuessing(int X, int Y)
+ 	{
+ 		for (int i = 0; i < 8000; i++) {
+@@ -490,6 +_,19 @@
+ 		return -1;
+ 	}
+ 
++	/// <summary>
++	/// Determines if a new chest can exist at tile coordinates (<paramref name="x"/>, <paramref name="y"/>).
++	/// </summary>
++	/// <param name="x">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="y">The y-coordinate to check, in tile coordinates.</param>
++	/// <param name="type">Unused, but required for use with <see cref="PlacementHook.hook"/>.</param>
++	/// <param name="style">Unused, but required for use with <see cref="PlacementHook.hook"/>.</param>
++	/// <param name="direction">Unused, but required for use with <see cref="PlacementHook.hook"/>.</param>
++	/// <param name="alternate">Unused, but required for use with <see cref="PlacementHook.hook"/>.</param>
++	/// <returns>
++	/// <c>-1</c> if there exists a chest in <see cref="Main.chest"/> at the coordinates (<paramref name="x"/>, <paramref name="y"/>), or if <see cref="Main.chest"/> contains no <see langword="null"/> elements.
++	/// <br/> Otherwise, the index in <see cref="Main.chest"/> of the first <see langword="null"/> element.
++	/// </returns>
+ 	public static int FindEmptyChest(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
+ 	{
+ 		int num = -1;
+@@ -507,6 +_,12 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Determines if there are any chests near the tile coordinates (<paramref name="x"/>, <paramref name="y"/>).
++	/// </summary>
++	/// <param name="x">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="y">The y-coordinate to check, in tile coordinates.</param>
++	/// <returns><see langword="true"/> if any position in <see cref="Main.tile"/> within [-25, 25) tiles horizontally and [-8, 8) tiles vertically has a tile (<see cref="Tile.HasTile"/>) and if that tile's <see cref="Tile.TileType"/> is in <see cref="TileID.Sets.BasicChest"/>. Otherwise, returns <see langword="false"/>.</returns>
+ 	public static bool NearOtherChests(int x, int y)
+ 	{
+ 		for (int i = x - 25; i < x + 25; i++) {
+@@ -520,6 +_,19 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Registers a placed chest into the world.
++	/// </summary>
++	/// <param name="x">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="y">The y-coordinate to check, in tile coordinates.</param>
++	/// <param name="type">The tile type of the placed chest.</param>
++	/// <param name="style">The tile style of the placed chest.</param>
++	/// <param name="direction">Unused, but required for use with <see cref="PlacementHook.hook"/>.</param>
++	/// <param name="alternate">Unused, but required for use with <see cref="PlacementHook.hook"/>.</param>
++	/// <returns>
++	/// <c>-1</c> if there exists a chest in <see cref="Main.chest"/> at the coordinates (<paramref name="x"/>, <paramref name="y"/>), or if <see cref="Main.chest"/> contains no <see langword="null"/> elements.
++	/// <br/> Otherwise, the index in <see cref="Main.chest"/> of the newly-created chest.
++	/// </returns>
+ 	public static int AfterPlacement_Hook(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
+ 	{
+ 		Point16 baseCoords = new Point16(x, y);
+@@ -540,21 +_,47 @@
+ 		}
+ 		else {
+ 			switch (type) {
++				// Containers
  				case 21:
- 					switch (num2) {
-@@ -318,6 +_,7 @@
- 					}
- 					return false;
- 			}
-+			PostVanillaChests:
- 
- 			SoundEngine.PlaySound(22, X * 16, Y * 16);
- 			for (int i = X; i <= X + 1; i++) {
-@@ -325,7 +_,7 @@
- 					Tile tileSafely2 = Framing.GetTileSafely(i, j);
- 					if (tileSafely2.type == type2) {
- 						tileSafely2.frameX -= num;
--						Main.tile[i, j] = tileSafely2;
-+						// Main.tile[i, j] = tileSafely2;
- 						for (int k = 0; k < 4; k++) {
- 							Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
- 						}
-@@ -412,15 +_,21 @@
- 			}
- 			else {
- 				switch (type) {
--					case 21:
-+					case TileID.Containers:
- 						NetMessage.SendData(34, -1, -1, null, 0, x, y, style);
- 						break;
--					case 467:
-+					case TileID.Containers2:
- 						NetMessage.SendData(34, -1, -1, null, 4, x, y, style);
- 						break;
--					default:
-+					case TileID.Dressers:
- 						NetMessage.SendData(34, -1, -1, null, 2, x, y, style);
- 						break;
-+					case int _ when TileID.Sets.BasicChest[type]:
-+						NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
-+						break;
-+					case int _ when TileID.Sets.BasicDresser[type]:
-+						NetMessage.SendData(34, -1, -1, null, 102, x, y, style, 0, type, 0);
-+						break;
- 				}
- 			}
- 
-@@ -505,14 +_,15 @@
+ 					NetMessage.SendData(34, -1, -1, null, 0, x, y, style);
+ 					break;
++				// Containers2
+ 				case 467:
+ 					NetMessage.SendData(34, -1, -1, null, 4, x, y, style);
+ 					break;
++				/*
+ 				default:
++				*/
++				case TileID.Dressers:
+ 					NetMessage.SendData(34, -1, -1, null, 2, x, y, style);
+ 					break;
++				// Handle mod chests
++				case int _ when TileID.Sets.BasicChest[type]:
++					NetMessage.SendData(34, -1, -1, null, 100, x, y, style, 0, type, 0);
++					break;
++				// Handle mod dressers
++				case int _ when TileID.Sets.BasicDresser[type]:
++					NetMessage.SendData(34, -1, -1, null, 102, x, y, style, 0, type, 0);
++					break;
  			}
  		}
  
--		public void AddItemToShop(Item newItem) {
-+		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
- 			int num = Main.shopSellbackHelper.Remove(newItem);
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Creates and registers a new chest into the world.
++	/// </summary>
++	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
++	/// <param name="id">The index in <see cref="Main.chest"/> that this chest should use. If <c><paramref name="id"/> != -1</c>, placement cannot fail.</param>
++	/// <returns>
++	/// <c>-1</c> if <c><paramref name="id"/> == -1</c> and <see cref="FindEmptyChest(int, int, int, int, int, int)"/> returns <c>-1</c>.
++	/// <br/> Otherwise, the index in <see cref="Main.chest"/> of the newly-created chest.
++	/// </returns>
++	/// <remarks>
++	/// It is recommended to use <see cref="WorldGen.PlaceChest(int, int, ushort, bool, int)"/> to place chests into the world.
++	/// </remarks>
+ 	public static int CreateChest(int X, int Y, int id = -1)
+ 	{
+ 		int num = id;
+@@ -577,6 +_,12 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Determines if the chest at (<paramref name="X"/>, <paramref name="Y"/>) can be destroyed.
++	/// </summary>
++	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
++	/// <returns><see langword="false"/> if a chest exists at (<paramref name="X"/>, <paramref name="Y"/>) and if any element in that chest's <see cref="item"/> array is not <see cref="Item.IsAir"/>. Otherwise, returns <see langword="true"/>.</returns>
+ 	public static bool CanDestroyChest(int X, int Y)
+ 	{
+ 		for (int i = 0; i < 8000; i++) {
+@@ -595,6 +_,12 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to destroy the chest at (<paramref name="X"/>, <paramref name="Y"/>).
++	/// </summary>
++	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
++	/// <returns><see langword="false"/> if a chest exists at (<paramref name="X"/>, <paramref name="Y"/>) and if any element in that chest's <see cref="item"/> array is not <see cref="Item.IsAir"/>. Otherwise, returns <see langword="true"/>.</returns>
+ 	public static bool DestroyChest(int X, int Y)
+ 	{
+ 		for (int i = 0; i < 8000; i++) {
+@@ -618,6 +_,13 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Forcibly destroys the chest at (<paramref name="X"/>, <paramref name="Y"/>) with ID <paramref name="id"/> if it exists.
++	/// <br/> <strong>Warning: This will destroy any items contained within the chest.</strong>
++	/// </summary>
++	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
++	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
++	/// <param name="id">The index in <see cref="Main.chest"/> of the chest to destroy.</param>
+ 	public static void DestroyChestDirect(int X, int Y, int id)
+ 	{
+ 		if (id < 0 || id >= Main.chest.Length)
+@@ -637,13 +_,27 @@
+ 		}
+ 	}
+ 
++	//TML: Now returns the item's index.
++	/// <summary>
++	/// Adds an item to the first empty slot in this shop.
++	/// </summary>
++	/// <param name="newItem">The item to add.</param>
++	/// <returns><c>0</c> if the item could not be added to the shop, or the index in <see cref="item"/> if the item was successfully added.</returns>
+-	public void AddItemToShop(Item newItem)
++	public int AddItemToShop(Item newItem)
+ 	{
+ 		int num = Main.shopSellbackHelper.Remove(newItem);
 +
- 			if (num >= newItem.stack)
--				return;
-+				return 0;
+ 		if (num >= newItem.stack)
+-			return;
++			return 0;
  
- 			int num2 = 0;
- 			while (true) {
--				if (num2 < 39) {
-+				if (num2 < 38) { // tModLoader change: When selling to vendor with full inventory, replace 2nd to last item rather than have the item disappear to facilitate PostSellItem Item reference.
- 					if (item[num2] == null || item[num2].type == 0)
- 						break;
- 
-@@ -520,7 +_,7 @@
- 					continue;
- 				}
- 
--				return;
-+				break;
- 			}
- 
- 			item[num2] = newItem.Clone();
-@@ -529,6 +_,7 @@
- 			item[num2].stack -= num;
- 			_ = item[num2].value;
- 			_ = 0;
-+			return num2;
- 		}
- 
- 		public static void SetupTravelShop() {
-@@ -902,9 +_,12 @@
- 							Main.travelShop[num2++] = 3636;
- 							Main.travelShop[num2++] = 3641;
- 							break;
-+						//patch file: num2
- 					}
- 				}
- 			}
++		//TML:
++		// When selling to vendor with full inventory, replace 2nd to last
++		// item rather than have the item disappear to facilitate PostSellItem Item reference.
 +
-+			NPCLoader.SetupTravelShop(Main.travelShop, ref num2);
++		/*
+ 		for (int i = 0; i < 39; i++) {
++		*/
++		for (int i = 0; i < 38; i++) {
+ 			if (item[i] == null || item[i].type == 0) {
+ 				item[i] = newItem.Clone();
+ 				item[i].favorited = false;
+@@ -651,9 +_,15 @@
+ 				item[i].stack -= num;
+ 				_ = item[i].value;
+ 				_ = 0;
++				
++				/*
+ 				break;
++				*/
++				return i;
+ 			}
  		}
++
++		return 0;
+ 	}
  
- 		public void SetupShop(int type) {
-@@ -2015,12 +_,12 @@
- 						num++;
- 						array[num].SetDefaults(1979);
- 						num++;
--						if (Main.player[Main.myPlayer].statLifeMax >= 400) {
-+						if (Main.player[Main.myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
- 							array[num].SetDefaults(1977);
- 							num++;
- 						}
+ 	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count)
+@@ -1077,6 +_,9 @@
+ 		}
+ 	}
  
--						if (Main.player[Main.myPlayer].statManaMax >= 200) {
-+						if (Main.player[Main.myPlayer].ConsumedManaCrystals == Player.ManaCrystalMax) {
- 							array[num].SetDefaults(1978);
- 							num++;
- 						}
-@@ -2611,6 +_,7 @@
- 					array[num++].SetDefaults(4921);
++	/// <summary>
++	/// Sets up the <see cref="NPCID.TravellingMerchant"/>'s shop.
++	/// </summary>
+ 	public static void SetupTravelShop()
+ 	{
+ 		for (int i = 0; i < 40; i++) {
+@@ -1164,10 +_,17 @@
+ 				break;
  			}
+ 		}
++
++		NPCLoader.SetupTravelShop(Main.travelShop, ref count);
+ 	}
  
-+			NPCLoader.SetupShop(type, this, ref num);
- 			for (int num13 = 0; num13 < num; num13++) {
- 				array[num13].isAShopItem = true;
- 			}
+ 	public void SetupShop(int type)
+ 	{
++		SetupShop(NPCShopDatabase.GetShopNameFromVanillaIndex(type), Main.LocalPlayer.TalkNPC);
++	}
++
++	internal void VanillaSetupShop(int type)
++	{
+ 		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
+ 		Item[] array = item;
+ 		for (int i = 0; i < 40; i++) {
+@@ -2313,12 +_,12 @@
+ 				num++;
+ 				array[num].SetDefaults(1979);
+ 				num++;
+-				if (Main.player[Main.myPlayer].statLifeMax >= 400) {
++				if (Main.player[Main.myPlayer].ConsumedLifeCrystals == Player.LifeCrystalMax) {
+ 					array[num].SetDefaults(1977);
+ 					num++;
+ 				}
+ 
+-				if (Main.player[Main.myPlayer].statManaMax >= 200) {
++				if (Main.player[Main.myPlayer].ConsumedManaCrystals == Player.ManaCrystalMax) {
+ 					array[num].SetDefaults(1978);
+ 					num++;
+ 				}
+@@ -2996,7 +_,30 @@
+ 		}
+ 	}
+ 
++	// Added by tML
++	public void SetupShop(string shopName, NPC npc)
++	{
++		Array.Fill(item, null);
++
++		if (NPCShopDatabase.TryGetNPCShop(shopName, out var shop)) {
++			shop.FillShop(item, npc, out bool overflow);
++			if (overflow) {
++				Main.NewText(Language.GetTextValue("tModLoader.ShopOverflow"), Color.Orange);
++				Logging.tML.Warn($"Unable to fit all item in the shop {shopName}");
++			}
++		}
++
++		if (npc != null) // not that it's valid to call SetupShop without an npc, except when testing
++			NPCLoader.ModifyActiveShop(npc, shopName, item);
++
++		foreach (ref var item in item.AsSpan()) {
++			item ??= new Item();
++			item.isAShopItem = true;
++		}
++	}
++
++	// TML: Made internal
+-	private static bool BestiaryGirl_IsFairyTorchAvailable()
++	internal static bool BestiaryGirl_IsFairyTorchAvailable()
+ 	{
+ 		if (!DidDiscoverBestiaryEntry(585))
+ 			return false;
+@@ -3012,6 +_,11 @@
+ 
+ 	private static bool DidDiscoverBestiaryEntry(int npcId) => Main.BestiaryDB.FindEntryByNPCID(npcId).UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0;
+ 
++	/// <summary>
++	/// Visually opens the chest at <paramref name="worldPosition"/> for <paramref name="duration"/> ticks.
++	/// </summary>
++	/// <param name="worldPosition">The position of the chest to ask, in tile coordinates.</param>
++	/// <param name="duration">The duration of the eating animation in ticks.</param>
+ 	public static void AskForChestToEatItem(Vector2 worldPosition, int duration)
+ 	{
+ 		Point point = worldPosition.ToTileCoordinates();
+@@ -3020,6 +_,10 @@
+ 			Main.chest[num].eatingAnimationTime = duration;
+ 	}
+ 
++	/// <summary>
++	/// Visually updates all chests' frames.
++	/// <br/> Chests that are being used (<see cref="GetCurrentlyOpenChests"/>) or eating an item (<see cref="eatingAnimationTime"/>) will not be opened.
++	/// </summary>
+ 	public static void UpdateChestFrames()
+ 	{
+ 		int num = 8000;
+@@ -3063,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="Item.FixAgainstExploit"/> on all of this chest's items.
++	/// </summary>
+ 	public void FixLoadedData()
+ 	{
+ 		Item[] array = item;

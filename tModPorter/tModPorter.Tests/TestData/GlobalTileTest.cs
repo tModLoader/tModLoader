@@ -20,4 +20,6 @@ public class GlobalTileTest : GlobalTile {
 	}
 
 	public override void PlaceInWorld(int i, int j, Item item) { /* Empty */ }
+
+	public override bool Drop(int i, int j, int type) { /* Empty */ }
 }

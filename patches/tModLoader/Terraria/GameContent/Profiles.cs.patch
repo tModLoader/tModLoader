@@ -2,28 +2,28 @@
 +++ src/tModLoader/Terraria/GameContent/Profiles.cs
 @@ -5,7 +_,7 @@
  
- namespace Terraria.GameContent
+ namespace Terraria.GameContent;
+ 
+-public class Profiles
++public partial class Profiles
  {
--	public class Profiles
-+	public partial class Profiles
+ 	public class StackedNPCProfile : ITownNPCProfile
  	{
- 		public class LegacyNPCProfile : ITownNPCProfile
+@@ -67,7 +_,7 @@
+ 		}
+ 
+ 		public int RollVariation() => 0;
+-		public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
++		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+ 
+ 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
  		{
-@@ -26,7 +_,7 @@
- 			}
+@@ -104,7 +_,7 @@
+ 		}
  
- 			public int RollVariation() => 0;
--			public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
-+			public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+ 		public int RollVariation() => 0;
+-		public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
++		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
  
- 			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
- 				if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-@@ -62,7 +_,7 @@
- 			}
- 
- 			public int RollVariation() => 0;
--			public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
-+			public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
- 
- 			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
- 				if (npc.altTexture == 3)
+ 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+ 		{

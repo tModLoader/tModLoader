@@ -11,6 +11,7 @@ public static partial class Config
 		new InvokeRewriter(),
 		new HookRewriter(),
 		new RecipeRewriter(),
+		new HookGenRewriter(),
 	};
 
 	static Config() {

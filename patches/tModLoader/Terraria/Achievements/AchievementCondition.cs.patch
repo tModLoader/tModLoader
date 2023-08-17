@@ -5,14 +5,5 @@
  using Newtonsoft.Json.Linq;
 +using Terraria.Social;
  
- namespace Terraria.Achievements
- {
-@@ -30,6 +_,8 @@
- 		}
+ namespace Terraria.Achievements;
  
- 		public virtual void Complete() {
-+			if (SocialAPI.Mode == SocialMode.Steam) return;
-+
- 			if (!_isCompleted) {
- 				_isCompleted = true;
- 				if (this.OnComplete != null)

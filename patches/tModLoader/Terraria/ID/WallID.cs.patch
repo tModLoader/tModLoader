@@ -4,22 +4,23 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
- namespace Terraria.ID
- {
- 	public class WallID
-@@ -17,7 +_,7 @@
- 				public static bool[] NewWall4 = Factory.CreateBoolSet(191, 195, 203, 207, 215, 279, 283, 291, 295, 303);
- 			}
+ namespace Terraria.ID;
  
--			public static SetFactory Factory = new SetFactory(316);
-+			public static SetFactory Factory = new SetFactory(WallLoader.WallCount);
- 			public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
- 			public static bool[] Transparent = Factory.CreateBoolSet(88, 89, 90, 91, 92, 241);
- 			public static bool[] Corrupt = Factory.CreateBoolSet(69, 217, 220, 3);
-@@ -344,5 +_,6 @@
- 		public const ushort AmberStoneWallEcho = 314;
- 		public const ushort BambooFence = 315;
- 		public const ushort Count = 316;
-+		public static readonly IdDictionary Search = IdDictionary.Create<WallID, ushort>();
- 	}
+ public class WallID
+@@ -20,7 +_,7 @@
+ 			public static bool[] NewWall4 = Factory.CreateBoolSet(191, 195, 203, 207, 215, 279, 283, 291, 295, 303);
+ 		}
+ 
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(WallLoader.WallCount);
+ 		public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
+ 		public static bool[] AllowsUndergroundDesertEnemiesToSpawn = Factory.CreateBoolSet(187, 220, 222, 221, 216, 217, 219, 218);
+ 		public static bool[] Transparent = Factory.CreateBoolSet(88, 89, 90, 91, 92, 241);
+@@ -382,4 +_,7 @@
+ 	public const ushort VioletMossBlockWall = 345;
+ 	public const ushort RainbowMossBlockWall = 346;
+ 	public static readonly ushort Count = 347;
++
++	// Added by TML.
++	public static readonly IdDictionary Search = IdDictionary.Create<WallID, ushort>();
  }

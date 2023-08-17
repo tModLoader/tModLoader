@@ -1,4 +1,4 @@
-﻿## tModPorter
+## tModPorter
 
 tModPorter is a tool to help keep mods up to date with changes to the tModLoader API. 
 

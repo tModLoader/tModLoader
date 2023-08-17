@@ -1,58 +1,63 @@
 --- src/TerrariaNetCore/Terraria/RemoteClient.cs
 +++ src/tModLoader/Terraria/RemoteClient.cs
-@@ -2,6 +_,7 @@
+@@ -1,6 +_,7 @@
  using System;
- using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
  
- namespace Terraria
-@@ -12,7 +_,7 @@
- 		public int Id;
- 		public string Name = "Anonymous";
- 		public bool IsActive;
--		public bool PendingTermination;
-+		public bool PendingTermination { get; private set; }
- 		public bool PendingTerminationApproved;
- 		public bool IsAnnouncementCompleted;
- 		public int State;
-@@ -34,6 +_,12 @@
- 		private volatile bool _isReading;
- 		private static List<Point> _pendingSectionFraming = new List<Point>();
- 
-+		// log a reason for terminating clients
-+		internal void SetPendingTermination(string reason) {
-+			PendingTermination = true;
-+			ModNet.Log(Id, "Terminating: " + reason);
-+		}
+ namespace Terraria;
+@@ -11,7 +_,10 @@
+ 	public int Id;
+ 	public string Name = "Anonymous";
+ 	public bool IsActive;
+-	public bool PendingTermination;
 +
- 		public bool IsConnected() {
- 			if (Socket != null)
- 				return Socket.IsConnected();
-@@ -199,14 +_,14 @@
- 				}
- 			}
- 			catch {
--				PendingTermination = true;
-+				SetPendingTermination("Exception in RemoteClient.TryRead");
- 			}
- 		}
++	// Changed from a field into a private setter property.
++	// Vanilla code must be changed to use SetPendingTermination instead.
++	public bool PendingTermination { get; private set; }
+ 	public bool PendingTerminationApproved;
+ 	public bool IsAnnouncementCompleted;
+ 	public int State;
+@@ -32,6 +_,13 @@
+ 	public float SpamWaterMax = 50f;
+ 	private volatile bool _isReading;
  
- 		private void ServerReadCallBack(object state, int length) {
- 			if (!Netplay.Disconnect) {
- 				if (length == 0) {
--					PendingTermination = true;
-+					SetPendingTermination("ServerReadCallBack returned no data");
- 				}
- 				else {
- 					try {
-@@ -248,7 +_,7 @@
- 					StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
- 				}
- 				catch (Exception) {
--					PendingTermination = true;
-+					SetPendingTermination("Exception in Socket.GetRemoteAddress while updating StatusText (State == 10)");
- 				}
++	// Added by TML to log a reason for terminating clients
++	internal void SetPendingTermination(string reason)
++	{
++		PendingTermination = true;
++		ModNet.Log(Id, "Terminating: " + reason);
++	}
++
+ 	public bool IsConnected()
+ 	{
+ 		if (Socket != null)
+@@ -199,7 +_,7 @@
  			}
  		}
+ 		catch {
+-			PendingTermination = true;
++			SetPendingTermination("Exception in RemoteClient.TryRead");
+ 		}
+ 	}
+ 
+@@ -207,7 +_,7 @@
+ 	{
+ 		if (!Netplay.Disconnect) {
+ 			if (length == 0) {
+-				PendingTermination = true;
++				SetPendingTermination("ServerReadCallBack returned no data");
+ 			}
+ 			else {
+ 				try {
+@@ -250,7 +_,7 @@
+ 				StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
+ 			}
+ 			catch (Exception) {
+-				PendingTermination = true;
++				SetPendingTermination("Exception in Socket.GetRemoteAddress while updating StatusText (State == 10)");
+ 			}
+ 		}
+ 	}

@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/ReLogic/OS/Linux/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/Linux/WindowService.cs
-@@ -18,5 +_,8 @@
- 
- 		public void SetQuickEditEnabled(bool enabled) {
- 		}
-+
-+		public void HideConsole() {
-+		}
+@@ -22,4 +_,9 @@
+ 	public void SetQuickEditEnabled(bool enabled)
+ 	{
  	}
++
++	// Added by TML.
++	public void HideConsole()
++	{
++	}
  }

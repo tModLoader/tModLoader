@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.UI.BigProgressBar;
+using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.BossBars
 {
@@ -26,6 +27,12 @@ namespace ExampleMod.Content.BossBars
 
 				// Unused method by vanilla, which simply draws a few boxes that represent a boss bar (fixed position, colors, no icon)
 				BigProgressBarHelper.DrawBareBonesBar(spriteBatch, lifePercent);
+
+				if (info.showText && BigProgressBarSystem.ShowText) {
+					// If the bar can currently draw text and the setting for it is enabled, draw the "life/lifeMax" text in the center of the bar (position code taken from DrawBareBonesBar)
+					Rectangle barDimensions = Utils.CenteredRectangle(Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f), new Vector2(400f, 20f));
+					BigProgressBarHelper.DrawHealthText(spriteBatch, barDimensions, 2 * Vector2.UnitY, npc.life, npc.lifeMax);
+				}
 			}
 			else {
 				// If a bar with special behavior is currently selected, draw it instead because we don't have access to its special features

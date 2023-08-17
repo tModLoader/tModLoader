@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Metadata/TileMaterials.cs
 +++ src/tModLoader/Terraria/GameContent/Metadata/TileMaterials.cs
 @@ -8,8 +_,8 @@
- {
- 	public static class TileMaterials
- 	{
--		private static Dictionary<string, TileMaterial> _materialsByName;
--		private static readonly TileMaterial[] MaterialsByTileId;
-+		public static Dictionary<string, TileMaterial> _materialsByName; // TML: Changed to public so modders can access vanilla TileMaterials
-+		internal static TileMaterial[] MaterialsByTileId; // TML: Changed to internal and removed readonly so the array can be resized for modded tiles
  
- 		static TileMaterials() {
- 			MaterialsByTileId = new TileMaterial[625];
+ public static class TileMaterials
+ {
+-	private static Dictionary<string, TileMaterial> _materialsByName;
+-	private static readonly TileMaterial[] MaterialsByTileId;
++	public static Dictionary<string, TileMaterial> _materialsByName; // TML: Changed to public so modders can access vanilla TileMaterials
++	internal static TileMaterial[] MaterialsByTileId; // TML: Changed to internal and removed readonly so the array can be resized for modded tiles
+ 
+ 	static TileMaterials()
+ 	{

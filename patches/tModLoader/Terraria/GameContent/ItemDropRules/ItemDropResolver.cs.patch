@@ -1,11 +1,17 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropResolver.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropResolver.cs
-@@ -11,7 +_,7 @@
- 		}
+@@ -13,7 +_,14 @@
  
- 		public void TryDropping(DropAttemptInfo info) {
--			List<IItemDropRule> rulesForNPCID = _database.GetRulesForNPCID(info.npc.netID);
-+			List<IItemDropRule> rulesForNPCID = info.npc != null ? _database.GetRulesForNPCID(info.npc.netID) : _database.GetRulesForItemID(info.item);
- 			for (int i = 0; i < rulesForNPCID.Count; i++) {
- 				ResolveRule(rulesForNPCID[i], info);
- 			}
+ 	public void TryDropping(DropAttemptInfo info)
+ 	{
++		/*
+ 		List<IItemDropRule> rulesForNPCID = _database.GetRulesForNPCID(info.npc.netID);
++		*/
++
++		var rulesForNPCID = info.npc != null
++			? _database.GetRulesForNPCID(info.npc.netID)
++			: _database.GetRulesForItemID(info.item);
++
+ 		for (int i = 0; i < rulesForNPCID.Count; i++) {
+ 			ResolveRule(rulesForNPCID[i], info);
+ 		}

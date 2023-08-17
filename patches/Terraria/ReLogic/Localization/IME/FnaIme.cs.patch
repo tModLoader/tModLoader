@@ -5,31 +5,32 @@
 +using Microsoft.Xna.Framework.Input;
 +#endif
 +
- namespace ReLogic.Localization.IME
- {
- 	internal class FnaIme : PlatformIme
-@@ -12,6 +_,12 @@
+ namespace ReLogic.Localization.IME;
  
- 		public override uint SelectedCandidate => 0u;
+ internal class FnaIme : PlatformIme
+@@ -12,6 +_,13 @@
+ 
+ 	public override uint SelectedCandidate => 0u;
  
 +#if FNA
-+		public FnaIme() {
-+			TextInputEXT.TextInput += OnCharCallback;
-+		}
++	public FnaIme()
++	{
++		TextInputEXT.TextInput += OnCharCallback;
++	}
 +#endif
 +
- 		private void OnCharCallback(char key) {
+ 	private void OnCharCallback(char key)
+ 	{
+ 		if (base.IsEnabled)
+@@ -23,6 +_,11 @@
+ 	protected override void Dispose(bool disposing)
+ 	{
+ 		if (!_disposedValue) {
++#if FNA
++			if (disposing)
++				TextInputEXT.TextInput -= OnCharCallback;
++#endif
++
  			if (base.IsEnabled)
- 				OnKeyPress(key);
-@@ -21,6 +_,11 @@
- 
- 		protected override void Dispose(bool disposing) {
- 			if (!_disposedValue) {
-+#if FNA
-+				if (disposing)
-+					TextInputEXT.TextInput -= OnCharCallback;
-+#endif
-+
- 				if (base.IsEnabled)
- 					Disable();
+ 				Disable();
  

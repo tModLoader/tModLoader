@@ -42,55 +42,54 @@
  				else if (anch.entity is Projectile)
  					item = 2;
  
-+				// TML: #WorldUIAnchorProjectileSyncFix: Explanation below
-+				// Vanilla never uses Projectile as a WorldUIAnchor, but if mods do, it is very likely to desync.
-+				// As whoAmI is not enough to match a projectile between sides, TML rewrites it to use identity + owner instead.
-+				// It does so by packing the anchor entity type together with the owner if it's a projectile.
-+				// Chosen because both variables can never go above 255 (whoAmI can go above that for projectiles), allowing for easier masking.
-+				// Methods (including the IO protocol) accessing this packed owner/type pair handle it properly.
-+				// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile.
-+				// tl;dr: byte type -> ushort packedOwnerType [owner << 8 | type] (only if it's a projectile)
-+				int whoAmI = anch.entity.whoAmI;
-+				if (!ModNet.AllowVanillaClients) {
-+					if (anch.entity is Projectile projectile) {
-+						whoAmI = projectile.identity; // This is the meta parameter in DeserializeNetAnchor
-+						item = projectile.owner << 8 | item;
-+					}
++			// #WorldUIAnchorProjectileSyncFix: Explanation below
++			// Vanilla never uses Projectile as a WorldUIAnchor, but if mods do, it is very likely to desync.
++			// As whoAmI is not enough to match a projectile between sides, TML rewrites it to use identity + owner instead.
++			// It does so by packing the anchor entity type together with the owner if it's a projectile.
++			// Chosen because both variables can never go above 255 (whoAmI can go above that for projectiles), allowing for easier masking.
++			// Methods (including the IO protocol) accessing this packed owner/type pair handle it properly.
++			// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile.
++			// tl;dr: byte type -> ushort packedOwnerType [owner << 8 | type] (only if it's a projectile)
++			int whoAmI = anch.entity.whoAmI;
++			if (!ModNet.AllowVanillaClients) {
++				if (anch.entity is Projectile projectile) {
++					whoAmI = projectile.identity; // This is the meta parameter in DeserializeNetAnchor
++					item = projectile.owner << 8 | item;
 +				}
--				return Tuple.Create(item, anch.entity.whoAmI);
-+				return Tuple.Create(item, whoAmI);
- 			}
- 
- 			return Tuple.Create(0, 0);
++			}
++
+-			return Tuple.Create(item, anch.entity.whoAmI);
++			return Tuple.Create(item, whoAmI);
  		}
  
- 		public static WorldUIAnchor DeserializeNetAnchor(int type, int meta) {
-+			// TML: #WorldUIAnchorProjectileSyncFix
-+			// Unpack type for the switch case evaluation, use the owner in the Projectile case
-+			int packedOwnerType = type;
-+			type = packedOwnerType & 0xFF; // Masking has no effect on vanilla value
+ 		return Tuple.Create(0, 0);
+@@ -72,12 +_,33 @@
+ 
+ 	public static WorldUIAnchor DeserializeNetAnchor(int type, int meta)
+ 	{
++		// #WorldUIAnchorProjectileSyncFix
++		// Unpack type for the switch case evaluation, use the owner in the Projectile case
++		int packedOwnerType = type;
++		type = packedOwnerType & 0xFF; // Masking has no effect on vanilla value
 +
- 			switch (type) {
- 				case 0:
- 					return new WorldUIAnchor(Main.npc[meta]);
- 				case 1:
- 					return new WorldUIAnchor(Main.player[meta]);
- 				case 2:
-+					if (!ModNet.AllowVanillaClients) {
-+						// meta represents the identity here
-+						int owner = packedOwnerType >> 8;
+ 		switch (type) {
+ 			case 0:
+ 				return new WorldUIAnchor(Main.npc[meta]);
+ 			case 1:
+ 				return new WorldUIAnchor(Main.player[meta]);
+ 			case 2:
++				if (!ModNet.AllowVanillaClients) {
++					// meta represents the identity here
++					int owner = packedOwnerType >> 8;
 +
-+						// identity matching code taken from MessageBuffer.GetData case 27
-+						int whoAmI = Main.maxProjectiles;
-+						for (int i = 0; i < Main.maxProjectiles; i++) {
-+							Projectile projectile = Main.projectile[i];
-+							if (projectile.owner == owner && projectile.identity == meta && projectile.active) {
-+								whoAmI = i;
-+								break;
-+							}
++					// identity matching code taken from MessageBuffer.GetData case 27
++					int whoAmI = Main.maxProjectiles;
++					for (int i = 0; i < Main.maxProjectiles; i++) {
++						Projectile projectile = Main.projectile[i];
++						if (projectile.owner == owner && projectile.identity == meta && projectile.active) {
++							whoAmI = i;
++							break;
 +						}
-+
-+						return new WorldUIAnchor(Main.projectile[whoAmI]);
 +					}
  					return new WorldUIAnchor(Main.projectile[meta]);
  				default:
@@ -254,3 +253,21 @@
  				list.Add(23);
  		}
  
+@@ -369,7 +_,7 @@
+ 
+ 	private void ProbeTownNPCs(List<int> list)
+ 	{
+-		for (int i = 0; i < NPCID.Count; i++) {
++		for (int i = 0; i < NPCLoader.NPCCount; i++) {
+ 			CountNPCs[i] = 0;
+ 		}
+ 
+@@ -379,7 +_,7 @@
+ 		}
+ 
+ 		int type = ((NPC)anchor.entity).type;
+-		for (int k = 0; k < NPCID.Count; k++) {
++		for (int k = 0; k < NPCLoader.NPCCount; k++) {
+ 			if (NPCID.Sets.FaceEmote[k] > 0 && CountNPCs[k] > 0 && k != type)
+ 				list.Add(NPCID.Sets.FaceEmote[k]);
+ 		}

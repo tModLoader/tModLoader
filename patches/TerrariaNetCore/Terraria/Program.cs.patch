@@ -1,14 +1,29 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/TerrariaNetCore/Terraria/Program.cs
-@@ -155,6 +_,11 @@
- #else
- 			Main.dedServ = LaunchParameters.ContainsKey("-server");
+@@ -160,7 +_,15 @@
+ 		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+ #if SERVER
+ 		Main.dedServ = true;
++#else
++		// Unify server and client dll via launch param
++		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
 +
-+			if (Main.dedServ) {
-+				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
-+			}
++		if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
++			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
++		}
 +
- 			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
- 			InitializeConsoleOutput();
+ 		ThreadPool.SetMinThreads(8, 8);
+ 		InitializeConsoleOutput();
+ 		SetupLogging();
+@@ -185,8 +_,8 @@
+ 			Main.OnEnginePreload += StartForceLoad;
+ 			if (Main.dedServ)
+ 				main.DedServ();
+-
+-			main.Run();
++			else
++				main.Run();
+ 		}
+ 		catch (Exception e) {
+ 			DisplayException(e);

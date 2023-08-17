@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -25,19 +26,20 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.DrawsWalls[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.OpenDoorID[Type] = ModContent.TileType<ExampleDoorOpen>();
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.ClosedDoor };
-			OpenDoorID = ModContent.TileType<ExampleDoorOpen>();
 
 			// Names
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Door");
-			AddMapEntry(new Color(200, 200, 200), name);
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Door"));
 
 			// Placement
+			// In addition to copying from the TileObjectData.Something templates, modders can copy from specific tile types. CopyFrom won't copy subtile data, so style specific properties won't be copied, such as how Obsidian doors are immune to lava.
+			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.ClosedDoor, 0));
+			/* This is what is copied from the ClosedDoor tile
 			TileObjectData.newTile.Width = 1;
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 0);
@@ -48,12 +50,16 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
+			TileObjectData.newTile.StyleHorizontal = false;
+			TileObjectData.newTile.StyleWrapLimit = 36;
+			TileObjectData.newTile.StyleLineSkip = 3; // When a door closes, each tile randomize between 3 different options. StyleLineSkip ensures that those tiles are interpreted as the correct style.
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Origin = new Point16(0, 1);
 			TileObjectData.addAlternate(0);
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Origin = new Point16(0, 2);
 			TileObjectData.addAlternate(0);
+			*/
 			TileObjectData.addTile(Type);
 		}
 
@@ -63,10 +69,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<ExampleDoor>());
 		}
 
 		public override void MouseOver(int i, int j) {

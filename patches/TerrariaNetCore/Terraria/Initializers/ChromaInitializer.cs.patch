@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/Initializers/ChromaInitializer.cs
++++ src/TerrariaNetCore/Terraria/Initializers/ChromaInitializer.cs
+@@ -508,8 +_,10 @@
+ 
+ 		LoadSpecialRulesForDevices();
+ 		AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
++#if !NETCORE
+ 		if (Platform.IsWindows)
+ 			Application.ApplicationExit += OnProcessExit;
++#endif
+ 	}
+ 
+ 	private static void LoadSpecialRulesForDevices()

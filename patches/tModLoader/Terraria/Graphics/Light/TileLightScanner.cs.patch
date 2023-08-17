@@ -1,26 +1,38 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/TileLightScanner.cs
 +++ src/tModLoader/Terraria/Graphics/Light/TileLightScanner.cs
-@@ -4,6 +_,7 @@
- using Terraria.GameContent;
+@@ -5,6 +_,7 @@
+ using Terraria.GameContent.Liquid;
  using Terraria.ID;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
- namespace Terraria.Graphics.Light
- {
-@@ -173,6 +_,7 @@
- 					num2 = 0.3f;
+ namespace Terraria.Graphics.Light;
+ 
+@@ -255,9 +_,12 @@
+ 				break;
+ 		}
+ 
++		WallLoader.ModifyLight(x, y, tile.wall, ref num, ref num2, ref num3);
++
+ 		if (lightColor.X < num)
+ 			lightColor.X = num;
+ 
++		// Extra patch context.
+ 		if (lightColor.Y < num2)
+ 			lightColor.Y = num2;
+ 
+@@ -2214,11 +_,14 @@
+ 					B = 0.15f;
  					break;
  			}
-+			WallLoader.ModifyLight(x, y, tile.wall, ref num, ref num2, ref num3);
++
++			TileLoader.ModifyLight(x, y, tile.type, ref R, ref G, ref B);
+ 		}
  
- 			if (lightColor.X < num)
- 				lightColor.X = num;
-@@ -1924,6 +_,7 @@
- 						B = 0.15f;
- 						break;
- 				}
-+				TileLoader.ModifyLight(x, y, tile.type, ref R, ref G, ref B);
- 			}
+ 		if (lightColor.X < R)
+ 			lightColor.X = R;
  
- 			if (lightColor.X < R)
++		// Extra patch context.
+ 		if (lightColor.Y < G)
+ 			lightColor.Y = G;
+ 

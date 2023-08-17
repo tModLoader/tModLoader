@@ -1,215 +1,277 @@
 --- src/TerrariaNetCore/Terraria/Wiring.cs
 +++ src/tModLoader/Terraria/Wiring.cs
-@@ -7,6 +_,7 @@
+@@ -7,36 +_,42 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  
- namespace Terraria
+ namespace Terraria;
+ 
+ public static class Wiring
  {
-@@ -15,28 +_,28 @@
- 		public static bool blockPlayerTeleportationForOneIteration;
- 		public static bool running;
- 		private static Dictionary<Point16, bool> _wireSkip;
--		private static DoubleStack<Point16> _wireList;
-+		public static DoubleStack<Point16> _wireList;
--		private static DoubleStack<byte> _wireDirectionList;
-+		public static DoubleStack<byte> _wireDirectionList;
--		private static Dictionary<Point16, byte> _toProcess;
-+		public static Dictionary<Point16, byte> _toProcess;
- 		private static Queue<Point16> _GatesCurrent;
--		private static Queue<Point16> _LampsToCheck;
-+		public static Queue<Point16> _LampsToCheck;
--		private static Queue<Point16> _GatesNext;
-+		public static Queue<Point16> _GatesNext;
- 		private static Dictionary<Point16, bool> _GatesDone;
- 		private static Dictionary<Point16, byte> _PixelBoxTriggers;
--		private static Vector2[] _teleport;
- 		private const int MaxPump = 20;
-+		public static Vector2[] _teleport;
--		private static int[] _inPumpX;
-+		public static int[] _inPumpX;
--		private static int[] _inPumpY;
-+		public static int[] _inPumpY;
--		private static int _numInPump;
-+		public static int _numInPump;
--		private static int[] _outPumpX;
-+		public static int[] _outPumpX;
--		private static int[] _outPumpY;
-+		public static int[] _outPumpY;
--		private static int _numOutPump;
- 		private const int MaxMech = 1000;
-+		public static int _numOutPump;
- 		private static int[] _mechX;
- 		private static int[] _mechY;
- 		private static int _numMechs;
- 		private static int[] _mechTime;
--		private static int _currentWireColor;
-+		public static int _currentWireColor;
- 		private static int CurrentUser = 255;
++	//TML: Many many fields below were made public.	
+ 	public static bool blockPlayerTeleportationForOneIteration;
++	/// <summary>
++	/// True while wiring pulse code is running, which happens in <see cref="TripWire"/>. Check this before calling <see cref="Wiring.SkipWire(int, int)"/> in any code that is shared between wiring and other interactions to prevent buggy behavior.<br/><br/>
++	/// For example, the code in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs#L97">ExampleCampfire</see> needs to check <see cref="running"/> because the code is shared between wiring and right click interactions. 
++	/// </summary>
+ 	public static bool running;
+ 	private static Dictionary<Point16, bool> _wireSkip;
+-	private static DoubleStack<Point16> _wireList;
++	public static DoubleStack<Point16> _wireList;
+-	private static DoubleStack<byte> _wireDirectionList;
++	public static DoubleStack<byte> _wireDirectionList;
+-	private static Dictionary<Point16, byte> _toProcess;
++	public static Dictionary<Point16, byte> _toProcess;
+ 	private static Queue<Point16> _GatesCurrent;
+-	private static Queue<Point16> _LampsToCheck;
++	public static Queue<Point16> _LampsToCheck;
+-	private static Queue<Point16> _GatesNext;
++	public static Queue<Point16> _GatesNext;
+ 	private static Dictionary<Point16, bool> _GatesDone;
+ 	private static Dictionary<Point16, byte> _PixelBoxTriggers;
+-	private static Vector2[] _teleport;
++	public static Vector2[] _teleport;
+ 	private const int MaxPump = 20;
+-	private static int[] _inPumpX;
++	public static int[] _inPumpX;
+-	private static int[] _inPumpY;
++	public static int[] _inPumpY;
+-	private static int _numInPump;
++	public static int _numInPump;
+-	private static int[] _outPumpX;
++	public static int[] _outPumpX;
+-	private static int[] _outPumpY;
++	public static int[] _outPumpY;
+-	private static int _numOutPump;
++	public static int _numOutPump;
+ 	private const int MaxMech = 1000;
+ 	private static int[] _mechX;
+ 	private static int[] _mechY;
+ 	private static int _numMechs;
+ 	private static int[] _mechTime;
+-	private static int _currentWireColor;
++	public static int _currentWireColor;
+ 	private static int CurrentUser = 255;
  
- 		public static void SetCurrentUser(int plr = -1) {
-@@ -299,7 +_,7 @@
- 			}
+ 	public static void SetCurrentUser(int plr = -1)
+@@ -75,11 +_,17 @@
+ 		_mechTime = new int[1000];
+ 	}
+ 
++	/// <summary>
++	/// Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles to prevent a wire touching multiple tiles of the multi-tile from erroneously running wire code multiple times. In <see cref="ModTile.HitWire(int, int)"/>, call SkipWire for all the coordinates the tile covers.
++	/// </summary>
++	/// <param name="x"></param>
++	/// <param name="y"></param>
+ 	public static void SkipWire(int x, int y)
+ 	{
+ 		_wireSkip[new Point16(x, y)] = true;
+ 	}
+ 
++	/// <inheritdoc cref="SkipWire(int, int)"/>
+ 	public static void SkipWire(Point16 point)
+ 	{
+ 		_wireSkip[point] = true;
+@@ -349,7 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the wiring cooldown has been reached for the provided tile coordinates. The <paramref name="time"/> parameter will set the cooldown if wiring cooldown has elapsed. Use larger values for less frequent activations. Use this method to limit how often mechanisms can be triggerd. <see cref="Item.MechSpawn(float, float, int)"/> and <see cref="NPC.MechSpawn(float, float, int)"/> should also be checked for mechanisms spawning items or NPC, such as Statues.
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="time"></param>
++	/// <returns></returns>
+-	private static bool CheckMech(int i, int j, int time)
++	public static bool CheckMech(int i, int j, int time)
+ 	{
+ 		for (int k = 0; k < _numMechs; k++) {
+ 			if (_mechX[k] == i && _mechY[k] == j)
+@@ -410,7 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Used to send a single to wiring wired up to the specified area. The parameters represent the tile coordinates where wire signals will be sent. Mechanism tiles such as <see cref="TileID.Switches"/>, <see cref="TileID.PressurePlates"/>, <see cref="TileID.Timers"/>, and <see cref="TileID.LogicSensor"/> use this method as part of their interaction code.
++	/// </summary>
++	/// <param name="left"></param>
++	/// <param name="top"></param>
++	/// <param name="width"></param>
++	/// <param name="height"></param>
+-	private static void TripWire(int left, int top, int width, int height)
++	public static void TripWire(int left, int top, int width, int height)
+ 	{
+ 		if (Main.netMode == 1)
+ 			return;
+@@ -827,6 +_,9 @@
+ 		if (!tile.active())
+ 			return;
+ 
++		if (!TileLoader.PreHitWire(i, j, type))
++			return;
++
+ 		switch (type) {
+ 			case 144:
+ 				HitSwitch(i, j);
+@@ -1192,14 +_,14 @@
+ 			return;
  		}
  
--		private static bool CheckMech(int i, int j, int time) {
-+		public static bool CheckMech(int i, int j, int time) {
- 			for (int k = 0; k < _numMechs; k++) {
- 				if (_mechX[k] == i && _mechY[k] == j)
- 					return false;
-@@ -363,7 +_,7 @@
- 			}
+-		if (type == 11) {
++		if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0) {
+ 			if (WorldGen.CloseDoor(i, j, forced: true))
+ 				NetMessage.SendData(19, -1, -1, null, 1, i, j);
+ 
+ 			return;
  		}
  
--		private static void TripWire(int left, int top, int width, int height) {
-+		public static void TripWire(int left, int top, int width, int height) {
- 			if (Main.netMode == 1)
- 				return;
+-		if (type == 10) {
++		if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0) {
+ 			int num67 = 1;
+ 			if (Main.rand.Next(2) == 0)
+ 				num67 = -1;
+@@ -1287,7 +_,7 @@
  
-@@ -790,6 +_,9 @@
- 			if (!tile.active())
- 				return;
- 
-+			if (!TileLoader.PreHitWire(i, j, type))
-+				return;
-+
- 			switch (type) {
- 				case 144:
- 					HitSwitch(i, j);
-@@ -1119,14 +_,14 @@
- 				return;
+ 				break;
  			}
- 
--			if (type == 11) {
-+			if (TileLoader.CloseDoorID(Main.tile[i, j]) >= 0) {
- 				if (WorldGen.CloseDoor(i, j, forced: true))
- 					NetMessage.SendData(19, -1, -1, null, 1, i, j);
- 
- 				return;
+-			case 4:
++			case int _ when TileID.Sets.Torch[type]:
+ 				ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
+ 				break;
+ 			case 429: {
+@@ -1678,6 +_,7 @@
  			}
+ 			case 35:
+ 			case 139:
++			case int _ when TileLoader.IsModMusicBox(tile):
+ 				WorldGen.SwitchMB(i, j);
+ 				break;
+ 			case 207:
+@@ -2083,14 +_,30 @@
+ 								break;
  
--			if (type == 10) {
-+			if (TileLoader.OpenDoorID(Main.tile[i, j]) >= 0) {
- 				int num55 = 1;
- 				if (Main.rand.Next(2) == 0)
- 					num55 = -1;
-@@ -1214,7 +_,7 @@
- 
- 						break;
- 					}
--				case 4:
-+				case int _ when TileID.Sets.Torch[type]:
- 					ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
- 					break;
- 				case 429: {
-@@ -1597,6 +_,7 @@
- 					}
- 				case 35:
- 				case 139:
-+				case int _ when TileLoader.IsModMusicBox(tile):
- 					WorldGen.SwitchMB(i, j);
- 					break;
- 				case 207:
-@@ -1985,14 +_,18 @@
- 											break;
- 
- 										int num108 = 50;
--										int[] array2 = new int[num108];
-+										List<int> array2 = new List<int>();
- 										int num109 = 0;
- 										for (int num110 = 0; num110 < 200; num110++) {
-+											bool vanillaCanGo = false;
+ 							int num120 = 50;
 +
- 											if (Main.npc[num110].active && (Main.npc[num110].type == 17 || Main.npc[num110].type == 19 || Main.npc[num110].type == 22 || Main.npc[num110].type == 38 || Main.npc[num110].type == 54 || Main.npc[num110].type == 107 || Main.npc[num110].type == 108 || Main.npc[num110].type == 142 || Main.npc[num110].type == 160 || Main.npc[num110].type == 207 || Main.npc[num110].type == 209 || Main.npc[num110].type == 227 || Main.npc[num110].type == 228 || Main.npc[num110].type == 229 || Main.npc[num110].type == 368 || Main.npc[num110].type == 369 || Main.npc[num110].type == 550 || Main.npc[num110].type == 441 || Main.npc[num110].type == 588)) {
--												array2[num109] = num110;
-+												vanillaCanGo = true;
-+											}
++							/*
+ 							int[] array2 = new int[num120];
++							*/
++							var array2 = new List<int>(num120);
 +
-+											if (Main.npc[num110].active && NPCLoader.CanGoToStatue(Main.npc[num110], true, vanillaCanGo)) {
-+												array2.Add(num110);
- 												num109++;
--												if (num109 >= num108)
--													break;
- 											}
- 										}
- 
-@@ -2001,6 +_,7 @@
- 											Main.npc[num111].position.X = num100 - Main.npc[num111].width / 2;
- 											Main.npc[num111].position.Y = num101 - Main.npc[num111].height - 1;
- 											NetMessage.SendData(23, -1, -1, null, num111);
-+											NPCLoader.OnGoToStatue(Main.npc[num111], true);
- 										}
- 
+ 							int num121 = 0;
+ 							for (int num122 = 0; num122 < 200; num122++) {
++								bool vanillaCanGo = false;
+ 								if (Main.npc[num122].active && (Main.npc[num122].type == 17 || Main.npc[num122].type == 19 || Main.npc[num122].type == 22 || Main.npc[num122].type == 38 || Main.npc[num122].type == 54 || Main.npc[num122].type == 107 || Main.npc[num122].type == 108 || Main.npc[num122].type == 142 || Main.npc[num122].type == 160 || Main.npc[num122].type == 207 || Main.npc[num122].type == 209 || Main.npc[num122].type == 227 || Main.npc[num122].type == 228 || Main.npc[num122].type == 229 || Main.npc[num122].type == 368 || Main.npc[num122].type == 369 || Main.npc[num122].type == 550 || Main.npc[num122].type == 441 || Main.npc[num122].type == 588)) {
++									vanillaCanGo = true;
++								}
++
++								if (Main.npc[num122].active && (NPCLoader.CanGoToStatue(Main.npc[num122], toKingStatue: true) ?? vanillaCanGo)) {
++									/*
+ 									array2[num121] = num122;
++									*/
++									array2.Add(num122);
+ 									num121++;
++
++									/*
+ 									if (num121 >= num120)
  										break;
-@@ -2010,14 +_,18 @@
- 											break;
++									*/
+ 								}
+ 							}
  
- 										int num104 = 50;
--										int[] array = new int[num104];
-+										List<int> array = new List<int>();
- 										int num105 = 0;
- 										for (int num106 = 0; num106 < 200; num106++) {
-+											bool vanillaCanGo = false;
+@@ -2099,6 +_,8 @@
+ 								Main.npc[num123].position.X = num112 - Main.npc[num123].width / 2;
+ 								Main.npc[num123].position.Y = num113 - Main.npc[num123].height - 1;
+ 								NetMessage.SendData(23, -1, -1, null, num123);
 +
- 											if (Main.npc[num106].active && (Main.npc[num106].type == 18 || Main.npc[num106].type == 20 || Main.npc[num106].type == 124 || Main.npc[num106].type == 178 || Main.npc[num106].type == 208 || Main.npc[num106].type == 353 || Main.npc[num106].type == 633 || Main.npc[num106].type == 663)) {
--												array[num105] = num106;
-+												vanillaCanGo = true;
-+											}
++								NPCLoader.OnGoToStatue(Main.npc[num123], toKingStatue: true);
+ 							}
+ 
+ 							break;
+@@ -2108,14 +_,30 @@
+ 								break;
+ 
+ 							int num116 = 50;
 +
-+											if (Main.npc[num106].active && NPCLoader.CanGoToStatue(Main.npc[num106], false, vanillaCanGo)) {
-+												array.Add(num106);
- 												num105++;
--												if (num105 >= num104)
--													break;
- 											}
- 										}
- 
-@@ -2026,6 +_,7 @@
- 											Main.npc[num107].position.X = num100 - Main.npc[num107].width / 2;
- 											Main.npc[num107].position.Y = num101 - Main.npc[num107].height - 1;
- 											NetMessage.SendData(23, -1, -1, null, num107);
-+											NPCLoader.OnGoToStatue(Main.npc[num107], false);
- 										}
- 
++							/*
+ 							int[] array = new int[num116];
++							*/
++							var array = new List<int>(num116);
++
+ 							int num117 = 0;
+ 							for (int num118 = 0; num118 < 200; num118++) {
++								bool vanillaCanGo = false;
+ 								if (Main.npc[num118].active && (Main.npc[num118].type == 18 || Main.npc[num118].type == 20 || Main.npc[num118].type == 124 || Main.npc[num118].type == 178 || Main.npc[num118].type == 208 || Main.npc[num118].type == 353 || Main.npc[num118].type == 633 || Main.npc[num118].type == 663)) {
++									vanillaCanGo = true;
++								}
++
++								if (Main.npc[num118].active && (NPCLoader.CanGoToStatue(Main.npc[num118], toKingStatue: false) ?? vanillaCanGo)) {
++									/*
+ 									array[num117] = num118;
++									*/
++									array.Add(num118);
+ 									num117++;
++
++									/*
+ 									if (num117 >= num116)
  										break;
-@@ -2107,6 +_,8 @@
- 					NetMessage.SendTileSquare(-1, i, j);
- 					break;
- 			}
-+			// End of HitWireSingle.
-+			TileLoader.HitWire(i, j, type);
- 		}
++									*/
+ 								}
+ 							}
  
- 		public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn) {
-@@ -2411,7 +_,7 @@
- 			return false;
- 		}
- 
--		private static void DeActive(int i, int j) {
-+		public static void DeActive(int i, int j) {
- 			if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
- 				return;
- 
-@@ -2428,7 +_,7 @@
- 			}
- 		}
- 
--		private static void ReActive(int i, int j) {
-+		public static void ReActive(int i, int j) {
- 			Main.tile[i, j].inActive(inActive: false);
- 			WorldGen.SquareTileFrame(i, j, resetFrame: false);
- 			if (Main.netMode != 1)
-@@ -2510,7 +_,11 @@
- 			if (!flag)
- 				MassWireOperationStep(pe, toolMode, ref wireCount, ref actuatorCount);
- 
-+			/*
- 			EntitySource_ByItemSourceId reason = new EntitySource_ByItemSourceId(user, 5);
-+			*/
-+			var reason = user.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.GrandDesignOrMultiColorWrench));
+@@ -2124,6 +_,8 @@
+ 								Main.npc[num119].position.X = num112 - Main.npc[num119].width / 2;
+ 								Main.npc[num119].position.Y = num113 - Main.npc[num119].height - 1;
+ 								NetMessage.SendData(23, -1, -1, null, num119);
 +
- 			Item.DropCache(reason, dropPoint, Vector2.Zero, 530);
- 			Item.DropCache(reason, dropPoint, Vector2.Zero, 849);
++								NPCLoader.OnGoToStatue(Main.npc[num119], toKingStatue: false);
+ 							}
+ 
+ 							break;
+@@ -2202,10 +_,14 @@
+ 				break;
+ 			case 557:
+ 				tile.type = 546;
++				// Extra patch context.
+ 				WorldGen.SquareTileFrame(i, j);
+ 				NetMessage.SendTileSquare(-1, i, j);
+ 				break;
  		}
++
++		// End of HitWireSingle.
++		TileLoader.HitWire(i, j, type);
+ 	}
+ 
+ 	public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn)
+@@ -2523,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	private static void DeActive(int i, int j)
++	public static void DeActive(int i, int j)
+ 	{
+ 		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
+ 			return;
+@@ -2541,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static void ReActive(int i, int j)
++	public static void ReActive(int i, int j)
+ 	{
+ 		Main.tile[i, j].inActive(inActive: false);
+ 		WorldGen.SquareTileFrame(i, j, resetFrame: false);
+@@ -2625,7 +_,11 @@
+ 		if (!flag)
+ 			MassWireOperationStep(user, pe, toolMode, ref wireCount, ref actuatorCount);
+ 
++		/*
+ 		EntitySource_ByItemSourceId reason = new EntitySource_ByItemSourceId(user, 5);
++		*/
++		var reason = user.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.GrandDesignOrMultiColorWrench));
++
+ 		Item.DropCache(reason, dropPoint, Vector2.Zero, 530);
+ 		Item.DropCache(reason, dropPoint, Vector2.Zero, 849);
+ 	}

@@ -1,7 +1,6 @@
-﻿namespace Terraria.ModLoader
+namespace Terraria.ModLoader;
+
+[Autoload(false)]
+public class SimpleModGore : ModGore
 {
-	[Autoload(false)]
-	public class SimpleModGore : ModGore
-	{
-	}
 }

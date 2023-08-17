@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
-@@ -1,7 +_,10 @@
+@@ -1,10 +_,17 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -9,69 +9,173 @@
 +using Terraria.ModLoader;
 +using Terraria.Utilities;
  
- namespace Terraria.ID
+ namespace Terraria.ID;
+ 
++/// <summary>
++/// This class stores instances of various content types in a number of dictionaries. These instances serve as references that can be queried for information. For example, a modder could check ItemsByType[ItemID.Gel].value to check the value of the Gel item rather than creating a new Item instance and then checking. Care must be taken by modders to not use these instances for anything other than as a reference. Modders should not edit the instances in any way. <br/>
++/// ContentSamples should only be accessed in code that runs during <see cref="Mod.PostSetupContent"/> or later, as the entries are not filled in until then. <br/>
++/// </summary>
+ public static class ContentSamples
  {
-@@ -91,7 +_,12 @@
- 
- 				public ItemGroupAndOrderInGroup(Item item) {
- 					ItemType = item.type;
-+					try {
--					Group = GetItemGroup(item, out OrderInGroup);
-+						Group = GetItemGroup(item, out OrderInGroup);
-+					} catch (Exception e) {
-+						throw new Exception($"An exception occured while processing {(ItemLoader.IsModItem(item.type) ? item.ModItem.FullName : item.Name)}", e);
-+					}
-+					ItemLoader.ModifyResearchSorting(item, ref Group);
- 				}
- 			}
- 
-@@ -634,7 +_,7 @@
- 
- 			public static void SetCreativeMenuOrder() {
- 				List<Item> list = new List<Item>();
--				for (int i = 1; i < 5125; i++) {
-+				for (int i = 1; i < ItemLoader.ItemCount; i++) {
- 					Item item = new Item();
- 					item.SetDefaults(i);
- 					list.Add(item);
-@@ -722,11 +_,13 @@
- 		public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
- 
- 		public static void Initialize() {
-+			Main.rand ??= new UnifiedRandom((int)DateTime.Now.Ticks);
+ 	public static class CommonlyUsedContentSamples
+@@ -93,7 +_,15 @@
+ 			public ItemGroupAndOrderInGroup(Item item)
+ 			{
+ 				ItemType = item.type;
 +
- 			NpcsByNetId.Clear();
- 			NpcNetIdsByPersistentIds.Clear();
- 			NpcPersistentIdsByNetIds.Clear();
- 			NpcBestiarySortingId.Clear();
--			for (int i = -65; i < 670; i++) {
-+			for (int i = -65; i < NPCLoader.NPCCount; i++) {
- 				NPC nPC = new NPC();
- 				nPC.SetDefaults(i);
- 				NpcsByNetId[i] = nPC;
-@@ -738,14 +_,14 @@
- 
- 			ModifyNPCIds();
- 			ProjectilesByType.Clear();
--			for (int j = 0; j < 972; j++) {
-+			for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
- 				Projectile projectile = new Projectile();
- 				projectile.SetDefaults(j);
- 				ProjectilesByType[j] = projectile;
++				try {
+-				Group = GetItemGroup(item, out OrderInGroup);
++					Group = GetItemGroup(item, out OrderInGroup);
++				}
++				catch (Exception e) {
++					throw new Exception($"An exception occured while processing {(ItemLoader.IsModItem(item.type) ? item.ModItem.FullName : item.Name)}", e);
++				}
++
++				ItemLoader.ModifyResearchSorting(item, ref Group);
  			}
+ 		}
  
- 			ItemsByType.Clear();
--			for (int k = 0; k < 5125; k++) {
-+			for (int k = 0; k < ItemLoader.ItemCount; k++) {
+@@ -238,7 +_,10 @@
+ 			if (item.type == 781 || item.type == 783 || item.type == 780 || item.type == 782 || item.type == 784)
+ 				return ItemGroup.Solutions;
+ 
++			/*
+ 			if (item.type == 282 || item.type == 3112 || item.type == 4776 || item.type == 3002 || item.type == 286) {
++			*/
++			if (ItemID.Sets.Glowsticks[item.type]) {
+ 				if (item.type == 282)
+ 					orderInGroup = -1;
+ 
+@@ -332,6 +_,9 @@
+ 						return ItemGroup.Torches;
+ 					}
+ 
++					if (TileID.Sets.Torch[item.createTile])
++						return ItemGroup.Torches;
++
+ 					if (item.createTile == 178) {
+ 						orderInGroup = 5;
+ 					}
+@@ -639,7 +_,7 @@
+ 		public static void SetCreativeMenuOrder()
+ 		{
+ 			List<Item> list = new List<Item>();
+-			for (int i = 1; i < ItemID.Count; i++) {
++			for (int i = 1; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
- 				item.SetDefaults(k);
- 				ItemsByType[k] = item;
-@@ -904,7 +_,7 @@
- 			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
- 			nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
- 			NPCSpawnParams spawnparams = nPCSpawnParams;
--			for (int i = -65; i < 670; i++) {
-+			for (int i = -65; i < NPCLoader.NPCCount; i++) {
- 				NPC nPC = new NPC();
- 				nPC.SetDefaults(i, spawnparams);
- 				NpcBestiaryRarityStars[i] = GetNPCBestiaryRarityStarsCount(nPC);
+ 				item.SetDefaults(i);
+ 				list.Add(item);
+@@ -719,26 +_,86 @@
+ 		public static int GetBestiaryStarsPriority(NPC npc) => NpcBestiaryRarityStars[npc.type];
+ 	}
+ 
++	/// <summary>
++	/// The default <see cref="NPC"/> for a given NPC type (<see cref="NPC.type"/>). <br/>
++	/// Note that these entries do not take into account game mode specific changes so they shouldn't be used for querying that data. <br/>
++	/// </summary>
+ 	public static Dictionary<int, NPC> NpcsByNetId = new Dictionary<int, NPC>();
++
++	/// <summary>
++	/// The default <see cref="Projectile"/> for a given projectile type (<see cref="Projectile.type"/>).
++	/// </summary>
+ 	public static Dictionary<int, Projectile> ProjectilesByType = new Dictionary<int, Projectile>();
++
++	/// <summary>
++	/// The default <see cref="Item"/> for a given item type (<see cref="Item.type"/>).
++	/// </summary>
+ 	public static Dictionary<int, Item> ItemsByType = new Dictionary<int, Item>();
++
++	/// <summary>
++	/// The item type (<see cref="Item.type"/>) for a given persistent ID.
++	/// <br/> Vanilla persistent IDs are the names in <see cref="ItemID"/>. Modded persistent IDs are the value of <see cref="ModType.FullName"/>.
++	/// </summary>
++	/// <remarks>
++	/// You can get the persistent ID of a given item type using either <see cref="ItemPersistentIdsByNetIds"/> or <see cref="ItemID.Search"/>.
++	/// </remarks>
+ 	public static Dictionary<string, int> ItemNetIdsByPersistentIds = new Dictionary<string, int>();
++
++	/// <summary>
++	/// The persistent ID for a given item type (<see cref="Item.type"/>).
++	/// </summary>
+ 	public static Dictionary<int, string> ItemPersistentIdsByNetIds = new Dictionary<int, string>();
++
++	/// <summary>
++	/// Associates an item type (<see cref="Item.type"/>) with the item type it shares research values with.
++	/// </summary>
+ 	public static Dictionary<int, int> CreativeResearchItemPersistentIdOverride = new Dictionary<int, int>();
++
++	/// <summary>
++	/// The NPC type (<see cref="NPC.type"/>) for a given persistent ID.
++	/// <br/> Vanilla persistent IDs are the names in <see cref="NPCID"/>. Modded persistent IDs are the value of <see cref="ModType.FullName"/>.
++	/// </summary>
++	/// <remarks>
++	/// You can get the persistent ID of a given NPC type using either <see cref="NpcPersistentIdsByNetIds"/> or <see cref="NPCID.Search"/>.
++	/// </remarks>
+ 	public static Dictionary<string, int> NpcNetIdsByPersistentIds = new Dictionary<string, int>();
++
++	/// <summary>
++	/// The persistent ID for a given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
+ 	public static Dictionary<int, string> NpcPersistentIdsByNetIds = new Dictionary<int, string>();
++
++	/// <summary>
++	/// The entry number in the Bestiary for a given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
+ 	public static Dictionary<int, int> NpcBestiarySortingId = new Dictionary<int, int>();
++
++	/// <summary>
++	/// The number of stars a given NPC type (<see cref="NPC.type"/>) shows in the Bestiary.
++	/// <br/> Set in <see cref="ModNPC.SetBestiary(BestiaryDatabase, BestiaryEntry)"/> or <see cref="GlobalNPC.SetBestiary(NPC, BestiaryDatabase, BestiaryEntry)"/>.
++	/// </summary>
+ 	public static Dictionary<int, int> NpcBestiaryRarityStars = new Dictionary<int, int>();
++
++	/// <summary>
++	/// Associates an NPC type (<see cref="NPC.type"/>) with the persistent ID used for the Bestiary.
++	/// </summary>
+ 	public static Dictionary<int, string> NpcBestiaryCreditIdsByNpcNetIds = new Dictionary<int, string>();
++
++	/// <summary>
++	/// Associates an item type (<see cref="Item.type"/>) with its <see cref="CreativeHelper.ItemGroup"/> and sorting order in the Research menu.
++	/// </summary>
+ 	public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
+ 
+ 	public static void Initialize()
+ 	{
++		// Make sure that random was initialized.
++		Main.rand ??= new UnifiedRandom((int)DateTime.Now.Ticks);
++
+ 		NpcsByNetId.Clear();
+ 		NpcNetIdsByPersistentIds.Clear();
+ 		NpcPersistentIdsByNetIds.Clear();
+ 		NpcBestiarySortingId.Clear();
+-		for (int i = -65; i < NPCID.Count; i++) {
++		for (int i = -65; i < NPCLoader.NPCCount; i++) {
+ 			NPC nPC = new NPC();
+ 			nPC.SetDefaults(i);
+ 			NpcsByNetId[i] = nPC;
+@@ -750,14 +_,14 @@
+ 
+ 		ModifyNPCIds();
+ 		ProjectilesByType.Clear();
+-		for (int j = 0; j < ProjectileID.Count; j++) {
++		for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
+ 			Projectile projectile = new Projectile();
+ 			projectile.SetDefaults(j);
+ 			ProjectilesByType[j] = projectile;
+ 		}
+ 
+ 		ItemsByType.Clear();
+-		for (int k = 0; k < ItemID.Count; k++) {
++		for (int k = 0; k < ItemLoader.ItemCount; k++) {
+ 			Item item = new Item();
+ 			item.SetDefaults(k);
+ 			ItemsByType[k] = item;
+@@ -955,7 +_,7 @@
+ 		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
+ 		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
+ 		NPCSpawnParams spawnparams = nPCSpawnParams;
+-		for (int i = -65; i < NPCID.Count; i++) {
++		for (int i = -65; i < NPCLoader.NPCCount; i++) {
+ 			NPC nPC = new NPC();
+ 			nPC.SetDefaults(i, spawnparams);
+ 			NpcBestiaryRarityStars[i] = GetNPCBestiaryRarityStarsCount(nPC);

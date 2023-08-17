@@ -2,7 +2,6 @@ using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
@@ -10,12 +9,6 @@ namespace ExampleMod.Content.Items.Accessories
 	[AutoloadEquip(EquipType.Shield)] // Load the spritesheet you create as a shield for the player when it is equipped.
 	public class ExampleShield : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("This is a modded shield.");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 24;
 			Item.height = 28;

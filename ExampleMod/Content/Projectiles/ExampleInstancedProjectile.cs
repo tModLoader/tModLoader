@@ -10,10 +10,6 @@ namespace ExampleMod.Content.Projectiles
 	{
 		private Color trailColor;
 
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Instanced Projectile"); //The English name of the projectile
-		}
-
 		public override void SetDefaults() {
 			Projectile.width = 16; //The width of projectile hitbox
 			Projectile.height = 16; //The height of projectile hitbox

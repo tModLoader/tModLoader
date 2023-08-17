@@ -2,33 +2,34 @@
 +++ src/tModLoader/Terraria/Graphics/Capture/CaptureBiome.cs
 @@ -1,3 +_,4 @@
 +using Terraria.ModLoader;
- namespace Terraria.Graphics.Capture
- {
- 	public class CaptureBiome
-@@ -132,6 +_,13 @@
- 					return captureBiome;
- 			}
+ namespace Terraria.Graphics.Capture;
  
-+			var atmos = Main.LocalPlayer.CurrentSceneEffect;
-+			if (atmos.waterStyle.value >= Main.maxLiquidTypes) {
-+				// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
-+				//TODO: Future improvement should be using the SceneEffect layer associated to background.
-+				return new CaptureBiome(atmos.surfaceBackground.value, atmos.waterStyle.value, atmos.tileColorStyle);
-+			}
+ public class CaptureBiome
+@@ -135,6 +_,13 @@
+ 				return captureBiome;
+ 		}
+ 
++		var sceneEffect = Main.LocalPlayer.CurrentSceneEffect;
++		if (sceneEffect.waterStyle.value >= Main.maxLiquidTypes) {
++			// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
++			//TODO: Future improvement should be using the SceneEffect layer associated to background.
++			return new CaptureBiome(sceneEffect.surfaceBackground.value, sceneEffect.waterStyle.value, sceneEffect.tileColorStyle);
++		}
 +
- 			return null;
- 		}
+ 		return null;
+ 	}
  
-@@ -164,6 +_,12 @@
- 				case 9:
- 					return Styles.Mushroom;
- 				default:
-+					var atmos = Main.LocalPlayer.CurrentSceneEffect;
-+					if (atmos.surfaceBackground.value >= Main.BG_STYLES_COUNT) {
-+						// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
-+						//TODO: Future improvement should be using the SceneEffect layer associated to background.
-+						return new CaptureBiome(atmos.surfaceBackground.value, atmos.waterStyle.value, atmos.tileColorStyle);
-+					}
- 					return null;
- 			}
+@@ -168,6 +_,13 @@
+ 			case 9:
+ 				return Styles.Mushroom;
+ 			default:
++				var sceneEffect = Main.LocalPlayer.CurrentSceneEffect;
++				if (sceneEffect.surfaceBackground.value >= Main.BG_STYLES_COUNT) {
++					// This makes the capture match whatever the end result is of all modded effects, but that isn't quite right.
++					//TODO: Future improvement should be using the SceneEffect layer associated to background.
++					return new CaptureBiome(sceneEffect.surfaceBackground.value, sceneEffect.waterStyle.value, sceneEffect.tileColorStyle);
++				}
++
+ 				return null;
  		}
+ 	}

@@ -1,1264 +1,1938 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
-@@ -22,10 +_,11 @@
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+@@ -21,12 +_,13 @@
+ using Terraria.Graphics.Effects;
+ using Terraria.ID;
  using Terraria.Localization;
++using Terraria.ModLoader;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
-+using Terraria.ModLoader;
  
- namespace Terraria
+ namespace Terraria;
+ 
+-public class NPC : Entity
++public partial class NPC : Entity
  {
--	public class NPC : Entity
-+	public partial class NPC : Entity
+ 	private const int NPC_TARGETS_START = 300;
+ 	public bool IsABestiaryIconDummy;
+@@ -65,19 +_,52 @@
+ 	public int altTexture;
+ 	public int townNpcVariationIndex;
+ 	public Vector2 netOffset = Vector2.Zero;
+-	public short catchItem;
++
++	/// <summary>
++	/// The numerical ID of the item that this NPC becomes when caught.<br/>
++	/// Mainly used for critters that can be caught with bug nets, such as butterflies and worms.<br/>
++	/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
++	/// </summary>
++	public int catchItem; //TML: Changed from short to int for convenience and consistency purposes.
++	/// <summary>
++	/// Identifies the player who released this NPC into the world. Used mainly for released critters. Helps limit how many critters a player can release. Default to 255, indicating that the npc was not released by a player.
++	/// </summary>
+ 	public short releaseOwner = 255;
++
++	/// <summary>
++	/// How rare the NPC is for the Lifeform Analyzer. For example: 4 is for Tim and Mimics, 1 is for bound town NPCs.
++	/// <br/> Defaults to 0.
++	/// </summary>
+ 	public int rarity;
+ 	public static bool taxCollector = false;
++	/// <summary>
++	/// Tracks which <see cref="Player"/>s have damaged this NPC. Damaging boss minions or other parts of a boss is usually counted as damaging the main body of the boss. Used to determine which players participated in a boss fight and should receive a boss bag.<br/><br/>
++	/// Indexed by each players <see cref="Entity.whoAmI"/> (or <see cref="Main.myPlayer"/> for code running locally).<br/><br/>
++	/// <see cref="lastInteraction"/> tracks which player was the last player to damage this NPC. <see cref="AnyInteractions"/> can be used to easily check if any player has damaged the NPC.
++	/// </summary>
+ 	public bool[] playerInteraction = new bool[256];
++	/// <summary>
++	/// The <see cref="Entity.whoAmI"/> of the <see cref="Player"/> that last damaged this NPC. Used to award Banner items to the player that killed the NPC, but can be used for many other effects.<br/><br/>
++	/// The default value is 255. If the value is 255, the NPC has not been damaged by any <see cref="Player"/>.<br/><br/>
++	/// The <see cref="playerInteraction"/> array tracks all players that have damaged this NPC.
++	/// </summary>
+ 	public int lastInteraction = 255;
+ 	public float takenDamageMultiplier = 1f;
+ 	public static bool freeCake = false;
+ 	private static int spawnSpaceX = 3;
+ 	private static int spawnSpaceY = 3;
++	/// <summary>
++	/// An offset from the actual position of the npc that will be added to the draw position. Used to fake the effect of NPC smoothly traveling up single block obstacles. 
++	/// </summary>
+ 	public float gfxOffY;
++	/// <summary>
++	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// </summary>
+ 	public float stepSpeed;
++	/*
+ 	private static float gravity = 0.3f;
++	*/
++
+ 	public bool teleporting;
+ 	private static int maxAttack = 20;
+ 	private static int[] attackNPC = new int[maxAttack];
+@@ -99,6 +_,13 @@
+ 	public static int deerclopsBoss = -1;
+ 	public int netSkip;
+ 	public bool netAlways;
++
++	/// <summary>
++	/// Stores the index (the <see cref="Entity.whoAmI"/>) of a single NPC. This NPC will then share a health pool with that NPC.<br/>
++	/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
++	/// This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part NPCs will have the default value of -1 still.
++	/// <br/> Defaults to -1.
++	/// </summary>
+ 	public int realLife = -1;
+ 	private string _givenName = "";
+ 	public static int sWidth = 1920;
+@@ -111,9 +_,15 @@
+ 	private static int activeRangeY = (int)((double)sHeight * 2.1);
+ 	private static int townRangeX = sWidth;
+ 	private static int townRangeY = sHeight;
++
++	/// <summary>
++	/// Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flies have values around 0.1f and 0.25f. Enemies that are more difficult than normal have values higher than 1f, and bosses and mini bosses have values around 6.
++	/// <br/> Proper npcSlots values help balance the game and prevents the player from randomly being overwhelmed by powerful enemies. The <see href="https://terraria.wiki.gg/wiki/NPC_spawning#Spawn_rates">Spawn rates section on the NPC spawning wiki page</see> lists vanilla npcSlots values. Use this as a guide to find a suitable value.
++	/// <br/> Defaults to 1f.
++	/// </summary>
+ 	public float npcSlots = 1f;
+ 	private static bool noSpawnCycle = false;
+-	private static int activeTime = 750;
++	public static int activeTime = 750;
+ 	private static int defaultSpawnRate = 600;
+ 	private static int defaultMaxSpawns = 5;
+ 	public float shimmerTransparency;
+@@ -121,7 +_,11 @@
+ 	public static readonly int maxBuffs = 20;
+ 	public int[] buffType = new int[maxBuffs];
+ 	public int[] buffTime = new int[maxBuffs];
++
++	/// <summary>
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>. 
++	/// </summary>
+-	public bool[] buffImmune = new bool[BuffID.Count];
++	public bool[] buffImmune = new bool[BuffLoader.BuffCount];
+ 	public bool canDisplayBuffs = true;
+ 	public bool midas;
+ 	public bool ichor;
+@@ -182,35 +_,149 @@
+ 	public static bool unlockedArmsDealerSpawn = false;
+ 	public static bool unlockedNurseSpawn = false;
+ 	public static bool unlockedPrincessSpawn = false;
++
++	/// <summary>
++	/// Denotes whether or not Advanced Combat Techniques has been used in the current world.
++	/// </summary>
+ 	public static bool combatBookWasUsed = false;
+ 	public static bool combatBookVolumeTwoWasUsed = false;
+ 	public static bool peddlersSatchelWasUsed = false;
++
++	/// <summary>
++	/// Denotes whether or not the Eye of Cthulhu has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedBoss1 = false;
++
++	/// <summary>
++	/// Denotes whether or not the Eater of Worlds OR the Brain of Cthulhu have been defeated at least once in the current world.<br/>
++	/// This does NOT track the two of them separately; you will need to establish your own fields in a <see cref="ModSystem"/> for that.<br/>
++	/// </summary>
+ 	public static bool downedBoss2 = false;
++
++	/// <summary>
++	/// Denotes whether or not Skeletron has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedBoss3 = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Queen Bee has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedQueenBee = false;
++
++	/// <summary>
++	/// Denotes whether or not King Slime has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedSlimeKing = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Goblin Army has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedGoblins = false;
++
++	/// <summary>
++	/// Denotes whether or not the Frost Legion has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedFrost = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Pirate Invasion has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedPirates = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Clown has been killed in the current world.<br/>
++	/// Only used to make the Clothier sell the Clown set once at least one has been killed.
++	/// </summary>
+ 	public static bool downedClown = false;
++
++	/// <summary>
++	/// Denotes whether or not Plantera has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedPlantBoss = false;
++
++	/// <summary>
++	/// Denotes whether or not Golem has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedGolemBoss = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Martian Madness event has been cleared in the current world.
++	/// </summary>
+ 	public static bool downedMartians = false;
++
++	/// <summary>
++	/// Denotes whether or not Duke Fishron has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedFishron = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Mourning Wood has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedHalloweenTree = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Pumpking has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedHalloweenKing = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Ice Queen has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedChristmasIceQueen = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Everscream has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedChristmasTree = false;
++
++	/// <summary>
++	/// Denotes whether or not at least one Santa-NK1 has been defeated in the current world.
++	/// </summary>
+ 	public static bool downedChristmasSantank = false;
++
++	/// <summary>
++	/// Denotes whether or not the Lunatic Cultist has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedAncientCultist = false;
++
++	/// <summary>
++	/// Denotes whether or not the Moon Lord has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedMoonlord = false;
++
++	/// <summary>
++	/// Denotes whether or not the Solar Pillar has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedTowerSolar = false;
++
++	/// <summary>
++	/// Denotes whether or not the Vortex Pillar has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedTowerVortex = false;
++
++	/// <summary>
++	/// Denotes whether or not the Nebula Pillar has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedTowerNebula = false;
++
++	/// <summary>
++	/// Denotes whether or not the Stardust Pillar has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedTowerStardust = false;
++
++	/// <summary>
++	/// Denotes whether or not the Empress of Light has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedEmpressOfLight = false;
++
++	/// <summary>
++	/// Denotes whether or not Queen Slime has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedQueenSlime = false;
++
++	/// <summary>
++	/// Denotes whether or not the Deerclops has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedDeerclops = false;
+ 	public static int ShieldStrengthTowerSolar = 0;
+ 	public static int ShieldStrengthTowerVortex = 0;
+@@ -223,9 +_,25 @@
+ 	public static bool TowerActiveNebula = false;
+ 	public static bool TowerActiveStardust = false;
+ 	public static bool LunarApocalypseIsUp = false;
++
++	/// <summary>
++	/// Denotes whether or not ANY Mechanical Boss has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedMechBossAny = false;
++
++	/// <summary>
++	/// Denotes whether or not the Destroyer has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedMechBoss1 = false;
++
++	/// <summary>
++	/// Denotes whether or not the Twins have been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedMechBoss2 = false;
++
++	/// <summary>
++	/// Denotes whether or not Skeletron Prime has been defeated at least once in the current world.
++	/// </summary>
+ 	public static bool downedMechBoss3 = false;
+ 	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
+ 	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
+@@ -233,51 +_,172 @@
+ 	private static int maxSpawns = defaultMaxSpawns;
+ 	public int soundDelay;
+ 	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
++
++	/// <summary>
++	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
++	/// </summary>
+ 	public int[] immune = new int[256];
+ 	public int directionY = 1;
++	/// <summary>
++	/// The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game. This will be equal to either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.AngryBones"/> or ModContent.NPCType&lt;MyModNPC&gt;(). To check if an NPC instance is a specific NPC, check <c>NPC.type == NPCID.VanillaNPCHere</c> or <c>NPC.type == ModContent.NPCType&lt;ModdedNPCHere&gt;()</c> in an <see langword="if"/> statement.
++	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
++	/// </summary>
++	/// <negativenote>There are a few NPC that share the same <see cref="type"/> number, usually slight variations of enemies. <see cref="NPCID.GreenSlime"/> and <see cref="NPCID.RedSlime"/> have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as <see cref="NPCID.BlueSlime"/>. If code logic requires differentiating between these variations, use <see cref="netID"/> instead.</negativenote>
+ 	public int type;
++	/// <summary>
++	/// An array with 4 slots used for any sort of data storage, which is occasionally synced from the server to clients. Each vanilla <see cref="NPCAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true to manually sync. The advantage of using these 4 floats is that they are synced automatically. Using fields in your <see cref="ModNPC"/> class will work just the same, but they might need to be synced via <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModNPC.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
++	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleCustomAISlimeNPC.cs#L36">ExampleCustomAISlimeNPC.cs</see> can be used to reuse the ai array entries with readable names.
++	/// <br/> Defaults to the values passed into <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>, usually [0, 0, 0, 0].
++	/// </summary>
+ 	public float[] ai = new float[maxAI];
++	/// <summary>
++	/// Acts like <see cref="ai"/>, but does not sync to the server. Many vanilla <see cref="NPCAIStyleID"/> use these slots for various purposes.
++	/// <br/> Defaults to [0, 0, 0, 0]
++	/// </summary>
+ 	public float[] localAI = new float[maxAI];
+ 	public int aiAction;
++
++	/// <summary>
++	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
++	/// <br/> If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic.
++	/// <br/> Defaults to 0.
++	/// </summary>
+ 	public int aiStyle;
+ 	public bool justHit;
+ 	public int timeLeft;
+ 	public int target = -1;
++
++	/// <summary>
++	/// The amount of contact damage this NPC deals.<br/>
++	/// Changing this WILL NOT change the amount of damage done by projectiles.<br/>
++	/// Usually damage is scaled by some factor when NPC spawn projectiles with Projectile.NewProjectile in AI code. For example, passing in <c>(int)(NPC.damage * 0.5f)</c> as the Damage parameter.
++	/// <br/> The <see href="https://terraria.wiki.gg/wiki/List_of_NPCs">List of NPCs wiki page</see> can be useful for finding appropriate values.
++	/// </summary>
+ 	public int damage;
++
++	/// <summary>
++	/// How resistant to damage this NPC is.
++	/// <br/> The <see href="https://terraria.wiki.gg/wiki/List_of_NPCs">List of NPCs wiki page</see> can be useful for finding appropriate values.
++	/// </summary>
+ 	public int defense;
++
++	/// <summary>
++	/// Stores the value of <see cref="damage"/> at the end of SetDefaults. Useful for scaling damage in AI code conditionally.
++	/// </summary>
+ 	public int defDamage;
++
++	/// <summary>
++	/// Stores the value of <see cref="defense"/> at the end of SetDefaults. Useful for scaling defense in AI code, like how King Slime changes defense as it gets smaller.
++	/// </summary>
+ 	public int defDefense;
++
++	/// <summary>
++	/// Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion.<br/>
++	/// Defaults to false.
++	/// </summary>
+ 	public bool coldDamage;
+ 	public bool trapImmune;
+-	public LegacySoundStyle HitSound;
+-	public LegacySoundStyle DeathSound;
++
++	/// <summary>
++	/// The sound that plays when this npc is hit. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
++	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds.
++	/// <br/> For example <c>NPC.HitSound = SoundID.NPCHit1;</c> can be used for the typical NPC hit sound.
++	/// <br/> Defaults to null.
++	/// </summary>
++	public SoundStyle? HitSound;
++
++	/// <summary>
++	/// The sound that plays when this npc dies. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
++	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds.
++	/// <br/> For example <c>NPC.DeathSound = SoundID.NPCDeath1;</c> can be used for the typical NPC kill sound.
++	/// <br/> Defaults to null.
++	/// </summary>
++	public SoundStyle? DeathSound;
++
++	/// <summary>
++	/// The current life of the NPC. Automatically set to the value of <see cref="lifeMax"/> at the end of SetDefaults.
++	/// </summary>
+ 	public int life;
++
++	/// <summary>
++	/// The maximum life of this NPC.
++	/// </summary>
+ 	public int lifeMax;
+ 	public Rectangle targetRect;
+ 	public double frameCounter;
+ 	public Rectangle frame;
+ 	public Color color;
++
++	/// <summary>
++	/// 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Can be used to fade an NPC in and out.
++	/// <br/> Use <see cref="Opacity"/> instead for a 0f to 1f scaling that uses the high value for fully opaque, as is more typical in computer graphics.
++	/// <br/> Defaults to 0.
++	/// </summary>
+ 	public int alpha;
++
++	/// <summary>
++	/// Indicates that this NPC is drawn at a specific layer in the render order. Must use in conjunction with <see cref="ModNPC.DrawBehind(int)"/>.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
++	/// </summary>
+ 	public bool hide;
++
++	/// <summary>
++	/// Makes the NPC bigger or smaller. Bigger than 1f is bigger.
++	/// <br/> Defaults to 1f.
++	/// </summary>
+ 	public float scale = 1f;
++
++	/// <summary>
++	/// How much of the knockback it receives will actually apply. 1f: full knockback; 0f: no knockback.
++	/// <br/> Defaults to 1f.
++	/// </summary>
+ 	public float knockBackResist = 1f;
++
+ 	public int oldDirectionY;
+ 	public int oldTarget;
+ 	public float rotation;
++
++	/// <summary>
++	/// If true, the npc will not be affected by gravity. Demon Eyes and other floating npc use this.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public bool noGravity;
++
++	/// <summary>
++	/// If true, the npc does not collide with tiles, making the npc pass through tiles freely. Meteor Head and Worm npc use this.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public bool noTileCollide;
+ 	public bool netUpdate;
+ 	public bool netUpdate2;
+ 	public bool collideX;
+ 	public bool collideY;
++
++	/// <summary>
++	/// Set to true if the NPC is a boss. Prevents off-screen despawn. Bosses also need <c>[AutoloadBossHead]</c> annotated on the ModNPC class itself to fully register as a boss.
++	/// </summary>
+ 	public bool boss;
+ 	public int spriteDirection = -1;
++
++	/// <summary>
++	/// Indicates that this NPC draws behind solid tiles.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
++	/// </summary>
+ 	public bool behindTiles;
+ 	public bool lavaImmune;
++
++	/// <summary>
++	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
++	/// </summary>
+ 	public float value;
+ 	public int extraValue;
+ 	public bool dontTakeDamage;
+ 	private int catchableNPCTempImmunityCounter;
++	/// <summary>
++	/// Similar to <see cref="type"/>, but accounts for negative <see cref="NPCID"/> values. <br/>
++	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
++	/// </summary>
+ 	public int netID;
+ 	public int statsAreScaledForThisManyPlayers;
+ 	public float strengthMultiplier = 1f;
+@@ -290,6 +_,11 @@
+ 	public bool oldHomeless;
+ 	public int oldHomeTileX = -1;
+ 	public int oldHomeTileY = -1;
++	/// <summary>
++	/// Indicates that an NPC is friendly to players. If true, a player won't damage the NPC and the NPC won't deal contact damage to players, unless otherwise forced. <br/>
++	/// Mostly set to true for town npc and rescuable town npc. <br/>
++	/// Naturally spawned critter NPC that are <see cref="Main.npcCatchable"/> will automatically be friendly for 1.5 seconds after spawning. <br/>
++	/// </summary>
+ 	public bool friendly;
+ 	public bool closeDoor;
+ 	public int doorX;
+@@ -382,7 +_,9 @@
+ 	private static bool dayTimeHax;
+ 	private static bool rainingHax;
+ 	private static float cloudAlphaHax;
++	/*
+ 	private static int ignorePlayerInteractions = 0;
++	*/
+ 	public static int ladyBugGoodLuckTime = 43200;
+ 	public static int ladyBugBadLuckTime = -10800;
+ 	private static int ladyBugRainTime = 1800;
+@@ -462,8 +_,20 @@
+ 		}
+ 	}
+ 
+-	public string TypeName => Lang.GetNPCNameValue(netID);
++	/// <summary>
++	/// The TYPE name of this NPC.<br/>
++	/// Type names are the base titles given to any NPC, and are typically shared amongst all instances of an NPC. For example, the Stylist's type name will always be "Stylist".<br/>
++	/// To modify the type name of a specific NPC, make use of the ModifyTypeName hooks in <see cref="GlobalNPC"/> and <see cref="ModLoader.ModNPC"/>, according to your needs.<br/>
++	/// </summary>
++	public string TypeName => NPCLoader.ModifyTypeName(this, Lang.GetNPCNameValue(netID));
+ 
++	/// <summary>
++	/// The FULL name of this NPC.<br/>
++	/// If the NPC doesn't have a given name, this will just return the type name. A Stylist without a given name will always return "Stylist" here.<br/>
++	/// If the NPC does have a given name, this will return the NPC's full name; given name first, then type name.<br/>
++	/// Full name with a given name is given in the format of "X the Y", where X is their given name and Y is their type name.<br/>
++	/// For example, a Stylist might return "Scarlett the Stylist" here; with Scarlett being her given name, and Stylist being her type name.<br/>
++	/// </summary>
+ 	public string FullName {
+ 		get {
+ 			if (!HasGivenName)
+@@ -473,8 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Whether or not this NPC has a given name.<br/>
++	/// </summary>
+ 	public bool HasGivenName => _givenName.Length != 0;
+ 
++	/// <summary>
++	/// If this NPC has a given name, returns their given name; otherwise, returns their type name.<br/>
++	/// </summary>
+ 	public string GivenOrTypeName {
+ 		get {
+ 			if (!HasGivenName)
+@@ -484,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The GIVEN name of this NPC. Can be set directly.<br/>
++	/// Given names are unique to each NPC, though two NPCs can have the same given name.<br/>
++	/// Some vanilla examples of given names are Andrew (for the Guide), Yorai (for the Princess), Whitney (for the Steampunker), or Scarlett (for the Stylist).<br/>
++	/// </summary>
+ 	public string GivenName {
+ 		get {
+ 			return _givenName;
+@@ -532,7 +_,7 @@
+ 
+ 	public bool isLikeATownNPC {
+ 		get {
+-			if (type == 453)
++			if (NPCID.Sets.ActsLikeTownNPC[type])
+ 				return true;
+ 
+ 			return townNPC;
+@@ -726,6 +_,11 @@
+ 		return array;
+ 	}
+ 
++	/// <summary>
++	/// Returns the <see cref="FullName"/> of the first active NPC of the given type in the world. If not found, the type name is returned instead.
++	/// </summary>
++	/// <param name="npcID"></param>
++	/// <returns></returns>
+ 	public static string GetFullnameByID(int npcID)
  	{
- 		private const int NPC_TARGETS_START = 300;
- 		public bool IsABestiaryIconDummy;
-@@ -58,7 +_,12 @@
- 		public int altTexture;
- 		public int townNpcVariationIndex;
- 		public Vector2 netOffset = Vector2.Zero;
--		public short catchItem;
-+		/// <summary>
-+		/// The numerical ID of the item that this NPC becomes when caught.<br></br>
-+		/// Mainly used for critters that can be caught with bug nets, such as butterflies and worms.<br></br>
-+		/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
-+		/// </summary>
-+		public int catchItem; // tML: changed to int for convenience and consistency purposes
- 		public short releaseOwner = 255;
- 		public int rarity;
- 		public static bool taxCollector = false;
-@@ -90,6 +_,10 @@
- 		public static int crimsonBoss = -1;
- 		public int netSkip;
- 		public bool netAlways;
-+		/// <summary>
-+		/// Stores the index of a single NPC. This NPC will then share a health pool with that NPC.<br/>
-+		/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
-+		/// </summary>
- 		public int realLife = -1;
- 		private string _givenName = "";
- 		public static int sWidth = 1920;
-@@ -104,14 +_,14 @@
- 		private static int townRangeY = sHeight;
- 		public float npcSlots = 1f;
- 		private static bool noSpawnCycle = false;
--		private static int activeTime = 750;
-+		public static int activeTime = 750;
- 		private static int defaultSpawnRate = 600;
- 		private static int defaultMaxSpawns = 5;
- 		public bool dontCountMe;
- 		public const int maxBuffs = 5;
- 		public int[] buffType = new int[5];
- 		public int[] buffTime = new int[5];
--		public bool[] buffImmune = new bool[338];
-+		public bool[] buffImmune = new bool[BuffLoader.BuffCount];
- 		public bool midas;
- 		public bool ichor;
- 		public bool onFire;
-@@ -153,33 +_,119 @@
- 		public static bool boughtCat = false;
- 		public static bool boughtDog = false;
- 		public static bool boughtBunny = false;
-+		/// <summary>
-+		/// Denotes whether or not Advanced Combat Techniques has been used in the current world.
-+		/// </summary>
- 		public static bool combatBookWasUsed = false;
-+		/// <summary>
-+		/// Denotes whether or not the Eye of Cthulhu has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedBoss1 = false;
-+		/// <summary>
-+		/// Denotes whether or not the Eater of Worlds OR the Brain of Cthulhu have been defeated at least once in the current world.<br/>
-+		/// This does NOT track the two of them separately; you will need to establish your own fields in a <see cref="ModSystem"/> for that.<br/>
-+		/// </summary>
- 		public static bool downedBoss2 = false;
-+		/// <summary>
-+		/// Denotes whether or not Skeletron has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedBoss3 = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Queen Bee has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedQueenBee = false;
-+		/// <summary>
-+		/// Denotes whether or not King Slime has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedSlimeKing = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Goblin Army has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedGoblins = false;
-+		/// <summary>
-+		/// Denotes whether or not the Frost Legion has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedFrost = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Pirate Invasion has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedPirates = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Clown has been killed in the current world.<br/>
-+		/// Only used to make the Clothier sell the Clown set once at least one has been killed.
-+		/// </summary>
- 		public static bool downedClown = false;
-+		/// <summary>
-+		/// Denotes whether or not Plantera has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedPlantBoss = false;
-+		/// <summary>
-+		/// Denotes whether or not Golem has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedGolemBoss = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Martian Madness event has been cleared in the current world.
-+		/// </summary>
- 		public static bool downedMartians = false;
-+		/// <summary>
-+		/// Denotes whether or not Duke Fishron has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedFishron = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Mourning Wood has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedHalloweenTree = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Pumpking has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedHalloweenKing = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Ice Queen has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedChristmasIceQueen = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Everscream has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedChristmasTree = false;
-+		/// <summary>
-+		/// Denotes whether or not at least one Santa-NK1 has been defeated in the current world.
-+		/// </summary>
- 		public static bool downedChristmasSantank = false;
-+		/// <summary>
-+		/// Denotes whether or not the Lunatic Cultist has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedAncientCultist = false;
-+		/// <summary>
-+		/// Denotes whether or not the Moon Lord has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedMoonlord = false;
-+		/// <summary>
-+		/// Denotes whether or not the Solar Pillar has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedTowerSolar = false;
-+		/// <summary>
-+		/// Denotes whether or not the Vortex Pillar has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedTowerVortex = false;
-+		/// <summary>
-+		/// Denotes whether or not the Nebula Pillar has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedTowerNebula = false;
-+		/// <summary>
-+		/// Denotes whether or not the Stardust Pillar has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedTowerStardust = false;
-+		/// <summary>
-+		/// Denotes whether or not the Empress of Light has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedEmpressOfLight = false;
-+		/// <summary>
-+		/// Denotes whether or not Queen Slime has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedQueenSlime = false;
-+		/// <summary>
-+		/// Denotes whether or not the Deerclops has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedDeerclops = false;
- 		public static int ShieldStrengthTowerSolar = 0;
- 		public static int ShieldStrengthTowerVortex = 0;
-@@ -192,9 +_,21 @@
- 		public static bool TowerActiveNebula = false;
- 		public static bool TowerActiveStardust = false;
- 		public static bool LunarApocalypseIsUp = false;
-+		/// <summary>
-+		/// Denotes whether or not ANY Mechanical Boss has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedMechBossAny = false;
-+		/// <summary>
-+		/// Denotes whether or not the Destroyer has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedMechBoss1 = false;
-+		/// <summary>
-+		/// Denotes whether or not the Twins have been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedMechBoss2 = false;
-+		/// <summary>
-+		/// Denotes whether or not Skeletron Prime has been defeated at least once in the current world.
-+		/// </summary>
- 		public static bool downedMechBoss3 = false;
- 		public static bool[] npcsFoundForCheckActive = new bool[670];
- 		public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -212,14 +_,22 @@
- 		public bool justHit;
- 		public int timeLeft;
- 		public int target = -1;
-+		/// <summary>
-+		/// The amount of contact damage this NPC deals.<br/>
-+		/// Changing this WILL NOT change the amount of damage done by projectiles.<br/>
-+		/// </summary>
- 		public int damage;
- 		public int defense;
- 		public int defDamage;
- 		public int defDefense;
-+		/// <summary>
-+		/// Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion.<br/>
-+		/// Defaults to false.
-+		/// </summary>
- 		public bool coldDamage;
- 		public bool trapImmune;
--		public LegacySoundStyle HitSound;
--		public LegacySoundStyle DeathSound;
-+		public SoundStyle? HitSound;
-+		public SoundStyle? DeathSound;
- 		public int life;
- 		public int lifeMax;
- 		public Rectangle targetRect;
-@@ -389,8 +_,26 @@
+ 		for (int i = 0; i < 200; i++) {
+@@ -863,7 +_,10 @@
  
- 		public int WhoAmIToTargettingIndex => whoAmI + 300;
- 
--		public string TypeName => Lang.GetNPCNameValue(netID);
-+		/// <summary>
-+		/// The TYPE name of this NPC.<br/>
-+		/// Type names are the base titles given to any NPC, and are typically shared amongst all instances of an NPC. For example, the Stylist's type name will always be "Stylist".<br/>
-+		/// To modify the type name of a specific NPC, make use of the ModifyTypeName hooks in <see cref="GlobalNPC"/> and <see cref="ModLoader.ModNPC"/>, according to your needs.<br/>
-+		/// </summary>
-+		public string TypeName {
-+			get {
-+				string typeName = Lang.GetNPCNameValue(netID);
-+				NPCLoader.ModifyTypeName(this, ref typeName);
-+				return typeName;
-+			}
-+		}
- 
-+		/// <summary>
-+		/// The FULL name of this NPC.<br/>
-+		/// If the NPC doesn't have a given name, this will just return the type name. A Stylist without a given name will always return "Stylist" here.<br/>
-+		/// If the NPC does have a given name, this will return the NPC's full name; given name first, then type name.<br/>
-+		/// Full name with a given name is given in the format of "X the Y", where X is their given name and Y is their type name.<br/>
-+		/// For example, a Stylist might return "Scarlett the Stylist" here; with Scarlett being her given name, and Stylist being her type name.<br/>
-+		/// </summary>
- 		public string FullName {
- 			get {
- 				if (!HasGivenName)
-@@ -400,8 +_,14 @@
- 			}
+ 		for (int i = 0; i < 255; i++) {
+ 			Player player = Main.player[i];
++			/*
+ 			if (player.active && player.statLifeMax / 20 > 5)
++			*/
++			if (player.active && player.ConsumedLifeCrystals > 0)
+ 				return true;
  		}
- 
-+		/// <summary>
-+		/// Whether or not this NPC has a given name.<br/>
-+		/// </summary>
- 		public bool HasGivenName => _givenName.Length != 0;
- 
-+		/// <summary>
-+		/// If this NPC has a given name, returns their given name; otherwise, returns their type name.<br/>
-+		/// </summary>
- 		public string GivenOrTypeName {
- 			get {
- 				if (!HasGivenName)
-@@ -411,6 +_,11 @@
- 			}
- 		}
- 
-+		/// <summary>
-+		/// The GIVEN name of this NPC. Can be set directly.<br/>
-+		/// Given names are unique to each NPC, though two NPCs can have the same given name.<br/>
-+		/// Some vanilla examples of given names are Andrew (for the Guide), Yorai (for the Princess), Whitney (for the Steampunker), or Scarlett (for the Stylist).<br/>
-+		/// </summary>
- 		public string GivenName {
- 			get {
- 				return _givenName;
-@@ -458,7 +_,7 @@
- 
- 		public bool isLikeATownNPC {
- 			get {
--				if (type == 453)
-+				if (NPCID.Sets.ActsLikeTownNPC[type])
- 					return true;
- 
- 				return townNPC;
-@@ -696,7 +_,7 @@
- 		public static void UpdateFoundActiveNPCs() {
- 			for (int i = 0; i < 200; i++) {
- 				NPC nPC = Main.npc[i];
--				if (nPC.active && nPC.type >= 0 && nPC.type < 670)
-+				if (nPC.active && nPC.type >= 0 && nPC.type < NPCLoader.NPCCount)
- 					npcsFoundForCheckActive[nPC.type] = true;
- 			}
- 
-@@ -809,8 +_,116 @@
- 			return false;
- 		}
- 
--		public static string getNewNPCName(int npcType) => getNewNPCNameInner(npcType);
--
-+		public string getNewNPCName() {
-+			string NPCNameCategoryKey = null;
-+			switch (type) {
-+				// TODO: this looks horrible, and I know it does
-+				// ideally, there'd exist a better way to do this,
-+				// but as of now, I'm not sure what it would be
-+				// -thomas
-+				case 17:
-+					NPCNameCategoryKey = "MerchantNames";
-+					break;
-+				case 18:
-+					NPCNameCategoryKey = "NurseNames";
-+					break;
-+				case 19:
-+					NPCNameCategoryKey = "ArmsDealerNames";
-+					break;
-+				case 20:
-+					NPCNameCategoryKey = "DryadNames";
-+					break;
-+				case 22:
-+					NPCNameCategoryKey = "GuideNames";
-+					break;
-+				case 38:
-+					NPCNameCategoryKey = "DemolitionistNames";
-+					break;
-+				case 54:
-+					NPCNameCategoryKey = "ClothierNames";
-+					break;
-+				case 107:
-+					NPCNameCategoryKey = "GoblinTinkererNames";
-+					break;
-+				case 108:
-+					NPCNameCategoryKey = "WizardNames";
-+					break;
-+				case 124:
-+					NPCNameCategoryKey = "MechanicNames";
-+					break;
-+				case 160:
-+					NPCNameCategoryKey = "TruffleNames";
-+					break;
-+				case 178:
-+					NPCNameCategoryKey = "SteampunkerNames";
-+					break;
-+				case 207:
-+					NPCNameCategoryKey = "DyeTraderNames";
-+					break;
-+				case 208:
-+					NPCNameCategoryKey = "PartyGirlNames";
-+					break;
-+				case 209:
-+					NPCNameCategoryKey = "CyborgNames";
-+					break;
-+				case 227:
-+					NPCNameCategoryKey = "PainterNames";
-+					break;
-+				case 228:
-+					NPCNameCategoryKey = "WitchDoctorNames";
-+					break;
-+				case 229:
-+					NPCNameCategoryKey = "PirateNames";
-+					break;
-+				case 353:
-+					NPCNameCategoryKey = "StylistNames";
-+					break;
-+				case 368:
-+					NPCNameCategoryKey = "TravelingMerchantNames";
-+					break;
-+				case 369:
-+					NPCNameCategoryKey = "AnglerNames";
-+					break;
-+				case 453:
-+					NPCNameCategoryKey = "SkeletonMerchantNames";
-+					break;
-+				case 441:
-+					NPCNameCategoryKey = "TaxCollectorNames";
-+					break;
-+				case 550:
-+					NPCNameCategoryKey = "BartenderNames";
-+					break;
-+				case 588:
-+					NPCNameCategoryKey = "GolferNames";
-+					break;
-+				case 633:
-+					NPCNameCategoryKey = "BestiaryGirlNames";
-+					break;
-+				case 663:
-+					NPCNameCategoryKey = "PrincessNames";
-+					break;
-+				case 637:
-+					NPCNameCategoryKey = "CatNames_Siamese";
-+					break;
-+				case 638:
-+					NPCNameCategoryKey = "DogNames_Labrador";
-+					break;
-+				case 656:
-+					NPCNameCategoryKey = "BunnyNames_White";
-+					break;
-+			}
-+
-+			List<string> NPCNameList = new List<string>();
-+			if (NPCNameCategoryKey != null)
-+				NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategory(NPCNameCategoryKey);
-+			NPCNameList = NPCLoader.ModifyNPCNameList(this, NPCNameList);
-+			if (NPCNameList != null && NPCNameList.Count > 0)
-+				return NPCNameList[WorldGen.genRand.Next(NPCNameList.Count)];
-+			else
-+				return "";
-+		}
-+
-+		/*
- 		private static string getNewNPCNameInner(int npcType) {
- 			switch (npcType) {
- 				case 17:
-@@ -874,9 +_,10 @@
- 				case 656:
- 					return Language.RandomFromCategory("BunnyNames_White", WorldGen.genRand).Value;
- 				default:
--					return "";
-+					return NPCLoader.TownNPCName(npcType);
- 			}
- 		}
-+		*/
- 
- 		public NetworkText GetTypeNetName() => NetworkText.FromKey(Lang.GetNPCName(netID).Key);
  
 @@ -917,7 +_,7 @@
- 					continue;
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+ 			NPC nPC = Main.npc[i];
+-			if (nPC.active && nPC.type >= 0 && nPC.type < NPCID.Count)
++			if (nPC.active && nPC.type >= 0)
+ 				npcsFoundForCheckActive[nPC.type] = true;
+ 		}
  
- 				if (flag) {
--					Main.npc[i].GivenName = getNewNPCName(npcType);
-+					Main.npc[i].GivenName = Main.npc[i].getNewNPCName();
- 					Main.npc[i].needsUniqueInfoUpdate = true;
- 					continue;
- 				}
-@@ -930,6 +_,7 @@
+@@ -1036,10 +_,37 @@
+ 		return false;
+ 	}
+ 
++	/*
+ 	public static string getNewNPCName(int npcType) => getNewNPCNameInner(npcType);
++	*/
++	public string getNewNPCName()
++	{
++		string npcNameCategoryKey = getNewNPCNameInner(type);
++		var npcNameList = new List<string>();
++
++		if (!string.IsNullOrEmpty(npcNameCategoryKey))
++			npcNameList = LanguageManager.Instance.GetLocalizedEntriesInCategory(npcNameCategoryKey);
++
++		npcNameList = NPCLoader.ModifyNPCNameList(this, npcNameList);
++
++		if (npcNameList != null && npcNameList.Count > 0)
++			return npcNameList[WorldGen.genRand.Next(npcNameList.Count)];
++		else
++			return "";
++	}
++
++	//TML: A dummy for tricking 'getNewNPCNameInner' into returning category names.
++	private readonly ref struct NPCNameFakeLanguageCategoryPassthrough
++	{
++		public struct V { public string Value; }
++		public readonly V RandomFromCategory(string category, UnifiedRandom _) => new V { Value = category };
++	}
+ 
+ 	private static string getNewNPCNameInner(int npcType)
+ 	{
++		// Delightfully devilish.
++		var Language = new NPCNameFakeLanguageCategoryPassthrough();
++
+ 		switch (npcType) {
+ 			case 17:
+ 				return Language.RandomFromCategory("MerchantNames", WorldGen.genRand).Value;
+@@ -1166,7 +_,7 @@
+ 				continue;
+ 
+ 			if (flag) {
+-				Main.npc[i].GivenName = getNewNPCName(npcType);
++				Main.npc[i].GivenName = Main.npc[i].getNewNPCName();
+ 				Main.npc[i].needsUniqueInfoUpdate = true;
+ 				continue;
  			}
+@@ -1179,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/*
+ 	public static string firstNPCName(int npcType)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -1188,7 +_,13 @@
+ 
+ 		return getNewNPCName(npcType);
+ 	}
++	*/
+ 
++	/// <summary>
++	/// Returns the <see cref="GivenOrTypeName"/> of the first active NPC of the given type in the world. If not found, null is returned.
++	/// </summary>
++	/// <param name="npcType"></param>
++	/// <returns></returns>
+ 	public static string GetFirstNPCNameOrNull(int npcType)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -1199,6 +_,9 @@
+ 		return null;
+ 	}
+ 
++	/// <summary>
++	/// Use to check if a mechanism is allowed to spawn an NPC of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
++	/// </summary>
+ 	public static bool MechSpawn(float x, float y, int type)
+ 	{
+ 		int num = 0;
+@@ -1345,7 +_,10 @@
+ 			case 684:
+ 				return 53;
+ 			default:
++				/*
+ 				return -1;
++				*/
++				return NPCHeadLoader.GetNPCHeadSlot(type);
+ 		}
+ 	}
+ 
+@@ -1380,9 +_,11 @@
+ 			case 440:
+ 				if (ai[0] != 5f || alpha == 255)
+ 					result = -1;
++				// Extra patch context.
+ 				break;
+ 		}
+ 
++		NPCLoader.BossHeadSlot(this, ref result);
+ 		return result;
+ 	}
+ 
+@@ -1402,9 +_,11 @@
+ 			case 345:
+ 				if (ai[0] == 2f)
+ 					result = rotation;
++				// Extra patch context.
+ 				break;
+ 		}
+ 
++		NPCLoader.BossHeadRotation(this, ref result);
+ 		return result;
+ 	}
+ 
+@@ -1415,6 +_,8 @@
+ 		if (num == 491 && spriteDirection == 1)
+ 			result = SpriteEffects.FlipHorizontally;
+ 
++		NPCLoader.BossHeadSpriteEffects(this, ref result);
++
+ 		return result;
+ 	}
+ 
+@@ -2105,9 +_,25 @@
+ 		defDamage = damage;
+ 		defDefense = defense;
+ 		if (flag) {
+-			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
+ 			life = lifeMax;
+ 		}
++	}
++
++	// Added by TML.
++	public void CloneDefaults(int Type)
++	{
++		int originalType = type;
++		int originalNetID = netID;
++		var originalModNPC = ModNPC;
++		var originalGlobals = _globals;
++
++		SetDefaultsKeepPlayerInteraction(Type);
++
++		type = originalType;
++		netID = originalNetID;
++		ModNPC = originalModNPC;
++		_globals = originalGlobals;
+ 	}
+ 
+ 	public void SetDefaultsKeepPlayerInteraction(int Type)
+@@ -2156,6 +_,15 @@
+ 			return;
+ 		}
+ 
++		ModNPC = null;
++		ShowNameOnHover = true;
++		HideStrikeDamage = false;
++		BossBar = null;
++		_globals = null;
++		GravityIgnoresLiquid = false;
++		GravityIgnoresSpace = false;
++		GravityIgnoresType = false;
++
+ 		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
+ 		honeyMovementSpeed = 0.25f;
+ 		netOffset *= 0f;
+@@ -2207,10 +_,17 @@
+ 			buffType[k] = 0;
+ 		}
+ 
++		if (buffImmune.Length != BuffLoader.BuffCount)
++			Array.Resize(ref buffImmune, BuffLoader.BuffCount);
++
+-		for (int l = 0; l < BuffID.Count; l++) {
++		for (int l = 0; l < buffImmune.Length; l++) {
+ 			buffImmune[l] = false;
+ 		}
+ 
++		// Added by TML:
++		// Use aiStyle -1 for modded NPCs by default so they don't always face the nearest player and/or trigger net updates.
++		aiStyle = type < NPCID.Count ? 0 : -1;
++
+ 		setFrameSize = false;
+ 		netSkip = -2;
+ 		realLife = -1;
+@@ -6970,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2002;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 358) {
+ 			width = 12;
+@@ -7216,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2740;
+ 			npcSlots = 0.1f;
+ 		}
+@@ -7680,7 +_,9 @@
+ 			lifeMax = 5;
+ 			HitSound = SoundID.NPCHit1;
+ 			DeathSound = SoundID.NPCDeath1;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			catchItem = 2893;
+ 			npcSlots = 0.1f;
+ 			rarity = 3;
+@@ -7709,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 2895;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 			rarity = 3;
+ 		}
+ 		else if (type == 449) {
+@@ -7936,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = (short)(3191 + type - 484);
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 488) {
+ 			width = 18;
+@@ -9994,7 +_,9 @@
+ 			DeathSound = SoundID.NPCDeath1;
+ 			npcSlots = 0.1f;
+ 			catchItem = 4363;
++			/* TML: Fix #3299
+ 			friendly = true;
++			*/
+ 		}
+ 		else if (type == 607) {
+ 			noGravity = true;
+@@ -10792,14 +_,84 @@
+ 			DeathSound = SoundID.NPCDeath6;
+ 			catchItem = 2121;
+ 		}
++		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.  
++		if (NPCID.Sets.ImmuneToAllBuffs[type])
++			Array.Fill(buffImmune, true);
++
++		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToAllBuffs[type]) {
++			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
++			if (!NPCID.Sets.ImmuneToAllBuffs[type]) {
++				for (int i = 0; i < buffImmune.Length; i++) {
++					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
++				}
++			}
++
++			// If immune to most buffs...
++			// Apply all `SpecificDebuffImmunity` `false` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if(buffImmunity is false) {
++					buffImmune[i] = false;
++				}
++			}
++
++			// Apply all `GrantImmunityWith` in reverse (if vulnerable to OnFire, add vulnerability to OnFire3, keep in mind this is _all_ of the vulnerabilities in `[OnFire3]` list)
++			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
++				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
++				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[i]))
++					buffImmune[i] = false;
++			}
++
++			// Apply all `SpecificDebuffImmunity` `true` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is true) {
++					buffImmune[i] = true;
++				}
++			}
++		}
++		else {
++			// If not immune to most buffs...
++			// Apply all `SpecificDebuffImmunity` `true` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is true) {
++					buffImmune[i] = true;
++				}
++			}
++
++			// Apply all `GrantImmunityWith` (if immune to OnFire, add OnFire3, keep in mind this is _any_ of the immunities in `[OnFire3]` list)
++			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
++				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
++				foreach (var inheritableBuff in buffsToInherit) {
++					if (buffImmune[inheritableBuff]) {
++						buffImmune[i] = true;
++						break;
++					}
++				}
++			}
++
++			// Apply all `SpecificDebuffImmunity` `false` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is false) {
++					buffImmune[i] = false;
++				}
++			}
++		}
++
++		NPCLoader.SetDefaults(this);
+ 
+ 		if (Main.dedServ)
+ 			frame = default(Rectangle);
++		// Extra patch context.
+ 		else if (TextureAssets.Npc[type] != null && TextureAssets.Npc[type].IsLoaded)
+ 			frame = new Rectangle(0, 0, TextureAssets.Npc[type].Width(), TextureAssets.Npc[type].Height() / Main.npcFrameCount[type]);
+ 		else
+ 			setFrameSize = true;
+ 
++		// Extra patch context.
++
+ 		if (spawnparams.sizeScaleOverride.HasValue) {
+ 			int num3 = (int)((float)width * scale);
+ 			int num4 = (int)((float)height * scale);
+@@ -10823,6 +_,7 @@
+ 		defDamage = damage;
+ 		defDefense = defense;
+ 		netID = type;
++		/*
+ 		if (NPCID.Sets.DebuffImmunitySets.TryGetValue(type, out var nPCDebuffImmunityData) && nPCDebuffImmunityData != null) {
+ 			nPCDebuffImmunityData.ApplyToNPC(this);
+ 		}
+@@ -10833,6 +_,7 @@
+ 		}
+ 
+ 		buffImmune[353] = NPCID.Sets.ShimmerImmunity[type];
++		*/
+ 		if (Main.zenithWorld)
+ 			getZenithSeedAdjustmentsBeforeEverything();
+ 
+@@ -10841,12 +_,13 @@
+ 		else if (Main.tenthAnniversaryWorld)
+ 			getTenthAnniversaryAdjustments();
+ 
+-		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
++		if (type >= 0 && Main.npcCatchable[type]) {
+ 			catchableNPCTempImmunityCounter = 90;
++			catchableNPCOriginallyFriendly = friendly; 
+ 			friendly = true;
+ 		}
+ 
+-		ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++		ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData.Value, spawnparams.strengthMultiplierOverride);
+ 		life = lifeMax;
+ 	}
+ 
+@@ -11516,6 +_,8 @@
+ 			}
+ 		}
+ 
++		NPCLoader.ApplyDifficultyAndPlayerScaling(this, numPlayers, balance, bossAdjustment);
++
+ 		defDefense = defense;
+ 		defDamage = damage;
+ 		life = lifeMax;
+@@ -11823,7 +_,7 @@
+ 		}
+ 		else if (!unlockedSlimeCopperSpawn && Main.npc.IndexInRange(npcIndex)) {
+ 			NPC nPC = Main.npc[npcIndex];
+-			if (nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type]) {
++			if (nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type]) {
+ 				unlockedSlimeCopperSpawn = true;
+ 				NetMessage.SendData(7);
+ 				Vector2 vector = nPC.velocity;
+@@ -11877,7 +_,8 @@
+ 			if (flag)
+ 				vector3 = vector;
+ 
++			//TML: Added context
+-			Projectile.NewProjectile(new EntitySource_DebugCommand(), vector3 + vector2, Vector2.Zero, 995, 0, 0f, Main.myPlayer);
++			Projectile.NewProjectile(new EntitySource_DebugCommand("DryadStardewAnimation"), vector3 + vector2, Vector2.Zero, 995, 0, 0f, Main.myPlayer);
+ 			break;
+ 		}
+ 	}
+@@ -12338,6 +_,17 @@
+ 
+ 	public void AI()
+ 	{
++		NPCLoader.NPCAI(this);
++	}
++
++	public void VanillaAI()
++	{
++		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
++		VanillaAI_Inner();
++	}
++
++	private void VanillaAI_Inner()
++	{
+ 		if (aiStyle == 0) {
+ 			if (Main.netMode != 1) {
+ 				for (int i = 0; i < 255; i++) {
+@@ -31736,7 +_,7 @@
+ 			timeLeft = 86400;
+ 		}
+ 
+-		timeLeft -= Main.dayRate;
++		timeLeft -= Main.worldEventUpdates;
+ 		if (timeLeft < 0)
+ 			timeLeft = 0;
+ 
+@@ -39208,13 +_,18 @@
+ 
+ 		int num2 = 7;
+ 		int num3 = 6;
+-		int num4 = 2;
++		int num4 = 1; // #ModdedChairsForNPCs: Changed from 2 to 1 to support non 2 tile high chairs
+ 		int num5 = 1;
+-		int num6 = 2;
++		int num6 = 1; // #ModdedChairsForNPCs: Changed from 2 to 1 to support non 2 tile high chairs
+ 		for (int i = point.X - num2; i <= point.X + num2; i += num5) {
+ 			for (int num7 = point.Y + num4; num7 >= point.Y - num3; num7 -= num6) {
+ 				Tile tile = Main.tile[i, num7];
++
++				//#ModdedChairsForNPCs: Removed vanilla specific conditions
++				/*
+ 				if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type] && (tile.frameY % 40 != 0 || num7 + 1 <= point.Y + num4)) {
++				*/
++				if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type]) {
+ 					int num8 = Math.Abs(i - point.X) + Math.Abs(num7 - point.Y);
+ 					if (num == -1 || num8 < num) {
+ 						num = num8;
+@@ -39230,11 +_,20 @@
+ 
+ 		Tile tile2 = Main.tile[point2.X, point2.Y];
+ 		if (tile2.type == 497 || tile2.type == 15) {
++			// Extra patch context.
+ 			if (tile2.frameY % 40 != 0)
+ 				point2.Y--;
+ 
+ 			point2.Y += 2;
+ 		}
++		//TML: This check is necessary as in this case vanilla changes (to vanilla tiles that aren't sittable by default) by the hook should not take effect.
++		else if (tile2.type >= TileID.Count) {
++			var info = new TileRestingInfo(this, point2, Vector2.Zero, direction);
++			TileLoader.ModifySittingTargetInfo(point2.X, point2.Y, tile2.type, ref info);
++
++			point2 = info.AnchorTilePosition;
++			point2.Y += 1; // Set to tile *below* chair
++		}
+ 
+ 		for (int j = 0; j < 200; j++) {
+ 			if (Main.npc[j].active && Main.npc[j].aiStyle == 7 && Main.npc[j].townNPC && Main.npc[j].ai[0] == 5f && (Main.npc[j].Bottom + Vector2.UnitY * -2f).ToTileCoordinates() == point2)
+@@ -39248,9 +_,16 @@
+ 	private void AI_007_TryForcingSitting(int homeFloorX, int homeFloorY)
+ 	{
+ 		Tile tile = Main.tile[homeFloorX, homeFloorY - 1];
++		/*
+ 		bool flag = type != 638 && type != 656 && !NPCID.Sets.IsTownSlime[type] && ai[0] != 5f;
++		*/
++		bool flag = !NPCID.Sets.CannotSitOnFurniture[type] && !NPCID.Sets.IsTownSlime[type] && ai[0] != 5f;
++
+ 		if (flag)
++			/*
+ 			flag &= tile != null && tile.active() && (tile.type == 15 || tile.type == 497);
++			*/
++			flag &= tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type]; // #ModdedChairsForNPCs
+ 
+ 		if (flag)
+ 			flag &= tile.type != 15 || tile.frameY < 1080 || tile.frameY > 1098;
+@@ -39268,8 +_,17 @@
+ 		if (flag) {
+ 			ai[0] = 5f;
+ 			ai[1] = 900 + Main.rand.Next(10800);
++
++			// #ModdedChairsForNPCs
++			SitDown(new Point(homeFloorX, homeFloorY - 1), out int targetDirection, out var bottom);
++
++			/*
+ 			direction = ((tile.frameX != 0) ? 1 : (-1));
+ 			base.Bottom = new Vector2(homeFloorX * 16 + 8 + 2 * direction, homeFloorY * 16);
++			*/
++			direction = targetDirection;
++			base.Bottom = bottom;
++
+ 			velocity = Vector2.Zero;
+ 			localAI[3] = 0f;
+ 			netUpdate = true;
+@@ -39313,6 +_,7 @@
+ 		if (type == 638 || type == 656 || NPCID.Sets.IsTownSlime[type])
+ 			num = 0;
+ 
++		//patch file: flag
+ 		bool flag = Main.raining;
+ 		if (!Main.dayTime)
+ 			flag = true;
+@@ -39402,10 +_,13 @@
+ 				defense += 8;
+ 			}
+ 
++			// Extra patch context.
+ 			if (downedAncientCultist) {
+ 				num2 += 0.15f;
+ 				defense += 8;
+ 			}
++
++			NPCLoader.BuffTownNPC(ref num2, ref defense);
+ 		}
+ 
+ 		if (type == 142 && Main.netMode != 1 && !Main.xMas) {
+@@ -39542,7 +_,7 @@
+ 			return;
+ 		}
+ 
+-		if (type >= 0 && type < NPCID.Count && NPCID.Sets.TownCritter[type] && target == 255) {
++		if (type >= 0 && NPCID.Sets.TownCritter[type] && target == 255) {
+ 			TargetClosest();
+ 			if (position.X < Main.player[target].position.X) {
+ 				direction = 1;
+@@ -39637,7 +_,10 @@
+ 				direction = -1;
  		}
  
 +		/*
- 		public static string firstNPCName(int npcType) {
- 			for (int i = 0; i < 200; i++) {
- 				if (Main.npc[i].active && Main.npc[i].type == npcType)
-@@ -938,6 +_,7 @@
- 
- 			return getNewNPCName(npcType);
- 		}
+ 		if (!WorldGen.InWorld(num6, num7) || Main.tile[num6, num7] == null)
 +		*/
++		if (!WorldGen.InWorld(num6, num7) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num6, num7))
+ 			return;
  
- 		public static string GetFirstNPCNameOrNull(int npcType) {
- 			for (int i = 0; i < 200; i++) {
-@@ -1072,7 +_,7 @@
- 				case 656:
- 					return 39;
- 				default:
--					return -1;
-+					return NPCHeadLoader.GetNPCHeadSlot(type);
- 			}
- 		}
+ 		if (!homeless && Main.netMode != 1 && townNPC && (flag || (type == 37 && Main.tileDungeon[Main.tile[num6, num7].type])) && !AI_007_TownEntities_IsInAGoodRestingSpot(num6, num7, floorX, floorY)) {
+@@ -39687,6 +_,9 @@
+ 				if (!Main.npc[m].active || Main.npc[m].friendly || Main.npc[m].damage <= 0 || !(Main.npc[m].Distance(base.Center) < num8) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[m].type]) || (!Main.npc[m].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[m].Center, 0, 0)))
+ 					continue;
  
-@@ -1139,7 +_,7 @@
- 				case 39:
- 					return 656;
- 				default:
--					return -1;
-+					return NPCHeadLoader.GetNPCFromHeadSlot(headIndex);
- 			}
- 		}
- 
-@@ -1172,6 +_,8 @@
- 					break;
- 			}
- 
-+			NPCLoader.BossHeadSlot(this, ref result);
++				if (!NPCLoader.CanHitNPC(Main.npc[m], this))
++					continue;
 +
- 			return result;
- 		}
+ 				bool flag15 = Main.npc[m].CanBeChasedBy(this);
+ 				flag13 = true;
+ 				float num14 = Main.npc[m].Center.X - base.Center.X;
+@@ -39938,7 +_,11 @@
  
-@@ -1193,6 +_,7 @@
- 					break;
- 			}
- 
-+			NPCLoader.BossHeadRotation(this, ref result);
- 			return result;
- 		}
- 
-@@ -1201,6 +_,7 @@
- 			if (type == 491 && spriteDirection == 1)
- 				result = SpriteEffects.FlipHorizontally;
- 
-+			NPCLoader.BossHeadSpriteEffects(this, ref result);
- 			return result;
- 		}
- 
-@@ -1869,9 +_,21 @@
- 			defDamage = damage;
- 			defDefense = defense;
- 			if (flag) {
--				ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
-+				ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
- 				life = lifeMax;
- 			}
-+		}
+ 				if (closeDoor && ((position.X + (float)(width / 2)) / 16f > (float)(doorX + 2) || (position.X + (float)(width / 2)) / 16f < (float)(doorX - 2))) {
+ 					Tile tileSafely = Framing.GetTileSafely(doorX, doorY);
 +
-+		public void CloneDefaults(int Type) {
-+			int originalType = type;
-+			int originalNetID = netID;
-+			var originalModNPC = ModNPC;
-+			var originalGlobals = globalNPCs;
-+			SetDefaultsKeepPlayerInteraction(Type);
-+			type = originalType;
-+			netID = originalNetID;
-+			ModNPC = originalModNPC;
-+			globalNPCs = originalGlobals;
- 		}
- 
- 		public void SetDefaultsKeepPlayerInteraction(int Type) {
-@@ -1910,6 +_,9 @@
- 				return;
- 			}
- 
-+			ModNPC = null;
-+			ShowNameOnHover = true;
-+			globalNPCs = new Instanced<GlobalNPC>[0];
- 			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
- 			honeyMovementSpeed = 0.25f;
- 			netOffset *= 0f;
-@@ -1954,10 +_,14 @@
- 				buffType[k] = 0;
- 			}
- 
-+			if (buffImmune.Length != BuffLoader.BuffCount)
-+				Array.Resize(ref buffImmune, BuffLoader.BuffCount);
++					/*
+ 					if (tileSafely.type == 11) {
++					*/
++					if (TileLoader.CloseDoorID(tileSafely) >= 0) {
+ 						if (WorldGen.CloseDoor(doorX, doorY)) {
+ 							closeDoor = false;
+ 							NetMessage.SendData(19, -1, -1, null, 1, doorX, doorY, direction);
+@@ -40107,7 +_,11 @@
+ 					Tile tileSafely4 = Framing.GetTileSafely(num20, num21 - 1);
+ 					Tile tileSafely5 = Framing.GetTileSafely(num20, num21 - 2);
+ 					bool flag21 = height / 16 < 3;
 +
--			for (int l = 0; l < 338; l++) {
-+			for (int l = 0; l < buffImmune.Length; l++) {
- 				buffImmune[l] = false;
++					/*
+ 					if (townNPC && tileSafely5.nactive() && (tileSafely5.type == 10 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
++					*/
++					if ((townNPC || NPCID.Sets.AllowDoorInteraction[type]) && tileSafely5.nactive() && (TileLoader.IsClosedDoor(tileSafely5) || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
+ 						if (Main.netMode != 1) {
+ 							if (WorldGen.OpenDoor(num20, num21 - 2, direction)) {
+ 								closeDoor = true;
+@@ -40286,7 +_,12 @@
+ 			if (ai[0] == 5f) {
+ 				Point coords = (base.Bottom + Vector2.UnitY * -2f).ToTileCoordinates();
+ 				Tile tile = Main.tile[coords.X, coords.Y];
++
++				// #ModdedChairsForNPCs
++				/*
+ 				if (tile.type != 15 && tile.type != 497)
++				*/
++				if (!TileID.Sets.CanBeSatOnForNPCs[tile.type])
+ 					ai[1] = 0f;
+ 				else
+ 					Main.sittingManager.AddNPC(whoAmI, coords);
+@@ -40465,6 +_,11 @@
+ 				num41 = 10f;
  			}
  
-+			aiStyle = type < NPCID.Count ? 0 : -1; //Added by tML - use aiStyle -1 for modded NPCs by default so they don't always face the nearest player, and trigger net updates
- 			setFrameSize = false;
- 			netSkip = -2;
- 			realLife = -1;
-@@ -10243,13 +_,18 @@
- 				dontTakeDamage = true;
- 			}
- 
-+			NPCLoader.SetDefaults(this);
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num37, knockback: ref knockBack);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num40, randExtraCooldown: ref maxValue);
++			NPCLoader.TownNPCAttackProj(this, projType: ref num36, attackDelay: ref num39);
++			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num38, gravityCorrection: ref num41, randomOffset: ref num43);
 +
- 			if (Main.dedServ)
- 				frame = default(Rectangle);
-+			// Extra patch context.
- 			else if (TextureAssets.Npc[type] != null && TextureAssets.Npc[type].IsLoaded)
- 				frame = new Rectangle(0, 0, TextureAssets.Npc[type].Width(), TextureAssets.Npc[type].Height() / Main.npcFrameCount[type]);
- 			else
- 				setFrameSize = true;
+ 			if (Main.expertMode)
+ 				num37 = (int)((float)num37 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-+			// Extra patch context.
+@@ -40472,20 +_,27 @@
+ 			velocity.X *= 0.8f;
+ 			ai[1] -= 1f;
+ 			localAI[3] += 1f;
++			// Patch note: num39 - attackDelay.
+ 			if (localAI[3] == (float)num39 && Main.netMode != 1) {
+ 				Vector2 vec = -Vector2.UnitY;
+ 				if (num11 == 1 && spriteDirection == 1 && num13 != -1)
+ 					vec = DirectionTo(Main.npc[num13].Center + new Vector2(0f, (0f - num41) * MathHelper.Clamp(Distance(Main.npc[num13].Center) / num42, 0f, 1f)));
+ 
++				// Patch note: num41 - gravityCorrection.
+ 				if (num11 == -1 && spriteDirection == -1 && num12 != -1)
+ 					vec = DirectionTo(Main.npc[num12].Center + new Vector2(0f, (0f - num41) * MathHelper.Clamp(Distance(Main.npc[num12].Center) / num42, 0f, 1f)));
+ 
+ 				if (vec.HasNaNs() || Math.Sign(vec.X) != spriteDirection)
+ 					vec = new Vector2(spriteDirection, -1f);
+ 
++				// Patch note: num38 - projectile speed multiplier.
+ 				vec *= num38;
++				// Patch note: num43 - projectile speed randomOffset.
+ 				vec += Utils.RandomVector2(Main.rand, 0f - num43, num43);
+ 				int num44 = 1000;
++				// Patch note: num36 - projType.
++				// Patch note: num37 - damage.
++				// Patch note: knockBack - knockBack.
+ 				num44 = ((type == 124) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num36, num37, knockBack, Main.myPlayer, 0f, whoAmI, townNpcVariationIndex) : ((type != 142) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num36, num37, knockBack, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num36, num37, knockBack, Main.myPlayer, 0f, Main.rand.Next(5))));
+ 				Main.projectile[num44].npcProj = true;
+ 				Main.projectile[num44].noDropItem = true;
+@@ -40495,6 +_,8 @@
+ 
+ 			if (ai[1] <= 0f && 0 == 0) {
+ 				ai[0] = ((localAI[2] == 8f && flag13) ? 8 : 0);
++				// Patch note: num40 - cooldown.
++				// Patch note: maxValue - randExtraCooldown.
+ 				ai[1] = num40 + Main.rand.Next(maxValue);
+ 				ai[2] = 0f;
+ 				localAI[1] = (localAI[3] = num40 / 2 + Main.rand.Next(maxValue));
+@@ -40509,7 +_,10 @@
+ 			int num49 = 0;
+ 			int maxValue2 = 0;
+ 			float knockBack2 = 0f;
 +
- 			if (spawnparams.sizeScaleOverride.HasValue) {
- 				int num2 = (int)((float)width * scale);
- 				int num3 = (int)((float)height * scale);
-@@ -10288,7 +_,7 @@
- 			if (Main.tenthAnniversaryWorld)
- 				getTenthAnniversaryAdjustments();
- 
--			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
-+			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData.Value, spawnparams.strengthMultiplierOverride);
- 			life = lifeMax;
- 		}
- 
-@@ -10837,6 +_,7 @@
- 					break;
- 			}
- 
-+			NPCLoader.ScaleExpertStats(this, numPlayers, balance);
- 			defDefense = defense;
- 			defDamage = damage;
- 			life = lifeMax;
-@@ -11049,6 +_,18 @@
- 		}
- 
- 		public void AI() {
-+			NPCLoader.NPCAI(this);
-+		}
++			//TML: int -> float.
+-			int num50 = 0;
++			float num50 = 0;
 +
-+		public void VanillaAI() {
-+			IEntitySource.PushFallback(thisEntitySourceCache);
-+
-+			VanillaAI_Inner();
-+
-+			IEntitySource.PopFallback();
-+		}
-+
-+		private void VanillaAI_Inner() {
- 			if (aiStyle == 0) {
- 				if (Main.netMode != 1) {
- 					for (int i = 0; i < 255; i++) {
-@@ -30035,7 +_,8 @@
- 				timeLeft = 86400;
- 			}
+ 			bool flag24 = false;
+ 			float num51 = 0f;
+ 			if ((float)NPCID.Sets.AttackTime[type] == ai[1]) {
+@@ -40674,6 +_,7 @@
  
-+			//TODO: Replace this downcast.
--			timeLeft -= Main.dayRate;
-+			timeLeft -= (int)Main.dayRate;
- 			if (timeLeft < 0)
- 				timeLeft = 0;
- 
-@@ -37185,13 +_,14 @@
- 			int num = -1;
- 			int num2 = 7;
- 			int num3 = 6;
--			int num4 = 2;
-+			int num4 = 1; // TML: #ModdedChairsForNPCs: Changed from 2 to 1 to support non 2 tile high chairs
- 			int num5 = 1;
--			int num6 = 2;
-+			int num6 = 1; // TML: #ModdedChairsForNPCs: Changed from 2 to 1 to support non 2 tile high chairs
- 			for (int i = point.X - num2; i <= point.X + num2; i += num5) {
- 				for (int num7 = point.Y + num4; num7 >= point.Y - num3; num7 -= num6) {
- 					Tile tile = Main.tile[i, num7];
--					if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type] && (tile.frameY % 40 != 0 || num7 + 1 <= point.Y + num4)) {
-+					//if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type] && (tile.frameY % 40 != 0 || num7 + 1 <= point.Y + num4)) {
-+					if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type]) { // TML: #ModdedChairsForNPCs: Removed vanilla specific conditions
- 						int num8 = Math.Abs(i - point.X) + Math.Abs(num7 - point.Y);
- 						if (num == -1 || num8 < num) {
- 							num = num8;
-@@ -37212,6 +_,12 @@
- 
- 				point2.Y += 2;
- 			}
-+			else if (tile2.type >= TileID.Count) { // Check necessary as in this case vanilla changes (to vanilla tiles that aren't sittable by default) by the hook should not take effect
-+				TileRestingInfo info = new TileRestingInfo(this, point2, Vector2.Zero, base.direction);
-+				TileLoader.ModifySittingTargetInfo(point2.X, point2.Y, tile2.type, ref info);
-+				point2 = info.AnchorTilePosition;
-+				point2.Y += 1; // Set to tile *below* chair
-+			}
- 
- 			floorX = point2.X;
- 			floorY = point2.Y;
-@@ -37219,9 +_,11 @@
- 
- 		private void AI_007_TryForcingSitting(int homeFloorX, int homeFloorY) {
- 			Tile tile = Main.tile[homeFloorX, homeFloorY - 1];
--			bool flag = type != 638 && type != 656 && ai[0] != 5f;
-+			//bool flag = type != 638 && type != 656 && ai[0] != 5f;
-+			bool flag = !NPCID.Sets.CannotSitOnFurniture[type] && ai[0] != 5f;
- 			if (flag)
--				flag &= (tile != null && tile.active() && (tile.type == 15 || tile.type == 497));
-+				//flag &= (tile != null && tile.active() && (tile.type == 15 || tile.type == 497));
-+				flag &= (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type]); // TML: #ModdedChairsForNPCs
- 
- 			if (flag)
- 				flag &= (tile.type != 15 || tile.frameY < 1080 || tile.frameY > 1098);
-@@ -37239,8 +_,10 @@
- 			if (flag) {
- 				ai[0] = 5f;
- 				ai[1] = 900 + Main.rand.Next(10800);
--				direction = ((tile.frameX != 0) ? 1 : (-1));
--				base.Bottom = new Vector2(homeFloorX * 16 + 8 + 2 * direction, homeFloorY * 16);
-+				// TML: #ModdedChairsForNPCs
-+				SitDown(new Point(homeFloorX, homeFloorY - 1), out int targetDirection, out var bottom);
-+				direction = targetDirection;
-+				base.Bottom = bottom;
- 				velocity = Vector2.Zero;
- 				localAI[3] = 0f;
- 				netUpdate = true;
-@@ -37252,6 +_,7 @@
- 			if (type == 638 || type == 656)
- 				num = 0;
- 
-+			//patch file: flag
- 			bool flag = Main.raining;
- 			if (!Main.dayTime)
- 				flag = true;
-@@ -37340,6 +_,8 @@
- 					num2 += 0.15f;
- 					defense += 8;
- 				}
-+
-+				NPCLoader.BuffTownNPC(ref num2, ref defense);
- 			}
- 
- 			if (type == 142 && Main.netMode != 1 && !Main.xMas) {
-@@ -37399,7 +_,7 @@
- 					break;
- 			}
- 
--			if (type >= 0 && type < 670 && NPCID.Sets.TownCritter[type] && target == 255) {
-+			if (type >= 0 && NPCID.Sets.TownCritter[type] && target == 255) {
- 				TargetClosest();
- 				if (position.X < Main.player[target].position.X) {
- 					base.direction = 1;
-@@ -37495,7 +_,7 @@
- 					base.direction = -1;
- 			}
- 
--			if (!WorldGen.InWorld(num4, num5) || Main.tile[num4, num5] == null)
-+			if (!WorldGen.InWorld(num4, num5) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num4, num5))
- 				return;
- 
- 			if (!homeless && Main.netMode != 1 && townNPC && (flag || Main.tileDungeon[Main.tile[num4, num5].type]) && !AI_007_TownEntities_IsInAGoodRestingSpot(num4, num5, floorX, floorY)) {
-@@ -37539,7 +_,14 @@
- 			int num11 = -1;
- 			if (!flag6 && Main.netMode != 1 && !flag3) {
- 				for (int l = 0; l < 200; l++) {
-+					if (!Main.npc[l].active) continue;
-+					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[l], this);
-+					if (modCanHit.HasValue && !modCanHit.Value)
-+						continue;
-+
-+					bool canHitVal = modCanHit.HasValue && modCanHit.Value;
-+					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
--					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type]) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
-+					if (!Main.npc[l].active || Main.npc[l].friendly || Main.npc[l].damage <= 0 || !(Main.npc[l].Distance(base.Center) < num6) || (type == 453 && NPCID.Sets.Skeletons[Main.npc[l].type] && canHitVal) || (!Main.npc[l].noTileCollide && !Collision.CanHit(base.Center, 0, 0, Main.npc[l].Center, 0, 0)))
- 						continue;
- 
- 					bool flag12 = Main.npc[l].CanBeChasedBy(this);
-@@ -37793,7 +_,7 @@
- 
- 					if (closeDoor && ((position.X + (float)(width / 2)) / 16f > (float)(doorX + 2) || (position.X + (float)(width / 2)) / 16f < (float)(doorX - 2))) {
- 						Tile tileSafely = Framing.GetTileSafely(doorX, doorY);
--						if (tileSafely.type == 11) {
-+						if (TileLoader.CloseDoorID(tileSafely) >= 0) {
- 							if (WorldGen.CloseDoor(doorX, doorY)) {
- 								closeDoor = false;
- 								NetMessage.SendData(19, -1, -1, null, 1, doorX, doorY, base.direction);
-@@ -37957,7 +_,7 @@
- 						Tile tileSafely4 = Framing.GetTileSafely(num18, num19 - 1);
- 						Tile tileSafely5 = Framing.GetTileSafely(num18, num19 - 2);
- 						bool flag18 = height / 16 < 3;
--						if (townNPC && tileSafely5.nactive() && (tileSafely5.type == 10 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
-+						if ((townNPC || NPCID.Sets.AllowDoorInteraction[type]) && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
- 							if (Main.netMode != 1) {
- 								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
- 									closeDoor = true;
-@@ -38109,7 +_,8 @@
- 				if (ai[0] == 5f) {
- 					Point coords = (base.Bottom + Vector2.UnitY * -2f).ToTileCoordinates();
- 					Tile tile = Main.tile[coords.X, coords.Y];
--					if (tile.type != 15 && tile.type != 497)
-+					//if (tile.type != 15 && tile.type != 497)
-+					if (!TileID.Sets.CanBeSatOnForNPCs[tile.type]) // TML: #ModdedChairsForNPCs 
- 						ai[1] = 0f;
- 					else
- 						Main.sittingManager.AddNPC(whoAmI, coords);
-@@ -38281,13 +_,19 @@
- 					num28 = 589;
- 					num30 = 7f;
- 					num29 = 22;
-+					//Patch context: num28 - proj type, num29 - damage, num30 - speed multiplier, num31 - attack delay, num32 - attack cooldown.
- 					num31 = 1;
- 					num32 = 10;
- 					maxValue = 1;
- 					knockBack = 2f;
-+					//Patch context: num33 - gravity correction.
- 					num33 = 10f;
+ 				if (localAI[3] > (float)num48) {
+ 					num48 = 48;
++					// Patch note: flag24 - inBetweenShots
+ 					flag24 = true;
  				}
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num29, ref knockBack);
-+				NPCLoader.TownNPCAttackCooldown(this, ref num32, ref maxValue);
-+				NPCLoader.TownNPCAttackProj(this, ref num28, ref num31);
-+				NPCLoader.TownNPCAttackProjSpeed(this, ref num30, ref num33, ref num35);
- 				if (Main.expertMode)
- 					num29 = (int)((float)num29 * Main.GameModeInfo.TownNPCDamageMultiplier);
- 
-@@ -38307,6 +_,7 @@
- 						vec = new Vector2(spriteDirection, -1f);
- 
- 					vec *= num30;
-+					// Context for the patch above: num35 - random speed offset.
- 					vec += Utils.RandomVector2(Main.rand, 0f - num35, num35);
- 					int num36 = 1000;
- 					num36 = ((type == 124) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer, 0f, whoAmI) : ((type != 142) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num28, num29, knockBack, Main.myPlayer, 0f, Main.rand.Next(5))));
-@@ -38332,7 +_,7 @@
- 				int num41 = 0;
- 				int maxValue2 = 0;
- 				float knockBack2 = 0f;
--				int num42 = 0;
-+				float num42 = 0;
- 				bool flag21 = false;
- 				float num43 = 0f;
- 				if ((float)NPCID.Sets.AttackTime[type] == ai[1]) {
-@@ -38497,6 +_,7 @@
- 
- 					if (localAI[3] > (float)num40) {
- 						num40 = 48;
-+						//Patch context: flag20 means 'in between shots'.
- 						flag21 = true;
- 					}
- 
-@@ -38510,6 +_,7 @@
+@@ -40716,6 +_,12 @@
  				}
- 				else if (type == 209) {
- 					num37 = Utils.SelectRandom<int>(Main.rand, 134, 133, 135);
-+					//Patch context: num37 - proj type, num38 - damage, num39 - speed multiplier, num40 - attack delay, num41 - attack cooldown.
- 					num40 = 1;
- 					switch (num37) {
- 						case 135:
-@@ -38539,6 +_,12 @@
- 					}
- 				}
+ 			}
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num38, ref knockBack2);
-+				NPCLoader.TownNPCAttackCooldown(this, ref num41, ref maxValue2);
-+				NPCLoader.TownNPCAttackProj(this, ref num37, ref num40);
-+				NPCLoader.TownNPCAttackProjSpeed(this, ref num39, ref num42, ref num43);
-+				NPCLoader.TownNPCAttackShoot(this, ref flag21);
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num46, knockback: ref knockBack2);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num49, randExtraCooldown: ref maxValue2);
++			NPCLoader.TownNPCAttackProj(this, projType: ref num45, attackDelay: ref num48);
++			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num47, gravityCorrection: ref num50, randomOffset: ref num51);
++			NPCLoader.TownNPCAttackShoot(this, inBetweenShots: ref flag24);
 +
- 				if (Main.expertMode)
- 					num38 = (int)((float)num38 * Main.GameModeInfo.TownNPCDamageMultiplier);
+ 			if (Main.expertMode)
+ 				num46 = (int)((float)num46 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -38659,6 +_,7 @@
- 				else if (type == 663) {
- 					num47 = 950;
- 					num48 = 20;
-+					//Patch context: num47 - proj type, num48 - damage, num50 - attack delay, num51 - attack cooldown.
- 					num50 = 15;
- 					num51 = 0;
- 					maxValue3 = 0;
-@@ -38674,6 +_,11 @@
- 					knockBack3 = 3f;
- 				}
+@@ -40723,17 +_,24 @@
+ 			velocity.X *= 0.8f;
+ 			ai[1] -= 1f;
+ 			localAI[3] += 1f;
++			// Patch note: num48 - attackDelay.
+ 			if (localAI[3] == (float)num48 && Main.netMode != 1) {
+ 				Vector2 vec2 = Vector2.Zero;
+ 				if (num52 != -1)
+ 					vec2 = DirectionTo(Main.npc[num52].Center + new Vector2(0f, -num50));
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num48, ref knockBack3);
-+				NPCLoader.TownNPCAttackCooldown(this, ref num51, ref maxValue3);
-+				NPCLoader.TownNPCAttackProj(this, ref num47, ref num50);
-+				NPCLoader.TownNPCAttackProjSpeed(this, ref num49, ref num52, ref num55);
-+				NPCLoader.TownNPCAttackMagic(this, ref num54);
- 				if (Main.expertMode)
- 					num48 = (int)((float)num48 * Main.GameModeInfo.TownNPCDamageMultiplier);
++				// Patch note: num50 - gravityCorrection.
+ 				if (vec2.HasNaNs() || Math.Sign(vec2.X) != spriteDirection)
+ 					vec2 = new Vector2(spriteDirection, 0f);
  
-@@ -38684,12 +_,14 @@
- 				if (localAI[3] == (float)num50 && Main.netMode != 1) {
- 					Vector2 vec4 = Vector2.Zero;
- 					if (num56 != -1)
-+						//Patch context: num52 is gravity correction.
- 						vec4 = DirectionTo(Main.npc[num56].Center + new Vector2(0f, (0f - num52) * MathHelper.Clamp(Distance(Main.npc[num56].Center) / num53, 0f, 1f)));
++				// Patch note: num47 - projectile speed multiplier.
+ 				vec2 *= num47;
++				// Patch note: num51 - projectile speed randomOffset.
+ 				vec2 += Utils.RandomVector2(Main.rand, 0f - num51, num51);
+ 				int num53 = 1000;
++				// Patch note: num45 - projType.
++				// Patch note: num46 - damage.
++				// Patch note: knockBack2 - knockback;
+ 				num53 = ((type != 227) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num45, num46, knockBack2, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num45, num46, knockBack2, Main.myPlayer, 0f, (float)Main.rand.Next(12) / 6f));
+ 				Main.projectile[num53].npcProj = true;
+ 				Main.projectile[num53].noDropItem = true;
+@@ -40747,6 +_,8 @@
  
- 					if (vec4.HasNaNs() || Math.Sign(vec4.X) != spriteDirection)
- 						vec4 = new Vector2(spriteDirection, 0f);
+ 			if (ai[1] <= 0f && 0 == 0) {
+ 				ai[0] = ((localAI[2] == 8f && flag13) ? 8 : 0);
++				// Patch note: num49 - cooldown.
++				// Patch note: maxValue2 - randExtraCooldown.
+ 				ai[1] = num49 + Main.rand.Next(maxValue2);
+ 				ai[2] = 0f;
+ 				localAI[1] = (localAI[3] = num49 / 2 + Main.rand.Next(maxValue2));
+@@ -40851,6 +_,12 @@
+ 				knockBack3 = 3f;
+ 			}
  
- 					vec4 *= num49;
-+					// Context for the patch above: num55 - random speed offset.
- 					vec4 += Utils.RandomVector2(Main.rand, 0f - num55, num55);
- 					if (type == 108) {
- 						int num57 = Utils.SelectRandom<int>(Main.rand, 1, 1, 1, 1, 2, 2, 3);
-@@ -38740,6 +_,7 @@
- 					}
- 				}
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num56, knockback: ref knockBack3);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num59, randExtraCooldown: ref maxValue3);
++			NPCLoader.TownNPCAttackProj(this, projType: ref num55, attackDelay: ref num58);
++			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num57, gravityCorrection: ref num60, randomOffset: ref num63);
++			NPCLoader.TownNPCAttackMagic(this, auraLightMultiplier: ref num62);
++
+ 			if (Main.expertMode)
+ 				num56 = (int)((float)num56 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-+				//Patch context: num54 is aura light multiplier
- 				if (num54 > 0f) {
- 					Vector3 vector5 = NPCID.Sets.MagicAuraColor[type].ToVector3() * num54;
- 					Lighting.AddLight(base.Center, vector5.X, vector5.Y, vector5.Z);
-@@ -38799,11 +_,15 @@
- 				else if (type == 637 || type == 638 || type == 656) {
- 					num67 = 10;
- 					num69 = (num70 = 32);
-+					//Patch context: num66 - attack cooldown,  num67 - damage, num68 - knockback, num69 & num70 - width and height, maxValue4 - random extra cooldown
- 					num66 = 15;
- 					maxValue4 = 8;
- 					num68 = 3f;
- 				}
+@@ -40858,20 +_,27 @@
+ 			velocity.X *= 0.8f;
+ 			ai[1] -= 1f;
+ 			localAI[3] += 1f;
++			// Patch note: num58 - attackDelay.
+ 			if (localAI[3] == (float)num58 && Main.netMode != 1) {
+ 				Vector2 vec4 = Vector2.Zero;
+ 				if (num64 != -1)
+ 					vec4 = DirectionTo(Main.npc[num64].Center + new Vector2(0f, (0f - num60) * MathHelper.Clamp(Distance(Main.npc[num64].Center) / num61, 0f, 1f)));
  
-+				NPCLoader.TownNPCAttackStrength(this, ref num67, ref num68);
-+				NPCLoader.TownNPCAttackCooldown(this, ref num66, ref maxValue4);
-+				NPCLoader.TownNPCAttackSwing(this, ref num69, ref num70);
- 				if (Main.expertMode)
- 					num67 = (int)((float)num67 * Main.GameModeInfo.TownNPCDamageMultiplier);
++				// Patch note: num60 - gravityCorrection.
+ 				if (vec4.HasNaNs() || Math.Sign(vec4.X) != spriteDirection)
+ 					vec4 = new Vector2(spriteDirection, 0f);
  
-@@ -39054,15 +_,18 @@
++				// Patch note: num57 - projectile speed multiplier.
+ 				vec4 *= num57;
++				// Patch note: num63 - projectile speed randomOffset.
+ 				vec4 += Utils.RandomVector2(Main.rand, 0f - num63, num63);
+ 				if (type == 108) {
+ 					int num65 = Utils.SelectRandom<int>(Main.rand, 1, 1, 1, 1, 2, 2, 3);
+ 					for (int num66 = 0; num66 < num65; num66++) {
+ 						Vector2 vector3 = Utils.RandomVector2(Main.rand, -3.4f, 3.4f);
++						// Patch note: num55 - projType.
++						// Patch note: num56 - damage.
++						// Patch note: knockBack3 - knockback.
+ 						int num67 = Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec4.X + vector3.X, vec4.Y + vector3.Y, num55, num56, knockBack3, Main.myPlayer, 0f, 0f, townNpcVariationIndex);
+ 						Main.projectile[num67].npcProj = true;
+ 						Main.projectile[num67].noDropItem = true;
+@@ -40918,12 +_,15 @@
+ 			}
  
- 				if (flag27) {
- 					Tile tile2 = Main.tile[b.X, b.Y];
--					flag27 = (tile2.type == 15 || tile2.type == 497);
-+					//flag27 = (tile2.type == 15 || tile2.type == 497);
-+					flag27 = TileID.Sets.CanBeSatOnForNPCs[tile2.type]; // TML: #ModdedChairsForNPCs
- 					if (flag27 && tile2.type == 15 && tile2.frameY >= 1080 && tile2.frameY <= 1098)
- 						flag27 = false;
+ 			if (num62 > 0f) {
++				// Patch note: num62 - auraLightMultiplier.
+ 				Vector3 vector6 = GetMagicAuraColor().ToVector3() * num62;
+ 				Lighting.AddLight(base.Center, vector6.X, vector6.Y, vector6.Z);
+ 			}
  
- 					if (flag27) {
+ 			if (ai[1] <= 0f && 0 == 0) {
+ 				ai[0] = ((localAI[2] == 8f && flag13) ? 8 : 0);
++				// Patch note: num59 - cooldown.
++				// Patch note: maxValue3 - randExtraCooldown.
+ 				ai[1] = num59 + Main.rand.Next(maxValue3);
+ 				ai[2] = 0f;
+ 				localAI[1] = (localAI[3] = num59 / 2 + Main.rand.Next(maxValue3));
+@@ -40985,6 +_,10 @@
+ 				num76 = 3f;
+ 			}
+ 
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num75, knockback: ref num76);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num74, randExtraCooldown: ref maxValue4);
++			NPCLoader.TownNPCAttackSwing(this, itemWidth: ref num77, itemHeight: ref num78);
++
+ 			if (Main.expertMode)
+ 				num75 = (int)((float)num75 * Main.GameModeInfo.TownNPCDamageMultiplier);
+ 
+@@ -40992,6 +_,8 @@
+ 			velocity.X *= 0.8f;
+ 			ai[1] -= 1f;
+ 			if (Main.netMode != 1) {
++				// Patch note: num77 - attack swing itemWidth.
++				// Patch note: num78 - attack swing itemHeight.
+ 				Tuple<Vector2, float> swingStats = GetSwingStats(NPCID.Sets.AttackTime[type] * 2, (int)ai[1], spriteDirection, num77, num78);
+ 				Rectangle itemRectangle = new Rectangle((int)swingStats.Item1.X, (int)swingStats.Item1.Y, num77, num78);
+ 				if (spriteDirection == -1)
+@@ -41003,6 +_,8 @@
+ 				for (int num79 = 0; num79 < 200; num79++) {
+ 					NPC nPC2 = Main.npc[num79];
+ 					if (nPC2.active && nPC2.immune[myPlayer] == 0 && !nPC2.dontTakeDamage && !nPC2.friendly && nPC2.damage > 0 && itemRectangle.Intersects(nPC2.Hitbox) && (nPC2.noTileCollide || Collision.CanHit(position, width, height, nPC2.position, nPC2.width, nPC2.height))) {
++						// Patch note: num75 - damage.
++						// Patch note: num76 - knockback.
+ 						nPC2.StrikeNPCNoInteraction(num75, num76, spriteDirection);
+ 						if (Main.netMode != 0)
+ 							NetMessage.SendData(28, -1, -1, null, num79, num75, num76, spriteDirection);
+@@ -41043,6 +_,8 @@
+ 
+ 				if (!flag25) {
+ 					ai[0] = ((localAI[2] == 8f && flag13) ? 8 : 0);
++					// Patch note: num74 - cooldown.
++					// Patch note: maxValue4 - randExtraCooldown.
+ 					ai[1] = num74 + Main.rand.Next(maxValue4);
+ 					ai[2] = 0f;
+ 					localAI[1] = (localAI[3] = num74 / 2 + Main.rand.Next(maxValue4));
+@@ -41267,15 +_,29 @@
+ 
+ 				if (flag30) {
+ 					Tile tile2 = Main.tile[point.X, point.Y];
++
++					// #ModdedChairsForNPCs
++					/*
+ 					flag30 = tile2.type == 15 || tile2.type == 497;
++					*/
++					flag30 = TileID.Sets.CanBeSatOnForNPCs[tile2.type];
++
+ 					if (flag30 && tile2.type == 15 && tile2.frameY >= 1080 && tile2.frameY <= 1098)
+ 						flag30 = false;
+ 
+ 					if (flag30) {
  						ai[0] = 5f;
  						ai[1] = 900 + Main.rand.Next(10800);
--						base.direction = ((tile2.frameX != 0) ? 1 : (-1));
--						base.Bottom = new Vector2(b.X * 16 + 8 + 2 * base.direction, b.Y * 16 + 16);
-+						// TML: #ModdedChairsForNPCs
-+						SitDown(b, out int targetDirection, out var bottom);
-+						base.direction = targetDirection;
++
++						// #ModdedChairsForNPCs
++						SitDown(point, out int targetDirection, out var bottom);
++						/*
+ 						direction = ((tile2.frameX != 0) ? 1 : (-1));
+ 						base.Bottom = new Vector2(point.X * 16 + 8 + 2 * direction, point.Y * 16 + 16);
++						*/
++						direction = targetDirection;
 +						base.Bottom = bottom;
++
  						velocity = Vector2.Zero;
  						localAI[3] = 0f;
  						netUpdate = true;
-@@ -42416,7 +_,7 @@
- 					Main.tile[num177 - direction, num178 + 1] = new Tile();
+@@ -44814,7 +_,11 @@
+ 				Main.tile[num194 - direction, num195 + 1] = new Tile();
  
- 				Main.tile[num177, num178 + 1].halfBrick();
--				if (Main.tile[num177, num178 - 1].nactive() && (Main.tile[num177, num178 - 1].type == 10 || Main.tile[num177, num178 - 1].type == 388) && flag8) {
-+				if (Main.tile[num177, num178 - 1].nactive() && (TileLoader.IsClosedDoor(Main.tile[num177, num178 - 1]) || Main.tile[num177, num178 - 1].type == 388) && flag8) {
- 					ai[2] += 1f;
- 					ai[3] = 0f;
- 					if (ai[2] >= 60f) {
-@@ -42455,7 +_,7 @@
- 									NetMessage.SendData(17, -1, -1, null, 0, num177, num178 - 1);
- 							}
- 							else {
--								if (Main.tile[num177, num178 - 1].type == 10) {
-+								if (TileLoader.OpenDoorID(Main.tile[num177, num178 - 1]) >= 0) {
- 									bool flag24 = WorldGen.OpenDoor(num177, num178 - 1, direction);
- 									if (!flag24) {
- 										ai[3] = num52;
-@@ -43608,7 +_,7 @@
- 								Tile tileSafely = Framing.GetTileSafely(i, j);
- 								bool flag2 = tileSafely.active() && Main.tileSolid[tileSafely.type] && !Main.tileFrameImportant[tileSafely.type];
- 								if (flag && flag2) {
--									int num38 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
-+									int num38 = WorldGen.KillTile_GetTileDustAmount(true, tileSafely, i, j);
- 									for (int k = 0; k < num38; k++) {
- 										Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
- 										obj.velocity.Y -= 3f + (float)num37 * 1.5f;
-@@ -44201,7 +_,7 @@
- 			bool flag21 = false;
- 			bool flag22 = false;
- 			bool flag23 = false;
--			LegacySoundStyle style = null;
-+			SoundStyle? style = null;
- 			int num20 = 0;
- 			bool flag24 = false;
- 			float num21 = 1f;
-@@ -45053,8 +_,13 @@
- 
- 			if (!flag20) {
- 				if (ai[3] < (float)num19 && flag21) {
-+					/*
- 					if (num20 > 0 && Main.rand.Next(num20) == 0)
- 						SoundEngine.PlayTrackedSound(style, base.Center);
-+					*/
+ 			Main.tile[num194, num195 + 1].halfBrick();
 +
-+					if (num20 > 0 && Main.rand.Next(num20) == 0 && style.HasValue)
-+						SoundEngine.PlayTrackedSound(style.Value, base.Center);
++			/*
+ 			if (Main.tile[num194, num195 - 1].nactive() && (Main.tile[num194, num195 - 1].type == 10 || Main.tile[num194, num195 - 1].type == 388) && flag8) {
++			*/
++			if (Main.tile[num194, num195 - 1].nactive() && (TileLoader.IsClosedDoor(Main.tile[num194, num195 - 1]) || Main.tile[num194, num195 - 1].type == 388) && flag8) {
+ 				ai[2] += 1f;
+ 				ai[3] = 0f;
+ 				if (ai[2] >= 60f) {
+@@ -44853,7 +_,7 @@
+ 								NetMessage.SendData(17, -1, -1, null, 0, num194, num195 - 1);
+ 						}
+ 						else {
+-							if (Main.tile[num194, num195 - 1].type == 10) {
++							if (TileLoader.IsClosedDoor(Main.tile[num194, num195 - 1])) {
+ 								bool flag26 = WorldGen.OpenDoor(num194, num195 - 1, direction);
+ 								if (!flag26) {
+ 									ai[3] = num56;
+@@ -45741,9 +_,12 @@
+ 						return 58;
+ 				}
+ 			case 2:
++				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
++				/*
+ 				if (Main.rand.Next(2) == 0)
+ 					return Main.rand.Next(11, 15);
+ 				return Main.rand.Next(699, 703);
++				*/
+ 			default:
+ 				switch (Main.rand.Next(3)) {
+ 					case 0:
+@@ -46035,7 +_,7 @@
+ 							Tile tileSafely = Framing.GetTileSafely(i, j);
+ 							bool flag2 = tileSafely.active() && Main.tileSolid[tileSafely.type] && !Main.tileFrameImportant[tileSafely.type];
+ 							if (flag && flag2) {
+-								int num43 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++								int num43 = WorldGen.KillTile_GetTileDustAmount(true, tileSafely, i, j);
+ 								for (int k = 0; k < num43; k++) {
+ 									Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
+ 									obj.velocity.Y -= 3f + (float)num42 * 1.5f;
+@@ -46640,7 +_,7 @@
+ 		bool flag21 = false;
+ 		bool flag22 = false;
+ 		bool flag23 = false;
+-		LegacySoundStyle style = null;
++		SoundStyle? style = null; // LegacySoundStyle -> SoundStyle
+ 		int num22 = 0;
+ 		bool flag24 = false;
+ 		float num23 = 1f;
+@@ -47492,8 +_,13 @@
  
- 					bool hasValidTarget = HasValidTarget;
- 					nPCTargetingMethod(this, faceTarget: true, null);
-@@ -45232,7 +_,7 @@
- 				Tile tileSafely4 = Framing.GetTileSafely(num64, num65 - 1);
- 				Tile tileSafely5 = Framing.GetTileSafely(num64, num65 - 2);
- 				Tile tileSafely6 = Framing.GetTileSafely(num64, num65 - 3);
--				if (flag8 && tileSafely4.nactive() && (tileSafely4.type == 10 || tileSafely4.type == 388)) {
-+				if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388)) {
- 					ai[0] += 1f;
- 					ai[3] = 0f;
- 					if (ai[0] >= 60f) {
-@@ -45262,7 +_,7 @@
- 									NetMessage.SendData(17, -1, -1, null, 0, num64, num65 - 1);
- 							}
- 							else {
--								if (tileSafely4.type == 10) {
-+								if (TileLoader.IsClosedDoor(tileSafely4)) {
- 									bool flag38 = WorldGen.OpenDoor(num64, num65 - 1, direction);
- 									if (!flag38) {
- 										ai[3] = num19;
-@@ -47243,6 +_,10 @@
- 			if (type == 441 || type == 37 || type == 633)
- 				return false;
- 
-+			if (!NPCLoader.UsesPartyHat(this)) {
-+				return false;
-+			}
+ 		if (!flag20) {
+ 			if (ai[3] < (float)num21 && flag21) {
++				/*
+ 				if (num22 > 0 && Main.rand.Next(num22) == 0)
+ 					SoundEngine.PlayTrackedSound(style, base.Center);
++				*/
 +
- 			if (ForcePartyHatOn)
- 				return true;
++				if (num22 > 0 && Main.rand.Next(num22) == 0 && style.HasValue)
++					SoundEngine.PlayTrackedSound(style.Value, base.Center);
  
-@@ -47294,6 +_,10 @@
- 				num = TextureAssets.Npc[type].Height() / Main.npcFrameCount[type];
- 			}
+ 				bool hasValidTarget = HasValidTarget;
+ 				nPCTargetingMethod(this, faceTarget: true, null);
+@@ -47671,7 +_,7 @@
+ 			Tile tileSafely4 = Framing.GetTileSafely(num66, num67 - 1);
+ 			Tile tileSafely5 = Framing.GetTileSafely(num66, num67 - 2);
+ 			Tile tileSafely6 = Framing.GetTileSafely(num66, num67 - 3);
+-			if (flag8 && tileSafely4.nactive() && (tileSafely4.type == 10 || tileSafely4.type == 388)) {
++			if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388)) {
+ 				ai[0] += 1f;
+ 				ai[3] = 0f;
+ 				if (ai[0] >= 60f) {
+@@ -47701,7 +_,7 @@
+ 								NetMessage.SendData(17, -1, -1, null, 0, num66, num67 - 1);
+ 						}
+ 						else {
+-							if (tileSafely4.type == 10) {
++							if (TileLoader.IsClosedDoor(tileSafely4)) {
+ 								bool flag38 = WorldGen.OpenDoor(num66, num67 - 1, direction);
+ 								if (!flag38) {
+ 									ai[3] = num21;
+@@ -49728,6 +_,10 @@
+ 		if (type == 20 && townNpcVariationIndex == 1)
+ 			return false;
  
-+			NPCLoader.FindFrame(this, num);
++		if (!NPCLoader.UsesPartyHat(this)) {
++			return false;
 +		}
 +
-+		public void VanillaFindFrame(int num, bool isLikeATownNPC, int type) {
- 			int num2 = 0;
- 			if (aiAction == 0)
- 				num2 = ((velocity.Y < 0f) ? 2 : ((velocity.Y > 0f) ? 3 : ((velocity.X != 0f) ? 1 : 0)));
-@@ -55372,7 +_,10 @@
- 					if (Main.tile[x, y].type == 467)
- 						number2 = 5;
+ 		if (ForcePartyHatOn)
+ 			return true;
  
--					NetMessage.SendData(34, -1, -1, null, number2, x, y, 0f, number);
-+					if (Main.tile[x, y].type >= TileID.Count)
-+						number2 = 101;
+@@ -49782,6 +_,11 @@
+ 			num = TextureAssets.Npc[type].Height() / Main.npcFrameCount[type];
+ 		}
+ 
++		NPCLoader.FindFrame(this, num);
++	}
 +
-+					NetMessage.SendData(34, -1, -1, null, number2, x, y, 0f, number, Main.tile[x, y].type, 0);
- 					NetMessage.SendTileSquare(-1, x, y, 3);
- 				}
++	public void VanillaFindFrame(int num, bool isLikeATownNPC, int type)
++	{
+ 		int num2 = 0;
+ 		if (aiAction == 0)
+ 			num2 = ((velocity.Y < 0f) ? 2 : ((velocity.Y > 0f) ? 3 : ((velocity.X != 0f) ? 1 : 0)));
+@@ -51387,7 +_,7 @@
+ 			case 684: {
+ 				int num236 = (isLikeATownNPC ? NPCID.Sets.ExtraFramesCount[type] : 0);
+ 				bool flag11 = NPCID.Sets.IsTownSlime[type];
+-				if (false && !Main.dedServ && TownNPCProfiles.Instance.GetProfile(type, out var profile)) {
++				if (false && !Main.dedServ && TownNPCProfiles.Instance.GetProfile(this, out var profile)) {
+ 					Asset<Texture2D> textureNPCShouldUse = profile.GetTextureNPCShouldUse(this);
+ 					if (textureNPCShouldUse.IsLoaded) {
+ 						num = textureNPCShouldUse.Height() / Main.npcFrameCount[type];
+@@ -58083,7 +_,13 @@
+ 				if (Main.tile[x, y].type == 467)
+ 					number2 = 5;
  
-@@ -55717,6 +_,9 @@
- 			if (!active || DoesntDespawnToInactivity())
- 				return;
- 
-+			if (!NPCLoader.CheckActive(this))
-+				return;
++				if (Main.tile[x, y].type >= TileID.Count)
++					number2 = 101;
 +
- 			if (townNPC) {
- 				AddIntoPlayersTownNPCSlots();
- 				return;
-@@ -55790,7 +_,7 @@
- 			if (timeLeft <= 0)
- 				flag = false;
- 
--			if (!flag && Main.netMode != 1) {
-+			if (!flag && Main.netMode != 1 && !NPCLoader.SavesAndLoads(this)) {
- 				noSpawnCycle = true;
- 				active = false;
- 				if (Main.netMode == 2) {
-@@ -55886,6 +_,9 @@
- 				return;
++				/*
+ 				NetMessage.SendData(34, -1, -1, null, number2, x, y, 0f, number);
++				*/
++				NetMessage.SendData(34, -1, -1, null, number2, x, y, 0f, number, Main.tile[x, y].type, 0);
+ 				NetMessage.SendTileSquare(-1, x, y, 3);
  			}
  
-+			if (!NPCLoader.CheckDead(this))
-+				return;
+@@ -58438,6 +_,9 @@
+ 		if (!active || DoesntDespawnToInactivity())
+ 			return;
+ 
++		if (!NPCLoader.CheckActive(this))
++			return;
 +
+ 		if (townNPC) {
+ 			AddIntoPlayersTownNPCSlots();
+ 			return;
+@@ -58518,7 +_,7 @@
+ 		if (timeLeft <= 0)
+ 			flag2 = false;
+ 
+-		if (!flag2 && Main.netMode != 1) {
++		if (!flag2 && Main.netMode != 1 && !NPCLoader.SavesAndLoads(this)) {
  			noSpawnCycle = true;
- 			if (townNPC && type != 37 && type != 453) {
- 				if (Main.netMode != 2)
-@@ -55934,7 +_,9 @@
- 			if (DeathSound != null)
- 				SoundEngine.PlaySound(DeathSound, base.position);
- 
-+			if (NPCLoader.SpecialOnKill(this)) {
-+			}
--			if (type == 13 || type == 14 || type == 15) {
-+			else if (type == 13 || type == 14 || type == 15) {
- 				DropEoWLoot();
- 			}
- 			else if (type == 134) {
-@@ -56447,7 +_,7 @@
- 		}
- 
- 		public static void ResetKillCount() {
--			for (int i = 0; i < 670; i++) {
-+			for (int i = 0; i < killCount.Length; i++) {
- 				killCount[i] = 0;
+ 			active = false;
+ 			if (Main.netMode == 2) {
+@@ -58650,6 +_,9 @@
  			}
  		}
-@@ -56491,7 +_,7 @@
- 		}
  
- 		public void NPCLoot() {
--			if (Main.netMode == 1 || type >= 670)
-+			if (Main.netMode == 1 || type >= NPCLoader.NPCCount)
- 				return;
- 
- 			Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
-@@ -56508,9 +_,13 @@
- 			if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
- 				return;
- 
-+			if (!NPCLoader.PreKill(this))
-+				return;
++		if (!NPCLoader.CheckDead(this))
++			return;
 +
- 			bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
- 			DoDeathEvents_BeforeLoot(closestPlayer);
- 			NPCLoot_DropItems(closestPlayer);
-+			NPCLoader.OnKill(this);
- 			DoDeathEvents(closestPlayer);
- 			if (!num && downedMechBoss1 && downedMechBoss2 && downedMechBoss3 && Main.hardMode) {
- 				if (Main.netMode == 0)
-@@ -56556,7 +_,7 @@
- 			WoFKilledToday = false;
+ 		noSpawnCycle = true;
+ 		if (townNPC && type != 37 && type != 453) {
+ 			if (Main.netMode != 2)
+@@ -58695,13 +_,14 @@
+ 		if (townNPC && Main.netMode != 1 && homeless && WorldGen.prioritizedTownNPCType == type)
+ 			WorldGen.prioritizedTownNPCType = 0;
+ 
+-		LegacySoundStyle legacySoundStyle = DeathSound;
++		var legacySoundStyle = DeathSound;
+ 		if (type == 229 && IsShimmerVariant)
+ 			legacySoundStyle = SoundID.NPCDeath6;
+ 
+ 		if (legacySoundStyle != null)
+ 			SoundEngine.PlaySound(legacySoundStyle, position);
+ 
++		if (NPCLoader.SpecialOnKill(this)) { } else
+ 		if (type == 13 || type == 14 || type == 15) {
+ 			DropEoWLoot();
+ 		}
+@@ -58761,6 +_,7 @@
+ 				break;
  		}
  
--		private void DoDeathEvents_DropBossPotionsAndHearts() {
-+		private void DoDeathEvents_DropBossPotionsAndHearts(ref string typeName) {
- 			int stack = Main.rand.Next(5, 16);
- 			int num = 28;
- 			if (type == 113)
-@@ -56584,6 +_,7 @@
- 			else if (type == 398)
- 				num = 3544;
- 
-+			NPCLoader.BossLoot(this, ref typeName, ref num);
- 			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
- 			int num2 = Main.rand.Next(5) + 5;
- 			for (int i = 0; i < num2; i++) {
-@@ -56601,7 +_,7 @@
- 			}
++		num10 = NPCID.Sets.InvasionSlotCount[type];
+ 		if (num10 > 0) {
+ 			Main.invasionSize -= num10;
+ 			if (Main.invasionSize < 0)
+@@ -58799,10 +_,20 @@
  		}
+ 	}
  
--		private void DoDeathEvents_CelebrateBossDeath() {
-+		private void DoDeathEvents_CelebrateBossDeath(string typeName) {
- 			if (type == 125 || type == 126) {
- 				if (Main.netMode == 0)
- 					Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Plural", Language.GetTextValue("Enemies.TheTwins")), 175, 75);
-@@ -56615,7 +_,7 @@
- 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", NetworkText.FromKey("Enemies.MoonLord")), new Color(175, 75, 255));
- 			}
- 			else if (Main.netMode == 0) {
--				Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", TypeName), 175, 75);
-+				Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75);
- 			}
- 			else if (Main.netMode == 2) {
- 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", GetTypeNetName()), new Color(175, 75, 255));
-@@ -57000,8 +_,10 @@
- 			}
++	/// <summary>
++	/// Gets the <see cref="InvasionID"/> associated with the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="npcID">The NPC type to check.</param>
++	/// <returns>
++	/// <c>0</c> for NPCs not affiliated with any invasion.
++	/// <br/> A positive <see cref="InvasionID"/> for NPCs affiliated with standard events, such as the Goblin Army.
++	/// <br/> A negative <see cref="InvasionID"/> for NPCs affiliated with a wave-based event, such as the Pumpkin Moon. Wave-based events are prefixed with "Cached" in <see cref="InvasionID"/>.
++	/// </returns>
+ 	public static int GetNPCInvasionGroup(int npcID)
+ 	{
+ 		int result = 0;
+ 		switch (npcID) {
++			/*
+ 			case 26:
+ 			case 27:
+ 			case 28:
+@@ -58810,21 +_,30 @@
+ 			case 111:
+ 			case 471:
+ 			case 472:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npcID]:
+ 				result = 1;
+ 				break;
++			/*
+ 			case 143:
+ 			case 144:
+ 			case 145:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npcID]:
+ 				result = 2;
+ 				break;
++			/*
+ 			case 212:
+ 			case 213:
+ 			case 214:
+ 			case 215:
+ 			case 216:
+ 			case 491:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionPirate[npcID]:
+ 				result = 3;
+ 				break;
++			/*
+ 			case 381:
+ 			case 382:
+ 			case 383:
+@@ -58836,6 +_,8 @@
+ 			case 390:
+ 			case 391:
+ 			case 395:
++			*/
++			case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npcID]:
+ 				result = 4;
+ 				break;
+ 			case 338:
+@@ -59211,11 +_,15 @@
  
- 			if (boss) {
-+				string typeName = TypeName;
+ 	public static void ResetKillCount()
+ 	{
+-		for (int i = 0; i < NPCID.Count; i++) {
++		for (int i = 0; i < killCount.Length; i++) {
+ 			killCount[i] = 0;
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly. Use <see cref="GetWereThereAnyInteractions"/> if <see cref="realLife"/> might be in use.
++	/// </summary>
++	/// <returns></returns>
+ 	public bool AnyInteractions()
+ 	{
+ 		if (Main.netMode == 0) {
+@@ -59279,7 +_,7 @@
+ 
+ 	public void NPCLoot()
+ 	{
+-		if (Main.netMode == 1 || type >= NPCID.Count || (Main.getGoodWorld && !downedBoss3 && (type == 31 || type == 294 || type == 296 || type == 295 || type == 32 || type == 34 || type == 71)))
++		if (Main.netMode == 1 || (Main.getGoodWorld && !downedBoss3 && (type == 31 || type == 294 || type == 296 || type == 295 || type == 32 || type == 34 || type == 71)))
+ 			return;
+ 
+ 		Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
+@@ -59296,9 +_,15 @@
+ 		if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
+ 			return;
+ 
++		if (!NPCLoader.PreKill(this))
++			return;
 +
--				DoDeathEvents_DropBossPotionsAndHearts();
-+				DoDeathEvents_DropBossPotionsAndHearts(ref typeName);
--				DoDeathEvents_CelebrateBossDeath();
-+				DoDeathEvents_CelebrateBossDeath(typeName);
- 				if (Main.netMode == 2)
- 					NetMessage.SendData(7);
- 			}
-@@ -57238,7 +_,10 @@
- 			}
+ 		bool num = downedMechBoss1 && downedMechBoss2 && downedMechBoss3;
+ 		DoDeathEvents_BeforeLoot(closestPlayer);
+ 		NPCLoot_DropItems(closestPlayer);
++
++		NPCLoader.OnKill(this);
++
+ 		DoDeathEvents(closestPlayer);
+ 		if (!num && downedMechBoss1 && downedMechBoss2 && downedMechBoss3 && Main.hardMode) {
+ 			if (Main.netMode == 0)
+@@ -59348,7 +_,8 @@
+ 		WoFKilledToday = false;
+ 	}
+ 
+-	private void DoDeathEvents_DropBossPotionsAndHearts()
++	//TML: Added 'typeName' parameter.
++	private void DoDeathEvents_DropBossPotionsAndHearts(ref string typeName)
+ 	{
+ 		int stack = Main.rand.Next(5, 16);
+ 		int num = 28;
+@@ -59377,6 +_,8 @@
+ 		else if (type == 398)
+ 			num = 3544;
+ 
++		NPCLoader.BossLoot(this, ref typeName, ref num);
++
+ 		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
+ 		int num2 = Main.rand.Next(5) + 5;
+ 		for (int i = 0; i < num2; i++) {
+@@ -59394,7 +_,8 @@
+ 		}
+ 	}
+ 
++	//TML: Added 'typeName' parameter.
+-	private void DoDeathEvents_CelebrateBossDeath()
++	private void DoDeathEvents_CelebrateBossDeath(string typeName)
+ 	{
+ 		if (type == 125 || type == 126) {
+ 			if (Main.netMode == 0)
+@@ -59409,7 +_,7 @@
+ 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", NetworkText.FromKey("Enemies.MoonLord")), new Color(175, 75, 255));
+ 		}
+ 		else if (Main.netMode == 0) {
+-			Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", TypeName), 175, 75);
++			Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75);
+ 		}
+ 		else if (Main.netMode == 2) {
+ 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", GetTypeNetName()), new Color(175, 75, 255));
+@@ -59806,8 +_,11 @@
  		}
  
-+		// this is made internal because NPC.CheckCatchNPC now fulfills every use case
-+		// that callin' this method manually could have for modders, and then some
-+		// -thomas
--		public static void CatchNPC(int i, int who = -1) {
-+		internal static void CatchNPC(int i, int who = -1) {
- 			if (!Main.npc[i].active)
- 				return;
- 
-@@ -57258,8 +_,14 @@
- 					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
- 				}
- 				else {
-+					/*
- 					new Item().SetDefaults(Main.npc[i].catchItem);
- 					Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
-+					*/
-+					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
-+					
-+					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
-+					
- 					Main.npc[i].active = false;
- 					NetMessage.SendData(23, -1, -1, null, i);
- 				}
-@@ -57396,11 +_,12 @@
+ 		if (boss) {
++			// Added by TML.
++			string typeName = TypeName;
++
+-			DoDeathEvents_DropBossPotionsAndHearts();
++			DoDeathEvents_DropBossPotionsAndHearts(ref typeName);
+-			DoDeathEvents_CelebrateBossDeath();
++			DoDeathEvents_CelebrateBossDeath(typeName);
+ 			if (Main.netMode == 2)
+ 				NetMessage.SendData(7);
  		}
+@@ -59945,6 +_,7 @@
+ 		}
+ 	}
  
- 		public static void ReleaseNPC(int x, int y, int Type, int Style, int who) {
-+			// Patch context.
- 			if (Main.netMode == 1) {
- 				NetMessage.SendData(71, -1, -1, null, x, y, Type, Style);
++	/*
+ 	public static int GetStackForSlimeItemDrop(int item)
+ 	{
+ 		int num = 1;
+@@ -59978,6 +_,7 @@
+ 
+ 		return num;
+ 	}
++	*/
+ 
+ 	public bool ExcludedFromDeathTally()
+ 	{
+@@ -60029,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly.
++	/// </summary>
++	/// <returns></returns>
+ 	public bool GetWereThereAnyInteractions()
+ 	{
+ 		bool flag = false;
+@@ -60090,7 +_,8 @@
+ 		return false;
+ 	}
+ 
++	// Made internal, modders should use NPC.CheckCatchNPC instead.
+-	public static void CatchNPC(int i, int who = -1)
++	internal static void CatchNPC(int i, int who = -1)
+ 	{
+ 		if (!Main.npc[i].active)
+ 			return;
+@@ -60114,8 +_,14 @@
+ 				NetMessage.SendData(106, -1, -1, null, (int)vector.X, vector.Y);
  			}
  			else {
--				if (Type < 0 || Type >= 670 || !Main.npcCatchable[Type] || !CanReleaseNPCs(who))
-+				if (Type < 0 || Type >= NPCLoader.NPCCount || !Main.npcCatchable[Type] || !CanReleaseNPCs(who))
- 					return;
++				/*
+ 				new Item().SetDefaults(Main.npc[i].catchItem);
+ 				Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
++				*/
++				int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
++
++				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
++
+ 				Main.npc[i].active = false;
+ 				NetMessage.SendData(23, -1, -1, null, i);
+ 			}
+@@ -60261,7 +_,7 @@
+ 		if (Main.netMode == 1) {
+ 			NetMessage.SendData(71, -1, -1, null, x, y, Type, Style);
+ 		}
+-		else if (Type >= 0 && Type < NPCID.Count && (Main.npcCatchable[Type] || who == Main.myPlayer) && CanReleaseNPCs(who)) {
++		else if (Type >= 0 && (Main.npcCatchable[Type] || who == Main.myPlayer) && CanReleaseNPCs(who)) {
+ 			switch (Type) {
+ 				case 583:
+ 				case 584:
+@@ -60465,8 +_,8 @@
+ 		if (tile == null || tile2 == null)
+ 			return false;
  
- 				switch (Type) {
-@@ -57628,6 +_,7 @@
- 			int num9;
- 			int num10;
- 			bool flag15;
-+			NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
- 			while (true) {
- 				if (num7 >= 255)
- 					return;
-@@ -57648,11 +_,13 @@
- 						flag11 = false;
- 						flag12 = false;
- 						flag13 = false;
-+						//patch file: flag14
- 						flag14 = (downedPlantBoss && Main.hardMode);
- 						isItAHappyWindyDay = Main.IsItAHappyWindyDay;
- 						if (Main.player[num7].active && Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0 && (double)Main.player[num7].position.Y < Main.worldSurface * 16.0 + (double)sHeight) {
- 							int num8 = 3000;
- 							if ((double)Main.player[num7].position.X > Main.invasionX * 16.0 - (double)num8 && (double)Main.player[num7].position.X < Main.invasionX * 16.0 + (double)num8) {
-+								//patch file: flag6
- 								flag6 = true;
- 							}
- 							else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5)) {
-@@ -57668,14 +_,17 @@
+-		if (tile.wall < 0 || tile.wall >= WallID.Count || !wallTypes[tile.wall]) {
+-			if (tile2.wall >= 0 && tile2.wall < WallID.Count)
++		if (tile.wall < 0 || !wallTypes[tile.wall]) {
++			if (tile2.wall >= 0)
+ 				return wallTypes[tile2.wall];
+ 
+ 			return false;
+@@ -60513,6 +_,8 @@
+ 			}
+ 		}
+ 
++		NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
++
+ 		float num6 = (int)((float)defaultMaxSpawns * (2f + 0.3f * (float)num4));
+ 		for (int k = 0; k < 255; k++) {
+ 			if (!Main.player[k].active || Main.player[k].dead)
+@@ -60535,6 +_,7 @@
+ 			bool flag11 = false;
+ 			bool flag12 = false;
+ 			bool flag13 = false;
++			// Patch note: flag14 is used below.
+ 			bool flag14 = downedPlantBoss && Main.hardMode;
+ 			bool isItAHappyWindyDay = Main.IsItAHappyWindyDay;
+ 			if (Main.player[k].active && Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0 && ((double)Main.player[k].position.Y < Main.worldSurface * 16.0 + (double)sHeight || Main.remixWorld)) {
+@@ -60555,14 +_,17 @@
+ 			}
+ 
+ 			if (Main.player[k].ZoneTowerSolar || Main.player[k].ZoneTowerNebula || Main.player[k].ZoneTowerVortex || Main.player[k].ZoneTowerStardust)
++				// Patch note: flag6 - Invasion.
+ 				flag6 = true;
+ 
+ 			int num8 = (int)(Main.player[k].position.X + (float)(Main.player[k].width / 2)) / 16;
+ 			int num9 = (int)(Main.player[k].position.Y + (float)(Main.player[k].height / 2)) / 16;
+ 			if (Main.wallHouse[Main.tile[num8, num9].wall])
++				//Patch note: flag5 - playerSafe
+ 				flag5 = true;
+ 
+ 			if (Main.tile[num8, num9].wall == 87)
++				//Patch note: flag4 - Lihzahrd
+ 				flag4 = true;
+ 
+ 			flag2 = false;
+@@ -60921,12 +_,16 @@
+ 					}
+ 					else {
+ 						if (!Main.expertMode || Main.rand.Next(30) != 0)
++							// Patch note: flag12 - playerInTown?
++							//TODO: Looks wrong, needs confirmation.
+ 							flag12 = true;
+ 
+ 						maxSpawns = (int)((double)(float)maxSpawns * 0.6);
+ 					}
+ 				}
+ 			}
++
++			NPCLoader.EditSpawnRate(Main.player[k], ref spawnRate, ref maxSpawns);
+ 
+ 			bool flag15 = false;
+ 			if (Main.player[k].active && !Main.player[k].dead && Main.player[k].nearbyActiveNPCs < (float)maxSpawns && Main.rand.Next(spawnRate) == 0) {
+@@ -60952,6 +_,8 @@
+ 					safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num11);
+ 				}
+ 
++				NPCLoader.EditSpawnRange(Main.player[k], ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
++
+ 				int num12 = (int)(Main.player[k].position.X / 16f) - spawnRangeX;
+ 				int num13 = (int)(Main.player[k].position.X / 16f) + spawnRangeX;
+ 				int num14 = (int)(Main.player[k].position.Y / 16f) - spawnRangeY;
+@@ -60984,6 +_,7 @@
+ 							num = num20;
+ 							num2 = num21;
+ 							flag2 = true;
++							// Patch note: flag3 - Sky
+ 							flag3 = true;
  						}
- 
- 						if (Main.player[num7].ZoneTowerSolar || Main.player[num7].ZoneTowerNebula || Main.player[num7].ZoneTowerVortex || Main.player[num7].ZoneTowerStardust)
-+							// Patch note: flag6 - Invasion.
- 							flag6 = true;
- 
- 						num9 = (int)(Main.player[num7].position.X + (float)(Main.player[num7].width / 2)) / 16;
- 						num10 = (int)(Main.player[num7].position.Y + (float)(Main.player[num7].height / 2)) / 16;
- 						if (Main.wallHouse[Main.tile[num9, num10].wall])
-+							//Patch note: flag5 - playerSafe
- 							flag5 = true;
- 
- 						if (Main.tile[num9, num10].wall == 87)
-+							//Patch note: flag4 - Lihzahrd
- 							flag4 = true;
- 
- 						flag2 = false;
-@@ -57947,12 +_,14 @@
- 								}
- 								else {
- 									if (!Main.expertMode || Main.rand.Next(30) != 0)
-+										// Patch note: flag12 - playerInTown??????????????? Pretty weird
- 										flag12 = true;
- 
- 									maxSpawns = (int)((double)(float)maxSpawns * 0.6);
- 								}
- 							}
- 						}
-+						NPCLoader.EditSpawnRate(Main.player[num7], ref spawnRate, ref maxSpawns);
- 
- 						flag15 = false;
- 						if (Main.player[num7].active && !Main.player[num7].dead && Main.player[num7].nearbyActiveNPCs < (float)maxSpawns && Main.rand.Next(spawnRate) == 0) {
-@@ -57978,6 +_,7 @@
- 								safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num12);
- 							}
- 
-+							NPCLoader.EditSpawnRange(Main.player[num7], ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
- 							int num13 = (int)(Main.player[num7].position.X / 16f) - spawnRangeX;
- 							int num14 = (int)(Main.player[num7].position.X / 16f) + spawnRangeX;
- 							int num15 = (int)(Main.player[num7].position.Y / 16f) - spawnRangeY;
-@@ -58011,6 +_,7 @@
- 										num2 = num22;
- 										flag2 = true;
- 										flag3 = true;
-+										// Patch note: flag3 - Sky
- 									}
- 									else if (!flag6 && (double)num22 < Main.worldSurface * 0.44999998807907104 && !flag12 && Main.hardMode && Main.rand.Next(10) == 0) {
- 										num3 = Main.tile[num21, num22].type;
-@@ -58071,6 +_,7 @@
+ 						else if (!flag6 && (double)num21 < Main.worldSurface * 0.44999998807907104 && !flag12 && Main.hardMode && Main.rand.Next(10) == 0) {
+@@ -61037,16 +_,19 @@
+ 											flag2 = false;
+ 											break;
  										}
++										// Extra patch context.
  
- 										if (num >= num17 && num <= num18)
-+											// Patch note: flag15 - safeRangeX
- 											flag15 = true;
+ 										if (Main.tile[num26, num27].lava()) {
+ 											flag2 = false;
+ 											break;
+ 										}
++										// Extra patch context.
  									}
  								}
-@@ -58097,17 +_,23 @@
- 
- 							if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava()) {
- 								if (Main.tile[num, num2 - 1].honey())
-+									// Patch note: flag8 - Honey
- 									flag8 = true;
- 								else
-+									// Patch note: flag7 - Water
- 									flag7 = true;
  							}
  
- 							int num29 = (int)Main.player[num7].Center.X / 16;
- 							int num30 = (int)(Main.player[num7].Bottom.Y + 8f) / 16;
-+							spawnInfo.PlayerFloorX = num29;
-+							spawnInfo.PlayerFloorY = num30;
- 							if (Main.tile[num, num2].type == 367) {
-+								// Patch note: flag10 - marble
- 								flag10 = true;
- 							}
- 							else if (Main.tile[num, num2].type == 368) {
-+								// Patch note: flag9 - granite
- 								flag9 = true;
- 							}
- 							else if (Main.tile[num29, num30].type == 367) {
-@@ -58196,6 +_,7 @@
+ 							if (num >= num16 && num <= num17)
++								// Patch note: flag15 - safeRangeX
+ 								flag15 = true;
+ 						}
+ 					}
+@@ -61076,17 +_,25 @@
+ 						flag2 = false;
+ 
+ 					if (Main.tile[num, num2 - 1].honey())
++						// Patch note: flag8 - Honey
+ 						flag8 = true;
+ 					else
++						// Patch note: flag7 - Water
+ 						flag7 = true;
+ 				}
+ 
+ 				int num29 = (int)Main.player[k].Center.X / 16;
+ 				int num30 = (int)(Main.player[k].Bottom.Y + 8f) / 16;
++
++				spawnInfo.PlayerFloorX = num29;
++				spawnInfo.PlayerFloorY = num30;
++
+ 				if (Main.tile[num, num2].type == 367) {
++					// Patch note: flag10 - Marble
+ 					flag10 = true;
+ 				}
+ 				else if (Main.tile[num, num2].type == 368) {
++					// Patch note: flag9 - Granite
+ 					flag9 = true;
+ 				}
+ 				else if (Main.tile[num29, num30].type == 367) {
+@@ -61175,6 +_,7 @@
  						for (int num40 = num - num39; num40 < num + num39; num40++) {
  							for (int num41 = num2 - num39; num41 < num2 + num39; num41++) {
  								if (Main.tile[num40, num41].wall == 62)
@@ -1266,23 +1940,24 @@
  									flag11 = true;
  							}
  						}
-@@ -58216,6 +_,7 @@
+@@ -61195,6 +_,7 @@
  						for (int num45 = num - num44; num45 < num + num44; num45++) {
  							for (int num46 = num2 - num44; num46 < num2 + num44; num46++) {
- 								if (WallID.Sets.Conversion.Sandstone[Main.tile[num45, num46].wall] || WallID.Sets.Conversion.HardenedSand[Main.tile[num45, num46].wall])
+ 								if (WallID.Sets.AllowsUndergroundDesertEnemiesToSpawn[Main.tile[num45, num46].wall])
 +									// Patch note: flag13 - Desert cave
  									flag13 = true;
  							}
  						}
-@@ -58237,9 +_,35 @@
+@@ -61258,9 +_,37 @@
+ 			}
  
- 			bool flag18 = (float)new Point(num9 - num, num10 - num2).X * Main.windSpeedTarget > 0f;
- 			spawnTileType = SpawnNPC_TryFindingProperGroundTileType(spawnTileType, num, num2);
+ 			num49 = SpawnNPC_TryFindingProperGroundTileType(num49, num, num2);
 +
++			//TML: Fill NPCSpawnInfo
 +			spawnInfo.SpawnTileX = num;
 +			spawnInfo.SpawnTileY = num2;
 +			spawnInfo.SpawnTileType = num3;
-+			spawnInfo.Player = Main.player[num7];
++			spawnInfo.Player = Main.player[k];
 +			spawnInfo.Sky = flag3;
 +			spawnInfo.Lihzahrd = flag4;
 +			spawnInfo.PlayerSafe = flag5;
@@ -1293,12 +1968,13 @@
 +			spawnInfo.SpiderCave = flag11;
 +			spawnInfo.PlayerInTown = flag12;
 +			spawnInfo.DesertCave = flag13;
-+			spawnInfo.PlanteraDefeated = flag14;
++			//spawnInfo.PlanteraDefeated = flag14;
 +			spawnInfo.SafeRangeX = flag15;
 +
  			int newNPC = 200;
  			int cattailX;
  			int cattailY;
++
 +			int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo);
 +			if (!spawnChoice.HasValue)
 +				return;
@@ -1307,19 +1983,22 @@
 +			if (spawn != 0)
 +				goto endVanillaSpawn;
 +
- 			if (Main.player[num7].ZoneTowerNebula) {
- 				bool flag19 = true;
- 				int num50 = 0;
-@@ -60086,7 +_,7 @@
- 						int num105 = Main.rand.Next(7);
- 						int num106 = 12;
- 						int maxValue3 = 20;
--						if (Main.player[num7].statLifeMax <= 100) {
-+						if (Main.player[num7].ConsumedLifeCrystals == 0) {
- 							num106 = 5;
- 							num106 -= Main.CurrentFrameFlags.ActivePlayersCount / 2;
- 							if (num106 < 2)
-@@ -60370,6 +_,11 @@
+ 			if (Main.player[k].ZoneTowerNebula) {
+ 				bool flag25 = true;
+ 				int num51 = 0;
+@@ -63243,7 +_,11 @@
+ 						int num109 = Main.rand.Next(7);
+ 						int num110 = 12;
+ 						int maxValue4 = 20;
++
++						/*
+ 						if (Main.player[k].statLifeMax <= 100) {
++						*/
++						if (Main.player[k].ConsumedLifeCrystals == 0) {
+ 							num110 = 5;
+ 							num110 -= Main.CurrentFrameFlags.ActivePlayersCount / 2;
+ 							if (num110 < 2)
+@@ -63539,6 +_,11 @@
  				}
  			}
  
@@ -1328,304 +2007,741 @@
 +			if (spawn != 0)
 +				newNPC = NPCLoader.SpawnNPC(spawn, num, num2);
 +
- 			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
+ 			if (Main.npc[newNPC].type == 1 && Main.player[k].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
-@@ -60918,6 +_,20 @@
- 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
- 		}
+@@ -64272,6 +_,23 @@
+ 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
+ 	}
  
-+		/// <summary>
-+		/// Spawns an NPC into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the NPC targetting a specific Player immediately on spawn. Start can be used to ensure that an NPC spawns in a slot after an existing NPC. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. The return value is the index of the spawned NPC within the <see cref="Main.npc"/> array. 
-+		/// </summary>
-+		/// <param name="source"></param>
-+		/// <param name="X"></param>
-+		/// <param name="Y"></param>
-+		/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or ModContent.NPCType&lt;MyModNPC&gt;()</param>
-+		/// <param name="Start"></param>
-+		/// <param name="ai0"></param>
-+		/// <param name="ai1"></param>
-+		/// <param name="ai2"></param>
-+		/// <param name="ai3"></param>
-+		/// <param name="Target"></param>
-+		/// <returns></returns>
- 		public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255) {
- 			if (Main.getGoodWorld) {
- 				if (Type == 46)
-@@ -60928,7 +_,9 @@
++	/// <summary>
++	/// Spawns an NPC into the game world with the given type. <br/>
++	/// This method should not be called on multiplayer clients. <br/>
++	/// The X and Y parameters dictate the centered spawn position. <br/>
++	/// <c>>ai0, ai1, ai2, ai3</c> will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. <br/>
++	/// </summary>
++	/// <param name="source"></param>
++	/// <param name="X"></param>
++	/// <param name="Y"></param>
++	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or <c>ModContent.NPCType&lt;MyModNPC&gt;()</c></param>
++	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. </param>
++	/// <param name="ai0"></param>
++	/// <param name="ai1"></param>
++	/// <param name="ai2"></param>
++	/// <param name="ai3"></param>
++	/// <param name="Target">Optionally, provide a <c>Player.whoAmI</c> to set <see cref="NPC.target"/> to a specific Player immediately on spawn.</param>
++	/// <returns>The index of the spawned NPC within the <see cref="Main.npc"/> array</returns>
+ 	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
+ 	{
+ 		if (Main.getGoodWorld && Main.rand.Next(3) != 0) {
+@@ -64305,6 +_,8 @@
+ 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[availableNPCSlot].GetTypeNetName()), new Color(175, 75, 255));
  			}
  
- 			int num = -1;
++			NPCLoader.OnSpawn(Main.npc[availableNPCSlot], source);
 +
--			if (Type == 222 || Type == 245) {
-+			//if (Type == 222 || Type == 245) {
-+			if (Type >= 0 && NPCID.Sets.SpawnFromLastEmptySlot[Type]) {
- 				for (int num2 = 199; num2 >= 0; num2--) {
- 					if (!Main.npc[num2].active) {
- 						num = num2;
-@@ -60967,6 +_,8 @@
- 						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
- 				}
- 
-+				NPCLoader.OnSpawn(Main.npc[num], source);
-+
- 				return num;
- 			}
- 
-@@ -60974,9 +_,9 @@
+ 			return availableNPCSlot;
  		}
  
- 		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
--			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
--				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
--				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
-+			if (TypeToDefaultHeadIndex(Type) != -1 || (Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])) {
-+				Main.npc[nextNPC].GivenName = Main.npc[nextNPC].getNewNPCName();
-+				if (TownNPCProfiles.Instance.GetProfile(Main.npc[nextNPC], out ITownNPCProfile profile)) {
- 					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
- 					Main.npc[nextNPC].GivenName = profile.GetNameForVariant(Main.npc[nextNPC]);
- 				}
-@@ -61171,12 +_,14 @@
- 			if (num2 < 0)
- 				num2 = 0;
+@@ -64313,7 +_,7 @@
  
-+			if (NPCLoader.StrikeNPC(this, ref num, num2, ref knockBack, hitDirection, ref crit)) {
--			num = Main.CalculateDamageNPCsTake((int)num, num2);
-+				num = Main.CalculateDamageNPCsTake((int)num, num2);
--			if (crit)
-+				if (crit)
--				num *= 2.0;
-+					num *= 2.0;
- 
--			if (takenDamageMultiplier > 1f)
-+				if (takenDamageMultiplier > 1f)
--				num *= (double)takenDamageMultiplier;
-+					num *= takenDamageMultiplier;
-+			}
- 
- 			if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
- 				if (friendly) {
-@@ -61453,7 +_,20 @@
+ 	private static int GetAvailableNPCSlot(int Type, int startIndex)
+ 	{
+-		bool num = Type == 222 || Type == 245;
++		bool num = Type >= 0 && NPCID.Sets.SpawnFromLastEmptySlot[Type];
+ 		int t = 200;
+ 		int num2 = 1;
+ 		if (num) {
+@@ -64338,9 +_,10 @@
+ 	private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC)
+ 	{
+ 		NPC nPC = Main.npc[nextNPC];
+-		if (nPC.isLikeATownNPC) {
+-			nPC.GivenName = getNewNPCName(Type);
+-			if (TownNPCProfiles.Instance.GetProfile(Type, out var profile)) {
++		// if (nPC.isLikeATownNPC) {
++		if (nPC.isLikeATownNPC || Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type]) {
++			nPC.GivenName = nPC.getNewNPCName();
++			if (TownNPCProfiles.Instance.GetProfile(nPC, out var profile)) {
+ 				nPC.townNpcVariationIndex = profile.RollVariation();
+ 				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
- 		}
+@@ -64385,7 +_,7 @@
  
-+		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
-+			=> NPCLoader.HitEffect(this, hitDirection, dmg);
+ 	public bool RerollVariation()
+ 	{
+-		if (!TownNPCProfiles.Instance.GetProfile(type, out var profile))
++		if (!TownNPCProfiles.Instance.GetProfile(this, out var profile))
+ 			return false;
+ 
+ 		int num = townNpcVariationIndex;
+@@ -64574,6 +_,8 @@
+ 		}
+ 	}
+ 
++	// Moved to AddStatsToDamageCalculation
++	/*
+ 	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
+ 	{
+ 		if (ichor)
+@@ -64591,26 +_,163 @@
+ 
+ 		return armorPenetration / 2;
+ 	}
++	*/
+ 
+-	public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
++	internal int StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection)
+ 	{
++		/*
+ 		if (Main.netMode == 0)
+ 			ignorePlayerInteractions++;
+-
++		*/
+-		return StrikeNPC(Damage, knockBack, hitDirection, crit, noEffect, fromNet);
++		return StrikeNPC(Damage, knockBack, hitDirection, noPlayerInteraction: true);
+ 	}
+ 
+-	public double StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
++	internal int StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, bool noPlayerInteraction = false)
++	{
++		return StrikeNPC(CalculateStrikeFromLegacyValues(Damage, knockBack, hitDirection, crit), fromNet, noPlayerInteraction);
++	}
 +
--		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
-+		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0) {
-+			var usedSource = new EntitySource_HitEffect(this);
-+
-+			IEntitySource.PushFallback(thisEntitySourceCache);
-+
-+			VanillaHitEffect_Inner(hitDirection, dmg);
-+
-+			IEntitySource.PopFallback();
++	internal HitInfo CalculateStrikeFromLegacyValues(int Damage, float knockBack, int hitDirection, bool crit)
++	{
++		HitInfo hit;
++		if (Damage == 9999) {
++			hit = new HitInfo {
++				Crit = crit,
++				Knockback = knockBack,
++				HitDirection = hitDirection,
++				InstantKill = true
++			};
++		}
++		else {
++			var modifiers = GetIncomingStrikeModifiers(DamageClass.Default, hitDirection, ignoreArmorDebuffs: true);
++			hit = modifiers.ToHitInfo(Damage, crit, knockBack, damageVariation: false);
 +		}
 +
-+		private void VanillaHitEffect_Inner(int hitDirection, double dmg) {
- 			if (!active)
- 				return;
- 
-@@ -68561,6 +_,8 @@
- 			int num = -1;
- 			for (int i = 0; i < 5; i++) {
- 				if (buffType[i] == type) {
-+					if (BuffLoader.ReApply(type, this, time, i))
-+						return;
- 					if (buffTime[i] < time)
- 						buffTime[i] = time;
- 
-@@ -68596,7 +_,7 @@
- 		}
- 
- 		public void RequestBuffRemoval(int buffTypeToRemove) {
--			if (buffTypeToRemove < 0 || buffTypeToRemove >= 338 || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
-+			if (buffTypeToRemove < 0 || buffTypeToRemove >= BuffLoader.BuffCount || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
- 				return;
- 
- 			int num = FindBuffIndex(buffTypeToRemove);
-@@ -68775,9 +_,18 @@
- 
- 		public void UpdateNPC(int i) {
- 			whoAmI = i;
++		NetMessage.SetLegacyStrike(hit);
++		return hit;
++	}
 +
- 			if (!active)
- 				return;
- 
-+			IEntitySource.PushFallback(thisEntitySourceCache);
++	/// <summary>
++	/// Initializes a <see cref="HitModifiers"/> calculation with the properties of this NPC, including calling <see cref="NPCLoader.ModifyIncomingHit"/>
++	/// </summary>
++	/// <param name="damageType">The DamageType of the hit.</param>
++	/// <param name="hitDirection">The direction to apply knockback. If 0, no knockback will be applied.</param>
++	/// <param name="ignoreArmorDebuffs">Ignores <see cref="ichor"/> and <see cref="betsysCurse"/>. Only used for legacy vanilla codepaths.</param>
++	/// <returns></returns>
++	public HitModifiers GetIncomingStrikeModifiers(DamageClass damageType, int hitDirection, bool ignoreArmorDebuffs = false)
++	{
++		var modifiers = new HitModifiers() with {
++			DamageType = damageType,
++			HitDirection = hitDirection,
++			SuperArmor = SuperArmor
++		};
 +
-+			UpdateNPC_Inner(i);
++		modifiers.FinalDamage *= takenDamageMultiplier;
 +
-+			IEntitySource.PopFallback();
++		if (defense >= 0)
++			modifiers.Defense.Base += defense;
++		else
++			modifiers.FlatBonusDamage += -defense;
++
++		if (!ignoreArmorDebuffs) {
++			if (ichor)
++				modifiers.Defense.Flat -= 15;
++
++			if (betsysCurse)
++				modifiers.Defense.Flat -= 40;
 +		}
 +
-+		private void UpdateNPC_Inner(int i) {
- 			if (offSetDelayTime > 0) {
- 				netOffset *= 0f;
++		if (onFire2)
++			modifiers.Knockback += 0.1f;
++
++		modifiers.Knockback *= knockBackResist;
++
++		NPCLoader.ModifyIncomingHit(this, ref modifiers);
++		return modifiers;
++	}
++
++	/// <summary>
++	/// Runs <see cref="NPCLoader.ModifyIncomingHit"/> hooks and and does the full damage calculations. <br/>
++	/// The result <see cref="HitInfo.Damage"/> will contain the health the NPC will lose when applied. <br/>
++	/// </summary>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Defaults to false</param>
++	/// <param name="knockBack">Defaults to 0</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
++	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
++		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
++	}
++
++	/// <summary>
++	/// Calls <see cref="CalculateHitInfo"/>, <see cref="StrikeNPC(HitInfo, bool, bool)"/> and then <see cref="NetMessage.SendStrikeNPC"/> (in multiplayer) <br/>
++	/// </summary>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Defaults to false</param>
++	/// <param name="knockBack">Defaults to 0</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in single player. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damage dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
++	public int SimpleStrikeNPC(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0, bool noPlayerInteraction = false)
++	{
++		var hit = CalculateHitInfo(damage, hitDirection, crit, knockBack, damageType, damageVariation, luck);
++		int damageDone = StrikeNPC(hit, fromNet: false, noPlayerInteraction);
++		if (Main.netMode != NetmodeID.SinglePlayer)
++			NetMessage.SendStrikeNPC(this, hit);
++
++		return damageDone;
++	}
++
++	/// <summary>
++	/// Helper method for calling <see cref="StrikeNPC(HitInfo, bool, bool)"/> with a <see cref="HitInfo.InstantKill"/> strike. <br/>
++	/// Use to butcher your own NPCs. <br/>
++	/// Not recommended for use on multiplayer clients because the net packet will trigger <see cref="PlayerInteraction"/> on the server.
++	/// </summary>
++	public void StrikeInstantKill()
++	{
++		var hit = new NPC.HitInfo() { InstantKill = true };
++		StrikeNPC(hit, noPlayerInteraction: true);
++		if (Main.netMode != NetmodeID.SinglePlayer)
++			NetMessage.SendStrikeNPC(this, hit);
++	}
++
++	/// <summary>
++	/// Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the provided <see cref="HitInfo"/><br/>
++	/// Calls <see cref="HitEffect(HitInfo)"/> and associated hooks after dealing damage.<br/>
++	/// Calls <see cref="checkDead"/><br/>
++	/// Does not automatically send packets. Use <see cref="NetMessage.SendStrikeNPC"/> to synchronize hits.
++	/// </summary>
++	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="CalculateHitInfo"/></param>
++	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
++	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in single player. In multiplayer, player interaction is handled by the server.</param>
++	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damage dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
++	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false)
+ 	{
+ 		bool flag = Main.netMode == 0;
++		/*
+ 		if (flag && ignorePlayerInteractions > 0) {
+ 			ignorePlayerInteractions--;
+ 			flag = false;
+ 		}
++		*/
++		flag &= !noPlayerInteraction;
+ 
+ 		if (!active || life <= 0)
+-			return 0.0;
++			return 0;
+ 
++		double num = hit.Damage;
++		bool crit = hit.Crit;
++		int hitDirection = hit.HitDirection;
++		if (hit.InstantKill)
++			num = realLife > 0 ? Main.npc[realLife].life : life;
++
++		/*
+ 		double num = Damage;
+ 		num = Main.CalculateDamageNPCsTake((int)num, defense);
+ 		if (crit)
+@@ -64620,6 +_,8 @@
+ 			num *= (double)takenDamageMultiplier;
+ 
+ 		if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
++		*/
++		if (!hit.HideCombatText && !hit.InstantKill && lifeMax > 1 && !HideStrikeDamage) {
+ 			if (friendly) {
+ 				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
+ 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);
+@@ -64722,11 +_,14 @@
+ 					life -= (int)num;
+ 				}
  			}
-@@ -68791,7 +_,7 @@
- 				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
- 					netOffset *= 0f;
+-
++			/*
+ 			if (knockBack > 0f && knockBackResist > 0f) {
+ 				float num3 = knockBack * knockBackResist;
+ 				if (onFire2)
+ 					num3 *= 1.1f;
++			*/
++			if (hit.Knockback > 0) {
++				float num3 = hit.Knockback;
+ 
+ 				if (num3 > 8f) {
+ 					float num4 = num3 - 8f;
+@@ -64803,11 +_,11 @@
+ 			if ((type == 113 || type == 114) && life <= 0) {
+ 				for (int i = 0; i < 200; i++) {
+ 					if (Main.npc[i].active && (Main.npc[i].type == 113 || Main.npc[i].type == 114))
+-						Main.npc[i].HitEffect(hitDirection, num);
++						Main.npc[i].HitEffect(hitDirection, num, hit.InstantKill);
  				}
--				else if (NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
-+				else if (aiStyle >= 0 && aiStyle < NPCLoader.NPCCount && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
- 					netOffset *= 0f;
- 				}
- 				else {
-@@ -68837,6 +_,7 @@
- 				bool flag = false;
- 				int num4 = (int)(position.X + (float)(width / 2)) / 16;
- 				int num5 = (int)(position.Y + (float)(height / 2)) / 16;
+ 			}
+ 			else {
+-				HitEffect(hitDirection, num);
++				HitEffect(hit);
+ 			}
+ 
+ 			if (HitSound != null)
+@@ -64818,10 +_,10 @@
+ 			else
+ 				checkDead();
+ 
+-			return num;
++			return (int)num;
+ 		}
+ 
+-		return 0.0;
++		return 0;
+ 	}
+ 
+ 	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
+@@ -64897,7 +_,29 @@
+ 		}
+ 	}
+ 
+-	public void HitEffect(int hitDirection = 0, double dmg = 10.0)
++	// Added instantKill parameter
++	public void HitEffect(int hitDirection = 0, double dmg = 10.0, bool? instantKill = null)
++	{
++		instantKill ??= dmg == 9999;
++		HitEffect(new HitInfo {
++			DamageType = DamageClass.Default,
++			SourceDamage = instantKill.Value ? 1 : (int)dmg,
++			Damage = instantKill.Value ? 1 : (int)dmg,
++			Crit = false,
++			HitDirection = hitDirection,
++			Knockback = 0,
++			InstantKill = instantKill.Value
++		});
++	}
++
++	public void HitEffect(HitInfo hit)
++	{
++		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
++		VanillaHitEffect(hit.HitDirection, hit.Damage, hit.InstantKill);
++		NPCLoader.HitEffect(this, hit);
++	}
++
++	private void VanillaHitEffect(int hitDirection, double dmg, bool instantKill)
+ 	{
+ 		if (!active)
+ 			return;
+@@ -64952,6 +_,8 @@
+ 			}
+ 
+ 			if (flag) {
++				int num = GetPartyHatGore();
 +				/*
- 				try {
- 					if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
- 						if (Main.tile[num4, num5] == null)
-@@ -68854,12 +_,14 @@
- 				catch {
- 					flag = true;
+ 				int num = 926;
+ 				switch (GetPartyHatColor()) {
+ 					case PartyHatColor.Cyan:
+@@ -64967,6 +_,7 @@
+ 						num = 942;
+ 						break;
  				}
 +				*/
  
--				if (flag)
-+				if (!Main.sectionManager.TilesLoaded(num4 - 3, num5 - 3, num4 + 3, num5 + 3))
- 					return;
+ 				Gore.NewGore(position, velocity, num);
  			}
- 
- 			UpdateNPC_BuffFlagsReset();
-+			NPCLoader.ResetEffects(this);
- 			UpdateNPC_BuffSetFlags();
- 			UpdateNPC_SoulDrainDebuff();
- 			UpdateNPC_BuffClearExpiredBuffs();
-@@ -69075,6 +_,8 @@
+@@ -65805,7 +_,10 @@
  			}
  		}
  
-+		// Original vanilla methods:
 +		/*
- 		public static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => new EntitySource_Parent(Main.player[whoReleasedIt]);
- 		public static IEntitySource GetSpawnSource_NPCCatch(int whoCatchedIt) => new EntitySource_Parent(Main.player[whoCatchedIt]);
- 		public IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
-@@ -69084,6 +_,23 @@
- 		public static IEntitySource GetSpawnSourceForTownSpawn() => new EntitySource_SpawnNPC();
- 		public IEntitySource GetSpawnSourceForNPCFromNPCAI() => new EntitySource_Parent(this);
- 		public IEntitySource GetItemSource_Loot() => new EntitySource_Loot(this);
+ 		if (type == 437 && dmg == 9999.0) {
 +		*/
-+
-+		// Internal redirects:
-+		internal static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => Main.player[whoReleasedIt].GetSource_ReleaseEntity();
-+		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt, Entity caughtEntity) => Main.player[whoCaughtIt].GetSource_CatchEntity(caughtEntity);
-+		internal static IEntitySource GetSpawnSourceForNaturalSpawn() => GetSource_NaturalSpawn();
-+		internal static IEntitySource GetSpawnSourceForTownSpawn() => GetSource_TownSpawn();
-+		
-+		internal IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
-+		internal IEntitySource GetSpawnSource_ForProjectile() => GetSource_FromAI();
-+		internal IEntitySource GetSpawnSourceForProjectileNPC() => GetSource_FromAI();
-+		internal IEntitySource GetSpawnSourceForNPCFromNPCAI() => GetSource_FromAI();
-+		internal IEntitySource GetItemSource_Loot() => GetSource_Loot();
-+
-+		// Public API methods can be found in:
-+		//   Entity.TML.Sources.cs;
-+		//   NPC.TML.Sources.cs (if exists);
++		if (type == 437 && instantKill) {
+ 			for (int num96 = 0; num96 < 6; num96++) {
+ 				int num97 = Gore.NewGore(base.Center - new Vector2(10f), Vector2.UnitY.RotatedByRandom(6.2831854820251465) * 5f, 728 + num96);
+ 			}
+@@ -72123,6 +_,11 @@
+ 		}
+ 	}
  
- 		private void UpdateNPC_UpdateTrails() {
- 			int num = NPCID.Sets.TrailingMode[type];
-@@ -69822,6 +_,7 @@
- 					num = 5;
++	/// <summary>
++	/// Returns the number of active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="Type"></param>
++	/// <returns></returns>
+ 	public static int CountNPCS(int Type)
+ 	{
+ 		int num = 0;
+@@ -72144,6 +_,11 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if there are any active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="Type"></param>
++	/// <returns></returns>
+ 	public static bool AnyNPCs(int Type)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -72154,6 +_,11 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Returns the index within <see cref="Main.npc"/> of the the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// </summary>
++	/// <param name="Type"></param>
++	/// <returns></returns>
+ 	public static int FindFirstNPC(int Type)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -72191,6 +_,14 @@
+ 		return -1;
+ 	}
+ 
++	/// <summary>
++	/// Gives this NPC the provided buff. This accounts for if the NPC is immune to the buff.
++	/// <br/> If the NPC already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>.
++	/// <br/> The quiet parameter will determine if the network sync message should happen. This should always stay false.
++	/// </summary>
++	/// <param name="type">The buff type</param>
++	/// <param name="time">The desired buff time in ticks. 60 ticks is 1 second</param>
++	/// <param name="quiet">If true, the network sync message is skipped.</param>
+ 	public void AddBuff(int type, int time, bool quiet = false)
+ 	{
+ 		if (buffImmune[type])
+@@ -72206,6 +_,9 @@
+ 		int num = -1;
+ 		for (int i = 0; i < maxBuffs; i++) {
+ 			if (buffType[i] == type) {
++				if (BuffLoader.ReApply(type, this, time, i))
++					return;
++
+ 				if (buffTime[i] < time)
+ 					buffTime[i] = time;
+ 
+@@ -72240,9 +_,14 @@
+ 		buffTime[num] = time;
+ 	}
+ 
++	/// <summary>
++	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap. Note that only buffs contained in <see cref="BuffID.Sets.CanBeRemovedByNetMessage"/> can be removed with this method. The intention is that those specific buffs are "owned" by the player who inflicts them, so they can be freely removed by multiplayer clients.
++	/// <br/><br/>  In all other cases code running on the server or in single player is in charge of the NPC debuffs and <see cref="NPC.DelBuff"/> should be used directly.
++	/// </summary>
++	/// <param name="buffTypeToRemove">The buff type</param>
+ 	public void RequestBuffRemoval(int buffTypeToRemove)
+ 	{
+-		if (buffTypeToRemove < 0 || buffTypeToRemove >= BuffID.Count || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
++		if (buffTypeToRemove < 0 || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
+ 			return;
+ 
+ 		int num = FindBuffIndex(buffTypeToRemove);
+@@ -72253,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player. 
++	/// </summary>
++	/// <param name="buffIndex">The index of the buff to remove.</param>
+ 	public void DelBuff(int buffIndex)
+ 	{
+ 		buffTime[buffIndex] = 0;
+@@ -72432,9 +_,16 @@
+ 	public void UpdateNPC(int i)
+ 	{
+ 		whoAmI = i;
++
+ 		if (!active)
+ 			return;
+ 
++		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
++		UpdateNPC_Inner(i);
++	}
++
++	private void UpdateNPC_Inner(int i)
++	{
+ 		if (offSetDelayTime > 0) {
+ 			netOffset *= 0f;
+ 		}
+@@ -72448,7 +_,7 @@
+ 			if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
+ 				netOffset *= 0f;
+ 			}
+-			else if (NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
++			else if (aiStyle >= 0 && aiStyle < NPCLoader.NPCCount && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) { // TML: added bounds check
+ 				netOffset *= 0f;
+ 			}
+ 			else {
+@@ -72499,6 +_,7 @@
+ 			bool flag = false;
+ 			int num4 = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num5 = (int)(position.Y + (float)(height / 2)) / 16;
++			/*
+ 			try {
+ 				if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
+ 					if (Main.tile[num4, num5] == null)
+@@ -72516,19 +_,25 @@
+ 			catch {
+ 				flag = true;
+ 			}
++			*/
+ 
++			flag = !Main.sectionManager.TilesLoaded(num4 - 3, num5 - 3, num4 + 3, num5 + 3);
+ 			if (flag)
+ 				return;
+ 		}
+ 
+ 		UpdateNPC_BuffFlagsReset();
++		NPCLoader.ResetEffects(this);
++		UpdateNPC_UpdateGravity();
+ 		UpdateNPC_BuffSetFlags();
+ 		UpdateNPC_SoulDrainDebuff();
+ 		UpdateNPC_BuffClearExpiredBuffs();
+ 		UpdateNPC_BuffApplyDOTs();
+ 		UpdateNPC_BuffApplyVFX();
+ 		UpdateNPC_BloodMoonTransformations();
++		/*TML: #AccessibleNPCGravity, removed out parameter and moved a couple lines up to allow gravity to be modified with buffs
+-		UpdateNPC_UpdateGravity(out var maxFallSpeed);
++		UpdateNPC_UpdateGravity(out var maxFallSpeed)
++		*/
+ 		if (soundDelay > 0)
+ 			soundDelay--;
+ 
+@@ -72653,19 +_,21 @@
+ 		justHit = false;
+ 	}
+ 
++
+ 	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
+ 	{
+-		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
++		// TML: changed logic to not assume npcCatchable npc should not be friendly after invulnerability period. Also only run code during period to prevent undoing intentional changes to friendly in AI code.
++		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter > 0) {
+ 			if (releaseOwner != 255 || SpawnedFromStatue)
+ 				catchableNPCTempImmunityCounter = 0;
+ 
+ 			bool num = friendly;
++			catchableNPCTempImmunityCounter--;
+ 			if (catchableNPCTempImmunityCounter > 0) {
+-				catchableNPCTempImmunityCounter--;
+ 				friendly = true;
+ 			}
+ 			else {
+-				friendly = false;
++				friendly = catchableNPCOriginallyFriendly;
  			}
  
-+			NPCLoader.UpdateLifeRegen(this, ref num);
- 			if (lifeRegen <= -240 && num < 2)
- 				num = 2;
+ 			if (num != friendly)
+@@ -72760,6 +_,8 @@
+ 		}
+ 	}
  
-@@ -70013,6 +_,7 @@
++	// Original vanilla methods:
++	/*
+ 	public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
+ 	public static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => new EntitySource_Parent(Main.player[whoReleasedIt]);
+ 	public static IEntitySource GetSpawnSource_NPCCatch(int whoCatchedIt) => new EntitySource_Parent(Main.player[whoCatchedIt]);
+@@ -72770,6 +_,24 @@
+ 	public static IEntitySource GetSpawnSourceForTownSpawn() => new EntitySource_SpawnNPC();
+ 	public IEntitySource GetSpawnSourceForNPCFromNPCAI() => new EntitySource_Parent(this);
+ 	public IEntitySource GetItemSource_Loot() => new EntitySource_Loot(this);
++	*/
++
++	// Internal redirects:
++	internal static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => Main.player[whoReleasedIt].GetSource_ReleaseEntity();
++	internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt, Entity caughtEntity) => Main.player[whoCaughtIt].GetSource_CatchEntity(caughtEntity);
++	internal static IEntitySource GetSpawnSourceForNaturalSpawn() => GetSource_NaturalSpawn();
++	internal static IEntitySource GetSpawnSourceForTownSpawn() => GetSource_TownSpawn();
++
++	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
++	internal IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
++	internal IEntitySource GetSpawnSource_ForProjectile() => GetSource_FromAI();
++	internal IEntitySource GetSpawnSourceForProjectileNPC() => GetSource_FromAI();
++	internal IEntitySource GetSpawnSourceForNPCFromNPCAI() => GetSource_FromAI();
++	internal IEntitySource GetItemSource_Loot() => GetSource_Loot();
++
++	// Public API methods can be found in:
++	//   Entity.TML.Sources.cs;
++	//   NPC.TML.Sources.cs (if exists);
  
- 					if (buffType[i] == 324)
- 						onFrostBurn2 = true;
-+					BuffLoader.Update(buffType[i], this, ref i); // todo, move?
+ 	private void UpdateNPC_UpdateTrails()
+ 	{
+@@ -72862,10 +_,22 @@
+ 		}
+ 	}
+ 
++	/* Out parameter replaced with property
+ 	private void UpdateNPC_UpdateGravity(out float maxFallSpeed)
++	*/
++
++	/// <summary>
++	/// Updates <see cref="maxFallSpeed"/> and <see cref="gravity"/> in line with vanilla behavior and resets <see cref="GravityMultiplier"/>. Behavior can be modified with <see cref="GravityIgnoresType"/>, <see cref="GravityIgnoresSpace"/>, and <see cref="GravityIgnoresLiquid"/>.<br/>
++	/// Certain NPC type ids may also cap velocity, see <see cref="GravityIgnoresType"/>.
++	/// </summary>
++	private void UpdateNPC_UpdateGravity()
+ 	{
+ 		maxFallSpeed = 10f;
+ 		gravity = 0.3f;
++
++		if (GravityIgnoresType) //TML: #AccessibleNPCGravity
++			goto skipGravityTypeChecks;
++
+ 		if (type == 258) {
+ 			gravity = 0.1f;
+ 			if (velocity.Y > 3f)
+@@ -72896,7 +_,13 @@
+ 			gravity = 0f;
+ 		}
+ 
++		skipGravityTypeChecks:
++
++		if (GravityIgnoresSpace) //TML: #AccessibleNPCGravity
++			goto skipGravitySpaceEffect;
++
+ 		float num = (float)Main.maxTilesX / 4200f;
++
+ 		num *= num;
+ 		float num2 = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
+ 		if ((double)num2 < 0.25)
+@@ -72906,6 +_,12 @@
+ 			num2 = 1f;
+ 
+ 		gravity *= num2;
++
++		skipGravitySpaceEffect:
++
++		if (GravityIgnoresLiquid) //TML: #AccessibleNPCGravity
++			return;
++
+ 		if (wet) {
+ 			if (shimmerWet) {
+ 				gravity = 0.15f;
+@@ -73627,9 +_,12 @@
+ 				num = 5;
+ 		}
+ 
++		NPCLoader.UpdateLifeRegen(this, ref num);
++
+ 		if (lifeRegen <= -240 && num < 2)
+ 			num = 2;
+ 
++		// Extra patch context.
+ 		lifeRegenCount += lifeRegen;
+ 		while (lifeRegenCount >= 120) {
+ 			lifeRegenCount -= 120;
+@@ -73828,12 +_,16 @@
+ 			if (buffType[i] == 324)
+ 				onFrostBurn2 = true;
+ 
++			// Extra patch context.
+ 			if (buffType[i] == 353) {
+ 				if (buffImmune[353])
+ 					DelBuff(i);
+ 				else
+ 					shimmering = true;
+ 			}
++
++			//TODO: Move?
++			BuffLoader.Update(buffType[i], this, ref i);
+ 		}
+ 	}
+ 
+@@ -74084,6 +_,9 @@
+ 			if (acceptableNPCIDs[nPC.type] && nPC.active && !nPC.friendly && nPC.damage > 0) {
+ 				Rectangle npcRect = nPC.Hitbox;
+ 				GetMeleeCollisionData(hitbox, i, ref specialHitSetter, ref damageMultiplier, ref npcRect);
++				if (!NPCLoader.CanHitNPC(nPC, this))
++					continue;
++
+ 				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624) {
+ 					BeHurtByOtherNPC(i, nPC);
+ 					break;
+@@ -74098,15 +_,31 @@
+ 		if (type == 548)
+ 			num = 20;
+ 
++		/*
+ 		int num2 = Main.DamageVar(thatNPC.damage);
++		*/
+ 		int num3 = 6;
+ 		int num4 = ((!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1));
++
++		/*
+ 		double num5 = StrikeNPCNoInteraction(num2, num3, num4);
+ 		if (Main.netMode != 0)
+ 			NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
++		*/
++		var modifiers = GetIncomingStrikeModifiers(DamageClass.Default, num4);
++		NPCLoader.ModifyHitNPC(thatNPC, this, ref modifiers);
++		var strike = modifiers.ToHitInfo(thatNPC.damage, crit: false, num3, damageVariation: true);
++		double num5 = StrikeNPC(strike, noPlayerInteraction: true);
++		if (Main.netMode != 0) {
++			NetMessage.SendStrikeNPC(this, strike);
++		}
+ 
+ 		netUpdate = true;
+ 		immune[255] = num;
++
++		NPCLoader.OnHitNPC(thatNPC, this, strike);
++		int num2 = strike.SourceDamage; // slightly more 'technically correct' to use modifiers.GetVanillaDamage, but better practice is to use pre-randomization or even post-mitigation values for reflection.
++
+ 		if (dryadWard) {
+ 			num2 = (int)num5 / 3;
+ 			num3 = 6;
+@@ -74491,6 +_,9 @@
+ 
+ 	private bool Collision_DecideFallThroughPlatforms()
+ 	{
++		if (NPCLoader.CanFallThroughPlatforms(this) is bool modResult)
++			return modResult;
++
+ 		bool result = false;
+ 		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
+ 			result = true;
+@@ -74862,6 +_,9 @@
+ 		if (IsABestiaryIconDummy)
+ 			newColor = Color.White;
+ 
++		if (NPCLoader.GetAlpha(this, newColor) is Color modColor)
++			return modColor;
++
+ 		float num = (float)(255 - alpha) / 255f;
+ 		int num2 = (int)((float)(int)newColor.R * num);
+ 		int num3 = (int)((float)(int)newColor.G * num);
+@@ -75525,7 +_,10 @@
+ 						break;
  				}
  			}
- 		}
-@@ -70211,7 +_,12 @@
- 				if (acceptableNPCIDs[nPC.type] && nPC.active && !nPC.friendly && nPC.damage > 0) {
- 					Rectangle npcRect = nPC.Hitbox;
- 					GetMeleeCollisionData(hitbox, i, ref specialHitSetter, ref damageMultiplier, ref npcRect);
-+					bool? modCanHit = NPCLoader.CanHitNPC(Main.npc[i], this);
-+					if (modCanHit.HasValue && !modCanHit.Value)
-+						continue;
-+
-+					// TODO: NPCLoader.CanHitNPC should return a plain bool. The only use of "override true" below is to force the skeleton merchant to be hit by skeletons
--					if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624)
-+					if (hitbox.Intersects(npcRect) && ((modCanHit == true) || type != 453 || !NPCID.Sets.Skeletons[nPC.type])&& nPC.type != 624)
- 						BeHurtByOtherNPC(i, nPC);
- 				}
- 			}
-@@ -70223,14 +_,17 @@
- 				num = 20;
- 
- 			int num2 = Main.DamageVar(thatNPC.damage);
--			int num3 = 6;
-+			float num3 = 6;
- 			int num4 = (!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1);
--			double num5 = StrikeNPCNoInteraction(num2, num3, num4);
-+			bool crit = false;
-+			NPCLoader.ModifyHitNPC(thatNPC, this, ref num2, ref num3, ref crit);
-+			double num5 = StrikeNPCNoInteraction(num2, num3, num4, crit, false, false);
- 			if (Main.netMode != 0)
- 				NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
- 
- 			netUpdate = true;
- 			immune[255] = num;
-+			NPCLoader.OnHitNPC(thatNPC, this, (int)num5, num3, crit);
- 			if (dryadWard) {
- 				num2 = (int)num5 / 3;
- 				num3 = 6;
-@@ -70586,6 +_,10 @@
++			/*
+ 			else if (Main.player[Main.myPlayer].statLifeMax < 300 || Main.player[Main.myPlayer].statDefense < 10) {
++			*/
++			else if (Main.player[Main.myPlayer].ConsumedLifeCrystals < 10 || Main.player[Main.myPlayer].statDefense < 10) {
+ 				switch (Main.rand.Next(4)) {
+ 					case 0:
+ 						result = Lang.dialog(85);
+@@ -76406,6 +_,7 @@
+ 			result = ((!HasSpecialEventText("Slime", out specialEventText)) ? Lang.SlimeChat(this) : specialEventText);
  		}
  
- 		private bool Collision_DecideFallThroughPlatforms() {
-+			bool? modResult = NPCLoader.CanFallThroughPlatforms(this);
-+			if (modResult.HasValue)
-+				return modResult.Value;
++		NPCLoader.GetChat(this, ref result);
+ 		return result;
+ 	}
+ 
+@@ -76514,6 +_,11 @@
+ 	public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect)
+ 	{
+ 		NPC nPC = Main.npc[enemyIndex];
 +
- 			bool result = false;
- 			if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
- 				result = true;
-@@ -70871,6 +_,10 @@
- 			if (IsABestiaryIconDummy)
- 				newColor = Color.White;
- 
-+			Color? modColor = NPCLoader.GetAlpha(this, newColor);
-+			if (modColor.HasValue)
-+				return modColor.Value;
++		if (!NPCLoader.ModifyCollisionData(nPC, victimHitbox, ref specialHitSetter, ref damageMultiplier, ref npcRect)) {
++			return;
++		}
 +
- 			float num = (float)(255 - alpha) / 255f;
- 			int num2 = (int)((float)(int)newColor.R * num);
- 			int num3 = (int)((float)(int)newColor.G * num);
-@@ -71473,7 +_,7 @@
- 							break;
- 					}
- 				}
--				else if (Main.player[Main.myPlayer].statLifeMax < 300 || Main.player[Main.myPlayer].statDefense < 10) {
-+				else if (Main.player[Main.myPlayer].ConsumedLifeCrystals < 10 || Main.player[Main.myPlayer].statDefense < 10) {
- 					switch (Main.rand.Next(4)) {
- 						case 0:
- 							result = Lang.dialog(85);
-@@ -72350,6 +_,7 @@
- 				result = ((!HasSpecialEventText("Bunny", out specialEventText)) ? Lang.BunnyChat(this) : specialEventText);
- 			}
- 
-+			NPCLoader.GetChat(this, ref result);
- 			return result;
- 		}
- 
-@@ -72452,6 +_,9 @@
- 
- 		public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect) {
- 			NPC nPC = Main.npc[enemyIndex];
-+			if (!NPCLoader.ModifyCollisionData(nPC, victimHitbox, ref specialHitSetter, ref damageMultiplier, ref npcRect)) {
-+				return;
-+			}
- 			if (((nPC.type >= 430 && nPC.type <= 436) || nPC.type == 591) && nPC.ai[2] > 5f) {
- 				int num = 34;
- 				if (nPC.spriteDirection < 0) {
+ 		if (((nPC.type >= 430 && nPC.type <= 436) || nPC.type == 591) && nPC.ai[2] > 5f) {
+ 			int num = 34;
+ 			if (nPC.spriteDirection < 0) {

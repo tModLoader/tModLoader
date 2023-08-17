@@ -510,12 +510,12 @@ namespace ExampleMod.NPCs
 		   
 			// Some netupdate stuff (multiplayer compatibility).
 			if (collision) {
-				if(NPC.localAI[0] != 1)
+				if (NPC.localAI[0] != 1)
 					NPC.netUpdate = true;
 
 				NPC.localAI[0] = 1f;
 			} else {
-				if(NPC.localAI[0] != 0)
+				if (NPC.localAI[0] != 0)
 					NPC.netUpdate = true;
 
 				NPC.localAI[0] = 0f;

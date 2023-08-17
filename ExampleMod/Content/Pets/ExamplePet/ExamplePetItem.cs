@@ -2,18 +2,13 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Pets.ExamplePet
 {
 	public class ExamplePetItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
+		// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish Item.
 

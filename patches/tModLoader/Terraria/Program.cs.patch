@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -4,6 +_,7 @@
+@@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
@@ -9,7 +9,7 @@
  using System.Runtime.CompilerServices;
  using System.Text;
 @@ -11,12 +_,16 @@
- using System.Windows.Forms;
+ using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -19,202 +19,181 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
- namespace Terraria
+ namespace Terraria;
+ 
+-public static class Program
++public static partial class Program
  {
--	public static class Program
-+	public static partial class Program
+ #if XNA
+ 	public static bool IsXna = true;
+@@ -35,6 +_,10 @@
+ 	public static bool LoadedEverything;
+ 	public static IntPtr JitForcedMethodCache;
+ 
++	// Added by TML.
++	public static Thread MainThread { get; private set; }
++	public static bool IsMainThread => Thread.CurrentThread == MainThread;
++
+ 	public static float LoadedPercentage {
+ 		get {
+ 			if (ThingsToLoad == 0)
+@@ -62,6 +_,7 @@
+ 		LoadedEverything = true;
+ 	}
+ 
++	/*
+ 	private static void ForceJITOnAssembly(Assembly assembly)
  	{
- 		/* hide unused consts
- 		public const bool IsServer = false;
-@@ -30,6 +_,10 @@
- 		public static bool LoadedEverything;
- 		public static IntPtr JitForcedMethodCache;
- 
-+		public static Thread MainThread { get; private set; }
-+
-+		public static bool IsMainThread => Thread.CurrentThread == MainThread;
-+
- 		public static float LoadedPercentage {
- 			get {
- 				if (ThingsToLoad == 0)
-@@ -55,21 +_,15 @@
- 			LoadedEverything = true;
+ 		Type[] types = assembly.GetTypes();
+@@ -79,6 +_,20 @@
+ 			ThingsLoaded++;
  		}
- 
--		private static void ForceJITOnAssembly(Assembly assembly) {
--			Type[] types = assembly.GetTypes();
--			for (int i = 0; i < types.Length; i++) {
--#if WINDOWS || NETCORE
--				MethodInfo[] methods = types[i].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
--#else
--				MethodInfo[] methods = types[i].GetMethods();
--#endif
--				foreach (MethodInfo methodInfo in methods) {
--					if (!methodInfo.IsAbstract && !methodInfo.ContainsGenericParameters && methodInfo.GetMethodBody() != null)
--#if WINDOWS || NETCORE
--						RuntimeHelpers.PrepareMethod(methodInfo.MethodHandle);
--#else
--						JitForcedMethodCache = methodInfo.MethodHandle.GetFunctionPointer();
--#endif
-+		private static void ForceJITOnAssembly(IEnumerable<Type> types) {
-+			var methodsToJIT = CollectMethodsToJIT(types);
+ 	}
++	*/
++	private static void ForceJITOnAssembly(IEnumerable<Type> types)
++	{
++		var methodsToJIT = CollectMethodsToJIT(types);
 +
-+			if (Environment.ProcessorCount > 1) {
-+				methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
-+			}
-+			else {
-+				foreach (var method in methodsToJIT) {
-+					ForceJITOnMethod(method);
- 				}
- 
- 				ThingsLoaded++;
-@@ -85,10 +_,13 @@
- 		}
- 
- 		private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers) {
--			ThingsToLoad = assembly.GetTypes().Length;
--			ForceJITOnAssembly(assembly);
--			if (initializeStaticMembers)
--				ForceStaticInitializers(assembly);
-+			var types = assembly.GetTypes();
-+			ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
-+
-+			ForceJITOnAssembly(types);
-+			if (initializeStaticMembers) {
-+				ForceStaticInitializers(types);
-+			}
- 		}
- 
- 		private static void ForceLoadAssembly(string name, bool initializeStaticMembers) {
-@@ -124,9 +_,12 @@
- 		}
- 
- 		private static void InitializeConsoleOutput() {
--			if (!Main.dedServ && Debugger.IsAttached)
-+			if (!Main.dedServ && (Debugger.IsAttached || LaunchParameters.ContainsKey("-console")))
- 				return;
- 
-+			if (!Main.dedServ)
-+				Platform.Get<IWindowService>().HideConsole();
-+
- 			try {
- 				Console.OutputEncoding = Encoding.UTF8;
- 				if (Platform.IsWindows)
-@@ -138,24 +_,68 @@
- 			}
- 		}
- 
-+		public const string PreviewFolder = "tModLoader-preview";
-+		public const string ReleaseFolder = "tModLoader";
-+		public const string DevFolder = "tModLoader-dev";
-+
-+		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
-+		// Moving all calls to Main to LaunchGame_() mitigates this risk
- 		public static void LaunchGame(string[] args, bool monoArgs = false) {
-+			// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
-+			MainThread = Thread.CurrentThread;
--			Thread.CurrentThread.Name = "Main Thread";
-+			MainThread.Name = "Main Thread";
-+
- 			if (monoArgs)
- 				args = Utils.ConvertMonoArgsToDotNet(args);
- 
-+			LaunchParameters = Utils.ParseArguements(args);
-+
-+			if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
-+				TerrariaSteamClient.Run();
-+				Environment.Exit(1);
-+			}
-+			
-+			bool isServer = LaunchParameters.ContainsKey("-server");
-+
-+			try {
-+				ControlledFolderAccessSupport.CheckFileSystemAccess();
-+				Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
-+				if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
-+					throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
-+			}
-+			catch (Exception e) {
-+				ErrorReporting.FatalExit("Failed to init logging", e);
-+			}
-+
-+			try {
-+				SetSavePath(); // Needs to run before Logging.LogStartup due to DeveloperMode check in ModCompile
-+				Logging.LogStartup(isServer);
-+			}
-+			catch (Exception e) {
-+				ErrorReporting.FatalExit("Failed to handle save data", e);
-+			}
-+
-+			AttemptSupportHighDPI(isServer);
-+			LaunchGame_(isServer);
++		if (Environment.ProcessorCount > 1) {
++			methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
 +		}
-+
-+		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
-+		// Moving all calls to Main to LaunchGame_() mitigates this risk
-+		public static void LaunchGame_(bool isServer) {
-+			Main.dedServ = isServer;
-+
-+			//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?
-+			if (LaunchInitializer.TryParameter("-build") is string build)
-+				// Inside the build from command line, the application exits
-+				// Anything beyond this point will not be executed
-+				ModCompile.BuildModCommandLine(build);
-+
- 			if (Platform.IsOSX) {
- 				Main.OnEngineLoad += delegate {
- 					Main.instance.IsMouseVisible = false;
- 				};
- 			}
- 
--			LaunchParameters = Utils.ParseArguements(args);
--#if SERVER
--			Main.dedServ = true;
--#else
--			Main.dedServ = LaunchParameters.ContainsKey("-server");
--#endif
--
- 			if (Main.dedServ) {
- 				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
- 			}
-@@ -163,10 +_,13 @@
- 			ThreadPool.SetMinThreads(8, 8);
- 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
- 			InitializeConsoleOutput();
--			SetupLogging();
-+			//Program.SetupLogging();
- 			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
--			using (Main main = new Main()) {
--				try {
-+
-+			InstallVerifier.Startup();
-+			try {
-+				ModLoader.ModLoader.EngineInit();
-+				using (Main main = new Main()) {
- 					Lang.InitializeLegacyLocalization();
- 					SocialAPI.Initialize();
- 					LaunchInitializer.LoadParameters(main);
-@@ -176,12 +_,13 @@
- 					else
- 						main.DedServ();
- 				}
--				catch (Exception e) {
--					DisplayException(e);
--				}
++		else {
++			foreach (var method in methodsToJIT) {
++				ForceJITOnMethod(method);
 +			}
-+			catch (Exception e) {
-+				ErrorReporting.FatalExit("Main engine crash", e);
- 			}
++		}
++	}
+ 
+ 	private static void ForceStaticInitializers(Assembly assembly)
+ 	{
+@@ -91,8 +_,14 @@
+ 
+ 	private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
+ 	{
++ 		/*
+ 		ThingsToLoad = assembly.GetTypes().Length;
+ 		ForceJITOnAssembly(assembly);
++ 		*/
++		var types = assembly.GetTypes();
++		ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
++		ForceJITOnAssembly(types);
++
+ 		if (initializeStaticMembers)
+ 			ForceStaticInitializers(assembly);
+ 	}
+@@ -136,6 +_,10 @@
+ 		if (Debugger.IsAttached)
+ 			return;
+ 
++		// Hide the console on clients unless a special parameter was passed down.
++		if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
++			Platform.Get<IWindowService>().HideConsole();
++
+ 		try {
+ 			Console.OutputEncoding = Encoding.UTF8;
+ 			if (Platform.IsWindows)
+@@ -147,23 +_,51 @@
  		}
+ 	}
+ 
++	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++	// Moving all calls to Main to LaunchGame_() mitigates this risk
+ 	public static void LaunchGame(string[] args, bool monoArgs = false)
+ 	{
++		// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
++		MainThread = Thread.CurrentThread;
+-		Thread.CurrentThread.Name = "Main Thread";
++		MainThread.Name = "Main Thread";
++
+ 		if (monoArgs)
+ 			args = Utils.ConvertMonoArgsToDotNet(args);
  
 +		/*
- 		private static void TrySettingFNAToOpenGL(string[] args) {
- 			bool flag = false;
- 			for (int i = 0; i < args.Length; i++) {
-@@ -220,5 +_,6 @@
- 			catch {
- 			}
- 		}
+ 		if (IsFna)
+ 			TrySettingFNAToOpenGL(args);
 +		*/
+ 
+ 		LaunchParameters = Utils.ParseArguements(args);
++
++		if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
++			// Launch the Terraria playtime tracker and quit.
++			TerrariaSteamClient.Run();
++			Environment.Exit(1);
++		}
++
+ 		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+-#if SERVER
+-		Main.dedServ = true;
+-#else
++
+ 		// Unify server and client dll via launch param
+-		Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
++		bool isServer = LaunchParameters.ContainsKey("-server");
++
++		StartupSequenceTml(isServer);
++		
++		LaunchGame_(isServer);
++	}
++
++	// IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++	// Moving all calls to Main to LaunchGame_() mitigates this risk
++	public static void LaunchGame_(bool isServer)
++	{
++		Main.dedServ = isServer;
++
++		//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?
++		if (LaunchInitializer.TryParameter("-build") is string build)
++			// Inside the build from command line, the application exits
++			// Anything beyond this point will not be executed
++			ModCompile.BuildModCommandLine(build);
+ 
+ 		if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
+ 			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
+@@ -171,7 +_,9 @@
+ 
+ 		ThreadPool.SetMinThreads(8, 8);
+ 		InitializeConsoleOutput();
++		/*
+ 		SetupLogging();
++		*/
+ 		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
+ 		RunGame();
  	}
+@@ -184,9 +_,14 @@
+ 				Main.instance.IsMouseVisible = false;
+ 			};
+ 		}
++		
++		InstallVerifier.Startup();
+ 
+-		using Main main = new Main();
+ 		try {
++			ModLoader.ModLoader.EngineInit();
++
++			using Main main = new Main();
++
+ 			Lang.InitializeLegacyLocalization();
+ 			SocialAPI.Initialize();
+ 			LaunchInitializer.LoadParameters(main);
+@@ -197,10 +_,14 @@
+ 				main.Run();
+ 		}
+ 		catch (Exception e) {
++			ErrorReporting.FatalExit("Main engine crash", e);
++			/*
+ 			DisplayException(e);
++			*/
+ 		}
+ 	}
+ 
++	/*
+ 	private static void TrySettingFNAToOpenGL(string[] args)
+ 	{
+ 		bool flag = false;
+@@ -241,4 +_,5 @@
+ 		catch {
+ 		}
+ 	}
++	*/
  }

@@ -1,65 +1,172 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -12,14 +_,15 @@
- using System.Threading;
+@@ -11,15 +_,15 @@
+ using ReLogic.Content.Sources;
+ using ReLogic.Graphics;
  using Terraria.GameContent;
- using Terraria.Initializers;
+-using Terraria.Initializers;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
- namespace Terraria.Localization
+ namespace Terraria.Localization;
+ 
+-public class LanguageManager
++public partial class LanguageManager
  {
--	public class LanguageManager
-+	public partial class LanguageManager
+ 	public static LanguageManager Instance = new LanguageManager();
+-	private readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
++	internal readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
+ 	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
+ 	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
+ 
+@@ -95,13 +_,17 @@
+ 	public void SetLanguage(GameCulture culture)
  	{
- 		public static LanguageManager Instance = new LanguageManager();
--		private readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
-+		internal readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
- 		private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
- 		private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
+ 		if (ActiveCulture != culture) {
++			/*
+ 			if (culture != _fallbackCulture && ActiveCulture != _fallbackCulture) {
+ 				SetAllTextValuesToKeys();
+ 				LoadLanguage(_fallbackCulture);
+ 			}
  
-@@ -96,6 +_,10 @@
- 				}
+ 			LoadLanguage(culture);
++			*/
++
+ 			ActiveCulture = culture;
++			ReloadLanguage();
+ 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+ 			if (this.OnLanguageChanged != null)
+@@ -111,6 +_,7 @@
+ 		}
+ 	}
  
- 				LoadLanguage(culture);
++	/*
+ 	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
+ 	{
+ 		LoadFilesForCulture(culture);
+@@ -122,6 +_,25 @@
+ 
+ 		ChatInitializer.PrepareAliases();
+ 	}
++	*/
 +
-+				if (ActiveCulture != null)
-+					LocalizationLoader.RefreshModLanguage(culture);
++	// Added by tML, replacement for commented code above
++	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
++	{
++		if (resetValuesToKeysFirst)
++			SetAllTextValuesToKeys();
 +
- 				ActiveCulture = culture;
- 				Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
- 				Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -137,10 +_,13 @@
++		LoadFilesForCulture(_fallbackCulture);
++		if (ActiveCulture != _fallbackCulture)
++			LoadFilesForCulture(ActiveCulture);
++
++		LoadActiveCultureTranslationsFromSources();
++
++		ProcessCopyCommandsInTexts();
++		RecalculateBoundTextValues();
++
++		SystemLoader.OnLocalizationsLoaded();
++	}
+ 
+ 	private void LoadFilesForCulture(GameCulture culture)
+ 	{
+@@ -142,8 +_,12 @@
+ 				break;
+ 			}
+ 		}
++
++		LocalizationLoader.LoadModTranslations(culture);
+ 	}
+ 
++	// Replaced by ProcessCopyCommandsInTexts implementation in LanguageManager.tML.cs
++	/*
+ 	private void ProcessCopyCommandsInTexts()
+ 	{
+ 		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
+@@ -155,15 +_,30 @@
+ 					break;
+ 
+ 				value.SetValue(text);
++				// patch context
+ 			}
+ 		}
+ 	}
++	*/
+ 
+ 	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
+ 	{
++		if (Enumerable.SequenceEqual(_contentSources, sourcesFromLowestToHighest))
++			return;
++
++		_contentSources = sourcesFromLowestToHighest.ToArray();
++		ReloadLanguage();
++	}
++
++	// Method split from UseSources above
++	private void LoadActiveCultureTranslationsFromSources() {
++		var sourcesFromLowestToHighest = _contentSources;
++
+ 		string name = ActiveCulture.Name;
+ 		string assetNameStart = ("Localization" + Path.DirectorySeparatorChar + name).ToLower();
++		/*
+ 		LoadLanguage(ActiveCulture, processCopyCommands: false);
++		*/
+ 		foreach (IContentSource item in sourcesFromLowestToHighest) {
+ 			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
+ 				string extension = item.GetExtension(item2);
+@@ -181,8 +_,10 @@
  			}
  		}
  
--		private void ProcessCopyCommandsInTexts() {
-+		internal void ProcessCopyCommandsInTexts() {
--			Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-+			Regex regex = new Regex(@"{\$([\w\.]+)}", RegexOptions.Compiled);
- 			foreach (KeyValuePair<string, LocalizedText> localizedText in _localizedTexts) {
- 				LocalizedText value = localizedText.Value;
-+				if (value.Value == null)
-+					continue;
++		/*
+ 		ProcessCopyCommandsInTexts();
+ 		ChatInitializer.PrepareAliases();
++		*/
+ 	}
+ 
+ 	public void LoadLanguageFromFileTextCsv(string fileText)
+@@ -310,7 +_,9 @@
+ 		if (!_categoryGroupedKeys.ContainsKey(categoryName))
+ 			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
+ 
+-		List<string> list = _categoryGroupedKeys[categoryName];
++		//TML: Changed to a GetKeysInCategory call instead of direct dictionary access.
++		var list = GetKeysInCategory(categoryName);
 +
- 				for (int i = 0; i < 100; i++) {
- 					string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
- 					if (text == value.Value)
-@@ -312,7 +_,7 @@
- 			if (!_categoryGroupedKeys.ContainsKey(categoryName))
- 				return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
+ 		return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
+ 	}
  
--			List<string> list = _categoryGroupedKeys[categoryName];
-+			List<string> list = GetKeysInCategory(categoryName);
- 			return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
- 		}
+@@ -319,7 +_,9 @@
+ 		if (!_categoryGroupedKeys.ContainsKey(categoryName))
+ 			return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
  
-@@ -320,7 +_,7 @@
- 			if (!_categoryGroupedKeys.ContainsKey(categoryName))
- 				return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
+-		List<string> list = _categoryGroupedKeys[categoryName];
++		//TML: Changed to a GetKeysInCategory call instead of direct dictionary access.
++		var list = GetKeysInCategory(categoryName);
++
+ 		int index2 = index % list.Count;
+ 		return GetText(categoryName + "." + list[index2]);
+ 	}
+@@ -328,10 +_,17 @@
  
--			List<string> list = _categoryGroupedKeys[categoryName];
-+			List<string> list = GetKeysInCategory(categoryName);
- 			int index2 = index % list.Count;
- 			return GetText(categoryName + "." + list[index2]);
- 		}
+ 	public LocalizedText GetText(string key)
+ 	{
+-		if (!_localizedTexts.ContainsKey(key))
+-			return new LocalizedText(key, key);
+-
+-		return _localizedTexts[key];
++		return _localizedTexts.TryGetValue(key, out var text) ? text : new LocalizedText(key, key);
++	}
++
++	public LocalizedText GetOrRegister(string key, Func<string> makeDefaultValue = null)
++	{
++		if (!_localizedTexts.TryGetValue(key, out var text)) {
++			_moddedKeys.Add(key);
++			_localizedTexts[key] = text = new LocalizedText(key, makeDefaultValue?.Invoke() ?? key);
++		}
++
++		return text;
+ 	}
+ 
+ 	public string GetTextValue(string key)

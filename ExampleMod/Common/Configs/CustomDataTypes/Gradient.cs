@@ -7,10 +7,8 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 {
 	public class Gradient
 	{
-		[Tooltip("The color the gradient starts at")]
 		[DefaultValue(typeof(Color), "0, 0, 255, 255")]
 		public Color start = Color.Blue; // For sub-objects, you'll want to make sure to set defaults in constructor or field initializer.
-		[Tooltip("The color the gradient ends at")]
 		[DefaultValue(typeof(Color), "255, 0, 0, 255")]
 		public Color end = Color.Red;
 

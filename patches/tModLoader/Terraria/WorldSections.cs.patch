@@ -1,51 +1,11 @@
 --- src/TerrariaNetCore/Terraria/WorldSections.cs
 +++ src/tModLoader/Terraria/WorldSections.cs
-@@ -126,7 +_,7 @@
- 		}
+@@ -4,7 +_,7 @@
  
- 		public void SetSectionFramed(int x, int y) {
--			if (x >= 0 && x < width && y >= 0 && y < height && !data[y * width + x][1]) {
-+			if (x >= 0 && x < width && y >= 0 && y < height && data[y * width + x][0] && !data[y * width + x][1]) {
- 				data[y * width + x][1] = true;
- 				frameSectionsLeft--;
- 			}
-@@ -139,6 +_,39 @@
- 					frameSectionsLeft++;
- 				}
- 			}
-+		}
-+
-+		public bool TileLoaded(int tileX, int tileY) {
-+			return SectionLoaded(Netplay.GetSectionX(tileX), Netplay.GetSectionY(tileY));
-+		}
-+
-+		public bool TilesLoaded(int startX, int startY, int endXInclusive, int endYInclusive) {
-+			int sX, sY, eX, eY;
-+
-+			sX = Netplay.GetSectionX(startX);
-+			sY = Netplay.GetSectionY(startY);
-+			eX = Netplay.GetSectionX(endXInclusive);
-+			eY = Netplay.GetSectionY(endYInclusive);
-+
-+			for (int x = sX; x <= eX; x++)
-+				for (int y = sY; y <= eY; y++)
-+					if (!SectionLoaded(x, y))
-+						return false;
-+
-+			return true;
-+		}
-+
-+		public void SetTilesLoaded(int startX, int startY, int endXInclusive, int endYInclusive) {
-+			int sX, sY, eX, eY;
-+
-+			sX = Netplay.GetSectionX(startX);
-+			sY = Netplay.GetSectionY(startY);
-+			eX = Netplay.GetSectionX(endXInclusive);
-+			eY = Netplay.GetSectionY(endYInclusive);
-+
-+			for (int x = sX; x <= eX; x++)
-+				for (int y = sY; y <= eY; y++)
-+					SetSectionLoaded(x, y);
- 		}
+ namespace Terraria;
  
- 		public bool GetNextMapDraw(Vector2 playerPos, out int x, out int y) {
+-public class WorldSections
++public partial class WorldSections
+ {
+ 	private struct IterationState
+ 	{
