@@ -5072,7 +5072,7 @@
  		int num = 0;
  		Player player = Main.player[myPlayer];
  		int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
-@@ -38700,6 +_,85 @@
+@@ -38700,6 +_,87 @@
  		}
  
  		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
@@ -5128,8 +5128,10 @@
 +				player.mouseInterface = true;
 +				mouseText = true;
 +
-+				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type)
-+					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, position, null, OurFavoriteColor, 0f, TextureAssets.InfoIcon[13].Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
++				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
++					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
++					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
++				}
 +				else if (toggleType == BuilderToggle.BlockSwap.Type)
 +					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
 +				else if (toggleType == BuilderToggle.TorchBiome.Type)

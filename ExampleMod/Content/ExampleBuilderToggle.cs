@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content
@@ -29,12 +30,20 @@ namespace ExampleMod.Content
 
 	public class ExampleBuilderToggleDimmedLight : BuilderToggle
 	{
+		public static LocalizedText OnText { get; private set; }
+		public static LocalizedText OffText { get; private set; }
+
 		public override string Texture => "ExampleMod/Content/ExampleBuilderToggle";
 		public override bool Active() => true;
-
 		public override int NumberOfStates => 2;
+
+		public override void SetStaticDefaults() {
+			OnText = this.GetLocalization(nameof(OnText));
+			OffText = this.GetLocalization(nameof(OffText));
+		}
+
 		public override string DisplayValue() {
-			return CurrentState == 0 ? "Example On" : "Example Off";
+			return CurrentState == 0 ? OnText.Value : OffText.Value;
 		}
 
 		public override Color DisplayColorTexture() {
