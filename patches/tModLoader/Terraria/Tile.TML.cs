@@ -61,6 +61,8 @@ public readonly partial struct Tile
 	public bool SkipLiquid { get => Get<LiquidData>().SkipLiquid; set => Get<LiquidData>().SkipLiquid = value; }
 	public bool CheckingLiquid { get => Get<LiquidData>().CheckingLiquid; set => Get<LiquidData>().CheckingLiquid = value; }
 
+	internal void SetLiquid(int liquidId, bool value) => SetIsLiquidType(liquidId, value);
+
 	// Wires
 
 	public bool RedWire { get => Get<TileWallWireStateData>().RedWire; set => Get<TileWallWireStateData>().RedWire = value; }

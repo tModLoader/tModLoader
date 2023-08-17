@@ -39,6 +39,11 @@ public abstract class ModLiquid : ModBlockType
 		set => LiquidRenderer.VISCOSITY_MASK[Type + 1] = value;
 	}
 
+	public int Delay {
+		get => LiquidLoader.liquidProperties[Type].FallDelay;
+		set => LiquidLoader.liquidProperties[Type].FallDelay = value;
+	}
+
 	public override string LocalizationCategory => "Liquids";
 
 	protected sealed override void Register()
