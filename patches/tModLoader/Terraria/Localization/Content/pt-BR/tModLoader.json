@@ -59,12 +59,13 @@
 		"ModOldWarning": "Mod antigo, ative-o por sua conta e risco",
 		"ModStableOnPreviewWarning": "Sem build para a versão Preview. Ative por sua conta e risco",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Este mod depende de: {0}\n (clique para ativar)",
 		"ModDependencyModsNotFound": "Os mods a seguir não foram encontrados: {0}",
 		"ModDidNotFullyUnloadWarning": "Este mod não descarregou corretamente durante o último descarregamento.\n(Esta é uma mensagem para o criador do mod)",
-		"BetaModCantPublish": "Este mod foi construído na versão beta e não pode ser publicado",
 		"BetaModCantPublishError": "Você não pode publicar um Mod construído em uma versão Beta do tModLoader",
 		"OutdatedModCantPublishError": "Você não pode publicar um Mod construído em uma versão antiga do tModLoader",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Recarregamento Necessário",
 		"ModReloadForced": "Recarregamento Forçado",
 		"ModIsServerSide": "Este é um mod do lado do servidor",
@@ -246,6 +247,12 @@
 		"MPErrorModDownloadError": "Ocorreu um erro ao baixar {0}",
 		"MPPacketTooLarge": "Pacote muito grande {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Baixar",
 		"MBDownloadAll": "Baixar Todos",
@@ -265,6 +272,7 @@
 		"MBUpdateAll": "Atualizar Todos",
 		"MBReloadBrowser": "Recarregar navegador",
 		"MBGettingData": "Obtendo dados...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Preenchendo o navegador...",
 		"MBSortByRecentlyUpdated": "Ordenar por recentemente atualizados",
 		"MBSortByPopularity": "Ordenar por popularidade",
@@ -343,8 +351,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Ativar e recarregar mods automaticamente ao sair do Navegador de Mods: Desligado",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automaticamente Recarregar Mods Necessários ao Sair da Tela de Mods: Ligado",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automaticamente Recarregar Mods Necessários ao Sair da Tela de Mods: Desligado",
-		"ReloadModsReminder": "Você atualizou um mod desativado. Lembre-se de ativá-lo e recarregar os mods para que tenha efeito.",
-		"EnableModsReminder": "Seus mods baixados recentemente estão desabilitados. Lembre-se de ativá-los e recarregar se você pretende usá-los.",
 		"DontShowAgain": "Não mostrar novamente",
 		"ModControls": "Controles de Mod",
 

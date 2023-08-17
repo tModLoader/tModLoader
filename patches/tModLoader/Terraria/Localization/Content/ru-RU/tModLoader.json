@@ -59,12 +59,13 @@
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии.\nВключайте на свой страх и риск",
 		"ModDependencyTooltip": "Этот мод требует установки: {0}\n (Они будут автоматически включены)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
 		"ModDidNotFullyUnloadWarning": "Мод не смог полностью выгрузиться\nво время последней выгрузки.\n(Это сообщение для разработчика мода)",
-		"BetaModCantPublish": "Этот мод собран на бета-версии и его публикация невозможна",
 		"BetaModCantPublishError": "Вы не можете опубликовать мод, собранный на бета-версии tModLoader",
 		"OutdatedModCantPublishError": "Вы не можете опубликовать мод, собранный на устаревшей версии tModLoader",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Требуется перезагрузка",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
@@ -246,6 +247,12 @@
 		"MPErrorModDownloadError": "Произошла ошибка во время скачивания {0}",
 		"MPPacketTooLarge": "Сетевой пакет слишком большой - {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Скачать",
 		"MBDownloadAll": "Скачать всё",
@@ -265,6 +272,7 @@
 		"MBUpdateAll": "Обновить все моды",
 		"MBReloadBrowser": "Перезагрузить Браузер",
 		"MBGettingData": "Получение данных...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Наполнение Браузера...",
 		"MBSortByRecentlyUpdated": "Сортировка: Последние обновлённые моды",
 		"MBSortByPopularity": "Сортировка: Моды по популярности",
@@ -343,8 +351,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Автоматически включать и перезагружать моды при выходе из «Браузера модов»: Нет",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Автоматически перезагружать моды при выходе из списка модов: Да",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Автоматически перезагружать моды при выходе из списка модов: Нет",
-		"ReloadModsReminder": "Вы обновили выключенный мод. Не забудьте его включить и перезагрузить моды, чтобы изменения вступили в силу.",
-		"EnableModsReminder": "Последние загружённые вами моды в данный момент выключены. Если вы собираетесь их использовать, то следует включить их и перезагрузить.",
 		"DontShowAgain": "Не показывать снова",
 		"ModControls": "Управление модов",
 

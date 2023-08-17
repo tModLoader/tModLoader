@@ -25,7 +25,8 @@ public class DamageClassPlayerFields : ModPlayer {
 		Player.GetDamage(DamageClass.Summon) *= 0.08f;
 		Player.GetDamage(DamageClass.Throwing) *= 0.08f;
 
-		Player.GetCritChance(DamageClass.Generic) *= 5;
+		Player.GetCritChance(DamageClass.Generic) += 1;
+		Player.GetCritChance(DamageClass.Melee) *= 5;
 		Player.GetCritChance(DamageClass.Ranged) *= 5;
 		Player.GetCritChance(DamageClass.Magic) *= 5;
 		Player.GetCritChance(DamageClass.Throwing) *= 5;

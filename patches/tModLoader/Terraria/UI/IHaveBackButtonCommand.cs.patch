@@ -1,26 +1,30 @@
 --- src/TerrariaNetCore/Terraria/UI/IHaveBackButtonCommand.cs
 +++ src/tModLoader/Terraria/UI/IHaveBackButtonCommand.cs
-@@ -1,6 +_,22 @@
+@@ -1,6 +_,26 @@
 +using Terraria.Audio;
++using Terraria.ID;
 +
  namespace Terraria.UI;
  
  public interface IHaveBackButtonCommand
  {
+-	void HandleBackButtonUsage();
 +	// Added by TML.
 +	UIState PreviousUIState { get; set; }
 +
 +	//TML: Added default implementation.
--	void HandleBackButtonUsage();
-+	void HandleBackButtonUsage()
++	void HandleBackButtonUsage() => GoBackTo(PreviousUIState);
++
++	public static void GoBackTo(UIState state)
 +	{
-+		if (PreviousUIState == null) {
++		if (state == null) {
 +			Main.menuMode = 0;
-+			return;
++		}
++		else {
++			Main.menuMode = MenuID.FancyUI;
++			Main.MenuUI.SetState(state);
 +		}
 +
-+		Main.menuMode = 888;
-+		Main.MenuUI.SetState(PreviousUIState);
-+		SoundEngine.PlaySound(11);
++		SoundEngine.PlaySound(SoundID.MenuClose);
 +	}
  }

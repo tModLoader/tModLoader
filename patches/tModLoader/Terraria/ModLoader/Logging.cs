@@ -53,6 +53,7 @@ public static partial class Logging
 		// This is the first file we attempt to use.
 		Utils.TryCreatingDirectory(LogDir);
 		try {
+			InitLogPaths(logFile);
 			ConfigureAppenders(logFile);
 		}
 		catch (Exception e) {
@@ -116,7 +117,7 @@ public static partial class Logging
 
 		var fileAppender = new FileAppender {
 			Name = "FileAppender",
-			File = LogPath = Path.Combine(LogDir, GetNewLogFile(logFile.ToString().ToLowerInvariant())),
+			File = LogPath,
 			AppendToFile = false,
 			Encoding = encoding,
 			Layout = layout
@@ -128,9 +129,33 @@ public static partial class Logging
 		BasicConfigurator.Configure(appenders.ToArray());
 	}
 
-	private static string GetNewLogFile(string baseName)
+	private static void InitLogPaths(LogFile logFile)
 	{
-		var pattern = new Regex($"{baseName}(\\d*)\\.log$");
+		// Launch.log is for the current run, so don't mark as old. Only needed for startup issues
+		// environment-client.log and environment-sever.log are old, will be replaced with new one during Logging.LogStartup
+		// terrariasteamclient.log is a log for the client that will be replaced with a new one during later tML Startup.
+
+		// the environment log file name is derived from the free log name we get below, so if this process logs to client2.log, env vars will dump to environment-client2.log
+		// We could pasa a log file name launch arg to TerrariaSteamClient, but in practice collisions should rarely if ever happen, due to steam not allowing parallel launches.
+
+		var mainLogName = logFile.ToString().ToLowerInvariant();
+		var baseLogNames = new List<string> { mainLogName };
+
+		if (logFile != LogFile.TerrariaSteamClient)
+			baseLogNames.Add("environment-" + mainLogName);
+		if (logFile == LogFile.Client)
+			baseLogNames.Add(LogFile.TerrariaSteamClient.ToString().ToLowerInvariant());
+
+		var logFileName = GetFreeLogFileName(baseLogNames, roll: logFile != LogFile.TerrariaSteamClient);
+		LogPath = Path.Combine(LogDir, logFileName);
+
+		// potential race condition, unless we Touch the file we're about to use. Unlikely to be an issue in practice.
+	}
+
+	private static string GetFreeLogFileName(List<string> baseLogNames, bool roll)
+	{
+		var baseLogName = baseLogNames[0];
+		var pattern = new Regex($"(?:{string.Join('|', baseLogNames)})(\\d*)\\.log$");
 		var existingLogs = Directory.GetFiles(LogDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToList();
 
 		if (!existingLogs.All(CanOpen)) {
@@ -140,9 +165,21 @@ public static partial class Logging
 				return tok.Length == 0 ? 1 : int.Parse(tok);
 			}).Max();
 
-			return $"{baseName}{n + 1}.log";
+			return $"{baseLogName}{n + 1}.log";
 		}
 
+		if (roll) {
+			RenameToOld(existingLogs);
+		}
+		else if (existingLogs.Any()) {
+			var logNames = existingLogs.Select(s => Path.GetFileName(s));
+			initWarnings.Add($"Old log files found which should have already been archived. The {baseLogName}.log will be overwritten. [{string.Join(", ", logNames)}]");
+		}
+
+		return $"{baseLogName}.log";
+	}
+
+	private static void RenameToOld(List<string> existingLogs) {
 		foreach (string existingLog in existingLogs.OrderBy(File.GetCreationTime)) {
 			string oldExt = ".old";
 			int n = 0;
@@ -158,8 +195,6 @@ public static partial class Logging
 				initWarnings.Add($"Move failed during log initialization: {existingLog} -> {Path.GetFileName(existingLog)}{oldExt}\n{e}");
 			}
 		}
-
-		return $"{baseName}.log";
 	}
 
 	private static bool CanOpen(string fileName)
@@ -220,7 +255,8 @@ public static partial class Logging
 	private static void DumpEnvVars()
 	{
 		try {
-			using var f = File.OpenWrite(Path.Combine(LogDir, "environment.log"));
+			string fileName = $"environment-{Path.GetFileName(LogPath)}";
+			using var f = File.OpenWrite(Path.Combine(LogDir, fileName));
 			using var w = new StreamWriter(f);
 			foreach (var key in Environment.GetEnvironmentVariables().Keys) {
 				w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");

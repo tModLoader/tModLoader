@@ -139,7 +139,13 @@ public static partial class Program
 		if (newFolderPath.Contains("OneDrive")) {
 			Logging.tML.Info("Ensuring OneDrive is running before starting to Migrate Files");
 			try {
-				System.Diagnostics.Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe"));
+				var oneDrivePath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\OneDrive\\OneDrive.exe");
+				var oneDrivePath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe");
+				if (File.Exists(oneDrivePath1))
+					System.Diagnostics.Process.Start(oneDrivePath1);
+				else if (File.Exists(oneDrivePath2))
+					System.Diagnostics.Process.Start(oneDrivePath2);
+
 				Thread.Sleep(3000);
 			}
 			catch { }
@@ -245,16 +251,17 @@ public static partial class Program
 		else {
 			// Needs to run as early as possible, given exception handler depends on ModCompile, and Porting carries exception risk
 			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
+			var savePathCopy = SavePath;
+
+			SavePath = Path.Combine(SavePath, SaveFolderName);
 
 			// File migration is only attempted for the default save folder
 			try {
-				PortFilesMaster(SavePath, isCloud: false);
+				PortFilesMaster(savePathCopy, isCloud: false);
 			}
 			catch (Exception e) {
 				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
 			}
-			
-			SavePath = Path.Combine(SavePath, SaveFolderName);
 		}
 		
 		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");

@@ -93,6 +93,15 @@ Mods: {
 		}
 
 		Items: {
+			ExampleLastPrism: {
+				// DisplayName: Example Last Prism
+				/* Tooltip:
+					'''
+					A slightly different laser-firing Prism
+					Ignores NPC immunity frames and fires 10 beams at once instead of 6
+					''' */
+			}
+
 			ExamplePetItem: {
 				# This example omits "Mods.ExampleMod." from the substitution key and still works. The game will test variations of the translation key to check for other keys in the scope.
 				// DisplayName: "{$Common.PaperAirplane}"
@@ -893,6 +902,8 @@ Mods: {
 			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			// ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
 			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
+			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
+			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
 		}
 
 		Buffs: {
