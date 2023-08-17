@@ -17,6 +17,8 @@ using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
 using Terraria.UI.Chat;
+using ReLogic.Content;
+using Terraria.UI.Gamepad;
 
 namespace Terraria;
 
@@ -243,6 +245,89 @@ public partial class Main
 				mouseText = false;
 			}
 		}
+	}
+
+	private void DrawBuilderAccToggles_Inner(Vector2 start)
+	{
+		Player player = Main.player[myPlayer];
+		int[] builderAccStatus = player.builderAccStatus;
+		List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
+		bool shiftHotbarLock = activeToggles.Count / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles.Count % 12 >= 10;
+		Vector2 startPosition = start - new Vector2(0, shiftHotbarLock ? 42 : 21);
+		string text = "";
+
+		BuilderTogglePageHandler((int)startPosition.Y, activeToggles.Count, out bool moveDownForButton, out int startIndex, out int endIndex);
+		for (int i = startIndex; i < endIndex; i++) {
+			BuilderToggle builderToggle = activeToggles[i];
+
+			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
+			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+			Color color = builderToggle.DisplayColorTexture();
+
+			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
+			text = builderToggle.DisplayValue();
+			int numberOfStates = builderToggle.NumberOfStates;
+			int toggleType = builderToggle.Type;
+
+			/*
+			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
+			BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
+			*/
+
+			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
+			bool click = hover && mouseLeft && mouseLeftRelease;
+
+			if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
+				if (toggleType == BuilderToggle.BlockSwap.Type)
+					rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
+				else
+					rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
+
+				position += new Vector2(1, 0);
+			}
+			else
+				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
+
+			/*
+			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
+			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
+			*/
+
+			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+
+			if (hover) {
+				player.mouseInterface = true;
+				mouseText = true;
+
+				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
+					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
+					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
+				}
+				else if (toggleType == BuilderToggle.BlockSwap.Type)
+					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
+				else if (toggleType == BuilderToggle.TorchBiome.Type)
+					spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
+			}
+
+			if (click) {
+				builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
+				SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
+				mouseLeftRelease = false;
+			}
+
+
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+
+			if (mouseText && hover && HoverItem.type <= 0) {
+				float colorByte = (float)mouseTextColor / 255f;
+				Color textColor = new Color(colorByte, colorByte, colorByte);
+
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(mouseX + 14, mouseY + 14), textColor, 0f, Vector2.Zero, Vector2.One);
+				mouseText = false;
+			}
+		}
+
+		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
 	}
 
 	//Mirrors code used in UpdateTime
