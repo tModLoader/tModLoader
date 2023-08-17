@@ -55,6 +55,7 @@ internal static class PlayerIO
 			["modData"] = SaveModData(player),
 			["modBuffs"] = SaveModBuffs(player),
 			["infoDisplays"] = SaveInfoDisplays(player),
+			["builderToggles"] = SaveBuilderToggles(player),
 			["usedMods"] = SaveUsedMods(player),
 			["usedModPack"] = SaveUsedModPack(player),
 			["hair"] = SaveHair(player.hair)
@@ -80,6 +81,7 @@ internal static class PlayerIO
 		LoadModData(player, tag.GetList<TagCompound>("modData"));
 		LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 		LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
+		LoadBuilderToggles(player, tag.GetList<TagCompound>("builderToggles"));
 		LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
 		LoadHair(player, tag.GetString("hair"));
@@ -342,6 +344,36 @@ internal static class PlayerIO
 					player.hideInfo[i] = true;
 			}
 		}
+	}
+
+	internal static List<TagCompound> SaveBuilderToggles(Player player)
+	{
+		return BuilderToggleLoader.BuilderToggles
+			.Where(x=> x is not VanillaBuilderToggle)
+			.Select(x=> new TagCompound {
+				["fullName"] = x.FullName,
+				["currentState"] = player.builderAccStatus[x.Type] // Can't use x.CurrentState, that is LocalPlayer.
+			}).ToList();
+	}
+
+	internal static void LoadBuilderToggles(Player player, IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			var fullname = tag.GetString("fullName");
+			var entryIndex = BuilderToggleLoader.BuilderToggles.FindIndex(x => x.FullName == fullname);
+			if (entryIndex != -1) {
+				player.builderAccStatus[entryIndex] = tag.GetInt("currentState");
+			}
+		}
+
+		// Could revert state to 0 if state is now invalid. This approach probably won't work since ModifyNumberOfStates probably relies on player inventory update.
+		/*for (int i = 0; i < BuilderToggleLoader.BuilderToggles.Count; i++) {
+			BuilderToggle builderToggle = BuilderToggleLoader.BuilderToggles[i];
+			int numberOfStates = builderToggle.NumberOfStates;
+			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
+			if (player.builderAccStatus[i] >= numberOfStates)
+				player.builderAccStatus[i] = 0;
+		}*/
 	}
 
 	internal static void LoadUsedMods(Player player, IList<string> usedMods)

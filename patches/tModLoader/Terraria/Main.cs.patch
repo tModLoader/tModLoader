@@ -4195,6 +4195,19 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
+@@ -32869,8 +_,12 @@
+ 			}
+ 		}
+ 
++		/*
+ 		GetBuilderAccsCountToShow(LocalPlayer, out var _, out var _, out var totalDrawnIcons);
+ 		bool pushSideToolsUp = totalDrawnIcons >= 10;
++		*/
++		int activeToggles = BuilderToggleLoader.ActiveBuilderToggles();
++		bool pushSideToolsUp = activeToggles / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles % 12 >= 10;
+ 		if (!PlayerInput.UsingGamepad)
+ 			DrawHotbarLockIcon(num, num2, pushSideToolsUp);
+ 
 @@ -33145,17 +_,25 @@
  					if (num34 == 147)
  						bannerMouseOver = true;
@@ -4457,7 +4470,20 @@
  
  		new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  		if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -34533,17 +_,39 @@
+@@ -34461,6 +_,8 @@
+ 			spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
+ 	}
+ 
++	// These 2 methods are no longer necessary because they had hardcoded values and did nearly the same thing. Builder Toggles are now much more flexible and dynamic
++	/*
+ 	private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset)
+ 	{
+ 		if (!playerInventory)
+@@ -34530,20 +_,43 @@
+ 
+ 		UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 	}
++	*/
  
  	public static void CraftItem(Recipe r)
  	{
@@ -5038,6 +5064,23 @@
  			if (mapStyle == 1 && mapEnabled)
  				Y += 261;
  		}
+@@ -38513,6 +_,7 @@
+ 		if (false || Main.player[myPlayer].sign >= 0)
+ 			return;
+ 
++		/*
+ 		int num = 0;
+ 		Player player = Main.player[myPlayer];
+ 		int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
+@@ -38700,6 +_,8 @@
+ 		}
+ 
+ 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
++		*/
++		DrawBuilderAccToggles_Inner(start);
+ 	}
+ 
+ 	private static void GetBuilderAccsCountToShow(Player plr, out int blockReplaceIcons, out int torchGodIcons, out int totalDrawnIcons)
 @@ -39089,6 +_,11 @@
  	private static void TryDisposingEverything()
  	{

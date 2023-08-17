@@ -1085,6 +1085,13 @@ Mods: {
 
 		UI.ExampleResource: Example Resource: {0} / {1}
 		WorldGen.ExampleOrePassMessage: Example Mod Ores
+
+		BuilderToggles: {
+			ExampleBuilderToggleDimmedLight: {
+				OnText: Example On
+				OffText: Example Off
+			}
+		}
 	}
 }
 
