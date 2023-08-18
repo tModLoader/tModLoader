@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalEmoteBubble>.Register(this);
 
-			Index = (ushort)EmoteBubbleLoader.globalEmoteBubbles.Count;
+			// Index = (ushort)EmoteBubbleLoader.globalEmoteBubbles.Count;
 
 			EmoteBubbleLoader.globalEmoteBubbles.Add(this);
 		}

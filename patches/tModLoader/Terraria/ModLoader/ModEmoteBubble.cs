@@ -6,7 +6,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModEmoteBubble : ModType<EmoteBubble, ModEmoteBubble>
+	public abstract class ModEmoteBubble : ModType<EmoteBubble, ModEmoteBubble>, ILocalizedModType
 	{
 		/// <summary>
 		/// The file name of this emote's texture file in the mod loader's file space.
@@ -23,29 +23,20 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public EmoteBubble EmoteBubble => Entity;
 
-		/// <summary>
-		/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up as the emote command.
-		/// </summary>
-		public ModTranslation EmoteName { get; internal set; }
+		public virtual string LocalizationCategory => "Emotes";
 
 		/// <summary>
 		/// This is the name that will show up as the emote command.
 		/// </summary>
-		public string DisplayName => EmoteName.GetTranslation(Language.ActiveCulture);
+		public virtual LocalizedText CommandName => this.GetLocalization(nameof(CommandName), () => Name.ToLower());
 
 		public sealed override void SetupContent() {
 			ModContent.Request<Texture2D>(Texture);
 			SetStaticDefaults();
-
-			if (EmoteName.IsDefault())
-				EmoteName.SetDefault(Name.ToLower()); // It will be the lowercase name of the class by default.
 		}
 
 		protected sealed override void Register() {
-			EmoteName = LocalizationLoader.GetOrCreateTranslation(Mod, $"EmoteName.{Name}");
-
 			ModTypeLookup<ModEmoteBubble>.Register(this);
-
 			Type = EmoteBubbleLoader.Add(this);
 		}
 

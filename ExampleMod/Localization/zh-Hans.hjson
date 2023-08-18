@@ -1093,14 +1093,17 @@ Mods: {
 			}
 		}
 
-		EmoteName: {
-			ExamplePersonEmote: 例子npc
-			ExampleTravellingMerchantEmote: 例子旅商
-			ExampleBoneMerchantEmote: 例子骨头商人
-			ExampleBiomeEmote: 例子环境
-			ExampleItemEmote: 例子物品
-			ExamplePickaxeEmote: 例子镐
-			MinionBossEmote: 例子仆从boss
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
+		Emotes: {
+			// ExampleBiomeEmote.CommandName: exbiome
+			// ExampleBoneMerchantEmote.CommandName: exbonemerchant
+			// ExampleItemEmote.CommandName: exitem
+			// ExamplePersonEmote.CommandName: experson
+			// ExamplePickaxeEmote.CommandName: expickaxe
+			// ExampleTravellingMerchantEmote.CommandName: extravelingmerchant
+			// MinionBossEmote.CommandName: exminionboss
 		}
 	}
 }

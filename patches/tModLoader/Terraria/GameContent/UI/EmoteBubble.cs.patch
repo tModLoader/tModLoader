@@ -1,48 +1,48 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/EmoteBubble.cs
 +++ src/tModLoader/Terraria/GameContent/UI/EmoteBubble.cs
 @@ -1,25 +_,31 @@
+ using System;
+ using System.Collections.Generic;
 +using Terraria.ModLoader;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
 +using ReLogic.Content;
- using System;
- using System.Collections.Generic;
 +using System.Linq;
  using Terraria.GameContent.Events;
  using Terraria.ID;
  
- namespace Terraria.GameContent.UI
- {
--	public class EmoteBubble
-+	public partial class EmoteBubble
- 	{
--		private static int[] CountNPCs = new int[670];
-+		internal static int[] CountNPCs = new int[NPCID.Count];
--		public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
-+		internal static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
- 		private static List<int> toClean = new List<int>();
--		public static int NextID;
-+		private static int NextID;
--		public int ID;
-+		internal int ID;
- 		public WorldUIAnchor anchor;
- 		public int lifeTime;
- 		public int lifeTimeStart;
-+		/// <summary>
-+		/// This is the internal ID of this EmoteBubble.
-+		/// </summary>
- 		public int emote;
- 		public int metadata;
--		private const int frameSpeed = 8;
-+		public int frameSpeed = 8;
- 		public int frameCounter;
- 		public int frame;
- 		public const int EMOTE_SHEET_HORIZONTAL_FRAMES = 8;
-@@ -61,19 +_,55 @@
- 				else if (anch.entity is Projectile)
- 					item = 2;
+ namespace Terraria.GameContent.UI;
  
-+			// #WorldUIAnchorProjectileSyncFix: Explanation below
+-public class EmoteBubble
++public partial class EmoteBubble
+ {
+-	private static int[] CountNPCs = new int[NPCID.Count];
++	internal static int[] CountNPCs = new int[NPCID.Count];
+-	public static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
++	internal static Dictionary<int, EmoteBubble> byID = new Dictionary<int, EmoteBubble>();
+ 	private static List<int> toClean = new List<int>();
+-	public static int NextID;
++	private static int NextID;
+-	public int ID;
++	internal int ID;
+ 	public WorldUIAnchor anchor;
+ 	public int lifeTime;
+ 	public int lifeTimeStart;
++	/// <summary>
++	/// This is the internal ID of this EmoteBubble.
++	/// </summary>
+ 	public int emote;
+ 	public int metadata;
+-	private const int frameSpeed = 8;
++	public int frameSpeed = 8;
+ 	public int frameCounter;
+ 	public int frame;
+ 	public const int EMOTE_SHEET_HORIZONTAL_FRAMES = 8;
+@@ -64,7 +_,22 @@
+ 			else if (anch.entity is Projectile)
+ 				item = 2;
+ 
++			// TML: #WorldUIAnchorProjectileSyncFix: Explanation below
 +			// Vanilla never uses Projectile as a WorldUIAnchor, but if mods do, it is very likely to desync.
 +			// As whoAmI is not enough to match a projectile between sides, TML rewrites it to use identity + owner instead.
 +			// It does so by packing the anchor entity type together with the owner if it's a projectile.
@@ -57,7 +57,6 @@
 +					item = projectile.owner << 8 | item;
 +				}
 +			}
-+
 -			return Tuple.Create(item, anch.entity.whoAmI);
 +			return Tuple.Create(item, whoAmI);
  		}
@@ -67,7 +66,7 @@
  
  	public static WorldUIAnchor DeserializeNetAnchor(int type, int meta)
  	{
-+		// #WorldUIAnchorProjectileSyncFix
++		// TML: #WorldUIAnchorProjectileSyncFix
 +		// Unpack type for the switch case evaluation, use the owner in the Projectile case
 +		int packedOwnerType = type;
 +		type = packedOwnerType & 0xFF; // Masking has no effect on vanilla value
@@ -91,167 +90,165 @@
 +							break;
 +						}
 +					}
- 					return new WorldUIAnchor(Main.projectile[meta]);
- 				default:
- 					throw new Exception("How did you end up getting this?");
-@@ -82,6 +_,13 @@
- 
- 		public static int AssignNewID() => NextID++;
- 
-+		/// <summary>
-+		/// Use this method to spawn a emote bubble
-+		/// </summary>
-+		/// <param name="emoticon">The emote ID of the emote that will spawn.</param>
-+		/// <param name="bubbleAnchor">The <see cref="WorldUIAnchor"/> instance for the emote. You can use <code>new WorldUIAnchor(Entity)</code> to get the instance.</param>
-+		/// <param name="time">How long this emote remains.</param>
-+		/// <returns>The <see cref="WhoAmI"/> of this emote</returns>
- 		public static int NewBubble(int emoticon, WorldUIAnchor bubbleAnchor, int time) {
- 			EmoteBubble emoteBubble = new EmoteBubble(emoticon, bubbleAnchor, time);
- 			emoteBubble.ID = AssignNewID();
-@@ -92,22 +_,41 @@
- 			}
- 
- 			OnBubbleChange(emoteBubble.ID);
 +
-+			EmoteBubbleLoader.OnSpawn(emoteBubble);
-+
- 			return emoteBubble.ID;
++					return new WorldUIAnchor(Main.projectile[whoAmI]);
++				}
+ 				return new WorldUIAnchor(Main.projectile[meta]);
+ 			default:
+ 				throw new Exception("How did you end up getting this?");
+@@ -86,6 +_,13 @@
+ 
+ 	public static int AssignNewID() => NextID++;
+ 
++	/// <summary>
++	/// Use this method to spawn a emote bubble
++	/// </summary>
++	/// <param name="emoticon">The emote ID of the emote that will spawn.</param>
++	/// <param name="bubbleAnchor">The <see cref="WorldUIAnchor"/> instance for the emote. You can use <code>new WorldUIAnchor(Entity)</code> to get the instance.</param>
++	/// <param name="time">How long this emote remains.</param>
++	/// <returns>The <see cref="WhoAmI"/> of this emote</returns>
+ 	public static int NewBubble(int emoticon, WorldUIAnchor bubbleAnchor, int time)
+ 	{
+ 		if (Main.netMode == 1)
+@@ -100,26 +_,45 @@
  		}
  
-+		/// <summary>
-+		/// Use this method to make NPCs use a random emote based on the pick emote table.
-+		/// </summary>
-+		/// <param name="bubbleAnchor">The <see cref="WorldUIAnchor"/> instance for the emote. You can use <code>new WorldUIAnchor(NPC)</code> to get the instance.</param>
-+		/// <param name="time">How long this emote remains.</param>
-+		/// <param name="other">The <see cref="WorldUIAnchor"/> instance from the other side of the conversation.</param>
-+		/// <returns>The <see cref="WhoAmI"/> of this emote</returns>
- 		public static int NewBubbleNPC(WorldUIAnchor bubbleAnchor, int time, WorldUIAnchor other = null) {
- 			EmoteBubble emoteBubble = new EmoteBubble(0, bubbleAnchor, time);
--			emoteBubble.ID = AssignNewID();
--			byID[emoteBubble.ID] = emoteBubble;
- 			emoteBubble.PickNPCEmote(other);
-+			if (emoteBubble.emote < 0)
-+				return -1;
-+			emoteBubble.ID = AssignNewID();
-+			byID[emoteBubble.ID] = emoteBubble;
- 			if (Main.netMode == 2) {
- 				Tuple<int, int> tuple = SerializeNetAnchor(bubbleAnchor);
- 				NetMessage.SendData(91, -1, -1, null, emoteBubble.ID, tuple.Item1, tuple.Item2, time, emoteBubble.emote, emoteBubble.metadata);
- 			}
- 
-+			EmoteBubbleLoader.OnSpawn(emoteBubble);
+ 		OnBubbleChange(emoteBubble.ID);
 +
- 			return emoteBubble.ID;
++		EmoteBubbleLoader.OnSpawn(emoteBubble);
++
+ 		return emoteBubble.ID;
+ 	}
+ 
++	/// <summary>
++	/// Use this method to make NPCs use a random emote based on the pick emote table.
++	/// </summary>
++	/// <param name="bubbleAnchor">The <see cref="WorldUIAnchor"/> instance for the emote. You can use <code>new WorldUIAnchor(NPC)</code> to get the instance.</param>
++	/// <param name="time">How long this emote remains.</param>
++	/// <param name="other">The <see cref="WorldUIAnchor"/> instance from the other side of the conversation.</param>
++	/// <returns>The <see cref="WhoAmI"/> of this emote</returns>
+ 	public static int NewBubbleNPC(WorldUIAnchor bubbleAnchor, int time, WorldUIAnchor other = null)
+ 	{
+ 		if (Main.netMode == 1)
+ 			return -1;
+ 
+ 		EmoteBubble emoteBubble = new EmoteBubble(0, bubbleAnchor, time);
+-		emoteBubble.ID = AssignNewID();
+-		byID[emoteBubble.ID] = emoteBubble;
+ 		emoteBubble.PickNPCEmote(other);
++		if (emoteBubble.emote < 0)
++			return -1;
++		emoteBubble.ID = AssignNewID();
++		byID[emoteBubble.ID] = emoteBubble;
+ 		if (Main.netMode == 2) {
+ 			Tuple<int, int> tuple = SerializeNetAnchor(bubbleAnchor);
+ 			NetMessage.SendData(91, -1, -1, null, emoteBubble.ID, tuple.Item1, tuple.Item2, time, emoteBubble.emote, emoteBubble.metadata);
  		}
  
-+		/// <summary>
-+		/// Try to find a NPC close enough (less than 200 pixels) to react to the emote sent by the player.
-+		/// </summary>
-+		/// <param name="emoteID"></param>
-+		/// <param name="player"></param>
- 		public static void CheckForNPCsToReactToEmoteBubble(int emoteID, Player player) {
- 			for (int i = 0; i < 200; i++) {
- 				NPC nPC = Main.npc[i];
-@@ -130,7 +_,11 @@
++		EmoteBubbleLoader.OnSpawn(emoteBubble);
++
+ 		return emoteBubble.ID;
+ 	}
+ 
++	/// <summary>
++	/// Try to find a NPC close enough (less than 200 pixels) to react to the emote sent by the player.
++	/// </summary>
++	/// <param name="emoteID"></param>
++	/// <param name="player"></param>
+ 	public static void CheckForNPCsToReactToEmoteBubble(int emoteID, Player player)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+@@ -145,7 +_,11 @@
+ 
+ 	private void Update()
+ 	{
++		lifeTime--;
++		if (!EmoteBubbleLoader.UpdateFrame(this)) {
++			return;
++		}
+-		if (--lifeTime > 0 && ++frameCounter >= 8) {
++		if (lifeTime > 0 && ++frameCounter >= frameSpeed) {
+ 			frameCounter = 0;
+ 			if (++frame >= 2)
+ 				frame = 0;
+@@ -167,7 +_,28 @@
+ 			position = Main.ReverseGravitySupport(position);
  		}
  
- 		private void Update() {
-+			lifeTime--;
-+			if (!EmoteBubbleLoader.UpdateFrame(this)) {
++		// vector: draw position
++		// value2: bubble background frame
++		// flag: whether the emote bubble is actually showing
++		Rectangle emoteFrame = (emote >= 0 && emote < EmoteID.Count) ? value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4) : new Rectangle(0, 0, 34, 28);
++		
++		if (emote == -1) {
++			position += new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -emoteFrame.Height + 3);
++		}
++		else {
++			if (ModEmoteBubble != null) {
++				value = ModContent.Request<Texture2D>(ModEmoteBubble.Texture).Value;
++				var moddedFrame = EmoteBubbleLoader.GetFrame(this);
++				emoteFrame = moddedFrame ?? value.Frame(2, 1, frame, 0);
++			}
++
++			if (!EmoteBubbleLoader.PreDraw(this, sb, value, position, emoteFrame, origin, effect)) {
++				EmoteBubbleLoader.PostDraw(this, sb, value, position, emoteFrame, origin, effect);
 +				return;
 +			}
--			if (--lifeTime > 0 && ++frameCounter >= 8) {
-+			if (lifeTime > 0 && ++frameCounter >= frameSpeed) {
- 				frameCounter = 0;
- 				if (++frame >= 2)
- 					frame = 0;
-@@ -151,7 +_,28 @@
- 				vector = Main.ReverseGravitySupport(vector);
++		}
++		
+-		sb.Draw(value, position, value2, Color.White, 0f, origin, 1f, effect, 0f);
++		sb.Draw(TextureAssets.Extra[48].Value, position, value2, Color.White, 0f, origin, 1f, effect, 0f);
+ 		if (flag)
+ 			return;
+ 
+@@ -177,7 +_,7 @@
+ 				position.X += 4f;
  			}
  
-+			// vector: draw position
-+			// value2: bubble background frame
-+			// flag: whether the emote bubble is actually showing
-+			Rectangle emoteFrame = emote is >= 0 and < EmoteID.Count ? value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4) : new Rectangle(0, 0, 34, 28);
-+			
-+			if (emote == -1) {
-+				vector += new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -emoteFrame.Height + 3);
-+			}
-+			else {
-+				if (ModEmoteBubble != null) {
-+					value = ModContent.Request<Texture2D>(ModEmoteBubble.Texture).Value;
-+					var moddedFrame = EmoteBubbleLoader.GetFrame(this);
-+					emoteFrame = moddedFrame ?? value.Frame(2, 1, frame, 0);
-+				}
+-			sb.Draw(value, position, value.Frame(8, EMOTE_SHEET_VERTICAL_FRAMES, emote * 2 % 8 + frame, 1 + emote / 4), Color.White, 0f, origin, 1f, effect, 0f);
++			sb.Draw(value, position, emoteFrame, Color.White, 0f, origin, 1f, effect, 0f);
+ 		}
+ 		else if (emote == -1) {
+ 			value = TextureAssets.NpcHead[metadata].Value;
+@@ -188,8 +_,10 @@
+ 			if ((float)value.Height / 16f > 1f / num)
+ 				num = 16f / (float)value.Height;
+ 
+-			sb.Draw(value, position + new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -value2.Height + 3), null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
++			sb.Draw(value, position, null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
+ 		}
 +
-+				if (!EmoteBubbleLoader.PreDraw(this, sb, value, vector, emoteFrame, origin, effect)) {
-+					EmoteBubbleLoader.PostDraw(this, sb, value, vector, emoteFrame, origin, effect);
-+					return;
-+				}
-+			}
-+			
--			sb.Draw(value, vector, value2, Color.White, 0f, origin, 1f, effect, 0f);
-+			sb.Draw(TextureAssets.Extra[48].Value, vector, value2, Color.White, 0f, origin, 1f, effect, 0f);
- 			if (flag)
- 				return;
++		EmoteBubbleLoader.PostDraw(this, sb, value, position, emoteFrame, origin, effect);
+ 	}
  
-@@ -161,7 +_,7 @@
- 					vector.X += 4f;
- 				}
+ 	private Vector2 GetPosition(out SpriteEffects effect)
+@@ -222,6 +_,10 @@
+ 		}
+ 	}
  
--				sb.Draw(value, vector, value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4), Color.White, 0f, origin, 1f, effect, 0f);
-+				sb.Draw(value, vector, emoteFrame, Color.White, 0f, origin, 1f, effect, 0f);
- 			}
- 			else if (emote == -1) {
- 				value = TextureAssets.NpcHead[metadata].Value;
-@@ -172,8 +_,10 @@
- 				if ((float)value.Height / 16f > 1f / num)
- 					num = 16f / (float)value.Height;
- 
--				sb.Draw(value, vector + new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -value2.Height + 3), null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
-+				sb.Draw(value, vector, null, Color.White, 0f, new Vector2(value.Width / 2, 0f), num, effect, 0f);
- 			}
-+
-+			EmoteBubbleLoader.PostDraw(this, sb, value, vector, emoteFrame, origin, effect);
++	/// <summary>
++	/// Send a emote from <see cref="Main.LocalPlayer"/>. Should never be called on server.
++	/// </summary>
++	/// <param name="emoteId"></param>
+ 	public static void MakeLocalPlayerEmote(int emoteId)
+ 	{
+ 		if (Main.netMode == 0) {
+@@ -277,7 +_,15 @@
+ 			ProbeCombat(list);
  		}
  
- 		private Vector2 GetPosition(out SpriteEffects effect) {
-@@ -208,6 +_,10 @@
- 			}
- 		}
- 
-+		/// <summary>
-+		/// Send a emote from <see cref="Main.LocalPlayer"/>. Should never be called on server.
-+		/// </summary>
-+		/// <param name="emoteId"></param>
- 		public static void MakeLocalPlayerEmote(int emoteId) {
- 			if (Main.netMode == 0) {
- 				NewBubble(emoteId, new WorldUIAnchor(Main.LocalPlayer), 360);
-@@ -261,7 +_,15 @@
- 				ProbeCombat(list);
- 			}
- 
-+			other ??= new WorldUIAnchor();
-+			int? modPickedEmote = NPCLoader.PickEmote((NPC)anchor.entity, plr, list, other);
-+			if (modPickedEmote == -1) {
-+				emote = -1;
-+			}
-+			else if (modPickedEmote != null) {
-+				emote = modPickedEmote.Value;
-+			}
--			if (list.Count > 0)
-+			else if (list.Count > 0)
- 				emote = list[Main.rand.Next(list.Count)];
- 		}
- 
-@@ -384,7 +_,7 @@
- 				list.Add(29);
- 			else if (plr.ZoneDesert)
- 				list.Add(28);
--			else
-+			else if (plr.ZoneForest)
- 				list.Add(23);
- 		}
++		other ??= new WorldUIAnchor();
++		int? modPickedEmote = NPCLoader.PickEmote((NPC)anchor.entity, plr, list, other);
++		if (modPickedEmote == -1) {
++			emote = -1;
++		}
++		else if (modPickedEmote != null) {
++			emote = modPickedEmote.Value;
++		}
+-		if (list.Count > 0)
++		else if (list.Count > 0)
+ 			emote = list[Main.rand.Next(list.Count)];
+ 	}
  
 @@ -369,7 +_,7 @@
  
@@ -271,3 +268,12 @@
  			if (NPCID.Sets.FaceEmote[k] > 0 && CountNPCs[k] > 0 && k != type)
  				list.Add(NPCID.Sets.FaceEmote[k]);
  		}
+@@ -407,7 +_,7 @@
+ 			list.Add(29);
+ 		else if (plr.ZoneDesert)
+ 			list.Add(28);
+-		else
++		else if (plr.ZoneForest)
+ 			list.Add(23);
+ 	}
+ 

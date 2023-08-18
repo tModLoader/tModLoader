@@ -16,16 +16,16 @@
  public static class ChatInitializer
  {
  	public static void Load()
-@@ -50,6 +_,12 @@
- 				string name = EmoteID.Search.GetName(i);
- 				string key = "EmojiCommand." + name;
- 				ChatManager.Commands.AddAlias(Language.GetText(key), NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Language.GetText("EmojiName." + name)));
-+			}
+@@ -56,6 +_,12 @@
+ 			string name = EmoteID.Search.GetName(i);
+ 			string key = "EmojiCommand." + name;
+ 			ChatManager.Commands.AddAlias(Language.GetText(key), NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Language.GetText("EmojiName." + name)));
++		}
 +
-+			foreach (var modEmoteBubble in EmoteBubbleLoader.emoteBubbles)
-+			{
-+				var command = new LocalizedText(modEmoteBubble.EmoteName.Key, $"/{Lang.GetEmojiName(modEmoteBubble.Type)}");
-+				ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Lang.GetEmojiName(modEmoteBubble.Type)));
- 			}
++		foreach (var modEmoteBubble in EmoteBubbleLoader.emoteBubbles)
++		{
++			var command = new LocalizedText(modEmoteBubble.CommandName.Key, $"/{Lang.GetEmojiName(modEmoteBubble.Type)}");
++			ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Lang.GetEmojiName(modEmoteBubble.Type)));
  		}
  	}
+ }

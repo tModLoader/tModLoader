@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.Utilities;
  
-@@ -34,14 +_,20 @@
+@@ -34,15 +_,21 @@
  	[Old("Lang arrays have been replaced with the new Language.GetText system.")]
  	public static LocalizedText[] chestType2 = new LocalizedText[17];
  	public static LocalizedText[] prefix = new LocalizedText[PrefixID.Count];
@@ -33,10 +33,11 @@
 -	private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
 +	internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
 +
-- 	private static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
+-	private static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
 + 	internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
  
  	public static string GetMapObjectName(int id)
+ 	{
 @@ -116,11 +_,13 @@
  
  	[Old("dialog is deprecated. Please use Language.GetText instead.")]
@@ -69,7 +70,14 @@
  			return _itemNameCache[id];
  
  		return LocalizedText.Empty;
-@@ -148,8 +_,11 @@
+@@ -142,14 +_,17 @@
+ 
+ 	public static LocalizedText GetEmojiName(int id)
+ 	{
+-		if (id >= 0 && id < EmoteID.Count && _emojiNameCache[id] != null)
++		if (id >= 0 && id < EmoteBubbleLoader.EmoteBubbleCount && _emojiNameCache[id] != null)
+ 			return _emojiNameCache[id];
+ 
  		return LocalizedText.Empty;
  	}
  

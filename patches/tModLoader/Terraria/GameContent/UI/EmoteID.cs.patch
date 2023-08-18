@@ -2,10 +2,10 @@
 +++ src/tModLoader/Terraria/GameContent/UI/EmoteID.cs
 @@ -2,7 +_,7 @@
  
- namespace Terraria.GameContent.UI
+ namespace Terraria.GameContent.UI;
+ 
+-public class EmoteID
++public partial class EmoteID
  {
--	public class EmoteID
-+	public partial class EmoteID
- 	{
- 		public const int ItemDisplay = -1;
- 		public const int Count = 151;
+ 	public const int ItemDisplay = -1;
+ 	public static readonly int Count = 151;

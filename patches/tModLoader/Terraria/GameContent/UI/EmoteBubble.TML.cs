@@ -5,9 +5,13 @@ using Terraria.ModLoader;
 
 namespace Terraria.GameContent.UI
 {
-	public partial class EmoteBubble
+	public partial class EmoteBubble : IEntityWithGlobals<GlobalEmoteBubble>
 	{
 		public ModEmoteBubble ModEmoteBubble { get; internal set; }
+
+		int IEntityWithGlobals<GlobalEmoteBubble>.Type => emote;
+		internal GlobalEmoteBubble[] _globals;
+		public RefReadOnlyArray<GlobalEmoteBubble> EntityGlobals => _globals;
 
 		/// <summary>
 		/// The whoAmI indicator that indicates this <see cref="EmoteBubble"/>, can be used in <see cref="GetExistingEmoteBubble"/>

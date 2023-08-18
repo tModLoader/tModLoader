@@ -4,8 +4,12 @@ using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Terraria.Chat.Commands;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.Initializers;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
@@ -37,6 +41,19 @@ namespace Terraria.ModLoader
 			for (int k = EmoteID.Count; k < EmoteBubbleCount; k++) {
 				Lang._emojiNameCache[k] = LocalizedText.Empty;
 			}
+		}
+
+		internal static void FinishSetup()
+		{
+			foreach (ModEmoteBubble emoteBubble in emoteBubbles) {
+				Lang._emojiNameCache[emoteBubble.Type] = emoteBubble.CommandName;
+
+				if (emoteBubble.CommandName != LocalizedText.Empty) // TODO: does this work?
+					EmojiCommand._byName[emoteBubble.CommandName] = emoteBubble.Type;
+			}
+
+			// Call PrepareAliases here for mod emote command setup
+			ChatInitializer.PrepareAliases(); // too early.
 		}
 
 		internal static Dictionary<Mod, List<int>> GetAllUnlockedModEmotes() {

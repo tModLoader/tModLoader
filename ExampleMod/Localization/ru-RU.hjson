@@ -1092,6 +1092,19 @@ Mods: {
 				// OffText: Example Off
 			}
 		}
+
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
+		Emotes: {
+			// ExampleBiomeEmote.CommandName: exbiome
+			// ExampleBoneMerchantEmote.CommandName: exbonemerchant
+			// ExampleItemEmote.CommandName: exitem
+			// ExamplePersonEmote.CommandName: experson
+			// ExamplePickaxeEmote.CommandName: expickaxe
+			// ExampleTravellingMerchantEmote.CommandName: extravelingmerchant
+			// MinionBossEmote.CommandName: exminionboss
+		}
 	}
 }
 

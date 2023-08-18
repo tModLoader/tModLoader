@@ -333,6 +333,7 @@ public static class ModContent
 		PylonLoader.FinishSetup();
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
+		EmoteBubbleLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
