@@ -360,7 +360,7 @@ public static class NPCLoader
 
 	public static void ReceiveExtraAI(NPC npc, byte[] extraAI)
 	{
-		using var stream = new MemoryStream(extraAI);
+		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
 		npc.ModNPC?.ReceiveExtraAI(modReader);

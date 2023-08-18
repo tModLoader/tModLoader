@@ -81,7 +81,7 @@ internal static partial class TileIO
 				return;
 			}
 
-			using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
+			using var reader = new BinaryReader(tag.GetByteArray(dataKey).ToMemoryStream());
 			var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
 
 			for (int x = 0; x < Main.maxTilesX; x++) {
@@ -227,14 +227,40 @@ internal static partial class TileIO
 		}
 	}
 
+	public class LiquidIOImpl : IOImpl<ModLiquid, LiquidEntry>
+	{
+		public LiquidIOImpl() : base("liquidMap", "liquidData") { }
+
+		protected override int LoadedBlockCount => LiquidLoader.LiquidCount;
+
+		protected override IEnumerable<ModLiquid> LoadedBlocks => LiquidLoader.liquids;
+
+		protected override LiquidEntry ConvertBlockToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
+		protected override ushort GetModBlockType(Tile tile) => tile.liquidType() >= LiquidID.Count ? tile.liquidType() : (ushort)0;
+
+		protected override void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
+		{
+			tile.liquidType(entry.loadedType);
+			tile.LiquidAmount = reader.ReadByte();
+		}
+
+		protected override void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
+		{
+			writer.Write(entry.type);
+			writer.Write(tile.LiquidAmount);
+		}
+	}
+
 	internal static TileIOImpl Tiles = new TileIOImpl();
 	internal static WallIOImpl Walls = new WallIOImpl();
+	internal static LiquidIOImpl Liquids = new LiquidIOImpl();
 
 	//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
 	internal static void LoadBasics(TagCompound tag)
 	{
 		Tiles.LoadEntries(tag, out var tileEntriesLookup);
 		Walls.LoadEntries(tag, out var wallEntriesLookup);
+		Liquids.LoadEntries(tag, out var liquidEntriesLookup);
 
 		if (!tag.ContainsKey("wallData")) {
 			LoadLegacy(tag, tileEntriesLookup, wallEntriesLookup);
@@ -242,6 +268,7 @@ internal static partial class TileIO
 		else {
 			Tiles.LoadData(tag, tileEntriesLookup);
 			Walls.LoadData(tag, wallEntriesLookup);
+			Liquids.LoadData(tag, liquidEntriesLookup);
 		}
 
 		WorldIO.ValidateSigns(); //call this at end
@@ -253,6 +280,7 @@ internal static partial class TileIO
 		var tag = new TagCompound();
 		Tiles.Save(tag);
 		Walls.Save(tag);
+		Liquids.Save(tag);
 		return tag;
 	}
 
@@ -262,11 +290,13 @@ internal static partial class TileIO
 	{
 		Tiles.unloadedTypes.Clear();
 		Walls.unloadedTypes.Clear();
+		Liquids.unloadedTypes.Clear();
 	}
 
 	internal static void ClearWorld()
 	{
 		Tiles.Clear();
 		Walls.Clear();
+		Liquids.Clear();
 	}
 }

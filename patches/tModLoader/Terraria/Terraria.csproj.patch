@@ -52,7 +52,7 @@
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -48,24 +_,37 @@
+@@ -48,24 +_,40 @@
  		<EmbeddedResource Include="Microsoft/**" />
  	</ItemGroup>
  	<ItemGroup>
@@ -64,6 +64,9 @@
 +		<Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
  	</ItemGroup>
  	<ItemGroup>
++	  <None Remove="ModLoader\Default\UnloadedLiquid.png" />
++	</ItemGroup>
++	<ItemGroup>
 +		<PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
 +		<PackageReference Include="MonoModReorg.RuntimeDetour" Version="23.3.22.1" />
 +		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />

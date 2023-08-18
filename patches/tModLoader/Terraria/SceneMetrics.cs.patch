@@ -14,7 +14,8 @@
  	public bool hasBanner;
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
- 	private readonly int[] _liquidCounts = new int[LiquidID.Count];
+-	private readonly int[] _liquidCounts = new int[LiquidID.Count];
++	internal int[] _liquidCounts = new int[LiquidLoader.LiquidCount];
  	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  	public int bestOre;
  

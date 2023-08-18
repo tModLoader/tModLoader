@@ -7,7 +7,6 @@ using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
-using Terraria.Social;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -32,11 +31,7 @@ internal static class PlayerIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-			TagIO.ToStream(tag, stream);
-			if (isCloudSave && SocialAPI.Cloud != null)
-				SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-		}
+		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
 
 	internal static TagCompound SaveData(Player player)
@@ -101,11 +96,10 @@ internal static class PlayerIO
 		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			//LoadLegacy(player, buf);
-			return false;
+			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 		}
 
-		tag = TagIO.FromStream(new MemoryStream(buf));
+		tag = TagIO.FromStream(buf.ToMemoryStream());
 		return true;
 	}
 

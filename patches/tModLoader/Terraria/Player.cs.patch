@@ -186,6 +186,20 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
+@@ -621,7 +_,12 @@
+ 	public int infernoCounter;
+ 	public int insanityShadowCooldown;
+ 	public int starCloakCooldown;
+-	public bool sandStorm;
++	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behaviour
++	private bool _sandStormLogicEnabled;
++	public bool sandStorm {
++		get => _sandStormLogicEnabled && GetJumpState<SandstormInABottleJump>().Active;
++		set => _sandStormLogicEnabled = value;
++	}
+ 	public bool crimsonRegen;
+ 	public bool ghostHeal;
+ 	public bool ghostHurt;
 @@ -635,11 +_,22 @@
  	public bool dangerSense;
  	public byte luckPotion;
@@ -373,7 +387,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,16 +_,89 @@
+@@ -961,23 +_,96 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -464,6 +478,14 @@
  	public float lifeRegenTime;
  	public int manaRegen;
  	public int manaRegenCount;
+ 	public float manaRegenDelay;
+ 	public bool manaRegenBuff;
+ 	public bool noKnockback;
+-	private bool shimmerImmune;
++	public bool shimmerImmune;
+ 	public bool spaceGun;
+ 	public float gravDir = 1f;
+ 	public bool chloroAmmoCost80;
 @@ -993,6 +_,10 @@
  	public bool ammoBox;
  	public bool ammoPotion;
@@ -632,7 +654,44 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
-@@ -1330,7 +_,18 @@
+@@ -1297,9 +_,21 @@
+ 	public Item boneGloveItem;
+ 	public bool goldRing;
+ 	public bool accDivingHelm;
+-	public bool accFlipper;
++	//public bool accFlipper;
++	public bool accFlipper {
++		set {
++			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
++			if (value) {
++				state.Enable();
++				// Allow equipping flippers while "midair" to still let the player use them
++				state.Available = true;
++			} else
++				state.Disable();
++		}
++	}
+ 	public bool hasLuck_LuckyCoin;
+ 	public bool hasLuck_LuckyHorseshoe;
++	/*
+ 	public bool hasJumpOption_Cloud;
+ 	public bool canJumpAgain_Cloud;
+ 	public bool isPerformingJump_Cloud;
+@@ -1327,10 +_,32 @@
+ 	public bool hasJumpOption_Basilisk;
+ 	public bool canJumpAgain_Basilisk;
+ 	public bool isPerformingJump_Basilisk;
++	*/
++	internal bool hasJumpOption_Cloud { set { if (value) GetJumpState<CloudInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sandstorm { set { if (value) GetJumpState<SandstormInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Blizzard { set { if (value) GetJumpState<BlizzardInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Fart { set { if (value) GetJumpState<FartInAJarJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sail { set { if (value) GetJumpState<TsunamiInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Unicorn { set { if (value) GetJumpState<UnicornMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Santank { set { if (value) GetJumpState<SantankMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_WallOfFleshGoat { set { if (value) GetJumpState<GoatMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Basilisk { set { if (value) GetJumpState<BasiliskMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++
  	public bool isPerformingPogostickTricks;
  	public bool autoJump;
  	public bool justJumped;
@@ -2081,11 +2140,29 @@
  		}
  
  		if (armorPiece.type == 3374)
-@@ -9811,10 +_,13 @@
+@@ -9799,22 +_,31 @@
+ 		}
+ 
+ 		if (armorPiece.type == 100 || armorPiece.type == 101 || armorPiece.type == 102) {
++			allCrit += 5;
++			/*
+ 			magicCrit += 5;
+ 			meleeCrit += 5;
+ 			rangedCrit += 5;
++			*/
+ 		}
+ 
+ 		if (armorPiece.type == 956 || armorPiece.type == 957 || armorPiece.type == 958) {
++			allCrit += 5;
++			/*
+ 			magicCrit += 5;
+ 			meleeCrit += 5;
+ 			rangedCrit += 5;
++			*/
  		}
  
  		if (armorPiece.type == 792 || armorPiece.type == 793 || armorPiece.type == 794) {
-+			allDamage += 0.02f;
++			allDamage += 0.03f;
 +			/*
  			meleeDamage += 0.03f;
  			rangedDamage += 0.03f;
@@ -2196,7 +2273,7 @@
  		}
  
  		if (armorPiece.type == 1210) {
-@@ -9970,9 +_,12 @@
+@@ -9970,17 +_,23 @@
  		}
  
  		if (armorPiece.type == 1213) {
@@ -2209,6 +2286,17 @@
  		}
  
  		if (armorPiece.type == 1214) {
+ 			moveSpeed += 0.11f;
++			allDamage += 0.08f;
++			/*
+ 			meleeDamage += 0.08f;
+ 			rangedDamage += 0.08f;
+ 			magicDamage += 0.08f;
+ 			minionDamage += 0.08f;
++			*/
+ 		}
+ 
+ 		if (armorPiece.type == 1215) {
 @@ -10001,6 +_,9 @@
  		}
  
@@ -2864,6 +2952,15 @@
  		hasFootball = false;
  		drawingFootball = false;
  		minionKB = 0f;
+@@ -14250,7 +_,7 @@
+ 		frogLegJumpBoost = false;
+ 		skyStoneEffects = false;
+ 		noFallDmg = false;
+-		accFlipper = false;
++		//accFlipper = false;
+ 		spawnMax = false;
+ 		spaceGun = false;
+ 		killGuide = false;
 @@ -14275,18 +_,33 @@
  
  		honeyCombItem = null;
@@ -2916,6 +3013,24 @@
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
+@@ -14597,6 +_,9 @@
+ 		boneGloveItem = null;
+ 		hasLuck_LuckyCoin = false;
+ 		hasLuck_LuckyHorseshoe = false;
++		blockExtraJumps = false;
++		ExtraJumpLoader.ResetEnableFlags(this);
++		/*
+ 		hasJumpOption_Cloud = false;
+ 		hasJumpOption_Sail = false;
+ 		hasJumpOption_Sandstorm = false;
+@@ -14606,6 +_,7 @@
+ 		hasJumpOption_Santank = false;
+ 		hasJumpOption_WallOfFleshGoat = false;
+ 		hasJumpOption_Basilisk = false;
++		*/
+ 		defendedByPaladin = false;
+ 		hasPaladinShield = false;
+ 		hasLucyTheAxe = false;
 @@ -14652,18 +_,23 @@
  			}
  		}
@@ -3204,6 +3319,64 @@
  
  					nPC.immune[whoAmI] = 10;
  					velocity.Y = -10f;
+@@ -15987,8 +_,10 @@
+ 				autoJump = false;
+ 
+ 			bool flag = false;
++			/*
+ 			bool flag2 = wet && accFlipper;
+ 			bool flag3 = !mount.Active || !mount.Cart;
++			*/
+ 			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
+ 				wetSlime = 0;
+ 				flag = true;
+@@ -16012,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
++			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpUsable()) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
+ 				if (mount.Active && MountID.Sets.Cart[mount.Type])
+ 					position.Y -= 0.001f;
+ 
+@@ -16020,6 +_,7 @@
+ 					justJumped = true;
+ 
+ 				bool flag4 = false;
++				/*
+ 				if (wet && accFlipper) {
+ 					if (swimTime == 0)
+ 						swimTime = 30;
+@@ -16073,6 +_,10 @@
+ 						canJumpAgain_Cloud = false;
+ 					}
+ 				}
++				*/
++
++				// Patch context: flag
++				bool attemptDoubleJumps = !flag;
+ 
+ 				canRocket = false;
+ 				rocketRelease = false;
+@@ -16093,6 +_,10 @@
+ 					if (sliding)
+ 						velocity.X = 3 * -slideDir;
+ 				}
++				else if (attemptDoubleJumps && !blockExtraJumps) {
++					ExtraJumpLoader.ProcessJumps(this);
++				}
++				/*
+ 				else if (flag5) {
+ 					isPerformingJump_Sandstorm = true;
+ 					_ = height;
+@@ -16303,6 +_,7 @@
+ 					Main.gore[num25].velocity.X = Main.gore[num25].velocity.X * 0.1f - velocity.X * 0.1f;
+ 					Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - velocity.Y * 0.05f;
+ 				}
++				*/
+ 			}
+ 
+ 			releaseJump = false;
 @@ -16334,16 +_,24 @@
  
  					Rectangle rect = nPC.getRect();
@@ -3290,6 +3463,32 @@
  	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
  	{
  		dir = 0;
+@@ -16745,7 +_,7 @@
+ 	public void CarpetMovement()
+ 	{
+ 		bool flag = false;
+-		if (grappling[0] == -1 && carpet && !canJumpAgain_Cloud && !canJumpAgain_Sandstorm && !canJumpAgain_Blizzard && !canJumpAgain_Fart && !canJumpAgain_Sail && !canJumpAgain_Unicorn && !canJumpAgain_Santank && !canJumpAgain_WallOfFleshGoat && !canJumpAgain_Basilisk && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
++		if (grappling[0] == -1 && carpet && !AnyExtraJumpUsable() && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
+ 			if (controlJump && canCarpet) {
+ 				canCarpet = false;
+ 				carpetTime = 300;
+@@ -16783,6 +_,8 @@
+ 
+ 	public void DoubleJumpVisuals()
+ 	{
++		ExtraJumpLoader.JumpVisuals(this);
++		/*
+ 		if (isPerformingJump_Cloud && hasJumpOption_Cloud && !canJumpAgain_Cloud && (canJumpAgain_Sandstorm || !hasJumpOption_Sandstorm) && ((gravDir == 1f && velocity.Y < 0f) || (gravDir == -1f && velocity.Y > 0f))) {
+ 			int num = height;
+ 			if (gravDir == -1f)
+@@ -16894,6 +_,7 @@
+ 			Main.dust[num15].noGravity = true;
+ 			Main.dust[num15].noLight = true;
+ 		}
++		*/
+ 	}
+ 
+ 	public void WingMovement()
 @@ -16930,6 +_,7 @@
  			if (wingsLogic == 26) {
  				num2 = 0.75f;
@@ -3358,6 +3557,43 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
+@@ -17491,6 +_,7 @@
+ 
+ 	private void RefreshDoubleJumps()
+ 	{
++		/*
+ 		if (hasJumpOption_Cloud)
+ 			canJumpAgain_Cloud = true;
+ 
+@@ -17517,6 +_,28 @@
+ 
+ 		if (hasJumpOption_Basilisk)
+ 			canJumpAgain_Basilisk = true;
++		*/
++		RefreshExtraJumps();
++	}
++
++	/// <summary>
++	/// For each extra jump that is <see cref="ExtraJumpState.Enabled"/>, its <see cref="ExtraJumpState.Available"/> property set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
++	/// </summary>
++	public void RefreshExtraJumps()
++	{
++		ExtraJumpLoader.RefreshJumps(this);
++	}
++
++	/// <summary>
++	/// Sets the <see cref="ExtraJumpState.Available"/> flag for all extra jumps to <see langword="false"/>.<br/>
++	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
++	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
++	/// </summary>
++	public void ConsumeAllExtraJumps()
++	{
++		// Included to make consuming all extra jumps easier to write
++		ExtraJumpLoader.ConsumeAllJumps(this);
+ 	}
+ 
+ 	public void StickyMovement()
 @@ -18269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;
@@ -3656,6 +3892,56 @@
  		}
  
  		lastTileRangeX = tileRangeX;
+@@ -20085,6 +_,8 @@
+ 			movementAbilitiesCache.PasteInto(this);
+ 
+ 		if (mount.Active && mount.BlockExtraJumps) {
++			ConsumeAllExtraJumps();
++			/*
+ 			canJumpAgain_Cloud = false;
+ 			canJumpAgain_Sandstorm = false;
+ 			canJumpAgain_Blizzard = false;
+@@ -20094,11 +_,14 @@
+ 			canJumpAgain_Santank = false;
+ 			canJumpAgain_WallOfFleshGoat = false;
+ 			canJumpAgain_Basilisk = false;
++			*/
+ 		}
+ 		else if (velocity.Y == 0f || sliding) {
+ 			RefreshDoubleJumps();
+ 		}
+ 		else {
++			ExtraJumpLoader.ConsumeAndStopUnavailableJumps(this);
++			/*
+ 			if (!hasJumpOption_Cloud)
+ 				canJumpAgain_Cloud = false;
+ 
+@@ -20125,6 +_,7 @@
+ 
+ 			if (!hasJumpOption_Basilisk)
+ 				canJumpAgain_Basilisk = false;
++			*/
+ 		}
+ 
+ 		if (!carpet) {
+@@ -20511,6 +_,7 @@
+ 				}
+ 			}
+ 
++			/*
+ 			if (sandStorm) {
+ 				runAcceleration *= 1.5f;
+ 				maxRunSpeed *= 2f;
+@@ -20550,6 +_,9 @@
+ 				runAcceleration *= 1.5f;
+ 				maxRunSpeed *= 1.25f;
+ 			}
++			*/
++
++			ExtraJumpLoader.UpdateHorizontalSpeeds(this);
+ 
+ 			if (carpetFrame != -1) {
+ 				runAcceleration *= 1.25f;
 @@ -20594,6 +_,8 @@
  					mount.UpdateDrill(this, controlUp, controlDown);
  			}
@@ -3688,6 +3974,15 @@
  				if (flag21 && wings != 4 && wings != 22 && wings != 0 && wings != 24 && wings != 28 && wings != 30 && wings != 33 && wings != 45) {
  					bool flag22 = wingFrame == 3;
  					if (wings == 43 || wings == 44)
+@@ -20722,7 +_,7 @@
+ 				if (empressBrooch)
+ 					rocketTime = rocketTimeMax;
+ 
+-				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !canJumpAgain_Cloud) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpUsable()) {
+ 					if (rocketTime > 0) {
+ 						rocketTime--;
+ 						rocketDelay = 10;
 @@ -20916,6 +_,7 @@
  								Main.dust[num59].shader = GameShaders.Armor.GetSecondaryShader(cWings, this);
  							}
@@ -4369,6 +4664,23 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
+@@ -28403,6 +_,8 @@
+ 
+ 	private void CancelAllJumpVisualEffects()
+ 	{
++		ExtraJumpLoader.StopActiveJump(this, out _);
++		/*
+ 		isPerformingJump_Cloud = false;
+ 		isPerformingJump_Sandstorm = false;
+ 		isPerformingJump_Blizzard = false;
+@@ -28410,6 +_,7 @@
+ 		isPerformingJump_Sail = false;
+ 		isPerformingJump_Unicorn = false;
+ 		isPerformingJump_Santank = false;
++		*/
+ 	}
+ 
+ 	private void CancelAllBootRunVisualEffects()
 @@ -28501,6 +_,7 @@
  
  	private void UpdateVisibleAccessories()
@@ -7540,6 +7852,15 @@
  		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
+@@ -42834,7 +_,7 @@
+ 	{
+ 		for (int i = 3; i < 10; i++) {
+ 			Item item = armorArray[i];
+-			if (item.IsAir)
++			if (item.IsAir || item._globals.Length > 0)
+ 				continue;
+ 
+ 			for (int j = i + 1; j < 10; j++) {
 @@ -42856,7 +_,29 @@
  	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
  	{

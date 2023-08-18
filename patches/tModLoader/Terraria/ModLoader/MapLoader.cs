@@ -13,10 +13,12 @@ internal static class MapLoader
 	internal static bool initialized = false;
 	internal static readonly IDictionary<ushort, IList<MapEntry>> tileEntries = new Dictionary<ushort, IList<MapEntry>>();
 	internal static readonly IDictionary<ushort, IList<MapEntry>> wallEntries = new Dictionary<ushort, IList<MapEntry>>();
+	internal static readonly IDictionary<ushort, IList<MapEntry>> liquidEntries = new Dictionary<ushort, IList<MapEntry>>();
 	internal static readonly IDictionary<ushort, Func<string, int, int, string>> nameFuncs =
 		new Dictionary<ushort, Func<string, int, int, string>>();
 	internal static readonly IDictionary<ushort, ushort> entryToTile = new Dictionary<ushort, ushort>();
 	internal static readonly IDictionary<ushort, ushort> entryToWall = new Dictionary<ushort, ushort>();
+	internal static readonly IDictionary<ushort, ushort> entryToLiquid = new Dictionary<ushort, ushort>();
 
 	internal static int modTileOptions(ushort type)
 	{

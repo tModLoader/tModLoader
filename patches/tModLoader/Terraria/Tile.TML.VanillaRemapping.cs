@@ -63,7 +63,7 @@ public readonly partial struct Tile
 
 	internal ref byte liquid => ref LiquidAmount;
 
-	internal byte liquidType() => (byte)LiquidType;
+	internal ushort liquidType() => (ushort)LiquidType;
 	internal void liquidType(int liquidType) => LiquidType = liquidType;
 
 	internal bool lava() => LiquidType == LiquidID.Lava;

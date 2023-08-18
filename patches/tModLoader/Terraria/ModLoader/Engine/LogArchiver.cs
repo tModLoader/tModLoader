@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -29,8 +30,8 @@ internal static class LogArchiver
 	internal static void ArchiveLogs()
 	{
 		SetupLogDirs();
-            MoveZipsToArchiveDir();
-		MoveOldLogs();
+		MoveZipsToArchiveDir();
+		Archive();
 		DeleteOldArchives();
 	}
 
@@ -52,7 +53,7 @@ internal static class LogArchiver
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
-                return Enumerable.Empty<string>();
+			return Enumerable.Empty<string>();
 		}
 	}
 
@@ -86,19 +87,16 @@ internal static class LogArchiver
 		}
 	}
 
-	private static void MoveOldLogs()
+	private static void Archive()
 	{
-		foreach (string log in GetOldLogs()) {
-			Archive(log, Path.GetFileNameWithoutExtension(log));
-		}
-	}
+		var logFiles = GetOldLogs().ToList();
+		if (!logFiles.Any())
+			return;
 
-	private static void Archive(string logFile, string entryName)
-	{
-
+		// Get the Creation Time to use for the Zip.
 		DateTime time;
 		try {
-			time = File.GetCreationTime(logFile);
+			time = logFiles.Select(File.GetCreationTime).Min();
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
@@ -106,28 +104,42 @@ internal static class LogArchiver
 		}
 		int n = 1;
 
+		// Check if other Zips exist already for today
 		var pattern = new Regex($"{time:yyyy-MM-dd}-(\\d+)\\.zip");
-		string[] existingLogs = new string[0];
+		string[] existingLogArchives = new string[0];
 		try {
-			existingLogs = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToArray();
+			existingLogArchives = Directory.GetFiles(Logging.LogArchiveDir).Where(s => pattern.IsMatch(Path.GetFileName(s))).ToArray();
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
 			return;
 		}
 
-		if (existingLogs.Length > 0)
-			n = existingLogs.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
+		// Calculate what the new index should be if already exists for today
+		if (existingLogArchives.Length > 0)
+			n = existingLogArchives.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
 
+
+		// Initiate the ZIP.
 		try {
 			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
-				using (var stream = File.OpenRead(logFile)) {
-					zip.AddEntry(entryName, stream);
-					zip.Save();
+				foreach (var logFile in logFiles) {
+					var entryName = Path.GetFileNameWithoutExtension(logFile); // Note this gives client.log from client.log.old
+					using (var stream = File.OpenRead(logFile)) {
+						if (stream.Length > 10_000_000) {
+							// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
+							Logging.tML.Warn($"{logFile} exceeds 10MB, it will be truncated for the logs archive.");
+							zip.AddEntry(entryName, stream.ReadBytes(10_000_000));
+						}
+						else {
+							zip.AddEntry(entryName, stream);
+						}
+						zip.Save();
+					}
+
+					File.Delete(logFile);
 				}
 			}
-
-			File.Delete(logFile);
 		}
 		catch (Exception e) {
 			// Problem either in File.OpenRead, zip.Save or File.Delete IO ops

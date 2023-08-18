@@ -1,0 +1,45 @@
+--- src/TerrariaNetCore/Terraria/Utilities/FileUtilities.cs
++++ src/tModLoader/Terraria/Utilities/FileUtilities.cs
+@@ -7,7 +_,7 @@
+ 
+ namespace Terraria.Utilities;
+ 
+-public static class FileUtilities
++public static partial class FileUtilities
+ {
+ 	private static Regex FileNameRegex = new Regex("^(?<path>.*[\\\\\\/])?(?:$|(?<fileName>.+?)(?:(?<extension>\\.[^.]*$)|$))", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+ 
+@@ -39,6 +_,7 @@
+ 
+ 	public static void Copy(string source, string destination, bool cloud, bool overwrite = true)
+ 	{
++		/*
+ 		if (!cloud) {
+ 			try {
+ 				File.Copy(source, destination, overwrite);
+@@ -57,6 +_,8 @@
+ 
+ 		if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+ 			SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
++		*/
++		CopyExtended(source, destination, cloud, overwriteAlways: overwrite);
+ 	}
+ 
+ 	public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false)
+@@ -181,6 +_,7 @@
+ 
+ 	public static void CopyFolder(string sourcePath, string destinationPath)
+ 	{
++		/*
+ 		Directory.CreateDirectory(destinationPath);
+ 		string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
+ 		for (int i = 0; i < directories.Length; i++) {
+@@ -191,6 +_,8 @@
+ 		foreach (string obj in directories) {
+ 			File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
+ 		}
++		*/
++		CopyFolderEXT(sourcePath, destinationPath, isCloud: false, overwriteAlways: true);
+ 	}
+ 
+ 	public static void ProtectedInvoke(Action action)

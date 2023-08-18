@@ -42,7 +42,13 @@ public partial class Main
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
+	/// <summary>
+	/// A color that cycles through the colors like Rainbow Brick does.
+	/// </summary>
 	public static Color DiscoColor => new Color(DiscoR, DiscoG, DiscoB);
+	/// <summary>
+	/// The typical pulsing white color used for much of the text shown in-game.
+	/// </summary>
 	public static Color MouseTextColorReal => new Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
 	public static bool PlayerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
 

@@ -36,6 +36,7 @@ public abstract class GlobalInfoDisplay : ModType
 	/// Allows you to modify the display color (the color of the text displayed next to the icon) of an InfoDisplay.
 	/// </summary>
 	/// <param name="currentDisplay">The display you're modifying the display color for.</param>
-	/// <param name="displayColor">The display color of the current display</param>
-	public virtual void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor) { }
+	/// <param name="displayColor">The display color of the current display.</param>
+	/// <param name="displayShadowColor">The text outline color of the current display.</param>
+	public virtual void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor, ref Color displayShadowColor) { }
 }

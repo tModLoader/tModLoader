@@ -355,6 +355,7 @@ public static class ModContent
 	{
 		EffectsTracker.CacheVanillaState();
 		DamageClassLoader.RegisterDefaultClasses();
+		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
 	}
 
@@ -451,6 +452,7 @@ public static class ModContent
 		TileLoader.Unload();
 		PylonLoader.Unload();
 		WallLoader.Unload();
+		LiquidLoader.Unload();
 		ProjectileLoader.Unload();
 
 		NPCLoader.Unload();
@@ -463,6 +465,7 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
@@ -516,12 +519,14 @@ public static class ModContent
 	private static void ResizeArrays(bool unloading = false)
 	{
 		DamageClassLoader.ResizeArrays();
+		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
 		EquipLoader.ResizeAndFillArrays();
 		PrefixLoader.ResizeArrays();
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
+		LiquidLoader.ResizeArrays(unloading);
 		ProjectileLoader.ResizeArrays(unloading);
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();

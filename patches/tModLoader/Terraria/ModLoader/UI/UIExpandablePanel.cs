@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI;
@@ -30,7 +31,7 @@ internal class UIExpandablePanel : UIPanel
 
 		SetPadding(6);
 
-		expandButton = new UIHoverImage(CollapsedTexture, "Expand");
+		expandButton = new UIHoverImage(CollapsedTexture, Language.GetTextValue("tModLoader.ModConfigExpand"));
 		expandButton.Top.Set(3, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-25, 1f);
 		expandButton.OnLeftClick += (a, b) => {
@@ -57,7 +58,7 @@ internal class UIExpandablePanel : UIPanel
 				if (innerDimensions.Height > newHeight)
 					newHeight = 30 + innerDimensions.Height + PaddingBottom + PaddingTop;
 			}
-			expandButton.HoverText = "Collapse";
+			expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigCollapse");
 			expandButton.SetImage(ExpandedTexture);
 			OnExpanded?.Invoke();
 		}
@@ -66,7 +67,7 @@ internal class UIExpandablePanel : UIPanel
 				RemoveChild(item);
 			}
 			OnCollapsed?.Invoke();
-			expandButton.HoverText = "Expand";
+			expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigExpand");
 			expandButton.SetImage(CollapsedTexture);
 		}
 

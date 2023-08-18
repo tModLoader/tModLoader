@@ -93,6 +93,15 @@ Mods: {
 		}
 
 		Items: {
+			ExampleLastPrism: {
+				// DisplayName: Example Last Prism
+				/* Tooltip:
+					'''
+					A slightly different laser-firing Prism
+					Ignores NPC immunity frames and fires 10 beams at once instead of 6
+					''' */
+			}
+
 			ExamplePetItem: {
 				# This example omits "Mods.ExampleMod." from the substitution key and still works. The game will test variations of the translation key to check for other keys in the scope.
 				// DisplayName: "{$Common.PaperAirplane}"
@@ -230,11 +239,13 @@ Mods: {
 			ExampleHelmet: {
 				// DisplayName: Example Helmet
 				// Tooltip: This is a modded helmet.
+				// SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				// DisplayName: Example Hood
 				// Tooltip: This is a modded hood.
+				// SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
 			}
 
 			ExampleLeggings: {
@@ -835,6 +846,25 @@ Mods: {
 				// DisplayName: Example Campfire
 				// Tooltip: "{$ItemTooltip.Campfire}"
 			}
+
+			ExampleExtraJumpAccessory: {
+				// DisplayName: Example Extra Jump Accessory
+				// Tooltip: Allows the user to perform an example mid-air extra jump
+			}
+
+			ExampleMultiExtraJumpAccessory: {
+				// DisplayName: Example Multiple-Use Extra Jump Accessory
+				/* Tooltip:
+					'''
+					Allows the user to perform an example mid-air extra jump
+					This accessory has <JUMPS> jumps remaining
+					''' */
+			}
+
+			ExampleSwingingEnergySword: {
+				// DisplayName: Example Swinging Energy Sword
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -871,6 +901,9 @@ Mods: {
 			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			// ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
+			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
+			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
+			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
 		}
 
 		Buffs: {
@@ -1051,6 +1084,7 @@ Mods: {
 		}
 
 		// UI.ExampleResource: Example Resource: {0} / {1}
+		// WorldGen.ExampleOrePassMessage: Example Mod Ores
 	}
 }
 

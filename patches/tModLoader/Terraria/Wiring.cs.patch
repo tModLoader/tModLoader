@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Wiring.cs
 +++ src/tModLoader/Terraria/Wiring.cs
-@@ -7,36 +_,38 @@
+@@ -7,36 +_,42 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Localization;
@@ -12,6 +12,10 @@
  {
 +	//TML: Many many fields below were made public.	
  	public static bool blockPlayerTeleportationForOneIteration;
++	/// <summary>
++	/// True while wiring pulse code is running, which happens in <see cref="TripWire"/>. Check this before calling <see cref="Wiring.SkipWire(int, int)"/> in any code that is shared between wiring and other interactions to prevent buggy behavior.<br/><br/>
++	/// For example, the code in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs#L97">ExampleCampfire</see> needs to check <see cref="running"/> because the code is shared between wiring and right click interactions. 
++	/// </summary>
  	public static bool running;
  	private static Dictionary<Point16, bool> _wireSkip;
 -	private static DoubleStack<Point16> _wireList;
@@ -86,6 +90,24 @@
  	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
+@@ -376,7 +_,7 @@
+ 			if (liquid <= 0)
+ 				continue;
+ 
+-			byte b = Main.tile[num, num2].liquidType();
++			ushort b = Main.tile[num, num2].liquidType();
+ 			for (int j = 0; j < _numOutPump; j++) {
+ 				int num3 = _outPumpX[j];
+ 				int num4 = _outPumpY[j];
+@@ -384,7 +_,7 @@
+ 				if (liquid2 >= 255)
+ 					continue;
+ 
+-				byte b2 = Main.tile[num3, num4].liquidType();
++				ushort b2 = Main.tile[num3, num4].liquidType();
+ 				if (liquid2 == 0)
+ 					b2 = b;
+ 
 @@ -410,7 +_,14 @@
  		}
  	}

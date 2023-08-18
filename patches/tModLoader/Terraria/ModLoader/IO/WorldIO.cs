@@ -40,10 +40,7 @@ internal static class WorldIO
 			["alteredVanillaFields"] = SaveAlteredVanillaFields()
 		};
 
-		var stream = new MemoryStream();
-		TagIO.ToStream(tag, stream);
-		var data = stream.ToArray();
-		FileUtilities.Write(path, data, data.Length, isCloudSave);
+		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
 	//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
 	internal static void Load(string path, bool isCloudSave)
@@ -57,11 +54,10 @@ internal static class WorldIO
 		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			//LoadLegacy(buf);
-			return;
+			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 		}
 
-		var tag = TagIO.FromStream(new MemoryStream(buf));
+		var tag = TagIO.FromStream(buf.ToMemoryStream());
 		TileIO.LoadBasics(tag.GetCompound("tiles"));
 		TileIO.LoadContainers(tag.GetCompound("containers"));
 		LoadNPCs(tag.GetList<TagCompound>("npcs"));

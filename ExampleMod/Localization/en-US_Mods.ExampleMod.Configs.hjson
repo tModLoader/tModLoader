@@ -178,6 +178,11 @@ ModConfigShowcaseDataTypes: {
 		Label: Custom Key
 		Tooltip: ""
 	}
+
+	prefixDefinitionDictionaryExample: {
+		Label: PrefixDefinition Dictionary Example
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDefaultValues: {

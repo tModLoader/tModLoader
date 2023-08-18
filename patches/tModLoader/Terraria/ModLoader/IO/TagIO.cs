@@ -97,7 +97,7 @@ public static class TagIO
 			v => (byte[]) v.Clone(),
 			() => Array.Empty<byte>()),
 		new ClassPayloadHandler<string>(
-			r => Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt16())),
+			r => Encoding.UTF8.GetString(r.BaseStream.ReadByteSpan(r.ReadInt16())),
 			(w, v) => {
 				var b = Encoding.UTF8.GetBytes(v);
 				w.Write((short)b.Length);
@@ -188,6 +188,10 @@ public static class TagIO
 	public static object Serialize(object value)
 	{
 		ArgumentNullException.ThrowIfNull(value);
+
+		// some very quick checks which can save on heavier dict lookups
+		if (value is string or int or TagCompound or List<TagCompound>)
+			return value;
 
 		var type = value.GetType();
 
@@ -332,7 +336,16 @@ public static class TagIO
 
 	public static TagCompound FromStream(Stream stream, bool compressed = true)
 	{
-		if (compressed) stream = new GZipStream(stream, CompressionMode.Decompress);
+		if (compressed) {
+			stream = new GZipStream(stream, CompressionMode.Decompress);
+
+			// Can cut parsing times by up to half
+			// The deserialized tag is stored in full memory anyway, so assume we have enough for the serialized representation too
+			var ms = new MemoryStream(1<<20);
+			stream.CopyTo(ms);
+			ms.Position = 0;
+			stream = ms;
+		}
 		return Read(new BigEndianReader(stream));
 	}
 

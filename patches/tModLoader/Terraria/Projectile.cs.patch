@@ -863,7 +863,7 @@
  											int num18 = NewProjectile(GetProjectileSource_FromThis(), nPC.Center, Vector2.Zero, 918, num17, 0f, owner);
  											Main.projectile[num18].localNPCImmunity[i] = -1;
 -											num6 += num17;
-+											modifiers.ScalingBonusDamage += 0.75f * num13; //num6 += num17;
++											modifiers.ScalingBonusDamage += 1.75f * num13; //num6 += num17;
  										}
  									}
  

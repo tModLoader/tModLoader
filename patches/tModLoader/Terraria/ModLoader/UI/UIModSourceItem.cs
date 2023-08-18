@@ -99,7 +99,7 @@ internal class UIModSourceItem : UIPanel
 		string modFolderName = Path.GetFileName(_mod);
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 		if (File.Exists(csprojFile)) {
-			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, Language.GetTextValue("tModLoader.MSOpenCSProj")) {
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};

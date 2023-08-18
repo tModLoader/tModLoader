@@ -15,8 +15,9 @@
 		"MenuModPackDescription": "Zarządzaj paczkami Modów (zapis obecnie używanych Modów oraz ich konfiguracji do paczki Modów, import/eksport paczek Modów). Funkja eksperymentalna na ten moment.",
 		"MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
 		// //No Longer In Use. "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
-		// "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
-		"MonthlyFreezeNotification": "Comiesięczny okres przejściowy dla autorów Modów (tzw. \"alpha freeze\") właśnie się rozpoczął. W ramach przypomnienia, od 21 dnia każdego miesiąca rozpoczyna się okres, w którym zachęca się autorów Modów do aktualizacji swoich Modów oraz ich publikacji na kanale (beta) 1.4-preview, żeby zapewnić kompatybilność Modów z nową wersją tModLoadera. Nowa wersja tModLoadera zostanie oficjalnie opublikowana 1 dnia następnego miesiąca.\n\nNiezaktualizowane przez autorów Mody pod kątem nowej wersji tModLoadera mogą przestać działać po opublikowaniu nowej wersji tModLoadera (od 1 dnia następnego miesiąca).\n\nDołącz do serwera Discord tModLoadera, żeby uzyskać więcej informacji o zmianach w kodzie/API tModLoadera oraz o instrukcjach migracji kodu do nowej wersji. Kliknij \"Więcej informacji\", żeby uzyskać więcej informacji odnośnie naszego cyklu wydawania nowych wersji tModLoadera.",
+		// // "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
+		// // "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
+		// "WelcomeMessagePreview": "WARNING: Player Beware!!\nThis is a monthly preview build with breaking changes, and thus mods will be broken.\n[c/ff1919:DO NOT ask modders to fix their mods for this preview build.]\nThis Preview branch provides opportunity for modders to update their mods on THEIR own schedule.\n\nClick \"More Info\" to learn more about the continuous release cycle.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes.",
 		"FirstLaunchWelcomeMessage": "Witaj w tModLoader 1.4.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki Mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.\n\nJeżeli używałeś do tej pory wersji 1.3 tModLoadera, możesz przywrócić wersję 1.3 poprzez zmianę bety w ustawieniach Steam na 1.3-legacy. Jeżeli w wersji 1.4 nie możesz znaleźć interesujących Ciebie modów, może to oznaczać że nie zostały jeszcze przystosowane do nowej wersji tModLoadera i są na ten moment dostępne tylko w wersji 1.3 tModLoadera.",
 		"WhatsNewMessage": "Poniżej znajdują się podstawowe zmiany w stosunku do ostatniego uruchomienia tModLoadera 1.4. Może się okazać, że mody, które odnoszą się do tych zmian, wymagają przebudowy przez autora. Odwiedź GitHub, aby zobaczyć więcej szczegółów:\n",
 		"ShowNewUpdatedModsInfoMessage": "Poniższe Mody zostały zaktualizowane lub dodane do Steam Workshop od czasu ostatniego uruchomienia gry (możesz wyłączyć to powiadomienie w ustawieniach):\n",
@@ -33,8 +34,11 @@
 		"MenuModsEnabled": "{0} {^0:Mod Włączony;Mody Włączone;Modów Włączonych}",
 		"MenuModUpdatesAvailable": "({0} {^0:Aktualizacja Moda dostępna;Aktualizacje Modów dostępne;Aktualizacji Modów dostępnych}!)",
 		"AudioNotSupported": "Nie znaleziono sprzętu audio. Wyłączenie wszystkich urządzeń audio.",
-		"HowToAccessLegacytModLoaderButton": "Jak przywrócić tModLoadera dla wersji gry 1.3",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "Lista modów",
@@ -54,6 +58,8 @@
 		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij, by włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
 		"ModDidNotFullyUnloadWarning": "Ten mod nie został w pełni rozładowany podczas ostatniego rozładunku.\n(To jest wiadomość dla twórcy moda)",
@@ -99,6 +105,14 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
 
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
@@ -355,6 +369,12 @@
 		"PlayerCustomDataFail": "Wystąpił problem podczas ładowania niestandardowych danych dla gracza",
 		"PlayerLoadWorldFail": "Wystąpił problem podczas próby załadowania świata",
 		"CloudWarning": "Osiągnięto limit przestrzeni dyskowej w chmurze, nie można przenieść do chmury",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
 
 		// Mod Sources
 		"MSBuild": "Zbuduj",
@@ -362,6 +382,7 @@
 		"MSBuildAll": "Zbuduj wszystkie",
 		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
 		"MSUpgradeCSProj": "Uaktualnij plik .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Aktualizuj pliki .lang do .hjson (niedestrukcyjnie)",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
@@ -488,7 +509,7 @@
 		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Proszę przywrócić swoją instalację Terrarii, a następnie zainstalować tModLoader przez Steam lub postępować zgodnie z przewodnikiem README.txt, aby zainstalować go ręcznie.",
 		"LogPathHint": "Plik {0} zawierający informacje o błędach został wygenerowany w następującym folderze:\n{1}\n(Musisz udostępnić ten plik, gdy prosisz o pomoc)",
-		"OutOfMemoryHint": "Wskazówka: Spróbuj grać z mniejszą ilością modów na raz, lub sprawdź czy jakiś mod nie zużywa zbyt dużo pamięci. Alternatywnie można zainstalować 64-bitowy tModLoader.",
+		"OutOfMemoryHint": "Wskazówka: Spróbuj grać z mniejszą ilością modów na raz, lub sprawdź czy jakiś mod nie zużywa zbyt dużo pamięci.",
 		"ModExceptionHint": "Wskazówka: To pewnie wina modów. Wyłączaj moddy jeden po drugim, aby sprawdzić, czy problem nadal występuje.",
 		"OneDriveHint": "Wskazówka: Spróbuj zainstalować/włączyć OneDrive. Naciśnij prawy przycisk myszy na folderze dokumentów i aktywuj opcję \"Zawsze zapisuj w tym urządzeniu\"",
 		"AntivirusHint": "Wskazówka: Jeśli masz antywirusa, spróbuj dodać Terrarię do jego białej listy/listy wykluczeń.",
@@ -537,7 +558,7 @@
 		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",
@@ -841,6 +862,7 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis",
 		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
 		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",

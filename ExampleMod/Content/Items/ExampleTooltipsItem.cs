@@ -44,15 +44,16 @@ namespace ExampleMod.Content.Items
 				}
 			}
 
-			// Here we will remove all tooltips whose title end with ':RemoveMe'
+			// Here we will hide all tooltips whose title end with ':RemoveMe'
 			// One like that is added at the start of this method
-			tooltips.RemoveAll(l => l.Name.EndsWith(":RemoveMe"));
+			foreach (var l in tooltips) {
+				if (l.Name.EndsWith(":RemoveMe")) {
+					l.Hide();
+				}
+			}
 
-			// Another method of removal can be done if you know the index of the tooltip:
-			// tooltips.RemoveAt(index);
-
-			// You can also remove a specific line, if you have access to that object:
-			// tooltips.Remove(tooltipLine);
+			// Another method of hiding can be done if you want to hide just one line.
+			// tooltips.FirstOrDefault(x => x.Mod == "ExampleMod" && x.Name == "Verbose:RemoveMe")?.Hide();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
