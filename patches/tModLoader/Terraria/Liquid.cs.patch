@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Liquid.cs
 +++ src/tModLoader/Terraria/Liquid.cs
+@@ -3,6 +_,7 @@
+ using Terraria.GameContent.NetModules;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.WorldBuilding;
+ 
 @@ -121,7 +_,7 @@
  		bool flag = tile.honey();
  		bool flag2 = tile.shimmer();
@@ -9,3 +17,86 @@
  		tile.liquid = 0;
  		bool flag3 = true;
  		while (true) {
+@@ -350,7 +_,7 @@
+ 			kill = 999;
+ 			return;
+ 		}
+-
++		/*
+ 		if (tile5.lava()) {
+ 			LavaCheck(x, y);
+ 			if (!quickFall) {
+@@ -417,6 +_,39 @@
+ 				}
+ 			}
+ 		}
++		*/
++
++		for (int i = 0; i <�LiquidLoader.LiquidCount; i++) {
++			if (tile5.LiquidType == i) {
++				if (tile5.LiquidType == LiquidID.Lava) {
++					LavaCheck(x, y);
++				}
++				else {
++					LiquidCheck(x, y, i);
++				}
++				if (!quickFall) {
++					if (delay < LiquidLoader.liquidProperties[i].FallDelay) {
++						delay++;
++						return;
++					}
++
++					delay = 0;
++				}
++				break;
++			} else {
++				if (tile.LiquidType == i)
++					AddWater(x - 1, y);
++
++				if (tile2.LiquidType == i)
++					AddWater(x + 1, y);
++
++				if (tile3.LiquidType == i)
++					AddWater(x, y - 1);
++
++				if (tile4.LiquidType == i)
++					AddWater(x, y + 1);
++			} 
++		}
+ 
+ 		if ((!tile4.nactive() || !Main.tileSolid[tile4.type] || Main.tileSolidTop[tile4.type]) && (tile4.liquid <= 0 || tile4.liquidType() == tile5.liquidType()) && tile4.liquid < byte.MaxValue) {
+ 			bool flag = false;
+@@ -1003,6 +_,7 @@
+ 
+ 			if (!tile5.active()) {
+ 				tile5.liquid = 0;
++				/*
+ 				switch (thisLiquidType) {
+ 					case 1:
+ 						tile5.lava(lava: false);
+@@ -1014,6 +_,8 @@
+ 						tile5.shimmer(shimmer: false);
+ 						break;
+ 				}
++				*/
++				tile5.LiquidType = 0;
+ 
+ 				TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
+ 				if (!WorldGen.gen)
+@@ -1064,6 +_,7 @@
+ 			bool shimmerNearby2 = tile4.shimmer();
+ 			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
+ 			tile5.liquid = 0;
++			/*
+ 			switch (thisLiquidType) {
+ 				case 1:
+ 					tile5.lava(lava: false);
+@@ -1075,6 +_,8 @@
+ 					tile5.shimmer(shimmer: false);
+ 					break;
+ 			}
++			*/
++			tile5.LiquidType = 0;
+ 
+ 			tile4.liquid = 0;
+ 			TileChangeType liquidChangeType2 = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType2);
