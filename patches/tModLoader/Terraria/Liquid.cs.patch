@@ -17,137 +17,85 @@
  		tile.liquid = 0;
  		bool flag3 = true;
  		while (true) {
-@@ -351,71 +_,36 @@
+@@ -350,7 +_,7 @@
+ 			kill = 999;
  			return;
  		}
- 
--		if (tile5.lava()) {
--			LavaCheck(x, y);
--			if (!quickFall) {
--				if (delay < 5) {
--					delay++;
--					return;
--				}
 -
--				delay = 0;
--			}
--		}
--		else {
--			if (tile.lava())
--				AddWater(x - 1, y);
--
--			if (tile2.lava())
--				AddWater(x + 1, y);
--
--			if (tile3.lava())
--				AddWater(x, y - 1);
--
--			if (tile4.lava())
--				AddWater(x, y + 1);
--
--			if (tile5.honey()) {
--				HoneyCheck(x, y);
++		/*
+ 		if (tile5.lava()) {
+ 			LavaCheck(x, y);
+ 			if (!quickFall) {
+@@ -417,6 +_,39 @@
+ 				}
+ 			}
+ 		}
++		*/
++
 +		for (int i = 0; i <�LiquidLoader.LiquidCount; i++) {
 +			if (tile5.LiquidType == i) {
-+				if (tile5.LiquidType == 1) {
++				if (tile5.LiquidType == LiquidID.Lava) {
 +					LavaCheck(x, y);
 +				}
 +				else {
 +					LiquidCheck(x, y, i);
 +				}
- 				if (!quickFall) {
--					if (delay < 10) {
++				if (!quickFall) {
 +					if (delay < LiquidLoader.liquidProperties[i].FallDelay) {
- 						delay++;
- 						return;
- 					}
- 
- 					delay = 0;
- 				}
--			}
--			else {
--				if (tile.honey())
++						delay++;
++						return;
++					}
++
++					delay = 0;
++				}
 +				break;
 +			} else {
 +				if (tile.LiquidType == i)
- 					AddWater(x - 1, y);
- 
--				if (tile2.honey())
++					AddWater(x - 1, y);
++
 +				if (tile2.LiquidType == i)
- 					AddWater(x + 1, y);
- 
--				if (tile3.honey())
++					AddWater(x + 1, y);
++
 +				if (tile3.LiquidType == i)
- 					AddWater(x, y - 1);
- 
--				if (tile4.honey())
++					AddWater(x, y - 1);
++
 +				if (tile4.LiquidType == i)
- 					AddWater(x, y + 1);
--
--				if (tile5.shimmer()) {
--					ShimmerCheck(x, y);
--				}
--				else {
--					if (tile.shimmer())
--						AddWater(x - 1, y);
--
--					if (tile2.shimmer())
--						AddWater(x + 1, y);
--
--					if (tile3.shimmer())
--						AddWater(x, y - 1);
--
--					if (tile4.shimmer())
--						AddWater(x, y + 1);
--				}
--			}
++					AddWater(x, y + 1);
 +			} 
- 		}
++		}
  
  		if ((!tile4.nactive() || !Main.tileSolid[tile4.type] || Main.tileSolidTop[tile4.type]) && (tile4.liquid <= 0 || tile4.liquidType() == tile5.liquidType()) && tile4.liquid < byte.MaxValue) {
-@@ -1003,17 +_,7 @@
+ 			bool flag = false;
+@@ -1003,6 +_,7 @@
  
  			if (!tile5.active()) {
  				tile5.liquid = 0;
--				switch (thisLiquidType) {
--					case 1:
--						tile5.lava(lava: false);
--						break;
--					case 2:
--						tile5.honey(honey: false);
--						break;
--					case 3:
--						tile5.shimmer(shimmer: false);
--						break;
--				}
++				/*
+ 				switch (thisLiquidType) {
+ 					case 1:
+ 						tile5.lava(lava: false);
+@@ -1014,6 +_,8 @@
+ 						tile5.shimmer(shimmer: false);
+ 						break;
+ 				}
++				*/
 +				tile5.LiquidType = 0;
  
  				TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
  				if (!WorldGen.gen)
-@@ -1049,7 +_,7 @@
- 
- 			if (tile5.liquid < 24) {
- 				tile5.liquid = 0;
--				tile5.liquidType(0);
-+				tile5.LiquidType = 0;
- 				if (Main.netMode == 2)
- 					NetMessage.SendTileSquare(-1, x - 1, y, 3);
- 
-@@ -1064,17 +_,7 @@
+@@ -1064,6 +_,7 @@
  			bool shimmerNearby2 = tile4.shimmer();
  			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
  			tile5.liquid = 0;
--			switch (thisLiquidType) {
--				case 1:
--					tile5.lava(lava: false);
--					break;
--				case 2:
--					tile5.honey(honey: false);
--					break;
--				case 3:
--					tile5.shimmer(shimmer: false);
--					break;
--			}
++			/*
+ 			switch (thisLiquidType) {
+ 				case 1:
+ 					tile5.lava(lava: false);
+@@ -1075,6 +_,8 @@
+ 					tile5.shimmer(shimmer: false);
+ 					break;
+ 			}
++			*/
 +			tile5.LiquidType = 0;
  
  			tile4.liquid = 0;
