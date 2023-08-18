@@ -71,6 +71,11 @@ public static class LiquidLoader
 		liquids.Clear();
 	}
 
+	public static void ModifyLight(int type, int i, int j, ref float r, ref float g, ref float b)
+	{
+		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
+	}
+
 	static LiquidLoader()
 	{
 		liquidProperties = new LiquidProperties[] {
