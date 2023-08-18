@@ -1,9 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/ChatInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/ChatInitializer.cs
-@@ -1,11 +_,15 @@
-+using Microsoft.Xna.Framework.Input;
-+using System.Text.RegularExpressions;
- using Terraria.Chat.Commands;
+@@ -2,10 +_,12 @@
  using Terraria.GameContent.UI;
  using Terraria.GameContent.UI.Chat;
  using Terraria.Localization;

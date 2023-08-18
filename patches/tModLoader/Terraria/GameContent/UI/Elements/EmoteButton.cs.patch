@@ -1,10 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/EmoteButton.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/EmoteButton.cs
-@@ -1,14 +_,17 @@
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
+@@ -3,12 +_,14 @@
  using ReLogic.Content;
-+using System;
  using Terraria.Audio;
  using Terraria.Localization;
 +using Terraria.ModLoader;

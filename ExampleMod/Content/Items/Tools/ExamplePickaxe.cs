@@ -3,7 +3,6 @@ using ExampleMod.Content.EmoteBubbles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
@@ -36,7 +35,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void UseAnimation(Player player) {
 			// Randomly causes the player to use Example Pickaxe Emote when using the item
-			if (Main.myPlayer == player.whoAmI && Main.rand.NextBool(20)) {
+			if (Main.myPlayer == player.whoAmI && player.ItemTimeIsZero && Main.rand.NextBool(60)) {
 				EmoteBubble.MakePlayerEmote(player, ModContent.EmoteBubbleType<ExamplePickaxeEmote>());
 			}
 		}

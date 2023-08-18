@@ -1,15 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/EmoteBubble.cs
 +++ src/tModLoader/Terraria/GameContent/UI/EmoteBubble.cs
-@@ -1,25 +_,31 @@
- using System;
- using System.Collections.Generic;
-+using Terraria.ModLoader;
- using Microsoft.Xna.Framework;
+@@ -4,22 +_,26 @@
  using Microsoft.Xna.Framework.Graphics;
-+using ReLogic.Content;
-+using System.Linq;
  using Terraria.GameContent.Events;
  using Terraria.ID;
++using Terraria.ModLoader;
  
  namespace Terraria.GameContent.UI;
  
