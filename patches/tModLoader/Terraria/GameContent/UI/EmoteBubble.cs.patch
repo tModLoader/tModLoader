@@ -33,11 +33,11 @@
  	public int frameCounter;
  	public int frame;
  	public const int EMOTE_SHEET_HORIZONTAL_FRAMES = 8;
-@@ -64,7 +_,22 @@
+@@ -64,7 +_,23 @@
  			else if (anch.entity is Projectile)
  				item = 2;
  
-+			// TML: #WorldUIAnchorProjectileSyncFix: Explanation below
++			// #WorldUIAnchorProjectileSyncFix: Explanation below
 +			// Vanilla never uses Projectile as a WorldUIAnchor, but if mods do, it is very likely to desync.
 +			// As whoAmI is not enough to match a projectile between sides, TML rewrites it to use identity + owner instead.
 +			// It does so by packing the anchor entity type together with the owner if it's a projectile.
@@ -52,6 +52,7 @@
 +					item = projectile.owner << 8 | item;
 +				}
 +			}
++
 -			return Tuple.Create(item, anch.entity.whoAmI);
 +			return Tuple.Create(item, whoAmI);
  		}
@@ -61,7 +62,7 @@
  
  	public static WorldUIAnchor DeserializeNetAnchor(int type, int meta)
  	{
-+		// TML: #WorldUIAnchorProjectileSyncFix
++		// #WorldUIAnchorProjectileSyncFix
 +		// Unpack type for the switch case evaluation, use the owner in the Projectile case
 +		int packedOwnerType = type;
 +		type = packedOwnerType & 0xFF; // Masking has no effect on vanilla value
