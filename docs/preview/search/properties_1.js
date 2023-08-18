@@ -8,9 +8,12 @@ var searchData=
   ['bestiaryicon_5',['BestiaryIcon',['../class_mod_biome.html#a3026c1396f5d66430dda41dee39734cc',1,'ModBiome']]],
   ['biomecampfireitemtype_6',['BiomeCampfireItemType',['../class_mod_biome.html#a32b4fd7d34c32fb78af362cb7e225fc7',1,'ModBiome']]],
   ['biometorchitemtype_7',['BiomeTorchItemType',['../class_mod_biome.html#a454490cc5a3ff7ffb87450efe406a209',1,'ModBiome']]],
-  ['bossbar_8',['BossBar',['../class_n_p_c.html#a19da99bc7becda9172cb9002eacdd3d0',1,'NPC']]],
-  ['bossheadtexture_9',['BossHeadTexture',['../class_mod_n_p_c.html#af2700325531a60ac9e61e01970a0c3b0',1,'ModNPC']]],
-  ['boundargs_10',['BoundArgs',['../class_localized_text.html#ae45fade564ccb84088f81047233a84d7',1,'LocalizedText']]],
-  ['buffid_11',['BuffId',['../class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652',1,'EntitySource_Buff']]],
-  ['buffindex_12',['BuffIndex',['../class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4',1,'EntitySource_Buff']]]
+  ['blocktype_8',['BlockType',['../struct_tile.html#aa4a432e10972f4a65ef696d7d1abb202',1,'Tile']]],
+  ['bluewire_9',['BlueWire',['../struct_tile.html#a2dc13acb96039aead01d169ba0c119a9',1,'Tile']]],
+  ['bossbar_10',['BossBar',['../class_n_p_c.html#a19da99bc7becda9172cb9002eacdd3d0',1,'NPC']]],
+  ['bossheadtexture_11',['BossHeadTexture',['../class_mod_n_p_c.html#af2700325531a60ac9e61e01970a0c3b0',1,'ModNPC']]],
+  ['bottomslope_12',['BottomSlope',['../struct_tile.html#a31802c0a3113b205b15f7154c420735e',1,'Tile']]],
+  ['boundargs_13',['BoundArgs',['../class_localized_text.html#ae45fade564ccb84088f81047233a84d7',1,'LocalizedText']]],
+  ['buffid_14',['BuffId',['../class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652',1,'EntitySource_Buff']]],
+  ['buffindex_15',['BuffIndex',['../class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4',1,'EntitySource_Buff']]]
 ];

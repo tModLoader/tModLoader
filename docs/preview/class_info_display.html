@@ -93,6 +93,9 @@ $(document).ready(function(){initNavTree('class_info_display.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
+<p>Represents an informational display toggle typically provided by informational accessories.The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> property determines if the <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> could be shown to the user. The game tracks the players desired visibility of active <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> through the Player.hideInfo array.  
+ <a href="class_info_display.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_mod_textured_type.html">ModTexturedType</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
 
 <p>Inherited by <a class="el" href="class_vanilla_info_display.html">VanillaInfoDisplay</a>.</p>
@@ -100,7 +103,7 @@ $(document).ready(function(){initNavTree('class_info_display.html',''); initResi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7799c04325bac7bc63c691f08ad60992"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">Active</a> ()</td></tr>
-<tr class="memdesc:a7799c04325bac7bc63c691f08ad60992"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this info display should be active.  <a href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">More...</a><br /></td></tr>
+<tr class="memdesc:a7799c04325bac7bc63c691f08ad60992"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this info display should be active.This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>.  <a href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">More...</a><br /></td></tr>
 <tr class="separator:a7799c04325bac7bc63c691f08ad60992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa967a2fca070ff418d46b861d0ca30cb"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#aa967a2fca070ff418d46b861d0ca30cb">DisplayValue</a> (ref Color displayColor, ref Color displayShadowColor)</td></tr>
 <tr class="memdesc:aa967a2fca070ff418d46b861d0ca30cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when viewing this display in normal play, right next to the icon. <br  />
@@ -266,7 +269,7 @@ static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><t
 <tr class="separator:a57125d4e01379e9d8e1281d00321af29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="memItemLeft" align="right" valign="top"><a id="ac53cc325cd4be38efbf6c00d972a9c4b" name="ac53cc325cd4be38efbf6c00d972a9c4b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the internal ID of this <a class="el" href="class_info_display.html">InfoDisplay</a>. <br /></td></tr>
+<tr class="memdesc:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the internal ID of this <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a>.Also serves as the index for Player.hideInfo. <br /></td></tr>
 <tr class="separator:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacf2f77d9b3590a69b905b6a7e015480"><td class="memItemLeft" align="right" valign="top"><a id="aacf2f77d9b3590a69b905b6a7e015480" name="aacf2f77d9b3590a69b905b6a7e015480"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaHoverTexture</b><code> [get]</code></td></tr>
@@ -342,7 +345,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="memdesc:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The category used by this modded content for use in localization keys. Localization keys follow the pattern of "Mods.{ModName}.{Category}.{ContentName}.{DataName}". The Localization wiki pageexplains how custom <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a> classes can utilize this.  <a href="interface_i_localized_mod_type.html#ac939fd71685c5b25062243257f03e1db">More...</a><br /></td></tr>
 <tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents an informational display toggle typically provided by informational accessories</p>
+<p >.</p>
+<p >The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> property determines if the <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> could be shown to the user. The game tracks the players desired visibility of active <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> through the Player.hideInfo array. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7799c04325bac7bc63c691f08ad60992" name="a7799c04325bac7bc63c691f08ad60992"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7799c04325bac7bc63c691f08ad60992">&#9670;&nbsp;</a></span>Active()</h2>
 
@@ -366,7 +373,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>This dictates whether or not this info display should be active. </p>
+<p>This dictates whether or not this info display should be active.This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>. </p>
 
 <p>Reimplemented in <a class="el" href="class_watches_info_display.html#a12ebe98f820700550500d304ebdc1228">WatchesInfoDisplay</a>, <a class="el" href="class_weather_radio_info_display.html#ae605de379c86a11effbb5430eca05b66">WeatherRadioInfoDisplay</a>, <a class="el" href="class_sextant_info_display.html#a747b1cd51057d2d10d353e9161882721">SextantInfoDisplay</a>, <a class="el" href="class_fish_finder_info_display.html#a716ad3524337148ccdad4a5fa8c193ad">FishFinderInfoDisplay</a>, <a class="el" href="class_metal_detector_info_display.html#ab710e3c000d437ac2fc1af905b8a2439">MetalDetectorInfoDisplay</a>, <a class="el" href="class_lifeform_analyzer_info_display.html#a6a6296dc87a0ea5f6cbc935082a55a44">LifeformAnalyzerInfoDisplay</a>, <a class="el" href="class_radar_info_display.html#ab5c8441816d070bea037bd6d2a66ec38">RadarInfoDisplay</a>, <a class="el" href="class_tally_counter_info_display.html#a760d62fe493673620e4b0e0aeac90a06">TallyCounterInfoDisplay</a>, <a class="el" href="class_dummy_info_display.html#a5a8ed157499ddf2502ff8ee1ab2ce719">DummyInfoDisplay</a>, <a class="el" href="class_d_p_s_meter_info_display.html#a96b85b5fa2f4c4cd426a63215c6e1d9e">DPSMeterInfoDisplay</a>, <a class="el" href="class_stopwatch_info_display.html#a10031152437ee1fa39696762bfd75e6c">StopwatchInfoDisplay</a>, <a class="el" href="class_compass_info_display.html#aedeff6bacc6190faaa71b5d73de05f38">CompassInfoDisplay</a>, and <a class="el" href="class_depth_meter_info_display.html#a900662526d87d59cecc48e4c3ef0eb85">DepthMeterInfoDisplay</a>.</p>
 

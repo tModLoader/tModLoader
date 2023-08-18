@@ -225,6 +225,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>blockPlayerTel
 <tr class="separator:acf455ec34438b658b2300498024c7720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5b23018a7cc0bf681e26ecb03e85762"><td class="memItemLeft" align="right" valign="top"><a id="ac5b23018a7cc0bf681e26ecb03e85762" name="ac5b23018a7cc0bf681e26ecb03e85762"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>running</b></td></tr>
+<tr class="memdesc:ac5b23018a7cc0bf681e26ecb03e85762"><td class="mdescLeft">&#160;</td><td class="mdescRight">True while wiring pulse code is running, which happens in <a class="el" href="class_wiring.html#ad92717ffc60287cbf5747237af64440e" title="Used to send a single to wiring wired up to the specified area. The parameters represent the tile coo...">TripWire</a>. Check this before calling <a class="el" href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89" title="Use to prevent wire signals from running for the provided coordinates. Typically used in multi-tiles ...">Wiring.SkipWire(int, int)</a> in any code that is shared between wiring and other interactions to prevent buggy behavior.<br  />
+<br  />
+ For example, the code in ExampleCampfireneeds to check <a class="el" href="class_wiring.html#ac5b23018a7cc0bf681e26ecb03e85762" title="True while wiring pulse code is running, which happens in TripWire. Check this before calling Wiring....">running</a> because the code is shared between wiring and right click interactions. <br /></td></tr>
 <tr class="separator:ac5b23018a7cc0bf681e26ecb03e85762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>

@@ -103,6 +103,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac6c47c320817d9c2c5756e6e98290952"><td class="memItemLeft" align="right" valign="top"><a id="ac6c47c320817d9c2c5756e6e98290952" name="ac6c47c320817d9c2c5756e6e98290952"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>BeginPlaytimeTracking</b> ()</td></tr>
 <tr class="separator:ac6c47c320817d9c2c5756e6e98290952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa363dc515275f644481dd3d94e777f6b"><td class="memItemLeft" align="right" valign="top"><a id="aa363dc515275f644481dd3d94e777f6b" name="aa363dc515275f644481dd3d94e777f6b"></a>
+static EUGCQuery&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateQuerySort</b> (<a class="el" href="struct_query_parameters.html">QueryParameters</a> qParams)</td></tr>
+<tr class="separator:aa363dc515275f644481dd3d94e777f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a837095659444e8bf4e186d5da9dc368a"><td class="memItemLeft" align="right" valign="top"><a id="a837095659444e8bf4e186d5da9dc368a" name="a837095659444e8bf4e186d5da9dc368a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DoesWorkshopItemNeedUpdate</b> (PublishedFileId_t publishId)</td></tr>
 <tr class="separator:a837095659444e8bf4e186d5da9dc368a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,15 +124,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FetchPlayTimeS
 <tr class="memitem:a6a92b9a04ba4242402de4408fbd3dc20"><td class="memItemLeft" align="right" valign="top"><a id="a6a92b9a04ba4242402de4408fbd3dc20" name="a6a92b9a04ba4242402de4408fbd3dc20"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FetchPreviewImageUrl</b> (UGCQueryHandle_t handle, uint index, out string modIconUrl)</td></tr>
 <tr class="separator:a6a92b9a04ba4242402de4408fbd3dc20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fe58fa8dd1b15ca6b35a54b87cbadf1"><td class="memItemLeft" align="right" valign="top"><a id="a2fe58fa8dd1b15ca6b35a54b87cbadf1" name="a2fe58fa8dd1b15ca6b35a54b87cbadf1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ForceCallbacks</b> ()</td></tr>
-<tr class="separator:a2fe58fa8dd1b15ca6b35a54b87cbadf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a711cdaf1e18b42a526d7c46be0efe743"><td class="memItemLeft" align="right" valign="top"><a id="a711cdaf1e18b42a526d7c46be0efe743" name="a711cdaf1e18b42a526d7c46be0efe743"></a>
-static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateModBrowserQuery</b> (string queryCursor, <a class="el" href="class_list.html">List</a>&lt; string &gt; tags=null, string internalName=null)</td></tr>
-<tr class="separator:a711cdaf1e18b42a526d7c46be0efe743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad722e9a8d6280183b3e95d1d1112dc29"><td class="memItemLeft" align="right" valign="top"><a id="ad722e9a8d6280183b3e95d1d1112dc29" name="ad722e9a8d6280183b3e95d1d1112dc29"></a>
-static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateSingleItemQuery</b> (ulong publishId)</td></tr>
-<tr class="separator:ad722e9a8d6280183b3e95d1d1112dc29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c3dd25dfeaeecf1ab50555df70fb60a"><td class="memItemLeft" align="right" valign="top"><a id="a2c3dd25dfeaeecf1ab50555df70fb60a" name="a2c3dd25dfeaeecf1ab50555df70fb60a"></a>
+static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateAndSubmitModBrowserQuery</b> (uint page, <a class="el" href="struct_query_parameters.html">QueryParameters</a> qP, string internalName=null)</td></tr>
+<tr class="separator:a2c3dd25dfeaeecf1ab50555df70fb60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa8cb5d037f94392aab98bedac84de7"><td class="memItemLeft" align="right" valign="top"><a id="a6fa8cb5d037f94392aab98bedac84de7" name="a6fa8cb5d037f94392aab98bedac84de7"></a>
+static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateDirectItemsQuery</b> (string[] modId)</td></tr>
+<tr class="separator:a6fa8cb5d037f94392aab98bedac84de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00aefcf0261bede44e9d6e71d8b2633d"><td class="memItemLeft" align="right" valign="top"><a id="a00aefcf0261bede44e9d6e71d8b2633d" name="a00aefcf0261bede44e9d6e71d8b2633d"></a>
 static <a class="el" href="struct_steamed_wraps_1_1_item_install_info.html">ItemInstallInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetInstallInfo</b> (PublishedFileId_t publishId)</td></tr>
 <tr class="separator:a00aefcf0261bede44e9d6e71d8b2633d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,6 +142,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsWorkshopItem
 <tr class="memitem:afdf5edac1da293866af4c478165217a0"><td class="memItemLeft" align="right" valign="top"><a id="afdf5edac1da293866af4c478165217a0" name="afdf5edac1da293866af4c478165217a0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ReleaseWorkshopHandle</b> (UGCQueryHandle_t handle)</td></tr>
 <tr class="separator:afdf5edac1da293866af4c478165217a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bcba559f215cf1de793c4725a49bdd1"><td class="memItemLeft" align="right" valign="top"><a id="a1bcba559f215cf1de793c4725a49bdd1" name="a1bcba559f215cf1de793c4725a49bdd1"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>RunCallbacks</b> ()</td></tr>
+<tr class="separator:a1bcba559f215cf1de793c4725a49bdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a061d1c0f162a7aed3f801637418fee2a"><td class="memItemLeft" align="right" valign="top"><a id="a061d1c0f162a7aed3f801637418fee2a" name="a061d1c0f162a7aed3f801637418fee2a"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>StopPlaytimeTracking</b> ()</td></tr>
 <tr class="separator:a061d1c0f162a7aed3f801637418fee2a"><td class="memSeparator" colspan="2">&#160;</td></tr>

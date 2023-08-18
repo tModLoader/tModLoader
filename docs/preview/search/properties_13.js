@@ -2,7 +2,7 @@ var searchData=
 [
   ['value_0',['Value',['../class_localized_text.html#ac00724fa218d8c72912eb3b5eb4ab514',1,'LocalizedText']]],
   ['vanillafallbackonmoddeletion_1',['VanillaFallbackOnModDeletion',['../class_mod_block_type.html#a1263f5a6ef3d7c7e477465c4acaa7674',1,'ModBlockType']]],
-  ['vanillahovertexture_2',['VanillaHoverTexture',['../class_info_display.html#aacf2f77d9b3590a69b905b6a7e015480',1,'InfoDisplay']]],
+  ['vanillahovertexture_2',['VanillaHoverTexture',['../class_builder_toggle.html#a010b7a1365fe6a93194dad5c9012d514',1,'BuilderToggle.VanillaHoverTexture()'],['../class_info_display.html#aacf2f77d9b3590a69b905b6a7e015480',1,'InfoDisplay.VanillaHoverTexture()']]],
   ['variants_3',['Variants',['../struct_sound_style.html#ad12afc077a47e80bc201345e1c8a9871',1,'SoundStyle']]],
   ['variantsweights_4',['VariantsWeights',['../struct_sound_style.html#a5202c2e6b1a467becfbd430387484c43',1,'SoundStyle']]],
   ['version_5',['Version',['../class_mod.html#ac06290a5264e10bc183201a18452e7c0',1,'Mod']]],

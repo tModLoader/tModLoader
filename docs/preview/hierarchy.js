@@ -92,6 +92,9 @@ var hierarchy =
     [ "ArmorShaderDataSet", "class_armor_shader_data_set.html", null ],
     [ "AssetInitializer", "class_asset_initializer.html", null ],
     [ "AssetSourceController", "class_asset_source_controller.html", null ],
+    [ "AsyncProvider< T >", "class_async_provider.html", null ],
+    [ "AsyncProvider< TResource >", "class_async_provider.html", null ],
+    [ "AsyncProviderStateExtensions", "class_async_provider_state_extensions.html", null ],
     [ "Attribute", "class_attribute.html", [
       [ "AutoloadAttribute", "class_autoload_attribute.html", null ],
       [ "AutoloadBossHead", "class_autoload_boss_head.html", null ],
@@ -197,6 +200,7 @@ var hierarchy =
     [ "BuffLoader", "class_buff_loader.html", null ],
     [ "BuffID.Sets.BuffMountData", "class_buff_i_d_1_1_sets_1_1_buff_mount_data.html", null ],
     [ "Player.BuilderAccToggleIDs", "class_player_1_1_builder_acc_toggle_i_ds.html", null ],
+    [ "BuilderToggleLoader", "class_builder_toggle_loader.html", null ],
     [ "BuildInfo", "class_build_info.html", null ],
     [ "ChestUI.ButtonID", "class_chest_u_i_1_1_button_i_d.html", null ],
     [ "CachedBuffer", "class_cached_buffer.html", null ],
@@ -428,6 +432,7 @@ var hierarchy =
       [ "OldHookException", "class_old_hook_exception.html", null ],
       [ "RecipeException", "class_recipe_exception.html", null ],
       [ "ResourceLoadException", "class_resource_load_exception.html", null ],
+      [ "SocialBrowserException", "class_social_browser_exception.html", null ],
       [ "TopoSort< T >.SortingException", "class_topo_sort_1_1_sorting_exception.html", null ],
       [ "UsageException", "class_usage_exception.html", null ],
       [ "ValueNotTranslationKeyException", "class_value_not_translation_key_exception.html", null ]
@@ -904,6 +909,9 @@ var hierarchy =
         [ "EmotesGroupListItem", "class_emotes_group_list_item.html", null ],
         [ "GroupOptionButton< T >", "class_group_option_button.html", null ],
         [ "PowerStripUIElement", "class_power_strip_u_i_element.html", null ],
+        [ "UIAnimatedImage", "class_u_i_animated_image.html", [
+          [ "UIBrowserStatus", "class_u_i_browser_status.html", null ]
+        ] ],
         [ "UIBestiaryBar", "class_u_i_bestiary_bar.html", null ],
         [ "UIBestiaryEntryButton", "class_u_i_bestiary_entry_button.html", null ],
         [ "UIBestiaryEntryGrid", "class_u_i_bestiary_entry_grid.html", null ],
@@ -918,7 +926,9 @@ var hierarchy =
         [ "UICreativeInfiniteItemsDisplay", "class_u_i_creative_infinite_items_display.html", null ],
         [ "UICreativeItemsInfiniteFilteringOptions", "class_u_i_creative_items_infinite_filtering_options.html", null ],
         [ "UICreativePowerButton", "class_u_i_creative_power_button.html", null ],
-        [ "UICycleImage", "class_u_i_cycle_image.html", null ],
+        [ "UICycleImage", "class_u_i_cycle_image.html", [
+          [ "UIBrowserFilterToggle< T >", "class_u_i_browser_filter_toggle.html", null ]
+        ] ],
         [ "UIDifficultyButton", "class_u_i_difficulty_button.html", null ],
         [ "UIDynamicItemCollection", "class_u_i_dynamic_item_collection.html", null ],
         [ "UIGenProgressBar", "class_u_i_gen_progress_bar.html", null ],
@@ -941,7 +951,9 @@ var hierarchy =
         [ "UIKeybindingSimpleListItem", "class_u_i_keybinding_simple_list_item.html", null ],
         [ "UIKeybindingSliderItem", "class_u_i_keybinding_slider_item.html", null ],
         [ "UIKeybindingToggleListItem", "class_u_i_keybinding_toggle_list_item.html", null ],
-        [ "UIList", "class_u_i_list.html", null ],
+        [ "UIList", "class_u_i_list.html", [
+          [ "UIAsyncList< TResource, TUIElement >", "class_u_i_async_list.html", null ]
+        ] ],
         [ "UIList", "class_u_i_list.html", null ],
         [ "UIPanel", "class_u_i_panel.html", [
           [ "AWorldListItem", "class_a_world_list_item.html", [
@@ -1088,6 +1100,7 @@ var hierarchy =
         [ "CreativePowers.StopBiomeSpreadPower", "class_creative_powers_1_1_stop_biome_spread_power.html", null ]
       ] ]
     ] ],
+    [ "IDownloadProgress", "interface_i_download_progress.html", null ],
     [ "IEntitySource", "interface_i_entity_source.html", [
       [ "AEntitySource_Tile", "class_a_entity_source___tile.html", [
         [ "EntitySource_OverfullChest", "class_entity_source___overfull_chest.html", null ],
@@ -1417,6 +1430,24 @@ var hierarchy =
             [ "UnloadedSystem", "class_unloaded_system.html", null ]
           ] ],
           [ "ModTexturedType", "class_mod_textured_type.html", [
+            [ "BuilderToggle", "class_builder_toggle.html", [
+              [ "VanillaBuilderToggle", "class_vanilla_builder_toggle.html", [
+                [ "AutoActuateBuilderToggle", "class_auto_actuate_builder_toggle.html", null ],
+                [ "AutoPaintBuilderToggle", "class_auto_paint_builder_toggle.html", null ],
+                [ "BlockSwapBuilderToggle", "class_block_swap_builder_toggle.html", null ],
+                [ "RulerGridBuilderToggle", "class_ruler_grid_builder_toggle.html", null ],
+                [ "RulerLineBuilderToggle", "class_ruler_line_builder_toggle.html", null ],
+                [ "TorchBiomeBuilderToggle", "class_torch_biome_builder_toggle.html", null ],
+                [ "WireVisibilityBuilderToggle", "class_wire_visibility_builder_toggle.html", [
+                  [ "ActuatorsVisibilityBuilderToggle", "class_actuators_visibility_builder_toggle.html", null ],
+                  [ "BlueWireVisibilityBuilderToggle", "class_blue_wire_visibility_builder_toggle.html", null ],
+                  [ "GreenWireVisibilityBuilderToggle", "class_green_wire_visibility_builder_toggle.html", null ],
+                  [ "HideAllWiresBuilderToggle", "class_hide_all_wires_builder_toggle.html", null ],
+                  [ "RedWireVisibilityBuilderToggle", "class_red_wire_visibility_builder_toggle.html", null ],
+                  [ "YellowWireVisibilityBuilderToggle", "class_yellow_wire_visibility_builder_toggle.html", null ]
+                ] ]
+              ] ]
+            ] ],
             [ "InfoDisplay", "class_info_display.html", [
               [ "VanillaInfoDisplay", "class_vanilla_info_display.html", [
                 [ "CompassInfoDisplay", "class_compass_info_display.html", null ],
@@ -1536,6 +1567,7 @@ var hierarchy =
       [ "ModType< Projectile, ModProjectile >", "class_mod_type.html", null ],
       [ "ModType< TEntity >", "class_mod_type.html", null ],
       [ "ILocalizedModType", "interface_i_localized_mod_type.html", [
+        [ "BuilderToggle", "class_builder_toggle.html", null ],
         [ "DamageClass", "class_damage_class.html", null ],
         [ "InfoDisplay", "class_info_display.html", null ],
         [ "ModBiome", "class_mod_biome.html", null ],
@@ -2026,10 +2058,12 @@ var hierarchy =
     [ "Mod", "class_mod.html", null ],
     [ "ModBrowserSortModesExtensions", "class_mod_browser_sort_modes_extensions.html", null ],
     [ "ModContent", "class_mod_content.html", null ],
+    [ "ModDownloadItem", "class_mod_download_item.html", null ],
     [ "Modifiers", "class_modifiers.html", null ],
     [ "ModKeybind", "class_mod_keybind.html", null ],
     [ "ModLoader", "class_mod_loader.html", null ],
     [ "ModNet", "class_mod_net.html", null ],
+    [ "ModPubId_t", "struct_mod_pub_id__t.html", null ],
     [ "ModShapes", "class_mod_shapes.html", null ],
     [ "ModSideExtensions", "class_mod_side_extensions.html", null ],
     [ "ModSideFilterModesExtensions", "class_mod_side_filter_modes_extensions.html", null ],
@@ -2195,6 +2229,7 @@ var hierarchy =
     [ "PropertyFieldWrapper", "class_property_field_wrapper.html", null ],
     [ "WorkshopHelper.UGCBased.PublishedItemsFinder", "class_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html", null ],
     [ "PylonLoader", "class_pylon_loader.html", null ],
+    [ "QueryParameters", "struct_query_parameters.html", null ],
     [ "Logging.QuietExceptionHandle", "struct_logging_1_1_quiet_exception_handle.html", null ],
     [ "Player.RabbitOrderFrameHelper", "struct_player_1_1_rabbit_order_frame_helper.html", null ],
     [ "Rain", "class_rain.html", null ],
@@ -2339,6 +2374,7 @@ var hierarchy =
     [ "SmartSelectGamepadPointer", "class_smart_select_gamepad_pointer.html", null ],
     [ "SnapPoint", "class_snap_point.html", null ],
     [ "SocialAPI", "class_social_a_p_i.html", null ],
+    [ "SocialBrowserModule", "interface_social_browser_module.html", null ],
     [ "UILinksInitializer.SomeVarsForUILinkers", "class_u_i_links_initializer_1_1_some_vars_for_u_i_linkers.html", null ],
     [ "SortingSteps", "class_sorting_steps.html", null ],
     [ "SoundEngine", "class_sound_engine.html", null ],
@@ -2472,8 +2508,15 @@ var hierarchy =
     ] ],
     [ "WorkshopHelper.UGCBased", "class_workshop_helper_1_1_u_g_c_based.html", null ],
     [ "UIAlign", "class_u_i_align.html", null ],
+    [ "UIAsyncList< ModDownloadItem, UIModDownloadItem >", "class_u_i_async_list.html", [
+      [ "UIModBrowser.UIAsyncList_ModDownloadItem", "class_u_i_mod_browser_1_1_u_i_async_list___mod_download_item.html", null ]
+    ] ],
     [ "UIAutoScaleTextTextPanel< LocalizedText >", "class_u_i_auto_scale_text_text_panel.html", null ],
     [ "UIAutoScaleTextTextPanel< string >", "class_u_i_auto_scale_text_text_panel.html", null ],
+    [ "UIBrowserFilterToggle< ModBrowserSortMode >", "class_u_i_browser_filter_toggle.html", null ],
+    [ "UIBrowserFilterToggle< ModSideFilter >", "class_u_i_browser_filter_toggle.html", null ],
+    [ "UIBrowserFilterToggle< SearchFilter >", "class_u_i_browser_filter_toggle.html", null ],
+    [ "UIBrowserFilterToggle< UpdateFilter >", "class_u_i_browser_filter_toggle.html", null ],
     [ "UICommon", "class_u_i_common.html", null ],
     [ "UIEvent", "class_u_i_event.html", [
       [ "UIMouseEvent", "class_u_i_mouse_event.html", [

@@ -4,5 +4,6 @@ var searchData=
   ['namekey_1',['NameKey',['../class_mod_resource_display_set.html#a10e4b48a715efec112b7cbb4ccbbf52f',1,'ModResourceDisplaySet']]],
   ['netstateversion_2',['NetStateVersion',['../class_item.html#a1de8c83868f78381c09d4822b5df0750',1,'Item']]],
   ['notactuallyanitem_3',['notActuallyAnItem',['../class_popup_text.html#a814ab9ed5baa7641f33bdb081aabeab0',1,'PopupText']]],
-  ['npc_4',['NPC',['../class_mod_n_p_c.html#a5154725c3ed7237d6f17fec7e44c67f7',1,'ModNPC']]]
+  ['npc_4',['NPC',['../class_mod_n_p_c.html#a5154725c3ed7237d6f17fec7e44c67f7',1,'ModNPC']]],
+  ['numberofstates_5',['NumberOfStates',['../class_builder_toggle.html#a025413f4634a1e9a2c7ecd93cc11f6ab',1,'BuilderToggle']]]
 ];

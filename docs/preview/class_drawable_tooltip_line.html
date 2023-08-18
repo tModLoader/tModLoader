@@ -107,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad76282035e813114ce54d904cf9f67a3 inherit pub_methods_class_tooltip_line"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tooltip_line.html#ad76282035e813114ce54d904cf9f67a3">TooltipLine</a> (<a class="el" href="class_mod.html">Mod</a> mod, string name, string text)</td></tr>
 <tr class="memdesc:ad76282035e813114ce54d904cf9f67a3 inherit pub_methods_class_tooltip_line"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a tooltip line object with the given mod, identifier name, and text.  <a href="class_tooltip_line.html#ad76282035e813114ce54d904cf9f67a3">More...</a><br /></td></tr>
 <tr class="separator:ad76282035e813114ce54d904cf9f67a3 inherit pub_methods_class_tooltip_line"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e2f16405405cae5636b73ddaa9a3ad inherit pub_methods_class_tooltip_line"><td class="memItemLeft" align="right" valign="top"><a id="ac9e2f16405405cae5636b73ddaa9a3ad" name="ac9e2f16405405cae5636b73ddaa9a3ad"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Hide</b> ()</td></tr>
+<tr class="separator:ac9e2f16405405cae5636b73ddaa9a3ad inherit pub_methods_class_tooltip_line"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -204,6 +207,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>OriginalY</b><code> [g
 new? <a class="el" href="class_drawable_tooltip_line.html#af0063abee3d99405da41782fffc80882">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OverrideColor</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:ad55bbf4963496c540797b14a8205646b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the tooltip line's color was overridden this will hold that color, it will be null otherwise <br /></td></tr>
 <tr class="separator:ad55bbf4963496c540797b14a8205646b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_tooltip_line"><td colspan="2" onclick="javascript:toggleInherit('properties_class_tooltip_line')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_tooltip_line.html">TooltipLine</a></td></tr>
+<tr class="memitem:ab69093e489122490516e3b8c29689bbe inherit properties_class_tooltip_line"><td class="memItemLeft" align="right" valign="top"><a id="ab69093e489122490516e3b8c29689bbe" name="ab69093e489122490516e3b8c29689bbe"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>FullName</b><code> [get]</code></td></tr>
+<tr class="memdesc:ab69093e489122490516e3b8c29689bbe inherit properties_class_tooltip_line"><td class="mdescLeft">&#160;</td><td class="mdescRight">=&gt; $"{Mod}/{Name}" <br /></td></tr>
+<tr class="separator:ab69093e489122490516e3b8c29689bbe inherit properties_class_tooltip_line"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab858b647230cce0f2b83dd8448800e3d inherit properties_class_tooltip_line"><td class="memItemLeft" align="right" valign="top"><a id="ab858b647230cce0f2b83dd8448800e3d" name="ab858b647230cce0f2b83dd8448800e3d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>Visible</b> = true<code> [get]</code></td></tr>
+<tr class="separator:ab858b647230cce0f2b83dd8448800e3d inherit properties_class_tooltip_line"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This class serves as a way to store information about a line that will be drawn of tooltip for an item. You will create and manipulate objects of this class if you use the draw hooks for tooltips in <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> and <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a>. For examples, see ExampleSword </p>
