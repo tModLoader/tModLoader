@@ -357,6 +357,7 @@ public static class ModContent
 		DamageClassLoader.RegisterDefaultClasses();
 		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
+		BuilderToggleLoader.RegisterDefaultToggles();
 	}
 
 	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction)
@@ -464,6 +465,7 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		BuilderToggleLoader.Unload();
 		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();

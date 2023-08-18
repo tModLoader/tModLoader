@@ -273,11 +273,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey),
-		() => {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Utils.OpenToURL(url);
-		});
+		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
 	}
 
 	private static string GetCommandToFindPathOfExecutable()

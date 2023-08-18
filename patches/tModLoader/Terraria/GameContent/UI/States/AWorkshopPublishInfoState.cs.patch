@@ -84,6 +84,28 @@
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));
  		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  		uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
+@@ -124,7 +_,10 @@
+ 		uIElement.SetPadding(0f);
+ 		obj.Append(uIElement);
+ 		float num = 86f;
++		if (!_isMod)
+-		_defaultPreviewImageTexture = Main.Assets.Request<Texture2D>("Images/UI/Workshop/DefaultPreviewImage");
++			_defaultPreviewImageTexture = Main.Assets.Request<Texture2D>("Images/UI/Workshop/DefaultPreviewImage");
++		else
++			_defaultPreviewImageTexture = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon");
+ 		UIImage uIImage = new UIImage(_defaultPreviewImageTexture) {
+ 			Width = new StyleDimension(-4f, 1f),
+ 			Height = new StyleDimension(-4f, 1f),
+@@ -140,7 +_,8 @@
+ 		};
+ 
+ 		uIElement.Append(uIImage);
++		if (!_isMod)
+-		uIElement.Append(element);
++			uIElement.Append(element);
+ 		_previewImageUIElement = uIImage;
+ 		UICharacterNameButton uICharacterNameButton = new UICharacterNameButton(Language.GetText("Workshop.PreviewImagePathTitle"), Language.GetText("Workshop.PreviewImagePathEmpty"), Language.GetText("Workshop.PreviewImagePathDescription")) {
+ 			Width = StyleDimension.FromPixelsAndPercent(0f - num, 1f),
 @@ -169,10 +_,14 @@
  			}
  		}
