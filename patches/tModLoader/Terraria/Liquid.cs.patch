@@ -41,7 +41,7 @@
  		}
 +		*/
 +
-+		for (int i = 0; i <�LiquidLoader.LiquidCount; i++) {
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (tile5.LiquidType == i) {
 +				if (tile5.LiquidType == LiquidID.Lava) {
 +					LavaCheck(x, y);
