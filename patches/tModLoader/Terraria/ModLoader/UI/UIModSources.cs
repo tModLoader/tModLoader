@@ -324,7 +324,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		yield return "/usr/bin/dotnet";
 	}
 
-	private static string GetSystemDotnetPath()
+	public static string GetSystemDotnetPath()
 	{
 		try {
 			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {

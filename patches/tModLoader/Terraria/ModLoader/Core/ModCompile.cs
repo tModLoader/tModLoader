@@ -18,6 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Core;
 
@@ -172,26 +173,28 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			Process process = new() {
 				StartInfo = new ProcessStartInfo {
-					FileName = "dotnet",
+					FileName = UIModSources.GetSystemDotnetPath() ?? "dotnet",
 					Arguments = $"build -v q /p:OutputTmodPath=\"{outputPath}\" /p:TmlVersion=\"{tmlVersion}\"",
 					WorkingDirectory = mod.path,
 					UseShellExecute = false,
 					RedirectStandardOutput = true,
+					RedirectStandardError = true,
 					CreateNoWindow = true,
 				},
 			};
 
-			// Force locale to be in english.
+			// Force locale to be in English.
 			// Needed because of how we are getting the error and warning count.
 			process.StartInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
 
 			process.Start();
+			process.WaitForExit(1000 * 60 * 5); // Wait up to 5 minutes for mod to build
 			string output = process.StandardOutput.ReadToEnd();
 
-			if (process.ExitCode != 0) {
-				Console.WriteLine("Complete build output:");
-				Console.WriteLine(output);
 
+			if (!process.HasExited || process.ExitCode != 0) {
+				Logging.tML.Debug("Complete build output:\n" + output);
+				Logging.tML.Debug("Stderr:\n" + process.StandardError.ReadToEnd());
 
 				Match errorMatch = ErrorRegex.Match(output);
 				Match warningMatch = WarningRegex.Match(output);
