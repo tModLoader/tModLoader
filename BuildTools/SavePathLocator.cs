@@ -85,8 +85,8 @@ public static class SavePathLocator
 		logger.LogMessage(MessageImportance.Low, $"tML Informational Version: {tmlInfoVersion}");
 
 		string[] parts = tmlInfoVersion.Substring(tmlInfoVersion.IndexOf('+') + 1).Split('|');
-		if (parts.Length >= 3) {
-			if (Enum.TryParse(parts[2], true, out BuildPurpose purpose))
+		if (parts.Length > 3) {
+			if (Enum.TryParse(parts[3], true, out BuildPurpose purpose))
 				return purpose;
 		}
 
