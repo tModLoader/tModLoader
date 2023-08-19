@@ -71,7 +71,8 @@ public static class LiquidLoader
 		liquidProperties = new LiquidProperties[] {
 			// Water
 			new LiquidProperties() {
-				FallDelay = 0
+				FallDelay = 0,
+				HellEvaporation = true
 			},
 			// Lava
 			new LiquidProperties() {

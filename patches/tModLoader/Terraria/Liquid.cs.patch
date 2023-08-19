@@ -17,6 +17,15 @@
  		tile.liquid = 0;
  		bool flag3 = true;
  		while (true) {
+@@ -338,7 +_,7 @@
+ 
+ 		byte liquid = tile5.liquid;
+ 		float num = 0f;
+-		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
++		if (y > Main.UnderworldLayer && LiquidLoader.liquidProperties[tile5.liquidType()].HellEvaporation && tile5.liquid > 0) {
+ 			byte b = 2;
+ 			if (tile5.liquid < b)
+ 				b = tile5.liquid;
 @@ -350,7 +_,7 @@
  			kill = 999;
  			return;
