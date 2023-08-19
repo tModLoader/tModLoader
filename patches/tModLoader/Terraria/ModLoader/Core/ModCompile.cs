@@ -188,13 +188,14 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			process.StartInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
 
 			process.Start();
-			process.WaitForExit(1000 * 60 * 5); // Wait up to 5 minutes for mod to build
 			string output = process.StandardOutput.ReadToEnd();
+			string stderr = process.StandardError.ReadToEnd();
+			process.WaitForExit(1000 * 60); // Wait up to a minute for the process to end
 
 
 			if (!process.HasExited || process.ExitCode != 0) {
 				Logging.tML.Debug("Complete build output:\n" + output);
-				Logging.tML.Debug("Stderr:\n" + process.StandardError.ReadToEnd());
+				Logging.tML.Debug("Stderr:\n" + stderr);
 
 				Match errorMatch = ErrorRegex.Match(output);
 				Match warningMatch = WarningRegex.Match(output);
