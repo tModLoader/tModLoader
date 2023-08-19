@@ -865,6 +865,11 @@ Mods: {
 				DisplayName: Example Swinging Energy Sword
 				Tooltip: ""
 			}
+
+			ExampleBucket: {
+				DisplayName: Exemple Liquid Bucket
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
