@@ -29,6 +29,11 @@ internal static class MapLoader
 	{
 		return wallEntries[type].Count;
 	}
+
+	internal static int modLiquidOptions(ushort type)
+	{
+		return liquidEntries[type].Count;
+	}
 	//make Terraria.Map.MapHelper.colorLookup internal
 	//add internal modPosition field to Terraria.Map.MapHelper
 	//near end of Terraria.Map.MapHelper.Initialize set modPosition to num11 + 1
@@ -40,6 +45,7 @@ internal static class MapLoader
 		}
 		Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
 		Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
+		Array.Resize(ref MapHelper.liquidLookup, LiquidLoader.LiquidCount);
 		IList<Color> colors = new List<Color>();
 		IList<LocalizedText> names = new List<LocalizedText>();
 		foreach (ushort type in tileEntries.Keys) {
@@ -74,6 +80,22 @@ internal static class MapLoader
 				}
 			}
 		}
+		foreach (ushort type in liquidEntries.Keys) {
+			MapHelper.liquidLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
+			foreach (MapEntry entry in liquidEntries[type]) {
+				ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
+				entryToLiquid[mapType] = type;
+				nameFuncs[mapType] = entry.getName;
+				colors.Add(entry.color);
+				if (entry.name != null) {
+					names.Add(entry.name);
+				}
+				else {
+					throw new Exception("How did this happen?");
+					//names.Add(Language.GetText(entry.translation.Key));
+				}
+			}
+		}
 		Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
 		Lang._mapLegendCache.Resize(MapHelper.modPosition + names.Count);
 		for (int k = 0; k < colors.Count; k++) {
@@ -95,6 +117,7 @@ internal static class MapLoader
 		entryToWall.Clear();
 		Array.Resize(ref MapHelper.tileLookup, TileID.Count);
 		Array.Resize(ref MapHelper.wallLookup, WallID.Count);
+		Array.Resize(ref MapHelper.liquidLookup, LiquidID.Count);
 		Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition);
 		Lang._mapLegendCache.Resize(MapHelper.modPosition);
 		initialized = false;
@@ -116,6 +139,14 @@ internal static class MapLoader
 			ushort option = wall.GetMapOption(i, j);
 			if (option < 0 || option >= modWallOptions(wall.Type)) {
 				throw new ArgumentOutOfRangeException("Bad map option for wall " + wall.Name + " from mod " + wall.Mod.Name);
+			}
+			mapType += option;
+		}
+		else if (entryToLiquid.ContainsKey(mapType)) {
+			ModLiquid liquid = LiquidLoader.GetLiquid(entryToLiquid[mapType]);
+			ushort option = liquid.GetMapOption(i, j);
+			if (option < 0 || option >= modLiquidOptions(liquid.Type)) {
+				throw new ArgumentOutOfRangeException("Bad map option for liquid " + liquid.Name + " from mod " + liquid.Mod.Name);
 			}
 			mapType += option;
 		}
