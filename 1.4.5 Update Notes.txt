@@ -1,0 +1,4 @@
+TODO:
+- Update Hashes for GoG
+- Update assets that changed in 1.4.4 / 1.4.5 such as Skeletron Prime 
+	https://github.com/tModLoader/tModLoader/commit/08924eef17ec425d8249112375c83c39cae30733
