@@ -6,6 +6,9 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// Represents an emote. Emotes are typically used by players or NPC. Players can use the emotes menu or chat commands to display an emote, while town NPC spawn emotes when talking to each other.<para/>
+/// </summary>
 public abstract class ModEmoteBubble : ModType<EmoteBubble, ModEmoteBubble>, ILocalizedModType
 {
 	/// <summary>

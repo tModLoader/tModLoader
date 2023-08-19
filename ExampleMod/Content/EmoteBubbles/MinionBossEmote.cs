@@ -7,11 +7,8 @@ namespace ExampleMod.Content.EmoteBubbles
 	public class MinionBossEmote : ModEmoteBubble
 	{
 		public override void SetStaticDefaults() {
-			// As for emote command name, you will want to lowercase all letters to match the vanilla command.
-			// If you don't have this set, it will be the lowercase name of the class.
-			// EmoteName automatically assigned from localization files (files in Localization/),
-			// but the commented line below is the normal approach.
-			// EmoteName.SetDefault("exminionboss");
+			// The default emote command name will be a lowercase version of the classname to match other vanilla commands.
+			// This can be changed in the localization files.
 
 			// Add the emote to "bosses" category
 			AddToCategory(EmoteID.Category.Dangers);

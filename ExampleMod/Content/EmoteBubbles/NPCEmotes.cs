@@ -35,11 +35,11 @@ namespace ExampleMod.Content.EmoteBubbles
 	}
 
 	// This is a showcase of using the same texture for different emotes.
-	// Names of these classes are defined using .hjson files in the Localization/ folder.
+	// Command names of these classes are defined using .hjson files in the Localization/ folder.
 	public class ExamplePersonEmote : ModTownEmote
 	{
 		public override void OnSpawn() {
-			// These code make the emote always remains longer than vanilla emotes.
+			// This code makes the emote remain longer than vanilla emotes.
 			EmoteBubble.lifeTime *= 2;
 			EmoteBubble.lifeTimeStart *= 2;
 		}
