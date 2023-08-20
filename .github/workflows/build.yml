@@ -5,14 +5,14 @@ env:
     StableBranch: stable
     PreviewBranch: preview
     IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
-    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable') || contains(github.ref, '1.4.4'))  }}
+    IsVersioned: false
 
 # Controls when the action will run. 
 on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [gh_actions_test, stable, preview, 1.4.4]
+    branches: [1.4.4-modliquid, stable, preview, 1.4.4]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -105,7 +105,7 @@ jobs:
         shell: bash
         run: |
           echo "Fetching the ${{env.StableBranch}} version of tmodloader"
-          version=$(git describe --tags --abbrev=0)
+          version=v2023.06.26.0
           
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
@@ -370,24 +370,24 @@ jobs:
         shell: pwsh
         run: tree /f /a
         
-      - name: Post push report to 1-4-nightly-builds on Discord
-        uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'push'
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
-          description: |
-            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
+      # - name: Post push report to 1-4-nightly-builds on Discord
+      #  uses: sarisia/actions-status-discord@v1
+      #  if: always() && github.event_name == 'push'
+      #  with:
+      #    webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+      #    description: |
+      #      Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
 
-      - name: Post pull request report to 1-4-nightly-builds on Discord
-        uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'pull_request_target'
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
-          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
-          description: |
-            Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
-            Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
-            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
+      # - name: Post pull request report to 1-4-nightly-builds on Discord
+      #  uses: sarisia/actions-status-discord@v1
+      #  if: always() && github.event_name == 'pull_request_target'
+      #  with:
+      #    webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+      #    color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
+      #    description: |
+      #      Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
+      #      Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
+      #      Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
     # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
