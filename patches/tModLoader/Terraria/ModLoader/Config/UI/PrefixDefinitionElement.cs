@@ -99,6 +99,6 @@ internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDef
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }

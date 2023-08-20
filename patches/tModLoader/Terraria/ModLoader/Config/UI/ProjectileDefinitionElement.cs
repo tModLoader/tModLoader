@@ -110,6 +110,6 @@ internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<Proje
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }

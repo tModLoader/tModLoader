@@ -315,7 +315,7 @@ internal class UIModConfigHoverImage : UIImage
 		base.DrawSelf(spriteBatch);
 
 		if (IsMouseHovering) {
-			UIModConfig.Tooltip = HoverText;
+			UICommon.TooltipMouseText(HoverText);
 		}
 	}
 }
@@ -339,10 +339,10 @@ internal class UIModConfigHoverImageSplit : UIImage
 
 		if (IsMouseHovering) {
 			if (Main.mouseY < r.Y + r.Height / 2) {
-				UIModConfig.Tooltip = HoverTextUp;
+				UICommon.TooltipMouseText(HoverTextUp);
 			}
 			else {
-				UIModConfig.Tooltip = HoverTextDown;
+				UICommon.TooltipMouseText(HoverTextDown);
 			}
 		}
 	}

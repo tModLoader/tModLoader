@@ -113,6 +113,6 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }
