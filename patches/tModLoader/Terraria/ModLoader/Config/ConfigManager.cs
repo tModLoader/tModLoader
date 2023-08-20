@@ -364,12 +364,35 @@ public static class ConfigManager
 		return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 	}
 
+	public static IEnumerable<PropertyFieldWrapper> GetSerializedVariables(object item)
+	{
+		return from variable in GetFieldsAndProperties(item)
+			   where variable.CanWrite
+			   where !Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute))
+			   select variable;
+	}
+
+	public static IEnumerable<PropertyFieldWrapper> GetDisplayedVariables(object item)
+	{
+		return from variable in GetFieldsAndProperties(item)
+			   where !Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute))
+			      || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))
+			   select variable;
+	}
+
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
 		string json = JsonConvert.SerializeObject(original, serializerSettings);
 		ModConfig properClone = original.Clone();
 		JsonConvert.PopulateObject(json, properClone, serializerSettings);
 		return properClone;
+	}
+
+	// Separate from GeneratePopulatedClone because otherwise config elements can't track the original and the list has to be recreated, which collapses all of the elements
+	public static void RevertConfig(ModConfig pendingConfig, ModConfig original)
+	{
+		string json = JsonConvert.SerializeObject(original, serializerSettings);
+		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 	}
 
 	public static object? AlternateCreateInstance(Type type)
