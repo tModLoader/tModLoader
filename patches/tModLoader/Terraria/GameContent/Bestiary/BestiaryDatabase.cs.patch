@@ -37,3 +37,12 @@
  			ExtractDropsForNPC(dropsDatabase, i);
  		}
  	}
+@@ -69,6 +_,8 @@
+ 		List<DropRateInfo> list = new List<DropRateInfo>();
+ 		DropRateInfoChainFeed ratesInfo = new DropRateInfoChainFeed(1f);
+ 		foreach (IItemDropRule item in rulesForNPCID) {
++			if (item.IsDisabled()) // TML
++				continue;
+ 			item.ReportDroprates(list, ratesInfo);
+ 		}
+ 

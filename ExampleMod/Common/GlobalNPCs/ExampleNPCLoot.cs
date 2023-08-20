@@ -78,6 +78,16 @@ namespace ExampleMod.Common.GlobalNPCs
 				}
 			}
 
+			// Stop Reaper from dropping the Death Sickle.
+			if (npc.type == NPCID.Reaper) {
+				foreach (var rule in npcLoot.Get()) {
+					if (rule is CommonDrop commonDrop && commonDrop.itemId == ItemID.DeathSickle) {
+						rule.Disable();
+						break;
+					}
+				}
+			}
+
 			if (npc.type == NPCID.Crimera || npc.type == NPCID.Corruptor) {
 				// Here we make use of our own special rule we created: drop during daytime
 				// Drop an item from the other evil with 33% chance
