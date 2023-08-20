@@ -374,7 +374,7 @@ jobs:
         
       - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'push' && ${{ env.RunDiscordHook }}
+        if: always() && github.event_name == 'push' && env.RunDiscordHook
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           description: |
@@ -382,7 +382,7 @@ jobs:
 
       - name: Post pull request report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'pull_request_target' && ${{ env.RunDiscordHook }}
+        if: always() && github.event_name == 'pull_request_target' && env.RunDiscordHook
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
