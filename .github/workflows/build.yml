@@ -2,7 +2,7 @@ name: Build tModLoader
 
 env:
     DevBranch: 1.4.4
-    StableBranch: stable
+    StableBranch: upstream/stable
     PreviewBranch: preview
     IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
     IsVersioned: false
