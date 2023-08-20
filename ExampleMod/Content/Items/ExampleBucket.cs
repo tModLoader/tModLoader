@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items
 		public override bool? UseItem(Player player) {
 			Tile liquid = Main.tile[Player.tileTargetX, Player.tileTargetY];
 
-			int liquidType = ModContent.GetInstance<ExempleLiquid>().Type;
+			int liquidType = ModContent.GetInstance<ExampleLiquid>().Type;
 
 			if (liquid.LiquidAmount == 0 || liquid.LiquidType == liquidType) {
 

@@ -17,6 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\Items\ExampleBucket.png" />
-    <None Remove="Content\Liquids\ExempleLiquid.png" />
+    <None Remove="Content\Liquids\ExampleLiquid.png" />
   </ItemGroup>
 </Project>

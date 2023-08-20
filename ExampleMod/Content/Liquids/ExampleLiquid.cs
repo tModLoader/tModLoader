@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Liquids
 {
-	public class ExempleLiquid : ModLiquid
+	public class ExampleLiquid : ModLiquid
 	{
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
