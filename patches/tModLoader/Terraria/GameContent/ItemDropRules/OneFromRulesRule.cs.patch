@@ -1,21 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
-@@ -1,24 +_,33 @@
- using System.Collections.Generic;
-+using Terraria.ModLoader;
- 
- namespace Terraria.GameContent.ItemDropRules;
- 
-+// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
--public class OneFromRulesRule : IItemDropRule, INestedItemDropRule
-+public class OneFromRulesRule : BaseItemDropRule, INestedItemDropRule
+@@ -6,12 +_,18 @@
  {
  	public IItemDropRule[] options;
  	public int chanceDenominator;
 +	public int chanceNumerator; // Added by TML.
  
--	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
-+	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
  
  	public OneFromRulesRule(int chanceDenominator, params IItemDropRule[] options)
 +		: this(chanceDenominator, 1, options) { }
@@ -26,19 +17,8 @@
  		this.chanceDenominator = chanceDenominator;
 +		this.chanceNumerator = chanceNumerator;
  		this.options = options;
--		ChainedRules = new List<IItemDropRuleChainAttempt>();
-+		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 		ChainedRules = new List<IItemDropRuleChainAttempt>();
  	}
- 
--	public bool CanDrop(DropAttemptInfo info) => true;
-+	// public bool CanDrop(DropAttemptInfo info) => true;
- 
-+	// TML: Added override
--	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
-+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
- 	{
- 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
- 		result.State = ItemDropAttemptResultState.DidNotRunCode;
 @@ -29,7 +_,11 @@
  	{
  		int num = -1;
@@ -51,13 +31,9 @@
  			num = info.rng.Next(options.Length);
  			resolveAction(options[num], info);
  			result = default(ItemDropAttemptResult);
-@@ -42,9 +_,11 @@
- 		return result;
- 	}
+@@ -44,7 +_,8 @@
  
-+	// TML: Added override
--	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
-+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
  	{
 +		//TML: chanceNumerator inserted in place of '1.0'.
 -		float num = 1f / (float)chanceDenominator;

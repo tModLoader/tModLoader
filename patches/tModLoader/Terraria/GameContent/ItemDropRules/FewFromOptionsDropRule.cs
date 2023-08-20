@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria.ModLoader;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -9,12 +8,17 @@ namespace Terraria.GameContent.ItemDropRules;
 /// <summary>
 /// Runs multiple rules if successes.
 /// </summary>
-public class FewFromOptionsDropRule : BaseItemDropRule
+public class FewFromOptionsDropRule : IItemDropRule
 {
 	public int[] dropIds;
 	public int chanceDenominator;
 	public int chanceNumerator;
 	public int amount;
+
+	public List<IItemDropRuleChainAttempt> ChainedRules {
+		get;
+		private set;
+	}
 
 	public FewFromOptionsDropRule(int amount, int chanceDenominator, int chanceNumerator, params int[] options)
 	{
@@ -26,9 +30,12 @@ public class FewFromOptionsDropRule : BaseItemDropRule
 		this.chanceDenominator = chanceDenominator;
 		this.chanceNumerator = chanceNumerator;
 		dropIds = options;
+		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
-	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public bool CanDrop(DropAttemptInfo info) => true;
+
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
 			List<int> savedDropIds = dropIds.ToList();
@@ -50,7 +57,7 @@ public class FewFromOptionsDropRule : BaseItemDropRule
 		return new() { State = ItemDropAttemptResultState.FailedRandomRoll };
 	}
 
-	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		float num = (float)chanceNumerator / (float)chanceDenominator;
 		float num2 = num * ratesInfo.parentDroprateChance;

@@ -19,7 +19,7 @@
  
  	private ItemDropAttemptResult ResolveRule(IItemDropRule rule, DropAttemptInfo info)
  	{
-+		if (rule.Disabled) // TML
++		if (ModLoader.ItemDropRuleExtensions.IsDisabled(rule))
 +			return new ItemDropAttemptResult { State = ItemDropAttemptResultState.DidNotRunCode };
 +
  		if (!rule.CanDrop(info)) {

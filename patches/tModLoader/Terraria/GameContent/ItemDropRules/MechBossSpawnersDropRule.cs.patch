@@ -1,39 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/MechBossSpawnersDropRule.cs
-@@ -1,19 +_,22 @@
- using System.Collections.Generic;
-+using Terraria.ModLoader;
- 
- namespace Terraria.GameContent.ItemDropRules;
- 
-+// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
--public class MechBossSpawnersDropRule : IItemDropRule
-+public class MechBossSpawnersDropRule : BaseItemDropRule
- {
- 	public Conditions.MechanicalBossesDummyCondition dummyCondition = new Conditions.MechanicalBossesDummyCondition();
- 
--	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
-+	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
- 
- 	public MechBossSpawnersDropRule()
- 	{
--		ChainedRules = new List<IItemDropRuleChainAttempt>();
-+		// ChainedRules = new List<IItemDropRuleChainAttempt>();
- 	}
- 
-+	// TML: Added override
--	public bool CanDrop(DropAttemptInfo info)
-+	public override bool CanDrop(DropAttemptInfo info)
- 	{
- 		if (info.npc.value > 0f && Main.hardMode && (!NPC.downedMechBoss1 || !NPC.downedMechBoss2 || !NPC.downedMechBoss3))
- 			return !info.IsInSimulation;
-@@ -21,25 +_,26 @@
- 		return false;
- 	}
- 
-+	// TML: Added override
--	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
-+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+@@ -25,21 +_,21 @@
  	{
  		ItemDropAttemptResult result;
  		if (!NPC.downedMechBoss1 && info.player.RollLuck(2500) == 0) {
@@ -58,13 +25,3 @@
  			result = default(ItemDropAttemptResult);
  			result.State = ItemDropAttemptResultState.Success;
  			return result;
-@@ -50,7 +_,8 @@
- 		return result;
- 	}
- 
-+	// TML: Added override
--	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
-+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
- 	{
- 		ratesInfo.AddCondition(dummyCondition);
- 		float num = 0.0004f;

@@ -41,7 +41,7 @@
  		List<DropRateInfo> list = new List<DropRateInfo>();
  		DropRateInfoChainFeed ratesInfo = new DropRateInfoChainFeed(1f);
  		foreach (IItemDropRule item in rulesForNPCID) {
-+			if (item.Disabled) // TML
++			if (item.IsDisabled()) // TML
 +				continue;
  			item.ReportDroprates(list, ratesInfo);
  		}
