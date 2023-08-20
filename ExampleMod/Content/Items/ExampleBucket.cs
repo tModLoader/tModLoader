@@ -30,9 +30,6 @@ namespace ExampleMod.Content.Items
 
 			if (liquid.LiquidAmount == 0 || liquid.LiquidType == liquidType) {
 
-				//Item newItem = Main.item[Item.NewItem(player.position, item.type)];
-				//ModBucket newBucket = newItem.modItem as ModBucket;
-
 				liquid.LiquidType = liquidType;
 				liquid.LiquidAmount = 255;
 
