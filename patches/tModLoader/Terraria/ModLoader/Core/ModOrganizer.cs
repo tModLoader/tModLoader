@@ -22,15 +22,15 @@ internal static class ModOrganizer
 {
 
 	// Used in Mod Browser for tracking changes
-	internal delegate void LocalModsChangedDelegate(HashSet<string> modSlugs);
+	internal delegate void LocalModsChangedDelegate(HashSet<string> modSlugs, bool isDeletion);
 	internal static event LocalModsChangedDelegate OnLocalModsChanged;
 	internal static event LocalModsChangedDelegate PostLocalModsChanged;
-	internal static void LocalModsChanged(HashSet<string> modSlugs)
+	internal static void LocalModsChanged(HashSet<string> modSlugs, bool isDeletion)
 	{
 		// On is intended to be used to update Caches of Installed Items. Such as Workshop LocalMod caches etc.
-		OnLocalModsChanged?.Invoke(modSlugs);
+		OnLocalModsChanged?.Invoke(modSlugs, isDeletion);
 		// Post is intended to be used to update anything that depends on caches of installed items. Such as UI in Mod Browser
-		PostLocalModsChanged?.Invoke(modSlugs);
+		PostLocalModsChanged?.Invoke(modSlugs, isDeletion);
 	}
 
 	internal static string modPath = Path.Combine(Main.SavePath, "Mods");
@@ -681,7 +681,7 @@ internal static class ModOrganizer
 			File.Delete(tmodPath);
 		}
 
-		LocalModsChanged(new HashSet<string> { tmod.Name });
+		LocalModsChanged(new HashSet<string> { tmod.Name }, isDeletion: true);
 	}
 
 	internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info)

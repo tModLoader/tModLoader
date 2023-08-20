@@ -265,7 +265,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		DebounceTimer = null;
 	}
 
-	private void CbLocalModsChanged(HashSet<string> modSlugs)
+	private void CbLocalModsChanged(HashSet<string> modSlugs, bool isDeletion)
 	{
 		if (_firstLoad)
 			return;
@@ -430,7 +430,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			return false;
 		}
 		finally {
-			ModOrganizer.LocalModsChanged(downloadedList);
+			ModOrganizer.LocalModsChanged(downloadedList, isDeletion:false);
 		}
 	}
 
