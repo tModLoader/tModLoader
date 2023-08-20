@@ -18,6 +18,7 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 	public float TextScale { get; set; } = 1f;
 	public Vector2 TextSize { get; private set; } = Vector2.Zero;
 	public Color TextColor { get; set; } = Color.White;
+	public bool ScalePanel = false;
 
 	private Rectangle oldInnerDimensions;
 	private T _text = default;
@@ -43,6 +44,16 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 
 	public virtual void SetText(T text, float textScaleMax, bool large)
 	{
+		if (ScalePanel) {
+			var dynamicSpriteFont = IsLarge ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
+			var textSize = ChatManager.GetStringSize(dynamicSpriteFont, Text, new Vector2(TextScaleMax));
+
+			Width.Set(PaddingLeft + textSize.X + PaddingRight, 0f);
+			Height.Set(PaddingTop + (IsLarge ? 32f : 16f) + PaddingBottom, 0f);
+
+			base.Recalculate();
+		}
+
 		var innerDimensionsRectangle = GetDimensions().ToRectangle();
 
 		if (text.ToString() != oldText || oldInnerDimensions != innerDimensionsRectangle) {
@@ -68,15 +79,16 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			innerDimensionsRectangle.Height -= 8;
 			_text = text;
 			oldText = _text?.ToString();
-			//this.TextScale = textScaleMax;
 			TextSize = textSize;
 			IsLarge = large;
 			textStrings = text.ToString().Split('\n');
-			// offset off left corner for centering
+
+			// Offset of left corner for centering
 			drawOffsets = new Vector2[textStrings.Length];
 			for (int i = 0; i < textStrings.Length; i++) {
 				Vector2 size = ChatManager.GetStringSize(dynamicSpriteFont, textStrings[i], new Vector2(TextScale));
-				//size.Y = size.Y * 0.9f;
+
+				// TODO: fix this
 				float x = (innerDimensionsRectangle.Width - size.X) * 0.5f;
 				float y = (-textStrings.Length * size.Y * 0.5f) + i * size.Y + innerDimensionsRectangle.Height * 0.5f;
 				drawOffsets[i] = new Vector2(x, y);
