@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/IItemDropRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/IItemDropRule.cs
+@@ -6,6 +_,10 @@
+ {
+ 	List<IItemDropRuleChainAttempt> ChainedRules { get; }
+ 
++	bool Disabled { get; }
++
++	void Disable();
++
+ 	bool CanDrop(DropAttemptInfo info);
+ 
+ 	void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo);

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ModLoader;
 
 namespace Terraria.GameContent.ItemDropRules;
 
 /// <summary>
 /// Re-runs all drop rules if none succeded.
 /// </summary>
-public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRule
+public class AlwaysAtleastOneSuccessDropRule : BaseItemDropRule, INestedItemDropRule
 {
 	private class PersonalDropRateReportingRule : IItemDropRuleChainAttempt
 	{
@@ -25,20 +26,12 @@ public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRul
 
 	public IItemDropRule[] rules;
 
-	public List<IItemDropRuleChainAttempt> ChainedRules {
-		get;
-		private set;
-	}
-
 	public AlwaysAtleastOneSuccessDropRule(params IItemDropRule[] rules)
 	{
 		this.rules = rules;
-		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
-	public bool CanDrop(DropAttemptInfo info) => true;
-
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		return new() { State = ItemDropAttemptResultState.DidNotRunCode };
 	}
@@ -57,7 +50,7 @@ public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRul
 		}
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		float reroll = 1f;
 		foreach (var rule in rules) {

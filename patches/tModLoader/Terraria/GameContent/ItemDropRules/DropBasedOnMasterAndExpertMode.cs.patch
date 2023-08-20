@@ -1,0 +1,54 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/DropBasedOnMasterAndExpertMode.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropBasedOnMasterAndExpertMode.cs
+@@ -1,24 +_,27 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
+-public class DropBasedOnMasterAndExpertMode : IItemDropRule, INestedItemDropRule
++public class DropBasedOnMasterAndExpertMode : BaseItemDropRule, INestedItemDropRule
+ {
+ 	public IItemDropRule ruleForDefault;
+ 	public IItemDropRule ruleForExpertmode;
+ 	public IItemDropRule ruleForMasterMode;
+ 
+-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
++	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public DropBasedOnMasterAndExpertMode(IItemDropRule ruleForDefault, IItemDropRule ruleForExpertMode, IItemDropRule ruleForMasterMode)
+ 	{
+ 		this.ruleForDefault = ruleForDefault;
+ 		ruleForExpertmode = ruleForExpertMode;
+ 		this.ruleForMasterMode = ruleForMasterMode;
+-		ChainedRules = new List<IItemDropRuleChainAttempt>();
++		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+ 
++	// TML: Added override
+-	public bool CanDrop(DropAttemptInfo info)
++	public override bool CanDrop(DropAttemptInfo info)
+ 	{
+ 		if (info.IsMasterMode)
+ 			return ruleForMasterMode.CanDrop(info);
+@@ -29,7 +_,8 @@
+ 		return ruleForDefault.CanDrop(info);
+ 	}
+ 
++	// TML: Added override
+-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
++	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+ 	{
+ 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
+ 		result.State = ItemDropAttemptResultState.DidNotRunCode;
+@@ -47,7 +_,8 @@
+ 		return resolveAction(ruleForDefault, info);
+ 	}
+ 
++	// TML: Added override
+-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
++	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
+ 		DropRateInfoChainFeed ratesInfo2 = ratesInfo.With(1f);
+ 		ratesInfo2.AddCondition(new Conditions.IsMasterMode());

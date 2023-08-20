@@ -1,6 +1,37 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromOptionsDropRule.cs
-@@ -24,7 +_,7 @@
+@@ -1,30 +_,33 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
+-public class OneFromOptionsDropRule : IItemDropRule
++public class OneFromOptionsDropRule : BaseItemDropRule
+ {
+ 	public int[] dropIds;
+ 	public int chanceDenominator;
+ 	public int chanceNumerator;
+ 
+-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
++	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public OneFromOptionsDropRule(int chanceDenominator, int chanceNumerator, params int[] options)
+ 	{
+ 		this.chanceDenominator = chanceDenominator;
+ 		this.chanceNumerator = chanceNumerator;
+ 		dropIds = options;
+-		ChainedRules = new List<IItemDropRuleChainAttempt>();
++		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+ 
+-	public bool CanDrop(DropAttemptInfo info) => true;
++	// public bool CanDrop(DropAttemptInfo info) => true;
+ 
++	// TML: Added override
+-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
++	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
  	{
  		ItemDropAttemptResult result;
  		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
@@ -9,3 +40,13 @@
  			result = default(ItemDropAttemptResult);
  			result.State = ItemDropAttemptResultState.Success;
  			return result;
+@@ -35,7 +_,8 @@
+ 		return result;
+ 	}
+ 
++	// TML: Added override
+-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
++	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
+ 		float num = (float)chanceNumerator / (float)chanceDenominator;
+ 		float num2 = num * ratesInfo.parentDroprateChance;

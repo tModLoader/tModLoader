@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -8,26 +9,18 @@ namespace Terraria.GameContent.ItemDropRules;
 /// Runs the provided rules in order, stopping after a rule succeeds.<br/>
 /// Does not use player luck.<br/>
 /// </summary>
-public class SequentialRulesNotScalingWithLuckRule : IItemDropRule, INestedItemDropRule
+public class SequentialRulesNotScalingWithLuckRule : BaseItemDropRule, INestedItemDropRule
 {
 	public IItemDropRule[] rules;
 	public int chanceDenominator;
-
-	public List<IItemDropRuleChainAttempt> ChainedRules {
-		get;
-		private set;
-	}
 
 	public SequentialRulesNotScalingWithLuckRule(int chanceDenominator, params IItemDropRule[] rules)
 	{
 		this.chanceDenominator = chanceDenominator;
 		this.rules = rules;
-		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
-	public bool CanDrop(DropAttemptInfo info) => true;
-
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
 		result.State = ItemDropAttemptResultState.DidNotRunCode;
@@ -52,7 +45,7 @@ public class SequentialRulesNotScalingWithLuckRule : IItemDropRule, INestedItemD
 		return result;
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		// Build the chain!
 		for (int i = rules.Length - 1; i >= 1; i--) {

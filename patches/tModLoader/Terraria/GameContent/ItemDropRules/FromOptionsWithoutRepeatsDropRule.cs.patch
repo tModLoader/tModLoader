@@ -1,5 +1,39 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/FromOptionsWithoutRepeatsDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/FromOptionsWithoutRepeatsDropRule.cs
+@@ -1,25 +_,28 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
+-public class FromOptionsWithoutRepeatsDropRule : IItemDropRule
++public class FromOptionsWithoutRepeatsDropRule : BaseItemDropRule
+ {
+ 	public int[] dropIds;
+ 	public int dropCount;
+ 	private List<int> _temporaryAvailableItems = new List<int>();
+ 
+-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
++	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public FromOptionsWithoutRepeatsDropRule(int dropCount, params int[] options)
+ 	{
+ 		this.dropCount = dropCount;
+ 		dropIds = options;
+-		ChainedRules = new List<IItemDropRuleChainAttempt>();
++		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+ 
+-	public bool CanDrop(DropAttemptInfo info) => true;
++	// public bool CanDrop(DropAttemptInfo info) => true;
+ 
++	// TML: Added override
+-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
++	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+ 	{
+ 		_temporaryAvailableItems.Clear();
+ 		_temporaryAvailableItems.AddRange(dropIds);
 @@ -28,7 +_,7 @@
  				break;
  
@@ -9,3 +43,13 @@
  			_temporaryAvailableItems.RemoveAt(index);
  		}
  
+@@ -37,7 +_,8 @@
+ 		return result;
+ 	}
+ 
++	// TML: Added override
+-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
++	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
+ 		float parentDroprateChance = ratesInfo.parentDroprateChance;
+ 		int num = dropIds.Length;

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Terraria.GameContent.ItemDropRules;
 
-public class CoinsRule : IItemDropRule
+public class CoinsRule : BaseItemDropRule
 {
 	public long value; // in copper coins
 	public bool withRandomBonus = false;
@@ -14,10 +15,7 @@ public class CoinsRule : IItemDropRule
 		this.withRandomBonus = withRandomBonus;
 	}
 
-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; } = new();
-	public bool CanDrop(DropAttemptInfo info) => true;
-
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		double scale = 1f;
 		if (withRandomBonus) {
@@ -52,7 +50,7 @@ public class CoinsRule : IItemDropRule
 		if (plat > 0) yield return (ItemID.PlatinumCoin, plat);
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		// TODO: is there a sensible way to report variance here? probably not
 

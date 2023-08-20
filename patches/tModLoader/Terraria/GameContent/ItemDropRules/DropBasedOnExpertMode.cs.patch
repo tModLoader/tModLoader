@@ -1,0 +1,52 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/DropBasedOnExpertMode.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropBasedOnExpertMode.cs
+@@ -1,22 +_,25 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
+-public class DropBasedOnExpertMode : IItemDropRule, INestedItemDropRule
++public class DropBasedOnExpertMode : BaseItemDropRule, INestedItemDropRule
+ {
+ 	public IItemDropRule ruleForNormalMode;
+ 	public IItemDropRule ruleForExpertMode;
+ 
+-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
++	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public DropBasedOnExpertMode(IItemDropRule ruleForNormalMode, IItemDropRule ruleForExpertMode)
+ 	{
+ 		this.ruleForNormalMode = ruleForNormalMode;
+ 		this.ruleForExpertMode = ruleForExpertMode;
+-		ChainedRules = new List<IItemDropRuleChainAttempt>();
++		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+ 
++	// TML: Added override
+-	public bool CanDrop(DropAttemptInfo info)
++	public override bool CanDrop(DropAttemptInfo info)
+ 	{
+ 		if (info.IsExpertMode)
+ 			return ruleForExpertMode.CanDrop(info);
+@@ -24,7 +_,8 @@
+ 		return ruleForNormalMode.CanDrop(info);
+ 	}
+ 
++	// TML: Added override
+-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
++	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+ 	{
+ 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
+ 		result.State = ItemDropAttemptResultState.DidNotRunCode;
+@@ -39,7 +_,8 @@
+ 		return resolveAction(ruleForNormalMode, info);
+ 	}
+ 
++	// TML: Added override
+-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
++	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
+ 		DropRateInfoChainFeed ratesInfo2 = ratesInfo.With(1f);
+ 		ratesInfo2.AddCondition(new Conditions.IsExpert());

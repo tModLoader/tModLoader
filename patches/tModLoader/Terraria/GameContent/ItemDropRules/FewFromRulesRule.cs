@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.ModLoader;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -8,16 +9,11 @@ namespace Terraria.GameContent.ItemDropRules;
 /// <summary>
 /// Runs multiple drop rules if successes.
 /// </summary>
-public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
+public class FewFromRulesRule : BaseItemDropRule, INestedItemDropRule
 {
 	public int amount;
 	public IItemDropRule[] options;
 	public int chanceDenominator;
-
-	public List<IItemDropRuleChainAttempt> ChainedRules {
-		get;
-		private set;
-	}
 
 	public FewFromRulesRule(int amount, int chanceNumerator, params IItemDropRule[] options)
 	{
@@ -28,19 +24,16 @@ public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
 		this.amount = amount;
 		chanceDenominator = chanceNumerator;
 		this.options = options;
-		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
-	public bool CanDrop(DropAttemptInfo info) => true;
-
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
 		result.State = ItemDropAttemptResultState.DidNotRunCode;
 		return result;
 	}
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
 	{
 		if (info.rng.Next(chanceDenominator) == 0) {
 			List<IItemDropRule> savedDropIds = options.ToList();
@@ -62,7 +55,7 @@ public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
 		return new() { State = ItemDropAttemptResultState.FailedRandomRoll };
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		float personalDroprate = 1f / (float)chanceDenominator;
 		float num2 = personalDroprate * ratesInfo.parentDroprateChance;

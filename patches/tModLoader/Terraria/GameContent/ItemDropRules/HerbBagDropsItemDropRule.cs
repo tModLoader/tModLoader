@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -7,24 +8,16 @@ namespace Terraria.GameContent.ItemDropRules;
 /// <summary>
 /// Used just by Herb Bag. Horribly hardcoded. Do not use if you can.
 /// </summary>
-public class HerbBagDropsItemDropRule : IItemDropRule
+public class HerbBagDropsItemDropRule : BaseItemDropRule
 {
 	public int[] dropIds;
-
-	public List<IItemDropRuleChainAttempt> ChainedRules {
-		get;
-		private set;
-	}
 
 	public HerbBagDropsItemDropRule(params int[] options)
 	{
 		dropIds = options;
-		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
 
-	public bool CanDrop(DropAttemptInfo info) => true;
-
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
 
@@ -45,7 +38,7 @@ public class HerbBagDropsItemDropRule : IItemDropRule
 		return result;
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		float num = (float)1f / (float)1f;
 		float num2 = num * ratesInfo.parentDroprateChance;

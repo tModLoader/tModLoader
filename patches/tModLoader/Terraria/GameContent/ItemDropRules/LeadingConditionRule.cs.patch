@@ -1,0 +1,42 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/LeadingConditionRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/LeadingConditionRule.cs
+@@ -1,28 +_,33 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
+-public class LeadingConditionRule : IItemDropRule
++public class LeadingConditionRule : BaseItemDropRule
+ {
+ 	public IItemDropRuleCondition condition;
+ 
+-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
++	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public LeadingConditionRule(IItemDropRuleCondition condition)
+ 	{
+ 		this.condition = condition;
+-		ChainedRules = new List<IItemDropRuleChainAttempt>();
++		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+ 
++	// TML: Added override
+-	public bool CanDrop(DropAttemptInfo info) => condition.CanDrop(info);
++	public override bool CanDrop(DropAttemptInfo info) => condition.CanDrop(info);
+ 
++	// TML: Added override
+-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
++	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
+ 		ratesInfo.AddCondition(condition);
+ 		Chains.ReportDroprates(ChainedRules, 1f, drops, ratesInfo);
+ 	}
+ 
++	// TML: Added override
+-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
++	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+ 	{
+ 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
+ 		result.State = ItemDropAttemptResultState.Success;

@@ -1,15 +1,39 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/SlimeBodyItemDropRule.cs
-@@ -15,7 +_,7 @@
- 	public bool CanDrop(DropAttemptInfo info)
+@@ -1,30 +_,34 @@
+ using System.Collections.Generic;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
+-public class SlimeBodyItemDropRule : IItemDropRule
++public class SlimeBodyItemDropRule : BaseItemDropRule
+ {
+-	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
++	// public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
+ 
+ 	public SlimeBodyItemDropRule()
+ 	{
+-		ChainedRules = new List<IItemDropRuleChainAttempt>();
++		// ChainedRules = new List<IItemDropRuleChainAttempt>();
+ 	}
+ 
++	// TML: Added override
+-	public bool CanDrop(DropAttemptInfo info)
++	public override bool CanDrop(DropAttemptInfo info)
  	{
  		if (info.npc.type == 1 && info.npc.ai[1] > 0f)
 -			return info.npc.ai[1] < (float)ItemID.Count;
-+			return info.npc.ai[1] < (float)Terraria.ModLoader.ItemLoader.ItemCount;
++			return info.npc.ai[1] < (float)ItemLoader.ItemCount;
  
  		return false;
  	}
-@@ -24,7 +_,7 @@
+ 
++	// TML: Added override
+-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
++	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
  	{
  		int itemId = (int)info.npc.ai[1];
  		GetDropInfo(itemId, out var amountDroppedMinimum, out var amountDroppedMaximum);
@@ -34,14 +58,19 @@
  			case 71:
  				amountDroppedMinimum = 50;
  				amountDroppedMaximum = 99;
-@@ -75,6 +_,10 @@
- 				amountDroppedMinimum = 2;
+@@ -76,9 +_,14 @@
  				amountDroppedMaximum = 5;
  				break;
-+		}
+ 		}
 +		if (ItemID.Sets.OreDropsFromSlime.TryGetValue(itemId, out var minMaxStack)) { // TML
 +			amountDroppedMinimum = minMaxStack.minStack;
 +			amountDroppedMaximum = minMaxStack.maxStack;
- 		}
++		}
  	}
  
++	// TML: Added override
+-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
++	public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+ 	{
+ 		Chains.ReportDroprates(ChainedRules, 1f, drops, ratesInfo);
+ 	}
