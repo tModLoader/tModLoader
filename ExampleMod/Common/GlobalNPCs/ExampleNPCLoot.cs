@@ -86,7 +86,8 @@ namespace ExampleMod.Common.GlobalNPCs
 							if (chainedRule is Chains.TryIfSucceeded && chainedRule.RuleToChain is DropBasedOnExpertMode dropBasedOnExpertMode
 								&& dropBasedOnExpertMode.ruleForNormalMode is CommonDrop { itemId: ItemID.DeathSickle }
 								&& dropBasedOnExpertMode.ruleForExpertMode is CommonDrop { itemId: ItemID.DeathSickle }) {
-								dropBasedOnExpertMode.Disable();
+								// Disable the rule entirely so it doesnt shows up in bestiary.
+								rule.Disable();
 								break;
 							}
 						}
