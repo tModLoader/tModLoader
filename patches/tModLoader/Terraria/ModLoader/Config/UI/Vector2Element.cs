@@ -45,7 +45,7 @@ internal class Vector2Element : ConfigElement
 			else
 				array[index] = current;
 
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.CheckSaveButton();
 		}
 
 		public Vector2Object(PropertyFieldWrapper memberInfo, object item)

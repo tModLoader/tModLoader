@@ -21,42 +21,38 @@ namespace Terraria.ModLoader.Config.UI;
 // TODO: Revert individual button.
 internal class UIModConfig : UIState
 {
-	public int UpdateCount { get; set; }
-
-	public static string Tooltip { get; set; }
-	private static bool pendingRevertDefaults;
+	// Used for animations in elements like NPCDefinition
+	public int UpdateCount { get; private set; }
 
 	private UIElement uIElement;
 	private UIPanel uIPanel;
-	private UIList mainConfigList;
+	private UIList configList;
 	private UIScrollbar uIScrollbar;
-	private UIFocusInputTextField filterTextField;
-	private UITextPanel<LocalizedText> headerTextPanel;
-	private UIAutoScaleTextTextPanel<LocalizedText> saveConfigButton;
-	private UIAutoScaleTextTextPanel<LocalizedText> backButton;
-	private UIAutoScaleTextTextPanel<LocalizedText> revertConfigButton;
-	private UIAutoScaleTextTextPanel<LocalizedText> restoreDefaultsConfigButton;
+	private UIFocusInputTextField searchBar;
+	private UITextPanel<string> configNamePanel;
+	private UITextPanel<LocalizedText> subConfigBackButton;
+	private UIButton<LocalizedText> saveConfigButton;
+	private UIButton<LocalizedText> backButton;
+	private UIButton<LocalizedText> revertConfigButton;
+	private UIButton<LocalizedText> restoreDefaultsConfigButton;
 	private UIPanel notificationModal;
-	private UIText notificationModalText;
+	private UIMessageBox notificationModalText;
 	private UIText notificationModalHeader;
 	private UIImage modalInputBlocker;
 
-	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
-	private readonly Stack<UIPanel> configPanelStack = new();
-	private readonly Stack<string> subPageStack = new();
-
+	// TODO: use only one config and just load from disk instead
+	// do we need 2 copies? We can discard changes by reloading.
+	// We can save pending changes by saving file then loading/reloading mods.
+	// when we get new server configs from server...replace, don't save?
+	// reload manually, reload fresh server config?
+	// need some CopyTo method to preserve references....hmmm
 	private Mod mod;
-	private List<ModConfig> modConfigs;
-	private ModConfig modConfig; // This is from ConfigManager.Configs
-	internal ModConfig pendingConfig; // The clone we modify.
-	private UIList subConfigList;
-	private UIFocusInputTextField subConfigSearch;
-	private List<Tuple<UIElement, UIElement>> subConfigItems = new();
-	private bool updateNeeded;
+	private ModConfig config;// Load time config from ConfigManager.Configs
+	private ModConfig pendingConfig;// The clone of the config that is modified
+
+	private Stack<ConfigElement> subPages = new();
+	private bool hasUnsavedChanges = false;
 	private bool openedFromModder = false;
-	private bool pendingChanges;
-	private bool pendingChangesUIUpdate;
-	private bool netUpdate;
 
 	public override void OnInitialize()
 	{
@@ -76,41 +72,59 @@ internal class UIModConfig : UIState
 		};
 		uIElement.Append(uIPanel);
 
-		headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
+		var headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue,
 		}.WithPadding(15f);
 		uIElement.Append(headerTextPanel);
 
-		UIPanel textBoxBackground = new UIPanel {
+		// TODO: clean this up
+		subConfigBackButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back")) {
+			Width = { Pixels = 75 },
+			Height = { Pixels = 40 },
+			Top = { Pixels = 5 },
+		};
+		uIPanel.Append(subConfigBackButton);// TODO: temporary
+		// Don't append
+
+		// TODO: fix name overflowing
+		configNamePanel = new UITextPanel<string>("") {
+			Width = { Pixels = -185 - 85, Percent = 1f },
+			Height = { Pixels = 40 },
+			Top = { Pixels = 5 },
+			Left = { Pixels = 80 },
+		};
+		uIPanel.Append(configNamePanel);
+
+		var textBoxBackground = new UIPanel {
 			Width = { Pixels = 175 },
 			Height = { Pixels = 30 },
 			Top = { Pixels = 10 },
 			HAlign = 1f,
 		}.WithPadding(0f);
 		uIPanel.Append(textBoxBackground);
-		configPanelStack.Push(uIPanel);
 
-		filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions")) {// TODO: localize
+		// TODO: localize properly
+		searchBar = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions")) {
 			Top = { Pixels = 5 },
 			Left = { Pixels = 10 },
 			Width = { Pixels = -20, Percent = 1f },
 			Height = { Pixels = 20 },
 		};
-		filterTextField.OnTextChange += (a, b) => updateNeeded = true;
-		filterTextField.OnRightClick += (a, b) => filterTextField.SetText("");
-		filterTextField.SetText("");
-		textBoxBackground.Append(filterTextField);
+		searchBar.OnTextChange += (_, _) => UpdateConfigList();
+		searchBar.OnRightClick += (_, _) => searchBar.SetText("");
+		searchBar.SetText("");
+		textBoxBackground.Append(searchBar);
 
 		float listTop = 50;
-		mainConfigList = new UIList {
+		configList = new UIList {
 			Width = { Pixels = -25, Percent = 1f },
 			Height = { Pixels = -listTop, Percent = 1f },
 			Top = { Pixels = listTop },
 			ListPadding = 5f,
 		};
-		uIPanel.Append(mainConfigList);
+		uIPanel.Append(configList);
 
 		uIScrollbar = new UIScrollbar {
 			Top = { Pixels = listTop },
@@ -118,67 +132,96 @@ internal class UIModConfig : UIState
 			HAlign = 1f,
 		};
 		uIScrollbar.SetView(100f, 1000f);
-		mainConfigList.SetScrollbar(uIScrollbar);
+		configList.SetScrollbar(uIScrollbar);
 		uIPanel.Append(uIScrollbar);
 
-		backButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigBack")) {
+		backButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigBack")) {
 			Width = { Pixels = -10, Percent = 0.25f },
 			Height = { Pixels = 40 },
 			Top = { Pixels = -20 },
 			HAlign = 0 / 3f,
 			VAlign = 1f,
-		}.WithFadedMouseOver();
-		backButton.OnMouseOver += (a, b) => {
-			if (pendingChanges)
-				backButton.BackgroundColor = Color.Red;
+			AltPanelColor = Color.Red * 0.7f,
+			AltHoverPanelColor = Color.Red,
+			UseAltColours = () => hasUnsavedChanges,
+			ClickSound = SoundID.MenuClose,
+			HoverSound = SoundID.MenuTick,
 		};
-		backButton.OnMouseOut += (a, b) => {
-			if (pendingChanges)
-				backButton.BackgroundColor = Color.Red * 0.7f;
+		backButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement)
+		{
+
+			if (Main.gameMenu)
+			{
+				Main.menuMode = openedFromModder ? MenuID.Title : Interface.modConfigListID;
+			}
+			else
+			{
+				if (openedFromModder)
+					IngameFancyUI.Close();
+				else
+					Main.InGameUI.SetState(Interface.modConfigList);
+			}
 		};
-		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
 
-		saveConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigSaveConfig"));
+		saveConfigButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigSaveConfig")) {
+			ClickSound = SoundID.MenuOpen,
+			HoverSound = SoundID.MenuTick,
+		};
 		saveConfigButton.CopyStyle(backButton);
-		saveConfigButton.WithFadedMouseOver();
 		saveConfigButton.HAlign = 1 / 3f;
-		saveConfigButton.OnLeftClick += SaveConfig;
-		// Don't append
-
-		revertConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigRevertChanges"));
-		revertConfigButton.CopyStyle(backButton);
-		revertConfigButton.WithFadedMouseOver();
-		revertConfigButton.HAlign = 2 / 3f;
-		revertConfigButton.OnLeftClick += RevertConfig;
-		// Don't append
-
-		restoreDefaultsConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigRestoreDefaults"));
-		restoreDefaultsConfigButton.CopyStyle(backButton);
-		restoreDefaultsConfigButton.WithFadedMouseOver();
-		restoreDefaultsConfigButton.HAlign = 3 / 3f;
-		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
-		uIElement.Append(restoreDefaultsConfigButton);
-
-		notificationModal = new UIPanel {
-			Width = { Pixels = 400 },
-			Height = { Pixels = 200 },
-			HAlign = 0.5f,
-			VAlign = 0.5f,
-			BackgroundColor = UICommon.DefaultUIBlue,
+		saveConfigButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			pendingConfig.Save();
+			CheckSaveButton();
 		};
 		// Don't append
 
-		notificationModalText = new UIText("") {
-			Width = { Percent = 1f },
-			MaxHeight = { Pixels = 175 },
+		revertConfigButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigRevertChanges")) {
+			ClickSound = SoundID.MenuClose,
+			HoverSound = SoundID.MenuTick,
+		};
+		revertConfigButton.CopyStyle(backButton);
+		revertConfigButton.HAlign = 2 / 3f;
+		revertConfigButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			ConfigManager.RevertConfig(pendingConfig, config);
+			CheckSaveButton();
+		};
+		// Don't append
+
+		restoreDefaultsConfigButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigRestoreDefaults")) {
+			ClickSound = SoundID.MenuOpen,
+			HoverSound = SoundID.MenuTick,
+		};
+		restoreDefaultsConfigButton.CopyStyle(backButton);
+		restoreDefaultsConfigButton.HAlign = 3 / 3f;
+		restoreDefaultsConfigButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			ConfigManager.Reset(pendingConfig);// Reset to defaults
+			CheckSaveButton();
+		};
+		uIElement.Append(restoreDefaultsConfigButton);
+
+		notificationModal = new UIPanel {// TODO: fix vertical alignment
+			Width = { Pixels = 500 },
+			Height = { Pixels = 350 },
 			HAlign = 0.5f,
 			VAlign = 0.5f,
-			IsWrapped = true,
+			BackgroundColor = UICommon.MainPanelBackground * (1 / 0.8f),
+		};
+		// Don't append
+
+		notificationModalText = new UIMessageBox("") {
+			Width = { Percent = 1f },
+			Height = { Pixels = -50, Percent = 1f },
+			HAlign = 0.5f,
+			VAlign = 1f,
+			TextOriginX = 0.5f,
+			TextOriginY = 0.5f,
 		};
 		notificationModal.Append(notificationModalText);
 
-		notificationModalHeader = new UIText("", 0.5f, large: true) {
+		notificationModalHeader = new UIText("", 0.75f, large: true) {
+			Top = { Pixels = 10 },
 			HAlign = 0.5f,
 		};
 		notificationModal.Append(notificationModalHeader);
@@ -186,7 +229,7 @@ internal class UIModConfig : UIState
 		var modalCloseButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
 			HAlign = 1f,
 		};
-		modalCloseButton.OnLeftClick += ClearMessage;
+		modalCloseButton.OnLeftClick += (_, _) => ClearMessage();
 		notificationModal.Append(modalCloseButton);
 
 		modalInputBlocker = new UIImage(TextureAssets.Extra[190]) {
@@ -195,148 +238,126 @@ internal class UIModConfig : UIState
 			Color = new Color(0, 0, 0, 0),
 			ScaleToFit = true,
 		};
-		modalInputBlocker.OnLeftClick += ClearMessage;
+		modalInputBlocker.OnLeftClick += (_, _) => ClearMessage();
 		// Don't append
 	}
 
-	public override void ScrollWheel(UIScrollWheelEvent evt)
+	public override void OnActivate()
 	{
-		base.ScrollWheel(evt);
-
-		if (!mainConfigList.ContainsPoint(Main.MouseScreen))
-			uIScrollbar.ViewPosition -= evt.ScrollWheelValue;
-	}
-
-	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-
-		if (Main.gameMenu) {
-			Main.menuMode = openedFromModder ? MenuID.Title : Interface.modConfigListID;
-		}
-		else {
-			if (openedFromModder)
-				IngameFancyUI.Close();
-			else
-				Main.InGameUI.SetState(Interface.modConfigList);
-		}
+		pendingConfig = ConfigManager.GeneratePopulatedClone(config);
+		searchBar.SetText("");
+		uIScrollbar.ViewPosition = 0f;
+		subPages.Clear();
+		ClearMessage(sound: false);
+		RefreshUI();
 	}
 
 	internal void Unload()
 	{
-		mainConfigList?.Clear();
-		mainConfigItems?.Clear();
-		subConfigItems?.Clear();
 		mod = null;
-		modConfigs = null;
-		modConfig = null;
+		config = null;
 		pendingConfig = null;
 
-		while (configPanelStack.Count > 1)
-			uIElement.RemoveChild(configPanelStack.Pop());
+		UpdateCount = 0;
+		configList?.Clear();
+		subPages?.Clear();
 	}
 
-	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults
-	public void DoMenuModeState()
+	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false)
 	{
-		if (Main.gameMenu) {
-			Main.MenuUI.SetState(null);
-			Main.menuMode = Interface.modConfigID;
-		}
-		else {
-			Main.InGameUI.SetState(null);
-			Main.InGameUI.SetState(Interface.modConfig);
-		}
+		this.openedFromModder = openedFromModder;
+		this.mod = mod;
+		this.config = config;
 	}
 
-	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
+	public void RefreshUI()
 	{
-		// Main Menu: Save, leave reload for later
-		// MP with ServerSide: Send request to server
-		// SP or MP with ClientSide: Apply immediately if !NeedsReload
-		if (Main.gameMenu) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			ConfigManager.Save(pendingConfig);
-			ConfigManager.Load(modConfig);
-			// modConfig.OnChanged(); delayed until ReloadRequired checked
-			// Reload will be forced by Back Button in UIMods if needed
+		UpdateConfigList();
+		CheckSaveButton();
+		UpdateSeparatePage();
+	}
+
+	// Updates the main config list
+	// TODO: rework
+	public void UpdateConfigList()
+	{
+		configList.Clear();
+
+		int top = 0;
+		int order = 0;
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetDisplayedVariables(pendingConfig))
+		{
+			HandleHeader(configList, ref top, ref order, variable);
+			var element = WrapIt(configList, ref top, variable, pendingConfig, order++).Item2;
+			configList.Add(element);
 		}
-		else {
-			// If we are in game...
-			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
 
-				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-				requestChanges.Write(pendingConfig.Mod.Name);
-				requestChanges.Write(pendingConfig.Name);
-				string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
-				requestChanges.Write(json);
-				requestChanges.Send();
-
-				//IngameFancyUI.Close();
-
-				return;
-			}
-
-			// SP or MP with ClientSide
-			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
-
-			if (loadTimeConfig.NeedsReload(pendingConfig)) {
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
-				return;
-			}
-			else {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
-				ConfigManager.Save(pendingConfig);
-				ConfigManager.Load(modConfig);
-				modConfig.OnChanged();
-			}
-		}
+		Recalculate();
 
 		/*
-		if (ConfigManager.ModNeedsReload(modConfig.mod)) {
-			Main.menuMode = Interface.reloadModsID;
+
+		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
+
+		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
+
+		if (backgroundColorAttribute != null) {
+			uIPanel.BackgroundColor = backgroundColorAttribute.Color;
 		}
-		else {
-			DoMenuModeState();
+
+		int order = 0;
+		int top = 0;
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
+			if (variable.IsProperty && variable.Name == "Mode")
+				continue;
+
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+				continue;
+
+			HandleHeader(configList, ref top, ref order, variable);
+
+			WrapIt(configList, ref top, variable, pendingConfig, order++);
+		}*/
+	}
+
+	// Checks if the config has been changed and updates the save and revert buttons
+	public void CheckSaveButton()
+	{
+		// Compare JSON because otherwise reference types act weird
+		string pendingJson = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettings);
+		string existingJson = JsonConvert.SerializeObject(config, ConfigManager.serializerSettings);
+				hasUnsavedChanges = pendingJson != existingJson;
+
+		saveConfigButton.Remove();
+		revertConfigButton.Remove();
+		if (hasUnsavedChanges) {
+			uIElement.Append(saveConfigButton);
+			uIElement.Append(revertConfigButton);
 		}
-		*/
-
-		DoMenuModeState();
 	}
 
-	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
+	// Updates the header panel, separate page back button, and separate page contents
+	// TODO
+	public void UpdateSeparatePage()
 	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		pendingRevertDefaults = true;
-		DoMenuModeState();
+		string configName = mod.DisplayName + " - " + config.DisplayName.Value;
+		string subPagesText = string.Join(" > ", subPages.Reverse());
+		configNamePanel.SetText(configName + subPagesText);
 	}
 
-	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
+	public void OpenSeparatePage(ObjectElement element)
 	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		DiscardChanges();
+		subPages.Push(element);
+		UpdateSeparatePage();
 	}
 
-	private void DiscardChanges()
+	public void ClearMessage(bool sound = true)
 	{
-		DoMenuModeState();
-	}
-
-	// TODO: make this set pending changes based on whether elements were changed rather than interacted with, since changing their values back doesn't update the UI
-	public void SetPendingChanges(bool changes = true)
-	{
-		pendingChangesUIUpdate |= changes;
-		pendingChanges |= changes;
-	}
-
-	private void ClearMessage(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
 		SetMessage("", "");
+		if (sound)
+			SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
-	public void SetMessage(string text, string header, Color color = default)
+	public void SetMessage(string text, string header, Color color = default, bool sendChatMessage = true)
 	{
 		if (color == default)
 			color = Color.White;
@@ -354,28 +375,33 @@ internal class UIModConfig : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Append(modalInputBlocker);
 		Append(notificationModal);
+		notificationModalText.Activate();
 		notificationModalText.SetText(text);
 		notificationModalHeader.SetText(header);
 		notificationModalHeader.TextColor = color;
+
+		if (sendChatMessage && !Main.gameMenu && Main.InGameUI.CurrentState != Interface.modConfig)
+			Main.NewText($"[c/{color.Hex3()}:{header}] - {text}");
+	}
+
+	// Make scrolling outside of the main list still scroll the main list (if there is scrollbar hell then this helps a lot)
+	public override void ScrollWheel(UIScrollWheelEvent evt)
+	{
+		base.ScrollWheel(evt);
+
+		if (!configList.ContainsPoint(Main.MouseScreen))
+			uIScrollbar.ViewPosition -= evt.ScrollWheelValue;
 	}
 
 	public override void Update(GameTime gameTime)
 	{
-		UpdateCount++;
-
-		if (pendingChangesUIUpdate) {
-			uIElement.Append(saveConfigButton);
-			uIElement.Append(revertConfigButton);
-			backButton.BackgroundColor = Color.Red * 0.7f;
-			pendingChangesUIUpdate = false;
-		}
-
-		if (netUpdate) {
-			DoMenuModeState();
-			netUpdate = false;
-		}
-
 		base.Update(gameTime);
+		UpdateCount++;
+	}
+
+	public override void Draw(SpriteBatch spriteBatch)
+	{
+		base.Draw(spriteBatch);
 
 		if (revertConfigButton.IsMouseHovering)
 			Main.instance.MouseText(Language.GetTextValue("tModLoader.ModConfigRevertChangesHover"));
@@ -383,126 +409,51 @@ internal class UIModConfig : UIState
 		if (restoreDefaultsConfigButton.IsMouseHovering)
 			Main.instance.MouseText(Language.GetTextValue("tModLoader.ModConfigRestoreDefaultsHover"));
 
-		if (!updateNeeded)
-			return;
-
-		updateNeeded = false;
-
-		var list = subConfigList ?? mainConfigList;
-		var items = subConfigItems ?? mainConfigItems;
-		var textField = subConfigSearch ?? filterTextField;
-		list.Clear();
-
-		list.AddRange(items.Where(item => {
-			if (item.Item2 is ConfigElement configElement) {
-				return configElement.TextDisplayFunction().IndexOf(textField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
-			}
-			return true;
-		}).Select(x => x.Item1));
-
-		Recalculate();
-	}
-
-	public override void Draw(SpriteBatch spriteBatch)
-	{
-		Tooltip = null;
-
-		base.Draw(spriteBatch);
-
-		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.TooltipMouseText(Tooltip);
-		}
-
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
 	}
 
-	// do we need 2 copies? We can discard changes by reloading.
-	// We can save pending changes by saving file then loading/reloading mods.
-	// when we get new server configs from server...replace, don't save?
-	// reload manually, reload fresh server config?
-	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromModder = false)
+	public static UIElement GetConfigElement(PropertyFieldWrapper memberInfo)
 	{
-		this.openedFromModder = openedFromModder;
-		this.mod = mod;
-		if (ConfigManager.Configs.ContainsKey(mod)) {
-			modConfigs = ConfigManager.Configs[mod];
-			modConfig = modConfigs[0];
-			if (config != null) {
-				modConfig = ConfigManager.Configs[mod].First(x => x == config);
-				// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == ConfigScope.ClientSide).ToList();
+		UIElement element = new UIText("TODO");
+
+		// Custom UI
+		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo);
+		if (customUI != null) {
+			Type customUIType = customUI.Type;
+
+			if (typeof(ConfigElement).IsAssignableFrom(customUIType)) {
+				ConstructorInfo ctor = customUIType.GetConstructor(Array.Empty<Type>());
+
+				if (ctor != null) {
+					object instance = ctor.Invoke(new object[0]);
+					element = instance as UIElement;
+				}
+				else {
+					element = new UIText($"{customUIType.Name} specified via CustomModConfigItem for {memberInfo.Name} does not have an empty constructor.");
+				}
 			}
-			//modConfigClone = modConfig.Clone();
-
-			// if in game, maybe have all configs open
-
+			else {
+				element = new UIText($"{customUIType.Name} specified via CustomModConfigItem for {memberInfo.Name} does not inherit from ConfigElement.");
+			}
 		}
-		else {
-			throw new Exception($"There are no ModConfig for {mod.DisplayName}, how did this happen?");
+
+		switch (memberInfo.Type) {
+			case var _ when Attribute.IsDefined(memberInfo.MemberInfo, typeof(HeaderAttribute)):
+				element = new HeaderElement("");// TODO
+				break;
+			default:
+				break;
 		}
+
+		return element;
 	}
 
-	public override void OnActivate()
-	{
-		filterTextField.SetText("");
-		SetMessage("", "", Color.White);
-		updateNeeded = false;
 
-		headerTextPanel.SetText(Language.GetText(string.Format("{0} - {1}", mod.DisplayName, modConfig.DisplayName.Value)));// Hacky, but works
-		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
-		pendingChanges = pendingRevertDefaults;
 
-		if (pendingRevertDefaults) {
-			pendingRevertDefaults = false;
-			ConfigManager.Reset(pendingConfig);
-			pendingChangesUIUpdate = true;
-		}
 
-		backButton.BackgroundColor = UICommon.DefaultUIBlueMouseOver;
-		uIElement.RemoveChild(saveConfigButton);
-		uIElement.RemoveChild(revertConfigButton);
-		uIElement.RemoveChild(configPanelStack.Peek());
-		uIElement.Append(uIPanel);
-		// Stop header getting overlapped by the main panel
-		uIElement.RemoveChild(headerTextPanel);
-		uIElement.Append(headerTextPanel);
-
-		mainConfigItems.Clear();
-		subConfigItems.Clear();
-		mainConfigList.Clear();
-		configPanelStack.Clear();
-		configPanelStack.Push(uIPanel);
-		subPageStack.Clear();
-
-		//currentConfigList = mainConfigList;
-		int top = 0;
-		// load all mod config options into UIList
-		// TODO: Inheritance with ModConfig? DeclaredOnly?
-
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-
-		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
-
-		if (backgroundColorAttribute != null) {
-			uIPanel.BackgroundColor = backgroundColorAttribute.Color;
-		}
-
-		int order = 0;
-
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
-			if (variable.IsProperty && variable.Name == "Mode")
-				continue;
-
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-				continue;
-
-			HandleHeader(mainConfigList, ref top, ref order, variable);
-
-			WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
-		}
-	}
-
+	// TODO: rework onwards
+	// TODO: rename to GetUIConfigElement
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
 	{
 		int elementHeight;
@@ -646,16 +597,7 @@ internal class UIModConfig : UIState
 				parent.Height.Set(top, 0);
 			}
 
-			var tuple = new Tuple<UIElement, UIElement>(container, e);
-
-			if (parent == Interface.modConfig.mainConfigList) {
-				Interface.modConfig.mainConfigItems.Add(tuple);
-			}
-			else {
-				Interface.modConfig.subConfigItems?.Add(tuple);
-			}
-
-			return tuple;
+			return new Tuple<UIElement, UIElement>(container, e);
 		}
 		return null;
 	}
@@ -697,14 +639,14 @@ internal class UIModConfig : UIState
 			Width = { Pixels = -20, Percent = 1f },
 			Height = { Pixels = 20 },
 		};
-		filterTextField.OnTextChange += (a, b) => Interface.modConfig.updateNeeded = true;
+		filterTextField.OnTextChange += (a, b) => Interface.modConfig.UpdateConfigList();
 		filterTextField.OnRightClick += (a, b) => filterTextField.SetText("");
 		filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 		// End of Ctrl + V
 
 		UIList separateList = new UIList();
-		separateList.CopyStyle(Interface.modConfig.mainConfigList);
+		separateList.CopyStyle(Interface.modConfig.configList);
 		uIPanel.Append(separateList);
 
 		UIScrollbar uIScrollbar = new UIScrollbar();
@@ -716,11 +658,11 @@ internal class UIModConfig : UIState
 		string name = ConfigManager.GetLocalizedLabel(memberInfo);
 		if (index != -1)
 			name = name + " #" + (index + 1);
-		Interface.modConfig.subPageStack.Push(name);
+		//Interface.modConfig.subPageStack.Push(name);
 		//UIPanel heading = new UIPanel();
 		//UIText headingText = new UIText(name);
 
-		name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
+		//name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
 
 		UITextPanel<string> heading = new UITextPanel<string>(name) {
 			Left = { Pixels = 65 },
@@ -736,17 +678,13 @@ internal class UIModConfig : UIState
 		};
 		back.OnLeftClick += (a, c) => {
 			Interface.modConfig.uIElement.RemoveChild(uIPanel);
-			Interface.modConfig.configPanelStack.Pop();
-			Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());
-
-			Interface.modConfig.subConfigSearch = null;
-			Interface.modConfig.subConfigList = null;
-			Interface.modConfig.subConfigItems = null;
-			Interface.modConfig.updateNeeded = true;
+			//Interface.modConfig.configPanelStack.Pop();
+			//Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());
+			Interface.modConfig.RefreshUI();
 
 			// Stop header getting overlapped by the main panel
-			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.headerTextPanel);
-			Interface.modConfig.uIElement.Append(Interface.modConfig.headerTextPanel);
+			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configNamePanel);
+			Interface.modConfig.uIElement.Append(Interface.modConfig.configNamePanel);
 			//Interface.modConfig.configPanelStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
 			//Interface.modConfig.currentConfigList = capturedCurrent;
 		};
@@ -785,11 +723,11 @@ internal class UIModConfig : UIState
 			//WrapIt(separateList, ref top, memberInfo, item, 1, ignoreSeparatePage: true);
 		}
 
-		Interface.modConfig.subPageStack.Pop();
+		//Interface.modConfig.subPageStack.Pop();
 		return (uIPanel, separateList, filterTextField);
 	}
 
-	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	internal static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 
@@ -797,34 +735,5 @@ internal class UIModConfig : UIState
 			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
 			WrapIt(parent, ref top, wrapper, header, order++);
 		}
-	}
-
-	internal static void SwitchToSubConfig(ObjectElement element)
-	{
-		var separateListPanel = element.separatePagePanel;
-		Interface.modConfig.subConfigList = element.uIList;
-		Interface.modConfig.subConfigSearch = element.search;
-		Interface.modConfig.subConfigItems = new();
-		Interface.modConfig.subConfigList.Clear();
-		Interface.modConfig.subConfigSearch.SetText("");
-		Interface.modConfig.filterTextField.SetText("");
-
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(element.Value)) {
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-				continue;
-
-			int top = 0;
-			int order = 0;
-			HandleHeader(element.uIList, ref top, ref order, variable);
-
-			WrapIt(element.uIList, ref top, variable, element.Value, order++);
-		}
-
-		Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
-		Interface.modConfig.uIElement.Append(separateListPanel);
-		Interface.modConfig.configPanelStack.Push(separateListPanel);
-		// Stop header getting overlapped by the main panel
-		Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.headerTextPanel);
-		Interface.modConfig.uIElement.Append(Interface.modConfig.headerTextPanel);
 	}
 }

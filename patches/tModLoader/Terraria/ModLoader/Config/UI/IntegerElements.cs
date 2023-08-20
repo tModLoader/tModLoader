@@ -49,9 +49,6 @@ internal class IntInputElement : ConfigElement
 			if (int.TryParse(uIInputTextField.CurrentString, out int val)) {
 				SetValue(val);
 			}
-			//else /{
-			//	Interface.modConfig.SetMessage($"{uIInputTextField.currentString} isn't a valid value.", Color.Green);
-			//}
 		};
 		uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(GetValue().ToString());
 		textBoxBackground.Append(uIInputTextField);

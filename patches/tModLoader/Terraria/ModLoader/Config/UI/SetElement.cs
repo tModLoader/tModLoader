@@ -120,7 +120,7 @@ internal class SetElement : CollectionElement
 					var removeMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
 					removeMethod.Invoke(Data, new object[] { o });
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					Interface.modConfig.CheckSaveButton();
 				};
 				wrapped.Item1.Append(deleteButton);
 

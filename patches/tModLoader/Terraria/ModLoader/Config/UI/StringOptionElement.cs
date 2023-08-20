@@ -38,7 +38,7 @@ internal class StringOptionElement : RangeElement
 
 		if (StringList != null) {
 			getValue = () => this.StringList[Index];
-			setValue = (int value) => { StringList[Index] = options[value]; Interface.modConfig.SetPendingChanges(); };
+			setValue = (int value) => { StringList[Index] = options[value]; Interface.modConfig.CheckSaveButton(); };
 			TextDisplayFunction = () => Index + 1 + ": " + StringList[Index];
 		}
 
@@ -53,7 +53,7 @@ internal class StringOptionElement : RangeElement
 			return;
 
 		MemberInfo.SetValue(Item, options[index]);
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.CheckSaveButton();
 	}
 
 	private string DefaultGetValue()

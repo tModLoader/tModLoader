@@ -293,7 +293,7 @@ public static class ConfigManager
 				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
-				Interface.modConfig.DoMenuModeState();
+				Interface.modConfig.CheckSaveButton();// TODO: save as well?
 				Interface.modConfig.SetMessage(Language.GetTextValue(message), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
@@ -419,16 +419,18 @@ public static class ConfigManager
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
 	}
 
+	// TODO: rename, change parameters (avoid breaking changes in config UI rework)
+	// Public API for modders
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
 	{
-		// public api for modders.
-		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
+		return new Tuple<UIElement, UIElement>(Interface.modConfig, UIModConfig.GetConfigElement(memberInfo));
 	}
 
+	// TODO: removed unused parameter and rename (avoid breaking changes in config UI rework)
+	// Public API for modders
 	public static void SetPendingChanges(bool changes = true)
 	{
-		// public api for modders.
-		Interface.modConfig.SetPendingChanges(changes);
+		Interface.modConfig.CheckSaveButton();
 	}
 
 	// TODO: better home?

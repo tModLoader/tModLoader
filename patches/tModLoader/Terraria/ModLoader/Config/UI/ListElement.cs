@@ -52,7 +52,7 @@ internal class ListElement : CollectionElement
 				// Add delete button.
 				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigRemove"));
 				deleteButton.VAlign = 0.5f;
-				deleteButton.OnLeftClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
+				deleteButton.OnLeftClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.CheckSaveButton(); };
 				wrapped.Item1.Append(deleteButton);
 			}
 		}

@@ -90,7 +90,7 @@ internal class ObjectElement : ConfigElement<object>
 			//e.Recalculate();
 			//elementHeight = (int)e.GetOuterDimensions().Height;
 			separatePageButton.OnLeftClick += (a, c) => {
-				UIModConfig.SwitchToSubConfig(this);
+				Interface.modConfig.OpenSeparatePage(this);
 				/*	Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 					Interface.modConfig.uIElement.Append(separateListPanel);
 					Interface.modConfig.configPanelStack.Push(separateListPanel);*/
@@ -171,7 +171,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.CheckSaveButton();
 		};
 
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
@@ -191,7 +191,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			//Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.CheckSaveButton();
 		};
 
 		if (Value != null) {

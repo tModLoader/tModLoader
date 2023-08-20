@@ -123,7 +123,7 @@ internal class DictionaryElement : CollectionElement
 			((IDictionary)Data).Add(keyValue, CreateCollectionElementInstance(valueType));
 		}
 		catch (Exception e) {
-			Interface.modConfig.SetMessage(e.Message, Language.GetTextValue("tModLoader.ModConfigError"), Color.Red);// TODO: exception message isn't localized
+			Interface.modConfig.SetMessage(e.Message, Language.GetTextValue("tModLoader.ModConfigError"), Color.Red, sendChatMessage: false);// TODO: exception message isn't localized
 		}
 	}
 
@@ -233,7 +233,7 @@ internal class DictionaryElement : CollectionElement
 				deleteButton.OnLeftClick += (a, b) => {
 					((IDictionary)Data).Remove(o);
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					Interface.modConfig.CheckSaveButton();
 				};
 
 				wrapped.Item1.Append(deleteButton);

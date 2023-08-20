@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections;
-using System.Threading.Tasks.Sources;
 using Terraria.GameContent;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -101,7 +100,7 @@ public abstract class ConfigElement : UIElement
 	{
 		if (List != null) {
 			List[Index] = value;
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.CheckSaveButton();
 			return;
 		}
 
@@ -109,7 +108,7 @@ public abstract class ConfigElement : UIElement
 			return;
 
 		MemberInfo.SetValue(Item, value);
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.CheckSaveButton();
 	}
 
 	protected virtual object GetObject()
