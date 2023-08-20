@@ -92,7 +92,7 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,51 @@
+@@ -147,9 +_,15 @@
  		}
  	}
  
@@ -105,31 +105,17 @@
 -		Thread.CurrentThread.Name = "Main Thread";
 +		MainThread.Name = "Main Thread";
 +
++		/*
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-+		/*
- 		if (IsFna)
- 			TrySettingFNAToOpenGL(args);
-+		*/
- 
- 		LaunchParameters = Utils.ParseArguements(args);
-+
-+		if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
-+			// Launch the Terraria playtime tracker and quit.
-+			TerrariaSteamClient.Run();
-+			Environment.Exit(1);
-+		}
-+
- 		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
--#if SERVER
--		Main.dedServ = true;
--#else
-+
+@@ -164,6 +_,26 @@
  		// Unify server and client dll via launch param
--		Main.dedServ = LaunchParameters.ContainsKey("-server");
--#endif
-+		bool isServer = LaunchParameters.ContainsKey("-server");
+ 		Main.dedServ = LaunchParameters.ContainsKey("-server");
+ #endif
++		*/
++
++		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
 +		
