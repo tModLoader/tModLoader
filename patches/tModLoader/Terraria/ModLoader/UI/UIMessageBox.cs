@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
@@ -5,6 +7,9 @@ namespace Terraria.ModLoader.UI;
 
 internal class UIMessageBox : UIPanel
 {
+	public float TextOriginX = 0f;
+	public float TextOriginY = 0f;
+
 	string _text;
 	UIScrollbar _scrollbar;
 	UIList _list;
@@ -20,6 +25,11 @@ internal class UIMessageBox : UIPanel
 		_text = text;
 		_textElement?.SetText(_text);
 		ResetScrollbar();
+	}
+
+	public void SetScrollbar(UIScrollbar scrollbar)
+	{
+		_scrollbar = scrollbar;
 	}
 
 	private void ResetScrollbar()
@@ -42,13 +52,21 @@ internal class UIMessageBox : UIPanel
 		_list.Add(_textElement = new UIText(_text) {
 			Width = StyleDimension.Fill,
 			IsWrapped = true,
-			MinWidth = StyleDimension.Empty, // IsWrapped and ctor call InternalSetText, which assigns a MinWidth, this must be below IsWrapped. 
-			TextOriginX = 0f,
+			MinWidth = StyleDimension.Empty, // IsWrapped and ctor call InternalSetText, which assigns a MinWidth, this must be below IsWrapped.
+			TextOriginX = TextOriginX,
 		});
 	}
 
-	public void SetScrollbar(UIScrollbar scrollbar)
+	public override void Recalculate()
 	{
-		_scrollbar = scrollbar;
+		base.Recalculate();
+
+		if (_textElement == null)
+			return;
+
+		var dimensions = GetInnerDimensions();
+		_textElement.MarginTop = (dimensions.Height - _textElement.MinHeight.Pixels ) * TextOriginY;
+
+		base.Recalculate();
 	}
 }
