@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonDrop.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDrop.cs
-@@ -1,8 +_,10 @@
+@@ -1,8 +_,11 @@
 +using System;
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.ItemDropRules;
  
++// TML: Made to inherit BaseItemDropRule instead of IItemDropRule
 -public class CommonDrop : IItemDropRule
 +public class CommonDrop : BaseItemDropRule
  {

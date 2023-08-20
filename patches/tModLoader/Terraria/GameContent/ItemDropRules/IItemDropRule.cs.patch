@@ -4,9 +4,9 @@
  {
  	List<IItemDropRuleChainAttempt> ChainedRules { get; }
  
-+	bool Disabled { get; }
++	bool Disabled { get; } // TML
 +
-+	void Disable();
++	void Disable(); // TML
 +
  	bool CanDrop(DropAttemptInfo info);
  
