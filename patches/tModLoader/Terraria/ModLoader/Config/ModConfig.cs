@@ -118,4 +118,57 @@ public abstract class ModConfig : ILocalizedModType
 			Main.InGameUI.SetState(Interface.modConfig);
 		}
 	}
+
+	/// <summary>
+	/// Saves any changes to this config.
+	/// </summary>
+	/// <param name="showErrors">Whether messages in the config UI and in chat should be shown.</param>
+	/// <returns>Whether the config was successfully saved.</returns>
+	public bool Save(bool showErrors = true)
+	{
+		// TODO: finish
+		// Since this can be called on a clone, we need to get the real config to load the data into
+		var realConfig = ConfigManager.GetConfig(Mod, Name);// Used to load changes back into
+		var loadTimeConfig = ConfigManager.GetLoadTimeConfig(Mod, Name);// Used to check if a reload is required
+
+		// Main Menu - Save, leave reload for later
+		// MP with ServerSide - Send request to server
+		// SP or MP with ClientSide - Apply immediately if !NeedsReload
+
+		// Game, client, server side config
+		if (!Main.gameMenu && Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient)
+		{
+			if (showErrors)
+				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
+
+			var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
+			requestChanges.Write(Mod.Name);
+			requestChanges.Write(Name);
+			string json = JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact);
+			requestChanges.Write(json);
+			requestChanges.Send();
+
+			return true;
+		}
+
+		// Game, singleplayer, 
+		if (!Main.gameMenu && loadTimeConfig.NeedsReload(this))
+		{
+			if (showErrors)
+				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
+
+			return false;
+		}
+
+		// Menu or singleplayer
+		ConfigManager.Save(this);
+		ConfigManager.Load(realConfig);
+
+		// ModConfig.OnChanged() delayed until ReloadRequired checked
+		// Reload will be forced by back button in UIMods if needed
+		if (!Main.gameMenu)
+			OnChanged();
+
+		return true;
+	}
 }
