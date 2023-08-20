@@ -71,8 +71,7 @@ public abstract class ModConfig : ILocalizedModType
 	public virtual ModConfig Clone() => (ModConfig)MemberwiseClone();
 
 	/// <summary>
-	/// Whether or not a reload is required. The default implementation compares properties and fields annotated with the ReloadRequiredAttribute. Unlike the other ModConfig hooks, this method is called on a clone of the ModConfig that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.<br/>
-	/// Has a max depth of 10 fields.
+	/// Whether or not a reload is required. The default implementation compares properties and fields annotated with the ReloadRequiredAttribute. Unlike the other ModConfig hooks, this method is called on a clone of the ModConfig that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.
 	/// </summary>
 	/// <param name="pendingConfig">The other instance of ModConfig to compare against, it contains the values that are pending to take effect</param>
 	/// <returns>Whether a reload is required.</returns>

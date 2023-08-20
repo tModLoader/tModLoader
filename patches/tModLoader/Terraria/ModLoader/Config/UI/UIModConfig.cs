@@ -413,7 +413,7 @@ internal class UIModConfig : UIState
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
 	}
 
-	public static UIElement GetConfigElement(PropertyFieldWrapper memberInfo)
+	public static UIElement GetConfigElement(PropertyFieldWrapper memberInfo, object value)
 	{
 		UIElement element = new UIText("TODO");
 
