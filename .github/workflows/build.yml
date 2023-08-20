@@ -370,24 +370,24 @@ jobs:
         shell: pwsh
         run: tree /f /a
         
-      - name: Post push report to 1-4-nightly-builds on Discord
-        uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'push'
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
-          description: |
-            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
+      # - name: Post push report to 1-4-nightly-builds on Discord
+      #  uses: sarisia/actions-status-discord@v1
+      #  if: always() && github.event_name == 'push'
+      #  with:
+      #    webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+      #    description: |
+      #      Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view.
 
-      - name: Post pull request report to 1-4-nightly-builds on Discord
-        uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'pull_request_target'
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
-          color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
-          description: |
-            Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
-            Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
-            Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
+      # - name: Post pull request report to 1-4-nightly-builds on Discord
+      #  uses: sarisia/actions-status-discord@v1
+      #  if: always() && github.event_name == 'pull_request_target'
+      #  with:
+      #    webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
+      #    color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
+      #    description: |
+      #      Pull Request: ${{github.event.pull_request.head.ref}} from ${{github.event.pull_request.head.repo.full_name}}
+      #      Click [here](https://github.com/tModLoader/tModLoader/pull/${{ github.event.number }}) to see pull request.
+      #      Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
     # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
