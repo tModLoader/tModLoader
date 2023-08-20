@@ -6,16 +6,22 @@ namespace Terraria.ModLoader;
 
 public static class ItemDropRuleExtensions
 {
-	private static readonly ConcurrentDictionary<IItemDropRule, Ref<bool>> disableableDropRules = new();
+	private sealed class ItemDropRuleSettings
+	{
+		public bool Disabled { get; set; }
+		// TODO: Add conditions list.
+	}
+
+	private static readonly ConcurrentDictionary<IItemDropRule, ItemDropRuleSettings> disableableDropRules = new();
 
 	public static bool IsDisabled(this IItemDropRule dropRule)
 	{
-		return disableableDropRules.GetValueOrDefault(dropRule)?.Value ?? false;
+		return disableableDropRules.GetValueOrDefault(dropRule)?.Disabled ?? false;
 	}
 
 	public static void Disable(this IItemDropRule dropRule)
 	{
-		disableableDropRules.TryAdd(dropRule, new Ref<bool>(true));
+		disableableDropRules.TryAdd(dropRule, new ItemDropRuleSettings { Disabled = true });
 	}
 
 	internal static void Clear()
