@@ -340,18 +340,22 @@ public static class SteamedWraps
 
 	internal static void OnGameExitCleanup()
 	{
-		if (!SteamAvailable) {
-			CleanupACF();
-			return;
-		}
+		// PATH/Steamapps/workshop
+		string workshopFolder = WorkshopHelper.GetWorkshopFolder(ModLoader.Engine.Steam.TMLAppID_t);
+		// Steamapps/workshop/appworkshop_1281930.acf
+		string targetACF = Path.Combine(workshopFolder, $"appworkshop_{ModLoader.Engine.Steam.TMLAppID}.acf");
 
-		if (SteamClient) {
+		if (SteamClient)
 			SteamAPI.Shutdown();
+		else if (SteamAvailable)
+			GameServer.Shutdown();
+
+		if (!File.Exists(targetACF)) {
+			Logging.tML.Error($"Unable to locate tmodloader steam acf. Expected path: {targetACF}");
 			return;
 		}
 		
-		GameServer.Shutdown();
-		CleanupACF();
+		File.Delete(targetACF);
 	}
 
 	public static uint GetWorkshopItemState(PublishedFileId_t publishId)
@@ -396,18 +400,6 @@ public static class SteamedWraps
 
 		// Remove the files
 		Directory.Delete(installPath, true);
-
-		if (!SteamClient)
-			// Steam Game Server has to be terminated before the ACF file is modified, so we defer cleanup to end of game likse steam client.
-			deletedItems.Add(publishId);
-	}
-
-	private static List<PublishedFileId_t> deletedItems = new List<PublishedFileId_t>();
-
-	private static void CleanupACF()
-	{
-		foreach (var item in deletedItems)
-			UninstallACF(item);
 	}
 
 	private static void UninstallACF(PublishedFileId_t publishId)
