@@ -81,9 +81,15 @@ namespace ExampleMod.Common.GlobalNPCs
 			// Stop Reaper from dropping the Death Sickle.
 			if (npc.type == NPCID.Reaper) {
 				foreach (var rule in npcLoot.Get()) {
-					if (rule is CommonDrop commonDrop && commonDrop.itemId == ItemID.DeathSickle) {
-						rule.Disable();
-						break;
+					if (rule is LeadingConditionRule leadingConditionRule && leadingConditionRule.condition is Conditions.DownedAllMechBosses) {
+						foreach (var chainedRule in rule.ChainedRules) {
+							if (chainedRule is Chains.TryIfSucceeded && chainedRule.RuleToChain is DropBasedOnExpertMode dropBasedOnExpertMode
+								&& dropBasedOnExpertMode.ruleForNormalMode is CommonDrop { itemId: ItemID.DeathSickle }
+								&& dropBasedOnExpertMode.ruleForExpertMode is CommonDrop { itemId: ItemID.DeathSickle }) {
+								dropBasedOnExpertMode.Disable();
+								break;
+							}
+						}
 					}
 				}
 			}
