@@ -264,7 +264,7 @@ public static class ConfigManager
 	}
 
 	// GetConfig...returns the config instance
-	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
+	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
 	{
 		if (Configs.TryGetValue(mod, out List<ModConfig>? configs)) {
@@ -325,8 +325,8 @@ public static class ConfigManager
 			}
 			if (success) {
 				// Apply to Servers Config
-				ConfigManager.Save(pendingConfig);
-				JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
+				Save(pendingConfig);
+				JsonConvert.PopulateObject(json, config, serializerSettingsCompact);
 				config.OnChanged();
 				// Send new config to all clients
 				var p = new ModPacket(MessageID.InGameChangeConfig);
@@ -366,9 +366,9 @@ public static class ConfigManager
 
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
-		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
+		string json = JsonConvert.SerializeObject(original, serializerSettings);
 		ModConfig properClone = original.Clone();
-		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+		JsonConvert.PopulateObject(json, properClone, serializerSettings);
 		return properClone;
 	}
 
@@ -380,7 +380,7 @@ public static class ConfigManager
 	}
 
 	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority, followed by attribute defined on the Class of that member.
-	public static T? GetCustomAttributeFromMemberThenMemberType<T>(PropertyFieldWrapper memberInfo, object? item, object? array) where T : Attribute
+	public static T? GetCustomAttributeFromMemberThenMemberType<T>(PropertyFieldWrapper memberInfo, object? item = null, object? array = null) where T : Attribute
 	{
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
@@ -535,43 +535,6 @@ public static class ConfigManager
 			header.key = GetDefaultLocalizationKey(memberInfo.DeclaringType!, $"Headers.{header.identifier}");
 
 		return header;
-	}
-
-
-	/// <summary>
-	/// Recursively checks a config to see if it has any fields that are changed and would require a reload.
-	/// </summary>
-	/// <param name="currentConfig">The config instance containg the default values. Should be <see langword="this"/>.</param>
-	/// <param name="pendingConfig">The config instance with changed values. Should be <c>pendingConfig</c>.</param>
-	/// <param name="depth">The maximum number of fields that will be recursively searched. Defaults to 10.</param>
-	/// <param name="checkSubField">A delegate that takes in a <see cref="PropertyFieldWrapper"/> and returns whether that member should be searched for members with reload required.</param>
-	/// <returns>Whether the object has any changes made to reload required fields and needs a reload.</returns>
-	public static bool ObjectNeedsReload(object currentConfig, object pendingConfig, int depth = 10, Func<PropertyFieldWrapper, bool>? checkSubField = null)
-	{
-		if (currentConfig is null || pendingConfig is null || currentConfig.GetType() != pendingConfig.GetType())
-			return false;
-
-		checkSubField ??= (field) => field.Type.IsClass;// TODO: causes problems?
-
-		// Recursive limit check
-		if (depth <= 0)
-			return false;
-
-		// Loop over every field to check if they have been changed
-		foreach (var field in GetFieldsAndProperties(currentConfig)) {
-			// If it has a reload required attribute and the field values don't match, then return true
-			bool doesntHaveJsonIgnore = GetCustomAttributeFromMemberThenMemberType<JsonIgnoreAttribute>(field, currentConfig, null) == null;
-			bool hasReloadRequired = GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(field, currentConfig, null) != null;
-			bool dontEqual = !ObjectEquals(field.GetValue(currentConfig), field.GetValue(pendingConfig));
-			if (doesntHaveJsonIgnore && hasReloadRequired && dontEqual)
-				return true;
-
-			// Otherwise if it's a sub config, then check that as well
-			if (checkSubField(field))
-				return ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1);
-		}
-
-		return false;
 	}
 }
 

@@ -1,10 +1,7 @@
-using System;
-using System.Reflection;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -81,7 +78,19 @@ public abstract class ModConfig : ILocalizedModType
 	/// <returns>Whether a reload is required.</returns>
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
-		return ConfigManager.ObjectNeedsReload(this, pendingConfig);
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this))
+		{
+			var reloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(variable, this, null);
+
+			if (reloadRequired == null)
+				continue;
+
+			// Do we need to implement nested ReloadRequired? Right now only top level fields will trigger it.
+			if (!ConfigManager.ObjectEquals(variable.GetValue(this), variable.GetValue(pendingConfig)))
+				return true;
+		}
+
+		return false;
 	}
 
 	/// <summary>
@@ -91,11 +100,14 @@ public abstract class ModConfig : ILocalizedModType
 	public void Open()
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfig.SetMod(Mod, this, true);
-		if (Main.gameMenu) {
+		Interface.modConfig.SetMod(Mod, this, openedFromModder: true);
+
+		if (Main.gameMenu)
+		{
 			Main.menuMode = Interface.modConfigID;
 		}
-		else {
+		else
+		{
 			IngameFancyUI.CoverNextFrame();
 
 			Main.playerInventory = false;
