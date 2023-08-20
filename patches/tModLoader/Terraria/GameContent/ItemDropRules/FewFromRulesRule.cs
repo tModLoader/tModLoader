@@ -33,7 +33,7 @@ public class FewFromRulesRule : BaseItemDropRule, INestedItemDropRule
 		return result;
 	}
 
-	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
+	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
 	{
 		if (info.rng.Next(chanceDenominator) == 0) {
 			List<IItemDropRule> savedDropIds = options.ToList();
