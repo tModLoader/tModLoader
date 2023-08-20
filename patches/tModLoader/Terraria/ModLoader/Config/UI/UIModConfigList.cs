@@ -8,7 +8,6 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
-
 internal class UIModConfigList : UIState
 {
 	public Mod SelectedMod;
@@ -156,31 +155,17 @@ internal class UIModConfigList : UIState
 		{
 			if (ConfigManager.Configs.TryGetValue(mod, out _))
 			{
-				var modPanel = new UITextPanel<string>(mod.DisplayName) {
-					HAlign = 0.5f
-				};
-
-				modPanel.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement) {
-					SoundEngine.PlaySound(SoundID.MenuTick);
-				};
-
-				modPanel.OnUpdate += delegate (UIElement affectedElement) {
-					bool selected = SelectedMod == mod;
-					if (modPanel.IsMouseHovering)
-					{
-						// Can't divide a colour so have to multiply by 1/x
-						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlue : UICommon.MainPanelBackground * (1 / 0.8f);
-						modPanel.BorderColor = UICommon.DefaultUIBorderMouseOver;
-					}
-					else
-					{
-						modPanel.BackgroundColor = selected ? UICommon.DefaultUIBlueMouseOver : UICommon.MainPanelBackground;
-						modPanel.BorderColor = UICommon.DefaultUIBorder;
-					}
+				var modPanel = new UIButton<string>(mod.DisplayName) {
+					MaxWidth = { Percent = 0.95f },
+					HAlign = 0.5f,
+					ScalePanel = true,
+					AltPanelColor = UICommon.MainPanelBackground,
+					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
+					UseAltColours = () => SelectedMod != mod,
+					ClickSound = SoundID.MenuTick,
 				};
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-					SoundEngine.PlaySound(SoundID.MenuTick);
 					SelectedMod = mod;
 					PopulateConfigs();
 				};
@@ -204,21 +189,22 @@ internal class UIModConfigList : UIState
 		{
 			float indicatorOffset = 20;
 
-			var configPanel = new UITextPanel<LocalizedText>(config.DisplayName) {
+			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
+				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,
+				ScalePanel = true,
+				ClickSound = SoundID.MenuOpen,
 			};
 			configPanel.PaddingRight += indicatorOffset;
-			configPanel.WithFadedMouseOver();
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
-
 				Interface.modConfig.SetMod(SelectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
 				else
 					Main.InGameUI.SetState(Interface.modConfig);
 			};
+
 			configList.Add(configPanel);
 
 			// ConfigScope indicator
