@@ -22,8 +22,6 @@ partial class Mod
 	internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
 	internal readonly IList<ILoadable> content = new List<ILoadable>();
 
-	internal readonly IList<PropertyPacket> packets = new List<PropertyPacket>();
-
 	internal void SetupContent()
 	{
 		LoaderUtils.ForEachAndAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
@@ -41,8 +39,6 @@ partial class Mod
 		content.Clear();
 
 		equipTextures.Clear();
-
-		packets.Clear();
 
 		Assets?.Dispose();
 	}
