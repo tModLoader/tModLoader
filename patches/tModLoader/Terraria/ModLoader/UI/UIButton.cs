@@ -13,6 +13,10 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 	public SoundStyle? HoverSound = null;
 	public SoundStyle? ClickSound = null;
 
+	public T HoverText = default;
+	public T AltHoverText = default;
+	public bool TooltipText = false;
+
 	public Color HoverPanelColor = UICommon.DefaultUIBlue;
 	public Color HoverBorderColor = UICommon.DefaultUIBorderMouseOver;
 
@@ -70,6 +74,15 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 		base.Update(gameTime);
 
 		SetPanelColours();
+
+		if (IsMouseHovering)
+		{
+			string text = (UseAltColours() ? AltHoverText : HoverText).ToString();
+			if (TooltipText)
+				UICommon.TooltipMouseText(text);
+			else
+				Main.instance.MouseText(text);
+		}
 	}
 
 	public override void MouseOver(UIMouseEvent evt)
