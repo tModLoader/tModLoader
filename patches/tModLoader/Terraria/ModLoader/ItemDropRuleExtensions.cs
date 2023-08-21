@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 
@@ -22,6 +23,15 @@ public static class ItemDropRuleExtensions
 	public static void Disable(this IItemDropRule dropRule)
 	{
 		disableableDropRules.TryAdd(dropRule, new ItemDropRuleSettings { Disabled = true });
+	}
+
+	public static void DisableWhere<T>(this T loot, Predicate<IItemDropRule> predicate) where T : ILoot
+	{
+		foreach (var entry in loot.Get()) {
+			if (predicate(entry)) {
+				entry.Disable();
+			}
+		}
 	}
 
 	internal static void Clear()

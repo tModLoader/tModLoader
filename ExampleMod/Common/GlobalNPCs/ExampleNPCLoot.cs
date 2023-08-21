@@ -31,7 +31,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			if (npc.type == NPCID.Guide) {
 				// RemoveWhere will remove any drop rule that matches the provided expression.
 				// To make your own expressions to remove vanilla drop rules, you'll usually have to study the original source code that adds those rules.
-				npcLoot.RemoveWhere(
+				npcLoot.DisableWhere(
 					// The following expression returns true if the following conditions are met:
 					rule => rule is ItemDropWithConditionRule drop // If the rule is an ItemDropWithConditionRule instance
 						&& drop.itemId == ItemID.GreenCap // And that instance drops a green cap
@@ -48,19 +48,19 @@ namespace ExampleMod.Common.GlobalNPCs
 				// The vanilla code responsible for this drop is: ItemDropRule.NormalvsExpert(4269, 2, 1)
 				// The NormalvsExpert method creates a DropBasedOnExpertMode rule, and that rule is made up of 2 CommonDrop rules. We'll need to use this information in our casting to properly identify the recipe to edit.
 
-				// There are 2 options. One option is remove the original rule and then add back a similar rule. The other option is to modify the existing rule.
+				// There are 2 options. One option is disable the original rule and then add back a similar rule. The other option is to modify the existing rule.
 				// It is preferred to modify the existing rule to preserve compatibility with other mods.
 
 				// Adjust the existing rule: Change the Normal mode drop rate from 50% to 33.3%
 				foreach (var rule in npcLoot.Get()) {
 					// You must study the vanilla code to know what to objects to cast to.
-					if (rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff)
+					if (!rule.IsDisabled() && rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff)
 						normalDropRule.chanceDenominator = 3;
 				}
 
-				// Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
+				// Disable the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
 				/*
-				npcLoot.RemoveWhere(
+				npcLoot.DisableWhere(
 					rule => rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff
 				);
 				npcLoot.Add(ItemDropRule.NormalvsExpert(4269, 6, 1));
