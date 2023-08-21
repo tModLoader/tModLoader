@@ -53,7 +53,7 @@
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -48,28 +_,46 @@
+@@ -48,28 +_,47 @@
  		<EmbeddedResource Include="Microsoft/**" />
  	</ItemGroup>
  	<ItemGroup>
@@ -75,6 +75,7 @@
 +		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
 +		<PackageReference Include="Hjson" Version="3.0.0" />
 +		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
++		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.5" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" /> <!-- Needed to copy the netstandard 2.0 version of ImageSharp to the BuildTools directory -->
  	</ItemGroup>
  	<PropertyGroup>
 -		<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
@@ -97,7 +98,7 @@
 +
 +		<!-- Copy the ImageSharp library from the build output to the BuildTools library folder in tModLoader/Libraries -->
 +		<!-- Needed for the BuildTools to be able to convert images to .rawimg that can be packed into the .tmod file -->
-+		<Copy SourceFiles="$(TargetDir)Libraries/sixlabors.imagesharp/1.0.3/lib/netcoreapp3.1/SixLabors.ImageSharp.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTools/1.0.0/" SkipUnchangedFiles="True" />
++		<Copy SourceFiles="$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTools/1.0.0/" SkipUnchangedFiles="True" />
 +
  		<Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
  	</Target>
