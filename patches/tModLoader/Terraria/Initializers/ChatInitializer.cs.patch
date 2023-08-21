@@ -13,7 +13,7 @@
  public static class ChatInitializer
  {
  	public static void Load()
-@@ -56,6 +_,12 @@
+@@ -56,6 +_,13 @@
  			string name = EmoteID.Search.GetName(i);
  			string key = "EmojiCommand." + name;
  			ChatManager.Commands.AddAlias(Language.GetText(key), NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Language.GetText("EmojiName." + name)));
@@ -21,8 +21,9 @@
 +
 +		foreach (var modEmoteBubble in EmoteBubbleLoader.emoteBubbles)
 +		{
-+			var command = new LocalizedText(modEmoteBubble.CommandName.Key, $"/{Lang.GetEmojiName(modEmoteBubble.Type)}");
-+			ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Lang.GetEmojiName(modEmoteBubble.Type)));
++			// Vanilla uses 2 keys, one with the name and the other with /${namekey}. Since the name is only used for the command, we can avoid that for simplicity
++			var command = new LocalizedText(modEmoteBubble.Command.Key, $"/{modEmoteBubble.Command.Value.ToLower()}");
++			ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), modEmoteBubble.Command));
  		}
  	}
  }

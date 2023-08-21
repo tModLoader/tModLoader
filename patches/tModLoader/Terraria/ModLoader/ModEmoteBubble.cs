@@ -31,7 +31,7 @@ public abstract class ModEmoteBubble : ModType<EmoteBubble, ModEmoteBubble>, ILo
 	/// <summary>
 	/// This is the name that will show up as the emote command.
 	/// </summary>
-	public virtual LocalizedText CommandName => this.GetLocalization(nameof(CommandName), () => Name.ToLower());
+	public virtual LocalizedText Command => this.GetLocalization(nameof(Command), () => Name.ToLower());
 
 	public sealed override void SetupContent()
 	{

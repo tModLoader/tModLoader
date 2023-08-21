@@ -636,6 +636,14 @@
  				if (num186 == 255) {
  					if (EmoteBubble.byID.ContainsKey(num185))
  						EmoteBubble.byID.Remove(num185);
+@@ -2863,6 +_,7 @@
+ 					EmoteBubble.byID[num185].ID = num185;
+ 					EmoteBubble.byID[num185].metadata = metadata;
+ 					EmoteBubble.OnBubbleChange(num185);
++					EmoteBubbleLoader.OnSpawn(EmoteBubble.byID[num185]);
+ 					break;
+ 				}
+ 			}
 @@ -3182,7 +_,16 @@
  				break;
  			case 117: {

@@ -47,14 +47,11 @@ public static class EmoteBubbleLoader
 	internal static void FinishSetup()
 	{
 		foreach (ModEmoteBubble emoteBubble in emoteBubbles) {
-			Lang._emojiNameCache[emoteBubble.Type] = emoteBubble.CommandName;
+			Lang._emojiNameCache[emoteBubble.Type] = emoteBubble.Command;
 
-			if (emoteBubble.CommandName != LocalizedText.Empty) // TODO: does this work?
-				EmojiCommand._byName[emoteBubble.CommandName] = emoteBubble.Type;
+			if (emoteBubble.Command != LocalizedText.Empty) // TODO: does this work?
+				EmojiCommand._byName[emoteBubble.Command] = emoteBubble.Type;
 		}
-
-		// Call PrepareAliases here for mod emote command setup
-		ChatInitializer.PrepareAliases(); // too early.
 	}
 
 	internal static Dictionary<Mod, List<int>> GetAllUnlockedModEmotes()
