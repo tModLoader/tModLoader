@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33913.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.SourceGenerators", "tModLoader.SourceGenerators\tModLoader.SourceGenerators.csproj", "{33E4473F-ADF9-4006-B578-8C07EAC08086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.SourceGenerators.Tests", "tModLoader.SourceGenerators.Tests\tModLoader.SourceGenerators.Tests.csproj", "{92F56C90-5D99-4494-8E69-DDD572A3EDFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33E4473F-ADF9-4006-B578-8C07EAC08086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33E4473F-ADF9-4006-B578-8C07EAC08086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33E4473F-ADF9-4006-B578-8C07EAC08086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33E4473F-ADF9-4006-B578-8C07EAC08086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F56C90-5D99-4494-8E69-DDD572A3EDFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F56C90-5D99-4494-8E69-DDD572A3EDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F56C90-5D99-4494-8E69-DDD572A3EDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92F56C90-5D99-4494-8E69-DDD572A3EDFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80215EAB-FA07-4C5C-B491-20A02C812197}
+	EndGlobalSection
+EndGlobal
