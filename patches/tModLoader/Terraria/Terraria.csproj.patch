@@ -53,7 +53,7 @@
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -48,28 +_,47 @@
+@@ -48,28 +_,53 @@
  		<EmbeddedResource Include="Microsoft/**" />
  	</ItemGroup>
  	<ItemGroup>
@@ -75,7 +75,13 @@
 +		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
 +		<PackageReference Include="Hjson" Version="3.0.0" />
 +		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
-+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.5" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" /> <!-- Needed to copy the netstandard 2.0 version of ImageSharp to the BuildTools directory -->
++		<!-- ImageSharp is added as a reference here to generate the path to ImageSharp compiled files (GeneratePathProperty, creates $(PkgSixLabors_ImageSharp)). 
++		This is needed to copy the .netstandard2.0 version of ImageSharp to the BuildTools directory inside Libraries/. If we only had the reference in the BuildTools.csproj (and without PrivateAssets="all"), 
++		the Terraria.csproj would obtain a transitive dependency to ImageSharp and attempt to copy the .netcoreapp3.1 version of ImageSharp to the Libraries/ folder (which was previously 
++		then being copied next to the BuildTools.dll). The .netcoreapp3.1 version of ImageSharp worked when building from Rider or the command line, but failed when building from Visual Studio 
++		as it uses .NET framework 4.something, so the fix was to force the .netstandard2.0 version. -->
++		<!-- ImageSharp is not copied to the Libraries/ folder automatically due to PrivateAssets and ExcludeAssets, this is intended. -->
++		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.5" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" />
  	</ItemGroup>
  	<PropertyGroup>
 -		<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
@@ -96,7 +102,7 @@
  			<Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
  		</Exec>
 +
-+		<!-- Copy the ImageSharp library from the build output to the BuildTools library folder in tModLoader/Libraries -->
++		<!-- Copy the ImageSharp library from the .nuget folder to the BuildTools library folder in tModLoader/Libraries -->
 +		<!-- Needed for the BuildTools to be able to convert images to .rawimg that can be packed into the .tmod file -->
 +		<Copy SourceFiles="$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTools/1.0.0/" SkipUnchangedFiles="True" />
 +
