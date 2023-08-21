@@ -59,12 +59,13 @@
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij, by włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
 		"ModDidNotFullyUnloadWarning": "Ten mod nie został w pełni rozładowany podczas ostatniego rozładunku.\n(To jest wiadomość dla twórcy moda)",
-		"BetaModCantPublish": "Ten mod został zbudowany w wersji beta - nie może zostać upubliczniony.",
 		"BetaModCantPublishError": "Nie możesz opublikować moda zbudowanego na wersji beta tModLoadera",
 		"OutdatedModCantPublishError": "Nie możesz opublikować moda zbudowanego na starszej wersji tModLoadera",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Wymagane przeładowanie",
 		"ModReloadForced": "Przeładowanie wymuszone",
 		"ModIsServerSide": "To jest mod serwerowy",
@@ -246,6 +247,12 @@
 		"MPErrorModDownloadError": "Wystąpił błąd podczas pobierania {0}",
 		"MPPacketTooLarge": "Pakiet za duży {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Pobierz",
 		"MBDownloadAll": "Pobierz wszystkie",
@@ -265,6 +272,7 @@
 		"MBUpdateAll": "Zaktualizuj wszystkie",
 		"MBReloadBrowser": "Odśwież",
 		"MBGettingData": "Pobieranie danych...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Wypełnianie bazy przeglądarki...",
 		"MBSortByRecentlyUpdated": "Sortuj po dacie aktualizacji",
 		"MBSortByPopularity": "Sortuj po popularności",
@@ -343,8 +351,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatyczne włączaj i ponowne przeładuj mody po opuszczeniu przeglądarki modów: Wyłączone",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatycznie przeładuj wymagane mody po opuszczeniu przeglądarki modów: Włączone",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatycznie przeładuj wymagane mody po opuszczeniu przeglądarki modów: Wyłączone",
-		"ReloadModsReminder": "Zaktualizowałeś moda. Pamiętaj by przeładować mody aby zmiany zaczęły obowiązywać.",
-		"EnableModsReminder": "Twoje ostatnio pobrane mody są wyłączone. Pamiętaj by włączyć je i przeładować jeśli zamierzasz ich użyć.",
 		"DontShowAgain": "Nie pokazuj więcej",
 		"ModControls": "Mody - sterowanie",
 

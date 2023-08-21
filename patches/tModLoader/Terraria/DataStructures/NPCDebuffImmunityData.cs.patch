@@ -1,23 +1,24 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/NPCDebuffImmunityData.cs
 +++ src/tModLoader/Terraria/DataStructures/NPCDebuffImmunityData.cs
-@@ -1,17 +_,36 @@
+@@ -1,18 +_,38 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.DataStructures;
  
 +/// <summary>
++/// <b>Unused:</b> Replaced by <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, <see cref="NPCID.Sets.ImmuneToAllBuffs "/>, and <see cref="NPCID.Sets.ImmuneToRegularBuffs"/><br/><br/>
 +/// Determines the default debuff immunities of an <see cref="NPC"/>.
 +/// </summary>
  public class NPCDebuffImmunityData
  {
 +	/// <summary>
-+	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
++	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all tag debuffs (<see cref="BuffID.Sets.IsATagBuff"/>).
 +	/// </summary>
  	public bool ImmuneToWhips;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all non-whip debuffs (<see cref="BuffID.Sets.IsAnNPCWhipDebuff"/>).
++	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all non-tag debuffs (<see cref="BuffID.Sets.IsATagBuff"/>).
 +	/// </summary>
  	public bool ImmuneToAllBuffsThatAreNotWhips;
 +
@@ -35,6 +36,8 @@
  		if (ImmuneToWhips || ImmuneToAllBuffsThatAreNotWhips) {
 -			for (int i = 1; i < BuffID.Count; i++) {
 +			for (int i = 1; i < BuffLoader.BuffCount; i++) {
- 				bool flag = BuffID.Sets.IsAnNPCWhipDebuff[i];
+-				bool flag = BuffID.Sets.IsAnNPCWhipDebuff[i];
++				bool flag = BuffID.Sets.IsATagBuff[i];
  				bool flag2 = false;
  				flag2 |= flag && ImmuneToWhips;
+ 				flag2 |= !flag && ImmuneToAllBuffsThatAreNotWhips;

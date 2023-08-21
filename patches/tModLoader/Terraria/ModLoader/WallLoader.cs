@@ -199,11 +199,14 @@ public static class WallLoader
 				return false;
 			}
 		}
-		if (wallTypeToItemType.TryGetValue(type, out int value)) {
-			dropType = value;
-		}
 		ModWall modWall = GetWall(type);
-		return modWall?.Drop(i, j, ref dropType) ?? true;
+		if (modWall != null) {
+			if (wallTypeToItemType.TryGetValue(type, out int value)) {
+				dropType = value;
+			}
+			return modWall.Drop(i, j, ref dropType);
+		}
+		return true;
 	}
 	//in Terraria.WorldGen.KillWall after if statements setting fail to true call
 	//  WallLoader.KillWall(i, j, tile.wall, ref fail);

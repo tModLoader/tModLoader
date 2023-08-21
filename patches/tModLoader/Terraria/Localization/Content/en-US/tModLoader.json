@@ -59,12 +59,13 @@
 		"ModOldWarning": "Old mod, enable at own risk",
 		"ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		"ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		"TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		"ModDependencyModsNotFound": "The following mods were not found: {0}",
 		"ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
-		"BetaModCantPublish": "This mod was built on beta version and can't be published",
-		"BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		"BetaModCantPublishError": "You cannot publish a Mod built on a beta version of tModLoader",
 		"OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
+		"WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Reload Required",
 		"ModReloadForced": "Reload Forced",
 		"ModIsServerSide": "This is a server side mod",
@@ -246,6 +247,12 @@
 		"MPErrorModDownloadError": "An error occurred while downloading {0}",
 		"MPPacketTooLarge": "Packet too large {0} > {1}",
 
+		// UIAsyncList
+		"ALLoading": "Loading...",
+		"ALNoEntries": "No matching entries",
+		"ALCancel": "Loading cancelled, refresh to see all entries",
+		"ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Download",
 		"MBDownloadAll": "Download All",
@@ -265,6 +272,7 @@
 		"MBUpdateAll": "Update All",
 		"MBReloadBrowser": "Reload browser",
 		"MBGettingData": "Getting data...",
+		"MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Populating browser...",
 		"MBSortByRecentlyUpdated": "Sort by recently updated",
 		"MBSortByPopularity": "Sort by popularity",
@@ -343,8 +351,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatically Enable and Reload Mods When Leaving Mod Browser: Off",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
-		"ReloadModsReminder": "You have updated a disabled mod. Remember to enable it and reload mods for it to take effect.",
-		"EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable them and reload if you intend to use them.",
 		"DontShowAgain": "Don't show again",
 		"ModControls": "Mod Controls",
 
