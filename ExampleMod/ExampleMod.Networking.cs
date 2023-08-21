@@ -1,3 +1,4 @@
+using ExampleMod.Common.Packets;
 using ExampleMod.Common.Players;
 using ExampleMod.Content.NPCs;
 using System.IO;
@@ -24,6 +25,9 @@ namespace ExampleMod
 			switch (msgType) {
 				// This message syncs ExampleStatIncreasePlayer.exampleLifeFruits and ExampleStatIncreasePlayer.exampleManaCrystals
 				case MessageType.ExampleStatIncreasePlayerSync:
+					// default(ExampleStatIncreasePlayerPacket).Receive(reader, whoAmI);
+
+					/*
 					byte playernumber = reader.ReadByte();
 					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
 					examplePlayer.ReceivePlayerSync(reader);
@@ -32,6 +36,7 @@ namespace ExampleMod
 						// Forward the changes to the other clients
 						examplePlayer.SyncPlayer(-1, whoAmI, false);
 					}
+					*/
 					break;
 				case MessageType.ExampleTeleportToStatue:
 					if (Main.npc[reader.ReadByte()].ModNPC is ExamplePerson person && person.NPC.active) {
