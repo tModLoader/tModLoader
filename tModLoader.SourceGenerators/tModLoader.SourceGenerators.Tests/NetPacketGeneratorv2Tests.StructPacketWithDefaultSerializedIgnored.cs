@@ -108,15 +108,15 @@ public sealed class GeneratedMod : Mod {
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -201,15 +201,15 @@ public sealed class GeneratedMod : Mod {
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -243,9 +243,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		packet.Write(Id);
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.ByteEncoder);
-		encoder_Default.Send(packet, (byte)Default);
+		encoder_Default.Send(packet, Default);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.ByteEncoder);
-		encoder_Serialized.Send(packet, (byte)Serialized);
+		encoder_Serialized.Send(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -256,9 +256,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		// SetDefaults();
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.ByteEncoder);
-		Default = (int)encoder_Default.Read(reader);
+		Default = encoder_Default.Read(reader);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.ByteEncoder);
-		Serialized = (int)encoder_Serialized.Read(reader);
+		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
@@ -294,15 +294,15 @@ public sealed class GeneratedMod : Mod {
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -336,9 +336,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		packet.Write(Id);
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.LongEncoder);
-		encoder_Default.Send(packet, (long)Default);
+		encoder_Default.Send(packet, Default);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.LongEncoder);
-		encoder_Serialized.Send(packet, (long)Serialized);
+		encoder_Serialized.Send(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -349,9 +349,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		// SetDefaults();
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.LongEncoder);
-		Default = (int)encoder_Default.Read(reader);
+		Default = encoder_Default.Read(reader);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.LongEncoder);
-		Serialized = (int)encoder_Serialized.Read(reader);
+		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
@@ -383,7 +383,7 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = true)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = true)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
@@ -473,19 +473,19 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = true)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = true)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -566,19 +566,19 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = true)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = true)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -612,9 +612,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		packet.Write(Id);
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.ByteEncoder);
-		encoder_Default.Send(packet, (byte)Default);
+		encoder_Default.Send(packet, Default);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.ByteEncoder);
-		encoder_Serialized.Send(packet, (byte)Serialized);
+		encoder_Serialized.Send(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -625,9 +625,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		// SetDefaults();
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.ByteEncoder);
-		Default = (int)encoder_Default.Read(reader);
+		Default = encoder_Default.Read(reader);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.ByteEncoder);
-		Serialized = (int)encoder_Serialized.Read(reader);
+		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
@@ -659,19 +659,19 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = true)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = true)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -705,9 +705,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		packet.Write(Id);
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.LongEncoder);
-		encoder_Default.Send(packet, (long)Default);
+		encoder_Default.Send(packet, Default);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.LongEncoder);
-		encoder_Serialized.Send(packet, (long)Serialized);
+		encoder_Serialized.Send(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -718,9 +718,9 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		// SetDefaults();
 
 		var encoder_Default = default(Terraria.ModLoader.Packets.LongEncoder);
-		Default = (int)encoder_Default.Read(reader);
+		Default = encoder_Default.Read(reader);
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.LongEncoder);
-		Serialized = (int)encoder_Serialized.Read(reader);
+		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
@@ -752,7 +752,7 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = false)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = false)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
@@ -838,19 +838,19 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = false)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = false)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<Int32Bit7Encoder>]
+	[EncodedAs(typeof(Int32Bit7Encoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -927,19 +927,19 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = false)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = false)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<ByteEncoder>]
+	[EncodedAs(typeof(ByteEncoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -973,7 +973,7 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		packet.Write(Id);
 
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.ByteEncoder);
-		encoder_Serialized.Send(packet, (byte)Serialized);
+		encoder_Serialized.Send(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -984,7 +984,7 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		// SetDefaults();
 
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.ByteEncoder);
-		Serialized = (int)encoder_Serialized.Read(reader);
+		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
@@ -1016,19 +1016,19 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = false)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = false)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Default;
 
 	[Serialize]
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Serialized;
 
 	[Ignore]
-	[EncodedAs<LongEncoder>]
+	[EncodedAs(typeof(LongEncoder))]
 	public int Ignored;
 
 	public readonly void HandlePacket() {
@@ -1062,7 +1062,7 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		packet.Write(Id);
 
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.LongEncoder);
-		encoder_Serialized.Send(packet, (long)Serialized);
+		encoder_Serialized.Send(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -1073,7 +1073,7 @@ partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
 		// SetDefaults();
 
 		var encoder_Serialized = default(Terraria.ModLoader.Packets.LongEncoder);
-		Serialized = (int)encoder_Serialized.Read(reader);
+		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);

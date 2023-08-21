@@ -104,7 +104,7 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = true)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = true)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
@@ -194,7 +194,7 @@ namespace GeneratedDemo;
 public sealed class GeneratedMod : Mod {
 }
 
-[NetPacket<GeneratedMod>(AutoSerialize = false)]
+[NetPacket(typeof(GeneratedMod), AutoSerialize = false)]
 public partial struct GeneratedPacket {
 	public const byte Id = GeneratedDemo.PacketRegistry.GeneratedPacketId;
 
