@@ -18,7 +18,7 @@ using Terraria.ID;
 namespace {Template_Namespace};
 
 partial struct {Template_DeclarationName} {{
-	/// <inheritdoc cref=""owolib.Packets.INetPacket.HandleForAll""/>
+	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.HandleForAll""/>
 	[CompilerGenerated]
 	public void HandleForAll() {{
 		switch (Main.netMode) {{
