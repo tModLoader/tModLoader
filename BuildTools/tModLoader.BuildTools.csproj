@@ -13,6 +13,8 @@
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
     </ItemGroup>
 
 </Project>
