@@ -35,10 +35,7 @@ public static class ContentConverters
 			for (int x = 0; x < image.Width; x++) {
 				Rgba32 color = image[x, y];
 
-				if (color.A == 0) {
-					dst.WriteByte(0);
-					continue;
-				}
+				if (color.A == 0) color = new Rgba32(0, 0, 0, 0);
 				dst.WriteByte(color.R);
 				dst.WriteByte(color.G);
 				dst.WriteByte(color.B);
