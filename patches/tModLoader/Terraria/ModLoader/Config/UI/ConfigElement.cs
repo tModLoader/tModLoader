@@ -54,6 +54,7 @@ public abstract class ConfigElement : UIElement
 	protected Func<string> TooltipFunction { get; set; }
 	protected bool DrawLabel { get; set; } = true;
 	protected bool ReloadRequired { get; set; }
+	protected bool ShowReloadRequiredTooltip { get; set; }
 	protected object OldValue { get; set; }
 	protected bool ValueChanged => !ConfigManager.ObjectEquals(OldValue, GetObject());
 
@@ -77,7 +78,6 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		OldValue = GetObject();
 		LabelAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<LabelKeyAttribute>(MemberInfo, Item, List);
 		Label = ConfigManager.GetLocalizedLabel(MemberInfo);
 		// Potential TODO if highly requested: Support interpolating value itself into label.
@@ -99,7 +99,15 @@ public abstract class ConfigElement : UIElement
 		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
 		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
 		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
-		ReloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
+		ShowReloadRequiredTooltip = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
+
+		if (ShowReloadRequiredTooltip && List == null && Item is ModConfig modConfig) {
+			// Default ModConfig.NeedsReload logic currently only checks members of the ModConfig class, this mirrors that logic.
+			ReloadRequired = true;
+			// We need to check against the value in the load time config, not the value at the time of binding.
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
+			OldValue = MemberInfo.GetValue(loadTimeConfig);
+		 }
 	}
 
 	protected virtual void SetObject(object value)
@@ -148,7 +156,7 @@ public abstract class ConfigElement : UIElement
 			position.Y += 8f;
 
 			string label = TextDisplayFunction();
-			if (ValueChanged && ReloadRequired) {
+			if (ReloadRequired && ValueChanged) {
 				label += " - [c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
 			}
 
@@ -161,9 +169,9 @@ public abstract class ConfigElement : UIElement
 
 			// TODO - Add line for default value?
 
-			if (ReloadRequired) {
+			if (ShowReloadRequiredTooltip) {
 				tooltip += string.IsNullOrEmpty(tooltip) ? "" : "\n";
-				tooltip += "[c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
+				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
 			}
 
 			UIModConfig.Tooltip = tooltip;
