@@ -46,7 +46,7 @@
 +		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
-+		<ProjectReference Include="../../../tModLoader.SourceGenerators/tModLoader.SourceGenerators/tModLoader.SourceGenerators.csproj" ReferenceOutputAssembly="false" PackAsAnalyzer="true" />
++		<ProjectReference Include="../../../tModLoader.SourceGenerators/tModLoader.SourceGenerators/tModLoader.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
  	</ItemGroup>
  	<ItemGroup>
 +		<EmbeddedResource Include="**\*.png" />
