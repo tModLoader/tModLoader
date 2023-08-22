@@ -865,6 +865,11 @@ Mods: {
 				DisplayName: Example Swinging Energy Sword
 				Tooltip: ""
 			}
+
+			ExampleLaserWeapon: {
+				DisplayName: Example Laser Weapon
+				Tooltip: Shoot a laser beam that can eliminate anything...
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -904,6 +909,7 @@ Mods: {
 			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			ExampleLaser.DisplayName: Example Laser
 		}
 
 		Buffs: {
