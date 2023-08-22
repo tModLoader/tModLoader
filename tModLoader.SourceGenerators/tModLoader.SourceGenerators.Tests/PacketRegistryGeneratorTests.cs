@@ -2,9 +2,11 @@
 
 namespace tModLoader.SourceGenerators.Tests;
 
-public class PacketRegistryGeneratorTests {
+public class PacketRegistryGeneratorTests
+{
 	[Fact]
-	public async Task EmptyPacketRegistry() {
+	public async Task EmptyPacketRegistry()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader.Packets;
 
@@ -43,7 +45,8 @@ partial class PacketRegistry {
 	}
 
 	[Fact]
-	public async Task PacketRegistryWithId() {
+	public async Task PacketRegistryWithId()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader.Packets;
 

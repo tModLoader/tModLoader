@@ -25,7 +25,8 @@ partial class NetPacketGeneratorv2
 			string encoderTypeName = null;
 
 			string propertyTypeName = typeSymbol.ToDisplayString();
-			encoderTypeName ??= globalEncoders.FirstOrDefault(g => g.Value.Type == propertyTypeName)?.Encoder;
+			var globalEncoder = globalEncoders.FirstOrDefault(g => g.Value.Type == propertyTypeName);
+			encoderTypeName ??= globalEncoder?.Encoder;
 			if (encoderTypeName != null) {
 				return $"global::{encoderTypeName}";
 			}
@@ -107,28 +108,45 @@ partial class NetPacketGeneratorv2
 			}
 
 		End:
-			return encoderTypeName ?? GetSpecialTypeEncoder(typeSymbol.SpecialType);
+			encoderTypeName ??= GetSpecialTypeEncoder(typeSymbol.SpecialType);
+
+			return encoderTypeName;
 		}
 
 		static string GetSpecialTypeEncoder(SpecialType specialType)
 		{
-			return specialType switch {
-				SpecialType.System_Boolean => "global::Terraria.ModLoader.Packets.BooleanEncoder",
-				SpecialType.System_Char => "global::Terraria.ModLoader.Packets.CharEncoder",
-				SpecialType.System_SByte => "global::Terraria.ModLoader.Packets.SByteEncoder",
-				SpecialType.System_Byte => "global::Terraria.ModLoader.Packets.ByteEncoder",
-				SpecialType.System_Int16 => "global::Terraria.ModLoader.Packets.ShortEncoder",
-				SpecialType.System_UInt16 => "global::Terraria.ModLoader.Packets.UShortEncoder",
-				SpecialType.System_Int32 => "global::Terraria.ModLoader.Packets.IntEncoder",
-				SpecialType.System_UInt32 => "global::Terraria.ModLoader.Packets.UIntEncoder",
-				SpecialType.System_Int64 => "global::Terraria.ModLoader.Packets.LongEncoder",
-				SpecialType.System_UInt64 => "global::Terraria.ModLoader.Packets.ULongEncoder",
-				SpecialType.System_Decimal => "global::Terraria.ModLoader.Packets.DecimalEncoder",
-				SpecialType.System_Single => "global::Terraria.ModLoader.Packets.SingleEncoder",
-				SpecialType.System_Double => "global::Terraria.ModLoader.Packets.DoubleEncoder",
-				SpecialType.System_String => "global::Terraria.ModLoader.Packets.StringEncoder",
-				_ => null
-			};
+			switch (specialType) {
+				case SpecialType.System_Boolean:
+					return "global::Terraria.ModLoader.Packets.BooleanEncoder";
+				case SpecialType.System_Char:
+					return "global::Terraria.ModLoader.Packets.CharEncoder";
+				case SpecialType.System_SByte:
+					return "global::Terraria.ModLoader.Packets.SByteEncoder";
+				case SpecialType.System_Byte:
+					return "global::Terraria.ModLoader.Packets.ByteEncoder";
+				case SpecialType.System_Int16:
+					return "global::Terraria.ModLoader.Packets.ShortEncoder";
+				case SpecialType.System_UInt16:
+					return "global::Terraria.ModLoader.Packets.UShortEncoder";
+				case SpecialType.System_Int32:
+					return "global::Terraria.ModLoader.Packets.IntEncoder";
+				case SpecialType.System_UInt32:
+					return "global::Terraria.ModLoader.Packets.UIntEncoder";
+				case SpecialType.System_Int64:
+					return "global::Terraria.ModLoader.Packets.LongEncoder";
+				case SpecialType.System_UInt64:
+					return "global::Terraria.ModLoader.Packets.ULongEncoder";
+				case SpecialType.System_Single:
+					return "global::Terraria.ModLoader.Packets.SingleEncoder";
+				case SpecialType.System_Double:
+					return "global::Terraria.ModLoader.Packets.DoubleEncoder";
+				case SpecialType.System_Decimal:
+					return "global::Terraria.ModLoader.Packets.DecimalEncoder";
+				case SpecialType.System_String:
+					return "global::Terraria.ModLoader.Packets.StringEncoder";
+				default:
+					return null;
+			}
 		}
 
 		return serializableProperties.Select(x => {
@@ -139,26 +157,24 @@ partial class NetPacketGeneratorv2
 			if (encodeAsAttribute != null) {
 				var encoder = (ITypeSymbol)encodeAsAttribute.ConstructorArguments[0].Value;
 				encoderTypeName = "global::" + encoder.ToDisplayString();
-				encoderType = encoder.Interfaces
-					.FirstOrDefault(x => x.OriginalDefinition.ToDisplayString() == INetEncoderTInterfaceFullName)
-					?.TypeArguments[0]?.ToDisplayString();
 
-				/*
-				if (encoderType != null)
-					encoderType = "global::" + encoderType;
-				*/
-			}
-			else {
-				string propertyTypeName = x.PropertyType.ToDisplayString();
-				var globalEncoder = globalEncoders.Cast<GlobalEncoderInfo?>().FirstOrDefault(g => g.Value.Type == propertyTypeName);
-				if (globalEncoder.HasValue) {
-					encoderTypeName = "global::" + globalEncoder.Value.Encoder;
-					encoderType = /*"global::" + */globalEncoder.Value.Type;
+				var type = encoder.Interfaces
+					.FirstOrDefault(x => x.OriginalDefinition.ToDisplayString() == INetEncoderTInterfaceFullName)
+					?.TypeArguments[0];
+
+				if (type != null) {
+					encoderType = type.ToDisplayString();
+					if (type.IsDefinition) {
+						encoderType = "global::" + encoderType;
+					}
 				}
 				else {
-					encoderTypeName = GetBuiltinTypeEncoder(x.PropertyType, globalEncoders.Cast<GlobalEncoderInfo?>());
 					encoderType = null;
 				}
+			}
+			else {
+				encoderTypeName = GetBuiltinTypeEncoder(x.PropertyType, globalEncoders.Cast<GlobalEncoderInfo?>());
+				encoderType = null;
 			}
 
 			return new EncoderInfo(encoderTypeName, encoderType, IsPtr(x.PropertyType));

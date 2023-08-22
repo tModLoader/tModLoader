@@ -2,9 +2,11 @@
 
 namespace tModLoader.SourceGenerators.Tests;
 
-partial class NetPacketGeneratorv2Tests {
+partial class NetPacketGeneratorv2Tests
+{
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -94,7 +96,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsIntBit7() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsIntBit7()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -187,7 +190,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsByte() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsByte()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -280,7 +284,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLong() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLong()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -373,7 +378,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32AutoSerializeOn() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32AutoSerializeOn()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -463,7 +469,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsIntBit7AutoSerializeOn() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsIntBit7AutoSerializeOn()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -556,7 +563,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsByteAutoSerializeOn() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsByteAutoSerializeOn()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -649,7 +657,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongAutoSerializeOn() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongAutoSerializeOn()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -742,7 +751,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32AutoSerializeOff() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32AutoSerializeOff()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -828,7 +838,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsIntBit7AutoSerializeOff() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsIntBit7AutoSerializeOff()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -917,7 +928,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsByteAutoSerializeOff() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsByteAutoSerializeOff()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -1006,7 +1018,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongAutoSerializeOff() {
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongAutoSerializeOff()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;

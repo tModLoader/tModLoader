@@ -2,9 +2,11 @@ using GeneratorTest = tModLoader.SourceGenerators.Tests.tModLoaderSourceGenerato
 
 namespace tModLoader.SourceGenerators.Tests;
 
-public partial class NetPacketGeneratorv2Tests {
+public partial class NetPacketGeneratorv2Tests
+{
 	[Fact]
-	public async Task EmptyStructPacket() {
+	public async Task EmptyStructPacket()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -76,7 +78,8 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	}
 
 	[Fact]
-	public async Task EmptyRefStructPacket() {
+	public async Task EmptyRefStructPacket()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;
@@ -146,7 +149,8 @@ partial struct GeneratedPacket {
 	}
 
 	[Fact]
-	public async Task EmptyStructPacketWithSetDefaults() {
+	public async Task EmptyStructPacketWithSetDefaults()
+	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
 using Terraria.ModLoader.Packets;

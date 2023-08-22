@@ -77,7 +77,7 @@ partial struct {Template_DeclarationName} {{
 		var registries = registrySyntax.Select((x, _) => {
 			var constants = x.Constants
 				.Select(x => {
-				var packetIdOfAttribute = (ISymbol)x.GetAttributes().First(x => x.AttributeClass.OriginalDefinition.ToDisplayString() == NetPacketIdOfTAttributeFullName).ConstructorArguments[0].Value;
+					var packetIdOfAttribute = (ISymbol)x.GetAttributes().First(x => x.AttributeClass.OriginalDefinition.ToDisplayString() == NetPacketIdOfTAttributeFullName).ConstructorArguments[0].Value;
 					return (
 						x.Name,
 						packetIdOfAttribute.ToDisplayString()
