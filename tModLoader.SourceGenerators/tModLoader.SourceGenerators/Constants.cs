@@ -7,7 +7,8 @@ internal static class Constants
 	public static Regex MatchBrackets { get; } = new(@"(?:\{[a-zA-Z]*\})", RegexOptions.Compiled);
 
 	// Attribute names
-	public const string INetEncoderTInterfaceFullName = "Terraria.ModLoader.Packets.INetEncoder";
+	public const string INetEncoderInterfaceFullName = "Terraria.ModLoader.Packets.INetEncoder";
+	public const string INetEncoderTInterfaceFullName = "Terraria.ModLoader.Packets.INetEncoder<T>";
 	public const string NetPacketAttributeFullMetadataName = "Terraria.ModLoader.Packets.NetPacketAttribute";
 	public const string NetPacketIdOfTAttributeFullName = "Terraria.ModLoader.Packets.NetPacketIdOfAttribute";
 	public const string PacketRegistryAttributeFullMetadataName = "Terraria.ModLoader.Packets.PacketRegistryAttribute";

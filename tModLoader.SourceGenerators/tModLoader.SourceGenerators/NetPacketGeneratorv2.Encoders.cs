@@ -14,9 +14,22 @@ partial class NetPacketGeneratorv2
 		in bool IsUnsafe
 	)
 	{
-		public readonly ITypeSymbol TypeFromEncodedAs =>
-			EncodedAsTData.AttributeClass.TypeArguments[0].Interfaces
-			.First(x => x.OriginalDefinition.ToDisplayString() == INetEncoderTInterfaceFullName).TypeArguments[0];
+		public readonly ITypeSymbol TypeFromEncodedAs {
+			get {
+				if (EncodedAsTData == null)
+					return null;
+
+				var netEncoderInterface = ((ITypeSymbol)EncodedAsTData.ConstructorArguments[0].Value).Interfaces
+					.FirstOrDefault(x => x.OriginalDefinition.ToDisplayString() is INetEncoderTInterfaceFullName);
+
+				if (netEncoderInterface == null) {
+					return null;
+				}
+				else {
+					return netEncoderInterface.TypeArguments[0];
+				}
+			}
+		}
 	}
 	private record struct GlobalEncoderInfo(
 		in string Type,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using tModLoader.SourceGenerators.Helpers;
@@ -93,7 +94,7 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 		in (bool Pre, bool IsPreBool, bool On, bool Post) GlobalSerializations,
 		in (bool Pre, bool IsPreBool, bool On, bool Post) GlobalDeserializations,
 		in EquatableArray<SourceProperty> SerializableProperties,
-		in EquatableArray<(string EncoderType, bool IsUnsafe)> Encoders
+		in EquatableArray<(string EncoderType, string EncodedType, bool IsUnsafe)> Encoders
 	) : IEquatable<SourceInfo>;
 
 	private const string SerializeMethodName = "Serialize";
@@ -177,14 +178,14 @@ partial struct {Template_DeclarationName} {{
 						x.Serialization.Deserialization.PostSerializationSymbol != null
 					)
 				)).ToImmutableArray();
-				var sourceEncoders = encoders.Select(x => (x.EncoderName, x.IsUnsafe)).ToImmutableArray();
+				var sourceEncoders = encoders.Select(x => (x.EncoderName, x.TypeFromEncodedAs?.ToDisplayString(), x.IsUnsafe)).ToImmutableArray();
 
 				return new SourceInfo(
 					Namespace: symbol.ContainingNamespace.ToString(),
 					MetadataName: symbol.MetadataName,
 					DeclarationName: symbol.IsRefLikeType ? symbol.Name : $"{symbol.Name} : Terraria.ModLoader.Packets.INetPacket",
 					ImplementsSetDefaults: symbol.GetMembers(NetPacketSetDefaultsMethodName).Any(x => x is IMethodSymbol methodSymbol && !methodSymbol.IsGenericMethod && !methodSymbol.Parameters.Any()),
-					ParentModName: modType.ToDisplayString(),
+					ParentModName: modType.ContainingNamespace.ToString() == modType.Name ? modType.Name : modType.ToDisplayString(),
 
 					GlobalSerializations: (
 						Pre: globalSerializationVector.Serialization.PreSerializationSymbol != null,
@@ -198,7 +199,7 @@ partial struct {Template_DeclarationName} {{
 						Post: globalSerializationVector.Deserialization.PostSerializationSymbol != null),
 
 					SerializableProperties: new EquatableArray<SourceProperty>(sourceProperties),
-					Encoders: new EquatableArray<(string EncoderType, bool IsUnsafe)>(sourceEncoders)
+					Encoders: new EquatableArray<(string EncoderType, string EncodedType, bool IsUnsafe)>(sourceEncoders)
 				);
 			});
 
@@ -276,7 +277,13 @@ partial struct {Template_DeclarationName} {{
 					}
 
 					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.EncoderType});");
-					sb.WriteLine($"encoder_{property.PropertyName}.Send({ParameterName}, {property.PropertyName});");
+					sb.Write($"encoder_{property.PropertyName}.Send({ParameterName}, ");
+					if (encoder.EncodedType != null && encoder.EncodedType != property.PropertyType) {
+						sb.Write($"({encoder.EncodedType})");
+					}
+
+					sb.Write(property.PropertyName);
+					sb.WriteLine(");");
 
 					if (property.Serialization.IsPreSerializationBool) {
 						sb.Indent--;
@@ -352,7 +359,12 @@ partial struct {Template_DeclarationName} {{
 					}
 
 					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.EncoderType});");
-					sb.WriteLine($"{property.PropertyName} = encoder_{property.PropertyName}.Read({ParameterName});");
+					sb.Write($"{property.PropertyName} = ");
+					if (encoder.EncodedType != null && encoder.EncodedType != property.PropertyType) {
+						sb.Write($"({property.PropertyType})");
+					}
+
+					sb.WriteLine($"encoder_{property.PropertyName}.Read({ParameterName});");
 
 					if (property.Serialization.IsPreSerializationBool) {
 						sb.Indent--;
