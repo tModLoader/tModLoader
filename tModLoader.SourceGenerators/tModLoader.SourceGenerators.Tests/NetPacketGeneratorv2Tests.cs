@@ -41,17 +41,17 @@ using Terraria.ModLoader;
 
 namespace GeneratedDemo;
 
-partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo.GeneratedMod>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
@@ -112,16 +112,16 @@ using Terraria.ModLoader;
 namespace GeneratedDemo;
 
 partial struct GeneratedPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo.GeneratedMod>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
@@ -186,17 +186,17 @@ using Terraria.ModLoader;
 
 namespace GeneratedDemo;
 
-partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo.GeneratedMod>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		SetDefaults();
@@ -259,17 +259,17 @@ using Terraria.ModLoader;
 
 namespace GeneratedDemo;
 
-partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedDemo>().GetPacket();
 		packet.Write(Id);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();

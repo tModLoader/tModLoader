@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using tModLoader.SourceGenerators.Helpers;
@@ -118,16 +117,16 @@ using Terraria.ModLoader;
 namespace {Template_Namespace};
 
 partial struct {Template_DeclarationName} {{
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {{
-		var packet = ModContent.GetInstance<{Template_ModName}>().GetPacket();
+		var packet = ModContent.GetInstance<global::{Template_ModName}>().GetPacket();
 		packet.Write(Id);
 {Template_SerializationImplementation}
 		packet.Send(toClient, ignoreClient);
 	}}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {{
 		{Template_OptionalSetDefaults}
@@ -178,14 +177,14 @@ partial struct {Template_DeclarationName} {{
 						x.Serialization.Deserialization.PostSerializationSymbol != null
 					)
 				)).ToImmutableArray();
-				var sourceEncoders = encoders.Select(x => (x.EncoderName, x.TypeFromEncodedAs?.ToDisplayString(), x.IsUnsafe)).ToImmutableArray();
+				var sourceEncoders = encoders.Select(x => (x.EncoderName, x.TypeFromEncodedAs, x.IsUnsafe)).ToImmutableArray();
 
 				return new SourceInfo(
 					Namespace: symbol.ContainingNamespace.ToString(),
 					MetadataName: symbol.MetadataName,
-					DeclarationName: symbol.IsRefLikeType ? symbol.Name : $"{symbol.Name} : Terraria.ModLoader.Packets.INetPacket",
+					DeclarationName: symbol.IsRefLikeType ? symbol.Name : $"{symbol.Name} : global::Terraria.ModLoader.Packets.INetPacket",
 					ImplementsSetDefaults: symbol.GetMembers(NetPacketSetDefaultsMethodName).Any(x => x is IMethodSymbol methodSymbol && !methodSymbol.IsGenericMethod && !methodSymbol.Parameters.Any()),
-					ParentModName: modType.ContainingNamespace.ToString() == modType.Name ? modType.Name : modType.ToDisplayString(),
+					ParentModName: modType.ToDisplayString(),
 
 					GlobalSerializations: (
 						Pre: globalSerializationVector.Serialization.PreSerializationSymbol != null,
@@ -277,7 +276,7 @@ partial struct {Template_DeclarationName} {{
 					}
 
 					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.EncoderType});");
-					sb.Write($"encoder_{property.PropertyName}.Send({ParameterName}, ");
+					sb.Write($"encoder_{property.PropertyName}.Write({ParameterName}, ");
 					if (encoder.EncodedType != null && encoder.EncodedType != property.PropertyType) {
 						sb.Write($"({encoder.EncodedType})");
 					}

@@ -49,29 +49,29 @@ using Terraria.ModLoader;
 
 namespace GeneratedDemo;
 
-partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo.GeneratedMod>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
-		var encoder_Default = default(Terraria.ModLoader.Packets.IntEncoder);
-		encoder_Default.Send(packet, Default);
-		var encoder_Serialized = default(Terraria.ModLoader.Packets.IntEncoder);
-		encoder_Serialized.Send(packet, Serialized);
+		var encoder_Default = default(global::Terraria.ModLoader.Packets.IntEncoder);
+		encoder_Default.Write(packet, Default);
+		var encoder_Serialized = default(global::Terraria.ModLoader.Packets.IntEncoder);
+		encoder_Serialized.Write(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
 
-		var encoder_Default = default(Terraria.ModLoader.Packets.IntEncoder);
+		var encoder_Default = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		Default = encoder_Default.Read(reader);
-		var encoder_Serialized = default(Terraria.ModLoader.Packets.IntEncoder);
+		var encoder_Serialized = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
@@ -139,29 +139,29 @@ using Terraria.ModLoader;
 
 namespace GeneratedDemo;
 
-partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo.GeneratedMod>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
-		var encoder_Default = default(Terraria.ModLoader.Packets.IntEncoder);
-		encoder_Default.Send(packet, Default);
-		var encoder_Serialized = default(Terraria.ModLoader.Packets.IntEncoder);
-		encoder_Serialized.Send(packet, Serialized);
+		var encoder_Default = default(global::Terraria.ModLoader.Packets.IntEncoder);
+		encoder_Default.Write(packet, Default);
+		var encoder_Serialized = default(global::Terraria.ModLoader.Packets.IntEncoder);
+		encoder_Serialized.Write(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
 
-		var encoder_Default = default(Terraria.ModLoader.Packets.IntEncoder);
+		var encoder_Default = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		Default = encoder_Default.Read(reader);
-		var encoder_Serialized = default(Terraria.ModLoader.Packets.IntEncoder);
+		var encoder_Serialized = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
@@ -229,25 +229,25 @@ using Terraria.ModLoader;
 
 namespace GeneratedDemo;
 
-partial struct GeneratedPacket : Terraria.ModLoader.Packets.INetPacket {
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
+partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Send(int, int)""/>
 	[CompilerGenerated]
 	public void Send(int toClient = -1, int ignoreClient = -1) {
-		var packet = ModContent.GetInstance<GeneratedDemo.GeneratedMod>().GetPacket();
+		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
-		var encoder_Serialized = default(Terraria.ModLoader.Packets.IntEncoder);
-		encoder_Serialized.Send(packet, Serialized);
+		var encoder_Serialized = default(global::Terraria.ModLoader.Packets.IntEncoder);
+		encoder_Serialized.Write(packet, Serialized);
 
 		packet.Send(toClient, ignoreClient);
 	}
 
-	/// <inheritdoc cref=""Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
+	/// <inheritdoc cref=""global::Terraria.ModLoader.Packets.INetPacket.Receive(BinaryReader, int)""/>
 	[CompilerGenerated]
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
 
-		var encoder_Serialized = default(Terraria.ModLoader.Packets.IntEncoder);
+		var encoder_Serialized = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		Serialized = encoder_Serialized.Read(reader);
 
 		if (Main.netMode == NetmodeID.Server) {
