@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using static tModLoader.SourceGenerators.Constants;
 
@@ -14,71 +15,85 @@ partial class NetPacketGeneratorv2
 		in bool IsUnsafe
 	);
 	private record struct GlobalEncoderInfo(
-		in string Type,
-		in string Encoder
+		in string EncodedType,
+		in string EncoderName,
+		in string EncoderType
 	);
 
-	private static ImmutableArray<EncoderInfo> RetriveEncoders(ImmutableArray<SerializableProperty> serializableProperties, ImmutableArray<GlobalEncoderInfo> globalEncoders)
+	private static ImmutableArray<EncoderInfo> RetrieveEncoders(ImmutableArray<SerializableProperty> serializableProperties, ImmutableArray<GlobalEncoderInfo> globalEncoders)
 	{
-		static string GetBuiltinTypeEncoder(ITypeSymbol typeSymbol, IEnumerable<GlobalEncoderInfo?> globalEncoders)
+		static string GetBuiltinTypeEncoder(ITypeSymbol typeSymbol, IEnumerable<GlobalEncoderInfo?> globalEncoders, out StringBuilder sb)
 		{
-			string encoderTypeName = null;
+			sb = new();
 
 			string propertyTypeName = typeSymbol.ToDisplayString();
-			var globalEncoder = globalEncoders.FirstOrDefault(g => g.Value.Type == propertyTypeName);
-			encoderTypeName ??= globalEncoder?.Encoder;
-			if (encoderTypeName != null) {
-				return $"global::{encoderTypeName}";
+			var globalEncoder = globalEncoders.FirstOrDefault(g => g.Value.EncodedType == propertyTypeName);
+			if (globalEncoder != null) {
+				sb.Append(globalEncoder.Value.EncoderType);
+				return "global::" + globalEncoder.Value.EncoderName;
 			}
-
-			if (typeSymbol.TypeKind == TypeKind.Array) {
+			else if (typeSymbol.TypeKind == TypeKind.Array) {
 				var elementType = ((IArrayTypeSymbol)typeSymbol).ElementType;
-				string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders);
+				string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders, out var elementSb);
 				if (builtinEncoder == null)
 					return null;
 
-				encoderTypeName = $"global::Terraria.ModLoader.Packets.ArrayEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
+				sb.Append(elementSb);
+				sb.Append("[]");
+
+				return $"global::Terraria.ModLoader.Packets.ArrayEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
 			}
 			else if (typeSymbol.TypeKind == TypeKind.Enum) {
-				encoderTypeName = $"global::Terraria.ModLoader.Packets.EnumEncoder<{typeSymbol.ToDisplayString()}>";
+				sb.Append("global::");
+				sb.Append(typeSymbol.ToDisplayString());
+
+				return $"global::Terraria.ModLoader.Packets.EnumEncoder<{typeSymbol.ToDisplayString()}>";
 			}
 			else {
 				switch (typeSymbol.OriginalDefinition.ToDisplayString()) {
 					case BitsByteStructFullName:
-						encoderTypeName = "global::Terraria.ModLoader.Packets.ByteEncoder";
-						goto End;
+						return "global::Terraria.ModLoader.Packets.ByteEncoder";
 					case HalfStructFullName:
-						encoderTypeName = "global::Terraria.ModLoader.Packets.HalfEncoder";
-						goto End;
+						sb.Append("global::System.Half");
+						return "global::Terraria.ModLoader.Packets.HalfEncoder";
 					case Vector2StructFullName:
-						encoderTypeName = "global::Terraria.ModLoader.Packets.Vector2Encoder";
-						goto End;
+						sb.Append("global::Microsoft.Xna.Framework.Vector2");
+						return "global::Terraria.ModLoader.Packets.Vector2Encoder";
 					case ListClassFullName: {
 						var elementType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
-						string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders);
+						string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders, out var elementSb);
 						if (builtinEncoder == null)
 							return null;
 
-						encoderTypeName = $"global::Terraria.ModLoader.Packets.ListEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
-						goto End;
+						sb.Append("global::System.Collections.Generic.List<");
+						sb.Append(elementSb);
+						sb.Append('>');
+
+						return $"global::Terraria.ModLoader.Packets.ListEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
 					}
 					case SpanStructFullName: {
 						var elementType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
-						string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders);
+						string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders, out var elementSb);
 						if (builtinEncoder == null)
 							return null;
 
-						encoderTypeName = $"global::Terraria.ModLoader.Packets.SpanEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
-						goto End;
+						sb.Append("global::System.Span<");
+						sb.Append(elementSb);
+						sb.Append('>');
+
+						return $"global::Terraria.ModLoader.Packets.SpanEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
 					}
 					case ReadOnlySpanStructFullName: {
 						var elementType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
-						string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders);
+						string builtinEncoder = GetBuiltinTypeEncoder(elementType, globalEncoders, out var elementSb);
 						if (builtinEncoder == null)
 							return null;
 
-						encoderTypeName = $"global::Terraria.ModLoader.Packets.ReadOnlySpanEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
-						goto End;
+						sb.Append("global::System.ReadOnlySpan<");
+						sb.Append(elementSb);
+						sb.Append('>');
+
+						return $"global::Terraria.ModLoader.Packets.ReadOnlySpanEncoder<{elementType.ToDisplayString()}, {builtinEncoder}>";
 					}
 				}
 
@@ -96,53 +111,67 @@ partial class NetPacketGeneratorv2
 					case "System.ValueTuple`8": {
 						var valueTupleSymbol = (INamedTypeSymbol)typeSymbol;
 						var typeArgs = valueTupleSymbol.TypeArguments;
-						var typeArgsWithEncoder = typeArgs.Select(x => (Type: x, Encoder: GetBuiltinTypeEncoder(x, globalEncoders)));
+						var typeArgsWithEncoder = typeArgs.Select(x => (Type: x, Encoder: GetBuiltinTypeEncoder(x, globalEncoders, out var sb), sb));
 						if (typeArgsWithEncoder.Any(x => x.Encoder is null))
 							return null;
 
+						sb.Append('(');
+						sb.Append(string.Join(", ", typeArgsWithEncoder.Select(x => x.sb)));
+						sb.Append(')');
+
 						string typesForEncoder = string.Join(", ", typeArgsWithEncoder.Select(x => $"{x.Type.ToDisplayString()}, {x.Encoder}"));
-						encoderTypeName = $"global::Terraria.ModLoader.Packets.ValueTupleEncoder<{typesForEncoder}>";
-						goto End;
+						return $"global::Terraria.ModLoader.Packets.ValueTupleEncoder<{typesForEncoder}>";
 					}
 				}
 			}
 
-		End:
-			encoderTypeName ??= GetSpecialTypeEncoder(typeSymbol.SpecialType);
-
-			return encoderTypeName;
+			return GetSpecialTypeEncoder(typeSymbol.SpecialType, sb);
 		}
 
-		static string GetSpecialTypeEncoder(SpecialType specialType)
+		static string GetSpecialTypeEncoder(SpecialType specialType, StringBuilder sb)
 		{
 			switch (specialType) {
 				case SpecialType.System_Boolean:
+					sb.Append("bool");
 					return "global::Terraria.ModLoader.Packets.BooleanEncoder";
 				case SpecialType.System_Char:
+					sb.Append("char");
 					return "global::Terraria.ModLoader.Packets.CharEncoder";
 				case SpecialType.System_SByte:
+					sb.Append("sbyte");
 					return "global::Terraria.ModLoader.Packets.SByteEncoder";
 				case SpecialType.System_Byte:
+					sb.Append("byte");
 					return "global::Terraria.ModLoader.Packets.ByteEncoder";
 				case SpecialType.System_Int16:
+					sb.Append("short");
 					return "global::Terraria.ModLoader.Packets.ShortEncoder";
 				case SpecialType.System_UInt16:
+					sb.Append("ushort");
 					return "global::Terraria.ModLoader.Packets.UShortEncoder";
 				case SpecialType.System_Int32:
+					sb.Append("int");
 					return "global::Terraria.ModLoader.Packets.IntEncoder";
 				case SpecialType.System_UInt32:
+					sb.Append("uint");
 					return "global::Terraria.ModLoader.Packets.UIntEncoder";
 				case SpecialType.System_Int64:
+					sb.Append("long");
 					return "global::Terraria.ModLoader.Packets.LongEncoder";
 				case SpecialType.System_UInt64:
+					sb.Append("ulong");
 					return "global::Terraria.ModLoader.Packets.ULongEncoder";
 				case SpecialType.System_Single:
+					sb.Append("float");
 					return "global::Terraria.ModLoader.Packets.SingleEncoder";
 				case SpecialType.System_Double:
+					sb.Append("double");
 					return "global::Terraria.ModLoader.Packets.DoubleEncoder";
 				case SpecialType.System_Decimal:
+					sb.Append("decimal");
 					return "global::Terraria.ModLoader.Packets.DecimalEncoder";
 				case SpecialType.System_String:
+					sb.Append("string");
 					return "global::Terraria.ModLoader.Packets.StringEncoder";
 				default:
 					return null;
@@ -164,7 +193,7 @@ partial class NetPacketGeneratorv2
 
 				if (type != null) {
 					encoderType = type.ToDisplayString();
-					if (type.IsDefinition) {
+					if (!type.IsPrimitiveType()) {
 						encoderType = "global::" + encoderType;
 					}
 				}
@@ -173,7 +202,11 @@ partial class NetPacketGeneratorv2
 				}
 			}
 			else {
-				encoderTypeName = GetBuiltinTypeEncoder(x.PropertyType, globalEncoders.Cast<GlobalEncoderInfo?>());
+				encoderTypeName = GetBuiltinTypeEncoder(x.PropertyType, globalEncoders.Cast<GlobalEncoderInfo?>(), out var sb);
+				encoderType = sb.ToString();
+			}
+
+			if (string.IsNullOrEmpty(encoderType)) {
 				encoderType = null;
 			}
 
@@ -198,6 +231,11 @@ partial class NetPacketGeneratorv2
 
 	private static ImmutableArray<GlobalEncoderInfo> RetriveGlobalEncoders(ITypeSymbol symbol) => symbol.GetAttributes()
 		.Where(x => x.AttributeClass.ToDisplayString() == GloballyEncodedAsAttributeFullName)
-		.Select(x => new GlobalEncoderInfo(((ITypeSymbol)x.ConstructorArguments[0].Value).ToDisplayString(), ((ITypeSymbol)x.ConstructorArguments[1].Value).ToDisplayString()))
+		.Select(x => {
+			string serializedType = ((ITypeSymbol)x.ConstructorArguments[0].Value).ToDisplayString();
+			var encoder = (ITypeSymbol)x.ConstructorArguments[1].Value;
+			var encoderType = encoder.Interfaces.FirstOrDefault(x => x.OriginalDefinition.ToDisplayString() == INetEncoderTInterfaceFullName);
+			return new GlobalEncoderInfo(serializedType, encoder.ToDisplayString(), encoderType?.TypeArguments[0]?.ToDisplayString() ?? string.Empty);
+		})
 		.ToImmutableArray();
 }
