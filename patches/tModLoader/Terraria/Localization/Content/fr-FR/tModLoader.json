@@ -67,6 +67,7 @@
 		"OutdatedModCantPublishError": "Vous ne pouvez pas publier un Mod compilé avec une version obsolète de tModLoader",
 		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Relance requise",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Relance forcée",
 		"ModIsServerSide": "Ceci est un mod côté serveur",
 		"ModsByline": "Par : {0}",
