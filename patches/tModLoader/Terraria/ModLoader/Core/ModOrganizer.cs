@@ -298,9 +298,9 @@ internal static class ModOrganizer
 
 	internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
-	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> mods, CancellationToken token)
+	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> availableMods, CancellationToken token)
 	{
-		var missing = ModLoader.EnabledMods.Except(mods.Select(mod => mod.Name)).ToList();
+		var missing = ModLoader.EnabledMods.Except(availableMods.Select(mod => mod.Name)).ToList();
 		if (missing.Any()) {
 			Logging.tML.Info("Missing previously enabled mods: " + string.Join(", ", missing));
 			foreach (var name in missing)
@@ -316,7 +316,7 @@ internal static class ModOrganizer
 			return new();
 		}
 
-		CommandLineModPackOverride(mods);
+		CommandLineModPackOverride(availableMods);
 
 		// Alternate fix for updating enabled mods
 		//foreach (string fileName in Directory.GetFiles(modPath, "*.tmod.update", SearchOption.TopDirectoryOnly)) {
@@ -324,8 +324,17 @@ internal static class ModOrganizer
 		//	File.Delete(fileName);
 		//}
 		Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
-		var modsToLoad = mods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
 
+		var modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
+		VerifyNames(modsToLoad);
+
+		EnsureDependenciesExist(modsToLoad, false);
+		foreach (var mod in modsToLoad) {
+			EnableWithDeps(mod, availableMods);
+		}
+		SaveEnabledMods();
+
+		modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
 		VerifyNames(modsToLoad);
 
 		try {
@@ -364,6 +373,17 @@ internal static class ModOrganizer
 		}
 		finally {
 			commandLineModPack = null;
+		}
+	}
+
+	//TODO: This duplicates some of the logic in UIModItem
+	internal static void EnableWithDeps(LocalMod mod, IEnumerable<LocalMod> availableMods)
+	{
+		mod.Enabled = true;
+
+		foreach (var depName in mod.properties.RefNames(includeWeak: false)) {
+			if (availableMods.SingleOrDefault(m => m.Name == depName) is LocalMod { Enabled: false } dep)
+				EnableWithDeps(dep, availableMods);
 		}
 	}
 
