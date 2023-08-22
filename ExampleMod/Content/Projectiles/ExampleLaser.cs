@@ -151,7 +151,7 @@ namespace ExampleMod.Content.Projectiles
 				Vector2 checkPosition = Owner.Center + Projectile.velocity * LaserDistance;
 
 				// If the current checkPosition is blocked via collision, decrease the distance to the last good value and break out of the loop.
-				if (!Collision.CanHit(Owner.Center, Projectile.width, Projectile.height, checkPosition, Projectile.width, Projectile.height)) {
+				if (!Collision.CanHitLine(Owner.Center, Projectile.width, Projectile.height, checkPosition, Projectile.width, Projectile.height)) {
 					LaserDistance -= chargeIncrement;
 					break;
 				}
