@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
@@ -194,8 +194,18 @@ public class RenameRewriter : BaseRewriter {
 			MemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
 		);
 	};
+
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {
 		if (node.Parent is MethodDeclarationSyntax decl)
 			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));
+	};
+
+	public static AdditionalRenameAction AccessShimmerBuffIDElem() => (rw, node) => {
+		if (node is not { Parent: IdentifierNameSyntax { Parent: ExpressionSyntax { Parent: ElementAccessExpressionSyntax elemAccess} } })
+			return;
+
+		var buffIdShimmer = MemberAccessExpression(rw.UseType("Terraria.ID.BuffID"), "Shimmer");
+		rw.RegisterAction<ExpressionSyntax>(elemAccess,
+			n => ElementAccessExpression(n.WithoutTrivia(), buffIdShimmer).WithTriviaFrom(n));
 	};
 }

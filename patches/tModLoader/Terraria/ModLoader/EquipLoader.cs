@@ -23,7 +23,7 @@ public static class EquipLoader
 	internal static readonly Dictionary<int, Dictionary<EquipType, int>> idToSlot = new();
 
 	//holds mappings of slot id -> item id for head/body/legs
-	//used to populate Item.(head/body/leg)Type for Manequinns
+	//used to populate Item.(head/body/leg)Type for Mannequins
 	internal static readonly Dictionary<EquipType, Dictionary<int, int>> slotToId = new();
 
 	public static readonly EquipType[] EquipTypes = (EquipType[])Enum.GetValues(typeof(EquipType));
@@ -79,7 +79,7 @@ public static class EquipLoader
 		Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(ArmorIDs), true);
+		LoaderUtils.ResetStaticMembers(typeof(ArmorIDs));
 		WingStatsInitializer.Load();
 
 		foreach (EquipType type in EquipTypes) {
@@ -102,7 +102,8 @@ public static class EquipLoader
 			}
 		}
 
-		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray) {
+		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray)
+		{
 			Array.Resize(ref typeArray, nextEquip[equipType]);
 
 			foreach (var entry in slotToId[equipType]) {
@@ -253,7 +254,7 @@ public static class EquipLoader
 	/// If you need to override EquipmentTexture's hooks, you can specify the class of the equipment texture class.
 	/// </summary>
 	/// <remarks>
-	/// If both an internal name and associated item are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
+	/// If both an internal name and associated item are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionary.<br/>
 	/// Additionally, if multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins.
 	/// </remarks>
 	/// <param name="mod">The mod the equipment texture is from.</param>
@@ -275,7 +276,7 @@ public static class EquipLoader
 			equipTexture = new EquipTexture();
 
 		ModContent.Request<Texture2D>(texture); //ensure texture exists
-		 
+
 		equipTexture.Texture = texture;
 		equipTexture.Name = name ?? item.Name;
 		equipTexture.Type = type;

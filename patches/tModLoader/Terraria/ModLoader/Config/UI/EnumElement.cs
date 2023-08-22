@@ -28,9 +28,10 @@ internal class EnumElement : RangeElement
 
 		// Retrieve individual Enum member labels
 		for (int i = 0; i < valueStrings.Length; i++) {
-			var enumFieldMemberInfo = MemberInfo.Type.GetMember(valueStrings[i]).FirstOrDefault();
-			if (enumFieldMemberInfo != null) {
-				valueStrings[i] = ((LabelAttribute)Attribute.GetCustomAttribute(enumFieldMemberInfo, typeof(LabelAttribute)))?.Label ?? valueStrings[i];
+			var enumFieldFieldInfo = MemberInfo.Type.GetField(valueStrings[i]);
+			if (enumFieldFieldInfo != null) {
+				string name = ConfigManager.GetLocalizedLabel(new PropertyFieldWrapper(enumFieldFieldInfo));
+				valueStrings[i] = name;
 			}
 		}
 
@@ -52,8 +53,8 @@ internal class EnumElement : RangeElement
 		}
 		*/
 
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label + ": " + _getValueString();
+		if (Label != null) {
+			TextDisplayFunction = () => Label + ": " + _getValueString();
 		}
 	}
 

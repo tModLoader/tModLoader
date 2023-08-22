@@ -1,7 +1,7 @@
 ﻿using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Mounts;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs

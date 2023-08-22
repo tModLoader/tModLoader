@@ -11,6 +11,7 @@ internal abstract class PatreonItem : ModLoaderModItem
 {
 	public string InternalSetName { get; set; }
 	public string SetSuffix { get; set; }
+	public override LocalizedText Tooltip => LocalizedText.Empty;
 
 	public PatreonItem()
 	{

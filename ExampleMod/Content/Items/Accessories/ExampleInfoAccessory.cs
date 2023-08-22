@@ -14,9 +14,8 @@ namespace ExampleMod.Content.Items.Accessories
 	{
         public override void SetStaticDefaults() {
 			// We want the information benefits of this accessory to work while in the void bag in order to keep
-			// it in line with the vanilla accessories; this is what this set is used for.
-			// If you DON'T want your info accessory to work in the void bag, then don't add this line.
-			ItemID.Sets.WorksInVoidBag[Type] = true;
+			// it in line with the vanilla accessories; This is the default behavior.
+			// If you DON'T want your info accessory to work in the void bag, then add: ItemID.Sets.WorksInVoidBag[Type] = false;
         }
 
 		public override void SetDefaults() {

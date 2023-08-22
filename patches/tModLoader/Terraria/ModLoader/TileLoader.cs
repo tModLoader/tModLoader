@@ -67,6 +67,8 @@ public static class TileLoader
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, ref Color sightColor);
+	private static DelegateIsTileBiomeSightable[] HookIsTileBiomeSightable;
 	private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
@@ -137,7 +139,7 @@ public static class TileLoader
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(TileID), true);
+		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
 		Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
@@ -219,6 +221,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
+		ModLoader.BuildGlobalHook<GlobalTile, DelegateIsTileBiomeSightable>(ref HookIsTileBiomeSightable, globalTiles, g => g.IsTileBiomeSightable);
 		ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
@@ -283,6 +286,9 @@ public static class TileLoader
 	//  and add && !checkStay to if statement that sets flag4
 	public static void CheckModTile(int i, int j, int type)
 	{
+		if(type <= TileID.Count) {
+			return;
+		}
 		if (WorldGen.destroyObject) {
 			return;
 		}
@@ -521,7 +527,7 @@ public static class TileLoader
 		if (Main.tileFrameImportant[type]) {
 			var tileData = TileObjectData.GetTileData(type, 0);
 			if (tileData != null) {
-				if(tileData.Width != 1 || tileData.Height != 1)
+				if (tileData.Width != 1 || tileData.Height != 1)
 					isLarge = true;
 			}
 			else if (TileID.Sets.IsMultitile[type])
@@ -555,8 +561,8 @@ public static class TileLoader
 
 		// Various call sites to WorldGen.KillTile_DropItems expect different sets of tile drops to be retrieved:
 		// KillTile: All 1x1 tiles
-		// ReplaceTile: All 1x1 tiles, all supported multitiles
-		// CheckModTile: All modded tiles (except 1x1 tiles will drop from killtile)
+		// ReplaceTile: All 1x1 tiles, all supported multi-tiles
+		// CheckModTile: All modded tiles (except 1x1 tiles will drop from KillTile)
 		bool needDrops = false;
 		TileObjectData tileData = TileObjectData.GetTileData(tileCache.TileType, 0, 0);
 		if (tileData == null) {
@@ -570,7 +576,7 @@ public static class TileLoader
 		else if (includeAllModdedLargeObjectDrops)
 			needDrops = true;
 		else if (includeLargeObjectDrops) {
-			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type]) {
+			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfire[tileCache.type]) {
 				needDrops = true;
 			}
 		}
@@ -589,7 +595,8 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, style 0 will be checked as a fallback.
+	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, a fallback item will be returned if one has been registered through <see cref="ModTile.RegisterItemDrop(int, int[])"/> usage.<br/>
+	/// Modders querying modded tile drops should use <see cref="ModTile.GetItemDrops(int, int)"/> directly rather that use this method so that custom drop logic is accounted for.
 	/// <br/> A return of 0 indicates that no item would drop from the tile.
 	/// </summary>
 	/// <param name="type"></param>
@@ -597,14 +604,7 @@ public static class TileLoader
 	/// <returns></returns>
 	public static int GetItemDropFromTypeAndStyle(int type, int style = 0)
 	{
-		// Override
-		ModTile modTile = GetTile(type);
-		if (modTile?.ItemDrop > 0) 
-			return modTile.ItemDrop;
-		if (modTile?.ItemDrop == -1)
-			return 0;
-
-		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, 0), out value))
+		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, -1), out value))
 			return value;
 
 		return 0;
@@ -693,6 +693,31 @@ public static class TileLoader
 
 		foreach (var hook in HookIsTileDangerous) {
 			bool? globalRetVal = hook(i, j, type, player);
+			if (globalRetVal.HasValue) {
+				if (globalRetVal.Value) {
+					retVal = true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+
+		return retVal;
+	}
+
+	public static bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
+	{
+		bool? retVal = null;
+
+		ModTile modTile = GetTile(type);
+
+		if (modTile != null && modTile.IsTileBiomeSightable(i, j, ref sightColor)) {
+			retVal = true;
+		}
+
+		foreach (var hook in HookIsTileBiomeSightable) {
+			bool? globalRetVal = hook(i, j, type, ref sightColor);
 			if (globalRetVal.HasValue) {
 				if (globalRetVal.Value) {
 					retVal = true;
@@ -808,6 +833,7 @@ public static class TileLoader
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
+		// TODO: Pass in TileDrawInfo so mods don't need to replicate existing SetDrawPositions logic. For example, ExampleTorch repeated logic (SetDrawPositions/PostDraw)
 		GetTile(type)?.PostDraw(i, j, spriteBatch);
 
 		foreach (var hook in HookPostDraw) {
@@ -1139,7 +1165,7 @@ public static class TileLoader
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 	}
-  
+
 	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
 	{
 		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;
@@ -1190,8 +1216,10 @@ public static class TileLoader
 		for (int k = 0; k < ItemLoader.ItemCount; k++) {
 			Item item = ContentSamples.ItemsByType[k];
 			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
-				if (item.createTile > -1)
-					tileTypeAndTileStyleToItemType[(item.createTile, item.placeStyle)] = item.type;
+				if (item.createTile > -1) {
+					// TryAdd won't override existing value if present. Existing ModTile.RegisterItemDrop entries take precedence
+					tileTypeAndTileStyleToItemType.TryAdd((item.createTile, item.placeStyle), item.type);
+				}
 			}
 		}
 	}

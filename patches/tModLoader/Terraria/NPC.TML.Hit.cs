@@ -32,7 +32,7 @@ public partial class NPC
 		/// Use this to enhance or scale the base damage of the item/projectile/hit. This damage modifier will apply to <see cref="HitInfo.SourceDamage"/> and be transferred to on-hit effects. <br/>
 		/// <br/>
 		/// For effects which apply to all damage dealt by the player, or a specific damage type, consider using <see cref="Player.GetDamage"/> instead. <br/>
-		/// For effects which apply to all dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
+		/// For effects which apply to all damage dealt by an item, consider using <see cref="GlobalItem.ModifyWeaponDamage"/> instead. <br/>
 		/// <br/>
 		/// Used by vanilla for weapons with unique scaling such as jousting lance, ham bat, breaker blade. And for accessories which enhance a projectile (strong bees)
 		/// </summary>
@@ -102,6 +102,12 @@ public partial class NPC
 		/// Use of <see cref="StatModifier.Base"/> also not recommended. <br/>
 		/// </summary>
 		public StatModifier CritDamage = new(2f, 1f);
+
+		/// <summary>
+		/// Applied to damage after defense and before <see cref="FinalDamage"/> when the hit is _not_ a crit. <br/>
+		/// Effectively a compliment for <see cref="CritDamage"/>
+		/// </summary>
+		public StatModifier NonCritDamage = new();
 
 		/// <summary>
 		/// Applied to the final damage result. <br/>
@@ -188,9 +194,10 @@ public partial class NPC
 
 		public readonly int GetDamage(float baseDamage, bool crit, bool damageVariation = false, float luck = 0f)
 		{
+			crit = _critOverride ?? crit;
 			if (SuperArmor) {
 				float dmg = 1;
-				if (_critOverride ?? crit)
+				if (crit)
 					dmg *= CritDamage.Additive * CritDamage.Multiplicative;
 
 				return Math.Clamp((int)dmg, 1, Math.Min(_damageLimit, 4));
@@ -204,15 +211,14 @@ public partial class NPC
 			if (damageVariation && variationPercent > 0)
 				damage = Main.DamageVar(damage, variationPercent, luck);
 
-			float defense = Defense.ApplyTo(0);
+			float defense = Math.Max(Defense.ApplyTo(0), 0);
 			float armorPenetration = defense * Math.Clamp(ScalingArmorPenetration.Value, 0, 1) + ArmorPenetration.Value;
 			defense = Math.Max(defense - armorPenetration, 0);
 
 			float damageReduction = defense * DefenseEffectiveness.Value;
 			damage = Math.Max(damage - damageReduction, 1);
 
-			if (_critOverride ?? crit)
-				damage = CritDamage.ApplyTo(damage);
+			damage = (crit ? CritDamage : NonCritDamage).ApplyTo(damage);
 
 			return Math.Clamp((int)FinalDamage.ApplyTo(damage), 1, _damageLimit);
 		}
@@ -257,7 +263,7 @@ public partial class NPC
 		/// <br/>
 		/// Using this instead of <see cref="Damage"/> can prevent diminishing returns from NPC defense, double crits, or excessively strong effects if the NPC has a vulnerability to the weapon/projectile (like vampires and stakes).
 		/// <br/>
-		/// Used by vanilla for dryad ward retaliation, and many sword on-hit projectiles like volcano and beekeepr
+		/// Used by vanilla for dryad ward retaliation, and many sword on-hit projectiles like volcano and beekeeper
 		/// </summary>
 		public int SourceDamage {
 			readonly get => _sourceDamage;

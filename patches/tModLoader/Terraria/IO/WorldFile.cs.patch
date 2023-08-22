@@ -83,12 +83,29 @@
  		new Stopwatch().Start();
  		int num;
  		byte[] array;
-@@ -688,6 +_,8 @@
+@@ -671,6 +_,7 @@
+ 		FileUtilities.Write(Main.worldPathName, array, num, useCloudSaving);
+ 		array = FileUtilities.ReadAllBytes(Main.worldPathName, useCloudSaving);
+ 		string text = null;
++		bool validated = true;
+ 		using (MemoryStream input = new MemoryStream(array, 0, num, writable: false)) {
+ 			using BinaryReader fileIO = new BinaryReader(input);
+ 			if (!Main.validateSaves || ValidateWorld(fileIO)) {
+@@ -682,12 +_,17 @@
+ 				DoRollingBackups(text);
+ 			}
+ 			else {
++				Logging.Terraria.Error("ValidateWorld failed. A bug in WorldFile.Save has produced an invalid file. Step through with a debugger to find out where ValidateWorld returns false.");
++				validated = false;
+ 				text = Main.worldPathName;
+ 			}
+ 		}
  
  		if (text != null && array2 != null)
  			FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
 +
-+		WorldIO.Save(Main.worldPathName, useCloudSaving);
++		if (validated)
++			WorldIO.Save(Main.worldPathName, useCloudSaving);
  	}
  
  	private static void DoRollingBackups(string backupWorldWritePath)
@@ -193,15 +210,18 @@
  				}
  			}
  		}
-@@ -1377,13 +_,16 @@
+@@ -1374,7 +_,10 @@
+ 
+ 	public static int SaveNPCs(BinaryWriter writer)
+ 	{
++		/*
  		bool[] array = (bool[])NPC.ShimmeredTownNPCs.Clone();
++		*/
++		bool[] array = NPC.ShimmeredTownNPCs[..NPCID.Count];
  		writer.Write(array.Count(value: true));
  		for (int i = 0; i < array.Length; i++) {
--			if (array[i])
-+			if (array[i] && i < NPCID.Count)
- 				writer.Write(i);
- 		}
- 
+ 			if (array[i])
+@@ -1384,6 +_,9 @@
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
  			if (nPC.active && nPC.townNPC && nPC.type != 368) {
@@ -221,7 +241,7 @@
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2147,8 +_,20 @@
+@@ -2147,8 +_,21 @@
  
  				while (num3 > 0) {
  					j++;
@@ -239,6 +259,7 @@
 +					tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
 +					tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
 +					tile2.Get<TileWallWireStateData>() = tile.Get<TileWallWireStateData>();
++					tile2.Get<TileWallBrightnessInvisibilityData>() = tile.Get<TileWallBrightnessInvisibilityData>();
  				}
  			}
  		}

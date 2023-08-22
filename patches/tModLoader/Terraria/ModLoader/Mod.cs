@@ -58,7 +58,7 @@ public partial class Mod
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
+	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
 	/// <summary>
@@ -96,14 +96,11 @@ public partial class Mod
 			return;
 
 		// TODO: Attribute to specify ordering of ModConfigs
-		foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName))
-		{
-			if (type.IsAbstract)
-			{
+		foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName)) {
+			if (type.IsAbstract) {
 				continue;
 			}
-			if (type.IsSubclassOf(typeof(ModConfig)))
-			{
+			if (type.IsSubclassOf(typeof(ModConfig))) {
 				var mc = (ModConfig)Activator.CreateInstance(type, true)!;
 				// Skip loading ClientSide on Main.dedServ?
 				if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
@@ -125,11 +122,12 @@ public partial class Mod
 
 		ConfigManager.Add(mc);
 		ContentInstance.Register(mc);
+		ModTypeLookup<ModConfig>.Register(mc);
 	}
 
 	/// <summary> Call this to manually add a content instance of the specified type (with a parameterless constructor) to the game. </summary>
 	/// <returns> true if the instance was successfully added </returns>
-	public void AddContent<T>() where T:ILoadable, new() => AddContent(new T());
+	public bool AddContent<T>() where T : ILoadable, new() => AddContent(new T());
 
 	/// <summary> Call this to manually add the given content instance to the game. </summary>
 	/// <param name="instance"> The content instance to add </param>
@@ -169,6 +167,11 @@ public partial class Mod
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
+	/// <summary>
+	/// Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <see cref="Language.GetOrRegister(string, Func{string})"/> to retrieve a <see cref="LocalizedText"/> for custom localization keys. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files.
+	/// </summary>
+	/// <param name="suffix"></param>
+	/// <returns></returns>
 	public string GetLocalizationKey(string suffix) => $"Mods.{Name}.{suffix}";
 
 	/// <summary>
@@ -176,7 +179,7 @@ public partial class Mod
 	/// </summary>
 	/// <param name="npcType">Type of the NPC.</param>
 	/// <param name="texture">The texture.</param>
-	/// <returns>The boss head txture slot</returns>
+	/// <returns>The boss head texture slot</returns>
 	/// <exception cref="MissingResourceException"></exception>
 	public int AddNPCHeadTexture(int npcType, string texture)
 	{
@@ -204,7 +207,7 @@ public partial class Mod
 	/// </summary>
 	/// <param name="texture">The texture.</param>
 	/// <param name="npcType">An optional npc id for NPCID.Sets.BossHeadTextures</param>
-	/// <returns>The boss head txture slot</returns>
+	/// <returns>The boss head texture slot</returns>
 	public int AddBossHeadTexture(string texture, int npcType = -1)
 	{
 		if (!loading)

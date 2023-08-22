@@ -1,0 +1,26 @@
+--- src/TerrariaNetCore/Terraria/GameContent/FlexibleTileWand.cs
++++ src/tModLoader/Terraria/GameContent/FlexibleTileWand.cs
+@@ -32,8 +_,11 @@
+ 		public int TileStyleToPlace;
+ 	}
+ 
++	/// <summary> Used by the Rubblemaker item to place fake versions of 1x1 rubble tiles. Technically it can place any size rubble. </summary>
+ 	public static FlexibleTileWand RubblePlacementSmall = CreateRubblePlacerSmall();
++	/// <summary> Used by the Rubblemaker item to place fake versions of 2x1 rubble tiles. Technically it can place any size rubble. </summary>
+ 	public static FlexibleTileWand RubblePlacementMedium = CreateRubblePlacerMedium();
++	/// <summary> Used by the Rubblemaker item to place fake versions of 3x2 rubble tiles. Technically it can place any size rubble. </summary>
+ 	public static FlexibleTileWand RubblePlacementLarge = CreateRubblePlacerLarge();
+ 	private UnifiedRandom _random = new UnifiedRandom();
+ 	private Dictionary<int, OptionBucket> _options = new Dictionary<int, OptionBucket>();
+@@ -194,4 +_,11 @@
+ 		wand.AddVariations_ByRow(3081, tileType, variationsPerRow, 31, 32, 33);
+ 		wand.AddVariations_ByRow(607, tileType, variationsPerRow, 34, 35, 36);
+ 	}
++
++	public static void Reload()
++	{
++		RubblePlacementSmall = CreateRubblePlacerSmall();
++		RubblePlacementMedium = CreateRubblePlacerMedium();
++		RubblePlacementLarge = CreateRubblePlacerLarge();
++	} 
+ }

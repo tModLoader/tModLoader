@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria;
@@ -16,9 +17,33 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	public ModItem ModItem { get; internal set; }
 
-	internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
+#region Globals
+	int IEntityWithGlobals<GlobalItem>.Type => type;
+	internal GlobalItem[] _globals;
+	public RefReadOnlyArray<GlobalItem> EntityGlobals => _globals;
+	public EntityGlobalsEnumerator<GlobalItem> Globals => new(this);
 
-	public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
+	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="IndexOutOfRangeException"/>
+	public T GetGlobalItem<T>() where T : GlobalItem
+		=> GlobalItem.GetGlobal<T>(type, EntityGlobals);
+
+	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="NullReferenceException"/>
+	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
+		=> GlobalItem.GetGlobal<T>(type, EntityGlobals, baseInstance);
+
+	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
+	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
+		=> GlobalItem.TryGetGlobal(type, EntityGlobals, out result);
+
+	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
+	/// <returns> Whether or not the requested instance has been found. </returns>
+	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
+		=> GlobalItem.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
+#endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
@@ -105,32 +130,17 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		set => _armorPenetration = Math.Max(0, value);
 	}
 
-	/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalItem<T>() where T : GlobalItem
-		=> GlobalType.GetGlobal<GlobalItem, T>(globalItems);
-
-	/// <summary> Gets the local instance of the type of the specified GlobalItem instance. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="NullReferenceException"/>
-	public T GetGlobalItem<T>(T baseInstance) where T : GlobalItem
-		=> GlobalType.GetGlobal(globalItems, baseInstance);
-
-	/// <summary> Gets the instance of the specified GlobalItem type. </summary>
-	public bool TryGetGlobalItem<T>(out T result) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, out result);
-
-	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
-	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-		=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
-
 	public TagCompound SerializeData() => ItemIO.Save(this);
 
+	/// <inheritdoc cref="CountsAsClass"/>
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
 
+	/// <summary>
+	/// This is used to check if this item benefits from the specified <see cref="DamageClass"/>.
+	/// </summary>
+	/// <param name="damageClass">The DamageClass to check for in this item.</param>
+	/// <returns><see langword="true"/> if this item's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
@@ -167,7 +177,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	[ThreadStatic]
 	private static bool newItemDisabled = false;
-	// Used to disable NewItem in situations that would result in an undesireable amount of patches.
+	// Used to disable NewItem in situations that would result in an undesirable amount of patches.
 	internal ref struct DisableNewItemMethod
 	{
 		internal DisableNewItemMethod(bool disabled) => newItemDisabled = disabled;
@@ -257,7 +267,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private void RestoreMeleeSpeedBehaviorOnVanillaItems()
 	{
-		if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type]) {
+		if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse) {
 			if (noMelee)
 				DamageType = DamageClass.MeleeNoSpeed;
 			else

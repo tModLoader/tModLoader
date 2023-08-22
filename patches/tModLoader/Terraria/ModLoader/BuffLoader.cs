@@ -60,7 +60,7 @@ public static class BuffLoader
 		Array.Resize(ref TextureAssets.Buff, nextBuff);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(BuffID), true);
+		LoaderUtils.ResetStaticMembers(typeof(BuffID));
 
 		//Etc
 		Array.Resize(ref Main.pvpBuff, nextBuff);
@@ -97,6 +97,11 @@ public static class BuffLoader
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegatePreDraw>(ref HookPreDraw, globalBuffs, g => g.PreDraw);
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegatePostDraw>(ref HookPostDraw, globalBuffs, g => g.PostDraw);
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegateRightClick>(ref HookRightClick, globalBuffs, g => g.RightClick);
+	}
+
+	internal static void PostSetupContent()
+	{
+		Main.Initialize_BuffDataFromMountData();
 	}
 
 	internal static void FinishSetup()

@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -86,6 +_,7 @@
+@@ -86,11 +_,12 @@
  		}
  
  		if (!FileUtilities.Exists(text, isCloudSave)) {
@@ -16,12 +16,26 @@
  			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
  			return;
  		}
-@@ -99,6 +_,8 @@
- 					MapHelper.LoadMapVersion1(binaryReader, num);
+ 
+-		using MemoryStream input = new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));
++		using MemoryStream input = FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();
+ 		using BinaryReader binaryReader = new BinaryReader(input);
+ 		try {
+ 			int num = binaryReader.ReadInt32();
+@@ -100,6 +_,8 @@
  				else
  					MapHelper.LoadMapVersion2(binaryReader, num);
-+
-+				MapIO.ReadModFile(text, isCloudSave);
  
++				MapIO.ReadModFile(text, isCloudSave);
++
  				ClearEdges();
  				Main.clearMap = true;
+ 				Main.loadMap = true;
+@@ -118,6 +_,7 @@
+ 				File.Copy(text, text + ".bad", overwrite: true);
+ 
+ 			Clear();
++			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map); // TML fix. Fix map saving if loading corrupted map file.
+ 		}
+ 	}
+ 

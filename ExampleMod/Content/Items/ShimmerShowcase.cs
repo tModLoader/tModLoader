@@ -11,6 +11,10 @@ By default, Shimmer will tranform crafted items back into their original recipe 
 ShimmerShowcaseConditions showcases crimson and corruption specific shimmer decrafting results.
 
 ShimmerShowcaseCustomShimmerResult showcases both preventing a recipe from being decrafted and specifying a custom shimmer decrafting result.
+
+To use Shimmer to transform an item into another item instead of decrafting an item, simply set "ItemID.Sets.ShimmerTransformToItem[Type] = ItemType here;" in SetStaticDefaults. ExampleMusicBox and ExampleTorch show examples of this.
+
+Also note that critter items (Item.makeNPC > 0) will also not attempt to decraft, but will instead transform into the NPC that the Item.makeNPC transforms into. NPCID.Sets.ShimmerTransformToNPC sets which NPC an NPC will transform into, see PartyZombie and ExampleCustomAISlimeNPC for examples of this.
 */
 public class ShimmerShowcaseConditions : ModItem
 {
@@ -22,9 +26,9 @@ public class ShimmerShowcaseConditions : ModItem
 	}
 
 	public override void AddRecipes() {
-
-		// Keep in mind that decraft order is reverse of recipe register, so this desert example has priority over the world evil
-
+		// Many items have multiple recipes. The first added recipe will usually be used for shimmer decrafting.
+		// Recipe decraft conditions may be used to only allow decrafting under certain conditions, the first recipe found that satisfies all of it's decraft conditions will be used.
+		// Therefore, this desert-specific example has priority over the world evil examples registered after it.
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Cactus)
@@ -32,8 +36,7 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddDecraftCondition(Condition.InDesert)
 			.Register();
 
-		// Many items have multiple recipes. The last added recipe will usually be used for shimmer decrafting.
-		// Recipe conditions may be used to only allow decrafting under certain conditions, here it is used to make the recipes decraftable in only their respective world types
+		// In these 2 examples, decraft conditions are used to make the recipes decraftable only in their respective world types
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.RottenChunk)
@@ -47,6 +50,8 @@ public class ShimmerShowcaseConditions : ModItem
 			.AddTile<Tiles.Furniture.ExampleWorkbench>()
 			.AddDecraftCondition(Condition.CrimsonWorld)
 			.Register();
+
+		// Finally, the ApplyConditionsAsDecraftConditions method can be used to quickly mirror any crafting conditions onto the decrafting conditions.
 	}
 }
 

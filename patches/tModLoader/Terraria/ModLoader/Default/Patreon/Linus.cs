@@ -2,12 +2,15 @@
 using ReLogic.Content;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
     [AutoloadEquip(EquipType.Head)]
     internal class Linus_Head : PatreonItem
     {
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
 		public override void SetDefaults() {
             base.SetDefaults();
 
@@ -19,7 +22,9 @@ namespace Terraria.ModLoader.Default.Patreon
     [AutoloadEquip(EquipType.Body)]
 	internal class Linus_Body : PatreonItem
     {
-        public override void SetDefaults() {
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
+		public override void SetDefaults() {
             base.SetDefaults();
 
 			Item.width = 34;
@@ -30,7 +35,9 @@ namespace Terraria.ModLoader.Default.Patreon
     [AutoloadEquip(EquipType.Legs)]
 	internal class Linus_Legs : PatreonItem
     {
-        public override void SetDefaults() {
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
+		public override void SetDefaults() {
             base.SetDefaults();
 
 			Item.width = 22;
@@ -41,7 +48,9 @@ namespace Terraria.ModLoader.Default.Patreon
     [AutoloadEquip(EquipType.Wings)]
 	internal class Linus_Wings : PatreonItem
     {
-        public override void SetStaticDefaults()
+		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
+
+		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
 

@@ -44,14 +44,7 @@ namespace ExampleMod.Content.Items.Tools
 				}
 
 				// This code releases all grappling hooks and kills/despawns them.
-				player.grappling[0] = -1;
-				player.grapCount = 0;
-
-				for (int p = 0; p < 1000; p++) {
-					if (Main.projectile[p].active && Main.projectile[p].owner == player.whoAmI && Main.projectile[p].aiStyle == 7) {
-						Main.projectile[p].Kill();
-					}
-				}
+				player.RemoveAllGrapplingHooks();
 
 				// The actual method that moves the player back to bed/spawn.
 				player.Spawn(PlayerSpawnContext.RecallFromItem);

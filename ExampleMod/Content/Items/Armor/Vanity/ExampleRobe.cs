@@ -18,6 +18,11 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
 		}
 
+		public override void SetStaticDefaults() {
+			// HidesHands defaults to true which we don't want.
+			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
+		}
+
 		public override void SetDefaults() {
 			Item.width = 18;
 			Item.height = 14;

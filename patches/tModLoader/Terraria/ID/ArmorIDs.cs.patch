@@ -67,13 +67,15 @@
 +				/// <summary>
 +				/// The <see cref="Front"/> equip to equip.
 +				/// </summary>
- 				public sbyte frontCape;
-+
+-				public sbyte frontCape;
++				public int frontCape;
+-				public sbyte backCape;
+ 
 +				/// <summary>
 +				/// The <see cref="Back"/> equip to equip.
 +				/// </summary>
- 				public sbyte backCape;
- 
++				public int backCape;
++
 +				/// <summary>
 +				/// If <see langword="true"/>, then this <see cref="IncludeCapeFrontAndBackInfo"/> cannot be used.
 +				/// </summary>

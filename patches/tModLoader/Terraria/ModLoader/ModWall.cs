@@ -30,21 +30,8 @@ public abstract class ModWall : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-	/*public void AddMapEntry(Color color, ModTranslation name)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.wallEntries.Keys.Contains(Type)) {
-				MapLoader.wallEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.wallEntries[Type].Add(entry);
-		}
-	}*/
-
-	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
+	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
@@ -58,18 +45,15 @@ public abstract class ModWall : ModBlockType
 	}
 
 	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color, default display name, and display name function. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This should be called in SetDefaults.
+	/// Manually registers the item to drop for this wall.<br/>
+	/// Only necessary if there is no item which places this wall, such as with unsafe walls dropping safe variants. Otherwise, the item placing this wall will be dropped automatically.<br/>
+	/// Use <see cref="ModWall.Drop(int, int, ref int)"/> to conditionally prevent or change drops.
 	/// </summary>
-	/*public void AddMapEntry(Color color, ModTranslation name, Func<string, int, int, string> nameFunc)
+	/// <param name="itemType"></param>
+	public void RegisterItemDrop(int itemType)
 	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.wallEntries.Keys.Contains(Type)) {
-				MapLoader.wallEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.wallEntries[Type].Add(entry);
-		}
-	}*/
+		WallLoader.wallTypeToItemType[Type] = itemType;
+	}
 
 	protected override sealed void Register()
 	{
@@ -90,7 +74,7 @@ public abstract class ModWall : ModBlockType
 
 	/// <summary>
 	/// Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default.
-	/// <br/> The <paramref name="type"/> passed in is the item type of the loaded item with <see cref="Item.createWall"/> matching the type of this Wall. If <see cref="ModBlockType.ItemDrop"/> is set, it will override that value.
+	/// <br/> The <paramref name="type"/> passed in is the item type of the loaded item with <see cref="Item.createWall"/> matching the type of this Wall. If <see cref="RegisterItemDrop(int)"/> was used, that item will be passed in instead.
 	/// </summary>
 	public virtual bool Drop(int i, int j, ref int type)
 	{

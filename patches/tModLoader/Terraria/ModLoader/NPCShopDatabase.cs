@@ -84,6 +84,10 @@ public static partial class NPCShopDatabase
 	{
 		foreach (var shop in AllShops) {
 			shop.FinishSetup();
+			// NPCShopDatabase.Initialize(); seems intentionally run before SetupRecipes, where IsAMaterial is populated, so we need to fix entries here.
+			foreach (var entry in shop.ActiveEntries) {
+				entry.Item.material = ItemID.Sets.IsAMaterial[entry.Item.type]; 
+			}
 		}
 
 		InitShopTestSystem();
@@ -198,7 +202,7 @@ public static partial class NPCShopDatabase
 		});
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
-			
+
 		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
@@ -1142,7 +1146,8 @@ public class TravellingMerchantShop : AbstractNPCShop
 
 	public TravellingMerchantShop(int npcType) : base(npcType) { }
 
-	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions) {
+	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
+	{
 		_entries.Add(new Entry(item, conditions.ToList()));
 		return this;
 	}
@@ -1165,7 +1170,7 @@ public class TravellingMerchantShop : AbstractNPCShop
 		foreach (var itemId in Main.travelShop) {
 			if (itemId == 0)
 				continue;
-			
+
 			items[i++] = new Item(itemId);
 		}
 	}

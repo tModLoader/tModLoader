@@ -108,7 +108,7 @@
  		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
  		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
  		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
-@@ -159,11 +_,20 @@
+@@ -159,14 +_,26 @@
  		public static bool[] DrawsWalls = Factory.CreateBoolSet(10, 54, 138, 664, 484, 388, 191, 137, 328, 162, 387, 48, 232, 127, 459, 541, 546);
  		public static ushort[] GemsparkFramingTypes = Factory.CreateUshortSet(0, 265, 265, 258, 258, 264, 264, 257, 257, 267, 267, 260, 260, 266, 266, 259, 259, 263, 263, 256, 256, 262, 262, 255, 255, 268, 268, 261, 261, 385, 385, 446, 446, 447, 447, 448, 448);
  		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
@@ -129,8 +129,31 @@
  		public static bool[] IgnoresNearbyHalfbricksWhenDrawn = Factory.CreateBoolSet(380, 476, 235, 138, 664, 137, 484, 421, 422);
  		public static bool[] SwaysInWindBasic = Factory.CreateBoolSet(3, 20, 24, 61, 71, 73, 74, 83, 84, 110, 113, 201, 227, 529, 590, 595, 615, 624, 656, 637);
  		public static int[] DrawFlipMode = Factory.CreateIntSet(0, 3, 1, 13, 1, 20, 1, 24, 1, 49, 1, 372, 1, 646, 1, 50, 1, 52, 1, 61, 1, 62, 1, 71, 1, 73, 1, 74, 1, 81, 1, 82, 1, 83, 1, 84, 1, 91, 1, 92, 1, 93, 1, 110, 1, 113, 1, 115, 1, 135, 1, 141, 1, 165, 1, 174, 1, 201, 1, 205, 1, 227, 1, 270, 1, 271, 1, 382, 1, 184, 2, 185, 3, 528, 1, 529, 1, 590, 1, 595, 1, 615, 1, 624, 1, 638, 1, 636, 1, 656, 1);
-@@ -248,6 +_,11 @@
++		/// <summary>
++		/// Indicates that this tile has an outline texture to be drawn to indicate that it is interactable. If set to true for a modded tile, <see cref="ModTile.HighlightTexture"/> will be used to autoload the highlight texture and must exist for the mod to load.
++		/// </summary>
+ 		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
+ 		public static bool[] AllTiles = Factory.CreateBoolSet(true);
+ 		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
+@@ -243,13 +_,33 @@
+ 		public static bool[] HousingWalls = Factory.CreateBoolSet(11, 389, 386);
+ 		public static bool[] BreakableWhenPlacing = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624);
+ 		public static bool[] TouchDamageDestroyTile = Factory.CreateBoolSet(32, 69, 352, 655);
++		/// <summary>
++		/// If true, the tile will apply the <see cref="BuffID.Suffocation"/> buff if the player is overlapping the tiles. Used by sand tiles.
++		/// </summary>
+ 		public static bool[] Suffocate = Factory.CreateBoolSet(53, 112, 116, 123, 224, 234);
++		/// <summary>
++		/// Applies the <see cref="BuffID.Burning"/> buff to any player touching the tile without <see cref="Player.fireWalk"/>. Used by <see cref="TileID.Meteorite"/>, <see cref="TileID.Hellstone"/>, <see cref="TileID.HellstoneBrick"/>, <see cref="TileID.CrispyHoneyBlock"/>, and <see cref="TileID.AncientHellstoneBrick"/>
++		/// </summary>
+ 		public static bool[] TouchDamageHot = Factory.CreateBoolSet(37, 58, 76, 684, 230);
++		/// <summary>
++		/// Applies the <see cref="BuffID.Bleeding"/> buff to any player touching the tile. The duration is random from 4 to 10 seconds. Used by <see cref="TileID.Spikes"/> and <see cref="TileID.WoodenSpikes"/>. Used in conjunction with <see cref="TouchDamageImmediate"/> to deal damage on contact.
++		/// </summary>
  		public static bool[] TouchDamageBleeding = Factory.CreateBoolSet(48, 232);
++		/// <summary>
++		/// Deals the provided amount of damage to any player in contact with the tile. Used by cactus, thorn, and spike tiles.
++		/// </summary>
  		public static int[] TouchDamageImmediate = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25);
  		public static bool[] Falling = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495);
 +		// Conditions taken from Main.SetupTileMerge
@@ -140,4 +163,9 @@
 +		/// </summary>
  		public static bool[] BlockMergesWithMergeAllBlock = Factory.CreateBoolSet();
  		public static bool[] OreMergesWithMud = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223);
++		/// <summary>
++		/// Indicates that the tile is an ore. Used in worldgen code for various purposes and by Fairies.
++		/// </summary>
  		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
+ 		public static bool[] IsAContainer = Factory.CreateBoolSet(21, 467, 88);
+ 		public static bool[] IsAMechanism = Factory.CreateBoolSet(137, 443, 105, 349, 141, 142, 143, 42, 34, 130, 131, 506, 546, 557, 593, 594);

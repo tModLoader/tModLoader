@@ -17,9 +17,19 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public override int Music => 0;
 
+	/// <summary>
+	/// The torch item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeTorchItemType => -1;
+
+	/// <summary>
+	/// The campfire item type that will be placed when under the effect of biome torches
+	/// </summary>
+	public virtual int BiomeCampfireItemType => -1;
+
 	internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
-	public string LocalizationCategory => "Biomes";
+	public virtual string LocalizationCategory => "Biomes";
 
 	/// <summary>
 	/// The display name for this biome in the bestiary.
@@ -33,7 +43,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	public virtual string BestiaryIcon => (GetType().Namespace + "." + Name + "_Icon").Replace('.', '/');
 
 	/// <summary>
-	/// The path to the background texture that will appear for this biome behind npcs in the bestiary. Defaults to adding "_Background" onto the usual namespace+classname derived texture path.
+	/// The path to the background texture that will appear for this biome behind NPC's in the bestiary. Defaults to adding "_Background" onto the usual namespace+classname derived texture path.
 	/// </summary>
 	public virtual string BackgroundPath => (GetType().Namespace + "." + Name + "_Background").Replace('.', '/');
 
@@ -44,7 +54,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 
 	public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
-	string IShoppingBiome.NameKey => Name;
+	string IShoppingBiome.NameKey => this.GetLocalizationKey("TownNPCDialogueName");
 
 	protected sealed override void Register()
 	{
@@ -55,8 +65,9 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	public sealed override void SetupContent()
 	{
 		SetStaticDefaults();
-		
+
 		ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
+		Language.GetOrRegister((this as IShoppingBiome).NameKey, () => "the " + Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}
 
 	/// <summary>
@@ -88,7 +99,7 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	/// <summary>
 	/// Override this hook to make things happen when the player is in the biome.
 	/// </summary>
-	public virtual void OnInBiome(Player player) {}
+	public virtual void OnInBiome(Player player) { }
 
 	/// <summary>
 	/// Override this hook to make things happen when the player leaves the biome.

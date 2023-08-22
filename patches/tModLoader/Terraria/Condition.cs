@@ -148,7 +148,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedOldOnesArmyT2 =		new("Conditions.DownedOldOnesArmyT2",		() => GameContent.Events.DD2Event.DownedInvasionT2);
 	public static readonly Condition DownedOldOnesArmyT3 =		new("Conditions.DownedOldOnesArmyT3",		() => GameContent.Events.DD2Event.DownedInvasionT3);
 
-	public static readonly Condition NotDownedKingSlime =	  	new("Conditions.NotNotDownedKingSlime",		() => !NPC.downedSlimeKing);
+	public static readonly Condition NotDownedKingSlime =	  	new("Conditions.NotDownedKingSlime",		() => !NPC.downedSlimeKing);
 	public static readonly Condition NotDownedEyeOfCthulhu =	new("Conditions.NotDownedEyeOfCthulhu",		() => !NPC.downedBoss1);
 	public static readonly Condition NotDownedEowOrBoc =	  	new("Conditions.NotDownedBoss2",		 	() => !NPC.downedBoss2);
 	public static readonly Condition NotDownedEaterOfWorlds =	new("Conditions.NotDownedEaterOfWorlds", 	() => !NPC.downedBoss2 && !WorldGen.crimson);

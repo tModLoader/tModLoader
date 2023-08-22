@@ -37,8 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 
 			// Etc
-			LocalizedText name = CreateMapEntryName();
-			AddMapEntry(new Color(200, 200, 200), name);
+			AddMapEntry(new Color(191, 142, 111), Language.GetText("ItemName.Bed"));
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {

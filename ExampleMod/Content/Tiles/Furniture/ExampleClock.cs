@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -27,7 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 
 			// Etc
-			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName());
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("ItemName.GrandfatherClock"));
 		}
 
 		public override bool RightClick(int x, int y) {

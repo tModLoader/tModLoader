@@ -1,10 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -11,15 +_,15 @@
- using ReLogic.Content.Sources;
+@@ -12,14 +_,15 @@
  using ReLogic.Graphics;
  using Terraria.GameContent;
--using Terraria.Initializers;
+ using Terraria.Initializers;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
@@ -45,16 +44,18 @@
  	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
  	{
  		LoadFilesForCulture(culture);
-@@ -122,6 +_,23 @@
+@@ -122,6 +_,26 @@
  
  		ChatInitializer.PrepareAliases();
  	}
 +	*/
 +
 +	// Added by tML, replacement for commented code above
-+	internal void ReloadLanguage()
++	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
 +	{
-+		SetAllTextValuesToKeys();
++		if (resetValuesToKeysFirst)
++			SetAllTextValuesToKeys();
++
 +		LoadFilesForCulture(_fallbackCulture);
 +		if (ActiveCulture != _fallbackCulture)
 +			LoadFilesForCulture(ActiveCulture);
@@ -63,6 +64,7 @@
 +
 +		ProcessCopyCommandsInTexts();
 +		RecalculateBoundTextValues();
++		ChatInitializer.PrepareAliases();
 +
 +		SystemLoader.OnLocalizationsLoaded();
 +	}

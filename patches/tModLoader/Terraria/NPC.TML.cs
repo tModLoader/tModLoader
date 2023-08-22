@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
@@ -12,11 +13,35 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 {
 	internal readonly IEntitySource thisEntitySourceCache;
 
-	internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
-
 	public ModNPC ModNPC { get; internal set; }
 
-	public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
+#region Globals
+	int IEntityWithGlobals<GlobalNPC>.Type => type;
+	internal GlobalNPC[] _globals;
+	public RefReadOnlyArray<GlobalNPC> EntityGlobals => _globals;
+	public EntityGlobalsEnumerator<GlobalNPC> Globals => new(this);
+
+	/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="IndexOutOfRangeException"/>
+	public T GetGlobalNPC<T>() where T : GlobalNPC
+		=> GlobalNPC.GetGlobal<T>(type, EntityGlobals);
+
+	/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
+	/// <exception cref="KeyNotFoundException"/>
+	/// <exception cref="NullReferenceException"/>
+	public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
+		=> GlobalNPC.GetGlobal(type, EntityGlobals, baseInstance);
+
+	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
+	public bool TryGetGlobalNPC<T>(out T result) where T : GlobalNPC
+		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, out result);
+
+	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
+	/// <returns> Whether or not the requested instance has been found. </returns>
+	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
+		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
+#endregion
 
 	/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
 	public NPCHappiness Happiness => NPCHappiness.Get(type);
@@ -59,29 +84,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <inheritdoc cref="HasBuff(int)" />
 	public bool HasBuff<T>() where T : ModBuff
 		=> HasBuff(ModContent.BuffType<T>());
-
-	// Get
-
-	/// <summary> Gets the instance of the specified GlobalNPC type. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="IndexOutOfRangeException"/>
-	public T GetGlobalNPC<T>() where T : GlobalNPC
-		=> GlobalType.GetGlobal<GlobalNPC, T>(globalNPCs);
-
-	/// <summary> Gets the local instance of the type of the specified GlobalNPC instance. This will throw exceptions on failure. </summary>
-	/// <exception cref="KeyNotFoundException"/>
-	/// <exception cref="NullReferenceException"/>
-	public T GetGlobalNPC<T>(T baseInstance) where T : GlobalNPC
-		=> GlobalType.GetGlobal(globalNPCs, baseInstance);
-
-	/// <summary> Gets the instance of the specified GlobalNPC type. </summary>
-	public bool TryGetGlobalNPC<T>(out T result, bool exactType = true) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal(globalNPCs, out result);
-
-	/// <summary> Safely attempts to get the local instance of the type of the specified GlobalNPC instance. </summary>
-	/// <returns> Whether or not the requested instance has been found. </returns>
-	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
-		=> GlobalType.TryGetGlobal(globalNPCs, baseInstance, out result);
 
 	/// <summary>
 	/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
@@ -194,5 +196,127 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 				break;
 		}
 		return num;
+	}
+
+	/// <summary>
+	/// Used to keep vanilla and modded gravity effects working neatly
+	/// </summary>
+	private float vanillaGravity = 0.3f;
+
+	/// <summary>
+	/// Multiply this value in order to change the NPCs active gravity, this can be done in AI as gravity values are reset slightly beforehand, and used slightly after.
+	/// </summary>
+	public MultipliableFloat GravityMultiplier = MultipliableFloat.One;
+
+	/// <summary>
+	/// The current change in velocity due to gravity applied every frame. <br/>
+	/// Multiply <see cref="GravityMultiplier"/> to modify this value
+	/// </summary>
+	public float gravity {
+		get => vanillaGravity * GravityMultiplier.Value;
+		private set {
+			GravityMultiplier = MultipliableFloat.One;
+			vanillaGravity = value;
+		}
+	}
+
+	/// <summary>
+	/// Used to keep vanilla and modded gravity effects working neatly
+	/// </summary>
+	private float vanillaMaxFallSpeed = 10f;
+
+	/// <summary>
+	/// Multiply this value in order to change the NPCs active maxFallSpeed, this can be done in AI as gravity values are reset slightly beforehand
+	/// </summary>
+	public MultipliableFloat MaxFallSpeedMultiplier = MultipliableFloat.One;
+
+	/// <summary>
+	/// The current fall speed cap in velocity applied every frame. <br/>
+	/// Multiply <see cref="MaxFallSpeedMultiplier"/> to modify this value
+	/// </summary>
+	public float maxFallSpeed {
+		get => vanillaMaxFallSpeed * MaxFallSpeedMultiplier.Value;
+		private set {
+			MaxFallSpeedMultiplier = MultipliableFloat.One;
+			vanillaMaxFallSpeed = value;
+		}
+	}
+
+	/// <summary>
+	/// The effect of different liquids on NPC gravity. Provided for reference only, modifying these will have no effect. <br/>
+	/// Corresponds with wet, lavaWet, honetWet, and shimmerWet.
+	///	</summary>
+	public static float[] GravityWetMultipliers { get; } = new float[4] { 2f / 3f, 2f / 3f, 1f / 3f, 1.5f / 3f };
+
+	/// <summary>
+	/// The effect of different liquids on NPC maxFallSpeed. Provided for reference only, modifying these will have no effect. <br/>
+	/// Corresponds with wet, lavaWet, honetWet, and shimmerWet.
+	///	</summary>
+	public static float[] MaxFallSpeedWetMultipliers { get; } = new float[4] { 0.7f, 0.7f, 0.4f, 0.55f };
+
+	/// <summary>
+	/// Set to disable vanilla type and AI based NPC gravity calculations. <br/>
+	/// Affects types 258, 425, 576, 577, 427, 426, 541, and the aiStyle 7. <br/>
+	/// Use with caution
+	/// </summary>
+	public bool GravityIgnoresType = false;
+
+	/// <summary>
+	/// Set to disable the effect of being in space on NPC gravity.
+	/// </summary>
+	public bool GravityIgnoresSpace = false;
+
+	/// <summary>
+	/// Set to disable the effect of being submerged in liquid on NPC gravity. <br/>
+	/// Note that being submerged in liquid overrides both type and space effects.
+	/// </summary>
+	public bool GravityIgnoresLiquid = false;
+
+	/// <summary>
+	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
+	/// </summary>
+	/// <param name="buffType"></param>
+	public void BecomeImmuneTo(int buffType)
+	{
+		buffImmune[buffType] = true; 
+
+		for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
+			var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
+			// This could be sped up with a reverse lookup if this proves too slow.
+			if (buffsToInherit.Contains(buffType)) {
+				buffImmune[i] = true;
+			}
+		}
+	}
+
+	/// Clears all buffs on this NPC that the NPC is currently immune (<see cref="buffImmune"/>) to. The buff types and times will then be synced to clients. Use after manually changing <see cref="buffImmune"/> or using <see cref="BecomeImmuneTo(int)"/>.<br/><br/>
+	/// <paramref name="anyBuffsCleared"/> will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br/><br/>
+	/// This should not be called on multiplayer clients.
+	/// </summary>
+	/// <param name="anyBuffsCleared"></param>
+	public void ClearImmuneToBuffs(out bool anyBuffsCleared)
+	{
+		anyBuffsCleared = false;
+
+		// Modelled after DelBuff method.
+		for (int i = maxBuffs - 1; i >= 0; i--) {
+			if (buffImmune[buffType[i]]) {
+				buffTime[i] = 0;
+				buffType[i] = 0;
+				anyBuffsCleared = true;
+			}
+
+			if (buffTime[i] == 0 || buffType[i] == 0) { 
+				for (int j = i + 1; j < maxBuffs; j++) {
+					buffTime[j - 1] = buffTime[j];
+					buffType[j - 1] = buffType[j];
+					buffTime[j] = 0;
+					buffType[j] = 0;
+				}
+			}
+		}
+
+		if (Main.netMode == 2)
+			NetMessage.SendData(54, -1, -1, null, whoAmI);
 	}
 }

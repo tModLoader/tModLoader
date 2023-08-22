@@ -127,7 +127,7 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
-@@ -73,7 +_,16 @@
+@@ -73,8 +_,18 @@
  			{ 56, 0 },
  			{ 101, 0 }
  		};
@@ -138,12 +138,15 @@
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="ImmuneToAllBuffs "/>, and <see cref="ImmuneToRegularBuffs"/><br/><br/>
 +		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
- 		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
+-		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
++		private static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
  			{ 0, null },
  			{
+ 				1,
 @@ -4756,6 +_,10 @@
  				}
  			}
@@ -161,7 +164,7 @@
  		};
 +
 +		/// <summary>
-+		/// The order of boss NPC types (<see cref="NPC.type"/>) in thhe Bestiary.
++		/// The order of boss NPC types (<see cref="NPC.type"/>) in the Bestiary.
 +		/// </summary>
  		public static List<int> BossBestiaryPriority = new List<int> {
  			664,
@@ -248,7 +251,7 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -4980,53 +_,359 @@
+@@ -4980,53 +_,361 @@
  			{ 622, 621 },
  			{ 623, 621 }
  		};
@@ -262,7 +265,7 @@
 +		/// <br/> A value of <c>3</c> or <c>7</c> will store the NPC's position and rotation in <see cref="NPC.oldPos"/> and <see cref="NPC.oldRot"/> respectively every frame.
 +		/// <br/> A value of <c>4</c> will store the NPC's position in <see cref="NPC.oldPos"/> every frame, as well as creating light (0x4D0033) at the NPC's position.
 +		/// <br/> Other values will do nothing.
-+		/// <br/> <strong>Vanilla wil not automatically draw trails for you.</strong>
++		/// <br/> <strong>Vanilla will not automatically draw trails for you.</strong>
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
 +		/// <remarks>The length of an NPC's trail is determined by <see cref="TrailCacheLength"/>.</remarks>
@@ -272,7 +275,7 @@
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is categorized as a dragonfly.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
-+		/// <remarks>Vanilla only uses this set to ensure the <see cref="ItemID.DragonflyStatue"/> doesn't spawn too many dragonflies without checkng each type individually. It's still recommended to add your NPC to this set if it applies.</remarks>
++		/// <remarks>Vanilla only uses this set to ensure the <see cref="ItemID.DragonflyStatue"/> doesn't spawn too many dragonflies without checking each type individually. It's still recommended to add your NPC to this set if it applies.</remarks>
  		public static bool[] IsDragonfly = Factory.CreateBoolSet(595, 596, 597, 598, 599, 600, 601);
 +
 +		/// <summary>
@@ -288,13 +291,13 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// Bosses and tile-phasing (<see cref="NPC.noTileCollide"/>) NPCs can't be teleproted at all, regardless of this set.
++		/// Bosses and tile-phasing (<see cref="NPC.noTileCollide"/>) NPCs can't be teleported at all, regardless of this set.
 +		/// </remarks>
  		public static bool[] TeleportationImmune = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 548, 549, 564, 565, 574, 575, 551, 578);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can target other NPCs.
-+		/// <br/> This set does <strong>not</strong> automatically handle NPC targetting. You should use <see cref="Utilities.NPCUtils.SearchForTarget(NPC, Utilities.NPCUtils.TargetSearchFlag, Utilities.NPCUtils.SearchFilter{Player}, Utilities.NPCUtils.SearchFilter{NPC})"/> or any of its overloads to write your own targetting function.
++		/// <br/> This set does <strong>not</strong> automatically handle NPC targeting. You should use <see cref="Utilities.NPCUtils.SearchForTarget(NPC, Utilities.NPCUtils.TargetSearchFlag, Utilities.NPCUtils.SearchFilter{Player}, Utilities.NPCUtils.SearchFilter{NPC})"/> or any of its overloads to write your own targeting function.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -455,11 +458,13 @@
  		public static int[] DangerDetectRange = Factory.CreateIntSet(-1, 38, 300, 17, 320, 107, 300, 19, 900, 22, 700, 124, 800, 228, 800, 178, 900, 18, 300, 229, 1000, 209, 1000, 54, 700, 108, 700, 160, 700, 20, 1200, 369, 300, 453, 300, 368, 900, 207, 60, 227, 800, 208, 400, 142, 500, 441, 50, 353, 60, 633, 100, 550, 120, 588, 120, 663, 700, 638, 250, 637, 250, 656, 250, 670, 250, 678, 250, 679, 250, 680, 250, 681, 250, 682, 250, 683, 250, 684, 250);
 +
 +		/// <summary>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/><br/><br/>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is immune to the effects of the shimmer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
-+		/// <remarks>To make an NPC ignore the player's shimmer invulnerabilty, use <see cref="CanHitPastShimmer"/> instead.</remarks>
- 		public static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
++		/// <remarks>To make an NPC ignore the player's shimmer invulnerability, use <see cref="CanHitPastShimmer"/> instead.</remarks>
+-		public static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
++		private static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
 +
 +		/// <summary>
 +		/// If not <c>-1</c> for a given NPC type (<see cref="NPC.type"/>), then that NPC will transform into the retrieved item type (<see cref="Item.type"/>) when touching shimmer.
@@ -478,6 +483,7 @@
 +		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it will turn into when submerged in shimmer.
 +		/// <br/> A value of<c>-1</c> means the given NPC won't transform.
 +		/// <br/> Defaults to <c>-1</c>.
++		/// <br/> Also applies to transforming critter items (<c><see cref="Item.makeNPC"/> &gt; 0</c>) into NPC.
 +		/// </summary>
  		public static int[] ShimmerTransformToNPC = Factory.CreateIntSet(-1, 3, 21, 132, 202, 186, 201, 187, 21, 188, 21, 189, 202, 200, 203, 590, 21, 1, 676, 302, 676, 335, 676, 336, 676, 334, 676, 333, 676, 225, 676, 141, 676, 16, 676, 147, 676, 184, 676, 537, 676, 204, 676, 81, 676, 183, 676, 138, 676, 121, 676, 591, 449, 430, 449, 436, 452, 432, 450, 433, 449, 434, 449, 435, 451, 614, 677, 74, 677, 297, 677, 298, 677, 673, 677, 672, 677, 671, 677, 675, 677, 674, 677, 362, 677, 363, 677, 364, 677, 365, 677, 608, 677, 609, 677, 602, 677, 603, 677, 611, 677, 148, 677, 149, 677, 46, 677, 303, 677, 337, 677, 299, 677, 538, 677, 55, 677, 607, 677, 615, 677, 625, 677, 626, 677, 361, 677, 687, 677, 484, 677, 604, 677, 358, 677, 355, 677, 616, 677, 617, 677, 654, 677, 653, 677, 655, 677, 585, 677, 584, 677, 583, 677, 595, 677, 596, 677, 600, 677, 597, 677, 598, 677, 599, 677, 357, 677, 377, 677, 606, 677, 359, 677, 360, 677, 367, 677, 366, 677, 300, 677, 610, 677, 612, 677, 487, 677, 486, 677, 485, 677, 669, 677, 356, 677, 661, 677, 374, 677, 442, 677, 443, 677, 444, 677, 601, 677, 445, 677, 592, 677, 446, 677, 605, 677, 447, 677, 627, 677, 539, 677, 613, 677);
 +
@@ -505,7 +511,7 @@
 +		/// </summary>
 +		/// <remarks>
 +		/// You can modify most aspects of a town NPC's attack, including the item used and projectile shot, using any of the "TownNPCAttack" or "TownAttack" hooks in <see cref="ModNPC"/> or <see cref="GlobalNPC"/>.
-+		/// <br/> You can change the color of a magic (<c>3</c>) NPC's aura using <see cref="MagicAuraColor"/>.
++		/// <br/> You can change the color of a magic (<c>2</c>) NPC's aura using <see cref="MagicAuraColor"/>.
 +		/// </remarks>
  		public static int[] AttackType = Factory.CreateIntSet(-1, 38, 0, 17, 0, 107, 0, 19, 1, 22, 1, 124, 0, 228, 1, 178, 1, 18, 0, 229, 1, 209, 1, 54, 2, 108, 2, 160, 2, 20, 2, 369, 0, 453, 0, 368, 1, 207, 3, 227, 1, 208, 0, 142, 0, 441, 3, 353, 3, 633, 0, 550, 0, 588, 0, 663, 2, 638, -1, 637, -1, 656, -1, 670, -1, 678, -1, 679, -1, 680, -1, 681, -1, 682, -1, 683, -1, 684, -1);
 +
@@ -537,7 +543,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a type of skeleton.
-+		/// <br/> Skeletons cannot huer the <see cref="SkeletonMerchant"/>.
++		/// <br/> Skeletons cannot hurt the <see cref="SkeletonMerchant"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] Skeletons = Factory.CreateBoolSet(77, 449, 450, 451, 452, 481, 201, 202, 203, 21, 324, 110, 323, 293, 291, 322, 292, 197, 167, 44, 635);
@@ -570,21 +576,21 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is considered dangerous without having <see cref="NPC.boss"/> set.
-+		/// <br/> <see cref="Main.CurrentFrameFlags.AnyActiveBossNPC"/> will be set to <see langword="true"/> if any NPC in this set is alive, and <see cref="NPC.AnyDanger(bool, bool)"/> will rturn <see langword="true"/> if any NPCs in this set are alive.
++		/// <br/> <see cref="Main.CurrentFrameFlags.AnyActiveBossNPC"/> will be set to <see langword="true"/> if any NPC in this set is alive, and <see cref="NPC.AnyDanger(bool, bool)"/> will return <see langword="true"/> if any NPCs in this set are alive.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DangerThatPreventsOtherDangers = Factory.CreateBoolSet(517, 422, 507, 493, 399);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will alays draw, even if its hitbox is off-screen.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will always draw, even if its hitbox is off-screen.
 +		/// <br/> Default to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] MustAlwaysDraw = Factory.CreateBoolSet(113, 114, 115, 116, 126, 125);
 +
 +		/// <summary>
-+		/// The number of extra textrues this town NPC has.
-+		/// <br/> Most extra textures are hatless versions used for parties, though the <see cref="BestiaryGirl"/> has an additional tranformed texture as well.
-+		/// <br/> Unused in vailla.
++		/// The number of extra textures this town NPC has.
++		/// <br/> Most extra textures are hatless versions used for parties, though the <see cref="BestiaryGirl"/> has an additional transformed texture as well.
++		/// <br/> Unused in vanilla.
 +		/// <br/> Defaults to <c>0</c>.
 +		/// </summary>
  		public static int[] ExtraTextureCount = Factory.CreateIntSet(0, 38, 1, 17, 1, 107, 0, 19, 0, 22, 0, 124, 1, 228, 0, 178, 1, 18, 1, 229, 1, 209, 1, 54, 1, 108, 1, 160, 0, 20, 0, 369, 1, 453, 1, 368, 1, 207, 1, 227, 1, 208, 0, 142, 1, 441, 1, 353, 1, 633, 1, 550, 0, 588, 1, 633, 2, 663, 1, 638, 0, 637, 0, 656, 0, 670, 0, 678, 0, 679, 0, 680, 0, 681, 0, 682, 0, 683, 0, 684, 0);
@@ -596,7 +602,7 @@
  		public static int[] NPCFramingGroup = Factory.CreateIntSet(0, 18, 1, 20, 1, 208, 1, 178, 1, 124, 1, 353, 1, 633, 1, 369, 2, 160, 3, 637, 4, 638, 5, 656, 6, 670, 7, 678, 7, 679, 7, 680, 7, 681, 7, 682, 7, 683, 7, 684, 7);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can players that are submerged in shimmer.
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can hit players that are submerged in shimmer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Bosses (<see cref="NPC.boss"/>) and invasion enemies (<see cref="NPC.GetNPCInvasionGroup(int)"/>) can always hit shimmered players.</remarks>

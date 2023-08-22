@@ -28,7 +28,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public override ModPlayer NewInstance(Player entity)
 	{
 		var inst = base.NewInstance(entity);
-		
+
 		inst.Index = Index;
 
 		return inst;
@@ -42,7 +42,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	protected override void ValidateType()
 	{
 		base.ValidateType();
-		
+
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
@@ -304,6 +304,91 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Use this hook to modify the jump duration from an extra jump.<br/>
+	/// Vanilla's extra jumps use the following values:
+	/// <para>
+	/// Basilisk mount: 0.75<br/>
+	/// Blizzard in a Bottle: 1.5<br/>
+	/// Cloud in a Bottle: 0.75<br/>
+	/// Fart in a Jar: 2<br/>
+	/// Goat mount: 2<br/>
+	/// Sandstorm in a Bottle: 3<br/>
+	/// Santank mount: 2<br/>
+	/// Tsunami in a Bottle: 1.25<br/>
+	/// Unicorn mount: 2
+	/// </para>
+	/// </summary>
+	/// <param name="jump">The jump being performed</param>
+	/// <param name="duration">A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</param>
+	public virtual void ModifyExtraJumpDurationMultiplier(ExtraJump jump, ref float duration)
+	{
+	}
+
+	/// <summary>
+	/// An extra condition for whether an extra jump can be started.  Returns <see langword="true"/> by default.
+	/// </summary>
+	/// <param name="jump">The jump that would be performed</param>
+	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
+	public virtual bool CanStartExtraJump(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Effects that should appear when the extra jump starts should happen here.<br/>
+	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
+	/// </summary>
+	/// <param name="jump">The jump being performed</param>
+	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
+	public virtual void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for an extra jump is set from <see langword="true"/> to <see langword="false"/> when the extra jump's duration has expired<br/>
+	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// </summary>
+	/// <param name="jump">The jump that was performed</param>
+	public virtual void OnExtraJumpEnded(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This occurs at the start of the grounded jump and while the player is grounded.
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual void OnExtraJumpRefreshed(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// Effects that should appear while the player is performing an extra jump should happen here.<br/>
+	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
+	/// </summary>
+	public virtual void ExtraJumpVisuals(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.ShowVisuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
+	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual bool CanShowExtraJumpVisuals(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="false"/>  in <see cref="Player.Update(int)"/> due to the jump being unavailable or when calling <see cref="Player.ConsumeAllExtraJumps"/> (vanilla calls it when a mount that blocks jumps is active)
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual void OnExtraJumpCleared(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
 	/// </summary>
 	public virtual void FrameEffects()
@@ -364,7 +449,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Called on local, server and remote clients. <br/>
 	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
 	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
-	/// The player will always take at least 1 damage. To prevent damage <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
 	/// </summary>
 	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
 	{
@@ -389,16 +474,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
+	/// This hook is called whenever the player is about to be killed after reaching 0 health.<br/><br/>
+	/// Set the <paramref name="playSound"/> parameter to false to stop the death sound from playing. Set the <paramref name="genDust"/> parameter to false to stop the dust from being created. These are useful for creating your own sound or dust to replace the normal death effects, such as how the Frost armor set spawns <see cref="DustID.IceTorch"/> instead of <see cref="DustID.Blood"/>. For mod compatibility, it is recommended to check if these values are true before setting them to true and spawning dust or playing sounds to avoid overlapping sounds and dust effects.<br/><br/>
+	/// Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
 	/// </summary>
 	/// <param name="damage"></param>
 	/// <param name="hitDirection"></param>
 	/// <param name="pvp"></param>
 	/// <param name="playSound"></param>
-	/// <param name="genGore"></param>
+	/// <param name="genDust"></param>
 	/// <param name="damageSource"></param>
 	/// <returns></returns>
-	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore,
+	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust,
 		ref PlayerDeathReason damageSource)
 	{
 		return true;
@@ -555,7 +642,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
-	/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
+	/// <param name="ammo">The ammo that the given weapon is attempting to consume.</param>
 	/// <returns></returns>
 	public virtual bool CanConsumeAmmo(Item weapon, Item ammo)
 	{
@@ -837,7 +924,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.br/>
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
@@ -845,7 +932,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player.br/>
+	/// Allows you to create special effects when a hostile projectile hits this player. <br/>
 	/// Runs on the local client. <br/>
 	/// </summary>
 	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
@@ -853,7 +940,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+	/// Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered.
 	/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
 	/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
 	/// </summary>
@@ -863,7 +950,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+	/// Allows you to change the item or enemy the player gets when successfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 	/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
@@ -884,7 +971,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior.
 	/// Not consuming will always take priority over forced consumption
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>
@@ -961,7 +1048,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
+	/// Use this hook to modify <see cref="Main.screenPosition"/> after weapon zoom and camera lerp have taken place.
 	/// <br/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
 	/// </summary>
 	public virtual void ModifyScreenPosition()

@@ -110,10 +110,10 @@ public static class InfoDisplayLoader
 		}
 	}
 
-	public static void ModifyDisplayColor(InfoDisplay info, ref Color displayColor)
+	public static void ModifyDisplayColor(InfoDisplay info, ref Color displayColor, ref Color displayShadowColor)
 	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
-			global.ModifyDisplayColor(info, ref displayColor);
+			global.ModifyDisplayColor(info, ref displayColor, ref displayShadowColor);
 		}
 	}
 }

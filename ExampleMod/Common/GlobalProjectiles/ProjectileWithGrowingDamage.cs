@@ -1,10 +1,5 @@
 ﻿using ExampleMod.Common.Configs;
 using ExampleMod.Common.GlobalItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -26,7 +21,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 		public override void OnSpawn(Projectile projectile, IEntitySource source) {
 			//Don't try to store the itemSource.Item.  Terraria can re-use an item instance with SetDefaults(),
 			//meaning the instance you save could become air or another item.  It is much safer to store the GlobalItem instance.
-			if (source is EntitySource_ItemUse itemSource) {
+			if (source is IEntitySource_WithStatsFromItem itemSource) {
 				itemSource.Item.TryGetGlobalItem(out sourceGlobalItem);
 			}
 		}

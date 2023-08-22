@@ -1,19 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
-using Terraria.ModLoader.Core;
-using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 /// </summary>
-/// <seealso cref="Terraria.DataStructures.TileEntity" />
-public abstract class ModTileEntity : TileEntity, IModType
+/// <seealso cref="TileEntity" />
+public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 {
 	public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
 		.GetTypes()
@@ -170,7 +167,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 		throw new NotImplementedException();
 	}
 
-	// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overriden.
+	// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overridden.
 	public override void NetSend(BinaryWriter writer) { }
 	public override void NetReceive(BinaryReader reader) { }
 
@@ -202,7 +199,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 
 	public virtual bool IsLoadingEnabled(Mod mod) => true;
 
-	public virtual void Unload(){}
+	public virtual void Unload() { }
 
 	/// <summary>
 	/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.

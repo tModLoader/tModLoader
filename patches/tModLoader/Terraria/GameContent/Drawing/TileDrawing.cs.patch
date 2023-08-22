@@ -121,6 +121,15 @@
  			if (drawData.tileLight.R < 200)
  				drawData.tileLight.R = 200;
  
+@@ -665,7 +_,7 @@
+ 
+ 		if (_localPlayer.biomeSight) {
+ 			Color sightColor = Color.White;
+-			if (Main.IsTileBiomeSightable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY, ref sightColor)) {
++			if (Main.IsTileBiomeSightable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY, ref sightColor)) {
+ 				if (drawData.tileLight.R < sightColor.R)
+ 					drawData.tileLight.R = sightColor.R;
+ 
 @@ -715,6 +_,7 @@
  
  		Rectangle rectangle = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
@@ -529,6 +538,15 @@
  			if (tileLight.R < 200)
  				tileLight.R = 200;
  
+@@ -6432,7 +_,7 @@
+ 			return;
+ 
+ 		Color sightColor = Color.White;
+-		if (Main.IsTileBiomeSightable(typeCache, tileFrameX, tileFrameY, ref sightColor)) {
++		if (Main.IsTileBiomeSightable(i, j, typeCache, tileFrameX, tileFrameY, ref sightColor)) {
+ 			if (tileLight.R < sightColor.R)
+ 				tileLight.R = sightColor.R;
+ 
 @@ -6453,7 +_,17 @@
  		}
  	}
@@ -568,3 +586,12 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
+@@ -6903,7 +_,7 @@
+ 			float num6 = (float)num2 * num3 * windCycle + num4;
+ 			if (_localPlayer.biomeSight) {
+ 				Color sightColor = Color.White;
+-				if (Main.IsTileBiomeSightable(type, tileFrameX, tileFrameY, ref sightColor)) {
++				if (Main.IsTileBiomeSightable(x, i, type, tileFrameX, tileFrameY, ref sightColor)) {
+ 					if (color.R < sightColor.R)
+ 						color.R = sightColor.R;
+ 

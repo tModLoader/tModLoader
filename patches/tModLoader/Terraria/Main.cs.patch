@@ -344,7 +344,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,7 +_,18 @@
+@@ -829,29 +_,67 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -361,20 +361,75 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
++	/// <summary>
++	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles.
++	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
-@@ -862,6 +_,8 @@
++	/// <summary>
++	/// How rarely tiny ambient dust appear from this tile. Larger values mean less frequently
++	/// </summary>
+ 	public static int[] tileShine = new int[TileID.Count];
++	/// <summary>
++	/// If true, the tile will be drawn to be slightly more bright. 
++	/// </summary>
+ 	public static bool[] tileShine2 = new bool[TileID.Count];
++	/// <summary>
++	/// If true, the wall is considered "safe" for enemy spawning purposes.
++	/// </summary>
+ 	public static bool[] wallHouse = new bool[WallID.Count];
+ 	public static bool[] wallDungeon = new bool[WallID.Count];
+ 	public static bool[] wallLight = new bool[WallID.Count];
+ 	public static int[] wallBlend = new int[WallID.Count];
+ 	public static bool[] tileStone = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe.
++	/// </summary>
+ 	public static bool[] tileAxe = new bool[TileID.Count];
+ 	public static bool[] tileHammer = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with water. <see cref="TileObjectData.WaterDeath"/> supersedes this if a <see cref="TileObjectData"/> is available.
++	/// </summary>
+ 	public static bool[] tileWaterDeath = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
++	/// </summary>
+ 	public static bool[] tileLavaDeath = new bool[TileID.Count];
+ 	public static bool[] tileTable = new bool[TileID.Count];
+ 	public static bool[] tileBlockLight = new bool[TileID.Count];
+ 	public static bool[] tileNoSunLight = new bool[TileID.Count];
+ 	public static bool[] tileDungeon = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
++	/// </summary>
+ 	public static bool[] tileSpelunker = new bool[TileID.Count];
+ 	public static bool[] tileSolidTop = new bool[TileID.Count];
+ 	public static bool[] tileSolid = new bool[TileID.Count];
+ 	public static bool[] tileBouncy = new bool[TileID.Count];
++	/// <summary>
++	/// The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The <see href="https://terraria.wiki.gg/wiki/Metal_Detector">Metal Detector wiki page</see> lists existing values to use as reference.
++	/// </summary>
+ 	public static short[] tileOreFinderPriority = new short[TileID.Count];
+ 	public static byte[] tileLargeFrames = new byte[TileID.Count];
+ 	public static byte[] wallLargeFrames = new byte[WallID.Count];
+@@ -861,7 +_,12 @@
+ 	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
++	/// <summary>
++	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
-+	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that shoud preserve frame data should set this to true. </summary>
++	/// <br/> All non-1x1 tiles should set this to true. All 1x1 tiles that have a TileObjectData or that should preserve frame data should set this to true. </summary>
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -942,6 +_,13 @@
+@@ -941,7 +_,15 @@
+ 	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
++	/// <summary>If true, indicates that a tile has a flame texture that will draw over the tile. Modded tiles should not use this. <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> can be used to manually draw a flame texture.</summary>
  	public static bool[] tileFlame = new bool[TileID.Count];
 +
 +	/// <summary>
@@ -397,6 +452,28 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -972,6 +_,10 @@
+ 	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
+ 	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
+ 	public static List<int> itemAnimationsRegistered = new List<int>();
++	/// <summary>
++	/// The position of the top left corner of the screen in world coordinates. Modify in <see cref="ModSystem.ModifyScreenPosition"/> or <see cref="ModPlayer.ModifyScreenPosition"/>. Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.<br/><br/>
++	/// When manually drawing, subtracting Main.screenPosition from the world position of the thing being drawn will result in the correct screen coordinates for use in <see cref="SpriteBatch"/>.Draw methods. When drawing tiles or walls, an additional offset calculated as <c>Vector2 zero = Main.drawToScreen? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange);</c> needs to be added to the coordinates.
++	/// </summary>
+ 	public static Vector2 screenPosition;
+ 	public static Vector2 screenLastPosition;
+ 	public static int screenWidth = 1152;
+@@ -1001,6 +_,10 @@
+ 		0.75f,
+ 		0.75f
+ 	};
++	/// <summary>
++	/// A value that ossilates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create <see cref="Color"/>s by passing in this value as either all 4 parameters or just the alpha parameter.<br/><br/>
++	/// <see cref="Main.MouseTextColorReal"/> can be used to access the typical pulsing white <see cref="Color"/> value.
++	/// </summary>
+ 	public static byte mouseTextColor;
+ 	public static int mouseTextColorChange = 1;
+ 	public static bool mouseLeftRelease;
 @@ -1026,6 +_,11 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -430,6 +507,26 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
+@@ -1860,11 +_,19 @@
+ 	public static float exitScale = 0.8f;
+ 	public static bool mouseReforge;
+ 	public static float reforgeScale = 0.8f;
++	/// <summary>
++	/// Used internally for network syncing. Use <see cref="Main.LocalPlayer"/> to access the player for the local user.
++	/// </summary>
+ 	public static Player clientPlayer = new Player();
+ 	public static string getIP = defaultIP;
+ 	public static string getPort = Convert.ToString(Netplay.ListenPort);
+ 	public static bool menuMultiplayer;
+ 	public static bool menuServer;
++	/// <summary>
++	/// Denotes the current network mode: <b>0</b> for single player client, <b>1</b> for multiplayer client, and <b>2</b> for server.<br/>
++	/// Using <see cref="ID.NetmodeID"/> entries instead of 0, 1, and 2 will greatly enhance code readability.<br/>
++	/// Modders must properly use netMode to selectively run code. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// </summary>
+ 	public static int netMode;
+ 	private static int _targetNetMode;
+ 	private static bool _hasPendingNetmodeChange;
 @@ -1970,7 +_,7 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;
@@ -546,7 +643,7 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
-@@ -2311,15 +_,22 @@
+@@ -2311,15 +_,23 @@
  		}
  	}
  
@@ -559,7 +656,8 @@
  	public static float WindForVisuals => windSpeedCurrent;
  
 +	/// <summary>
-+	/// Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.
++	/// Retrieves the <see cref="Player"/> object for the local user. Shorthand for <c><see cref="player"/>[<see cref="myPlayer"/>]</c>.<br/>
++	/// Many gameplay elements such as recipes, UI, TownNPC chat, and Biome logic are only executed locally, <see cref="LocalPlayer"/> is suitable for code relating to those situations. If the hook has a <see cref="Player"/> parameter, it is likely not suitable to use <see cref="LocalPlayer"/> in it.
 +	/// </summary>
  	public static Player LocalPlayer => player[myPlayer];
  
@@ -745,8 +843,8 @@
 -		if (currentValue != 279)
 +
 +		DateTime now = DateTime.UtcNow;
-+		// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this major.minor, then show the notification.
-+		if (BuildInfo.IsStable && ModCompile.DeveloperMode && now.Day >= 21 && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != new System.Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
++		// If you are on preview, and the tmodloader YYYY.MM version has changed, then show the notification.
++		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
 +		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
@@ -937,7 +1035,7 @@
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
 +				Console.WriteLine("m\t\tMods Menu");
-+				Console.WriteLine("b\t\tMod Browser");
++				//Console.WriteLine("b\t\tMod Browser"); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
@@ -995,7 +1093,7 @@
  					while (flag2) {
  						Console.WriteLine("");
  						Console.Write(Language.GetTextValue("CLI.EnterSeed"));
-@@ -4431,6 +_,19 @@
+@@ -4431,6 +_,22 @@
  
  					continue;
  				}
@@ -1008,10 +1106,13 @@
 +
 +					continue;
 +				}
++				// Not functional in the 1.4 Steam Workshop Environment
++				/*
 +				else if (text2 == "b" || text2 == "b") {
 +					Interface.ServerModBrowserMenu();
 +					continue;
 +				}
++				*/
  
  				try {
  					int num3 = Convert.ToInt32(text2);
@@ -1290,6 +1391,14 @@
  		musicFade[50] = 1f;
  		if (dedServ)
  			netMode = 2;
+@@ -5095,6 +_,7 @@
+ 			if (!dedServ)
+ 				Lighting.Clear();
+ 		};
++		WorldGen.AddGenPasses();
+ 
+ 		DontStarveSeed.Initialize();
+ 		ResourceSetsManager = new PlayerResourceSetsManager();
 @@ -5108,11 +_,20 @@
  		BindSettingsTo(Configuration);
  		if (dedServ) {
@@ -1330,6 +1439,31 @@
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
  		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
+@@ -7706,13 +_,24 @@
+ 		persistentBuff[77] = true;
+ 		persistentBuff[78] = true;
+ 		persistentBuff[79] = true;
++
++		Initialize_BuffDataFromMountData();
++		Initialize_TileAndNPCData1_Part2();
++	}
++
++	// Split so it can be called by TML separately
++	internal static void Initialize_BuffDataFromMountData()
++	{
+ 		for (int l = 0; l < BuffID.Sets.BasicMountData.Length; l++) {
+ 			if (BuffID.Sets.BasicMountData[l] != null) {
+ 				buffNoTimeDisplay[l] = true;
+ 				buffNoSave[l] = true;
+ 			}
+ 		}
++	}
+ 
++	private static void Initialize_TileAndNPCData1_Part2()
++	{
+ 		vanityPet[40] = true;
+ 		vanityPet[41] = true;
+ 		vanityPet[42] = true;
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -1450,8 +1584,12 @@
  					switch (num2) {
  						case 1:
  							flag = true;
-@@ -9942,6 +_,8 @@
- 					break;
+@@ -9939,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1464,7 +1602,7 @@
  			return;
  		}
 +
-+		//TODO: Re-implment game menu/menuloader audio in Other World soundtrack???
++		//TODO: Re-implement game menu/menuloader audio in Other World soundtrack???
 +        /*if (gameMenu) {
 +			if (netMode != 2) {
 +				if (WorldGen.drunkWorldGen) {
@@ -1519,15 +1657,15 @@
  		else if (flag15) {
  			newMusic = 80;
  		}
-@@ -9995,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 81;
+@@ -10001,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 80;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 80;
+ 		else if (flag9) {
+ 			newMusic = 82;
  		}
 @@ -10009,6 +_,9 @@
  		}
@@ -1582,6 +1720,75 @@
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  			int num2 = 5000;
  			for (int j = 0; j < 200; j++) {
+@@ -10219,12 +_,15 @@
+ 					case 131:
+ 						num3 = 1;
+ 						break;
++					/*
+ 					case 26:
+ 					case 27:
+ 					case 28:
+ 					case 29:
+ 					case 111:
+ 					case 471:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 11;
+ 						break;
+ 					case 113:
+@@ -10236,18 +_,24 @@
+ 					case 134:
+ 					case 135:
+ 					case 136:
++					/*
+ 					case 143:
+ 					case 144:
+ 					case 145:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 					case 266:
+ 						num3 = 3;
+ 						break;
++					/*
+ 					case 212:
+ 					case 213:
+ 					case 214:
+ 					case 215:
+ 					case 216:
+ 					case 491:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 8;
+ 						break;
+ 					case 245:
+@@ -10261,6 +_,7 @@
+ 					case 264:
+ 						num3 = 6;
+ 						break;
++					/*
+ 					case 381:
+ 					case 382:
+ 					case 383:
+@@ -10272,6 +_,9 @@
+ 					case 391:
+ 					case 395:
+ 					case 520:
++					*/
++					// No 387 tesla turret, handled via NoInvasionMusic below 
++					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 9;
+ 						break;
+ 					case 398:
+@@ -10309,6 +_,9 @@
+ 				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[j].type])
+ 					num3 = 12;
+ 
++				if (NPCID.Sets.NoInvasionMusic[npc[j].type] && NPC.GetNPCInvasionGroup(npc[j].type) != 0)
++					num3 = 0;
++
+ 				if (num3 == 0 && npc[j].boss)
+ 					num3 = 1;
+ 
 @@ -10320,6 +_,12 @@
  
  				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
@@ -1595,8 +1802,12 @@
  					switch (num3) {
  						case 1:
  							flag = true;
-@@ -10377,6 +_,8 @@
- 					break;
+@@ -10374,9 +_,11 @@
+ 							break;
+ 					}
+ 
+-					break;
++					// break; Allow priority to take effect despite spawn order.
  				}
  			}
 +
@@ -1654,15 +1865,15 @@
  		else if (flag15) {
  			newMusic = 57;
  		}
-@@ -10466,6 +_,9 @@
- 		else if (flag6) {
- 			newMusic = 25;
+@@ -10472,6 +_,9 @@
+ 		else if (flag2) {
+ 			newMusic = 90;
  		}
 +		else if (modPriority >= SceneEffectPriority.Event) {
 +			newMusic = modMusic;
 +		}
- 		else if (flag14) {
- 			newMusic = 56;
+ 		else if (flag9) {
+ 			newMusic = 35;
  		}
 @@ -10481,6 +_,9 @@
  		else if (flag13) {
@@ -1694,16 +1905,16 @@
  		else if (player[myPlayer].ZoneMeteor) {
  			newMusic = 2;
  		}
-@@ -10653,6 +_,9 @@
- 			else
- 				newMusic = 52;
+@@ -10590,6 +_,9 @@
+ 				newMusic = 14;
+ 			}
  		}
 +		else if (modPriority >= SceneEffectPriority.BiomeLow) {
 +			newMusic = modMusic;
 +		}
- 		else if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
- 			if (bloodMoon) {
- 				newMusic = 2;
+ 		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
+ 			if (player[myPlayer].ZoneHallow) {
+ 				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
@@ -2029,12 +2240,7 @@
  		NPC.RevengeManager.Update();
  		if (netMode != 1) {
  			if (remixWorld)
-@@ -14264,9 +_,15 @@
- 			else {
- 				npc[l].UpdateNPC(l);
- 			}
-+
-+			IEntitySource.ClearFallbacks();
+@@ -14267,6 +_,10 @@
  		}
  
  		CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
@@ -2239,11 +2445,11 @@
  			array3[i] = false;
  		}
  
-+		// This array will be filled with internal names assigned to vanilla toolips.
++		// This array will be filled with internal names assigned to vanilla tooltips.
 +		string[] tooltipNames = new string[num2];
 +
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3);
-+		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames);
++		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, array, array2, array3, tooltipNames, out int prefixlineIndex);
  		float num3 = (float)(int)mouseTextColor / 255f;
  		float num4 = num3;
  		int a = mouseTextColor;
@@ -2276,7 +2482,7 @@
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor);
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
 +		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
 +
  		int num12 = 0;
@@ -2356,7 +2562,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,91 @@
+@@ -16311,47 +_,92 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2409,8 +2615,9 @@
  	}
  
 -	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine)
-+	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames)
++	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames, out int prefixlineIndex)
  	{
++		prefixlineIndex = -1;
  		toolTipLine[0] = item.HoverName;
 +		toolTipNames[0] = "ItemName";
  		if (item.favorited) {
@@ -2498,7 +2705,7 @@
 +					// does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
 +					// special scaling rules. they're TML-specific, and can be messed with at the will of the modder.
 +					// 
-+					// As for why they're differently named: preparatiom for when that tooltip rework comes out.
++					// As for why they're differently named: preparation for when that tooltip rework comes out.
 +					// - Thomas
 +					if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
 +						if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
@@ -2748,7 +2955,7 @@
  					numLines++;
  				}
  
-@@ -16739,137 +_,163 @@
+@@ -16739,137 +_,165 @@
  						badPreFixLine[numLines] = true;
  
  					preFixLine[numLines] = true;
@@ -2888,6 +3095,8 @@
 +					toolTipNames[numLines] = "PrefixAccMeleeSpeed";
  					numLines++;
  				}
++
++				prefixlineIndex = numLines;
  			}
  
  			if (item.wornArmor && player[myPlayer].setBonus != "") {
@@ -3068,6 +3277,24 @@
  		if (tileSpelunker[typeCache])
  			return true;
  
+@@ -17293,8 +_,16 @@
+ 		return false;
+ 	}
+ 
++	// TML: Added x/y to IsTileBiomeSightable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, Tile t, ref Microsoft.Xna.Framework.Color sightColor) =>
++		IsTileBiomeSightable(tileX, tileY, t.type, t.frameX, t.frameY, ref sightColor);
++
+-	public static bool IsTileBiomeSightable(ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
+ 	{
++		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type, ref sightColor);
++		if (modded.HasValue)
++			return modded.Value;
++
+ 		if (TileID.Sets.CorruptBiomeSight[type] || (remixWorld && type == 474)) {
+ 			sightColor = new Microsoft.Xna.Framework.Color(200, 100, 240);
+ 			return true;
 @@ -17325,19 +_,25 @@
  				continue;
  
@@ -3522,14 +3749,19 @@
  				if (flag)
  					rain.Update();
  			}
-@@ -30999,6 +_,13 @@
+@@ -30999,6 +_,18 @@
  				if (dust.type == 213)
  					scale = 1f;
  
 +				ModDust modDust = DustLoader.GetDust(dust.type);
 +
 +				if (modDust != null) {
-+					modDust.Draw(dust, newColor, scale);
++					if(modDust.PreDraw(dust))
++						modDust.Draw(dust, newColor, scale);
++
++					if (newColor == Color.Black)
++						dust.active = false;
++
 +					continue;
 +				}
 +
@@ -3963,6 +4195,19 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
+@@ -32869,8 +_,12 @@
+ 			}
+ 		}
+ 
++		/*
+ 		GetBuilderAccsCountToShow(LocalPlayer, out var _, out var _, out var totalDrawnIcons);
+ 		bool pushSideToolsUp = totalDrawnIcons >= 10;
++		*/
++		int activeToggles = BuilderToggleLoader.ActiveBuilderToggles();
++		bool pushSideToolsUp = activeToggles / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles % 12 >= 10;
+ 		if (!PlayerInput.UsingGamepad)
+ 			DrawHotbarLockIcon(num, num2, pushSideToolsUp);
+ 
 @@ -33145,17 +_,25 @@
  					if (num34 == 147)
  						bannerMouseOver = true;
@@ -3995,7 +4240,7 @@
  			DrawLoadoutButtons(num20, flag5, flag6);
  			int num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num40 = 0; num40 < 10; num40++) {
 +			*/
@@ -4025,7 +4270,7 @@
  
  			num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num46 = 10; num46 < 20; num46++) {
 +			*/
@@ -4038,7 +4283,7 @@
  
  			num39 = -1;
 +
-+			// Vanlla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
 +			/*
  			for (int num50 = 0; num50 < 10; num50++) {
 +			*/
@@ -4095,7 +4340,7 @@
  					string text2 = "";
  					int num59 = 0;
  					int num60 = 0;
-@@ -33431,11 +_,20 @@
+@@ -33431,11 +_,21 @@
  
  						mouseReforge = true;
  						player[myPlayer].mouseInterface = true;
@@ -4103,8 +4348,9 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && player[myPlayer].BuyItem(num58)) {
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanBuyItem(num58) && ItemLoader.PreReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num58) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num58);
++							ItemLoader.PreReforge(reforgeItem); // After BuyItem just in case
 +
  							reforgeItem.ResetPrefix();
  							reforgeItem.Prefix(-2);
@@ -4224,7 +4470,20 @@
  
  		new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  		if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -34533,17 +_,39 @@
+@@ -34461,6 +_,8 @@
+ 			spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
+ 	}
+ 
++	// These 2 methods are no longer necessary because they had hardcoded values and did nearly the same thing. Builder Toggles are now much more flexible and dynamic
++	/*
+ 	private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset)
+ 	{
+ 		if (!playerInventory)
+@@ -34530,20 +_,43 @@
+ 
+ 		UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 	}
++	*/
  
  	public static void CraftItem(Recipe r)
  	{
@@ -4428,6 +4687,20 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
+@@ -35410,7 +_,13 @@
+ 			return;
+ 		}
+ 
++		if (hairstylesUpdatedForThisInteraction)
++			goto SkipUpdateUnlocks;
++
++		hairstylesUpdatedForThisInteraction = true;
+ 		Hairstyles.UpdateUnlocks();
++		SkipUpdateUnlocks:;
++
+ 		int count = Hairstyles.AvailableHairstyles.Count;
+ 		int num = screenHeight / 2 + 60;
+ 		int num2 = screenWidth / 2 - TextureAssets.HairStyleBack.Width() / 2;
 @@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
@@ -4470,6 +4743,15 @@
  				num -= 140;
  				num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
  				_settingsButtonIsPushedToSide = true;
+@@ -37010,6 +_,8 @@
+ 	{
+ 		if (hairWindow)
+ 			DrawHairWindow();
++		else
++			hairstylesUpdatedForThisInteraction = false;
+ 	}
+ 
+ 	private static void DrawInterface_20_MultiplayerPlayerNames()
 @@ -37182,6 +_,11 @@
  
  	private static void DrawInterface_17_DiagnoseNet()
@@ -4659,19 +4941,19 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,47 @@
+@@ -38346,27 +_,48 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
 +			else {
 +				num = info.Type;
-+				text2 = info.DisplayValue(ref infoTextColor);
++				text2 = info.DisplayValue(ref infoTextColor, ref infoTextShadowColor);
 +				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
-+			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor);
++			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor, ref infoTextShadowColor);
  
  			if (!(text2 != ""))
  				continue;
@@ -4698,6 +4980,7 @@
 +				Vector2 vector2 = new Vector2(X, Y + 74 + num26 * num3 + 52);
 +				int num27 = info.Type;
 +				Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
++				Texture2D iconHover = ModContent.Request<Texture2D>(info.HoverTexture).Value;
  
  				Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.White;
  				bool flag14 = false;
@@ -4708,19 +4991,15 @@
  						flag14 = true;
  						player[myPlayer].mouseInterface = true;
  						if (mouseLeft && mouseLeftRelease) {
-@@ -38384,14 +_,27 @@
+@@ -38384,23 +_,32 @@
  					if (player[myPlayer].hideInfo[num27])
  						color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  				}
 -				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {
+-					num2 = i;
 +				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !mouseText) {
-+					/*
- 					num2 = i;
-+					*/
-+					num2 = num3;
-+					if (i >= 7)
-+						num2 += 1;
-+
++					//TML: 'i' replaced with 'drawnCount'.
++					num2 = drawnCount;
  					text = text3;
  					mouseText = true;
  				}
@@ -4735,9 +5014,10 @@
 +				spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 +
  				if (flag14)
- 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(iconHover, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  
-@@ -38399,8 +_,9 @@
+ 				X += 20;
  			}
  
  			UILinkPointNavigator.Shortcuts.INFOACCCOUNT = num3;
@@ -4748,7 +5028,16 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38436,8 +_,12 @@
+@@ -38429,15 +_,20 @@
+ 				if (n == 4)
+ 					color3 = infoTextColor;
+ 
++				//TML: 'i' replaced with 'drawnCount'.
+-				if (i > num2 && i < num2 + 2)
++				if (drawnCount > num2 && drawnCount < num2 + 2)
+ 					color3 = new Microsoft.Xna.Framework.Color((int)color3.R / 3, (int)color3.G / 3, (int)color3.B / 3, (int)color3.A / 3);
+ 
+ 				int num30 = 22;
  				if (screenHeight < 650)
  					num30 = 20;
  
@@ -4775,6 +5064,23 @@
  			if (mapStyle == 1 && mapEnabled)
  				Y += 261;
  		}
+@@ -38513,6 +_,7 @@
+ 		if (false || Main.player[myPlayer].sign >= 0)
+ 			return;
+ 
++		/*
+ 		int num = 0;
+ 		Player player = Main.player[myPlayer];
+ 		int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
+@@ -38700,6 +_,8 @@
+ 		}
+ 
+ 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
++		*/
++		DrawBuilderAccToggles_Inner(start);
+ 	}
+ 
+ 	private static void GetBuilderAccsCountToShow(Player plr, out int blockReplaceIcons, out int torchGodIcons, out int totalDrawnIcons)
 @@ -39089,6 +_,11 @@
  	private static void TryDisposingEverything()
  	{
@@ -5211,7 +5517,7 @@
 +
 +			// Developer mode button.
 +			if (menuMode == 0 /*&& !ModCompile.DeveloperMode*/) {
-+				string developerModeText = Language.GetTextValue("tModLoader.13InfoButton");
++				string developerModeText = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 +
 +				// measure and draw text from bottom right
 +				var textSize = FontAssets.MouseText.Value.MeasureString(developerModeText);
@@ -5228,7 +5534,7 @@
 +
 +					if (mouseover && mouseLeftRelease && mouseLeft) {
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players");
++						Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches");
 +					}
 +				}
 +
@@ -5320,16 +5626,33 @@
  		if (num9 != undergroundBackground) {
  			oldUndergroundBackground = undergroundBackground;
  			undergroundBackground = num9;
+@@ -43390,6 +_,7 @@
+ 		int[] array = new int[7];
+ 		int[] array2 = new int[7];
+ 		for (int i = 0; i < 2; i++) {
++			// patch context, num10 below
+ 			int num10 = undergroundBackground;
+ 			if (i == 1)
+ 				num10 = oldUndergroundBackground;
 @@ -43580,6 +_,9 @@
  				array3[5] = 127;
  
  			array3[6] = 185 + hellBackStyle;
 +
-+			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num9, array3);
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num10, array3);
 +
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
  			LoadBackground(array3[2]);
+@@ -43698,7 +_,7 @@
+ 									Lighting.GetCornerColors(num24, num25, out var vertices);
+ 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+ 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+-									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 								}
+ 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+ 									Lighting.GetColor9Slice(num24, num25, ref slices);
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
@@ -5609,7 +5932,7 @@
  				}
  
 -				if (renderCount == 3) {
-+				//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++				//TML: Remapped from 3 to 2 to flatten per frame load for color lighting ( ~5ms peak).
 +				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
  					RenderTiles2();
  					sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
@@ -5617,7 +5940,7 @@
  				}
  
 -				if (renderCount == 3) {
-+				//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++				//TML: Remapped from 3 to 0 to flatten per frame load for color lighting ( ~15ms peak).
 +				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
  					RenderWalls();
  					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
@@ -5707,6 +6030,19 @@
  		if (!PlayerInput.Triggers.Current.MouseRight && !PlayerInput.Triggers.Current.MouseLeft && !preventStackSplitReset)
  			stackSplit = 0;
  
+@@ -51628,8 +_,12 @@
+ 		}
+ 
+ 		Vector2 value = screenPosition;
++		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
++		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
++		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
+ 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
+ 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
++		*/
+ 		Vector2 vector3 = Vector2.Zero;
+ 		float num2 = 0f;
+ 		float num3 = 0f;
 @@ -51684,6 +_,8 @@
  						else if (player.scope)
  							num5 = 0.5f;
@@ -5794,15 +6130,15 @@
  			}
  		}
  
-@@ -51852,6 +_,8 @@
+@@ -51850,6 +_,8 @@
+ 		}
+ 
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
- 		screenPosition.X = (int)screenPosition.X;
- 		screenPosition.Y = (int)screenPosition.Y;
 +		PlayerLoader.ModifyScreenPosition(LocalPlayer);
 +		SystemLoader.ModifyScreenPosition();
+ 		screenPosition.X = (int)screenPosition.X;
+ 		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
- 	}
- 
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
@@ -5998,7 +6334,7 @@
  
 +	/// <summary>
 +	/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).</br>
 +	/// </summary>
  	public static void StopRain()
  	{
@@ -6009,7 +6345,7 @@
  
 +	/// <summary>
 +	/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside as well (Journey Mode rain slider does this).</br>
 +	/// </summary>
  	public static void StartRain()
  	{

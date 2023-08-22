@@ -29,14 +29,27 @@ namespace ExampleMod.Content.Tiles
 			// MineResist = 4f;
 			// MinPick = 200;
 		}
+
+		// Example of how to enable the Biome Sight buff to highlight this tile. Biome Sight is technically intended to show "infected" tiles, so this example is purely for demonstration purposes.
+		public override bool IsTileBiomeSightable(int i, int j, ref Color sightColor) {
+			sightColor = Color.Blue;
+			return true;
+		}
 	}
 
 	public class ExampleOreSystem : ModSystem
 	{
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			// Because world generation is like layering several images ontop of each other, we need to do some steps between the original world generation steps.
+		public static LocalizedText ExampleOrePassMessage { get; private set; }
 
-			// The first step is an Ore. Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
+		public override void SetStaticDefaults() {
+			ExampleOrePassMessage = Language.GetOrRegister(Mod.GetLocalizationKey($"WorldGen.{nameof(ExampleOrePassMessage)}"));
+		}
+
+		// World generation is explained more in https://github.com/tModLoader/tModLoader/wiki/World-Generation
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+			// Because world generation is like layering several images on top of each other, we need to do some steps between the original world generation steps.
+
+			// Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
 			// First, we find out which step "Shinies" is.
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
 
@@ -56,7 +69,7 @@ namespace ExampleMod.Content.Tiles
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 			// progress.Message is the message shown to the user while the following code is running.
 			// Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
-			progress.Message = "Example Mod Ores";
+			progress.Message = ExampleOreSystem.ExampleOrePassMessage.Value;
 
 			// Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.
 			// "6E-05" is "scientific notation". It simply means 0.00006 but in some ways is easier to read.

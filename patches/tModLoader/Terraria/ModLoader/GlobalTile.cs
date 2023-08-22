@@ -44,7 +44,7 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
-	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. Use <see cref="Drop"/> to spawn additional items.
+	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's item(s). Returns true by default. Use <see cref="Drop"/> to spawn additional items.
 	/// </summary>
 	public virtual bool CanDrop(int i, int j, int type)
 	{
@@ -53,8 +53,8 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to spawn additional items when the tile at the given coordinates drops.
-	/// <br/> This hook is called once for multitiles. Trees or Cactus call this method for every individual tile.
-	/// <br/> For multitiles, the coordinates correspond to the tile that triggered this multitile to drop, so if checking <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>, be aware that the coordinates won't necessarily be the top left corner or origin of the multitile. Also be aware that some parts of the multitile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in.
+	/// <br/> This hook is called once for multi-tiles. Trees or Cactus call this method for every individual tile.
+	/// <br/> For multi-tiles, the coordinates correspond to the tile that triggered this multi-tile to drop, so if checking <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>, be aware that the coordinates won't necessarily be the top left corner or origin of the multi-tile. Also be aware that some parts of the multi-tile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in.
 	/// </summary>
 	public virtual void Drop(int i, int j, int type)
 	{
@@ -81,7 +81,7 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type">The tile type</param>
 	/// <param name="fail">If true, the tile won't be mined</param>
 	/// <param name="effectOnly">If true, only the dust visuals will happen</param>
-	/// <param name="noItem">If true, the corrsponding item won't drop</param>
+	/// <param name="noItem">If true, the corresponding item won't drop</param>
 	public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
 	{
 	}
@@ -107,6 +107,20 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type">The tile type</param>
 	/// <param name="player">Main.LocalPlayer</param>
 	public virtual bool? IsTileDangerous(int i, int j, int type, Player player)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default. 
+	/// <br/>This is only called on the local client.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The tile type</param>
+	/// <param name="sightColor">The color this tile should glow with, which defaults to <see cref="Color.White"/>.</param>
+	public virtual bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
 	{
 		return null;
 	}
@@ -301,6 +315,7 @@ public abstract class GlobalTile : GlobalBlockType
 		return true;
 	}
 
+	/// <summary>
 	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
 	/// </summary>
 	public virtual void PostSetupTileMerge()

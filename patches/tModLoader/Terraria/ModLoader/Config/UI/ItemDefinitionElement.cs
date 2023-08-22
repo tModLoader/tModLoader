@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Default;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -79,7 +80,7 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 			spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
 			if (!Item.IsAir || Unloaded) {
-				int type = Unloaded ? ItemID.Count : Item.type;
+				int type = Unloaded ? ModContent.ItemType<UnloadedItem>() : Item.type;
 				Main.instance.LoadItem(Item.type);
 				Texture2D itemTexture = TextureAssets.Item[type].Value;
 				Rectangle rectangle2;

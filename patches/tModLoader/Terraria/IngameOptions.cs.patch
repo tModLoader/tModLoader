@@ -54,25 +54,6 @@
  		num10++;
  		if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
-@@ -261,6 +_,9 @@
- 		if (flag5)
- 			num10++;
- 
-+		if (SocialAPI.Mode == SocialMode.Steam)
-+			goto SkipAchievementsButton;
-+
- 		if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector4, vector5, leftScale)) {
- 			leftHover = num10;
- 			if (flag4) {
-@@ -270,6 +_,8 @@
- 		}
- 
- 		num10++;
-+		SkipAchievementsButton:
-+
- 		if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector4, vector5, leftScale)) {
- 			leftHover = num10;
- 			if (flag4)
 @@ -280,6 +_,9 @@
  		if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;

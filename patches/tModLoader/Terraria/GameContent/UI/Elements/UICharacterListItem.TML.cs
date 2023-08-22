@@ -66,23 +66,30 @@ partial class UICharacterListItem
 				System.Text.StringBuilder fullSB = new System.Text.StringBuilder(Language.GetTextValue("tModLoader.ModsDifferentSinceLastPlay"));
 				System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
 
+				string Separator()
+					=> shortSB.Length != 0 ? "; " : null;
+
 				if (checkModPack) {
 					string pack = data.Player.modPack;
 					if (string.IsNullOrEmpty(pack))
 						pack = "None";
 
-					shortSB.Append(Language.GetTextValue("tModLoader.ModPackMismatch", pack));
+					shortSB.Append(Separator() + Language.GetTextValue("tModLoader.ModPackMismatch", pack));
 					fullSB.Append("\n" + Language.GetTextValue("tModLoader.ModPackMismatch", pack));
 				}
 
 				if (missingMods.Count > 0) {
-					shortSB.Append(missingMods.Count > 1 ? Language.GetTextValue("tModLoader.MissingXMods", missingMods.Count) : Language.GetTextValue("tModLoader.Missing1Mod"));
+					shortSB.Append(Separator() + (missingMods.Count > 1 ? Language.GetTextValue("tModLoader.MissingXMods", missingMods.Count) : Language.GetTextValue("tModLoader.Missing1Mod")));
 					fullSB.Append("\n" + Language.GetTextValue("tModLoader.MissingModsListing", string.Join("\n", missingMods.Select(x => "- " + x))));
 				}
 
 				if (newMods.Count > 0) {
-					shortSB.Append(" " + (newMods.Count > 1 ? Language.GetTextValue("tModLoader.NewXMods", newMods.Count) : Language.GetTextValue("tModLoader.New1Mod")));
+					shortSB.Append(Separator() + (newMods.Count > 1 ? Language.GetTextValue("tModLoader.NewXMods", newMods.Count) : Language.GetTextValue("tModLoader.New1Mod")));
 					fullSB.Append("\n" + Language.GetTextValue("tModLoader.NewModsListing", string.Join("\n", newMods.Select(x => "- " + x))));
+				}
+
+				if (shortSB.Length != 0) {
+					shortSB.Append('.');
 				}
 
 				string warning = shortSB.ToString();

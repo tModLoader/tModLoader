@@ -1,5 +1,4 @@
 using Terraria.DataStructures;
-using Terraria.ID;
 
 #nullable enable
 
@@ -24,27 +23,13 @@ partial class Entity
 	public IEntitySource GetSource_GiftOrReward(string? context = null)
 		=> new EntitySource_Gift(this, context);
 
-	// Item Use / Equipment Effects
-
-	public IEntitySource GetSource_Accessory(Item item, string? context = null)
-		=> new EntitySource_ItemUse(this, item, context);
-
-	public IEntitySource GetSource_OpenItem(int itemType, string? context = null)
-		=> new EntitySource_ItemOpen(this, itemType, context);
-	
-	public IEntitySource GetSource_ItemUse(Item item, string? context = null)
-		=> new EntitySource_ItemUse(this, item, context);
-
-	public IEntitySource GetSource_ItemUse_WithPotentialAmmo(Item item, int ammoItemId, string? context = null)
-		=> new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId, context);
-
 	// Damage / Death
 	
 	public IEntitySource GetSource_OnHit(Entity victim, string? context = null)
-		=> new EntitySource_OnHit(this, victim, context);
+		=> new EntitySource_OnHit(attacker: this, victim, context);
 	
-	public IEntitySource GetSource_OnHurt(Entity attacker, string? context = null)
-		=> new EntitySource_OnHit(attacker, this, context);
+	public IEntitySource GetSource_OnHurt(Entity? attacker, string? context = null)
+		=> new EntitySource_OnHurt(victim: this, attacker, context);
 
 	public IEntitySource GetSource_Death(string? context = null)
 		=> new EntitySource_Death(this, context);
@@ -61,7 +46,7 @@ partial class Entity
 		=> new EntitySource_Parent(this, context);
 
 	public IEntitySource GetSource_CatchEntity(Entity caughtEntity, string? context = null)
-		=> new EntitySource_CatchEntity(this, caughtEntity, context);
+		=> new EntitySource_Caught(this, caughtEntity, context);
 
 	// Common - Static
 

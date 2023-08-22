@@ -349,13 +349,37 @@
  		setWorldSize();
  		Star.SpawnStars();
 +
-+		TileIO.ClearWorld();
++		SystemLoader.ClearWorld();
 +
  		worldCleared = true;
  	}
  
-@@ -5972,6 +_,9 @@
+@@ -5231,17 +_,17 @@
  
+ 	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
+ 	{
+-		_generator.Append(new PassLegacy(name, method));
++		_vanillaGenPasses.Add(name, new PassLegacy(name, method));
+ 	}
+ 
+ 	private static void AddGenerationPass(GenPass pass)
+ 	{
+-		_generator.Append(pass);
++		_vanillaGenPasses.Add(pass.Name, pass);
+ 	}
+ 
+ 	private static void AddGenerationPass(string name, double weight, WorldGenLegacyMethod method)
+ 	{
+-		_generator.Append(new PassLegacy(name, method, weight));
++		_vanillaGenPasses.Add(name, new PassLegacy(name, method, weight));
+ 	}
+ 
+ 	public static bool checkUnderground(int x, int y)
+@@ -5970,8 +_,12 @@
+ 			GenVars.desertHiveRight = x;
+ 	}
+ 
++	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), AddGenPassesFromLoadTime (the replacement for AddGenPasses in GenerateWorld), and GenerateWorld_RunTasksAndFinish
  	public static void GenerateWorld(int seed, GenerationProgress customProgressObject = null)
  	{
 +		// For timing logging, used below.
@@ -379,7 +403,7 @@
  		_lastSeed = seed;
  		_generator = new WorldGenerator(seed, GenVars.configuration);
  		_genRand = new UnifiedRandom(seed);
-@@ -6097,6 +_,9 @@
+@@ -6097,9 +_,18 @@
  		GenVars.logX = -1;
  		GenVars.logY = -1;
  		GenVars.dungeonLocation = 0;
@@ -389,6 +413,15 @@
  		if (everythingWorldGen)
  			Main.starGame = true;
  
++		AddGenPassesFromLoadTime();
++		GenerateWorld_RunTasksAndFinish(seed, generationStopwatch, customProgressObject);
++	}
++
++	internal static void AddGenPasses()
++	{
+ 		AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 			if (genRand.Next(2) == 0)
+ 				GenVars.crimsonLeft = false;
 @@ -7904,7 +_,10 @@
  					}
  
@@ -533,12 +566,23 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13850,11 +_,22 @@
+@@ -13849,12 +_,33 @@
+ 			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
- 
-+		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++	}
 +
++	private static void AddGenPassesFromLoadTime()
++	{
++		foreach (var pass in _vanillaGenPasses) {
++			_generator.Append(pass.Value);
++		}
++	}
++
++	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
++	{
++		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
+ 
  		_generator.GenerateWorld(customProgressObject);
  		ConsumePostGenActions(GenVars.structures);
 +
@@ -1072,7 +1116,7 @@
  
  	public static void Check1x1(int x, int y, int type)
  	{
-+		// could put here, but there are probably other situations killtile is calleD?
++		// could put here, but there are probably other situations KillTile is called?
  		if (Main.tile[x, y + 1] != null) {
  			if (!SolidTileAllowBottomSlope(x, y + 1))
  				KillTile(x, y);
@@ -1781,9 +1825,14 @@
  
  		bool result = false;
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
-@@ -42239,7 +_,7 @@
+@@ -42238,8 +_,12 @@
+ 							if (style != 8 && style != 11 && style != 17)
  								return false;
  							break;
++						case int _ when TileID.Sets.Torch[num]:
++							if (TileObjectData.GetTileData(num, style).WaterPlacement != LiquidPlacement.Allowed)
++								return false;
++							break;
  						case 3:
 -						case 20:
 +						case int _ when TileID.Sets.TreeSapling[num]:
@@ -1989,6 +2038,15 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
+@@ -44631,7 +_,7 @@
+ 		else if (TileID.Sets.BasicDresser[targetType]) {
+ 			ReplaceTile_DoActualReplacement_Area(targetType, targetStyle, topLeftX, topLeftY, 3, 2);
+ 		}
+-		else if (targetType == 215) {
++		else if (TileID.Sets.Campfire[targetType]) {
+ 			ReplaceTile_DoActualReplacement_Area(targetType, targetStyle, topLeftX, topLeftY, 3, 2);
+ 		}
+ 		else {
 @@ -44647,7 +_,7 @@
  		if (TileID.Sets.Platforms[t.type])
  			t.frameY = (short)(targetStyle * 18);
@@ -2006,6 +2064,15 @@
  		SquareTileFrame(topLeftX, topLeftY);
  	}
  
+@@ -44708,7 +_,7 @@
+ 			y -= t.frameY % 36 / 18;
+ 		}
+ 
+-		if (t.type == 215) {
++		if (TileID.Sets.Campfire[t.type]) {
+ 			x -= t.frameX % 54 / 18;
+ 			y -= t.frameY % 36 / 18;
+ 		}
 @@ -44729,7 +_,7 @@
  	public static bool WouldTileReplacementWork(ushort attemptingToReplaceWith, int x, int y)
  	{
@@ -2024,15 +2091,17 @@
  		bool flag6 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  		return !(num && flag2 && flag3 && flag && flag4 && flag5 && flag6);
  	}
-@@ -44767,7 +_,7 @@
+@@ -44767,8 +_,8 @@
  		return false;
  	}
  
 -	private static bool ReplaceTile_IsValidTorch(int type) => type == 4;
+-	private static bool ReplaceTile_IsValidCampfire(int type) => type == 215;
 +	private static bool ReplaceTile_IsValidTorch(int type) => TileID.Sets.Torch[type];
- 	private static bool ReplaceTile_IsValidCampfire(int type) => type == 215;
++	private static bool ReplaceTile_IsValidCampfire(int type) => TileID.Sets.Campfire[type];
  	private static bool ReplaceTile_IsValidChest(int type) => TileID.Sets.BasicChest[type];
  	private static bool ReplaceTile_IsValidDresser(int type) => TileID.Sets.BasicDresser[type];
+ 	private static bool ReplaceTile_IsValidPlatform(int type) => TileID.Sets.Platforms[type];
 @@ -44973,14 +_,26 @@
  					else if (i % 3 == 1) {
  						treeFrame += 3;
@@ -2071,16 +2140,34 @@
  		switch (tileType) {
  			case 2:
  			case 477:
-@@ -45086,6 +_,9 @@
+@@ -45086,6 +_,8 @@
  		if (!IsTileALeafyTreeTop(x, y) || Collision.SolidTiles(x - 2, x + 2, y - 2, y + 2))
  			return;
  
-+		bool flag = false;
-+
-+		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, y].type, ref flag)) { } else
++		bool createLeaves = true;
++		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref createLeaves)) { } else
  		if (Main.getGoodWorld && genRand.Next(17) == 0) {
  			Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
  		}
+@@ -45310,11 +_,18 @@
+ 			Item.NewItem(Type: (genRand.Next(2) != 0) ? 5278 : 5277, source: GetItemSource_FromTreeShake(x, y), X: x * 16, Y: y * 16, Width: 16, Height: 16);
+ 		}
+ 
++		if (!createLeaves)
++			return;
++
+ 		int treeHeight = 0;
+ 		int treeFrame = 0;
+ 		int passStyle = 0;
+ 		GetTreeLeaf(x, Main.tile[x, y], Main.tile[x, num], ref treeHeight, out treeFrame, out passStyle);
++
++		/*
+ 		if (passStyle != -1) {
++		*/
++		if (passStyle > 0) {
+ 			if (Main.netMode == 2)
+ 				NetMessage.SendData(112, -1, -1, null, 1, x, y, 1f, passStyle);
+ 
 @@ -45415,11 +_,15 @@
  			Main.tile[i, j - 1] = new Tile();
  
@@ -2121,7 +2208,7 @@
 +
 +		TileLoader.GetItemDrops(x, y, tileCache, includeLargeObjectDrops, includeAllModdedLargeObjectDrops);
 +
-+		// TODO: support centering spawn location for multitiles? Vanilla code is inconsistent in doing this.
++		// TODO: support centering spawn location for multi-tiles? Vanilla code is inconsistent in doing this.
  		if (!Main.getGoodWorld || tileCache.active()) {
  			if (dropItem > 0) {
  				int num = Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, dropItem, dropItemStack, noBroadcast: false, -1);
@@ -2409,6 +2496,15 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -58741,7 +_,7 @@
+ 			Main.tile[x, y + 1] = new Tile();
+ 
+ 		switch (Main.tile[x, y].type) {
+-			case 10:
++			case ushort _ when TileLoader.IsClosedDoor(Main.tile[x, y].type):
+ 			case 48:
+ 			case 137:
+ 			case 138:
 @@ -58764,6 +_,7 @@
  				}
  				if (Main.tile[x, y - 1].active()) {

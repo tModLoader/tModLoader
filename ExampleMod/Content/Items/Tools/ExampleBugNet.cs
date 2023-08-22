@@ -69,7 +69,7 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleCatchItemModification : GlobalItem
 	{
 		public override void OnSpawn(Item item, IEntitySource source) {
-			if (source is not EntitySource_CatchEntity catchEntity) {
+			if (source is not EntitySource_Caught catchEntity) {
 				return;
 			}
 

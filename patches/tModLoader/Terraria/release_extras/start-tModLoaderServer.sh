@@ -42,12 +42,12 @@ if $steam_server; then
 	launch_args="$launch_args -steam"
 
 	if ! [[ "$launch_args" == *"-lobby"* ]]; then
-		read -p "Select lobby type ([f]riends/[p]rivate): " lobby_type_response
-		if [[ $lobby_type_response == f* ]]; then
-			launch_args="$launch_args -lobby friends"
-		else
-			launch_args="$launch_args -lobby private"
-		fi
+		read -r -p "Select lobby type ([f]riends / friend[s] of friends / [p]rivate): " lobby_type_response
+		case "$lobby_type_response" in
+			f* ) launch_args="$launch_args -lobby friends" ;;
+			s* ) launch_args="$launch_args -lobby friends -friendsoffriends" ;;
+			* ) launch_args="$launch_args -lobby private" ;;
+		esac
 	fi
 fi
 

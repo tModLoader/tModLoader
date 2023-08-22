@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices;
 using Terraria.ModLoader.Exceptions;
 
 #nullable enable
@@ -15,7 +14,7 @@ namespace Terraria.ModLoader.Core;
 public static class LoaderUtils
 {
 	/// <summary> Calls static constructors on the provided type and, optionally, its nested types. </summary>
-	public static void ResetStaticMembers(Type type, bool recursive)
+	public static void ResetStaticMembers(Type type, bool recursive = true)
 	{
 #if NETCORE
 		var typeInitializer = type.TypeInitializer;
@@ -54,6 +53,7 @@ public static class LoaderUtils
 				action(t);
 			}
 			catch (Exception ex) {
+				ex.Data["contentType"] = t.GetType();
 				exceptions.Add(ex);
 			}
 		}
@@ -63,59 +63,6 @@ public static class LoaderUtils
 
 		if (exceptions.Count > 0)
 			throw new MultipleException(exceptions);
-	}
-
-	[Obsolete("Use ReadOnlySpan or List variant", true)]
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
-		=> InstantiateGlobals(entity, globals.ToArray().AsSpan(), ref entityGlobals, midInstantiationAction);
-
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, List<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
-		=> InstantiateGlobals(entity, CollectionsMarshal.AsSpan(globals), ref entityGlobals, midInstantiationAction);
-
-	public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
-	{
-		var mem = GlobalInstantiationArrayPool<TGlobal>.Pool.Rent(globals.Length);
-
-		try {
-			var set = mem.AsSpan(0, globals.Length);
-
-			entityGlobals = null;
-
-			InstantiateGlobals(entity, globals, ref entityGlobals, set, late: false);
-			midInstantiationAction();
-			InstantiateGlobals(entity, globals, ref entityGlobals, set, late: true);
-		}
-		finally {
-			GlobalInstantiationArrayPool<TGlobal>.Pool.Return(mem, clearArray: true);
-		}
-	}
-
-	private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[]? entityGlobals, Span<TGlobal> set, bool late) where TGlobal : GlobalType<TEntity, TGlobal>
-	{
-		int n = 0;
-
-		for (int i = 0; i < globals.Length; i++) {
-			var g = globals[i];
-
-			if (set[i] == null && g.AppliesToEntity(entity, late)) {
-				set[i] = g.InstancePerEntity ? g.NewInstance(entity) : g;
-				n++;
-			}
-		}
-
-		if (n > 0) {
-			entityGlobals = new Instanced<TGlobal>[(entityGlobals?.Length ?? 0) + n];
-
-			int j = 0;
-
-			foreach (var g in set) {
-				if (g != null)
-					entityGlobals[j++] = new(g.Index, g);
-			}
-		}
-		else {
-			entityGlobals ??= Array.Empty<Instanced<TGlobal>>();
-		}
 	}
 
 	public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args)
@@ -155,8 +102,8 @@ public static class LoaderUtils
 	public static bool HasOverride(Type t, MethodInfo baseMethod)
 		=> baseMethod.DeclaringType!.IsInterface ? t.IsAssignableTo(baseMethod.DeclaringType) : GetDerivedDefinition(t, baseMethod).DeclaringType != baseMethod.DeclaringType;
 
-	public static bool HasOverride<T, F>(Type t, Expression<Func<T, F>> expr) where F : Delegate
-		=> HasOverride(t, expr.ToMethodInfo());
+	public static bool HasOverride<T, F>(T t, Expression<Func<T, F>> expr) where F : Delegate
+		=> HasOverride(t!.GetType(), expr.ToMethodInfo());
 
 	public static IEnumerable<T> WhereMethodIsOverridden<T>(this IEnumerable<T> providers, MethodInfo method)
 	{
@@ -188,15 +135,5 @@ public static class LoaderUtils
 	static LoaderUtils()
 	{
 		TypeCaching.OnClear += validatedTypes.Clear;
-	}
-}
-
-internal class GlobalInstantiationArrayPool<T>
-{
-	public static ArrayPool<T> Pool = ArrayPool<T>.Create();
-
-	static GlobalInstantiationArrayPool()
-	{
-		TypeCaching.OnClear += () => Pool = ArrayPool<T>.Create();
 	}
 }

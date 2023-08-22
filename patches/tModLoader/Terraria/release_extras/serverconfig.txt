@@ -1,6 +1,8 @@
-#this is an example config file for TerrariaServer.exe
-#use the command 'TerrariaServer.exe -config serverconfig.txt' to use this configuration or run start-server.bat
-#please report crashes by emailing crashlog.txt to support@terraria.org
+#this is an example config file for tModLoader
+#tModLoader config files work exactly the same as Terraria, but instead of launching the .exe file, the .bat file is launched. 
+#In addition, tModLoader config files support tModLoader specific options.
+#use the command 'start-tModLoaderServer.bat -config serverconfig.txt' to use this configuration
+#More details can be found at https://github.com/tModLoader/tModLoader/wiki/Command-Line and https://github.com/tModLoader/tModLoader/wiki/Starting-a-modded-server
 
 #the following is a list of available command line parameters:
 
@@ -21,6 +23,12 @@
 #-disableannouncementbox   Disables the text announcements Announcement Box makes when pulsed from wire.
 #-announcementboxrange <number>   Sets the announcement box text messaging range in pixels, -1 for serverwide announcements.
 #-seed <seed> Specifies the world seed when using -autocreate
+
+# Command line parameters added by tModLoader (https://github.com/tModLoader/tModLoader/wiki/Command-Line)
+
+#-tmlsavedirectory <path>		Specifies the tModLoader save directory. Mod and World directories are derived from the save directory.
+#-modpack <modpackname>			Sets the mod pack to load, causing only the specified mods to load. 
+#-modpath <path>				Sets the folder where manually installed mods will be loaded from.
 
 #remove the # in front of commands to enable them.
 
@@ -73,3 +81,10 @@
 #Default system priority 0:Realtime, 1:High, 2:AboveNormal, 3:Normal, 4:BelowNormal, 5:Idle
 priority=1
 
+# Server config options added by tModLoader (https://github.com/tModLoader/tModLoader/wiki/Command-Line)
+
+#Sets the folder where manually installed mods will be loaded from.
+#modpath=C:\Users\YOUR_USERNAME_HERE\My Documents\My Games\Terraria\tModLoader\Mods\
+
+#Sets the mod pack to load, causing only the specified mods to load. 
+#modpack=MyModpack

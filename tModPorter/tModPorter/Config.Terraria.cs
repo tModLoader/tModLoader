@@ -98,6 +98,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"allDamage",		DamageModifier("Generic",	"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"meleeDamage",		DamageModifier("Melee",		"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"rangedDamage",		DamageModifier("Ranged",	"GetDamage"));
+		RenameInstanceField("Terraria.Player",			"rocketDamage",		"specialistDamage");
 		RefactorInstanceMember("Terraria.Player",		"magicDamage",		DamageModifier("Magic",		"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"minionDamage",		DamageModifier("Summon",	"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"thrownDamage",		DamageModifier("Throwing",	"GetDamage"));
@@ -107,7 +108,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"magicDamageMult",	DamageModifier("Magic",		"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"minionDamageMult",	DamageModifier("Summon",	"GetDamage"));
 		RefactorInstanceMember("Terraria.Player",		"thrownDamageMult",	DamageModifier("Throwing",	"GetDamage"));
-		RefactorInstanceMember("Terraria.Player",		"meleeCrit",		DamageModifier("Generic",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"allCrit",			DamageModifier("Generic",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"meleeCrit",		DamageModifier("Melee",		"GetCritChance"));
 		RefactorInstanceMember("Terraria.Player",		"rangedCrit",		DamageModifier("Ranged",	"GetCritChance"));
 		RefactorInstanceMember("Terraria.Player",		"magicCrit",		DamageModifier("Magic",		"GetCritChance"));
 		RefactorInstanceMember("Terraria.Player",		"thrownCrit",		DamageModifier("Throwing",	"GetCritChance"));
@@ -117,6 +119,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
 
 		RefactorInstanceMethodCall("Terraria.Player", "VanillaUpdateEquip",	Removed("Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots)"));
+		RenameMethod("Terraria.Player", "CanBuyItem", "CanAfford");
 
 		RefactorInstanceMember("Terraria.Main", "fastForwardTime", Removed("Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk"));
 
@@ -193,6 +196,33 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
 		RenameInstanceField("Terraria.Player",	from: "discount",			to: "discountAvailable");
 
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Cloud",              ExtraJumpField("CloudInABottle",     "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Sandstorm",          ExtraJumpField("SandstormInABottle", "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Blizzard",           ExtraJumpField("BlizzardInABottle",  "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Fart",               ExtraJumpField("FartInAJar",         "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Sail",               ExtraJumpField("TsunamiInABottle",   "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Unicorn",            ExtraJumpField("UnicornMount",       "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Santank",            ExtraJumpField("SantankMount",       "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_WallOfFleshGoat",    ExtraJumpField("GoatMount",          "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "hasJumpOption_Basilisk",           ExtraJumpField("BasiliskMount",      "Enabled"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Cloud",               ExtraJumpField("CloudInABottle",     "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sandstorm",           ExtraJumpField("SandstormInABottle", "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Blizzard",            ExtraJumpField("BlizzardInABottle",  "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Fart",                ExtraJumpField("FartInAJar",         "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Sail",                ExtraJumpField("TsunamiInABottle",   "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Unicorn",             ExtraJumpField("UnicornMount",       "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Santank",             ExtraJumpField("SantankMount",       "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_WallOfFleshGoat",     ExtraJumpField("GoatMount",          "Available"));
+		RefactorInstanceMember("Terraria.Player",       "canJumpAgain_Basilisk",            ExtraJumpField("BasiliskMount",      "Available"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Cloud",           ExtraJumpField("CloudInABottle",     "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Sandstorm",       ExtraJumpField("SandstormInABottle", "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Blizzard",        ExtraJumpField("BlizzardInABottle",  "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Fart",            ExtraJumpField("FartInAJar",         "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Sail",            ExtraJumpField("TsunamiInABottle",   "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Unicorn",         ExtraJumpField("UnicornMount",       "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Santank",         ExtraJumpField("SantankMount",       "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_WallOfFleshGoat", ExtraJumpField("GoatMount",          "Active"));
+		RefactorInstanceMember("Terraria.Player",       "isPerformingJump_Basilisk",        ExtraJumpField("BasiliskMount",      "Active"));
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Item",		from: "DefaultToPlacableWall",	to: "DefaultToPlaceableWall");
@@ -227,6 +257,11 @@ public static partial class Config
 		RenameMethod("Terraria.UI.UIElement",			from: "DoubleClick",	to: "LeftDoubleClick");
 
 		AddWorldGenToGenVars();
+
+		RenameInstanceField("Terraria.DataStructures.EntitySource_BossSpawn", "Entity", "Target");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_FishedOut", "Entity", "Fisher");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStriking", "Attacker");
+		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 	}
 
 	private static void AddTextureRenames() {

@@ -10,7 +10,10 @@ using Microsoft.Xna.Framework.Graphics;
 public class ModTileTest : ModTile
 {
 	void Method() {
-		ItemDrop = 1;
+#if COMPILE_ERROR
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 1;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 12;
+#endif
 		DustType = 0;
 #if COMPILE_ERROR
 		// not-yet-implemented
@@ -20,10 +23,12 @@ public class ModTileTest : ModTile
 		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 
-		ItemDrop = 0;
-		ItemDrop = 0;
-		ItemDrop = 2;
-		ItemDrop = 3;
+#if COMPILE_ERROR
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 0;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 0;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 2;
+		ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = 3;
+#endif
 		MinPick = 0;
 		MineResist = 0;
 		AnimationFrameHeight = 0;

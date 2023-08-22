@@ -84,7 +84,6 @@ public static class AssemblyManager
 			var name = asm.GetName().Name;
 			assemblyBytes[name] = code;
 			assemblies[name] = asm;
-			hostContextForAssembly[asm] = this;
 
 			bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
 
@@ -147,7 +146,6 @@ public static class AssemblyManager
 			alc.Unload();
 		}
 
-		hostContextForAssembly.Clear();
 		loadedModContexts.Clear();
 
 		for (int i = 0; i < 10; i++) {
@@ -166,7 +164,6 @@ public static class AssemblyManager
 	private static readonly List<WeakReference<AssemblyLoadContext>> oldLoadContexts = new();
 
 	private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
-	private static readonly Dictionary<Assembly, ModLoadContext> hostContextForAssembly = new();
 
 	//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
@@ -294,13 +291,15 @@ public static class AssemblyManager
 
 	public static bool GetAssemblyOwner(Assembly assembly, out string modName)
 	{
-		if (hostContextForAssembly.TryGetValue(assembly, out var mod)) {
-			modName = mod.Name;
-			return true;
-		}
-
 		modName = null;
-		return false;
+		if (AssemblyLoadContext.GetLoadContext(assembly) is not ModLoadContext mlc)
+			return false;
+
+		modName = mlc.Name;
+		if (loadedModContexts[modName] != mlc)
+			throw new Exception("Attempt to retrieve owner for mod assembly from a previous load");
+
+		return true;
 	}
 
 	internal static bool FirstModInStackTrace(StackTrace stack, out string modName)
@@ -318,16 +317,16 @@ public static class AssemblyManager
 
 	public static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
 
-	public static Type[] GetLoadableTypes(Assembly assembly) => hostContextForAssembly.TryGetValue(assembly, out var mlc) ? mlc.loadableTypes[assembly] : assembly.GetTypes();
+	public static Type[] GetLoadableTypes(Assembly assembly) => AssemblyLoadContext.GetLoadContext(assembly) is ModLoadContext mlc ? mlc.loadableTypes[assembly] : assembly.GetTypes();
 
 	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
 	{
 		try {
 			return mod.Assemblies.ToDictionary(a => a, asm =>
-		mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
-			.Where(mType => IsLoadable(mod, mType))
-			.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
-			.ToArray());
+				mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
+					.Where(mType => IsLoadable(mod, mType))
+					.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
+					.ToArray());
 		}
 		catch (Exception e) {
 			throw new Exceptions.GetLoadableTypesException(

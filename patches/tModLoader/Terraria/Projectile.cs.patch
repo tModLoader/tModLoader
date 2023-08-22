@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,278 @@
+@@ -66,76 +_,320 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -31,7 +31,7 @@
 +
 +	/// <summary>
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
-+	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> for an example of this logic.
++	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
 +	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <br/> Defaults to <see langword="false"/>.
@@ -60,25 +60,32 @@
 +
 +	/// <summary>
 +	/// How transparent to draw this projectile. 0 to 255. 255 is completely transparent.
-+	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
++	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
++	/// <summary>
++	/// Indicates that this projectile is a sentry
++	/// <br/> Defaults to <see langword="false"/>.
++	/// <br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
++	/// <br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
++	/// </summary>
  	public bool sentry;
  	public short glowMask;
 +
 +	/// <summary>
 +	/// The index of the player who owns this projectile. In Multiplayer, Clients "own" projectiles that they shoot, while the Server "owns" projectiles spawned by NPCs and the World.
-+	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
++	/// <br/> NPC <b>never</b> own projectiles, do not use owner to index into <see cref="Main.npc"/>. 
++	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
 +	/// <br/> Defaults to the owner parameter of Projectile.NewProjectile, which should always be set to <see cref="Main.myPlayer"/> to correspond to the client that owns the projectile..
 +	/// </summary>
  	public int owner = 255;
 +
 +	/// <summary>
-+	/// An array with 3 slots used for any sort of data storage, which is occasionally synced to the server. Each vanilla <see cref="ProjAIStyleID"/> uses these slots for different purposes. Call <see cref="netUpdate"/> to manually sync. The advantage of using these 3 floats is that they are synced automatically. Using fields in your <see cref="ModProjectile"/> class will work just the same, but they might need to by synced via <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModProjectile.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
-+	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
-+	/// <br/> Defaults to [0, 0, 0]
++	/// An array with 3 slots used for any sort of data storage, which is occasionally synced to the server. Each vanilla <see cref="ProjAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true during AI methods to manually sync. The advantage of using these 3 floats is that they are synced automatically. Using fields in your <see cref="ModProjectile"/> class will work just the same, but they might need to be synced via <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModProjectile.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
++	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
++	/// <br/> Defaults to the values passed into <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, usually [0, 0, 0].
 +	/// </summary>
  	public float[] ai = new float[maxAI];
 +
@@ -87,11 +94,17 @@
 +	/// <br/> Defaults to [0, 0, 0]
 +	/// </summary>
  	public float[] localAI = new float[maxAI];
++	/// <summary>
++	/// An offset from the actual position of the projectile that will be added to the draw position. Used to offset some held projectiles to match the players <see cref="Player.gfxOffY"/>, thereby keeping the projectile visually in sync with the player. <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> can be used to ignore that usage.
++	/// </summary>
  	public float gfxOffY;
++	/// <summary>
++	/// Has nothing to do with the speed that this projectile travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// </summary>
  	public float stepSpeed = 1f;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai">Basic Projectile Guide</see> teaches how to use an existing aiStyle.
 +	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <br/> Defaults to 0.
@@ -114,7 +127,7 @@
  	public int spriteDirection = 1;
 +
 +	/// <summary>
-+	/// If True, this projectile will hurt players and friendly npcs (<see cref="NPC.friendly"/>)
++	/// If True, this projectile will hurt players and friendly NPCs (<see cref="NPC.friendly"/>)
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hostile;
@@ -132,14 +145,27 @@
  	public bool friendly;
 +
 +	/// <summary>
-+	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
++	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
 +	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
 -	private int[] localNPCImmunity = new int[200];
 +	public int[] localNPCImmunity = new int[200];
++	/// <summary>
++	/// If true, this projectile manages it's own immunity timers for each npc.<br/>
++	/// Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.<br/>
++	/// <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// </summary>
  	public bool usesLocalNPCImmunity;
++	/// <summary>
++	/// If true, all projectiles of this type share an immunity cooldown for each npc.<br/>
++	/// Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.<br/>
++	/// <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// </summary>
  	public bool usesIDStaticNPCImmunity;
++	/// <summary>
++	/// If true, this projectile will apply immunity to an npc despite having a <see cref="penetrate"/> value of 1. Used only for firework rockets in Terraria content.
++	/// </summary>
  	public bool appliesImmunityTimeOnSingleHits;
 +
 +	/// <summary>
@@ -195,14 +221,18 @@
 +
 +	/// <summary>
 +	/// Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summons two minions at once with 0.5f each)
++	/// <br/> Make sure to set <see cref="ItemID.Sets.StaffMinionSlotsRequired"/> for the minion summoning item to the sum of the minionSlots values of the minions that will be spawned.
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;
++	/// <summary>
++	/// A number indicating the order of minions. Minion AI code typically uses this value to determine a suitable idle position that results in minions lining up neatly in relation to the player without bunching up.
++	/// </summary>
  	public int minionPos;
  	public int restrikeDelay;
 +
 +	/// <summary>
-+	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L38">ExampleBullet</see> shows how to implemtent bounce.
++	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implement bounce.
 +	/// <br/> Defaults to <see langword="true"/>.
 +	/// </summary>
  	public bool tileCollide;
@@ -301,6 +331,18 @@
  	public int frame;
  	public bool manualDirectionChange;
  	public int projUUID = -1;
+ 	public bool decidesManualFallThrough;
+ 	public bool shouldFallThrough;
++	/// <summary>
++	/// When used in conjunction with <see cref="usesLocalNPCImmunity"/>, determines how many ticks must pass before this projectile can deal damage again to the same npc. A value of -1 indicates that it can only hit a specific npc once. The default value of -2 has no effect, so this must be assigned if usesLocalNPCImmunity is true.
++	/// </summary>
+ 	public int localNPCHitCooldown = -2;
++	/// <summary>
++	/// When used in conjunction with <see cref="usesIDStaticNPCImmunity"/>, determines how many ticks must pass before any projectile of the same type can deal damage again to the same npc. This must be assigned a suitable value if usesIDStaticNPCImmunity is true.
++	/// </summary>
+ 	public int idStaticNPCHitCooldown = -1;
+ 	public int bannerIdToRespondTo;
+ 	private static Conditions.IsSolid _cachedConditions_solid = new Conditions.IsSolid();
 @@ -152,7 +_,14 @@
  	private static List<int> _ai156_blacklistedTargets = new List<int>();
  	private static float[] _CompanionCubeScreamCooldown = new float[255];
@@ -334,13 +376,13 @@
 +	{
 +		int originalType = type;
 +		var originalModProjectile = ModProjectile;
-+		var originalGlobals = globalProjectiles;
++		var originalGlobals = _globals;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		ModProjectile = originalModProjectile;
-+		globalProjectiles = originalGlobals;
++		_globals = originalGlobals;
 +
 +		int num = ProjectileID.Sets.TrailCacheLength[type];
 +		if (num != oldPos.Length) {
@@ -361,12 +403,12 @@
  	{
 +		// TML fields:
 +		ModProjectile = null;
-+		globalProjectiles = new Instanced<GlobalProjectile>[0];
++		_globals = null;
 +		DamageType = DamageClass.Default;
 +		ArmorPenetration = 0;
 +		CritChance = 0;
 +		WhipSettings = default;
-+		ContinuouslyUpdateDamage = false;
++		ContinuouslyUpdateDamageStats = false;
 +		nameOverride = null;
 +
  		ownerHitCheckDistance = 1000f;
@@ -575,7 +617,7 @@
  	}
  
 +	/// <summary>
-+	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self-explanatory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 +	/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
 +	/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
 +	/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
@@ -596,13 +638,11 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
  	{
  		if (Owner == -1)
-@@ -8745,6 +_,10 @@
+@@ -8745,6 +_,8 @@
  		projectile.shimmerWet = Collision.shimmer;
  		Main.projectileIdentity[Owner, num] = num;
  		FindBannerToAssociateTo(spawnSource, projectile);
 +
-+		// Added by TML.
-+		HandlePlayerStatModifiers(spawnSource, projectile);
 +
  		if (projectile.aiStyle == 1) {
  			while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
@@ -642,10 +682,11 @@
  		}
  
  		if (Type == 249)
-@@ -8910,6 +_,11 @@
+@@ -8910,6 +_,12 @@
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
  
++		projectile.ApplyStatsFromSource(spawnSource);
 +		ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
 +		if (Main.netMode != 0 && Owner == Main.myPlayer)
@@ -822,7 +863,7 @@
  											int num18 = NewProjectile(GetProjectileSource_FromThis(), nPC.Center, Vector2.Zero, 918, num17, 0f, owner);
  											Main.projectile[num18].localNPCImmunity[i] = -1;
 -											num6 += num17;
-+											modifiers.ScalingBonusDamage += 0.75f * num13; //num6 += num17;
++											modifiers.ScalingBonusDamage += 1.75f * num13; //num6 += num17;
  										}
  									}
  
@@ -860,8 +901,22 @@
  										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10594,16 +_,20 @@
+@@ -10487,6 +_,9 @@
+ 									if (type == 981 && nPC.type == 104)
+ 										num19 *= 3;
+ 
++									// Essentially, the following block is moved to execute later on.
++									goto VanillaOnHitEffectsWhipsEnd;
++									VanillaOnHitEffectsWhipsStart: // Whip Multihit penalty and Crystal dart retargeting are OnHit effects
+ 									if (type == 294)
+ 										damage = (int)((double)damage * 0.9);
+ 
+@@ -10592,18 +_,26 @@
+ 											netUpdate = true;
+ 										}
  									}
++									goto VanillaOnHitEffectsResume;
++									VanillaOnHitEffectsWhipsEnd:
  
  									if (type == 261 && velocity.Length() < 3.5f) {
 -										num19 /= 2;
@@ -880,6 +935,8 @@
 +									goto VanillaOnHitEffectsEnd;
 +
 +									VanillaOnHitEffectsStart:
++									goto VanillaOnHitEffectsWhipsStart;
++									VanillaOnHitEffectsResume:
  									StatusNPC(i);
  									if (flag && nPC.life > 5)
  										TryDoingOnHitEffects(nPC);
@@ -1109,20 +1166,22 @@
  				return;
  		}
  
-@@ -12412,9 +_,16 @@
+@@ -12412,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
  
 +			/*
  			if (numUpdates == -1 && (minion || sentry)) {
 +			*/
-+			if ((minion || sentry || ContinuouslyUpdateDamage)) {
++			if ((minion || sentry || ContinuouslyUpdateDamageStats)) {
  				Player player = Main.player[owner];
 +
 +				/*
  				damage = (int)((float)originalDamage * player.minionDamage + 5E-06f);
 +				*/
 +				damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
++				CritChance = (int)(OriginalCritChance + player.GetTotalCritChance(DamageType) + 5E-06f);
++				ArmorPenetration = (int)(OriginalArmorPenetration + player.GetTotalArmorPenetration(DamageType) + 5E-06f);
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
@@ -1495,7 +1554,7 @@
 +		// Code taken 1:1 from the commented out method with the same name
 +		bool vanilla = Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
 +
-+		// TML: Vanilla check modified by moving Tile.nactive() from its callsites into here to allow actuated or air to be grappled by mods
++		// TML: Vanilla check modified by moving Tile.nactive() from its call sites into here to allow actuated or air to be grappled by mods
 +		vanilla &= theTile.nactive();
 +
 +		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
@@ -1524,7 +1583,7 @@
  					for (int l = 0; l < num4; l++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -37401,6 +_,9 @@
+@@ -37401,10 +_,13 @@
  			item.stack = stack2;
  		}
  
@@ -1534,6 +1593,11 @@
  		item.newAndShiny = true;
  		Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
  		if (item2.stack > 0) {
+-			int number = Item.NewItem(new EntitySource_FishedOut(this), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
++			int number = Item.NewItem(new EntitySource_OverfullInventory(thePlayer), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 		}
 @@ -46721,7 +_,7 @@
  			}
  
@@ -1702,7 +1766,7 @@
  	}
  
 +	/// <summary>
-+	/// Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjuction with <see cref="ExplodeTiles"/>.
++	/// Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjunction with <see cref="ExplodeTiles"/>.
 +	/// </summary>
  	public bool ShouldWallExplode(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)
  	{

@@ -28,12 +28,10 @@ internal static partial class TileIO
 		}
 
 		// Retrieve Locational-Specific Data from 'Data' and apply
-		using (var memoryStream = new MemoryStream(tag.GetByteArray("data")))
-		using (var reader = new BinaryReader(memoryStream)) {
-			ReadTileData(reader, tileEntriesLookup, wallEntriesLookup, out var tilePosMapList, out var wallPosMapList);
-			Tiles.unloadedEntryLookup = tilePosMapList.ToArray();
-			Walls.unloadedEntryLookup = wallPosMapList.ToArray();
-		}
+		using var reader = new BinaryReader(tag.GetByteArray("data").ToMemoryStream());
+		ReadTileData(reader, tileEntriesLookup, wallEntriesLookup, out var tilePosMapList, out var wallPosMapList);
+		Tiles.unloadedEntryLookup = tilePosMapList.ToArray();
+		Walls.unloadedEntryLookup = wallPosMapList.ToArray();
 	}
 
 	internal static void ReadTileData(BinaryReader reader, TileEntry[] tileEntriesLookup, WallEntry[] wallEntriesLookup, out List<PosData<ushort>> wallPosMapList, out List<PosData<ushort>> tilePosMapList)

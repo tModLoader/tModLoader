@@ -10,6 +10,13 @@ using Terraria.ModLoader.Exceptions;
 
 namespace Terraria;
 
+/// <summary>
+/// A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft items in the game.<br/>
+/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
+/// Use <see cref="Recipe.Create(int, int)"/> to create a Recipe instance resulting in the specified item. Use <see cref="AddIngredient(int, int)"/> to add ingredients and <see cref="AddTile(int)"/> to add crafting stations. Finally, use <see cref="Register"/> to complete the recipe and register it to the game.<br/>
+/// Recipes can only be added in <see cref="ModSystem.AddRecipes"/>, <see cref="ModItem.AddRecipes"/>, and <see cref="GlobalItem.AddRecipes"/>.<br/>
+/// Recipes should be edited only in <see cref="ModSystem.PostAddRecipes"/>.
+/// </summary>
 public partial class Recipe
 {
 	public static class ConsumptionRules
@@ -259,7 +266,7 @@ public partial class Recipe
 	}
 
 	/// <summary>
-	/// Adds every condition from Recipie.Condtions to Recipie.DecraftContions, checking for duplicates.
+	/// Adds every condition from Recipe.Conditions to Recipe.DecraftConditions, checking for duplicates.
 	/// </summary>
 	public Recipe ApplyConditionsAsDecraftConditions()
 	{
@@ -415,7 +422,7 @@ public partial class Recipe
 		}
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
-		// it here to not have multiple dupliocate hooks.
+		// it here to not have multiple duplicate hooks.
 		if (clone.requiredTile.Contains(TileID.Bottles))
 			clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
 
@@ -460,6 +467,12 @@ public partial class Recipe
 		return this;
 	}
 
+	/// <summary>
+	/// Creates a recipe resulting in the given item and amount but does not yet register it into the game. Call this at the very beginning when creating a new craft.
+	/// </summary>
+	/// <param name="result">What item will be given when the craft has been completed</param>
+	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
+	/// <exception cref="RecipeException">A Recipe can only be created inside recipe related methods</exception>
 	public static Recipe Create(int result, int amount = 1)
 	{
 		if (!RecipeLoader.setupRecipes)

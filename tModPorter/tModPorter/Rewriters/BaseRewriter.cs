@@ -144,7 +144,8 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		}
 
 		isInvoke = false;
-		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
+		op = model.GetOperation(memberRefExpr);
+		return IsInvalidOrObsolete(op);
 	}
 
 	public static bool IsInvalidOrObsolete(IOperation op) =>

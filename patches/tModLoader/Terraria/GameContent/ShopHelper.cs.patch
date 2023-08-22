@@ -69,27 +69,24 @@
  			new AllPersonalitiesModifier().ModifyShopPrice(info, this);
  			if (_currentHappiness == "")
  				AddHappinessReportText("Content");
-@@ -167,11 +_,22 @@
+@@ -167,11 +_,19 @@
  		return priceAdjustment;
  	}
  
+-	private static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
 +	//TML: Turned public.
 +	//TODO: Anything else?
--	private static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
-+	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
++	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue(biomeNameKey.StartsWith("Mods.") ? biomeNameKey : "TownNPCMoodBiomes." + biomeNameKey);
  
- 	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
+-	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
++	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null, int otherNPCType = 0)
  	{
-+		string text;
+ 		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +
-+		if (_currentNPCBeingTalkedTo.type < NPCID.Count)
--		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+			text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
-+		else {
-+			var modNpc = _currentNPCBeingTalkedTo.ModNPC;
-+
-+			text = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
-+		}
++		if (textKeyInCategory == "Princess_LovesNPC")
++			text = ModContent.GetModNPC(otherNPCType).GetLocalizationKey("TownNPCMood");
++		else if (_currentNPCBeingTalkedTo.ModNPC is ModNPC modNPC)
++			text = modNPC.GetLocalizationKey("TownNPCMood");
 +
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  			text += "Transformed";
@@ -130,7 +127,7 @@
  	public void LikeBiome(string nameKey)
  	{
  		AddHappinessReportText("LikeBiome", new {
-@@ -223,25 +_,29 @@
+@@ -223,25 +_,38 @@
  
  		_currentPriceAdjustment *= 0.94f;
  	}
@@ -140,11 +137,20 @@
 -	public void LoveNPCByTypeName(int npcType)
 +	internal void LoveNPCByTypeName(int npcType)
  	{
++		if (npcType >= NPCID.Count && _currentNPCBeingTalkedTo.type == 633) {
++			// Princess text for liking modded npcs located with the text for the modnpc itself, not with the princess text. Revisit this if https://github.com/tModLoader/tModLoader/issues/3493 is ever implemented.
++			AddHappinessReportText("Princess_LovesNPC", new {
++				NPCName = NPC.GetFullnameByID(npcType)
++			}, npcType);
++			goto PriceAdjustment;
++		}
++
  		AddHappinessReportText("LoveNPC_" + NPCID.Search.GetName(npcType), new {
  			NPCName = NPC.GetFullnameByID(npcType)
  		});
  
 -		_currentPriceAdjustment *= 0.88f;
++		PriceAdjustment:
 +		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
  	}
  
@@ -189,7 +195,7 @@
 +		/*
  		if (type == 37 || type == 368 || type == 453)
 +		*/
-+		if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
++		if (NPCID.Sets.NoTownNPCHappiness[type])
  			return true;
  
  		return false;

@@ -1,8 +1,11 @@
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.Social;
@@ -117,4 +120,45 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	}
 
 	private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	Utils.OpenToURL(TmlRules);
+
+	public override void OnInitialize()
+	{
+		base.OnInitialize();
+
+		// Update Localization Tags Automatically if the mod is loaded. (Can only publish if enabled, but just in case.)
+		if (ModLoader.ModLoader.TryGetMod(_dataObject.Name, out ModLoader.Mod mod)) {
+			var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(mod);
+			int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
+			ModLoader.Logging.tML.Info($"Determining localization progress for {mod.Name}:");
+			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
+				if (tagOption.OptionValue.NameKey.StartsWith("tModLoader.TagsLanguage_")) {
+					// I couldn't see any other way to convert this.
+					var culture = tagOption.OptionValue.NameKey.Split('_')[1] switch {
+						"English" => GameCulture.FromName("en-US"),
+						"Spanish" => GameCulture.FromName("es-ES"),
+						"French" => GameCulture.FromName("fr-FR"),
+						"Italian" => GameCulture.FromName("it-IT"),
+						"Russian" => GameCulture.FromName("ru-RU"),
+						"Chinese" => GameCulture.FromName("zh-Hans"),
+						"Portuguese" => GameCulture.FromName("pt-BR"),
+						"German" => GameCulture.FromName("de-DE"),
+						"Polish" => GameCulture.FromName("pl-PL"),
+						_ => throw new NotImplementedException(),
+					};
+
+					int countOtherEntries;
+					localizationCounts.TryGetValue(culture, out countOtherEntries);
+					float localizationProgress = (float)countOtherEntries / countMaxEntries;
+					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countMaxEntries}, {localizationProgress:P0}, missing {countMaxEntries - countOtherEntries}");
+
+					bool languageMostlyLocalized = localizationProgress > 0.75f; // Suitable threshold?
+
+					// Override existing selection or only set to true if true? Current behavior is override.
+					tagOption.SetCurrentOption(languageMostlyLocalized ? tagOption.OptionValue : null);
+					// Automatically set option is slightly redder, indicating it was automaticly selected
+					tagOption.SetColor(tagOption.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
+				}
+			}
+		}
+	}
 }

@@ -92,15 +92,10 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,74 @@
+@@ -147,23 +_,51 @@
  		}
  	}
  
-+	public const string PreviewFolder = "tModLoader-preview";
-+	public const string ReleaseFolder = "tModLoader";
-+	public const string DevFolder = "tModLoader-dev";
-+	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
-+
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
  	public static void LaunchGame(string[] args, bool monoArgs = false)
@@ -136,26 +131,8 @@
 -#endif
 +		bool isServer = LaunchParameters.ContainsKey("-server");
 +
-+		try {
-+			ControlledFolderAccessSupport.CheckFileSystemAccess();
-+			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
-+
-+			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
-+				throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
-+		}
-+		catch (Exception e) {
-+			ErrorReporting.FatalExit("Failed to init logging", e);
-+		}
-+
-+		try {
-+			SetSavePath(); // Needs to run before Logging.LogStartup due to DeveloperMode check in ModCompile
-+			Logging.LogStartup(isServer);
-+		}
-+		catch (Exception e) {
-+			ErrorReporting.FatalExit("Failed to handle save data", e);
-+		}
-+
-+		AttemptSupportHighDPI(isServer);
++		StartupSequenceTml(isServer);
++		
 +		LaunchGame_(isServer);
 +	}
 +
@@ -200,7 +177,7 @@
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
 @@ -197,10 +_,14 @@
- 			main.Run();
+ 				main.Run();
  		}
  		catch (Exception e) {
 +			ErrorReporting.FatalExit("Main engine crash", e);

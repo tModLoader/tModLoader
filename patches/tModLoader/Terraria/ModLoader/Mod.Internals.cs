@@ -115,7 +115,7 @@ partial class Mod
 		}
 		else {
 			if (e is AssetLoadException AssetLoadException) {
-				// Fix this once ContenSources are sane with extensions
+				// Fix this once ContentSources are sane with extensions
 				ICollection<string> keys = RootContentSource.EnumerateAssets().ToList();
 				var cleanKeys = new List<string>();
 				foreach (var key in keys) {
@@ -123,9 +123,12 @@ partial class Mod
 					string extension = RootContentSource.GetExtension(keyWithoutExtension);
 					if (extension != null) {
 						cleanKeys.Add(key.Substring(0, key.LastIndexOf(extension)));
+						// Should probably check RootContentSource.Rejections.IsRejected before adding to cleanKeys, but it doesn't matter because of MissingResourceException logic.
 					}
 				}
-				var MissingResourceException = new Exceptions.MissingResourceException(assetPath.Replace("\\", "/"), cleanKeys);
+				var reasons = new List<string>();
+				RootContentSource.Rejections.TryGetRejections(reasons); // Not technically the rejection reasons for the specific asset, but there is no current way of getting that.
+				var MissingResourceException = new Exceptions.MissingResourceException(reasons, assetPath.Replace("\\", "/"), cleanKeys);
 				AssetExceptions.Add(MissingResourceException);
 			}
 			else {

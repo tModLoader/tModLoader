@@ -102,7 +102,12 @@
  					NetMessage.TrySendData(6);
  					if (Netplay.Connection.State == 2)
  						Netplay.Connection.State = 3;
-@@ -235,7 +_,7 @@
+@@ -231,11 +_,11 @@
+ 				player14.skinVariant = reader.ReadByte();
+ 				player14.skinVariant = (int)MathHelper.Clamp(player14.skinVariant, 0f, PlayerVariantID.Count - 1);
+ 				player14.hair = reader.ReadByte();
+-				if (player14.hair >= 165)
++				if (player14.hair >= HairLoader.Count)
  					player14.hair = 0;
  
  				player14.name = reader.ReadString().Trim().Trim();
@@ -631,6 +636,14 @@
  				if (num186 == 255) {
  					if (EmoteBubble.byID.ContainsKey(num185))
  						EmoteBubble.byID.Remove(num185);
+@@ -2863,6 +_,7 @@
+ 					EmoteBubble.byID[num185].ID = num185;
+ 					EmoteBubble.byID[num185].metadata = metadata;
+ 					EmoteBubble.OnBubbleChange(num185);
++					EmoteBubbleLoader.OnSpawn(EmoteBubble.byID[num185]);
+ 					break;
+ 				}
+ 			}
 @@ -3182,7 +_,16 @@
  				break;
  			case 117: {
@@ -675,6 +688,15 @@
  				}
  
  				break;
+@@ -3218,7 +_,7 @@
+ 					num213 = whoAmI;
+ 
+ 				int num214 = reader.ReadByte();
+-				if (num214 >= 0 && num214 < EmoteID.Count && Main.netMode == 2) {
++				if (num214 >= 0 && num214 < EmoteBubbleLoader.EmoteBubbleCount && Main.netMode == 2) {
+ 					EmoteBubble.NewBubble(num214, new WorldUIAnchor(Main.player[num213]), 360);
+ 					EmoteBubble.CheckForNPCsToReactToEmoteBubble(num214, Main.player[num213]);
+ 				}
 @@ -3293,10 +_,23 @@
  				if (Main.netMode == 2) {
  					short x10 = reader.ReadInt16();

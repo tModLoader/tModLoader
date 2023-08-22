@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader;
 
@@ -17,7 +16,7 @@ public ref struct RefReadOnlyArray<T>
 		this.array = array;
 	}
 
-	public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)array).GetEnumerator();
+	public ReadOnlySpan<T>.Enumerator GetEnumerator() => ((ReadOnlySpan<T>)array).GetEnumerator();
 
 	public static implicit operator RefReadOnlyArray<T>(T[] array) => new RefReadOnlyArray<T>(array);
 

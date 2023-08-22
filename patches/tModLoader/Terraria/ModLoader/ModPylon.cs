@@ -82,16 +82,18 @@ public abstract class ModPylon : ModTile
 	/// Creates the npc shop entry which will be registered to the shops of all NPCs which can sell pylons. <br/>
 	/// Override this to change the sold item type, or alter the conditions of sale. <br/>
 	/// Return null to prevent automatically registering this pylon in shops. <br/>
-	/// By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero <see cref="ModBlockType.ItemDrop"/> <br/>
+	/// By default, the pylon will be sold in all shops when the provided conditions are met, if the pylon has a non-zero item drop.<br/>
 	/// <br/>
 	/// The standard pylon conditions are <see cref="Condition.HappyEnoughToSellPylons"/>, <see cref="Condition.AnotherTownNPCNearby"/>, <see cref="Condition.NotInEvilBiome"/>
 	/// </summary>
 	public virtual NPCShop.Entry GetNPCShopEntry()
 	{
-		if (ItemDrop == 0)
+		// TODO: Handle this correctly once pylons support multiple styles.
+		int drop = TileLoader.GetItemDropFromTypeAndStyle(Type);
+		if (drop == 0)
 			return null;
 
-		return new NPCShop.Entry(ItemDrop, Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome);
+		return new NPCShop.Entry(drop, Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome);
 	}
 
 	/// <summary>

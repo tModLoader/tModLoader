@@ -18,6 +18,11 @@ public class TooltipLine
 	public readonly string Name;
 
 	/// <summary>
+	/// => $"{Mod}/{Name}"
+	/// </summary>
+	public string FullName => $"{Mod}/{Name}";
+
+	/// <summary>
 	/// The actual text that this tooltip displays.
 	/// </summary>
 	public string Text;
@@ -73,7 +78,7 @@ public class TooltipLine
 	/// <item><description>"Material" - Tells if the item can be used to craft something.</description></item>
 	/// <item><description>"Tooltip#" - A tooltip line of the item. # will be 0 for the first line, 1 for the second, etc.</description></item>
 	/// <item><description>"EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated.</description></item>
-	/// <item><description>"WellFedExpert" - In expert mode, tells that food increases life renegeration.</description></item>
+	/// <item><description>"WellFedExpert" - In expert mode, tells that food increases life regeneration.</description></item>
 	/// <item><description>"BuffTime" - Tells how long the item's buff lasts.</description></item>
 	/// <item><description>"OneDropLogo" - The One Drop logo for yoyos.This is a specially-marked tooltip line that has no text.</description></item>
 	/// <item><description>"PrefixDamage" - The damage modifier of the prefix.</description></item>
@@ -118,4 +123,8 @@ public class TooltipLine
 		Name = name;
 		Text = text;
 	}
+
+	public bool Visible { get; private set; } = true;
+
+	public void Hide() => Visible = false;
 }

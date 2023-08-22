@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -19,6 +20,14 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract partial class ModSystem : ModType
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, s => s.SaveWorldData, s => s.LoadWorldData);
+		LoaderUtils.MustOverrideTogether(this, s => s.NetSend, s => s.NetReceive);
+	}
+
 	protected override void Register()
 	{
 		SystemLoader.Add(this);
@@ -55,8 +64,8 @@ public abstract partial class ModSystem : ModType
 	public virtual void OnLocalizationsLoaded() { }
 
 	/// <summary>
-	/// Override this method to add recipes to the game.
-	/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
 	/// </summary>
 	public virtual void AddRecipes() { }
 
@@ -69,9 +78,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
 	/// </summary>
-	public virtual void PostSetupRecipes()
-	{
-	}
+	public virtual void PostSetupRecipes() { }
 
 	/// <summary>
 	/// Override this method to add recipe groups to the game.
@@ -81,18 +88,25 @@ public abstract partial class ModSystem : ModType
 	public virtual void AddRecipeGroups() { }
 
 	/// <summary>
-	/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
-	/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
+	/// Called whenever a world is loaded, before <see cref="LoadWorldData"/> <br/>
+	/// If you need to initialize tile or other world related data-structures, use <see cref="ClearWorld"/> instead
 	/// </summary>
 	public virtual void OnWorldLoad() { }
 
 	/// <summary>
-	/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
+	/// Called whenever a world is unloaded.
 	/// </summary>
 	public virtual void OnWorldUnload() { }
 
 	/// <summary>
-	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
+	/// Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br/>
+	/// Also called just before mods are unloaded.
+	/// </summary>
+	public virtual void ClearWorld() { }
+
+	/// <summary>
+	/// Use this hook to modify <see cref="Main.screenPosition"/> after weapon zoom and camera lerp have taken place.
+	/// <br/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
 	/// </summary>
 	public virtual void ModifyScreenPosition() { }
 
@@ -342,7 +356,8 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. <para/>
-	/// For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.
+	/// For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. <para/>
+	/// To disable or hide generation passes, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) { }
 
@@ -357,7 +372,8 @@ public abstract partial class ModSystem : ModType
 	public virtual void ResetNearbyTileEffects() { }
 
 	/// <summary>
-	/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement"
+	/// Similar to <see cref="ModifyWorldGenTasks(List{GenPass}, ref double)"/>, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement" <para/>
+	/// To disable or hide tasks, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
 
@@ -369,7 +385,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
 
 	/// <summary>
-	/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+	/// Allows you to modify overall brightness of lights. Can be used to create effects similar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
 	/// </summary>
 	/// <param name="scale">Brightness scale</param>
 	public virtual void ModifyLightingBrightness(ref float scale) { }

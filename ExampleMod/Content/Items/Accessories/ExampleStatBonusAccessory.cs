@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public static readonly int ExampleKnockback = 100;
 		public static readonly int AdditiveCritDamageBonus = 20;
 
-		// Insert the modifier values into the tooltip localization
+		// Insert the modifier values into the tooltip localization. More info on this approach can be found on the wiki: https://github.com/tModLoader/tModLoader/wiki/Localization#binding-values-to-localizations
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback, AdditiveCritDamageBonus);
 
 		public override void SetDefaults() {

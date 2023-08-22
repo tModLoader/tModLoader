@@ -31,10 +31,19 @@ partial class ArmorIDs
 
 			// Created based on 'drawsBackHairWithoutHeadgear' definition in 'Player.GetHairSettings'.
 			/// <summary>
-			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow back hair (<see cref="DrawBackHair"/>) to draw in full when equipped.
+			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow back hair (<see cref="HairID.Sets.DrawBackHair"/>) to draw in full when equipped.
 			/// <br/> Defaults to <see langword="false"/>.
 			/// </summary>
 			public static bool[] DrawsBackHairWithoutHeadgear = Factory.CreateBoolSet(0, 23, 259);
+
+			/// <summary>
+			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow a taller hat to render.
+			/// <br/> Defaults to <see langword="false"/>.
+			/// </summary>
+			/// <remarks>
+			/// This is used by, for example, wizard hats and gladiator helmet. Without this setting, some animation frames would render cropped at the top.
+			/// </remarks>
+			public static bool[] IsTallHat = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180);
 
 			/// <summary>
 			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow the player's head and face to be drawn.

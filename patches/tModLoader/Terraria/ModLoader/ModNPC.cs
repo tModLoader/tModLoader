@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
@@ -25,7 +26,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> Shorthand for NPC.type; </summary>
 	public int Type => NPC.type;
 
-	public string LocalizationCategory => "NPCs";
+	public virtual string LocalizationCategory => "NPCs";
 
 	/// <summary> The translations for the display name of this NPC. </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
@@ -52,12 +53,17 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	public int AnimationType { get; set; }
 
-	/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
-	/// Will be superceded by ModSceneEffect. Kept for legacy.
+	/// <summary>
+	/// The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally.
+	/// </summary>
+	/// <remarks>
+	/// Note: This property gets ignored if the game would not play music for this NPC by default (i.e. it's not a boss, or it doesn't belong to an invasion)
+	/// </remarks>
+	/// Will be superseded by ModSceneEffect. Kept for legacy.
 	public int Music { get; set; } = -1;
 
 	/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
-	/// Will be superceded by ModSceneEffect. Kept for legacy.
+	/// Will be superseded by ModSceneEffect. Kept for legacy.
 	public SceneEffectPriority SceneEffectPriority { get; set; } = SceneEffectPriority.BossLow;
 
 	/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
@@ -72,7 +78,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	//TODO: Find a better solution in the future.
 	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
-	
+
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
 	public bool TownNPCStayingHomeless { get; set; }
 
@@ -81,8 +87,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModNPC>.Register(this);
-		NPC.type = NPCLoader.ReserveNPCID();
-		NPCLoader.npcs.Add(this);
+		NPC.type = NPCLoader.Register(this);
 
 		Type type = GetType();
 		var autoloadHead = type.GetAttribute<AutoloadHead>();
@@ -95,12 +100,22 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 		}
 	}
 
+	/// <summary>
+	/// Allows you to change the emote that the NPC will pick
+	/// </summary>
+	/// <param name="closestPlayer">The <see cref="Player"/> closest to the NPC. You can check the biome the player is in and let the NPC pick the emote that corresponds to the biome.</param>
+	/// <param name="emoteList">A list of emote IDs from which the NPC will randomly select one</param>
+	/// <param name="otherAnchor">A <see cref="WorldUIAnchor"/> instance that indicates the target of this emote conversation. Use this to get the instance of the <see cref="NPC"/> or <see cref="Player"/> this NPC is talking to.</param>
+	/// <returns>Return null to use vanilla mechanic (pick one from the list), otherwise pick the emote by the returned ID. Returning -1 will prevent the emote from being used. Returns null by default</returns>
+	public virtual int? PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+		return null;
+	}
+
 	public sealed override void SetupContent()
 	{
-		NPCLoader.SetDefaults(NPC, false);
+		NPCLoader.SetDefaults(NPC, createModNPC: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		NPCID.Search.Add(FullName, Type);
 	}
 
@@ -404,6 +419,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="target"></param>
 	/// <returns></returns>
 	public virtual bool CanHitNPC(NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// </summary>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC attacker)
 	{
 		return true;
 	}
@@ -723,7 +748,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether this NPC can be telported to a King or Queen statue. Returns false by default.
+	/// Whether this NPC can be teleported to a King or Queen statue. Returns false by default.
 	/// </summary>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
 	public virtual bool CanGoToStatue(bool toKingStatue)
@@ -803,7 +828,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and hori<paramref name="horizontalHoldoutOffset"/>zontalHoldoutOffset is how far away the item should be drawn from the NPC.<br/>
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.<br/>
 	/// To use an actual item sprite, use <code>Main.GetItemDrawFrame(itemTypeHere, out item, out itemFrame);
 	/// horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - someOffsetHere</code>
 	/// </summary>
@@ -828,7 +853,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the npc's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+	/// Allows you to modify the NPC's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
 	/// </summary>
 	/// <param name="victimHitbox"></param>
 	/// <param name="immunityCooldownSlot"></param>

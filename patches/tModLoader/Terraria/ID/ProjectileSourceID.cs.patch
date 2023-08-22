@@ -35,7 +35,7 @@
 +		SetBonus_GhostHeal => nameof(SetBonus_GhostHeal),
 +		SetBonus_GhostHurt => nameof(SetBonus_GhostHurt),
 +		VampireKnives => nameof(VampireKnives),
-+		TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_TorchGod' being added.
++		TorchGod => nameof(TorchGod),
 +		_ => null,
 +	};
  }

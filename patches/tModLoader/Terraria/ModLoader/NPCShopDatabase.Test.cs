@@ -61,7 +61,7 @@ public static partial class NPCShopDatabase
 
 		// Some known issues:
 		//   Golf score exactly 500/1000/2000, some vanilla conditions use > and some use >=. tML can just use >=
-		//   Player y zone hight. Some vanilla conditions use player.position.Y, others use player.center.Y and others use ZoneSkyHeight etc
+		//   Player y zone height. Some vanilla conditions use player.position.Y, others use player.center.Y and others use ZoneSkyHeight etc
 		//     minor differences between these are fine to ignore
 
 		// Some helper codes

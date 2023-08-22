@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Default;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -78,7 +79,7 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 			int frames = Main.npcFrameCount[type];
 
 			if (Unloaded) {
-				npcTexture = TextureAssets.Item[ItemID.Count].Value; //Will this always return the 'missing item' texture?
+				npcTexture = TextureAssets.Item[ModContent.ItemType<UnloadedItem>()].Value;
 				frames = 1;
 			}
 

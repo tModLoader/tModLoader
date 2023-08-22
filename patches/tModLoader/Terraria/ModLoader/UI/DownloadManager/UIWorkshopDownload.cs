@@ -1,59 +1,96 @@
 using System.Diagnostics;
-using Terraria.Audio;
+using Microsoft.Xna.Framework;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.DownloadManager;
 
-internal class UIWorkshopDownload : UIProgress
+public interface IDownloadProgress
 {
+	public void DownloadStarted(string displayName);
+	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded);
+}
+
+internal class UIWorkshopDownload : UIProgress, IDownloadProgress
+{
+	internal struct ProgressData
+	{
+		public string displayName;
+		public float progress;
+		public long bytesReceived;
+		public long totalBytesNeeded;
+		public bool reset;
+	}
+	private ProgressData progressData;
+	private bool needToUpdateProgressData = false;
+
 	private Stopwatch downloadTimer;
 
-	public int PreviousMenuMode { get; set; } = -1;
-
-	public UIWorkshopDownload(int previousMenuMode)
+	public UIWorkshopDownload()
 	{
 		downloadTimer = new Stopwatch();
-		PreviousMenuMode = previousMenuMode;
-		Main.menuMode = 888;
 	}
 
-	public void PrepUIForDownload(string displayName)
+	public override void OnInitialize()
 	{
-		_progressBar.UpdateProgress(0f);
-		_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", displayName);
-		downloadTimer.Restart();
-		Main.MenuUI.RefreshState();
-
+		base.OnInitialize();
+		// We can't cancel in-progress workshop downloads without getting steam in to a deadlock state - Solxan
+		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		_cancelButton.Remove();
 	}
 
+	public override void Update(GameTime gameTime)
+	{
+		if (needToUpdateProgressData) { // Lock only when needed
+			ProgressData localProgressData;
+			lock (this) {
+				localProgressData = progressData; // Make local to release the lock
+				progressData.reset = false; // Reset reset status
+
+				needToUpdateProgressData = false;
+			}
+
+			// Update reset
+			if (localProgressData.reset) {
+				_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", localProgressData.displayName);
+				downloadTimer.Restart();
+			}
+			// Update progress
+			_progressBar.UpdateProgress(localProgressData.progress);
+			double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
+			double speed = elapsedSeconds > 0.0 ? localProgressData.bytesReceived / elapsedSeconds : 0.0;
+			SubProgressText = $"{UIMemoryBar.SizeSuffix(localProgressData.bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(localProgressData.totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
+		}
+		base.Update(gameTime);
+	}
+
+	/**
+	 * <remarks>This will be called from a thread!</remarks>
+	 */
+	public void DownloadStarted(string displayName)
+	{
+		lock (this) {
+			progressData.displayName = displayName;
+			progressData.progress = 0;
+			progressData.bytesReceived = 0;
+			progressData.totalBytesNeeded = 0;
+			progressData.reset = true;
+
+			needToUpdateProgressData = true;
+		};
+	}
+
+	/**
+	 * <remarks>This will be called from a thread!</remarks>
+	 */
 	public void UpdateDownloadProgress(float progress, long bytesReceived, long totalBytesNeeded)
 	{
-		_progressBar.UpdateProgress(progress);
+		lock (this) {
+			// Intentional leaving reset and name as previous data (to handle multiple events before UI update
+			progressData.progress = progress;
+			progressData.bytesReceived = bytesReceived;
+			progressData.totalBytesNeeded = totalBytesNeeded;
 
-		double elapsedSeconds = downloadTimer.Elapsed.TotalSeconds;
-		double speed = elapsedSeconds > 0.0 ? bytesReceived / elapsedSeconds : 0.0;
-
-		SubProgressText = $"{UIMemoryBar.SizeSuffix(bytesReceived, 2)} / {UIMemoryBar.SizeSuffix(totalBytesNeeded, 2)} ({UIMemoryBar.SizeSuffix((long)speed, 2)}/s)";
-	}
-
-	public void Leave(bool refreshBrowser)
-	{
-		// Exit
-		ReturnToPreviousMenu();
-	}
-
-	public void ReturnToPreviousMenu()
-	{
-		if (PreviousMenuMode == -1) {
-			Main.menuMode = 0;
-			return;
-		}
-
-		if (PreviousMenuMode != -1) {
-			Main.menuMode = PreviousMenuMode;
-		}
-
-		SoundEngine.PlaySound(11);
+			needToUpdateProgressData = true;
+		};
 	}
 }

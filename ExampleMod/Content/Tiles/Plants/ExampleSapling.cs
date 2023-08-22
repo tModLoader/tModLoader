@@ -42,8 +42,7 @@ namespace ExampleMod.Content.Tiles.Plants
 
 			TileObjectData.addTile(Type);
 
-			LocalizedText name = CreateMapEntryName();
-			AddMapEntry(new Color(200, 200, 200), name);
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Sapling"));
 
 			TileID.Sets.TreeSapling[Type] = true;
 			TileID.Sets.CommonSapling[Type] = true;

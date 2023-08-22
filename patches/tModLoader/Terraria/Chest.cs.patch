@@ -144,7 +144,7 @@
 +	/// Gets a list of currently-open chests in the world.
 +	/// <br/> Never called on <see cref="NetmodeID.MultiplayerClient"/>.
 +	/// </summary>
-+	/// <returns>A <see cref="List{T}"/> containing the indicies in <see cref="Main.chest"/> of all chests any active <see cref="Player"/> has open.</returns>
++	/// <returns>A <see cref="List{T}"/> containing the indices in <see cref="Main.chest"/> of all chests any active <see cref="Player"/> has open.</returns>
  	public static List<int> GetCurrentlyOpenChests()
  	{
  		List<int> list = new List<int>();

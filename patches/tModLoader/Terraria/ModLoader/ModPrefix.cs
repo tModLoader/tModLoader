@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -29,7 +31,7 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
 
-	public string LocalizationCategory => "Prefixes";
+	public virtual string LocalizationCategory => "Prefixes";
 
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
@@ -45,7 +47,11 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 		PrefixLoader.RegisterPrefix(this);
 	}
 
-	public sealed override void SetupContent() => SetStaticDefaults();
+	public sealed override void SetupContent()
+	{
+		SetStaticDefaults();
+		PrefixID.Search.Add(FullName, Type);
+	}
 
 	/// <summary>
 	/// The roll chance of your prefix relative to a vanilla prefix, 1f by default.
@@ -86,4 +92,12 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 	/// </summary>
 	/// <param name="player"> The player gaining the benefits of this accessory. </param>
 	public virtual void ApplyAccessoryEffects(Player player) { }
+
+	/// <summary>
+	/// Use this to add tooltips to any item with this prefix applied. Note that the stat bonuses applied via <see cref="SetStats"/> will automatically generate tooltips. (such as damage, use speed, crit chance, mana cost, scale, shoot speed, and knockback)<br/>
+	/// </summary>
+	public virtual IEnumerable<TooltipLine> GetTooltipLines(Item item)
+	{
+		return null;
+	}
 }

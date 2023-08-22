@@ -6,6 +6,11 @@ partial class ItemID
 {
 	partial class Sets
 	{
+		/// <summary>
+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
+		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
+		/// <br/> Defaults to <see langword="false"/>.
+		/// </summary>
 		public static bool[] Glowsticks = Factory.CreateBoolSet(282, 286, 3002, 3112, 4776);
 
 		/// <summary>
@@ -59,6 +64,26 @@ partial class ItemID
 			MonkStaffT2,
 			ChlorophytePartisan,
 			NorthPole
+		);
+
+		/// <summary>
+		/// Set for defining how much coin luck according to its stack this item gives to nearby players when thrown into shimmer (<see cref="Entity.shimmerWet"/>).<br/>
+		/// Includes the 4 vanilla coin types by default. The value represents the "price" of the currency in copper coins. For other items, default value is 0, which means it will not give coin luck.<br/>
+		/// </summary>
+		/// <remarks>Coin luck application takes precedence over other actions related to shimmer.</remarks>
+		public static int[] CoinLuckValue = Factory.CreateIntSet(0,
+			CopperCoin,   1,
+			SilverCoin,	  100,
+			GoldCoin,	  10000,
+			PlatinumCoin, 1000000
+		);
+
+		/// <summary>
+		/// If true, the item counts as a specialist weapon.<br/>
+		/// Used for Shroomite Helmet damage buffs (and other effects that will affect <see cref="Player.specialistDamage"/>).<br/>
+		/// </summary>
+		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(
+			PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove
 		);
 
 		/// <summary>

@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,449 @@
+@@ -37,78 +_,455 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -161,7 +161,7 @@
 +	/// <summary>
 +	/// The numerical ID of the armor shader in <see cref="GameShaders.Armor"/> this item activates when worn in a dye slot.<br/>
 +	/// If greater than 0, then this item can be equipped into dye slots.<br/>
-+	/// Defaults to -1.<br/>
++	/// Defaults to 0.<br/>
 +	/// </summary>
 +	public int dye; //TML: Changed from byte to int.
 +
@@ -244,6 +244,11 @@
 +	/// </summary>
  	public bool isAShopItem;
 -	public short hairDye = -1;
++	/// <summary>
++	/// The numerical ID of the hair shader in <see cref="GameShaders.Hair"/> this item will apply to the player when used.<br/>
++	/// If greater than -1, then this item is a hair dye.<br/>
++	/// Defaults to -1.<br/>
++	/// </summary>
 +	public int hairDye = -1; //TML: Changed from short to int.
 +
 +	/// <summary>
@@ -311,15 +316,15 @@
  	public bool accessory;
 +
 +	/// <summary>
-+	/// The time span of the using animation for the item in ticks. This is independant of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <see cref="useTime"/> as this is only the animation.
++	/// The time span of the using animation for the item in ticks. This is independent of the time it takes for the item to actually be used and potentially autoReused again. For weapons it is recommended to be the same as <see cref="useTime"/> as this is only the animation.
 +	/// <br/> Blocks use 15. Default value is 100. Terraria runs at 60 frames per second, so 15 is 1/4th of a second.
 +	/// </summary>
  	public int useAnimation;
 +
 +	/// <summary>
-+	/// The time span of using the item in ticks. This is independant of the time it takes for the item animation to finish. 
++	/// The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish. 
 +	/// <br/> Blocks use 10. Default value is 100.
-+	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L111">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
++	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
  	public int useTime;
 +
@@ -439,7 +444,7 @@
  	public Color color;
 +
 +	/// <summary>
-+	/// Set to a value from 0 to 255 to control how transparant the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
++	/// Set to a value from 0 to 255 to control how transparent the item will appear when drawn. Gel uses 175, gemstone items use 50. 0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Use <see cref="ModItem.GetAlpha(Color)"/> for more control over the resulting color.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
@@ -453,6 +458,7 @@
 +
 +	/// <summary>
 +	/// The size multiplier of the item's sprite while the item is being used. Also increases range for melee weapons.
++	/// <br/> Use <see cref="ModItem.ModifyItemScale(Player, ref float)"/> for dynamic scale values.
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -478,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,238 @@
+@@ -121,49 +_,242 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -549,7 +555,8 @@
  	public bool buyOnce;
 +
 +	/// <summary>
-+	/// The amount of mana this item consumes on use. Use <see cref="ModItem.ModifyManaCost(Player, ref float, ref float)"/> for dynamic mana costs.
++	/// The amount of mana this item consumes on use.
++	/// <br/> Use <see cref="ModItem.ModifyManaCost(Player, ref float, ref float)"/> for dynamic mana costs.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int mana;
@@ -607,7 +614,7 @@
  	public int buffTime;
 +
 +	/// <summary>
-+	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
++	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int mountType = -1;
@@ -625,6 +632,7 @@
 +	/// The numerical ID of the special currency this item is bought using.<br/>
 +	/// To make an item bought using Defender Medals, set this to <see cref="CustomCurrencyID.DefenderMedals"/>.<br/>
 +	/// See <see href="https://github.com/tModLoader/tModLoader/search?q=ExampleCustomCurrencyId">ExampleCustomCurrencyId</see> for an example of creating and using a custom currency.<br/>
++	/// Must be used with <see cref="shopCustomPrice"/> assigning the price in terms of this custom currency.<br/>
 +	/// Defaults to -1, which means an item is bought using coins.<br/>
 +	/// </summary>
  	public int shopSpecialCurrency = -1;
@@ -632,6 +640,7 @@
 +	/// <summary>
 +	/// If not <see langword="null"/>, the custom value of the given item when being bought from a shop.<br/>
 +	/// Used for assigning a non-default price to an item in shops.<br/>
++	/// Can be used with <see cref="shopSpecialCurrency"/> to assign a price in terms of a custom currency instead of coins.<br/>
 +	/// To get the raw price of an item, use <see cref="GetStoreValue"/>.<br/>
 +	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.<br/>
 +	/// Defaults to <see langword="null"/>.<br/>
@@ -651,6 +660,7 @@
 +
 +	/// <summary>
 +	/// The base critical chance for this item. Remember that the player has a base crit chance of 4.
++	/// <br/> Use <see cref="ModItem.ModifyWeaponCrit(Player, ref float)"/> for dynamic crit values.
 +	/// <br/> Defaults to 0
 +	/// </summary>
  	public int crit;
@@ -1292,7 +1302,7 @@
 +	/// <summary>
 +	/// This method sets a variety of Item values common to golf ball items.<br/>
 +	/// Specifically:<code>
-+	///	shoot = projid;
++	///	shoot = <paramref name="projid"/>;
 +	///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
 +	///	shootSpeed = 12f;
 +	///	width = 18;
@@ -1372,7 +1382,7 @@
 +	///	noUseGraphic = true;
 +	///	damage = dmg;
 +	///	knockBack = kb;
-+	///	shootSpeed = shootspeed;
++	///	shootSpeed = <paramref name="shootspeed"/>;
 +	/// </code>
 +	/// </summary>
 +	/// <param name="projectileId"></param>
@@ -1426,7 +1436,7 @@
 +	///	height = 40;
 +	///	UseSound = <see cref="SoundID.Item43"/>;
 +	/// </code>
-+	/// Addtionally: <br/><inheritdoc cref="DefaultToMagicWeapon" />
++	/// Additionally: <br/><inheritdoc cref="DefaultToMagicWeapon" />
 +	/// </summary>
 +	/// <param name="projType"></param>
 +	/// <param name="pushForwardSpeed">Passed into DefaultToMagicWeapon as the shotVelocity parameter</param>
@@ -1494,7 +1504,7 @@
 +	/// <summary>
 +	/// This method sets a variety of Item values common to bow weapons.<br/>
 +	/// Specifically: <code>width = 14;<br/>height = 30;<br/>UseSound = SoundID.Item5;</code><br/>
-+	/// Addtionally: <br/><inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
++	/// Additionally: <br/><inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
 +	/// </summary>
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
@@ -1660,8 +1670,8 @@
 +	/// useAnimation = useTime = animationTime;
 +	/// maxStack = 30;
 +	/// consumable = true;
-+	/// buffType = foodbuff;
-+	/// buffTime = foodbuffduration;
++	/// buffType = <paramref name="foodbuff"/>;
++	/// buffTime = <paramref name="foodbuffduration"/>;
 +	/// rare = <see cref="ItemRarityID.Blue"/>;
 +	/// value = 20 silver;
 +	/// </code>
@@ -1740,14 +1750,14 @@
 +		int originalType = type;
 +		int originalNetID = netID;
 +		var originalModItem = ModItem;
-+		var originalGlobals = globalItems;
++		var originalGlobals = _globals;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		netID = originalNetID;
 +		ModItem = originalModItem;
-+		globalItems = originalGlobals;
++		_globals = originalGlobals;
 +	}
 +
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
@@ -1785,7 +1795,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,11 +_,14 @@
+@@ -47297,19 +_,27 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
@@ -1798,10 +1808,14 @@
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
 +		if (type > 0 && ItemID.Sets.Deprecated[type]) {
++			/*
  			netID = 0;
  			type = 0;
  			stack = 0;
-@@ -47310,6 +_,8 @@
++			*/
++			TurnToAir();
+ 		}
+ 	}
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1817,7 +1831,7 @@
 +
 +		// TML field initialization:
 +		ModItem = null;
-+		globalItems = new Instanced<GlobalItem>[0];
++		_globals = null;
 +		StatsModifiedBy = new();
 +		AllowReforgeForStackableItem = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
@@ -1866,6 +1880,16 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
+@@ -47623,6 +_,9 @@
+ 		return new Color(num, num2, num3, num4);
+ 	}
+ 
++	/// <summary>
++	/// Use to check if a mechanism is allowed to spawn an Item of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
++	/// </summary>
+ 	public static bool MechSpawn(float x, float y, int type)
+ 	{
+ 		int num = 0;
 @@ -47649,7 +_,18 @@
  		return true;
  	}
@@ -1885,6 +1909,35 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public bool CanShimmer()
+@@ -47668,7 +_,7 @@
+ 		if (type == 3461 || createTile == 139)
+ 			flag = true;
+ 
+-		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && !ItemID.Sets.CommonCoin[type])
++		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && ItemID.Sets.CoinLuckValue[type] <= 0)
+ 			return makeNPC > 0;
+ 
+ 		return true;
+@@ -47723,7 +_,9 @@
+ 	{
+ 		int shimmerEquivalentType = GetShimmerEquivalentType();
+ 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
+-		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
++		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
++			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
++			/*
+ 			switch (shimmerEquivalentType) {
+ 				case 72:
+ 					stack *= 100;
+@@ -47737,6 +_,8 @@
+ 					stack *= 1000000;
+ 					break;
+ 			}
++			*/
++			// patch context for CoinLuckValue
+ 
+ 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
+ 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];
@@ -2040,7 +2093,7 @@
  		}
  
 -		if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
-+		if (itemToClone != null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
++		if (itemToClone == null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}
@@ -2094,7 +2147,7 @@
  
  					if (num2 > num3) {
  						num2 = num3;
-@@ -49266,10 +_,32 @@
+@@ -49266,10 +_,30 @@
  		}
  	}
  
@@ -2110,9 +2163,7 @@
 +		Item newItem = (Item)MemberwiseClone();
 +
 +		newItem.ModItem = ModItem?.Clone(newItem);
-+		newItem.globalItems = globalItems
-+			.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(this, newItem)))
-+			.ToArray();
++		newItem._globals = _globals?.Select(g => g?.Clone(this, newItem)).ToArray();
 +
 +		return newItem;
 +	}
@@ -2153,7 +2204,7 @@
  	}
  
 +	/// <summary>
-+	/// Clears the overriden value of <see cref="Name"/>.
++	/// Clears the overridden value of <see cref="Name"/>.
 +	/// </summary>
  	public void ClearNameOverride()
  	{
@@ -2164,7 +2215,7 @@
  		mountType = -1;
 +
 +		ModItem = null;
-+		globalItems = new Instanced<GlobalItem>[0];
++		_globals = null;
  	}
  
  	public void OnPurchase(Item item)

@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Generation/PassLegacy.cs
++++ src/tModLoader/Terraria/GameContent/Generation/PassLegacy.cs
+@@ -205,7 +_,8 @@
+ 		{ "Remove Broken Traps", 1293.4247f },
+ 		{ "Final Cleanup", 2080.294f }
+ 	};
++	// tML: Made internal
+-	private readonly WorldGenLegacyMethod _method;
++	internal readonly WorldGenLegacyMethod _method;
+ 
+ 	public PassLegacy(string name, WorldGenLegacyMethod method)
+ 		: base(name, GetWeight(name))

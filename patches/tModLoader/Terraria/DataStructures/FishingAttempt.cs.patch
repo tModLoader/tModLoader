@@ -73,7 +73,7 @@
 +
 +	/// <summary>
 +	/// If positive, the percent decrease in fishing power this attempt has from missing liquid tiles.
-+	/// <br/> This is <strong>not</strong> how gull the body of liquid is.
++	/// <br/> This is <strong>not</strong> how full the body of liquid is.
 +	/// </summary>
  	public float waterQuality;
 +

@@ -83,6 +83,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreReforge", comment: "Note: Use CanReforge instead for logic determining if a reforge can happen.");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
@@ -279,6 +281,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"CanBurnInLava",		"Use ItemID.Sets.IsLavaImmuneRegardlessOfRarity or add a method hook to On_Item.CheckLavaDeath");
 		HookRemoved("Terraria.ModLoader.ModItem",		"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
 		HookRemoved("Terraria.ModLoader.ModItem",		"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
+		HookRemoved("Terraria.ModLoader.ModItem",		"AutoLightSelect",		"Use ItemID.Sets.Torches[Type], ItemID.Sets.WaterTorches[Type], and ItemID.Sets.Glowsticks[Type] in SetStaticDefaults");
 		HookRemoved("Terraria.ModLoader.ModGore",		"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
 		HookRemoved("Terraria.ModLoader.ModTile",		"SaplingGrowthType",	"Use ModTree.SaplingGrowthType");
 		HookRemoved("Terraria.ModLoader.GlobalRecipe",	"RecipeAvailable",		"Use Recipe.AddCondition");
@@ -314,7 +317,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
 		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
 
-		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files and/or override DisplayName to adjust localization");
+		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files to adjust localization");
 		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
@@ -495,11 +498,13 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
 		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
 		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
+		ChangeHookSignature("Terraria.ModLoader.GlobalInfoDisplay", "ModifyDisplayColor");
 
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile", "Drop", comment: "Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation.");
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "ChestDrop", to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModTile", from: "DresserDrop", to: "ItemDrop");
+		RefactorInstanceMember("Terraria.ModLoader.ModBlockType", "ItemDrop", Removed("Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary."));
 		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
 		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
 		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
@@ -521,5 +526,14 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
+
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Add", to: "Add", newType: "Terraria.ModLoader.MonoModHooks");
+		RenameMethod("MonoMod.RuntimeDetour.HookGen.HookEndpointManager", from: "Modify", to: "Modify", newType: "Terraria.ModLoader.MonoModHooks");
+
+		RenameStaticField("Terraria.ID.AmmoID.Sets", from: "IsRocket", to: "IsSpecialist");
+		RenameInstanceField("Terraria.Projectile", from: "ContinuouslyUpdateDamage", to: "ContinuouslyUpdateDamageStats");
+		RenameStaticField("Terraria.ID.BuffID.Sets", from: "IsAnNPCWhipDebuff", to: "IsATagBuff");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShimmerImmunity", to: "SpecificDebuffImmunity").FollowBy(AccessShimmerBuffIDElem());
+		RefactorStaticMember("Terraria.ID.NPCID.Sets", "DebuffImmunitySets", Comment("Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453"));
 	}
 }

@@ -25,6 +25,7 @@ internal class UIModSourceItem : UIPanel
 	internal readonly string modName;
 	private readonly Asset<Texture2D> _dividerTexture;
 	private readonly UIText _modName;
+	private readonly UIAutoScaleTextTextPanel<string> needRebuildButton;
 	private readonly LocalMod _builtMod;
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
@@ -68,7 +69,15 @@ internal class UIModSourceItem : UIPanel
 		Append(buildReloadButton);
 
 		_builtMod = builtMod;
-		if (builtMod != null) {
+		if (builtMod != null && LocalizationLoader.changedMods.Contains(modName)) {
+			needRebuildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSRebuildRequired"));
+			needRebuildButton.CopyStyle(buildReloadButton);
+			needRebuildButton.Width.Pixels = 180;
+			needRebuildButton.Left.Pixels = 360;
+			needRebuildButton.BackgroundColor = Color.Red;
+			Append(needRebuildButton);
+		}
+		else if (builtMod != null) {
 			var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 			publishButton.CopyStyle(buildReloadButton);
 			publishButton.Width.Pixels = 100;
@@ -90,7 +99,7 @@ internal class UIModSourceItem : UIPanel
 		string modFolderName = Path.GetFileName(_mod);
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 		if (File.Exists(csprojFile)) {
-			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, Language.GetTextValue("tModLoader.MSOpenCSProj")) {
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
@@ -107,6 +116,14 @@ internal class UIModSourceItem : UIPanel
 		}
 	}
 
+	protected override void DrawChildren(SpriteBatch spriteBatch)
+	{
+		base.DrawChildren(spriteBatch);
+		if (needRebuildButton?.IsMouseHovering == true) {
+			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MSLocalizationFilesChangedCantPublish"), GetOuterDimensions().ToRectangle());
+		}
+	}
+
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		base.DrawSelf(spriteBatch);
@@ -114,7 +131,7 @@ internal class UIModSourceItem : UIPanel
 		Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 		spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 
-		// This code here rather than ctor since the delay for dozens of mod source folders is noticable.
+		// This code here rather than ctor since the delay for dozens of mod source folders is noticeable.
 		if (!_upgradePotentialChecked) {
 			_upgradePotentialChecked = true;
 			string modFolderName = Path.GetFileName(_mod);
@@ -184,7 +201,7 @@ internal class UIModSourceItem : UIPanel
 			}
 
 
-			// Display Run tModPorter for Windows when csproj is valid
+			// Display Run tModPorter for Windows when .csproj is valid
 			if (Platform.IsWindows && !projNeedsUpdate) {
 				var pIcon = UICommon.ButtonExclamationTexture;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
@@ -272,6 +289,7 @@ internal class UIModSourceItem : UIPanel
 				Main.menuMode = Interface.reloadModsID;
 				ModLoader.OnSuccessfulLoad += () => {
 					Main.QueueMainThreadAction(() => {
+						// Delay publishing to when the mod is completely reloaded in main thread
 						PublishMod(null, null);
 					});
 				};
@@ -285,7 +303,7 @@ internal class UIModSourceItem : UIPanel
 			WorkshopHelper.PublishMod(_builtMod, icon);
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
@@ -307,7 +325,7 @@ internal class UIModSourceItem : UIPanel
 			pending.WaitForExit();
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 

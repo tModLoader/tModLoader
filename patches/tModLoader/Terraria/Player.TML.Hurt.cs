@@ -161,6 +161,8 @@ public partial class Player
 				SourceDamage = (int)SourceDamage.ApplyTo(damage),
 				Damage = (int)GetDamage(damage, defense, defenseEffectiveness),
 				Knockback = GetKnockback(knockback, knockbackImmune),
+				DustDisabled = _dustDisabled,
+				SoundDisabled = _soundDisabled,
 			};
 
 

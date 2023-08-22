@@ -33,8 +33,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private UIPanel _uIPanel;
 	private UIInputTextField filterTextBox;
 	private UILoaderAnimatedImage _uiLoader;
+	private UIElement _links;
 	private CancellationTokenSource _cts;
-	private bool dotnetSDKFound;
+	private static bool dotnetSDKFound;
 
 	public override void OnInitialize()
 	{
@@ -48,7 +49,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		_uIPanel = new UIPanel {
 			Width = { Percent = 1f },
-			Height = { Pixels = -110, Percent = 1f },
+			Height = { Pixels = -65, Percent = 1f },
 			BackgroundColor = UICommon.MainPanelBackground,
 			PaddingTop = 0f
 		};
@@ -58,14 +59,14 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		var upperMenuContainer = new UIElement {
 			Width = { Percent = 1f },
-			Height = { Pixels = 32 },
+			Height = { Pixels = 82 },
 			Top = { Pixels = 10 }
 		};
 		var filterTextBoxBackground = new UIPanel {
 			Top = { Percent = 0f },
 			Left = { Pixels = -135, Percent = 1f },
 			Width = { Pixels = 135 },
-			Height = { Pixels = 40 }
+			Height = { Pixels = 32 }
 		};
 		filterTextBoxBackground.OnRightClick += (a, b) => filterTextBox.Text = "";
 		upperMenuContainer.Append(filterTextBoxBackground);
@@ -83,15 +84,15 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		_modList = new UIList {
 			Width = { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -50, Percent = 1f },
-			Top = { Pixels = 50 },
+			Height = { Pixels = -134, Percent = 1f },
+			Top = { Pixels = 134 },
 			ListPadding = 5f
 		};
 		_uIPanel.Append(_modList);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = { Pixels = -50, Percent = 1f },
-			Top = { Pixels = 50 },
+			Height = { Pixels = -134, Percent = 1f },
+			Top = { Pixels = 134 },
 			HAlign = 1f
 		}.WithView(100f, 1000f);
 		_uIPanel.Append(uIScrollbar);
@@ -103,6 +104,22 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			BackgroundColor = UICommon.DefaultUIBlue
 		}.WithPadding(15f);
 		_uIElement.Append(uIHeaderTextPanel);
+
+		_links = new UIPanel {
+			Width = { Percent = 1f },
+			Height = { Pixels = 78 },
+			Top = { Pixels = 46 },
+		};
+		_links.SetPadding(8);
+		_uIPanel.Append(_links);
+
+		AddLink(Language.GetText("tModLoader.VersionUpgrade"), 0.5f, 0f, "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+		AddLink(Language.GetText("tModLoader.WikiLink"), 0f, 0.5f, "https://github.com/tModLoader/tModLoader/wiki/");
+		string exampleModBranch = BuildInfo.IsStable ? "stable" : (BuildInfo.IsPreview ? "preview" : "1.4.4");
+		AddLink(Language.GetText("tModLoader.ExampleModLink"), 1f, 0.5f, $"https://github.com/tModLoader/tModLoader/tree/{exampleModBranch}/ExampleMod");
+		string docsURL = BuildInfo.IsStable ? "stable" : "preview";
+		AddLink(Language.GetText("tModLoader.DocumentationLink"), 0f, 1f, $"https://docs.tmodloader.net/docs/{docsURL}/annotated.html");
+		AddLink(Language.GetText("tModLoader.DiscordLink"), 1f, 1f, "https://tmodloader.net/discord");
 
 		var buttonBA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildAll")) {
 			Width = { Pixels = -10, Percent = 1f / 3f },
@@ -147,6 +164,27 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		Append(_uIElement);
 	}
 
+	private void AddLink(LocalizedText text, float hAlign, float vAlign, string url)
+	{
+		var link = new UIText(text) {
+			TextColor = Color.White,
+			HAlign = hAlign,
+			VAlign = vAlign,
+		};
+		link.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(SoundID.MenuTick);
+			link.TextColor = Main.OurFavoriteColor;
+		};
+		link.OnMouseOut += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			link.TextColor = Color.White;
+		};
+		link.OnLeftClick += delegate(UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Utils.OpenToURL(url);
+		};
+		_links.Append(link);
+	}
+
 	private void ButtonCreateMod_OnClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(11);
@@ -188,38 +226,6 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
-		DrawMigrationGuideLink();
-	}
-
-	//TODO: simplify this method
-	private void DrawMigrationGuideLink()
-	{
-		string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
-		float scale = 1f;
-
-		var font = FontAssets.MouseText.Value;
-		Vector2 sizes = font.MeasureString(versionUpgradeMessage);
-		Vector2 origin = sizes;
-		Color color = Color.IndianRed;
-		if (sizes.X > 430) {
-			scale = 430 / sizes.X;
-			sizes.X *= scale;
-		}
-
-		int xLoc = (int)(Main.screenWidth / 2 + 134);
-		int yLoc = (int)(sizes.Y + 244f);
-
-		Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, origin, new Vector2(scale, 1f), SpriteEffects.None, 0f);
-
-		var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
-		if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
-			return;
-		}
-
-		if (Main.mouseLeftRelease && Main.mouseLeft) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
-		}
 	}
 
 	public override void OnActivate()
@@ -252,7 +258,13 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 
 		if (!IsCompatibleDotnetSdkAvailable()) {
-			ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+			if (IsRunningInSandbox()) {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
+			}
+			else {
+				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+			}
+
 			return true;
 		}
 
@@ -261,14 +273,10 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey),
-		() => {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Utils.OpenToURL(url);
-		});
+		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
 	}
 
-	string GetCommandToFindPathOfExecutable()
+	private static string GetCommandToFindPathOfExecutable()
 	{
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			return "where";
@@ -279,39 +287,54 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return "which";
 
 		Logging.tML.Debug("Getting command for finding path of the executable failed due to an unsupported operating system");
-
 		return null;
 	}
 
-	string GetSystemDotnetPath()
+	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
-		string commandToFindPathOfExecutable = GetCommandToFindPathOfExecutable();
-		if (commandToFindPathOfExecutable == null)
-			return null;
-
-		try {
-			string dotnetPath = Process.Start(new ProcessStartInfo {
-				FileName = commandToFindPathOfExecutable,
+		if (GetCommandToFindPathOfExecutable() is string cmd) {
+			yield return Process.Start(new ProcessStartInfo {
+				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Trim();
+		}
 
-			if (!File.Exists(dotnetPath)) {
-				Logging.tML.Debug("Can't find SystemDotnetPath");
-				return null;
+		// OSX fallback
+		var pathsFile = "/etc/paths.d/dotnet";
+		if (File.Exists(pathsFile)) {
+			var contents = File.ReadAllText(pathsFile).Trim();
+			Logging.tML.Debug($"Reading {pathsFile}: {contents}");
+			yield return contents + "/dotnet";
+		}
+
+		// These fallbacks are generally pretty useless, since /usr/bin should almost always be on PATH
+		// env var, often set on Linux
+		if (Environment.GetEnvironmentVariable("DOTNET_ROOT") is string dotnetRoot) {
+			Logging.tML.Debug($"Found env var DOTNET_ROOT: {dotnetRoot}");
+			yield return $"{dotnetRoot}/dotnet";
+		}
+
+		// general unix fallback
+		yield return "/usr/bin/dotnet";
+	}
+
+	private static string GetSystemDotnetPath()
+	{
+		try {
+			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {
+				Logging.tML.Debug($"System dotnet install located at: {path}");
+				return path;
 			}
-
-			return dotnetPath;
 		}
-		catch (Exception e) {
-			Logging.tML.Debug("Finding SystemDotnetPath failed: ", e);
-		}
+		catch (Exception) {}
 
+		Logging.tML.Debug("Finding dotnet on PATH failed");
 		return null;
 	}
 
-	bool IsCompatibleDotnetSdkAvailable()
+	private static bool IsCompatibleDotnetSdkAvailable()
 	{
 		if (dotnetSDKFound)
 			return true;
@@ -338,6 +361,16 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 
 		return dotnetSDKFound;
+	}
+
+	private static bool IsRunningInSandbox()
+	{
+		if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("FLATPAK_SANDBOX_DIR"))) {
+			Logging.tML.Debug("Flatpak sandbox detected");
+			return true;
+		}
+
+		return false;
 	}
 
 	internal void Populate()
