@@ -67,6 +67,7 @@
 		"OutdatedModCantPublishError": "Вы не можете опубликовать мод, собранный на устаревшей версии tModLoader",
 		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Требуется перезагрузка",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
 		"ModsByline": "Автор: {0}",
