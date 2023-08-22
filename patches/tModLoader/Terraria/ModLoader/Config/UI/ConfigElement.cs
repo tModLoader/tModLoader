@@ -55,7 +55,7 @@ public abstract class ConfigElement : UIElement
 	protected bool DrawLabel { get; set; } = true;
 	protected bool ReloadRequired { get; set; }
 	protected object OldValue { get; set; }
-	protected bool ValueChanged => !OldValue.Equals(GetObject());
+	protected bool ValueChanged => !ConfigManager.ObjectEquals(OldValue, GetObject());
 
 	public ConfigElement()
 	{
@@ -99,7 +99,7 @@ public abstract class ConfigElement : UIElement
 		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
 		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
 		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
-		ReloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
+		ReloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
 	}
 
 	protected virtual void SetObject(object value)
