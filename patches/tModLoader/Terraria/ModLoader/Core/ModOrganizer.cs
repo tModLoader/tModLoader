@@ -328,7 +328,6 @@ internal static class ModOrganizer
 		var modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
 		VerifyNames(modsToLoad);
 
-		EnsureDependenciesExist(modsToLoad, false);
 		foreach (var mod in modsToLoad) {
 			EnableWithDeps(mod, availableMods);
 		}
