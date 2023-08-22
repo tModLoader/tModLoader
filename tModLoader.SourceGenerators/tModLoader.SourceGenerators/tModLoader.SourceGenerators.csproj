@@ -11,4 +11,15 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
 	</ItemGroup>
 
+	<Target Name="CopyDllToTmlLibs" AfterTargets="Build">
+		<ItemGroup>
+			<DllFile Include="bin/$(Configuration)/$(TargetFramework)/tModLoader.SourceGenerators.dll"/>
+		</ItemGroup>
+
+		<Copy
+            SourceFiles="@(DllFile)"
+            DestinationFolder="../../src/tModLoader/Terraria/bin/$(Configuration)/net6.0/Libraries/tModLoader.SourceGenerators"
+		/>
+	</Target>
+
 </Project>

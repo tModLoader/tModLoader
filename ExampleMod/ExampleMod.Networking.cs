@@ -25,7 +25,7 @@ namespace ExampleMod
 			switch (msgType) {
 				// This message syncs ExampleStatIncreasePlayer.exampleLifeFruits and ExampleStatIncreasePlayer.exampleManaCrystals
 				case MessageType.ExampleStatIncreasePlayerSync:
-					// default(ExampleStatIncreasePlayerPacket).Receive(reader, whoAmI);
+					default(ExampleStatIncreasePlayerPacket).Receive(reader, whoAmI);
 
 					/*
 					byte playernumber = reader.ReadByte();
