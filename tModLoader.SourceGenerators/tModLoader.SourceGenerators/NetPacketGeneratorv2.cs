@@ -164,7 +164,7 @@ partial struct {Template_DeclarationName} {{
 
 				var sourceProperties = serializableProperties.Select(x => new SourceProperty(
 					x.PropertySymbol.Name,
-					x.PropertySymbol.ToDisplayString(),
+					x.PropertyType.ToDisplayString(),
 					new SourceSerialization(
 						x.Serialization.Serialization.PreSerializationSymbol != null,
 						x.Serialization.Serialization.PreSerializationSymbol?.ReturnType?.SpecialType == SpecialType.System_Boolean,
@@ -411,7 +411,7 @@ partial struct {Template_DeclarationName} {{
 	private static ImmutableArray<SerializableProperty> RetrieveSerializableProperties(INamedTypeSymbol symbol, bool autoSerialization) => symbol.GetMembers()
 		.Where(x => {
 			bool isValidType =
-				x is IFieldSymbol fieldSymbol && !fieldSymbol.IsReadOnly && !fieldSymbol.IsConst
+				x is IFieldSymbol fieldSymbol && !fieldSymbol.IsReadOnly && !fieldSymbol.IsConst && !fieldSymbol.IsImplicitlyDeclared
 				|| x is IPropertySymbol propertySymbol && (propertySymbol.ReturnsByRef || !propertySymbol.IsWriteOnly && !propertySymbol.IsReadOnly);
 
 			if (!isValidType)
