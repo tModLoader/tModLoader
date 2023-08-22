@@ -15,6 +15,7 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
 using Terraria.GameContent;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -47,7 +48,7 @@ internal class UIModConfig : UIState
 	// reload manually, reload fresh server config?
 	// need some CopyTo method to preserve references....hmmm
 	private Mod mod;
-	private ModConfig config;// Load time config from ConfigManager.Configs
+	private ModConfig config;// Config from ConfigManager.Configs
 	private ModConfig pendingConfig;// The clone of the config that is modified
 
 	private Stack<ConfigElement> subPages = new();
@@ -440,7 +441,9 @@ internal class UIModConfig : UIState
 
 		switch (memberInfo.Type) {
 			case var _ when Attribute.IsDefined(memberInfo.MemberInfo, typeof(HeaderAttribute)):
-				element = new HeaderElement("");// TODO
+				element = new HeaderElement((string)memberInfo.GetValue(value));// TODO
+				break;
+			case ItemDefinition.GetType():
 				break;
 			default:
 				break;
@@ -458,13 +461,10 @@ internal class UIModConfig : UIState
 	{
 		int elementHeight;
 		Type type = memberInfo.Type;
-
 		if (arrayType != null) {
 			type = arrayType;
 		}
-
 		UIElement e;
-
 		// TODO: Other common structs? -- Rectangle, Point
 		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
 
