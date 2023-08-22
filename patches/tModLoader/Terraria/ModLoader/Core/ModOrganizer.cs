@@ -325,17 +325,12 @@ internal static class ModOrganizer
 		//}
 		Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
 
-		var modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
-		VerifyNames(modsToLoad);
-
-		foreach (var mod in modsToLoad) {
+		foreach (var mod in GetModsToLoad(availableMods)) {
 			EnableWithDeps(mod, availableMods);
 		}
 		SaveEnabledMods();
 
-		modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
-		VerifyNames(modsToLoad);
-
+		var modsToLoad = GetModsToLoad(availableMods);
 		try {
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
@@ -346,6 +341,13 @@ internal static class ModOrganizer
 			e.Data["hideStackTrace"] = true;
 			throw;
 		}
+	}
+
+	private static List<LocalMod> GetModsToLoad(IEnumerable<LocalMod> availableMods)
+	{
+		var modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
+		VerifyNames(modsToLoad);
+		return modsToLoad;
 	}
 
 	private static void CommandLineModPackOverride(IEnumerable<LocalMod> mods)
