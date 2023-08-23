@@ -10,16 +10,15 @@ namespace ExampleMod.Content.Tiles.CustomTree
         public override string TileTexture => "Terraria/Images/Tiles_583";
         public override string TopTexture => "Terraria/Images/Tree_Tops_30";
         public override string BranchTexture => "Terraria/Images/Tree_Branches_26";
-
         //public override string LeafTexture => "CustomTreeLib/ExampleCustomTree/ExampleLeaf";
 
-        //public override int[] ValidGroundTiles => new int[] { TileID.Grass, TileID.Dirt, TileID.Stone };
+        public override int[] ValidGroundTiles => new int[] { TileID.Grass, TileID.Dirt, TileID.Stone };
 
-        //public override int SaplingStyles => 3;
-        //public override int GrowChance => 1;
+        public override int SaplingStyles => 3;
+        public override int GrowChance => 1;
 
-        //public override int MinHeight => 2;
-        //public override int MaxHeight => 20;
+        public override int MinHeight => 2;
+        public override int MaxHeight => 20;
 
         //public override Color? MapColor => Color.Yellow;
         //public override string MapName => "Example Tree";
@@ -38,13 +37,14 @@ namespace ExampleMod.Content.Tiles.CustomTree
         //    Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), new Vector2(x, y) * 16, ItemID.DirtBlock);
         //    return false;
         //}
-        //public override bool GetTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
-        //{
-        //    topTextureFrameWidth = 118;
-        //    topTextureFrameHeight = 96;
-        //    floorY = 0;
-        //    return true;
-        //}
+		
+        public override bool GetTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
+        {
+            topTextureFrameWidth = 118;
+            topTextureFrameHeight = 96;
+            floorY = 0;
+            return true;
+        }
 
         //public override bool TryGenerate(int x, int y)
         //{

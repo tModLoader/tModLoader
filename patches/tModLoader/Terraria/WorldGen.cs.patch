@@ -715,6 +715,18 @@
  			return true;
  
  		return false;
+@@ -18281,6 +_,11 @@
+ 			case 634:
+ 				result = GrowTreeWithSettings(checkedX, checkedY, GrowTreeSettings.Profiles.Tree_Ash);
+ 				break;
++			default:
++				ModCustomTree customTree = CustomTreeLoader.GetByTile((ushort)treeTileType);
++				if (customTree is not null)
++					result = customTree.Grow(checkedX, checkedY);
++				break;
+ 		}
+ 
+ 		return result;
 @@ -18921,10 +_,12 @@
  		int num6 = genRand.Next(3);
  		bool flag3 = false;
@@ -979,7 +991,7 @@
  			flag = true;
  
 -		if (Main.tile[x, num].type == 20) {
-+		if (TileID.Sets.TreeSapling[Main.tile[x, num].type]) {
++		if (TileID.Sets.TreeSapling[Main.tile[x, num].type] && CustomTreeLoader.GetBySapling(Main.tile[x, num].type) is null) {
 +			int originalType = Main.tile[x, num].type;
 +			int newType = TileID.Saplings;
  			int num5 = Main.tile[x, num].frameX / 54;

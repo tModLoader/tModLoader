@@ -163,7 +163,7 @@
 +					tileStyle = sandType + 1;
 +					break;
 +				}
-+					
++
 +				if (tile.frameX == 204 || tile.frameX == 202) {
 +					var asset = PlantLoader.GetCactusFruitTexture(sandType);
 +					if (asset != null)
@@ -238,6 +238,17 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
+@@ -2900,6 +_,10 @@
+ 
+ 	private void CacheSpecialDraws_Part1(int tileX, int tileY, int tileType, int drawDataTileFrameX, int drawDataTileFrameY, bool skipDraw)
+ 	{
++		if (CustomTreeLoader.TryGetByTile((ushort)tileType, out _)) {
++			AddSpecialPoint(tileX, tileY, TileCounterType.Tree);
++		}
++
+ 		if (tileType == 395) {
+ 			Point point = new Point(tileX, tileY);
+ 			if (drawDataTileFrameX % 36 != 0)
 @@ -3112,7 +_,8 @@
  		}
  	}
@@ -464,6 +475,20 @@
  		}
  	}
  
+@@ -6030,6 +_,13 @@
+ 						flag2 = true;
+ 						getTreeFoliageDataMethod = WorldGen.GetAshTreeFoliageData;
+ 						break;
++
++					default:
++						if (CustomTreeLoader.TryGetByTile(type, out ModCustomTree tree)) {
++							flag2 = true;
++							getTreeFoliageDataMethod = CustomTreeLoader.GetTreeFoliageData;
++						}
++						break;
+ 				}
+ 
+ 				if (flag2 && frameY >= 198 && frameX >= 22) {
 @@ -6209,6 +_,26 @@
  						num20 = 2;
  					}
@@ -491,7 +516,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6234,8 +_,13 @@
+@@ -6234,17 +_,32 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -501,12 +526,18 @@
 +				treeTextureIndex = 0;
 +
  			texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
-+		}
-+			
  
++			if (CustomTreeLoader.TryGetByTreeStyle(treeTextureIndex, out ModCustomTree tree))
++			{
++				ReLogic.Content.Asset<Texture2D> asset = tree.GetFoliageTexture(false);
++				if (asset.IsLoaded)
++					texture2D = asset.Value;
++			}
++		}
++
  		return texture2D;
  	}
-@@ -6243,8 +_,12 @@
+ 
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);

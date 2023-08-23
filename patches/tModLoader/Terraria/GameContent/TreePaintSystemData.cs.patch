@@ -31,11 +31,14 @@
  						return WoodPurity;
  					case 0:
  					case 4:
-@@ -276,6 +_,27 @@
+@@ -276,6 +_,30 @@
  	{
  		switch (foliageIndex) {
  			default:
-+				if (foliageIndex >= ModTree.VanillaTopTextureCount) {
++				if (CustomTreeLoader.TryGetByTreeStyle(foliageIndex, out ModCustomTree customTree)) {
++					return customTree.PaintingSettings;
++				}
++				else if (foliageIndex >= ModTree.VanillaTopTextureCount) {
 +					int lookup = foliageIndex - ModTree.VanillaTopTextureCount;
 +
 +					var tree = PlantLoader.Get<ModTree>(5, lookup);
