@@ -31,16 +31,10 @@ namespace ExampleMod.Common.Configs.CustomUI
 
 			// item is the owner object instance, memberinfo is the Info about this field in item
 
-			int height = 30;
-			int order = 0;
-
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
-
-				if (List != null) {
-					wrapped.Item1.Left.Pixels -= 20;
-					wrapped.Item1.Width.Pixels += 20;
-				}
+				var wrapped = ConfigManager.GetConfigElement(variable, subitem);
+				Append(wrapped);
+				// TODO: get working
 			}
 		}
 

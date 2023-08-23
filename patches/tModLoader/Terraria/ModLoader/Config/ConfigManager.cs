@@ -294,12 +294,12 @@ public static class ConfigManager
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
 				Interface.modConfig.CheckSaveButton();
-				Interface.modConfig.SetMessage(Language.GetTextValue(message), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
+				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
-				Interface.modConfig.SetMessage(Language.GetTextValue(message), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
+				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 			}
 		}
 		else {

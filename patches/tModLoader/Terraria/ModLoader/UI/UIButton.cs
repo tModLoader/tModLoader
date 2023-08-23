@@ -77,7 +77,11 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 
 		if (IsMouseHovering)
 		{
-			string text = (UseAltColours() ? AltHoverText : HoverText).ToString();
+			string text = UseAltColours() ? AltHoverText?.ToString() : HoverText?.ToString();
+
+			if (text is null)
+				return;
+
 			if (TooltipText)
 				UICommon.TooltipMouseText(text);
 			else

@@ -443,8 +443,6 @@ internal class UIModConfig : UIState
 			case var _ when Attribute.IsDefined(memberInfo.MemberInfo, typeof(HeaderAttribute)):
 				element = new HeaderElement((string)memberInfo.GetValue(value));// TODO
 				break;
-			case ItemDefinition.GetType():
-				break;
 			default:
 				break;
 		}

@@ -99,7 +99,7 @@ public abstract class ConfigElement : UIElement
 		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
 		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
 		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
-		ShowReloadRequiredTooltip = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
+		ShowReloadRequiredTooltip = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;// TODO: fix this too
 
 		if (ShowReloadRequiredTooltip && List == null && Item is ModConfig modConfig) {
 			// Default ModConfig.NeedsReload logic currently only checks members of the ModConfig class, this mirrors that logic.
@@ -164,8 +164,8 @@ public abstract class ConfigElement : UIElement
 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, label, position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 		}
 
-		if (IsMouseHovering && TooltipFunction != null) {
-			string tooltip = TooltipFunction();
+		if (IsMouseHovering) {
+			string tooltip = TooltipFunction?.Invoke() ?? "";
 
 			// TODO - Add line for default value?
 
@@ -174,8 +174,7 @@ public abstract class ConfigElement : UIElement
 				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
 			}
 
-			if (!string.IsNullOrEmpty(tooltip))
-				UICommon.TooltipMouseText(TooltipFunction());
+			UICommon.TooltipMouseText(tooltip);
 		}
 	}
 

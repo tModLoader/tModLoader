@@ -95,6 +95,9 @@ public static class UICommon
 	public static void TooltipMouseText(string text)
 	{
 		if (Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
+			if (string.IsNullOrEmpty(text))
+				return;
+
 			Item fakeItem = new Item();
 			fakeItem.SetDefaults(0, noMatCheck: true);
 			fakeItem.SetNameOverride(text);
