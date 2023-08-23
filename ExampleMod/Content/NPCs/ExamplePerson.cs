@@ -341,14 +341,9 @@ namespace ExampleMod.Content.NPCs
 
 		// Make something happen when the npc teleports to a statue. Since this method only runs server side, any visual effects like dusts or gores have to be synced across all clients manually.
 		public override void OnGoToStatue(bool toKingStatue) {
-			if (Main.netMode == NetmodeID.Server) {
-				new ExampleTeleportToStatuePacket {
-					NpcWhoAmI = (byte)NPC.whoAmI
-				}.Send();
-			}
-			else {
-				StatueTeleport();
-			}
+			new ExampleTeleportToStatuePacket {
+				NpcWhoAmI = (byte)NPC.whoAmI
+			}.SendToAll();
 		}
 
 		// Create a square of pixels around the NPC on teleport.

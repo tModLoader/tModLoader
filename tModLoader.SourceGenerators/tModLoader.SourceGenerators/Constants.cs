@@ -36,4 +36,5 @@ internal static class Constants
 
 	// Method names
 	public const string NetPacketSetDefaultsMethodName = "SetDefaults";
+	public const string NetPacketHandlePacketMethodName = "HandlePacket";
 }

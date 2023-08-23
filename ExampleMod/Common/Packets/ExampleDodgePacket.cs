@@ -10,9 +10,6 @@ public partial struct ExampleDodgePacket
 {
 	public byte PlayerWhoAmI { get; set; }
 
-	public readonly void HandlePacket() {
-	}
-
 	public void HandlePacket(int sender) {
 		if (Main.netMode == NetmodeID.Server) {
 			PlayerWhoAmI = (byte)sender;

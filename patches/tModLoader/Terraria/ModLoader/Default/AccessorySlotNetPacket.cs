@@ -20,10 +20,6 @@ public partial struct AccessorySlotInventorySlotNetPacket
 	[EncodedAs(typeof(ItemEncoder))]
 	public Item Item { get; set; }
 
-	public readonly void HandlePacket()
-	{
-	}
-
 	public readonly void HandlePacket(int fromWho)
 	{
 		if (IsClient())
@@ -47,10 +43,6 @@ public partial struct AccessorySlotVisualStateNetPacket
 	public byte Player { get; set; }
 	public sbyte Slot { get; set; }
 	public bool HideVisual { get; set; }
-
-	public readonly void HandlePacket()
-	{
-	}
 
 	public readonly void HandlePacket(int fromWho)
 	{

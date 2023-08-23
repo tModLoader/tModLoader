@@ -1,11 +1,8 @@
 ﻿using System.IO;
-using Terraria.ID;
 
 namespace Terraria.ModLoader.Packets;
 
 public interface INetPacket {
-	void HandlePacket();
-
 	/// <summary>
 	/// Serializes the information and then sends it using the same format as <see cref="ModPacket.Send"/>
 	/// </summary>
@@ -20,21 +17,13 @@ public interface INetPacket {
 	///	<param name="sender">The int whoAmI in <see cref="Mod.HandlePacket"/></param>
 	void Receive(BinaryReader reader, int sender);
 
-	/// <summary>
-	/// Causes all clients and the server to handle the results of this packet
-	/// <br />
-	/// Works for single-player or multiplayer
-	/// </summary>
-	public void HandleForAll() {
-		switch (Main.netMode) {
-			case NetmodeID.MultiplayerClient:
-				Send(-1, Main.myPlayer);
-				break;
-			case NetmodeID.Server:
-				Send();
-				break;
-		}
+	void SendToPlayer(int player);
 
-		HandlePacket();
-	}
+	void SendToPlayers(params int[] players);
+
+	void SendToAllPlayers(int ignoreClient = -1);
+
+	void SendToServer();
+
+	void SendToAll();
 }

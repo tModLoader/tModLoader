@@ -12,10 +12,6 @@ public partial struct ConsumedStatIncreasesPacket
 	public byte ConsumedLifeFruit { get; set; }
 	public byte ConsumedManaCrystals { get; set; }
 
-	public readonly void HandlePacket()
-	{
-	}
-
 	public readonly void HandlePacket(int sender)
 	{
 		if (IsMPClient())
@@ -26,6 +22,8 @@ public partial struct ConsumedStatIncreasesPacket
 		player.ConsumedLifeCrystals = ConsumedLifeCrystals;
 		player.ConsumedLifeFruit = ConsumedLifeFruit;
 		player.ConsumedManaCrystals = ConsumedManaCrystals;
+
+		SendToAllPlayers(ignoreClient: player.whoAmI);
 	}
 
 	private static bool IsMPClient() => Main.netMode == NetmodeID.MultiplayerClient;
