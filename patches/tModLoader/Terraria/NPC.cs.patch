@@ -476,10 +476,16 @@
  	public bool friendly;
  	public bool closeDoor;
  	public int doorX;
-@@ -382,7 +_,9 @@
- 	private static bool dayTimeHax;
- 	private static bool rainingHax;
- 	private static float cloudAlphaHax;
+@@ -379,10 +_,12 @@
+ 	private static bool EoCKilledToday;
+ 	private static bool WoFKilledToday;
+ 	public static bool fairyLog = false;
+-	private static bool dayTimeHax;
++	internal static bool dayTimeHax;
+-	private static bool rainingHax;
++	internal static bool rainingHax;
+-	private static float cloudAlphaHax;
++	internal static float cloudAlphaHax;
 +	/*
  	private static int ignorePlayerInteractions = 0;
 +	*/

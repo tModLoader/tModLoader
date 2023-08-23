@@ -990,7 +990,8 @@ public static class NPCLoader
 	public static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
 	{
 		SpawnCondition.baseCondition.Reset();
-		SpawnCondition.baseCondition.Check(spawnInfo);
+		float totalSpawnChance = 1f;
+		SpawnCondition.baseCondition.Check(spawnInfo, ref totalSpawnChance);
 
 		IDictionary<int, float> pool = new Dictionary<int, float>();
 		pool[0] = 1f;

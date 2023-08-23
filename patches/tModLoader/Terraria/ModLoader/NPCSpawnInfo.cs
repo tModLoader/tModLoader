@@ -130,4 +130,8 @@ public struct NPCSpawnInfo
 	public int ProperGroundTileType;
 
 	public int WallTileType;
+
+	public static bool TrueDayTime => NPC.dayTimeHax;
+	public static bool TrueRaining => NPC.rainingHax;
+	public static float TrueCloudAlpha => NPC.cloudAlphaHax;
 }
