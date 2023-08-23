@@ -285,7 +285,7 @@ public static class ConfigManager
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
-			string message = reader.ReadString();
+			NetworkText message = NetworkText.Deserialize(reader);
 			if (success) {
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
@@ -325,10 +325,10 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			string message = "Accepted";
+			NetworkText message = NetworkText.FromLiteral("Accepted");
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = "Can't save because changes would require a reload.";
+				message = NetworkText.FromLiteral("Can't save because changes would require a reload.");
 			}
 			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
 				success = false;
@@ -341,7 +341,7 @@ public static class ConfigManager
 				// Send new config to all clients
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(true);
-				p.Write(message);
+				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
 				p.Write(json);
@@ -351,7 +351,7 @@ public static class ConfigManager
 				// Send rejections message back to client who requested change
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
-				p.Write(message);
+				message.Serialize(p);
 				p.Send(whoAmI);
 			}
 

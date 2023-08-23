@@ -54,7 +54,7 @@ public abstract class ModConfig : ILocalizedModType
 	/// <param name="whoAmI">The client whoAmI</param>
 	/// <param name="message">A message that will be returned to the client, set this to the reason the server rejects the changes.</param>
 	/// <returns>Return false to reject client changes</returns>
-	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
+	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
 		=> true;
 
 	// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
