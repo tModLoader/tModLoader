@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -52,6 +53,10 @@ public abstract class ConfigElement : UIElement
 	protected internal Func<string> TextDisplayFunction { get; set; }
 	protected Func<string> TooltipFunction { get; set; }
 	protected bool DrawLabel { get; set; } = true;
+	protected bool ReloadRequired { get; set; }
+	protected bool ShowReloadRequiredTooltip { get; set; }
+	protected object OldValue { get; set; }
+	protected bool ValueChanged => !ConfigManager.ObjectEquals(OldValue, GetObject());
 
 	public ConfigElement()
 	{
@@ -94,6 +99,15 @@ public abstract class ConfigElement : UIElement
 		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
 		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
 		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
+		ShowReloadRequiredTooltip = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
+
+		if (ShowReloadRequiredTooltip && List == null && Item is ModConfig modConfig) {
+			// Default ModConfig.NeedsReload logic currently only checks members of the ModConfig class, this mirrors that logic.
+			ReloadRequired = true;
+			// We need to check against the value in the load time config, not the value at the time of binding.
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
+			OldValue = MemberInfo.GetValue(loadTimeConfig);
+		 }
 	}
 
 	protected virtual void SetObject(object value)
@@ -140,12 +154,29 @@ public abstract class ConfigElement : UIElement
 		if (DrawLabel) {
 			position.X += 8f;
 			position.Y += 8f;
+
+			string label = TextDisplayFunction();
+			if (ReloadRequired && ValueChanged) {
+				label += " - [c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
+			}
+
 			// TODO: Support chat tag hover?
-			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, label, position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 		}
 
-		if (IsMouseHovering && TooltipFunction != null && !string.IsNullOrEmpty(TooltipFunction()))
-			UICommon.TooltipMouseText(TooltipFunction());
+		if (IsMouseHovering && TooltipFunction != null) {
+			string tooltip = TooltipFunction();
+
+			// TODO - Add line for default value?
+
+			if (ShowReloadRequiredTooltip) {
+				tooltip += string.IsNullOrEmpty(tooltip) ? "" : "\n";
+				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
+			}
+
+			if (!string.IsNullOrEmpty(tooltip))
+				UICommon.TooltipMouseText(TooltipFunction());
+		}
 	}
 
 	public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color)

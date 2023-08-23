@@ -1354,7 +1354,7 @@
 +	///	height = 12;
 +	/// value = buyPrice(0, 0, 15);
 +	/// rare = 3;
-+	///	maxStack = CommonMaxStack;
++	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	/// </code>
 +	/// </summary>
@@ -1668,7 +1668,7 @@
 +	/// useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;
 +	/// useTurn = true;
 +	/// useAnimation = useTime = animationTime;
-+	/// maxStack = 30;
++	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// consumable = true;
 +	/// buffType = <paramref name="foodbuff"/>;
 +	/// buffTime = <paramref name="foodbuffduration"/>;

@@ -67,6 +67,7 @@
 		"OutdatedModCantPublishError": "No puedes publicar un mod creado para una versión antigua de tModLoader",
 		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Recarga necesaria",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Recarga forzada",
 		"ModIsServerSide": "Este es un mod del lado del servidor",
 		"ModsByline": "De: {0}",

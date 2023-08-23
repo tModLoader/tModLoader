@@ -1,10 +1,12 @@
 using ExampleMod.Content.Biomes;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -71,6 +73,9 @@ namespace ExampleMod.Content.NPCs
 					StolenItems += item.stack;
 
 					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item.whoAmI);
+
+					// Show emote when stealing an example item
+					EmoteBubble.NewBubble(ModContent.EmoteBubbleType<ExampleItemEmote>(), new WorldUIAnchor(NPC), 90);
 				}
 			}
 		}
