@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static tModLoader.SourceGenerators.Constants;
 
@@ -42,8 +43,14 @@ partial struct {Template_DeclarationName} {{
 
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
+		// Commons.AssignDebugger();
+
 		var modClassData = context.SyntaxProvider.CreateSyntaxProvider(
-			static (node, _) => node is ClassDeclarationSyntax,
+			static (node, _) => node is ClassDeclarationSyntax classDeclarationSyntax
+				&& !classDeclarationSyntax.Modifiers.Any(SyntaxKind.AbstractKeyword)
+				&& !classDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword)
+				&& classDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword)
+				&& classDeclarationSyntax.BaseList != null && classDeclarationSyntax.BaseList.Types.Any(),
 			static (ctx, token) => {
 				var type = (ITypeSymbol)ctx.SemanticModel.GetDeclaredSymbol(ctx.Node, token);
 
