@@ -668,7 +668,19 @@
  		for (int num = -1; num > -100; num--) {
  			Tile tile = Main.tile[x, y + num];
  			if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
-@@ -17655,14 +_,18 @@
+@@ -17491,6 +_,11 @@
+ 				treeFrame = 2;
+ 		}
+ 
++		if (CustomTreeLoader.TryGetByTile(topTile.TileType, out ModCustomTree tree)) {
++			tree.GetTreeLeaf(x, topTile, t, ref treeHeight, ref treeFrame, out passStyle);
++			return;
++		}
++
+ 		switch (topTile.type) {
+ 			case 596:
+ 				passStyle = 1248;
+@@ -17655,14 +_,20 @@
  						case 17:
  							passStyle = num2 + 8;
  							break;
@@ -684,6 +696,8 @@
  		}
 +
 +		PlantLoader.GetTreeLeaf(t.type, ref passStyle);
++
++		
  	}
  
  	public static void TreeGrowFX(int x, int y, int height, int treeGore, bool hitTree = false)
@@ -2152,15 +2166,40 @@
  		switch (tileType) {
  			case 2:
  			case 477:
-@@ -45086,6 +_,8 @@
+@@ -45065,7 +_,13 @@
+ 
+ 		GetTreeBottom(i, j, out var x, out var y);
+ 		int num = y;
++		TreeTypes treeType;
++
++		if (CustomTreeLoader.TryGetByTile(Framing.GetTileSafely(x, y - 1).TileType, out ModCustomTree customTree))
++			treeType = customTree.TreeType;
++		else
+-		TreeTypes treeType = GetTreeType(Main.tile[x, y].type);
++			treeType = GetTreeType(Main.tile[x, y].type);
++
+ 		if (treeType == TreeTypes.None)
+ 			return;
+ 
+@@ -45086,6 +_,9 @@
  		if (!IsTileALeafyTreeTop(x, y) || Collision.SolidTiles(x - 2, x + 2, y - 2, y + 2))
  			return;
  
 +		bool createLeaves = true;
 +		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref createLeaves)) { } else
++		if (CustomTreeLoader.TryGetByTile(Main.tile[x, y].type, out ModCustomTree tree) && !tree.Shake(x, y, ref createLeaves)) { } else
  		if (Main.getGoodWorld && genRand.Next(17) == 0) {
  			Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
  		}
+@@ -45104,7 +_,7 @@
+ 		else if (genRand.Next(1000) == 0 && treeType == TreeTypes.Forest) {
+ 			Item.NewItem(GetItemSource_ShakeTree(x, y), x * 16, y * 16, 16, 16, 4366);
+ 		}
+-		else if (genRand.Next(7) == 0 && (treeType == TreeTypes.Forest || treeType == TreeTypes.Snow || treeType == TreeTypes.Hallowed || treeType == TreeTypes.Ash)) {
++		else if (!CustomTreeLoader.TryGetByTile(Main.tile[x, num].type, out _) && genRand.Next(7) == 0 && (treeType == TreeTypes.Forest || treeType == TreeTypes.Snow || treeType == TreeTypes.Hallowed || treeType == TreeTypes.Ash)) {
+ 			Item.NewItem(GetItemSource_ShakeTree(x, y), x * 16, y * 16, 16, 16, 27, genRand.Next(1, 3));
+ 		}
+ 		else if (genRand.Next(8) == 0 && treeType == TreeTypes.Mushroom) {
 @@ -45310,11 +_,18 @@
  			Item.NewItem(Type: (genRand.Next(2) != 0) ? 5278 : 5277, source: GetItemSource_FromTreeShake(x, y), X: x * 16, Y: y * 16, Width: 16, Height: 16);
  		}

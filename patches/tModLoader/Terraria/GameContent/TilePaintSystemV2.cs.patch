@@ -19,7 +19,7 @@
 +			Asset<Texture2D> asset;
 +
 +			if (CustomTreeLoader.TryGetByTreeStyle(Key.TextureIndex, out ModCustomTree tree)) {
-+				asset = tree.GetFoliageTexture(false);
++				asset = tree.GetFoliageTextureCached(Key.TextureStyle, false);
 +			}
 +			else if (Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
 +				int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
@@ -61,7 +61,7 @@
 +			Asset<Texture2D> asset;
 +
 +			if (CustomTreeLoader.TryGetByTreeStyle(Key.TextureIndex, out ModCustomTree tree)) {
-+				asset = tree.GetFoliageTexture(true);
++				asset = tree.GetFoliageTextureCached(Key.TextureStyle, true);
 +			}
 +			else if(Key.TextureIndex >= ModTree.VanillaTopTextureCount) {
 +				int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;

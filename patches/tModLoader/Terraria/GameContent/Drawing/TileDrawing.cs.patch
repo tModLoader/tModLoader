@@ -529,7 +529,7 @@
  
 +			if (CustomTreeLoader.TryGetByTreeStyle(treeTextureIndex, out ModCustomTree tree))
 +			{
-+				ReLogic.Content.Asset<Texture2D> asset = tree.GetFoliageTexture(false);
++				ReLogic.Content.Asset<Texture2D> asset = tree.GetFoliageTextureCached(treeTextureStyle, false);
 +				if (asset.IsLoaded)
 +					texture2D = asset.Value;
 +			}
