@@ -2,12 +2,11 @@
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.Tiles;
+namespace ExampleMod.Content.Tiles;
 
 public class ExampleCritterCage : ModTile
 {
@@ -40,7 +39,7 @@ public class ExampleCritterCage : ModTile
 		frameYOffset = Main.frogCageFrame[tileCageFrameHolder] * 36;
 	}
 
-	// The below code should still work, but the above code is less verbose and a little friendlier due to using vanilla code 
+	// The below code should still work, but the above code is less verbose and a little friendlier due to using vanilla code
 	//public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
 	//	// This code utilizes some math to stagger each individual tile. First the top left tile is found, then those coordinates are passed into some math to stagger an index into Main.snail2CageFrame
 	//	// Main.snail2CageFrame is used since we want the same animation, but if we wanted a different frame count or a different animation timing, we could write our own by adapting vanilla code and placing the code in AnimateTile

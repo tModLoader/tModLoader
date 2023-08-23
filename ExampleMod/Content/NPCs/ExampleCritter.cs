@@ -3,12 +3,13 @@ using MonoMod.Cil;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
-namespace ExampleMod.NPCs;
+namespace ExampleMod.Content.NPCs;
 
 /// <summary>
 /// This file shows off a critter npc. The unique thing about critters is how you can catch them with a bug net.
@@ -19,9 +20,8 @@ internal class ExampleCritterNPC : ModNPC
 {
 	private const int ClonedNPCID = NPCID.Frog;
 
-	public override bool IsLoadingEnabled(Mod mod) {
+	public override void Load() {
 		IL_Wiring.HitWireSingle += HookFrogStatue;
-		return true;
 	}
 
 	/// <summary>
@@ -33,11 +33,10 @@ internal class ExampleCritterNPC : ModNPC
 	/// to
 	/// <code>
 	///		case 61:
-	///			num115 = Utils.SelectRandom(Main.rand, new int[2] {
-	///				361,
-	///				(our npc type)
-	///			});
+	///			num115 = Main.rand.NextBool() ? 361 : NPC.type
 	/// </code>
+	///
+	/// This causes the frog statue to spawn this NPC 50% of the time
 	/// </summary>
 	/// <param name="ilContext"></param>
 	private void HookFrogStatue(ILContext ilContext) {
@@ -94,28 +93,47 @@ internal class ExampleCritterNPC : ModNPC
 			// couldn't find the right place to insert
 			throw new Exception("Hook location not found, switch(*) { case 61: ...");
 		}
-		catch {
-			MonoModHooks.DumpIL(ModContent.GetInstance<ExampleMod>(), ilContext);
-			throw;
-		}
-	}
+		catch (Exception e) {
+			// If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
+			MonoModHooks.DumpIL(GetInstance<ExampleMod>(), ilContext);
 
-	public override void SetDefaults() {
-		NPC.CloneDefaults(ClonedNPCID);
-		NPC.catchItem = ItemType<ExampleCritterItem>();
-		NPC.lavaImmune = true;
-		NPC.friendly = true;
-		AIType = ClonedNPCID;
-		NPC.aiStyle = NPCAIStyleID.Passive;
-		AnimationType = ClonedNPCID;
+			// If the mod cannot run without the IL hook, throw an exception instead. The exception will call DumpIL internally
+			//throw new ILPatchFailureException(GetInstance<ExampleMod>(), ilContext, e);
+		}
 	}
 
 	public override void SetStaticDefaults() {
 		Main.npcFrameCount[Type] = Main.npcFrameCount[ClonedNPCID];
+		Main.npcCatchable[Type] = true;
 		NPCID.Sets.CountsAsCritter[NPC.type] = true;
 		NPCID.Sets.TakesDamageFromHostilesWithoutBeingFriendly[NPC.type] = true;
 		NPCID.Sets.TownCritter[NPC.type] = true;
 		NPC.buffImmune[BuffID.Confused] = true;
+
+		NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(NPCID.Sets.NormalGoldCritterBestiaryPriority.IndexOf(ClonedNPCID) + 1, NPC.type);
+	}
+
+	public override void SetDefaults() {
+		//width = 12;
+		//height = 10;
+		//aiStyle = 7;
+		//damage = 0;
+		//defense = 0;
+		//lifeMax = 5;
+		//HitSound = SoundID.NPCHit1;
+		//DeathSound = SoundID.NPCDeath1;
+		//catchItem = 2121;
+
+		//Sets the above
+		NPC.CloneDefaults(ClonedNPCID);
+		NPC.catchItem = ItemType<ExampleCritterItem>();
+		NPC.lavaImmune = true;
+		AIType = ClonedNPCID;
+		AnimationType = ClonedNPCID;
+	}
+
+	public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		bestiaryEntry.AddTags(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld);
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
@@ -134,13 +152,13 @@ internal class ExampleCritterNPC : ModNPC
 					dust.scale = 0.7f * NPC.scale;
 				}
 			}
-			//Gore.NewGore(NPC.position, NPC.velocity, Mod.GetGoreSlot("Gores/LavaSnailHead"), NPC.scale);
-			//Gore.NewGore(NPC.position, NPC.velocity, Mod.GetGoreSlot("Gores/LavaSnailShell"), NPC.scale);
+			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Head").Type, NPC.scale);
+			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Leg").Type, NPC.scale);
 		}
 	}
 
 	public override Color? GetAlpha(Color drawColor) {
-		// GetAlpha gives our Lava Snail a red glow.
+		// GetAlpha gives our Lava Frog a red glow.
 		// both these do the same in this situation, using these methods is useful.
 		return drawColor with {
 			R = 255,
@@ -151,7 +169,6 @@ internal class ExampleCritterNPC : ModNPC
 	}
 
 	public override bool PreAI() {//TODO: Make the frog swim in lava instead of water
-								  // Usually we can use npc.wet, but aiStyle 67 prevents wet from being set.
 		if (Collision.WetCollision(NPC.position, NPC.width, NPC.height)) //if (npc.wet)
 		{
 			// These 3 lines instantly kill the npc without showing damage numbers, dropping loot, or playing DeathSound. Use this for instant deaths
@@ -160,7 +177,7 @@ internal class ExampleCritterNPC : ModNPC
 			NPC.active = false;
 			SoundEngine.PlaySound(SoundID.NPCDeath16, NPC.position); // plays a fizzle sound
 		}
-		return base.PreAI();
+		return true;
 	}
 
 	public override void OnCaughtBy(Player player, Item item, bool failed) {

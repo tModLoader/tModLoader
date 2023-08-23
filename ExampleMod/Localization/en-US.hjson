@@ -73,6 +73,7 @@ Mods: {
 
 			MinionBossMinion.DisplayName: Minion Boss Minion
 			PartyZombie.DisplayName: Party Zombie
+			ExampleCritterNPC.DisplayName: Lava Frog
 		}
 
 		Tiles: {
@@ -90,6 +91,7 @@ Mods: {
 			}
 
 			ExampleDresser.MapEntry: Example Dresser
+			ExampleCritterCage.MapEntry: Lava Frog Cage
 		}
 
 		Items: {
@@ -864,6 +866,16 @@ Mods: {
 			ExampleSwingingEnergySword: {
 				DisplayName: Example Swinging Energy Sword
 				Tooltip: ""
+			}
+
+			ExampleCritterItem: {
+				DisplayName: Lava Frog
+				Tooltip: A spicy boi
+			}
+
+			ExampleCritterCageItem: {
+				DisplayName: Lava Frog Cage
+				Tooltip: A sad spicy boi
 			}
 		}
 
