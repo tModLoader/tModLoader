@@ -15,4 +15,9 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\Tiles\CustomTree\ExampleCustomTree_Acorn.png" />
+    <None Remove="Content\Tiles\CustomTree\ExampleCustomTree_Sapling.png" />
+    <None Remove="Content\Tiles\CustomTree\ExampleLeaf.png" />
+  </ItemGroup>
 </Project>
