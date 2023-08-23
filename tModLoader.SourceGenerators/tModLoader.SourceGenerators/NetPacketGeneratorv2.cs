@@ -88,6 +88,7 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 		in string MetadataName,
 		in string DeclarationName,
 		in bool ImplementsSetDefaults,
+		in bool ImplementsHandlePacketAlt,
 		in string ParentModName,
 
 		in (bool Pre, bool IsPreBool, bool On, bool Post) GlobalSerializations,
@@ -103,6 +104,7 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 	private const string Template_DeclarationName = "{DeclarationName}";
 	private const string Template_ModName = "{ModName}";
 	private const string Template_OptionalSetDefaults = "{OptionalSetDefaults}";
+	private const string Template_OptionalHandlePacketAlt = "{OptionalHandlePacketAlt}";
 	private const string Template_SerializationImplementation = "{SerializationImplementation}";
 	private const string Template_DeserializationImplementation = "{DeserializationImplementation}";
 
@@ -135,6 +137,7 @@ partial struct {Template_DeclarationName} {{
 			Send(-1, sender);
 		}}
 		HandlePacket();
+		{Template_OptionalHandlePacketAlt}
 	}}
 }}
 
@@ -184,6 +187,10 @@ partial struct {Template_DeclarationName} {{
 					MetadataName: symbol.MetadataName,
 					DeclarationName: symbol.IsRefLikeType ? symbol.Name : $"{symbol.Name} : global::Terraria.ModLoader.Packets.INetPacket",
 					ImplementsSetDefaults: symbol.GetMembers(NetPacketSetDefaultsMethodName).Any(x => x is IMethodSymbol methodSymbol && !methodSymbol.IsGenericMethod && !methodSymbol.Parameters.Any()),
+					ImplementsHandlePacketAlt: symbol.GetMembers("HandlePacket").Any(x => x is IMethodSymbol methodSymbol
+						&& !methodSymbol.IsGenericMethod && methodSymbol.Parameters.Length == 1
+						&& methodSymbol.Parameters[0].Type.SpecialType == SpecialType.System_Int32
+					),
 					ParentModName: modType.ToDisplayString(),
 
 					GlobalSerializations: (
@@ -209,6 +216,7 @@ partial struct {Template_DeclarationName} {{
 				Template_ModName => source.ParentModName,
 
 				Template_OptionalSetDefaults => Create_OptionalSetDefaults(),
+				Template_OptionalHandlePacketAlt => Create_OptionalHandlePacketAlt(),
 				Template_SerializationImplementation => Create_SerializationImplementation(),
 				Template_DeserializationImplementation => Create_DeserializationImplementation(),
 
@@ -221,6 +229,15 @@ partial struct {Template_DeclarationName} {{
 					return $"{NetPacketSetDefaultsMethodName}();";
 				else {
 					return $"// {NetPacketSetDefaultsMethodName}();";
+				}
+			}
+
+			string Create_OptionalHandlePacketAlt()
+			{
+				if (source.ImplementsHandlePacketAlt)
+					return "HandlePacket(sender);";
+				else {
+					return "// HandlePacket(sender);";
 				}
 			}
 
@@ -238,17 +255,17 @@ partial struct {Template_DeclarationName} {{
 
 				if (source.GlobalSerializations.Pre) {
 					if (source.GlobalSerializations.IsPreBool) {
-						sb.Write($"if (PreSerialize({ParameterName})) {{");
+						sb.Write($"if (PreSerialize({ParameterName}, toClient, ignoreClient)) {{");
 						sb.WriteLine();
 						sb.Indent++;
 					}
 					else {
-						sb.WriteLine($"PreSerialize({ParameterName});");
+						sb.WriteLine($"PreSerialize({ParameterName}, toClient, ignoreClient);");
 					}
 				}
 
 				if (source.GlobalSerializations.On) {
-					sb.WriteLine($"OnSerialize({ParameterName});");
+					sb.WriteLine($"OnSerialize({ParameterName}, toClient, ignoreClient);");
 				}
 
 				int i = 0;
@@ -257,17 +274,17 @@ partial struct {Template_DeclarationName} {{
 
 					if (property.Serialization.HasPreSerialization) {
 						if (property.Serialization.IsPreSerializationBool) {
-							sb.Write($"if (PreSerialize_{property.PropertyName}({ParameterName})) {{");
+							sb.Write($"if (PreSerialize_{property.PropertyName}({ParameterName}, toClient, ignoreClient)) {{");
 							sb.WriteLine();
 							sb.Indent++;
 						}
 						else {
-							sb.WriteLine($"PreSerialize_{property.PropertyName}({ParameterName});");
+							sb.WriteLine($"PreSerialize_{property.PropertyName}({ParameterName}, toClient, ignoreClient);");
 						}
 					}
 
 					if (property.Serialization.HasOnSerialization) {
-						sb.WriteLine($"OnSerialize_{property.PropertyName}({ParameterName});");
+						sb.WriteLine($"OnSerialize_{property.PropertyName}({ParameterName}, toClient, ignoreClient);");
 					}
 
 					if (encoder.IsUnsafe) {
@@ -290,7 +307,7 @@ partial struct {Template_DeclarationName} {{
 					}
 
 					if (property.Serialization.HasPostSerialization) {
-						sb.WriteLine($"PostSerialize_{property.PropertyName}({ParameterName});");
+						sb.WriteLine($"PostSerialize_{property.PropertyName}({ParameterName}, toClient, ignoreClient);");
 					}
 				}
 
@@ -300,7 +317,7 @@ partial struct {Template_DeclarationName} {{
 				}
 
 				if (source.GlobalSerializations.Post) {
-					sb.WriteLine($"PostSerialize({ParameterName});");
+					sb.WriteLine($"PostSerialize({ParameterName}, toClient, ignoreClient);");
 				}
 
 				return sb.ToString();
@@ -320,17 +337,17 @@ partial struct {Template_DeclarationName} {{
 
 				if (source.GlobalSerializations.Pre) {
 					if (source.GlobalSerializations.IsPreBool) {
-						sb.Write($"if (PreDeserialize({ParameterName})) {{");
+						sb.Write($"if (PreDeserialize({ParameterName}, sender)) {{");
 						sb.WriteLine();
 						sb.Indent++;
 					}
 					else {
-						sb.WriteLine($"PreDeserialize({ParameterName});");
+						sb.WriteLine($"PreDeserialize({ParameterName}, sender);");
 					}
 				}
 
 				if (source.GlobalSerializations.On) {
-					sb.WriteLine($"OnDeserialize({ParameterName});");
+					sb.WriteLine($"OnDeserialize({ParameterName}, sender);");
 				}
 
 				int i = 0;
@@ -339,17 +356,17 @@ partial struct {Template_DeclarationName} {{
 
 					if (property.Serialization.HasPreSerialization) {
 						if (property.Serialization.IsPreSerializationBool) {
-							sb.Write($"if (PreDeserialize_{property.PropertyName}({ParameterName})) {{");
+							sb.Write($"if (PreDeserialize_{property.PropertyName}({ParameterName}, sender)) {{");
 							sb.WriteLine();
 							sb.Indent++;
 						}
 						else {
-							sb.WriteLine($"PreDeserialize_{property.PropertyName}({ParameterName});");
+							sb.WriteLine($"PreDeserialize_{property.PropertyName}({ParameterName}, sender);");
 						}
 					}
 
 					if (property.Serialization.HasOnSerialization) {
-						sb.WriteLine($"OnDeserialize_{property.PropertyName}({ParameterName});");
+						sb.WriteLine($"OnDeserialize_{property.PropertyName}({ParameterName}, sender);");
 					}
 
 					if (encoder.IsUnsafe) {
@@ -371,7 +388,7 @@ partial struct {Template_DeclarationName} {{
 					}
 
 					if (property.Serialization.HasPostSerialization) {
-						sb.WriteLine($"PostDeserialize_{property.PropertyName}({ParameterName});");
+						sb.WriteLine($"PostDeserialize_{property.PropertyName}({ParameterName}, sender);");
 					}
 				}
 
@@ -381,7 +398,7 @@ partial struct {Template_DeclarationName} {{
 				}
 
 				if (source.GlobalSerializations.Post) {
-					sb.WriteLine($"PostDeserialize({ParameterName});");
+					sb.WriteLine($"PostDeserialize({ParameterName}, sender);");
 				}
 
 				return sb.ToString();
@@ -389,32 +406,32 @@ partial struct {Template_DeclarationName} {{
 		});
 	}
 
+	private static bool MatchSerializationMethod(IMethodSymbol methodSymbol)
+	{
+		return !methodSymbol.IsGenericMethod && methodSymbol.Parameters.Length == 3
+			&& methodSymbol.Parameters[0].Type.ToDisplayString() is BinaryWriterClassFullName
+			&& methodSymbol.Parameters[1].Type.SpecialType == SpecialType.System_Int32
+			&& methodSymbol.Parameters[2].Type.SpecialType == SpecialType.System_Int32;
+	}
+
+	private static bool MatchDeserializationMethod(IMethodSymbol methodSymbol)
+	{
+		return !methodSymbol.IsGenericMethod && methodSymbol.Parameters.Length == 2
+			&& methodSymbol.Parameters[0].Type.ToDisplayString() is BinaryReaderClassFullName
+			&& methodSymbol.Parameters[1].Type.SpecialType == SpecialType.System_Int32;
+	}
+
 	private static SerializationVector RetrieveGlobalSerializationMethods(INamedTypeSymbol symbol)
 	{
-		static bool MatchMethod(IMethodSymbol methodSymbol)
-		{
-			return !methodSymbol.IsGenericMethod && methodSymbol.Parameters.Length == 1;
-		}
-
-		static bool MatchSerializationParameter(IParameterSymbol parameterSymbol)
-		{
-			return parameterSymbol.Type.ToDisplayString() is BinaryWriterClassFullName;
-		}
-
-		static bool MatchDeserializationParameter(IParameterSymbol parameterSymbol)
-		{
-			return parameterSymbol.Type.ToDisplayString() is BinaryReaderClassFullName;
-		}
-
 		var serializationMethods = new SerializationMethods(symbol);
-		serializationMethods.FindPreSerialization($"Pre{SerializeMethodName}", MatchMethod, MatchSerializationParameter);
-		serializationMethods.FindOnSerialization($"On{SerializeMethodName}", MatchMethod, MatchSerializationParameter);
-		serializationMethods.FindPostSerialization($"Post{SerializeMethodName}", MatchMethod, MatchSerializationParameter);
+		serializationMethods.FindPreSerialization($"Pre{SerializeMethodName}", MatchSerializationMethod);
+		serializationMethods.FindOnSerialization($"On{SerializeMethodName}", MatchSerializationMethod);
+		serializationMethods.FindPostSerialization($"Post{SerializeMethodName}", MatchSerializationMethod);
 
 		var deserializationMethods = new SerializationMethods(symbol);
-		deserializationMethods.FindPreSerialization($"Pre{DeserializeMethodName}", MatchMethod, MatchDeserializationParameter);
-		deserializationMethods.FindOnSerialization($"On{DeserializeMethodName}", MatchMethod, MatchDeserializationParameter);
-		deserializationMethods.FindPostSerialization($"Post{DeserializeMethodName}", MatchMethod, MatchDeserializationParameter);
+		deserializationMethods.FindPreSerialization($"Pre{DeserializeMethodName}", MatchDeserializationMethod);
+		deserializationMethods.FindOnSerialization($"On{DeserializeMethodName}", MatchDeserializationMethod);
+		deserializationMethods.FindPostSerialization($"Post{DeserializeMethodName}", MatchDeserializationMethod);
 
 		return new SerializationVector(in serializationMethods, in serializationMethods);
 	}
@@ -436,18 +453,6 @@ partial struct {Template_DeclarationName} {{
 			}
 		})
 		.Select(x => {
-			static bool MatchSerializationMethod(IMethodSymbol methodSymbol)
-			{
-				return !methodSymbol.IsGenericMethod && methodSymbol.Parameters.Length == 1
-					&& methodSymbol.Parameters[0].Type.ToDisplayString() is BinaryWriterClassFullName;
-			}
-
-			static bool MatchDeserializationMethod(IMethodSymbol methodSymbol)
-			{
-				return !methodSymbol.IsGenericMethod && methodSymbol.Parameters.Length == 1
-					&& methodSymbol.Parameters[0].Type.ToDisplayString() is BinaryReaderClassFullName;
-			}
-
 			var serialization = new SerializationMethods(symbol);
 			serialization.FindPreSerialization($"Pre{SerializeMethodName}_{x.Name}", MatchSerializationMethod);
 			serialization.FindOnSerialization($"On{SerializeMethodName}_{x.Name}", MatchSerializationMethod);

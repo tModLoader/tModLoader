@@ -34,42 +34,12 @@ internal class ConsumedStatIncreasesPlayer : ModPlayer
 
 		public static void SendConsumedState(int toClient, Player player)
 		{
-			var packet = ModLoaderMod.GetPacket(ModLoaderMod.StatResourcesPacket);
-
-			packet.Write(SyncConsumedProperties);
-
-			if (Main.netMode == NetmodeID.Server)
-				packet.Write((byte)player.whoAmI);
-
-			packet.Write((byte)player.ConsumedLifeCrystals);
-			packet.Write((byte)player.ConsumedLifeFruit);
-			packet.Write((byte)player.ConsumedManaCrystals);
-
-			packet.Send(toClient, player.whoAmI);
-		}
-
-		private static void HandleConsumedState(BinaryReader reader, int sender)
-		{
-			if (Main.netMode == NetmodeID.MultiplayerClient)
-				sender = reader.ReadByte();
-
-			Player player = Main.player[sender];
-
-			player.ConsumedLifeCrystals = reader.ReadByte();
-			player.ConsumedLifeFruit = reader.ReadByte();
-			player.ConsumedManaCrystals = reader.ReadByte();
-
-			if (Main.netMode == NetmodeID.Server)
-				SendConsumedState(-1, player);
-		}
-
-		public static void HandlePacket(BinaryReader reader, int sender)
-		{
-			switch (reader.ReadByte()) {
-				case SyncConsumedProperties:
-					HandleConsumedState(reader, sender);
-					break;
-			}
+			new ConsumedStatIncreasesPacket {
+				Player = (byte)player.whoAmI,
+				ConsumedLifeCrystals = (byte)player.ConsumedLifeCrystals,
+				ConsumedLifeFruit = (byte)player.ConsumedLifeFruit,
+				ConsumedManaCrystals = (byte)player.ConsumedManaCrystals,
+			}.Send(toClient, player.whoAmI);
 		}
 	}
 }

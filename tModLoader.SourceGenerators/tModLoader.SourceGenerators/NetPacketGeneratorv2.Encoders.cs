@@ -52,6 +52,7 @@ partial class NetPacketGeneratorv2
 			else {
 				switch (typeSymbol.OriginalDefinition.ToDisplayString()) {
 					case BitsByteStructFullName:
+						sb.Append("global::Terraria.BitsByte");
 						return "global::Terraria.ModLoader.Packets.ByteEncoder";
 					case HalfStructFullName:
 						sb.Append("global::System.Half");

@@ -62,6 +62,7 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 			Send(-1, sender);
 		}
 		HandlePacket();
+		// HandlePacket(sender);
 	}
 }
 
@@ -133,6 +134,7 @@ partial struct GeneratedPacket {
 			Send(-1, sender);
 		}
 		HandlePacket();
+		// HandlePacket(sender);
 	}
 }
 
@@ -209,6 +211,7 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 			Send(-1, sender);
 		}
 		HandlePacket();
+		// HandlePacket(sender);
 	}
 }
 
@@ -282,6 +285,7 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 			Send(-1, sender);
 		}
 		HandlePacket();
+		// HandlePacket(sender);
 	}
 }
 

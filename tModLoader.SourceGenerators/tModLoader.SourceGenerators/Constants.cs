@@ -19,7 +19,6 @@ internal static class Constants
 	public const string IgnoreAttributeFullName = "Terraria.ModLoader.Packets.IgnoreAttribute";
 
 	// Class names
-	public const string ModPacketClassFullName = "Terraria.ModLoader.ModPacket";
 	public const string ListClassFullName = "System.Collections.Generic.List<T>";
 
 	public const string BinaryReaderClassFullName = "System.IO.BinaryReader";

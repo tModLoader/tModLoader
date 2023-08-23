@@ -26,27 +26,21 @@ public partial struct GeneratedPacket {
 	public readonly void HandlePacket() {
 	}
 
-	private readonly void PreSerialize(BinaryWriter writer) { }
-	private readonly void OnSerialize(BinaryWriter writer) { }
-	private readonly void PostSerialize(BinaryWriter writer) { }
-	private readonly void PreDeserialize(BinaryReader reader) { }
-	private readonly void OnDeserialize(BinaryReader reader) { }
-	private readonly void PostDeserialize(BinaryReader reader) { }
+	private readonly void PreSerialize(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void OnSerialize(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void PostSerialize(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void PreDeserialize(BinaryReader reader, int sender) { }
+	private readonly void OnDeserialize(BinaryReader reader, int sender) { }
+	private readonly void PostDeserialize(BinaryReader reader, int sender) { }
 
-	private readonly void PreSerialize_Field(BinaryWriter writer) { }
-	private readonly void OnSerialize_Field(BinaryWriter writer) { }
-	private readonly void PostSerialize_Field(BinaryWriter writer) { }
-	private readonly void PreDeserialize_Field(BinaryReader reader) { }
-	private readonly void OnDeserialize_Field(BinaryReader reader) { }
-	private readonly void PostDeserialize_Field(BinaryReader reader) { }
+	private readonly void PreSerialize_Field(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void OnSerialize_Field(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void PostSerialize_Field(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void PreDeserialize_Field(BinaryReader reader, int sender) { }
+	private readonly void OnDeserialize_Field(BinaryReader reader, int sender) { }
+	private readonly void PostDeserialize_Field(BinaryReader reader, int sender) { }
 
 	public void HandleForAll() => throw new System.NotImplementedException();
-}
-
-[PacketRegistry]
-static partial class PacketRegistry {
-	[NetPacketIdOf(typeof(GeneratedPacket))]
-	public const byte GeneratedPacketId = 0;
 }
 ";
 
@@ -67,14 +61,14 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
-		PreSerialize(packet);
-		OnSerialize(packet);
-		PreSerialize_Field(packet);
-		OnSerialize_Field(packet);
+		PreSerialize(packet, toClient, ignoreClient);
+		OnSerialize(packet, toClient, ignoreClient);
+		PreSerialize_Field(packet, toClient, ignoreClient);
+		OnSerialize_Field(packet, toClient, ignoreClient);
 		var encoder_Field = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		encoder_Field.Write(packet, Field);
-		PostSerialize_Field(packet);
-		PostSerialize(packet);
+		PostSerialize_Field(packet, toClient, ignoreClient);
+		PostSerialize(packet, toClient, ignoreClient);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -84,19 +78,20 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
 
-		PreDeserialize(reader);
-		OnDeserialize(reader);
-		PreDeserialize_Field(reader);
-		OnDeserialize_Field(reader);
+		PreDeserialize(reader, sender);
+		OnDeserialize(reader, sender);
+		PreDeserialize_Field(reader, sender);
+		OnDeserialize_Field(reader, sender);
 		var encoder_Field = default(global::Terraria.ModLoader.Packets.IntEncoder);
 		Field = encoder_Field.Read(reader);
-		PostDeserialize_Field(reader);
-		PostDeserialize(reader);
+		PostDeserialize_Field(reader, sender);
+		PostDeserialize(reader, sender);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
 		}
 		HandlePacket();
+		// HandlePacket(sender);
 	}
 }
 
@@ -134,27 +129,21 @@ public partial struct GeneratedPacket {
 	public readonly void HandlePacket() {
 	}
 
-	private readonly bool PreSerialize(BinaryWriter writer) { return true; }
-	private readonly void OnSerialize(BinaryWriter writer) { }
-	private readonly void PostSerialize(BinaryWriter writer) { }
-	private readonly bool PreDeserialize(BinaryReader reader) { return true; }
-	private readonly void OnDeserialize(BinaryReader reader) { }
-	private readonly void PostDeserialize(BinaryReader reader) { }
+	private readonly bool PreSerialize(BinaryWriter writer, int toClient, int ignoreClient) { return true; }
+	private readonly void OnSerialize(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void PostSerialize(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly bool PreDeserialize(BinaryReader reader, int sender) { return true; }
+	private readonly void OnDeserialize(BinaryReader reader, int sender) { }
+	private readonly void PostDeserialize(BinaryReader reader, int sender) { }
 
-	private readonly bool PreSerialize_Field(BinaryWriter writer) { return true; }
-	private readonly void OnSerialize_Field(BinaryWriter writer) { }
-	private readonly void PostSerialize_Field(BinaryWriter writer) { }
-	private readonly bool PreDeserialize_Field(BinaryReader reader) { return true; }
-	private readonly void OnDeserialize_Field(BinaryReader reader) { }
-	private readonly void PostDeserialize_Field(BinaryReader reader) { }
+	private readonly bool PreSerialize_Field(BinaryWriter writer, int toClient, int ignoreClient) { return true; }
+	private readonly void OnSerialize_Field(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly void PostSerialize_Field(BinaryWriter writer, int toClient, int ignoreClient) { }
+	private readonly bool PreDeserialize_Field(BinaryReader reader, int sender) { return true; }
+	private readonly void OnDeserialize_Field(BinaryReader reader, int sender) { }
+	private readonly void PostDeserialize_Field(BinaryReader reader, int sender) { }
 
 	public void HandleForAll() => throw new System.NotImplementedException();
-}
-
-[PacketRegistry]
-static partial class PacketRegistry {
-	[NetPacketIdOf(typeof(GeneratedPacket))]
-	public const byte GeneratedPacketId = 0;
 }
 ";
 
@@ -175,16 +164,16 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 		var packet = ModContent.GetInstance<global::GeneratedDemo.GeneratedMod>().GetPacket();
 		packet.Write(Id);
 
-		if (PreSerialize(packet)) {
-			OnSerialize(packet);
-			if (PreSerialize_Field(packet)) {
-				OnSerialize_Field(packet);
+		if (PreSerialize(packet, toClient, ignoreClient)) {
+			OnSerialize(packet, toClient, ignoreClient);
+			if (PreSerialize_Field(packet, toClient, ignoreClient)) {
+				OnSerialize_Field(packet, toClient, ignoreClient);
 				var encoder_Field = default(global::Terraria.ModLoader.Packets.IntEncoder);
 				encoder_Field.Write(packet, Field);
 			}
-			PostSerialize_Field(packet);
+			PostSerialize_Field(packet, toClient, ignoreClient);
 		}
-		PostSerialize(packet);
+		PostSerialize(packet, toClient, ignoreClient);
 
 		packet.Send(toClient, ignoreClient);
 	}
@@ -194,21 +183,22 @@ partial struct GeneratedPacket : global::Terraria.ModLoader.Packets.INetPacket {
 	public void Receive(BinaryReader reader, int sender) {
 		// SetDefaults();
 
-		if (PreDeserialize(reader)) {
-			OnDeserialize(reader);
-			if (PreDeserialize_Field(reader)) {
-				OnDeserialize_Field(reader);
+		if (PreDeserialize(reader, sender)) {
+			OnDeserialize(reader, sender);
+			if (PreDeserialize_Field(reader, sender)) {
+				OnDeserialize_Field(reader, sender);
 				var encoder_Field = default(global::Terraria.ModLoader.Packets.IntEncoder);
 				Field = encoder_Field.Read(reader);
 			}
-			PostDeserialize_Field(reader);
+			PostDeserialize_Field(reader, sender);
 		}
-		PostDeserialize(reader);
+		PostDeserialize(reader, sender);
 
 		if (Main.netMode == NetmodeID.Server) {
 			Send(-1, sender);
 		}
 		HandlePacket();
+		// HandlePacket(sender);
 	}
 }
 

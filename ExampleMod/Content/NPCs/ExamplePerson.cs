@@ -28,6 +28,7 @@ using Terraria.ModLoader.IO;
 using ExampleMod.Common.Configs;
 using ExampleMod.Common;
 using ExampleMod.Content.Projectiles;
+using ExampleMod.Common.Packets;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -341,10 +342,9 @@ namespace ExampleMod.Content.NPCs
 		// Make something happen when the npc teleports to a statue. Since this method only runs server side, any visual effects like dusts or gores have to be synced across all clients manually.
 		public override void OnGoToStatue(bool toKingStatue) {
 			if (Main.netMode == NetmodeID.Server) {
-				ModPacket packet = Mod.GetPacket();
-				packet.Write((byte)ExampleMod.MessageType.ExampleTeleportToStatue);
-				packet.Write((byte)NPC.whoAmI);
-				packet.Send();
+				new ExampleTeleportToStatuePacket {
+					NpcWhoAmI = (byte)NPC.whoAmI
+				}.Send();
 			}
 			else {
 				StatueTeleport();

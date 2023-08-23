@@ -216,75 +216,20 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 		public static void SendSlot(int toWho, int plr, int slot, Item item)
 		{
-			var p = ModLoaderMod.GetPacket(ModLoaderMod.AccessorySlotPacket);
-
-			p.Write(InventorySlot);
-
-			if (Main.netMode == Server)
-				p.Write((sbyte)plr);
-
-			p.Write((sbyte)slot);
-
-			ItemIO.Send(item, p, true);
-			p.Send(toWho, plr);
-		}
-
-		private static void HandleSlot(BinaryReader r, int fromWho)
-		{
-			if (Main.netMode == Client)
-				fromWho = r.ReadByte();
-
-			var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
-
-			sbyte slot = r.ReadSByte();
-			var item = ItemIO.Receive(r, true);
-
-			SetSlot(slot, item, dPlayer);
-
-			if (Main.netMode == 2)
-				SendSlot(-1, fromWho, slot, item);
+			new AccessorySlotInventorySlotNetPacket {
+				Player = (byte)plr,
+				Slot = (sbyte)slot,
+				Item = item
+			}.Send(toWho, plr);
 		}
 
 		public static void SendVisualState(int toWho, int plr, int slot, bool hideVisual)
 		{
-			var p = ModLoaderMod.GetPacket(ModLoaderMod.AccessorySlotPacket);
-
-			p.Write(VisualState);
-
-			if (Main.netMode == Server)
-				p.Write((byte)plr);
-
-			p.Write((sbyte)slot);
-
-			p.Write(hideVisual);
-			p.Send(toWho, plr);
-		}
-
-		private static void HandleVisualState(BinaryReader r, int fromWho)
-		{
-			if (Main.netMode == Client)
-				fromWho = r.ReadByte();
-
-			var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
-
-			sbyte slot = r.ReadSByte();
-
-			dPlayer.exHideAccessory[slot] = r.ReadBoolean();
-
-			if (Main.netMode == Server)
-				SendVisualState(-1, fromWho, slot, dPlayer.exHideAccessory[slot]);
-		}
-
-		public static void HandlePacket(BinaryReader r, int fromWho)
-		{
-			switch (r.ReadByte()) {
-				case InventorySlot:
-					HandleSlot(r, fromWho);
-					break;
-				case VisualState:
-					HandleVisualState(r, fromWho);
-					break;
-			}
+			new AccessorySlotVisualStateNetPacket {
+				Player = (byte)plr,
+				Slot = (sbyte)slot,
+				HideVisual = hideVisual
+			}.Send(toWho, plr);
 		}
 
 		public static void SetSlot(sbyte slot, Item item, ModAccessorySlotPlayer dPlayer)

@@ -73,7 +73,7 @@ public static partial class tModLoaderSourceGeneratorVerifier<TSourceGenerator> 
 
 		protected override Project ApplyCompilationOptions(Project project)
 		{
-			return base.ApplyCompilationOptions(project).AddMetadataReference(Commons.TmlReference);
+			return base.ApplyCompilationOptions(project).AddMetadataReference(Commons.TmlReference).AddMetadataReference(Commons.Log4netReference);
 		}
 	}
 }

@@ -25,6 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="log4net" Version="2.0.8.0" />
 		<ProjectReference Include="..\..\src\tModLoader\Terraria\Terraria.csproj" />
 		<ProjectReference Include="..\tModLoader.SourceGenerators\tModLoader.SourceGenerators.csproj" />
 	</ItemGroup>

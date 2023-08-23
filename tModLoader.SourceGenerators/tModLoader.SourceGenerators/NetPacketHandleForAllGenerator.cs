@@ -30,7 +30,7 @@ partial struct {Template_DeclarationName} {{
 				break;
 		}}
 
-		HandlePacket();
+		// HandlePacket();
 	}}
 }}
 ";
@@ -43,16 +43,16 @@ partial struct {Template_DeclarationName} {{
 				var symbol = (INamedTypeSymbol)ctx.TargetSymbol;
 
 				return (
-					symbol.ContainingNamespace.ToString(),
+					Namespace: symbol.ContainingNamespace.ToString(),
 					symbol.MetadataName,
 					symbol.Name
 				);
 			});
 
 		ctx.RegisterSourceOutput(netPackets, static (ctx, source) => {
-			ctx.AddSource($"{source.Item1}.{source.Item2}.g.cs", MatchBrackets.Replace(TemplateCodeText, match => match.Value switch {
-				Template_Namespace => source.Item1,
-				Template_DeclarationName => source.Item3,
+			ctx.AddSource($"{source.Namespace}.{source.MetadataName}.g.cs", MatchBrackets.Replace(TemplateCodeText, match => match.Value switch {
+				Template_Namespace => source.Namespace,
+				Template_DeclarationName => source.Name,
 				_ => match.Value
 			}));
 		});

@@ -12,8 +12,7 @@ public partial struct ExampleStatIncreasePlayerPacket
 	public byte PlayerExampleManaCrystals { get; set; }
 
 	public readonly void HandlePacket() {
-		if (!Main.player[PlayerWhoAmI].TryGetModPlayer<ExampleStatIncreasePlayer>(out var statIncreasePlayer))
-			return;
+		ExampleStatIncreasePlayer statIncreasePlayer = Main.player[PlayerWhoAmI].GetModPlayer<ExampleStatIncreasePlayer>();
 
 		statIncreasePlayer.exampleLifeFruits = PlayerExampleLifeFruits;
 		statIncreasePlayer.exampleManaCrystals = PlayerExampleManaCrystals;
