@@ -68,6 +68,7 @@
 		"OutdatedModCantPublishError": "你无法发布基于旧版本tModLoader的模组",
 		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "需要重新加载",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "强制重新加载",
 		"ModIsServerSide": "这是一个服务器的模组",
 		"ModsByline": "作者: {0}",

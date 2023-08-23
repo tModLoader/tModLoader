@@ -28,16 +28,23 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	public bool Initialize()
 	{
-		OnLocalModsChanged(null);
+		OnLocalModsChanged(null, false);
 		return true;
 	}
 
-	private void OnLocalModsChanged(HashSet<string> modSlugs)
+	private void OnLocalModsChanged(HashSet<string> modSlugs, bool isDeletion)
 	{
 		InstalledItems = ModOrganizer.FindWorkshopMods();
 
 		if (SteamedWraps.SteamAvailable)
 			CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
+
+		if (!isDeletion)
+			return;
+
+		foreach (var item in modSlugs) {
+			intermediateInstallStateMods.Add(item);
+		}
 	}
 
 	public IReadOnlyList<LocalMod> GetInstalledMods()
@@ -49,6 +56,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	}
 
 	public List<ModDownloadItem> CachedInstalledModDownloadItems { get; set; }
+	private HashSet<string> intermediateInstallStateMods = new HashSet<string>();
 
 	// Cache to minimize heavy costs associated with scanning over 50+ mods installed. Test anytime after big optimization to see if can remove
 	// last test Jun 23 2023 - Solxan
@@ -160,14 +168,14 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		switch (queryParams.updateStatusFilter) {
 			case UpdateFilter.All:
 				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
-					if (CachedInstalledModDownloadItems.Contains(item))
+					if (CachedInstalledModDownloadItems.Contains(item) || intermediateInstallStateMods.Contains(item.ModName))
 						item.UpdateInstallState();
 					yield return item;
 				}
 				yield break;
 			case UpdateFilter.Available:
 				await foreach (var item in WorkshopHelper.QueryHelper.QueryWorkshop(queryParams, token)) {
-					if (!CachedInstalledModDownloadItems.Contains(item)) {
+					if (!CachedInstalledModDownloadItems.Contains(item) && !intermediateInstallStateMods.Contains(item.ModName)) {
 						yield return item;
 					}
 				}
