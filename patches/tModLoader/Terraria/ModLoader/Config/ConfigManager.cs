@@ -285,7 +285,7 @@ public static class ConfigManager
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
-			string message = reader.ReadString();
+			NetworkText message = NetworkText.Deserialize(reader);
 			if (success) {
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
@@ -315,10 +315,10 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			string message = "tModLoader.ModConfigChangesAccepted";// Send key in case client and server have different languages instead of value
+			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigChangesAccepted");
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = "tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload";
+				message = NetworkText.FromKey("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload");
 			}
 			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
 				success = false;
@@ -331,7 +331,7 @@ public static class ConfigManager
 				// Send new config to all clients
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(true);
-				p.Write(message);
+				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
 				p.Write(json);
@@ -341,7 +341,7 @@ public static class ConfigManager
 				// Send rejections message back to client who requested change
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
-				p.Write(message);
+				message.Serialize(p);
 				p.Send(whoAmI);
 			}
 
