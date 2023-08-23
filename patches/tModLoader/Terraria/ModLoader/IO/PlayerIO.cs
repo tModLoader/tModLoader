@@ -388,7 +388,7 @@ internal static class PlayerIO
 
 	internal static void LoadUsedModPack(Player player, string modpack)
 	{
-		player.modPack = modpack;
+		player.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null 
 	}
 
 	internal static string SaveUsedModPack(Player player)

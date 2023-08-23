@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using Terraria.DataStructures;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.IO;
@@ -11,6 +13,7 @@ using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader.IO;
 
@@ -639,6 +642,9 @@ internal static class WorldIO
 	{
 		return new TagCompound {
 			["modHeaders"] = SaveModHeaders(),
+			["usedMods"] = SaveUsedMods(),
+			["usedModPack"] = SaveUsedModPack(),
+			["generatedWithMods"] = SaveGeneratedWithMods(),
 		};			
 	}
 
@@ -709,5 +715,45 @@ internal static class WorldIO
 
 			data.ModHeaders[fullname] = (TagCompound)entry.Value;
 		}
+		LoadUsedMods(data, tag.GetList<string>("usedMods"));
+		LoadUsedModPack(data, tag.GetString("usedModPack"));
+		if(tag.ContainsKey("generatedWithMods")) // GetList will return an empty List instead of null. null and empty list have different meaning for this data.
+			LoadGeneratedWithMods(data, tag.GetList<TagCompound>("generatedWithMods"));
+	}
+
+	internal static void LoadUsedMods(WorldFileData data, IList<string> usedMods)
+	{
+		data.usedMods = usedMods;
+	}
+
+	internal static List<string> SaveUsedMods()
+	{
+		return ModLoader.Mods.Select(m => m.Name).Except(new[] { "ModLoader" }).ToList();
+	}
+
+	internal static void LoadUsedModPack(WorldFileData data, string modpack)
+	{
+		data.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null was saved.
+	}
+
+	internal static string SaveUsedModPack()
+	{
+		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+	}
+
+	internal static void LoadGeneratedWithMods(WorldFileData data, IList<TagCompound> list)
+	{
+		data.modsGeneratedWith = list.Select(x => (x.GetString("mod"), new Version(x.GetString("version")))).ToList();
+	}
+
+	internal static List<TagCompound> SaveGeneratedWithMods()
+	{
+		if (Main.ActiveWorldFileData.modsGeneratedWith == null)
+			return null;
+		return Main.ActiveWorldFileData.modsGeneratedWith
+			.Select(x => new TagCompound {
+				["mod"] = x.modName,
+				["version"] = x.modVersion.ToString()
+			}).ToList();
 	}
 }
