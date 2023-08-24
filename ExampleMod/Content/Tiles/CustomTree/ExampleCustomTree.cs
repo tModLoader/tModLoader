@@ -18,13 +18,16 @@ namespace ExampleMod.Content.Tiles.CustomTree
         public override int SaplingStyles => 3;
         public override int GrowChance => 1;
 
-        public override int MinHeight => 2;
-        public override int MaxHeight => 20;
+        public override int MinHeight => 10;
+        public override int MaxHeight => 50;
 
 		public override TreeTypes TreeType => TreeTypes.Ash;
 
-		public override Color? TileMapColor => Color.Yellow;
-		public override Color? SaplingMapColor => Color.Orange;
+		public override Color? TileMapColor => Color.Gray;
+		public override Color? SaplingMapColor => Color.Gray;
+
+		public override int BranchChance => 2;
+		public override int NotLeafyBranchChance => 2;
 
 		public override bool Shake(int x, int y, ref bool createLeaves) {
             createLeaves = true;
@@ -34,7 +37,12 @@ namespace ExampleMod.Content.Tiles.CustomTree
 
 		public override IEnumerable<Item> GetItemDrops(int x, int y) {
 			Item item = new();
-			item.SetDefaults(ItemID.DirtBlock);
+
+			if (TreeTileInfo.GetInfo(x, y).Type == TreeTileType.LeafyTop)
+				item.SetDefaults(ModContent.ItemType<Content.Items.Placeable.ExampleBar>());
+			else
+				item.SetDefaults(ModContent.ItemType<Content.Items.Placeable.ExampleBlock>());
+
 			return new[] { item };
 		}
 
