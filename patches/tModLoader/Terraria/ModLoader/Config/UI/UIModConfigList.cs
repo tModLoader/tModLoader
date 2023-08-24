@@ -1,3 +1,4 @@
+using System.Configuration;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -193,6 +194,7 @@ internal class UIModConfigList : UIState
 				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,
 				ScalePanel = true,
+				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
 			configPanel.PaddingRight += indicatorOffset;
@@ -208,10 +210,12 @@ internal class UIModConfigList : UIState
 			configList.Add(configPanel);
 
 			// ConfigScope indicator
+			var indicatorTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
+			var indicatorFrame = indicatorTexture.Frame(2, 1, 1, 0);
 			var serverColor = Colors.RarityRed;
 			var clientColor = Colors.RarityCyan;
-			var texture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
-			var sideIndicator = new UIImageFramed(texture, texture.Frame(2, 1, 1, 0)) {
+
+			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = config.Mode == ConfigScope.ServerSide ? serverColor : clientColor,
