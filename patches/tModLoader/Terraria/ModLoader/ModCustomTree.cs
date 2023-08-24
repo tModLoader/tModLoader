@@ -147,6 +147,14 @@ public static class CustomTreeLoader
 		return tree.Grow(x, y);
 	}
 
+	public static bool GrowFromSapling(ushort tileType, int x, int y)
+	{
+		if (!TryGetBySapling(tileType, out ModCustomTree tree))
+			return false;
+
+		return tree.Grow(x, y);
+	}
+
 	public static bool TryGenerate(int x, int y)
 	{
 		if (trees.Count == 0)
@@ -178,6 +186,13 @@ public static class CustomTreeLoader
 			return false;
 		}
 		return false;
+	}
+
+	public static bool CanGrowAcorn(int acornItemType, ushort groundTileType) {
+		if (!TryGetByAcorn(acornItemType, out ModCustomTree tree))
+			return false;
+
+		return tree.ValidGroundType(groundTileType);
 	}
 }
 

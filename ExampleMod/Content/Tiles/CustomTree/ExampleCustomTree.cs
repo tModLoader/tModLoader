@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Enums;
@@ -9,10 +11,7 @@ namespace ExampleMod.Content.Tiles.CustomTree
 {
     public class ExampleCustomTree : ModCustomTree
     {
-        public override string TileTexture => "ExampleMod/Content/Tiles/Plants/ExampleTree";
-        public override string TopTexture => "Terraria/Images/Tree_Tops_30";
-        public override string BranchTexture => "Terraria/Images/Tree_Branches_26";
-        public override string LeafTexture => (GetType().Namespace + "." + Name + "_Leaf").Replace('.', '/');
+        public override string LeafTexture => "ExampleMod/Content/Tiles/CustomTree/ExampleCustomTree_Leaf";
 
         public override int[] ValidGroundTiles => new int[] { TileID.Grass, TileID.Dirt, TileID.Stone };
 
@@ -27,8 +26,7 @@ namespace ExampleMod.Content.Tiles.CustomTree
 		public override Color? TileMapColor => Color.Yellow;
 		public override Color? SaplingMapColor => Color.Orange;
 
-		public override bool Shake(int x, int y, ref bool createLeaves)
-        {
+		public override bool Shake(int x, int y, ref bool createLeaves) {
             createLeaves = true;
             Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Vector2(x, y) * 16, ItemID.StoneBlock);
             return false;
@@ -40,21 +38,15 @@ namespace ExampleMod.Content.Tiles.CustomTree
 			return new[] { item };
 		}
 
-		public override bool GetTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
-        {
-            topTextureFrameWidth = 118;
-            topTextureFrameHeight = 96;
-            floorY = 0;
-            return true;
-        }
+		public override int GetStyle(int x, int y) {
+			return WorldGen.TreeTops.GetTreeStyle(0);
+		}
 
-        public override bool TryGenerate(int x, int y)
-        {
+		public override bool TryGenerate(int x, int y) {
             return CustomTreeGen.GrowTree(x, y, GetTreeSettings());
         }
 
-        public override bool CreateDust(int x, int y, ref int dustType)
-        {
+        public override bool CreateDust(int x, int y, ref int dustType) {
             TreeTileInfo info = TreeTileInfo.GetInfo(x, y);
             switch (info.Type)
             {
@@ -70,5 +62,18 @@ namespace ExampleMod.Content.Tiles.CustomTree
             }
             return true;
         }
-    }
+
+		public override Asset<Texture2D> GetFoliageTexture(int style, bool branch) {
+			style = style % 2 + 1;
+
+			string path;
+			if (branch) {
+				path = $"ExampleMod/Content/Tiles/CustomTree/ExampleCustomTree_Branch{style}";
+			}
+			else {
+				path = $"ExampleMod/Content/Tiles/CustomTree/ExampleCustomTree_Top{style}";
+			}
+			return ModContent.Request<Texture2D>(path);
+		}
+	}
 }

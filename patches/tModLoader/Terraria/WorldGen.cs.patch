@@ -2545,6 +2545,15 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -52901,6 +_,8 @@
+ 					TreeGrowFXCheck(x, y);
+ 				return flag;
+ 			default:
++				if (CustomTreeLoader.GrowFromSapling(tile.TileType, x, y))
++					return true;
+ 				return false;
+ 		}
+ 	}
 @@ -53002,7 +_,7 @@
  			return false;
  
