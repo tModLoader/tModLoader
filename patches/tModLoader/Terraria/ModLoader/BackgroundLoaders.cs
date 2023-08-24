@@ -64,9 +64,6 @@ public sealed class BackgroundTextureLoader : Loader
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
 
-		if (!mod.loading)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
-
 		AddBackgroundTexture($"{mod.Name}/{texture}");
 	}
 
