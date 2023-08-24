@@ -38,6 +38,22 @@ public sealed class BackgroundTextureLoader : Loader
 	/// <summary> Safely attempts to output the slot/ID of the background texture with the given mod and path. </summary>
 	public static bool TryGetBackgroundSlot(Mod mod, string texture, out int slot) => TryGetBackgroundSlot($"{mod.Name}/{texture}", out slot);
 
+	/// <inheritdoc cref="AddBackgroundTexture(Mod, string)"/>
+	public static void AddBackgroundTexture(string texture)
+	{
+		if (texture == null)
+			throw new ArgumentNullException(nameof(texture));
+
+		ModContent.SplitName(texture, out string modName, out _);
+		if (!ModLoader.TryGetMod(modName, out Mod mod) || !mod.loading) {
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
+		}
+
+		mod.Assets.Request<Texture2D>(texture);
+
+		backgrounds[texture] = Instance.Reserve();
+	}
+
 	/// <summary>
 	/// Adds a texture to the list of background textures and assigns it a background texture slot.
 	/// </summary>
@@ -48,15 +64,10 @@ public sealed class BackgroundTextureLoader : Loader
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
 
-		if (texture == null)
-			throw new ArgumentNullException(nameof(texture));
-
 		if (!mod.loading)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
-		ModContent.Request<Texture2D>(texture);
-
-		backgrounds[texture] = Instance.Reserve();
+		AddBackgroundTexture($"{mod.Name}/{texture}");
 	}
 
 	internal override void ResizeArrays()
