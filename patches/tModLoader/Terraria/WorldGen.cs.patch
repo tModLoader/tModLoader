@@ -2545,10 +2545,26 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
-@@ -52901,6 +_,8 @@
+@@ -52901,6 +_,24 @@
  					TreeGrowFXCheck(x, y);
  				return flag;
  			default:
++				int j = y;
++				while (InWorld(x, j, 2) && (TileID.Sets.TreeSapling[Main.tile[x, j].TileType] || TileID.Sets.CommonSapling[Main.tile[x, j].TileType]))
++					j++;
++				if (InWorld(x, j, 2)) {
++					flag = false;
++					ushort groundType = Main.tile[x, j].TileType;
++					if (PlantLoader.Exists(TileID.Trees, groundType) && WorldGen.GrowTree(x, y))
++						flag = true;
++					if (PlantLoader.Exists(TileID.PalmTree, groundType) && WorldGen.GrowPalmTree(x, y))
++						flag = true;
++					if (flag && PlayerLOS(x, y))
++						TreeGrowFXCheck(x, y);
++					if (flag)
++						return true;
++				}
++
 +				if (CustomTreeLoader.GrowFromSapling(tile.TileType, x, y))
 +					return true;
  				return false;
