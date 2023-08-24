@@ -51,7 +51,7 @@ namespace ExampleMod.Content.Tiles.CustomTree
 		}
 
 		public override bool TryGenerate(int x, int y) {
-            return CustomTreeGen.GrowTree(x, y, GetTreeSettings());
+            return CustomTreeGenerator.GrowTree(x, y, GetTreeSettings());
         }
 
         public override bool CreateDust(int x, int y, ref int dustType) {
