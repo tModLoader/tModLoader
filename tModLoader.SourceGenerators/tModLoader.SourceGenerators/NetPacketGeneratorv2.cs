@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using tModLoader.SourceGenerators.Helpers;
 using static tModLoader.SourceGenerators.Constants;
@@ -108,7 +110,7 @@ using System.Runtime.CompilerServices;
 
 namespace {Template_Namespace};
 
-partial struct {Template_DeclarationName} {{
+{Template_DeclarationName} {{
 	[CompilerGenerated]
 	private void Serialize(global::Terraria.ModLoader.ModPacket writer, int toClient, int ignoreClient) {{
 {Template_SerializationImplementation}
@@ -121,12 +123,30 @@ partial struct {Template_DeclarationName} {{
 }}
 ";
 
+	public static bool MatchStructAndRecordStruct(SyntaxNode syntaxNode, CancellationToken token)
+	{
+		return syntaxNode is StructDeclarationSyntax or RecordDeclarationSyntax { ClassOrStructKeyword.RawKind: (int)SyntaxKind.StructKeyword };
+	}
+
+	public static string GenerateDeclarationName(ITypeSymbol symbol)
+	{
+		if (symbol.IsRecord) {
+			return $"partial record struct {symbol.Name}";
+		}
+		else if (symbol.IsRefLikeType) {
+			return $"ref partial struct {symbol.Name}";
+		}
+		else {
+			return $"partial struct {symbol.Name}";
+		}
+	}
+
 	public void Initialize(IncrementalGeneratorInitializationContext ctx)
 	{
 		// Commons.AssignDebugger();
 
 		var netPackets = ctx.SyntaxProvider.ForAttributeWithMetadataName(NetPacketAttributeFullMetadataName,
-			static (n, _) => n is StructDeclarationSyntax,
+			MatchStructAndRecordStruct,
 			static (ctx, _) => {
 				var symbol = (INamedTypeSymbol)ctx.TargetSymbol;
 				var netPacketAttribute = ctx.Attributes[0];
@@ -135,7 +155,7 @@ partial struct {Template_DeclarationName} {{
 				if (netPacketAttribute.NamedArguments.Any(x => x.Key == NetPacketAutoSerializePropertyName)) {
 					autoSerialization = (bool)netPacketAttribute.NamedArguments.First(x => x.Key == NetPacketAutoSerializePropertyName).Value.Value;
 				}
-
+			
 				var globalEncodedAsAttributes = RetriveGlobalEncoders(symbol);
 
 				var globalSerializationVector = RetrieveGlobalSerializationMethods(symbol);
@@ -162,7 +182,7 @@ partial struct {Template_DeclarationName} {{
 				return new SourceInfo(
 					Namespace: symbol.ContainingNamespace.ToString(),
 					MetadataName: symbol.MetadataName,
-					DeclarationName: symbol.Name,
+					DeclarationName: GenerateDeclarationName(symbol),
 
 					GlobalSerializations: (
 						Pre: globalSerializationVector.Serialization.PreSerializationSymbol != null,

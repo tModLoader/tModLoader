@@ -5,7 +5,7 @@ namespace tModLoader.SourceGenerators.Tests;
 partial class NetPacketGeneratorv2Tests
 {
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32Global()
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongGlobal()
 	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
@@ -142,7 +142,7 @@ partial struct GeneratedPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32GlobalAutoSerializeOn()
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongGlobalAutoSerializeOn()
 	{
 		const string CodeFile = @"
 using Terraria.ModLoader;
@@ -279,7 +279,7 @@ partial struct GeneratedPacket {
 	}
 
 	[Fact]
-	public async Task StructPacketWithDefaultSerializedIgnoredInt32GlobalAutoSerializeOff()
+	public async Task StructPacketWithDefaultSerializedIgnoredInt32EncodedAsLongGlobalAutoSerializeOff()
 	{
 		const string CodeFile = @"
 using Terraria.ModLoader;

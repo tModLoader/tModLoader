@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static tModLoader.SourceGenerators.Constants;
 
 namespace tModLoader.SourceGenerators;
@@ -22,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace {Template_Namespace};
 
-partial struct {Template_DeclarationName} {{
+{Template_DeclarationName} {{
 #region Internal methods
 	private ModPacket _Internal_WriteSerializedData(int toClient, int ignoreClient) {{
 		var packet = ModContent.GetInstance<{Template_ModName}>().GetPacket();
@@ -112,17 +111,19 @@ partial struct {Template_DeclarationName} {{
 	public void Initialize(IncrementalGeneratorInitializationContext ctx)
 	{
 		var netPackets = ctx.SyntaxProvider.ForAttributeWithMetadataName(NetPacketAttributeFullMetadataName,
-			static (n, _) => n is StructDeclarationSyntax,
+			NetPacketGeneratorv2.MatchStructAndRecordStruct,
 			static (ctx, _) => {
 				var symbol = (INamedTypeSymbol)ctx.TargetSymbol;
 				var netPacketAttribute = ctx.Attributes[0];
 
 				var modType = (ITypeSymbol)netPacketAttribute.ConstructorArguments[0].Value;
 
+				string declarationName = NetPacketGeneratorv2.GenerateDeclarationName(symbol);
+
 				return (
 					Namespace: symbol.ContainingNamespace.ToString(),
 					symbol.MetadataName,
-					Name: symbol.IsRefLikeType ? symbol.Name : $"{symbol.Name} : global::Terraria.ModLoader.Packets.INetPacket",
+					Name: symbol.IsRefLikeType ? declarationName : $"{declarationName} : global::Terraria.ModLoader.Packets.INetPacket",
 					ModName: modType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
 					ImplementsSetDefaults: symbol.GetMembers(NetPacketSetDefaultsMethodName).Any(x => x is IMethodSymbol methodSymbol && !methodSymbol.IsGenericMethod && !methodSymbol.Parameters.Any())
 				);

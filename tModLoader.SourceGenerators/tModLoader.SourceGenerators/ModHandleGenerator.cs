@@ -34,7 +34,7 @@ using System.Runtime.CompilerServices;
 
 namespace {Template_Namespace};
 
-partial struct {Template_DeclarationName} {{
+{Template_DeclarationName} {{
 	[CompilerGenerated]
 	public const byte Id = {Template_IdValue};
 }}
@@ -74,10 +74,11 @@ partial struct {Template_DeclarationName} {{
 
 		var netPackets = context.SyntaxProvider.ForAttributeWithMetadataName(
 			NetPacketAttributeFullMetadataName,
-			static (n, _) => n is StructDeclarationSyntax,
+			NetPacketGeneratorv2.MatchStructAndRecordStruct,
 			static (ctx, _) => {
 				return (
 					ctx.TargetSymbol.Name,
+					DeclarationName: NetPacketGeneratorv2.GenerateDeclarationName((ITypeSymbol)ctx.TargetSymbol),
 					Namespace: ctx.TargetSymbol.ContainingNamespace.ToString(),
 					Token: ctx.TargetSymbol.MetadataToken,
 					ModFullyQualifiedName: ((ISymbol)ctx.Attributes[0].ConstructorArguments[0].Value).ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)
@@ -134,7 +135,7 @@ partial struct {Template_DeclarationName} {{
 
 		context.RegisterSourceOutput(netPackets, static (ctx, packet) => {
 			ctx.AddSource($"{packet.PacketData.Namespace}.{packet.PacketData.Name}.g.cs", MatchBrackets.Replace(TemplateCode_Packet, match => match.Value switch {
-				Template_DeclarationName => packet.PacketData.Name,
+				Template_DeclarationName => packet.PacketData.DeclarationName,
 				Template_Namespace => packet.PacketData.Namespace,
 				Template_IdValue => packet.Id.ToString(),
 				_ => match.Value
