@@ -12,7 +12,7 @@ public partial struct ConsumedStatIncreasesPacket
 	public byte ConsumedLifeFruit { get; set; }
 	public byte ConsumedManaCrystals { get; set; }
 
-	public readonly void HandlePacket(int sender)
+	public void HandlePacket(int sender)
 	{
 		if (IsMPClient())
 			sender = Player;

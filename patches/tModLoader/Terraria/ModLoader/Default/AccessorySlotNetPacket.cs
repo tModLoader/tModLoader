@@ -20,7 +20,7 @@ public partial struct AccessorySlotInventorySlotNetPacket
 	[EncodedAs(typeof(ItemEncoder))]
 	public Item Item { get; set; }
 
-	public readonly void HandlePacket(int fromWho)
+	public void HandlePacket(int fromWho)
 	{
 		if (IsClient())
 			fromWho = Player;
@@ -28,6 +28,8 @@ public partial struct AccessorySlotInventorySlotNetPacket
 		var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
 
 		ModAccessorySlotPlayer.NetHandler.SetSlot(Slot, Item, dPlayer);
+
+		SendToAllPlayers(ignoreClient: fromWho);
 	}
 
 	private static bool IsClient() => Main.netMode == NetmodeID.SinglePlayer;
@@ -44,7 +46,7 @@ public partial struct AccessorySlotVisualStateNetPacket
 	public sbyte Slot { get; set; }
 	public bool HideVisual { get; set; }
 
-	public readonly void HandlePacket(int fromWho)
+	public void HandlePacket(int fromWho)
 	{
 		if (IsClient())
 			fromWho = Player;
@@ -52,6 +54,8 @@ public partial struct AccessorySlotVisualStateNetPacket
 		var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
 
 		dPlayer.exHideAccessory[Slot] = HideVisual;
+
+		SendToAllPlayers(ignoreClient: fromWho);
 	}
 
 	private static bool IsClient() => Main.netMode == NetmodeID.SinglePlayer;

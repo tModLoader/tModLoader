@@ -16,5 +16,8 @@ public partial struct ExampleDodgePacket
 		}
 
 		Main.player[PlayerWhoAmI].GetModPlayer<ExampleDamageModificationPlayer>().ExampleDodgeEffects();
+
+		// If the server receives this message, it sends it to all other clients to sync the effects.
+		SendToAllPlayers(ignoreClient: PlayerWhoAmI);
 	}
 }
