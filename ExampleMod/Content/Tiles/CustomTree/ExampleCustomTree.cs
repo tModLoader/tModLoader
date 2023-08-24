@@ -24,11 +24,8 @@ namespace ExampleMod.Content.Tiles.CustomTree
 
 		public override TreeTypes TreeType => TreeTypes.Ash;
 
-		//public override Color? MapColor => Color.Yellow;
-		//public override string MapName => "Example Tree";
-
-		//public override Color? SaplingMapColor => Color.Orange;
-		//public override string SaplingMapName => "Example Sapling";
+		public override Color? TileMapColor => Color.Yellow;
+		public override Color? SaplingMapColor => Color.Orange;
 
 		public override bool Shake(int x, int y, ref bool createLeaves)
         {
@@ -51,13 +48,10 @@ namespace ExampleMod.Content.Tiles.CustomTree
             return true;
         }
 
-        //public override bool TryGenerate(int x, int y)
-        //{
-        //    if (TreeGenPass.Active)
-        //        return false; // Can be initiated only by command 
-
-        //    return TreeGrowing.GrowTree(x, y, GetTreeSettings());
-        //}
+        public override bool TryGenerate(int x, int y)
+        {
+            return CustomTreeGen.GrowTree(x, y, GetTreeSettings());
+        }
 
         public override bool CreateDust(int x, int y, ref int dustType)
         {

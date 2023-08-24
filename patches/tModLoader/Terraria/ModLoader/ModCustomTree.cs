@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ObjectData;
 
 namespace Terraria.ModLoader;
@@ -99,9 +98,9 @@ public static class CustomTreeLoader
 		return true;
 	}
 
-	public static bool GetTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
+	public static bool GetTreeFoliageData(int x, int y, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
 	{
-		Tile tile = Main.tile[i, j];
+		Tile tile = Main.tile[x, y];
 
 		floorY = 0;
 		topTextureFrameHeight = 0;
@@ -111,11 +110,78 @@ public static class CustomTreeLoader
 			return false;
 
 		treeStyle = tree.TreeStyle;
-		return tree.GetTreeFoliageData(i, j, xoffset, ref treeFrame, out floorY, out topTextureFrameWidth, out topTextureFrameHeight);
+		return tree.GetTreeFoliageData(x, y, xoffset, ref treeFrame, out floorY, out topTextureFrameWidth, out topTextureFrameHeight);
+	}
+
+	public static void GetStyle(int x, int y, ref int style)
+	{
+		Tile tile = Main.tile[x, y];
+		if (!TryGetByTile(tile.TileType, out ModCustomTree tree))
+			return;
+
+		style = tree.GetStyle(x, y);
+	}
+
+	public static bool Shake(int x, int y, ref bool createLeaves)
+	{
+		Tile tile = Main.tile[x, y];
+		if (!TryGetByTile(tile.TileType, out ModCustomTree tree))
+			return true;
+
+		return tree.Shake(x, y, ref createLeaves);
+	}
+
+	public static void GetTreeLeaf(int x, Tile topTile, Tile t, ref int treeHeight, ref int treeFrame, ref int passStyle)
+	{
+		if (!TryGetByTile(topTile.TileType, out ModCustomTree tree))
+			return;
+
+		tree.GetTreeLeaf(x, topTile, t, ref treeHeight, ref treeFrame, out passStyle);
+	}
+
+	public static bool Grow(ushort tileType, int x, int y)
+	{
+		if (!TryGetByTile(tileType, out ModCustomTree tree))
+			return false;
+
+		return tree.Grow(x, y);
+	}
+
+	public static bool TryGenerate(int x, int y)
+	{
+		if (trees.Count == 0)
+			return false;
+
+		int tileType = Framing.GetTileSafely(x, y).TileType;
+
+		int weight = 0;
+		foreach (ModCustomTree tree in trees)
+			if (tree.ValidGroundType(tileType))
+				weight += Math.Abs(tree.GenerationWeight);
+
+		if (weight <= 0)
+			return false;
+
+		int chosenWeight = WorldGen.genRand.Next(weight);
+		foreach (ModCustomTree tree in trees) {
+			if (!tree.ValidGroundType(tileType))
+				continue;
+
+			chosenWeight -= Math.Abs(tree.GenerationWeight);
+			if (chosenWeight > 0)
+				continue;
+
+			if (WorldGen.genRand.Next(tree.GenerationChance) == 0) {
+				return tree.TryGenerate(x, y);
+			}
+
+			return false;
+		}
+		return false;
 	}
 }
 
-public abstract class ModCustomTree : ModType
+public abstract class ModCustomTree : ModType, ILocalizedModType
 {
 	public virtual string TileTexture => (GetType().Namespace + "." + Name + "_Tile").Replace('.', '/');
 	public virtual string SaplingTexture => (GetType().Namespace + "." + Name + "_Sapling").Replace('.', '/');
@@ -161,6 +227,16 @@ public abstract class ModCustomTree : ModType
 	/// 1 in X chance of tree growing from sapling per random tick
 	/// </summary>
 	public virtual int GrowChance { get; set; } = 5;
+
+	/// <summary>
+	/// Generation weight among other custom trees
+	/// </summary>
+	public virtual int GenerationWeight { get; set; } = 10;
+
+	/// <summary>
+	/// Chance that this tree will try to generate if chosen by weight
+	/// </summary>
+	public virtual int GenerationChance { get; set; } = 5;
 
 	/// <summary>
 	/// 1 in X chance of not generating roots
@@ -212,25 +288,61 @@ public abstract class ModCustomTree : ModType
 	/// </summary>
 	public virtual int SaplingStyles { get; set; } = 1;
 
+	/// <summary>
+	/// Tree tile map color
+	/// </summary>
+	public virtual Color? TileMapColor { get; set; } = null;
+
+	/// <summary>
+	/// Tree tile map name
+	/// Defaults to localization key of {ModName}.CustomTrees.{TreeName}.TileMapName
+	/// </summary>
+	public virtual LocalizedText TileMapName { get; set; } = null;
+
+	/// <summary>
+	/// Sapling tile map color
+	/// </summary>
+	public virtual Color? SaplingMapColor { get; set; } = null;
+
+	/// <summary>
+	/// Sapling tile map name
+	/// Defaults to localization key of {ModName}.CustomTrees.{TreeName}.SaplingMapName
+	/// </summary>
+	public virtual LocalizedText SaplingMapName { get; set; } = null;
+
+	/// <summary>
+	/// Default name for acorn item
+	/// Defaults to localization key of {ModName}.CustomTrees.{TreeName}.AcornDisplayName
+	/// </summary>
+	public virtual LocalizedText AcornDisplayName { get; set; } = null;
+
+	/// <summary>
+	/// Tooltip for acorn item
+	/// Defaults to localization key of {ModName}.CustomTrees.{TreeName}.AcornTooltip
+	/// </summary>
+	public virtual LocalizedText AcornTooltip { get; set; } = null;
+
+	public string LocalizationCategory => "CustomTrees";
+
 	private List<Asset<Texture2D>> FoliageTextureCache = new();
 
 	public virtual ushort LoadTile()
 	{
-		CustomTreeDefaultTile tile = new();
+		CustomTreeDefaultTile tile = new(this);
 		Mod.AddContent(tile);
 		return tile.Type;
 	}
 
 	public virtual ushort LoadSapling()
 	{
-		CustomTreeDefaultSapling sapling = new();
+		CustomTreeDefaultSapling sapling = new(this);
 		Mod.AddContent(sapling);
 		return sapling.Type;
 	}
 
 	public virtual int LoadAcorn()
 	{
-		CustomTreeDefaultAcorn acorn = new();
+		CustomTreeDefaultAcorn acorn = new(this);
 		Mod.AddContent(acorn);
 		return acorn.Type;
 	}
@@ -240,21 +352,21 @@ public abstract class ModCustomTree : ModType
 		if (LeafTexture is null)
 			return GoreID.TreeLeaf_Normal;
 
-		CustomTreeDefaultLeaf leaf = new();
+		CustomTreeDefaultLeaf leaf = new(this);
 		Mod.AddContent(leaf);
 		return leaf.Type;
 	}
 
-	public virtual void TileFrame(int i, int j)
+	public virtual void TileFrame(int x, int y)
 	{
-		CustomTreeGen.CheckTree(i, j, GetTreeSettings());
+		CustomTreeGen.CheckTree(x, y, GetTreeSettings());
 	}
 
-	public virtual bool Grow(int i, int j)
+	public virtual bool Grow(int x, int y)
 	{
-		if (CustomTreeGen.GrowTree(i, j, GetTreeSettings()) && WorldGen.PlayerLOS(i, j))
+		if (CustomTreeGen.GrowTree(x, y, GetTreeSettings()) && WorldGen.PlayerLOS(x, y))
 		{
-			WorldGen.TreeGrowFXCheck(i, j);
+			WorldGen.TreeGrowFXCheck(x, y);
 			return true;
 		}
 		return false;
@@ -333,14 +445,29 @@ public abstract class ModCustomTree : ModType
 	}
 
 	/// <summary>
-	/// Gets texture coordinates data for custom top texture
+	/// Called in world generaion process
+	/// Return true if tree was generated
 	/// </summary>
-	public virtual bool GetTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
+	/// <param name="x">Ground tile X position</param>
+	/// <param name="y">Ground tile Y position</param>
+	/// <returns></returns>
+	public virtual bool TryGenerate(int x, int y)
 	{
-		int v = 0;
-		return WorldGen.GetCommonTreeFoliageData(i, j, xoffset, ref treeFrame, ref v, out floorY, out topTextureFrameWidth, out topTextureFrameHeight);
+		return false;
 	}
 
+	public virtual int GetStyle(int x, int y) => 0;
+
+	/// <summary>
+	/// Gets texture coordinates data for custom top texture
+	/// </summary>
+	public virtual bool GetTreeFoliageData(int x, int y, int xoffset, ref int treeFrame, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
+	{
+		int v = 0;
+		return WorldGen.GetCommonTreeFoliageData(x, y, xoffset, ref treeFrame, ref v, out floorY, out topTextureFrameWidth, out topTextureFrameHeight);
+	}
+
+	// TODO: style is always 0
 	public virtual Asset<Texture2D> GetFoliageTexture(int style, bool branch)
 	{
 		if (branch)
@@ -447,82 +574,98 @@ public static class CustomTreeDefaults
 [Autoload(false)]
 internal class CustomTreeDefaultTile : ModTile
 {
-	// Should be always valid, no checks needed
-	private ModCustomTree Tree => CustomTreeLoader.GetByTile(Type);
+	private ModCustomTree initTree = null;
+	private ModCustomTree Tree => initTree ?? CustomTreeLoader.GetByTile(Type);
+
+	public override string Name => Tree.Name + "Tile";
 
 	public override string Texture => Tree.TileTexture;
+
+	public CustomTreeDefaultTile(ModCustomTree tree)
+	{
+		initTree = tree;
+	}
+	public CustomTreeDefaultTile() { }
 
 	public override void SetStaticDefaults()
 	{
 		CustomTreeDefaults.SetTileStaticDefaults(Type);
+
+		ModCustomTree tree = Tree;
+		Color? color = tree.TileMapColor;
+		if (color is not null)
+			AddMapEntry(color.Value, tree.TileMapName ?? tree.GetLocalization(nameof(ModCustomTree.TileMapName), tree.PrettyPrintName));
 	}
 
-	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+	public override void SetDrawPositions(int x, int y, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
 	{
 		width = 20;
 		height = 20;
 	}
 
-	public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+	public override bool TileFrame(int x, int y, ref bool resetFrame, ref bool noBreak)
 	{
-		Tree.TileFrame(i, j);
+		Tree.TileFrame(x, y);
 		return false;
 	}
 
-	public override void RandomUpdate(int i, int j)
+	public override void RandomUpdate(int x, int y)
 	{
-		Tree.RandomUpdate(i, j);
+		Tree.RandomUpdate(x, y);
 	}
 
-	public override bool CreateDust(int i, int j, ref int type)
+	public override bool CreateDust(int x, int y, ref int type)
 	{
-		return Tree.CreateDust(i, j, ref type);
+		return Tree.CreateDust(x, y, ref type);
 	}
 
-	public override IEnumerable<Item> GetItemDrops(int i, int j)
+	public override IEnumerable<Item> GetItemDrops(int x, int y)
 	{
-		return Tree.GetItemDrops(i, j);
-	}
-
-	public override void MouseOver(int i, int j)
-	{
-		var tile = Main.tile[i, j];
-		var info = TreeTileInfo.GetInfo(tile);
-		var framing = $"\nFx: {tile.TileFrameX} Fy: {tile.TileFrameY}";
-		Main.instance.MouseText(info.ToString() + framing);
-		Main.mouseText = true;
+		return Tree.GetItemDrops(x, y);
 	}
 }
 
 [Autoload(false)]
 internal class CustomTreeDefaultSapling : ModTile
 {
-	// Should be always valid, no checks needed
-	private ModCustomTree Tree => CustomTreeLoader.GetBySapling(Type);
+	private ModCustomTree initTree = null;
+	private ModCustomTree Tree => initTree ?? CustomTreeLoader.GetBySapling(Type);
+
+	public override string Name => Tree.Name + "Sapling";
 
 	public override string Texture => Tree.SaplingTexture;
 
-	public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
+	public CustomTreeDefaultSapling(ModCustomTree tree)
 	{
-		WorldGen.Check1x2(i, j, Type);
+		initTree = tree;
+	}
+	public CustomTreeDefaultSapling() { }
+
+	public override bool TileFrame(int x, int y, ref bool resetFrame, ref bool noBreak)
+	{
+		WorldGen.Check1x2(x, y, Type);
 		return false;
 	}
 
 	public override void SetStaticDefaults()
 	{
-		CustomTreeDefaults.SetSaplingStaticDefaults(Type, Tree.SaplingStyles);
+		ModCustomTree tree = Tree;
+		CustomTreeDefaults.SetSaplingStaticDefaults(Type, tree.SaplingStyles);
+		Color? color = tree.SaplingMapColor;
+		if (color is not null)
+			AddMapEntry(color.Value, tree.SaplingMapName ?? tree.GetLocalization(nameof(ModCustomTree.SaplingMapName), () => tree.PrettyPrintName() + " Sapling"));
 	}
 
-	public override void RandomUpdate(int i, int j)
+	public override void RandomUpdate(int x, int y)
 	{
 		ModCustomTree tree = Tree;
 		if (Main.rand.Next(tree.GrowChance) == 0)
-			tree.Grow(i, j);
+			tree.Grow(x, y);
 	}
 
-	public override bool RightClick(int i, int j)
+	public override bool RightClick(int x, int y)
 	{
-		Tree.Grow(i, j);
+		Tree.Grow(x, y);
 		return true;
 	}
 }
@@ -530,15 +673,22 @@ internal class CustomTreeDefaultSapling : ModTile
 [Autoload(false)]
 internal class CustomTreeDefaultAcorn : ModItem
 {
-	// Should be always valid, no checks needed
-	private ModCustomTree Tree => CustomTreeLoader.GetByAcorn(Type);
+	private ModCustomTree initTree = null;
+	private ModCustomTree Tree => initTree ?? CustomTreeLoader.GetByAcorn(Type);
+
+	public override string Name => Tree.Name + "Acorn";
 
 	public override string Texture => Tree.AcornTexture;
 
-	public override void SetStaticDefaults()
+	public override LocalizedText DisplayName => Tree.AcornDisplayName ?? Tree.GetLocalization(nameof(ModCustomTree.AcornDisplayName), () => Tree.PrettyPrintName() + " Acorn");
+
+	public override LocalizedText Tooltip => Tree.AcornTooltip ?? Tree.GetLocalization(nameof(ModCustomTree.AcornTooltip), () => "");
+
+	public CustomTreeDefaultAcorn(ModCustomTree tree)
 	{
-		// TODO: display name
+		initTree = tree;
 	}
+	public CustomTreeDefaultAcorn() { }
 
 	public override void SetDefaults()
 	{
@@ -549,10 +699,18 @@ internal class CustomTreeDefaultAcorn : ModItem
 [Autoload(false)]
 internal class CustomTreeDefaultLeaf : ModGore
 {
-	// Should be always valid, no checks needed
-	private ModCustomTree Tree => CustomTreeLoader.GetByCustomLeaf(Type);
+	private ModCustomTree initTree = null;
+	private ModCustomTree Tree => initTree ?? CustomTreeLoader.GetByCustomLeaf(Type);
+
+	public override string Name => Tree.Name + "Leaf";
 
 	public override string Texture => Tree.LeafTexture;
+
+	public CustomTreeDefaultLeaf(ModCustomTree tree)
+	{
+		initTree = tree;
+	}
+	public CustomTreeDefaultLeaf() { }
 
 	public override void SetStaticDefaults()
 	{

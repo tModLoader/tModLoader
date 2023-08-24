@@ -668,14 +668,13 @@
  		for (int num = -1; num > -100; num--) {
  			Tile tile = Main.tile[x, y + num];
  			if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
-@@ -17491,6 +_,11 @@
+@@ -17491,6 +_,10 @@
  				treeFrame = 2;
  		}
  
-+		if (CustomTreeLoader.TryGetByTile(topTile.TileType, out ModCustomTree tree)) {
-+			tree.GetTreeLeaf(x, topTile, t, ref treeHeight, ref treeFrame, out passStyle);
++		CustomTreeLoader.GetTreeLeaf(x, topTile, t, ref treeHeight, ref treeFrame, ref passStyle);
++		if (passStyle > -1)
 +			return;
-+		}
 +
  		switch (topTile.type) {
  			case 596:
@@ -729,14 +728,12 @@
  			return true;
  
  		return false;
-@@ -18281,6 +_,11 @@
+@@ -18281,6 +_,9 @@
  			case 634:
  				result = GrowTreeWithSettings(checkedX, checkedY, GrowTreeSettings.Profiles.Tree_Ash);
  				break;
 +			default:
-+				ModCustomTree customTree = CustomTreeLoader.GetByTile((ushort)treeTileType);
-+				if (customTree is not null)
-+					result = customTree.Grow(checkedX, checkedY);
++				result = CustomTreeLoader.Grow((ushort)treeTileType, checkedX, checkedY);
 +				break;
  		}
  
@@ -756,6 +753,35 @@
  			flag4 = true;
  
  		if (!flag3) {
+@@ -19142,6 +_,7 @@
+ 		double num2 = 0.1 + genRand.NextDouble() * 0.35;
+ 		int num3 = 20;
+ 		int num4 = (int)Main.worldSurface;
++
+ 		if (!undergroundOnly) {
+ 			for (int i = 1; i < Main.maxTilesX - 1; i++) {
+ 				for (int j = num3; j < num4; j++) {
+@@ -19166,6 +_,7 @@
+ 						else
+ 							GrowTreeWithSettings(i, j, GrowTreeSettings.Profiles.VanityTree_Sakura);
+ 					}
++					else if (CustomTreeLoader.TryGenerate(i, j)) { }
+ 					else {
+ 						GrowTree(i, j);
+ 					}
+@@ -19179,6 +_,12 @@
+ 			}
+ 		}
+ 
++		for (int k = 1; k < Main.maxTilesX - 1; k++) {
++			for (int l = num4; l < Main.maxTilesY - 20; l++) {
++				CustomTreeLoader.TryGenerate(k, l);
++			}
++		}
++
+ 		if (!remixWorldGen)
+ 			return;
+ 
 @@ -19251,9 +_,11 @@
  				}
  
@@ -2187,7 +2213,7 @@
  
 +		bool createLeaves = true;
 +		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref createLeaves)) { } else
-+		if (CustomTreeLoader.TryGetByTile(Main.tile[x, y].type, out ModCustomTree tree) && !tree.Shake(x, y, ref createLeaves)) { } else
++		if (!CustomTreeLoader.Shake(x, y, ref createLeaves)) { } else
  		if (Main.getGoodWorld && genRand.Next(17) == 0) {
  			Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
  		}

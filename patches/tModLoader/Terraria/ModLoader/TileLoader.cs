@@ -777,7 +777,7 @@ public static class TileLoader
 				}
 				width = tileData.CoordinateWidth;
 				offsetY = tileData.DrawYOffset;
-				height = tileData.CoordinateHeights[partY];
+				height = tileData.CoordinateHeights[Math.Clamp(partY, 0, tileData.CoordinateHeights.Length-1)];
 			}
 			GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref tileFrameX, ref tileFrameY);
 		}
