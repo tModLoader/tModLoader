@@ -160,7 +160,7 @@ public static class MonoModHooks
 	{
 		var ilHooksField = typeof(HookEndpointManager).GetField("ILHooks", BindingFlags.NonPublic | BindingFlags.Static);
 		object ilHooksFieldValue = ilHooksField.GetValue(null);
-		if (ilHooksFieldValue is Dictionary<(MethodBase, Delegate), ILHook> ilHooks) {
+		if (ilHooksFieldValue is IDictionary<(MethodBase, Delegate), ILHook> ilHooks) {
 			Logging.tML.Debug("Dump of registered IL Hooks:");
 			foreach (var item in ilHooks) {
 				Logging.tML.Debug(item.Key + ": " + item.Value);
