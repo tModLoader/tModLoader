@@ -97,7 +97,18 @@ public static class CustomTreeLoader
 		tree = trees[style];
 		return true;
 	}
-
+	/// <summary>
+	/// Gets tree foliage data for rendering
+	/// </summary>
+	/// <param name="x">World X coordinate</param>
+	/// <param name="y">World Y coordinate</param>
+	/// <param name="xoffset"></param>
+	/// <param name="treeFrame">Tree frame (0, 1, 2)</param>
+	/// <param name="treeStyle">Tree texture index</param>
+	/// <param name="floorY"></param>
+	/// <param name="topTextureFrameWidth">Tree top width</param>
+	/// <param name="topTextureFrameHeight">Tree top height</param>
+	/// <returns></returns>
 	public static bool GetTreeFoliageData(int x, int y, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight)
 	{
 		Tile tile = Main.tile[x, y];
@@ -113,6 +124,12 @@ public static class CustomTreeLoader
 		return tree.GetTreeFoliageData(x, y, xoffset, ref treeFrame, out floorY, out topTextureFrameWidth, out topTextureFrameHeight);
 	}
 
+	/// <summary>
+	/// Gets tree style (texture index)
+	/// </summary>
+	/// <param name="x">World X coordinate</param>
+	/// <param name="y">World Y coordinate</param>
+	/// <param name="style"></param>
 	public static void GetStyle(int x, int y, ref int style)
 	{
 		Tile tile = Main.tile[x, y];
@@ -122,6 +139,13 @@ public static class CustomTreeLoader
 		style = tree.GetStyle(x, y);
 	}
 
+	/// <summary>
+	/// Called when tree was shook
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="createLeaves"></param>
+	/// <returns></returns>
 	public static bool Shake(int x, int y, ref bool createLeaves)
 	{
 		Tile tile = Main.tile[x, y];
@@ -131,6 +155,15 @@ public static class CustomTreeLoader
 		return tree.Shake(x, y, ref createLeaves);
 	}
 
+	/// <summary>
+	/// Sets passStyle to tree leaf gore id
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="topTile"></param>
+	/// <param name="t"></param>
+	/// <param name="treeHeight"></param>
+	/// <param name="treeFrame"></param>
+	/// <param name="passStyle"></param>
 	public static void GetTreeLeaf(int x, Tile topTile, Tile t, ref int treeHeight, ref int treeFrame, ref int passStyle)
 	{
 		if (!TryGetByTile(topTile.TileType, out ModCustomTree tree))
@@ -139,6 +172,13 @@ public static class CustomTreeLoader
 		tree.GetTreeLeaf(x, topTile, t, ref treeHeight, ref treeFrame, out passStyle);
 	}
 
+	/// <summary>
+	/// Tries to grow tree by tile type
+	/// </summary>
+	/// <param name="tileType"></param>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
 	public static bool Grow(ushort tileType, int x, int y)
 	{
 		if (!TryGetByTile(tileType, out ModCustomTree tree))
@@ -147,6 +187,13 @@ public static class CustomTreeLoader
 		return tree.Grow(x, y);
 	}
 
+	/// <summary>
+	/// Tries to grow tree by sapling tile type
+	/// </summary>
+	/// <param name="tileType"></param>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
 	public static bool GrowFromSapling(ushort tileType, int x, int y)
 	{
 		if (!TryGetBySapling(tileType, out ModCustomTree tree))
@@ -155,6 +202,12 @@ public static class CustomTreeLoader
 		return tree.Grow(x, y);
 	}
 
+	/// <summary>
+	/// Tries to generate any ModCustomTree at given coordinates
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
 	public static bool TryGenerate(int x, int y)
 	{
 		if (trees.Count == 0)
@@ -188,6 +241,12 @@ public static class CustomTreeLoader
 		return false;
 	}
 
+	/// <summary>
+	/// Returns true if given acorn item type can grow on given ground
+	/// </summary>
+	/// <param name="acornItemType"></param>
+	/// <param name="groundTileType"></param>
+	/// <returns></returns>
 	public static bool CanGrowAcorn(int acornItemType, ushort groundTileType) {
 		if (!TryGetByAcorn(acornItemType, out ModCustomTree tree))
 			return false;
@@ -198,10 +257,33 @@ public static class CustomTreeLoader
 
 public abstract class ModCustomTree : ModType, ILocalizedModType
 {
+	/// <summary>
+	/// Texture path for tree tile
+	/// </summary>
 	public virtual string TileTexture => (GetType().Namespace + "." + Name + "_Tile").Replace('.', '/');
+
+	/// <summary>
+	/// Texture path for tree sapling tile.<br/>
+	/// Can contain multiple styles of saplings, style count is set by <see cref="SaplingStyles"/>
+	/// </summary>
 	public virtual string SaplingTexture => (GetType().Namespace + "." + Name + "_Sapling").Replace('.', '/');
+
+	/// <summary>
+	/// Texture path for tree acorn item
+	/// </summary>
 	public virtual string AcornTexture => (GetType().Namespace + "." + Name + "_Acorn").Replace('.', '/');
+
+	/// <summary>
+	/// Texture path for tree top<br/>
+	/// Must contain 3 variants of tops<br/>
+	/// Sprite size is defined in <see cref="GetTreeFoliageData"/>
+	/// </summary>
 	public virtual string TopTexture => (GetType().Namespace + "." + Name + "_Top").Replace('.', '/');
+
+	/// <summary>
+	/// Texture path for tree top<br/>
+	/// Must contain 3 variants of branches on both sides<br/>
+	/// </summary>
 	public virtual string BranchTexture => (GetType().Namespace + "." + Name + "_Branch").Replace('.', '/');
 
 	/// <summary>
@@ -209,12 +291,34 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 	/// </summary>
 	public virtual string LeafTexture => null;
 
+	/// <summary>
+	/// Tree style type, unique for each tree
+	/// </summary>
 	public int TreeStyle { get; internal set; }
+
+	/// <summary>
+	/// Tree tile type
+	/// </summary>
 	public ushort TileType { get; internal set; }
+
+	/// <summary>
+	/// Tree sapling type
+	/// </summary>
 	public ushort SaplingType { get; internal set; }
+
+	/// <summary>
+	/// Tree acorn item type
+	/// </summary>
 	public int AcornType { get; internal set; }
+
+	/// <summary>
+	/// Tree leaf type
+	/// </summary>
 	public int LeafType { get; internal set; }
 
+	/// <summary>
+	/// Tree shader settings for painting
+	/// </summary>
 	public TreePaintingSettings PaintingSettings = new TreePaintingSettings {
 		UseSpecialGroups = true,
 		SpecialGroupMinimalHueValue = 1f / 6f,
@@ -341,6 +445,10 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 
 	private List<Asset<Texture2D>> FoliageTextureCache = new();
 
+	/// <summary>
+	/// Override for loading custom tile for this tree
+	/// </summary>
+	/// <returns></returns>
 	public virtual ushort LoadTile()
 	{
 		CustomTreeDefaultTile tile = new(this);
@@ -348,6 +456,10 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 		return tile.Type;
 	}
 
+	/// <summary>
+	/// Override for loading custom sapling tile for this tree
+	/// </summary>
+	/// <returns></returns>
 	public virtual ushort LoadSapling()
 	{
 		CustomTreeDefaultSapling sapling = new(this);
@@ -355,6 +467,10 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 		return sapling.Type;
 	}
 
+	/// <summary>
+	/// Override for loading custom acorn item for this tree
+	/// </summary>
+	/// <returns></returns>
 	public virtual int LoadAcorn()
 	{
 		CustomTreeDefaultAcorn acorn = new(this);
@@ -362,6 +478,10 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 		return acorn.Type;
 	}
 
+	/// <summary>
+	/// Override for loading custom leaf gore for this tree
+	/// </summary>
+	/// <returns></returns>
 	public virtual int LoadLeaf()
 	{
 		if (LeafTexture is null)
@@ -372,11 +492,20 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 		return leaf.Type;
 	}
 
+	/// <summary>
+	/// Ran for each tile's <see cref="ModTile.TileFrame"/>
+	/// </summary>
 	public virtual void TileFrame(int x, int y)
 	{
 		CustomTreeGen.CheckTree(x, y, GetTreeSettings());
 	}
 
+	/// <summary>
+	/// Called when tree tries to grow from sapling
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
 	public virtual bool Grow(int x, int y)
 	{
 		if (CustomTreeGen.GrowTree(x, y, GetTreeSettings()) && WorldGen.PlayerLOS(x, y))
@@ -482,7 +611,14 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 		return WorldGen.GetCommonTreeFoliageData(x, y, xoffset, ref treeFrame, ref v, out floorY, out topTextureFrameWidth, out topTextureFrameHeight);
 	}
 
-	// TODO: style is always 0
+	/// <summary>
+	/// Gets foliage assets for tree tops and branches for each texture style<br/>
+	/// Texture style is received from <see cref="GetStyle"/><br/>
+	/// This method is called only once for each style
+	/// </summary>
+	/// <param name="style"></param>
+	/// <param name="branch"></param>
+	/// <returns></returns>
 	public virtual Asset<Texture2D> GetFoliageTexture(int style, bool branch)
 	{
 		if (branch)
@@ -1512,8 +1648,6 @@ public struct TreeTileInfo
 		Point frame = new(t.TileFrameX, t.TileFrameY);
 
 		int frameSize = 22;
-		//if (CustomTreeLoader.byTileLookup.ContainsKey(t.TileType))
-		//	frameSize = 18;
 
 		int style = (frame.Y & frameSize * 3) / frameSize % 3;
 		frame.Y /= frameSize * 3;
@@ -1718,9 +1852,6 @@ public struct TreeTileInfo
 		frame.Y += Style;
 
 		int frameSize = 22;
-		//if (CustomTreeLoader.byTileLookup.ContainsKey(t.TileType))
-		//	frameSize = 18;
-
 		t.TileFrameX = (short)(frame.X * frameSize);
 		t.TileFrameY = (short)(frame.Y * frameSize);
 	}

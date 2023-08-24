@@ -47,7 +47,7 @@ namespace ExampleMod.Content.Tiles.CustomTree
 		}
 
 		public override int GetStyle(int x, int y) {
-			return WorldGen.TreeTops.GetTreeStyle(0);
+			return WorldGen.TreeTops.GetTreeStyle(0) % 2;
 		}
 
 		public override bool TryGenerate(int x, int y) {
