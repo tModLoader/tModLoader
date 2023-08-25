@@ -12,4 +12,7 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\Items\Weapons\ExampleUseStyleWeapon.png" />
+  </ItemGroup>
 </Project>
