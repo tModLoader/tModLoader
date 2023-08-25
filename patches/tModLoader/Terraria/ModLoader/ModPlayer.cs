@@ -1253,7 +1253,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>
