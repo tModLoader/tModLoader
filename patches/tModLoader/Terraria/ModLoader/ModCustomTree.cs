@@ -317,6 +317,8 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 
 		CustomTreeLoader.trees.Add(this);
 	}
+
+	public override void SetupContent() => SetStaticDefaults();
 }
 
 [Autoload(false)]
