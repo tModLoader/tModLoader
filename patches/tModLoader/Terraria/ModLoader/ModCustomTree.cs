@@ -251,7 +251,8 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Ran for each tile's <see cref="ModTile.TileFrame"/>
+	/// Ran for each tile's <see cref="ModTile.TileFrame"/><br/>
+	/// Called from tree's ModTile. You'll need to call it manually when overriding tree tile with <see cref="LoadTile"/>.
 	/// </summary>
 	public virtual void TileFrame(int x, int y)
 	{
@@ -259,7 +260,8 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Called when tree tries to grow from sapling
+	/// Called when tree tries to grow from sapling<br/>
+	/// Called from tree's sapling ModTile on <see cref="ModBlockType.RandomUpdate"/>. You'll need to call it manually when overriding tree tile with <see cref="LoadSapling"/>.
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
@@ -273,6 +275,24 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 		}
 		return false;
 	}
+
+	/// <summary>
+	/// Called from tree's ModTile's <see cref="ModBlockType.SetStaticDefaults"/>. You'll need to call it manually when overriding tree tile with <see cref="LoadTile"/>.<br/>
+	/// Static values default to values from <see cref="CustomTreeDefaults.SetTileStaticDefaults"/>, so:
+	/// <code>
+	/// Main.tileAxe[type] = true;
+	/// Main.tileFrameImportant[type] = true;
+	/// TileID.Sets.IsATreeTrunk[type] = true;
+	/// TileID.Sets.IsShakeable[type] = true;
+	/// TileID.Sets.GetsDestroyedForMeteors[type] = true;
+	/// TileID.Sets.GetsCheckedForLeaves[type] = true;
+	/// TileID.Sets.PreventsTileRemovalIfOnTopOfIt[type] = true;
+	/// TileID.Sets.PreventsTileReplaceIfOnTopOfIt[type] = true;
+	/// </code>
+	/// </summary>
+	/// <param name="tile"></param>
+	/// <returns></returns>
+	public virtual void SetTileStaticDefaults(ModTile tile) { }
 
 	/// <summary>
 	/// Gets current tree settings
@@ -310,13 +330,15 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 	public virtual bool ValidWallType(int tile) => ValidWalls.Contains(tile);
 
 	/// <summary>
-	/// Randomly executed on every tree tile
+	/// Randomly executed on every tree tile<br/>
+	/// Called from tree's ModTile. You'll need to call it manually when overriding tree tile with <see cref="LoadTile"/>.
 	/// </summary>
 	public virtual void RandomUpdate(int x, int y) { }
 
 	/// <summary>
 	/// Same as <see cref="ModTile.GetItemDrops"/>.
-	/// Use TreeTileInfo.GetInfo to determine tile type
+	/// Use TreeTileInfo.GetInfo to determine tile type.<br/>
+	/// Called from tree's ModTile. You'll need to call it manually when overriding tree tile with <see cref="LoadTile"/>.
 	/// </summary>
 	public virtual IEnumerable<Item> GetItemDrops(int x, int y) => Array.Empty<Item>();
 
@@ -335,7 +357,8 @@ public abstract class ModCustomTree : ModType, ILocalizedModType
 
 	/// <summary>
 	/// Woks the same as ModTile.CreateDust<br/>
-	/// Allows to change dust type created or to disable tile dust
+	/// Allows to change dust type created or to disable tile dust<br/>
+	/// Called from tree's ModTile. You'll need to call it manually when overriding tree tile with <see cref="LoadTile"/>.
 	/// </summary>
 	/// <param name="x">Tile X position</param>
 	/// <param name="y">Tile Y position</param>
@@ -504,6 +527,8 @@ internal class CustomTreeDefaultTile : ModTile
 		Color? color = tree.TileMapColor;
 		if (color is not null)
 			AddMapEntry(color.Value, tree.TileMapName ?? tree.GetLocalization(nameof(ModCustomTree.TileMapName), tree.PrettyPrintName));
+
+		tree.SetTileStaticDefaults(this);
 	}
 
 	public override void SetDrawPositions(int x, int y, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
@@ -570,12 +595,6 @@ internal class CustomTreeDefaultSapling : ModTile
 		ModCustomTree tree = Tree;
 		if (Main.rand.Next(tree.GrowChance) == 0)
 			tree.Grow(x, y);
-	}
-
-	public override bool RightClick(int x, int y)
-	{
-		Tree.Grow(x, y);
-		return true;
 	}
 }
 

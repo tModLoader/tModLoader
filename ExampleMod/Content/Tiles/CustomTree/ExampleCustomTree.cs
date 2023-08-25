@@ -46,6 +46,13 @@ namespace ExampleMod.Content.Tiles.CustomTree
 			return new[] { item };
 		}
 
+		public override void SetTileStaticDefaults(ModTile tile) {
+
+			// Make tree breakable by hammer only
+			Main.tileAxe[tile.Type] = false;
+			Main.tileHammer[tile.Type] = true;
+		}
+
 		public override int GetStyle(int x, int y) {
 			return WorldGen.TreeTops.GetTreeStyle(0) % 2;
 		}
