@@ -530,6 +530,34 @@ namespace Terraria.ModLoader.Core
 			return recommendedTmod.file;
 		}
 
+		public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion) {
+			string thisVersion = GetBrowserVersionNumber(BuildInfo.tMLVersion);
+			modBrowserVersion = thisVersion;
+
+			// If Can't Read Manifest, assume local build and thus must be compatible
+			if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
+				return true;
+
+			// If Tags is null, it would be a pre-1.4 release mod. IE "1.4-alpha". 
+			if (info.tags == null) {
+				modBrowserVersion = "1.4.3";
+				return modBrowserVersion == thisVersion;
+			}
+
+			// Attempt checking if it's supported on this version, if so, then it's for this duh.
+			if (info.tags.Contains(thisVersion))
+				return true;
+
+			// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
+			modBrowserVersion = GetBrowserVersionNumber(mod.tModLoaderVersion);
+			if (info.tags.Contains(modBrowserVersion))
+				return false;
+
+			// Version unknown. Assume 1.4.3
+			modBrowserVersion = "1.4.3";
+			return false;
+		}
+
 		// Delete in Mod Browsewr refactor - temp
 		public static string GetBrowserVersionNumber(Version tmlVersion) {
 			if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9

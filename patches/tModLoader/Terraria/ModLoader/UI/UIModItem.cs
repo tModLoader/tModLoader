@@ -101,19 +101,29 @@ namespace Terraria.ModLoader.UI
 			};
 			_uiModStateText.OnClick += ToggleEnabled;
 
+			// Don't show the Enable/Disable button if there is no loadable version
+			string updateVersion = null;
+			string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+			Color updateColor = Color.Orange;
+
+			// Detect if it's for a preview version ahead of our time
 			if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
-				string updateVersion = $"v{_mod.tModLoaderVersion}";
-				string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
+				updateVersion = $"v{_mod.tModLoaderVersion}";
 
 				if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
 					updateVersion = $"Preview {updateVersion}";
-				if (ModOrganizer.GetBrowserVersionNumber(_mod.tModLoaderVersion) == "1.4.4") {
-					updateVersion = $"1.4.4 tModLoader";
-					updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
-				}
+			}
 
-				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
-				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
+			// Detect if it's for a different browser version entirely
+			if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion)) {
+				updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
+				updateColor = Color.Yellow;
+			}
+
+			// Hide the Enabled button if it's not for this built version
+			if (updateVersion != null) {
+				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(updateColor, updateColor * 0.7f);
+				tMLUpdateRequired.BackgroundColor = updateColor * 0.7f;
 				tMLUpdateRequired.Top.Pixels = 40;
 				tMLUpdateRequired.Width.Pixels = 280;
 				tMLUpdateRequired.Height.Pixels = 36;
