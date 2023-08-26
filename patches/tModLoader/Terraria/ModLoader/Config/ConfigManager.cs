@@ -245,6 +245,7 @@ public static class ConfigManager
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
+		ConfigElementRegistry.Unload();
 	}
 
 	internal static bool AnyModNeedsReload() => ModLoader.Mods.Any(ModNeedsReload);
@@ -402,6 +403,9 @@ public static class ConfigManager
 		return Activator.CreateInstance(type, true);
 	}
 
+	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo) where T : Attribute
+		=> GetCustomAttributeFromMemberThenMemberType<T>(memberInfo);
+
 	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority, followed by attribute defined on the Class of that member.
 	public static T? GetCustomAttributeFromMemberThenMemberType<T>(PropertyFieldWrapper memberInfo, object? item = null, object? array = null) where T : Attribute
 	{
@@ -417,12 +421,6 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
-	}
-
-	// Public API for modders
-	public static UIElement GetConfigElement(PropertyFieldWrapper memberInfo, object value)
-	{
-		return UIModConfig.GetConfigElement(memberInfo, value);
 	}
 
 	// Public API for modders
@@ -509,6 +507,7 @@ public static class ConfigManager
 		return GetAndValidate<T>(memberInfo)?.key ?? GetDefaultLocalizationKey(memberInfo, dataName);
 	}
 
+	// TODO: make all of the localization use LocalizedText instead of strings so hot reload for localization works
 	private static string GetDefaultLocalizationKey(MemberInfo member, string dataName)
 	{
 		Assembly asm = (member is Type t ? t : member.DeclaringType!).Assembly;

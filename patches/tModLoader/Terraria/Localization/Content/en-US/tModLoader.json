@@ -122,6 +122,8 @@
 		"ModConfigCollapse": "Collapse",
 		"ModConfigScaleUp": "Scale Up",
 		"ModConfigScaleDown": "Scale Down",
+		"ModConfigTrue": "True",
+		"ModConfigFalse": "False",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",

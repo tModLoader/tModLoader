@@ -25,6 +25,7 @@ using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
 using System.Reflection;
+using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader;
 
@@ -350,6 +351,7 @@ public static class ModContent
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
+		ConfigElementRegistry.Load();
 
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();

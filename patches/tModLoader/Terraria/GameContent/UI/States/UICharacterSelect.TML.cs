@@ -30,7 +30,7 @@ public partial class UICharacterSelect : UIState
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		ModLoader.Config.UI.NestedUIList migratePlayerList = new ModLoader.Config.UI.NestedUIList();
+		var migratePlayerList = new NestedUIList();
 		migratePlayerList.Width.Set(-22, 1f);
 		migratePlayerList.Left.Set(0, 0f);
 		migratePlayerList.Top.Set(30, 0);

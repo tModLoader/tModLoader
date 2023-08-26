@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 using Terraria.UI;
-
+/*
 // ATTENTION: Below this point is custom config UI element.
 // Be aware that mods using custom config elements will break with the next few tModLoader updates until their design is finalized.
 // You will need to be very active in updating your mod if you use these as they can break in any update.
@@ -28,19 +28,21 @@ namespace ExampleMod.Common.Configs.CustomUI
 		BottomRight
 	}
 
-	class CornerElement : ConfigElement
+	class CornerElement : UIConfigElement
 	{
 		Texture2D circleTexture;
 		string[] valueStrings;
 
-		public override void OnBind() {
-			base.OnBind();
+		public override void CreateUI() {
 			circleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 			valueStrings = Enum.GetNames(MemberInfo.Type);
-			TextDisplayFunction = () => Label + ": " + GetStringValue();
 		}
 
-		void SetValue(Corner value) => SetObject(value);
+		public override string GetLabel() {
+			return Label + ": " + GetStringValue();
+		}
+
+		void SetValue(Corner value) => Value = value;
 
 		Corner GetValue() => (Corner)GetObject();
 
@@ -69,3 +71,4 @@ namespace ExampleMod.Common.Configs.CustomUI
 		}
 	}
 }
+*/

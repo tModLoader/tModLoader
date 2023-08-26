@@ -84,7 +84,7 @@
  
 +			// TML code.
 +			if (_ModNames.Contains(bindings[i])) {
-+				UIElement header = new HeaderElement(bindings[i]);
++				UIElement header = new ModLoader.Config.UI.Elements.UIHeaderElement { Header = bindings[i] };
 +				header.Width.Set(0f, 1f);
 +				header.Height.Set(0f, 1f);
 +				header.SetSnapPoint("Wide", SnapPointIndex++);
