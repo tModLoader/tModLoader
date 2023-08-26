@@ -12,7 +12,7 @@ using Terraria.ModLoader.Packets;
 
 namespace Terraria;
 
-public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IDefaultEncoder<Projectile>
+public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IDefaultEncoder<Projectile.Encoder>
 {
 	public readonly struct Encoder : INetEncoder<Projectile>
 	{

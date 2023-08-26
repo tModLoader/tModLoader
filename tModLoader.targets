@@ -11,8 +11,5 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.Core.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/ReLogic/ReLogic.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/Terraria/Terraria.csproj" />
-    <ProjectReference Include="$(MSBuildThisFileDirectory)tModLoader.SourceGenerators/tModLoader.SourceGenerators/tModLoader.SourceGenerators.csproj"
-			OutputItemType="Analyzer"
-			ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>
