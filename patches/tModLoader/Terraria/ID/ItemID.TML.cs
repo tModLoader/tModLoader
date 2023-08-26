@@ -120,5 +120,7 @@ partial class ItemID
 			{ GoldOre, (3, 13) },
 			{ PlatinumOre, (3, 13) },
 		};
+
+		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
 	}
 }
