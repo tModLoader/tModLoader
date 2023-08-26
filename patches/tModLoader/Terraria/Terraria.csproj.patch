@@ -64,8 +64,8 @@
 +		<Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
  	</ItemGroup>
  	<ItemGroup>
-+		<Compile Remove="ModLoader/Config/Old/**" />
-+		<None Include="ModLoader/Config/Old/**" />
++    <Compile Remove="ModLoader/Config/Old/**" />
++    <None Include="ModLoader/Config/Old/**" />
 +	</ItemGroup>
 +	<ItemGroup>
 +		<PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
