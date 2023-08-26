@@ -269,7 +269,7 @@
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
  				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,92 @@
+@@ -262,22 +_,80 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
