@@ -18,6 +18,7 @@ using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using System.Collections.Generic;
+using Microsoft.Build.Framework;
 
 namespace Terraria.ModLoader.UI;
 
@@ -53,7 +54,7 @@ internal static class Interface
 	internal static UIModSources modSources = new UIModSources();
 	internal static UIBuildMod buildMod = new UIBuildMod();
 	internal static UIErrorMessage errorMessage = new UIErrorMessage();
-	internal static UIModBrowser modBrowser = new UIModBrowser();
+	internal static UIModBrowser modBrowser = new UIModBrowser(WorkshopBrowserModule.Instance);
 	internal static UIModInfo modInfo = new UIModInfo();
 	internal static UIForcedDelayInfoMessage infoMessageDelayed = new UIForcedDelayInfoMessage();
 	//internal static UIManagePublished managePublished = new UIManagePublished();
@@ -153,10 +154,7 @@ internal static class Interface
 					}
 					if (LastLaunchedShaInRecentGitHubCommits)
 						infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
-							() => {
-								SoundEngine.PlaySound(SoundID.MenuOpen);
-								Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
-							});
+							() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4"));
 				}
 			}
 
@@ -164,30 +162,36 @@ internal static class Interface
 				ModLoader.PreviewFreezeNotification = false;
 				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
-					() => {
-						SoundEngine.PlaySound(SoundID.MenuOpen);
-						Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
-					});
+					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14"));
 				Main.SaveSettings();
 			}
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
 				// Find dependencies that need to be downloaded.
-				var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
-				bool promptDepDownloads = deps.Count != 0;
+				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
+				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
-				string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
-				string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}\n{string.Concat(missingDeps)}".Trim('\n');
+
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+
 				Action downloadAction = () => {
-					if (promptDepDownloads) {
-						//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
-						WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed: null)).ToList(), previousMenuId: 0);
+					HashSet<ModDownloadItem> downloads = new();
+					foreach (var slug in missingDeps) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
+							continue;
+						}
+
+						downloads.Add(item);
 					}
-				};
+
+					_ = UIModBrowser.DownloadMods(
+						downloads,
+						loadModsID);
+                };
 
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
@@ -452,6 +456,25 @@ internal static class Interface
 
 	internal static void ServerModBrowserMenu()
 	{
+		//TODO: Broke this, again. I don't think ever really worked in 1.4. To be left broken for later reconsideration if a different host is used.
+		//	In Place of fixing, we rely on ModPack Menu for exporting .tmod files and SteamCMD paired with install.txt from ModPack menu
+
+		/*
+		if (!SteamedWraps.SteamAvailable) {
+			if (!SteamedWraps.TryInitViaGameServer()) {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
+				throw new SocialBrowserException("No Workshop Access");
+			}
+
+			// lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
+			var stopwatch = Stopwatch.StartNew();
+			while (!SteamGameServer.BLoggedOn() && stopwatch.Elapsed.TotalSeconds < 5) {
+				await SteamedWraps.ForceCallbacks(token);
+			}
+		}
+		*/
+
+		/*
 		bool exit = false;
 		Console.Clear();
 		while (!exit) {
@@ -484,5 +507,6 @@ internal static class Interface
 			}
 		}
 		//Console.Clear();
+		*/
 	}
 }

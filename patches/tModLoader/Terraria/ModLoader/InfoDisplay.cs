@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// Represents an informational display toggle typically provided by <see href="https://terraria.wiki.gg/wiki/Informational_Accessories">informational accessories</see>.<para/>
+/// The <see cref="Active"/> property determines if the InfoDisplay could be shown to the user. The game tracks the players desired visibility of active InfoDisplay through the <see cref="Player.hideInfo"/> array.
+/// </summary>
 public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 {
 	public static InfoDisplay Watches { get; private set; } = new WatchesInfoDisplay();
@@ -43,7 +47,8 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	public static string VanillaHoverTexture => "Terraria/Images/UI/InfoIcon_13";
 
 	/// <summary>
-	/// This is the internal ID of this InfoDisplay.
+	/// This is the internal ID of this InfoDisplay.<para/>
+	/// Also serves as the index for <see cref="Player.hideInfo"/>.
 	/// </summary>
 	public int Type { get; internal set; }
 
@@ -60,7 +65,8 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
-	/// This dictates whether or not this info display should be active.
+	/// This dictates whether or not this info display should be active.<para/>
+	/// This is usually determined by player-specific values, typically set in <see cref="ModItem.UpdateInventory"/>.
 	/// </summary>
 	public virtual bool Active() => false;
 

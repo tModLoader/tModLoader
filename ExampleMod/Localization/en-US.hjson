@@ -1085,6 +1085,26 @@ Mods: {
 
 		UI.ExampleResource: Example Resource: {0} / {1}
 		WorldGen.ExampleOrePassMessage: Example Mod Ores
+
+		BuilderToggles: {
+			ExampleBuilderToggleDimmedLight: {
+				OnText: Example On
+				OffText: Example Off
+			}
+		}
+
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
+		Emotes: {
+			ExampleBiomeEmote.Command: exbiome
+			ExampleBoneMerchantEmote.Command: exbonemerchant
+			ExampleItemEmote.Command: exitem
+			ExamplePersonEmote.Command: experson
+			ExamplePickaxeEmote.Command: expickaxe
+			ExampleTravellingMerchantEmote.Command: extravelingmerchant
+			MinionBossEmote.Command: exminionboss
+		}
 	}
 }
 

@@ -76,15 +76,17 @@
  	public OverheadMessage chatOverhead;
  	public SelectionRadial DpadRadial = new SelectionRadial();
  	public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -484,7 +_,7 @@
+@@ -484,8 +_,8 @@
  	public int HotbarOffset;
  	public bool GoingDownWithGrapple;
  	public byte spelunkerTimer;
 -	public bool[] hideInfo = new bool[13];
 +	public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
- 	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
+-	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
++	public int[] builderAccStatus = new int[BuilderToggleLoader.BuilderToggleCount];
  	public long lostCoins;
  	public string lostCoinString = "";
+ 	public int soulDrain;
 @@ -496,10 +_,18 @@
  	private static float _blizzardSoundVolume;
  	private static SlotId _strongBlizzardSound = SlotId.Invalid;
@@ -7780,6 +7782,15 @@
 -		for (int num7 = 0; num7 < newPlayer.hideInfo.Length; num7++) {
 +		for (int num7 = 0; num7 < InfoDisplayLoader.DefaultDisplayCount; num7++) {
  			fileIO.Write(newPlayer.hideInfo[num7]);
+ 		}
+ 
+@@ -42139,7 +_,7 @@
+ 			fileIO.Write(newPlayer.DpadRadial.Bindings[num8]);
+ 		}
+ 
+-		for (int num9 = 0; num9 < newPlayer.builderAccStatus.Length; num9++) {
++		for (int num9 = 0; num9 < BuilderToggleLoader.DefaultDisplayCount; num9++) {
+ 			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
 @@ -42272,6 +_,10 @@
