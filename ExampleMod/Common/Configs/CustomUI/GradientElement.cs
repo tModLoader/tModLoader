@@ -16,38 +16,29 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.CustomUI
 {
 	// This custom config UI element uses vanilla config elements paired with custom drawing.
-	class GradientElement : ConfigElement
+	class GradientElement : UIConfigElement
 	{
-		public override void OnBind() {
-			base.OnBind();
-
-			object subitem = MemberInfo.GetValue(Item);
+		public override void CreateUI() {
+			object subitem = MemberInfo.GetValue(ParentObject);
 
 			if (subitem == null) {
 				subitem = Activator.CreateInstance(MemberInfo.Type);
 				JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
-				MemberInfo.SetValue(Item, subitem);
+				MemberInfo.SetValue(ParentObject, subitem);
 			}
 
 			// item is the owner object instance, memberinfo is the Info about this field in item
 
-			int height = 30;
-			int order = 0;
-
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
-
-				if (List != null) {
-					wrapped.Item1.Left.Pixels -= 20;
-					wrapped.Item1.Width.Pixels += 20;
-				}
+				var element = ConfigElementRegistry.GetConfigElement(subitem, variable);
+				Append(element);
 			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			var hitbox = GetInnerDimensions().ToRectangle();
-			if (MemberInfo.GetValue(Item) is Gradient g) {
+			if (MemberInfo.GetValue(ParentObject) is Gradient g) {
 				int left = (hitbox.Left + hitbox.Right) / 2;
 				int right = hitbox.Right;
 				int steps = right - left;
@@ -59,6 +50,10 @@ namespace ExampleMod.Common.Configs.CustomUI
 				//Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(hitbox.X + hitbox.Width / 2, hitbox.Y, hitbox.Width / 4, 30), g.start);
 				//Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(hitbox.X + 3 * hitbox.Width / 4, hitbox.Y, hitbox.Width / 4, 30), g.end);
 			}
+		}
+
+		public override bool FitsType(Type type) {
+			return false;
 		}
 	}
 }

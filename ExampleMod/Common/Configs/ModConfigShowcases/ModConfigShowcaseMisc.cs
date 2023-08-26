@@ -22,7 +22,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[CustomModConfigItem(typeof(GradientElement))]
+		[CustomConfigUI(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
 
 		/*
@@ -38,7 +38,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		*/
 
 		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
-		public Corner corner;
+		//public Corner corner;
 
 		// You can put multiple attributes in the same [] if you like.
 		// ColorHueSliderAttribute displays Hue Saturation Lightness. Passing in false means only Hue is shown.
@@ -46,7 +46,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public Color hsl;
 
 		// In this example we inherit from a tmodloader config UIElement to slightly customize the colors.
-		[CustomModConfigItem(typeof(CustomFloatElement))]
+		//[CustomModConfigItem(typeof(CustomFloatElement))]
 		public float tint;
 
 		public Dictionary<string, Pair> StringPairDictionary = new Dictionary<string, Pair>();

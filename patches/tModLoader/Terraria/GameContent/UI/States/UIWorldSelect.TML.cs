@@ -29,7 +29,7 @@ partial class UIWorldSelect
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		ModLoader.Config.UI.NestedUIList migrateWorldList = new ModLoader.Config.UI.NestedUIList();
+		var migrateWorldList = new NestedUIList();
 		migrateWorldList.Width.Set(-22, 1f);
 		migrateWorldList.Left.Set(0, 0f);
 		migrateWorldList.Top.Set(30, 0);

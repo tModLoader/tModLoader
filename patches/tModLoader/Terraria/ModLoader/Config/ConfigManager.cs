@@ -245,6 +245,7 @@ public static class ConfigManager
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
+		ConfigElementRegistry.Unload();
 	}
 
 	internal static bool AnyModNeedsReload() => ModLoader.Mods.Any(ModNeedsReload);
@@ -264,7 +265,7 @@ public static class ConfigManager
 	}
 
 	// GetConfig...returns the config instance
-	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
+	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
 	{
 		if (Configs.TryGetValue(mod, out List<ModConfig>? configs)) {
@@ -285,7 +286,7 @@ public static class ConfigManager
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
-			string message = reader.ReadString();
+			NetworkText message = NetworkText.Deserialize(reader);
 			if (success) {
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
@@ -293,23 +294,13 @@ public static class ConfigManager
 				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
-
-				Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(Interface.modConfig);
-					Interface.modConfig.SetMessage("Server response: " + message, Color.Green);
-				}
+				Interface.modConfig.CheckSaveButton();
+				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
-
-				Main.NewText("Changes Rejected: " + message);
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage("Server rejected changes: " + message, Color.Red);
-					//Main.InGameUI.SetState(Interface.modConfig);
-				}
-
+				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 			}
 		}
 		else {
@@ -325,23 +316,23 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			string message = "Accepted";
+			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigChangesAccepted");
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = "Can't save because changes would require a reload.";
+				message = NetworkText.FromKey("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload");
 			}
 			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
 				success = false;
 			}
 			if (success) {
 				// Apply to Servers Config
-				ConfigManager.Save(pendingConfig);
-				JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
+				Save(pendingConfig);
+				JsonConvert.PopulateObject(json, config, serializerSettingsCompact);
 				config.OnChanged();
 				// Send new config to all clients
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(true);
-				p.Write(message);
+				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
 				p.Write(json);
@@ -351,7 +342,7 @@ public static class ConfigManager
 				// Send rejections message back to client who requested change
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
-				p.Write(message);
+				message.Serialize(p);
 				p.Send(whoAmI);
 			}
 
@@ -374,12 +365,35 @@ public static class ConfigManager
 		return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 	}
 
+	public static IEnumerable<PropertyFieldWrapper> GetSerializedVariables(object item)
+	{
+		return from variable in GetFieldsAndProperties(item)
+			   where variable.CanWrite
+			   where !Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute))
+			   select variable;
+	}
+
+	public static IEnumerable<PropertyFieldWrapper> GetDisplayedVariables(object item)
+	{
+		return from variable in GetFieldsAndProperties(item)
+			   where !Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute))
+			      || Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute))
+			   select variable;
+	}
+
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
-		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
+		string json = JsonConvert.SerializeObject(original, serializerSettings);
 		ModConfig properClone = original.Clone();
-		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+		JsonConvert.PopulateObject(json, properClone, serializerSettings);
 		return properClone;
+	}
+
+	// Separate from GeneratePopulatedClone because otherwise config elements can't track the original and the list has to be recreated, which collapses all of the elements
+	public static void RevertConfig(ModConfig pendingConfig, ModConfig original)
+	{
+		string json = JsonConvert.SerializeObject(original, serializerSettings);
+		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 	}
 
 	public static object? AlternateCreateInstance(Type type)
@@ -389,8 +403,11 @@ public static class ConfigManager
 		return Activator.CreateInstance(type, true);
 	}
 
+	public static T? GetCustomAttribute<T>(PropertyFieldWrapper memberInfo) where T : Attribute
+		=> GetCustomAttributeFromMemberThenMemberType<T>(memberInfo);
+
 	// Gets an Attribute from a property or field. Attribute defined on Member has highest priority, followed by attribute defined on the Class of that member.
-	public static T? GetCustomAttributeFromMemberThenMemberType<T>(PropertyFieldWrapper memberInfo, object? item, object? array) where T : Attribute
+	public static T? GetCustomAttributeFromMemberThenMemberType<T>(PropertyFieldWrapper memberInfo, object? item = null, object? array = null) where T : Attribute
 	{
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
@@ -406,16 +423,10 @@ public static class ConfigManager
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
 	}
 
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
+	// Public API for modders
+	public static void CheckSaveButton()
 	{
-		// public api for modders.
-		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
-	}
-
-	public static void SetPendingChanges(bool changes = true)
-	{
-		// public api for modders.
-		Interface.modConfig.SetPendingChanges(changes);
+		Interface.modConfig.CheckSaveButton();
 	}
 
 	// TODO: better home?
@@ -496,6 +507,7 @@ public static class ConfigManager
 		return GetAndValidate<T>(memberInfo)?.key ?? GetDefaultLocalizationKey(memberInfo, dataName);
 	}
 
+	// TODO: make all of the localization use LocalizedText instead of strings so hot reload for localization works
 	private static string GetDefaultLocalizationKey(MemberInfo member, string dataName)
 	{
 		Assembly asm = (member is Type t ? t : member.DeclaringType!).Assembly;

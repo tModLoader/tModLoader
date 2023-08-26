@@ -1,7 +1,12 @@
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config;
 
@@ -52,9 +57,10 @@ public abstract class ModConfig : ILocalizedModType
 	/// </summary>
 	/// <param name="pendingConfig">An instance of the ModConfig with the attempted changes</param>
 	/// <param name="whoAmI">The client whoAmI</param>
-	/// <param name="message">A message that will be returned to the client, set this to the reason the server rejects the changes.</param>
+	/// <param name="message">A message that will be returned to the client, set this to the reason the server rejects the changes.<br/>
+	/// Make sure you set this to the localization key instead of the actual value, since the server and client could have different languages.</param>
 	/// <returns>Return false to reject client changes</returns>
-	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
+	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
 		=> true;
 
 	// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
@@ -68,22 +74,100 @@ public abstract class ModConfig : ILocalizedModType
 	/// Whether or not a reload is required. The default implementation compares properties and fields annotated with the ReloadRequiredAttribute. Unlike the other ModConfig hooks, this method is called on a clone of the ModConfig that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.
 	/// </summary>
 	/// <param name="pendingConfig">The other instance of ModConfig to compare against, it contains the values that are pending to take effect</param>
-	/// <returns></returns>
+	/// <returns>Whether a reload is required.</returns>
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this)) {
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this))
+		{
 			var reloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(variable, this, null);
 
-			if (reloadRequired == null) {
+			if (reloadRequired == null)
 				continue;
-			}
 
 			// Do we need to implement nested ReloadRequired? Right now only top level fields will trigger it.
-			if (!ConfigManager.ObjectEquals(variable.GetValue(this), variable.GetValue(pendingConfig))) {
+			if (!ConfigManager.ObjectEquals(variable.GetValue(this), variable.GetValue(pendingConfig)))
 				return true;
-			}
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Opens this config in the config UI.<br/>
+	/// Can be used to allow your own UI to add buttons to access the config.
+	/// </summary>
+	public void Open()
+	{
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Interface.modConfig.SetMod(Mod, this, openedFromModder: true);
+
+		if (Main.gameMenu)
+		{
+			Main.menuMode = Interface.modConfigID;
+		}
+		else
+		{
+			IngameFancyUI.CoverNextFrame();
+
+			Main.playerInventory = false;
+			Main.editChest = false;
+			Main.npcChatText = "";
+			Main.inFancyUI = true;
+
+			Main.InGameUI.SetState(Interface.modConfig);
+		}
+	}
+
+	/// <summary>
+	/// Saves any changes to this config.
+	/// </summary>
+	/// <param name="showErrors">Whether messages in the config UI and in chat should be shown.</param>
+	/// <returns>Whether the config was successfully saved.</returns>
+	public bool Save(bool showErrors = true)
+	{
+		// TODO: finish
+		// Since this can be called on a clone, we need to get the real config to load the data into
+		var realConfig = ConfigManager.GetConfig(Mod, Name);// Used to load changes back into
+		var loadTimeConfig = ConfigManager.GetLoadTimeConfig(Mod, Name);// Used to check if a reload is required
+
+		// Main Menu - Save, leave reload for later
+		// MP with ServerSide - Send request to server
+		// SP or MP with ClientSide - Apply immediately if !NeedsReload
+
+		// Game, client, server side config
+		if (!Main.gameMenu && Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient)
+		{
+			if (showErrors)
+				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
+
+			var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
+			requestChanges.Write(Mod.Name);
+			requestChanges.Write(Name);
+			string json = JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact);
+			requestChanges.Write(json);
+			requestChanges.Send();
+
+			return true;
+		}
+
+		// Game, singleplayer, 
+		if (!Main.gameMenu && loadTimeConfig.NeedsReload(this))
+		{
+			if (showErrors)
+				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
+
+			return false;
+		}
+
+		// Menu or singleplayer
+		ConfigManager.Save(this);
+		ConfigManager.Load(realConfig);
+
+		// ModConfig.OnChanged() delayed until ReloadRequired checked
+		// Reload will be forced by back button in UIMods if needed
+		if (!Main.gameMenu)
+			OnChanged();
+
+		return true;
 	}
 }

@@ -17,6 +17,16 @@ public class BackgroundColorAttribute : Attribute
 	{
 		Color = new Color(r, g, b, a);
 	}
+
+	public BackgroundColorAttribute(float r, float g, float b, float a = 1f)
+	{
+		Color = new Color(r, g, b, a);
+	}
+
+	public BackgroundColorAttribute(Color color)
+	{
+		Color = color;
+	}
 }
 
 /// <summary>
@@ -30,6 +40,16 @@ public class SliderColorAttribute : Attribute
 	public SliderColorAttribute(int r, int g, int b, int a = 255)
 	{
 		Color = new Color(r, g, b, a);
+	}
+
+	public SliderColorAttribute(float r, float g, float b, float a = 1f)
+	{
+		Color = new Color(r, g, b, a);
+	}
+
+	public SliderColorAttribute(Color color)
+	{
+		Color = color;
 	}
 }
 
@@ -212,11 +232,11 @@ public class HeaderAttribute : Attribute
 /// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Enum)]
-public class CustomModConfigItemAttribute : Attribute
+public class CustomConfigUIAttribute : Attribute
 {
 	public Type Type { get; }
 
-	public CustomModConfigItemAttribute(Type type)
+	public CustomConfigUIAttribute(Type type)
 	{
 		Type = type;
 	}
@@ -387,20 +407,6 @@ public class JsonDefaultDictionaryKeyValueAttribute : Attribute
 }
 
 /// <summary>
-/// By default, string fields will provide the user with a text input field. Use this attribute to restrict strings to a selection of options.
-/// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class OptionStringsAttribute : Attribute
-{
-	public string[] OptionLabels { get; set; }
-
-	public OptionStringsAttribute(string[] optionLabels)
-	{
-		OptionLabels = optionLabels;
-	}
-}
-
-/// <summary>
 /// Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
 /// Defaults are: float: 0.01f - byte/int/uint: 1
 /// </summary>
@@ -408,13 +414,8 @@ public class OptionStringsAttribute : Attribute
 public class IncrementAttribute : Attribute
 {
 	public object Increment { get; }
-
+	
 	public IncrementAttribute(int increment)
-	{
-		Increment = increment;
-	}
-
-	public IncrementAttribute(float increment)
 	{
 		Increment = increment;
 	}
@@ -424,7 +425,47 @@ public class IncrementAttribute : Attribute
 		Increment = increment;
 	}
 
+	public IncrementAttribute(long increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(ulong increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(float increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(double increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(decimal increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(short increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(ushort increment)
+	{
+		Increment = increment;
+	}
+
 	public IncrementAttribute(byte increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(sbyte increment)
 	{
 		Increment = increment;
 	}
@@ -445,19 +486,61 @@ public class RangeAttribute : Attribute
 		Max = max;
 	}
 
-	public RangeAttribute(float min, float max)
-	{
-		Min = min;
-		Max = max;
-	}
-
 	public RangeAttribute(uint min, uint max)
 	{
 		Min = min;
 		Max = max;
 	}
 
+	public RangeAttribute(long min, long max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(ulong min, ulong max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(float min, float max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(double min, double max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(decimal min, decimal max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(short min, short max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(ushort min, ushort max)
+	{
+		Min = min;
+		Max = max;
+	}
+
 	public RangeAttribute(byte min, byte max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(sbyte min, sbyte max)
 	{
 		Min = min;
 		Max = max;
