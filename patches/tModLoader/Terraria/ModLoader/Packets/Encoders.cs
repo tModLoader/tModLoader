@@ -472,3 +472,34 @@ public readonly struct ValueTupleEncoder<T1_0, T1_1, T2_0, T2_1, T3_0, T3_1, T4_
 	}
 }
 #endregion
+
+#region Mod Types
+public readonly struct ModPlayerEncoder : INetEncoder<ModPlayer>
+{
+	public readonly void Write(ModPacket packet, ModPlayer value)
+	{
+		default(Player.Encoder).Write(packet, value.Player);
+		packet.Write(value.Index);
+	}
+
+	public readonly ModPlayer Read(BinaryReader reader)
+	{
+		var player = default(Player.Encoder).Read(reader);
+		ushort index = reader.ReadUInt16();
+
+		return player.modPlayers[index];
+	}
+}
+
+public readonly struct ModNPCEncoder : INetEncoder<ModNPC>
+{
+	public readonly void Write(ModPacket packet, ModNPC value) => default(NPC.Encoder).Write(packet, value.NPC);
+	public readonly ModNPC Read(BinaryReader reader) => default(NPC.Encoder).Read(reader).ModNPC;
+}
+
+public readonly struct ModProjectileEncoder : INetEncoder<ModProjectile>
+{
+	public readonly void Write(ModPacket packet, ModProjectile value) => default(Projectile.Encoder).Write(packet, value.Projectile);
+	public readonly ModProjectile Read(BinaryReader reader) => default(Projectile.Encoder).Read(reader).ModProjectile;
+}
+#endregion

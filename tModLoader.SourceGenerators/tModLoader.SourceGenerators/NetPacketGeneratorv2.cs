@@ -64,7 +64,7 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 		in SerializationMethods Serialization,
 		in SerializationMethods Deserialization
 	);
-	private record struct SerializableProperty(
+	private record struct SerializablePropertyCandidate(
 		in ISymbol PropertySymbol,
 		in SerializationVector Serialization
 	)
@@ -73,6 +73,10 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 				? ((IPropertySymbol)PropertySymbol).Type
 				: ((IFieldSymbol)PropertySymbol).Type;
 	}
+	private record struct SerializableProperty(
+		in SerializablePropertyCandidate Property,
+		in EncoderInfo Encoder
+	);
 
 	private record struct SourceSerialization(
 		in bool HasPreSerialization, in bool IsPreSerializationBool,
@@ -83,6 +87,7 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 	private record struct SourceProperty(
 		in string PropertyName,
 		in string PropertyType,
+		in EncoderInfo EncoderInfo,
 		in SourceSerialization Serialization
 	) : IEquatable<SourceProperty>;
 	private record struct SourceInfo(
@@ -92,8 +97,7 @@ public sealed partial class NetPacketGeneratorv2 : IIncrementalGenerator
 
 		in (bool Pre, bool IsPreBool, bool On, bool Post) GlobalSerializations,
 		in (bool Pre, bool IsPreBool, bool On, bool Post) GlobalDeserializations,
-		in EquatableArray<SourceProperty> SerializableProperties,
-		in EquatableArray<(string EncoderType, string EncodedType, bool IsUnsafe)> Encoders
+		in EquatableArray<SourceProperty> SerializableProperties
 	) : IEquatable<SourceInfo>;
 
 	private const string SerializeMethodName = "Serialize";
@@ -159,25 +163,25 @@ namespace {Template_Namespace};
 				var globalEncodedAsAttributes = RetriveGlobalEncoders(symbol);
 
 				var globalSerializationVector = RetrieveGlobalSerializationMethods(symbol);
-				var serializableProperties = RetrieveSerializableProperties(symbol, autoSerialization);
-				var encoders = RetrieveEncoders(serializableProperties, globalEncodedAsAttributes);
+				var serializablePropertiesCandidates = RetrieveSerializableProperties(symbol, autoSerialization);
+				var serializableProperties = RetrieveEncoders(serializablePropertiesCandidates, globalEncodedAsAttributes);
 
 				var sourceProperties = serializableProperties.Select(x => new SourceProperty(
-					x.PropertySymbol.Name,
-					x.PropertyType.ToDisplayString(),
+					x.Property.PropertySymbol.Name,
+					x.Property.PropertyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+					x.Encoder,
 					new SourceSerialization(
-						x.Serialization.Serialization.PreSerializationSymbol != null,
-						x.Serialization.Serialization.PreSerializationSymbol?.ReturnType?.SpecialType == SpecialType.System_Boolean,
-						x.Serialization.Serialization.OnSerializationSymbol != null,
-						x.Serialization.Serialization.PostSerializationSymbol != null,
+						x.Property.Serialization.Serialization.PreSerializationSymbol != null,
+						x.Property.Serialization.Serialization.PreSerializationSymbol?.ReturnType?.SpecialType == SpecialType.System_Boolean,
+						x.Property.Serialization.Serialization.OnSerializationSymbol != null,
+						x.Property.Serialization.Serialization.PostSerializationSymbol != null,
 
-						x.Serialization.Deserialization.PreSerializationSymbol != null,
-						x.Serialization.Deserialization.PreSerializationSymbol?.ReturnType?.SpecialType == SpecialType.System_Boolean,
-						x.Serialization.Deserialization.OnSerializationSymbol != null,
-						x.Serialization.Deserialization.PostSerializationSymbol != null
+						x.Property.Serialization.Deserialization.PreSerializationSymbol != null,
+						x.Property.Serialization.Deserialization.PreSerializationSymbol?.ReturnType?.SpecialType == SpecialType.System_Boolean,
+						x.Property.Serialization.Deserialization.OnSerializationSymbol != null,
+						x.Property.Serialization.Deserialization.PostSerializationSymbol != null
 					)
 				)).ToImmutableArray();
-				var sourceEncoders = encoders.Select(x => (x.EncoderName, x.TypeFromEncodedAs, x.IsUnsafe)).ToImmutableArray();
 
 				return new SourceInfo(
 					Namespace: symbol.ContainingNamespace.ToString(),
@@ -195,8 +199,7 @@ namespace {Template_Namespace};
 						On: globalSerializationVector.Deserialization.OnSerializationSymbol != null,
 						Post: globalSerializationVector.Deserialization.PostSerializationSymbol != null),
 
-					SerializableProperties: new EquatableArray<SourceProperty>(sourceProperties),
-					Encoders: new EquatableArray<(string EncoderType, string EncodedType, bool IsUnsafe)>(sourceEncoders)
+					SerializableProperties: new EquatableArray<SourceProperty>(sourceProperties)
 				);
 			});
 
@@ -238,9 +241,13 @@ namespace {Template_Namespace};
 					sb.WriteLine($"OnSerialize({ParameterName}, toClient, ignoreClient);");
 				}
 
-				int i = 0;
 				foreach (var property in source.SerializableProperties.AsSpan()) {
-					var encoder = source.Encoders[i++];
+					var encoder = property.EncoderInfo;
+
+					if (encoder.IsUnsafe) {
+						sb.WriteLine("unsafe {");
+						sb.Indent++;
+					}
 
 					if (property.Serialization.HasPreSerialization) {
 						if (property.Serialization.IsPreSerializationBool) {
@@ -257,12 +264,7 @@ namespace {Template_Namespace};
 						sb.WriteLine($"OnSerialize_{property.PropertyName}({ParameterName}, toClient, ignoreClient);");
 					}
 
-					if (encoder.IsUnsafe) {
-						sb.WriteLine("unsafe {");
-						sb.Indent++;
-					}
-
-					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.EncoderType});");
+					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.Type});");
 					sb.Write($"encoder_{property.PropertyName}.Write({ParameterName}, ");
 					if (encoder.EncodedType != null && encoder.EncodedType != property.PropertyType) {
 						sb.Write($"({encoder.EncodedType})");
@@ -278,6 +280,11 @@ namespace {Template_Namespace};
 
 					if (property.Serialization.HasPostSerialization) {
 						sb.WriteLine($"PostSerialize_{property.PropertyName}({ParameterName}, toClient, ignoreClient);");
+					}
+
+					if (encoder.IsUnsafe) {
+						sb.Indent--;
+						sb.WriteLine('}');
 					}
 				}
 
@@ -320,9 +327,13 @@ namespace {Template_Namespace};
 					sb.WriteLine($"OnDeserialize({ParameterName}, sender);");
 				}
 
-				int i = 0;
 				foreach (var property in source.SerializableProperties.AsSpan()) {
-					var encoder = source.Encoders[i++];
+					var encoder = property.EncoderInfo;
+
+					if (encoder.IsUnsafe) {
+						sb.WriteLine("unsafe {");
+						sb.Indent++;
+					}
 
 					if (property.Serialization.HasPreSerialization) {
 						if (property.Serialization.IsPreSerializationBool) {
@@ -339,12 +350,7 @@ namespace {Template_Namespace};
 						sb.WriteLine($"OnDeserialize_{property.PropertyName}({ParameterName}, sender);");
 					}
 
-					if (encoder.IsUnsafe) {
-						sb.WriteLine("unsafe {");
-						sb.Indent++;
-					}
-
-					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.EncoderType});");
+					sb.WriteLine($"var encoder_{property.PropertyName} = default({encoder.Type});");
 					sb.Write($"{property.PropertyName} = ");
 					if (encoder.EncodedType != null && encoder.EncodedType != property.PropertyType) {
 						sb.Write($"({property.PropertyType})");
@@ -359,6 +365,11 @@ namespace {Template_Namespace};
 
 					if (property.Serialization.HasPostSerialization) {
 						sb.WriteLine($"PostDeserialize_{property.PropertyName}({ParameterName}, sender);");
+					}
+
+					if (encoder.IsUnsafe) {
+						sb.Indent--;
+						sb.WriteLine('}');
 					}
 				}
 
@@ -406,7 +417,7 @@ namespace {Template_Namespace};
 		return new SerializationVector(in serializationMethods, in serializationMethods);
 	}
 
-	private static ImmutableArray<SerializableProperty> RetrieveSerializableProperties(INamedTypeSymbol symbol, bool autoSerialization) => symbol.GetMembers()
+	private static ImmutableArray<SerializablePropertyCandidate> RetrieveSerializableProperties(INamedTypeSymbol symbol, bool autoSerialization) => symbol.GetMembers()
 		.Where(x => {
 			bool isValidType =
 				x is IFieldSymbol fieldSymbol && !fieldSymbol.IsReadOnly && !fieldSymbol.IsConst && !fieldSymbol.IsImplicitlyDeclared
@@ -433,6 +444,6 @@ namespace {Template_Namespace};
 			deserialization.FindOnSerialization($"On{DeserializeMethodName}_{x.Name}", MatchDeserializationMethod);
 			deserialization.FindPostSerialization($"Post{DeserializeMethodName}_{x.Name}", MatchDeserializationMethod);
 
-			return new SerializableProperty(x, new(serialization, deserialization));
+			return new SerializablePropertyCandidate(x, new(serialization, deserialization));
 		}).ToImmutableArray();
 }

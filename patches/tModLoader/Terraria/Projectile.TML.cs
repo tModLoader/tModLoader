@@ -1,17 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Packets;
 
 namespace Terraria;
 
-public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
+public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IDefaultEncoder<Projectile>
 {
+	public readonly struct Encoder : INetEncoder<Projectile>
+	{
+		public readonly void Write(ModPacket packet, Projectile value) => packet.Write((ushort)value.whoAmI);
+		public readonly Projectile Read(BinaryReader reader) => Main.projectile[reader.ReadByte()];
+	}
+
 	/// <summary>
 	/// The ModProjectile instance that controls the behavior of this projectile. This property is null if this is not a modded projectile.
 	/// </summary>

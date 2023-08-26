@@ -1,16 +1,24 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Packets;
 
 namespace Terraria;
 
-public partial class NPC : IEntityWithGlobals<GlobalNPC>
+public partial class NPC : IEntityWithGlobals<GlobalNPC>, IDefaultEncoder<NPC.Encoder>
 {
+	public readonly struct Encoder : INetEncoder<NPC>
+	{
+		public readonly void Write(ModPacket packet, NPC value) => packet.Write((byte)value.whoAmI);
+		public readonly NPC Read(BinaryReader reader) => Main.npc[reader.ReadByte()];
+	}
+
 	internal readonly IEntitySource thisEntitySourceCache;
 
 	public ModNPC ModNPC { get; internal set; }
