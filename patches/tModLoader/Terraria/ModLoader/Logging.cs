@@ -72,7 +72,7 @@ public static partial class Logging
 
 		string args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1));
 
-		if (!string.IsNullOrEmpty(args)) {
+		if (!string.IsNullOrEmpty(args) || Program.LaunchParameters.Any()) {
 			tML.InfoFormat("Launch Parameters: {0}", args);
 			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 		}
