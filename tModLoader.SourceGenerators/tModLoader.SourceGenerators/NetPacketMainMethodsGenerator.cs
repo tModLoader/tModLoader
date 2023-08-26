@@ -25,7 +25,7 @@ namespace {Template_Namespace};
 #region Internal methods
 	private ModPacket _Internal_WriteSerializedData(int toClient, int ignoreClient) {{
 		var packet = ModContent.GetInstance<{Template_ModName}>().GetPacket();
-		packet.Write(Id);
+		_Internal_TryWriteId(packet);
 
 		Serialize(packet, toClient, ignoreClient);
 
