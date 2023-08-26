@@ -28,26 +28,17 @@
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,6 +_,44 @@
+@@ -34,6 +_,35 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +
-+		if (File.Exists("cli-argsConfig.txt")) {
-+			var customArgs = File.ReadAllLines("cli-argsConfig.txt");
-+			foreach (var item in customArgs.Select(a => a.Split(" ", 2))) {
-+				args = args.Concat(item).ToArray();
-+			}
-+		}
++		if (File.Exists("cli-argsConfig.txt"))
++			args = args.Concat(File.ReadAllLines("cli-argsConfig.txt").SelectMany(a => a.Split(" ", 2))).ToArray();
 +
-+		if (File.Exists("env-argsConfig.txt")) {
-+			var customEnv = File.ReadAllLines("env-argsConfig.txt");
-+			foreach (var environmentVar in customEnv) {
-+				var envSet = environmentVar.Split("=");
-+				if (envSet.Length == 2)
-+					Environment.SetEnvironmentVariable(envSet[0], envSet[1]);
-+			}
-+		}
++		if (File.Exists("env-argsConfig.txt"))
++			foreach (var environmentVar in File.ReadAllLines("env-argsConfig.txt").Select(text => text.Split("=")).Where(envVar => envVar.Length == 2))
++				Environment.SetEnvironmentVariable(environmentVar[0], environmentVar[1]);
 +
 +		// Spawn a thread to use configured default stack size instead of the one reported in the binary
 +		// https://social.msdn.microsoft.com/Forums/office/en-US/7132b30d-9792-4bf3-87ec-7198052e4ed3/main-thread-stack-size?forum=csharpgeneral
