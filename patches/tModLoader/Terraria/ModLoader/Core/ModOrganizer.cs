@@ -571,34 +571,31 @@ internal static class ModOrganizer
 		return recommendedTmod.file;
 	}
 
+	/// <summary>
+	/// Case 1:
+	///		tmlVersion = 1.4.4
+	///		modVersion = 2023.1 => 1.4.4 transition versions prior to major breaking changes completion
+	///	Returns false as 2023.1 isn't considered 1.4.4 ready. Supplies modBrowserVersion as 1.4.3 as achievable version
+	///	Case 2:
+	///		tmlVersion = 1.4.3
+	///		modVersion = 2022.9 => 1.4.3
+	///	Returns true as tmlVersion = modVersion. Supplies modBrowserVersion as 1.4.3
+	///	Case 3:
+	///		tmlVersion = 1.4.4
+	///		modVersion = 2023.6 => 1.4.4
+	///	Returns true as tmlVersion = modVersion. Supplies modBrowserVersion as 1.4.4
+	///	 1.4.4 tag is 2023.03.85.0 onwards
+	/// </summary>
 	public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion)
 	{
-		string thisVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
-		modBrowserVersion = thisVersion;
-		// If Can't Read Manifest, assume local build and thus must be compatible
-		if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
-			return true;
-
-		// If Tags is null, it would be a pre-1.4 release mod. IE "1.4-alpha". 
-		if (info.tags == null) {
-			modBrowserVersion = "1.4.3";
-			return modBrowserVersion == thisVersion;
-		}
-
-		// Attempt checking if it's supported on this version, if so, then it's for this duh.
-		if (info.tags.Contains(thisVersion))
-			return true;
-
-		// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
+		string tmlVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
 		modBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(mod.tModLoaderVersion);
-		if (info.tags.Contains(modBrowserVersion))
-			return false;
 
-		// Version unknown. Assume 1.4.3
-		modBrowserVersion = "1.4.3";
-		return false;
+		if (modBrowserVersion == SocialBrowserModule.GetBrowserVersionNumber(new Version(2023, 01)))
+			modBrowserVersion = "1.4.3";
+
+		return modBrowserVersion == tmlVersion;
 	}
-
 
 	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
 	{

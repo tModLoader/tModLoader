@@ -129,6 +129,9 @@ public interface SocialBrowserModule
 		if (tmlVersion < new Version(2022, 10)) // Versions 0.12 to 2022.9
 			return "1.4";
 
+		if (tmlVersion < new Version(2023, 3, 85)) // Introduction of 1.4.4 tag and end of major 1.4.4 breaking changes
+			return "1.4.4-Transitive";
+
 		return "1.4.4";
 	}
 }
