@@ -221,7 +221,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 			p.Write(InventorySlot);
 
 			if (Main.netMode == Server)
-				p.Write((sbyte)plr);
+				p.Write((byte)plr);
 
 			p.Write((sbyte)slot);
 

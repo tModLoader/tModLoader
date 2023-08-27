@@ -59,13 +59,15 @@
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		"ModDidNotFullyUnloadWarning": "Ce mod ne s'est pas complètement déchargé lors du dernier déchargement.\n(Ceci est un message pour le créateur du mod)",
-		"BetaModCantPublish": "Ce mod a été construit sur la version Beta et ne peut pas être publié",
 		"BetaModCantPublishError": "Vous ne pouvez pas publier un Mod compilé en version Beta de tModLoader",
 		"OutdatedModCantPublishError": "Vous ne pouvez pas publier un Mod compilé avec une version obsolète de tModLoader",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Relance requise",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Relance forcée",
 		"ModIsServerSide": "Ceci est un mod côté serveur",
 		"ModsByline": "Par : {0}",
@@ -246,6 +248,12 @@
 		"MPErrorModDownloadError": "Une erreur est apparue en téléchargeant {0}",
 		"MPPacketTooLarge": "Paquets supérieurs en nombre {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Télécharger",
 		"MBDownloadAll": "Tout télécharger",
@@ -265,6 +273,7 @@
 		"MBUpdateAll": "Tout mettre à jour",
 		"MBReloadBrowser": "Relancer le navigateur",
 		"MBGettingData": "Obtention des données...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Remplissage du navigateur...",
 		"MBSortByRecentlyUpdated": "Trier par date de mise à jour",
 		"MBSortByPopularity": "Trier par popularité",
@@ -343,8 +352,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Activer et relancer automatiquement les Mods en quittant le navigateur : Non",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
-		"ReloadModsReminder": "Vous avez mis à jour un Mod. N'oubliez pas de relancer les Mods pour que cela prenne effet.",
-		"EnableModsReminder": "Vos Mods téléchargés récemment sont actuallement désactivés. N'oubliez pas de les activer et de les relancer si vous comptez les utiliser.",
 		"DontShowAgain": "Ne pas montrer de nouveau",
 		"ModControls": "Contrôles pour les Mods",
 

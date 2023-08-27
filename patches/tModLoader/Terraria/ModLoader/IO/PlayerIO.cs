@@ -7,7 +7,6 @@ using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
-using Terraria.Social;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -32,11 +31,7 @@ internal static class PlayerIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-			TagIO.ToStream(tag, stream);
-			if (isCloudSave && SocialAPI.Cloud != null)
-				SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-		}
+		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
 
 	internal static TagCompound SaveData(Player player)
@@ -60,6 +55,7 @@ internal static class PlayerIO
 			["modData"] = SaveModData(player),
 			["modBuffs"] = SaveModBuffs(player),
 			["infoDisplays"] = SaveInfoDisplays(player),
+			["builderToggles"] = SaveBuilderToggles(player),
 			["usedMods"] = SaveUsedMods(player),
 			["usedModPack"] = SaveUsedModPack(player),
 			["hair"] = SaveHair(player.hair)
@@ -85,6 +81,7 @@ internal static class PlayerIO
 		LoadModData(player, tag.GetList<TagCompound>("modData"));
 		LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 		LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
+		LoadBuilderToggles(player, tag.GetList<TagCompound>("builderToggles"));
 		LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
 		LoadHair(player, tag.GetString("hair"));
@@ -101,8 +98,7 @@ internal static class PlayerIO
 		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			//LoadLegacy(player, buf);
-			return false;
+			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 		}
 
 		tag = TagIO.FromStream(buf.ToMemoryStream());
@@ -348,6 +344,36 @@ internal static class PlayerIO
 					player.hideInfo[i] = true;
 			}
 		}
+	}
+
+	internal static List<TagCompound> SaveBuilderToggles(Player player)
+	{
+		return BuilderToggleLoader.BuilderToggles
+			.Where(x=> x is not VanillaBuilderToggle)
+			.Select(x=> new TagCompound {
+				["fullName"] = x.FullName,
+				["currentState"] = player.builderAccStatus[x.Type] // Can't use x.CurrentState, that is LocalPlayer.
+			}).ToList();
+	}
+
+	internal static void LoadBuilderToggles(Player player, IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			var fullname = tag.GetString("fullName");
+			var entryIndex = BuilderToggleLoader.BuilderToggles.FindIndex(x => x.FullName == fullname);
+			if (entryIndex != -1) {
+				player.builderAccStatus[entryIndex] = tag.GetInt("currentState");
+			}
+		}
+
+		// Could revert state to 0 if state is now invalid. This approach probably won't work since ModifyNumberOfStates probably relies on player inventory update.
+		/*for (int i = 0; i < BuilderToggleLoader.BuilderToggles.Count; i++) {
+			BuilderToggle builderToggle = BuilderToggleLoader.BuilderToggles[i];
+			int numberOfStates = builderToggle.NumberOfStates;
+			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
+			if (player.builderAccStatus[i] >= numberOfStates)
+				player.builderAccStatus[i] = 0;
+		}*/
 	}
 
 	internal static void LoadUsedMods(Player player, IList<string> usedMods)

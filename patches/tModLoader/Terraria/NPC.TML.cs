@@ -318,4 +318,52 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 		}
 	}
 	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
+	
+	/// <summary>
+	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
+	/// </summary>
+	/// <param name="buffType"></param>
+	public void BecomeImmuneTo(int buffType)
+	{
+		buffImmune[buffType] = true; 
+
+		for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
+			var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
+			// This could be sped up with a reverse lookup if this proves too slow.
+			if (buffsToInherit.Contains(buffType)) {
+				buffImmune[i] = true;
+			}
+		}
+	}
+
+	/// Clears all buffs on this NPC that the NPC is currently immune (<see cref="buffImmune"/>) to. The buff types and times will then be synced to clients. Use after manually changing <see cref="buffImmune"/> or using <see cref="BecomeImmuneTo(int)"/>.<br/><br/>
+	/// <paramref name="anyBuffsCleared"/> will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br/><br/>
+	/// This should not be called on multiplayer clients.
+	/// </summary>
+	/// <param name="anyBuffsCleared"></param>
+	public void ClearImmuneToBuffs(out bool anyBuffsCleared)
+	{
+		anyBuffsCleared = false;
+
+		// Modelled after DelBuff method.
+		for (int i = maxBuffs - 1; i >= 0; i--) {
+			if (buffImmune[buffType[i]]) {
+				buffTime[i] = 0;
+				buffType[i] = 0;
+				anyBuffsCleared = true;
+			}
+
+			if (buffTime[i] == 0 || buffType[i] == 0) { 
+				for (int j = i + 1; j < maxBuffs; j++) {
+					buffTime[j - 1] = buffTime[j];
+					buffType[j - 1] = buffType[j];
+					buffTime[j] = 0;
+					buffType[j] = 0;
+				}
+			}
+		}
+
+		if (Main.netMode == 2)
+			NetMessage.SendData(54, -1, -1, null, whoAmI);
+	}
 }

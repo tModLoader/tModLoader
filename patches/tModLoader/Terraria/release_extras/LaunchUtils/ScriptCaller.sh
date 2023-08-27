@@ -60,9 +60,6 @@ echo "Success!"  2>&1 | tee -a "$LogFile"
 
 run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
 
-# Gather CommandLine arguments from config
-customargs=$(cat "$root_dir/cli-argsConfig.txt")
-echo "Loaded Custom Arguments: $customargs"  2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
 

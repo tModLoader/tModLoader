@@ -269,6 +269,11 @@ public static class ModContent
 	/// </summary>
 	public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
+	/// <summary>
+	/// Get the id (type) of a ModEmoteBubble by class. Assumes one instance per class.
+	/// </summary>
+	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
+
 	internal static void Load(CancellationToken token)
 	{
 		CacheVanillaState();
@@ -328,6 +333,7 @@ public static class ModContent
 		PylonLoader.FinishSetup();
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
+		EmoteBubbleLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
@@ -357,6 +363,7 @@ public static class ModContent
 		DamageClassLoader.RegisterDefaultClasses();
 		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
+		BuilderToggleLoader.RegisterDefaultToggles();
 	}
 
 	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction)
@@ -464,10 +471,12 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		BuilderToggleLoader.Unload();
 		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
+		EmoteBubbleLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -534,6 +543,7 @@ public static class ModContent
 		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
+		EmoteBubbleLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {

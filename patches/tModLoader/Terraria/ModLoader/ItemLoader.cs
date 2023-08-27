@@ -2191,6 +2191,8 @@ public static class ItemLoader
 			}
 		}
 
+		tooltips.RemoveAll(x => !x.Visible);
+
 		numTooltips = tooltips.Count;
 		text = new string[numTooltips];
 		modifier = new bool[numTooltips];
