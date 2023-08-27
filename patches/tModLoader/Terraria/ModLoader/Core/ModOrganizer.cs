@@ -555,7 +555,7 @@ namespace Terraria.ModLoader.Core
 
 			// Version unknown. Assume 1.4.3
 			modBrowserVersion = "1.4.3";
-			return false;
+			return true;
 		}
 
 		// Delete in Mod Browsewr refactor - temp
