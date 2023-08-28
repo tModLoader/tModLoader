@@ -237,7 +237,7 @@
  	public static int maxTilesY = (int)bottomWorld / 16 + 1;
  	public const int sectionWidth = 200;
  	public const int sectionHeight = 150;
-@@ -683,11 +_,11 @@
+@@ -683,12 +_,12 @@
  	public const int maxItemText = 20;
  	public const int maxPlayers = 255;
  	public static int maxNetPlayers = 255;
@@ -251,9 +251,11 @@
 +	public static readonly int maxNPCs = 200;
 -	private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
 +	internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
- 	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
+-	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
++	internal static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
+ 	public static int maxRain = 750;
 @@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
