@@ -506,8 +506,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		float reduce = manaCost;
 		float mult = 1;
-		// TODO: Make a space gun set
-		if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray || item.type == ItemID.ZapinatorOrange))
+
+		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
 		if(item.type == ItemID.BookStaff && altFunctionUse == 2)

@@ -120,5 +120,10 @@ partial class ItemID
 			{ GoldOre, (3, 13) },
 			{ PlatinumOre, (3, 13) },
 		};
+
+		/// <summary>
+		/// Set to <see langword="true"/> to make this Item set its mana cost to 0 whenever <see cref="Player.spaceGun"/> is set to <see langword="true"/>.
+		/// </summary>
+		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
 	}
 }
