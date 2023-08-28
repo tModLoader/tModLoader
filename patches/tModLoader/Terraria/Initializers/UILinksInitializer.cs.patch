@@ -47,7 +47,7 @@
  				text2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
  
  			if (flag3)
-@@ -1632,6 +_,18 @@
+@@ -1632,6 +_,12 @@
  				if (Main.MenuUI.CurrentState is IHaveBackButtonCommand haveBackButtonCommand)
  					haveBackButtonCommand.HandleBackButtonUsage();
  				break;
@@ -55,12 +55,6 @@
 +			case 100:
 +				SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);
 +				Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
-+				break;
-+			case 101:
-+				Interface.modBrowser.BackClick(null, null);
-+				break;
-+			case 102:
-+				Interface.modsMenu.BackClick(null, null);
 +				break;
 +			// ]]
  		}

@@ -63,10 +63,11 @@
 		"ModDependencyClickTooltip": "Dieser Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
 		"ModDidNotFullyUnloadWarning": "Dieser Mod wurde beim letzten Entladen nicht vollständig entladen.\n(Dies ist eine Nachricht für den Modentwickler)",
-		"BetaModCantPublish": "Dieser Mod wurde in einer Beta-Version erstellt und kann nicht veröffentlicht werden.",
 		"BetaModCantPublishError": "Du kannst keinen Mod der in einer Beta-Version von tModLoader erstellt wurde veröffentlichen",
 		"OutdatedModCantPublishError": "Du kannst keinen Mod der in einer alten tModLoader Version erstellt wurde veröffentlichen",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Neu laden erforderlich",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Neu laden erzwingen",
 		"ModIsServerSide": "Dies ist ein serverseitiger Mod",
 		"ModsByline": "Mod von: {0}",
@@ -247,6 +248,12 @@
 		"MPErrorModDownloadError": "Beim herunterladen ist ein Fehler aufgetreten {0}",
 		"MPPacketTooLarge": "Paket zu groß {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Herunterladen",
 		"MBDownloadAll": "Alle herunterladen",
@@ -266,6 +273,7 @@
 		"MBUpdateAll": "Alle aktualisieren",
 		"MBReloadBrowser": "Mod-Browser neu laden",
 		"MBGettingData": "Sammle Daten...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Browser aktivieren...",
 		"MBSortByRecentlyUpdated": "Nach kürzlich aktualisierten sortieren",
 		"MBSortByPopularity": "Nach Beliebtheit sortieren",
@@ -344,8 +352,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Mods automatisch aktivieren und neu laden, wenn der Mod-Browser verlassen wird: Aus",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Erforderliche Mods automatisch neu laden, wenn der Modbildschirm verlassen wird: An",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Erforderliche Mods automatisch neu laden, wenn der Modbildschirm verlassen wird: Aus",
-		"ReloadModsReminder": "Du hast einen Mod aktualisiert. Vergiss nicht sie neu zu laden, damit die Änderungen wirksam werden!",
-		"EnableModsReminder": "Deine neu heruntergeladenen Mods sind im Moment deaktiviert, vergiss nicht sie zu aktivieren, wenn du sie benutzen willst!",
 		"DontShowAgain": "Nie wieder zeigen",
 		"ModControls": "Mod-Steuerung",
 

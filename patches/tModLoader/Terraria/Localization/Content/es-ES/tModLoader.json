@@ -63,10 +63,11 @@
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",
 		"ModDidNotFullyUnloadWarning": "Este mod no se desactivó completamente durante la última recarga.\n(Este es un mensaje para el creador del mod)",
-		"BetaModCantPublish": "Este mod se ha creado en una versión beta y no puede publicarse",
 		"BetaModCantPublishError": "No puedes publicar un mod basado en una versión beta de tModLoader",
 		"OutdatedModCantPublishError": "No puedes publicar un mod creado para una versión antigua de tModLoader",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Recarga necesaria",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Recarga forzada",
 		"ModIsServerSide": "Este es un mod del lado del servidor",
 		"ModsByline": "De: {0}",
@@ -247,6 +248,12 @@
 		"MPErrorModDownloadError": "Se ha producido un error al descargar {0}",
 		"MPPacketTooLarge": "Paquete demasiado grande {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Descargar",
 		"MBDownloadAll": "Descargar todos",
@@ -266,6 +273,7 @@
 		"MBUpdateAll": "Actualizar todos",
 		"MBReloadBrowser": "Recargar navegador",
 		"MBGettingData": "Obteniendo datos...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Rellenando navegador...",
 		"MBSortByRecentlyUpdated": "Ordenar por actualizaciones recientes",
 		"MBSortByPopularity": "Ordenar por popularidad",
@@ -344,8 +352,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Activar y recargar automáticamente mods al salir del Navegador: Desactivado",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Recargar automáticamente los mods necesarios al salir del menú de Mods: Activado",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Recargar automáticamente los mods necesarios al salir del menú de Mods: Desactivado",
-		"ReloadModsReminder": "Has actualizado un mod desactivado. Recuerda activarlo y recargar los mods para que funcione.",
-		"EnableModsReminder": "Tus últimos mods descargados están desactivados. Recuerda activarlos y recargarlos si tienes intención de jugar con ellos.",
 		"DontShowAgain": "No mostrar de nuevo",
 		"ModControls": "Controles de mods",
 

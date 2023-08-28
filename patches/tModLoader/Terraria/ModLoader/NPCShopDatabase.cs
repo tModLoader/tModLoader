@@ -84,6 +84,10 @@ public static partial class NPCShopDatabase
 	{
 		foreach (var shop in AllShops) {
 			shop.FinishSetup();
+			// NPCShopDatabase.Initialize(); seems intentionally run before SetupRecipes, where IsAMaterial is populated, so we need to fix entries here.
+			foreach (var entry in shop.ActiveEntries) {
+				entry.Item.material = ItemID.Sets.IsAMaterial[entry.Item.type]; 
+			}
 		}
 
 		InitShopTestSystem();

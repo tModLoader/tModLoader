@@ -1044,13 +1044,13 @@ public static class TileLoader
 		int originalType = saplingType;
 		int originalStyle = style;
 
-		var treeGrown = PlantLoader.Get<ModTree>(TileID.Trees, soilType);
+		ITree treeGrown = PlantLoader.Get<ModTree>(TileID.Trees, soilType);
 
 		if (treeGrown == null) {
-			var palmGrown = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, soilType);
+			treeGrown = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, soilType);
 
-			if (palmGrown != null)
-				saplingType = palmGrown.SaplingGrowthType(ref style);
+			if (treeGrown != null)
+				saplingType = treeGrown.SaplingGrowthType(ref style);
 			else
 				return false;
 		}
@@ -1075,7 +1075,7 @@ public static class TileLoader
 		if (!tile.active())
 			return;
 
-		var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
+		ITree tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 		if (tree != null)
 			dust = tree.CreateDust();
 	}
@@ -1106,7 +1106,7 @@ public static class TileLoader
 		if (!tile.active())
 			return;
 
-		var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
+		ITree tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
 		if (tree != null)
 			dust = tree.CreateDust();
 	}

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
-using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.UI.Chat;
@@ -67,6 +67,20 @@ public partial class WorkshopHelper
 		return Path.Combine("steamapps", "workshop");
 	}
 
+	/////// Others ////////////////////
+	internal static bool TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
+	{
+		item = null;
+
+		var query = new QueryHelper.AQueryInstance(new QueryParameters() { searchModSlugs = new string[] { modSlug } });
+		if (!query.TrySearchByInternalName(out var items))
+			return false;
+
+		item = items[0];
+		return item != null; // TODO, return value is ambiguous between a connection error and the mod not existing on workshop, currently both are logged as an error and the item is skipped
+	}
+
+	// Should this be in SteamedWraps or here?
 	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId)
 	{
 		publishId = 0;
@@ -77,13 +91,82 @@ public partial class WorkshopHelper
 		return true;
 	}
 
+	/////// Used for Publishing ////////////////////
+	internal static bool TryGetPublishIdByInternalName(QueryParameters query, out List<string> modIds)
+	{
+		modIds = new List<string>();
+
+		if (!TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> items))
+			return false;
+
+		for (int i = 0; i < query.searchModSlugs.Length; i++) {
+			if (items[i] is null) {
+				Logging.tML.Info($"Unable to find the PublishID for {query.searchModSlugs[i]}");
+				modIds.Add("0");
+			}
+			else
+				modIds.Add(items[i].PublishId.m_ModPubId);
+		}
+
+		return true;
+	}
+
+	internal static bool TryGetModDownloadItemsByInternalName(QueryParameters query, out List<ModDownloadItem> mods)
+	{
+		var queryHandle = new QueryHelper.AQueryInstance(query);
+		if (!queryHandle.TrySearchByInternalName(out mods))
+			return false;
+
+		return true;
+	}
+
+	/////// Workshop Version Calculation Helpers ////////////////////
+	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
+	{
+		(System.Version modV, System.Version tmlV) selectVersion = new(new System.Version(metadata["version"].Replace("v", "")), new System.Version(metadata["modloaderversion"].Replace("tModLoader v", "")));
+		// Backwards compat after metadata version change
+		if (!metadata["versionsummary"].Contains(':'))
+			return selectVersion;
+
+		InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
+
+		// Handle Github Actions metadata from description
+		// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
+		Match match = MetadataInDescriptionFallbackRegex.Match(mbDescription);
+		if (match.Success) {
+			InnerCalculateRelevantVersion(ref selectVersion, (match.Groups[1].Value));
+		}
+
+		return selectVersion;
+	}
+
+	// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
+	private static void InnerCalculateRelevantVersion(ref (System.Version modV, System.Version tmlV) selectVersion, string versionSummary)
+	{
+		foreach (var item in VersionSummaryToArray(versionSummary)) {
+			if (item.tmlVersion.MajorMinor() > BuildInfo.tMLVersion.MajorMinor())
+				continue;
+
+			if (selectVersion.modV < item.modVersion || selectVersion.tmlV.MajorMinor() < item.tmlVersion.MajorMinor()) {
+				selectVersion.modV = item.modVersion;
+				selectVersion.tmlV = item.tmlVersion; //item.tmlVersion.MajorMinor().ToString();
+			}
+		}
+	}
+
+	private static (System.Version tmlVersion, System.Version modVersion)[] VersionSummaryToArray(string versionSummary)
+	{
+		return versionSummary.Split(";").Select(s => (new System.Version(s.Split(":")[0]), new System.Version(s.Split(":")[1]))).ToArray();
+	}
+
+	//////// Workshop Publishing ////////////////////
 	internal static void PublishMod(LocalMod mod, string iconPath)
 	{
 		var modFile = mod.modFile;
 		var bp = mod.properties;
 
 		if (bp.buildVersion != modFile.TModLoaderVersion)
-			throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
+			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
 
 		var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
 		string changeLog;
@@ -138,208 +221,21 @@ public partial class WorkshopHelper
 		}
 	}
 
-	/// <summary>
-	/// Downloads all UIModDownloadItems provided.
-	/// </summary>
-	internal static Task SetupDownload(List<ModDownloadItem> items, int previousMenuId)
-	{
-		//Set UIWorkshopDownload
-		UIWorkshopDownload uiProgress = null;
-
-		// Can't update enabled items due to in-use file access constraints
-		var needFreeInUseMods = items.Any(item => item.Installed != null && item.Installed.Enabled);
-		if (needFreeInUseMods)
-			ModLoader.ModLoader.Unload();
-
-		if (!Main.dedServ) {
-			uiProgress = new UIWorkshopDownload(previousMenuId);
-			Main.MenuUI.SetState(uiProgress);
-		}
-
-		return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
-	}
-
-	private static void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone)
-	{
-		foreach (var item in items) {
-			var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
-			bool forceUpdate = item.HasUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
-
-			uiProgress?.PrepUIForDownload(item.DisplayName);
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
-			SteamedWraps.Download(publishId, uiProgress, forceUpdate);
-
-			// Due to issues with Steam moving files from downloading folder to installed folder,
-			// there can be some latency in detecting it's installed. - Solxan
-			Thread.Sleep(1000);
-
-			// Add installed info to the downloaded item
-			var localMod = ModOrganizer.FindWorkshopMods().FirstOrDefault(m => m.Name == item.ModName);
-			QueryHelper.FindModDownloadItem(item.ModName).Installed = localMod;
-		}
-
-		Interface.modBrowser.PopulateModBrowser(uiOnly: true);
-		Interface.modBrowser.UpdateNeeded = true;
-
-		uiProgress?.Leave(refreshBrowser: true);
-
-		if (reloadWhenDone)
-			ModLoader.ModLoader.Reload();
-	}
-
-	internal static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t id, LocalMod installed, System.Version mbVersion)
-	{
-		if (installed.properties.version < mbVersion)
-			return true;
-
-		if (SteamedWraps.DoesWorkshopItemNeedUpdate(id))
-			return true;
-
-		return false;
-	}
-
 	internal static class QueryHelper
 	{
-		internal const int QueryPagingConst = Steamworks.Constants.kNumUGCResultsPerPage;
-		internal static int IncompleteModCount;
-		internal static int HiddenModCount;
-		internal static uint TotalItemsQueried;
+		/////// Used for Mod Browser ////////////////////
 
-		internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
-
-		internal static ModDownloadItem FindModDownloadItem(string modName)
-		=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
-
-		internal static bool QueryWorkshop()
+		internal static async IAsyncEnumerable<ModDownloadItem> QueryWorkshop(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token)
 		{
-			HiddenModCount = IncompleteModCount = 0;
-			TotalItemsQueried = 0;
-			Items.Clear();
+			var queryHandle = new AQueryInstance(queryParams);
 
-			AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
-
-			if (!SteamedWraps.SteamAvailable) {
-				if (!SteamedWraps.TryInitViaGameServer()) {
-					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
-					return false;
-				}
-
-				var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
-				while (!SteamGameServer.BLoggedOn() && (DateTime.Now - start) < TimeSpan.FromSeconds(5)) {
-					SteamedWraps.ForceCallbacks();
-				}
-			}
-
-			if (!new AQueryInstance().QueryAllWorkshopItems())
-				return false;
-
-			AQueryInstance.InstalledMods = null;
-			return true;
-		}
-
-		internal static bool HandleError(EResult eResult)
-		{
-			if (eResult == EResult.k_EResultOK || eResult == EResult.k_EResultNone)
-				return true;
-
-			if (eResult == EResult.k_EResultAccessDenied) {
-				Utils.ShowFancyErrorMessage("Error: Access to Steam Workshop was denied.", 0);
-			}
-			else if (eResult == EResult.k_EResultTimeout) {
-				Utils.ShowFancyErrorMessage("Error: Operation Timed Out. No callback received from Steam Servers.", 0);
-			}
-			else {
-				Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
-				SteamedWraps.ReportCheckSteamLogs();
-			}
-			return false;
-		}
-
-		internal static string GetDescription(ulong publishedId)
-		{
-			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
-			return pDetails.m_rgchDescription;
-		}
-
-		internal static ulong GetSteamOwner(ulong publishedId)
-		{
-			var pDetails = new AQueryInstance().FastQueryItem(publishedId);
-			return pDetails.m_ulSteamIDOwner;
-		}
-
-		private static List<ulong> GetDependencies(ulong publishedId)
-		{
-			var query = new AQueryInstance();
-			query.FastQueryItem(publishedId, queryChildren: true);
-			return query.ugcChildren;
-		}
-
-		internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set)
-		{
-			var deps = GetDependencies(publishedId);
-			set.UnionWith(deps);
-
-			foreach (ulong dep in deps)
-				GetDependenciesRecursive(dep, ref set);
-		}
-
-		internal static bool GetPublishIdByInternalName(string internalName, out ulong publishId)
-		{
-			var query = new AQueryInstance();
-			bool success = query.SearchByInternalName(internalName, out var itemDetails);
-
-			publishId = itemDetails.m_nPublishedFileId.m_PublishedFileId;
-			return success;
-		}
-
-		internal static bool CheckWorkshopConnection()
-		{
-			// If populating fails during query, than no connection. Attempt connection if not yet attempted.
-			if (!QueryWorkshop())
-				return false;
-
-			// If there are zero items on workshop, than return true.
-			if (Items.Count + TotalItemsQueried == 0)
-				return true;
-
-			// Otherwise, return the original condition.
-			return Items.Count + IncompleteModCount != 0;
-		}
-
-		private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
-		{
-			(System.Version modV, string tmlV) selectVersion = new (new System.Version(metadata["version"].Replace("v", "")), metadata["modloaderversion"]);
-			// Backwards compat after metadata version change
-			if (!metadata["versionsummary"].Contains(':'))
-				return selectVersion;
-
-			InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
-
-			// Handle Github Actions metadata from description
-			// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
-			Match match = MetadataInDescriptionFallbackRegex.Match(mbDescription);
-			if (match.Success) {
-				InnerCalculateRelevantVersion(ref selectVersion, (match.Groups[1].Value));
-			}
-
-			return selectVersion;
-		}
-
-		// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
-		private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary)
-		{
-			foreach (var item in VersionSummaryToArray(versionSummary)) {
-				if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
-					selectVersion.modV = item.modVersion;
-					selectVersion.tmlV = item.tmlVersion.ToString(); //item.tmlVersion.MajorMinor().ToString();
-				}
+			await foreach (var item in queryHandle.QueryAllWorkshopItems(token)) {
+				if (item is not null)
+					yield return item;
 			}
 		}
 
-		private static (System.Version tmlVersion, System.Version modVersion)[] VersionSummaryToArray(string versionSummary)
-		{
-			return versionSummary.Split(";").Select(s => (new System.Version(s.Split(":")[0]), new System.Version(s.Split(":")[1]))).ToArray();
-		}
+		/////// Used for Query Caching per Steam Requirements ////////////////////
 
 		internal class AQueryInstance
 		{
@@ -347,14 +243,18 @@ public partial class WorkshopHelper
 			protected UGCQueryHandle_t _primaryUGCHandle;
 			protected EResult _primaryQueryResult;
 			protected uint _queryReturnCount;
-			protected string _nextCursor;
 			internal List<ulong> ugcChildren = new List<ulong>();
+			internal QueryParameters queryParameters;
 
-			internal static IReadOnlyList<LocalMod> InstalledMods;
+			internal int numberPages = 0;
+			internal uint totalItemsQueried = 0;
 
-			internal AQueryInstance()
+			/////// Query basic implemenatation ////////////////////
+
+			internal AQueryInstance(QueryParameters queryParameters)
 			{
 				_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryInitialized);
+				this.queryParameters = queryParameters;
 			}
 
 			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure)
@@ -362,10 +262,11 @@ public partial class WorkshopHelper
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
-				_nextCursor = pCallback.m_rgchNextCursor;
 
-				if (TotalItemsQueried == 0 && pCallback.m_unTotalMatchingResults > 0)
-					TotalItemsQueried = pCallback.m_unTotalMatchingResults;
+				if (totalItemsQueried == 0 && pCallback.m_unTotalMatchingResults > 0) {
+					totalItemsQueried = pCallback.m_unTotalMatchingResults;
+					numberPages = (int)Math.Ceiling((double)totalItemsQueried / Constants.kNumUGCResultsPerPage);
+				}
 			}
 
 			/// <summary>
@@ -376,168 +277,225 @@ public partial class WorkshopHelper
 				SteamedWraps.ReleaseWorkshopHandle(_primaryUGCHandle);
 			}
 
+			/////// Queries ////////////////////
+
 			/// <summary>
-			/// For direct information gathering of a particular mod/workshop item
+			/// For direct information gathering of particular mod/workshop items. Synchronous.
+			/// Note that the List size is 1 to 1 with the provided array.
+			/// If the Mod is not found, the space is filled with a null.
 			/// </summary>
-			internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false)
+			internal List<ModDownloadItem> QueryItemsSynchronously(out List<string> missingMods)
 			{
-				TryRunQuery(SteamedWraps.GenerateSingleItemQuery(publishedId));
+				var numPages = Math.Ceiling(queryParameters.searchModIds.Length / (float)Constants.kNumUGCResultsPerPage);
+				var items = new List<ModDownloadItem>();
+				missingMods = new List<string>();
 
-				var pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
+				for (int i = 0; i < numPages; i++) {
+					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) ));
+					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
-				// Some weird mod will have a super big m_unNumChildren and will cause game crash.
-				if (pDetails.m_unNumChildren > 1000) {
-					throw new OverflowException("Numbers of dependencies exceeds 1000. Dependencies from Steam Workshop: " + pDetails.m_unNumChildren);
-				}
+					try {
+						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray));
 
-				if (queryChildren) {
-					ugcChildren = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, 0, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId).ToList();
-				}
+						for (int j = 0; j < _queryReturnCount; j++) {
+							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
+							var item = GenerateModDownloadItemFromQuery((uint)j);
+							if (item is null) {
+								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
+								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
+								missingMods.Add(idArray[j]);
+								continue;
+							}
 
-				ReleaseWorkshopQuery();
-				return pDetails;
-			}
-
-			internal bool QueryAllWorkshopItems()
-			{
-				do {
-					// Appx. 0.5 seconds per page of 50 items during testing. No way to parallelize.
-					//TODO: Review an upgrade of ModBrowser to load items over time (ie paging Mod Browser).
-
-					string currentPage = _nextCursor;
-					if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage))) {
-						ReleaseWorkshopQuery();
-
-						// If it failed, make a second attempt after 100 ms
-						Thread.Sleep(100);
-						if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage))) {
-							ReleaseWorkshopQuery();
-							return false;
+							item.UpdateInstallState();
+							items.Add(item);
 						}
 					}
-
-					// Appx. 10 ms per page of 50 items
-					ProcessPageResult();
-
-					ReleaseWorkshopQuery();
-				} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
-				return true;
+					finally {
+						ReleaseWorkshopQuery();
+					}
+				}
+				
+				return items;
 			}
 
-			// Only use if we don't have a guaranteed PublishID source
-			internal bool SearchByInternalName(string modName, out SteamUGCDetails_t itemDetails)
+			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
 			{
-				string currentPage = _nextCursor;
-				itemDetails = new();
+				uint currentPage = 1;
+				int currentPageAttempts = 0;
+				do {
+					token.ThrowIfCancellationRequested();
+					try {
+						try {
+							await WaitForQueryResultAsync(SteamedWraps.GenerateAndSubmitModBrowserQuery(currentPage, queryParameters), token);
+						}
+						catch {
+							if (currentPageAttempts == 1)
+								throw;
 
-				// If Query Fails, we can't publish.
-				if (!TryRunQuery(SteamedWraps.GenerateModBrowserQuery(currentPage, internalName: modName)))
-					return false;
+							await Task.Delay(100, token);
+							currentPage--;
+							currentPageAttempts++;
+							continue;
+						}
 
-				// If Query Succeeds, but doesn't find a match, assume safe to publish new item.
-				if (_queryReturnCount == 0)
-					return true;
+						foreach (var item in await Task.Run(ProcessPageResult))
+							yield return item;
+					}
+					finally {
+						ReleaseWorkshopQuery();
+					}
 
-				// Should only be one of the matching mod
-				itemDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
+					currentPageAttempts = 0;
+				} while (++currentPage <= numberPages);
+			}
+
+			private IEnumerable<ModDownloadItem> ProcessPageResult()
+			{
+				// Appx. 10 ms per page of 50 items
+				for (uint i = 0; i < _queryReturnCount; i++) {
+					var mod = GenerateModDownloadItemFromQuery(i);
+					if (mod == null)
+						continue;
+
+					yield return mod;
+				}
+			}
+
+			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
+			/// <summary>
+			/// Only Use if we don't have a PublishID source.
+			/// Outputs a List of ModDownloadItems of equal length to QueryParameters.SearchModSlugs
+			/// Uses null entries to fill gaps to ensure length consistency
+			/// </summary>
+			internal bool TrySearchByInternalName(out List<ModDownloadItem> items)
+			{
+				items = new List<ModDownloadItem>();
+
+				foreach (var slug in queryParameters.searchModSlugs) {
+					try {
+						WaitForQueryResult(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug));
+
+						if (_queryReturnCount == 0) {
+							Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
+							items.Add(null);
+							continue;
+						}
+
+						items.Add(GenerateModDownloadItemFromQuery(0));
+					}
+					catch {
+						// If Query Fails, we can't publish
+						return false;
+					}
+					finally {
+						ReleaseWorkshopQuery();
+					}
+				}
+
 				return true;
 			}
 
-			internal bool TryRunQuery(SteamAPICall_t query)
+			/////// Run Queries ////////////////////
+
+			internal async Task WaitForQueryResultAsync(SteamAPICall_t query, CancellationToken token = default)
 			{
 				_primaryQueryResult = EResult.k_EResultNone;
 				_queryHook.Set(query);
 
 				var stopwatch = Stopwatch.StartNew();
-				do {
-					if (stopwatch.Elapsed.TotalSeconds >= 10) // 10 seconds maximum allotted time before no connection is assumed
-						_primaryQueryResult = EResult.k_EResultTimeout;
+				while (true) {
+					SteamedWraps.RunCallbacks();
+					if (_primaryQueryResult != EResult.k_EResultNone)
+						break;
 
-					SteamedWraps.ForceCallbacks();
+					if (stopwatch.Elapsed.TotalSeconds >= 10)
+						throw new TimeoutException("No response from steam workshop query");
+
+					await Task.Delay(1, token);
 				}
-				while (_primaryQueryResult == EResult.k_EResultNone);
-
-				return HandleError(_primaryQueryResult);
+				
+				if (_primaryQueryResult != EResult.k_EResultOK) {
+					SteamedWraps.ReportCheckSteamLogs();
+					throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {_primaryQueryResult}");
+				}
 			}
 
-			private void ProcessPageResult()
+			[Obsolete("Should not be used because it hides syncronous waiting")]
+			internal void WaitForQueryResult(SteamAPICall_t query)
 			{
-				for (uint i = 0; i < _queryReturnCount; i++) {
-					// Item Result call data
-					SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);
+				WaitForQueryResultAsync(query).GetAwaiter().GetResult();
+			}
 
-					PublishedFileId_t id = pDetails.m_nPublishedFileId;
+			/////// Process Query Result per Item ////////////////////
 
-					if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic) {
-						HiddenModCount++;
-						continue;
-					}
+			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
+			internal ModDownloadItem GenerateModDownloadItemFromQuery(uint i)
+			{
+				// Item Result call data
+				SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);
 
-					if (pDetails.m_eResult != EResult.k_EResultOK) {
-						Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
-						HiddenModCount++;
-						continue;
-					}
+				PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
-					DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
-					string displayname = pDetails.m_rgchTitle;
-
-					// Item Tagged data
-					SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
-
-					// Backwards compat code for the metadata version change
-					if (metadata["versionsummary"] == null)
-						metadata["versionsummary"] = metadata["version"];
-
-					string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
-
-					if (missingKeys.Length != 0) {
-						Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
-						IncompleteModCount++;
-						continue;
-					}
-
-					if (string.IsNullOrWhiteSpace(metadata["name"])) {
-						Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
-						IncompleteModCount++;
-						continue;
-					}
-
-					// Partial Description - we don't include Long Description so this is only first handful of characters
-					string description = pDetails.m_rgchDescription;
-
-					var cVersion = CalculateRelevantVersion(description, metadata);
-
-					// Assign ModSide Enum
-					ModSide modside = ModSide.Both;
-
-					if (metadata["modside"] == "Client")
-						modside = ModSide.Client;
-
-					if (metadata["modside"] == "Server")
-						modside = ModSide.Server;
-
-					if (metadata["modside"] == "NoSync")
-						modside = ModSide.NoSync;
-
-					// Preview Image url
-					SteamedWraps.FetchPreviewImageUrl(_primaryUGCHandle, i, out string modIconURL);
-
-					// Item Statistics
-					SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
-
-					// Check against installed mods for updates
-
-					bool updateIsDowngrade = false;
-
-					var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
-					bool update = installed != null && DoesWorkshopItemNeedUpdate(id, installed, cVersion.modV);
-
-					// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
-					bool needsRestart = installed == null && SteamedWraps.IsWorkshopItemInstalled(id);
-
-					Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, cVersion.tmlV, metadata["homepage"], needsRestart));
+				if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic) {
+					return null;
 				}
+
+				if (pDetails.m_eResult != EResult.k_EResultOK) {
+					Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
+					return null;
+				}
+
+				string ownerId = pDetails.m_ulSteamIDOwner.ToString();
+
+				DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
+				string displayname = pDetails.m_rgchTitle;
+
+				// Item Tagged data
+				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
+
+				// Backwards compat code for the metadata version change
+				if (metadata["versionsummary"] == null)
+					metadata["versionsummary"] = metadata["version"];
+
+				string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
+
+				if (missingKeys.Length != 0) {
+					Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
+					return null;
+				}
+
+				if (string.IsNullOrWhiteSpace(metadata["name"])) {
+					Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
+					return null;
+				}
+
+				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();
+
+				// Partial Description - we don't include Long Description so this is only first handful of characters
+				string description = pDetails.m_rgchDescription;
+
+				var cVersion = CalculateRelevantVersion(description, metadata);
+
+				// Assign ModSide Enum
+				ModSide modside = ModSide.Both;
+
+				if (metadata["modside"] == "Client")
+					modside = ModSide.Client;
+
+				if (metadata["modside"] == "Server")
+					modside = ModSide.Server;
+
+				if (metadata["modside"] == "NoSync")
+					modside = ModSide.NoSync;
+
+				// Preview Image url
+				SteamedWraps.FetchPreviewImageUrl(_primaryUGCHandle, i, out string modIconURL);
+
+				// Item Statistics
+				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
+
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById);
 			}
 		}
 	}

@@ -119,7 +119,6 @@ internal static class LogArchiver
 		if (existingLogArchives.Length > 0)
 			n = existingLogArchives.Select(s => int.Parse(pattern.Match(Path.GetFileName(s)).Groups[1].Value)).Max() + 1;
 
-
 		// Initiate the ZIP.
 		try {
 			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {

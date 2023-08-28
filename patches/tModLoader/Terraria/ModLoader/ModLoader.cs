@@ -57,8 +57,6 @@ public static class ModLoader
 
 	internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
-	internal static bool dontRemindModBrowserUpdateReload;
-	internal static bool dontRemindModBrowserDownloadEnable;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
 	internal static bool showMemoryEstimates = true;
@@ -327,8 +325,6 @@ public static class ModLoader
 		Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
-		Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
-		Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 		Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 		Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
 		Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
@@ -356,8 +352,6 @@ public static class ModLoader
 		Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
-		Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
-		Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 		Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
 		Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
