@@ -1,7 +1,7 @@
 ﻿using ExampleMod.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
+using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -37,15 +37,27 @@ namespace ExampleMod.Common.Systems
 		}
 	}
 
-	public class ExampleWorldHeaderPlayer : ModPlayer {
+	public class ExampleWorldHeaderPlayer : ModPlayer
+	{
 		public override void OnEnterWorld() {
-			// modsGeneratedWith can only be checked in Single Player
-			if (Main.netMode == NetmodeID.SinglePlayer ) {
-				// Check if this world was generated with at least a specific version of a mod.
-				// Tracking mods used to generate a world was added in v2023.8, so if modsGeneratedWith is null we don't know for sure if ExampleMod was enabled when this world was generated.
-				if (Main.ActiveWorldFileData.modsGeneratedWith?.Any(x => x.modName == "ExampleMod" && x.modVersion >= new System.Version(1, 0)) == false) {
-					Main.NewText(Language.GetTextValue(Mod.GetLocalizationKey("NotPresentDuringWorldGenMessage")), Color.Orange);
+			// This data can only be checked in Single Player
+			if (Main.netMode != NetmodeID.SinglePlayer) {
+				return;
+			}
+
+			// Check if this world was generated with at least a specific version of a mod.
+			// Tracking mods used to generate a world was added in v2023.8, so if WorldGenModsRecorded is false we don't know for sure if ExampleMod was enabled when this world was generated.
+			if (!Main.ActiveWorldFileData.WorldGenModsRecorded) {
+				return;
+			}
+
+			if (Main.ActiveWorldFileData.TryGetModVersionGeneratedWith("ExampleMod", out Version modVersion)) {
+				if (modVersion < new Version(1, 0)) {
+					// Here we could have a message about the world missing a new biome added in v1.0 of this mod that won't be present in the world because it was generated before then.
 				}
+			}
+			else {
+				Main.NewText(Language.GetTextValue(Mod.GetLocalizationKey("NotPresentDuringWorldGenMessage")), Color.Orange);
 			}
 		}
 	}

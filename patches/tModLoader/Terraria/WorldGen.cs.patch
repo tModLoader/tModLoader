@@ -597,7 +597,7 @@
 +		SystemLoader.PostWorldGen();
 +
  		Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
-+		Main.ActiveWorldFileData.modsGeneratedWith = ModLoader.ModLoader.Mods.Where(x => x.Name != "ModLoader").Select(x => (x.Name, x.Version)).ToList();
++		Main.ActiveWorldFileData.modVersionsDuringWorldGen = ModLoader.ModLoader.Mods.ToDictionary(x => x.Name, x => x.Version);
  		Main.NotifyOfEvent(GameNotificationType.WorldGen);
  		drunkWorldGenText = false;
 +

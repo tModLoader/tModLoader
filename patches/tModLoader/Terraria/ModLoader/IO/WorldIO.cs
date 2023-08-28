@@ -706,6 +706,15 @@ internal static class WorldIO
 
 	private static void LoadWorldHeader(WorldFileData data, TagCompound tag)
 	{
+		LoadModHeaders(data, tag);
+		LoadUsedMods(data, tag.GetList<string>("usedMods"));
+		LoadUsedModPack(data, tag.GetString("usedModPack"));
+		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
+			LoadGeneratedWithMods(data, tag.GetCompound("generatedWithMods"));
+	}
+
+	private static void LoadModHeaders(WorldFileData data, TagCompound tag)
+	{
 		data.ModHeaders = new Dictionary<string, TagCompound>();
 		foreach (var entry in tag.GetCompound("modHeaders")) {
 			string fullname = entry.Key;
@@ -715,10 +724,6 @@ internal static class WorldIO
 
 			data.ModHeaders[fullname] = (TagCompound)entry.Value;
 		}
-		LoadUsedMods(data, tag.GetList<string>("usedMods"));
-		LoadUsedModPack(data, tag.GetString("usedModPack"));
-		if(tag.ContainsKey("generatedWithMods")) // GetList will return an empty List instead of null. null and empty list have different meaning for this data.
-			LoadGeneratedWithMods(data, tag.GetList<TagCompound>("generatedWithMods"));
 	}
 
 	internal static void LoadUsedMods(WorldFileData data, IList<string> usedMods)
@@ -741,19 +746,22 @@ internal static class WorldIO
 		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
 	}
 
-	internal static void LoadGeneratedWithMods(WorldFileData data, IList<TagCompound> list)
+	internal static void LoadGeneratedWithMods(WorldFileData data, TagCompound tag)
 	{
-		data.modsGeneratedWith = list.Select(x => (x.GetString("mod"), new Version(x.GetString("version")))).ToList();
+		data.modVersionsDuringWorldGen = new Dictionary<string, Version>();
+		foreach (var item in tag) {
+			data.modVersionsDuringWorldGen[item.Key] = tag.Get<Version>(item.Key);
+		}
 	}
 
-	internal static List<TagCompound> SaveGeneratedWithMods()
+	internal static TagCompound SaveGeneratedWithMods()
 	{
-		if (Main.ActiveWorldFileData.modsGeneratedWith == null)
+		if (Main.ActiveWorldFileData.modVersionsDuringWorldGen == null)
 			return null;
-		return Main.ActiveWorldFileData.modsGeneratedWith
-			.Select(x => new TagCompound {
-				["mod"] = x.modName,
-				["version"] = x.modVersion.ToString()
-			}).ToList();
+		var tag = new TagCompound();
+		foreach (var item in Main.ActiveWorldFileData.modVersionsDuringWorldGen) {
+			tag[item.Key] = item.Value;
+		}
+		return tag;
 	}
 }
