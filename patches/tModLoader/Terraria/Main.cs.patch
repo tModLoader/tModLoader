@@ -4941,7 +4941,7 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,48 @@
+@@ -38346,27 +_,49 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
@@ -4954,6 +4954,7 @@
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
 +			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor, ref infoTextShadowColor);
++			InfoDisplayLoader.ModifyDisplayParameters(info, ref text2, ref text3, ref infoTextColor, ref infoTextShadowColor);
  
  			if (!(text2 != ""))
  				continue;
