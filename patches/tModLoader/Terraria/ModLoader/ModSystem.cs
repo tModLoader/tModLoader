@@ -304,6 +304,17 @@ public abstract partial class ModSystem : ModType
 	public virtual void LoadWorldData(TagCompound tag) { }
 
 	/// <summary>
+	/// <br/>Allows you to save custom data for this system in the current world, and have that data accessible in the world select UI and during vanilla world loading.
+	/// <br/><b>WARNING:</b> Saving too much data here will cause lag when opening the world select menu for users with many worlds.
+	/// <br/>Can be retrieved via <see cref="WorldFileData.TryGetHeaderData(ModSystem, out TagCompound)"/> and <see cref="Main.ActiveWorldFileData"/>
+	/// <br/>
+	/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+	/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+	/// </summary>
+	/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+	public virtual void SaveWorldHeader(TagCompound tag) { }
+
+	/// <summary>
 	/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
 	/// </summary>
 	public virtual bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData)

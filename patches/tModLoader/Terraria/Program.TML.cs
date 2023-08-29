@@ -300,6 +300,32 @@ public static partial class Program
 		}
 	}
 
+	private static void ProcessLaunchArgs(string[] args, bool monoArgs, out bool isServer)
+	{
+		isServer = false;
+
+		try {
+			if (monoArgs)
+				args = Utils.ConvertMonoArgsToDotNet(args);
+
+			LaunchParameters = Utils.ParseArguements(args);
+
+			if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
+				// Launch the Terraria playtime tracker and quit.
+				TerrariaSteamClient.Run();
+				Environment.Exit(1);
+			}
+
+			SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+
+			// Unify server and client dll via launch param
+			isServer = LaunchParameters.ContainsKey("-server");
+		}
+		catch (Exception e) {
+			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
+		}
+	}
+
 	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
 
 	// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.

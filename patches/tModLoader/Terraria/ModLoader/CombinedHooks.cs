@@ -307,4 +307,9 @@ public static class CombinedHooks
 		PlayerLoader.FrameEffects(player);
 		EquipLoader.EquipFrameEffects(player);
 	}
+
+	public static bool OnPickup(Item item, Player player)
+	{
+		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
+	}
 }
