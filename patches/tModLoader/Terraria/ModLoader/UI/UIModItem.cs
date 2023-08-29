@@ -16,6 +16,7 @@ using Terraria.GameContent;
 using ReLogic.Content;
 using System.IO;
 using ReLogic.Utilities;
+using Terraria.Social.Base;
 
 namespace Terraria.ModLoader.UI;
 
@@ -125,7 +126,7 @@ internal class UIModItem : UIPanel
 		}
 
 		// Detect if it's for a different browser version entirely
-		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion)) {
+		if (!CheckIfPublishedForThisBrowserVersion(out var modBrowserVersion)) {
 			updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
 			updateColor = Color.Yellow;
 		}
@@ -585,5 +586,11 @@ internal class UIModItem : UIPanel
 
 		CloseDialog(evt, listeningElement);
 		Interface.modsMenu.Activate();
+	}
+
+	private bool CheckIfPublishedForThisBrowserVersion(out string recommendedModBrowserVersion)
+	{
+		recommendedModBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(_mod.tModLoaderVersion);
+		return recommendedModBrowserVersion == SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
 	}
 }

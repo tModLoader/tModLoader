@@ -556,8 +556,11 @@ internal static class ModOrganizer
 
 	internal static string GetActiveTmodInRepo(string repo)
 	{
-		var information = AnalyzeWorkshopTmods(repo);
-		if (information == null || information.Count == 0) {
+		var information = AnalyzeWorkshopTmods(repo).Where(t => 
+			// Ignore Transitive versions of tModLoader, such as 1.4.4-transitive. See 'GetBrowserVersionNumber' for why
+			!SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion).Contains("Transitive")
+		);
+		if (information == null || information.Count() == 0) {
 			Logging.tML.Warn($"Unexpectedly missing .tMods in Workshop Folder {repo}");
 			return null;
 		}
@@ -569,41 +572,6 @@ internal static class ModOrganizer
 		}
 
 		return recommendedTmod.file;
-	}
-
-	public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion)
-	{
-		string thisVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
-		modBrowserVersion = thisVersion;
-		// If Can't Read Manifest, assume local build and thus must be compatible
-		if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
-			return true;
-
-		// If Tags is null, it would be a pre-1.4 release mod. IE "1.4-alpha". 
-		if (info.tags == null) {
-			modBrowserVersion = "1.4.3";
-			return modBrowserVersion == thisVersion;
-		}
-
-		// Attempt checking if it's supported on this version, if so, then it's for this duh.
-		if (info.tags.Contains(thisVersion))
-			return true;
-
-		// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
-		modBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(mod.tModLoaderVersion);
-		if (info.tags.Contains(modBrowserVersion))
-			return false;
-
-		// Version unknown. Assume 1.4.3
-		modBrowserVersion = "1.4.3";
-		return false;
-	}
-
-
-	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
-	{
-		var summary = AnalyzeWorkshopTmods(repo);
-		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 	}
 
 	/// <summary>
@@ -629,7 +597,7 @@ internal static class ModOrganizer
 			return;
 
 		(string browserVersion, int keepCount)[] keepRequirements =
-			{ ("1.4.3", 1), ("1.4.4", 3) };
+			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
 
 		foreach (var requirement in keepRequirements) {
 			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
