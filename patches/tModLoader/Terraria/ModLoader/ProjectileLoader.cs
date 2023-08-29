@@ -382,6 +382,7 @@ public static class ProjectileLoader
 	public static void OnKill(Projectile projectile, int timeLeft)
 	{
 		projectile.ModProjectile?.OnKill(timeLeft);
+		Kill_Obsolete(projectile, timeLeft); // Placed here so both ModProjectile methods are called and then the GlobalProjectile methods
 
 		foreach (var g in HookOnKill.Enumerate(projectile)) {
 			g.OnKill(projectile, timeLeft);

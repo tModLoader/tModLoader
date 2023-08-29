@@ -1737,7 +1737,7 @@
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  			ai[1] = 0f;
-@@ -56584,15 +_,24 @@
+@@ -56584,15 +_,23 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					NewProjectile(GetProjectileSource_FromThis(), base.Center.X, base.Center.Y, x2, y8, 379, damage, knockBack, owner);
@@ -1747,7 +1747,6 @@
  		}
 +
 +		// Patch note: End of Projectile.Kill().
-+		ProjectileLoader.Kill_Obsolete(this, num);
 +		ProjectileLoader.OnKill(this, num);
  
  		active = false;
