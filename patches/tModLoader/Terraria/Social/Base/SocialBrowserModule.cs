@@ -124,15 +124,20 @@ public interface SocialBrowserModule
 	public static string GetBrowserVersionNumber(Version tmlVersion)
 	{
 		if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9
-			return "1.3";
+			return "1.3"; // Long Term Service Version 1.3
 
 		if (tmlVersion < new Version(2022, 10)) // Versions 0.12 to 2022.9
-			return "1.4";
+			return "1.4.3"; // Long Term Service version 1.4.3
 
+		// We treat tModLoader versions between 2022.10.0.0 and 2023.3.85.0 as 'dead' versions.
+		// Any mods built against these are not expected to actually work with tModLoader, and should be excluded in any ModBrowser or Mods Menu usage
+		// The core reasonsing is due to systemic changes that broke nearly all mods during the 1.4.4 port (Localization rework)
+		// It is recommended, given the timing of it, to ignore all tMods in publish folder with this.
+		// NOTE: This does cause this tag to be added on Steam in the 'unsorted tags' category, for better or worse - Solxan
 		if (tmlVersion < new Version(2023, 3, 85)) // Introduction of 1.4.4 tag and end of major 1.4.4 breaking changes
 			return "1.4.4-Transitive";
 
-		return "1.4.4";
+		return "1.4.4"; // Long Term Service Version 1.4.4 (Current)
 	}
 }
 
