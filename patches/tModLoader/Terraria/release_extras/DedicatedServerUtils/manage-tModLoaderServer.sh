@@ -18,9 +18,9 @@ function popd {
 # See: https://github.com/moby/moby/blob/v24.0.5/libnetwork/drivers/bridge/setup_bridgenetfiltering.go#L162-L165
 function is_in_docker {
 	if [[ -f /.dockerenv ]]; then
-		return 0
+		return true
 	fi
-	return 1
+	return false
 }
 
 # Returns true if an update is needed
@@ -30,10 +30,10 @@ function check_script_update {
 	} | grep "script_version=" | head -n1 | cut -d '"' -f2)
 
 	if [[ "$script_version" != "$(echo -e "$script_version\n$latest_script_version" | sort -rV | head -n1)" ]]; then
-		return 0
+		return true
 	fi
 
-	return 1
+	return false
 }
 
 function update_script {
