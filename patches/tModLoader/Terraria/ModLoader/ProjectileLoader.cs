@@ -364,6 +364,19 @@ public static class ProjectileLoader
 		return result;
 	}
 
+	[Obsolete]
+	private static HookList HookKill = AddHook<Action<Projectile, int>>(g => g.Kill);
+
+	[Obsolete("Renamed to OnKill")]
+	public static void Kill_Obsolete(Projectile projectile, int timeLeft)
+	{
+		projectile.ModProjectile?.Kill(timeLeft);
+
+		foreach (var g in HookKill.Enumerate(projectile)) {
+			g.Kill(projectile, timeLeft);
+		}
+	}
+
 	private static HookList HookOnKill = AddHook<Action<Projectile, int>>(g => g.OnKill);
 
 	public static void OnKill(Projectile projectile, int timeLeft)

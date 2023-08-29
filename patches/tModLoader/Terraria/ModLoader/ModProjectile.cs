@@ -202,10 +202,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	public virtual void OnKill(int timeLeft)
 	{
-		Kill(timeLeft);
 	}
 
-	[Obsolete("Renamed to OnKill")] // Remove in 2023_10
+	[Obsolete("Renamed to OnKill", error: true)] // Remove in 2023_10
 	public virtual void Kill(int timeLeft)
 	{
 	}
