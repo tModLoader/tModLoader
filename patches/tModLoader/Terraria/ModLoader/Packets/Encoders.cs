@@ -229,22 +229,25 @@ public readonly struct ListEncoder<TType, TEncoder> : INetEncoder<List<TType>> w
 #endregion
 
 #region Spans
-public readonly struct SpanEncoder<TType, TEncoder> where TType : struct where TEncoder : INetEncoder
+public readonly struct SpanEncoder<TType, TEncoder> : INetEncoder where TType : struct where TEncoder : INetEncoder
 {
 	public readonly void Write(ModPacket packet, Span<TType> value)
 	{
 		packet.Write7BitEncodedInt(value.Length);
 
 		var encoder = default(TEncoder);
-		foreach (var element in value) {
+		foreach (ref var element in value) {
 			encoder.Write(packet, element);
 		}
 	}
 
 	public readonly Span<TType> Read(BinaryReader reader) => default(ArrayEncoder<TType, TEncoder>).Read(reader);
-}
 
-public readonly struct ReadOnlySpanEncoder<TType, TEncoder> where TType : struct where TEncoder : INetEncoder
+	void INetEncoder.Write<T>(ModPacket packet, T value) => throw new NotImplementedException();
+
+	T INetEncoder.Read<T>(BinaryReader reader) => throw new NotImplementedException();
+}
+public readonly struct ReadOnlySpanEncoder<TType, TEncoder> : INetEncoder where TType : struct where TEncoder : INetEncoder
 {
 	public readonly void Write(ModPacket packet, ReadOnlySpan<TType> value)
 	{
@@ -257,6 +260,10 @@ public readonly struct ReadOnlySpanEncoder<TType, TEncoder> where TType : struct
 	}
 
 	public readonly ReadOnlySpan<TType> Read(BinaryReader reader) => default(ArrayEncoder<TType, TEncoder>).Read(reader);
+
+	void INetEncoder.Write<T>(ModPacket packet, T value) => throw new NotImplementedException();
+
+	T INetEncoder.Read<T>(BinaryReader reader) => throw new NotImplementedException();
 }
 #endregion
 
