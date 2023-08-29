@@ -183,6 +183,43 @@ ModConfigShowcaseDataTypes: {
 		// Label: PrefixDefinition Dictionary Example
 		// Tooltip: ""
 	}
+
+	// Headers.Numbers: Numbers Header
+
+	SomeSByte: {
+		// Label: Some S Byte
+		// Tooltip: ""
+	}
+
+	SomeShort: {
+		// Label: Some Short
+		// Tooltip: ""
+	}
+
+	SomeUShort: {
+		// Label: Some U Short
+		// Tooltip: ""
+	}
+
+	SomeLong: {
+		// Label: Some Long
+		// Tooltip: ""
+	}
+
+	SomeULong: {
+		// Label: Some U Long
+		// Tooltip: ""
+	}
+
+	SomeDouble: {
+		// Label: Some Double
+		// Tooltip: ""
+	}
+
+	SomeDecimal: {
+		// Label: Some Decimal
+		// Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDefaultValues: {

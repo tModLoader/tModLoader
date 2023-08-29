@@ -30,7 +30,7 @@ public partial class UICharacterSelect : UIState
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		var migratePlayerList = new NestedUIList();
+		var migratePlayerList = new UINestedList();
 		migratePlayerList.Width.Set(-22, 1f);
 		migratePlayerList.Left.Set(0, 0f);
 		migratePlayerList.Top.Set(30, 0);

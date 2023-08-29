@@ -25,7 +25,7 @@ using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
 using System.Reflection;
-using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.UI.Config;
 
 namespace Terraria.ModLoader;
 

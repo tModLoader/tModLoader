@@ -69,7 +69,7 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			if (UseInnerDimensions)
 				innerDimensionsRectangle.Inflate(0, 6);
 			else
-				innerDimensionsRectangle.Inflate(-4, 0);// Why not put -8 in inflate param here?
+				innerDimensionsRectangle.Inflate(-4, 0);// Why not put -8 in inflate parameter here?
 
 			var availableSpace = new Vector2(innerDimensionsRectangle.Width, innerDimensionsRectangle.Height);
 
@@ -101,6 +101,10 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 
 				float x = (innerDimensionsRectangle.Width - size.X) * TextOriginX;
 				float y = (-textStrings.Length * size.Y * TextOriginY) + i * size.Y + innerDimensionsRectangle.Height * TextOriginY;
+
+				if (UseInnerDimensions)
+					y -= 2;
+
 				drawOffsets[i] = new Vector2(x, y);
 			}
 			//this.MinWidth.Set(textSize.X + this.PaddingLeft + this.PaddingRight, 0f);

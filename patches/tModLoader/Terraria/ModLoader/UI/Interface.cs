@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
@@ -19,6 +18,7 @@ using Terraria.Social.Steam;
 using Terraria.UI;
 using System.Collections.Generic;
 using Microsoft.Build.Framework;
+using Terraria.ModLoader.UI.Config;
 
 namespace Terraria.ModLoader.UI;
 

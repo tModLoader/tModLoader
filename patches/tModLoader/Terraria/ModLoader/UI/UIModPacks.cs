@@ -17,6 +17,7 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Utilities;
 using Terraria.Audio;
+using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI;
 
@@ -229,13 +230,13 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 
 	public static void SaveSnapshot(string configsPath, string modsPath)
 	{
-		if (!Directory.Exists(Config.ConfigManager.ModConfigPath))
-			Directory.CreateDirectory(Config.ConfigManager.ModConfigPath);
+		if (!Directory.Exists(ConfigManager.ModConfigPath))
+			Directory.CreateDirectory(ConfigManager.ModConfigPath);
 
 		Directory.CreateDirectory(configsPath);
 		Directory.CreateDirectory(modsPath);
 
-		var configsAll = Directory.EnumerateFiles(Config.ConfigManager.ModConfigPath);
+		var configsAll = Directory.EnumerateFiles(ConfigManager.ModConfigPath);
 
 		// Export enabled.json to the modpack
 		File.Copy(Path.Combine(ModOrganizer.modPath, "enabled.json"), Path.Combine(modsPath, "enabled.json"), true);
@@ -279,7 +280,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 
 		//TODO: When implementing ModConfig as part of Mod Pack, update
 		string modsPath =  ModPackModsPath(modPackName); 
-		string configPath = Config.ConfigManager.ModConfigPath; //ModPackConfigPath(modPackName);
+		string configPath = ConfigManager.ModConfigPath; //ModPackConfigPath(modPackName);
 
 		// Deploy Mods, Configs to instance
 		FileUtilities.CopyFolder(modsPath, Path.Combine(instancePath, "SaveData", "Mods"));

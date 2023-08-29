@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using Terraria.ModLoader.Config;
 using ExampleMod.Common.Configs.CustomDataTypes;
-using ExampleMod.Common.Configs.CustomUI;
+//using ExampleMod.Common.Configs.CustomUI;
 
 // This file contains fake ModConfig class that showcase various attributes
 // that can be used to customize behavior config fields.
@@ -22,7 +22,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[CustomConfigUI(typeof(GradientElement))]
+		//[CustomConfigUI(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
 
 		/*

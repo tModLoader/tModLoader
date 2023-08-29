@@ -106,6 +106,7 @@
 		"ModConfigRevertChangesHover": "Revert changes to config",
 		"ModConfigRestoreDefaults": "Restore",
 		"ModConfigRestoreDefaultsHover": "Restore default config values",
+		"ModConfigUnsavedChanges": "[c/ff0000:Warning] - Unsaved changes will be discarded",
 		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		"ModConfigError": "Config Error",
 		"ModConfigChangesAccepted": "Config Changes Accepted",
@@ -124,6 +125,7 @@
 		"ModConfigScaleDown": "Scale Down",
 		"ModConfigTrue": "True",
 		"ModConfigFalse": "False",
+		"ModConfigNotHandled": "{0} - \"{1}\" is not handled yet",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",

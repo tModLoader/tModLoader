@@ -7,14 +7,14 @@ using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
 using Terraria.GameContent;
+using Terraria.ModLoader.Config;
 
-namespace Terraria.ModLoader.Config.UI;
-// TODO: Revert individual button.
+namespace Terraria.ModLoader.UI.Config;
+// TODO: main panel colours
 internal class UIModConfig : UIState
 {
 	// Used for animations in elements like NPCDefinition
@@ -110,7 +110,7 @@ internal class UIModConfig : UIState
 			Width = { Pixels = -20, Percent = 1f },
 			Height = { Pixels = 20 },
 		};
-		searchBar.OnTextChange += (_, _) => UpdateConfigList();
+		searchBar.OnTextChange += (_, _) => RefreshUI();
 		searchBar.OnRightClick += (_, _) => searchBar.SetText("");
 		searchBar.SetText("");
 		textBoxBackground.Append(searchBar);
@@ -144,16 +144,14 @@ internal class UIModConfig : UIState
 			UseAltColours = () => hasUnsavedChanges,
 			ClickSound = SoundID.MenuClose,
 			HoverSound = SoundID.MenuTick,
+			AltHoverText = Language.GetText("tModLoader.ModConfigUnsavedChanges"),
 		};
-		backButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement)
-		{
+		backButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 
-			if (Main.gameMenu)
-			{
+			if (Main.gameMenu) {
 				Main.menuMode = openedFromModder ? MenuID.Title : Interface.modConfigListID;
 			}
-			else
-			{
+			else {
 				if (openedFromModder)
 					IngameFancyUI.Close();
 				else
@@ -177,6 +175,7 @@ internal class UIModConfig : UIState
 		revertConfigButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigRevertChanges")) {
 			ClickSound = SoundID.MenuClose,
 			HoverSound = SoundID.MenuTick,
+			HoverText = Language.GetText("tModLoader.ModConfigRevertChangesHover"),
 		};
 		revertConfigButton.CopyStyle(backButton);
 		revertConfigButton.HAlign = 2 / 3f;
@@ -189,17 +188,17 @@ internal class UIModConfig : UIState
 		restoreDefaultsConfigButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigRestoreDefaults")) {
 			ClickSound = SoundID.MenuOpen,
 			HoverSound = SoundID.MenuTick,
-		};
+			HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsHover"),
+	};
 		restoreDefaultsConfigButton.CopyStyle(backButton);
 		restoreDefaultsConfigButton.HAlign = 3 / 3f;
 		restoreDefaultsConfigButton.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
 			ConfigManager.Reset(pendingConfig);// Reset to defaults
 			RefreshUI();
 		};
 		uIElement.Append(restoreDefaultsConfigButton);
 
-		notificationModal = new UIPanel {// TODO: fix vertical alignment
+		notificationModal = new UIPanel {
 			Width = { Pixels = 500 },
 			Height = { Pixels = 350 },
 			HAlign = 0.5f,
@@ -250,9 +249,7 @@ internal class UIModConfig : UIState
 
 		// Populating config elements now so they can save their state if the list is refreshed
 		configElements.Clear();
-		foreach (PropertyFieldWrapper memberInfo in ConfigManager.GetDisplayedVariables(pendingConfig)) {
-			ConfigElementRegistry.HandleElement(configElements, pendingConfig, memberInfo);
-		}
+		ConfigElementRegistry.HandleElements(configElements, pendingConfig);
 
 		RefreshUI();
 	}
@@ -281,28 +278,28 @@ internal class UIModConfig : UIState
 		UpdateConfigList();
 		CheckSaveButton();
 		UpdateSeparatePage();
+		Recalculate();
 	}
 
 	// Updates the main config list
-	public void UpdateConfigList()
+	private void UpdateConfigList()
 	{
 		configList.Clear();
 
 		foreach (var element in configElements) {
 			configList.Add(element);
-			element.RefreshUI();
 		}
 
 		Recalculate();
 	}
 
 	// Checks if the config has been changed and updates the save and revert buttons
-	public void CheckSaveButton()
+	private void CheckSaveButton()
 	{
 		// Compare JSON because otherwise reference types act weird
 		string pendingJson = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettings);
 		string existingJson = JsonConvert.SerializeObject(config, ConfigManager.serializerSettings);
-				hasUnsavedChanges = pendingJson != existingJson;
+		hasUnsavedChanges = pendingJson != existingJson;
 
 		saveConfigButton.Remove();
 		revertConfigButton.Remove();
@@ -314,7 +311,7 @@ internal class UIModConfig : UIState
 
 	// Updates the header panel, separate page back button, and separate page contents
 	// TODO
-	public void UpdateSeparatePage()
+	private void UpdateSeparatePage()
 	{
 		string configName = mod.DisplayName + " - " + config.DisplayName.Value;
 		string subPagesText = string.Join(" > ", subPages.Reverse());
@@ -379,12 +376,6 @@ internal class UIModConfig : UIState
 	public override void Draw(SpriteBatch spriteBatch)
 	{
 		base.Draw(spriteBatch);
-
-		if (revertConfigButton.IsMouseHovering)
-			Main.instance.MouseText(Language.GetTextValue("tModLoader.ModConfigRevertChangesHover"));
-
-		if (restoreDefaultsConfigButton.IsMouseHovering)
-			Main.instance.MouseText(Language.GetTextValue("tModLoader.ModConfigRestoreDefaultsHover"));
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.UI;
 
@@ -69,14 +70,13 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 		SetPanelColours();
 	}
 
-	public override void Update(GameTime gameTime)
+	public override void Draw(SpriteBatch spriteBatch)
 	{
-		base.Update(gameTime);
+		base.Draw(spriteBatch);
 
 		SetPanelColours();
 
-		if (IsMouseHovering)
-		{
+		if (IsMouseHovering) {
 			string text = UseAltColours() ? AltHoverText?.ToString() : HoverText?.ToString();
 
 			if (text is null)

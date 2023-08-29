@@ -29,7 +29,7 @@ partial class UIWorldSelect
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		var migrateWorldList = new NestedUIList();
+		var migrateWorldList = new UINestedList();
 		migrateWorldList.Width.Set(-22, 1f);
 		migrateWorldList.Left.Set(0, 0f);
 		migrateWorldList.Top.Set(30, 0);

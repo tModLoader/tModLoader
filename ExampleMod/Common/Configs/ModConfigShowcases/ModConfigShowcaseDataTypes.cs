@@ -18,14 +18,27 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		// Value Types
-		public bool SomeBool;
+		// This is all of numbers supported in C# apart from nint and nuint, which are platform specific.
+		[Header("Numbers")]
+		public byte SomeByte;
+		public sbyte SomeSByte;
+
+		public short SomeShort;
+		public ushort SomeUShort;
+
 		public int SomeInt;
+		public uint SomeUInt;
+
+		public long SomeLong;
+		public ulong SomeULong;
+
 		public float SomeFloat;
+		public double SomeDouble;
+		public decimal SomeDecimal;
+
+		public bool SomeBool;
 		public string SomeString;
 		public EquipType SomeEnum;
-		public byte SomeByte;
-		public uint SomeUInt;
 
 		// Structs - These require special code. We've implemented Color and Vector2 so far.
 		public Color SomeColor;

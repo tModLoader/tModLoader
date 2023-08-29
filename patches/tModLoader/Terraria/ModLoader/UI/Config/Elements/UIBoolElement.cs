@@ -6,29 +6,28 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 
-namespace Terraria.ModLoader.Config.UI.Elements;
+namespace Terraria.ModLoader.UI.Config.Elements;
 public class UIBoolElement : UIConfigElement<bool>
 {
-	readonly Asset<Texture2D> _texture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
+	private static readonly Asset<Texture2D> _toggleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
 
-	UIImageFramed _toggleImage;
-	UIText _toggleLabel;
+	private UIImageFramed _toggleImage;
+	private UIText _toggleLabel;
 
-	public override void CreateUI()
+	public override void OnInitialize()
 	{
 		OnLeftClick += (_, _) => {
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			Value = !Value;
-			RefreshUI();
 		};
 
-		_toggleImage = new UIImageFramed(_texture, GetTextureFrame()) {
+		_toggleImage = new UIImageFramed(_toggleTexture, GetTextureFrame()) {
 			HAlign = 1f,
 			VAlign = 0.5f,
 		};
 		Append(_toggleImage);
 
-		_toggleLabel = new UIText(GetToggleLabel()) {
+		_toggleLabel = new UIText(GetToggleLabel(), TextScale) {
 			Left = { Pixels = -20 },
 			HAlign = 1f,
 			VAlign = 0.5f,
@@ -36,8 +35,10 @@ public class UIBoolElement : UIConfigElement<bool>
 		Append(_toggleLabel);
 	}
 
-	public override void RefreshUI()
+	public override void Recalculate()
 	{
+		base.Recalculate();
+
 		_toggleImage.SetFrame(GetTextureFrame());
 		_toggleLabel.SetText(GetToggleLabel());
 	}
@@ -46,5 +47,5 @@ public class UIBoolElement : UIConfigElement<bool>
 		=> Value ? Language.GetText("tModLoader.ModConfigTrue") : Language.GetText("tModLoader.ModConfigFalse");
 
 	private Rectangle GetTextureFrame()
-		=> Value ? _texture.Frame(2, 1, 0, 0, sizeOffsetX: -1) : _texture.Frame(2, 1, 1, 0);
+		=> new(!Value ? (_toggleTexture.Width() - 2) / 2 + 2 : 0, 0, (_toggleTexture.Width() - 2) / 2, _toggleTexture.Height());// TODO: use non vanilla texture?
 }

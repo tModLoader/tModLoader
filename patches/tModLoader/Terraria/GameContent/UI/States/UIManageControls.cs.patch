@@ -1,11 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIManageControls.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIManageControls.cs
-@@ -11,12 +_,14 @@
+@@ -11,12 +_,13 @@
  using Terraria.ID;
  using Terraria.Initializers;
  using Terraria.Localization;
-+using Terraria.ModLoader;
-+using Terraria.ModLoader.Config.UI;
++using Terraria.ModLoader.UI;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
@@ -84,7 +83,7 @@
  
 +			// TML code.
 +			if (_ModNames.Contains(bindings[i])) {
-+				UIElement header = new ModLoader.Config.UI.Elements.UIHeaderElement { Header = bindings[i] };
++				UIElement header = new UIHeading(bindings[i]);
 +				header.Width.Set(0f, 1f);
 +				header.Height.Set(0f, 1f);
 +				header.SetSnapPoint("Wide", SnapPointIndex++);

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Config;
 using Terraria.UI;
 
-namespace Terraria.ModLoader.Config.UI;
+namespace Terraria.ModLoader.UI.Config;
 public abstract class UIConfigElement<T> : UIConfigElement
 {
 	public new T Value {
@@ -21,8 +19,38 @@ public abstract class UIConfigElement<T> : UIConfigElement
 	public override bool FitsType(Type type) => type == typeof(T);
 }
 
+// TODO: revert and restore buttons
+// TODO: text max width
 public abstract class UIConfigElement : UIElement
 {
+	#region Attributes
+	public LabelKeyAttribute LabelKeyAttribute { get; internal set; }
+	public TooltipKeyAttribute TooltipKeyAttribute { get; internal set; }
+	public BackgroundColorAttribute BackgroundColorAttribute { get; internal set; }
+
+	// TODO move the below block to the elements where it is actually used [[
+	public RangeAttribute RangeAttribute { get; internal set; }
+	public IncrementAttribute IncrementAttribute { get; internal set; }
+	public SliderAttribute SliderAttribute { get; internal set; }
+	public DrawTicksAttribute DrawTicksAttribute { get; internal set; }
+	public SliderColorAttribute SliderColorAttribute { get; internal set; }
+	public JsonDefaultValueAttribute JsonDefaultValueAttribute { get; internal set; }
+	// ]]
+
+	public bool NullAllowed;
+	public bool ShowReloadRequiredLabel;
+	public bool ShowReloadRequiredTooltip;
+	#endregion
+
+	#region Textures
+	public static Asset<Texture2D> PlayTexture { get; internal set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
+	public static Asset<Texture2D> DeleteTexture { get; internal set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
+	public static Asset<Texture2D> PlusTexture { get; internal set; } = UICommon.ButtonPlusTexture;
+	public static Asset<Texture2D> UpDownTexture { get; internal set; } = UICommon.ButtonUpDownTexture;
+	public static Asset<Texture2D> CollapsedTexture { get; internal set; } = UICommon.ButtonCollapsedTexture;
+	public static Asset<Texture2D> ExpandedTexture { get; internal set; } = UICommon.ButtonExpandedTexture;
+	#endregion
+
 	#region Core
 	/// <summary>
 	/// If true, then this <see cref="UIConfigElement"/> is a dummy instance used in loading.
@@ -48,72 +76,39 @@ public abstract class UIConfigElement : UIElement
 			else if (MemberInfo.CanWrite)
 				MemberInfo.SetValue(ParentObject, value);
 
-			ConfigManager.CheckSaveButton();
+			ConfigManager.RefreshConfigUI();
 		}
 	}
 	public object DefaultValue;
 	public bool ValueChanged => !ConfigManager.ObjectEquals(DefaultValue, Value);
 	public IList Collection => IndexInCollection != -1 ? MemberInfo.GetValue(ParentObject) as IList : null;
-	#endregion
+	public int IndexInUIList { get; internal set; }// See CompareTo for more info on why this exists
 
-	#region Attributes
-	public LabelKeyAttribute LabelKeyAttribute { get; internal set; }
-	public TooltipKeyAttribute TooltipKeyAttribute { get; internal set; }
-	public BackgroundColorAttribute BackgroundColorAttribute { get; internal set; }
+	// Aautomatically determining which config elements go on which fields
+	public abstract bool FitsType(Type type);
 
-	// TODO move the below block to the elements where it is actually used
-	public RangeAttribute RangeAttribute { get; internal set; }
-	public IncrementAttribute IncrementAttribute { get; internal set; }
-	public SliderAttribute SliderAttribute { get; internal set; }
-	public DrawTicksAttribute DrawTicksAttribute { get; internal set; }
-	public SliderColorAttribute SliderColorAttribute { get; internal set; }
-	public JsonDefaultValueAttribute JsonDefaultValueAttribute { get; internal set; }
-
-	public bool NullAllowed;
-	public bool ShowReloadRequiredLabel;
-	public bool ShowReloadRequiredTooltip;
-	#endregion
-
-	#region Textures
-	public static Asset<Texture2D> PlayTexture { get; internal set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
-	public static Asset<Texture2D> DeleteTexture { get; internal set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
-	public static Asset<Texture2D> PlusTexture { get; internal set; } = UICommon.ButtonPlusTexture;
-	public static Asset<Texture2D> UpDownTexture { get; internal set; } = UICommon.ButtonUpDownTexture;
-	public static Asset<Texture2D> CollapsedTexture { get; internal set; } = UICommon.ButtonCollapsedTexture;
-	public static Asset<Texture2D> ExpandedTexture { get; internal set; } = UICommon.ButtonExpandedTexture;
-	#endregion
-
-	#region UI
-	public UIText Label;
-	public Color BackgroundColor {
-		get {
-			var col = BackgroundColorAttribute?.Color ?? UICommon.DefaultUIBlue;
-
-			if (!MemberInfo?.CanWrite ?? false)
-				col = Color.Gray;
-
-			if (!IsMouseHovering)
-				col *= 0.8f;
-
-			return col;
-		}
+	// Basically, config elements can have a weird order in a uilist because of the CompareTo of default ui elements
+	// To counter this, we store the index in the ui list when it is added, so we can sort them properly
+	public override int CompareTo(object obj)
+	{
+		if (obj is UIConfigElement element)
+			return IndexInUIList.CompareTo(element.IndexInUIList);
+		return base.CompareTo(obj);
 	}
-	public bool DrawPanel = true;
-	public bool DrawLabel = true;
-	public bool DrawTooltip = true;
-	#endregion
 
-	internal void Bind(object parent, PropertyFieldWrapper memberInfo, int indexInCollection = -1)
+	// Called to setup the element
+	internal UIConfigElement Bind(object parent, PropertyFieldWrapper memberInfo, int indexInUIList, int indexInCollection = -1)
 	{
 		// Helper method to reduced repeated code
 		T GetAttribute<T>() where T : Attribute
 			=> ConfigManager.GetCustomAttribute<T>(MemberInfo);
 
 		if (IsDummy)
-			return;
+			return this;
 
 		ParentObject = parent;
 		MemberInfo = memberInfo;
+		IndexInUIList = indexInUIList;
 		IndexInCollection = indexInCollection;
 
 		LabelKeyAttribute = GetAttribute<LabelKeyAttribute>();
@@ -136,18 +131,52 @@ public abstract class UIConfigElement : UIElement
 			DefaultValue = MemberInfo.GetValue(loadTimeConfig);
 		}
 
-		// UI
-		this.WithPadding(4);
+		CreateUI();
+		Activate(); // Activate isn't normally called during append but we need to initialize ui
+
+		return this;
+	}
+	#endregion
+
+	#region UI
+	public UIText Label;
+	public Color BackgroundColor {
+		get {
+			var col = BackgroundColorAttribute?.Color ?? UICommon.DefaultUIBlue;
+
+			if (!MemberInfo?.CanWrite ?? false)
+				col = Color.Gray;
+
+			if (!IsMouseHovering)
+				col *= 0.8f;
+
+			return col;
+		}
+	}
+
+	public float TextScale = 0.8f;
+	public bool DrawPanel = true;
+	public bool DrawLabel = true;
+	public bool DrawTooltip = true;
+
+	private void CreateUI()
+	{
 		Width.Set(0, 1f);
 		Height.Set(30, 0f);
+		SetPadding(4);
+		PaddingLeft = 8;
 
-		Label = new UIText(DrawLabel ? GetLabel() : "") {
+		Label = new UIText(DrawLabel ? GetLabel() : "", TextScale) {
 			HAlign = 0f,
 			VAlign = 0.5f,
 		};
 		Append(Label);
+	}
 
-		CreateUI();
+	public override void Recalculate()
+	{
+		base.Recalculate();
+		Label.SetText(DrawLabel ? GetLabel() : "");
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -155,41 +184,16 @@ public abstract class UIConfigElement : UIElement
 		if (DrawPanel)
 			DrawBackgroundPanel(spriteBatch);
 
-		Label.SetText(DrawLabel ? GetLabel() : "");
-
 		if (IsMouseHovering && DrawTooltip)
 			UICommon.TooltipMouseText(GetTooltip());
 	}
 
 	private void DrawBackgroundPanel(SpriteBatch sb)
 	{
+		// TODO: finish panel drawing
 		var dimensions = GetDimensions();
-		var texture = TextureAssets.SettingsPanel;
-		var color = BackgroundColor;
-
-		sb.Draw(texture.Value, dimensions.ToRectangle(), color);
-		// TODO
-		/*
-		// left edge
-		sb.Draw(texture, position, new Rectangle(0, 0, 2, texture.Height), color);
-		sb.Draw(texture, new Vector2(position.X + 2, position.Y), new Rectangle(2, 0, texture.Width - 4, texture.Height), color, 0f, Vector2.Zero, new Vector2((width - 4) / (texture.Width - 4), (height - 4) / (texture.Height - 4)), SpriteEffects.None, 0f);
-		sb.Draw(texture, new Vector2(position.X + width - 2, position.Y), new Rectangle(texture.Width - 2, 0, 2, texture.Height), color);
-
-		// width and height include border
-		sb.Draw(texture, position + new Vector2(0, 2), new Rectangle(0, 2, 1, 1), color, 0, Vector2.Zero, new Vector2(2, height - 4), SpriteEffects.None, 0f);
-		sb.Draw(texture, position + new Vector2(width - 2, 2), new Rectangle(0, 2, 1, 1), color, 0, Vector2.Zero, new Vector2(2, height - 4), SpriteEffects.None, 0f);
-		sb.Draw(texture, position + new Vector2(2, 0), new Rectangle(2, 0, 1, 1), color, 0, Vector2.Zero, new Vector2(width - 4, 2), SpriteEffects.None, 0f);
-		sb.Draw(texture, position + new Vector2(2, height - 2), new Rectangle(2, 0, 1, 1), color, 0, Vector2.Zero, new Vector2(width - 4, 2), SpriteEffects.None, 0f);
-
-		sb.Draw(texture, position + new Vector2(2, 2), new Rectangle(2, 2, 1, 1), color, 0, Vector2.Zero, new Vector2(width - 4, (height - 4) / 2), SpriteEffects.None, 0f);
-		sb.Draw(texture, position + new Vector2(2, 2 + ((height - 4) / 2)), new Rectangle(2, 16, 1, 1), color, 0, Vector2.Zero, new Vector2(width - 4, (height - 4) / 2), SpriteEffects.None, 0f);*/
+		Utils.DrawSettingsPanel(sb, dimensions.Position(), dimensions.Width, BackgroundColor);
 	}
-
-	public abstract bool FitsType(Type type);
-
-	public abstract void CreateUI();
-
-	public abstract void RefreshUI();
 
 	public virtual string GetLabel()
 	{
@@ -211,6 +215,9 @@ public abstract class UIConfigElement : UIElement
 			tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
 		}
 
+		// TODO: default value tooltip?
+
 		return tooltip;
 	}
+	#endregion
 }

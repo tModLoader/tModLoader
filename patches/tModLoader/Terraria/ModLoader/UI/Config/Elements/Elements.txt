@@ -1,0 +1,45 @@
+﻿Numeric - Text Input UI, Slider UI
+	✅ byte
+	✅ sbyte
+	✅ short
+	✅ ushort
+	✅ int
+	✅ uint
+	✅ long
+	✅ ulong
+	✅ float
+	✅ double
+	✅ decimal
+
+Collections - Collection UI
+	Array
+	List
+	Dictionary
+	HashSet
+
+String - Text Input UI
+	string
+	char
+
+Positional - Text Input UI, Slider UI, Position UI
+	Vector2
+	Vector3
+	Vector4
+	Point
+	Point16
+
+Entity Definitions - Entity Definition UI
+	ItemDefinition
+	NPCDefinition
+	ProjectileDefinition
+	PrefixDefinition
+	
+Miscellaneous
+	✅ Header
+	✅ Text
+	✅ Bool
+	Enum
+	Object
+	Struct
+	Rectangle
+	Color

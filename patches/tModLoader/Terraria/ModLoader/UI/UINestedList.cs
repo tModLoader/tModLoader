@@ -2,14 +2,12 @@
 using Terraria.GameInput;
 using Terraria.UI;
 
-internal class NestedUIList : UIList
+namespace Terraria.ModLoader.UI;
+/// <summary>
+/// A <see cref="UIList"/> that can be inside another <see cref="UIList"/>.
+/// </summary>
+public class UINestedList : UIList
 {
-	/*
-	public NestedUIList() {
-		OverflowHidden = false;
-	}
-	*/
-
 	public override void MouseOver(UIMouseEvent evt)
 	{
 		base.MouseOver(evt);

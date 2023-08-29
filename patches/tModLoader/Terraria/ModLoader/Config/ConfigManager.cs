@@ -10,11 +10,10 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
-using Terraria.UI;
+using Terraria.ModLoader.UI.Config;
 
 namespace Terraria.ModLoader.Config;
 #nullable enable
@@ -294,7 +293,7 @@ public static class ConfigManager
 				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
-				Interface.modConfig.CheckSaveButton();
+				RefreshConfigUI();
 				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
@@ -424,9 +423,11 @@ public static class ConfigManager
 	}
 
 	// Public API for modders
-	public static void CheckSaveButton()
+	// TODO: just make modConfig public and include instance?
+	// TODO: make apis for modal popup?
+	public static void RefreshConfigUI()
 	{
-		Interface.modConfig.CheckSaveButton();
+		Interface.modConfig.RefreshUI();
 	}
 
 	// TODO: better home?
@@ -500,6 +501,8 @@ public static class ConfigManager
 		return configKeyAttribute;
 	}
 
+	// TODO: at some point move all localization into another file and use partial classes
+	// TODO: pass localization text around more so hot reloading localization doesn't require reopening the ui
 	// Used to determine which key to register, based only on field/property, not class, not necessarily which key to use in UI.
 	private static string GetConfigKey<T>(MemberInfo memberInfo, string dataName) where T : ConfigKeyAttribute
 	{
