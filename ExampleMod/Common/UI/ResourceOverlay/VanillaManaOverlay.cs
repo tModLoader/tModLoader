@@ -74,7 +74,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// the position should be modified to compensate for the sprite size difference
 			Vector2 positionOffset;
 
-			if (context.resourceNumber == context.snapshot.AmountOfManaStars) {
+			if (context.resourceNumber == context.snapshot.AmountOfManaStars - 1) {
 				// Final panel in the column.  Determine whether it has panels above it
 				if (CompareAssets(context.texture, fancyFolder + "Star_Single")) {
 					// First and only panel
