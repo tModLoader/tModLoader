@@ -944,7 +944,7 @@
  	}
  
  	public void SetWorldName(string world)
-@@ -4110,12 +_,42 @@
+@@ -4110,20 +_,52 @@
  		autoPass = true;
  	}
  
@@ -988,6 +988,16 @@
  	}
  
  	public void AutoHost()
+ 	{
++		ModLoader.ModLoader.OnSuccessfulLoad += () => { // Fix #3742
+ 		menuMultiplayer = true;
+ 		menuServer = true;
+ 		ClearPendingPlayerSelectCallbacks();
+ 		menuMode = 1;
++		};
+ 	}
+ 
+ 	public void loadLib(string path)
 @@ -4148,7 +_,7 @@
  	{
  		NeverSleep();
