@@ -2822,7 +2822,7 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,43 @@
+@@ -16536,36 +_,51 @@
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
  				}
  
@@ -2836,8 +2836,16 @@
  				numLines++;
  			}
  
++			/* TML: Show mana cost based on Player.GetManaCost method and show UseMana tooltip on Space Gun with Meteor Armor
  			if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
++				toolTipNames[numLines] = "UseMana";
++				numLines++;
++			}
++			*/
++
++			if (item.mana > 0) {
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", player[myPlayer].GetManaCost(item));
 +				toolTipNames[numLines] = "UseMana";
  				numLines++;
  			}
