@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -199,6 +200,11 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (Projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
 	/// </summary>
+	public virtual void OnKill(int timeLeft)
+	{
+	}
+
+	[Obsolete("Renamed to OnKill", error: true)] // Remove in 2023_10
 	public virtual void Kill(int timeLeft)
 	{
 	}
