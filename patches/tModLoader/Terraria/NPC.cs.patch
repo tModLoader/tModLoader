@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.ComponentModel;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
 @@ -21,12 +_,13 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
@@ -9,8 +16,9 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
- 
+-
 -public class NPC : Entity
++[EditorBrowsable(EditorBrowsableState.Never)]
 +public partial class NPC : Entity
  {
  	private const int NPC_TARGETS_START = 300;

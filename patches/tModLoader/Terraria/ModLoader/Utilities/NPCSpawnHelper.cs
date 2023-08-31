@@ -133,9 +133,8 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 	{
 		public static readonly SubSpawnCondition RockGolemCondition = new((info) => NPC.SpawnNPC_CheckToSpawnRockGolem(info.SpawnTileX, info.SpawnTileY, info.Player.whoAmI, info.ProperGroundTileType));
 		public static readonly SubSpawnCondition TimArmourCheck = new((info) => (info.Player.armor[1].type == 4256 || (info.Player.armor[1].type >= 1282 && info.Player.armor[1].type <= 1287)) && info.Player.armor[0].type != 238);
-		public static readonly SubSpawnCondition SpiderCaveCheck = new((info) => SpawnCondition.GetTile(info).wall == WallID.SpiderUnsafe || info.SpiderCave);
 
-		public static readonly SubSpawnCondition DesertCaveConditions = new((info) => (NPC.SpawnTileOrAboveHasAnyWallInSet(info.SpawnTileX, info.SpawnTileY, WallID.Sets.AllowsUndergroundDesertEnemiesToSpawn) || info.DesertCave));
+		public static readonly SubSpawnCondition DesertCaveWallCheck = new((info) => NPC.SpawnTileOrAboveHasAnyWallInSet(info.SpawnTileX, info.SpawnTileY, WallID.Sets.AllowsUndergroundDesertEnemiesToSpawn));
 		public static readonly SubSpawnCondition CanGetBartender = new((info) => !NPC.savedBartender && DD2Event.ReadyToFindBartender);
 		public static readonly ConditionWrapper BoundNPCBaseCondition = !InfoWater & InfoCaverns & CommonAboveHellHeightCheck;
 
@@ -233,11 +232,13 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 		public static readonly SubSpawnCondition InfoSky = new((info) => info.Sky);
 		public static readonly SubSpawnCondition InfoCaverns = new((info) => info.Caverns);
 		public static readonly SubSpawnCondition InfoLihzahrd = new((info) => info.Lihzahrd);
+		public static readonly SubSpawnCondition InfoSpider = new((info) => info.SpiderCave);
+		public static readonly SubSpawnCondition InfoDesertCave = new((info) => info.DesertCave);
 
 		public static readonly SubSpawnCondition InfoSafeRange = new((info) => info.SafeRangeX);
 		public static readonly SubSpawnCondition InfoPlayerSafe = new((info) => info.PlayerSafe);
 
-		public static readonly SubSpawnCondition CheckUnderground = new((info) => WorldGen.checkUnderground(info.SpawnTileX, info.SpawnTileY));
+		public static readonly SubSpawnCondition WorldGenCheckUnderground = new((info) => WorldGen.checkUnderground(info.SpawnTileX, info.SpawnTileY));
 
 		public static SubSpawnCondition CloudAlphaAbove(float amount)
 			=> new((info) => Main.cloudAlpha > amount) { MetaData = nameof(CloudAlphaAbove) + ":" + amount };
@@ -328,7 +329,7 @@ public readonly record struct ConditionWrapper(CompareType CurrentCompare, IEnum
 		//if (compareType == CompareType.Xor)
 		//	return new ConditionWrapper(compareType, new ISubSpawnCondition[] { wrapper1, wrapper2 });
 		if ((wrapper1.CurrentCompare == wrapper2.CurrentCompare && wrapper2.CurrentCompare == compareType)
-			|| (wrapper1.CurrentCompare == compareType && wrapper2Count == 1) // If one has one element and the other matches the current comparetype
+			|| (wrapper1.CurrentCompare == compareType && wrapper2Count == 1) // If one has one element and the other matches the current CompareType
 			|| (wrapper2.CurrentCompare == compareType && wrapper1Count == 1)) {
 			return new ConditionWrapper(compareType, wrapper1.SpecificConditions.Concat(wrapper2.SpecificConditions));
 		}
@@ -342,14 +343,19 @@ public readonly record struct ConditionWrapper(CompareType CurrentCompare, IEnum
 		});
 }
 
-public readonly record struct EntrySumChance(IList<ISpawnTreeItem> Items)
+public class MultiEntrySum : List<ISpawnTreeItem>
 {
-	public EntrySumChance(params ISpawnTreeItem[] items) : this(items as IList<ISpawnTreeItem>)
-	{ }
-	public readonly float Chance => Items.Sum((item) => item.Chance);
+	public MultiEntrySum(params ISpawnTreeItem[] items)
+	{
+		AddRange(items);
+	}
+	public float Chance => this.Sum((item) => item.Chance);
 
-	public static EntrySumChance operator +(EntrySumChance parent, ISpawnTreeItem child)
-		=> parent with { Items = parent.Items.Append(child).ToList() };
+	internal ISpawnTreeItem AddAndReturn(ISpawnTreeItem item)
+	{
+		Add(item);
+		return item;
+	}
 }
 
 public interface ISpawnTreeItem
@@ -501,20 +507,20 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition SpiderCave; //9
 	public static readonly WeightedSpawnCondition DesertCave; //10
 	public static readonly WeightedSpawnCondition HardmodeJungleWater; //11
-	public static readonly WeightedSpawnCondition HardmodeCrimsonWater; //12, 13
+	public static readonly MultiEntrySum HardmodeCrimsonWater; //12, 13
 	public static readonly ConditionedSpawnTreeParent Ocean; //14
 	public static readonly WeightedSpawnCondition OceanAngler; //14, 15
-	public static readonly EntrySumChance OceanCritter;
-	public static readonly EntrySumChance OceanMonster;
+	public static readonly MultiEntrySum OceanCritter;
+	public static readonly MultiEntrySum OceanMonster;
 	public static readonly WeightedSpawnCondition BeachAngler; //16
-	public static readonly EntrySumChance Angler = new(BeachAngler, OceanAngler);
+	public static readonly MultiEntrySum Angler = new(BeachAngler, OceanAngler);
 	public static readonly ConditionedSpawnTreeParent CaveOrJungleWater;
 	public static readonly ConditionedSpawnTreeParent JungleWater;
 	public static readonly WeightedSpawnCondition JungleWaterSurfaceCritter;
 	public static readonly WeightedSpawnCondition JunglePiranha;
 	public static readonly WeightedSpawnCondition CaveWater;
 	public static WeightedSpawnCondition CavePiranha => CaveWater;
-	public static readonly EntrySumChance Piranha = new(CavePiranha, JunglePiranha);
+	public static readonly MultiEntrySum Piranha = new(CavePiranha, JunglePiranha);
 	public static readonly WeightedSpawnCondition CaveJellyfish;
 	public static readonly ConditionedSpawnTreeParent WaterCritter;
 	public static readonly WeightedSpawnCondition CorruptWaterCritter;
@@ -525,7 +531,7 @@ public static class SpawnCondition
 	public static readonly CalculatedSpawnCondition BoundGoblin;
 	public static readonly CalculatedSpawnCondition BoundWizard;
 	public static readonly CalculatedSpawnCondition BoundOldShakingChest;
-	public static readonly EntrySumChance BoundCaveNPC = new(BoundGoblin, BoundWizard, BoundOldShakingChest);
+	public static readonly MultiEntrySum BoundCaveNPC = new(BoundGoblin, BoundWizard, BoundOldShakingChest);
 	public static readonly ConditionedSpawnTreeParent TownCritter;
 	public static readonly ConditionedSpawnTreeParent TownGraveyardCritter;
 	public static readonly WeightedSpawnCondition TownGraveyardWaterCritter; // No vanilla relation
@@ -647,8 +653,8 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition HalloweenSkeletons;
 	public static readonly WeightedSpawnCondition ExpertSkeletons;
 	public static readonly WeightedSpawnCondition NormalSkeletons;
-	public static readonly EntrySumChance AllSkeletons = new(NormalSkeletons, ExpertSkeletons, HalloweenSkeletons, SporeSkeletons);
-	public static readonly EntrySumChance Flinx = new(Flinx1, Flinx2, Flinx3, Flinx4);
+	public static readonly MultiEntrySum AllSkeletons = new(NormalSkeletons, ExpertSkeletons, HalloweenSkeletons, SporeSkeletons);
+	public static readonly MultiEntrySum Flinx = new(Flinx1, Flinx2, Flinx3, Flinx4);
 
 	//public static readonly ConditionedSpawnTreeParent Gnome;
 	public static readonly WeightedSpawnCondition Ghost;
@@ -656,16 +662,16 @@ public static class SpawnCondition
 	static SpawnCondition()
 	{
 		// Pillars
-		baseCondition += NebulaTower = new(InTowerNebula);
-		baseCondition += VortexTower = new(InTowerVortex);
-		baseCondition += StardustTower = new(InTowerStardust);
-		baseCondition += SolarTower = new(InTowerSolar);
+		baseCondition += NebulaTower = new(InTowerNebula); //1
+		baseCondition += VortexTower = new(InTowerVortex); //2
+		baseCondition += StardustTower = new(InTowerStardust); //3
+		baseCondition += SolarTower = new(InTowerSolar); //4
 
 		//Sky
-		baseCondition += Sky = new(InfoSky);
+		baseCondition += Sky = new(InfoSky); //5 (spawnInfo.Sky = flag3)
 
 		//Invasions
-		baseCondition += Invasion = new(InfoInvasion, new ISpawnTreeItem[] {
+		baseCondition += Invasion = new(InfoInvasion, new ISpawnTreeItem[] { // 6 (spawnInfo.Invasion = flag6)
 			GoblinArmy = new(GoblinArmyCondition),
 			FrostLegion = new(FrostLegionCondition),
 			Pirates = new(PiratesCondition),
@@ -673,35 +679,42 @@ public static class SpawnCondition
 		});
 
 		// Living Tree (Critters + Gnome)
-		baseCondition += LivingTree = new(InfoWallTile(WallID.LivingWoodUnsafe) & RemixWorld);
+		baseCondition += LivingTree = new(InfoWallTile(WallID.LivingWoodUnsafe) & RemixWorld); // 7 (num50 == 244 && !Main.remixWorld)
 
 		//Bartender
-		baseCondition += Bartender = new(CanGetBartender & SpawnCap(NPCID.BartenderUnconscious, 1) & !InfoWater, 1f / 80f);
+		baseCondition += Bartender = new(CanGetBartender & SpawnCap(NPCID.BartenderUnconscious, 1) & !InfoWater, 1f / 80f); // 8 (!savedBartender && DD2Event.ReadyToFindBartender && !AnyNPCs(579) && Main.rand.Next(80) == 0 && !flag7)
 
 		// Caves
-		baseCondition += SpiderCave = new(SpiderCaveCheck); //TODO: split to parts
-		baseCondition += DesertCave = new(DesertCaveConditions & CheckUnderground);
+		baseCondition += SpiderCave = new(WallTile(WallID.SpiderUnsafe) | InfoSpider); // 9 (Main.tile[num, num2].wall == 62 || flag11)
+		baseCondition += DesertCave = new((DesertCaveWallCheck | InfoDesertCave) & WorldGenCheckUnderground); // 10 ((SpawnTileOrAboveHasAnyWallInSet(num, num2, WallID.Sets.AllowsUndergroundDesertEnemiesToSpawn) || flag13) && WorldGen.checkUnderground(num, num2))
 
 		//Hardmode Water
-		baseCondition += HardmodeJungleWater = new(HardMode & InfoWater & InJungle, 2f / 3f);
-		baseCondition += HardmodeCrimsonWater = new(HardMode & InfoWater & InCrimson, 8f / 9f);
+		baseCondition += HardmodeJungleWater = new(HardMode & InfoWater & InJungle, 2f / 3f); // 11 (Main.hardMode && flag7 && Main.player[k].ZoneJungle && Main.rand.Next(3) != 0)
+
+		// Seperated in case I'd like to go deeper here
+		HardmodeCrimsonWater = new(); // 12 (Main.hardMode && flag7 && Main.player[k].ZoneCrimson && Main.rand.Next(3) != 0)
+									  // 13 (Main.hardMode && flag7 && Main.player[k].ZoneCrimson && Main.rand.Next(3) != 0)
+		baseCondition += HardmodeCrimsonWater.AddAndReturn(new WeightedSpawnCondition(HardMode & InfoWater & InCrimson, 2f/3f));
+		baseCondition += HardmodeCrimsonWater.AddAndReturn(new WeightedSpawnCondition(HardMode & InfoWater & InCrimson, 2f/3f));
 
 		//Ocean
 		ConditionedSpawnTreeParent oceanCreature;
-		OceanCritter = new(null, null, null);
-		OceanMonster = new(null, null);
+		OceanCritter = new();
+		OceanMonster = new();
 
+		// 14 ((!flag12 || (!savedAngler && !AnyNPCs(376))) && flag7 && flag22)
 		baseCondition += Ocean = new((!InfoPlayerInTown | AnglerNotSavedOrSpawned) & InfoWater & InfoOcean, new ISpawnTreeItem[] {
 			OceanAngler = new(AnglerNotSavedOrSpawned & OnWaterSurface & AnglerOceanSurface),
 			oceanCreature = new(!InfoSafeRange, new ISpawnTreeItem[] {
-				OceanCritter.Items[0] = new WeightedSpawnCondition(OnWaterSurfaceAvoidHousing, 0.01f),
-				OceanCritter.Items[1] = new WeightedSpawnCondition(0.1f),
-				OceanMonster.Items[0] = new WeightedSpawnCondition(1f / 40f), // Sea Snail
-				OceanCritter.Items[2] = new WeightedSpawnCondition(1f / 18f), // Squid
-				OceanMonster.Items[1] = new WeightedSpawnCondition()
+				OceanCritter.AddAndReturn(new WeightedSpawnCondition(OnWaterSurfaceAvoidHousing, 0.01f)),
+				OceanCritter.AddAndReturn(new WeightedSpawnCondition(0.1f)),
+				OceanMonster.AddAndReturn(new WeightedSpawnCondition(1f / 40f)), // Sea Snail
+				OceanCritter.AddAndReturn(new WeightedSpawnCondition(1f / 18f)), // Squid
+				OceanMonster.AddAndReturn(new WeightedSpawnCondition())
 			})
 		});
 
+		// 15 (!flag7 && !savedAngler && !AnyNPCs(376) && (num < WorldGen.beachDistance || num > Main.maxTilesX - WorldGen.beachDistance) && Main.tileSand[num49] && ((double)num2 < Main.worldSurface || Main.remixWorld))
 		baseCondition += BeachAngler = new(!InfoWater & AnglerNotSavedOrSpawned & InBeachDistance & ProperGroundTileSand & (AboveWorldSurface | RemixWorld));
 
 		//Misc Water
@@ -1019,4 +1032,4 @@ public static class SpawnCondition
 
 			return 1f / denominator;
 		};
-} // TODO: flag 22, 20, 21, 22, 23 +, check flag 17 for all items, check windy day spawns, finish gem critter calculator, add rollluck items
+} // TODO: flag 22, 20, 21, 22, 23 +, check flag 17 for all items, check windy day spawns, finish gem critter calculator, add roll luck items
