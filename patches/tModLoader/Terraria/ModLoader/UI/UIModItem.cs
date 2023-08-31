@@ -69,19 +69,17 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
+		var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
+		_modIconAdjust += 85;
+
 		if (_mod.modFile.HasFile("icon.png")) {
 			try {
 				using (_mod.modFile.Open())
 				using (var s = _mod.modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png").Value;
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
 
-					if (iconTexture.Width == 80 && iconTexture.Height == 80) {
-						_modIcon = new UIImage(iconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						Append(_modIcon);
-						_modIconAdjust += 85;
+					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
+						modIcon = iconTexture;
 					}
 				}
 			}
@@ -89,6 +87,15 @@ internal class UIModItem : UIPanel
 				Logging.tML.Error("Unknown error", e);
 			}
 		}
+
+		_modIcon = new UIImage(modIcon) {
+			Left = { Percent = 0f },
+			Top = { Percent = 0f },
+			Width = { Pixels = 80 },
+			Height = { Pixels = 80 },
+			ScaleToFit = true,
+		};
+		Append(_modIcon);
 
 		_modName = new UIText(text) {
 			Left = new StyleDimension(_modIconAdjust, 0f),
@@ -104,7 +111,8 @@ internal class UIModItem : UIPanel
 
 		// Don't show the Enable/Disable button if there is no loadable version
 		string updateVersion = null;
-		string updateURL = "https://github.com/tModLoader/tModLoader/releases/latest";
+		string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+		Color updateColor = Color.Orange;
 
 		// Detect if it's for a preview version ahead of our time
 		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
@@ -115,13 +123,15 @@ internal class UIModItem : UIPanel
 		}
 
 		// Detect if it's for a different browser version entirely
-		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion))
+		if (!ModOrganizer.CheckIfPublishedForThisBrowserVersion(_mod, out var modBrowserVersion)) {
 			updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
+			updateColor = Color.Yellow;
+		}
 
 		// Hide the Enabled button if it's not for this built version
 		if (updateVersion != null) {
-			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
-			tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
+			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(updateColor, updateColor * 0.7f);
+			tMLUpdateRequired.BackgroundColor = updateColor * 0.7f;
 			tMLUpdateRequired.Top.Pixels = 40;
 			tMLUpdateRequired.Width.Pixels = 280;
 			tMLUpdateRequired.Height.Pixels = 36;
@@ -347,7 +357,7 @@ internal class UIModItem : UIPanel
 				_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
 		}
 		else if (tMLUpdateRequired?.IsMouseHovering == true) {
-			_tooltip = Language.GetTextValue("tModLoader.MBClickToUpdate");
+			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
 	}
 
@@ -552,8 +562,6 @@ internal class UIModItem : UIPanel
 	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)
 	{
 		ModOrganizer.DeleteMod(_mod);
-
-		UIModBrowser.CleanupDeletedItem(ModName);
 
 		CloseDialog(evt, listeningElement);
 		Interface.modsMenu.Activate();
