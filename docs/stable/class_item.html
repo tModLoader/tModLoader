@@ -702,7 +702,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>defense</b></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>dye</b></td></tr>
 <tr class="memdesc:ab6e880491db6e30a6dce29b4589bf65a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot.<br  />
  If greater than 0, then this item can be equipped into dye slots.<br  />
- Defaults to -1.<br  />
+ Defaults to 0.<br  />
  <br /></td></tr>
 <tr class="separator:ab6e880491db6e30a6dce29b4589bf65a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9726ea3c9d55ca764de569027578479"><td class="memItemLeft" align="right" valign="top"><a id="ab9726ea3c9d55ca764de569027578479" name="ab9726ea3c9d55ca764de569027578479"></a>
@@ -755,6 +755,10 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>glowMask</b></td></t
 <tr class="separator:aab4098bfcd01cf2bbf9ad0201984c77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a270b7ba785b394f34b82448bc62bb5cc"><td class="memItemLeft" align="right" valign="top"><a id="a270b7ba785b394f34b82448bc62bb5cc" name="a270b7ba785b394f34b82448bc62bb5cc"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>hairDye</b> = -1</td></tr>
+<tr class="memdesc:a270b7ba785b394f34b82448bc62bb5cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical ID of the hair shader in GameShaders.Hair this item will apply to the player when used.<br  />
+ If greater than -1, then this item is a hair dye.<br  />
+ Defaults to -1.<br  />
+ <br /></td></tr>
 <tr class="separator:a270b7ba785b394f34b82448bc62bb5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbd27cc5151658d1851d955f2d8a8a73"><td class="memItemLeft" align="right" valign="top"><a id="acbd27cc5151658d1851d955f2d8a8a73" name="acbd27cc5151658d1851d955f2d8a8a73"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>hammer</b></td></tr>
@@ -918,7 +922,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ownTime</b></td></tr>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>paint</b></td></tr>
 <tr class="memdesc:a46323b4a0918abe281a296534a19f37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical ID of the paint applied by this item when used with a paint brush or paint roller.<br  />
  For conversion into a shader index, see Main.ConvertPaintIdToTileShaderIndex.<br  />
- For more details regarding paint, see Tile.TileColor and Tile.WallColor.<br  />
+ For more details regarding paint, see <a class="el" href="struct_tile.html#a915218932b09dd718e1fd0b446e130cd" title="The PaintID the tile at this position is painted with. Is PaintID.None if not painted....">Tile.TileColor</a> and <a class="el" href="struct_tile.html#a8ac69bdd7d6e4a536b4d712ba0897aef" title="The PaintID the wall at this position is painted with. Is PaintID.None if not painted....">Tile.WallColor</a>.<br  />
  Defaults to 0.<br  />
  <br /></td></tr>
 <tr class="separator:a46323b4a0918abe281a296534a19f37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -934,7 +938,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>pick</b></td></tr>
 <tr class="memitem:ae34214b6739ef1f2b45f182d9b398dca"><td class="memItemLeft" align="right" valign="top"><a id="ae34214b6739ef1f2b45f182d9b398dca" name="ae34214b6739ef1f2b45f182d9b398dca"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>placeStyle</b></td></tr>
 <tr class="memdesc:ae34214b6739ef1f2b45f182d9b398dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The style of the tile being placed. Used for tiles that have a different look depending on the item used to place them. <br  />
- The Basic <a class="el" href="struct_tile.html">Tile</a> guideexplains more about this concept. <br  />
+ The Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> guideexplains more about this concept. <br  />
  Defaults to 0. <br /></td></tr>
 <tr class="separator:ae34214b6739ef1f2b45f182d9b398dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74e48a31d491176ed1f3035a107b7fde"><td class="memItemLeft" align="right" valign="top"><a id="a74e48a31d491176ed1f3035a107b7fde" name="a74e48a31d491176ed1f3035a107b7fde"></a>
@@ -1855,7 +1859,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to food items.<br  />
  Specifically: </p>
-<p ><code> UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <a class="el" href="class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65" title="Item is brought in front of player and rotated towards player.   Used by potions, drings,...">ItemUseStyleID.DrinkLiquid</a> : <a class="el" href="class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715" title="Eating or using Used by food">ItemUseStyleID.EatFood</a>; useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true; buffType = <em>foodbuff</em> ; buffTime = <em>foodbuffduration</em> ; rare = <a class="el" href="class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435" title="One (1)">ItemRarityID.Blue</a>; value = 20 silver; </code> </p>
+<p ><code> UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <a class="el" href="class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65" title="Item is brought in front of player and rotated towards player.   Used by potions, drings,...">ItemUseStyleID.DrinkLiquid</a> : <a class="el" href="class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715" title="Eating or using Used by food">ItemUseStyleID.EatFood</a>; useTurn = true; useAnimation = useTime = animationTime; maxStack = <a class="el" href="class_item.html#acb99b0d7025820142cd9cd12f446043e" title="The default stack size for stackable items: 9999">CommonMaxStack</a>; consumable = true; buffType = <em>foodbuff</em> ; buffTime = <em>foodbuffduration</em> ; rare = <a class="el" href="class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435" title="One (1)">ItemRarityID.Blue</a>; value = 20 silver; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newwidth</td><td></td></tr>
@@ -2156,7 +2160,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to Clentaminator ammo solution items.<br  />
  Specifically: </p>
-<p ><code> shoot = projectileId - 145; ammo = AmmoID.Solution; width = 10; height = 12; value = buyPrice(0, 0, 15); rare = 3; maxStack = CommonMaxStack; consumable = true; </code> </p>
+<p ><code> shoot = projectileId - 145; ammo = AmmoID.Solution; width = 10; height = 12; value = buyPrice(0, 0, 15); rare = 3; maxStack = <a class="el" href="class_item.html#acb99b0d7025820142cd9cd12f446043e" title="The default stack size for stackable items: 9999">CommonMaxStack</a>; consumable = true; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectileId</td><td></td></tr>

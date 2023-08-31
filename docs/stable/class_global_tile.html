@@ -114,7 +114,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimateTile</
 <tr class="separator:a9eeb8c9743872de44d296a76c8dc85a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="memItemLeft" align="right" valign="top"><a id="a7fc9c3291213b13ae2bddb0d81dd720f" name="a7fc9c3291213b13ae2bddb0d81dd720f"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDrop</b> (int i, int j, int type)</td></tr>
-<tr class="memdesc:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. Use <a class="el" href="class_global_wall.html#a4c68c359fda675d590609b2de070af91" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">Drop</a> to spawn additional items. <br /></td></tr>
+<tr class="memdesc:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's item(s). Returns true by default. Use <a class="el" href="class_global_wall.html#a4c68c359fda675d590609b2de070af91" title="Allows you to customize which items the wall at the given coordinates drops. Return false to stop the...">Drop</a> to spawn additional items. <br /></td></tr>
 <tr class="separator:a7fc9c3291213b13ae2bddb0d81dd720f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fcb4b3d2f73067fef7211f9320e876b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a1fcb4b3d2f73067fef7211f9320e876b">CanKillTile</a> (int i, int j, int type, ref bool blockDamaged)</td></tr>
 <tr class="memdesc:a1fcb4b3d2f73067fef7211f9320e876b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not the tile at the given coordinates can be hit by anything. Returns true by default. blockDamaged currently has no use.  <a href="class_global_tile.html#a1fcb4b3d2f73067fef7211f9320e876b">More...</a><br /></td></tr>
@@ -135,7 +135,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDrop</b> (
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a7bbde788cba66acfd18f62fec2b139af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to spawn additional items when the tile at the given coordinates drops. <br  />
  This hook is called once for multi-tiles. Trees or Cactus call this method for every individual tile. <br  />
- For multi-tiles, the coordinates correspond to the tile that triggered this multi-tile to drop, so if checking Tile.TileFrameX and Tile.TileFrameY, be aware that the coordinates won't necessarily be the top left corner or origin of the multi-tile. Also be aware that some parts of the multi-tile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in. <br /></td></tr>
+ For multi-tiles, the coordinates correspond to the tile that triggered this multi-tile to drop, so if checking <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameX</a> and <a class="el" href="struct_tile.html#aca28d176561b94bde3604b673a9712b0" title="The Y coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameY</a>, be aware that the coordinates won't necessarily be the top left corner or origin of the multi-tile. Also be aware that some parts of the multi-tile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in. <br /></td></tr>
 <tr class="separator:a7bbde788cba66acfd18f62fec2b139af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0">DropCritterChance</a> (int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="memdesc:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0">More...</a><br /></td></tr>
@@ -739,7 +739,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
-    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html">Tile</a> type of the tile being drawn</td></tr>
+    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> type of the tile being drawn</td></tr>
     <tr><td class="paramname">spriteBatch</td><td>The SpriteBatch that should be used for all draw calls</td></tr>
     <tr><td class="paramname">drawData</td><td>Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</td></tr>
   </table>
@@ -1595,7 +1595,7 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
-    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html">Tile</a> type of the tile being drawn</td></tr>
+    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> type of the tile being drawn</td></tr>
     <tr><td class="paramname">spriteBatch</td><td>The SpriteBatch that should be used for all draw calls</td></tr>
   </table>
   </dd>

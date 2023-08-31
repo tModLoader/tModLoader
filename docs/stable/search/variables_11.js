@@ -35,7 +35,7 @@ var searchData=
   ['rolleditemdrop_32',['rolledItemDrop',['../struct_fishing_attempt.html#a0bf19447a860097836fd278923495634',1,'FishingAttempt']]],
   ['ropeandropecoils_33',['RopeAndRopeCoils',['../class_game_tip_i_d.html#afe382fb98e83c14d647d00a7497698e0',1,'GameTipID']]],
   ['ropecoil_34',['RopeCoil',['../class_proj_a_i_style_i_d.html#ab57e6475f3ad4c4b0bad4cfbd063a0cd',1,'ProjAIStyleID']]],
-  ['rotation_35',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
-  ['rotation_36',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
+  ['rotation_35',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
+  ['rotation_36',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
   ['runacceleration_37',['runAcceleration',['../class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3',1,'Player']]]
 ];

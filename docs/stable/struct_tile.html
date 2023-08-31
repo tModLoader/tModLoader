@@ -92,55 +92,65 @@ $(document).ready(function(){initNavTree('struct_tile.html',''); initResizable()
   <div class="headertitle"><div class="title">Tile Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A data structure used for accessing information about tiles, walls, wires, and liquids at a single position in the world.Vanilla tile code and a mods tile code will be quite different, since tModLoader reworked how tiles function to improve performance. This means that copying vanilla code will leave you with many errors. Running the code through tModPorter will fix most of the issues, however.For your sanity, all of the changes are well documented to make it easier to port vanilla code.  
+ <a href="struct_tile.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a17aadedb02df44afb3f7488ae0791c49"><td class="memItemLeft" align="right" valign="top"><a id="a17aadedb02df44afb3f7488ae0791c49" name="a17aadedb02df44afb3f7488ae0791c49"></a>
-<a class="el" href="struct_tile_color_cache.html">TileColorCache</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BlockColorAndCoating</b> ()</td></tr>
+<tr class="memitem:a17aadedb02df44afb3f7488ae0791c49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_tile_color_cache.html">TileColorCache</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a17aadedb02df44afb3f7488ae0791c49">BlockColorAndCoating</a> ()</td></tr>
+<tr class="memdesc:a17aadedb02df44afb3f7488ae0791c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the paint and coating information from the tile at this position as a <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>.  <a href="struct_tile.html#a17aadedb02df44afb3f7488ae0791c49">More...</a><br /></td></tr>
 <tr class="separator:a17aadedb02df44afb3f7488ae0791c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab299e2d8fe148887815a76d9fec17452"><td class="memItemLeft" align="right" valign="top"><a id="ab299e2d8fe148887815a76d9fec17452" name="ab299e2d8fe148887815a76d9fec17452"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> (TileDataType types)</td></tr>
+<tr class="memitem:ab299e2d8fe148887815a76d9fec17452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#ab299e2d8fe148887815a76d9fec17452">Clear</a> (TileDataType types)</td></tr>
+<tr class="memdesc:ab299e2d8fe148887815a76d9fec17452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the specified data at this position based on the given TileDataType.  <a href="struct_tile.html#ab299e2d8fe148887815a76d9fec17452">More...</a><br /></td></tr>
 <tr class="separator:ab299e2d8fe148887815a76d9fec17452"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6689150e347d80787fd7d2ce776d9075"><td class="memItemLeft" align="right" valign="top"><a id="a6689150e347d80787fd7d2ce776d9075" name="a6689150e347d80787fd7d2ce776d9075"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearBlockPaintAndCoating</b> ()</td></tr>
+<tr class="memdesc:a6689150e347d80787fd7d2ce776d9075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears any paint or coating on the tile at this position. <br /></td></tr>
 <tr class="separator:a6689150e347d80787fd7d2ce776d9075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fd0f74e9285ff77cf6427831bf769db"><td class="memItemLeft" align="right" valign="top"><a id="a3fd0f74e9285ff77cf6427831bf769db" name="a3fd0f74e9285ff77cf6427831bf769db"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearEverything</b> ()</td></tr>
+<tr class="memdesc:a3fd0f74e9285ff77cf6427831bf769db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets all of the data at this position.<br  />
+ To only remove the tile data, use <a class="el" href="struct_tile.html#a48a5ec5fe17941af7e405f3e31e4916a" title="Resets the tile data at this position.  Sets HasTile and IsActuated to false and sets the BlockType t...">ClearTile</a>. <br /></td></tr>
 <tr class="separator:a3fd0f74e9285ff77cf6427831bf769db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48a5ec5fe17941af7e405f3e31e4916a"><td class="memItemLeft" align="right" valign="top"><a id="a48a5ec5fe17941af7e405f3e31e4916a" name="a48a5ec5fe17941af7e405f3e31e4916a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearTile</b> ()</td></tr>
+<tr class="memitem:a48a5ec5fe17941af7e405f3e31e4916a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a48a5ec5fe17941af7e405f3e31e4916a">ClearTile</a> ()</td></tr>
+<tr class="memdesc:a48a5ec5fe17941af7e405f3e31e4916a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the tile data at this position.<br  />
+ Sets <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">HasTile</a> and <a class="el" href="struct_tile.html#a168c0ee5adf37634712c9d1415272286" title="Whether the tile at this position is actuated by an actuator.  Legacy/vanilla equivalent is inActive(...">IsActuated</a> to <code>false</code> and sets the <a class="el" href="struct_tile.html#aa4a432e10972f4a65ef696d7d1abb202" title="The Slope and IsHalfBlock of this tile combined, which can be changed by hammering....">BlockType</a> to ID.BlockType.Solid.  <a href="struct_tile.html#a48a5ec5fe17941af7e405f3e31e4916a">More...</a><br /></td></tr>
 <tr class="separator:a48a5ec5fe17941af7e405f3e31e4916a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a259277529cfc1f6cfd4f75c543daea64"><td class="memItemLeft" align="right" valign="top"><a id="a259277529cfc1f6cfd4f75c543daea64" name="a259277529cfc1f6cfd4f75c543daea64"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearWallPaintAndCoating</b> ()</td></tr>
+<tr class="memdesc:a259277529cfc1f6cfd4f75c543daea64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears any paint or coating on the wall at this position. <br /></td></tr>
 <tr class="separator:a259277529cfc1f6cfd4f75c543daea64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3038cec8ce07baf48923626fc282ca29"><td class="memItemLeft" align="right" valign="top"><a id="a3038cec8ce07baf48923626fc282ca29" name="a3038cec8ce07baf48923626fc282ca29"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
 <tr class="separator:a3038cec8ce07baf48923626fc282ca29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81ca04988475532bbf0dd1dd2803b099"><td class="memItemLeft" align="right" valign="top"><a id="a81ca04988475532bbf0dd1dd2803b099" name="a81ca04988475532bbf0dd1dd2803b099"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyFrom</b> (<a class="el" href="struct_tile.html">Tile</a> from)</td></tr>
+<tr class="memitem:a81ca04988475532bbf0dd1dd2803b099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a81ca04988475532bbf0dd1dd2803b099">CopyFrom</a> (<a class="el" href="struct_tile.html">Tile</a> from)</td></tr>
+<tr class="memdesc:a81ca04988475532bbf0dd1dd2803b099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies all data from the given position to this position.  <a href="struct_tile.html#a81ca04988475532bbf0dd1dd2803b099">More...</a><br /></td></tr>
 <tr class="separator:a81ca04988475532bbf0dd1dd2803b099"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa08a918d6dee2a9687a6b855cf81f0c0"><td class="memItemLeft" align="right" valign="top"><a id="aa08a918d6dee2a9687a6b855cf81f0c0" name="aa08a918d6dee2a9687a6b855cf81f0c0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyPaintAndCoating</b> (<a class="el" href="struct_tile.html">Tile</a> other)</td></tr>
+<tr class="memitem:aa08a918d6dee2a9687a6b855cf81f0c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#aa08a918d6dee2a9687a6b855cf81f0c0">CopyPaintAndCoating</a> (<a class="el" href="struct_tile.html">Tile</a> other)</td></tr>
+<tr class="memdesc:aa08a918d6dee2a9687a6b855cf81f0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the paint and coating data from the specified tile to this tile.<br  />
+ Does not copy wall paint and coating data.  <a href="struct_tile.html#aa08a918d6dee2a9687a6b855cf81f0c0">More...</a><br /></td></tr>
 <tr class="separator:aa08a918d6dee2a9687a6b855cf81f0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a879ec7788912120723902cd5a6702691"><td class="memItemLeft" align="right" valign="top">unsafe ref T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a879ec7788912120723902cd5a6702691">Get&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a879ec7788912120723902cd5a6702691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to get a reference to the <a class="el" href="interface_i_tile_data.html">ITileData</a> at this position.  <a href="struct_tile.html#a879ec7788912120723902cd5a6702691">More...</a><br /></td></tr>
 <tr class="separator:a879ec7788912120723902cd5a6702691"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad4186e3de6c9102e653da48c7495fa9"><td class="memItemLeft" align="right" valign="top"><a id="aad4186e3de6c9102e653da48c7495fa9" name="aad4186e3de6c9102e653da48c7495fa9"></a>
 override int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHashCode</b> ()</td></tr>
 <tr class="separator:aad4186e3de6c9102e653da48c7495fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a047cb32edc0780caae12689f296b2faa"><td class="memItemLeft" align="right" valign="top"><a id="a047cb32edc0780caae12689f296b2faa" name="a047cb32edc0780caae12689f296b2faa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetToType</b> (ushort type)</td></tr>
+<tr class="memitem:a047cb32edc0780caae12689f296b2faa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a047cb32edc0780caae12689f296b2faa">ResetToType</a> (ushort type)</td></tr>
+<tr class="memdesc:a047cb32edc0780caae12689f296b2faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets all of the data at this position except for the <a class="el" href="struct_tile.html#a3bd249192cdad8bfac0af378c5d6206a" title="The WallID of the wall at this position.  A value of 0 indicates no wall.  Legacy/vanilla equivalent ...">WallType</a>, and sets <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">TileType</a> to <em>type</em> .  <a href="struct_tile.html#a047cb32edc0780caae12689f296b2faa">More...</a><br /></td></tr>
 <tr class="separator:a047cb32edc0780caae12689f296b2faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aa5ac04f01031e9cdfd9ae9abcb75bd"><td class="memItemLeft" align="right" valign="top"><a id="a0aa5ac04f01031e9cdfd9ae9abcb75bd" name="a0aa5ac04f01031e9cdfd9ae9abcb75bd"></a>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
 <tr class="separator:a0aa5ac04f01031e9cdfd9ae9abcb75bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46a5fa0a5aa2277fd277107ff7fbf465"><td class="memItemLeft" align="right" valign="top"><a id="a46a5fa0a5aa2277fd277107ff7fbf465" name="a46a5fa0a5aa2277fd277107ff7fbf465"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UseBlockColors</b> (<a class="el" href="struct_tile_color_cache.html">TileColorCache</a> cache)</td></tr>
+<tr class="memitem:a46a5fa0a5aa2277fd277107ff7fbf465"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a46a5fa0a5aa2277fd277107ff7fbf465">UseBlockColors</a> (<a class="el" href="struct_tile_color_cache.html">TileColorCache</a> cache)</td></tr>
+<tr class="memdesc:a46a5fa0a5aa2277fd277107ff7fbf465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the paint and coating of the tile at this position based on the given <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>.  <a href="struct_tile.html#a46a5fa0a5aa2277fd277107ff7fbf465">More...</a><br /></td></tr>
 <tr class="separator:a46a5fa0a5aa2277fd277107ff7fbf465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d7bd8c478e2aa49b36d1c451fc2b87b"><td class="memItemLeft" align="right" valign="top"><a id="a3d7bd8c478e2aa49b36d1c451fc2b87b" name="a3d7bd8c478e2aa49b36d1c451fc2b87b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UseWallColors</b> (<a class="el" href="struct_tile_color_cache.html">TileColorCache</a> cache)</td></tr>
+<tr class="memitem:a3d7bd8c478e2aa49b36d1c451fc2b87b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a3d7bd8c478e2aa49b36d1c451fc2b87b">UseWallColors</a> (<a class="el" href="struct_tile_color_cache.html">TileColorCache</a> cache)</td></tr>
+<tr class="memdesc:a3d7bd8c478e2aa49b36d1c451fc2b87b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the paint and coating of the wall at this position based on the given <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>.  <a href="struct_tile.html#a3d7bd8c478e2aa49b36d1c451fc2b87b">More...</a><br /></td></tr>
 <tr class="separator:a3d7bd8c478e2aa49b36d1c451fc2b87b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3ffd736595d7e83fa29af24c77b5687"><td class="memItemLeft" align="right" valign="top"><a id="ac3ffd736595d7e83fa29af24c77b5687" name="ac3ffd736595d7e83fa29af24c77b5687"></a>
-<a class="el" href="struct_tile_color_cache.html">TileColorCache</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WallColorAndCoating</b> ()</td></tr>
+<tr class="memitem:ac3ffd736595d7e83fa29af24c77b5687"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_tile_color_cache.html">TileColorCache</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#ac3ffd736595d7e83fa29af24c77b5687">WallColorAndCoating</a> ()</td></tr>
+<tr class="memdesc:ac3ffd736595d7e83fa29af24c77b5687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the paint and coating information from the wall at this position as a <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>.  <a href="struct_tile.html#ac3ffd736595d7e83fa29af24c77b5687">More...</a><br /></td></tr>
 <tr class="separator:ac3ffd736595d7e83fa29af24c77b5687"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -157,113 +167,304 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b>
 <tr class="memitem:a1744e8f0d85cacc5ec32b31c9cd6bf70"><td class="memItemLeft" align="right" valign="top"><a id="a1744e8f0d85cacc5ec32b31c9cd6bf70" name="a1744e8f0d85cacc5ec32b31c9cd6bf70"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (<a class="el" href="struct_tile.html">Tile</a> tile, <a class="el" href="struct_tile.html">Tile</a> tile2)</td></tr>
 <tr class="separator:a1744e8f0d85cacc5ec32b31c9cd6bf70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34554623b942a20f0348481283a522a9"><td class="memItemLeft" align="right" valign="top"><a id="a34554623b942a20f0348481283a522a9" name="a34554623b942a20f0348481283a522a9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>SmoothSlope</b> (int x, int y, bool applyToNeighbors=true, bool sync=false)</td></tr>
+<tr class="memitem:a34554623b942a20f0348481283a522a9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a34554623b942a20f0348481283a522a9">SmoothSlope</a> (int x, int y, bool applyToNeighbors=true, bool sync=false)</td></tr>
+<tr class="memdesc:a34554623b942a20f0348481283a522a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Slopes a tile based on the tiles adjacent to it.  <a href="struct_tile.html#a34554623b942a20f0348481283a522a9">More...</a><br /></td></tr>
 <tr class="separator:a34554623b942a20f0348481283a522a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:aa4a432e10972f4a65ef696d7d1abb202"><td class="memItemLeft" align="right" valign="top"><a id="aa4a432e10972f4a65ef696d7d1abb202" name="aa4a432e10972f4a65ef696d7d1abb202"></a>
 BlockType&#160;</td><td class="memItemRight" valign="bottom"><b>BlockType</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:aa4a432e10972f4a65ef696d7d1abb202"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="struct_tile.html#ab6cf8461c7e10d7d62865f171535fea7" title="The slope shape of the tile, which can be changed by hammering.  Used by WorldGen....">Slope</a> and <a class="el" href="struct_tile.html#ad5d360fe8a3e53dd509e0ff3eff3b4e5" title="Whether a tile is a half block shape, which can be changed by hammering.  Used by WorldGen....">IsHalfBlock</a> of this tile combined, which can be changed by hammering.<br  />
+ Legacy/vanilla equivalent is blockType. <br /></td></tr>
 <tr class="separator:aa4a432e10972f4a65ef696d7d1abb202"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dc13acb96039aead01d169ba0c119a9"><td class="memItemLeft" align="right" valign="top"><a id="a2dc13acb96039aead01d169ba0c119a9" name="a2dc13acb96039aead01d169ba0c119a9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>BlueWire</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2dc13acb96039aead01d169ba0c119a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is blue wire at this position.<br  />
+ Legacy/vanilla equivalent is wire2() or wire2(bool). <br /></td></tr>
 <tr class="separator:a2dc13acb96039aead01d169ba0c119a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31802c0a3113b205b15f7154c420735e"><td class="memItemLeft" align="right" valign="top"><a id="a31802c0a3113b205b15f7154c420735e" name="a31802c0a3113b205b15f7154c420735e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>BottomSlope</b><code> [get]</code></td></tr>
+<tr class="memdesc:a31802c0a3113b205b15f7154c420735e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a tile's <a class="el" href="struct_tile.html#ab6cf8461c7e10d7d62865f171535fea7" title="The slope shape of the tile, which can be changed by hammering.  Used by WorldGen....">Slope</a> has a solid bottom side (SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight).<br  />
+ Legacy/vanilla equivalent is bottomSlope. <br /></td></tr>
 <tr class="separator:a31802c0a3113b205b15f7154c420735e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fe1a8fac8fc664b3f1c38b8ecb4f263"><td class="memItemLeft" align="right" valign="top"><a id="a2fe1a8fac8fc664b3f1c38b8ecb4f263" name="a2fe1a8fac8fc664b3f1c38b8ecb4f263"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckingLiquid</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2fe1a8fac8fc664b3f1c38b8ecb4f263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is liquid at this position.<br  />
+ Legacy/vanilla equivalent is checkingLiquid() or checkingLiquid(bool). <br /></td></tr>
 <tr class="separator:a2fe1a8fac8fc664b3f1c38b8ecb4f263"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c7169c7c6413c29f23ddb234e796fd6"><td class="memItemLeft" align="right" valign="top"><a id="a6c7169c7c6413c29f23ddb234e796fd6" name="a6c7169c7c6413c29f23ddb234e796fd6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GreenWire</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a6c7169c7c6413c29f23ddb234e796fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is green wire at this position.<br  />
+ Legacy/vanilla equivalent is wire3() or wire3(bool). <br /></td></tr>
 <tr class="separator:a6c7169c7c6413c29f23ddb234e796fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6325ed8c780c63c155030661a5eda400"><td class="memItemLeft" align="right" valign="top"><a id="a6325ed8c780c63c155030661a5eda400" name="a6325ed8c780c63c155030661a5eda400"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasActuator</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a6325ed8c780c63c155030661a5eda400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an actuator at this position.<br  />
+ Legacy/vanilla equivalent is actuator() or actuator(bool). <br /></td></tr>
 <tr class="separator:a6325ed8c780c63c155030661a5eda400"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac570981af830aa51c5a5280d624697d"><td class="memItemLeft" align="right" valign="top"><a id="aac570981af830aa51c5a5280d624697d" name="aac570981af830aa51c5a5280d624697d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasTile</b><code> [get, set]</code></td></tr>
+<tr class="memitem:aac570981af830aa51c5a5280d624697d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d">HasTile</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:aac570981af830aa51c5a5280d624697d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is a tile at this position. Check this whenever you are accessing data from a tile to avoid getting data from an empty tile.<br  />
+ Legacy/vanilla equivalent is active() or active(bool).  <a href="struct_tile.html#aac570981af830aa51c5a5280d624697d">More...</a><br /></td></tr>
 <tr class="separator:aac570981af830aa51c5a5280d624697d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2574be32ca43ff43f54a3faf33858c46"><td class="memItemLeft" align="right" valign="top"><a id="a2574be32ca43ff43f54a3faf33858c46" name="a2574be32ca43ff43f54a3faf33858c46"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasUnactuatedTile</b><code> [get]</code></td></tr>
+<tr class="memitem:a2574be32ca43ff43f54a3faf33858c46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a2574be32ca43ff43f54a3faf33858c46">HasUnactuatedTile</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2574be32ca43ff43f54a3faf33858c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is a tile at this position that isn't actuated.<br  />
+ Legacy/vanilla equivalent is nactive.  <a href="struct_tile.html#a2574be32ca43ff43f54a3faf33858c46">More...</a><br /></td></tr>
 <tr class="separator:a2574be32ca43ff43f54a3faf33858c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a168c0ee5adf37634712c9d1415272286"><td class="memItemLeft" align="right" valign="top"><a id="a168c0ee5adf37634712c9d1415272286" name="a168c0ee5adf37634712c9d1415272286"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsActuated</b><code> [get, set]</code></td></tr>
+<tr class="memitem:a168c0ee5adf37634712c9d1415272286"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_tile.html#a168c0ee5adf37634712c9d1415272286">IsActuated</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a168c0ee5adf37634712c9d1415272286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the tile at this position is actuated by an actuator.<br  />
+ Legacy/vanilla equivalent is inActive() or inActive(bool).  <a href="struct_tile.html#a168c0ee5adf37634712c9d1415272286">More...</a><br /></td></tr>
 <tr class="separator:a168c0ee5adf37634712c9d1415272286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5d360fe8a3e53dd509e0ff3eff3b4e5"><td class="memItemLeft" align="right" valign="top"><a id="ad5d360fe8a3e53dd509e0ff3eff3b4e5" name="ad5d360fe8a3e53dd509e0ff3eff3b4e5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsHalfBlock</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ad5d360fe8a3e53dd509e0ff3eff3b4e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a tile is a half block shape, which can be changed by hammering.<br  />
+ Used by WorldGen.PoundTile(int, int) and <a class="el" href="struct_tile.html#aa4a432e10972f4a65ef696d7d1abb202" title="The Slope and IsHalfBlock of this tile combined, which can be changed by hammering....">BlockType</a>.<br  />
+ Legacy/vanilla equivalent is halfBrick() or halfBrick(bool). <br /></td></tr>
 <tr class="separator:ad5d360fe8a3e53dd509e0ff3eff3b4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4aae72b50c181b6b7223ca09a2b10b"><td class="memItemLeft" align="right" valign="top"><a id="a5b4aae72b50c181b6b7223ca09a2b10b" name="a5b4aae72b50c181b6b7223ca09a2b10b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileFullbright</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5b4aae72b50c181b6b7223ca09a2b10b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the tile at this position is fully illuminated. Used by ItemID.GlowPaint.<br  />
+ Legacy/vanilla equivalent is fullbrightBlock() or fullbrightBlock(bool). <br /></td></tr>
 <tr class="separator:a5b4aae72b50c181b6b7223ca09a2b10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c90e89e281a54ae9fffc8ff08517f41"><td class="memItemLeft" align="right" valign="top"><a id="a1c90e89e281a54ae9fffc8ff08517f41" name="a1c90e89e281a54ae9fffc8ff08517f41"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileInvisible</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1c90e89e281a54ae9fffc8ff08517f41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the tile at this position is invisible. Used by ItemID.EchoCoating.<br  />
+ Legacy/vanilla equivalent is invisibleBlock() or invisibleBlock(bool). <br /></td></tr>
 <tr class="separator:a1c90e89e281a54ae9fffc8ff08517f41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f09786c54f8644a8db3c54cac239112"><td class="memItemLeft" align="right" valign="top"><a id="a8f09786c54f8644a8db3c54cac239112" name="a8f09786c54f8644a8db3c54cac239112"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsWallFullbright</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8f09786c54f8644a8db3c54cac239112"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the wall at this position is fully illuminated. Used by ItemID.GlowPaint.<br  />
+ Legacy/vanilla equivalent is fullbrightWall() or fullbrightWall(bool). <br /></td></tr>
 <tr class="separator:a8f09786c54f8644a8db3c54cac239112"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34df77b1ec8100fdbb643a7944283c54"><td class="memItemLeft" align="right" valign="top"><a id="a34df77b1ec8100fdbb643a7944283c54" name="a34df77b1ec8100fdbb643a7944283c54"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsWallInvisible</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a34df77b1ec8100fdbb643a7944283c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the wall at this position is invisible. Used by ItemID.EchoCoating.<br  />
+ Legacy/vanilla equivalent is invisibleWall() or invisibleWall(bool). <br /></td></tr>
 <tr class="separator:a34df77b1ec8100fdbb643a7944283c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a519bd492b733fd5ebf265dd266b33660"><td class="memItemLeft" align="right" valign="top"><a id="a519bd492b733fd5ebf265dd266b33660" name="a519bd492b733fd5ebf265dd266b33660"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>LeftSlope</b><code> [get]</code></td></tr>
+<tr class="memdesc:a519bd492b733fd5ebf265dd266b33660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a tile's <a class="el" href="struct_tile.html#ab6cf8461c7e10d7d62865f171535fea7" title="The slope shape of the tile, which can be changed by hammering.  Used by WorldGen....">Slope</a> has a solid left side (SlopeType.SlopeDownRight or SlopeType.SlopeUpRight).<br  />
+ Legacy/vanilla equivalent is leftSlope. <br /></td></tr>
 <tr class="separator:a519bd492b733fd5ebf265dd266b33660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a420edd17ed083bfa38db1bfb5a8f5dc7"><td class="memItemLeft" align="right" valign="top"><a id="a420edd17ed083bfa38db1bfb5a8f5dc7" name="a420edd17ed083bfa38db1bfb5a8f5dc7"></a>
 ref byte&#160;</td><td class="memItemRight" valign="bottom"><b>LiquidAmount</b><code> [get]</code></td></tr>
+<tr class="memdesc:a420edd17ed083bfa38db1bfb5a8f5dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of liquid at this position.<br  />
+ Ranges from 0, no liquid, to 255, filled with liquid.<br  />
+ Legacy/vanilla equivalent is liquid. <br /></td></tr>
 <tr class="separator:a420edd17ed083bfa38db1bfb5a8f5dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75ef7e5fcc77b3987680367b98d92616"><td class="memItemLeft" align="right" valign="top"><a id="a75ef7e5fcc77b3987680367b98d92616" name="a75ef7e5fcc77b3987680367b98d92616"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LiquidType</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a75ef7e5fcc77b3987680367b98d92616"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_liquid_i_d.html">LiquidID</a> of the liquid at this position.<br  />
+ Make sure to check that <a class="el" href="struct_tile.html#a420edd17ed083bfa38db1bfb5a8f5dc7" title="The amount of liquid at this position.  Ranges from 0, no liquid, to 255, filled with liquid....">LiquidAmount</a> is greater than 0.<br  />
+ Legacy/vanilla equivalent is liquidType() or liquidType(int). <br /></td></tr>
 <tr class="separator:a75ef7e5fcc77b3987680367b98d92616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1cf254577c3eb67a92efe58588bc5b9"><td class="memItemLeft" align="right" valign="top"><a id="ab1cf254577c3eb67a92efe58588bc5b9" name="ab1cf254577c3eb67a92efe58588bc5b9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RedWire</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab1cf254577c3eb67a92efe58588bc5b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is red wire at this position.<br  />
+ Legacy/vanilla equivalent is wire() or wire(bool). <br /></td></tr>
 <tr class="separator:ab1cf254577c3eb67a92efe58588bc5b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae14288a7163ef28de4f634a080021d55"><td class="memItemLeft" align="right" valign="top"><a id="ae14288a7163ef28de4f634a080021d55" name="ae14288a7163ef28de4f634a080021d55"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RightSlope</b><code> [get]</code></td></tr>
+<tr class="memdesc:ae14288a7163ef28de4f634a080021d55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a tile's <a class="el" href="struct_tile.html#ab6cf8461c7e10d7d62865f171535fea7" title="The slope shape of the tile, which can be changed by hammering.  Used by WorldGen....">Slope</a> has a solid right side (SlopeType.SlopeDownLeft or SlopeType.SlopeUpLeft).<br  />
+ Legacy/vanilla equivalent is rightSlope. <br /></td></tr>
 <tr class="separator:ae14288a7163ef28de4f634a080021d55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d034267b724dc7073497163cfeb7a1"><td class="memItemLeft" align="right" valign="top"><a id="a53d034267b724dc7073497163cfeb7a1" name="a53d034267b724dc7073497163cfeb7a1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SkipLiquid</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a53d034267b724dc7073497163cfeb7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the liquid at this position should skip updating for 1 tick.<br  />
+ Legacy/vanilla equivalent is skipLiquid() or skipLiquid(bool). <br /></td></tr>
 <tr class="separator:a53d034267b724dc7073497163cfeb7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6cf8461c7e10d7d62865f171535fea7"><td class="memItemLeft" align="right" valign="top"><a id="ab6cf8461c7e10d7d62865f171535fea7" name="ab6cf8461c7e10d7d62865f171535fea7"></a>
 SlopeType&#160;</td><td class="memItemRight" valign="bottom"><b>Slope</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab6cf8461c7e10d7d62865f171535fea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The slope shape of the tile, which can be changed by hammering.<br  />
+ Used by WorldGen.SlopeTile(int, int, int, bool) and <a class="el" href="struct_tile.html#aa4a432e10972f4a65ef696d7d1abb202" title="The Slope and IsHalfBlock of this tile combined, which can be changed by hammering....">BlockType</a>.<br  />
+ Legacy/vanilla equivalent is slope() or slope(byte). <br /></td></tr>
 <tr class="separator:ab6cf8461c7e10d7d62865f171535fea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915218932b09dd718e1fd0b446e130cd"><td class="memItemLeft" align="right" valign="top"><a id="a915218932b09dd718e1fd0b446e130cd" name="a915218932b09dd718e1fd0b446e130cd"></a>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileColor</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a915218932b09dd718e1fd0b446e130cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_paint_i_d.html">PaintID</a> the tile at this position is painted with. Is PaintID.None if not painted.<br  />
+ Legacy/vanilla equivalent is color() or color(byte). <br /></td></tr>
 <tr class="separator:a915218932b09dd718e1fd0b446e130cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad13afd5ae330e950ea1e76e0e848565a"><td class="memItemLeft" align="right" valign="top"><a id="ad13afd5ae330e950ea1e76e0e848565a" name="ad13afd5ae330e950ea1e76e0e848565a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrameNumber</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ad13afd5ae330e950ea1e76e0e848565a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The random style number the tile at this position has, which is random number between 0 and 2 (inclusive).<br  />
+ This is used in non-<a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tiles (aka "Terrain" tiles) to provide visual variation and is not synced in multiplayer nor will it be preserved when saving and loading the world.<br  />
+ Legacy/vanilla equivalent is frameNumber() or frameNumber(byte). <br /></td></tr>
 <tr class="separator:ad13afd5ae330e950ea1e76e0e848565a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22fa4402bfdbb4c9eaec14ff130ae882"><td class="memItemLeft" align="right" valign="top"><a id="a22fa4402bfdbb4c9eaec14ff130ae882" name="a22fa4402bfdbb4c9eaec14ff130ae882"></a>
 ref short&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrameX</b><code> [get]</code></td></tr>
+<tr class="memdesc:a22fa4402bfdbb4c9eaec14ff130ae882"><td class="mdescLeft">&#160;</td><td class="mdescRight">The X coordinate of the top left corner of the area in the spritesheet for the <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">TileType</a> to be used to draw the tile at this position.For a Framed tile, this value is set automatically according to the framing logic as the world loads or other tiles are placed or mined nearby. See Framed vs FrameImportantfor more info. For <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tiles, this value will not change due to tile framing and will be saved and synced in Multiplayer. In either case, <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">TileFrameX</a> and <a class="el" href="struct_tile.html#aca28d176561b94bde3604b673a9712b0" title="The Y coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">TileFrameY</a> correspond to the coordinates of the top left corner of the area in the spritesheet corresponding to the <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">TileType</a> that should be drawn at this position. Custom drawing logic can adjust these values.Some tiles such as Christmas Tree and Weapon Rack use the higher bits of these fields to do tile-specific behaviors. Modders should not attempt to do similar approaches, but should use ModLoader.ModTileEntitys.Legacy/vanilla equivalent is frameX. <br /></td></tr>
 <tr class="separator:a22fa4402bfdbb4c9eaec14ff130ae882"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca28d176561b94bde3604b673a9712b0"><td class="memItemLeft" align="right" valign="top"><a id="aca28d176561b94bde3604b673a9712b0" name="aca28d176561b94bde3604b673a9712b0"></a>
 ref short&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrameY</b><code> [get]</code></td></tr>
+<tr class="memdesc:aca28d176561b94bde3604b673a9712b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Y coordinate of the top left corner of the area in the spritesheet for the <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">TileType</a> to be used to draw the tile at this position.For a Framed tile, this value is set automatically according to the framing logic as the world loads or other tiles are placed or mined nearby. See Framed vs FrameImportantfor more info. For <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tiles, this value will not change due to tile framing and will be saved and synced in Multiplayer. In either case, <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">TileFrameX</a> and <a class="el" href="struct_tile.html#aca28d176561b94bde3604b673a9712b0" title="The Y coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">TileFrameY</a> correspond to the coordinates of the top left corner of the area in the spritesheet corresponding to the <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">TileType</a> that should be drawn at this position. Custom drawing logic can adjust these values.Some tiles such as Christmas Tree and Weapon Rack use the higher bits of these fields to do tile-specific behaviors. Modders should not attempt to do similar approaches, but should use ModLoader.ModTileEntitys.Legacy/vanilla equivalent is frameY. <br /></td></tr>
 <tr class="separator:aca28d176561b94bde3604b673a9712b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78dd48536cd907712816268fa581495a"><td class="memItemLeft" align="right" valign="top"><a id="a78dd48536cd907712816268fa581495a" name="a78dd48536cd907712816268fa581495a"></a>
 ref ushort&#160;</td><td class="memItemRight" valign="bottom"><b>TileType</b><code> [get]</code></td></tr>
+<tr class="memdesc:a78dd48536cd907712816268fa581495a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_tile_i_d.html">TileID</a> of the tile at this position.<br  />
+ This value is only valid if <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">HasTile</a> is true.<br  />
+ Legacy/vanilla equivalent is type. <br /></td></tr>
 <tr class="separator:a78dd48536cd907712816268fa581495a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa06271ee4ed7f053070d27f96b2bf402"><td class="memItemLeft" align="right" valign="top"><a id="aa06271ee4ed7f053070d27f96b2bf402" name="aa06271ee4ed7f053070d27f96b2bf402"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TopSlope</b><code> [get]</code></td></tr>
+<tr class="memdesc:aa06271ee4ed7f053070d27f96b2bf402"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a tile's <a class="el" href="struct_tile.html#ab6cf8461c7e10d7d62865f171535fea7" title="The slope shape of the tile, which can be changed by hammering.  Used by WorldGen....">Slope</a> has a solid top side (SlopeType.SlopeDownLeft or SlopeType.SlopeDownRight).<br  />
+ Legacy/vanilla equivalent is topSlope. <br /></td></tr>
 <tr class="separator:aa06271ee4ed7f053070d27f96b2bf402"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ac69bdd7d6e4a536b4d712ba0897aef"><td class="memItemLeft" align="right" valign="top"><a id="a8ac69bdd7d6e4a536b4d712ba0897aef" name="a8ac69bdd7d6e4a536b4d712ba0897aef"></a>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>WallColor</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8ac69bdd7d6e4a536b4d712ba0897aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_paint_i_d.html">PaintID</a> the wall at this position is painted with. Is PaintID.None if not painted.<br  />
+ Legacy/vanilla equivalent is wallColor() or wallColor(byte). <br /></td></tr>
 <tr class="separator:a8ac69bdd7d6e4a536b4d712ba0897aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e965328d1b4089dc34f6aa0fe4bb860"><td class="memItemLeft" align="right" valign="top"><a id="a2e965328d1b4089dc34f6aa0fe4bb860" name="a2e965328d1b4089dc34f6aa0fe4bb860"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>WallFrameNumber</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2e965328d1b4089dc34f6aa0fe4bb860"><td class="mdescLeft">&#160;</td><td class="mdescRight">The random style number the wall at this position has, which is a random number between 0 and 2 (inclusive).<br  />
+ This is used to provide visual variation and is not synced in multiplayer nor will it be preserved when saving and loading the world.<br  />
+ Legacy/vanilla equivalent is wallFrameNumber() or wallFrameNumber(byte). <br /></td></tr>
 <tr class="separator:a2e965328d1b4089dc34f6aa0fe4bb860"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd5bea663a7beadabc9611e8a127bb7"><td class="memItemLeft" align="right" valign="top"><a id="a8cd5bea663a7beadabc9611e8a127bb7" name="a8cd5bea663a7beadabc9611e8a127bb7"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>WallFrameX</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8cd5bea663a7beadabc9611e8a127bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The X coordinate of the top left corner of the area in the spritesheet for the <a class="el" href="struct_tile.html#a3bd249192cdad8bfac0af378c5d6206a" title="The WallID of the wall at this position.  A value of 0 indicates no wall.  Legacy/vanilla equivalent ...">WallType</a> to be used to draw the wall at this position.Legacy/vanilla equivalent is wallFrameX() or wallFrameX(int). <br /></td></tr>
 <tr class="separator:a8cd5bea663a7beadabc9611e8a127bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8353c5e3f9d1fa1ae506be2c87afc65d"><td class="memItemLeft" align="right" valign="top"><a id="a8353c5e3f9d1fa1ae506be2c87afc65d" name="a8353c5e3f9d1fa1ae506be2c87afc65d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>WallFrameY</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8353c5e3f9d1fa1ae506be2c87afc65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Y coordinate of the top left corner of the area in the spritesheet for the <a class="el" href="struct_tile.html#a3bd249192cdad8bfac0af378c5d6206a" title="The WallID of the wall at this position.  A value of 0 indicates no wall.  Legacy/vanilla equivalent ...">WallType</a> to be used to draw the wall at this position.Legacy/vanilla equivalent is wallFrameY() or wallFrameY(int). <br /></td></tr>
 <tr class="separator:a8353c5e3f9d1fa1ae506be2c87afc65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bd249192cdad8bfac0af378c5d6206a"><td class="memItemLeft" align="right" valign="top"><a id="a3bd249192cdad8bfac0af378c5d6206a" name="a3bd249192cdad8bfac0af378c5d6206a"></a>
 ref ushort&#160;</td><td class="memItemRight" valign="bottom"><b>WallType</b><code> [get]</code></td></tr>
+<tr class="memdesc:a3bd249192cdad8bfac0af378c5d6206a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_wall_i_d.html">WallID</a> of the wall at this position.<br  />
+ A value of 0 indicates no wall.<br  />
+ Legacy/vanilla equivalent is wall. <br /></td></tr>
 <tr class="separator:a3bd249192cdad8bfac0af378c5d6206a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45645d128e148155cf9adb298124f14d"><td class="memItemLeft" align="right" valign="top"><a id="a45645d128e148155cf9adb298124f14d" name="a45645d128e148155cf9adb298124f14d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>YellowWire</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a45645d128e148155cf9adb298124f14d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is yellow wire at this position.<br  />
+ Legacy/vanilla equivalent is wire4() or wire4(bool). <br /></td></tr>
 <tr class="separator:a45645d128e148155cf9adb298124f14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A data structure used for accessing information about tiles, walls, wires, and liquids at a single position in the world.</p>
+<p >Vanilla tile code and a mods tile code will be quite different, since tModLoader reworked how tiles function to improve performance. This means that copying vanilla code will leave you with many errors. Running the code through tModPorter will fix most of the issues, however.</p>
+<p >For your sanity, all of the changes are well documented to make it easier to port vanilla code. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a17aadedb02df44afb3f7488ae0791c49" name="a17aadedb02df44afb3f7488ae0791c49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17aadedb02df44afb3f7488ae0791c49">&#9670;&nbsp;</a></span>BlockColorAndCoating()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_tile_color_cache.html">TileColorCache</a> Tile.BlockColorAndCoating </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the paint and coating information from the tile at this position as a <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_tile_color_cache.html">TileColorCache</a> representing the paint and coatings on the tile at this position.</dd></dl>
+
+</div>
+</div>
+<a id="ab299e2d8fe148887815a76d9fec17452" name="ab299e2d8fe148887815a76d9fec17452"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab299e2d8fe148887815a76d9fec17452">&#9670;&nbsp;</a></span>Clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.Clear </td>
+          <td>(</td>
+          <td class="paramtype">TileDataType&#160;</td>
+          <td class="paramname"><em>types</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clears the specified data at this position based on the given TileDataType. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">types</td><td>The TileDataType to clear.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a48a5ec5fe17941af7e405f3e31e4916a" name="a48a5ec5fe17941af7e405f3e31e4916a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48a5ec5fe17941af7e405f3e31e4916a">&#9670;&nbsp;</a></span>ClearTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.ClearTile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets the tile data at this position.<br  />
+ Sets <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">HasTile</a> and <a class="el" href="struct_tile.html#a168c0ee5adf37634712c9d1415272286" title="Whether the tile at this position is actuated by an actuator.  Legacy/vanilla equivalent is inActive(...">IsActuated</a> to <code>false</code> and sets the <a class="el" href="struct_tile.html#aa4a432e10972f4a65ef696d7d1abb202" title="The Slope and IsHalfBlock of this tile combined, which can be changed by hammering....">BlockType</a> to ID.BlockType.Solid. </p>
+<p >Does not reset data related to walls, wires, or anything else. For that, use <a class="el" href="struct_tile.html#a3fd0f74e9285ff77cf6427831bf769db" title="Resets all of the data at this position.  To only remove the tile data, use ClearTile.">ClearEverything</a>. </p>
+
+</div>
+</div>
+<a id="a81ca04988475532bbf0dd1dd2803b099" name="a81ca04988475532bbf0dd1dd2803b099"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81ca04988475532bbf0dd1dd2803b099">&#9670;&nbsp;</a></span>CopyFrom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.CopyFrom </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tile.html">Tile</a>&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies all data from the given position to this position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">from</td><td>The position to copy the data from.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa08a918d6dee2a9687a6b855cf81f0c0" name="aa08a918d6dee2a9687a6b855cf81f0c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa08a918d6dee2a9687a6b855cf81f0c0">&#9670;&nbsp;</a></span>CopyPaintAndCoating()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.CopyPaintAndCoating </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tile.html">Tile</a>&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies the paint and coating data from the specified tile to this tile.<br  />
+ Does not copy wall paint and coating data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> to copy the data from.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a879ec7788912120723902cd5a6702691" name="a879ec7788912120723902cd5a6702691"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a879ec7788912120723902cd5a6702691">&#9670;&nbsp;</a></span>Get&lt; T &gt;()</h2>
 
@@ -278,6 +479,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>YellowWire</b><code> 
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Used to get a reference to the <a class="el" href="interface_i_tile_data.html">ITileData</a> at this position. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The <a class="el" href="interface_i_tile_data.html">ITileData</a> to get.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="interface_i_tile_data.html">ITileData</a> of type <em>T</em>  at this position.</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -291,6 +501,244 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>YellowWire</b><code> 
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a047cb32edc0780caae12689f296b2faa" name="a047cb32edc0780caae12689f296b2faa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a047cb32edc0780caae12689f296b2faa">&#9670;&nbsp;</a></span>ResetToType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.ResetToType </td>
+          <td>(</td>
+          <td class="paramtype">ushort&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets all of the data at this position except for the <a class="el" href="struct_tile.html#a3bd249192cdad8bfac0af378c5d6206a" title="The WallID of the wall at this position.  A value of 0 indicates no wall.  Legacy/vanilla equivalent ...">WallType</a>, and sets <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">TileType</a> to <em>type</em> . </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The ID.TileID to set this tile to.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a34554623b942a20f0348481283a522a9" name="a34554623b942a20f0348481283a522a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34554623b942a20f0348481283a522a9">&#9670;&nbsp;</a></span>SmoothSlope()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Tile.SmoothSlope </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>applyToNeighbors</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>sync</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Slopes a tile based on the tiles adjacent to it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The X coordinate of the tile.</td></tr>
+    <tr><td class="paramname">y</td><td>The Y coordinate of the tile.</td></tr>
+    <tr><td class="paramname">applyToNeighbors</td><td>Whether the adjacent tiles should be automatically smoothed.</td></tr>
+    <tr><td class="paramname">sync</td><td>Whether the changes should automatically be synced to multiplayer.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a46a5fa0a5aa2277fd277107ff7fbf465" name="a46a5fa0a5aa2277fd277107ff7fbf465"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46a5fa0a5aa2277fd277107ff7fbf465">&#9670;&nbsp;</a></span>UseBlockColors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.UseBlockColors </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tile_color_cache.html">TileColorCache</a>&#160;</td>
+          <td class="paramname"><em>cache</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the paint and coating of the tile at this position based on the given <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cache</td><td>The <a class="el" href="struct_tile_color_cache.html">TileColorCache</a> to apply.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3d7bd8c478e2aa49b36d1c451fc2b87b" name="a3d7bd8c478e2aa49b36d1c451fc2b87b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d7bd8c478e2aa49b36d1c451fc2b87b">&#9670;&nbsp;</a></span>UseWallColors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tile.UseWallColors </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tile_color_cache.html">TileColorCache</a>&#160;</td>
+          <td class="paramname"><em>cache</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the paint and coating of the wall at this position based on the given <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cache</td><td>The <a class="el" href="struct_tile_color_cache.html">TileColorCache</a> to apply.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac3ffd736595d7e83fa29af24c77b5687" name="ac3ffd736595d7e83fa29af24c77b5687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ffd736595d7e83fa29af24c77b5687">&#9670;&nbsp;</a></span>WallColorAndCoating()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_tile_color_cache.html">TileColorCache</a> Tile.WallColorAndCoating </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the paint and coating information from the wall at this position as a <a class="el" href="struct_tile_color_cache.html">TileColorCache</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_tile_color_cache.html">TileColorCache</a> representing the paint and coatings on the wall at this position.</dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="aac570981af830aa51c5a5280d624697d" name="aac570981af830aa51c5a5280d624697d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac570981af830aa51c5a5280d624697d">&#9670;&nbsp;</a></span>HasTile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Tile.HasTile</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether there is a tile at this position. Check this whenever you are accessing data from a tile to avoid getting data from an empty tile.<br  />
+ Legacy/vanilla equivalent is active() or active(bool). </p>
+<p >Actuated tiles are not solid, so use <a class="el" href="struct_tile.html#a2574be32ca43ff43f54a3faf33858c46" title="Whether there is a tile at this position that isn&#39;t actuated.  Legacy/vanilla equivalent is nactive.">HasUnactuatedTile</a> instead of <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">HasTile</a> for collision checks.<br  />
+ This only corresponds to whether a tile exists, however, a wall can exist without a tile. To check if a wall exists, use <code>tile.WallType != WallID.None</code>. </p>
+
+</div>
+</div>
+<a id="a2574be32ca43ff43f54a3faf33858c46" name="a2574be32ca43ff43f54a3faf33858c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2574be32ca43ff43f54a3faf33858c46">&#9670;&nbsp;</a></span>HasUnactuatedTile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Tile.HasUnactuatedTile</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether there is a tile at this position that isn't actuated.<br  />
+ Legacy/vanilla equivalent is nactive. </p>
+<p >Actuated tiles are not solid, so use <a class="el" href="struct_tile.html#a2574be32ca43ff43f54a3faf33858c46" title="Whether there is a tile at this position that isn&#39;t actuated.  Legacy/vanilla equivalent is nactive.">HasUnactuatedTile</a> instead of <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">HasTile</a> for collision checks.<br  />
+ When checking if a tile exists, use <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">HasTile</a> instead of <a class="el" href="struct_tile.html#a2574be32ca43ff43f54a3faf33858c46" title="Whether there is a tile at this position that isn&#39;t actuated.  Legacy/vanilla equivalent is nactive.">HasUnactuatedTile</a>. </p>
+
+</div>
+</div>
+<a id="a168c0ee5adf37634712c9d1415272286" name="a168c0ee5adf37634712c9d1415272286"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a168c0ee5adf37634712c9d1415272286">&#9670;&nbsp;</a></span>IsActuated</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Tile.IsActuated</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the tile at this position is actuated by an actuator.<br  />
+ Legacy/vanilla equivalent is inActive() or inActive(bool). </p>
+<p >Actuated tiles are <b>not</b> solid. </p>
 
 </div>
 </div>

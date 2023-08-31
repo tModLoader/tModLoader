@@ -105,6 +105,7 @@ Classes</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="memItemLeft" align="right" valign="top"><a id="a6e95bb6ab5530638124e67d61e8dbf7c" name="a6e95bb6ab5530638124e67d61e8dbf7c"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorkshopFolder</b> (AppId_t app)</td></tr>
+<tr class="memdesc:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found If SteamClient is true (ie it is a steam user running a client or host&amp;play), InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop) If SteamClient is false, SteamAvailable = True -&gt; Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed InstallDir: anywhere, manual. WorkshopFolder: InstallDir/Steamapps/workshop If Main.DedServ is true Use SteamClient reference path if it exists &amp;&amp; Not "-nosteam" supplied Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists <br /></td></tr>
 <tr class="separator:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

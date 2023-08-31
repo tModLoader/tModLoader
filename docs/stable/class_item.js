@@ -88,6 +88,7 @@ var class_item =
     [ "fishingPole", "class_item.html#a01d64da05d90b6e446b597fcbab75e11", null ],
     [ "flame", "class_item.html#ae3a852d0106a490a1acb9e47be14fa73", null ],
     [ "glowMask", "class_item.html#aab4098bfcd01cf2bbf9ad0201984c77e", null ],
+    [ "hairDye", "class_item.html#a270b7ba785b394f34b82448bc62bb5cc", null ],
     [ "hammer", "class_item.html#acbd27cc5151658d1851d955f2d8a8a73", null ],
     [ "hasVanityEffects", "class_item.html#a60df2d8d6ebe0a18166ef84fddffb797", null ],
     [ "headType", "class_item.html#a8e6a10ef3ca56481a5afc50edc79c590", null ],
