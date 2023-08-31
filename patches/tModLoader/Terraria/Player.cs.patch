@@ -744,6 +744,34 @@
  	public int chest = -1;
  	public int chestX;
  	public int chestY;
+@@ -1423,8 +_,11 @@
+ 	public PlayerInteractionAnchor tileEntityAnchor;
+ 	public DoorOpeningHelper doorHelper;
+ 	public ShoppingSettings currentShoppingSettings = ShoppingSettings.NotInShop;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Head"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cHead;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Body"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cBody;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Legs"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLegs;
+ 	public int cHandOn;
+ 	public int cHandOff;
+@@ -1445,10 +_,15 @@
+ 	public int cBackpack;
+ 	public int cTail;
+ 	public int cShieldFallback;
++	/// <summary>The armor shader ID applied to the Hook equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cGrapple;
++	/// <summary>The armor shader ID applied to the Mount equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMount;
++	/// <summary>The armor shader ID applied to the Minecart equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMinecart;
++	/// <summary>The armor shader ID applied to the Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cPet;
++	/// <summary>The armor shader ID applied to the Light Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLight;
+ 	public int cYorai;
+ 	public int cPortableStool;
 @@ -1458,6 +_,12 @@
  	public int cMinion;
  	public int cLeinShampoo;
