@@ -47,6 +47,7 @@ var class_item_i_d_1_1_sets =
     [ "IsLavaImmuneRegardlessOfRarity", "class_item_i_d_1_1_sets.html#a16d8b891b843b9f58eb1362bdf8cabfd", null ],
     [ "IsPaintScraper", "class_item_i_d_1_1_sets.html#a8f8cfe18c1284b798eddefd95f46f29a", null ],
     [ "IsRangedSpecialistWeapon", "class_item_i_d_1_1_sets.html#a297f9b0902b38844c6fa6f923e8244c8", null ],
+    [ "IsSpaceGun", "class_item_i_d_1_1_sets.html#a67216aacee77cd3c3a4808b20ba15581", null ],
     [ "ItemIconPulse", "class_item_i_d_1_1_sets.html#a547a5c419e4317e4eb7d038f4d0bda72", null ],
     [ "ItemNoGravity", "class_item_i_d_1_1_sets.html#ab62512ced60329185a90ed0622544f48", null ],
     [ "ItemsForStuffCannon", "class_item_i_d_1_1_sets.html#a817bee37179f797f793d0d8c28ddae8a", null ],

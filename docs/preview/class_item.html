@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1859,7 +1859,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to food items.<br  />
  Specifically: </p>
-<p ><code> UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <a class="el" href="class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65" title="Item is brought in front of player and rotated towards player.   Used by potions, drings,...">ItemUseStyleID.DrinkLiquid</a> : <a class="el" href="class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715" title="Eating or using Used by food">ItemUseStyleID.EatFood</a>; useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true; buffType = <em>foodbuff</em> ; buffTime = <em>foodbuffduration</em> ; rare = <a class="el" href="class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435" title="One (1)">ItemRarityID.Blue</a>; value = 20 silver; </code> </p>
+<p ><code> UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? <a class="el" href="class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65" title="Item is brought in front of player and rotated towards player.   Used by potions, drings,...">ItemUseStyleID.DrinkLiquid</a> : <a class="el" href="class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715" title="Eating or using Used by food">ItemUseStyleID.EatFood</a>; useTurn = true; useAnimation = useTime = animationTime; maxStack = <a class="el" href="class_item.html#acb99b0d7025820142cd9cd12f446043e" title="The default stack size for stackable items: 9999">CommonMaxStack</a>; consumable = true; buffType = <em>foodbuff</em> ; buffTime = <em>foodbuffduration</em> ; rare = <a class="el" href="class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435" title="One (1)">ItemRarityID.Blue</a>; value = 20 silver; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newwidth</td><td></td></tr>
@@ -2160,7 +2160,7 @@ UseSound = SoundID.Item5;</code><br  />
 
 <p>This method sets a variety of <a class="el" href="class_item.html">Item</a> values common to Clentaminator ammo solution items.<br  />
  Specifically: </p>
-<p ><code> shoot = projectileId - 145; ammo = AmmoID.Solution; width = 10; height = 12; value = buyPrice(0, 0, 15); rare = 3; maxStack = CommonMaxStack; consumable = true; </code> </p>
+<p ><code> shoot = projectileId - 145; ammo = AmmoID.Solution; width = 10; height = 12; value = buyPrice(0, 0, 15); rare = 3; maxStack = <a class="el" href="class_item.html#acb99b0d7025820142cd9cd12f446043e" title="The default stack size for stackable items: 9999">CommonMaxStack</a>; consumable = true; </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectileId</td><td></td></tr>

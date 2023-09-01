@@ -35,11 +35,12 @@ var searchData=
   ['rolleditemdrop_32',['rolledItemDrop',['../struct_fishing_attempt.html#a0bf19447a860097836fd278923495634',1,'FishingAttempt']]],
   ['ropeandropecoils_33',['RopeAndRopeCoils',['../class_game_tip_i_d.html#afe382fb98e83c14d647d00a7497698e0',1,'GameTipID']]],
   ['ropecoil_34',['RopeCoil',['../class_proj_a_i_style_i_d.html#ab57e6475f3ad4c4b0bad4cfbd063a0cd',1,'ProjAIStyleID']]],
-  ['rotation_35',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
-  ['rotation_36',['rotation',['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
-  ['rubbleplacementlarge_37',['RubblePlacementLarge',['../class_flexible_tile_wand.html#ac73cb13f8e013b7c004d8959b0de9d65',1,'FlexibleTileWand']]],
-  ['rubbleplacementmedium_38',['RubblePlacementMedium',['../class_flexible_tile_wand.html#ac7464e6fe78b06bf82fa206010be4895',1,'FlexibleTileWand']]],
-  ['rubbleplacementsmall_39',['RubblePlacementSmall',['../class_flexible_tile_wand.html#a2bda0c3e99fe67967eab3421663c5487',1,'FlexibleTileWand']]],
-  ['runacceleration_40',['runAcceleration',['../class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3',1,'Player']]],
-  ['running_41',['running',['../class_wiring.html#ac5b23018a7cc0bf681e26ecb03e85762',1,'Wiring']]]
+  ['rotation_35',['rotation',['../class_dust.html#a3090336e581e657101b9c967ae2c5e4c',1,'Dust.rotation()'],['../class_popup_text.html#a57552b45499a74e33f354c338d50f242',1,'PopupText.rotation()'],['../class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf',1,'Projectile.rotation()']]],
+  ['rotation_36',['Rotation',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#add971e3648283efa627838b0b8964e39',1,'NPCID.Sets.NPCBestiaryDrawModifiers.Rotation()'],['../class_drawable_tooltip_line.html#ae6bd787635732108df62a77d6e35c36d',1,'DrawableTooltipLine.Rotation()']]],
+  ['rps_37',['Rps',['../class_emote_i_d_1_1_category.html#aa0bea02dfffd06e07b53f0acd1a354e1',1,'EmoteID::Category']]],
+  ['rubbleplacementlarge_38',['RubblePlacementLarge',['../class_flexible_tile_wand.html#ac73cb13f8e013b7c004d8959b0de9d65',1,'FlexibleTileWand']]],
+  ['rubbleplacementmedium_39',['RubblePlacementMedium',['../class_flexible_tile_wand.html#ac7464e6fe78b06bf82fa206010be4895',1,'FlexibleTileWand']]],
+  ['rubbleplacementsmall_40',['RubblePlacementSmall',['../class_flexible_tile_wand.html#a2bda0c3e99fe67967eab3421663c5487',1,'FlexibleTileWand']]],
+  ['runacceleration_41',['runAcceleration',['../class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3',1,'Player']]],
+  ['running_42',['running',['../class_wiring.html#ac5b23018a7cc0bf681e26ecb03e85762',1,'Wiring']]]
 ];

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -151,8 +151,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleRetrea
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleTargetPoint</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, ref float grappleX, ref float grappleY)</td></tr>
 <tr class="memdesc:a9bca3eda926bf9c9f33709c29c974c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile. <br /></td></tr>
 <tr class="separator:a9bca3eda926bf9c9f33709c29c974c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8549625bd6f77b103d841c06bd4358f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a8549625bd6f77b103d841c06bd4358f3">Kill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
-<tr class="memdesc:a8549625bd6f77b103d841c06bd4358f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds).  <a href="class_global_projectile.html#a8549625bd6f77b103d841c06bd4358f3">More...</a><br /></td></tr>
+<tr class="memitem:a8549625bd6f77b103d841c06bd4358f3"><td class="memItemLeft" align="right" valign="top"><a id="a8549625bd6f77b103d841c06bd4358f3" name="a8549625bd6f77b103d841c06bd4358f3"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Kill</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
 <tr class="separator:a8549625bd6f77b103d841c06bd4358f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88d91943cb6bc13dae77215521fbfd3f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">MinionContactDamage</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
 <tr class="memdesc:a88d91943cb6bc13dae77215521fbfd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet.  <a href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">More...</a><br /></td></tr>
@@ -177,6 +177,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NumGrappleHoo
 <tr class="memdesc:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a hostile projectile hits a player. <br  />
  Only runs on the local client in multiplayer.  <a href="class_global_projectile.html#a124c3a586e8c1eeb6fd81eb8b59b1c0f">More...</a><br /></td></tr>
 <tr class="separator:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4b89da038710058b217f6b8a309ae5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">OnKill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
+<tr class="memdesc:afd4b89da038710058b217f6b8a309ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds).  <a href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">More...</a><br /></td></tr>
+<tr class="separator:afd4b89da038710058b217f6b8a309ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5a20d5923e842b14cfe959ca515138"><td class="memItemLeft" align="right" valign="top"><a id="a5e5a20d5923e842b14cfe959ca515138" name="a5e5a20d5923e842b14cfe959ca515138"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:a5e5a20d5923e842b14cfe959ca515138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any projectiles spawns in world <br /></td></tr>
@@ -775,51 +778,6 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 
 </div>
 </div>
-<a id="a8549625bd6f77b103d841c06bd4358f3" name="a8549625bd6f77b103d841c06bd4358f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8549625bd6f77b103d841c06bd4358f3">&#9670;&nbsp;</a></span>Kill()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalProjectile.Kill </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_projectile.html">Projectile</a>&#160;</td>
-          <td class="paramname"><em>projectile</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timeLeft</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">projectile</td><td></td></tr>
-    <tr><td class="paramname">timeLeft</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a88d91943cb6bc13dae77215521fbfd3f" name="a88d91943cb6bc13dae77215521fbfd3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88d91943cb6bc13dae77215521fbfd3f">&#9670;&nbsp;</a></span>MinionContactDamage()</h2>
 
@@ -1110,6 +1068,51 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
     <tr><td class="paramname">projectile</td><td></td></tr>
     <tr><td class="paramname">target</td><td></td></tr>
     <tr><td class="paramname">info</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afd4b89da038710058b217f6b8a309ae5" name="afd4b89da038710058b217f6b8a309ae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd4b89da038710058b217f6b8a309ae5">&#9670;&nbsp;</a></span>OnKill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void GlobalProjectile.OnKill </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeLeft</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projectile</td><td></td></tr>
+    <tr><td class="paramname">timeLeft</td><td></td></tr>
   </table>
   </dd>
 </dl>

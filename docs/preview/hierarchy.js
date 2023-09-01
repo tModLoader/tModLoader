@@ -211,6 +211,7 @@ var hierarchy =
     [ "CaptureBiome", "class_capture_biome.html", null ],
     [ "CaptureInterface", "class_capture_interface.html", null ],
     [ "CaptureSettings", "class_capture_settings.html", null ],
+    [ "EmoteID.Category", "class_emote_i_d_1_1_category.html", null ],
     [ "ChainID", "class_chain_i_d.html", null ],
     [ "Chains", "class_chains.html", null ],
     [ "ChambersEntrance", "class_chambers_entrance.html", null ],
@@ -391,7 +392,7 @@ var hierarchy =
     [ "EffectManager< Overlay >", "class_effect_manager.html", [
       [ "OverlayManager", "class_overlay_manager.html", null ]
     ] ],
-    [ "EmoteBubble", "class_emote_bubble.html", null ],
+    [ "EmoteBubbleLoader", "class_emote_bubble_loader.html", null ],
     [ "EmoteID", "class_emote_i_d.html", null ],
     [ "EmpressBladeDrawer", "struct_empress_blade_drawer.html", null ],
     [ "EnabledFilterModesExtensions", "class_enabled_filter_modes_extensions.html", null ],
@@ -642,6 +643,9 @@ var hierarchy =
     [ "GlobalList< TGlobal >", "class_global_list.html", null ],
     [ "GlobalLoaderUtils< TGlobal, TEntity >", "class_global_loader_utils.html", null ],
     [ "GlobalRecipe", "class_global_recipe.html", null ],
+    [ "GlobalType< EmoteBubble, GlobalEmoteBubble >", "class_global_type.html", [
+      [ "GlobalEmoteBubble", "class_global_emote_bubble.html", null ]
+    ] ],
     [ "GlobalType< Item, GlobalItem >", "class_global_type.html", [
       [ "GlobalItem", "class_global_item.html", [
         [ "UnloadedGlobalItem", "class_unloaded_global_item.html", null ]
@@ -1152,6 +1156,9 @@ var hierarchy =
       [ "EntitySource_ItemUse", "class_entity_source___item_use.html", null ]
     ] ],
     [ "IEntityWithGlobals< TGlobal >", "interface_i_entity_with_globals.html", null ],
+    [ "IEntityWithGlobals< GlobalEmoteBubble >", "interface_i_entity_with_globals.html", [
+      [ "EmoteBubble", "class_emote_bubble.html", null ]
+    ] ],
     [ "IEntityWithGlobals< GlobalItem >", "interface_i_entity_with_globals.html", [
       [ "Item", "class_item.html", null ]
     ] ],
@@ -1315,6 +1322,9 @@ var hierarchy =
       [ "LightingEngine", "class_lighting_engine.html", null ]
     ] ],
     [ "ILoadable", "interface_i_loadable.html", [
+      [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", [
+        [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ]
+      ] ],
       [ "ModType< Item, ModItem >", "class_mod_type.html", [
         [ "ModItem", "class_mod_item.html", [
           [ "ModLoaderModItem", "class_mod_loader_mod_item.html", [
@@ -1367,6 +1377,9 @@ var hierarchy =
           ] ],
           [ "TagSerializer< Vector3, TagCompound >", "class_tag_serializer.html", [
             [ "Vector3TagSerializer", "class_vector3_tag_serializer.html", null ]
+          ] ],
+          [ "TagSerializer< Version, string >", "class_tag_serializer.html", [
+            [ "VersionSerializer", "class_version_serializer.html", null ]
           ] ],
           [ "DamageClass", "class_damage_class.html", [
             [ "VanillaDamageClass", "class_vanilla_damage_class.html", [
@@ -1560,6 +1573,7 @@ var hierarchy =
     ] ],
     [ "ImmunityCooldownID", "class_immunity_cooldown_i_d.html", null ],
     [ "IModType", "interface_i_mod_type.html", [
+      [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", null ],
       [ "ModType< Item, ModItem >", "class_mod_type.html", null ],
       [ "ModType< Mount.MountData, ModMount >", "class_mod_type.html", null ],
       [ "ModType< NPC, ModNPC >", "class_mod_type.html", null ],
@@ -1574,6 +1588,7 @@ var hierarchy =
         [ "ModBlockType", "class_mod_block_type.html", null ],
         [ "ModBuff", "class_mod_buff.html", null ],
         [ "ModConfig", "class_mod_config.html", null ],
+        [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ],
         [ "ModItem", "class_mod_item.html", null ],
         [ "ModNPC", "class_mod_n_p_c.html", null ],
         [ "ModPrefix", "class_mod_prefix.html", null ],

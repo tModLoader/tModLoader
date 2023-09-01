@@ -52,6 +52,7 @@ var class_mod_n_p_c =
     [ "OnHitPlayer", "class_mod_n_p_c.html#a58ae99ead1ed73f15da32317d262176b", null ],
     [ "OnKill", "class_mod_n_p_c.html#a2c1ad109db9314006a395886a967fe07", null ],
     [ "OnSpawn", "class_mod_n_p_c.html#a7f4875e42ba28150c072e4829261cba2", null ],
+    [ "PickEmote", "class_mod_n_p_c.html#acc0c36e6b2f6b1ca72df7322e1ae2de9", null ],
     [ "PostDraw", "class_mod_n_p_c.html#a3c0a7db0e213a9db0d5ef034f71db3c5", null ],
     [ "PreAI", "class_mod_n_p_c.html#a59734d50b20bc7225a23acb167af1c23", null ],
     [ "PreDraw", "class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc", null ],

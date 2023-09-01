@@ -81,6 +81,7 @@ var class_mod_player =
     [ "OnHitNPCWithProj", "class_mod_player.html#ad0ae4e09a21ad30748a27408d110a1b4", null ],
     [ "OnHurt", "class_mod_player.html#aacc3f719106ed7fca9e2c036fbfebe45", null ],
     [ "OnMissingMana", "class_mod_player.html#a19964efe7ba5a1564052b3000665b641", null ],
+    [ "OnPickup", "class_mod_player.html#a241b21c5da2302ce7d6a6d8cf0a383f7", null ],
     [ "OnRespawn", "class_mod_player.html#ac31fbd2a5247f07f9a6b95f292fc910c", null ],
     [ "PlayerConnect", "class_mod_player.html#a66c5b6244e774a2e5a67e22b9f3f025c", null ],
     [ "PlayerDisconnect", "class_mod_player.html#a518fe106339dc4ed0d3b8de9a88e4973", null ],

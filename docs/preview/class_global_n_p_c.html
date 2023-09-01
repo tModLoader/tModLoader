@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -297,6 +297,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTypeNam
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:a9e6faf26813e7925b90554e9f92923f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any <a class="el" href="class_n_p_c.html">NPC</a> spawns in world <br /></td></tr>
 <tr class="separator:a9e6faf26813e7925b90554e9f92923f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b6b5dcf8e125d4704a088efad35941"><td class="memItemLeft" align="right" valign="top">virtual ? int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#ae6b6b5dcf8e125d4704a088efad35941">PickEmote</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_player.html">Player</a> closestPlayer, <a class="el" href="class_list.html">List</a>&lt; int &gt; emoteList, <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> otherAnchor)</td></tr>
+<tr class="memdesc:ae6b6b5dcf8e125d4704a088efad35941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the emote that the <a class="el" href="class_n_p_c.html">NPC</a> will pick  <a href="class_global_n_p_c.html#ae6b6b5dcf8e125d4704a088efad35941">More...</a><br /></td></tr>
+<tr class="separator:ae6b6b5dcf8e125d4704a088efad35941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c397e4bb2e690e481d0052261fbcdfb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a7c397e4bb2e690e481d0052261fbcdfb">PostAI</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a7c397e4bb2e690e481d0052261fbcdfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will be called regardless of what PreAI returns.  <a href="class_global_n_p_c.html#a7c397e4bb2e690e481d0052261fbcdfb">More...</a><br /></td></tr>
 <tr class="separator:a7c397e4bb2e690e481d0052261fbcdfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2859,6 +2862,66 @@ instance.</td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae6b6b5dcf8e125d4704a088efad35941" name="ae6b6b5dcf8e125d4704a088efad35941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6b6b5dcf8e125d4704a088efad35941">&#9670;&nbsp;</a></span>PickEmote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? int GlobalNPC.PickEmote </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>closestPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>emoteList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a>&#160;</td>
+          <td class="paramname"><em>otherAnchor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to change the emote that the <a class="el" href="class_n_p_c.html">NPC</a> will pick </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+    <tr><td class="paramname">closestPlayer</td><td>The <a class="el" href="class_player.html">Player</a> closest to the <a class="el" href="class_n_p_c.html">NPC</a>. You can check the biome the player is in and let the <a class="el" href="class_n_p_c.html">NPC</a> pick the emote that corresponds to the biome.</td></tr>
+    <tr><td class="paramname">emoteList</td><td>A list of emote IDs from which the <a class="el" href="class_n_p_c.html">NPC</a> will randomly select one</td></tr>
+    <tr><td class="paramname">otherAnchor</td><td>A <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> instance that indicates the target of this emote conversation. Use this to get the instance of the <a class="el" href="class_n_p_c.html">NPC</a> or <a class="el" href="class_player.html">Player</a> this <a class="el" href="class_n_p_c.html">NPC</a> is talking to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Return null to use vanilla mechanic (pick one from the list), otherwise pick the emote by the returned ID. Returning -1 will prevent the emote from being used. Returns null by default</dd></dl>
 
 </div>
 </div>

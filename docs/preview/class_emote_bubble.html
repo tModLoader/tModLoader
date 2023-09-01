@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -89,10 +89,13 @@ $(document).ready(function(){initNavTree('class_emote_bubble.html',''); initResi
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_emote_bubble-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">EmoteBubble Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Inherits <a class="el" href="interface_i_entity_with_globals.html">IEntityWithGlobals&lt; GlobalEmoteBubble &gt;</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -108,8 +111,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6fae7bb9d42a9fbc7a7a2833c8edb3c2"><td class="memItemLeft" align="right" valign="top"><a id="a6fae7bb9d42a9fbc7a7a2833c8edb3c2" name="a6fae7bb9d42a9fbc7a7a2833c8edb3c2"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>AssignNewID</b> ()</td></tr>
 <tr class="separator:a6fae7bb9d42a9fbc7a7a2833c8edb3c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a908997c7c9c3ac606f461c502c9d24ad"><td class="memItemLeft" align="right" valign="top"><a id="a908997c7c9c3ac606f461c502c9d24ad" name="a908997c7c9c3ac606f461c502c9d24ad"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckForNPCsToReactToEmoteBubble</b> (int emoteID, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="memitem:a908997c7c9c3ac606f461c502c9d24ad"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_emote_bubble.html#a908997c7c9c3ac606f461c502c9d24ad">CheckForNPCsToReactToEmoteBubble</a> (int emoteID, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a908997c7c9c3ac606f461c502c9d24ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to find a <a class="el" href="class_n_p_c.html">NPC</a> close enough (less than 200 pixels) to react to the emote sent by the player.  <a href="class_emote_bubble.html#a908997c7c9c3ac606f461c502c9d24ad">More...</a><br /></td></tr>
 <tr class="separator:a908997c7c9c3ac606f461c502c9d24ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab963941f021f563648d6953db12af376"><td class="memItemLeft" align="right" valign="top"><a id="ab963941f021f563648d6953db12af376" name="ab963941f021f563648d6953db12af376"></a>
 static <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DeserializeNetAnchor</b> (int type, int meta)</td></tr>
@@ -117,14 +120,20 @@ static <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a>&#160;<
 <tr class="memitem:a215f01aa31a8b7b8bdfcf1824d303d2f"><td class="memItemLeft" align="right" valign="top"><a id="a215f01aa31a8b7b8bdfcf1824d303d2f" name="a215f01aa31a8b7b8bdfcf1824d303d2f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawAll</b> (SpriteBatch sb)</td></tr>
 <tr class="separator:a215f01aa31a8b7b8bdfcf1824d303d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbee0d23cc137d7bf7a08ce441e3eb28"><td class="memItemLeft" align="right" valign="top"><a id="acbee0d23cc137d7bf7a08ce441e3eb28" name="acbee0d23cc137d7bf7a08ce441e3eb28"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>MakeLocalPlayerEmote</b> (int emoteId)</td></tr>
+<tr class="memitem:a6a32e2e0f75946b000b5c0de309c0e62"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_emote_bubble.html">EmoteBubble</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_emote_bubble.html#a6a32e2e0f75946b000b5c0de309c0e62">GetExistingEmoteBubble</a> (int whoAmI)</td></tr>
+<tr class="memdesc:a6a32e2e0f75946b000b5c0de309c0e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the emote bubble that exists in the world by <a class="el" href="class_emote_bubble.html#a22ac5b18c4d601e226340c74413fdb09" title="The whoAmI indicator that indicates this EmoteBubble, can be used in GetExistingEmoteBubble">WhoAmI</a>. Returns null if there is no corresponding emote  <a href="class_emote_bubble.html#a6a32e2e0f75946b000b5c0de309c0e62">More...</a><br /></td></tr>
+<tr class="separator:a6a32e2e0f75946b000b5c0de309c0e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbee0d23cc137d7bf7a08ce441e3eb28"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_emote_bubble.html#acbee0d23cc137d7bf7a08ce441e3eb28">MakeLocalPlayerEmote</a> (int emoteId)</td></tr>
+<tr class="memdesc:acbee0d23cc137d7bf7a08ce441e3eb28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a emote from <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a>. Should never be called on server.  <a href="class_emote_bubble.html#acbee0d23cc137d7bf7a08ce441e3eb28">More...</a><br /></td></tr>
 <tr class="separator:acbee0d23cc137d7bf7a08ce441e3eb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab49785e23efb164ecc9e5dcaffbd0ba3"><td class="memItemLeft" align="right" valign="top"><a id="ab49785e23efb164ecc9e5dcaffbd0ba3" name="ab49785e23efb164ecc9e5dcaffbd0ba3"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewBubble</b> (int emoticon, <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> bubbleAnchor, int time)</td></tr>
+<tr class="memitem:acebe3b2cfac218777753f0c14891b1a7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_emote_bubble.html#acebe3b2cfac218777753f0c14891b1a7">MakePlayerEmote</a> (<a class="el" href="class_player.html">Player</a> player, int emoteId, bool syncBetweenClients=true)</td></tr>
+<tr class="memdesc:acebe3b2cfac218777753f0c14891b1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a emote from the player  <a href="class_emote_bubble.html#acebe3b2cfac218777753f0c14891b1a7">More...</a><br /></td></tr>
+<tr class="separator:acebe3b2cfac218777753f0c14891b1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab49785e23efb164ecc9e5dcaffbd0ba3"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_emote_bubble.html#ab49785e23efb164ecc9e5dcaffbd0ba3">NewBubble</a> (int emoticon, <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> bubbleAnchor, int time)</td></tr>
+<tr class="memdesc:ab49785e23efb164ecc9e5dcaffbd0ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to spawn a emote bubble  <a href="class_emote_bubble.html#ab49785e23efb164ecc9e5dcaffbd0ba3">More...</a><br /></td></tr>
 <tr class="separator:ab49785e23efb164ecc9e5dcaffbd0ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61fef8b55f4ec940ef920d46b203ae7f"><td class="memItemLeft" align="right" valign="top"><a id="a61fef8b55f4ec940ef920d46b203ae7f" name="a61fef8b55f4ec940ef920d46b203ae7f"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewBubbleNPC</b> (<a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> bubbleAnchor, int time, <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> other=null)</td></tr>
+<tr class="memitem:a61fef8b55f4ec940ef920d46b203ae7f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_emote_bubble.html#a61fef8b55f4ec940ef920d46b203ae7f">NewBubbleNPC</a> (<a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> bubbleAnchor, int time, <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> other=null)</td></tr>
+<tr class="memdesc:a61fef8b55f4ec940ef920d46b203ae7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to make NPCs use a random emote based on the pick emote table.  <a href="class_emote_bubble.html#a61fef8b55f4ec940ef920d46b203ae7f">More...</a><br /></td></tr>
 <tr class="separator:a61fef8b55f4ec940ef920d46b203ae7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc58e3865f7509ca75e65bfa92ae2107"><td class="memItemLeft" align="right" valign="top"><a id="acc58e3865f7509ca75e65bfa92ae2107" name="acc58e3865f7509ca75e65bfa92ae2107"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBubbleChange</b> (int bubbleID)</td></tr>
@@ -143,6 +152,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a5088afd9bda5fbf32963da685056bed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a506fe3176157e255670077175c37a6b1"><td class="memItemLeft" align="right" valign="top"><a id="a506fe3176157e255670077175c37a6b1" name="a506fe3176157e255670077175c37a6b1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>emote</b></td></tr>
+<tr class="memdesc:a506fe3176157e255670077175c37a6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the internal ID of this <a class="el" href="class_emote_bubble.html">EmoteBubble</a>. <br /></td></tr>
 <tr class="separator:a506fe3176157e255670077175c37a6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2967209e96a792e605a9184348c32396"><td class="memItemLeft" align="right" valign="top"><a id="a2967209e96a792e605a9184348c32396" name="a2967209e96a792e605a9184348c32396"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>frame</b></td></tr>
@@ -150,9 +160,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>frame</b></td></tr>
 <tr class="memitem:a5f770c57147dff429b024642379dfec2"><td class="memItemLeft" align="right" valign="top"><a id="a5f770c57147dff429b024642379dfec2" name="a5f770c57147dff429b024642379dfec2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>frameCounter</b></td></tr>
 <tr class="separator:a5f770c57147dff429b024642379dfec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad92a1342d1195e64670390e5f4999334"><td class="memItemLeft" align="right" valign="top"><a id="ad92a1342d1195e64670390e5f4999334" name="ad92a1342d1195e64670390e5f4999334"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ID</b></td></tr>
-<tr class="separator:ad92a1342d1195e64670390e5f4999334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8cdea9003652dfb69c2557bef13d76"><td class="memItemLeft" align="right" valign="top"><a id="adf8cdea9003652dfb69c2557bef13d76" name="adf8cdea9003652dfb69c2557bef13d76"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>frameSpeed</b> = 8</td></tr>
+<tr class="separator:adf8cdea9003652dfb69c2557bef13d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d43594feda26527bd23406f1a31a728"><td class="memItemLeft" align="right" valign="top"><a id="a0d43594feda26527bd23406f1a31a728" name="a0d43594feda26527bd23406f1a31a728"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeTime</b></td></tr>
 <tr class="separator:a0d43594feda26527bd23406f1a31a728"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,9 +175,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>metadata</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:abe45eb7f7c85d6aea679560d5a93ebb1"><td class="memItemLeft" align="right" valign="top"><a id="abe45eb7f7c85d6aea679560d5a93ebb1" name="abe45eb7f7c85d6aea679560d5a93ebb1"></a>
-static Dictionary&lt; int, <a class="el" href="class_emote_bubble.html">EmoteBubble</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>byID</b> = new Dictionary&lt;int, <a class="el" href="class_emote_bubble.html">EmoteBubble</a>&gt;()</td></tr>
-<tr class="separator:abe45eb7f7c85d6aea679560d5a93ebb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150af8c966ec4efb5b074d5c2a25d049"><td class="memItemLeft" align="right" valign="top"><a id="a150af8c966ec4efb5b074d5c2a25d049" name="a150af8c966ec4efb5b074d5c2a25d049"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>EMOTE_SHEET_EMOTES_PER_ROW</b> = 4</td></tr>
 <tr class="separator:a150af8c966ec4efb5b074d5c2a25d049"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,10 +184,310 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>EMOTE_SHEET_HORI
 <tr class="memitem:a3a1bfb76efdafb829b78d7ac4b7cbc8d"><td class="memItemLeft" align="right" valign="top"><a id="a3a1bfb76efdafb829b78d7ac4b7cbc8d" name="a3a1bfb76efdafb829b78d7ac4b7cbc8d"></a>
 static readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>EMOTE_SHEET_VERTICAL_FRAMES</b> = 2 + (EmoteID.Count - 1) / 4</td></tr>
 <tr class="separator:a3a1bfb76efdafb829b78d7ac4b7cbc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef7fe049004ee8c6a0e7511a6c619a65"><td class="memItemLeft" align="right" valign="top"><a id="aef7fe049004ee8c6a0e7511a6c619a65" name="aef7fe049004ee8c6a0e7511a6c619a65"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NextID</b></td></tr>
-<tr class="separator:aef7fe049004ee8c6a0e7511a6c619a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a3a2f9647ead23b7aef5a712ce168337b"><td class="memItemLeft" align="right" valign="top"><a id="a3a2f9647ead23b7aef5a712ce168337b" name="a3a2f9647ead23b7aef5a712ce168337b"></a>
+<a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="class_global_emote_bubble.html">GlobalEmoteBubble</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>EntityGlobals</b><code> [get]</code></td></tr>
+<tr class="separator:a3a2f9647ead23b7aef5a712ce168337b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae538fb27979c2be053fe30144cc10ef2"><td class="memItemLeft" align="right" valign="top"><a id="ae538fb27979c2be053fe30144cc10ef2" name="ae538fb27979c2be053fe30144cc10ef2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsFullyDisplayed</b><code> [get]</code></td></tr>
+<tr class="memdesc:ae538fb27979c2be053fe30144cc10ef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this emote is fully displayed <br  />
+The first and the last 6 frames are for bubble-popping animation. The emote content is displayed after the animation <br /></td></tr>
+<tr class="separator:ae538fb27979c2be053fe30144cc10ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4c81e6d5f5f299e7e0e1e564fdb0dbd"><td class="memItemLeft" align="right" valign="top"><a id="ac4c81e6d5f5f299e7e0e1e564fdb0dbd" name="ac4c81e6d5f5f299e7e0e1e564fdb0dbd"></a>
+<a class="el" href="class_mod_emote_bubble.html">ModEmoteBubble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ModEmoteBubble</b><code> [get, set]</code></td></tr>
+<tr class="separator:ac4c81e6d5f5f299e7e0e1e564fdb0dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22ac5b18c4d601e226340c74413fdb09"><td class="memItemLeft" align="right" valign="top"><a id="a22ac5b18c4d601e226340c74413fdb09" name="a22ac5b18c4d601e226340c74413fdb09"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>WhoAmI</b><code> [get]</code></td></tr>
+<tr class="memdesc:a22ac5b18c4d601e226340c74413fdb09"><td class="mdescLeft">&#160;</td><td class="mdescRight">The whoAmI indicator that indicates this <a class="el" href="class_emote_bubble.html">EmoteBubble</a>, can be used in <a class="el" href="class_emote_bubble.html#a6a32e2e0f75946b000b5c0de309c0e62" title="Gets the emote bubble that exists in the world by WhoAmI. Returns null if there is no corresponding e...">GetExistingEmoteBubble</a> <br /></td></tr>
+<tr class="separator:a22ac5b18c4d601e226340c74413fdb09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_i_entity_with_globals"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_entity_with_globals')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_entity_with_globals.html">IEntityWithGlobals&lt; GlobalEmoteBubble &gt;</a></td></tr>
+<tr class="memitem:a7bfc6ab908c56b3e8760389a58d922c5 inherit properties_interface_i_entity_with_globals"><td class="memItemLeft" align="right" valign="top"><a id="a7bfc6ab908c56b3e8760389a58d922c5" name="a7bfc6ab908c56b3e8760389a58d922c5"></a>
+<a class="el" href="struct_ref_read_only_array.html">RefReadOnlyArray</a>&lt; TGlobal &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>EntityGlobals</b><code> [get]</code></td></tr>
+<tr class="separator:a7bfc6ab908c56b3e8760389a58d922c5 inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5a145aa3bbabc385b4510f2519ea3bd inherit properties_interface_i_entity_with_globals"><td class="memItemLeft" align="right" valign="top"><a id="ac5a145aa3bbabc385b4510f2519ea3bd" name="ac5a145aa3bbabc385b4510f2519ea3bd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
+<tr class="separator:ac5a145aa3bbabc385b4510f2519ea3bd inherit properties_interface_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a908997c7c9c3ac606f461c502c9d24ad" name="a908997c7c9c3ac606f461c502c9d24ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a908997c7c9c3ac606f461c502c9d24ad">&#9670;&nbsp;</a></span>CheckForNPCsToReactToEmoteBubble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void EmoteBubble.CheckForNPCsToReactToEmoteBubble </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>emoteID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Try to find a <a class="el" href="class_n_p_c.html">NPC</a> close enough (less than 200 pixels) to react to the emote sent by the player. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">emoteID</td><td></td></tr>
+    <tr><td class="paramname">player</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6a32e2e0f75946b000b5c0de309c0e62" name="a6a32e2e0f75946b000b5c0de309c0e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a32e2e0f75946b000b5c0de309c0e62">&#9670;&nbsp;</a></span>GetExistingEmoteBubble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_emote_bubble.html">EmoteBubble</a> EmoteBubble.GetExistingEmoteBubble </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>whoAmI</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the emote bubble that exists in the world by <a class="el" href="class_emote_bubble.html#a22ac5b18c4d601e226340c74413fdb09" title="The whoAmI indicator that indicates this EmoteBubble, can be used in GetExistingEmoteBubble">WhoAmI</a>. Returns null if there is no corresponding emote </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">whoAmI</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="acbee0d23cc137d7bf7a08ce441e3eb28" name="acbee0d23cc137d7bf7a08ce441e3eb28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbee0d23cc137d7bf7a08ce441e3eb28">&#9670;&nbsp;</a></span>MakeLocalPlayerEmote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void EmoteBubble.MakeLocalPlayerEmote </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>emoteId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send a emote from <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a>. Should never be called on server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">emoteId</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acebe3b2cfac218777753f0c14891b1a7" name="acebe3b2cfac218777753f0c14891b1a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acebe3b2cfac218777753f0c14891b1a7">&#9670;&nbsp;</a></span>MakePlayerEmote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void EmoteBubble.MakePlayerEmote </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>emoteId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>syncBetweenClients</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send a emote from the player </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+    <tr><td class="paramname">emoteId</td><td></td></tr>
+    <tr><td class="paramname">syncBetweenClients</td><td>If true, this emote will be automatically synchronized between clients</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab49785e23efb164ecc9e5dcaffbd0ba3" name="ab49785e23efb164ecc9e5dcaffbd0ba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab49785e23efb164ecc9e5dcaffbd0ba3">&#9670;&nbsp;</a></span>NewBubble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int EmoteBubble.NewBubble </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>emoticon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a>&#160;</td>
+          <td class="paramname"><em>bubbleAnchor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Use this method to spawn a emote bubble </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">emoticon</td><td>The emote ID of the emote that will spawn.</td></tr>
+    <tr><td class="paramname">bubbleAnchor</td><td>The <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> instance for the emote. You can use <div class="fragment"><div class="line"><span class="keyword">new</span> <a class="code hl_class" href="class_world_u_i_anchor.html">WorldUIAnchor</a>(<a class="code hl_class" href="class_entity.html">Entity</a>)</div>
+<div class="ttc" id="aclass_entity_html"><div class="ttname"><a href="class_entity.html">Entity</a></div><div class="ttdef"><b>Definition:</b> Entity.cs:7</div></div>
+<div class="ttc" id="aclass_world_u_i_anchor_html"><div class="ttname"><a href="class_world_u_i_anchor.html">WorldUIAnchor</a></div><div class="ttdef"><b>Definition:</b> WorldUIAnchor.cs:7</div></div>
+</div><!-- fragment --> to get the instance.</td></tr>
+    <tr><td class="paramname">time</td><td>How long this emote remains.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="class_emote_bubble.html#a22ac5b18c4d601e226340c74413fdb09" title="The whoAmI indicator that indicates this EmoteBubble, can be used in GetExistingEmoteBubble">WhoAmI</a> of this emote</dd></dl>
+
+</div>
+</div>
+<a id="a61fef8b55f4ec940ef920d46b203ae7f" name="a61fef8b55f4ec940ef920d46b203ae7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61fef8b55f4ec940ef920d46b203ae7f">&#9670;&nbsp;</a></span>NewBubbleNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int EmoteBubble.NewBubbleNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a>&#160;</td>
+          <td class="paramname"><em>bubbleAnchor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a>&#160;</td>
+          <td class="paramname"><em>other</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Use this method to make NPCs use a random emote based on the pick emote table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bubbleAnchor</td><td>The <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> instance for the emote. You can use <div class="fragment"><div class="line"><span class="keyword">new</span> <a class="code hl_class" href="class_world_u_i_anchor.html">WorldUIAnchor</a>(<a class="code hl_class" href="class_n_p_c.html">NPC</a>)</div>
+<div class="ttc" id="aclass_n_p_c_html"><div class="ttname"><a href="class_n_p_c.html">NPC</a></div><div class="ttdef"><b>Definition:</b> NPC.cs:32</div></div>
+</div><!-- fragment --> to get the instance.</td></tr>
+    <tr><td class="paramname">time</td><td>How long this emote remains.</td></tr>
+    <tr><td class="paramname">other</td><td>The <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> instance from the other side of the conversation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="class_emote_bubble.html#a22ac5b18c4d601e226340c74413fdb09" title="The whoAmI indicator that indicates this EmoteBubble, can be used in GetExistingEmoteBubble">WhoAmI</a> of this emote</dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

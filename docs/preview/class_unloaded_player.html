@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -436,6 +436,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHurt</b> (<
 <tr class="memitem:a19964efe7ba5a1564052b3000665b641 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a19964efe7ba5a1564052b3000665b641">OnMissingMana</a> (<a class="el" href="class_item.html">Item</a> item, int neededMana)</td></tr>
 <tr class="memdesc:a19964efe7ba5a1564052b3000665b641 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use. If the player has high enough mana after this hook runs, mana consumption will happen normally. Only runs once per item use.  <a href="class_mod_player.html#a19964efe7ba5a1564052b3000665b641">More...</a><br /></td></tr>
 <tr class="separator:a19964efe7ba5a1564052b3000665b641 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a241b21c5da2302ce7d6a6d8cf0a383f7 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a241b21c5da2302ce7d6a6d8cf0a383f7">OnPickup</a> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:a241b21c5da2302ce7d6a6d8cf0a383f7 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.  <a href="class_mod_player.html#a241b21c5da2302ce7d6a6d8cf0a383f7">More...</a><br /></td></tr>
+<tr class="separator:a241b21c5da2302ce7d6a6d8cf0a383f7 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac31fbd2a5247f07f9a6b95f292fc910c inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top"><a id="ac31fbd2a5247f07f9a6b95f292fc910c" name="ac31fbd2a5247f07f9a6b95f292fc910c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnRespawn</b> ()</td></tr>
 <tr class="memdesc:ac31fbd2a5247f07f9a6b95f292fc910c inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a player respawns in the world. <br /></td></tr>

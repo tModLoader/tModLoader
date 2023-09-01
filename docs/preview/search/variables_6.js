@@ -23,7 +23,7 @@ var searchData=
   ['gamepadtrash_20',['GamePadTrash',['../class_game_tip_i_d.html#adb4f130c8d44b5fc3937488a3967aa05',1,'GameTipID']]],
   ['gamepadwholescreenuserange_21',['GamepadWholeScreenUseRange',['../class_item_i_d_1_1_sets.html#a80bc6931916d232f4c31254af30be4d0',1,'ItemID::Sets']]],
   ['gemstaffbolt_22',['GemStaffBolt',['../class_proj_a_i_style_i_d.html#aaea7d5440d014b394b4d93ec3716d889',1,'ProjAIStyleID']]],
-  ['general_23',['General',['../class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e',1,'ImmunityCooldownID']]],
+  ['general_23',['General',['../class_emote_i_d_1_1_category.html#a200f4766a70cd7a6bbf5237a2706ae17',1,'EmoteID.Category.General()'],['../class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e',1,'ImmunityCooldownID.General()']]],
   ['geodedrops_24',['GeodeDrops',['../class_item_i_d_1_1_sets.html#a3299be186ab7b34b4ec9ebd48b4bb515',1,'ItemID::Sets']]],
   ['geyser_25',['Geyser',['../class_proj_a_i_style_i_d.html#a006329e3b348c6dd153f3853ed1f4836',1,'ProjAIStyleID']]],
   ['gfxoffy_26',['gfxOffY',['../class_n_p_c.html#a7f796a0ac2fe61dea6f6975552f4b59b',1,'NPC.gfxOffY()'],['../class_player.html#a50056c148e9e99495fa90b3698bf0825',1,'Player.gfxOffY()'],['../class_projectile.html#a8086d1cdae48cc3a28cce5ec592b6684',1,'Projectile.gfxOffY()']]],

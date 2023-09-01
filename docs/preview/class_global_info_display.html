@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -108,6 +108,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af509cba5c53ec9136786f6a1e172bce9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_info_display.html#af509cba5c53ec9136786f6a1e172bce9">ModifyDisplayName</a> (<a class="el" href="class_info_display.html">InfoDisplay</a> currentDisplay, ref string displayName)</td></tr>
 <tr class="memdesc:af509cba5c53ec9136786f6a1e172bce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the display name of an <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> (shown when hovering over said display in-game).  <a href="class_global_info_display.html#af509cba5c53ec9136786f6a1e172bce9">More...</a><br /></td></tr>
 <tr class="separator:af509cba5c53ec9136786f6a1e172bce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f92782d745e1daa5b3fec925acf2055"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_info_display.html#a5f92782d745e1daa5b3fec925acf2055">ModifyDisplayParameters</a> (<a class="el" href="class_info_display.html">InfoDisplay</a> currentDisplay, ref string displayValue, ref string displayName, ref Color displayColor, ref Color displayShadowColor)</td></tr>
+<tr class="memdesc:a5f92782d745e1daa5b3fec925acf2055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows modifying the display value (the text displayed next to the icon), the display name (texxt shown when hovering over the <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> in-game), and the display colors of an <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a>.  <a href="class_global_info_display.html#a5f92782d745e1daa5b3fec925acf2055">More...</a><br /></td></tr>
+<tr class="separator:a5f92782d745e1daa5b3fec925acf2055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae596e684e0958c9d418688787d9dc9a2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_info_display.html#ae596e684e0958c9d418688787d9dc9a2">ModifyDisplayValue</a> (<a class="el" href="class_info_display.html">InfoDisplay</a> currentDisplay, ref string displayValue)</td></tr>
 <tr class="memdesc:ae596e684e0958c9d418688787d9dc9a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the display value (the text displayed next to the icon) of an <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a>.  <a href="class_global_info_display.html#ae596e684e0958c9d418688787d9dc9a2">More...</a><br /></td></tr>
 <tr class="separator:ae596e684e0958c9d418688787d9dc9a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -397,6 +400,72 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   <table class="params">
     <tr><td class="paramname">currentDisplay</td><td>The display you're modifying the display name for.</td></tr>
     <tr><td class="paramname">displayName</td><td>The display name of the current display.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5f92782d745e1daa5b3fec925acf2055" name="a5f92782d745e1daa5b3fec925acf2055"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f92782d745e1daa5b3fec925acf2055">&#9670;&nbsp;</a></span>ModifyDisplayParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void GlobalInfoDisplay.ModifyDisplayParameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td>
+          <td class="paramname"><em>currentDisplay</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref string&#160;</td>
+          <td class="paramname"><em>displayValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref string&#160;</td>
+          <td class="paramname"><em>displayName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>displayColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>displayShadowColor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows modifying the display value (the text displayed next to the icon), the display name (texxt shown when hovering over the <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> in-game), and the display colors of an <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">currentDisplay</td><td>The display you're modifying the parameters for.</td></tr>
+    <tr><td class="paramname">displayValue</td><td>The display value of the current display.</td></tr>
+    <tr><td class="paramname">displayName</td><td>The display name of the current display.</td></tr>
+    <tr><td class="paramname">displayColor</td><td>The display color of the current display.</td></tr>
+    <tr><td class="paramname">displayShadowColor</td><td>The text outline color of the current display.</td></tr>
   </table>
   </dd>
 </dl>

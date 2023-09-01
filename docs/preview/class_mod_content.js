@@ -2,6 +2,7 @@ var class_mod_content =
 [
     [ "BuffType< T >", "class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837", null ],
     [ "DustType< T >", "class_mod_content.html#a2e5088dea2ed1df947181a447284d950", null ],
+    [ "EmoteBubbleType< T >", "class_mod_content.html#a3bc92dd34e75e83175f542ba9751f287", null ],
     [ "FileExists", "class_mod_content.html#aa62a1a13744a3ac5c4cb12b2879e87ee", null ],
     [ "Find< T >", "class_mod_content.html#affc0d221807d3aaba139988257cd5ca4", null ],
     [ "Find< T >", "class_mod_content.html#aa0213edd0cf7a3cd6992a042bbdae3bf", null ],

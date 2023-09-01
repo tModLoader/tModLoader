@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -342,6 +342,15 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 <b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
 <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_mod_system.html#a926129e278ac9c460685bd2a326cd998">More...</a><br /></td></tr>
 <tr class="separator:a926129e278ac9c460685bd2a326cd998 inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4cf839033cb3bfe58f2994c778ebf2 inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#aff4cf839033cb3bfe58f2994c778ebf2">SaveWorldHeader</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:aff4cf839033cb3bfe58f2994c778ebf2 inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+Allows you to save custom data for this system in the current world, and have that data accessible in the world select UI and during vanilla world loading. <br  />
+<b>WARNING:</b> Saving too much data here will cause lag when opening the world select menu for users with many worlds. <br  />
+Can be retrieved via WorldFileData.TryGetHeaderData(ModSystem, out TagCompound) and Main.ActiveWorldFileData <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_mod_system.html#aff4cf839033cb3bfe58f2994c778ebf2">More...</a><br /></td></tr>
+<tr class="separator:aff4cf839033cb3bfe58f2994c778ebf2 inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5dafb524e0b67f6ff1f760fec82523c inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#ab5dafb524e0b67f6ff1f760fec82523c">SetupContent</a> ()</td></tr>
 <tr class="memdesc:ab5dafb524e0b67f6ff1f760fec82523c inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults. This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent  <a href="class_mod_system.html#ab5dafb524e0b67f6ff1f760fec82523c">More...</a><br /></td></tr>
 <tr class="separator:ab5dafb524e0b67f6ff1f760fec82523c inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>

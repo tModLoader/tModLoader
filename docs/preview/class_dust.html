@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,6 +93,9 @@ $(document).ready(function(){initNavTree('class_dust.html',''); initResizable();
   <div class="headertitle"><div class="title">Dust Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are particles effects used to add visual elements to weapons and other effects. <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are completely visual and should never be used as a gameplay element. <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> count limits are imposed by the game to keep perfomance consistent, so <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are not guaranteed to spawn when code attempts to spawn them.Vanilla <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are enumerated in the <a class="el" href="class_dust_i_d.html">DustID</a> class.New <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> can be implemented using the <a class="el" href="class_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> class.The Basic <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> Guideteaches the basics on using <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a>. In addition, the guide has resources teaching how to discover and use vanilla <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a>.  
+ <a href="class_dust.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,32 +126,32 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawDebugBox</
 <tr class="memitem:a45ad8257d9365dc6b16792d1b3877093"><td class="memItemLeft" align="right" valign="top"><a id="a45ad8257d9365dc6b16792d1b3877093" name="a45ad8257d9365dc6b16792d1b3877093"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>dustWater</b> ()</td></tr>
 <tr class="separator:a45ad8257d9365dc6b16792d1b3877093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab171b38c60e5943ad1e33eeaef0f0ed1"><td class="memItemLeft" align="right" valign="top"><a id="ab171b38c60e5943ad1e33eeaef0f0ed1" name="ab171b38c60e5943ad1e33eeaef0f0ed1"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewDust</b> (Vector2 Position, int Width, int Height, int Type, float SpeedX=0f, float SpeedY=0f, int Alpha=0, Color newColor=default(Color), float Scale=1f)</td></tr>
+<tr class="memitem:ab171b38c60e5943ad1e33eeaef0f0ed1"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1">NewDust</a> (Vector2 Position, int Width, int Height, int Type, float SpeedX=0f, float SpeedY=0f, int Alpha=0, Color newColor=default(Color), float Scale=1f)</td></tr>
+<tr class="memdesc:ab171b38c60e5943ad1e33eeaef0f0ed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to spawn a single <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> into the game world. The Position, Width, and Height parameters dictate a rectangle, the dust will be spawned randomly within that rectangle. SpeedX and SpeedY dictate the initial velocity, they will be slightly randomized as well.  <a href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1">More...</a><br /></td></tr>
 <tr class="separator:ab171b38c60e5943ad1e33eeaef0f0ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96f53df54dad8ad3aac4b431be593e32"><td class="memItemLeft" align="right" valign="top"><a id="a96f53df54dad8ad3aac4b431be593e32" name="a96f53df54dad8ad3aac4b431be593e32"></a>
-static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewDustDirect</b> (Vector2 Position, int Width, int Height, int Type, float SpeedX=0f, float SpeedY=0f, int Alpha=0, Color newColor=default(Color), float Scale=1f)</td></tr>
+<tr class="memitem:a96f53df54dad8ad3aac4b431be593e32"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dust.html#a96f53df54dad8ad3aac4b431be593e32">NewDustDirect</a> (Vector2 Position, int Width, int Height, int Type, float SpeedX=0f, float SpeedY=0f, int Alpha=0, Color newColor=default(Color), float Scale=1f)</td></tr>
+<tr class="memdesc:a96f53df54dad8ad3aac4b431be593e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike <a class="el" href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1" title="Attempts to spawn a single Dust into the game world. The Position, Width, and Height parameters dicta...">Dust.NewDust(Vector2, int, int, int, float, float, int, Color, float)</a>, this method returns a <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> instance directly.  <a href="class_dust.html#a96f53df54dad8ad3aac4b431be593e32">More...</a><br /></td></tr>
 <tr class="separator:a96f53df54dad8ad3aac4b431be593e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1498ed079fe5c80b81137b9fd2af404e"><td class="memItemLeft" align="right" valign="top"><a id="a1498ed079fe5c80b81137b9fd2af404e" name="a1498ed079fe5c80b81137b9fd2af404e"></a>
-static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewDustPerfect</b> (Vector2 Position, int Type, Vector2? Velocity=null, int Alpha=0, Color newColor=default(Color), float Scale=1f)</td></tr>
+<tr class="memitem:a1498ed079fe5c80b81137b9fd2af404e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dust.html#a1498ed079fe5c80b81137b9fd2af404e">NewDustPerfect</a> (Vector2 Position, int Type, Vector2? Velocity=null, int Alpha=0, Color newColor=default(Color), float Scale=1f)</td></tr>
+<tr class="memdesc:a1498ed079fe5c80b81137b9fd2af404e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to spawn a single <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> into the game world. <em>Position</em>  indicates the spawn position and <em>Velocity</em>  indicates the initial velocity. Unlike <a class="el" href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1" title="Attempts to spawn a single Dust into the game world. The Position, Width, and Height parameters dicta...">NewDust(Vector2, int, int, int, float, float, int, Color, float)</a>, position and velocity will not be slightly randomized, making this method suitable for visual effects that need exact positioning.  <a href="class_dust.html#a1498ed079fe5c80b81137b9fd2af404e">More...</a><br /></td></tr>
 <tr class="separator:a1498ed079fe5c80b81137b9fd2af404e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f2b3149957ca785d52d0e8b64e0425"><td class="memItemLeft" align="right" valign="top"><a id="a38f2b3149957ca785d52d0e8b64e0425" name="a38f2b3149957ca785d52d0e8b64e0425"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>QuickBox</b> (Vector2 topLeft, Vector2 bottomRight, int divisions, Color color, Action&lt; <a class="el" href="class_dust.html">Dust</a> &gt; manipulator)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>QuickBox</b> (Vector2 topLeft, Vector2 bottomRight, int divisions, Color <a class="el" href="class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1">color</a>, Action&lt; <a class="el" href="class_dust.html">Dust</a> &gt; manipulator)</td></tr>
 <tr class="separator:a38f2b3149957ca785d52d0e8b64e0425"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa20260dc72a4f7e30d95d778eec78c4"><td class="memItemLeft" align="right" valign="top"><a id="afa20260dc72a4f7e30d95d778eec78c4" name="afa20260dc72a4f7e30d95d778eec78c4"></a>
-static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDust</b> (int x, int y, Color color)</td></tr>
+static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDust</b> (int x, int y, Color <a class="el" href="class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1">color</a>)</td></tr>
 <tr class="separator:afa20260dc72a4f7e30d95d778eec78c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad51702afe48d11015e0609764dc801e5"><td class="memItemLeft" align="right" valign="top"><a id="ad51702afe48d11015e0609764dc801e5" name="ad51702afe48d11015e0609764dc801e5"></a>
-static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDust</b> (Point tileCoords, Color color)</td></tr>
+static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDust</b> (Point tileCoords, Color <a class="el" href="class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1">color</a>)</td></tr>
 <tr class="separator:ad51702afe48d11015e0609764dc801e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f9bf22f6911250449e5597256fb4aed"><td class="memItemLeft" align="right" valign="top"><a id="a6f9bf22f6911250449e5597256fb4aed" name="a6f9bf22f6911250449e5597256fb4aed"></a>
-static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDust</b> (Vector2 pos, Color color)</td></tr>
+<tr class="memitem:a6f9bf22f6911250449e5597256fb4aed"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dust.html#a6f9bf22f6911250449e5597256fb4aed">QuickDust</a> (Vector2 pos, Color <a class="el" href="class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1">color</a>)</td></tr>
+<tr class="memdesc:a6f9bf22f6911250449e5597256fb4aed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns dust 267 tinted to the provided color at the specified position with no velocity or gravity. Used solely for debugging purposes.  <a href="class_dust.html#a6f9bf22f6911250449e5597256fb4aed">More...</a><br /></td></tr>
 <tr class="separator:a6f9bf22f6911250449e5597256fb4aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adff85caf7eb8d0fe81a730337e9be9d3"><td class="memItemLeft" align="right" valign="top"><a id="adff85caf7eb8d0fe81a730337e9be9d3" name="adff85caf7eb8d0fe81a730337e9be9d3"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDustLine</b> (Vector2 start, Vector2 end, float splits, Color color)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDustLine</b> (Vector2 start, Vector2 end, float splits, Color <a class="el" href="class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1">color</a>)</td></tr>
 <tr class="separator:adff85caf7eb8d0fe81a730337e9be9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bbc5a26f208bd1014a57adfc48681a6"><td class="memItemLeft" align="right" valign="top"><a id="a2bbc5a26f208bd1014a57adfc48681a6" name="a2bbc5a26f208bd1014a57adfc48681a6"></a>
-static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDustSmall</b> (Vector2 pos, Color color, bool floorPositionValues=false)</td></tr>
+static <a class="el" href="class_dust.html">Dust</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QuickDustSmall</b> (Vector2 pos, Color <a class="el" href="class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1">color</a>, bool floorPositionValues=false)</td></tr>
 <tr class="separator:a2bbc5a26f208bd1014a57adfc48681a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9945821af750186b26ca4f9bb29d0a28"><td class="memItemLeft" align="right" valign="top"><a id="a9945821af750186b26ca4f9bb29d0a28" name="a9945821af750186b26ca4f9bb29d0a28"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateDust</b> ()</td></tr>
@@ -161,51 +164,64 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
 <tr class="separator:aed90ad6370e9bf2a635aca4dbe2c7a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6836d14f71f7e12c541a980ce097d0f9"><td class="memItemLeft" align="right" valign="top"><a id="a6836d14f71f7e12c541a980ce097d0f9" name="a6836d14f71f7e12c541a980ce097d0f9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
+<tr class="memdesc:a6836d14f71f7e12c541a980ce097d0f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">How transparent to draw this dust. 0 to 255. 255 is completely transparent. Used to fade dust out and sometimes to determine if a dust should despawn. <br /></td></tr>
 <tr class="separator:a6836d14f71f7e12c541a980ce097d0f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af706fbc49c4f3b906a51c97dc608d7a1"><td class="memItemLeft" align="right" valign="top"><a id="af706fbc49c4f3b906a51c97dc608d7a1" name="af706fbc49c4f3b906a51c97dc608d7a1"></a>
 Color&#160;</td><td class="memItemRight" valign="bottom"><b>color</b></td></tr>
+<tr class="memdesc:af706fbc49c4f3b906a51c97dc608d7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tinting to the color this dust is drawn. Works best with sprites with low saturation, such as greyscale sprites. Not as effective with colored sprites. <br /></td></tr>
 <tr class="separator:af706fbc49c4f3b906a51c97dc608d7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a339a20abccf01b968f6ad40994e0fab3"><td class="memItemLeft" align="right" valign="top"><a id="a339a20abccf01b968f6ad40994e0fab3" name="a339a20abccf01b968f6ad40994e0fab3"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>customData</b></td></tr>
+<tr class="memdesc:a339a20abccf01b968f6ad40994e0fab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to store any custom data. Typically used to store a <a class="el" href="class_player.html">Player</a>, <a class="el" href="class_n_p_c.html">NPC</a>, or <a class="el" href="class_projectile.html">Projectile</a> instance that the dust will attempt to follow. ExampleAdvancedDust.csshowcases how customData can be used for advanced movement behavior. <br /></td></tr>
 <tr class="separator:a339a20abccf01b968f6ad40994e0fab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00b63faf48bdcc5e5e861623b2b6ac55"><td class="memItemLeft" align="right" valign="top"><a id="a00b63faf48bdcc5e5e861623b2b6ac55" name="a00b63faf48bdcc5e5e861623b2b6ac55"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>dustIndex</b></td></tr>
 <tr class="separator:a00b63faf48bdcc5e5e861623b2b6ac55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd020535ddcd254ab6d7b805baf7bdfa"><td class="memItemLeft" align="right" valign="top"><a id="acd020535ddcd254ab6d7b805baf7bdfa" name="acd020535ddcd254ab6d7b805baf7bdfa"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>fadeIn</b></td></tr>
+<tr class="memdesc:acd020535ddcd254ab6d7b805baf7bdfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by some dust AI to control logic pertaining to the dust fading in. The specific behavior depends on the dust type. Defaults to 0f. <br /></td></tr>
 <tr class="separator:acd020535ddcd254ab6d7b805baf7bdfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e5f475555a5957ac8c62264b8f8e0a"><td class="memItemLeft" align="right" valign="top"><a id="a95e5f475555a5957ac8c62264b8f8e0a" name="a95e5f475555a5957ac8c62264b8f8e0a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>firstFrame</b></td></tr>
 <tr class="separator:a95e5f475555a5957ac8c62264b8f8e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6e5ec001104c289afdba74221632d0d"><td class="memItemLeft" align="right" valign="top"><a id="ac6e5ec001104c289afdba74221632d0d" name="ac6e5ec001104c289afdba74221632d0d"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>frame</b></td></tr>
+<tr class="memdesc:ac6e5ec001104c289afdba74221632d0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly choosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired. <br /></td></tr>
 <tr class="separator:ac6e5ec001104c289afdba74221632d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89556b7ff999ce9d8f68efce73322e74"><td class="memItemLeft" align="right" valign="top"><a id="a89556b7ff999ce9d8f68efce73322e74" name="a89556b7ff999ce9d8f68efce73322e74"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noGravity</b></td></tr>
+<tr class="memdesc:a89556b7ff999ce9d8f68efce73322e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if a dust should be affected by gravity or not. Not all vanilla dust have logic checking this value and modded dust with custom <a class="el" href="class_mod_dust.html#a2417be890d06179dfa2f5b34aa87dbd0" title="Allows you to customize how you want this type of dust to behave. Return true to allow for vanilla du...">ModDust.Update(Dust)</a> code would need to implement this into the logic for it to have effect. Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a89556b7ff999ce9d8f68efce73322e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af80c445e506df08a3f7fd46cb7b04aa6"><td class="memItemLeft" align="right" valign="top"><a id="af80c445e506df08a3f7fd46cb7b04aa6" name="af80c445e506df08a3f7fd46cb7b04aa6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noLight</b></td></tr>
+<tr class="memdesc:af80c445e506df08a3f7fd46cb7b04aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <a class="el" href="class_dust.html#af80c445e506df08a3f7fd46cb7b04aa6" title="If true, the dust will not emit light. The specific behavior depends on the dust type,...">noLight</a>. Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:af80c445e506df08a3f7fd46cb7b04aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec7b56a066825e79538185f8a5249e77"><td class="memItemLeft" align="right" valign="top"><a id="aec7b56a066825e79538185f8a5249e77" name="aec7b56a066825e79538185f8a5249e77"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noLightEmittence</b></td></tr>
 <tr class="separator:aec7b56a066825e79538185f8a5249e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa7683b785f9d14fcc85ea086b9d428d"><td class="memItemLeft" align="right" valign="top"><a id="aaa7683b785f9d14fcc85ea086b9d428d" name="aaa7683b785f9d14fcc85ea086b9d428d"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<tr class="memdesc:aaa7683b785f9d14fcc85ea086b9d428d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position of this dust. <br /></td></tr>
 <tr class="separator:aaa7683b785f9d14fcc85ea086b9d428d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3090336e581e657101b9c967ae2c5e4c"><td class="memItemLeft" align="right" valign="top"><a id="a3090336e581e657101b9c967ae2c5e4c" name="a3090336e581e657101b9c967ae2c5e4c"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>rotation</b></td></tr>
+<tr class="memdesc:a3090336e581e657101b9c967ae2c5e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current rotation of this dust. <br /></td></tr>
 <tr class="separator:a3090336e581e657101b9c967ae2c5e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1994762070a6000fae3f47a3bae5b038"><td class="memItemLeft" align="right" valign="top"><a id="a1994762070a6000fae3f47a3bae5b038" name="a1994762070a6000fae3f47a3bae5b038"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b></td></tr>
+<tr class="memdesc:a1994762070a6000fae3f47a3bae5b038"><td class="mdescLeft">&#160;</td><td class="mdescRight">The draw scale of the dust. Many dust rely on scale to determine when it should despawn. The Scale parameter of <a class="el" href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1" title="Attempts to spawn a single Dust into the game world. The Position, Width, and Height parameters dicta...">NewDust(Vector2, int, int, int, float, float, int, Color, float)</a> will be slightly randomized (multiplied by a number between 80% to 120%) and then assigned to <a class="el" href="class_dust.html#a1994762070a6000fae3f47a3bae5b038" title="The draw scale of the dust. Many dust rely on scale to determine when it should despawn....">scale</a>. <br /></td></tr>
 <tr class="separator:a1994762070a6000fae3f47a3bae5b038"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0fc9111ae5d4cbbed21e840505d4f4e"><td class="memItemLeft" align="right" valign="top"><a id="af0fc9111ae5d4cbbed21e840505d4f4e" name="af0fc9111ae5d4cbbed21e840505d4f4e"></a>
 <a class="el" href="class_armor_shader_data.html">ArmorShaderData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>shader</b></td></tr>
+<tr class="memdesc:af0fc9111ae5d4cbbed21e840505d4f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The shader that will be applied to this dust when drawing. Typically assigned based on the dye attached to the accessory or equipment spawning the dust. This is done using code similar to <code>dust.shader = GameShaders.Armor.GetSecondaryShader(player.cPet, player);</code> <br /></td></tr>
 <tr class="separator:af0fc9111ae5d4cbbed21e840505d4f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ababcb0d034ba24ebbb99959c285e0584"><td class="memItemLeft" align="right" valign="top"><a id="ababcb0d034ba24ebbb99959c285e0584" name="ababcb0d034ba24ebbb99959c285e0584"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memdesc:ababcb0d034ba24ebbb99959c285e0584"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> ID of this dust. The <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> ID will be equal to either a <a class="el" href="class_dust_i_d.html">DustID</a> entry or <a class="el" href="class_mod_content.html#a2e5088dea2ed1df947181a447284d950" title="Get the id (type) of a ModDust by class. Assumes one instance per class.">ModContent.DustType&lt;T&gt;</a>. <br /></td></tr>
 <tr class="separator:ababcb0d034ba24ebbb99959c285e0584"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcb451dc788d3e82cd37c1fed56e9bf8"><td class="memItemLeft" align="right" valign="top"><a id="adcb451dc788d3e82cd37c1fed56e9bf8" name="adcb451dc788d3e82cd37c1fed56e9bf8"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
+<tr class="memdesc:adcb451dc788d3e82cd37c1fed56e9bf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current velocity of this dust. <br /></td></tr>
 <tr class="separator:adcb451dc788d3e82cd37c1fed56e9bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -220,6 +236,323 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>lavaBubbles</b>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>SandStormCount</b></td></tr>
 <tr class="separator:abea46e5479fd875927df92686bc4e8fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p ><a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are particles effects used to add visual elements to weapons and other effects. <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are completely visual and should never be used as a gameplay element. <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> count limits are imposed by the game to keep perfomance consistent, so <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are not guaranteed to spawn when code attempts to spawn them.</p>
+<p >Vanilla <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> are enumerated in the <a class="el" href="class_dust_i_d.html">DustID</a> class.</p>
+<p >New <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> can be implemented using the <a class="el" href="class_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> class.</p>
+<p >The Basic <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> Guide</p>
+<p >teaches the basics on using <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a>. In addition, the guide has resources teaching how to discover and use vanilla <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a>. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab171b38c60e5943ad1e33eeaef0f0ed1" name="ab171b38c60e5943ad1e33eeaef0f0ed1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab171b38c60e5943ad1e33eeaef0f0ed1">&#9670;&nbsp;</a></span>NewDust()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Dust.NewDust </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>SpeedX</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>SpeedY</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Alpha</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>newColor</em> = <code>default(Color)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to spawn a single <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> into the game world. The Position, Width, and Height parameters dictate a rectangle, the dust will be spawned randomly within that rectangle. SpeedX and SpeedY dictate the initial velocity, they will be slightly randomized as well. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Position</td><td></td></tr>
+    <tr><td class="paramname">Width</td><td></td></tr>
+    <tr><td class="paramname">Height</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td>Either an <a class="el" href="class_dust_i_d.html">DustID</a> entry or <a class="el" href="class_mod_content.html#a2e5088dea2ed1df947181a447284d950" title="Get the id (type) of a ModDust by class. Assumes one instance per class.">ModContent.DustType&lt;T&gt;</a></td></tr>
+    <tr><td class="paramname">SpeedX</td><td></td></tr>
+    <tr><td class="paramname">SpeedY</td><td></td></tr>
+    <tr><td class="paramname">Alpha</td><td></td></tr>
+    <tr><td class="paramname">newColor</td><td></td></tr>
+    <tr><td class="paramname">Scale</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the dust within Main.dust</dd></dl>
+
+</div>
+</div>
+<a id="a96f53df54dad8ad3aac4b431be593e32" name="a96f53df54dad8ad3aac4b431be593e32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96f53df54dad8ad3aac4b431be593e32">&#9670;&nbsp;</a></span>NewDustDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_dust.html">Dust</a> Dust.NewDustDirect </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>SpeedX</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>SpeedY</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Alpha</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>newColor</em> = <code>default(Color)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unlike <a class="el" href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1" title="Attempts to spawn a single Dust into the game world. The Position, Width, and Height parameters dicta...">Dust.NewDust(Vector2, int, int, int, float, float, int, Color, float)</a>, this method returns a <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> instance directly. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Position</td><td></td></tr>
+    <tr><td class="paramname">Width</td><td></td></tr>
+    <tr><td class="paramname">Height</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td></td></tr>
+    <tr><td class="paramname">SpeedX</td><td></td></tr>
+    <tr><td class="paramname">SpeedY</td><td></td></tr>
+    <tr><td class="paramname">Alpha</td><td></td></tr>
+    <tr><td class="paramname">newColor</td><td></td></tr>
+    <tr><td class="paramname">Scale</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> instance spawned</dd></dl>
+
+</div>
+</div>
+<a id="a1498ed079fe5c80b81137b9fd2af404e" name="a1498ed079fe5c80b81137b9fd2af404e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1498ed079fe5c80b81137b9fd2af404e">&#9670;&nbsp;</a></span>NewDustPerfect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_dust.html">Dust</a> Dust.NewDustPerfect </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2?&#160;</td>
+          <td class="paramname"><em>Velocity</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Alpha</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>newColor</em> = <code>default(Color)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to spawn a single <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> into the game world. <em>Position</em>  indicates the spawn position and <em>Velocity</em>  indicates the initial velocity. Unlike <a class="el" href="class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1" title="Attempts to spawn a single Dust into the game world. The Position, Width, and Height parameters dicta...">NewDust(Vector2, int, int, int, float, float, int, Color, float)</a>, position and velocity will not be slightly randomized, making this method suitable for visual effects that need exact positioning. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Position</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td></td></tr>
+    <tr><td class="paramname">Velocity</td><td></td></tr>
+    <tr><td class="paramname">Alpha</td><td></td></tr>
+    <tr><td class="paramname">newColor</td><td></td></tr>
+    <tr><td class="paramname">Scale</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> instance spawned</dd></dl>
+
+</div>
+</div>
+<a id="a6f9bf22f6911250449e5597256fb4aed" name="a6f9bf22f6911250449e5597256fb4aed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f9bf22f6911250449e5597256fb4aed">&#9670;&nbsp;</a></span>QuickDust()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_dust.html">Dust</a> Dust.QuickDust </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns dust 267 tinted to the provided color at the specified position with no velocity or gravity. Used solely for debugging purposes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td></td></tr>
+    <tr><td class="paramname">color</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
