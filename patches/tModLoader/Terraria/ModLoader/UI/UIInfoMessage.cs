@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -20,6 +21,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	private Action _altAction;
 	private string _altText;
 	private string _okText;
+
 	public UIState PreviousUIState { get; set; }
 
 	public override void OnInitialize()
@@ -87,11 +89,17 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		_area.AddOrRemoveChild(_buttonAlt, showAlt);
 	}
 
-	internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
+	internal void Show(string message, int gotoMenu, UIState gotoState = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
 	{
+		if (!Program.IsMainThread) {
+			// in some cases it would be better to block on this, but in other cases that might be a deadlock. Better to assume that letting the thread continue is the right choice
+			Main.QueueMainThreadAction(() => Show(message, gotoMenu, gotoState, altButtonText, altButtonAction, okButtonText));
+			return;
+		}
+
 		_message = message;
 		_gotoMenu = gotoMenu;
-		_gotoState = state;
+		_gotoState = gotoState;
 		_altText = altButtonText;
 		_altAction = altButtonAction;
 		_okText = okButtonText;
@@ -106,7 +114,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()
 	{
-		SoundEngine.PlaySound(10);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Main.menuMode = _gotoMenu;
 		if (_gotoState != null)
 			Main.MenuUI.SetState(_gotoState);
@@ -114,9 +122,8 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 
 	private void AltClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(10);
-		_altAction?.Invoke();
-		Main.menuMode = _gotoMenu;
+		HandleBackButtonUsage();
+		_altAction();
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)

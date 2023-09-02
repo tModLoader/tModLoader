@@ -286,7 +286,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		FileUtilities.CopyFolder(configPath, Path.Combine(instancePath, "SaveData", "ModConfigs"));
 
 		// Customize the instance to look at the correct folder
-		File.WriteAllText(Path.Combine(instancePath, "cli-argsConfig.txt"), $"-tmlsavedirectory {Path.Combine(instancePath, "SaveData")} -steamworkshopfolder none");
+		File.WriteAllText(Path.Combine(instancePath, "cli-argsConfig.txt"), $"-tmlsavedirectory {Path.Combine(instancePath, "SaveData")}\n-steamworkshopfolder none");
 
 		//TODO: Install the correct tModLoader version
 		/*

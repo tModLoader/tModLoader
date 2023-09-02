@@ -1,5 +1,6 @@
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -70,5 +71,15 @@ public class ModNPCTest : ModNPC
 	public override void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) { }
 	public override void DrawTownAttackGun(ref float scale, ref int item, ref int closeness) {
 		closeness = 10;
+	}
+
+	public override void SetStaticDefaults() {
+		NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
+			SpecificallyImmuneTo = new int[] {
+				BuffID.Poisoned
+			}
+		});
+
+		NPCID.Sets.ShimmerImmunity[Type] = true;
 	}
 }

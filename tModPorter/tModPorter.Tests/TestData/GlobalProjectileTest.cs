@@ -33,4 +33,5 @@ public class GlobalProjectileTest : GlobalProjectile
 
 	public override void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit) { }
 	public override void OnHitPvp(Projectile projectile, Player target, int damage, bool crit) { }
+	public override void Kill(Projectile projectile, int timeLeft) { }
 }

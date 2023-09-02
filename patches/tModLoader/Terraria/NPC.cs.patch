@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
 @@ -21,12 +_,13 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
@@ -106,7 +113,7 @@
  	public int[] buffTime = new int[maxBuffs];
 +
 +	/// <summary>
-+	/// Make the NPC immune to buffs/debuffs. Example: <c>NPC.buffImmune[BuffID.OnFire] = true;</c>
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>. 
 +	/// </summary>
 -	public bool[] buffImmune = new bool[BuffID.Count];
 +	public bool[] buffImmune = new bool[BuffLoader.BuffCount];
@@ -827,12 +834,78 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -10793,13 +_,18 @@
+@@ -10792,14 +_,84 @@
+ 			DeathSound = SoundID.NPCDeath6;
  			catchItem = 2121;
  		}
- 
-+		NPCLoader.SetDefaults(this);
++		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.  
++		if (NPCID.Sets.ImmuneToAllBuffs[type])
++			Array.Fill(buffImmune, true);
 +
++		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToAllBuffs[type]) {
++			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
++			if (!NPCID.Sets.ImmuneToAllBuffs[type]) {
++				for (int i = 0; i < buffImmune.Length; i++) {
++					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
++				}
++			}
++
++			// If immune to most buffs...
++			// Apply all `SpecificDebuffImmunity` `false` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if(buffImmunity is false) {
++					buffImmune[i] = false;
++				}
++			}
++
++			// Apply all `GrantImmunityWith` in reverse (if vulnerable to OnFire, add vulnerability to OnFire3, keep in mind this is _all_ of the vulnerabilities in `[OnFire3]` list)
++			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
++				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
++				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[i]))
++					buffImmune[i] = false;
++			}
++
++			// Apply all `SpecificDebuffImmunity` `true` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is true) {
++					buffImmune[i] = true;
++				}
++			}
++		}
++		else {
++			// If not immune to most buffs...
++			// Apply all `SpecificDebuffImmunity` `true` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is true) {
++					buffImmune[i] = true;
++				}
++			}
++
++			// Apply all `GrantImmunityWith` (if immune to OnFire, add OnFire3, keep in mind this is _any_ of the immunities in `[OnFire3]` list)
++			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
++				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
++				foreach (var inheritableBuff in buffsToInherit) {
++					if (buffImmune[inheritableBuff]) {
++						buffImmune[i] = true;
++						break;
++					}
++				}
++			}
++
++			// Apply all `SpecificDebuffImmunity` `false` overrides
++			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
++				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
++				if (buffImmunity is false) {
++					buffImmune[i] = false;
++				}
++			}
++		}
++
++		NPCLoader.SetDefaults(this);
+ 
  		if (Main.dedServ)
  			frame = default(Rectangle);
 +		// Extra patch context.
@@ -846,6 +919,22 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
+@@ -10823,6 +_,7 @@
+ 		defDamage = damage;
+ 		defDefense = defense;
+ 		netID = type;
++		/*
+ 		if (NPCID.Sets.DebuffImmunitySets.TryGetValue(type, out var nPCDebuffImmunityData) && nPCDebuffImmunityData != null) {
+ 			nPCDebuffImmunityData.ApplyToNPC(this);
+ 		}
+@@ -10833,6 +_,7 @@
+ 		}
+ 
+ 		buffImmune[353] = NPCID.Sets.ShimmerImmunity[type];
++		*/
+ 		if (Main.zenithWorld)
+ 			getZenithSeedAdjustmentsBeforeEverything();
+ 
 @@ -10841,12 +_,13 @@
  		else if (Main.tenthAnniversaryWorld)
  			getTenthAnniversaryAdjustments();
@@ -2370,8 +2459,8 @@
  	}
  
 +	/// <summary>
-+	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap.
-+	/// <br/> Use <see cref="NPC.DelBuff"/> if you only know the buff index.
++	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap. Note that only buffs contained in <see cref="BuffID.Sets.CanBeRemovedByNetMessage"/> can be removed with this method. The intention is that those specific buffs are "owned" by the player who inflicts them, so they can be freely removed by multiplayer clients.
++	/// <br/><br/>  In all other cases code running on the server or in single player is in charge of the NPC debuffs and <see cref="NPC.DelBuff"/> should be used directly.
 +	/// </summary>
 +	/// <param name="buffTypeToRemove">The buff type</param>
  	public void RequestBuffRemoval(int buffTypeToRemove)
@@ -2381,13 +2470,12 @@
  			return;
  
  		int num = FindBuffIndex(buffTypeToRemove);
-@@ -72253,6 +_,11 @@
+@@ -72253,6 +_,10 @@
  		}
  	}
  
 +	/// <summary>
-+	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap.
-+	/// <br/> Use <see cref="NPC.RequestBuffRemoval"/> if you only know the buff type.
++	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player. 
 +	/// </summary>
 +	/// <param name="buffIndex">The index of the buff to remove.</param>
  	public void DelBuff(int buffIndex)

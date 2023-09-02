@@ -77,7 +77,7 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// the position should be modified to compensate for the sprite size difference
 			Vector2 positionOffset;
 
-			if (context.resourceNumber == context.snapshot.AmountOfLifeHearts) {
+			if (context.resourceNumber == context.snapshot.AmountOfLifeHearts - 1) {
 				// Final panel to draw has a special "Fancy" variant.  Determine whether it has panels to the left of it
 				if (CompareAssets(context.texture, fancyFolder + "Heart_Single_Fancy")) {
 					// First and only panel in this panel's row
