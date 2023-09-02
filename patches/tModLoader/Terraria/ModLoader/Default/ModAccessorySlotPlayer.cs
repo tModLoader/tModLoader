@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Default;
 
 // Test in Multiplayer, suspect there is some issue with synchronization of unloaded slots
-public class ModAccessorySlotPlayer : ModPlayer
+public sealed class ModAccessorySlotPlayer : ModPlayer
 {
 	internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
