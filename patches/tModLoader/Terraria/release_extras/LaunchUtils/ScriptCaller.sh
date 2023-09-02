@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 
 echo "You are on platform: \"$_uname\""
 
-LaunchLogs="$root_dir/tModLoader-Logs"
+export LaunchLogs="$root_dir/tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"

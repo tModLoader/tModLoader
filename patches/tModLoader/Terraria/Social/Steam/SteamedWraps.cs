@@ -52,6 +52,21 @@ public static class SteamedWraps
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 	}
 
+	public static void QueueForceValidateSteamInstall()
+	{
+		// There is no GoG version for this, unfortunately.
+		if (!SteamClient)
+			return;
+
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+			Logging.tML.Info("Launched Outside of Steam. Skipping attempt to trigger 'verify local files' in Steam. If error persists, please attempt this manually");
+			return;
+		}
+
+		SteamApps.MarkContentCorrupt(false);
+		Logging.tML.Info("Marked tModLoader installation files as corrupt in Steam. On Next Launch, User will have 'Verify Local Files' ran");
+	}
+
 	internal static void Initialize()
 	{
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
@@ -400,31 +415,6 @@ public static class SteamedWraps
 
 		// Remove the files
 		Directory.Delete(installPath, true);
-	}
-
-	private static void UninstallACF(PublishedFileId_t publishId)
-	{
-		// Cleanup acf file by removing info on this itemID
-		string acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
-
-		string[] acf = File.ReadAllLines(acfPath);
-		using StreamWriter w = new StreamWriter(acfPath);
-
-		int blockLines = 5;
-		int skip = 0;
-
-		for (int i = 0; i < acf.Length; i++) {
-			if (acf[i].Contains(publishId.ToString())) {
-				skip = blockLines;
-				continue;
-			}
-			else if (skip > 0) {
-				skip--;
-				continue;
-			}
-
-			w.WriteLine(acf[i]);
-		}
 	}
 
 	public static bool IsWorkshopItemInstalled(PublishedFileId_t publishId)
