@@ -17,6 +17,10 @@ public struct NPCSpawnInfo
 
 	public int SpawnTileType;
 
+	/// <summary> Shorthand for "Main.tile[info.SpawnTileX, info.SpawnTileY]" </summary>
+	public readonly Tile GetTile()
+		=> Main.tile[SpawnTileX, SpawnTileY];
+
 	/// <summary>
 	/// The player that this NPC is spawning around.
 	/// For convenience, here are the player zones, which are also useful for determining NPC spawn:
@@ -55,12 +59,15 @@ public struct NPCSpawnInfo
 	/// <summary>
 	/// The x-coordinate of the tile the player is standing on.
 	/// </summary>
-	public int PlayerFloorX;
+	public readonly int PlayerFloorX => (int)Player.Center.X / 16;
 
 	/// <summary>
 	/// The y-coordinate of the tile the player is standing on.
 	/// </summary>
-	public int PlayerFloorY;
+	public readonly int PlayerFloorY => (int)(Player.Bottom.Y + 8f) / 16;
+
+	public readonly Tile GetPlayerCentreTile()
+		=> Main.tile[(int)Player.Center.X / 16, (int)Player.Center.Y / 16];
 
 	/// <summary>
 	/// Whether or not the player is in the sky biome, where harpies and wyverns spawn.

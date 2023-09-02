@@ -1,12 +1,5 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
-@@ -1,5 +_,6 @@
- using System;
- using System.Collections.Generic;
-+using System.ComponentModel;
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Content;
 @@ -21,12 +_,13 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
@@ -16,9 +9,8 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
--
+ 
 -public class NPC : Entity
-+[EditorBrowsable(EditorBrowsableState.Never)]
 +public partial class NPC : Entity
  {
  	private const int NPC_TARGETS_START = 300;
@@ -1831,7 +1823,7 @@
  								flag15 = true;
  						}
  					}
-@@ -61076,17 +_,25 @@
+@@ -61076,17 +_,22 @@
  						flag2 = false;
  
  					if (Main.tile[num, num2 - 1].honey())
@@ -1844,9 +1836,6 @@
  
  				int num29 = (int)Main.player[k].Center.X / 16;
  				int num30 = (int)(Main.player[k].Bottom.Y + 8f) / 16;
-+
-+				spawnInfo.PlayerFloorX = num29;
-+				spawnInfo.PlayerFloorY = num30;
 +
  				if (Main.tile[num, num2].type == 367) {
 +					// Patch note: flag10 - Marble
