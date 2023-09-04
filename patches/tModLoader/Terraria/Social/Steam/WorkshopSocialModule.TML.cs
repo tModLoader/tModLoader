@@ -134,7 +134,7 @@ public partial class WorkshopSocialModule
 			ModOrganizer.CleanupOldPublish(workshopFolderPath);
 
 			// Should be called after folder created & cleaned up
-			tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
+			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
@@ -164,6 +164,12 @@ public partial class WorkshopSocialModule
 		}
 
 		return true;
+	}
+
+	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
+	{
+		var summary = ModOrganizer.AnalyzeWorkshopTmods(repo);
+		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 	}
 
 	internal static LocalMod OpenModFile(string path)

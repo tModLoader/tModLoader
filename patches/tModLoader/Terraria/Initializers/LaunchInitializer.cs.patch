@@ -30,7 +30,7 @@
  
  		string arg;
  		if ((arg = TryParameter("-pass", "-password")) != null) {
-@@ -41,6 +_,42 @@
+@@ -41,10 +_,53 @@
  
  		if (HasParameter("-host"))
  			game.AutoHost();
@@ -73,6 +73,25 @@
  	}
  
  	private static void LoadServerParameters(Main game)
+ 	{
++		if (!OperatingSystem.IsWindows()) {
++			if (TryParameter("-forcepriority") != null) {
++				ModLoader.Logging.tML.Warn("The -forcepriority command line parameter has no effect on non-Windows OS. You'll have to set priority manually within your OS."); // Fix #3749
++			}
++			goto PostSetPriorityClass;
++		}
++
+ 		try {
+ 			string s;
+ 			if ((s = TryParameter("-forcepriority")) != null) {
+@@ -84,6 +_,7 @@
+ 		}
+ 		catch {
+ 		}
++		PostSetPriorityClass:
+ 
+ 		string value;
+ 		if ((value = TryParameter("-maxplayers", "-players")) != null) {
 @@ -103,6 +_,16 @@
  		if ((s2 = TryParameter("-language")) != null)
  			LanguageManager.Instance.SetLanguage(s2);
