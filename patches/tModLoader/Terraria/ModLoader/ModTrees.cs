@@ -10,7 +10,7 @@ namespace Terraria.ModLoader;
 /// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
 /// This class encapsulates several functions that distinguish each type of tree from each other.
 /// </summary>
-public abstract class ModConvertibleTree : BaseTree
+public abstract class ModTree : BaseTree
 {
 	// Default Properties of ModTree
 	public const int VanillaTopTextureCount = 100;
@@ -47,7 +47,7 @@ public abstract class ModConvertibleTree : BaseTree
 /// The palm tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
 /// This class encapsulates several functions that distinguish each type of palm tree from each other.
 /// </summary>
-public abstract class ModConvertiblePalmTree : BaseTree
+public abstract class ModPalmTree : BaseTree
 {
 	// Properties for ModPalmTree
 	public const int VanillaStyleCount = 8;

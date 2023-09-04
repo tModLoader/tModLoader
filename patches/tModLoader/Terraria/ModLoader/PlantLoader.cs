@@ -70,11 +70,11 @@ public static class PlantLoader
 
 	public static BaseTree GetTree(int type)
 	{
-		var tree = Get<ModConvertibleTree>(TileID.Trees, type);
+		var tree = Get<ModTree>(TileID.Trees, type);
 		if (tree is not null)
 			return tree;
 
-		var palm = Get<ModConvertiblePalmTree>(TileID.PalmTree, type);
+		var palm = Get<ModPalmTree>(TileID.PalmTree, type);
 		if (palm is not null)
 			return palm;
 
