@@ -68,7 +68,7 @@ public static class PlantLoader
 		return plant.GetTexture();
 	}
 
-	public static ITree GetTree(int type)
+	public static ConvertibleTree GetTree(int type)
 	{
 		var tree = Get<ModTree>(TileID.Trees, type);
 		if (tree is not null)

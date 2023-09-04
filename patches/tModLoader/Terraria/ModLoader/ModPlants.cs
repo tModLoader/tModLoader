@@ -24,12 +24,38 @@ public interface IPlant : ILoadable
 	void ILoadable.Unload() { }
 }
 
-public interface ITree : IPlant
+/// <summary>
+/// This class represents a type of modded cactus.
+/// This class encapsulates a function for retrieving the cactus's texture and an array for type of soil it grows on.
+/// </summary>
+public abstract class ModCactus : IPlant
+{
+	/// <summary>
+	/// The cactus will share a tile ID with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted.
+	/// </summary>
+	public int PlantTileId => TileID.Cactus;
+	public int VanillaCount => 1;
+	public int[] GrowsOnTileId { get; set; }
+	public abstract void SetStaticDefaults();
+	public abstract Asset<Texture2D> GetTexture();
+	public abstract Asset<Texture2D> GetFruitTexture();
+}
+
+public abstract class ConvertibleTree : IPlant
 {
 	/// <summary>
 	/// Used mostly for vanilla tree shake loot tables
 	/// </summary>
-	TreeTypes CountsAsTreeType { get; }
+	public TreeTypes CountsAsTreeType { get; }
+
+	public int PlantTileId { get; }
+	public int VanillaCount { get; }
+
+	// Bulk Abstract requirements
+	public int[] GrowsOnTileId { get; set; }
+	public abstract void SetStaticDefaults();
+	public abstract Asset<Texture2D> GetTexture();
+	public abstract TreePaintingSettings TreeShaderSettings { get; }
 
 	/// <summary>
 	/// Executed on tree shake, return false to skip vanilla tree shake drops.<br/>
@@ -91,28 +117,11 @@ public interface ITree : IPlant
 }
 
 /// <summary>
-/// This class represents a type of modded cactus.
-/// This class encapsulates a function for retrieving the cactus's texture and an array for type of soil it grows on.
-/// </summary>
-public abstract class ModCactus : IPlant
-{
-	/// <summary>
-	/// The cactus will share a tile ID with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted.
-	/// </summary>
-	public int PlantTileId => TileID.Cactus;
-	public int VanillaCount => 1;
-	public int[] GrowsOnTileId { get; set; }
-	public abstract void SetStaticDefaults();
-	public abstract Asset<Texture2D> GetTexture();
-	public abstract Asset<Texture2D> GetFruitTexture();
-}
-
-/// <summary>
 /// This class represents a type of modded tree.
 /// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
 /// This class encapsulates several functions that distinguish each type of tree from each other.
 /// </summary>
-public abstract class ModTree : ITree
+public abstract class ModTree : ConvertibleTree
 {
 	// Default Properties of ModTree
 	public const int VanillaTopTextureCount = 100;
@@ -124,19 +133,6 @@ public abstract class ModTree : ITree
 	public int PlantTileId => TileID.Trees;
 	public int VanillaCount => VanillaStyleCount;
 	public virtual TreeTypes CountsAsTreeType => TreeTypes.Forest;
-
-	// Abstract bulk entries
-	public abstract TreePaintingSettings TreeShaderSettings { get; }
-	public int[] GrowsOnTileId { get; set; }
-	public abstract void SetStaticDefaults();
-	public abstract Asset<Texture2D> GetTexture();
-	public abstract int DropWood();
-
-	/// <summary>
-	/// Return the texture containing the possible tree tops that can be drawn above this tree.
-	/// The framing was determined under <cref>SetTreeFoliageSettings</cref>
-	/// </summary>
-	public abstract Asset<Texture2D> GetTopTextures();
 
 	// Special Items for ModTree
 	/// <summary>
@@ -155,12 +151,6 @@ public abstract class ModTree : ITree
 	/// The framing was determined under <cref>SetTreeFoliageSettings</cref>
 	/// </summary>
 	public abstract Asset<Texture2D> GetBranchTextures();
-
-	// Anti-Breakage Code As of Aug 24 2023
-	public virtual bool Shake(int x, int y, ref bool createLeaves) => (this as ITree).Shake(x, y, ref createLeaves);
-	public virtual int TreeLeaf() => (this as ITree).TreeLeaf();
-	public virtual int SaplingGrowthType(ref int style) => (this as ITree).SaplingGrowthType(ref style);
-	public virtual int CreateDust() => (this as ITree).CreateDust();
 }
 
 /// <summary>
@@ -168,7 +158,7 @@ public abstract class ModTree : ITree
 /// The palm tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
 /// This class encapsulates several functions that distinguish each type of palm tree from each other.
 /// </summary>
-public abstract class ModPalmTree : ITree
+public abstract class ModPalmTree : ConvertibleTree
 {
 	// Properties for ModPalmTree
 	public const int VanillaStyleCount = 8;
@@ -179,24 +169,10 @@ public abstract class ModPalmTree : ITree
 	public int VanillaCount => VanillaStyleCount;
 	public virtual TreeTypes CountsAsTreeType => TreeTypes.Palm;
 
-	// Bulk Abstract requirements
-	public abstract TreePaintingSettings TreeShaderSettings { get; }
-	public int[] GrowsOnTileId { get; set; }
-	public abstract void SetStaticDefaults();
-	public abstract Asset<Texture2D> GetTexture();
-	public abstract int DropWood();
-	public abstract Asset<Texture2D> GetTopTextures();
-
 	// Custom to ModPalmTree
 	/// <summary>
 	/// Return the texture containing the possible tree tops that can be drawn above this palm tree.
 	/// </summary>
 	/// <returns></returns>
 	public abstract Asset<Texture2D> GetOasisTopTextures();
-
-	// Anti-Breakage Code As of Aug 24 2023
-	public virtual bool Shake(int x, int y, ref bool createLeaves) => (this as ITree).Shake(x, y, ref createLeaves);
-	public virtual int TreeLeaf() => (this as ITree).TreeLeaf();
-	public virtual int SaplingGrowthType(ref int style) => (this as ITree).SaplingGrowthType(ref style);
-	public virtual int CreateDust() => (this as ITree).CreateDust();
 }
