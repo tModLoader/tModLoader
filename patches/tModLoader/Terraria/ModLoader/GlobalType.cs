@@ -7,6 +7,8 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
+#nullable enable
+
 public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<TGlobal>
 {
 	/// <summary>
@@ -43,7 +45,7 @@ public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<T
 		base.ValidateType();
 
 		bool hasInstanceFields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-			.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalType<TGlobal>)));
+			.Any(f => f.DeclaringType!.IsSubclassOf(typeof(GlobalType<TGlobal>)));
 
 		if (hasInstanceFields && !InstancePerEntity)
 			throw new Exception($" {GetType().FullName} instance fields but {nameof(InstancePerEntity)} returns false. Either use static fields, or override {nameof(InstancePerEntity)} to return true");
@@ -130,10 +132,10 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	/// <summary>
 	/// Create a copy of this instanced global. Called when an entity is cloned.
 	/// </summary>
-	/// <param name="from">The entity being cloned</param>
+	/// <param name="from">The entity being cloned. May be null if <see cref="CloneNewInstances"/> is true (via call from <see cref="NewInstance(TEntity)"/>)</param>
 	/// <param name="to">The new clone of the entity</param>
 	/// <returns>A clone of this global</returns>
-	public virtual TGlobal Clone(TEntity from, TEntity to)
+	public virtual TGlobal Clone(TEntity? from, TEntity to)
 	{
 		if (!IsCloneable)
 			Cloning.WarnNotCloneable(GetType());
@@ -142,11 +144,14 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	}
 
 	/// <summary>
-	/// Only called if <see cref="GlobalType{TGlobal}.InstancePerEntity"/> and <see cref="AppliesToEntity"/>(<paramref name="target"/>, ...) are both true
+	/// Only called if <see cref="GlobalType{TGlobal}.InstancePerEntity"/> and <see cref="AppliesToEntity"/>(<paramref name="target"/>, ...) are both true. <br/>
+	/// <br/>
+	/// Returning null is permitted but <b>not recommended</b> over <c>AppliesToEntity</c> for performance reasons. <br/>
+	/// Only return null when the global is disabled based on some runtime property (eg world seed).
 	/// </summary>
 	/// <param name="target">The entity instance the global is being instantiated for</param>
 	/// <returns></returns>
-	public virtual TGlobal NewInstance(TEntity target)
+	public virtual TGlobal? NewInstance(TEntity target)
 	{
 		if (CloneNewInstances)
 			return Clone(default, target);
