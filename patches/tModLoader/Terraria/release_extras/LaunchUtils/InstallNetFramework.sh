@@ -30,12 +30,6 @@ if [ -d "$dotnet_dir" ]; then
 			rm -rf "$old_version"
 		fi
 	done
-
-	if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
-		echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"
-		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
-	fi
 else
 	mkdir "$dotnet_dir"
 fi

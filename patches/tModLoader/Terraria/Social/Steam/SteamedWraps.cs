@@ -425,6 +425,31 @@ public static class SteamedWraps
 			UninstallACF(item);
 	}
 
+	private static void UninstallACF(PublishedFileId_t publishId)
+	{
+		// Cleanup acf file by removing info on this itemID
+		string acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
+
+		string[] acf = File.ReadAllLines(acfPath);
+		using StreamWriter w = new StreamWriter(acfPath);
+
+		int blockLines = 5;
+		int skip = 0;
+
+		for (int i = 0; i < acf.Length; i++) {
+			if (acf[i].Contains(publishId.ToString())) {
+				skip = blockLines;
+				continue;
+			}
+			else if (skip > 0) {
+				skip--;
+				continue;
+			}
+
+			w.WriteLine(acf[i]);
+		}
+	}
+
 	public static bool IsWorkshopItemInstalled(PublishedFileId_t publishId)
 	{
 		var currState = GetWorkshopItemState(publishId);

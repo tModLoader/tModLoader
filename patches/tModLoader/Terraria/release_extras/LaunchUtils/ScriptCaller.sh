@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 
 echo "You are on platform: \"$_uname\""
 
-export LaunchLogs="$root_dir/tModLoader-Logs"
+LaunchLogs="$root_dir/tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
@@ -57,6 +57,12 @@ if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
 fi
 export install_dir="$dotnet_dir/$dotnet_version"
 echo "Success!"  2>&1 | tee -a "$LogFile"
+
+if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
+	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"
+	rm -rf "$dotnet_dir"
+	mkdir "$dotnet_dir"
+fi
 
 run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
 
