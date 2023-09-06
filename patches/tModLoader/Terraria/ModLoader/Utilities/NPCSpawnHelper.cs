@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.ID;
 using static Terraria.ModLoader.Utilities.SubSpawnCondition.Common;
@@ -113,7 +114,9 @@ public class SpawnTreeParent : ISpawnTreeItem
 	}
 
 	public static SpawnTreeParent operator +(SpawnTreeParent parent, ISpawnTreeItem child)
-		=> new(parent.Children.Append(child).ToArray());
+	{
+		return new(parent.Children.Append(child).ToArray());
+	}
 }
 
 public class ConditionedSpawnTreeParent : SpawnTreeParent, IConditionedTreeItem
@@ -136,7 +139,7 @@ public class ConditionedSpawnTreeParent : SpawnTreeParent, IConditionedTreeItem
 }
 
 // TODO: I don't like that we've ended up here again, think of something to keep it all separate
-public sealed class DualConditionedSpawnTreeParent : ConditionedSpawnTreeParent, IConditionedTreeItem
+public sealed class DualConditionedSpawnTreeParent : ConditionedSpawnTreeParent
 {
 	private Func<NPCSpawnInfo, float> WeightFunc { get; init; }
 
@@ -146,6 +149,22 @@ public sealed class DualConditionedSpawnTreeParent : ConditionedSpawnTreeParent,
 	}
 
 	public override float GetWeight(NPCSpawnInfo info) => WeightFunc.Invoke(info);
+}
+
+public class MultiEntrySum : List<ISpawnTreeItem>
+{
+	public MultiEntrySum(params ISpawnTreeItem[] items)
+	{
+		AddRange(items);
+	}
+
+	public float Chance => this.Sum((item) => item.Chance);
+
+	internal ISpawnTreeItem AddAndReturn(ISpawnTreeItem item)
+	{
+		Add(item);
+		return item;
+	}
 }
 
 //TODO: further documentation
@@ -319,9 +338,7 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition Marble;
 	public static readonly WeightedSpawnCondition Granite;
 	public static readonly CalculatedSpawnCondition Tim;
-	private static readonly WeightedSpawnCondition ArmouredVikingIcyMermanSkeletonArcherArmouredSkeleton;
 	public static readonly WeightedSpawnCondition UndeadMiner;
-	private static readonly ConditionedSpawnTreeParent UndeadVikingSnowFlinx;
 	public static readonly WeightedSpawnCondition UndeadViking;
 	public static readonly WeightedSpawnCondition Flinx3;
 	public static readonly WeightedSpawnCondition Flinx4;
@@ -480,13 +497,13 @@ public static class SpawnCondition
 		Gnome = new();
 		//(!Main.remixWorld && !flag7 && (!Main.dayTime || Main.tile[num, num2].wall > 0) && Main.tile[num8, num9].wall == 244 && !Main.eclipse && !Main.bloodMoon && Main.player[k].RollLuck(30) == 0 && CountNPCS(624) <= Main.rand.Next(3))
 		baseCondition += Gnome.AddAndReturn(new CalculatedSpawnCondition(!RemixWorld & !InfoWater & (!TimeDay | HasTrueWallTile) & PlayerCenterSpawnTile(WallID.LivingWoodUnsafe) & !Eclipse & !BloodMoon & SpawnCap(NPCID.Gnome, 3),
-			(info) => ((3 - NPC.CountNPCS(NPCID.Gnome)) / 3f) * GetPlayerRollWeight(info, 30))); //29
+			(info) => (3 - NPC.CountNPCS(NPCID.Gnome)) / 3f * GetPlayerRollWeight(info, 30))); //29
 
 		//ReLogic??? I will cry on you and that is a threat
 		//(!Main.player[k].ZoneCorrupt && !Main.player[k].ZoneCrimson && !flag7 && !Main.eclipse && !Main.bloodMoon && Main.player[k].RollLuck(range) == 0 && ((!Main.remixWorld && (double)num2 >= Main.worldSurface * 0.800000011920929 && (double)num2 < Main.worldSurface * 1.100000023841858) || (Main.remixWorld && (double)num2 > Main.rockLayer && num2 < Main.maxTilesY - 350)) && CountNPCS(624) <= Main.rand.Next(3) && (!Main.dayTime || Main.tile[num, num2].wall > 0) && (Main.tile[num, num2].wall == 63 || Main.tile[num, num2].wall == 2 || Main.tile[num, num2].wall == 196 || Main.tile[num, num2].wall == 197 || Main.tile[num, num2].wall == 198 || Main.tile[num, num2].wall == 199))
 		baseCondition += Gnome.AddAndReturn(
 			new CalculatedSpawnCondition(!InCorrupt & !InCrimson & !InfoWater & !Eclipse & !BloodMoon & (!TimeDay | HasTrueWallTile) & SpawnCap(NPCID.Gnome, 3) & ConditionWrapper.CreateConditional(RemixWorld, BelowRockLayer & AboveTileFromFloor(350), GnomeSurfaceCheck) & TrueWallTile(63, 2, 196, 197, 198, 199),
-				(info) => ((3 - NPC.CountNPCS(NPCID.Gnome)) / 3f) * GetPlayerRollWeight(info, Main.remixWorld ? 5 : 10))); //30
+				(info) => (3 - NPC.CountNPCS(NPCID.Gnome)) / 3f * GetPlayerRollWeight(info, Main.remixWorld ? 5 : 10))); //30
 
 		// Mushroom
 		baseCondition += HardmodeMushroomWater = new(HardMode & SpawnTile(TileID.MushroomGrass) & InfoWater); //31
@@ -504,7 +521,7 @@ public static class SpawnCondition
 
 		baseCondition += Wraith = new(HardMode & AboveOrWorldSurface & TimeDay, //39
 			(info) => (1 / 20f) + (Main.moonPhase == 4 ? 1f / 5f : 0f));
-		// Remeber kids: P(A or B) = P(A) + P(B) for independant events
+		// Remember kids: P(A or B) = P(A) + P(B) for independent events
 		baseCondition += HoppinJack = new(HardMode & Halloween & AboveOrWorldSurface & !TimeDay, 0.1f); //40
 		baseCondition += DoctorBones = new(ProperGroundSpawnTile(TileID.JungleGrass) & TimeDay, GetPlayerRollWeightFunc(500)); // 41
 		baseCondition += LacBeetle = new(SpawnTile(TileID.JungleGrass) & !AboveOrWorldSurface, 1f / 60f); // 42
@@ -559,7 +576,7 @@ public static class SpawnCondition
 			RainbowSlime = new(InHallow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.RainbowSlime), 0.05f),
 			AngryNimbus = new(!InSnow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.AngryNimbus, 2), 0.1f),
 			MartianProbe = new(MartianProbePosition & HardMode & DownedGolem & SpawnCap(NPCID.MartianProbe),
-				(info) => 1f - (!NPC.downedMartians ? (399f / 400f) * 0.99f : (399f / 400f))),
+				(info) => 1f - (!NPC.downedMartians ? 399f / 400f * 0.99f : (399f / 400f))),
 
 			// Overworld Typical
 			OverworldDay = new(TimeDay, new ISpawnTreeItem[] {
@@ -575,7 +592,7 @@ public static class SpawnCondition
 				OverworldDayDesert = new(TrueSpawnTile(TileID.Sand) & InfoWater, 0.2f),
 
 				// Overworld Goblin Scout
-				GoblinScout = new(InfoOuterThird, (info) => 1f - ((!NPC.downedGoblins && WorldGen.shadowOrbSmashed) ? (6f / 7f) * (14f / 15f) : (14f / 15f))),
+				GoblinScout = new(InfoOuterThird, (info) => 1f - ((!NPC.downedGoblins && WorldGen.shadowOrbSmashed) ? 6f / 7f * (14f / 15f) : (14f / 15f))),
 
 				// Overworld Typical
 				OverworldDayRain = new(Raining, 2f / 3f),
@@ -593,7 +610,7 @@ public static class SpawnCondition
 
 		// Caverns
 
-		baseCondition += Cavern = new(new ISpawnTreeItem[] { // 66 => 93 //TODO: Make into Multi
+		baseCondition += Cavern = new(new ISpawnTreeItem[] { // 66 => 93 //TODO: Make into Multi? Kinda unnecessary as overflow isn't an issue here
 			RockGolem = new(RockGolemCondition),
 			DyeBeetle = new(1f / 60f),
 			ChaosElemental = new(HardMode & !InfoPlayerSafe & ProperGroundSpawnTile(TileID.Pearlsand, TileID.Pearlstone, TileID.HallowedIce), 1f / 8f),
@@ -618,10 +635,10 @@ public static class SpawnCondition
 			Marble = new(InfoMarble, 3f / 4f),
 			Granite = new(InfoGranite, 4f / 5f),
 			Tim = new(RemixWorld | !IDontKnow, (info) => 1f / (TimArmourCheck.IsMet(info) ? 50f : 200f)),
-			ArmouredVikingIcyMermanSkeletonArcherArmouredSkeleton = new(HardMode, 0.9f),
+			new WeightedSpawnCondition(HardMode, 0.9f),
 			Ghost = new(!InfoPlayerSafe & (Halloween | InGraveyard), 1f / 30f),
 			UndeadMiner = new(1f / 20f),
-			UndeadVikingSnowFlinx = new(SpawnTile(TileID.SnowBlock, TileID.IceBlock, TileID.BreakableIce),new ISpawnTreeItem[] {
+			new ConditionedSpawnTreeParent(SpawnTile(TileID.SnowBlock, TileID.IceBlock, TileID.BreakableIce),new ISpawnTreeItem[] {
 				Flinx3 = new(1f / 15f),
 				UndeadViking = new()
 			}),
@@ -690,9 +707,7 @@ public static class SpawnCondition
 	public static bool WaterSurfaceAvoidHousing(NPCSpawnInfo info, int extraHeight = 2, int maxHeight = 50, int airGapHeight = 3)
 	{
 		int surfaceY = GetWaterSurface_Unchecked(info, extraHeight, maxHeight, airGapHeight);
-		if (IsHouseWall(info.SpawnTileX, surfaceY))
-			return false;
-		return surfaceY > 0;
+		return !IsHouseWall(info.SpawnTileX, surfaceY) && surfaceY > 0;
 	}
 
 	/// <summary> Shorthand for "Main.wallHouse[Main.tile[x, y].wall]" </summary>
@@ -701,7 +716,7 @@ public static class SpawnCondition
 
 	/// <summary> Checks if a martian probe can spawn </summary>
 	public static bool MartianProbeHelper(NPCSpawnInfo info)
-		=> MathF.Abs(info.SpawnTileX - Main.maxTilesX / 2) / (Main.maxTilesX / 2) > 0.33f && !NPC.AnyDanger();
+		=> MathF.Abs(info.SpawnTileX - (Main.maxTilesX / 2)) / (Main.maxTilesX / 2) > 0.33f && !NPC.AnyDanger();
 
 	/// <summary> Checks if the spawn tile is in the middle third of the map </summary>
 	public static bool InnerThird(NPCSpawnInfo info)

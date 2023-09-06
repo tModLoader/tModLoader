@@ -20,6 +20,12 @@ public interface ISubSpawnCondition
 	public bool IsMet(NPCSpawnInfo info);
 
 	public ISubSpawnCondition GetNot();
+
+	public static IEnumerable<ISubSpawnCondition> operator +(ISubSpawnCondition condition1, ISubSpawnCondition condition2)
+		=> new ISubSpawnCondition[] { condition1, condition2 };
+
+	public static IEnumerable<ISubSpawnCondition> operator +(ISubSpawnCondition condition)
+		=> new ISubSpawnCondition[] { condition };
 }
 
 public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate, bool Not, string MetaData) : ISubSpawnCondition, IEquatable<SubSpawnCondition>, IEquatable<Condition>
@@ -84,15 +90,14 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 	ISubSpawnCondition ISubSpawnCondition.GetNot() => GetNot();
 	public static SubSpawnCondition operator !(SubSpawnCondition condition)
 		=> condition with { Not = !condition.Not };
-	public static IEnumerable<ISubSpawnCondition> operator +(SubSpawnCondition condition1, SubSpawnCondition condition2)
-		=> new ISubSpawnCondition[] { condition1, condition2 };
+
 	public static ConditionWrapper operator &(SubSpawnCondition condition1, SubSpawnCondition condition2)
-		=> new(CompareType.And, condition1 + condition2);
+		=> new(CompareType.And, condition1 + (condition2 as ISubSpawnCondition));
 	public static ConditionWrapper operator |(SubSpawnCondition condition1, SubSpawnCondition condition2)
-		=> new(CompareType.Or, condition1 + condition2);
+		=> new(CompareType.Or, condition1 + (condition2 as ISubSpawnCondition));
 
 	public static implicit operator ConditionWrapper(SubSpawnCondition condition)
-		=> new(CompareType.And, new ISubSpawnCondition[] { condition });
+		=> new(CompareType.And, +(condition as ISubSpawnCondition));
 	public static class Zone
 	{
 		public static readonly SubSpawnCondition InDungeon = FromCondition(Condition.InDungeon, true);
@@ -378,28 +383,12 @@ public record class ConditionWrapper(CompareType CurrentCompare, IEnumerable<ISu
 			|| (wrapper2.CurrentCompare == compareType && wrapper1Count == 1)) {
 			return new ConditionWrapper(compareType, wrapper1.SpecificConditions.Concat(wrapper2.SpecificConditions));
 		}
-		return new ConditionWrapper(compareType, new ISubSpawnCondition[] { wrapper1, wrapper2 });
+		return new ConditionWrapper(compareType, wrapper1 + (wrapper2 as ISubSpawnCondition));
 	}
 
 	public static ConditionWrapper CreateConditional(ISubSpawnCondition condition, ISubSpawnCondition whenTrue, ISubSpawnCondition whenFalse)
 		=> new(CompareType.Or, new ISubSpawnCondition[] {
-			new ConditionWrapper(CompareType.And, new ISubSpawnCondition[] { condition, whenTrue }),
-			new ConditionWrapper(CompareType.And, new ISubSpawnCondition[] { condition.GetNot(), whenFalse }),
+			new ConditionWrapper(CompareType.And, condition+ whenTrue ),
+			new ConditionWrapper(CompareType.And, condition.GetNot() + whenFalse ),
 		});
-}
-
-public class MultiEntrySum : List<ISpawnTreeItem>
-{
-	public MultiEntrySum(params ISpawnTreeItem[] items)
-	{
-		AddRange(items);
-	}
-
-	public float Chance => this.Sum((item) => item.Chance);
-
-	internal ISpawnTreeItem AddAndReturn(ISpawnTreeItem item)
-	{
-		Add(item);
-		return item;
-	}
 }
