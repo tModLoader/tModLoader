@@ -499,6 +499,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
 		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
 		ChangeHookSignature("Terraria.ModLoader.GlobalInfoDisplay", "ModifyDisplayColor");
+		ChangeHookSignature("Terraria.ModLoader.Config.ModConfig", "AcceptClientChanges");
 
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile", "Drop", comment: "Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation.");
 		HookRemoved("Terraria.ModLoader.ModTile", "Drop", "Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether.");
