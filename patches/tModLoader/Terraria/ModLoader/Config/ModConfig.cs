@@ -1,5 +1,7 @@
+using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 
@@ -46,6 +48,11 @@ public abstract class ModConfig : ILocalizedModType
 	/// This hook is called anytime new config values have been set and are ready to take effect. This will always be called right after OnLoaded and anytime new configuration values are ready to be used. The hook won't be called with values that violate NeedsReload. Use this hook to integrate with other code in your Mod to apply the effects of the configuration values. If your NeedsReload is correctly implemented, you should be able to apply the settings without error in this hook. Be aware that this hook can be called in-game and in the main menu, as well as in single player and multiplayer situations.
 	/// </summary>
 	public virtual void OnChanged() { }
+
+	/// <inheritdoc cref="AcceptClientChanges(ModConfig, int, ref NetworkText)"/>
+	[Obsolete("Use the updated hook signature")]
+	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
+		=> true;
 
 	/// <summary>
 	/// Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload.

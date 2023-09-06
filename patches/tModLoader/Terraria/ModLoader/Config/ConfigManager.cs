@@ -1,6 +1,8 @@
+using Microsoft.Build.Framework;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using rail;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -330,9 +332,16 @@ public static class ConfigManager
 				success = false;
 				message = NetworkText.FromLiteral("Can't save because changes would require a reload.");
 			}
-			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
-				success = false;
-			}
+
+			string stringMessage = ""; // For compatibility with mods that haven't updated yet
+			success &= config.AcceptClientChanges(pendingConfig, whoAmI, ref message);
+#pragma warning disable CS0618 // Type or member is obsolete
+			success &= config.AcceptClientChanges(pendingConfig, whoAmI, ref stringMessage);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+			if (!string.IsNullOrEmpty(stringMessage))
+				message = NetworkText.FromLiteral(stringMessage);
+
 			if (success) {
 				// Apply to Servers Config
 				ConfigManager.Save(pendingConfig);
