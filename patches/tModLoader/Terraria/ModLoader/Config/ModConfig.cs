@@ -1,7 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 
