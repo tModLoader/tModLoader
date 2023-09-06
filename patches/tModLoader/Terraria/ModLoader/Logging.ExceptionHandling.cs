@@ -40,6 +40,8 @@ public static partial class Logging
 		"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
 		"UwUPnP", // UPnP does a lot of trial and error
 		"System.Threading.CancellationTokenSource.Cancel", // an operation (task) was deliberately cancelled
+		"System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync", // Async connection errors thrown on the thread pool. These get bounced back to the caller continuation and can be logged there
+		"ReLogic.Peripherals.RGB.SteelSeries.GameSenseConnection._sendMsg",
 	};
 	// There are a couple of annoying messages that happen during cancellation of asynchronous downloads, and they have no other useful info to suppress by
 	private static readonly List<string> ignoreMessages = new() {
