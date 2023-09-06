@@ -21,7 +21,6 @@ public abstract class GlobalType<TGlobal> : ModType where TGlobal : GlobalType<T
 	public short PerEntityIndex { get; internal set; }
 
 	/// <summary>
-	/// Whether this global has <see cref="InstancePerEntity"/> or can be conditionally applied (overrides <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity(TEntity, bool)"/>) <br/>
 	/// If true, the global will be assigned a <see cref="PerEntityIndex"/> at load time, which can be used to access the instance in the <see cref="IEntityWithGlobals{TGlobal}.EntityGlobals"/> array. <br/>
 	/// If false, the global will be a singleton applying to all entities
 	/// </summary>
