@@ -26,6 +26,7 @@ internal class TerrariaSteamClient
 	private static string MsgGrant = "grant:";
 	private static string MsgAck = "acknowledged";
 	private static string MsgShutdown = "shutdown";
+	private static string MsgInvalidateTerrariaInstall = "corrupt_install";
 
 	public enum LaunchResult
 	{
@@ -184,6 +185,10 @@ internal class TerrariaSteamClient
 					if (!pbAchieved)
 						SteamUserStats.SetAchievement(achievement);
 				}
+
+				if (nextCMD == MsgInvalidateTerrariaInstall) {
+					SteamApps.MarkContentCorrupt(false);
+				}
 			}
 		}
 		catch (EndOfStreamException) {
@@ -206,6 +211,14 @@ internal class TerrariaSteamClient
 		catch (Exception ex) {
 			Logger.Error("Error shutting down SteamAPI", ex);
 		}
+	}
+
+	private static void MarkSteamTerrariaInstallCorrupt()
+	{
+		try {
+			Logger.Info("Marking Steam Terraria Installation as Corrupt to force 'Verify Local Files' on next run");
+			SendCmd(MsgInvalidateTerrariaInstall);
+		} catch {	}
 	}
 
 	internal static void Shutdown()

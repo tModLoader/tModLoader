@@ -52,6 +52,21 @@ public static class SteamedWraps
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 	}
 
+	public static void QueueForceValidateSteamInstall()
+	{
+		// There is no GoG version for this, unfortunately.
+		if (!SteamClient)
+			return;
+
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+			Logging.tML.Info("Launched Outside of Steam. Skipping attempt to trigger 'verify local files' in Steam. If error persists, please attempt this manually");
+			return;
+		}
+
+		SteamApps.MarkContentCorrupt(false);
+		Logging.tML.Info("Marked tModLoader installation files as corrupt in Steam. On Next Launch, User will have 'Verify Local Files' ran");
+	}
+
 	internal static void Initialize()
 	{
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
