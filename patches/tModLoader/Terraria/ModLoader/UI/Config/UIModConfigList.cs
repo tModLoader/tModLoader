@@ -196,11 +196,11 @@ internal class UIModConfigList : UIState
 			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-				Interface.modConfig.SetMod(SelectedMod, config);
+				UIModConfig.Instance.SetMod(SelectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
 				else
-					Main.InGameUI.SetState(Interface.modConfig);
+					Main.InGameUI.SetState(UIModConfig.Instance);
 			};
 
 			configList.Add(configPanel);

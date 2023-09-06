@@ -5,6 +5,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.Config;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -98,7 +99,7 @@ public abstract class ModConfig : ILocalizedModType
 	public void Open()
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfig.SetMod(Mod, this, openedFromModder: true);
+		UIModConfig.Instance.SetMod(Mod, this, openedFromModder: true);
 
 		if (Main.gameMenu)
 		{
@@ -113,7 +114,7 @@ public abstract class ModConfig : ILocalizedModType
 			Main.npcChatText = "";
 			Main.inFancyUI = true;
 
-			Main.InGameUI.SetState(Interface.modConfig);
+			Main.InGameUI.SetState(UIModConfig.Instance);
 		}
 	}
 
@@ -137,7 +138,7 @@ public abstract class ModConfig : ILocalizedModType
 		if (!Main.gameMenu && Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient)
 		{
 			if (showErrors)
-				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
+				UIModConfig.Instance.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
 
 			var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
 			requestChanges.Write(Mod.Name);
@@ -153,7 +154,7 @@ public abstract class ModConfig : ILocalizedModType
 		if (!Main.gameMenu && loadTimeConfig.NeedsReload(this))
 		{
 			if (showErrors)
-				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
+				UIModConfig.Instance.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 
 			return false;
 		}

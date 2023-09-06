@@ -11,6 +11,8 @@ public class UIHeaderElement : UIConfigElement
 
 	public override void OnInitialize()
 	{
+		base.OnInitialize();
+
 		SetPadding(4f);
 
 		DrawLabel = false;

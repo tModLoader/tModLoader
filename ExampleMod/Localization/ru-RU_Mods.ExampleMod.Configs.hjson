@@ -79,6 +79,11 @@ ModConfigShowcaseAccessibility: {
 		// Label: Ignore With Label Getter
 		// Tooltip: ""
 	}
+
+	pair2: {
+		// Label: pair2
+		// Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDataTypes: {
@@ -184,7 +189,7 @@ ModConfigShowcaseDataTypes: {
 		// Tooltip: ""
 	}
 
-	// Headers.Numbers: Numbers Header
+	// Headers.Numbers: Numbers
 
 	SomeSByte: {
 		// Label: Some S Byte

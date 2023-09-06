@@ -16,19 +16,22 @@ public class UIBoolElement : UIConfigElement<bool>
 
 	public override void OnInitialize()
 	{
+		base.OnInitialize();
+
 		OnLeftClick += (_, _) => {
 			SoundEngine.PlaySound(SoundID.MenuTick);
 			Value = !Value;
 		};
 
 		_toggleImage = new UIImageFramed(_toggleTexture, GetTextureFrame()) {
+			Left = { Pixels = -4 },
 			HAlign = 1f,
 			VAlign = 0.5f,
 		};
 		Append(_toggleImage);
 
 		_toggleLabel = new UIText(GetToggleLabel(), TextScale) {
-			Left = { Pixels = -20 },
+			Left = { Pixels = -16 - PaddingLeft },
 			HAlign = 1f,
 			VAlign = 0.5f,
 		};

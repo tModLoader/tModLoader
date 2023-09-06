@@ -242,7 +242,7 @@ public static class ConfigManager
 		Configs.Clear();
 		loadTimeConfigs.Clear();
 
-		Interface.modConfig.Unload();
+		UIModConfig.Instance.Unload();
 		Interface.modConfigList.Unload();
 		ConfigElementRegistry.Unload();
 	}
@@ -293,13 +293,13 @@ public static class ConfigManager
 				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
-				RefreshConfigUI();
-				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
+				UIModConfig.Instance.RefreshUI();
+				UIModConfig.Instance.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
-				Interface.modConfig.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
+				UIModConfig.Instance.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 			}
 		}
 		else {
@@ -388,7 +388,7 @@ public static class ConfigManager
 		return properClone;
 	}
 
-	// Separate from GeneratePopulatedClone because otherwise config elements can't track the original and the list has to be recreated, which collapses all of the elements
+	// Separate from GeneratePopulatedClone because otherwise config elements can't track the original and the elements have to be recreated, which resets their state
 	public static void RevertConfig(ModConfig pendingConfig, ModConfig original)
 	{
 		string json = JsonConvert.SerializeObject(original, serializerSettings);
@@ -420,14 +420,6 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
-	}
-
-	// Public API for modders
-	// TODO: just make modConfig public and include instance?
-	// TODO: make apis for modal popup?
-	public static void RefreshConfigUI()
-	{
-		Interface.modConfig.RefreshUI();
 	}
 
 	// TODO: better home?

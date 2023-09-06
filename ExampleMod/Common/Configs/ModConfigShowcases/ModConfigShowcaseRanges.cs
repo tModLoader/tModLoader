@@ -29,9 +29,9 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[DefaultValue(2f)]
 		public float IncrementalRangedFloat;
 
-		[Range(0f, 5f)]
-		[Increment(.11f)]
-		public float IncrementByPoint11;
+		[Range(0f, 15f)]
+		[Increment(1.0001f)]
+		public float IncrementByPoint11;// TODO: doesn't work?
 
 		[Range(2f, 5f)]
 		[DefaultValue(2f)]

@@ -14,11 +14,10 @@ using Terraria.GameContent;
 using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI.Config;
-// TODO: main panel colours
-internal class UIModConfig : UIState
+public class UIModConfig : UIState
 {
-	// Used for animations in elements like NPCDefinition
-	public int UpdateCount { get; private set; }
+	// Allows modders to access methods on this ui becauase Interface is internal
+	public static UIModConfig Instance => Interface.modConfig;
 
 	private UIElement uIElement;
 	private UIPanel uIPanel;
@@ -44,7 +43,7 @@ internal class UIModConfig : UIState
 	// need some CopyTo method to preserve references....hmmm
 	private Mod mod;
 	private ModConfig config;// Config from ConfigManager.Configs
-	private ModConfig pendingConfig;// The clone of the config that is modified
+	private ModConfig pendingConfig; // The clone of the config that is modified
 
 	private UIConfigElement CurrentPage => subPages.Peek();
 	private Stack<UIConfigElement> subPages = new();
@@ -54,6 +53,7 @@ internal class UIModConfig : UIState
 
 	public override void OnInitialize()
 	{
+		#region Main Panel
 		uIElement = new UIElement {
 			Width = { Percent = 0.8f },
 			MaxWidth = UICommon.MaxPanelWidth,
@@ -70,6 +70,7 @@ internal class UIModConfig : UIState
 		};
 		uIElement.Append(uIPanel);
 
+		// TODO: move config name back here?
 		var headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
@@ -103,7 +104,6 @@ internal class UIModConfig : UIState
 		}.WithPadding(0f);
 		uIPanel.Append(textBoxBackground);
 
-		// TODO: localize properly
 		searchBar = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions")) {
 			Top = { Pixels = 5 },
 			Left = { Pixels = 10 },
@@ -132,7 +132,9 @@ internal class UIModConfig : UIState
 		uIScrollbar.SetView(100f, 1000f);
 		configList.SetScrollbar(uIScrollbar);
 		uIPanel.Append(uIScrollbar);
+		#endregion
 
+		#region Buttons
 		backButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigBack")) {
 			Width = { Pixels = -10, Percent = 0.25f },
 			Height = { Pixels = 40 },
@@ -197,7 +199,9 @@ internal class UIModConfig : UIState
 			RefreshUI();
 		};
 		uIElement.Append(restoreDefaultsConfigButton);
+		#endregion
 
+		#region Notification Popup
 		notificationModal = new UIPanel {
 			Width = { Pixels = 500 },
 			Height = { Pixels = 350 },
@@ -237,17 +241,19 @@ internal class UIModConfig : UIState
 		};
 		modalInputBlocker.OnLeftClick += (_, _) => ClearMessage();
 		// Don't append
+		#endregion
 	}
 
 	public override void OnActivate()
 	{
+		// Resetting and initializing various fields
 		pendingConfig = ConfigManager.GeneratePopulatedClone(config);
 		searchBar.SetText("");
 		uIScrollbar.ViewPosition = 0f;
 		subPages.Clear();
 		ClearMessage(sound: false);
 
-		// Populating config elements now so they can save their state if the list is refreshed
+		// Populating config elements now so they can save their state (such as being collapsed) if the ui list is refreshed
 		configElements.Clear();
 		ConfigElementRegistry.HandleElements(configElements, pendingConfig);
 
@@ -260,7 +266,6 @@ internal class UIModConfig : UIState
 		config = null;
 		pendingConfig = null;
 
-		UpdateCount = 0;
 		configList?.Clear();
 		subPages?.Clear();
 		configElements?.Clear();
@@ -275,10 +280,21 @@ internal class UIModConfig : UIState
 
 	public void RefreshUI()
 	{
+		UpdateSeparatePage();
 		UpdateConfigList();
 		CheckSaveButton();
-		UpdateSeparatePage();
+		UpdatePanelBackground();
+
 		Recalculate();
+	}
+
+	// Updates the header panel, separate page back button, and separate page contents
+	// TODO: separate pages
+	private void UpdateSeparatePage()
+	{
+		string configName = mod.DisplayName + " - " + config.DisplayName.Value;
+		string subPagesText = string.Join(" > ", subPages.Reverse());
+		configNamePanel.SetText(configName + subPagesText);
 	}
 
 	// Updates the main config list
@@ -309,13 +325,11 @@ internal class UIModConfig : UIState
 		}
 	}
 
-	// Updates the header panel, separate page back button, and separate page contents
-	// TODO
-	private void UpdateSeparatePage()
+	// TODO: main panel background
+	private void UpdatePanelBackground()
 	{
-		string configName = mod.DisplayName + " - " + config.DisplayName.Value;
-		string subPagesText = string.Join(" > ", subPages.Reverse());
-		configNamePanel.SetText(configName + subPagesText);
+		var backgroundColorAttribute = Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute)) as BackgroundColorAttribute;
+		uIPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
 	}
 
 	public void OpenSeparatePage(UIConfigElement element)
@@ -354,7 +368,7 @@ internal class UIModConfig : UIState
 		notificationModalHeader.SetText(header);
 		notificationModalHeader.TextColor = color;
 
-		if (sendChatMessage && !Main.gameMenu && Main.InGameUI.CurrentState != Interface.modConfig)
+		if (sendChatMessage && !Main.gameMenu && Main.InGameUI.CurrentState != Instance)
 			Main.NewText($"[c/{color.Hex3()}:{header}] - {text}");
 	}
 
@@ -365,12 +379,6 @@ internal class UIModConfig : UIState
 
 		if (!configList.ContainsPoint(Main.MouseScreen))
 			uIScrollbar.ViewPosition -= evt.ScrollWheelValue;
-	}
-
-	public override void Update(GameTime gameTime)
-	{
-		base.Update(gameTime);
-		UpdateCount++;
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)

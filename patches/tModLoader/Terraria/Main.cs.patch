@@ -11,7 +11,7 @@
  using System.IO;
  using System.Linq;
  using System.Reflection;
-@@ -64,9 +_,16 @@
+@@ -64,9 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -21,6 +21,7 @@
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
++using Terraria.ModLoader.UI.Config;
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
@@ -2128,7 +2129,7 @@
  		if (netMode == 0) {
  			flag |= ingameOptionsWindow;
  			flag |= InGameUI.IsVisible && (InGameUI.CurrentState == ManageControlsMenu || InGameUI.CurrentState == AchievementsMenu);
-+			flag |= InGameUI.IsVisible && (InGameUI.CurrentState == Interface.modConfigList || InGameUI.CurrentState == Interface.modConfig); // Check mod config states too
++			flag |= InGameUI.IsVisible && (InGameUI.CurrentState == Interface.modConfigList || InGameUI.CurrentState == UIModConfig.Instance); // Check mod config states too
  			if (autoPause) {
  				flag |= playerInventory;
  				flag |= LocalPlayer.sign >= 0;

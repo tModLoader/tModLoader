@@ -1,3 +1,3 @@
-en-US, 521/521, 100%, missing 0
-ru-RU, 6/521, 1%, missing 515
-zh-Hans, 1/521, 0%, missing 520
+en-US, 522/522, 100%, missing 0
+ru-RU, 6/522, 1%, missing 516
+zh-Hans, 1/522, 0%, missing 521

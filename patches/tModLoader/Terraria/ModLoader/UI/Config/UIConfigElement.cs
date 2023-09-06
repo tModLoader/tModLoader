@@ -27,15 +27,7 @@ public abstract class UIConfigElement : UIElement
 	public LabelKeyAttribute LabelKeyAttribute { get; internal set; }
 	public TooltipKeyAttribute TooltipKeyAttribute { get; internal set; }
 	public BackgroundColorAttribute BackgroundColorAttribute { get; internal set; }
-
-	// TODO move the below block to the elements where it is actually used [[
-	public RangeAttribute RangeAttribute { get; internal set; }
-	public IncrementAttribute IncrementAttribute { get; internal set; }
-	public SliderAttribute SliderAttribute { get; internal set; }
-	public DrawTicksAttribute DrawTicksAttribute { get; internal set; }
-	public SliderColorAttribute SliderColorAttribute { get; internal set; }
 	public JsonDefaultValueAttribute JsonDefaultValueAttribute { get; internal set; }
-	// ]]
 
 	public bool NullAllowed;
 	public bool ShowReloadRequiredLabel;
@@ -43,6 +35,7 @@ public abstract class UIConfigElement : UIElement
 	#endregion
 
 	#region Textures
+	// TODO: improve these textures
 	public static Asset<Texture2D> PlayTexture { get; internal set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
 	public static Asset<Texture2D> DeleteTexture { get; internal set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 	public static Asset<Texture2D> PlusTexture { get; internal set; } = UICommon.ButtonPlusTexture;
@@ -76,13 +69,13 @@ public abstract class UIConfigElement : UIElement
 			else if (MemberInfo.CanWrite)
 				MemberInfo.SetValue(ParentObject, value);
 
-			ConfigManager.RefreshConfigUI();
+			UIModConfig.Instance.RefreshUI();
 		}
 	}
 	public object DefaultValue;
 	public bool ValueChanged => !ConfigManager.ObjectEquals(DefaultValue, Value);
 	public IList Collection => IndexInCollection != -1 ? MemberInfo.GetValue(ParentObject) as IList : null;
-	public int IndexInUIList { get; internal set; }// See CompareTo for more info on why this exists
+	public int IndexInUIList { get; internal set; } // See CompareTo for more info on why this exists
 
 	// Aautomatically determining which config elements go on which fields
 	public abstract bool FitsType(Type type);
@@ -96,13 +89,12 @@ public abstract class UIConfigElement : UIElement
 		return base.CompareTo(obj);
 	}
 
-	// Called to setup the element
-	internal UIConfigElement Bind(object parent, PropertyFieldWrapper memberInfo, int indexInUIList, int indexInCollection = -1)
-	{
-		// Helper method to reduced repeated code
-		T GetAttribute<T>() where T : Attribute
+	protected T GetAttribute<T>() where T : Attribute
 			=> ConfigManager.GetCustomAttribute<T>(MemberInfo);
 
+	// Called to setup the element
+	public UIConfigElement Bind(object parent, PropertyFieldWrapper memberInfo, int indexInUIList, int indexInCollection = -1)
+	{
 		if (IsDummy)
 			return this;
 
@@ -114,12 +106,7 @@ public abstract class UIConfigElement : UIElement
 		LabelKeyAttribute = GetAttribute<LabelKeyAttribute>();
 		TooltipKeyAttribute = GetAttribute<TooltipKeyAttribute>();
 		BackgroundColorAttribute = GetAttribute<BackgroundColorAttribute>();
-
-		RangeAttribute = GetAttribute<RangeAttribute>();
-		IncrementAttribute = GetAttribute<IncrementAttribute>();
-		SliderAttribute = GetAttribute<SliderAttribute>();
 		JsonDefaultValueAttribute = GetAttribute<JsonDefaultValueAttribute>();
-
 		NullAllowed = GetAttribute<NullAllowedAttribute>() != null;
 		ShowReloadRequiredTooltip = GetAttribute<ReloadRequiredAttribute>() != null;
 
@@ -131,8 +118,8 @@ public abstract class UIConfigElement : UIElement
 			DefaultValue = MemberInfo.GetValue(loadTimeConfig);
 		}
 
-		CreateUI();
-		Activate(); // Activate isn't normally called during append but we need to initialize ui
+		// Activate isn't normally called during append but we need to initialize ui
+		Activate();
 
 		return this;
 	}
@@ -159,7 +146,7 @@ public abstract class UIConfigElement : UIElement
 	public bool DrawLabel = true;
 	public bool DrawTooltip = true;
 
-	private void CreateUI()
+	public override void OnInitialize()
 	{
 		Width.Set(0, 1f);
 		Height.Set(30, 0f);
@@ -175,8 +162,9 @@ public abstract class UIConfigElement : UIElement
 
 	public override void Recalculate()
 	{
-		base.Recalculate();
 		Label.SetText(DrawLabel ? GetLabel() : "");
+
+		base.Recalculate();
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -188,7 +176,7 @@ public abstract class UIConfigElement : UIElement
 			UICommon.TooltipMouseText(GetTooltip());
 	}
 
-	private void DrawBackgroundPanel(SpriteBatch sb)
+	protected void DrawBackgroundPanel(SpriteBatch sb)
 	{
 		// TODO: finish panel drawing
 		var dimensions = GetDimensions();
