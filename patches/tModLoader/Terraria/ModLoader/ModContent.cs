@@ -346,6 +346,7 @@ public static class ModContent
 		SetupBestiary();
 		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
+		ShimmerTransformation.OrderKnown();
 		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();

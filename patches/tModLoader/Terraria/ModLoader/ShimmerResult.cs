@@ -6,15 +6,15 @@ using Terraria.ID;
 namespace Terraria.ModLoader;
 
 /// <summary> A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation </summary>
-
 /// <param name="Count"> The number of this result to spawn, true count will be multiplied by the stack size of the <see cref="IModShimmerable"/> source </param>
-
 public abstract record class ModShimmerResult(int Count)
 {
 	public abstract bool IsSameResultType(ModShimmerResult result);
 
-	public virtual bool IsSameResult(ModShimmerResult result)
-		=> result == this;
+	public virtual bool IsItemResult(int type)
+		=> false;
+	public virtual bool IsNPCResult(int type)
+		=> false;
 
 	/// <summary> <br/> Does not despawn <paramref name="shimmerable"/> or decrement <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.Remove(int)"/> </summary>
 	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> that is shimmering, does not affect this </param>
@@ -24,9 +24,10 @@ public abstract record class ModShimmerResult(int Count)
 
 	/// <summary> Added the the velocity of the <see cref="IModShimmerable"/> to prevent stacking </summary>
 	public static Vector2 GetShimmerSpawnVelocityModifier()
-		// What vanilla does for items with more than one ingredient, flings stuff everywhere as it's never supposed to do more than 15
+		=> new Vector2(Main.rand.Next(-30, 31), Main.rand.Next(-40, -15)) * 0.1f;
 		// => new(count * (1f + count * 0.05f) * ((count % 2 == 0) ? -1 : 1), 0);
-		=> new Vector2(Main.rand.Next(-30, 31), Main.rand.Next(-40, -15)) * 0.1f; //So we're using the random spawn values from shimmered items instead, items push each other away when in the shimmer state anyway, so this is more for NPCs
+		// What vanilla does for items with more than one ingredient, flings stuff everywhere as it's never supposed to do more than 15
+		//So we're using the random spawn values from shimmered items instead, items push each other away when in the shimmer state anyway, so this is more for NPCs
 }
 
 public record class CoinLuckShimmerResult(int Count) : ModShimmerResult(Count)
@@ -48,6 +49,8 @@ public abstract record class TypedShimmerResult(int Type, int Count) : ModShimme
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
 public record class ItemShimmerResult(int Type, int Count) : TypedShimmerResult(Type, Count)
 {
+	public override bool IsItemResult(int type)
+		=> Type == type;
 	public override bool IsSameResultType(ModShimmerResult result)
 		=> result is ItemShimmerResult r && r.Type == Type;
 
@@ -91,6 +94,8 @@ public record class NPCShimmerResult(int Type, int Count) : TypedShimmerResult(T
 	public bool KeepVanillaTransformationConventions { get; init; }
 	public override bool IsSameResultType(ModShimmerResult result)
 		=> result is NPCShimmerResult r && r.Type == Type;
+	public override bool IsNPCResult(int type)
+		=> Type == type;
 
 	public override void Spawn(IModShimmerable shimmerable, int allowedStack, List<IModShimmerable> spawned)
 	{

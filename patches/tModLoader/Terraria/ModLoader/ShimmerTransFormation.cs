@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader.Utilities;
 
 namespace Terraria.ModLoader;
 // TML: #AdvancedShimmerTransformations
@@ -13,20 +14,40 @@ namespace Terraria.ModLoader;
 /// <see cref="ShimmerTransformation{TShimmeredType}.Transformations"/> which is updated via <see cref="Register()"/> and its overloads. Uses a similar syntax to
 /// <see cref="Recipe"/>, usually starting with <see cref="ModNPC.CreateShimmerTransformation"/> or <see cref="ModItem.CreateShimmerTransformation"/>
 /// </summary>
-public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>, ICloneable
+public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTransformation>
 {
+	private static Action extraKnownTypeResets;
+	private static Action extraKnownTypeOrders;
+	public static void AddAsKnownType<TModShimmerable>() where TModShimmerable : IModShimmerable
+	{
+		extraKnownTypeResets += ShimmerTransformation<TModShimmerable>.Reset;
+		extraKnownTypeOrders += ShimmerTransformation<TModShimmerable>.Order;
+	}
 	internal static void ResetKnown()
 	{
-		ShimmerTransformation<NPC>.Transformations.Clear();
-		ShimmerTransformation<Item>.Transformations.Clear();
+		ShimmerTransformation<NPC>.Reset();
+		ShimmerTransformation<Item>.Reset();
+		extraKnownTypeResets.Invoke();
+		extraKnownTypeResets = null;
 	}
 
+	internal static void OrderKnown()
+	{
+		ShimmerTransformation<NPC>.Order();
+		ShimmerTransformation<Item>.Order();
+		extraKnownTypeOrders.Invoke();
+	}
+	private protected abstract ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after);
+	public abstract ShimmerTransformation SortBefore(ShimmerTransformation transformation);
+	public abstract ShimmerTransformation SortAfter(ShimmerTransformation transformation);
 	public void Disable()
 		=> Disabled = true;
 
 	public bool Disabled { get; set; }
 
 	#region FunctionalityVariables
+
+	public (ShimmerTransformation target, bool after) Ordering { get; set; }
 
 	/// <summary> Every condition must be true for the transformation to occur </summary>
 	public List<Condition> Conditions { get; init; } = new();
@@ -36,9 +57,6 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	/// <summary> Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick when skeletron or golem are undefeated respectively </summary>
 	public bool IgnoreVanillaItemConstraints { get; private protected set; }
-
-	/// <summary> Gives a priority to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, clamps between -10 and 10 </summary>
-	public int Priority { get; private protected set; } = 0;
 
 	/// <summary> Called in addition to conditions to check if the <see cref="IModShimmerable"/> shimmers </summary>
 	/// <param name="transformation"> The transformation </param>
@@ -125,13 +143,6 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 		return this;
 	}
 
-	/// <inheritdoc cref="Priority"/>
-	public ShimmerTransformation SetPriority(int priority)
-	{
-		Priority = Math.Clamp(priority, -10, 10);
-		return this;
-	}
-
 	/// <summary> Adds a delegate to <see cref="CanShimmerCallBacks"/> that will be called if the shimmer transformation succeeds </summary>
 	public ShimmerTransformation AddCanShimmerCallBack(CanShimmerCallBack callBack)
 	{
@@ -201,7 +212,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 		&& Conditions.All((condition) => condition.IsMet())
 		&& (CheckCanShimmerCallBacks(shimmerable))
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result is ItemShimmerResult item && (item.Type == ItemID.Bone && !NPC.downedBoss3 || item.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)))
-		&& (GetCurrentAvailableNPCSlots() >= GetNPCSpawnCount());
+		&& (GetCurrentAvailableNPCSlots() >= GetSpawnCount<NPCShimmerResult>());
 
 	/// <summary> Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/> </summary>
 	/// <returns> Returns true if all delegates in <see cref="CanShimmerCallBacks"/> return true </returns>
@@ -216,8 +227,8 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	public const int SingleShimmerNPCSpawnCap = 50;
 
-	public int GetNPCSpawnCount()
-		=> Results.Sum((ModShimmerResult result) => result is NPCShimmerResult ? result.Count : 0);
+	public int GetSpawnCount<TResultType>()
+		=> Results.Sum((ModShimmerResult result) => result is TResultType ? result.Count : 0);
 
 	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
 
@@ -225,7 +236,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 	public static void DoModShimmer(IModShimmerable source, ShimmerTransformation transformation)
 	{
 		// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set
-		int npcSpawnCount = transformation.GetNPCSpawnCount();
+		int npcSpawnCount = transformation.GetSpawnCount<NPCShimmerResult>();
 		int usableStack = npcSpawnCount != 0 ? Math.Min((int)MathF.Floor(GetCurrentAvailableNPCSlots() / (float)npcSpawnCount), source.Stack) : source.Stack;
 
 		SpawnModShimmerResults(source, transformation, usableStack, out List<IModShimmerable> spawned); // Spawn results, output stack amount used
@@ -258,9 +269,6 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 	/// <summary> Creates a deep clone of <see cref="ShimmerTransformation"/>. </summary>
 	public abstract ShimmerTransformation Clone();
 
-	public int CompareTo(ShimmerTransformation other)
-		=> other.Priority - Priority;
-
 	#endregion Shimmering
 }
 
@@ -284,9 +292,14 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		Transformations.Clear();
 	}
 
+	public static void Order()
+	{
+		foreach (int type in Transformations.Keys)
+			Transformations[type] = Transformations[type].GetOrdered().ToList();
+	}
+
 	public override ShimmerTransformation<TModShimmerable> Clone()
 		=> new() {
-			Priority = Priority,
 			Conditions = new List<Condition>(Conditions), // Technically I think the localization for the conditions can be changed
 			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
 			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
@@ -323,9 +336,6 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	public static Dictionary<int, int> Redirects { get; } = new();
 
-	public static void AddRedirect(IModShimmerable redirectFromType, int redirectToType)
-		=> AddRedirect(redirectFromType.Type, redirectToType);
-
 	public static void AddRedirect(int typeFrom, int typeTo)
 		=> Redirects.Add(typeFrom, typeTo);
 
@@ -337,7 +347,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	{
 		if (Redirects.TryGetValue(type, out int value))
 			type = value;
-		if (typeof(TModShimmerable) == typeof(Item) && ItemID.Sets.ShimmerCountsAsItem[type] > 0)
+		if (default(TModShimmerable) is Item && ItemID.Sets.ShimmerCountsAsItem[type] > 0)
 			type = ItemID.Sets.ShimmerCountsAsItem[type];
 		return type;
 	}
@@ -381,6 +391,42 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		}
 		return false;
 	}
+
+	#region Ordering
+
+	/// <summary>
+	/// Sets the Ordering of this <see cref="ShimmerTransformation"/>. This <see cref="ShimmerTransformation"/> can't already have one.
+	/// </summary>
+	private protected override ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after)
+	{
+		if (Ordering.target != null)
+			throw new Exception("This transformation already has an ordering.");
+
+		Ordering = (transformation, after);
+		ShimmerTransformation target = transformation;
+		do
+		{
+			if (target == this)
+				throw new Exception("Shimmer ordering loop!");
+
+			target = target.Ordering.target;
+		} while (target != null);
+
+
+		return this;
+	}
+
+	/// <summary>
+	/// Sorts the <see cref="ShimmerTransformation"/> before the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered.
+	/// </summary>
+	public override ShimmerTransformation SortBefore(ShimmerTransformation recipe) => SetOrdering(recipe, false);
+
+	/// <summary>
+	/// Sorts the <see cref="ShimmerTransformation"/> after the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered.
+	/// </summary>
+	public override ShimmerTransformation SortAfter(ShimmerTransformation recipe) => SetOrdering(recipe, true);
+
+	#endregion
 }
 
 /// <summary>
@@ -402,12 +448,12 @@ public interface IModShimmerable
 
 	/// <summary>
 	/// When this undergoes a <see cref="ShimmerTransformation"/> this is the amount contained within one instance of the type, returns 1 for <see cref="NPC"/>, and
-	/// <see cref="Item.stack"/> for <see cref="Item"/><br/> returns 1 by default
+	/// <see cref="Item.stack"/> for <see cref="Item"/><br/>
 	/// </summary>
 	public virtual int Stack => 1;
 
 	/// <summary>
-	/// Checks if this <see cref="IModShimmerable"/> can currently undergo a shimmer transformation. This includes both vanilla and <br/> Should not makes changes to game
+	/// Checks if this <see cref="IModShimmerable"/> can currently undergo a shimmer transformation. This includes both vanilla and modded <br/> Should not makes changes to game
 	/// state. <br/> Treat as read only.
 	/// </summary>
 	/// <returns> True if the <see cref="IModShimmerable"/> currently has a valid shimmer operation it can use. </returns>
@@ -417,12 +463,12 @@ public interface IModShimmerable
 	public virtual void OnShimmer() { }
 
 	/// <summary>
-	/// Called once an entity Shimmers, int <see cref="Item"/> decrements <see cref="Item.stack"/>, handles despawning when <see cref="Stack"/> reaches 0
+	/// Called once an entity Shimmers, for <see cref="Item"/> decrements <see cref="Item.stack"/>, handles despawning when <see cref="Stack"/> reaches zero
 	/// </summary>
 	public abstract void Remove(int amount);
 
 	/// <summary>
-	/// Returns <see cref="Entity.GetSource_Misc(string)"/> with passed value "shimmer" in for <see cref="NPC"/> and <see cref="Item"/>, used only for <see cref="ShimmerTransformation"/>
+	/// Returns <see cref="Entity.GetSource_Misc(string)"/> with passed value "shimmer" in <see cref="NPC"/> and <see cref="Item"/>, used only for <see cref="ShimmerTransformation"/>
 	/// </summary>
 	public abstract IEntitySource GetSource_ForShimmer();
 }
