@@ -6146,6 +6146,15 @@
  		ItemCheck_UseWiringTools(sItem);
  		ItemCheck_UseLawnMower(sItem);
  		ItemCheck_PlayInstruments(sItem);
+@@ -33858,7 +_,7 @@
+ 		else {
+ 			toolTime--;
+ 			if (toolTime < 0)
+-				toolTime = sItem.useTime;
++				toolTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem); //sItem.useTime;
+ 		}
+ 
+ 		ItemCheck_TryDestroyingDrones(sItem);
 @@ -33898,7 +_,10 @@
  			Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
  		}
