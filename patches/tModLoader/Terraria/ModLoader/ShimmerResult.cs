@@ -28,6 +28,7 @@ public abstract record class ModShimmerResult(int Count)
 		// => new(count * (1f + count * 0.05f) * ((count % 2 == 0) ? -1 : 1), 0);
 		=> new Vector2(Main.rand.Next(-30, 31), Main.rand.Next(-40, -15)) * 0.1f; //So we're using the random spawn values from shimmered items instead, items push each other away when in the shimmer state anyway, so this is more for NPCs
 }
+
 public record class CoinLuckShimmerResult(int Count) : ModShimmerResult(Count)
 {
 	public override bool IsSameResultType(ModShimmerResult result)

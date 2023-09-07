@@ -279,7 +279,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	public static Dictionary<int, List<ShimmerTransformation>> Transformations { get; } = new();
 
-	internal static void Reset()
+	public static void Reset()
 	{
 		Transformations.Clear();
 	}
