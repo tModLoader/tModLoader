@@ -1334,10 +1334,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
 	/// <summary>
-	/// Creates a <see cref="ShimmerTransformation"/> resulting this ModItem. This method only creates the <see cref="ShimmerTransformation"/>, call <see cref="ShimmerTransformation.Register()"/> to register it into the game.
-	/// <br/> This method automatically sets <see cref="ShimmerTransformation.SourceStorageKey"/>
+	/// Creates a <see cref="ShimmerTransformation"/>&lt; <see cref="Terraria.Item"/>&gt; resulting this ModItem. This method only creates the
+	/// <see cref="ShimmerTransformation"/>&lt; <see cref="Terraria.Item"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game. Call
+	/// this at the very beginning when creating a new <see cref="ShimmerTransformation"/>&lt; <see cref="Terraria.Item"/>&gt;. <br/>
 	/// </summary>
-	public ShimmerTransformation CreateShimmerTransformation() => new(Item);
+	public ShimmerTransformation<Item> CreateShimmerTransformation() => new(Item);
 
 	public virtual bool CanShimmer() => true;
 	public virtual void OnShimmer()

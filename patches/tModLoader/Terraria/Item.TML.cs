@@ -275,11 +275,10 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IMo
 		}
 	}
 
-	public Vector2 ShimmerVelocity { get => velocity; set => velocity = value; }
-	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.Item;
-	public int ShimmerType => type;
-	public int Stack => stack;
-	public void Remove(int amount)
+	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.Type => type;
+	int IModShimmerable.Stack => stack;
+	void IModShimmerable.Remove(int amount)
 	{
 		stack -= amount;
 		shimmerWet = true;

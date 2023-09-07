@@ -7,14 +7,14 @@ namespace ExampleMod.Common.GlobalNPCs
 	public class ExampleShimmerGlobalNPC : GlobalNPC
 	{
 		public override void SetStaticDefaults() {
-			(ModShimmerTypeID, int)[] transformationFor = new (ModShimmerTypeID, int)[] {
-				(ModShimmerTypeID.NPC, NPCID.Goldfish),
-				(ModShimmerTypeID.NPC, NPCID.Crab),
-				(ModShimmerTypeID.NPC, NPCID.Penguin),
-				(ModShimmerTypeID.NPC, NPCID.PartyBunny),
+			int[] transformationFor = new int[] {
+				NPCID.Goldfish,
+				NPCID.Crab,
+				NPCID.Penguin,
+				NPCID.PartyBunny,
 			};
 
-			new ShimmerTransformation() // Since we're not in ModNPC we instantiate manually
+			new ShimmerTransformation<NPC>() // Since we're not in ModNPC we instantiate manually
 				.AddNPCResult(NPCID.Frog, 1) // Vanilla frog
 				.AddCondition(Condition.InBeach) // On the beach
 				.Register(transformationFor); // Registers for every entity passed within the array

@@ -78,7 +78,7 @@ public class NPCShimmerShowcase : ModNPC
 	public static void OnShimmerCallBack(ShimmerTransformation transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
 		spawnedShimmerables.ForEach((IModShimmerable spawnedShimmerable)
 			=> {
-				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.ShimmerVelocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
 				p.friendly = false;
 				p.hostile = true;
 			});

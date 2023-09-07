@@ -276,10 +276,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	/// </summary>
 	public bool GravityIgnoresLiquid = false;
 
-	public Vector2 ShimmerVelocity { get => velocity; set => velocity = value; }
-	public ModShimmerTypeID ModShimmerTypeID => ModShimmerTypeID.NPC;
-	public int ShimmerType => type;
-
 	/// <summary> <inheritdoc/> <br/>
 	/// For this <see cref="NPC"/> override it checks for <see cref="NPCLoader.CanShimmer(NPC)"/> and for any of the following:
 	/// <list type="number">
@@ -287,27 +283,24 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToNPC"/>
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToItem"/>
 	/// <item/> not <see cref="NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue"/> while <see cref="SpawnedFromStatue"/>
-	/// <item/> <see cref="ShimmerTransformation.AnyValidModShimmer"/>
+	/// <item/> <see cref="ShimmerTransformation{T}.AnyValidModShimmer"/>
 	/// </list>
 	/// </summary>
 	/// <inheritdoc/>
 	public bool CanShimmer()
 	{
-		int type = ShimmerTransformation.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey);
+		int redirectedType = ShimmerTransformation<NPC>.GetRedirectedType(type);
 
 		return NPCLoader.CanShimmer(this) // ModNPC and GlobalNPC
-		&& (NPCID.Sets.ShimmerTownTransform[type] // valid shimmer types
-		|| NPCID.Sets.ShimmerTransformToNPC[type] >= 0
-		|| NPCID.Sets.ShimmerTransformToItem[type] >= 0
-		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
-		|| ShimmerTransformation.AnyValidModShimmer(this));
+		&& (NPCID.Sets.ShimmerTownTransform[redirectedType] // valid shimmer types
+		|| NPCID.Sets.ShimmerTransformToNPC[redirectedType] >= 0
+		|| NPCID.Sets.ShimmerTransformToItem[redirectedType] >= 0
+		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[redirectedType] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
+		|| ShimmerTransformation<NPC>.AnyValidModShimmer(this));
 	}
-
-	/// <summary> <inheritdoc/> <br/>
-	/// For this <see cref="NPC"/> override, calls <see cref="NPCLoader.OnShimmer(NPC)"/>
-	/// </summary>
-	public void OnShimmer() => NPCLoader.OnShimmer(this);
-	public void Remove(int amount)
+	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.Type => type;
+	void IModShimmerable.Remove(int amount)
 	{
 		noSpawnCycle = true;
 		active = false;
@@ -317,6 +310,11 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 			NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, whoAmI);
 		}
 	}
+
+	/// <summary> <inheritdoc/> <br/>
+	/// For this <see cref="NPC"/> override, calls <see cref="NPCLoader.OnShimmer(NPC)"/>
+	/// </summary>
+	public void OnShimmer() => NPCLoader.OnShimmer(this);
 	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
 	
 	/// <summary>
