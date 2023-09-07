@@ -267,7 +267,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private void RestoreMeleeSpeedBehaviorOnVanillaItems()
 	{
-		if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse) {
+		bool isTool = pick > 0 || axe > 0 || hammer > 0 || type == ItemID.GravediggerShovel;
+		if (type < ItemID.Count && melee && (shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse || isTool)) {
 			if (noMelee)
 				DamageType = DamageClass.MeleeNoSpeed;
 			else
