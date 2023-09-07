@@ -109,7 +109,7 @@ public class ItemShimmerShowcaseModShimmer : ModItem
 			.AddModifyShimmerCallBack((ShimmerTransformation transformation, IModShimmerable source) => transformation.Results[0] = transformation.Results[0] with { Count = Main.rand.Next(20, 41) })
 			.AddModNPCResult<ExampleZombieThief>(2) // Unlike recipe we can spawn NPCs here, of any count, under conditions
 			.AddCoinLuckResult(2) // We can also add coin luck
-			.SortBefore(transformation)
+			.SortBefore(transformation, Type)
 			.Register();
 	}
 

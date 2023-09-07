@@ -14,13 +14,15 @@ namespace Terraria.ModLoader;
 /// <see cref="ShimmerTransformation{TShimmeredType}.Transformations"/> which is updated via <see cref="Register()"/> and its overloads. Uses a similar syntax to
 /// <see cref="Recipe"/>, usually starting with <see cref="ModNPC.CreateShimmerTransformation"/> or <see cref="ModItem.CreateShimmerTransformation"/>
 /// </summary>
-public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTransformation>
+public abstract class ShimmerTransformation : ICloneable
 {
+	#region Management
+
 	private static Action extraKnownTypeResets;
 	private static Action extraKnownTypeOrders;
 
 	/// <summary> Called on the first item added to the dictionary for a given type </summary>
-	internal static void AddAsKnownType<TModShimmerable>() where TModShimmerable : IModShimmerable
+	protected static void AddAsKnownType<TModShimmerable>() where TModShimmerable : IModShimmerable
 	{
 		extraKnownTypeResets += ShimmerTransformation<TModShimmerable>.Reset;
 		extraKnownTypeOrders += ShimmerTransformation<TModShimmerable>.Order;
@@ -40,20 +42,14 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 		extraKnownTypeOrders.Invoke();
 	}
 
-	protected abstract ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after, int forType);
-
-	public abstract ShimmerTransformation SortBefore(ShimmerTransformation transformation, int forType);
-
-	public abstract ShimmerTransformation SortAfter(ShimmerTransformation transformation, int forType);
-
 	public void Disable()
 		=> Disabled = true;
 
 	public bool Disabled { get; set; }
 
-	#region FunctionalityVariables
+	#endregion Management
 
-	public (ShimmerTransformation target, bool after) Ordering { get; set; }
+	#region Variables
 
 	/// <summary> Every condition must be true for the transformation to occur </summary>
 	public List<Condition> Conditions { get; init; } = new();
@@ -89,86 +85,54 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 	/// <inheritdoc cref="OnShimmerCallBack"/>
 	public OnShimmerCallBack OnShimmerCallBacks { get; private protected set; }
 
-	#endregion FunctionalityVariables
+	#endregion Variables
 
-	#region ControllerMethods
+	#region AbstractControllerMethods
 
 	/// <summary> Adds a condition to <see cref="Conditions"/>. <inheritdoc cref="Conditions"/> </summary>
 	/// <param name="condition"> The condition to be added </param>
-	public ShimmerTransformation AddCondition(Condition condition)
-	{
-		Conditions.Add(condition);
-		return this;
-	}
+	public abstract ShimmerTransformation AddCondition(Condition condition);
 
 	#region AddResultMethods
 
 	/// <summary> Adds a result to <see cref="Results"/>, this will be spawned when the <see cref="IModShimmerable"/> successfully shimmers </summary>
 	/// <param name="result"> The result to be added </param>
 	/// <exception cref="ArgumentException"> thrown when <paramref name="result"/> has a <see cref="ModShimmerResult.Count"/> that is less than or equal to zero </exception>
-	public ShimmerTransformation AddResult(ModShimmerResult result)
-	{
-		if (result.Count <= 0)
-			throw new ArgumentException("A Count greater than 0 is required", nameof(result));
-
-		Results.Add(result);
-		return this;
-	}
+	public abstract ShimmerTransformation AddResult(ModShimmerResult result);
 
 	/// <inheritdoc cref=" AddItemResult(int, int)"/>
-	public ShimmerTransformation AddModItemResult<T>(int stack) where T : ModItem
-		=> AddItemResult(ModContent.ItemType<T>(), stack);
+	public abstract ShimmerTransformation AddModItemResult<T>(int stack) where T : ModItem;
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="type"> The <see cref="Item.type"/> of the <see cref="Item"/> </param>
 	/// <param name="stack"> The amount of Item to be spawned </param>
-	public ShimmerTransformation AddItemResult(int type, int stack)
-		=> AddResult(new ItemShimmerResult(type, stack));
+	public abstract ShimmerTransformation AddItemResult(int type, int stack);
 
 	/// <inheritdoc cref="AddNPCResult(int, int)"/>
-	public ShimmerTransformation AddModNPCResult<T>(int count) where T : ModNPC
-		=> AddNPCResult(ModContent.NPCType<T>(), count);
+	public abstract ShimmerTransformation AddModNPCResult<T>(int count) where T : ModNPC;
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="type"> The <see cref="NPC.type"/> of the <see cref="NPC"/> </param>
 	/// <param name="count"> The amount of NPC to be spawned </param>
-	public ShimmerTransformation AddNPCResult(int type, int count)
-		=> AddResult(new NPCShimmerResult(type, count));
+	public abstract ShimmerTransformation AddNPCResult(int type, int count);
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="coinLuck"> The amount of coin luck to be added </param>
-	public ShimmerTransformation AddCoinLuckResult(int coinLuck)
-		=> AddResult(new CoinLuckShimmerResult(coinLuck));
+	public abstract ShimmerTransformation AddCoinLuckResult(int coinLuck);
 
 	#endregion AddResultMethods
 
 	/// <inheritdoc cref="IgnoreVanillaItemConstraints"/>
-	public ShimmerTransformation DisableVanillaItemConstraints()
-	{
-		IgnoreVanillaItemConstraints = true;
-		return this;
-	}
+	public abstract ShimmerTransformation DisableVanillaItemConstraints();
 
 	/// <summary> Adds a delegate to <see cref="CanShimmerCallBacks"/> that will be called if the shimmer transformation succeeds </summary>
-	public ShimmerTransformation AddCanShimmerCallBack(CanShimmerCallBack callBack)
-	{
-		CanShimmerCallBacks += callBack;
-		return this;
-	}
+	public abstract ShimmerTransformation AddCanShimmerCallBack(CanShimmerCallBack callBack);
 
 	/// <summary> Adds a delegate to <see cref="ModifyShimmerCallBacks"/> that will be called before the transformation </summary>
-	public ShimmerTransformation AddModifyShimmerCallBack(ModifyShimmerCallBack callBack)
-	{
-		ModifyShimmerCallBacks += callBack;
-		return this;
-	}
+	public abstract ShimmerTransformation AddModifyShimmerCallBack(ModifyShimmerCallBack callBack);
 
 	/// <summary> Adds a delegate to <see cref="OnShimmerCallBacks"/> that will be called if the shimmer transformation succeeds </summary>
-	public ShimmerTransformation AddOnShimmerCallBack(OnShimmerCallBack callBack)
-	{
-		OnShimmerCallBacks += callBack;
-		return this;
-	}
+	public abstract ShimmerTransformation AddOnShimmerCallBack(OnShimmerCallBack callBack);
 
 	/// <inheritdoc cref="Register(int)"/>
 	/// <exception cref="InvalidOperationException"> Thrown if this instance was not created from an Entity </exception>
@@ -180,7 +144,13 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 	/// <summary> Finalizes transformation </summary>
 	public abstract void Register(int type);
 
-	#endregion ControllerMethods
+	/// <summary> Sorts the <see cref="ShimmerTransformation"/> before the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered. </summary>
+	public abstract ShimmerTransformation SortBefore(ShimmerTransformation transformation, int forType);
+
+	/// <summary> Sorts the <see cref="ShimmerTransformation"/> after the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered. </summary>
+	public abstract ShimmerTransformation SortAfter(ShimmerTransformation transformation, int forType);
+
+	#endregion AbstractControllerMethods
 
 	#region Shimmering
 
@@ -208,7 +178,8 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 	/// <item/>
 	/// All added <see cref="CanShimmerCallBack"/> return true
 	/// <item/>
-	/// None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
+	/// None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is false (Used by vanilla
+	/// for progression protection)
 	/// <item/>
 	/// The amount of empty NPC slots under slot 200 is less than the number of NPCs this transformation spawns
 	/// </list>
@@ -217,7 +188,7 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 		=> !Disabled
 		&& Conditions.All((condition) => condition.IsMet())
 		&& (CheckCanShimmerCallBacks(shimmerable))
-		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result is ItemShimmerResult item && (item.Type == ItemID.Bone && !NPC.downedBoss3 || item.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)))
+		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.IsItemResult(ItemID.Bone) && !NPC.downedBoss3 || result.IsItemResult(ItemID.LihzahrdBrick) && !NPC.downedGolemBoss))
 		&& (GetCurrentAvailableNPCSlots() >= GetSpawnCount<NPCShimmerResult>());
 
 	/// <summary> Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/> </summary>
@@ -233,7 +204,7 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 
 	public const int SingleShimmerNPCSpawnCap = 50;
 
-	public int GetSpawnCount<TResultType>()
+	public int GetSpawnCount<TResultType>() where TResultType : ModShimmerResult
 		=> Results.Sum((ModShimmerResult result) => result is TResultType ? result.Count : 0);
 
 	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
@@ -278,9 +249,13 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 	#endregion Shimmering
 }
 
-public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformation where TModShimmerable : IModShimmerable
+/// <inheritdoc/>
+/// <typeparam name="TModShimmerable"> The type that will be shimmered from, mainly used it tandem with <see cref="Transformations"/> for type separation </typeparam>
+public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformation, IOrderable<ShimmerTransformation<TModShimmerable>> where TModShimmerable : IModShimmerable
 {
-	public int? SourceType { get; init; }
+	#region Management
+
+	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> Transformations { get; } = new();
 
 	public ShimmerTransformation()
 	{
@@ -290,8 +265,6 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	{
 		SourceType = CreateFrom.Type;
 	}
-
-	public static Dictionary<int, List<ShimmerTransformation>> Transformations { get; } = new();
 
 	public static void Reset()
 	{
@@ -304,18 +277,76 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			Transformations[type] = Transformations[type].GetOrdered().ToList();
 	}
 
-	public override ShimmerTransformation<TModShimmerable> Clone()
-		=> new() {
-			Disabled = Disabled,
-			Ordering = Ordering,
-			SourceType = SourceType,
-			Conditions = new List<Condition>(Conditions), // Technically I think the localization for the conditions can be changed
-			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
-			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
-			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks?.Clone(), // Stored values are immutable
-			ModifyShimmerCallBacks = (ModifyShimmerCallBack)ModifyShimmerCallBacks?.Clone(),
-			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
-		};
+	#endregion Management
+
+	#region Variables
+
+	public int? SourceType { get; init; }
+	public (ShimmerTransformation<TModShimmerable> target, bool after) Ordering { get; set; }
+
+	#endregion Variables
+
+	#region ControllerMethods
+
+	public override ShimmerTransformation<TModShimmerable> AddCondition(Condition condition)
+	{
+		Conditions.Add(condition);
+		return this;
+	}
+
+	#region AddResultMethods
+
+	public override ShimmerTransformation<TModShimmerable> AddResult(ModShimmerResult result)
+	{
+		if (result.Count <= 0)
+			throw new ArgumentException("A Count greater than 0 is required", nameof(result));
+
+		Results.Add(result);
+		return this;
+	}
+
+	public override ShimmerTransformation<TModShimmerable> AddModItemResult<T>(int stack)
+		=> AddItemResult(ModContent.ItemType<T>(), stack);
+
+	public override ShimmerTransformation<TModShimmerable> AddItemResult(int type, int stack)
+		=> AddResult(new ItemShimmerResult(type, stack));
+
+	public override ShimmerTransformation<TModShimmerable> AddModNPCResult<T>(int count)
+		=> AddNPCResult(ModContent.NPCType<T>(), count);
+
+	public override ShimmerTransformation<TModShimmerable> AddNPCResult(int type, int count)
+		=> AddResult(new NPCShimmerResult(type, count));
+
+	public override ShimmerTransformation<TModShimmerable> AddCoinLuckResult(int coinLuck)
+		=> AddResult(new CoinLuckShimmerResult(coinLuck));
+
+	#endregion AddResultMethods
+
+	public override ShimmerTransformation<TModShimmerable> DisableVanillaItemConstraints()
+	{
+		IgnoreVanillaItemConstraints = true;
+		return this;
+	}
+
+	public override ShimmerTransformation<TModShimmerable> AddCanShimmerCallBack(CanShimmerCallBack callBack)
+	{
+		CanShimmerCallBacks += callBack;
+		return this;
+	}
+
+	public override ShimmerTransformation<TModShimmerable> AddModifyShimmerCallBack(ModifyShimmerCallBack callBack)
+	{
+		ModifyShimmerCallBacks += callBack;
+		return this;
+	}
+
+	public override ShimmerTransformation<TModShimmerable> AddOnShimmerCallBack(OnShimmerCallBack callBack)
+	{
+		OnShimmerCallBacks += callBack;
+		return this;
+	}
+
+	#region Registering
 
 	/// <inheritdoc/>
 	public override void Register()
@@ -341,6 +372,10 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			Transformations[type].Add(this); // If it fails, entry exists, therefore add to list
 	}
 
+	#endregion Registering
+
+	#endregion ControllerMethods
+
 	#region Redirects
 
 	public static Dictionary<int, int> Redirects { get; } = new();
@@ -362,6 +397,8 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	}
 
 	#endregion Redirects
+
+	#region Shimmering
 
 	/// <summary>
 	/// Checks every <see cref="ShimmerTransformation"/> for this <typeparamref name="TModShimmerable"/> and returns true when if finds one that passes
@@ -386,7 +423,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	/// <returns> True if the transformation is successful, false if it is should fall through to vanilla as normal </returns>
 	public static bool TryModShimmer(TModShimmerable source)
 	{
-		List<ShimmerTransformation> transformations = Transformations.GetValueOrDefault(source.Type);
+		List<ShimmerTransformation<TModShimmerable>> transformations = Transformations.GetValueOrDefault(source.Type);
 		if (!(transformations?.Count > 0)) // Inverse to catch null
 			return false;
 
@@ -401,10 +438,12 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		return false;
 	}
 
+	#endregion Shimmering
+
 	#region Ordering
 
 	/// <summary> Sets the Ordering of this <see cref="ShimmerTransformation"/>. This <see cref="ShimmerTransformation"/> can't already have one. </summary>
-	protected override ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after, int forType)
+	private ShimmerTransformation<TModShimmerable> SetOrdering(ShimmerTransformation<TModShimmerable> transformation, bool after, int forType)
 	{
 		if (Ordering.target != null)
 			throw new Exception("This transformation already has an ordering.");
@@ -412,24 +451,52 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			throw new ArgumentException("This passed transformation must be registered.", nameof(transformation));
 
 		Ordering = (transformation, after);
-		ShimmerTransformation target = transformation;
+		ShimmerTransformation<TModShimmerable> target = transformation;
 		do {
 			if (target == this)
 				throw new Exception("Shimmer ordering loop!");
-
 			target = target.Ordering.target;
 		} while (target != null);
 
 		return this;
 	}
 
-	/// <summary> Sorts the <see cref="ShimmerTransformation"/> before the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered. </summary>
-	public override ShimmerTransformation SortBefore(ShimmerTransformation recipe, int forType) => SetOrdering(recipe, false, forType);
+	public ShimmerTransformation<TModShimmerable> SortBefore(ShimmerTransformation<TModShimmerable> transformation, int forType) => SetOrdering(transformation, false, forType);
 
-	/// <summary> Sorts the <see cref="ShimmerTransformation"/> after the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered. </summary>
-	public override ShimmerTransformation SortAfter(ShimmerTransformation recipe, int forType) => SetOrdering(recipe, true, forType);
+	public override ShimmerTransformation<TModShimmerable> SortBefore(ShimmerTransformation transformation, int forType)
+	{
+		if (transformation is ShimmerTransformation<TModShimmerable> typedTransformation)
+			return SortBefore(typedTransformation, forType);
+		throw new ArgumentException("Passed transformation must be the same type as self.", nameof(transformation));
+	}
+
+	public ShimmerTransformation<TModShimmerable> SortAfter(ShimmerTransformation<TModShimmerable> transformation, int forType) => SetOrdering(transformation, true, forType);
+
+	public override ShimmerTransformation<TModShimmerable> SortAfter(ShimmerTransformation transformation, int forType)
+	{
+		if (transformation is ShimmerTransformation<TModShimmerable> typedTransformation)
+			return SortBefore(typedTransformation, forType);
+		throw new ArgumentException("Passed transformation must be the same type as self.", nameof(transformation));
+	}
 
 	#endregion Ordering
+
+	#region Helpers
+
+	public override ShimmerTransformation<TModShimmerable> Clone()
+		=> new() {
+			Disabled = Disabled,
+			Ordering = Ordering,
+			SourceType = SourceType,
+			Conditions = new List<Condition>(Conditions), // Technically I think the localization for the conditions can be changed
+			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
+			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
+			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks?.Clone(), // Stored values are immutable
+			ModifyShimmerCallBacks = (ModifyShimmerCallBack)ModifyShimmerCallBacks?.Clone(),
+			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
+		};
+
+	#endregion Helpers
 }
 
 /// <summary>
