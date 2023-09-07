@@ -18,28 +18,34 @@ public abstract class ShimmerTransformation : ICloneable, IOrderable<ShimmerTran
 {
 	private static Action extraKnownTypeResets;
 	private static Action extraKnownTypeOrders;
-	public static void AddAsKnownType<TModShimmerable>() where TModShimmerable : IModShimmerable
+
+	/// <summary> Called on the first item added to the dictionary for a given type </summary>
+	internal static void AddAsKnownType<TModShimmerable>() where TModShimmerable : IModShimmerable
 	{
 		extraKnownTypeResets += ShimmerTransformation<TModShimmerable>.Reset;
 		extraKnownTypeOrders += ShimmerTransformation<TModShimmerable>.Order;
 	}
+
+	/// <summary> Called during unloading </summary>
 	internal static void ResetKnown()
 	{
-		ShimmerTransformation<NPC>.Reset();
-		ShimmerTransformation<Item>.Reset();
 		extraKnownTypeResets.Invoke();
-		extraKnownTypeResets = null;
+		extraKnownTypeResets = null; // Clear for the next load
+		extraKnownTypeOrders = null;
 	}
 
+	/// <summary> Called near recipe ordering when loading </summary>
 	internal static void OrderKnown()
 	{
-		ShimmerTransformation<NPC>.Order();
-		ShimmerTransformation<Item>.Order();
 		extraKnownTypeOrders.Invoke();
 	}
-	private protected abstract ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after);
-	public abstract ShimmerTransformation SortBefore(ShimmerTransformation transformation);
-	public abstract ShimmerTransformation SortAfter(ShimmerTransformation transformation);
+
+	protected abstract ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after, int forType);
+
+	public abstract ShimmerTransformation SortBefore(ShimmerTransformation transformation, int forType);
+
+	public abstract ShimmerTransformation SortAfter(ShimmerTransformation transformation, int forType);
+
 	public void Disable()
 		=> Disabled = true;
 
@@ -300,6 +306,9 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	public override ShimmerTransformation<TModShimmerable> Clone()
 		=> new() {
+			Disabled = Disabled,
+			Ordering = Ordering,
+			SourceType = SourceType,
 			Conditions = new List<Condition>(Conditions), // Technically I think the localization for the conditions can be changed
 			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
 			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
@@ -326,10 +335,10 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	/// <inheritdoc/>
 	public override void Register(int type)
 	{
+		if (Transformations.Count == 0)
+			AddAsKnownType<TModShimmerable>();
 		if (!Transformations.TryAdd(type, new() { this })) //Try add a new entry for the tuple
 			Transformations[type].Add(this); // If it fails, entry exists, therefore add to list
-
-		Transformations[type].Sort(); //TODO: with orderafter stuff
 	}
 
 	#region Redirects
@@ -347,7 +356,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	{
 		if (Redirects.TryGetValue(type, out int value))
 			type = value;
-		if (default(TModShimmerable) is Item && ItemID.Sets.ShimmerCountsAsItem[type] > 0)
+		if (typeof(TModShimmerable) == typeof(Item) && ItemID.Sets.ShimmerCountsAsItem[type] > 0)
 			type = ItemID.Sets.ShimmerCountsAsItem[type];
 		return type;
 	}
@@ -355,10 +364,10 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	#endregion Redirects
 
 	/// <summary>
-	/// Checks every <see cref="ShimmerTransformation"/> for this <see cref="IModShimmerable"/> and returns true when if finds one that passes
+	/// Checks every <see cref="ShimmerTransformation"/> for this <typeparamref name="TModShimmerable"/> and returns true when if finds one that passes
 	/// <see cref="ShimmerTransformation.CanModShimmer_Transformation(IModShimmerable)"/>. <br/> Does not check <see cref="IModShimmerable.CanShimmer"/>
 	/// </summary>
-	/// <returns> True if there is a mod transformation this <see cref="IModShimmerable"/> could undergo </returns>
+	/// <returns> True if there is a mod transformation this <typeparamref name="TModShimmerable"/> could undergo </returns>
 	public static bool AnyValidModShimmer(TModShimmerable source)
 	{
 		if (!Transformations.ContainsKey(source.Type))
@@ -372,8 +381,8 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		return false;
 	}
 
-	/// <summary> Tries to complete a shimmer operation on the <see cref="IModShimmerable"/> passed, should not be called on multiplayer clients </summary>
-	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
+	/// <summary> Tries to complete a shimmer operation on the <typeparamref name="TModShimmerable"/> passed, should not be called on multiplayer clients </summary>
+	/// <param name="source"> The <typeparamref name="TModShimmerable"/> to be shimmered </param>
 	/// <returns> True if the transformation is successful, false if it is should fall through to vanilla as normal </returns>
 	public static bool TryModShimmer(TModShimmerable source)
 	{
@@ -394,39 +403,33 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	#region Ordering
 
-	/// <summary>
-	/// Sets the Ordering of this <see cref="ShimmerTransformation"/>. This <see cref="ShimmerTransformation"/> can't already have one.
-	/// </summary>
-	private protected override ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after)
+	/// <summary> Sets the Ordering of this <see cref="ShimmerTransformation"/>. This <see cref="ShimmerTransformation"/> can't already have one. </summary>
+	protected override ShimmerTransformation SetOrdering(ShimmerTransformation transformation, bool after, int forType)
 	{
 		if (Ordering.target != null)
 			throw new Exception("This transformation already has an ordering.");
+		if (!Transformations[forType].Contains(transformation))
+			throw new ArgumentException("This passed transformation must be registered.", nameof(transformation));
 
 		Ordering = (transformation, after);
 		ShimmerTransformation target = transformation;
-		do
-		{
+		do {
 			if (target == this)
 				throw new Exception("Shimmer ordering loop!");
 
 			target = target.Ordering.target;
 		} while (target != null);
 
-
 		return this;
 	}
 
-	/// <summary>
-	/// Sorts the <see cref="ShimmerTransformation"/> before the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered.
-	/// </summary>
-	public override ShimmerTransformation SortBefore(ShimmerTransformation recipe) => SetOrdering(recipe, false);
+	/// <summary> Sorts the <see cref="ShimmerTransformation"/> before the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered. </summary>
+	public override ShimmerTransformation SortBefore(ShimmerTransformation recipe, int forType) => SetOrdering(recipe, false, forType);
 
-	/// <summary>
-	/// Sorts the <see cref="ShimmerTransformation"/> after the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered.
-	/// </summary>
-	public override ShimmerTransformation SortAfter(ShimmerTransformation recipe) => SetOrdering(recipe, true);
+	/// <summary> Sorts the <see cref="ShimmerTransformation"/> after the one given as parameter. Both <see cref="ShimmerTransformation"/> must already be registered. </summary>
+	public override ShimmerTransformation SortAfter(ShimmerTransformation recipe, int forType) => SetOrdering(recipe, true, forType);
 
-	#endregion
+	#endregion Ordering
 }
 
 /// <summary>
@@ -453,8 +456,8 @@ public interface IModShimmerable
 	public virtual int Stack => 1;
 
 	/// <summary>
-	/// Checks if this <see cref="IModShimmerable"/> can currently undergo a shimmer transformation. This includes both vanilla and modded <br/> Should not makes changes to game
-	/// state. <br/> Treat as read only.
+	/// Checks if this <see cref="IModShimmerable"/> can currently undergo a shimmer transformation. This includes both vanilla and modded <br/> Should not makes changes
+	/// to game state. <br/> Treat as read only.
 	/// </summary>
 	/// <returns> True if the <see cref="IModShimmerable"/> currently has a valid shimmer operation it can use. </returns>
 	public virtual bool CanShimmer() => true;
@@ -467,8 +470,6 @@ public interface IModShimmerable
 	/// </summary>
 	public abstract void Remove(int amount);
 
-	/// <summary>
-	/// Returns <see cref="Entity.GetSource_Misc(string)"/> with passed value "shimmer" in <see cref="NPC"/> and <see cref="Item"/>, used only for <see cref="ShimmerTransformation"/>
-	/// </summary>
+	/// <summary> Returns <see cref="Entity.GetSource_Misc(string)"/> with passed value "shimmer" in <see cref="NPC"/> and <see cref="Item"/>, used only for <see cref="ShimmerTransformation"/> </summary>
 	public abstract IEntitySource GetSource_ForShimmer();
 }

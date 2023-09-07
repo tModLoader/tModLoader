@@ -11,9 +11,6 @@ namespace ExampleMod.Content.Projectiles;
 public class ExampleShimmerableProjectile : ModProjectile, IModShimmerable
 {
 	public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.ThornBall}";
-	public override void Load() {
-		ShimmerTransformation.AddAsKnownType<ExampleShimmerableProjectile>();
-	}
 
 	public override void SetStaticDefaults() {
 		new ShimmerTransformation<ExampleShimmerableProjectile>()
