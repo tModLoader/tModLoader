@@ -2629,7 +2629,7 @@
 -		if (SpawnedFromStatue) {
 +		if (!CanShimmer()) // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC
 +			return;
-+		int type = ModShimmer.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey); // TML
++		int type = ShimmerTransformation.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey); // TML
 +
 +		if (SpawnedFromStatue && NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
  			if (Main.netMode == 0)
@@ -2639,7 +2639,7 @@
  				NetMessage.SendData(23, -1, -1, null, whoAmI);
  			}
  		}
-+		else if (ModShimmer.TryModShimmer(this)) { } // TML: #AdvancedShimmerTransformations
++		else if (ShimmerTransformation.TryModShimmer(this)) { } // TML: #AdvancedShimmerTransformations
  		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
  			Transform(NPCID.Sets.ShimmerTransformToNPC[type]);
  			if (Main.netMode == 0)

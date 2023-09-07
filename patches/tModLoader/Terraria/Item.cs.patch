@@ -1911,7 +1911,7 @@
 +	/// <summary> <inheritdoc/> <br/>
 +	/// For this <see cref="Item"/> override it checks for <see cref="ItemLoader.CanShimmer(Item)"/> and for any of the following:
 +	/// <list type="number">
-+	/// <item/> <see cref="ModShimmer.AnyValidModShimmer"/>
++	/// <item/> <see cref="ShimmerTransformation.AnyValidModShimmer"/>
 +	/// <item/> (type == 1326 || type == 779 || type == 3031 || type == 5364) and NPC.downedMoonlord
 +	/// <item/> (type == 4986 and !NPC.unlockedSlimeRainbowSpawn)
 +	/// <item/> (type == 3461 || createTile == 139)
@@ -1923,7 +1923,7 @@
  	{
 +		if (!ItemLoader.CanShimmer(this)) // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
 +			return false;
-+		if (ModShimmer.AnyValidModShimmer(this))
++		if (ShimmerTransformation.AnyValidModShimmer(this))
 +			return true;
 +
  		int shimmerEquivalentType = GetShimmerEquivalentType();
@@ -1948,12 +1948,12 @@
  
  		return type;
 +		*/
-+		return ModShimmer.GetRedirectedKeySameShimmerID((ModShimmerTypeID, type)); // TML: #AdvancedShimmerTransformations, does ModShimmer redirects first
++		return ShimmerTransformation.GetRedirectedKeySameShimmerID((ModShimmerTypeID, type)); // TML: #AdvancedShimmerTransformations, does ShimmerTransformation redirects first
  	}
  
  	private void GetShimmered()
  	{
-+		if (ModShimmer.TryModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++		if (ShimmerTransformation.TryModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
 +			OnShimmer(); // ModItem and GlobalItem
 +			return;
 +		}

@@ -14,7 +14,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				(ModShimmerTypeID.NPC, NPCID.PartyBunny),
 			};
 
-			new ModShimmer() // Since we're not in ModNPC we instantiate manually
+			new ShimmerTransformation() // Since we're not in ModNPC we instantiate manually
 				.AddNPCResult(NPCID.Frog, 1) // Vanilla frog
 				.AddCondition(Condition.InBeach) // On the beach
 				.Register(transformationFor); // Registers for every entity passed within the array

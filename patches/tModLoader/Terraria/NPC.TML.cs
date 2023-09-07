@@ -287,20 +287,20 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToNPC"/>
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToItem"/>
 	/// <item/> not <see cref="NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue"/> while <see cref="SpawnedFromStatue"/>
-	/// <item/> <see cref="ModShimmer.AnyValidModShimmer"/>
+	/// <item/> <see cref="ShimmerTransformation.AnyValidModShimmer"/>
 	/// </list>
 	/// </summary>
 	/// <inheritdoc/>
 	public bool CanShimmer()
 	{
-		int type = ModShimmer.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey);
+		int type = ShimmerTransformation.GetRedirectedKeySameShimmerID((this as IModShimmerable).StorageKey);
 
 		return NPCLoader.CanShimmer(this) // ModNPC and GlobalNPC
 		&& (NPCID.Sets.ShimmerTownTransform[type] // valid shimmer types
 		|| NPCID.Sets.ShimmerTransformToNPC[type] >= 0
 		|| NPCID.Sets.ShimmerTransformToItem[type] >= 0
 		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
-		|| ModShimmer.AnyValidModShimmer(this));
+		|| ShimmerTransformation.AnyValidModShimmer(this));
 	}
 
 	/// <summary> <inheritdoc/> <br/>

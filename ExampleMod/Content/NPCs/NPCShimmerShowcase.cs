@@ -26,7 +26,7 @@ public class NPCShimmerShowcase : ModNPC
 
 		CreateShimmerTransformation()
 			// A shimmer callback applies to the one transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
-			.AddCanShimmerCallBack((ModShimmer transformation, IModShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
+			.AddCanShimmerCallBack((ShimmerTransformation transformation, IModShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
 			.AddItemResult(ItemID.ExplosiveBunny, 30)
 			.AddNPCResult(NPCID.Skeleton, 3)
 			.AddOnShimmerCallBack(OnShimmerCallBack)
@@ -42,7 +42,7 @@ public class NPCShimmerShowcase : ModNPC
 			.AddNPCResult(NPCID.TheBride, 1)
 			.Register();
 
-		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ModShimmer unless all conditions fall through
+		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ShimmerTransformation unless all conditions fall through
 		NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
 		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal, this NPC does not have a statue, but this would be used if it did
 		NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[NPC.type] = true;
@@ -73,9 +73,9 @@ public class NPCShimmerShowcase : ModNPC
 		return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 	}
 
-	// This is static and not an override, it is used earlier to pass as a ModShimmer.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a method.
+	// This is static and not an override, it is used earlier to pass as a ShimmerTransformation.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a method.
 	// While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based, use "origin"
-	public static void OnShimmerCallBack(ModShimmer transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
+	public static void OnShimmerCallBack(ShimmerTransformation transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
 		spawnedShimmerables.ForEach((IModShimmerable spawnedShimmerable)
 			=> {
 				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.ShimmerVelocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
