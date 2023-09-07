@@ -184,8 +184,6 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	/// </exception>
 	public ShimmerTransformation AddResult(ModShimmerResult result)
 	{
-		if (!result.ModShimmerTypeID.IsValidSpawnedType())
-			throw new ArgumentException("ModShimmerTypeID must be a valid spawn type, check Example Mod for details", nameof(result));
 		if (result.Count <= 0)
 			throw new ArgumentException("A Count greater than 0 is required", nameof(result));
 
@@ -201,7 +199,7 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	/// <param name="type"> The <see cref="Item.type"/> of the <see cref="Item"/> </param>
 	/// <param name="stack"> The amount of Item to be spawned </param>
 	public ShimmerTransformation AddItemResult(int type, int stack)
-		=> AddResult(new(ModShimmerTypeID.Item, type, stack));
+		=> AddResult(new ItemShimmerResult(type, stack));
 
 	/// <inheritdoc cref="AddNPCResult(int, int)"/>
 	public ShimmerTransformation AddModNPCResult<T>(int count) where T : ModNPC
@@ -211,19 +209,12 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	/// <param name="type"> The <see cref="NPC.type"/> of the <see cref="NPC"/> </param>
 	/// <param name="count"> The amount of NPC to be spawned </param>
 	public ShimmerTransformation AddNPCResult(int type, int count)
-		=> AddResult(new(ModShimmerTypeID.NPC, type, count));
+		=> AddResult(new NPCShimmerResult(type, count));
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="coinLuck"> The amount of coin luck to be added </param>
 	public ShimmerTransformation AddCoinLuckResult(int coinLuck)
-		=> AddResult(new(ModShimmerTypeID.CoinLuck, -1, coinLuck));
-
-	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
-	/// <param name="count"> The number of times <see cref="ModShimmerResult.CustomSpawner"/> will be called </param>
-	/// <param name="spawnShimmer"> custom shimmer spawn function </param>
-	/// <param name="customShimmerType"> unused by tModLoader, will still be in <see cref="ModShimmerResult"/> so can be used in <paramref name="spawnShimmer"/> </param>
-	public ShimmerTransformation AddCustomShimmerResult(int count = 1, ModShimmerResult.SpawnShimmer spawnShimmer = null, int customShimmerType = -1)
-		=> AddResult(new ModShimmerResult(ModShimmerTypeID.Custom, customShimmerType, count) { CustomSpawner = spawnShimmer });
+		=> AddResult(new CoinLuckShimmerResult(coinLuck));
 
 	#endregion AddResultMethods
 
@@ -340,7 +331,7 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	public bool CanModShimmer_Transformation(IModShimmerable shimmerable)
 		=> Conditions.All((condition) => condition.IsMet())
 		&& (CheckCanShimmerCallBacks(shimmerable))
-		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.ModShimmerTypeID == ModShimmerTypeID.Item && (result.Type == ItemID.Bone && !NPC.downedBoss3 || result.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)))
+		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result is ItemShimmerResult item && (item.Type == ItemID.Bone && !NPC.downedBoss3 || item.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)))
 		&& (GetCurrentAvailableNPCSlots() >= GetNPCSpawnCount());
 
 	/// <summary>
@@ -399,7 +390,7 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	public const int SingleShimmerNPCSpawnCap = 50;
 
 	public int GetNPCSpawnCount()
-		=> Results.Sum((ModShimmerResult result) => result.ModShimmerTypeID == ModShimmerTypeID.NPC ? result.Count : 0);
+		=> Results.Sum((ModShimmerResult result) => result is NPCShimmerResult ? result.Count : 0);
 
 	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
 
@@ -423,16 +414,8 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	{
 		spawned = new(); // List to be passed for onShimmerCallBacks
 		foreach (ModShimmerResult result in transformation.Results)
-			SpawnModShimmerResult(source, result, stackUsed, ref spawned); //Spawns the individual result, adds it to the list
+			result.Spawn(source, stackUsed, spawned); //Spawns the individual result, adds it to the list
 	}
-
-	/// <summary>
-	/// Added the the velocity of the <see cref="IModShimmerable"/> to prevent stacking
-	/// </summary>
-	public static Vector2 GetShimmerSpawnVelocityModifier()
-		// What vanilla does for items with more than one ingredient, flings stuff everywhere as it's never supposed to do more than 15
-		// => new(count * (1f + count * 0.05f) * ((count % 2 == 0) ? -1 : 1), 0);
-		=> new Vector2(Main.rand.Next(-30, 31), Main.rand.Next(-40, -15)) * 0.1f; //So we're using the random spawn values from shimmered items instead, items push each other away when in the shimmer state anyway, so this is more for NPCs
 
 	/// <summary>
 	/// Acts on the <paramref name="shimmerResult"/>. Result depends on <see cref="ModShimmerResult.ModShimmerTypeID"/>, usually spawns an <see cref="Item"/> or
@@ -442,73 +425,12 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 	/// <param name="shimmerResult"> The Result to be spawned </param>
 	/// <param name="stackUsed"> The amount of the <see cref="IModShimmerable"/> that is used, actual spawned amount will be <paramref name="stackUsed"/> * <see cref="ModShimmerResult.Count"/> </param>
 	/// <param name="spawned"> A list of <see cref="IModShimmerable"/> passed to <see cref="OnShimmerCallBacks"/> </param>
-	public static void SpawnModShimmerResult(IModShimmerable source, ModShimmerResult shimmerResult, int stackUsed, ref List<IModShimmerable> spawned)
+	public static void ToRemove(IModShimmerable source, ModShimmerResult shimmerResult, int stackUsed, ref List<IModShimmerable> spawned)
 	{
-		int spawnTotal = shimmerResult.Count * stackUsed;
-		switch (shimmerResult.ModShimmerTypeID) {
-			case ModShimmerTypeID.Item: {
-				while (spawnTotal > 0) {
-					Item item = Main.item[Item.NewItem(source.GetSource_ForShimmer(), source.Center, shimmerResult.Type)];
-					item.stack = Math.Min(item.maxStack, spawnTotal);
-					item.shimmerTime = 1f;
-					item.shimmered = item.shimmerWet = item.wet = true;
-					item.velocity = source.ShimmerVelocity + GetShimmerSpawnVelocityModifier();
-					item.playerIndexTheItemIsReservedFor = Main.myPlayer;
-					NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, item.whoAmI, 1f); // net sync spawning the item
-
-					spawned.Add(item);
-					spawnTotal -= item.stack;
-				}
-				break;
-			}
-
-			case ModShimmerTypeID.NPC: {
-				while (spawnTotal > 0) {
-					NPC newNPC = NPC.NewNPCDirect(source.GetSource_ForShimmer(), source.Center, shimmerResult.Type);
-
-					//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
-					if (source is NPC nPC && shimmerResult.KeepVanillaTransformationConventions) {
-						newNPC.extraValue = nPC.extraValue;
-						newNPC.CopyInteractions(nPC);
-						newNPC.spriteDirection = nPC.spriteDirection;
-
-						if (nPC.value == 0f) // Statue stuff
-							newNPC.value = 0f;
-						newNPC.SpawnedFromStatue = nPC.SpawnedFromStatue;
-						newNPC.shimmerTransparency = nPC.shimmerTransparency;
-						newNPC.buffType = nPC.buffType[..]; // Pretty sure the manual way vanilla does it is actually the slowest way that isn't LINQ
-						newNPC.buffTime = nPC.buffTime[..];
-					}
-					else {
-						newNPC.shimmerTransparency = 1f;
-					}
-					newNPC.velocity = source.ShimmerVelocity + GetShimmerSpawnVelocityModifier();
-					newNPC.TargetClosest();
-
-					if (Main.netMode == NetmodeID.Server) {
-						NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, newNPC.whoAmI);
-						NetMessage.SendData(MessageID.NPCBuffs, -1, -1, null, newNPC.whoAmI);
-						newNPC.netUpdate = true;
-					}
-
-					spawned.Add(newNPC);
-					spawnTotal--;
-				}
-
-				break;
-			}
-
-			case ModShimmerTypeID.CoinLuck:
-				Main.player[Main.myPlayer].AddCoinLuck(source.Center, spawnTotal);
-				NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, source.Center.X, source.Center.Y, spawnTotal);
-				break;
-
-			case ModShimmerTypeID.Custom:
-				for (int i = 0; i < shimmerResult.Count; i++) {
-					shimmerResult.CustomSpawner.Invoke(source, shimmerResult, source.ShimmerVelocity + GetShimmerSpawnVelocityModifier(), ref spawned);
-				}
-				break;
-		}
+			//case ModShimmerTypeID.Custom:
+			//	for (int i = 0; i < shimmerResult.Count; i++) {
+			//		shimmerResult.CustomSpawner.Invoke(source, shimmerResult, source.ShimmerVelocity + GetShimmerSpawnVelocityModifier(), ref spawned);
+			//	}
 	}
 
 	/// <summary>
@@ -545,14 +467,15 @@ public sealed class ShimmerTransformation : IComparable<ShimmerTransformation>, 
 
 	#region Helpers
 
-	public bool ContainsResult((ModShimmerTypeID, int) type)
-		=> Results.Any((result) => result.IsResult(type));
+	//TODO: this.
+	//public bool ContainsResult((ModShimmerTypeID, int) type)
+	//	=> Results.Any((result) => result.IsSameResultType(type));
 
-	public bool ContainsAnyResult((ModShimmerTypeID, int)[] types)
-		=> types.Any((type) => ContainsResult(type));
+	//public bool ContainsAnyResult((ModShimmerTypeID, int)[] types)
+	//	=> types.Any((type) => ContainsResult(type));
 
-	public bool ContainsResults((ModShimmerTypeID, int)[] types)
-		=> types.All((type) => ContainsResult(type));
+	//public bool ContainsResults((ModShimmerTypeID, int)[] types)
+	//	=> types.All((type) => ContainsResult(type));
 
 	#endregion Helpers
 }
@@ -585,48 +508,6 @@ public static class ModShimmerTypeIDExtensions
 	/// </summary>
 	public static bool IsValidSpawnedType(this ModShimmerTypeID id)
 		=> id == ModShimmerTypeID.NPC || id == ModShimmerTypeID.Item || id == ModShimmerTypeID.CoinLuck || id == ModShimmerTypeID.Custom;
-}
-
-/// <summary>
-/// A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation
-/// </summary>
-/// <param name="ModShimmerTypeID"> The type of shimmer operation this represents </param>
-/// <param name="Type">
-/// The type of the <see cref="IModShimmerable"/> to spawn, ignored when <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> or
-/// <see cref="ModShimmerTypeID.Custom"/> although it is passed into <see cref="CustomSpawner"/> so can be used for custom logic
-/// </param>
-/// <param name="Count">
-/// The number of this <see cref="IModShimmerable"/> to spawn, if <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck
-/// value, if <see cref="ModShimmerTypeID.Custom"/>, this is the amount of times <see cref="CustomSpawner"/> will be called
-/// </param>
-/// <param name="KeepVanillaTransformationConventions">
-/// Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay keep their spawned NPCs from a
-/// statue when shimmered, if you have no reason to disable, don't
-/// </param>
-public readonly record struct ModShimmerResult(ModShimmerTypeID ModShimmerTypeID, int Type, int Count, bool KeepVanillaTransformationConventions)
-{
-	/// <inheritdoc cref="ModShimmerResult(ModShimmerTypeID, int, int, bool)"/>
-	public ModShimmerResult() : this(default, default, default, default) { }
-
-	/// <inheritdoc cref="ModShimmerResult(ModShimmerTypeID, int, int, bool)"/>
-	public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true) { }
-
-	/// <summary>
-	/// Called when an instance of <see cref="ModShimmerResult"/> is set as <see cref="ModShimmerTypeID.Custom"/>
-	/// </summary>
-	/// <param name="spawner"> The <see cref="IModShimmerable"/> that caused this transformation </param>
-	/// <param name="shimmerResult"> The <see cref="ModShimmerResult"/> that caused this </param>
-	/// <param name="velocity"> The velocity to spawn the new instance at </param>
-	/// <param name="spawned"> A <see cref="List{T}"/> of <see cref="IModShimmerable"/> that the new instance of <see cref="IModShimmerable"/> should be added to </param>
-	public delegate void SpawnShimmer(IModShimmerable spawner, ModShimmerResult shimmerResult, Vector2 velocity, ref List<IModShimmerable> spawned);
-
-	/// <inheritdoc cref="SpawnShimmer"/>
-	public SpawnShimmer CustomSpawner { get; init; } = null;
-
-	public (ModShimmerTypeID, int) CompleteResultType => (ModShimmerTypeID, Type);
-
-	public bool IsResult((ModShimmerTypeID, int) result)
-		=> CompleteResultType == result;
 }
 
 /// <summary>
