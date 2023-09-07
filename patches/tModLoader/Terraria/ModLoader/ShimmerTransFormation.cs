@@ -257,6 +257,15 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> Transformations { get; } = new();
 
+	/// <summary>
+	/// Gets every entry that isn't disabled and where every result is of type <typeparamref name="TModShimmerResult"/>
+	/// </summary>
+	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> GetAllFilterFilteredByType<TModShimmerResult>() where TModShimmerResult : ModShimmerResult
+		=> new(Transformations.Where(pair // Where
+			=> pair.Value.All(transformation // for every transformation
+				=> !transformation.Disabled && transformation.Results.All(result // This transformation is not disabled, and for every result
+					=> result is TModShimmerResult)))); // The result is of the TModShimmerResult passed
+
 	public ShimmerTransformation()
 	{
 	}
