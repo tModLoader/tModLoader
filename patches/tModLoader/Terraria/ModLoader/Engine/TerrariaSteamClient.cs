@@ -95,7 +95,9 @@ internal class TerrariaSteamClient
 
 		SendCmd(MsgAck);
 
-		// may need to put a Thread.Sleep here if there are issues with the steam current game reporting Terraria rather than tModLoader
+		// We put a Thread.Sleep here since there were ~5-10% users with issues with the steam current game reporting Terraria rather than tModLoader
+		Thread.Sleep(300);
+
 		return LaunchResult.Ok;
 	}
 
