@@ -493,7 +493,7 @@ public static class ModContent
 		Recipe.numRecipes = 0;
 		RecipeGroupHelper.ResetRecipeGroups();
 		Recipe.SetupRecipes();
-		ShimmerTransformation.Unload();
+		ShimmerTransformation.ResetKnown();
 		TileEntity.manager.Reset();
 		MapLoader.UnloadModMap();
 		ItemSorting.SetupWhiteLists();

@@ -7,24 +7,10 @@ namespace Terraria.ModLoader;
 
 /// <summary> A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation </summary>
 
-/// <param name="Count">
-/// The number of this <see cref="IModShimmerable"/> to spawn, if <paramref name="ModShimmerTypeID"/> is <see cref="ModShimmerTypeID.CoinLuck"/> this is the coin luck
-/// value, if <see cref="ModShimmerTypeID.Custom"/>, this is the amount of times <see cref="CustomSpawner"/> will be called
-/// </param>
-/// <param name="KeepVanillaTransformationConventions">
-/// Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes, e.g. NPC's spawned via statues stay keep their spawned NPCs
-/// from a statue when shimmered, if you have no reason to disable, don't
-/// </param>
-public abstract record class ModShimmerResult(/*ModShimmerTypeID ModShimmerTypeID, int Type, */int Count/*, bool KeepVanillaTransformationConventions*/)
+/// <param name="Count"> The number of this result to spawn, true count will be multiplied by the stack size of the <see cref="IModShimmerable"/> source </param>
+
+public abstract record class ModShimmerResult(int Count)
 {
-	///// <inheritdoc cref="ModShimmerResult(ModShimmerTypeID, int, int, bool)"/>
-	//public ModShimmerResult() : this(default, default, default, default) { }
-
-	///// <inheritdoc cref="ModShimmerResult(ModShimmerTypeID, int, int, bool)"/>
-	//public ModShimmerResult(ModShimmerTypeID ResultType, int Type, int Count) : this(ResultType, Type, Count, true) { }
-
-	//public (ModShimmerTypeID, int) CompleteResultType => (ModShimmerTypeID, Type);
-
 	public abstract bool IsSameResultType(ModShimmerResult result);
 
 	public virtual bool IsSameResult(ModShimmerResult result)
@@ -53,10 +39,11 @@ public record class CoinLuckShimmerResult(int Count) : ModShimmerResult(Count)
 	}
 }
 
+/// <param name="Type"> The type of the to spawn </param>
+/// <param name="Count"> <inheritdoc/> </param>
 /// <inheritdoc cref="ModShimmerResult(int)"/>
 public abstract record class TypedShimmerResult(int Type, int Count) : ModShimmerResult(Count);
 
-/// <param name="Type"> The type of the <see cref="Item"/> to spawn </param>
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
 public record class ItemShimmerResult(int Type, int Count) : TypedShimmerResult(Type, Count)
 {
@@ -82,8 +69,24 @@ public record class ItemShimmerResult(int Type, int Count) : TypedShimmerResult(
 	}
 }
 
+/// <inheritdoc cref="TypedShimmerResult(int, int)"/>
 public record class NPCShimmerResult(int Type, int Count) : TypedShimmerResult(Type, Count)
 {
+	/// <summary>
+	/// Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes when shimmering NPCs. If you have no reason to disable,
+	/// don't. Here are the effects: <code>
+	/// newNPC.extraValue = nPC.extraValue;
+	/// newNPC.CopyInteractions(nPC);
+	/// newNPC.spriteDirection = nPC.spriteDirection;
+	///
+	/// if (nPC.value == 0f)
+	///		newNPC.value = 0f;
+	/// newNPC.SpawnedFromStatue = nPC.SpawnedFromStatue;
+	/// newNPC.shimmerTransparency = nPC.shimmerTransparency;
+	/// newNPC.buffType = nPC.buffType[..];
+	/// newNPC.buffTime = nPC.buffTime[..];
+	///</code>
+	/// </summary>
 	public bool KeepVanillaTransformationConventions { get; init; }
 	public override bool IsSameResultType(ModShimmerResult result)
 		=> result is NPCShimmerResult r && r.Type == Type;

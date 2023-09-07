@@ -9,41 +9,38 @@ namespace Terraria.ModLoader;
 // TML: #AdvancedShimmerTransformations
 
 /// <summary>
-/// Represents the behavior and output of a shimmer transformation, the <see cref="IModShimmerable"/>(s) that can use it are stored via <see cref="ShimmerTransformation{TShimmeredType}.Transformations"/>
-/// which is updated via <see cref="Register()"/> and its overloads. Uses a similar syntax to <see cref="Recipe"/>, usually starting with
-/// <see cref="ModNPC.CreateShimmerTransformation"/> or <see cref="ModItem.CreateShimmerTransformation"/>
+/// Represents the behavior and output of a shimmer transformation, the <see cref="IModShimmerable"/>(s) that can use it are stored via
+/// <see cref="ShimmerTransformation{TShimmeredType}.Transformations"/> which is updated via <see cref="Register()"/> and its overloads. Uses a similar syntax to
+/// <see cref="Recipe"/>, usually starting with <see cref="ModNPC.CreateShimmerTransformation"/> or <see cref="ModItem.CreateShimmerTransformation"/>
 /// </summary>
 public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>, ICloneable
 {
+	internal static void ResetKnown()
+	{
+		ShimmerTransformation<NPC>.Transformations.Clear();
+		ShimmerTransformation<Item>.Transformations.Clear();
+	}
+
 	public void Disable()
 		=> Disabled = true;
 
 	public bool Disabled { get; set; }
+
 	#region FunctionalityVariables
 
-	/// <summary>
-	/// Every condition must be true for the transformation to occur
-	/// </summary>
+	/// <summary> Every condition must be true for the transformation to occur </summary>
 	public List<Condition> Conditions { get; init; } = new();
 
-	/// <summary>
-	/// The results that the transformation produces.
-	/// </summary>
+	/// <summary> The results that the transformation produces. </summary>
 	public List<ModShimmerResult> Results { get; init; } = new();
 
-	/// <summary>
-	/// Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick when skeletron or golem are undefeated respectively
-	/// </summary>
+	/// <summary> Vanilla disallows a transformation if the result includes either a bone or a lihzahrd brick when skeletron or golem are undefeated respectively </summary>
 	public bool IgnoreVanillaItemConstraints { get; private protected set; }
 
-	/// <summary>
-	/// Gives a priority to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, clamps between -10 and 10
-	/// </summary>
+	/// <summary> Gives a priority to the shimmer operation, lower numbers are sorted lower, higher numbers are sorted higher, clamps between -10 and 10 </summary>
 	public int Priority { get; private protected set; } = 0;
 
-	/// <summary>
-	/// Called in addition to conditions to check if the <see cref="IModShimmerable"/> shimmers
-	/// </summary>
+	/// <summary> Called in addition to conditions to check if the <see cref="IModShimmerable"/> shimmers </summary>
 	/// <param name="transformation"> The transformation </param>
 	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
 	public delegate bool CanShimmerCallBack(ShimmerTransformation transformation, IModShimmerable source);
@@ -51,9 +48,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 	/// <inheritdoc cref="CanShimmerCallBack"/>
 	public CanShimmerCallBack CanShimmerCallBacks { get; private protected set; }
 
-	/// <summary>
-	/// Called once before a transformation, use this to edit the transformation or type beforehand
-	/// </summary>
+	/// <summary> Called once before a transformation, use this to edit the transformation or type beforehand </summary>
 	/// <param name="transformation"> The transformation, editing this does not change the stored transformation, only this time </param>
 	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
 	public delegate void ModifyShimmerCallBack(ShimmerTransformation transformation, IModShimmerable source);
@@ -61,9 +56,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 	/// <inheritdoc cref="ModifyShimmerCallBack"/>
 	public ModifyShimmerCallBack ModifyShimmerCallBacks { get; private protected set; }
 
-	/// <summary>
-	/// Called after <see cref="IModShimmerable"/> shimmers
-	/// </summary>
+	/// <summary> Called after <see cref="IModShimmerable"/> shimmers </summary>
 	/// <param name="transformation"> The transformation </param>
 	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
 	/// <param name="source"> The <see cref="IModShimmerable"/> that was shimmered </param>
@@ -76,9 +69,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	#region ControllerMethods
 
-	/// <summary>
-	/// Adds a condition to <see cref="Conditions"/>. <inheritdoc cref="Conditions"/>
-	/// </summary>
+	/// <summary> Adds a condition to <see cref="Conditions"/>. <inheritdoc cref="Conditions"/> </summary>
 	/// <param name="condition"> The condition to be added </param>
 	public ShimmerTransformation AddCondition(Condition condition)
 	{
@@ -88,13 +79,9 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	#region AddResultMethods
 
-	/// <summary>
-	/// Adds a result to <see cref="Results"/>, this will be spawned when the <see cref="IModShimmerable"/> successfully shimmers
-	/// </summary>
+	/// <summary> Adds a result to <see cref="Results"/>, this will be spawned when the <see cref="IModShimmerable"/> successfully shimmers </summary>
 	/// <param name="result"> The result to be added </param>
-	/// <exception cref="ArgumentException">
-	/// thrown when <paramref name="result"/> has a <see cref="ModShimmerResult.Count"/> that is less than or equal to zero
-	/// </exception>
+	/// <exception cref="ArgumentException"> thrown when <paramref name="result"/> has a <see cref="ModShimmerResult.Count"/> that is less than or equal to zero </exception>
 	public ShimmerTransformation AddResult(ModShimmerResult result)
 	{
 		if (result.Count <= 0)
@@ -145,27 +132,21 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 		return this;
 	}
 
-	/// <summary>
-	/// Adds a delegate to <see cref="CanShimmerCallBacks"/> that will be called if the shimmer transformation succeeds
-	/// </summary>
+	/// <summary> Adds a delegate to <see cref="CanShimmerCallBacks"/> that will be called if the shimmer transformation succeeds </summary>
 	public ShimmerTransformation AddCanShimmerCallBack(CanShimmerCallBack callBack)
 	{
 		CanShimmerCallBacks += callBack;
 		return this;
 	}
 
-	/// <summary>
-	/// Adds a delegate to <see cref="ModifyShimmerCallBacks"/> that will be called before the transformation
-	/// </summary>
+	/// <summary> Adds a delegate to <see cref="ModifyShimmerCallBacks"/> that will be called before the transformation </summary>
 	public ShimmerTransformation AddModifyShimmerCallBack(ModifyShimmerCallBack callBack)
 	{
 		ModifyShimmerCallBacks += callBack;
 		return this;
 	}
 
-	/// <summary>
-	/// Adds a delegate to <see cref="OnShimmerCallBacks"/> that will be called if the shimmer transformation succeeds
-	/// </summary>
+	/// <summary> Adds a delegate to <see cref="OnShimmerCallBacks"/> that will be called if the shimmer transformation succeeds </summary>
 	public ShimmerTransformation AddOnShimmerCallBack(OnShimmerCallBack callBack)
 	{
 		OnShimmerCallBacks += callBack;
@@ -181,35 +162,38 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	/// <summary> Finalizes transformation </summary>
 	public abstract void Register(int type);
+
 	#endregion ControllerMethods
 
 	#region Shimmering
 
-	/// <summary>
-	/// Checks if the <see cref="IModShimmerable"/> supplied can undergo a shimmer transformation, should not alter game state / read only
-	/// </summary>
+	/// <summary> Checks if the <see cref="IModShimmerable"/> supplied can undergo a shimmer transformation, should not alter game state / read only </summary>
 	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> being shimmered </param>
 	/// <returns>
 	/// <inheritdoc cref="CanModShimmer_Transformation(IModShimmerable)"/>
 	/// <list type="bullet">
-	/// <item/> <see cref="IModShimmerable.CanShimmer"/> returns true for <paramref name="shimmerable"/>
+	/// <item/>
+	/// <see cref="IModShimmerable.CanShimmer"/> returns true for <paramref name="shimmerable"/>
 	/// </list>
 	/// </returns>
 	public bool CanModShimmer(IModShimmerable shimmerable)
 		=> CanModShimmer_Transformation(shimmerable)
 		&& shimmerable.CanShimmer();
 
-	/// <summary>
-	/// Checks the conditions for this transformation
-	/// </summary>
+	/// <summary> Checks the conditions for this transformation </summary>
 	/// <returns>
 	/// true if the following are all true in order
 	/// <list type="bullet">
-	/// <item/> The transformation is not disabled
-	/// <item/> All <see cref="Conditions"/> return true
-	/// <item/>  All added <see cref="CanShimmerCallBack"/> return true
-	/// <item/> None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
-	/// <item/> The amount of empty NPC slots under slot 200 is less than the number of NPCs this transformation spawns
+	/// <item/>
+	/// The transformation is not disabled
+	/// <item/>
+	/// All <see cref="Conditions"/> return true
+	/// <item/>
+	/// All added <see cref="CanShimmerCallBack"/> return true
+	/// <item/>
+	/// None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is false (default)
+	/// <item/>
+	/// The amount of empty NPC slots under slot 200 is less than the number of NPCs this transformation spawns
 	/// </list>
 	/// </returns>
 	public bool CanModShimmer_Transformation(IModShimmerable shimmerable)
@@ -219,9 +203,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result is ItemShimmerResult item && (item.Type == ItemID.Bone && !NPC.downedBoss3 || item.Type == ItemID.LihzahrdBrick && !NPC.downedGolemBoss)))
 		&& (GetCurrentAvailableNPCSlots() >= GetNPCSpawnCount());
 
-	/// <summary>
-	/// Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/>
-	/// </summary>
+	/// <summary> Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/> </summary>
 	/// <returns> Returns true if all delegates in <see cref="CanShimmerCallBacks"/> return true </returns>
 	public bool CheckCanShimmerCallBacks(IModShimmerable shimmerable)
 	{
@@ -239,9 +221,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
 
-	/// <summary>
-	/// Called by <see cref="ShimmerTransformation{TShimmeredType}.TryModShimmer(TShimmeredType)"/> once it finds a valid transformation
-	/// </summary>
+	/// <summary> Called by <see cref="ShimmerTransformation{TShimmeredType}.TryModShimmer(TShimmeredType)"/> once it finds a valid transformation </summary>
 	public static void DoModShimmer(IModShimmerable source, ShimmerTransformation transformation)
 	{
 		// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set
@@ -262,9 +242,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 			result.Spawn(source, stackUsed, spawned); //Spawns the individual result, adds it to the list
 	}
 
-	/// <summary>
-	/// Creates the shimmer effect checking either single player or server
-	/// </summary>
+	/// <summary> Creates the shimmer effect checking either single player or server </summary>
 	/// <param name="position"> The position to create the effect </param>
 	public static void ShimmerEffect(Vector2 position)
 	{
@@ -277,9 +255,7 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 	/// <inheritdoc cref="Clone"/>
 	object ICloneable.Clone() => Clone();
 
-	/// <summary>
-	/// Creates a deep clone of <see cref="ShimmerTransformation"/>.
-	/// </summary>
+	/// <summary> Creates a deep clone of <see cref="ShimmerTransformation"/>. </summary>
 	public abstract ShimmerTransformation Clone();
 
 	public int CompareTo(ShimmerTransformation other)
@@ -287,29 +263,29 @@ public abstract class ShimmerTransformation : IComparable<ShimmerTransformation>
 
 	#endregion Shimmering
 }
+
 public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformation where TModShimmerable : IModShimmerable
 {
 	public int? SourceType { get; init; }
 
 	public ShimmerTransformation()
 	{
-
 	}
+
 	public ShimmerTransformation(TModShimmerable CreateFrom)
 	{
 		SourceType = CreateFrom.Type;
 	}
+
 	public static Dictionary<int, List<ShimmerTransformation>> Transformations { get; } = new();
 
-	internal static void Unload()
+	internal static void Reset()
 	{
 		Transformations.Clear();
-		//customShimmerTypeCounter = -1;
 	}
 
 	public override ShimmerTransformation<TModShimmerable> Clone()
-		=> new()
-		{
+		=> new() {
 			Priority = Priority,
 			Conditions = new List<Condition>(Conditions), // Technically I think the localization for the conditions can be changed
 			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
@@ -354,7 +330,8 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		=> Redirects.Add(typeFrom, typeTo);
 
 	/// <summary>
-	/// First <see cref="Redirects"/> is checked for an entry, if one exists it is applied over <paramref name="type"/>, then if this is <see cref="ShimmerTransformation"/>&lt;<see cref="Item"/>&gt;, it checks <see cref="ItemID.Sets.ShimmerCountsAsItem"/><br/>. Is not recursive
+	/// First <see cref="Redirects"/> is checked for an entry, if one exists it is applied over <paramref name="type"/>, then if this is
+	/// <see cref="ShimmerTransformation"/>&lt; <see cref="Item"/>&gt;, it checks <see cref="ItemID.Sets.ShimmerCountsAsItem"/><br/>. Is not recursive
 	/// </summary>
 	public static int GetRedirectedType(int type)
 	{
@@ -367,7 +344,6 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	#endregion Redirects
 
-
 	/// <summary>
 	/// Checks every <see cref="ShimmerTransformation"/> for this <see cref="IModShimmerable"/> and returns true when if finds one that passes
 	/// <see cref="ShimmerTransformation.CanModShimmer_Transformation(IModShimmerable)"/>. <br/> Does not check <see cref="IModShimmerable.CanShimmer"/>
@@ -378,8 +354,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		if (!Transformations.ContainsKey(source.Type))
 			return false;
 
-		foreach (ShimmerTransformation modShimmer in Transformations[source.Type])
-		{
+		foreach (ShimmerTransformation modShimmer in Transformations[source.Type]) {
 			if (modShimmer.CanModShimmer_Transformation(source))
 				return true;
 		}
@@ -387,9 +362,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		return false;
 	}
 
-	/// <summary>
-	/// Tries to complete a shimmer operation on the <see cref="IModShimmerable"/> passed, should not be called on multiplayer clients
-	/// </summary>
+	/// <summary> Tries to complete a shimmer operation on the <see cref="IModShimmerable"/> passed, should not be called on multiplayer clients </summary>
 	/// <param name="source"> The <see cref="IModShimmerable"/> to be shimmered </param>
 	/// <returns> True if the transformation is successful, false if it is should fall through to vanilla as normal </returns>
 	public static bool TryModShimmer(TModShimmerable source)
@@ -398,10 +371,8 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		if (!(transformations?.Count > 0)) // Inverse to catch null
 			return false;
 
-		foreach (ShimmerTransformation transformation in transformations)
-		{ // Loops possible transformations
-			if (transformation.Results.Count > 0 && transformation.CanModShimmer(source))
-			{ // Checks conditions and callback in CanShimmer
+		foreach (ShimmerTransformation transformation in transformations) { // Loops possible transformations
+			if (transformation.Results.Count > 0 && transformation.CanModShimmer(source)) { // Checks conditions and callback in CanShimmer
 				ShimmerTransformation copy = transformation.Clone(); // Make a copy
 				copy.ModifyShimmerCallBacks?.Invoke(copy, source); // As to not be effected by any changes made here
 				DoModShimmer(source, copy);
@@ -424,9 +395,7 @@ public interface IModShimmerable
 	/// <inheritdoc cref="Entity.Hitbox"/>
 	public abstract Rectangle Hitbox { get; set; }
 
-	/// <summary>
-	/// Wraps <see cref="Entity.velocity"/>
-	/// </summary>
+	/// <summary> Wraps <see cref="Entity.velocity"/> </summary>
 	public abstract Vector2 Velocity { get; set; }
 
 	public abstract int Type { get; }
@@ -444,9 +413,7 @@ public interface IModShimmerable
 	/// <returns> True if the <see cref="IModShimmerable"/> currently has a valid shimmer operation it can use. </returns>
 	public virtual bool CanShimmer() => true;
 
-	/// <summary>
-	/// Called at the end of shimmer
-	/// </summary>
+	/// <summary> Called at the end of shimmer </summary>
 	public virtual void OnShimmer() { }
 
 	/// <summary>
