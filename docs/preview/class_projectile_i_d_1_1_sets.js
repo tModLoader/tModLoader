@@ -29,6 +29,7 @@ var class_projectile_i_d_1_1_sets =
     [ "MinionTargettingFeature", "class_projectile_i_d_1_1_sets.html#a7387ac144a71f66d6a0d89b520de4b10", null ],
     [ "NoLiquidDistortion", "class_projectile_i_d_1_1_sets.html#a2894277b0e5d4f8589ee3f4dd547405e", null ],
     [ "NoMeleeSpeedVelocityScaling", "class_projectile_i_d_1_1_sets.html#a3c2ee8f243e0d857d43d71d43b4b1b0d", null ],
+    [ "PlayerHurtDamageIgnoresDifficultyScaling", "class_projectile_i_d_1_1_sets.html#a4f030d00e0a13cfe52c7148d01b2564a", null ],
     [ "RocketsSkipDamageForPlayers", "class_projectile_i_d_1_1_sets.html#aafd3ad11f973341222a7e8e4cdba8988", null ],
     [ "SentryShot", "class_projectile_i_d_1_1_sets.html#a0582b37e0bc2b5a0fd1c96fbaabf075c", null ],
     [ "SingleGrappleHook", "class_projectile_i_d_1_1_sets.html#a64a00183a609a4e93a50adf75ac41724", null ],

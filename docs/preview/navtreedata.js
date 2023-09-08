@@ -65,12 +65,12 @@ var NAVTREEINDEX =
 "class_pillar_shader.html",
 "class_player_queen_slime_mount_texture_content.html",
 "class_proj_a_i_style_i_d.html#adc625ef32baacf8cd048e74af34c53c7",
-"class_santank_mount_jump.html#a7a12616c0a346bf9875dbc388aff6098",
-"class_tile_i_d_1_1_sets.html#a4caff834296122a8aadb0b343003a793",
-"class_unloaded_global_n_p_c.html#a8fcbb5c6f276252463ebc4a7546fd0fb",
-"functions_vars_q.html",
-"struct_global_loot.html",
-"struct_tile.html#a75ef7e5fcc77b3987680367b98d92616"
+"class_santank_mount_jump.html#a16611ec047196e615b2e83608819b6aa",
+"class_tile_i_d_1_1_sets.html#a40fcb33e079653d8b942406323a72370",
+"class_unloaded_global_n_p_c.html#a05843235eacb651ed397380a2aa47e94",
+"functions_vars_p.html",
+"struct_get_item_settings.html",
+"struct_tile.html#a6c7169c7c6413c29f23ddb234e796fd6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

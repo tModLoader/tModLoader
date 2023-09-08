@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"functions_vars_p.html":[3,3,2,15],
 "functions_vars_q.html":[3,3,2,16],
 "functions_vars_r.html":[3,3,2,17],
 "functions_vars_s.html":[3,3,2,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX21 =
 "struct_frame_event_data.html":[3,0,405],
 "struct_game_animation_segment.html":[3,0,413],
 "struct_game_mode_data.html":[3,0,419],
-"struct_gen_shape_action_pair.html":[3,0,440],
-"struct_get_item_settings.html":[3,0,443]
+"struct_gen_shape_action_pair.html":[3,0,440]
 };
