@@ -53,7 +53,7 @@ public class BuildProperties
 		}
 
 		VerifyRefs(properties.RefNames(true).ToList());
-		DistinctRefsToSortAfter(properties);
+		properties.SortAfter = properties.GetDistinctRefs();
 
 		return properties;
 	}
@@ -75,7 +75,7 @@ public class BuildProperties
 		}
 
 		VerifyRefs(properties.RefNames(true).ToList());
-		DistinctRefsToSortAfter(properties);
+		properties.SortAfter = properties.GetDistinctRefs();
 
 		return properties;
 	}
@@ -242,8 +242,7 @@ public class BuildProperties
 	}
 
 	// Adds (mod|weak)References that are not in sortBefore to sortAfter
-	private static void DistinctRefsToSortAfter(BuildProperties properties) {
-		properties.SortAfter = properties.RefNames(true).Where(dep => !properties.SortBefore.Contains(dep))
-			.Concat(properties.SortAfter).Distinct().ToArray();
-	}
+	public string[] GetDistinctRefs() => RefNames(true)
+		.Where(dep => !SortBefore.Contains(dep))
+		.Concat(SortAfter).Distinct().ToArray();
 }

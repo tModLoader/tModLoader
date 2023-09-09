@@ -19,7 +19,6 @@ public class PackageModFile : TaskBase
 	/// <summary>
 	/// Project references.
 	/// </summary>
-	[Required]
 	public ITaskItem[] ProjectReferences { get; set; } = Array.Empty<ITaskItem>();
 
 
@@ -181,6 +180,9 @@ public class PackageModFile : TaskBase
 			Log.LogMessage(MessageImportance.Normal, $"Adding mod reference with mod name {modName} [Weak: {weakRef}]");
 			modProperties.AddModReference(modName, string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase));
 		}
+
+		// Add modReferences to sortAfter if they are not already in sortBefore
+		modProperties.SortAfter = modProperties.GetDistinctRefs();
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
@@ -249,7 +251,8 @@ public class PackageModFile : TaskBase
 	}
 
 	private BuildProperties GetModProperties() {
-		if (ModProperties.Length == 0) {
+		// Check there are at least 2 properties because `Version` always exists
+		if (ModProperties.Length < 2) {
 			Log.LogMessage(MessageImportance.Low, "No mod properties found in csproj.");
 			string buildInfoFile = Path.Combine(ProjectDirectory, "build.txt");
 			if (File.Exists(buildInfoFile)) {
