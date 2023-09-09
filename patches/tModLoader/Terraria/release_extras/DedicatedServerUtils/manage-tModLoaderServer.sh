@@ -187,6 +187,7 @@ function install_tml_github {
 	pushd server
 
 	# Check for an empty directory, skipping checks on any backed up versions
+	# TODO: This throws an error in the Docker container. It's not important since no backups are kept but it should be fixed eventually.
 	if [[ -n "$(ls -A --ignore='v*.tar.gz' .)" ]]; then
 		echo "Install directory not empty, please make sure your $folder/server directory is empty or run update to update an existing installation"
 		exit 1
@@ -438,13 +439,4 @@ popd
 # Check for updates to the script if it's not running in a Docker container
 if ! is_in_docker; then
 	update_script
-	# if check_script_update; then
-	# 	read -t 5 -p "Script update available! Update now? (y/n): " update_now
-	# 	if [[ "$update_now" = [Yy]* ]]; then
-	# 		echo "Updating now"
-	# 		update_script
-	# 	else
-	# 		echo "Not updating"
-	# 	fi
-	# fi
 fi

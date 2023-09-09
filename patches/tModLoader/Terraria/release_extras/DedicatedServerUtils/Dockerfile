@@ -1,15 +1,21 @@
-FROM steamcmd/steamcmd:ubuntu-22
+FROM steamcmd/steamcmd:alpine-3
 
 # Install prerequisites
-RUN apt-get update && apt-get -y upgrade \
- && apt-get -y install bash curl unzip tmux libstdc++-10-dev libgcc-10-dev icu-devtools \
- && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+ && apk add --no-cache bash curl tmux libstdc++ libgcc icu-libs \
+ && rm -rf /var/cache/apk/*
+
+# Fix 32 and 64 bit library conflicts
+RUN mkdir /steamlib \
+ && mv /lib/libstdc++.so.6 /steamlib \
+ && mv /lib/libgcc_s.so.1 /steamlib
+ENV LD_LIBRARY_PATH /steamlib
 
 # Create tModLoader user and drop root permissions
 ARG UID
 ARG GID
-RUN groupadd -g $GID tml \
- && useradd --gid $GID --uid $UID --create-home --home-dir /home/tml tml
+RUN addgroup -g $GID tml \
+ && adduser tml -u $UID -G tml -h /home/tml -D
 
 USER tml
 ENV USER tml
