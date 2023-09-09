@@ -16,6 +16,12 @@ public class PackageModFile : TaskBase
 	[Required]
 	public ITaskItem[] PackageReferences { get; set; } = Array.Empty<ITaskItem>();
 
+	/// <summary>
+	/// Project references.
+	/// </summary>
+	[Required]
+	public ITaskItem[] ProjectReferences { get; set; } = Array.Empty<ITaskItem>();
+
 
 	/// <summary>
 	/// Assembly references.
@@ -117,6 +123,7 @@ public class PackageModFile : TaskBase
 	private void AddAllReferences(TmodFile tmodFile, BuildProperties modProperties) {
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 		List<ITaskItem> modReferences = GetModReferences();
+		List<ITaskItem> projectReferences = GetProjectReferences();
 
 		// Assumes all dll references are under the mod's folder (at same level or in subfolders).
 		// Letting dll references be anywhere would mean doing some weird filters on references,
@@ -152,9 +159,24 @@ public class PackageModFile : TaskBase
 			modProperties.AddDllReference(dllName);
 		}
 
+		foreach (ITaskItem projectReference in projectReferences) {
+			string dllPath = projectReference.ItemSpec;
+			string outputPath = "lib/" + Path.GetFileName(dllPath);
+			string originalItemSpec = projectReference.GetMetadata("OriginalItemSpec"); // Path to .csproj
+
+			if (string.Equals(projectReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) {
+				Log.LogMessage(MessageImportance.Normal, $"Skipping private project reference: {originalItemSpec}");
+				continue;
+			}
+
+			Log.LogMessage(MessageImportance.Normal, $"Adding project reference with path {originalItemSpec}");
+			tmodFile.AddFile(outputPath, File.ReadAllBytes(dllPath));
+			modProperties.AddDllReference(Path.GetFileNameWithoutExtension(dllPath));
+		}
+
 		foreach (ITaskItem modReference in modReferences) {
-			string? modName = modReference.GetMetadata("Identity");
-			string? weakRef = modReference.GetMetadata("Weak");
+			string modName = modReference.GetMetadata("Identity");
+			string weakRef = modReference.GetMetadata("Weak");
 
 			Log.LogMessage(MessageImportance.Normal, $"Adding mod reference with mod name {modName} [Weak: {weakRef}]");
 			modProperties.AddModReference(modName, string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase));
@@ -209,6 +231,21 @@ public class PackageModFile : TaskBase
 
 		Log.LogMessage(MessageImportance.Normal, $"Found {modReferences.Count} mod references.");
 		return modReferences;
+	}
+
+	private List<ITaskItem> GetProjectReferences() {
+		List<ITaskItem> projectReferences = new();
+		foreach (ITaskItem projectReference in ProjectReferences) {
+			string dllPath = projectReference.ItemSpec;
+			if (!File.Exists(dllPath)) {
+				Log.LogWarning("Project reference dll not found: " + dllPath);
+				continue;
+			}
+
+			projectReferences.Add(projectReference);
+		}
+
+		return projectReferences;
 	}
 
 	private BuildProperties GetModProperties() {
