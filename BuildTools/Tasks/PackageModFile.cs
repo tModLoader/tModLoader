@@ -98,9 +98,10 @@ public class PackageModFile : TaskBase
 		AddAllReferences(tmodFile, modProperties);
 		tmodFile.AddFile("Info", modProperties.ToBytes(TmlVersion));
 
-		string modPdbPath = Path.ChangeExtension(modDllName, ".pdb");
+		string modPdbPath = Path.ChangeExtension(modDllPath, ".pdb");
+		string modPdbName = Path.ChangeExtension(modDllName, ".pdb");
 		if (File.Exists(modPdbPath))
-			tmodFile.AddFile(modPdbPath, File.ReadAllBytes(modPdbPath));
+			tmodFile.AddFile(modPdbName, File.ReadAllBytes(modPdbPath));
 
 		Log.LogMessage(MessageImportance.Normal, "Adding resources...");
 		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
