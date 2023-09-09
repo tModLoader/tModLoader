@@ -25,7 +25,7 @@
 			<Visible>false</Visible>
 		</ModReference>
 	</ItemDefinitionGroup>
-	<Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
+	<Target Name="IncludeModReferences" BeforeTargets="BeforeResolveReferences">
 		<Message Text="Adding %(ModReference.Identity) as a reference" />
 
 		<ItemGroup>
@@ -35,7 +35,7 @@
 		</ItemGroup>
 
 		<ItemGroup>
-			<ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''" />
+			<ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''" Private="true" />
 		</ItemGroup>
 	</Target>
 
@@ -71,6 +71,7 @@
 
 		<PackageModFile
 				PackageReferences="@(PackageReference)"
+				ProjectReferences="@(_ResolvedProjectReferencePaths)"
 				ModReferences="@(ModReference)"
 				ReferencePaths="@(ReferencePath)"
 				ProjectDirectory="$(MSBuildProjectDirectory)"
