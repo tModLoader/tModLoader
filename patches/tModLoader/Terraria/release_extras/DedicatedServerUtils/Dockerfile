@@ -21,8 +21,8 @@ RUN steamcmd +quit
 
 RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
   && chmod u+x manage-tModLoaderServer.sh \
-  && ./manage-tModLoaderServer.sh install --github --skip-mods --folder $HOME
+  && ./manage-tModLoaderServer.sh install --github --skip-mods
 
 EXPOSE 7777
 
-ENTRYPOINT [ "/bin/bash", "-c", "./manage-tModLoaderServer.sh docker" ]
+ENTRYPOINT [ "/bin/bash", "-c", "./manage-tModLoaderServer.sh docker --folder ~/.local/share/Terraria/tModLoader" ]

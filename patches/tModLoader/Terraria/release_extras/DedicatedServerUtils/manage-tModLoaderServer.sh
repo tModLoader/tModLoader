@@ -18,32 +18,49 @@ function popd {
 # See: https://github.com/moby/moby/blob/v24.0.5/libnetwork/drivers/bridge/setup_bridgenetfiltering.go#L162-L165
 function is_in_docker {
 	if [[ -f /.dockerenv ]]; then
-		return true
+		return 0
 	fi
-	return false
+	return 1
 }
 
-# Returns true if an update is needed
-function check_script_update {
+function update_script {
+	if [[ -z "$1" ]]; then
+		read -t 5 -p "Would you like to check for script updates? (y/n): " update_now
+		if [[ "$update_now" = [Yy]* ]]; then
+			echo "Checking for updates"
+			update_script
+		else
+			echo "Not updating"
+			return
+		fi
+	fi
+
+	# Go to where the script currently is
+	pushd "$(dirname $(realpath "$0"))"
+
 	latest_script_version=$({
 		curl -s "$script_url" 2>/dev/null || wget -q -O- "$script_url";
 	} | grep "script_version=" | head -n1 | cut -d '"' -f2)
 
-	if [[ "$script_version" != "$(echo -e "$script_version\n$latest_script_version" | sort -rV | head -n1)" ]]; then
-		return true
+	local new_version=$(echo -e "$script_version\n$latest_script_version" | sort -rV | head -n1)
+	if [[ "$script_version" = "$new_version" ]]; then
+		echo "No version change detected"
+		exit 0
+	fi
+	
+	if [[ "${script_version:0:1}" != "${new_version:0:1}" ]]; then
+		read -t 15 -p "A major version change has been detected ($script_version -> $new_version) Major versions mean incompatibilities with previous versions, so you should check the wiki for any updates to how the script works. Update anyways? (y/n): " update_major
+		if [[ "$update_major" != [Yy]* ]]; then
+			echo "Skipping major version update"
+			exit 0
+		fi
 	fi
 
-	return false
-}
+	echo "Updating from version v$script_version to v$latest_script_version"
+	curl -s -O "$script_url" 2>/dev/null || wget -q "$script_url"
+	mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
 
-function update_script {
-	if check_script_update; then
-		echo "Updating from version v$script_version to v$latest_script_version"
-		curl -s -O "$script_url" 2>/dev/null || wget -q "$script_url"
-		mv manage-tModLoaderServer.sh.1 manage-tModLoaderServer.sh
-	else
-		echo "No new script updates"
-	fi
+	popd
 }
 
 # Check PATH and flags for required commands for tml/mod installation
@@ -73,6 +90,28 @@ function verify_download_tools {
 	fi
 }
 
+function install_dotnet {
+	pushd server
+
+	if ! [[ -r tModLoader.runtimeconfig.json ]]; then
+		echo "tModLoader not installed or missing files. Quitting..."
+		exit 1
+	fi
+
+	echo "Installing dotnet..."
+	dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' < $folder/server/tModLoader.runtimeconfig.json)
+	export dotnet_version=${dotnet_version%$'\r'} # Remove carriage return, see ScriptCaller.sh
+	export dotnet_dir="$folder/server/dotnet"
+	if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+		echo "wsl detected. Setting dotnet_dir=dotnet_wsl"
+		export dotnet_dir="$folder/server/dotnet_wsl"
+	fi
+	export install_dir="$dotnet_dir/$dotnet_version"
+	chmod +x "$folder/server/LaunchUtils/InstallNetFramework.sh" && bash $_
+
+	popd
+}
+
 # Gets version of tML to install from github, prioritizing --tml-version and tmlversion.txt
 function get_version {
 	if [[ -v tmlversion ]]; then
@@ -93,14 +132,12 @@ function get_version {
 
 # Takes version number as first parameter
 function download_release {
-	pushd tModLoader
 	local down_url="https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
 	echo "Downloading version $1"
 	curl -s -LJO "$down_url" 2>/dev/null || wget -q --content-disposition "$down_url"
 	echo "Unzipping tModLoader.zip"
 	unzip -q tModLoader.zip
 	rm tModLoader.zip
-	popd
 	echo "$1" > .ver
 }
 
@@ -150,8 +187,8 @@ function install_tml_github {
 	pushd server
 
 	# Check for an empty directory, skipping checks on any backed up versions
-	if [[ -n "$(mkdir -p tModLoader && ls -A --ignore='v*.tar.gz' $_)" ]]; then
-		echo "Install directory not empty, please make sure your $folder/server/tModLoader directory is empty or run update to update an existing installation"
+	if [[ -n "$(ls -A --ignore='v*.tar.gz' .)" ]]; then
+		echo "Install directory not empty, please make sure your $folder/server directory is empty or run update to update an existing installation"
 		exit 1
 	fi
 
@@ -171,7 +208,7 @@ function install_tml_steam {
 	fi
 
 	# Installs tML, but all other steam assets will be in $HOME/Steam or $HOME/.steam
-	eval "$steam_cmd +force_install_dir $folder/server/tModLoader +login $username +app_update 1281930 +quit"
+	eval "$steam_cmd +force_install_dir $folder/server +login $username +app_update 1281930 +quit"
 
 	if [[ $? = "5" ]]; then # Only recurse when not being used in the docker container.
 		if ! is_in_docker; then
@@ -189,13 +226,13 @@ function install_workshop_mods {
 		mkdir Mods 2>/dev/null && mv enabled.json Mods/enabled.json
 	fi
 
-	if ! [[ -v steam_cmd ]]; then
-		echo "SteamCMD not found, no workshop mods will be installed or updated"
+	if ! [[ -r install.txt ]]; then
+		echo "No workshop mods to install"
 		return
 	fi
 
-	if ! [[ -r install.txt ]]; then
-		echo "No workshop mods to install"
+	if ! [[ -v steam_cmd ]]; then
+		echo "SteamCMD not found, no workshop mods will be installed or updated"
 		return
 	fi
 
@@ -207,7 +244,7 @@ function install_workshop_mods {
 		steamcmd_command="$steamcmd_command +workshop_download_item 1281930 $line"
 	done
 
-	eval "$steam_cmd +force_install_dir $folder/server +login anonymous $steamcmd_command +quit"
+	eval "$steam_cmd +force_install_dir $folder +login anonymous $steamcmd_command +quit"
 }
 
 function print_version {
@@ -220,7 +257,6 @@ function print_version {
 	exit
 }
 
-# TODO: "clean" or "remove" command to cleanup the installation
 function print_help {
 	echo \
 "tML dedicated server installation and maintenance script
@@ -244,8 +280,8 @@ Commands:
  install             Installs tModLoader and any mods provided. Will copy any world files, will not overwrite any existing ones.
  update              Updates an existing tModLoader installation and its mods.
  start               Launches the server with no updating or installing of mods. This should be run after one of the above commands.
+ uninstall           Uninstalls the current tML installation, removing ALL server files and workshop mods.
  update-script       Update the script to the latest version on Github.
- uninstall           Uninstalls the current tML installation, removing ALL server files.
 "
 	exit
 }
@@ -315,17 +351,11 @@ done
 
 # Set folder to the script's folder if it isn't set
 if ! [[ -v folder ]]; then
-	if is_in_docker; then
-		echo "In Docker, setting folder to docker directory"
-		folder="$HOME/.local/share/Terraria/tModLoader"
-	else
-		echo "Setting folder to current directory"
-		script_path=$(realpath "$0")
-		folder="$(dirname "$script_path")"
-	fi
+	echo "Setting folder to current directory"
+	folder="$(dirname $(realpath "$0"))"
 fi
 
-mkdir -p "$folder/server" && pushd "$folder"
+mkdir -p "$folder" && pushd "$folder"
 
 case $cmd in
 	help)
@@ -335,6 +365,7 @@ case $cmd in
 		verify_download_tools
 
 		if ! $skip_tml; then
+			mkdir -p "$folder/server"
 			if $steamcmd; then
 				install_tml_steam
 			elif [[ "$cmd" = "install" ]]; then
@@ -344,21 +375,23 @@ case $cmd in
 			fi
 		fi
 
+		install_dotnet
+
 		if ! $skip_mods; then
 			install_workshop_mods
 		fi
 		;;
 	uninstall)
-		read -t 5 -p "This will delete ALL server files but will keep Mod/World Data. Uninstall now? (y/n): " uninstall_now
+		read -t 5 -p "This will delete ALL server files and workshop mods but will keep local Mod/World Data. Uninstall now? (y/n): " uninstall_now
 		if [[ "$uninstall_now" = [Yy]* ]]; then
 			echo "Uninstalled tML server"
-			rm -r "$folder/server"
+			rm -r "$folder/server" "$folder/steamapps" "$folder/logs"
 		else
 			echo "Cancelled"
 		fi
 		;;
 	update-script)
-		update_script
+		update_script 1
 		;;
 	docker)
 		if ! is_in_docker; then
@@ -369,29 +402,30 @@ case $cmd in
 		verify_download_tools
 		install_workshop_mods
 
-		# Link the server folder to the Docker installation, cli args for debugging and dotnet
-		if ! [[ -L "$folder/server/tModLoader" ]]; then
-			ln -s "$HOME/server/tModLoader" "$folder/server/tModLoader"
+		# Link the server folder to the Docker installation and cli args for debugging (if it exists)
+		if ! [[ -L "$folder/server" ]]; then
+			ln -s "$HOME/server" "$folder/server"
 		fi
 
-		if ! [[ -f "$folder/server/cli-argsConfig.txt" ]]; then
-			touch "$folder/server/cli-argsConfig.txt" && ln -s $_ "$folder/server/tModLoader/cli-argsConfig.txt"
-		fi
-
-		if ! [[ -d "$folder/server/dotnet" ]]; then
-			mkdir -p "$folder/server/dotnet" && ln -s $_ "$folder/server/tModLoader/dotnet"
+		if [[ -f "$folder/cli-argsConfig.txt" ]]; then
+			ln -s "$folder/cli-argsConfig.txt" "$folder/server/cli-argsConfig.txt"
 		fi
 
 		;&
 	start)
 		# Link logs to a more convenient place
-		if ! [[ -d "$folder/server/logs" ]]; then
-			mkdir -p "$folder/server/logs" && ln -s $_ "$folder/server/tModLoader/tModLoader-Logs"
+		if ! [[ -d "$folder/logs" ]]; then
+			mkdir -p "$folder/logs" && ln -s $_ "$folder/server/tModLoader-Logs"
 		fi
 
-		cd "$folder/server/tModLoader" || exit
+		# Link workshop to tMod dir so we don't need to pass -steamworkshopfolder
+		if ! [[ -L "$folder/server/steamapps" ]]; then
+			ln -s "$folder/steamapps" "$folder/server/steamapps"
+		fi
+
+		cd "$folder/server" || exit
 		chmod u+x start-tModLoaderServer.sh
-		./start-tModLoaderServer.sh -config "$folder/serverconfig.txt" -nosteam -steamworkshopfolder "$folder/server/steamapps/workshop" -tmlsavedirectory "$folder"
+		./start-tModLoaderServer.sh -config "$folder/serverconfig.txt" -nosteam -tmlsavedirectory "$folder"
 		;;
 	*)
 		echo "Invalid Command: $1"
@@ -403,13 +437,14 @@ popd
 
 # Check for updates to the script if it's not running in a Docker container
 if ! is_in_docker; then
-	if check_script_update; then
-		read -t 5 -p "Script update available! Update now? (y/n): " update_now
-		if [[ "$update_now" = [Yy]* ]]; then
-			echo "Updating now"
-			update_script
-		else
-			echo "Not updating"
-		fi
-	fi
+	update_script
+	# if check_script_update; then
+	# 	read -t 5 -p "Script update available! Update now? (y/n): " update_now
+	# 	if [[ "$update_now" = [Yy]* ]]; then
+	# 		echo "Updating now"
+	# 		update_script
+	# 	else
+	# 		echo "Not updating"
+	# 	fi
+	# fi
 fi

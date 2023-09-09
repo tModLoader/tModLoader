@@ -34,13 +34,27 @@ Both the Docker and Management script use the same folder structure, so make sur
 │   ├── world2.twld
 │   └── world2.wld
 ├── server
-│   └── * contains tModLoader installation and Steam workshop mods *
+│   └── * contains tModLoader installation *
+├── steamapps
+│   └── * contains Steam workshop mods *
+├── logs
+│   └── * contains tModLoader logs *
 ├── install.txt
 ├── manage-tModLoaderServer.sh
 ├── serverconfig.txt
 └── tmlversion.txt
 ```
-The `server` folder is created by the management script and do not need to be edited unless you want to clear your installation.
+The `server`, `steamapps` and `logs` folders are created by the management script and do not need to be edited unless you want to clear your installation.
+
+### Obtaining install.txt
+Because the steam workshop does not use mod names to identify mods, you must create a modpack to install mods from the workshop. To get an `install.txt` file and its accompanying `enabled.json`
+1. Go to Workshop
+2. Go to Mod Packs
+3. Click `Save Enabled as New Mod Pack`
+4. Click `Open Mod Pack Folder`.
+5. Enter the folder with the name of your modpack
+6. Copy `install.txt` to your script directory. Then make a `Mods` folder and copy the `enabled.json` file into the Mods folder.
+7. Run `./manage-tModLoaderServer.sh install --skip-tml` to install the mods on your server. **This is not necessary if you are using Docker, it will be done automatically**
 
 ### Server Configuration
 If you want to run tModLoader without needing any input on startup (such as from an init system), copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/serverconfig.txt) and change the settings how you like. Key options are defined below, and other options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file).
@@ -55,15 +69,15 @@ To install and run the container:
 1. Install `docker` from your package manager or [Docker's Official Page](https://docs.docker.com/engine/install/)
    * **To check if Compose V2 is installed in this package**, run `docker compose version`. If the command errors, your manager still uses V1 and will need to additionally install the `docker-compose` package. All commands below assume Compose V2 is installed, so if you have V1 replace any `docker compose` commands with `docker-compose`
 2. Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Dockerfile).
-3. Next to those docker files, create a folder named `Terraria`, and create a proper [folder structure](#folder-structure) for your server in that folder.
+3. Next to those docker files, create a folder named `tModLoader`, and create a proper [folder structure](#folder-structure) for your server in that folder.
 4. Edit `docker-compose.yml` with your GID and UID. These can be found by running `id`, and generally default to 1000.
 5. Run `docker compose up`
-   * If [serverconfig.txt](#server-configuration) exists in the `Terraria` directory add `-d` to the end to run without interactivity.
+   * If [serverconfig.txt](#server-configuration) exists in the `tModLoader` directory add `-d` to the end to run without interactivity.
 
 To attach to the server console run `docker attach tml`. To detach from the console press `Ctrl-P Ctrl-Q` to avoid shutting down or `Ctrl-C` to detach and shutdown the server.
 
 ### Updating
-To update, download the newest container and rebuild it using `docker compose build` to update tModLoader. Mods will be updated as well.
+To update, download the newest container and rebuild it using `docker compose build` to update tModLoader. Mods will be updated as well. If the container doesn't rebuild you can force rebuilding by running `docker compose build --no-cache`
 
 ---
 
@@ -72,7 +86,7 @@ The `manage-tModLoaderServer.sh` script can be used to install tModLoader either
 
 ### Installing tModLoader
 #### SteamCMD (recommended)
-1. Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [Valve's Wiki](https://developer.valvesoftware.com/wiki/SteamCMD).
+1. Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [Valve's Wiki](https://developer.valvesoftware.com/wiki/SteamCMD). If your distribution cannot install SteamCMD the standard way, download it manually and pass in `steamcmdpath` to the management script.
 2. Run `./manage-tModLoaderServer.sh install --username your_steam_username` and enter any password/2fa if necessary. tModLoader will install to the `server` directory in your installation folder.
 
 #### GitHub
@@ -80,17 +94,7 @@ The `manage-tModLoaderServer.sh` script can be used to install tModLoader either
    * If you wish to use a custom/legacy tModLoader version from Github, provide either a `tmlversion.txt` file from a modpack or pass the `--tml-version` flag with a specified version, ex. `v2022.06.96.4`
 
 ### Installing Mods
-Mods will be automatically installed during the tModLoader installation step, but can also be installed separately by running `./manage-tModLoaderServer.sh install --skip-tml`. Provide `install.txt` for workshop mods, and make a `Mods` folder with `enabled.json` to enable any necessary mods. **You will need a `Mods/enabled.json` for any mods to be enabled on your server**. Any local mod files can also be copied into the Mods directory.
-
-#### Obtaining install.txt
-Because the steam workshop does not use mod names to identify mods, you must create a modpack to install mods from the workshop. To get an `install.txt` file and its accompanying `enabled.json`
-1. Go to Workshop
-2. Go to Mod Packs
-3. Click `Save Enabled as New Mod Pack`
-4. Click `Open Mod Pack Folder`.
-5. Enter the folder with the name of your modpack
-6. Copy `install.txt` to your script directory. Then make a `Mods` folder and copy the `enabled.json` file into the Mods folder.
-7. Run `./manage-tModLoaderServer.sh install --skip-tml` to install the mods on your server
+Mods will be automatically installed during the tModLoader installation step, but can also be installed separately by running `./manage-tModLoaderServer.sh install --skip-tml`. Provide `install.txt` for workshop mods, and make a `Mods` folder with `enabled.json` to enable any necessary mods. Any local mod files can also be copied into the Mods directory. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled**. 
 
 ### Launching
 To start a server, run `./manage-tModLoaderServer.sh start`. Be sure to pass in `--folder` again if you used a custom location during installation.

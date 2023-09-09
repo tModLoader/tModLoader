@@ -14,4 +14,4 @@ services:
     ports:
       - 7777:7777
     volumes:
-      - ./Terraria:/home/tml/.local/share/Terraria/tModLoader
+      - ./tModLoader:/home/tml/.local/share/Terraria/tModLoader
