@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -11,12 +12,11 @@ namespace ExampleMod.Content.Projectiles;
 public class ExampleShimmerableProjectile : ModProjectile, IModShimmerable
 {
 	public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.ThornBall}";
-
 	public override void SetStaticDefaults() {
 		new ShimmerTransformation<ExampleShimmerableProjectile>()
-			.AddResult(new ThornBallShimmerResult(9999, 1))
+			.AddResult(new MultiGrenadeShimmerResult(9999, 10))
 			.AddNPCResult(NPCID.Frog, 2)
-			.Register();
+			.Register(Type);
 	}
 
 	public override void SetDefaults() {
@@ -35,35 +35,46 @@ public class ExampleShimmerableProjectile : ModProjectile, IModShimmerable
 		return Projectile.GetSource_Misc("shimmer");
 	}
 
-	private const float maxShimmerTime = 300;
+	private const float maxShimmerTime = 150;
 	private float shimmerTime = maxShimmerTime;
 
 	public override void AI() {
 		if (Projectile.shimmerWet) {
 			shimmerTime--;
+			ShimmerTransformation<ExampleShimmerableProjectile>.TryModShimmer(this);
 		}
+	}
+
+	public bool CanShimmer() {
+		return shimmerTime < 0;
 	}
 
 	public void Remove(int amount) {
 		Projectile.active = false;
+		Projectile.netUpdate = true;
 	}
 
 	public override Color? GetAlpha(Color lightColor) {
-		return Color.Lerp(Color.Red, lightColor, shimmerTime / maxShimmerTime);
+		return Color.Lerp(Color.Red, lightColor, MathF.Max((maxShimmerTime - shimmerTime) / maxShimmerTime, 0));
 	}
 
 	/// <inheritdoc cref="TypedShimmerResult(int, int)"/>
-	public record class ThornBallShimmerResult(int Damage, int Knockback) : TypedShimmerResult(ProjectileID.ThornBall, 1)
+	public record class MultiGrenadeShimmerResult(int Damage, int Knockback) : TypedShimmerResult(ProjectileID.Grenade, 5)
 	{
 		public override bool IsSameResultType(ModShimmerResult result) {
-			return result is ThornBallShimmerResult r && r.Type == Type;
+			return result is MultiGrenadeShimmerResult;
 		}
 
 		public override void Spawn(IModShimmerable shimmerable, int allowedStack, List<IModShimmerable> spawned) {
 			int spawnTotal = Count * allowedStack;
 			while (spawnTotal > 0) {
-				Projectile.NewProjectileDirect(shimmerable.GetSource_ForShimmer(), shimmerable.Center, shimmerable.Velocity, Type, Damage, Knockback);
-				//spawned.Add(newNPC); TODO: ¯\_(ツ)_/¯
+				Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_ForShimmer(), shimmerable.Center, shimmerable.Velocity + GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback);
+				projectile.position -= projectile.Size / 2;
+				projectile.hostile = false;
+				projectile.friendly = true;
+				projectile.netUpdate = true;
+
+				//spawned.Add(newNPC); TODO: ¯\_(ツ)_/¯ could be an issue?
 				spawnTotal--;
 			}
 		}

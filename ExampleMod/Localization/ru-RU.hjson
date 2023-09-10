@@ -905,6 +905,7 @@ Mods: {
 			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			// ExampleShimmerableProjectile.DisplayName: Example Shimmerable Projectile
 		}
 
 		Buffs: {

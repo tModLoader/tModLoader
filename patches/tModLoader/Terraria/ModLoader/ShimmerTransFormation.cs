@@ -31,7 +31,7 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <summary> Called during unloading </summary>
 	internal static void ResetKnown()
 	{
-		extraKnownTypeResets.Invoke();
+		extraKnownTypeResets?.Invoke();
 		extraKnownTypeResets = null; // Clear for the next load
 		extraKnownTypeOrders = null;
 	}
@@ -39,7 +39,7 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <summary> Called near recipe ordering when loading </summary>
 	internal static void OrderKnown()
 	{
-		extraKnownTypeOrders.Invoke();
+		extraKnownTypeOrders?.Invoke();
 	}
 
 	public void Disable()

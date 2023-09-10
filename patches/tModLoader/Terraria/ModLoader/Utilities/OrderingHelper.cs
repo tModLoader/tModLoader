@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Terraria.ModLoader.Utilities;
-public interface IOrderable<TSelf> where TSelf : IOrderable<TSelf>
+public interface IOrderable<TSelf> where TSelf : class, IOrderable<TSelf>
 {
 	public (TSelf target, bool after) Ordering { get; private protected set; }
 }
 
 public static class OrderableExtensions
 {
-	/// <summary> Orders everything in the enumerable according to their Ordering. </summary>
-	public static IEnumerable<TOrderable> GetOrdered<TOrderable>(this IEnumerable<TOrderable> orderableIEnumerable) where TOrderable : IOrderable<TOrderable>
+	/// <summary> Orders everything in the enumerable according to <see cref="IOrderable{TSelf}"/>. </summary>
+	public static IEnumerable<TOrderable> GetOrdered<TOrderable>(this IEnumerable<TOrderable> orderableIEnumerable) where TOrderable : class, IOrderable<TOrderable>
 	{
 		TOrderable[] orderableArray = orderableIEnumerable.ToArray();
 
