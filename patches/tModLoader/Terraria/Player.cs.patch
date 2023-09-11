@@ -6889,6 +6889,18 @@
  		int num = whoAmI;
  		bool flag = true;
  		int num2 = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+@@ -40054,8 +_,10 @@
+ 		if (sItem.mana > 0 && silence)
+ 			flag = false;
+ 
+-		if (sItem.mana > 0 && flag)
++		if (sItem.mana > 0 && flag) {
+ 			flag = ItemCheck_PayMana(sItem, flag);
++			ItemCheck_ApplyManaRegenDelay(sItem); // Fix #3799 - Need to apply mana regen delay on 1st frame to prevent premature mana regen.
++		}
+ 
+ 		if (sItem.type == 43 && Main.IsItDay())
+ 			flag = false;
 @@ -40262,7 +_,7 @@
  		if (baitTypeUsed == 2673)
  			flag = true;
