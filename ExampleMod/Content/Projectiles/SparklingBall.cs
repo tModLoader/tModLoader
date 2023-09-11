@@ -1,4 +1,4 @@
-using ExampleMod.Content.Dusts;
+﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
