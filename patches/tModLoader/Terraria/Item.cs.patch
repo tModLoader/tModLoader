@@ -1513,6 +1513,19 @@
  	{
  		useStyle = 1;
  		useTurn = true;
+@@ -46866,6 +_,12 @@
+ 		height = 12;
+ 	}
+ 
++	/// <summary>
++	/// This method conviniently sets <see cref="Item.damage"/>, <see cref="Item.knockBack"/>, and <see cref="Item.crit"/>.
++	/// </summary>
++	/// <param name="dmg"></param>
++	/// <param name="knockback"></param>
++	/// <param name="bonusCritChance"></param>
+ 	public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0)
+ 	{
+ 		damage = dmg;
 @@ -46873,6 +_,14 @@
  		crit = bonusCritChance;
  	}
@@ -1706,7 +1719,7 @@
  	}
  
 +	/// <summary>
-+	/// A helper method that sets item rarity and item value. 
++	/// A helper method that sets item rarity (<see cref="Item.rare"/>) and item value (<see cref="Item.value"/>). 
 +	/// </summary>
 +	/// <param name="rarity"></param>
 +	/// <param name="coinValue"></param>

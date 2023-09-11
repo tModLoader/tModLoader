@@ -93,6 +93,11 @@ Mods: {
 		}
 
 		Items: {
+			ExampleStaff: {
+				DisplayName: Example Staff
+				Tooltip: This is a modded magic staff weapon
+			}
+
 			ExampleLastPrism: {
 				DisplayName: Example Last Prism
 				Tooltip:
