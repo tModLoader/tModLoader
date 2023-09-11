@@ -3,43 +3,39 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles.Furniture;
-using static Terraria.ModLoader.ModContent;
+using Terraria.Enums;
 
 namespace ExampleMod.Content.Items.Weapons
 {
+	// ExampleStaff is a typical staff. Staffs and other shooting weapons are very similar, this example serves mainly to show what makes staffs unique from other items.
+	// Staff sprites, by convention, are angled to point up and to the right. "Item.staff[Type] = true;" is essential for correctly drawing staffs.
+	// Staffs use mana and shoot a specific projectile instead of using ammo. Item.DefaultToStaff takes care of that.
 	public class ExampleStaff : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			Item.staff[Type] = true; // This makes the useStyle animate as a staff instead of as a gun.
 		}
 
-		public override void SetDefaults()
-		{
-			Item.damage = 20;
-			Item.DamageType = DamageClass.Magic;
-			Item.mana = 12;
-			Item.width = 40;
-			Item.height = 40;
-			Item.useTime = 25;
-			Item.useAnimation = 25;
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.noMelee = true; // This is set to true so the animation doesn't deal damage.
-			Item.knockBack = 5;
-			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+		public override void SetDefaults() {
+			// DefaultToStaff handles setting various Item values that magic staff weapons use.
+			// Hover over DefaultToStaff in Visual Studio to read the documentation!
+			Item.DefaultToStaff(ModContent.ProjectileType<SparklingBall>(), 16, 25, 12);
+
+			// Customize the UseSound. DefaultToStaff sets UseSound to SoundID.Item43, but we want SoundID.Item20
 			Item.UseSound = SoundID.Item20;
-			Item.autoReuse = true;
-			Item.shoot = ProjectileType<SparklingBall>();
-			Item.shootSpeed = 16f;
+
+			// Set damage and knockBack
+			Item.SetWeaponValues(20, 5);
+
+			// Set rarity and value
+			Item.SetShopValues(ItemRarityColor.Green2, 10000);
 		}
 
-		public override void AddRecipes()
-		{
-            CreateRecipe().
-                AddIngredient<ExampleItem>().
-                AddTile<ExampleWorkbench>().
-                Register();
-        }
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<ExampleWorkbench>()
+				.Register();
+		}
 	}
 }

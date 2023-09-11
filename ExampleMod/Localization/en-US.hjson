@@ -93,7 +93,6 @@ Mods: {
 		}
 
 		Items: {
-
 			ExampleStaff: {
 				DisplayName: Example Staff
 				Tooltip: This is a modded magic staff weapon
@@ -910,7 +909,6 @@ Mods: {
 			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
-			SparklingBall.DisplayName: Sparkling Ball
 		}
 
 		Buffs: {
