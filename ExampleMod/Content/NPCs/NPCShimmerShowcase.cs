@@ -1,6 +1,7 @@
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
+using System.Linq;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -12,8 +13,7 @@ using Terraria.ModLoader.Utilities;
 namespace ExampleMod.Content.NPCs;
 
 // For info on ModNPC stuff see PartyZombie.cs
-public class NPCShimmerShowcase : ModNPC
-{
+public class NPCShimmerShowcase : ModNPC {
 	public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
 	public override void SetStaticDefaults() {
 		Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
@@ -27,9 +27,14 @@ public class NPCShimmerShowcase : ModNPC
 		CreateShimmerTransformation()
 			// A shimmer callback applies to the one transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
 			.AddCanShimmerCallBack((ShimmerTransformation transformation, IModShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
-			.AddItemResult(ItemID.ExplosiveBunny, 30)
-			.AddNPCResult(NPCID.Skeleton, 3)
-			.AddOnShimmerCallBack(OnShimmerCallBack)
+			// Results
+			.AddItemResult(ItemID.ExplosiveBunny, 30) // 0
+			//.AddNPCResult(NPCID.Skeleton, 3) // 1
+			.AddNPCResult(NPCID.Frog) // 2
+			.AddModifyShimmerCallBack((ShimmerTransformation transformation, IModShimmerable source) => transformation.Results[^1] = transformation.Results[^1] with { Count = Main.rand.Next(5, 11) }) // Spawn 5 - 10 frogs inclusive
+			.AddModifyShimmerCallBack(ModifyShimmer_GildFrogs) // Applies the gold critter chance to the frogs in the transformation
+			.AddOnShimmerCallBack(OnShimmer_SpawnFriendlyBullets)
+			.DisableChainedShimmers()
 			.Register();
 
 		CreateShimmerTransformation()
@@ -39,7 +44,7 @@ public class NPCShimmerShowcase : ModNPC
 
 		CreateShimmerTransformation()
 			.AddCondition(Condition.DownedEarlygameBoss)
-			.AddNPCResult(NPCID.TheBride, 1)
+			.AddNPCResult(NPCID.TheBride)
 			.Register();
 
 		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ShimmerTransformation unless all conditions fall through
@@ -75,12 +80,42 @@ public class NPCShimmerShowcase : ModNPC
 
 	// This is static and not an override, it is used earlier to pass as a ShimmerTransformation.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a method.
 	// While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based, use "origin"
-	public static void OnShimmerCallBack(ShimmerTransformation transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
+	public static void OnShimmer_SpawnFriendlyBullets(ShimmerTransformation transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
 		spawnedShimmerables.ForEach((IModShimmerable spawnedShimmerable)
 			=> {
-				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_ForShimmer(), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
-				p.friendly = false;
-				p.hostile = true;
+				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_Shimmer(null), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+				p.friendly = true;
+				p.hostile = false;
 			});
+		// Here we show one way to spawn projectiles, we do it after the transformation because we need the list of spawned IModShimmerables.
+		// See ExampleComplexCustomShimmerable for how to utilise projectiles in shimmer better
+	}
+
+	public static void ModifyShimmer_GildFrogs(ShimmerTransformation transformation, IModShimmerable target) {
+		int sumGoodRolls(int times) {
+			Player closestPlayer = Main.player[Player.FindClosest(target.Center, 1, 1)];
+
+			int goodRolls = 0;
+			for (int i = 0; i < times; i++)
+				if (closestPlayer.RollLuck(NPC.goldCritterChance) == 0)
+					goodRolls++;
+			return goodRolls;
+		}
+		int changeFrogCount = transformation.Results.Sum(result => result.IsNPCResult(NPCID.Frog) ? sumGoodRolls(result.Count) : 0);
+
+		if (changeFrogCount > 0) {
+			for (int i = 0; i < changeFrogCount; i++) {
+				int index = transformation.Results.FindIndex(result => result.IsNPCResult(NPCID.Frog));
+				if (index < 0)
+					break;
+
+				if (transformation.Results[index].Count > 1)
+					transformation.Results[index] = transformation.Results[index] with { Count = transformation.Results[index].Count - 1 };
+				else
+					transformation.Results.RemoveAt(index);
+			}
+
+			transformation.AddNPCResult(NPCID.GoldFrog, changeFrogCount);
+		}
 	}
 }

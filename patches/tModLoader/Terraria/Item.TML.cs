@@ -276,9 +276,11 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IMo
 	}
 
 	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<Item>.GetRedirectedType(type);
 	int IModShimmerable.Type => type;
 	int IModShimmerable.Stack => stack;
-	void IModShimmerable.Remove(int amount)
+	public bool PreventingChainedShimmers { get; set; }
+	void IModShimmerable.ShimmerRemoveStacked(int amount)
 	{
 		stack -= amount;
 		shimmerWet = true;
@@ -301,5 +303,5 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IMo
 	/// For this <see cref="Item"/> override, calls <see cref="ItemLoader.OnShimmer(Item)"/>
 	/// </summary>
 	public void OnShimmer() => ItemLoader.OnShimmer(this);
-	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
+	//public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
 }

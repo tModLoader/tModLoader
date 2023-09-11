@@ -10,7 +10,7 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
-public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
+public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShimmerable
 {
 	/// <summary>
 	/// The ModProjectile instance that controls the behavior of this projectile. This property is null if this is not a modded projectile.
@@ -201,7 +201,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// This is used to check if the projectile is considered to be a member of a specified <see cref="DamageClass"/>.
 	/// </summary>
 	/// <param name="damageClass">The DamageClass to compare with the one assigned to this projectile.</param>
-	/// <returns><see langword="true"/> if this projectiles's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	/// <returns><see langword="true"/> if this projectile's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
@@ -210,4 +210,55 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br/>
 	/// </summary>
 	public bool IsMinionOrSentryRelated => minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type];
+
+	/// <summary>
+	/// <inheritdoc/><br/> For this <see cref="Projectile"/> override it checks for <see cref="ProjectileLoader.CanShimmer(Projectile)"/> and
+	/// <see cref="ShimmerTransformation{Projectile}.AnyValidModShimmer(Projectile)"/>. <br/> Used exclusively for modded <see cref="ShimmerTransformation"/>, does not
+	/// change how shimmer affects AI.
+	/// </summary>
+	/// <inheritdoc/>
+	public bool CanShimmer()
+		=> ProjectileLoader.CanShimmer(this) && ShimmerTransformation<Projectile>.AnyValidModShimmer(this);
+
+	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<Projectile>.GetRedirectedType(type);
+	int IModShimmerable.Type => type;
+
+	void IModShimmerable.ShimmerRemoveStacked(int amount)
+	{
+		active = false;
+		if (Main.netMode == NetmodeID.Server) {
+			NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, whoAmI);
+		}
+	}
+
+	public float shimmerTransformTime;
+	public bool PreventingChainedShimmers { get; set; }
+
+	private void ModdedProjectileShimmer()
+	{
+		if (type == 936) // Prevent interfering with the Diva Slime unlock
+			return;
+
+		if (shimmerWet && CanShimmer()) { // If in shimmer and can shimmer
+			shimmerTransformTime += 0.01f;
+			if (Main.netMode != NetmodeID.MultiplayerClient && shimmerTransformTime > 0.9f && !PreventingChainedShimmers) {
+				shimmerTransformTime = 0.9f;
+				ShimmerTransformation<Projectile>.TryModShimmer(this);
+			}
+
+			if (shimmerTransformTime > 1f)
+				shimmerTransformTime = 1f;
+		}
+		else if (shimmerTransformTime > 0f) {
+			shimmerTransformTime -= 0.01f;
+			if (shimmerTransformTime < 0f)
+				shimmerTransformTime = 0f;
+		}
+		else
+			PreventingChainedShimmers = false; // Reset for allowing shimmer again, only reset after timer is below zero again
+	}
+
+	/// <summary> <inheritdoc/><br/> For this <see cref="Projectile"/> override, calls <see cref="ProjectileLoader.OnShimmer(Projectile)"/> </summary>
+	public void OnShimmer() => ProjectileLoader.OnShimmer(this);
 }

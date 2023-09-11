@@ -277,7 +277,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	public bool GravityIgnoresLiquid = false;
 
 	/// <summary> <inheritdoc/> <br/>
-	/// For this <see cref="NPC"/> override it checks for <see cref="NPCLoader.CanShimmer(NPC)"/> and for any of the following:
+	/// For this <see cref="NPC"/> override it checks for <see cref="NPCLoader.CanShimmer(NPC)"/>, not <see cref="PreventingChainedShimmers"/>, and for any of the following:
 	/// <list type="number">
 	/// <item/> <see cref="NPCID.Sets.ShimmerTownTransform"/>
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToNPC"/>
@@ -299,8 +299,10 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 		|| ShimmerTransformation<NPC>.AnyValidModShimmer(this));
 	}
 	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<NPC>.GetRedirectedType(type);
 	int IModShimmerable.Type => type;
-	void IModShimmerable.Remove(int amount)
+	public bool PreventingChainedShimmers { get; set; }
+	void IModShimmerable.ShimmerRemoveStacked(int amount)
 	{
 		noSpawnCycle = true;
 		active = false;
@@ -315,7 +317,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	/// For this <see cref="NPC"/> override, calls <see cref="NPCLoader.OnShimmer(NPC)"/>
 	/// </summary>
 	public void OnShimmer() => NPCLoader.OnShimmer(this);
-	public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
 	
 	/// <summary>
 	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.

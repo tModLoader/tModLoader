@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Terraria.ModLoader.Utilities;
+
 public interface IOrderable<TSelf> where TSelf : class, IOrderable<TSelf>
 {
-	public (TSelf target, bool after) Ordering { get; private protected set; }
+	public (TSelf target, bool after) Ordering { get; }
 }
 
 public static class OrderableExtensions
 {
-	/// <summary> Orders everything in the enumerable according to <see cref="IOrderable{TSelf}"/>. </summary>
-	public static IEnumerable<TOrderable> GetOrdered<TOrderable>(this IEnumerable<TOrderable> orderableIEnumerable) where TOrderable : class, IOrderable<TOrderable>
+	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable{TSelf}"/>. </summary>
+	public static IEnumerable<TOrderable> GetOrdered<TOrderable>(this IList<TOrderable> orderableIList) where TOrderable : class, IOrderable<TOrderable>
 	{
-		TOrderable[] orderableArray = orderableIEnumerable.ToArray();
-
 		// first-pass, collect sortBefore and sortAfter
 		Dictionary<TOrderable, List<TOrderable>> sortBefore = new();
 		Dictionary<TOrderable, List<TOrderable>> sortAfter = new();
-		List<TOrderable> baseOrder = new List<TOrderable>(orderableArray.Length);
-		foreach (TOrderable orderable in orderableArray) {
+		List<TOrderable> baseOrder = new List<TOrderable>(orderableIList.Count);
+		foreach (TOrderable orderable in orderableIList) {
 			switch (orderable.Ordering) {
 				case (null, _):
 					baseOrder.Add(orderable);
@@ -42,7 +41,7 @@ public static class OrderableExtensions
 		}
 
 		if (!sortBefore.Any() && !sortAfter.Any())
-			return orderableArray;
+			return orderableIList;
 
 		// define sort function
 		int i = 0;
@@ -52,7 +51,7 @@ public static class OrderableExtensions
 				foreach (TOrderable c in before)
 					Sort(c);
 
-			orderableArray[i++] = r;
+			orderableIList[i++] = r;
 
 			if (sortAfter.TryGetValue(r, out List<TOrderable> after))
 				foreach (TOrderable c in after)
@@ -63,8 +62,8 @@ public static class OrderableExtensions
 		foreach (TOrderable r in baseOrder)
 			Sort(r);
 
-		if (i != orderableArray.Length)
+		if (i != orderableIList.Count)
 			throw new Exception("Sorting code is broken?");
-		return orderableArray;
+		return orderableIList;
 	}
 }

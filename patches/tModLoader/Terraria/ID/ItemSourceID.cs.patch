@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemSourceID.cs
 +++ src/tModLoader/Terraria/ID/ItemSourceID.cs
-@@ -1,16 +_,34 @@
+@@ -1,16 +_,35 @@
 +using System;
 +
 +#nullable enable
@@ -30,10 +30,11 @@
 +		ThrowItem => nameof(ThrowItem),
 +		GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
 +		SortingWithNoSpace => nameof(SortingWithNoSpace),
++		//Shimmer => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'. If you if ItemSourceID.Shimmer was intended, use GetSource_Shimmer.", nameof(itemSourceId)), // Due to 'EntitySource_Shimmer being added.
 +		Shimmer => nameof(Shimmer),
 +		Digesting => nameof(Digesting),
 +		TorchGod => nameof(TorchGod),
-+		PlayerDeath => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_Death being added.
++		PlayerDeath => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'.", nameof(itemSourceId)), // Due to 'EntitySource_Death being added.
 +		_ => null,
 +	};
  }

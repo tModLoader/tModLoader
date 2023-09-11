@@ -756,4 +756,30 @@ public static class ProjectileLoader
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 		}
 	}
+
+	private static HookList HookCanShimmer = AddHook<Func<Projectile, bool>>(g => g.CanShimmer);
+
+	public static bool CanShimmer(Projectile projectile)
+	{
+		if (projectile.ModProjectile?.CanShimmer() == false)
+			return false;
+
+		foreach (var g in HookCanShimmer.Enumerate(projectile)) {
+			if (!g.CanShimmer(projectile)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static HookList HookOnShimmer = AddHook<Action<Projectile>>(g => g.OnShimmer);
+
+	public static void OnShimmer(Projectile projectile)
+	{
+		projectile.ModProjectile?.OnShimmer();
+
+		foreach (var g in HookOnShimmer.Enumerate(projectile))
+			g.OnShimmer(projectile);
+	}
 }

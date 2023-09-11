@@ -382,4 +382,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	{
 		return null;
 	}
+
+	public virtual bool CanShimmer(Projectile npc) => true;
+
+	public virtual void OnShimmer(Projectile npc) { }
 }

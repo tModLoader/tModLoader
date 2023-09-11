@@ -2622,14 +2622,31 @@
  		if (wet) {
  			if (shimmerWet) {
  				gravity = 0.15f;
-@@ -73348,7 +_,11 @@
+@@ -73324,7 +_,7 @@
+ 		netShimmer = false;
+ 		if (shimmering) {
+ 			shimmerTransparency += 0.01f;
+-			if (Main.netMode != 1 && (double)shimmerTransparency > 0.9)
++			if (Main.netMode != 1 && (double)shimmerTransparency > 0.9 && !PreventingChainedShimmers)
+ 				GetShimmered();
+ 
+ 			if (shimmerTransparency > 1f)
+@@ -73342,13 +_,19 @@
+ 			if (shimmerTransparency < 0f)
+ 				shimmerTransparency = 0f;
+ 		}
++		else
++			PreventingChainedShimmers = false;
+ 
+ 		position -= netOffset;
+ 	}
  
  	private void GetShimmered()
  	{
 -		if (SpawnedFromStatue) {
 +		if (!CanShimmer()) // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC
 +			return;
-+		int type = ShimmerTransformation<NPC>.GetRedirectedType(this.type); // TML
++		int type = (this as IModShimmerable).ShimmerRedirectedType; // TML
 +
 +		if (SpawnedFromStatue && NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
  			if (Main.netMode == 0)
@@ -2665,14 +2682,18 @@
  		lifeRegenCount += lifeRegen;
  		while (lifeRegenCount >= 120) {
  			lifeRegenCount -= 120;
-@@ -73828,12 +_,16 @@
+@@ -73828,12 +_,19 @@
  			if (buffType[i] == 324)
  				onFrostBurn2 = true;
  
 +			// Extra patch context.
  			if (buffType[i] == 353) {
- 				if (buffImmune[353])
+-				if (buffImmune[353])
++				if (buffImmune[353]) {
  					DelBuff(i);
++					i--;
++					continue;
++				}
  				else
  					shimmering = true;
  			}

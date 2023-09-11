@@ -1333,6 +1333,15 @@
  	public void Resize(int newWidth, int newHeight)
  	{
  		position = base.Center;
+@@ -15921,6 +_,8 @@
+ 
+ 	private void Shimmer()
+ 	{
++		ModdedProjectileShimmer();
++
+ 		if (hostile || (aiStyle == 99 && ai[0] == -1f) || (aiStyle == 15 && (ai[0] == 2f || ai[0] == 4f)))
+ 			return;
+ 
 @@ -16028,6 +_,11 @@
  
  	public void AI()

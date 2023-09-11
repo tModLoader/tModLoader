@@ -1938,6 +1938,24 @@
  			return makeNPC > 0;
  
  		return true;
+@@ -47682,7 +_,7 @@
+ 			if (!WorldGen.InWorld(num, num2) || Main.tile[num, num2] == null || Main.tile[num, num2].liquid <= 0 || !Main.tile[num, num2].shimmer())
+ 				return;
+ 
+-			if (playerIndexTheItemIsReservedFor == Main.myPlayer && Main.netMode != 1) {
++			if (playerIndexTheItemIsReservedFor == Main.myPlayer && Main.netMode != 1 && !PreventingChainedShimmers) {
+ 				shimmerTime += 0.01f;
+ 				if (shimmerTime > 0.9f) {
+ 					shimmerTime = 0.9f;
+@@ -47700,6 +_,8 @@
+ 			if (shimmerTime < 0f)
+ 				shimmerTime = 0f;
+ 		}
++		else
++			PreventingChainedShimmers = false;
+ 	}
+ 
+ 	private int FindDecraftAmount()
 @@ -47713,17 +_,27 @@
  
  	private int GetShimmerEquivalentType()
@@ -1948,7 +1966,7 @@
  
  		return type;
 +		*/
-+		return ShimmerTransformation<Item>.GetRedirectedType(type); // TML: #AdvancedShimmerTransformations, does ShimmerTransformation redirects first
++		return (this as IModShimmerable).ShimmerRedirectedType; // TML: #AdvancedShimmerTransformations, does ShimmerTransformation redirects first
  	}
  
  	private void GetShimmered()

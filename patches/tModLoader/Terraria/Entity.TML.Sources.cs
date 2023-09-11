@@ -33,11 +33,14 @@ partial class Entity
 
 	public IEntitySource GetSource_Death(string? context = null)
 		=> new EntitySource_Death(this, context);
-	
+
 	// Etc
 
 	public IEntitySource GetSource_Misc(string context)
 		=> new EntitySource_Misc(/*this,*/ context);
+
+	public IEntitySource GetSource_Shimmer(Player attachedPlayer, string? context = null)
+		=> new EntitySource_Shimmer(this, attachedPlayer, context);
 
 	public IEntitySource GetSource_TileInteraction(int tileCoordsX, int tileCoordsY, string? context = null)
 		=> new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY, context);
