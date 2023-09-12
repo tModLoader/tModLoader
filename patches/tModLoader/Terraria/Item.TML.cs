@@ -112,6 +112,13 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	public bool StopAnimationOnHurt { get; set; }
 
+	/// <summary>
+	/// When true, shooting any projectile from this item will make the owner face the projectile. Defaults to true.<br/>
+	/// The only 2 vanilla items that change this from true to false are the Grand Design and Beam Sword<br/>
+	/// This is different to <see cref="Item.useTurn"/>. Item.useTurn will prevent the player from changing their direction while the animation is playing if it is set to true.<br/>
+	/// </summary>
+	public bool ChangePlayerDirectionOnShoot { get; set; } = true;
+
 	private DamageClass _damageClass = DamageClass.Default;
 	/// <summary>
 	/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.
