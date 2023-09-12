@@ -114,6 +114,11 @@
 		"ModConfigCollapse": "Collapse",
 		"ModConfigScaleUp": "Scale Up",
 		"ModConfigScaleDown": "Scale Down",
+		"ModConfigServerResponse": "Server response: {0}",
+		"ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		"ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		"ModConfigAccepted": "Accepted",
+		"ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",

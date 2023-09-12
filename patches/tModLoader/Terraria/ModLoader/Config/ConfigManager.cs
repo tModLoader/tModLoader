@@ -294,19 +294,19 @@ public static class ConfigManager
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
 
-				Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
+				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(Interface.modConfig);
-					Interface.modConfig.SetMessage("Server response: " + message, Color.Green);
+					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
 
-				Main.NewText("Changes Rejected: " + message);
+				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage("Server rejected changes: " + message, Color.Red);
+					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 					//Main.InGameUI.SetState(Interface.modConfig);
 				}
 
@@ -325,10 +325,10 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			NetworkText message = NetworkText.FromLiteral("Accepted");
+			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigAccepted");
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = NetworkText.FromLiteral("Can't save because changes would require a reload.");
+				message = NetworkText.FromKey("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload");
 			}
 
 			string stringMessage = ""; // For compatibility with mods that haven't updated yet
