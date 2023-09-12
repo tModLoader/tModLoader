@@ -3125,51 +3125,6 @@
  		}
  		else {
  			if (jumpBoost) {
-@@ -15314,7 +_,7 @@
- 		if (chilled)
- 			accRunSpeed = maxRunSpeed;
- 
--		bool flag = (itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange;
-+		bool flag = (ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange;
- 		bool flag2 = controlLeft || controlRight;
- 		float num = (accRunSpeed + maxRunSpeed) / 2f;
- 		float num2 = 0f;
-@@ -15408,7 +_,7 @@
- 					}
- 				}
- 			}
--			else if (!sandStorm && (itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
-+			else if (!sandStorm && (ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
- 				direction = -1;
- 			}
- 		}
-@@ -15457,7 +_,7 @@
- 					}
- 				}
- 			}
--			else if (!sandStorm && (itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
-+			else if (!sandStorm && (ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
- 				direction = 1;
- 			}
- 		}
-@@ -15466,7 +_,7 @@
- 				if (velocity.X < 0f)
- 					direction = -1;
- 			}
--			else if ((itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
-+			else if ((ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
- 				direction = -1;
- 			}
- 
-@@ -15494,7 +_,7 @@
- 				if (velocity.X > 0f)
- 					direction = -1;
- 			}
--			else if ((itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
-+			else if ((ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
- 				direction = 1;
- 			}
- 
 @@ -15582,14 +_,14 @@
  			if (flag4)
  				num5 = 30;
@@ -3806,17 +3761,6 @@
  					}
  				}
  				else {
-@@ -19467,8 +_,10 @@
- 				}
- 			}
- 
-+			/* Moved into ItemCheck
- 			if (selectedItem != 58)
- 				SmartSelectLookup();
-+			*/
- 
- 			if (stoned != lastStoned) {
- 				if (whoAmI == Main.myPlayer && stoned) {
 @@ -19566,11 +_,14 @@
  					}
  				}
@@ -5923,7 +5867,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,59 @@
+@@ -33268,6 +_,54 @@
  			}
  		}
  
@@ -5975,11 +5919,6 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
-+
-+		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (selectedItem != 58)
-+			SmartSelectLookup();
-+
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_HandleMPItemAnimation(item);
