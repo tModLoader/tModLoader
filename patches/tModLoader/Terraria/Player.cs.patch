@@ -5931,17 +5931,19 @@
  				FreeUpPetsAndMinions(item);
  
  			if (flag3)
-@@ -33323,6 +_,9 @@
- 		if (!flag4)
- 			channel = false;
- 
+@@ -33339,13 +_,25 @@
+ 				itemHeight = drawHitbox.Height;
+ 				itemWidth = drawHitbox.Width;
+ 			}
++		// The itemAnimation > 0 block has been split in 2 parts (above and below) to allow for the insertion of labels
++		}
 +		goto ReleaseUseItem;
-+
+ 
 +		DecrementItemAnimation:
- 		Item item2 = ((itemAnimation > 0) ? lastVisualizedSelectedItem : item);
- 		Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
- 		compositeFrontArm.enabled = false;
-@@ -33345,7 +_,13 @@
++
++		if (itemAnimation > 0) {
+ 			itemAnimation--;
+ 			if (itemAnimation == 0 && whoAmI == Main.myPlayer)
  				PlayerInput.TryEndingFastUse();
  		}
  
