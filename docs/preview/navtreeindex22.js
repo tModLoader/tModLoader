@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"struct_game_mode_data.html":[3,0,419],
+"struct_gen_shape_action_pair.html":[3,0,440],
 "struct_get_item_settings.html":[3,0,443],
 "struct_global_loot.html":[3,0,455],
 "struct_global_type_lookups_1_1_applies_to_type_set.html":[3,0,462,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "struct_tile.html#a48a5ec5fe17941af7e405f3e31e4916a":[3,0,1217,4],
 "struct_tile.html#a519bd492b733fd5ebf265dd266b33660":[3,0,1217,28],
 "struct_tile.html#a53d034267b724dc7073497163cfeb7a1":[3,0,1217,33],
-"struct_tile.html#a5b4aae72b50c181b6b7223ca09a2b10b":[3,0,1217,24],
-"struct_tile.html#a6325ed8c780c63c155030661a5eda400":[3,0,1217,19],
-"struct_tile.html#a6689150e347d80787fd7d2ce776d9075":[3,0,1217,2]
+"struct_tile.html#a5b4aae72b50c181b6b7223ca09a2b10b":[3,0,1217,24]
 };

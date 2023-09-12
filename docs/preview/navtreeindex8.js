@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"class_item_rarity_i_d.html#a7656c54122194ccd61f4aee5baab43b6":[3,0,639,6],
+"class_item_rarity_i_d.html#a8c511cab3dfd5afe38a1b795d722e0b2":[3,0,639,3],
 "class_item_rarity_i_d.html#a90c854025485842d7020cef3f5382af2":[3,0,639,2],
 "class_item_rarity_i_d.html#a93ae0dde70087a5100133e4da5f5edaf":[3,0,639,5],
 "class_item_rarity_i_d.html#aa3b16c7dc810a1ab0f12e9bf1855a7fa":[3,0,639,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "class_meteorite_shader.html":[3,0,757],
 "class_method_sequence_list_item.html":[3,0,758],
 "class_micro_biome.html":[3,0,759],
-"class_minecart.html":[3,0,760],
-"class_minecart_digger_helper.html":[3,0,761],
-"class_minimap_frame.html":[3,0,762]
+"class_minecart.html":[3,0,760]
 };

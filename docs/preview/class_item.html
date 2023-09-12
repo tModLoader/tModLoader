@@ -1347,6 +1347,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>attackSpeedOnlyAffect
 <tr class="memitem:a19ef460ebcac4b552f99f95840216cac"><td class="memItemLeft" align="right" valign="top"><a id="a19ef460ebcac4b552f99f95840216cac" name="a19ef460ebcac4b552f99f95840216cac"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeQuickUsed</b><code> [get]</code></td></tr>
 <tr class="separator:a19ef460ebcac4b552f99f95840216cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac583a83e73a1a59a9158e9c20c4aca16"><td class="memItemLeft" align="right" valign="top"><a id="ac583a83e73a1a59a9158e9c20c4aca16" name="ac583a83e73a1a59a9158e9c20c4aca16"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ChangePlayerDirectionOnShoot</b> = true<code> [get, set]</code></td></tr>
+<tr class="memdesc:ac583a83e73a1a59a9158e9c20c4aca16"><td class="mdescLeft">&#160;</td><td class="mdescRight">When true, shooting any projectile from this item will make the owner face the projectile. Defaults to true.<br  />
+ The only 2 vanilla items that change this from true to false are the Grand Design and Beam Sword<br  />
+ This is different to <a class="el" href="class_item.html#a454f5012981a5be2b2b526c72477b889" title="Whether the player can turn around while the using animation of this item is happening....">Item.useTurn</a>. <a class="el" href="class_item.html#a454f5012981a5be2b2b526c72477b889" title="Whether the player can turn around while the using animation of this item is happening....">Item.useTurn</a> will prevent the player from changing their direction while the animation is playing if it is set to true.<br  />
+ <br /></td></tr>
+<tr class="separator:ac583a83e73a1a59a9158e9c20c4aca16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af50e755297ab9529ba9282c0a16aa0c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#af50e755297ab9529ba9282c0a16aa0c4">consumeAmmoOnFirstShotOnly</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:af50e755297ab9529ba9282c0a16aa0c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictates whether or not this item should only consume ammo on its first shot of each use.<br  />
  Defaults to false.<br  />
@@ -1433,6 +1440,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>StopAnimationOnHurt</
  Used in vanilla by the following:<br  />
   <a href="class_item.html#a45a9bea6cb7b8b8f088460c128326172">More...</a><br /></td></tr>
 <tr class="separator:a45a9bea6cb7b8b8f088460c128326172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b69df7f6c806d9bf33332a82d295234"><td class="memItemLeft" align="right" valign="top"><a id="a7b69df7f6c806d9bf33332a82d295234" name="a7b69df7f6c806d9bf33332a82d295234"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>useTurnOnAnimationStart</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a7b69df7f6c806d9bf33332a82d295234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a7b69df7f6c806d9bf33332a82d295234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f3c4c189bf37852038ded6b11b910bb"><td class="memItemLeft" align="right" valign="top"><a id="a2f3c4c189bf37852038ded6b11b910bb" name="a2f3c4c189bf37852038ded6b11b910bb"></a>
 <a class="el" href="class_item_variant.html">ItemVariant</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Variant</b><code> [get]</code></td></tr>
 <tr class="separator:a2f3c4c189bf37852038ded6b11b910bb"><td class="memSeparator" colspan="2">&#160;</td></tr>

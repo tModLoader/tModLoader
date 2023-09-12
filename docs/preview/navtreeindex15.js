@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"class_personality_profile.html":[3,0,947],
+"class_physics_properties.html":[3,0,948],
 "class_pillar_shader.html":[3,0,949],
 "class_ping_map_layer.html":[3,0,950],
 "class_pirate_invasion_shader.html":[3,0,951],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "class_player_input_profile.html":[3,0,975],
 "class_player_item_slot_i_d.html":[3,0,977],
 "class_player_loader.html":[3,0,978],
-"class_player_loader.html#a84074598144f7f0ede0d5166f28f0721":[3,0,978,1],
-"class_player_loader.html#ab17e7c9c2a12208aaa8b44239cfe19d1":[3,0,978,0],
-"class_player_loader.html#aece323c2271210358ff0f2731f556724":[3,0,978,2]
+"class_player_loader.html#a84074598144f7f0ede0d5166f28f0721":[3,0,978,1]
 };
