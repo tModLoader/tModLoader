@@ -6883,6 +6883,15 @@
  		if (Main.dedServ)
  			return;
  
+@@ -39713,7 +_,7 @@
+ 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
+ 			toolTime = 1;
+ 
+-		if (grappling[0] > -1) {
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+ 			pulley = false;
+ 			pulleyDir = 1;
+ 			if (controlRight)
 @@ -39780,7 +_,10 @@
  			}
  
