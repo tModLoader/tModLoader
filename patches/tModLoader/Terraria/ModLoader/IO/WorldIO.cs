@@ -3,13 +3,17 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using Terraria.DataStructures;
 using Terraria.GameContent.Events;
 using Terraria.ID;
-using Terraria.ModLoader.Core;
+using Terraria.IO;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader.IO;
 
@@ -25,6 +29,7 @@ internal static class WorldIO
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
 		var tag = new TagCompound {
+			["0header"] = SaveHeader(),
 			["chests"] = SaveChestInventory(),
 			["tiles"] = TileIO.SaveBasics(),
 			["containers"] = TileIO.SaveContainers(),
@@ -42,6 +47,7 @@ internal static class WorldIO
 
 		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
+
 	//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
 	internal static void Load(string path, bool isCloudSave)
 	{
@@ -630,5 +636,132 @@ internal static class WorldIO
 		else if (SocialAPI.Cloud != null) {
 			SocialAPI.Cloud.Delete(path);
 		}
+	}
+
+	private static TagCompound SaveHeader()
+	{
+		return new TagCompound {
+			["modHeaders"] = SaveModHeaders(),
+			["usedMods"] = SaveUsedMods(),
+			["usedModPack"] = SaveUsedModPack(),
+			["generatedWithMods"] = SaveGeneratedWithMods(),
+		};			
+	}
+
+	private static TagCompound SaveModHeaders()
+	{
+		var modHeaders = new TagCompound();
+
+		var saveData = new TagCompound();
+		foreach (var system in SystemLoader.Systems) {
+			system.SaveWorldHeader(saveData);
+			if (saveData.Count == 0)
+				continue;
+
+			modHeaders[system.FullName] = saveData;
+			saveData = new TagCompound();
+		}
+
+		// preserve data for unloaded systems
+		foreach (var entry in Main.ActiveWorldFileData.ModHeaders) {
+			if (!ModContent.TryFind<ModSystem>(entry.Key, out _))
+				modHeaders[entry.Key] = entry.Value;
+		}
+
+		return modHeaders;
+	}
+
+	internal static void ReadWorldHeader(WorldFileData data)
+	{
+		string path = Path.ChangeExtension(data.Path, ".twld");
+		bool isCloudSave = data.IsCloudSave;
+
+		if (!FileUtilities.Exists(path, isCloudSave))
+			return;
+
+		try {
+			// this code hard-traverses the NBT format to read the just the first nested tag, if preset.
+			// It relies on deterministic tag saving order for the header to be first.
+			// Because the NBT format is not seekable, there is no way to skip reading the entire tag tree in order to find a specific sub-tag at an arbitrary path.
+
+			using Stream stream = isCloudSave ? new MemoryStream(SocialAPI.Cloud.Read(path)) : new FileStream(path, FileMode.Open);
+			using BinaryReader reader = new BigEndianReader(new GZipStream(stream, CompressionMode.Decompress));
+			if (reader.ReadByte() != 10)
+				throw new IOException("Root tag not a TagCompound");
+
+			// ignore root tag name
+			_ = TagIO.ReadTagImpl(8, reader);
+			if (reader.ReadByte() != 10)
+				return; // no header tag
+
+			if ((string)TagIO.ReadTagImpl(8, reader) != "0header")
+				return;
+
+			LoadWorldHeader(data, (TagCompound)TagIO.ReadTagImpl(10, reader));
+		}
+		catch (Exception ex) {
+			Logging.tML.Warn($"Error reading .twld header from: {path} (IsCloudSave={isCloudSave})", ex);
+		}
+	}
+
+	private static void LoadWorldHeader(WorldFileData data, TagCompound tag)
+	{
+		LoadModHeaders(data, tag);
+		LoadUsedMods(data, tag.GetList<string>("usedMods"));
+		LoadUsedModPack(data, tag.GetString("usedModPack"));
+		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
+			LoadGeneratedWithMods(data, tag.GetCompound("generatedWithMods"));
+	}
+
+	private static void LoadModHeaders(WorldFileData data, TagCompound tag)
+	{
+		data.ModHeaders = new Dictionary<string, TagCompound>();
+		foreach (var entry in tag.GetCompound("modHeaders")) {
+			string fullname = entry.Key;
+
+			if (ModContent.TryFind<ModSystem>(fullname, out var system)) // handle legacy renames
+				fullname = system.FullName;
+
+			data.ModHeaders[fullname] = (TagCompound)entry.Value;
+		}
+	}
+
+	internal static void LoadUsedMods(WorldFileData data, IList<string> usedMods)
+	{
+		data.usedMods = usedMods;
+	}
+
+	internal static List<string> SaveUsedMods()
+	{
+		return ModLoader.Mods.Select(m => m.Name).Except(new[] { "ModLoader" }).ToList();
+	}
+
+	internal static void LoadUsedModPack(WorldFileData data, string modpack)
+	{
+		data.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null was saved.
+	}
+
+	internal static string SaveUsedModPack()
+	{
+		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+	}
+
+	internal static void LoadGeneratedWithMods(WorldFileData data, TagCompound tag)
+	{
+		data.modVersionsDuringWorldGen = new Dictionary<string, Version>();
+		foreach (var item in tag) {
+			data.modVersionsDuringWorldGen[item.Key] = tag.Get<Version>(item.Key);
+		}
+	}
+
+	internal static TagCompound SaveGeneratedWithMods()
+	{
+		if (Main.ActiveWorldFileData.modVersionsDuringWorldGen == null)
+			return null;
+		var tag = new TagCompound();
+		foreach (var item in Main.ActiveWorldFileData.modVersionsDuringWorldGen) {
+			tag[item.Key] = item.Value;
+		}
+		return tag;
 	}
 }

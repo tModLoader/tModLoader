@@ -1436,4 +1436,17 @@ public static class PlayerLoader
 				yield return (items, onUsedForCrafting);
 		}
 	}
+
+	private static HookList HookOnPickup = AddHook<Func<Item, bool>>(p => p.OnPickup);
+
+	public static bool OnPickup(Player player, Item item)
+	{
+		foreach (var modPlayer in HookOnPickup.Enumerate(player)) {
+			if (!modPlayer.OnPickup(item)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
