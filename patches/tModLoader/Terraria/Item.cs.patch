@@ -1853,7 +1853,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,31 @@
+@@ -47318,14 +_,32 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1863,6 +1863,7 @@
 +		_globals = null;
 +		StatsModifiedBy = new();
 +		AllowReforgeForStackableItem = false;
++		useTurnOnAnimationStart = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
 +		useLimitPerAnimation = null;
 +		consumeAmmoOnFirstShotOnly = false;

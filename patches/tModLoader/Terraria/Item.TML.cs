@@ -74,6 +74,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public bool AllowReforgeForStackableItem { get; set; }
 
 	/// <summary>
+	/// Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with.
+	/// <br/> Defaults to <see langword="false"/>.
+	/// </summary>
+	public bool useTurnOnAnimationStart { get; set; }
+
+	/// <summary>
 	/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
 	/// Defaults to null.<br/>
 	/// Used in vanilla by the following:<br/>
@@ -263,6 +269,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		if (type < ItemID.Count && autoReuse && !noMelee) {
 			useAnimation--;
 			currentUseAnimationCompensation--;
+		}
+
+		// in vanilla, items without autoReuse get a frame where itemAnimation == 0 between uses allowing the direction change checks in HorizontalMovement to apply
+		// in tML we need to explicitly enable this behavior
+		if (type < ItemID.Count && useStyle != 0 && !autoReuse && !useTurn && shoot == 0 && damage > 0) {
+			useTurnOnAnimationStart = true;
 		}
 	}
 
