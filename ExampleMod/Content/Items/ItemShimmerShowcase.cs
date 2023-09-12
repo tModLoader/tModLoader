@@ -22,15 +22,16 @@ Also note that critter items (Item.makeNPC > 0) will also not attempt to decraft
 public class ItemShimmerShowcaseConditions : ModItem
 {
 	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
+
 	public override void SetDefaults() {
 		Item.width = Item.height = 20;
 		Item.maxStack = Item.CommonMaxStack;
 	}
 
 	public override void AddRecipes() {
-		// Many items have multiple recipes. The first added recipe will usually be used for shimmer decrafting. Recipe decraft conditions may be used
-		// to only allow decrafting under certain conditions, the first recipe found that satisfies all of it's decraft conditions will be used.
-		// Therefore, this desert-specific example has priority over the world evil examples registered after it.
+		// Many items have multiple recipes. The first added recipe will usually be used for shimmer decrafting. Recipe decraft conditions may be used to only allow
+		// decrafting under certain conditions, the first recipe found that satisfies all of it's decraft conditions will be used. Therefore, this desert-specific example
+		// has priority over the world evil examples registered after it.
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.Cactus)
@@ -73,8 +74,8 @@ public class ItemShimmerShowcaseCustomShimmerResult : ModItem
 	}
 
 	public override void AddRecipes() {
-		// By default, the first added recipe will be used for shimmer decrafting. We can use DisableDecraft() to tell the game to ignore this recipe
-		// and use the below recipe instead.
+		// By default, the first added recipe will be used for shimmer decrafting. We can use DisableDecraft() to tell the game to ignore this recipe and use the below
+		// recipe instead.
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddIngredient(ItemID.PadThai)
@@ -82,8 +83,7 @@ public class ItemShimmerShowcaseCustomShimmerResult : ModItem
 			.DisableDecraft()
 			.Register();
 
-		// AddCustomShimmerResult can be used to change the decrafting results. Rather that return 1 ExampleItem, decrafting this item will return 1
-		// Rotten Egg and 3 Chain.
+		// AddCustomShimmerResult can be used to change the decrafting results. Rather that return 1 ExampleItem, decrafting this item will return 1 Rotten Egg and 3 Chain.
 		CreateRecipe()
 			.AddIngredient<ExampleItem>()
 			.AddTile<ExampleWorkbench>()

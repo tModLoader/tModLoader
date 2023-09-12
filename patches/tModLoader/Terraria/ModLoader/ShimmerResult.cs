@@ -18,9 +18,12 @@ public abstract record class ModShimmerResult(int Count = 1)
 	public virtual bool IsProjectileResult(int type)
 		=> false;
 
-	/// <summary> <br/> Does not despawn <paramref name="shimmerable"/> or decrement <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/> </summary>
+	/// <summary>
+	/// Spawns <see cref="Count"/> * <paramref name="allowedStack"/> amount of the intended type
+	/// <br/> Does not despawn <paramref name="shimmerable"/> or decrement <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/> </summary>
 	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> that is shimmering, does not affect this </param>
 	/// <param name="allowedStack"> The amount of the <see cref="IModShimmerable"/> that is used, actual spawned amount will be <paramref name="allowedStack"/> * <see cref="Count"/> </param>
+	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return an null instance itself </returns>
 	public abstract IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack);
 
 	/// <summary> Added to the the velocity of the <see cref="IModShimmerable"/> to prevent stacking </summary>
@@ -60,7 +63,7 @@ public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerRes
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			Item item = Main.item[Item.NewItem(shimmerable.GetSource_Shimmer(null), shimmerable.Center, Type)]; //TODO: Get player bits here
+			Item item = Main.item[Item.NewItem(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type)]; //TODO: Get player bits here
 			item.stack = Math.Min(item.maxStack, spawnTotal);
 			item.shimmerTime = 1f;
 			item.shimmered = true;
@@ -102,7 +105,7 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Shimmer(null), shimmerable.Center, Type);//TODO: Get player bits here
+			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type);//TODO: Get player bits here
 
 			//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
 			if (shimmerable is NPC nPC && KeepVanillaTransformationConventions) {
@@ -153,7 +156,7 @@ public record class ProjectileShimmerResult(int Type, int Damage, int Knockback,
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Shimmer(null), shimmerable.Center, shimmerable.Velocity + GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback);
+			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback);
 			projectile.position -= projectile.Size / 2;
 			projectile.hostile = Hostile;
 			projectile.friendly = Friendly;

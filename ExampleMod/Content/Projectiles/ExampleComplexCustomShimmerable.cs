@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Projectiles;
 public class ExampleComplexCustomShimmerable : ModProjectile
 {
 	public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.ThornBall}";
+
 	public override void SetStaticDefaults() {
 		CreateShimmerTransformation()
 			.AddResult(new MultiGrenadeShimmerResult(9999, 10))
@@ -27,15 +28,18 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 		Projectile.hostile = false;
 		Projectile.friendly = true;
 	}
+
 	private float maxTransformTime;
+
 	public override void AI() { // Does not let Projectile.shimmerTransformTime decrement
 		maxTransformTime = Projectile.shimmerTransformTime = MathF.Max(maxTransformTime, Projectile.shimmerTransformTime);
 	}
+
 	public override Color? GetAlpha(Color lightColor) {
 		return Color.Lerp(Color.Red, lightColor, Projectile.shimmerTransformTime);
 	}
 
-	/// <inheritdoc cref="ProjectileShimmerResult.ProjectileShimmerResult(int, int, int, bool, bool, int)"/>
+	/// <inheritdoc cref="ProjectileShimmerResult(int, int, int, bool, bool, int)"/>
 	//TODO: Better behaviour here
 	public record class MultiGrenadeShimmerResult(int Damage, int Knockback) : ProjectileShimmerResult(ProjectileID.Grenade, Damage, Knockback, true, false, 5)
 	{
@@ -45,7 +49,7 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 
 			while (spawnTotal > 0) {
 				Vector2 velocityMod = GetShimmerSpawnVelocityModifier();
-				Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Shimmer(null), shimmerable.Center,
+				Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center,
 					shimmerable.Velocity + velocityMod + velocityMod * 2 * (Vector2.Normalize(closestPlayer.Center - shimmerable.Center)),
 					Type, Damage, Knockback);
 				projectile.position -= projectile.Size / 2;

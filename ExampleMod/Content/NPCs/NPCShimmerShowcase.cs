@@ -1,8 +1,8 @@
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -13,8 +13,10 @@ using Terraria.ModLoader.Utilities;
 namespace ExampleMod.Content.NPCs;
 
 // For info on ModNPC stuff see PartyZombie.cs
-public class NPCShimmerShowcase : ModNPC {
+public class NPCShimmerShowcase : ModNPC
+{
 	public override string Texture => $"Terraria/Images/NPC_{NPCID.Zombie}";
+
 	public override void SetStaticDefaults() {
 		Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
@@ -29,7 +31,7 @@ public class NPCShimmerShowcase : ModNPC {
 			.AddCanShimmerCallBack((ShimmerTransformation transformation, IModShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
 			// Results
 			.AddItemResult(ItemID.ExplosiveBunny, 30) // 0
-			//.AddNPCResult(NPCID.Skeleton, 3) // 1
+													  //.AddNPCResult(NPCID.Skeleton, 3) // 1
 			.AddNPCResult(NPCID.Frog) // 2
 			.AddModifyShimmerCallBack((ShimmerTransformation transformation, IModShimmerable source) => transformation.Results[^1] = transformation.Results[^1] with { Count = Main.rand.Next(5, 11) }) // Spawn 5 - 10 frogs inclusive
 			.AddModifyShimmerCallBack(ModifyShimmer_GildFrogs) // Applies the gold critter chance to the frogs in the transformation
@@ -49,7 +51,8 @@ public class NPCShimmerShowcase : ModNPC {
 
 		// Sets a basic npc transformation, this uses the vanilla method which is overridden by ShimmerTransformation unless all conditions fall through
 		NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
-		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal, this NPC does not have a statue, but this would be used if it did
+		// In vanilla an NPC spawned from a statue will despawn in shimmer, he we disable that and allow it to shimmer as normal, this NPC does not have a statue, but
+		// this would be used if it did
 		NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[NPC.type] = true;
 	}
 
@@ -78,17 +81,17 @@ public class NPCShimmerShowcase : ModNPC {
 		return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
 	}
 
-	// This is static and not an override, it is used earlier to pass as a ShimmerTransformation.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a method.
-	// While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based, use "origin"
+	// This is static and not an override, it is used earlier to pass as a ShimmerTransformation.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a
+	// method. While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based, use "origin"
 	public static void OnShimmer_SpawnFriendlyBullets(ShimmerTransformation transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
 		spawnedShimmerables.ForEach((IModShimmerable spawnedShimmerable)
 			=> {
-				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_Shimmer(null), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_Misc("Shimmer"), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
 				p.friendly = true;
 				p.hostile = false;
 			});
-		// Here we show one way to spawn projectiles, we do it after the transformation because we need the list of spawned IModShimmerables.
-		// See ExampleComplexCustomShimmerable for how to utilise projectiles in shimmer better
+		// Here we show one way to spawn projectiles, we do it after the transformation because we need the list of spawned IModShimmerables. See
+		// ExampleComplexCustomShimmerable for how to utilise projectiles in shimmer better
 	}
 
 	public static void ModifyShimmer_GildFrogs(ShimmerTransformation transformation, IModShimmerable target) {

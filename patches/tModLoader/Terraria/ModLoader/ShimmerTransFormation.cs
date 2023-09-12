@@ -18,7 +18,10 @@ public abstract class ShimmerTransformation : ICloneable
 {
 	#region Management
 
+	/// <summary> See <see cref="AddAsKnownType{TModShimmerable}"/> </summary>
 	private static Action extraKnownTypeResets;
+
+	/// <summary> See <see cref="AddAsKnownType{TModShimmerable}"/> </summary>
 	private static Action extraKnownTypeOrders;
 
 	/// <summary> Called on the first item added to the dictionary for a given type </summary>
@@ -42,9 +45,11 @@ public abstract class ShimmerTransformation : ICloneable
 		extraKnownTypeOrders?.Invoke();
 	}
 
+	/// <inheritdoc cref="Disabled"/>
 	public void Disable()
 		=> Disabled = true;
 
+	/// <summary> Prevents the transformation from being used. </summary>
 	public bool Disabled { get; set; }
 
 	#endregion Management
@@ -204,7 +209,7 @@ public abstract class ShimmerTransformation : ICloneable
 	public bool CanModShimmer_Transformation(IModShimmerable shimmerable)
 		=> !Disabled
 		&& Conditions.All((condition) => condition.IsMet())
-		&& (CheckCanShimmerCallBacks(shimmerable))
+		&& CheckCanShimmerCallBacks(shimmerable)
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.IsItemResult(ItemID.Bone) && !NPC.downedBoss3 || result.IsItemResult(ItemID.LihzahrdBrick) && !NPC.downedGolemBoss))
 		&& (GetCurrentAvailableNPCSlots() >= GetSpawnCount<NPCShimmerResult>());
 
@@ -218,13 +223,6 @@ public abstract class ShimmerTransformation : ICloneable
 		}
 		return true;
 	}
-
-	public const int SingleShimmerNPCSpawnCap = 50;
-
-	public int GetSpawnCount<TResultType>() where TResultType : ModShimmerResult
-		=> Results.Sum((ModShimmerResult result) => result is TResultType ? result.Count : 0);
-
-	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
 
 	/// <summary> Called by <see cref="ShimmerTransformation{TShimmeredType}.TryModShimmer(TShimmeredType)"/> once it finds a valid transformation </summary>
 	public void DoModShimmer(IModShimmerable source)
@@ -256,6 +254,10 @@ public abstract class ShimmerTransformation : ICloneable
 		}
 	}
 
+	#endregion Shimmering
+
+	#region Helpers
+
 	/// <summary> Creates the shimmer effect checking either single player or server </summary>
 	/// <param name="position"> The position to create the effect </param>
 	public static void ShimmerEffect(Vector2 position)
@@ -280,7 +282,14 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <summary> Creates a deep clone of <see cref="ShimmerTransformation"/>. </summary>
 	public abstract ShimmerTransformation Clone();
 
-	#endregion Shimmering
+	public int GetSpawnCount<TResultType>() where TResultType : ModShimmerResult
+		=> Results.Sum((ModShimmerResult result) => result is TResultType ? result.Count : 0);
+
+	public const int SingleShimmerNPCSpawnCap = 50;
+
+	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
+
+	#endregion Helpers
 }
 
 /// <inheritdoc/>
@@ -292,7 +301,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> Transformations { get; } = new();
 
 	/// <summary> Gets every entry that isn't disabled and where every result is of type <typeparamref name="TModShimmerResult"/> </summary>
-	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> GetAllFilterFilteredByType<TModShimmerResult>() where TModShimmerResult : ModShimmerResult
+	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> GetAllWithOnly<TModShimmerResult>() where TModShimmerResult : ModShimmerResult
 		=> new(Transformations.Where(pair // Where
 			=> pair.Value.All(transformation // for every transformation
 				=> !transformation.Disabled && transformation.Results.All(result // This transformation is not disabled, and for every result
@@ -451,35 +460,24 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 
 	#region Shimmering
 
+	public static IEnumerable<ShimmerTransformation<TModShimmerable>> GetTransformationsOrEmpty(int type)
+		=> Transformations.GetValueOrDefault(type) ?? Array.Empty<ShimmerTransformation<TModShimmerable>>().AsEnumerable();
+
 	/// <summary>
 	/// Checks every <see cref="ShimmerTransformation"/> for this <typeparamref name="TModShimmerable"/> and returns true when if finds one that passes
 	/// <see cref="ShimmerTransformation.CanModShimmer_Transformation(IModShimmerable)"/>. <br/> Does not check <see cref="IModShimmerable.CanShimmer"/>
 	/// </summary>
 	/// <returns> True if there is a mod transformation this <typeparamref name="TModShimmerable"/> could undergo </returns>
 	public static bool AnyValidModShimmer(TModShimmerable source)
-	{
-		if (!Transformations.ContainsKey(source.ShimmerRedirectedType))
-			return false;
-
-		foreach (ShimmerTransformation modShimmer in Transformations[source.ShimmerRedirectedType]) {
-			if (modShimmer.CanModShimmer_Transformation(source))
-				return true;
-		}
-
-		return false;
-	}
+		=> GetTransformationsOrEmpty(source.ShimmerRedirectedType).Any(trans => trans.CanModShimmer_Transformation(source));
 
 	/// <summary> Tries to complete a shimmer operation on the <typeparamref name="TModShimmerable"/> passed, should not be called on multiplayer clients </summary>
 	/// <param name="source"> The <typeparamref name="TModShimmerable"/> to be shimmered </param>
 	/// <returns> True if the transformation is successful, false if it is should fall through to vanilla as normal </returns>
 	public static bool TryModShimmer(TModShimmerable source)
 	{
-		List<ShimmerTransformation<TModShimmerable>> transformations = Transformations.GetValueOrDefault(source.ShimmerRedirectedType);
-		if (!(transformations?.Count > 0)) // Inverse to catch null
-			return false;
-
-		foreach (ShimmerTransformation transformation in transformations) { // Loops possible transformations
-			if (transformation.Results.Count > 0 && transformation.CanModShimmer(source)) { // Checks conditions and callback in CanShimmer
+		foreach (ShimmerTransformation transformation in GetTransformationsOrEmpty(source.ShimmerRedirectedType)) { // Loops possible transformations
+			if (transformation.CanModShimmer(source)) { // Checks conditions and callback in CanShimmer
 				ShimmerTransformation copy = transformation.Clone(); // Make a copy
 				copy.ModifyShimmerCallBacks?.Invoke(copy, source); // As to not be effected by any changes made here
 				copy.DoModShimmer(source);
@@ -540,9 +538,9 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			Ordering = Ordering,
 			AllowChainedShimmers = AllowChainedShimmers,
 			SourceType = SourceType,
+			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints,
 			Conditions = new List<Condition>(Conditions), // Technically I think the localization for the conditions can be changed
 			Results = new List<ModShimmerResult>(Results), // List is new, ModShimmerResult is a readonly struct
-			IgnoreVanillaItemConstraints = IgnoreVanillaItemConstraints, // Assigns by value
 			CanShimmerCallBacks = (CanShimmerCallBack)CanShimmerCallBacks?.Clone(), // Stored values are immutable
 			ModifyShimmerCallBacks = (ModifyShimmerCallBack)ModifyShimmerCallBacks?.Clone(),
 			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
@@ -555,8 +553,6 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 /// Marks a class to be used with <see cref="ShimmerTransformation"/> as a type, most implementations for <see cref="NPC"/> and <see cref="Item"/> wrap normal values,
 /// <see cref="ShimmerTransformation{T}.TryModShimmer(T)"/> must be called manually for implementing types
 /// </summary>
-#nullable enable
-
 public interface IModShimmerable
 {
 	/// <inheritdoc cref="Entity.Center"/>
@@ -598,5 +594,5 @@ public interface IModShimmerable
 	/// </summary>
 	public abstract void ShimmerRemoveStacked(int amount);
 
-	public abstract IEntitySource GetSource_Shimmer(Player attachedPlayer, string? context = null);
+	public abstract IEntitySource GetSource_Misc(string context);
 }
