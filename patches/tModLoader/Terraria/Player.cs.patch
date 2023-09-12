@@ -6705,6 +6705,16 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36708,7 +_,8 @@
+ 		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
+ 		bool flag = true;
+ 		int type = sItem.type;
+-		if (type == 723 || type == 3611)
++		//if (type == 723 || type == 3611)
++		if (!sItem.ChangePlayerDirectionOnShoot)
+ 			flag = false;
+ 
+ 		Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
 @@ -36824,6 +_,16 @@
  			num3 = vector5.Y;
  		}
