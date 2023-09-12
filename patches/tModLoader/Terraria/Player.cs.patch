@@ -3125,6 +3125,51 @@
  		}
  		else {
  			if (jumpBoost) {
+@@ -15314,7 +_,7 @@
+ 		if (chilled)
+ 			accRunSpeed = maxRunSpeed;
+ 
+-		bool flag = (itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange;
++		bool flag = (ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange;
+ 		bool flag2 = controlLeft || controlRight;
+ 		float num = (accRunSpeed + maxRunSpeed) / 2f;
+ 		float num2 = 0f;
+@@ -15408,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			else if (!sandStorm && (itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
++			else if (!sandStorm && (ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
+ 				direction = -1;
+ 			}
+ 		}
+@@ -15457,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			else if (!sandStorm && (itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
++			else if (!sandStorm && (ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
+ 				direction = 1;
+ 			}
+ 		}
+@@ -15466,7 +_,7 @@
+ 				if (velocity.X < 0f)
+ 					direction = -1;
+ 			}
+-			else if ((itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
++			else if ((ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
+ 				direction = -1;
+ 			}
+ 
+@@ -15494,7 +_,7 @@
+ 				if (velocity.X > 0f)
+ 					direction = -1;
+ 			}
+-			else if ((itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
++			else if ((ItemAnimationEndingOrEnded || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
+ 				direction = 1;
+ 			}
+ 
 @@ -15582,14 +_,14 @@
  			if (flag4)
  				num5 = 30;
