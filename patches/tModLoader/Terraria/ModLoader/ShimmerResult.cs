@@ -19,11 +19,14 @@ public abstract record class ModShimmerResult(int Count = 1)
 		=> false;
 
 	/// <summary>
-	/// Spawns <see cref="Count"/> * <paramref name="allowedStack"/> amount of the intended type
-	/// <br/> Does not despawn <paramref name="shimmerable"/> or decrement <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/> </summary>
+	/// Spawns <see cref="Count"/> * <paramref name="allowedStack"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement
+	/// <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/>
+	/// </summary>
 	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> that is shimmering, does not affect this </param>
 	/// <param name="allowedStack"> The amount of the <see cref="IModShimmerable"/> that is used, actual spawned amount will be <paramref name="allowedStack"/> * <see cref="Count"/> </param>
-	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return an null instance itself </returns>
+	/// <returns>
+	/// yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself
+	/// </returns>
 	public abstract IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack);
 
 	/// <summary> Added to the the velocity of the <see cref="IModShimmerable"/> to prevent stacking </summary>

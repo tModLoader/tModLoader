@@ -227,10 +227,7 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <summary> Called by <see cref="ShimmerTransformation{TShimmeredType}.TryModShimmer(TShimmeredType)"/> once it finds a valid transformation </summary>
 	public void DoModShimmer(IModShimmerable source)
 	{
-		// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set
-		int npcSpawnCount = GetSpawnCount<NPCShimmerResult>();
-		int usableStack = npcSpawnCount != 0 ? Math.Min((int)MathF.Floor(GetCurrentAvailableNPCSlots() / (float)npcSpawnCount), source.Stack) : source.Stack;
-
+		int usableStack = GetUsableStack(source);
 		SpawnModShimmerResults(source, usableStack, out List<IModShimmerable> spawned); // Spawn results, output stack amount used
 		source.ShimmerRemoveStacked(usableStack); // Removed amount used
 		OnShimmerCallBacks?.Invoke(this, source, spawned);
@@ -282,12 +279,25 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <summary> Creates a deep clone of <see cref="ShimmerTransformation"/>. </summary>
 	public abstract ShimmerTransformation Clone();
 
+	/// <summary> Gets the number of <typeparamref name="TResultType"/> in this transformation by <see cref="ModShimmerResult.Count"/> </summary>
 	public int GetSpawnCount<TResultType>() where TResultType : ModShimmerResult
 		=> Results.Sum((ModShimmerResult result) => result is TResultType ? result.Count : 0);
+
+	/// <summary> Gets the total number of spawns in this transformation by <see cref="ModShimmerResult.Count"/> </summary>
+	public int GetSpawnCount()
+		=> Results.Sum((ModShimmerResult result) => result.Count);
 
 	public const int SingleShimmerNPCSpawnCap = 50;
 
 	private static int GetCurrentAvailableNPCSlots() => NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(SingleShimmerNPCSpawnCap, 200);
+
+	/// <summary> Gets the current amount of this <see cref="IModShimmerable"/> of <see cref="IModShimmerable.Stack"/> that can currently be used for shimmer </summary>
+	public int GetUsableStack(IModShimmerable source)
+	{
+		// 200 and 50 are the values vanilla uses for the highest slot to count with and the maximum NPCs to spawn in one transformation set
+		int npcSpawnCount = GetSpawnCount<NPCShimmerResult>();
+		return npcSpawnCount != 0 ? Math.Min((int)MathF.Floor(GetCurrentAvailableNPCSlots() / (float)npcSpawnCount), source.Stack) : source.Stack;
+	}
 
 	#endregion Helpers
 }
@@ -299,13 +309,6 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	#region Management
 
 	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> Transformations { get; } = new();
-
-	/// <summary> Gets every entry that isn't disabled and where every result is of type <typeparamref name="TModShimmerResult"/> </summary>
-	public static Dictionary<int, List<ShimmerTransformation<TModShimmerable>>> GetAllWithOnly<TModShimmerResult>() where TModShimmerResult : ModShimmerResult
-		=> new(Transformations.Where(pair // Where
-			=> pair.Value.All(transformation // for every transformation
-				=> !transformation.Disabled && transformation.Results.All(result // This transformation is not disabled, and for every result
-					=> result is TModShimmerResult)))); // The result is of the TModShimmerResult passed
 
 	public ShimmerTransformation()
 	{
@@ -469,7 +472,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 	/// </summary>
 	/// <returns> True if there is a mod transformation this <typeparamref name="TModShimmerable"/> could undergo </returns>
 	public static bool AnyValidModShimmer(TModShimmerable source)
-		=> GetTransformationsOrEmpty(source.ShimmerRedirectedType).Any(trans => trans.CanModShimmer_Transformation(source));
+		=> GetTransformationsOrEmpty(source.ShimmerRedirectedType).Any(transformation => transformation.CanModShimmer_Transformation(source));
 
 	/// <summary> Tries to complete a shimmer operation on the <typeparamref name="TModShimmerable"/> passed, should not be called on multiplayer clients </summary>
 	/// <param name="source"> The <typeparamref name="TModShimmerable"/> to be shimmered </param>
@@ -545,6 +548,29 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			ModifyShimmerCallBacks = (ModifyShimmerCallBack)ModifyShimmerCallBacks?.Clone(),
 			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
 		};
+
+	private static Dictionary<int, IEnumerable<ShimmerTransformation<TModShimmerable>>> FilterInnerEmpty(IEnumerable<KeyValuePair<int, IEnumerable<ShimmerTransformation<TModShimmerable>>>> keyValuePairs)
+		=> new(keyValuePairs.Where(pair => pair.Value?.Count() > 0));
+
+	/// <summary> Gets every entry that isn't disabled </summary>
+	public static Dictionary<int, IEnumerable<ShimmerTransformation<TModShimmerable>>> GetAllTransformationsNotDisabled()
+		=> FilterInnerEmpty(Transformations.Select(keyValuePair
+			=> new KeyValuePair<int, IEnumerable<ShimmerTransformation<TModShimmerable>>>(keyValuePair.Key, keyValuePair.Value.Where(transformation
+				=> !transformation.Disabled))));
+
+	/// <summary> Gets every entry that isn't disabled and where every result is of type <typeparamref name="TModShimmerResult"/> </summary>
+	public static Dictionary<int, IEnumerable<ShimmerTransformation<TModShimmerable>>> GetAllTransformationsWithOnly<TModShimmerResult>() where TModShimmerResult : ModShimmerResult
+		=> FilterInnerEmpty(Transformations.Select(keyValuePair
+			=> new KeyValuePair<int, IEnumerable<ShimmerTransformation<TModShimmerable>>>(keyValuePair.Key, keyValuePair.Value.Where(transformation
+				=> !transformation.Disabled && transformation.Results.All(result // This transformation is not disabled, and for every result
+					=> result is TModShimmerResult))))); // The result is of the TModShimmerResult passed
+
+	/// <summary> Gets every entry that isn't disabled and where there is any result of type <typeparamref name="TModShimmerResult"/> </summary>
+	public static Dictionary<int, IEnumerable<ShimmerTransformation<TModShimmerable>>> GetAllTransformationsWithAny<TModShimmerResult>() where TModShimmerResult : ModShimmerResult
+		=> FilterInnerEmpty(Transformations.Select(keyValuePair
+			=> new KeyValuePair<int, IEnumerable<ShimmerTransformation<TModShimmerable>>>(keyValuePair.Key, keyValuePair.Value.Where(transformation
+				=> !transformation.Disabled && transformation.Results.Any(result // This transformation is not disabled, and for any result
+					=> result is TModShimmerResult))))); // The result is of the TModShimmerResult passed
 
 	#endregion Helpers
 }

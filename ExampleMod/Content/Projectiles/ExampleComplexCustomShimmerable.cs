@@ -1,4 +1,6 @@
-﻿using ExampleMod.Content.NPCs;
+﻿using ExampleMod.Content.Items;
+using ExampleMod.Content.NPCs;
+using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -40,7 +42,6 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 	}
 
 	/// <inheritdoc cref="ProjectileShimmerResult(int, int, int, bool, bool, int)"/>
-	//TODO: Better behaviour here
 	public record class MultiGrenadeShimmerResult(int Damage, int Knockback) : ProjectileShimmerResult(ProjectileID.Grenade, Damage, Knockback, true, false, 5)
 	{
 		public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack) {
@@ -61,5 +62,34 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 				spawnTotal--;
 			}
 		}
+	}
+}
+
+// This shoots the above item
+public class ExampleComplexCustomShimmerableItem : ModItem
+{
+	public override void SetStaticDefaults() {
+		Item.ResearchUnlockCount = 99;
+	}
+
+	public override void SetDefaults() {
+		Item.damage = 18;
+		Item.DamageType = DamageClass.Ranged;
+		Item.width = Item.height = 8;
+		Item.maxStack = Item.CommonMaxStack;
+		Item.consumable = true;
+		Item.knockBack = 1.5f;
+		Item.value = Item.buyPrice(silver: 10);
+		Item.rare = ItemRarityID.Purple;
+		Item.shoot = ModContent.ProjectileType<ExampleComplexCustomShimmerable>();
+		Item.shootSpeed = 4f;
+		Item.ammo = AmmoID.Bullet;
+	}
+
+	public override void AddRecipes() {
+		CreateRecipe()
+			.AddIngredient<ExampleItem>()
+			.AddTile<ExampleWorkbench>()
+			.Register();
 	}
 }
