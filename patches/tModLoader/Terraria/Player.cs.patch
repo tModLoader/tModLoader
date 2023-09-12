@@ -3806,6 +3806,17 @@
  					}
  				}
  				else {
+@@ -19467,8 +_,10 @@
+ 				}
+ 			}
+ 
++			/* Moved into ItemCheck
+ 			if (selectedItem != 58)
+ 				SmartSelectLookup();
++			*/
+ 
+ 			if (stoned != lastStoned) {
+ 				if (whoAmI == Main.myPlayer && stoned) {
 @@ -19566,11 +_,14 @@
  					}
  				}
@@ -5912,7 +5923,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,54 @@
+@@ -33268,6 +_,59 @@
  			}
  		}
  
@@ -5964,6 +5975,11 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
++
++		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
++		if (selectedItem != 58)
++			SmartSelectLookup();
++
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_HandleMPItemAnimation(item);
