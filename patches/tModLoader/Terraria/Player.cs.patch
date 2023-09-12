@@ -5931,17 +5931,19 @@
  				FreeUpPetsAndMinions(item);
  
  			if (flag3)
-@@ -33323,6 +_,9 @@
- 		if (!flag4)
- 			channel = false;
- 
+@@ -33339,13 +_,25 @@
+ 				itemHeight = drawHitbox.Height;
+ 				itemWidth = drawHitbox.Width;
+ 			}
++		// The itemAnimation > 0 block has been split in 2 parts (above and below) to allow for the insertion of labels
++		}
 +		goto ReleaseUseItem;
-+
+ 
 +		DecrementItemAnimation:
- 		Item item2 = ((itemAnimation > 0) ? lastVisualizedSelectedItem : item);
- 		Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
- 		compositeFrontArm.enabled = false;
-@@ -33345,7 +_,13 @@
++
++		if (itemAnimation > 0) {
+ 			itemAnimation--;
+ 			if (itemAnimation == 0 && whoAmI == Main.myPlayer)
  				PlayerInput.TryEndingFastUse();
  		}
  
@@ -6889,18 +6891,6 @@
  		int num = whoAmI;
  		bool flag = true;
  		int num2 = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-@@ -40054,8 +_,10 @@
- 		if (sItem.mana > 0 && silence)
- 			flag = false;
- 
--		if (sItem.mana > 0 && flag)
-+		if (sItem.mana > 0 && flag) {
- 			flag = ItemCheck_PayMana(sItem, flag);
-+			ItemCheck_ApplyManaRegenDelay(sItem); // Fix #3799 - Need to apply mana regen delay on 1st frame to prevent premature mana regen.
-+		}
- 
- 		if (sItem.type == 43 && Main.IsItDay())
- 			flag = false;
 @@ -40262,7 +_,7 @@
  		if (baitTypeUsed == 2673)
  			flag = true;
