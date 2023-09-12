@@ -285,7 +285,7 @@ public static class ConfigManager
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
-			string message = reader.ReadString();
+			NetworkText message = NetworkText.Deserialize(reader);
 			if (success) {
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
@@ -325,14 +325,21 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			string message = "Accepted";
+			NetworkText message = NetworkText.FromLiteral("Accepted");
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = "Can't save because changes would require a reload.";
+				message = NetworkText.FromLiteral("Can't save because changes would require a reload.");
 			}
-			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
-				success = false;
-			}
+
+			string stringMessage = ""; // For compatibility with mods that haven't updated yet
+			success &= config.AcceptClientChanges(pendingConfig, whoAmI, ref message);
+#pragma warning disable CS0618 // Type or member is obsolete
+			success &= config.AcceptClientChanges(pendingConfig, whoAmI, ref stringMessage);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+			if (!string.IsNullOrEmpty(stringMessage))
+				message = NetworkText.FromLiteral(stringMessage);
+
 			if (success) {
 				// Apply to Servers Config
 				ConfigManager.Save(pendingConfig);
@@ -341,7 +348,7 @@ public static class ConfigManager
 				// Send new config to all clients
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(true);
-				p.Write(message);
+				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
 				p.Write(json);
@@ -351,7 +358,7 @@ public static class ConfigManager
 				// Send rejections message back to client who requested change
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
-				p.Write(message);
+				message.Serialize(p);
 				p.Send(whoAmI);
 			}
 

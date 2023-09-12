@@ -495,6 +495,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.LocalizationLoader", "GetOrCreateTranslation", "GetOrRegister", newType: "Terraria.Localization.Language");
 
 		RefactorInstanceMethodCall("Terraria.Localization.LocalizedText", "SetDefault", CommentOut);
+		ChangeHookSignature("Terraria.ModLoader.Config.ModConfig", "AcceptClientChanges");
 		RenameInstanceField("Terraria.ModLoader.InfoDisplay", from: "InfoName",		to: "DisplayName");
 		RenameInstanceField("Terraria.ModLoader.DamageClass", from: "ClassName",	to: "DisplayName");
 		ChangeHookSignature("Terraria.ModLoader.InfoDisplay", "DisplayValue", comment: "Suggestion: Set displayColor to InactiveInfoTextColor if your display value is \"zero\"/shows no valuable information");
