@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net;
+using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 
@@ -15,18 +17,26 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
+	private ulong existingAuthorID = 0;
 
-	//TODO: Revisit this. Creates a lot of 'slowness' when publishing due to needing to jump through re-querying the mod browser.
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
-		if(!WorkshopHelper.QueryHelper.GetPublishIdByInternalName(modFile.Name, out currPublishID)) {
-			base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+		var query = new QueryParameters() {
+			searchModSlugs = new string[] { modFile.Name },
+			queryType = QueryType.SearchDirect
+		};
+
+		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
-		if (currPublishID == 0)
+		if (!mods.Any())
 			return false;
+
+		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
+		existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		SteamedWraps.Download(new Steamworks.PublishedFileId_t(currPublishID), forceUpdate: true);
@@ -39,8 +49,24 @@ public partial class WorkshopSocialModule
 
 	public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
 	{
+		try {
+			return _PublishMod(modFile, buildData, settings);
+		}
+		catch {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+			return false;
+		}
+	}
+
+	private bool _PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
+	{
 		if (!SteamedWraps.SteamClient) {
-			base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
+			IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
+			return false;
+		}
+		
+		if (modFile.TModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor()) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
 		}
 
@@ -55,11 +81,10 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (existingID != currID.m_SteamID) {
+			if (existingAuthorID != currID.m_SteamID) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
 				return false;
 			}
@@ -91,7 +116,10 @@ public partial class WorkshopSocialModule
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
 		tagsList.Add(buildData["modside"]);
 
-		CalculateWorkshopDeps(ref buildData);
+		if (!TryCalculateWorkshopDeps(ref buildData)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+			return false;
+		}
 		
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
@@ -106,7 +134,7 @@ public partial class WorkshopSocialModule
 			ModOrganizer.CleanupOldPublish(workshopFolderPath);
 
 			// Should be called after folder created & cleaned up
-			tagsList.AddRange(ModOrganizer.DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
+			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
@@ -138,6 +166,12 @@ public partial class WorkshopSocialModule
 		return true;
 	}
 
+	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
+	{
+		var summary = ModOrganizer.AnalyzeWorkshopTmods(repo);
+		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
+	}
+
 	internal static LocalMod OpenModFile(string path)
 	{
 		var sModFile = new TmodFile(path);
@@ -145,20 +179,23 @@ public partial class WorkshopSocialModule
 			return new LocalMod(sModFile);
 	}
 
-	private static void CalculateWorkshopDeps(ref NameValueCollection buildData)
+	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
 	{
 		string workshopDeps = "";
 
 		if (buildData["modreferences"].Length > 0) {
-			foreach (string modRef in buildData["modreferences"].Split(",")) {
-				var temp = WorkshopHelper.QueryHelper.FindModDownloadItem(modRef);
+			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
+			if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+				return false;
 
-				if (temp != null)
-					workshopDeps += temp.PublishId + ",";
+			foreach (string modRef in modIds) {
+				if (modRef != "0")
+					workshopDeps += modRef + ",";
 			}
 		}
 
 		buildData["workshopdeps"] = workshopDeps;
+		return true;
 	}
 
 	public static void FixErrorsInWorkshopFolder(string workshopFolderPath)

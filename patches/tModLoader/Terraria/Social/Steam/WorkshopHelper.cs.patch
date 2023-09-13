@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,15 +_,22 @@
+@@ -1,14 +_,19 @@
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
 +using System.Linq;
++using System.Threading;
  using Steamworks;
  using Terraria.IO;
 +using Terraria.Localization;
@@ -18,12 +19,8 @@
 -public class WorkshopHelper
 +public partial class WorkshopHelper
  {
-+	private const string TmlModNamePrefix = "[1.4 Alpha] ";
-+	private const string TmlModDescriptionPrefix = "Built for 1.4 Alpha version of tModLoader. \n";
-+
  	public class UGCBased
  	{
- 		public struct SteamWorkshopItem
 @@ -20,6 +_,10 @@
  			public string[] Tags;
  			public string Title;
@@ -168,7 +165,7 @@
  					UpdateItem();
  				}
  				else {
-@@ -212,14 +_,61 @@
+@@ -212,14 +_,63 @@
  
  			private void CreateItem()
  			{
@@ -186,7 +183,8 @@
 +					return;
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
 +
@@ -196,7 +194,8 @@
 +				UpdateItem(creatingItem:true);
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
  			}
@@ -270,7 +269,7 @@
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
  				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,76 @@
+@@ -262,22 +_,92 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
@@ -289,7 +288,22 @@
 +						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 +					}
 +
-+					patchNotes = $"Version {_entryData.BuildData["trueversion"]} has been published to {BuildInfo.Purpose} learn more @ {_entryData.BuildData["homepage"]}\n{_entryData.ChangeNotes}";
++					patchNotes = _entryData.ChangeNotes;
++					// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
++					if (string.IsNullOrWhiteSpace(patchNotes)) {
++						patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
++						if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
++							patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
++					}
++
++					// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
++					// This allows us to use substitution keys such as {ModVersion}
++					patchNotes = Language.GetText(patchNotes).FormatWith(new {
++						ModVersion      = _entryData.BuildData["trueversion"],
++						ModHomepage     = _entryData.BuildData["homepage"],
++						tMLVersion      = BuildInfo.tMLVersion.MajorMinor().ToString(),
++						tMLBuildPurpose = BuildInfo.Purpose.ToString(),
++					});
 +
 +					string refs = _entryData.BuildData["workshopdeps"];
 +
@@ -326,7 +340,8 @@
 +					return;
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_updateCallback == EResult.k_EResultNone);
  			}

@@ -5,6 +5,7 @@ using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -77,7 +78,7 @@ internal abstract class CollectionElement : ConfigElement
 		SetupList();
 
 		if (CanAdd) {
-			initializeButton = new UIModConfigHoverImage(PlayTexture, "Initialize");
+			initializeButton = new UIModConfigHoverImage(PlayTexture, Language.GetTextValue("tModLoader.ModConfigInitialize"));
 			initializeButton.Top.Pixels += 4;
 			initializeButton.Left.Pixels -= 3;
 			initializeButton.HAlign = 1f;
@@ -91,7 +92,7 @@ internal abstract class CollectionElement : ConfigElement
 				pendingChanges = true;
 			};
 
-			addButton = new UIModConfigHoverImage(PlusTexture, "Add");
+			addButton = new UIModConfigHoverImage(PlusTexture, Language.GetTextValue("tModLoader.ModConfigAdd"));
 			addButton.Top.Set(4, 0f);
 			addButton.Left.Set(-52, 1f);
 			addButton.OnLeftClick += (a, b) => {
@@ -104,7 +105,7 @@ internal abstract class CollectionElement : ConfigElement
 				pendingChanges = true;
 			};
 
-			deleteButton = new UIModConfigHoverImage(DeleteTexture, "Clear");
+			deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigClear"));
 			deleteButton.Top.Set(4, 0f);
 			deleteButton.Left.Set(-25, 1f);
 			deleteButton.OnLeftClick += (a, b) => {
@@ -120,7 +121,7 @@ internal abstract class CollectionElement : ConfigElement
 			};
 		}
 
-		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
+		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-79, 1f);
 		expandButton.OnLeftClick += (a, b) => {
@@ -128,7 +129,7 @@ internal abstract class CollectionElement : ConfigElement
 			pendingChanges = true;
 		};
 
-		upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, "Scale Up", "Scale Down");
+		upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, Language.GetTextValue("tModLoader.ModConfigScaleUp"), Language.GetTextValue("tModLoader.ModConfigScaleDown"));
 		upDownButton.Top.Set(4, 0f);
 		upDownButton.Left.Set(-106, 1f);
 		upDownButton.OnLeftClick += (a, b) => {
@@ -225,11 +226,11 @@ internal abstract class CollectionElement : ConfigElement
 			if (expanded) {
 				Append(upDownButton);
 				Append(DataListElement);
-				expandButton.HoverText = "Collapse";
+				expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigCollapse");
 				expandButton.SetImage(ExpandedTexture);
 			}
 			else {
-				expandButton.HoverText = "Expand";
+				expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigExpand");
 				expandButton.SetImage(CollapsedTexture);
 			}
 		}

@@ -99,7 +99,7 @@ internal class UIModSourceItem : UIPanel
 		string modFolderName = Path.GetFileName(_mod);
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 		if (File.Exists(csprojFile)) {
-			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, Language.GetTextValue("tModLoader.MSOpenCSProj")) {
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
@@ -289,6 +289,7 @@ internal class UIModSourceItem : UIPanel
 				Main.menuMode = Interface.reloadModsID;
 				ModLoader.OnSuccessfulLoad += () => {
 					Main.QueueMainThreadAction(() => {
+						// Delay publishing to when the mod is completely reloaded in main thread
 						PublishMod(null, null);
 					});
 				};
@@ -302,7 +303,7 @@ internal class UIModSourceItem : UIPanel
 			WorkshopHelper.PublishMod(_builtMod, icon);
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
@@ -324,7 +325,7 @@ internal class UIModSourceItem : UIPanel
 			pending.WaitForExit();
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 

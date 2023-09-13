@@ -178,6 +178,11 @@ ModConfigShowcaseDataTypes: {
 		Label: Custom Key
 		Tooltip: ""
 	}
+
+	prefixDefinitionDictionaryExample: {
+		Label: PrefixDefinition Dictionary Example
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDefaultValues: {
@@ -586,6 +591,21 @@ ClassUsedAsKey: {
 
 	SomeBool: {
 		Label: Some Bool
+		Tooltip: ""
+	}
+
+	SomeNumber: {
+		Label: Some Number
+		Tooltip: ""
+	}
+}
+
+ModConfigShowcaseAcceptClientChanges: {
+	RejectChangesDaytime: OnlyChangeableDuringNight can't be changed during the day.
+	DisplayName: ModConfig Showcase H: AcceptClientChanges
+
+	OnlyChangeableDuringNight: {
+		Label: Only Changeable During Night
 		Tooltip: ""
 	}
 

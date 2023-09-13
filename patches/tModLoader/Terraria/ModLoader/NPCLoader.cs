@@ -360,7 +360,7 @@ public static class NPCLoader
 
 	public static void ReceiveExtraAI(NPC npc, byte[] extraAI)
 	{
-		using var stream = new MemoryStream(extraAI);
+		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
 		npc.ModNPC?.ReceiveExtraAI(modReader);
@@ -594,6 +594,24 @@ public static class NPCLoader
 		foreach (var g in HookOnCaughtBy.Enumerate(npc)) {
 			g.OnCaughtBy(npc, player, item, failed);
 		}
+	}
+		
+	private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int?>>(g => g.PickEmote);
+		
+	public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
+		int? result = null;
+
+		if (npc.ModNPC != null) {
+			result = npc.ModNPC.PickEmote(closestPlayer, emoteList, anchor);
+		}
+
+		foreach (GlobalNPC globalNPC in HookPickEmote.Enumerate(npc)) {
+			int? emote = globalNPC.PickEmote(npc, closestPlayer, emoteList, anchor);
+			if (emote != null)
+				result = emote;
+		}
+
+		return result;
 	}
 
 	private delegate bool DelegateCanHitPlayer(NPC npc, Player target, ref int cooldownSlot);

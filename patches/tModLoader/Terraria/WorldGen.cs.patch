@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
+@@ -1,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Diagnostics;
++using System.Linq;
+ using System.Threading;
+ using System.Threading.Tasks;
+ using Microsoft.Xna.Framework;
 @@ -22,13 +_,15 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -566,7 +574,7 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13849,12 +_,33 @@
+@@ -13849,12 +_,34 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
@@ -589,6 +597,7 @@
 +		SystemLoader.PostWorldGen();
 +
  		Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
++		Main.ActiveWorldFileData.modVersionsDuringWorldGen = ModLoader.ModLoader.Mods.ToDictionary(x => x.Name, x => x.Version);
  		Main.NotifyOfEvent(GameNotificationType.WorldGen);
  		drunkWorldGenText = false;
 +
@@ -2205,16 +2214,34 @@
  		switch (tileType) {
  			case 2:
  			case 477:
-@@ -45086,6 +_,9 @@
+@@ -45086,6 +_,8 @@
  		if (!IsTileALeafyTreeTop(x, y) || Collision.SolidTiles(x - 2, x + 2, y - 2, y + 2))
  			return;
  
-+		bool flag = false;
-+
-+		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref flag)) { } else
++		bool createLeaves = true;
++		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref createLeaves)) { } else
  		if (Main.getGoodWorld && genRand.Next(17) == 0) {
  			Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
  		}
+@@ -45310,11 +_,18 @@
+ 			Item.NewItem(Type: (genRand.Next(2) != 0) ? 5278 : 5277, source: GetItemSource_FromTreeShake(x, y), X: x * 16, Y: y * 16, Width: 16, Height: 16);
+ 		}
+ 
++		if (!createLeaves)
++			return;
++
+ 		int treeHeight = 0;
+ 		int treeFrame = 0;
+ 		int passStyle = 0;
+ 		GetTreeLeaf(x, Main.tile[x, y], Main.tile[x, num], ref treeHeight, out treeFrame, out passStyle);
++
++		/*
+ 		if (passStyle != -1) {
++		*/
++		if (passStyle > 0) {
+ 			if (Main.netMode == 2)
+ 				NetMessage.SendData(112, -1, -1, null, 1, x, y, 1f, passStyle);
+ 
 @@ -45415,11 +_,15 @@
  			Main.tile[i, j - 1] = new Tile();
  
@@ -2543,6 +2570,15 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -58741,7 +_,7 @@
+ 			Main.tile[x, y + 1] = new Tile();
+ 
+ 		switch (Main.tile[x, y].type) {
+-			case 10:
++			case ushort _ when TileLoader.IsClosedDoor(Main.tile[x, y].type):
+ 			case 48:
+ 			case 137:
+ 			case 138:
 @@ -58764,6 +_,7 @@
  				}
  				if (Main.tile[x, y - 1].active()) {

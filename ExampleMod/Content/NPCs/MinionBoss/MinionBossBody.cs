@@ -114,15 +114,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			// This boss also becomes immune to OnFire and all buffs that inherit OnFire immunity during the second half of the fight. See the ApplySecondStageBuffImmunities method.
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -149,9 +144,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.boss = true;
 			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
-			// Don't set immunities like this as of 1.4:
-			// NPC.buffImmune[BuffID.Confused] = true;
-			// immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
+			// Default buff immunities should be set in SetStaticDefaults through the NPCID.Sets.ImmuneTo{X} arrays.
+			// To dynamically adjust immunities of an active NPC, NPC.buffImmune[] can be changed in AI: NPC.buffImmune[BuffID.OnFire] = true;
+			// This approach, however, will not preserve buff immunities. To preserve buff immunities, use the NPC.BecomeImmuneTo and NPC.ClearImmuneToBuffs methods instead, as shown in the ApplySecondStageBuffImmunities method below.
 
 			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
 			NPC.aiStyle = -1;
@@ -370,12 +365,12 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		private void CheckSecondStage() {
+			MinionHealthTotal = 0;
 			if (SecondStage) {
 				// No point checking if the NPC is already in its second stage
 				return;
 			}
 
-			MinionHealthTotal = 0;
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC otherNPC = Main.npc[i];
 				if (otherNPC.active && otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
@@ -466,6 +461,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		private void DoSecondStage(Player player) {
+			if (NPC.life < NPC.lifeMax * 0.5f) {
+				ApplySecondStageBuffImmunities();
+			}
+
 			Vector2 toPlayer = player.Center - NPC.Center;
 
 			float offsetX = 200f;
@@ -526,6 +525,40 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				var entitySource = NPC.GetSource_FromAI();
 
 				Projectile.NewProjectile(entitySource, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+			}
+		}
+
+		private void ApplySecondStageBuffImmunities() {
+			if (NPC.buffImmune[BuffID.OnFire]) {
+				return;
+			}
+			// Halfway through stage 2, this boss becomes immune to the OnFire buff.
+			// This code will only run once because of the !NPC.buffImmune[BuffID.OnFire] check.
+			// If you make a similar check for just a life percentage in a boss, you will need to use a bool to track if the corresponding code has run yet or not.
+			NPC.BecomeImmuneTo(BuffID.OnFire);
+
+			// Finally, this boss will clear all the buffs it currently has that it is now immune to. ClearImmuneToBuffs should not be run on multiplayer clients, the server has authority over buffs.
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
+				NPC.ClearImmuneToBuffs(out bool anyBuffsCleared);
+
+				if (anyBuffsCleared) {
+					// Since we cleared some fire related buffs, spawn some smoke to communicate that the fire buffs have been extinguished.
+					// This example is commented out because it would require a ModPacket to manually sync in order to work in multiplayer.
+					/* for (int g = 0; g < 8; g++) {
+						Gore gore = Gore.NewGoreDirect(NPC.GetSource_FromThis(), NPC.Center, default, Main.rand.Next(61, 64), 1f);
+						gore.scale = 1.5f;
+						gore.velocity += new Vector2(1.5f, 0).RotatedBy(g * MathHelper.PiOver2);
+					}*/
+				}
+			}
+
+			// Spawn a ring of dust to communicate the change.
+			for (int loops = 0; loops < 2; loops++) {
+				for (int i = 0; i < 50; i++) {
+					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+					Dust d = Dust.NewDustPerfect(NPC.Center, DustID.BlueCrystalShard, speed * 10 * (loops + 1), Scale: 1.5f);
+					d.noGravity = true;
+				}
 			}
 		}
 	}

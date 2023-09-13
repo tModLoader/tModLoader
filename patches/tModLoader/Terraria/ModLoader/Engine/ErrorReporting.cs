@@ -58,12 +58,24 @@ internal class ErrorReporting
 			tip = Language.GetTextValue("tModLoader.OutOfMemoryHint");
 		else if (e is InvalidOperationException || e is NullReferenceException || e is IndexOutOfRangeException || e is ArgumentNullException)
 			tip = Language.GetTextValue("tModLoader.ModExceptionHint");
-		else if (e is IOException && e.Message.Contains("cloud file provider"))
+		else if (e is IOException && e.Message.Contains("cloud file provider")) {
+			if (string.IsNullOrEmpty(e.HelpLink))
+				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#save-data-file-issues";
 			tip = Language.GetTextValue("tModLoader.OneDriveHint");
+			if (Language.ActiveCulture == null) // This error typically happens before localization is loaded, so fallback to english text.
+				tip = "Tip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"";
+		}
 		else if (e is SynchronizationLockException)
 			tip = Language.GetTextValue("tModLoader.AntivirusHint");
 		else if (e is TypeInitializationException)
 			tip = Language.GetTextValue("tModLoader.TypeInitializationHint");
+
+		if (e.HelpLink != null) {
+			try {
+				Utils.OpenToURL(e.HelpLink);
+			}
+			catch { }
+		}
 
 		if (tip != null)
 			message += "\n\n" + tip;

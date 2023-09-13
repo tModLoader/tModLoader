@@ -24,9 +24,10 @@ body:
     description: What version are you running?
     multiple: false
     options:
-      - Latest 1.4-stable
+      - Latest 1.4.4-stable
       - Latest 1.4.4-preview
-      - Latest 1.3
+      - Latest 1.4.3-legacy
+      - Latest 1.3-legacy
       - Self-Compiled (please specify branch)
       - Other (please specify elsewhere)
   validations:

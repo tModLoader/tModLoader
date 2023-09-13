@@ -237,7 +237,7 @@
  	public static int maxTilesY = (int)bottomWorld / 16 + 1;
  	public const int sectionWidth = 200;
  	public const int sectionHeight = 150;
-@@ -683,11 +_,11 @@
+@@ -683,12 +_,12 @@
  	public const int maxItemText = 20;
  	public const int maxPlayers = 255;
  	public static int maxNetPlayers = 255;
@@ -251,9 +251,11 @@
 +	public static readonly int maxNPCs = 200;
 -	private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
 +	internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
- 	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
+-	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
++	internal static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
+ 	public static int maxRain = 750;
 @@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
@@ -463,6 +465,17 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
+@@ -1001,6 +_,10 @@
+ 		0.75f,
+ 		0.75f
+ 	};
++	/// <summary>
++	/// A value that ossilates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create <see cref="Color"/>s by passing in this value as either all 4 parameters or just the alpha parameter.<br/><br/>
++	/// <see cref="Main.MouseTextColorReal"/> can be used to access the typical pulsing white <see cref="Color"/> value.
++	/// </summary>
+ 	public static byte mouseTextColor;
+ 	public static int mouseTextColorChange = 1;
+ 	public static bool mouseLeftRelease;
 @@ -1026,6 +_,11 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -832,8 +845,8 @@
 -		if (currentValue != 279)
 +
 +		DateTime now = DateTime.UtcNow;
-+		// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this major.minor, then show the notification.
-+		if (BuildInfo.IsStable && ModCompile.DeveloperMode && now.Day >= 21 && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != new System.Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
++		// If you are on preview, and the tmodloader YYYY.MM version has changed, then show the notification.
++		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
 +		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
@@ -931,7 +944,7 @@
  	}
  
  	public void SetWorldName(string world)
-@@ -4110,12 +_,42 @@
+@@ -4110,20 +_,52 @@
  		autoPass = true;
  	}
  
@@ -975,6 +988,16 @@
  	}
  
  	public void AutoHost()
+ 	{
++		ModLoader.ModLoader.OnSuccessfulLoad += () => { // Fix #3742
+ 		menuMultiplayer = true;
+ 		menuServer = true;
+ 		ClearPendingPlayerSelectCallbacks();
+ 		menuMode = 1;
++		};
+ 	}
+ 
+ 	public void loadLib(string path)
 @@ -4148,7 +_,7 @@
  	{
  		NeverSleep();
@@ -1024,7 +1047,7 @@
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
 +				Console.WriteLine("m\t\tMods Menu");
-+				Console.WriteLine("b\t\tMod Browser");
++				//Console.WriteLine("b\t\tMod Browser"); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
@@ -1082,7 +1105,7 @@
  					while (flag2) {
  						Console.WriteLine("");
  						Console.Write(Language.GetTextValue("CLI.EnterSeed"));
-@@ -4431,6 +_,19 @@
+@@ -4431,6 +_,22 @@
  
  					continue;
  				}
@@ -1095,10 +1118,13 @@
 +
 +					continue;
 +				}
++				// Not functional in the 1.4 Steam Workshop Environment
++				/*
 +				else if (text2 == "b" || text2 == "b") {
 +					Interface.ServerModBrowserMenu();
 +					continue;
 +				}
++				*/
  
  				try {
  					int num3 = Convert.ToInt32(text2);
@@ -2808,7 +2834,7 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,43 @@
+@@ -16536,36 +_,51 @@
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
  				}
  
@@ -2822,8 +2848,16 @@
  				numLines++;
  			}
  
++			/* TML: Show mana cost based on Player.GetManaCost method and show UseMana tooltip on Space Gun with Meteor Armor. There has been suggestions to show "Uses X mana (Y% reduction)", but that seems more suited for a mod. This change brings ModifyManaCost behavior in line with Player.manaCost behavior.
  			if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
++				toolTipNames[numLines] = "UseMana";
++				numLines++;
++			}
++			*/
++
++			if (item.mana > 0) {
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", player[myPlayer].GetManaCost(item));
 +				toolTipNames[numLines] = "UseMana";
  				numLines++;
  			}
@@ -4181,6 +4215,19 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
+@@ -32869,8 +_,12 @@
+ 			}
+ 		}
+ 
++		/*
+ 		GetBuilderAccsCountToShow(LocalPlayer, out var _, out var _, out var totalDrawnIcons);
+ 		bool pushSideToolsUp = totalDrawnIcons >= 10;
++		*/
++		int activeToggles = BuilderToggleLoader.ActiveBuilderToggles();
++		bool pushSideToolsUp = activeToggles / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles % 12 >= 10;
+ 		if (!PlayerInput.UsingGamepad)
+ 			DrawHotbarLockIcon(num, num2, pushSideToolsUp);
+ 
 @@ -33145,17 +_,25 @@
  					if (num34 == 147)
  						bannerMouseOver = true;
@@ -4443,7 +4490,20 @@
  
  		new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  		if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -34533,17 +_,39 @@
+@@ -34461,6 +_,8 @@
+ 			spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
+ 	}
+ 
++	// These 2 methods are no longer necessary because they had hardcoded values and did nearly the same thing. Builder Toggles are now much more flexible and dynamic
++	/*
+ 	private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset)
+ 	{
+ 		if (!playerInventory)
+@@ -34530,20 +_,43 @@
+ 
+ 		UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 	}
++	*/
  
  	public static void CraftItem(Recipe r)
  	{
@@ -4901,19 +4961,20 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,47 @@
+@@ -38346,27 +_,49 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
 +			else {
 +				num = info.Type;
-+				text2 = info.DisplayValue(ref infoTextColor);
++				text2 = info.DisplayValue(ref infoTextColor, ref infoTextShadowColor);
 +				text3 = info.DisplayName.ToString();
 +			}
 +
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
-+			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor);
++			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor, ref infoTextShadowColor);
++			InfoDisplayLoader.ModifyDisplayParameters(info, ref text2, ref text3, ref infoTextColor, ref infoTextShadowColor);
  
  			if (!(text2 != ""))
  				continue;
@@ -4940,6 +5001,7 @@
 +				Vector2 vector2 = new Vector2(X, Y + 74 + num26 * num3 + 52);
 +				int num27 = info.Type;
 +				Texture2D icon = ModContent.Request<Texture2D>(info.Texture).Value;
++				Texture2D iconHover = ModContent.Request<Texture2D>(info.HoverTexture).Value;
  
  				Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.White;
  				bool flag14 = false;
@@ -4950,19 +5012,15 @@
  						flag14 = true;
  						player[myPlayer].mouseInterface = true;
  						if (mouseLeft && mouseLeftRelease) {
-@@ -38384,14 +_,27 @@
+@@ -38384,23 +_,32 @@
  					if (player[myPlayer].hideInfo[num27])
  						color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  				}
 -				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)TextureAssets.InfoIcon[num].Width() && (float)mouseY <= vector2.Y + (float)TextureAssets.InfoIcon[num].Height() && !mouseText) {
+-					num2 = i;
 +				else if ((float)mouseX >= vector2.X && (float)mouseY >= vector2.Y && (float)mouseX <= vector2.X + (float)icon.Width && (float)mouseY <= vector2.Y + (float)icon.Height && !mouseText) {
-+					/*
- 					num2 = i;
-+					*/
-+					num2 = num3;
-+					if (i >= 7)
-+						num2 += 1;
-+
++					//TML: 'i' replaced with 'drawnCount'.
++					num2 = drawnCount;
  					text = text3;
  					mouseText = true;
  				}
@@ -4977,9 +5035,10 @@
 +				spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 +
  				if (flag14)
- 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(iconHover, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  
-@@ -38399,8 +_,9 @@
+ 				X += 20;
  			}
  
  			UILinkPointNavigator.Shortcuts.INFOACCCOUNT = num3;
@@ -4990,7 +5049,16 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38436,8 +_,12 @@
+@@ -38429,15 +_,20 @@
+ 				if (n == 4)
+ 					color3 = infoTextColor;
+ 
++				//TML: 'i' replaced with 'drawnCount'.
+-				if (i > num2 && i < num2 + 2)
++				if (drawnCount > num2 && drawnCount < num2 + 2)
+ 					color3 = new Microsoft.Xna.Framework.Color((int)color3.R / 3, (int)color3.G / 3, (int)color3.B / 3, (int)color3.A / 3);
+ 
+ 				int num30 = 22;
  				if (screenHeight < 650)
  					num30 = 20;
  
@@ -5017,6 +5085,23 @@
  			if (mapStyle == 1 && mapEnabled)
  				Y += 261;
  		}
+@@ -38513,6 +_,7 @@
+ 		if (false || Main.player[myPlayer].sign >= 0)
+ 			return;
+ 
++		/*
+ 		int num = 0;
+ 		Player player = Main.player[myPlayer];
+ 		int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
+@@ -38700,6 +_,8 @@
+ 		}
+ 
+ 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
++		*/
++		DrawBuilderAccToggles_Inner(start);
+ 	}
+ 
+ 	private static void GetBuilderAccsCountToShow(Player plr, out int blockReplaceIcons, out int torchGodIcons, out int totalDrawnIcons)
 @@ -39089,6 +_,11 @@
  	private static void TryDisposingEverything()
  	{
@@ -5453,7 +5538,7 @@
 +
 +			// Developer mode button.
 +			if (menuMode == 0 /*&& !ModCompile.DeveloperMode*/) {
-+				string developerModeText = Language.GetTextValue("tModLoader.HowToAccessLegacytModLoaderButton");
++				string developerModeText = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 +
 +				// measure and draw text from bottom right
 +				var textSize = FontAssets.MouseText.Value.MeasureString(developerModeText);
@@ -5470,7 +5555,7 @@
 +
 +					if (mouseover && mouseLeftRelease && mouseLeft) {
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players");
++						Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches");
 +					}
 +				}
 +

@@ -125,6 +125,12 @@ internal class UIErrorMessage : UIState
 
 	internal void Show(string message, int gotoMenu, UIState gotoState = null, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null)
 	{
+		if (!Program.IsMainThread) {
+			// in some cases it would be better to block on this, but in other cases that might be a deadlock. Better to assume that letting the thread continue is the right choice
+			Main.QueueMainThreadAction(() => Show(message, gotoMenu, gotoState, webHelpURL, continueIsRetry, showSkip, retryAction));
+			return;
+		}
+
 		this.message = message;
 		this.gotoMenu = gotoMenu;
 		this.gotoState = gotoState;

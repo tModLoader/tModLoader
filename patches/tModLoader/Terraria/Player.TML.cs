@@ -506,8 +506,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		float reduce = manaCost;
 		float mult = 1;
-		// TODO: Make a space gun set
-		if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray || item.type == ItemID.ZapinatorOrange))
+
+		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
 		if(item.type == ItemID.BookStaff && altFunctionUse == 2)
@@ -593,5 +593,55 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		else {
 			hurtCooldowns[cooldownCounterId] += immuneTime;
 		}
+	}
+
+	// Extra jumps
+	private ExtraJumpState[] extraJumps = new ExtraJumpState[ExtraJumpLoader.ExtraJumpCount];
+
+	public ref ExtraJumpState GetJumpState<T>(T baseInstance) where T : ExtraJump => ref extraJumps[baseInstance.Type];
+
+	public ref ExtraJumpState GetJumpState<T>() where T : ExtraJump => ref GetJumpState(ModContent.GetInstance<T>());
+
+	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
+
+	/// <summary>
+	/// When <see langword="true"/>, all extra jumps will be blocked, including Flipper usage.<br/>
+	/// Setting this field to <see langword="true"/> will not stop any currently active extra jumps.
+	/// </summary>
+	public bool blockExtraJumps;
+
+	/// <summary>
+	/// Returns <see langword="true"/> if any extra jump is <see cref="ExtraJumpState.Available"/> and <see cref="ExtraJump.CanStart"/>.<br/>
+	/// Setting <see cref="blockExtraJumps"/> will cause this method to return <see langword="false"/> instead.
+	/// </summary>
+	public bool AnyExtraJumpUsable()
+	{
+		if (blockExtraJumps)
+			return false;
+
+		foreach (ExtraJump jump in ExtraJumpLoader.OrderedJumps) {
+			if (GetJumpState(jump).Available && jump.CanStart(this) && PlayerLoader.CanStartExtraJump(jump, this))
+				return true;
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	/// Cancels any extra jump in progress.<br/>
+	/// Sets all <see cref="ExtraJumpState.Active"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
+	/// Also sets <see cref="jump"/> to 0 if a an extra jump was active.<br/><br/>
+	///
+	/// Used by vanilla when performing an action which would cancel jumping, such as grappling, grabbing a rope or getting frozen.<br/><br/>
+	///
+	/// To prevent the use of remaining jumps, use <see cref="ConsumeAllExtraJumps"/> or <see cref="blockExtraJumps"/>.<br/>
+	/// To cancel a regular jump as well, do <c>Player.jump = 0;</c>
+	/// </summary>
+	public void StopExtraJumpInProgress()
+	{
+		ExtraJumpLoader.StopActiveJump(this, out bool anyJumpCancelled);
+
+		if (anyJumpCancelled)
+			jump = 0;
 	}
 }

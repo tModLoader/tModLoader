@@ -46,15 +46,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 
 			// Optional: If you don't want this NPC to show on the bestiary (if there is no reason to show a boss minion separately)
 			// Make sure to remove SetBestiary code aswell

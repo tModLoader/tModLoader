@@ -14,8 +14,11 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
+using System.Collections.Generic;
+using Microsoft.Build.Framework;
 
 namespace Terraria.ModLoader.UI;
 
@@ -35,6 +38,7 @@ internal static class Interface
 	//internal const int managePublishedID = 10011;
 	internal const int updateMessageID = 10012;
 	internal const int infoMessageID = 10013;
+	internal const int infoMessageDelayedID = 10014;
 	//internal const int enterPassphraseMenuID = 10015;
 	internal const int modPacksMenuID = 10016;
 	internal const int tModLoaderSettingsID = 10017;
@@ -50,8 +54,9 @@ internal static class Interface
 	internal static UIModSources modSources = new UIModSources();
 	internal static UIBuildMod buildMod = new UIBuildMod();
 	internal static UIErrorMessage errorMessage = new UIErrorMessage();
-	internal static UIModBrowser modBrowser = new UIModBrowser();
+	internal static UIModBrowser modBrowser = new UIModBrowser(WorkshopBrowserModule.Instance);
 	internal static UIModInfo modInfo = new UIModInfo();
+	internal static UIForcedDelayInfoMessage infoMessageDelayed = new UIForcedDelayInfoMessage();
 	//internal static UIManagePublished managePublished = new UIManagePublished();
 	internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 	internal static UIInfoMessage infoMessage = new UIInfoMessage();
@@ -120,11 +125,13 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
 			}
 
+			/* For Major Updates that span multi-month
 			else if (!ModLoader.BetaUpgradeWelcomed144) {
 				ModLoader.BetaUpgradeWelcomed144 = true;
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageUpgradeBeta"), Main.menuMode);
 				Main.SaveSettings();
 			}
+			*/
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
@@ -147,46 +154,49 @@ internal static class Interface
 					}
 					if (LastLaunchedShaInRecentGitHubCommits)
 						infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
-							() => {
-								SoundEngine.PlaySound(SoundID.MenuOpen);
-								Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
-							});
+							() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4"));
 				}
 			}
-			//SOLXAN:TODO: Re-enable for stabilization later
-			/*
+
 			else if (ModLoader.PreviewFreezeNotification) {
 				ModLoader.PreviewFreezeNotification = false;
-				ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-				infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
-					() => {
-						SoundEngine.PlaySound(SoundID.MenuOpen);
-						Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
-					});
+				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
+				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14"));
 				Main.SaveSettings();
 			}
-			*/
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
 				// Find dependencies that need to be downloaded.
-				var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
-				bool promptDepDownloads = deps.Count != 0;
+				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
+				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
-				string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
-				string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}\n{string.Concat(missingDeps)}".Trim('\n');
+
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
-				Action downloadAction = () => {
-					if (promptDepDownloads) {
-						//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
-						WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed: null)).ToList(), previousMenuId: 0);
-					}
-				};
 
-				if (!string.IsNullOrWhiteSpace(message))
+				Action downloadAction = () => {
+					HashSet<ModDownloadItem> downloads = new();
+					foreach (var slug in missingDeps) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
+							continue;
+						}
+
+						downloads.Add(item);
+					}
+
+					_ = UIModBrowser.DownloadMods(
+						downloads,
+						loadModsID);
+                };
+
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
 			}
 		}
 		if (Main.menuMode == modsMenuID) {
@@ -408,13 +418,63 @@ internal static class Interface
 				exit = true;
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
-				mods[value - 1].Enabled ^= true;
+				var mod = mods[value - 1];
+				mod.Enabled ^= true;
+
+				if (mod.Enabled) {
+					var missingRefs = new List<string>();
+					EnableDepsRecursive(mod, mods, missingRefs);
+
+					if (missingRefs.Any()) {
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(", ", missingRefs)) + "\n");
+						Console.ResetColor();
+					}
+				}
 			}
+		}
+	}
+
+	private static void EnableDepsRecursive(LocalMod mod, LocalMod[] mods, List<string> missingRefs)
+	{
+		string[] _modReferences = mod.properties.modReferences.Select(x => x.mod).ToArray();
+		foreach (var name in _modReferences) {
+			var dep = mods.FirstOrDefault(x => x.Name == name);
+			if (dep == null) {
+				missingRefs.Add(name);
+				continue;
+			}
+			EnableDepsRecursive(dep, mods, missingRefs);
+			if (!dep.Enabled) {
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.ResetColor();
+			}
+			dep.Enabled ^= true;
 		}
 	}
 
 	internal static void ServerModBrowserMenu()
 	{
+		//TODO: Broke this, again. I don't think ever really worked in 1.4. To be left broken for later reconsideration if a different host is used.
+		//	In Place of fixing, we rely on ModPack Menu for exporting .tmod files and SteamCMD paired with install.txt from ModPack menu
+
+		/*
+		if (!SteamedWraps.SteamAvailable) {
+			if (!SteamedWraps.TryInitViaGameServer()) {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
+				throw new SocialBrowserException("No Workshop Access");
+			}
+
+			// lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
+			var stopwatch = Stopwatch.StartNew();
+			while (!SteamGameServer.BLoggedOn() && stopwatch.Elapsed.TotalSeconds < 5) {
+				await SteamedWraps.ForceCallbacks(token);
+			}
+		}
+		*/
+
+		/*
 		bool exit = false;
 		Console.Clear();
 		while (!exit) {
@@ -447,5 +507,6 @@ internal static class Interface
 			}
 		}
 		//Console.Clear();
+		*/
 	}
 }
