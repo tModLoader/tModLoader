@@ -48,7 +48,7 @@ public static class ConfigManager
 		ContractResolver = serializerSettings.ContractResolver
 	};
 
-	/* Wasn't working due to initialization order. Revist later.
+	/* Wasn't working due to initialization order. Revisit later.
 	private static readonly IList<JsonConverter> converters = new List<JsonConverter>() {
 		new Newtonsoft.Json.Converters.VersionConverter(),
 		//new ColorJsonConverter(),
@@ -398,7 +398,7 @@ public static class ConfigManager
 		// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
 	}
 
-	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attibute on the generic Type.
+	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attribute on the generic Type.
 	public static T? GetCustomAttributeFromCollectionMemberThenElementType<T>(MemberInfo memberInfo, Type elementType) where T : Attribute
 	{
 		return
@@ -549,7 +549,7 @@ public static class ConfigManager
 }
 
 /// <summary>
-/// Custom ContractResolver for facilitating refernce type defaults.
+/// Custom ContractResolver for facilitating reference type defaults.
 /// The ShouldSerialize code enables unchanged-by-user reference type defaults to properly not serialize.
 /// The ValueProvider code helps during deserialization to not
 /// </summary>
