@@ -174,7 +174,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			Process process = new() {
 				StartInfo = new ProcessStartInfo {
 					FileName = UIModSources.GetSystemDotnetPath() ?? "dotnet",
-					Arguments = $"build -v q /p:OutputTmodPath=\"{outputPath}\" /p:TmlVersion=\"{tmlVersion}\"",
+					Arguments = $"build -c Release -v q -p:OutputTmodPath=\"{outputPath}\" -p:TmlVersion=\"{tmlVersion}\"",
 					WorkingDirectory = mod.path,
 					UseShellExecute = false,
 					RedirectStandardOutput = true,
@@ -207,6 +207,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
 			}
 
+			// Enable mods here to update mod menu UI
 			ModLoader.EnableMod(mod.Name);
 			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
