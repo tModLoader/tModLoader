@@ -12,6 +12,7 @@ internal class LocalMod
 
 	public string Name => modFile.Name;
 	public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
+	public Version Version => properties.version;
 	public Version tModLoaderVersion => properties.buildVersion;
 
 	public bool Enabled {

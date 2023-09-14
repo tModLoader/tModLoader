@@ -194,7 +194,7 @@ internal static class ModOrganizer
 		// For convenience, convert to dict
 		var currMods = FindWorkshopMods().ToDictionary(mod => mod.Name, mod => mod);
 
-		Logging.tML.Info("3 most recently changed workshop mods: " + string.Join(", ", currMods.OrderByDescending(x => x.Value.lastModified).Take(3).Select(x => $"{x.Value.Name} v{x.Value.properties.version} {x.Value.lastModified:d}")));
+		Logging.tML.Info("3 most recently changed workshop mods: " + string.Join(", ", currMods.OrderByDescending(x => x.Value.lastModified).Take(3).Select(x => $"{x.Value.Name} v{x.Value.Version} {x.Value.lastModified:d}")));
 
 		// trycatch the read in case users manually modify the file
 		try {
@@ -220,7 +220,7 @@ internal static class ModOrganizer
 			foreach (var item in currMods) {
 				string name = item.Key;
 				var localMod = item.Value;
-				Version version = localMod.properties.version;
+				Version version = localMod.Version;
 
 				if (!lastMods.ContainsKey(name)) {
 					newMods.Add(name);
@@ -272,7 +272,7 @@ internal static class ModOrganizer
 		var currMods = FindWorkshopMods();
 		var fileText = new StringBuilder();
 		foreach (var mod in currMods) {
-			fileText.Append($"{mod.Name} {mod.properties.version}\n");
+			fileText.Append($"{mod.Name} {mod.Version}\n");
 		}
 		File.WriteAllText(lastLaunchedModsFilePath, fileText.ToString());
 	}
@@ -443,13 +443,13 @@ internal static class ModOrganizer
 				if (dep.target == null || !nameMap.TryGetValue(dep.mod, out var inst))
 					continue;
 
-				if (inst.properties.version < dep.target) {
+				if (inst.Version < dep.target) {
 					errored.Add(mod);
-					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
+					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.Version));
 				}
-				else if (inst.properties.version.Major != dep.target.Major) {
+				else if (inst.Version.Major != dep.target.Major) {
 					errored.Add(mod);
-					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.properties.version));
+					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.Version));
 				}
 			}
 
