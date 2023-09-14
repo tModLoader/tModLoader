@@ -773,87 +773,47 @@
  		IsGeneratingHardMode = true;
  		TryProtectingSpawnedItems();
  		if (Main.rand == null)
-@@ -19358,35 +_,66 @@
+@@ -19358,7 +_,8 @@
  			num3 = (int)((double)Main.maxTilesX * (1.0 - num2));
  		}
  
 -		if (Main.remixWorld) {
--			int num7 = Main.maxTilesX / 7;
--			int num8 = Main.maxTilesX / 14;
--			if (Main.dungeonX < Main.maxTilesX / 2) {
--				for (int i = Main.maxTilesX - num7 - num8; i < Main.maxTilesX; i++) {
--					for (int j = (int)Main.worldSurface + genRand.Next(-1, 2); j < Main.maxTilesY - 10; j++) {
--						if (i > Main.maxTilesX - num7)
--							Convert(i, j, 2, 1);
--						else if (TileID.Sets.Crimson[Main.tile[i, j].type] || TileID.Sets.Corrupt[Main.tile[i, j].type])
--							Convert(i, j, 2, 1);
--					}
--				}
--			}
--			else {
--				for (int k = 0; k < num7 + num8; k++) {
--					for (int l = (int)Main.worldSurface + genRand.Next(-1, 2); l < Main.maxTilesY - 10; l++) {
--						if (k < num7)
--							Convert(k, l, 2, 1);
--						else if (TileID.Sets.Crimson[Main.tile[k, l].type] || TileID.Sets.Corrupt[Main.tile[k, l].type])
--							Convert(k, l, 2, 1);
--					}
--				}
--			}
--		}
++		void HardmodeGoodRemixTask(GenerationProgress progress, GameConfiguration configuration)
++		{
+ 			int num7 = Main.maxTilesX / 7;
+ 			int num8 = Main.maxTilesX / 14;
+ 			if (Main.dungeonX < Main.maxTilesX / 2) {
+@@ -19382,11 +_,44 @@
+ 				}
+ 			}
+ 		}
 -		else {
--			GERunner(num3, 0, 3 * num5, 5.0);
--			GERunner(num4, 0, 3 * -num5, 5.0, good: false);
--		}
--
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Good", HardmodeGoodTask));
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Evil", HardmodeEvilTask));
 +
 +		void HardmodeGoodTask(GenerationProgress progress, GameConfiguration configuration)
 +		{
-+			if (Main.remixWorld)
-+			{
-+				int num7 = Main.maxTilesX / 7;
-+				int num8 = Main.maxTilesX / 14;
-+				if (Main.dungeonX < Main.maxTilesX / 2)
-+				{
-+					for (int i = Main.maxTilesX - num7 - num8; i < Main.maxTilesX; i++)
-+					{
-+						for (int j = (int)Main.worldSurface + genRand.Next(-1, 2); j < Main.maxTilesY - 10; j++)
-+						{
-+							if (i > Main.maxTilesX - num7)
-+								Convert(i, j, 2, 1);
-+							else if (TileID.Sets.Crimson[Main.tile[i, j].type] || TileID.Sets.Corrupt[Main.tile[i, j].type])
-+								Convert(i, j, 2, 1);
-+						}
-+					}
-+				}
-+				else
-+				{
-+					for (int k = 0; k < num7 + num8; k++)
-+					{
-+						for (int l = (int)Main.worldSurface + genRand.Next(-1, 2); l < Main.maxTilesY - 10; l++)
-+						{
-+							if (k < num7)
-+								Convert(k, l, 2, 1);
-+							else if (TileID.Sets.Crimson[Main.tile[k, l].type] || TileID.Sets.Corrupt[Main.tile[k, l].type])
-+								Convert(k, l, 2, 1);
-+						}
-+					}
-+				}
-+			}
-+			else
-+			{
-+				GERunner(num3, 0, 3 * num5, 5.0);
-+			}
+ 			GERunner(num3, 0, 3 * num5, 5.0);
 +		}
-+		
++
 +		void HardmodeEvilTask(GenerationProgress progress, GameConfiguration configuration)
 +		{
-+			if (!Main.remixWorld)
-+			{
-+				GERunner(num4, 0, 3 * -num5, 5.0, good: false);
-+			}
+ 			GERunner(num4, 0, 3 * -num5, 5.0, good: false);
+ 		}
+ 
++		var HardmodeGoodRemixPass = new PassLegacy("Hardmode Good Remix", HardmodeGoodRemixTask);
++		var HardmodeGoodPass = new PassLegacy("Hardmode Good", HardmodeGoodTask);
++		var HardmodeEvilPass = new PassLegacy("Hardmode Evil", HardmodeEvilTask);
++
++		hardmodeTasks.Add(HardmodeGoodRemixPass);
++		hardmodeTasks.Add(HardmodeGoodPass);
++		hardmodeTasks.Add(HardmodeEvilPass);
++
++		// Main.remixWorld checks removed from Pass code, we want all passes present in the list no matter what and disable those that don't apply for consistency with other tModLoader approaches and modder expectations. #3606 discussion
++		if (Main.remixWorld) {
++			HardmodeGoodPass.Disable();
++			HardmodeEvilPass.Disable();
++		}
++		else {
++			HardmodeGoodRemixPass.Disable();
 +		}
 +
 +		hardmodeTasks.Add(new PassLegacy("Hardmode Walls", HardmodeWallsTask));
