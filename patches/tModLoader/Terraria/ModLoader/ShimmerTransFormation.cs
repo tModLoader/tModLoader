@@ -91,7 +91,7 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <param name="transformation"> The transformation </param>
 	/// <param name="spawnedEntities"> A list of the spawned Entities </param>
 	/// <param name="source"> The <see cref="IModShimmerable"/> that was shimmered </param>
-	public delegate void OnShimmerCallBack(ShimmerTransformation transformation, IModShimmerable source, List<IModShimmerable> spawnedEntities);
+	public delegate void OnShimmerCallBack(ShimmerTransformation transformation, IModShimmerable source, IEnumerable<IModShimmerable> spawnedEntities);
 
 	/// <inheritdoc cref="OnShimmerCallBack"/>
 	public OnShimmerCallBack OnShimmerCallBacks { get; private protected set; }
@@ -228,16 +228,18 @@ public abstract class ShimmerTransformation : ICloneable
 	public void DoModShimmer(IModShimmerable source)
 	{
 		int usableStack = GetUsableStack(source);
-		SpawnModShimmerResults(source, usableStack, out List<IModShimmerable> spawned); // Spawn results, output stack amount used
+		IEnumerable<IModShimmerable> spawned = SpawnModShimmerResults(source, usableStack); // Spawn results, output stack amount used
 		source.ShimmerRemoveStacked(usableStack); // Removed amount used
 		OnShimmerCallBacks?.Invoke(this, source, spawned);
 
 		ShimmerEffect(source.Center);
 	}
 
-	public void SpawnModShimmerResults(IModShimmerable source, int stackUsed, out List<IModShimmerable> spawned)
+	/// <summary>
+	/// Spawns every item in <see cref="Results"/> <paramref name="stackUsed"/> times for this transformation using <paramref name="source"/>
+	/// </summary>
+	public IEnumerable<IModShimmerable> SpawnModShimmerResults(IModShimmerable source, int stackUsed)
 	{
-		spawned = new(); // List to be passed for onShimmerCallBacks
 		foreach (IModShimmerable shimmerable in Results.SelectMany(result => result.SpawnFrom(source, stackUsed)).Where(shimmerable => shimmerable != null)) { //Spawns the individual result, adds it to the list
 			if (!AllowChainedShimmers)
 				shimmerable.PreventingChainedShimmers = true;
@@ -247,7 +249,7 @@ public abstract class ShimmerTransformation : ICloneable
 				entity.wet = true;
 			}
 
-			spawned.Add(shimmerable);
+			yield return shimmerable;
 		}
 	}
 
@@ -548,6 +550,8 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			ModifyShimmerCallBacks = (ModifyShimmerCallBack)ModifyShimmerCallBacks?.Clone(),
 			OnShimmerCallBacks = (OnShimmerCallBack)OnShimmerCallBacks?.Clone(),
 		};
+
+	// These return an IEnumerable to make clear the list should not be edited here.
 
 	private static Dictionary<int, IEnumerable<ShimmerTransformation<TModShimmerable>>> FilterInnerEmpty(IEnumerable<KeyValuePair<int, IEnumerable<ShimmerTransformation<TModShimmerable>>>> keyValuePairs)
 		=> new(keyValuePairs.Where(pair => pair.Value?.Count() > 0));

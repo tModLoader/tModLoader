@@ -240,6 +240,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShim
 		if (type == 936) // Prevent interfering with the Diva Slime unlock
 			return;
 
+		// Code roughly from NPC.cs
 		if (shimmerWet && CanShimmer()) { // If in shimmer and can shimmer
 			shimmerTransformTime += 0.01f;
 			if (Main.netMode != NetmodeID.MultiplayerClient && shimmerTransformTime > 0.9f && !PreventingChainedShimmers) {

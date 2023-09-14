@@ -83,13 +83,12 @@ public class NPCShimmerShowcase : ModNPC
 
 	// This is static and not an override, it is used earlier to pass as a ShimmerTransformation.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a
 	// method. While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based, use "origin"
-	public static void OnShimmer_SpawnFriendlyBullets(ShimmerTransformation transformation, IModShimmerable origin, List<IModShimmerable> spawnedShimmerables) {
-		spawnedShimmerables.ForEach((IModShimmerable spawnedShimmerable)
-			=> {
-				Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_Misc("Shimmer"), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
-				p.friendly = true;
-				p.hostile = false;
-			});
+	public static void OnShimmer_SpawnFriendlyBullets(ShimmerTransformation transformation, IModShimmerable origin, IEnumerable<IModShimmerable> spawnedShimmerables) {
+		foreach (IModShimmerable spawnedShimmerable in spawnedShimmerables) {
+			Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_Misc("Shimmer"), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
+			p.friendly = true;
+			p.hostile = false;
+		};
 		// Here we show one way to spawn projectiles, we do it after the transformation because we need the list of spawned IModShimmerables. See
 		// ExampleComplexCustomShimmerable for how to utilise projectiles in shimmer better
 	}

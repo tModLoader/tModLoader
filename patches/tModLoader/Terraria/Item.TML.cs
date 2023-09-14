@@ -283,10 +283,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IMo
 	void IModShimmerable.ShimmerRemoveStacked(int amount)
 	{
 		stack -= amount;
-		shimmerWet = true;
-		wet = true;
+		shimmerWet = wet = shimmered = true;
 		velocity *= 0.1f;
-		shimmered = true;
 
 		if (stack <= 0) {
 			active = false;

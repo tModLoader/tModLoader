@@ -66,7 +66,7 @@ public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerRes
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			Item item = Main.item[Item.NewItem(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type)]; //TODO: Get player bits here
+			Item item = Main.item[Item.NewItem(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type)];
 			item.stack = Math.Min(item.maxStack, spawnTotal);
 			item.shimmerTime = 1f;
 			item.shimmered = true;
@@ -108,7 +108,7 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type);//TODO: Get player bits here
+			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type);
 
 			//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
 			if (shimmerable is NPC nPC && KeepVanillaTransformationConventions) {
