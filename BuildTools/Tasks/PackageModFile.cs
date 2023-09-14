@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using tModLoader.BuildTools.ModFile;
 
 namespace tModLoader.BuildTools.Tasks;
@@ -117,6 +118,15 @@ public class PackageModFile : TaskBase
 		// Save it
 		Log.LogMessage(MessageImportance.Normal, "Saving mod file...");
 		tmodFile.Save();
+
+		// Enable the mod
+		string? modsFolder = Path.GetDirectoryName(OutputTmodPath);
+		if (modsFolder is null) {
+			Log.LogWarning("Couldn't get directory from .tmod output path.");
+			return;
+		}
+
+		EnableMod(AssemblyName, modsFolder);
 	}
 
 	private void AddAllReferences(TmodFile tmodFile, BuildProperties modProperties) {
@@ -270,6 +280,26 @@ public class PackageModFile : TaskBase
 		properties.Description = File.ReadAllText(descriptionFilePath);
 
 		return properties;
+	}
+
+	private void EnableMod(string modName, string modsFolderPath){
+		string enabledPath = Path.Combine(modsFolderPath, "enabled.json");
+		if (!File.Exists(enabledPath)) {
+			Log.LogMessage(MessageImportance.Low, $"enabled.json not found at '{enabledPath}', the mod will not be enabled.");
+			return;
+		}
+
+		string enabledJson = File.ReadAllText(enabledPath);
+		try {
+			List<string> enabled = JsonConvert.DeserializeObject<List<string>>(enabledJson) ?? new List<string>();
+			if (!enabled.Contains(modName)) {
+				enabled.Add(modName);
+				File.WriteAllText(enabledPath, JsonConvert.SerializeObject(enabled, Formatting.Indented));
+			}
+		}
+		catch (Exception e) {
+			Log.LogWarning($"Failed to enable mod {modName}: {e}");
+		}
 	}
 
 	private bool IgnoreResource(BuildProperties properties, string resourcePath) {
