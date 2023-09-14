@@ -117,7 +117,14 @@ public class PackageModFile : TaskBase
 
 		// Save it
 		Log.LogMessage(MessageImportance.Normal, "Saving mod file...");
-		tmodFile.Save();
+		try {
+			tmodFile.Save();
+		}
+		catch (Exception e) {
+			Log.LogError("Failed to create .tmod file. Check that the mod isn't enabled if tModLoader is open.\n" +
+			             "Full error: " + e);
+			return;
+		}
 
 		// Enable the mod
 		string? modsFolder = Path.GetDirectoryName(OutputTmodPath);
