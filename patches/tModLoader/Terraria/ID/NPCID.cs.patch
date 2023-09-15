@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,109 @@
+@@ -3,29 +_,110 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -109,9 +109,37 @@
 +			/// Creates a new <see cref="NPCBestiaryDrawModifiers"/> with default values.
 +			/// </summary>
 +			/// <param name="seriouslyWhyCantStructsHaveParameterlessConstructors">Unused.</param>
++			[Obsolete("Use the parameterless constructor instead")]// TODO: make internal at some point
  			public NPCBestiaryDrawModifiers(int seriouslyWhyCantStructsHaveParameterlessConstructors)
  			{
  				Position = default(Vector2);
+@@ -42,6 +_,26 @@
+ 				PortraitPositionYOverride = null;
+ 				CustomTexturePath = null;
+ 			}
++
++			/// <summary>
++			/// Creates a new <see cref="NPCBestiaryDrawModifiers"/> with default values.
++			/// </summary>
++			public NPCBestiaryDrawModifiers()
++			{
++				Position = default(Vector2);
++				Rotation = 0f;
++				Scale = 1f;
++				PortraitScale = 1f;
++				Hide = false;
++				IsWet = false;
++				Frame = null;
++				Direction = null;
++				SpriteDirection = null;
++				Velocity = 0f;
++				PortraitPositionXOverride = null;
++				PortraitPositionYOverride = null;
++				CustomTexturePath = null;
++			}
+ 		}
+ 
+ 		private static class LocalBuffID
 @@ -64,7 +_,13 @@
  			public const int BloodButcherer = 344;
  		}
