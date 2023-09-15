@@ -3,6 +3,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.Config;
 
 namespace Terraria.ModLoader.UI.Config.Elements;
+// TODO: make this just have text input and slider
 public abstract class UINumericElement<T> : UIConfigElement<T>
 {
 	public RangeAttribute RangeAttribute { get; internal set; }
@@ -141,6 +142,7 @@ public class UIByteElement : UINumericElement<byte>
 	public override byte Round(byte value, byte nearest) => (byte)(value - value % nearest);
 	public override byte FromInt(int value) => (byte)value;
 	public override byte Negate(byte value) => (byte)-value;
+	public override bool TryParse(string text, out byte value) => byte.TryParse(text, out value);
 }
 public class UISByteElement : UINumericElement<sbyte>
 {
@@ -149,6 +151,7 @@ public class UISByteElement : UINumericElement<sbyte>
 	public override sbyte Round(sbyte value, sbyte nearest) => (sbyte)(value - value % nearest);
 	public override sbyte FromInt(int value) => (sbyte)value;
 	public override sbyte Negate(sbyte value) => (sbyte)-value;
+	public override bool TryParse(string text, out sbyte value) => sbyte.TryParse(text, out value);
 }
 
 public class UIShortElement : UINumericElement<short>
@@ -158,6 +161,7 @@ public class UIShortElement : UINumericElement<short>
 	public override short Round(short value, short nearest) => (short)(value - value % nearest);
 	public override short FromInt(int value) => (short)value;
 	public override short Negate(short value) => (short)-value;
+	public override bool TryParse(string text, out short value) => short.TryParse(text, out value);
 }
 public class UIUShortElement : UINumericElement<ushort>
 {
@@ -166,6 +170,7 @@ public class UIUShortElement : UINumericElement<ushort>
 	public override ushort Round(ushort value, ushort nearest) => (ushort)(value - value % nearest);
 	public override ushort FromInt(int value) => (ushort)value;
 	public override ushort Negate(ushort value) => (ushort)-value;
+	public override bool TryParse(string text, out ushort value) => ushort.TryParse(text, out value);
 }
 
 public class UIIntElement : UINumericElement<int>
@@ -175,6 +180,7 @@ public class UIIntElement : UINumericElement<int>
 	public override int Round(int value, int nearest) => value - value % nearest;
 	public override int FromInt(int value) => value;
 	public override int Negate(int value) => -value;
+	public override bool TryParse(string text, out int value) => int.TryParse(text, out value);
 }
 public class UIUIntElement : UINumericElement<uint>
 {
@@ -183,6 +189,7 @@ public class UIUIntElement : UINumericElement<uint>
 	public override uint Round(uint value, uint nearest) => value - value % nearest;
 	public override uint FromInt(int value) => (uint)value;
 	public override uint Negate(uint value) => (uint)-value;
+	public override bool TryParse(string text, out uint value) => uint.TryParse(text, out value);
 }
 
 public class UILongElement : UINumericElement<long>
@@ -192,6 +199,7 @@ public class UILongElement : UINumericElement<long>
 	public override long Round(long value, long nearest) => value - value % nearest;
 	public override long FromInt(int value) => value;
 	public override long Negate(long value) => -value;
+	public override bool TryParse(string text, out long value) => long.TryParse(text, out value);
 }
 public class UIULongElement : UINumericElement<ulong>
 {
@@ -200,6 +208,7 @@ public class UIULongElement : UINumericElement<ulong>
 	public override ulong Round(ulong value, ulong nearest) => value - value % nearest;
 	public override ulong FromInt(int value) => (ulong)value;
 	public override ulong Negate(ulong value) => unchecked((ulong)-1) * value;
+	public override bool TryParse(string text, out ulong value) => ulong.TryParse(text, out value);
 }
 
 public class UIFloatElement : UINumericElement<float>
@@ -209,6 +218,7 @@ public class UIFloatElement : UINumericElement<float>
 	public override float Round(float value, float nearest) => value - value % nearest;
 	public override float FromInt(int value) => value;
 	public override float Negate(float value) => -value;
+	public override bool TryParse(string text, out float value) => float.TryParse(text, out value);
 }
 public class UIDoubleElement : UINumericElement<double>
 {
@@ -217,6 +227,7 @@ public class UIDoubleElement : UINumericElement<double>
 	public override double Round(double value, double nearest) => value - value % nearest;
 	public override double FromInt(int value) => value;
 	public override double Negate(double value) => -value;
+	public override bool TryParse(string text, out double value) => double.TryParse(text, out value);
 }
 public class UIDecimalElement : UINumericElement<decimal>
 {
@@ -225,5 +236,6 @@ public class UIDecimalElement : UINumericElement<decimal>
 	public override decimal Round(decimal value, decimal nearest) => value - value % nearest;
 	public override decimal FromInt(int value) => value;
 	public override decimal Negate(decimal value) => -value;
+	public override bool TryParse(string text, out decimal value) => decimal.TryParse(text, out value);
 }
 #endregion
