@@ -97,6 +97,7 @@
 		"AskForCommand": "Type a command: ",
 
 		//Mod Config
+		"ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Filter Options",
 		"ModConfigNotification": "Notification: ",
 		"ModConfigModConfig": "Mod Config",
