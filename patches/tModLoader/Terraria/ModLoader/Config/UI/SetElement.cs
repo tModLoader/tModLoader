@@ -106,7 +106,7 @@ internal class SetElement : CollectionElement
 
 				var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList().First(x => x.Name == "DataWrapperList");
 				int index = i;
-				var wrapped = UIModConfig.WrapIt(DataList, ref top, wrappermemberInfo, this, 0, DataWrapperList, genericType, i);
+				var wrapped = ConfigManager.GetConfigElement(wrappermemberInfo, this, 0, DataWrapperList, genericType, i);
 				wrapped.Item2.Left.Pixels += 24;
 				wrapped.Item2.Width.Pixels -= 24;
 
@@ -120,7 +120,7 @@ internal class SetElement : CollectionElement
 					var removeMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
 					removeMethod.Invoke(Data, new object[] { o });
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					Interface.modConfig.RefreshUI();
 				};
 				wrapped.Item1.Append(deleteButton);
 

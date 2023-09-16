@@ -48,7 +48,7 @@ internal class EnumElement : RangeElement
 		/*
 		if (array != null) {
 			_GetValue = () => array[index];
-			_SetValue = (int valueIndex) => { array[index] = (Enum)Enum.GetValues(memberInfo.Type).GetValue(valueIndex); Interface.modConfig.SetPendingChanges(); };
+			_SetValue = (int valueIndex) => { array[index] = (Enum)Enum.GetValues(memberInfo.Type).GetValue(valueIndex); Interface.modConfig.RefreshUI(); };
 			_TextDisplayFunction = () => index + 1 + ": " + _GetValueString();
 		}
 		*/
@@ -64,7 +64,7 @@ internal class EnumElement : RangeElement
 			return;
 
 		MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.RefreshUI();
 	}
 
 	private object DefaultGetValue()

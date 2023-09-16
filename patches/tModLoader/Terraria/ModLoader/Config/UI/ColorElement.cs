@@ -153,7 +153,7 @@ internal class ColorElement : ConfigElement
 			if (skip.Contains(variable.Name))
 				continue;
 
-			var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
+			var wrapped = ConfigManager.GetConfigElement(variable, c, order++);
 
 			if (ColorList != null) {
 				wrapped.Item1.Left.Pixels -= 20;

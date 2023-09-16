@@ -89,26 +89,24 @@ public static class UICommon
 	}
 
 	/// <summary>
-	/// Functions like Main.instance.MouseText, but adds the same background seen in tooltips to the text
+	/// Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/>, but adds the same background seen in tooltips to the text.
 	/// </summary>
-	/// <param name="text"></param>
+	/// <param name="text">The text to display.</param>
 	public static void TooltipMouseText(string text)
 	{
-		if (Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
-			Item fakeItem = new Item();
-			fakeItem.SetDefaults(0, noMatCheck: true);
-			fakeItem.SetNameOverride(text);
-			fakeItem.type = 1;
-			fakeItem.scale = 0f;
-			fakeItem.rare = 0;
-			fakeItem.value = -1;
-			Main.HoverItem = fakeItem;
-			Main.instance.MouseText("");
-			Main.mouseText = true;
-		}
-		else {
-			Main.instance.MouseText(text);
-		}
+		if (string.IsNullOrEmpty(text))
+			return;
+
+		Item fakeItem = new Item();
+		fakeItem.SetDefaults(0, noMatCheck: true);
+		fakeItem.SetNameOverride(text);
+		fakeItem.type = 1;
+		fakeItem.scale = 0f;
+		fakeItem.rare = 0;
+		fakeItem.value = -1;
+		Main.HoverItem = fakeItem;
+		Main.instance.MouseText("");
+		Main.mouseText = true;
 	}
 
 	public static Asset<Texture2D> ButtonErrorTexture { get; internal set; }

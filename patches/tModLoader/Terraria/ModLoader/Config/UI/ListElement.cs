@@ -44,7 +44,7 @@ internal class ListElement : CollectionElement
 		if (Data != null) {
 			for (int i = 0; i < ((IList)Data).Count; i++) {
 				int index = i;
-				var wrapped = UIModConfig.WrapIt(DataList, ref top, MemberInfo, Item, 0, Data, listType, index);
+				var wrapped = ConfigManager.GetConfigElement(MemberInfo, Item, 0, Data, listType, index);
 
 				wrapped.Item2.Left.Pixels += 24;
 				wrapped.Item2.Width.Pixels -= 30;
@@ -52,7 +52,7 @@ internal class ListElement : CollectionElement
 				// Add delete button.
 				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigRemove"));
 				deleteButton.VAlign = 0.5f;
-				deleteButton.OnLeftClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
+				deleteButton.OnLeftClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.RefreshUI(); };
 				wrapped.Item1.Append(deleteButton);
 			}
 		}

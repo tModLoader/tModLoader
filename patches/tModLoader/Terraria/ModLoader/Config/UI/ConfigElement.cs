@@ -114,7 +114,7 @@ public abstract class ConfigElement : UIElement
 	{
 		if (List != null) {
 			List[Index] = value;
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.RefreshUI();
 			return;
 		}
 
@@ -122,7 +122,7 @@ public abstract class ConfigElement : UIElement
 			return;
 
 		MemberInfo.SetValue(Item, value);
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.RefreshUI();
 	}
 
 	protected virtual object GetObject()
@@ -174,7 +174,7 @@ public abstract class ConfigElement : UIElement
 				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
 			}
 
-			UIModConfig.Tooltip = tooltip;
+			UICommon.TooltipMouseText(tooltip);
 		}
 	}
 

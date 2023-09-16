@@ -74,7 +74,7 @@ internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<Proje
 			Main.instance.LoadProjectile(type);
 			Texture2D projectileTexture = TextureAssets.Projectile[type].Value;
 
-			int frameCounter = Interface.modConfig.UpdateCount / 4;
+			int frameCounter = (int)(Main.GlobalTimeWrappedHourly / 60f / 4f);
 			int frames = Main.projFrames[type];
 
 			if (Unloaded) {
@@ -110,6 +110,6 @@ internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<Proje
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }

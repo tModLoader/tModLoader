@@ -43,7 +43,7 @@ internal class ArrayElement : CollectionElement
 
 		for (int i = 0; i < count; i++) {
 			int index = i;
-			UIModConfig.WrapIt(DataList, ref top, MemberInfo, Item, 0, Data, itemType, index);
+			ConfigManager.GetConfigElement(MemberInfo, Item, 0, Data, itemType, index);
 		}
 	}
 }

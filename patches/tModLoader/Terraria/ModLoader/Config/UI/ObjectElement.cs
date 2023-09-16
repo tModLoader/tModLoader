@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -27,6 +29,8 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage expandButton;
 	private UIPanel separatePagePanel;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
+
+	private List<Tuple<UIElement, UIElement>> elements;
 
 	// Label:
 	//  Members
@@ -88,7 +92,7 @@ internal class ObjectElement : ConfigElement<object>
 			//e.Recalculate();
 			//elementHeight = (int)e.GetOuterDimensions().Height;
 			separatePageButton.OnLeftClick += (a, c) => {
-				UIModConfig.SwitchToSubConfig(this.separatePagePanel);
+				Interface.modConfig.OpenSeparatePage(this);
 				/*	Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 					Interface.modConfig.uIElement.Append(separateListPanel);
 					Interface.modConfig.configPanelStack.Push(separateListPanel);*/
@@ -169,7 +173,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.RefreshUI();
 		};
 
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
@@ -189,7 +193,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			//Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.RefreshUI();
 		};
 
 		if (Value != null) {
@@ -257,29 +261,12 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
-				separatePagePanel = UIModConfig.MakeSeparateListPanel(Item, data, MemberInfo, List, Index, AbridgedTextDisplayFunction);
+				return;
 			}
-			else {
-				int order = 0;
-				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
-						continue;
 
-					int top = 0;
-
-					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
-
-					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
-
-					if (List != null) {
-						//wrapped.Item1.Left.Pixels -= 20;
-						wrapped.Item1.Width.Pixels += 20;
-					}
-					else {
-						//wrapped.Item1.Left.Pixels += 20;
-						//wrapped.Item1.Width.Pixels -= 20;
-					}
-				}
+			ConfigManager.PopulateElements(elements, this);
+			foreach (var element in elements) {
+				dataList.Append(element.Item1);
 			}
 		}
 	}
@@ -313,7 +300,7 @@ internal class UIModConfigHoverImage : UIImage
 		base.DrawSelf(spriteBatch);
 
 		if (IsMouseHovering) {
-			UIModConfig.Tooltip = HoverText;
+			UICommon.TooltipMouseText(HoverText);
 		}
 	}
 }
@@ -337,10 +324,10 @@ internal class UIModConfigHoverImageSplit : UIImage
 
 		if (IsMouseHovering) {
 			if (Main.mouseY < r.Y + r.Height / 2) {
-				UIModConfig.Tooltip = HoverTextUp;
+				UICommon.TooltipMouseText(HoverTextUp);
 			}
 			else {
-				UIModConfig.Tooltip = HoverTextDown;
+				UICommon.TooltipMouseText(HoverTextDown);
 			}
 		}
 	}
