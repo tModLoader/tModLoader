@@ -35,7 +35,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 			int order = 0;
 
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
+				var wrapped = ConfigManager.GetConfigElement(variable, subitem, order++);
 
 				if (List != null) {
 					wrapped.Item1.Left.Pixels -= 20;
