@@ -159,6 +159,8 @@ internal class ColorElement : ConfigElement
 				wrapped.Item1.Left.Pixels -= 20;
 				wrapped.Item1.Width.Pixels += 20;
 			}
+
+			Append(wrapped.Item1);
 		}
 	}
 

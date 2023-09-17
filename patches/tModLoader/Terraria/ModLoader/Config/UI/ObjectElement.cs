@@ -264,6 +264,7 @@ internal class ObjectElement : ConfigElement<object>
 				return;
 			}
 
+			elements = new();
 			ConfigManager.PopulateElements(elements, this);
 			foreach (var element in elements) {
 				dataList.Append(element.Item1);

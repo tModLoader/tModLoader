@@ -12,6 +12,7 @@ using Terraria.UI.Gamepad;
 using Terraria.Localization;
 using Terraria.GameContent;
 using Terraria.ModLoader.UI;
+using Microsoft.CodeAnalysis;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -27,7 +28,7 @@ public class UIModConfig : UIState
 	private UIScrollbar uIScrollbar;
 	private UIFocusInputTextField searchBar;
 
-	private UITextPanel<string> subConfigNamePanel;
+	private UIAutoScaleTextTextPanel<string> subConfigNamePanel;
 	private UITextPanel<LocalizedText> subConfigBackButton;
 
 	private UIButton<LocalizedText> saveConfigButton;
@@ -50,10 +51,12 @@ public class UIModConfig : UIState
 	private ModConfig config;// Config from ConfigManager.Configs
 	private ModConfig pendingConfig; // The clone of the config that is modified
 
-	private object CurrentPage => subPages.Peek();// UIConfigElement
-	private Stack<object> subPages = new();// UIConfigElement
+	private ConfigElement CurrentSubConfig => subConfigs.TryPeek(out var element) ? element : null;
+	private Stack<ConfigElement> subConfigs = new();
 	private List<Tuple<UIElement, UIElement>> configElements = new();
 	private bool hasUnsavedChanges = false;
+	private bool needsListRefresh = false;
+
 	private bool openedFromModder = false;
 	private Action modderOnClose = null;
 
@@ -89,15 +92,19 @@ public class UIModConfig : UIState
 			Height = { Pixels = 40 },
 			Top = { Pixels = 5 },
 		};
+		uIPanel.Append(subConfigBackButton);
 		// Don't append
 
 		// TODO: fix name overflowing
-		subConfigNamePanel = new UITextPanel<string>("") {
+		subConfigNamePanel = new UIAutoScaleTextTextPanel<string>("") {
 			Width = { Pixels = -185 - 85, Percent = 1f },
 			Height = { Pixels = 40 },
 			Top = { Pixels = 5 },
 			Left = { Pixels = 80 },
+			ScalePanel = true,
+			UseInnerDimensions = true,
 		};
+		uIPanel.Append(subConfigNamePanel);
 		// Don't append
 
 		var textBoxBackground = new UIPanel {
@@ -263,28 +270,34 @@ public class UIModConfig : UIState
 			uIScrollbar.ViewPosition -= evt.ScrollWheelValue;
 	}
 
-	public override void Draw(SpriteBatch spriteBatch)
+	public override void Update(GameTime gameTime)
 	{
-		base.Draw(spriteBatch);
+		base.Update(gameTime);
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+
+		// Updating the UI list (can't do in a normal method call because otherwise crash)
+		if (needsListRefresh) {
+			needsListRefresh = false;
+			UpdateConfigList(delayUpdate: false);
+		}
 	}
 
 	public override void OnActivate()
 	{
-		// Resetting and initializing various fields
+		// Resetting and initializing various 
 		pendingConfig = ConfigManager.GeneratePopulatedClone(config);
 		searchBar.SetText("");
 		uIScrollbar.ViewPosition = 0f;
-		subPages.Clear();
+		subConfigs.Clear();
 		ClearMessage(sound: false);
 
 		// Populating config elements now so they can save their state (such as being collapsed) if the UI list is refreshed
+		configList.Clear();
 		configElements.Clear();
 		ConfigManager.PopulateElements(configElements, pendingConfig);
-
-		RefreshUI();
+		RefreshUI(delayUpdate: false);
 	}
 
 	internal void Unload()
@@ -294,7 +307,7 @@ public class UIModConfig : UIState
 		pendingConfig = null;
 
 		configList?.Clear();
-		subPages?.Clear();
+		subConfigs?.Clear();
 		configElements?.Clear();
 	}
 
@@ -307,12 +320,13 @@ public class UIModConfig : UIState
 	}
 
 	#region UI Updating
-	public void RefreshUI()
+	public void RefreshUI(bool delayUpdate = true)
 	{
 		UpdateSeparatePage();
-		UpdateConfigList();
-		CheckSaveButton();
+		UpdateConfigList(delayUpdate);
+		UpdateSaveButtons();
 		UpdatePanelBackground();
+		UpdateHeaderPanel();
 
 		Recalculate();
 	}
@@ -321,25 +335,46 @@ public class UIModConfig : UIState
 	// TODO: separate pages
 	private void UpdateSeparatePage()
 	{
-		string configName = mod.DisplayName + " - " + config.DisplayName.Value;
-		string subPagesText = string.Join(" > ", subPages.Reverse());
-		subConfigNamePanel.SetText(configName + subPagesText);
+		subConfigBackButton.Remove();
+		subConfigNamePanel.Remove();
+
+		if (CurrentSubConfig != null) {
+			uIPanel.Append(subConfigBackButton);
+			uIPanel.Append(subConfigNamePanel);
+
+			string configName = mod.DisplayName + " - " + config.DisplayName.Value;
+			string subPagesText = string.Join(" > ", subConfigs.Reverse());
+			subConfigNamePanel.SetText(configName + subPagesText);
+		}
 	}
 
 	// Updates the main config list
-	private void UpdateConfigList()
+	private void UpdateConfigList(bool delayUpdate = true)
 	{
-		configList.Clear();
-
-		foreach (var element in configElements) {
-			configList.Add(element.Item1);
+		// Have to do this because if an element is drawing or updating and we modify the collection that is containing it
+		// That means we get a crash because the collection was modified during an enumeration
+		if (delayUpdate) {
+			needsListRefresh = true;
+			return;
 		}
 
+		// Filtering elements
+		var elements = configElements;
+		if (!string.IsNullOrEmpty(searchBar.CurrentString)) {
+			elements = (from element in configElements
+						where (element.Item2 is ConfigElement configElement && configElement.TextDisplayFunction().ToLower().Contains(searchBar.CurrentString.ToLower()))
+							|| element.Item2 is HeaderElement
+						select element).ToList();
+		}
+
+		// Adding the elements
+		configList.Clear();
+		configList.AddRange(elements.Select(e => e.Item1));
 		Recalculate();
 	}
 
 	// Checks if the config has been changed and updates the save and revert buttons
-	private void CheckSaveButton()
+	private void UpdateSaveButtons()
 	{
 		// Compare JSON because otherwise reference types act weird
 		string pendingJson = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettings);
@@ -354,16 +389,20 @@ public class UIModConfig : UIState
 		}
 	}
 
-	// TODO: main panel background
 	private void UpdatePanelBackground()
 	{
 		var backgroundColorAttribute = Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute)) as BackgroundColorAttribute;
 		uIPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
 	}
 
-	public void OpenSeparatePage(UIElement element)
+	private void UpdateHeaderPanel()
 	{
-		//subPages.Push(element);
+		headerTextPanel.SetText(mod.Name + " - " + pendingConfig.DisplayName.Value);
+	}
+
+	public void OpenSeparatePage(ConfigElement element)
+	{
+		subConfigs.Push(element);
 		UpdateSeparatePage();
 	}
 	#endregion
@@ -399,7 +438,7 @@ public class UIModConfig : UIState
 		notificationModalHeader.SetText(header);
 		notificationModalHeader.TextColor = color;
 
-		if (sendChatMessage && !Main.gameMenu && Main.InGameUI.CurrentState != Instance)
+		if (sendChatMessage)// && !Main.gameMenu && Main.InGameUI.CurrentState != this)
 			Main.NewText($"[c/{color.Hex3()}:{header}] - {text}");
 	}
 	#endregion

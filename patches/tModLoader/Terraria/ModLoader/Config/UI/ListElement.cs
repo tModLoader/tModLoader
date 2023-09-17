@@ -45,6 +45,7 @@ internal class ListElement : CollectionElement
 			for (int i = 0; i < ((IList)Data).Count; i++) {
 				int index = i;
 				var wrapped = ConfigManager.GetConfigElement(MemberInfo, Item, 0, Data, listType, index);
+				DataList.Add(wrapped.Item1);
 
 				wrapped.Item2.Left.Pixels += 24;
 				wrapped.Item2.Width.Pixels -= 30;

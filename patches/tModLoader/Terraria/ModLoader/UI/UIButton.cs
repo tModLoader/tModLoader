@@ -49,6 +49,8 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 
 		AltHoverPanelColor ??= HoverPanelColor;
 		AltHoverBorderColor ??= HoverBorderColor;
+
+		SetPanelColours();
 	}
 
 	protected void SetPanelColours()

@@ -107,6 +107,7 @@ internal class SetElement : CollectionElement
 				var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList().First(x => x.Name == "DataWrapperList");
 				int index = i;
 				var wrapped = ConfigManager.GetConfigElement(wrappermemberInfo, this, 0, DataWrapperList, genericType, i);
+				DataList.Add(wrapped.Item1);
 				wrapped.Item2.Left.Pixels += 24;
 				wrapped.Item2.Width.Pixels -= 24;
 

@@ -319,7 +319,7 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigAccepted");
+			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigSharedConfigChanged", modname, configname);
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
 				message = NetworkText.FromKey("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload");
