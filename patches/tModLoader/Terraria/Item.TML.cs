@@ -74,6 +74,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public bool AllowReforgeForStackableItem { get; set; }
 
 	/// <summary>
+	/// Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with.
+	/// <br/> Defaults to <see langword="false"/>.
+	/// </summary>
+	public bool useTurnOnAnimationStart { get; set; }
+
+	/// <summary>
 	/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
 	/// Defaults to null.<br/>
 	/// Used in vanilla by the following:<br/>
@@ -111,6 +117,13 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// When enabled and the player is hurt, <see cref="Player.channel"/> will be set to false, and the item animation will stop immediately
 	/// </summary>
 	public bool StopAnimationOnHurt { get; set; }
+
+	/// <summary>
+	/// When true, shooting any projectile from this item will make the owner face the projectile. Defaults to true.<br/>
+	/// The only 2 vanilla items that change this from true to false are the Grand Design and Beam Sword<br/>
+	/// This is different to <see cref="Item.useTurn"/>. Item.useTurn will prevent the player from changing their direction while the animation is playing if it is set to true.<br/>
+	/// </summary>
+	public bool ChangePlayerDirectionOnShoot { get; set; } = true;
 
 	private DamageClass _damageClass = DamageClass.Default;
 	/// <summary>
@@ -257,6 +270,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 			useAnimation--;
 			currentUseAnimationCompensation--;
 		}
+
+		// in vanilla, items without autoReuse get a frame where itemAnimation == 0 between uses allowing the direction change checks in HorizontalMovement to apply
+		// in tML we need to explicitly enable this behavior
+		if (type < ItemID.Count && useStyle != 0 && !autoReuse && !useTurn && shoot == 0 && damage > 0) {
+			useTurnOnAnimationStart = true;
+		}
 	}
 
 	private void UndoItemAnimationCompensations()
@@ -267,7 +286,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private void RestoreMeleeSpeedBehaviorOnVanillaItems()
 	{
-		if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse) {
+		bool isTool = pick > 0 || axe > 0 || hammer > 0 || type == ItemID.GravediggerShovel;
+		if (type < ItemID.Count && melee && (shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse || isTool)) {
 			if (noMelee)
 				DamageType = DamageClass.MeleeNoSpeed;
 			else

@@ -278,12 +278,12 @@ jobs:
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
                     
-      - name: Upload Debug Build Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: Debug Build
-          path: |
-            ./artifacts/Debug/
+      #- name: Upload Debug Build Artifact
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: Debug Build
+      #    path: |
+      #      ./artifacts/Debug/
             
       - name: Upload Release Build Artifact
         uses: actions/upload-artifact@v2

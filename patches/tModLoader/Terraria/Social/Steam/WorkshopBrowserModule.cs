@@ -112,7 +112,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		string itemFolder = Path.Combine(workshopFolder, "content", ModLoader.Engine.Steam.TMLAppID_t.ToString(), item.PublishId.m_ModPubId.ToString());
 
 		// Await for the directory to be made for a new install, and assume all the .tmods are in it once completed
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 30; i++) {
 			Thread.Sleep(500);
 
 			if (Directory.Exists(itemFolder))
@@ -120,6 +120,10 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 			Logging.tML.Info($"Workshop Folder Missing. Awaiting. Attempt {i} / 20");
 		}
+
+		if (!Directory.Exists(itemFolder))
+			throw new Exception($"Workshop Item {item.DisplayNameClean} Failed to Install during this play session!\n" +
+				$"Please restart the game to resolve.");
 
 		// If this is an update, we also need to check that the new .tmod matches the ModDownloadItem
 		Logging.tML.Info("Validating Installation Has Completed: Step 2 / 2");

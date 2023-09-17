@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Projectiles
 	// 3. Override OnHitNPC: If not immune, when it hits it manually set an immune other than 10
 	// 	Ex: Arkhalis: Sets it to 5
 	// 	Ex: Sharknado Minion: Sets to 20
-	// 	Video: https://gfycat.com/DisloyalImprobableHoatzin Notice how Sharknado minion hits prevent Arhalis hits for a brief moment.
+	// 	Video: https://media-1.discordapp.net/attachments/242228770855976960/1150275205017636995/Projectile_Immunity_Sharknado_Arkhalis_Example.mp4 Notice how Sharknado minion hits prevent Arkhalis hits for a brief moment.
 	// 4. Projectile.usesIDStaticNPCImmunity and Projectile.idStaticNPCHitCooldown: Specifies that a type of projectile has a shared immunity timer for each npc.
 	// 	Use this if you want other projectiles a chance to damage, but don't want the same projectile type to hit an npc rapidly.
 	// 	Ex: Ghastly Glaive is the only one who uses this.

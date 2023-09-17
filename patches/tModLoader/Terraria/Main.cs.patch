@@ -237,7 +237,7 @@
  	public static int maxTilesY = (int)bottomWorld / 16 + 1;
  	public const int sectionWidth = 200;
  	public const int sectionHeight = 150;
-@@ -683,11 +_,11 @@
+@@ -683,12 +_,12 @@
  	public const int maxItemText = 20;
  	public const int maxPlayers = 255;
  	public static int maxNetPlayers = 255;
@@ -251,9 +251,11 @@
 +	public static readonly int maxNPCs = 200;
 -	private static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
 +	internal static UICharacterSelect _characterSelectMenu = new UICharacterSelect();
- 	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
+-	private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
++	internal static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
+ 	public static int maxRain = 750;
 @@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
@@ -942,7 +944,7 @@
  	}
  
  	public void SetWorldName(string world)
-@@ -4110,12 +_,42 @@
+@@ -4110,20 +_,52 @@
  		autoPass = true;
  	}
  
@@ -986,6 +988,16 @@
  	}
  
  	public void AutoHost()
+ 	{
++		ModLoader.ModLoader.OnSuccessfulLoad += () => { // Fix #3742
+ 		menuMultiplayer = true;
+ 		menuServer = true;
+ 		ClearPendingPlayerSelectCallbacks();
+ 		menuMode = 1;
++		};
+ 	}
+ 
+ 	public void loadLib(string path)
 @@ -4148,7 +_,7 @@
  	{
  		NeverSleep();
@@ -2822,7 +2834,7 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,43 @@
+@@ -16536,36 +_,51 @@
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
  				}
  
@@ -2836,8 +2848,16 @@
  				numLines++;
  			}
  
++			/* TML: Show mana cost based on Player.GetManaCost method and show UseMana tooltip on Space Gun with Meteor Armor. There has been suggestions to show "Uses X mana (Y% reduction)", but that seems more suited for a mod. This change brings ModifyManaCost behavior in line with Player.manaCost behavior.
  			if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
++				toolTipNames[numLines] = "UseMana";
++				numLines++;
++			}
++			*/
++
++			if (item.mana > 0) {
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", player[myPlayer].GetManaCost(item));
 +				toolTipNames[numLines] = "UseMana";
  				numLines++;
  			}
@@ -4941,7 +4961,7 @@
  				num = 4;
  				text3 = Lang.inter[99].Value;
  				int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
-@@ -38346,27 +_,48 @@
+@@ -38346,27 +_,49 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
  			}
@@ -4954,6 +4974,7 @@
 +			InfoDisplayLoader.ModifyDisplayValue(info, ref text2);
 +			InfoDisplayLoader.ModifyDisplayName(info, ref text3);
 +			InfoDisplayLoader.ModifyDisplayColor(info, ref infoTextColor, ref infoTextShadowColor);
++			InfoDisplayLoader.ModifyDisplayParameters(info, ref text2, ref text3, ref infoTextColor, ref infoTextShadowColor);
  
  			if (!(text2 != ""))
  				continue;

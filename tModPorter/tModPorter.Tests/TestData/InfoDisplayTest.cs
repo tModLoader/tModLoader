@@ -20,3 +20,10 @@ public class GlobalInfoDisplayTest : GlobalInfoDisplay
 			displayColor = Color.Red;
 	}
 }
+
+public class GlobalInfoDisplayTest2 : GlobalInfoDisplay
+{
+	public override void ModifyDisplayName(InfoDisplay currentDisplay, ref string displayName)
+	{
+	}
+}

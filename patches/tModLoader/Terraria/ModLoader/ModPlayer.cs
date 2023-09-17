@@ -99,7 +99,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Similar to UpdateDead, except this is only called when the player is dead. If this is called, then ResetEffects will not be called.
+	/// Similar to <see cref="ResetEffects"/>, except this is only called when the player is dead. If this is called, then <see cref="ResetEffects"/> will not be called.
 	/// </summary>
 	public virtual void UpdateDead()
 	{
@@ -1250,5 +1250,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
 		itemConsumedCallback = null;
 		return null;
+	}
+
+	/// <summary>
+	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// </summary>
+	/// <param name="item">The item being picked up</param>
+	/// <returns></returns>
+	public virtual bool OnPickup(Item item)
+	{
+		return true;
 	}
 }

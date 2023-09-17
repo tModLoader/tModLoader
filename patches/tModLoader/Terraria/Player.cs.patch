@@ -744,6 +744,34 @@
  	public int chest = -1;
  	public int chestX;
  	public int chestY;
+@@ -1423,8 +_,11 @@
+ 	public PlayerInteractionAnchor tileEntityAnchor;
+ 	public DoorOpeningHelper doorHelper;
+ 	public ShoppingSettings currentShoppingSettings = ShoppingSettings.NotInShop;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Head"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cHead;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Body"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cBody;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Legs"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLegs;
+ 	public int cHandOn;
+ 	public int cHandOff;
+@@ -1445,10 +_,15 @@
+ 	public int cBackpack;
+ 	public int cTail;
+ 	public int cShieldFallback;
++	/// <summary>The armor shader ID applied to the Hook equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cGrapple;
++	/// <summary>The armor shader ID applied to the Mount equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMount;
++	/// <summary>The armor shader ID applied to the Minecart equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMinecart;
++	/// <summary>The armor shader ID applied to the Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cPet;
++	/// <summary>The armor shader ID applied to the Light Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLight;
+ 	public int cYorai;
+ 	public int cPortableStool;
 @@ -1458,6 +_,12 @@
  	public int cMinion;
  	public int cLeinShampoo;
@@ -3733,6 +3761,17 @@
  					}
  				}
  				else {
+@@ -19467,8 +_,10 @@
+ 				}
+ 			}
+ 
++			/* Moved into ItemCheck
+ 			if (selectedItem != 58)
+ 				SmartSelectLookup();
++			*/
+ 
+ 			if (stoned != lastStoned) {
+ 				if (whoAmI == Main.myPlayer && stoned) {
 @@ -19566,11 +_,14 @@
  					}
  				}
@@ -4379,7 +4418,7 @@
  			if (base.Hitbox.Intersects(hitbox)) {
 -				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
 +				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					if (!ItemLoader.OnPickup(Main.item[j], this)) {
++					if (!CombinedHooks.OnPickup(Main.item[j], this)) {
 +						Main.item[j] = new Item();
 +						if (Main.netMode == 1)
 +							NetMessage.SendData(21, -1, -1, null, j);
@@ -5839,7 +5878,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,54 @@
+@@ -33268,6 +_,59 @@
  			}
  		}
  
@@ -5891,6 +5930,11 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
++
++		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
++		if (selectedItem != 58)
++			SmartSelectLookup();
++
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_HandleMPItemAnimation(item);
@@ -5903,17 +5947,19 @@
  				FreeUpPetsAndMinions(item);
  
  			if (flag3)
-@@ -33323,6 +_,9 @@
- 		if (!flag4)
- 			channel = false;
- 
+@@ -33339,13 +_,25 @@
+ 				itemHeight = drawHitbox.Height;
+ 				itemWidth = drawHitbox.Width;
+ 			}
++		// The itemAnimation > 0 block has been split in 2 parts (above and below) to allow for the insertion of labels
++		}
 +		goto ReleaseUseItem;
-+
+ 
 +		DecrementItemAnimation:
- 		Item item2 = ((itemAnimation > 0) ? lastVisualizedSelectedItem : item);
- 		Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
- 		compositeFrontArm.enabled = false;
-@@ -33345,7 +_,13 @@
++
++		if (itemAnimation > 0) {
+ 			itemAnimation--;
+ 			if (itemAnimation == 0 && whoAmI == Main.myPlayer)
  				PlayerInput.TryEndingFastUse();
  		}
  
@@ -6118,6 +6164,15 @@
  		ItemCheck_UseWiringTools(sItem);
  		ItemCheck_UseLawnMower(sItem);
  		ItemCheck_PlayInstruments(sItem);
+@@ -33858,7 +_,7 @@
+ 		else {
+ 			toolTime--;
+ 			if (toolTime < 0)
+-				toolTime = sItem.useTime;
++				toolTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem); //sItem.useTime;
+ 		}
+ 
+ 		ItemCheck_TryDestroyingDrones(sItem);
 @@ -33898,7 +_,10 @@
  			Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
  		}
@@ -6666,6 +6721,16 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36708,7 +_,8 @@
+ 		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
+ 		bool flag = true;
+ 		int type = sItem.type;
+-		if (type == 723 || type == 3611)
++		//if (type == 723 || type == 3611)
++		if (!sItem.ChangePlayerDirectionOnShoot)
+ 			flag = false;
+ 
+ 		Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
 @@ -36824,6 +_,16 @@
  			num3 = vector5.Y;
  		}
@@ -6818,6 +6883,15 @@
  		if (Main.dedServ)
  			return;
  
+@@ -39713,7 +_,7 @@
+ 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
+ 			toolTime = 1;
+ 
+-		if (grappling[0] > -1) {
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+ 			pulley = false;
+ 			pulleyDir = 1;
+ 			if (controlRight)
 @@ -39780,7 +_,10 @@
  			}
  

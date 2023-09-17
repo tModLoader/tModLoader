@@ -38,6 +38,10 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override bool? UseItem(Player player) {
+			if (player.whoAmI != Main.myPlayer) {
+				return true;
+			}
+
 			if (player.altFunctionUse == 2) {
 				Item.holdStyle++;
 				if (Item.holdStyle > ItemHoldStyleID.HoldRadio) {
