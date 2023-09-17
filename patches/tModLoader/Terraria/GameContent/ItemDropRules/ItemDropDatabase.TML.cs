@@ -205,7 +205,7 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.LunarOre, 1, 90, 110));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.MeowmereMinecart, 10));
 		RegisterToItem(item, ItemDropRule.ByCondition(new Conditions.NoPortalGun(), ItemID.PortalGun));
-		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Meowmere, ItemID.Terrarian, ItemID.StarWrath, ItemID.SDMG, ItemID.Celeb2, ItemID.LastPrism, ItemID.LunarFlareBook, ItemID.RainbowCrystalStaff, 3569));
+		RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 2, ItemID.Meowmere, ItemID.Terrarian, ItemID.StarWrath, ItemID.SDMG, ItemID.Celeb2, ItemID.LastPrism, ItemID.LunarFlareBook, ItemID.RainbowCrystalStaff, ItemID.MoonlordTurretStaff));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.MoonLordCore));
 
 		item = ItemID.BossBagBetsy;
