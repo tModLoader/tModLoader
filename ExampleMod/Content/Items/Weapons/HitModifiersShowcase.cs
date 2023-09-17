@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Weapons
 	/// <br/>
 	/// The math taught in this example also assumes the player is in a normal world. <br/> 
 	/// Use right click to switch modes.<br/>
-	/// This example is purely for demonstation purposes only, it will not work in multiplayer. This should also not be considered correct code for a working dual-use weapon. <br/>
+	/// This example is purely for demonstration purposes only, it will not work in multiplayer. This should also not be considered correct code for a working dual-use weapon. <br/>
 	/// </summary>
 	public class HitModifiersShowcase : ModItem
 	{
@@ -53,6 +53,10 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override bool? UseItem(Player player) {
+			if (player.whoAmI != Main.myPlayer) {
+				return true;
+			}
+
 			if (player.altFunctionUse == 2) {
 				mode++;
 				if (mode >= numberOfModes) {
@@ -117,8 +121,8 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 
 			// Below is an example of using ModifyHitInfo to alter the final value of damage, between Modify and OnHit hooks.
-			// This 'backdoor' is a replacmenet for the old style of modifiers which allowed modifying the damage via `ref`
-			// Please only use this if absolutely necessary, as multiple mods freely altering the damage results will create incompatible or unintutive player experiences.
+			// This 'backdoor' is a replacement for the old style of modifiers which allowed modifying the damage via `ref`
+			// Please only use this if absolutely necessary, as multiple mods freely altering the damage results will create incompatible or unintuitive player experiences.
 			//
 			// For example, the effect below could be better implemented by checking `player.GetWeaponDamage(Item)` and adding to FinalDamage.Base, SourceDamage.Base, SourceDamage.Flat or FlatBonusDamage
 			/*
@@ -160,8 +164,9 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo) {
 			// These effects of this weapon should only run on the player damaging another, this check does that.
-			if (player != Main.LocalPlayer)
+			if (player != Main.LocalPlayer) {
 				return;
+			}
 
 			if (mode == 6) {
 				// This AddBuff is not quiet because it is affecting another player. This allows it to broadcast to all players that the target has a buff. (Main.pvpBuff must be set to true for other players to be able to give buffs to a player)

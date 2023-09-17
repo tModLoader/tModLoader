@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -167,7 +168,7 @@ public static class CombinedHooks
 		if (player.resistCold && projectile.coldDamage)
 			modifiers.IncomingDamageMultiplier *= 0.7f;
 
-		if (!projectile.reflected) {
+		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
 			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
 			if (Main.GameModeInfo.IsJourneyMode) {
 				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
@@ -306,5 +307,10 @@ public static class CombinedHooks
 	{
 		PlayerLoader.FrameEffects(player);
 		EquipLoader.EquipFrameEffects(player);
+	}
+
+	public static bool OnPickup(Item item, Player player)
+	{
+		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
 	}
 }

@@ -543,13 +543,13 @@
  						NetMessage.TrySendData(3, whoAmI);
  					}
  					else {
-@@ -1920,7 +_,13 @@
+@@ -1920,16 +_,25 @@
  				float itemRotation = reader.ReadSingle();
  				int itemAnimation = reader.ReadInt16();
  				player15.itemRotation = itemRotation;
 +
 +				// TML changes how item synchronization works, making it based on remote players' already-synchronized input.
-+				// Setting itemAnimation in this packet would interfere with that.
++				// Setting itemAnimation in this packet would interfere with that. #ItemTimeOnAllClients
 +				/*
  				player15.itemAnimation = itemAnimation;
 +				*/
@@ -557,6 +557,18 @@
  				player15.channel = player15.inventory[player15.selectedItem].channel;
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(41, -1, whoAmI, null, num226);
+ 
++				// Sound is played on animation start #ItemTimeOnAllClients
++				/*
+ 				if (Main.netMode == 1) {
+ 					Item item6 = player15.inventory[player15.selectedItem];
+ 					if (item6.UseSound != null)
+ 						SoundEngine.PlaySound(item6.UseSound, player15.Center);
+ 				}
++				*/
+ 
+ 				break;
+ 			}
 @@ -2049,7 +_,11 @@
  				if (Main.tile[num237, num238] == null)
  					Main.tile[num237, num238] = new Tile();

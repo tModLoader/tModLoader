@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -136,6 +137,11 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="timeLeft"></param>
+	public virtual void OnKill(Projectile projectile, int timeLeft)
+	{
+	}
+
+	[Obsolete("Renamed to OnKill", error: true)] // Remove in 2023_10
 	public virtual void Kill(Projectile projectile, int timeLeft)
 	{
 	}

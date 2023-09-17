@@ -94,6 +94,11 @@ Mods: {
 		}
 
 		Items: {
+			ExampleStaff: {
+				// DisplayName: Example Staff
+				// Tooltip: This is a modded magic staff weapon
+			}
+
 			ExampleLastPrism: {
 				// DisplayName: Example Last Prism
 				/* Tooltip:
@@ -1112,6 +1117,8 @@ Mods: {
 			// ExampleTravellingMerchantEmote.Command: extravelingmerchant
 			// MinionBossEmote.Command: exminionboss
 		}
+
+		// NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 	}
 }
 

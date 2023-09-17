@@ -1,21 +1,18 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
-@@ -9,10 +_,14 @@
- using Terraria.Localization;
- using Terraria.Social;
- using Terraria.UI;
-+using Terraria.Utilities;
-+using Terraria.ModLoader;
-+using System.Linq;
-+using Terraria.ModLoader.UI;
+@@ -12,8 +_,11 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
 -public class UICharacterListItem : UIPanel
 +public partial class UICharacterListItem : UIPanel
  {
++	// Added by TML
++	public PlayerFileData Data => _data;
++
  	private PlayerFileData _data;
  	private Asset<Texture2D> _dividerTexture;
+ 	private Asset<Texture2D> _innerPanelTexture;
 @@ -43,6 +_,9 @@
  		_buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
  		_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");

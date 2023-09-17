@@ -312,8 +312,10 @@ public static class TagIO
 		}
 
 		name = StringHandler.reader(r);
-		return PayloadHandlers[id].Read(r);
+		return ReadTagImpl(id, r);
 	}
+
+	public static object? ReadTagImpl(int id, BinaryReader r) => PayloadHandlers[id].Read(r);
 
 	public static void WriteTag(string name, object tag, BinaryWriter w)
 	{

@@ -1509,7 +1509,8 @@ public static class ItemLoader
 
 		OnStack(destination, source, numTransferred);
 
-		if (source.favorited) {
+		bool isSplittingToHand = numTransferred < source.stack && destination == Main.mouseItem;
+		if (source.favorited && !isSplittingToHand) {
 			destination.favorited = true;
 			source.favorited = false;
 		}

@@ -112,7 +112,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
 		}
 
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			// If we are the original projectile running on the owner, spawn the 5 child projectiles.
 			if (Projectile.owner == Main.myPlayer && Projectile.ai[1] == 0) {
 				for (int i = 0; i < 5; i++) {

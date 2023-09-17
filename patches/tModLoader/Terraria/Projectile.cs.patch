@@ -31,7 +31,7 @@
 +
 +	/// <summary>
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
-+	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
++	/// <br/> In <see cref="ModProjectile.OnKill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
 +	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <br/> Defaults to <see langword="false"/>.
@@ -1758,7 +1758,7 @@
  		}
 +
 +		// Patch note: End of Projectile.Kill().
-+		ProjectileLoader.Kill(this, num);
++		ProjectileLoader.OnKill(this, num);
  
  		active = false;
  	}
