@@ -198,10 +198,10 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <item/>
 	/// All <see cref="Conditions"/> return true
 	/// <item/>
-	/// All added <see cref="CanShimmerCallBack"/> return true
-	/// <item/>
 	/// None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is false (Used by vanilla
 	/// for progression protection)
+	/// <item/>
+	/// All added <see cref="CanShimmerCallBack"/> return true
 	/// <item/>
 	/// All <see cref="SystemLoader.CanModShimmer(ShimmerTransformation, IModShimmerable)"/>
 	///	<item/>
@@ -211,8 +211,8 @@ public abstract class ShimmerTransformation : ICloneable
 	public bool CanModShimmer_Transformation(IModShimmerable shimmerable)
 		=> !Disabled
 		&& Conditions.All((condition) => condition.IsMet())
-		&& CheckCanShimmerCallBacks(shimmerable)
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.IsItemResult(ItemID.Bone) && !NPC.downedBoss3 || result.IsItemResult(ItemID.LihzahrdBrick) && !NPC.downedGolemBoss))
+		&& CheckCanShimmerCallBacks(shimmerable)
 		&& SystemLoader.CanModShimmer(this, shimmerable)
 		&& (GetCurrentAvailableNPCSlots() >= GetSpawnCount<NPCShimmerResult>());
 
