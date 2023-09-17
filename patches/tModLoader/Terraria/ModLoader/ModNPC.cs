@@ -903,7 +903,14 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	public ShimmerTransformation<NPC> CreateShimmerTransformation() => new(NPC);
 
+	/// <summary>
+	/// Return false to prevent this NPC from shimmering, shouldn't have side effects
+	/// </summary>
 	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Allows you to create effects when this NPC shimmers
+	/// </summary>
 	public virtual void OnShimmer()
 	{
 	}

@@ -1340,7 +1340,14 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	public ShimmerTransformation<Item> CreateShimmerTransformation() => new(Item);
 
+	/// <summary>
+	/// Return false to prevent this Item from shimmering, shouldn't have side effects
+	/// </summary>
 	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Allows you to create effects when this Item shimmers
+	/// </summary>
 	public virtual void OnShimmer()
 	{
 	}

@@ -1141,7 +1141,9 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 	}
 
+	/// <inheritdoc cref="ModItem.CanShimmer"/>
 	public virtual bool CanShimmer(Item item) => true;
 
+	/// <inheritdoc cref="ModItem.OnShimmer"/>
 	public virtual void OnShimmer(Item item) { }
 }

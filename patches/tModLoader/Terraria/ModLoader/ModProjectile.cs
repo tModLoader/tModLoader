@@ -423,7 +423,14 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	public ShimmerTransformation<Projectile> CreateShimmerTransformation() => new(Projectile);
 
+	/// <summary>
+	/// Return false to prevent this Projectile from shimmering, shouldn't have side effects
+	/// </summary>
 	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Allows you to create effects when this Projectile shimmers
+	/// </summary>
 	public virtual void OnShimmer()
 	{
 	}
