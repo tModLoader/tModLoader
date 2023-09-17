@@ -456,6 +456,32 @@ public static partial class SystemLoader
 		}
 	}
 
+	/// <inheritdoc cref="ModSystem.CanModShimmer(ShimmerTransformation, IModShimmerable)"/>
+	public static bool CanModShimmer(ShimmerTransformation transformation, IModShimmerable modShimmerable)
+	{
+		foreach (var system in HookCanShimmer.Enumerate()) {
+			if (!system.CanModShimmer(transformation, modShimmerable))
+				return false;
+		}
+		return true;
+	}
+
+	/// <inheritdoc cref="ModSystem.ModifyModShimmer(ShimmerTransformation, IModShimmerable)"/>
+	public static void ModifyModShimmer(ShimmerTransformation transformation, IModShimmerable modShimmerable)
+	{
+		foreach (var system in HookModifyShimmer.Enumerate()) {
+			system.ModifyModShimmer(transformation, modShimmerable);
+		}
+	}
+
+	/// <inheritdoc cref="ModSystem.OnModShimmer(ShimmerTransformation, IModShimmerable, IEnumerable{IModShimmerable})"/>
+	public static void OnModShimmer(ShimmerTransformation transformation, IModShimmerable modShimmerable, IEnumerable<IModShimmerable> shimmerables)
+	{
+		foreach (var system in HookOnShimmer.Enumerate()) {
+			system.OnModShimmer(transformation, modShimmerable, shimmerables);
+		}
+	}
+
 	public static void ModifyHardmodeTasks(List<GenPass> passes)
 	{
 		foreach (var system in HookModifyHardmodeTasks.Enumerate()) {

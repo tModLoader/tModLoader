@@ -232,6 +232,9 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShim
 		}
 	}
 
+	/// <summary>
+	/// Similar to <see cref="NPC.shimmerTransparency"/> except only increases for a projectile that is transforming using <see cref="ShimmerTransformation"/>
+	/// </summary>
 	public float shimmerTransformTime;
 	public bool PreventingChainedShimmers { get; set; }
 
@@ -241,23 +244,24 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShim
 			return;
 
 		// Code roughly from NPC.cs
-		if (shimmerWet && CanShimmer()) { // If in shimmer and can shimmer
+		if (CanShimmer()) { // If can shimmer
 			shimmerTransformTime += 0.01f;
 			if (Main.netMode != NetmodeID.MultiplayerClient && shimmerTransformTime > 0.9f && !PreventingChainedShimmers) {
-				shimmerTransformTime = 0.9f;
+				shimmerTransformTime = 0.9f; // server/single-client side we stop at 0.9 bc NPC does
 				ShimmerTransformation<Projectile>.TryModShimmer(this);
+				OnShimmer();
 			}
 
 			if (shimmerTransformTime > 1f)
-				shimmerTransformTime = 1f;
+				shimmerTransformTime = 1f; // mult-client side we stop at 1 bc NPC does
 		}
 		else if (shimmerTransformTime > 0f) {
-			shimmerTransformTime -= 0.01f;
+			shimmerTransformTime -= 0.01f; // NPCs use 0.001 usually and 0.1 when hit, since projectiles can't they appear at the same rate they disappear
 			if (shimmerTransformTime < 0f)
 				shimmerTransformTime = 0f;
 		}
 		else
-			PreventingChainedShimmers = false; // Reset for allowing shimmer again, only reset after timer is below zero again
+			PreventingChainedShimmers = false; // Reset for allowing shimmer again, only reset after timer is zero again
 	}
 
 	/// <summary> <inheritdoc/><br/> For this <see cref="Projectile"/> override, calls <see cref="ProjectileLoader.OnShimmer(Projectile)"/> </summary>

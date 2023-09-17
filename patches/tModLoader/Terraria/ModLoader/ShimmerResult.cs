@@ -9,12 +9,18 @@ namespace Terraria.ModLoader;
 /// <param name="Count"> The number of this result to spawn, true count will be multiplied by the stack size of the <see cref="IModShimmerable"/> source </param>
 public abstract record class ModShimmerResult(int Count = 1)
 {
+	/// <summary> Checks using 'is' keyword and for <see cref="TypedShimmerResult"/> types checks <see cref="TypedShimmerResult.Type"/> as well. </summary>
 	public abstract bool IsSameResultType(ModShimmerResult result);
 
+	/// <summary> Used to check if this is an <see cref="Item"/> of <paramref name="type"/> </summary>
 	public virtual bool IsItemResult(int type)
 		=> false;
+
+	/// <summary> Used to check if this is an <see cref="NPC"/> of <paramref name="type"/> </summary>
 	public virtual bool IsNPCResult(int type)
 		=> false;
+
+	/// <summary> Used to check if this is an <see cref="Projectile"/> of <paramref name="type"/> </summary>
 	public virtual bool IsProjectileResult(int type)
 		=> false;
 
@@ -51,7 +57,10 @@ public record class CoinLuckShimmerResult(int Count = 1) : ModShimmerResult(Coun
 
 /// <param name="Type"> The type of the to spawn </param>
 /// <param name="Count"> <inheritdoc/> </param>
-/// <inheritdoc cref="ModShimmerResult(int)"/>
+/// <summary>
+/// <inheritdoc cref="ModShimmerResult(int)"/><br/> Using <see cref="ModShimmerResult.IsItemResult(int)"/> and its relatives, this type can be used for inter-mod
+/// compatibility when implementing custom spawning behaviour across known types
+/// </summary>
 public abstract record class TypedShimmerResult(int Type, int Count = 1) : ModShimmerResult(Count);
 
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
@@ -62,11 +71,12 @@ public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerRes
 	public override bool IsSameResultType(ModShimmerResult result)
 		=> result is ItemShimmerResult r && r.Type == Type;
 
-	public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<Item> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
 			Item item = Main.item[Item.NewItem(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type)];
+			item.position -= item.Size / 2; // Centre
 			item.stack = Math.Min(item.maxStack, spawnTotal);
 			item.shimmerTime = 1f;
 			item.shimmered = true;
@@ -84,7 +94,7 @@ public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerRes
 public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResult(Type, Count)
 {
 	/// <summary>
-	/// Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes when shimmering NPCs. If you have no reason to disable,
+	/// Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes when shimmering NPCs. Defaults to true. If you have no reason to disable,
 	/// don't. Here are the effects: <code>
 	/// newNPC.extraValue = nPC.extraValue;
 	/// newNPC.CopyInteractions(nPC);
@@ -98,17 +108,33 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 	/// newNPC.buffTime = nPC.buffTime[..];
 	///</code>
 	/// </summary>
-	public bool KeepVanillaTransformationConventions { get; init; }
+	public bool KeepVanillaTransformationConventions { get; init; } = true;
+	/// <summary> Passed to <see cref="NPC.NewNPC(DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/> </summary>
+	public int Start { get; init; }
+	/// <summary> Passed to <see cref="NPC.NewNPC(DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/> </summary>
+	public float AI0 { get; init; }
+	/// <summary> Passed to <see cref="NPC.NewNPC(DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/> </summary>
+	public float AI1 { get; init; }
+	/// <summary> Passed to <see cref="NPC.NewNPC(DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/> </summary>
+	public float AI2 { get; init; }
+	/// <summary> Passed to <see cref="NPC.NewNPC(DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/> </summary>
+	public float AI3 { get; init; }
+
+	/// <summary> Wraps <see cref="AI0"/>, <see cref="AI1"/>, <see cref="AI2"/>, and <see cref="AI3"/> </summary>
+	public float[] AI { get => new float[4] { AI0, AI1, AI2, AI3 }; init { AI0 = value[0]; AI1 = value[1]; AI2 = value[2]; AI3 = value[3]; } }
+	/// <summary> Assigned to <see cref="NPC.scale"/> </summary>
+	public float? Scale { get; init; }
 	public override bool IsSameResultType(ModShimmerResult result)
 		=> result is NPCShimmerResult r && r.Type == Type;
 	public override bool IsNPCResult(int type)
 		=> Type == type;
 
-	public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<NPC> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type);
+			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type, Start, AI0, AI1, AI2, AI3);
+			newNPC.position -= newNPC.Size / 2; // Centre
 
 			//syncing up some values that vanilla intentionally sets after SetDefaults() is NPC transformations, mostly self explanatory
 			if (shimmerable is NPC nPC && KeepVanillaTransformationConventions) {
@@ -123,10 +149,15 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 				newNPC.buffType = nPC.buffType[..]; // Pretty sure the manual way vanilla does it is actually the slowest way that isn't LINQ
 				newNPC.buffTime = nPC.buffTime[..];
 			}
+			if (shimmerable is Projectile projectile && KeepVanillaTransformationConventions) {
+				newNPC.shimmerTransparency = projectile.shimmerTransformTime;
+			}
 			else {
 				newNPC.shimmerTransparency = 1f;
 			}
 			newNPC.velocity = shimmerable.Velocity + GetShimmerSpawnVelocityModifier();
+			if (Scale != null)
+				newNPC.scale = Scale.Value;
 			newNPC.TargetClosest();
 
 			if (Main.netMode == NetmodeID.Server) {
@@ -148,22 +179,52 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 /// <param name="Knockback"> Passed to <see cref="Projectile.NewProjectile(DataStructures.IEntitySource, Vector2, Vector2, int, int, float, int, float, float, float)"/> </param>
 /// <param name="Friendly"> Assigned to <see cref="Projectile.friendly"/> </param>
 /// <param name="Hostile"> Assigned to <see cref="Projectile.hostile"/> </param>
-public record class ProjectileShimmerResult(int Type, int Damage, int Knockback, bool Friendly, bool Hostile, int Count = 1) : TypedShimmerResult(Type, Count)
+public record class ProjectileShimmerResult(int Type, int Damage, int Knockback, bool Friendly = false, bool Hostile = false, int Count = 1) : TypedShimmerResult(Type, Count)
 {
+	/// <summary> Passed to <see cref="Projectile.NewProjectile(DataStructures.IEntitySource, Vector2, Vector2, int, int, float, int, float, float, float)"/> </summary>
+	public float AI0 { get; init; }
+	/// <summary> Passed to <see cref="Projectile.NewProjectile(DataStructures.IEntitySource, Vector2, Vector2, int, int, float, int, float, float, float)"/> </summary>
+	public float AI1 { get; init; }
+	/// <summary> Passed to <see cref="Projectile.NewProjectile(DataStructures.IEntitySource, Vector2, Vector2, int, int, float, int, float, float, float)"/> </summary>
+	public float AI2 { get; init; }
+	/// <summary> Wraps <see cref="AI0"/>, <see cref="AI1"/>, and <see cref="AI2"/> </summary>
+	public float[] AI { get => new float[3] { AI0, AI1, AI2 }; init { AI0 = value[0]; AI1 = value[1]; AI2 = value[2]; } }
+	/// <summary> Assigned to <see cref="Projectile.scale"/> </summary>
+	public float? Scale { get; init; }
+
+	/// <summary>
+	/// If true, when spawning a projectile this will check if the entity shimmering into this was a projectile, and if it was, will set <see cref="Projectile.friendly"/>
+	/// and <see cref="Projectile.hostile"/> to its values. <br/> Overrides <see cref="Hostile"/> and <see cref="Friendly"/>.
+	/// </summary>
+	public bool TryCopyHostileFriendly;
 	public override bool IsProjectileResult(int type)
 		=> Type == type;
 	public override bool IsSameResultType(ModShimmerResult result)
 		=> result is ProjectileShimmerResult r && r.Type == Type;
 
-	public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
 	{
 		int spawnTotal = Count * allowedStack;
 		while (spawnTotal > 0) {
-			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback);
+			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback, ai0: AI0, ai1: AI1, ai2: AI2);
 			projectile.position -= projectile.Size / 2;
-			projectile.hostile = Hostile;
-			projectile.friendly = Friendly;
-			projectile.netUpdate = true;
+			if (Scale != null)
+				projectile.scale = Scale.Value;
+
+			if (TryCopyHostileFriendly && shimmerable is Projectile oldProjectile) {
+				projectile.hostile = oldProjectile.hostile;
+				projectile.friendly = oldProjectile.friendly;
+			}
+			else {
+				projectile.hostile = Hostile;
+				projectile.friendly = Friendly;
+			}
+
+			if (Main.netMode == NetmodeID.Server) {
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+				projectile.netUpdate = true;
+			}
+
 			yield return projectile;
 
 			spawnTotal--;

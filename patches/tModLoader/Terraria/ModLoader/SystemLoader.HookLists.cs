@@ -165,6 +165,10 @@ partial class SystemLoader
 
 	private static HookList HookTileCountsAvailable = AddHook<DelegateTileCountsAvailable>(s => s.TileCountsAvailable);
 
+	private static HookList HookCanShimmer = AddHook<Func<ShimmerTransformation, IModShimmerable, bool>>(s => s.CanModShimmer);
+	private static HookList HookModifyShimmer = AddHook<Action<ShimmerTransformation, IModShimmerable>>(s => s.ModifyModShimmer);
+	private static HookList HookOnShimmer = AddHook<Action<ShimmerTransformation, IModShimmerable, IEnumerable<IModShimmerable>>>(s => s.OnModShimmer);
+
 	private static HookList HookModifyHardmodeTasks = AddHook<Action<List<GenPass>>>(s => s.ModifyHardmodeTasks);
 
 	private static HookList HookHijackGetData = AddHook<DelegateHijackGetData>(s => s.HijackGetData);

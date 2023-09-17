@@ -418,8 +418,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Creates a <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt; resulting this ModItem. This method only creates the
-	/// <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game. Call
-	/// this at the very beginning when creating a new <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt;. <br/>
+	/// <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game.
+	/// <br/> Call this at the very beginning when creating a new <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt;.
 	/// </summary>
 	public ShimmerTransformation<Projectile> CreateShimmerTransformation() => new(Projectile);
 

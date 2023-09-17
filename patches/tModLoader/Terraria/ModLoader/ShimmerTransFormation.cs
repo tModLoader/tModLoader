@@ -203,6 +203,8 @@ public abstract class ShimmerTransformation : ICloneable
 	/// None of the results contain bone or lihzahrd brick while skeletron or golem are undefeated if <see cref="IgnoreVanillaItemConstraints"/> is false (Used by vanilla
 	/// for progression protection)
 	/// <item/>
+	/// All <see cref="SystemLoader.CanModShimmer(ShimmerTransformation, IModShimmerable)"/>
+	///	<item/>
 	/// The amount of empty NPC slots under slot 200 is less than the number of NPCs this transformation spawns
 	/// </list>
 	/// </returns>
@@ -211,6 +213,7 @@ public abstract class ShimmerTransformation : ICloneable
 		&& Conditions.All((condition) => condition.IsMet())
 		&& CheckCanShimmerCallBacks(shimmerable)
 		&& (IgnoreVanillaItemConstraints || !Results.Any((result) => result.IsItemResult(ItemID.Bone) && !NPC.downedBoss3 || result.IsItemResult(ItemID.LihzahrdBrick) && !NPC.downedGolemBoss))
+		&& SystemLoader.CanModShimmer(this, shimmerable)
 		&& (GetCurrentAvailableNPCSlots() >= GetSpawnCount<NPCShimmerResult>());
 
 	/// <summary> Checks all <see cref="CanShimmerCallBacks"/> for <paramref name="shimmerable"/> </summary>
@@ -230,7 +233,9 @@ public abstract class ShimmerTransformation : ICloneable
 		int usableStack = GetUsableStack(source);
 		IEnumerable<IModShimmerable> spawned = SpawnModShimmerResults(source, usableStack); // Spawn results, output stack amount used
 		source.ShimmerRemoveStacked(usableStack); // Removed amount used
+
 		OnShimmerCallBacks?.Invoke(this, source, spawned);
+		SystemLoader.OnModShimmer(this, source, spawned);
 
 		ShimmerEffect(source.Center);
 	}
@@ -240,6 +245,7 @@ public abstract class ShimmerTransformation : ICloneable
 	/// </summary>
 	public IEnumerable<IModShimmerable> SpawnModShimmerResults(IModShimmerable source, int stackUsed)
 	{
+		List<IModShimmerable> results = new();
 		foreach (IModShimmerable shimmerable in Results.SelectMany(result => result.SpawnFrom(source, stackUsed)).Where(shimmerable => shimmerable != null)) { //Spawns the individual result, adds it to the list
 			if (!AllowChainedShimmers)
 				shimmerable.PreventingChainedShimmers = true;
@@ -249,8 +255,9 @@ public abstract class ShimmerTransformation : ICloneable
 				entity.wet = true;
 			}
 
-			yield return shimmerable;
+			results.Add(shimmerable);
 		}
+		return results;
 	}
 
 	#endregion Shimmering
@@ -485,6 +492,7 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 			if (transformation.CanModShimmer(source)) { // Checks conditions and callback in CanShimmer
 				ShimmerTransformation copy = transformation.Clone(); // Make a copy
 				copy.ModifyShimmerCallBacks?.Invoke(copy, source); // As to not be effected by any changes made here
+				SystemLoader.ModifyModShimmer(copy, source);
 				copy.DoModShimmer(source);
 				return true;
 			}
@@ -605,7 +613,7 @@ public interface IModShimmerable
 	/// </summary>
 	public virtual int Stack => 1;
 
-	/// <summary> Used by <see cref="ShimmerTransformation.AllowChainedShimmers"/> to check if this instance has left shimmer long enough to go again </summary>
+	/// <summary> Used by <see cref="ShimmerTransformation.AllowChainedShimmers"/> to check if this instance has left shimmer long enough to go again, entirely server or single-player </summary>
 	public abstract bool PreventingChainedShimmers { get; set; }
 
 	/// <summary>

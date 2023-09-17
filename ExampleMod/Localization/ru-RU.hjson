@@ -866,6 +866,11 @@ Mods: {
 				// DisplayName: Example Swinging Energy Sword
 				// Tooltip: ""
 			}
+
+			ExampleComplexCustomShimmerableItem: {
+				// DisplayName: Example Complex Custom Shimmerable Item
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

@@ -16,7 +16,7 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 
 	public override void SetStaticDefaults() {
 		CreateShimmerTransformation()
-			.AddResult(new MultiGrenadeShimmerResult(9999, 10))
+			.AddResult(new EvilGrenadeShimmerResult(9999, 10))
 			.AddNPCResult(NPCID.Frog, 2)
 			.AddModifyShimmerCallBack(NPCShimmerShowcase.ModifyShimmer_GildFrogs)
 			.DisableChainedShimmers()
@@ -42,24 +42,14 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 	}
 
 	/// <inheritdoc cref="ProjectileShimmerResult(int, int, int, bool, bool, int)"/>
-	public record class MultiGrenadeShimmerResult(int Damage, int Knockback) : ProjectileShimmerResult(ProjectileID.Grenade, Damage, Knockback, true, false, 5)
+	public record class EvilGrenadeShimmerResult(int Damage, int Knockback) : ProjectileShimmerResult(ProjectileID.Grenade, Damage, Knockback, true, false, 5)
 	{
-		public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack) {
-			int spawnTotal = Count * allowedStack;
+		public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, int allowedStack) {
 			Player closestPlayer = Main.player[Player.FindClosest(shimmerable.Center, 1, 1)];
-
-			while (spawnTotal > 0) {
+			foreach (Projectile projectile in base.SpawnFrom(shimmerable, allowedStack)) {
 				Vector2 velocityMod = GetShimmerSpawnVelocityModifier();
-				Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center,
-					shimmerable.Velocity + velocityMod + velocityMod * 2 * (Vector2.Normalize(closestPlayer.Center - shimmerable.Center)),
-					Type, Damage, Knockback);
-				projectile.position -= projectile.Size / 2;
-				projectile.hostile = Hostile;
-				projectile.friendly = Friendly;
-				projectile.netUpdate = true;
+				projectile.velocity = shimmerable.Velocity + velocityMod + velocityMod * 2 * Vector2.Normalize(closestPlayer.Center - shimmerable.Center);
 				yield return projectile;
-
-				spawnTotal--;
 			}
 		}
 	}
@@ -68,6 +58,8 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 // This shoots the above item
 public class ExampleComplexCustomShimmerableItem : ModItem
 {
+	public override string Texture => "ExampleMod/Content/Items/ExampleItem";
+
 	public override void SetStaticDefaults() {
 		Item.ResearchUnlockCount = 99;
 	}
