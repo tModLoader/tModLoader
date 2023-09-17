@@ -29,6 +29,7 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 		AIType = ProjectileID.ThornBall;
 		Projectile.hostile = false;
 		Projectile.friendly = true;
+		maxTransformTime = 0;
 	}
 
 	private float maxTransformTime;
@@ -48,7 +49,7 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 			Player closestPlayer = Main.player[Player.FindClosest(shimmerable.Center, 1, 1)];
 			foreach (Projectile projectile in base.SpawnFrom(shimmerable, allowedStack)) {
 				Vector2 velocityMod = GetShimmerSpawnVelocityModifier();
-				projectile.velocity = shimmerable.Velocity + velocityMod + velocityMod * 2 * Vector2.Normalize(closestPlayer.Center - shimmerable.Center);
+				projectile.velocity = (shimmerable.Velocity / 2) + velocityMod + 5 * Vector2.Normalize(closestPlayer.Center - shimmerable.Center);
 				yield return projectile;
 			}
 		}

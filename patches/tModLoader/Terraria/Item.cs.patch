@@ -1824,7 +1824,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,30 @@
+@@ -47318,14 +_,31 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1841,6 +1841,7 @@
 +		InterruptChannelOnHurt = false;
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
++		PreventingChainedShimmers = false;
 +
  		sentry = false;
  		hasVanityEffects = false;

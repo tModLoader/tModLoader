@@ -733,7 +733,7 @@
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
-@@ -2156,6 +_,15 @@
+@@ -2156,6 +_,16 @@
  			return;
  		}
  
@@ -745,6 +745,7 @@
 +		GravityIgnoresLiquid = false;
 +		GravityIgnoresSpace = false;
 +		GravityIgnoresType = false;
++		PreventingChainedShimmers = false;
 +
  		waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  		honeyMovementSpeed = 0.25f;

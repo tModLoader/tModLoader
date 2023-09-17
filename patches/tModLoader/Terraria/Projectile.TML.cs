@@ -227,9 +227,8 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShim
 	void IModShimmerable.ShimmerRemoveStacked(int amount)
 	{
 		active = false;
-		if (Main.netMode == NetmodeID.Server) {
+		if (Main.netMode == NetmodeID.Server)
 			NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, whoAmI);
-		}
 	}
 
 	/// <summary>
