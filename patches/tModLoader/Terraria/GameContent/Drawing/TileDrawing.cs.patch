@@ -322,6 +322,31 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
+@@ -4868,21 +_,21 @@
+ 		return false;
+ 	}
+ 
+-	private int GetWaterAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetWaterAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
+ 		return num / 2 * (num2 / 3) % Main.cageFrames;
+ 	}
+ 
+-	private int GetSmallAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetSmallAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
+ 		return num / 3 * (num2 / 3) % Main.cageFrames;
+ 	}
+ 
+-	private int GetBigAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetBigAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
 @@ -4922,18 +_,29 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
