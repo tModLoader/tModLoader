@@ -91,7 +91,6 @@ Mods: {
 			}
 
 			// ExampleDresser.MapEntry: Example Dresser
-			// ExampleCritterCage.MapEntry: Lava Frog Cage
 		}
 
 		Items: {
