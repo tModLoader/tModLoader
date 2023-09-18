@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void SetDefaults() {
 			Item.damage = 27;
-			Item.DamageType = DamageClass.Melee;
+			Item.DamageType = DamageClass.MeleeNoSpeed; // ignores melee speed bonuses. There's no need for drill animations to play faster, nor drills to dig faster with melee speed.
 			Item.width = 20;
 			Item.height = 12;
 			// IsDrill/IsChainsaw effects must be applied manually, so 60% or 0.6 times the time of the corresponding pickaxe. In this case, 60% of 7 is 4 and 60% of 25 is 15.

@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
+@@ -1,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Diagnostics;
++using System.Linq;
+ using System.Threading;
+ using System.Threading.Tasks;
+ using Microsoft.Xna.Framework;
 @@ -22,13 +_,15 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -566,7 +574,7 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13849,12 +_,33 @@
+@@ -13849,12 +_,34 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
@@ -589,6 +597,7 @@
 +		SystemLoader.PostWorldGen();
 +
  		Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
++		Main.ActiveWorldFileData.modVersionsDuringWorldGen = ModLoader.ModLoader.Mods.ToDictionary(x => x.Name, x => x.Version);
  		Main.NotifyOfEvent(GameNotificationType.WorldGen);
  		drunkWorldGenText = false;
 +
@@ -764,24 +773,49 @@
  		IsGeneratingHardMode = true;
  		TryProtectingSpawnedItems();
  		if (Main.rand == null)
-@@ -19383,10 +_,30 @@
+@@ -19358,7 +_,8 @@
+ 			num3 = (int)((double)Main.maxTilesX * (1.0 - num2));
+ 		}
+ 
+-		if (Main.remixWorld) {
++		void HardmodeGoodRemixTask(GenerationProgress progress, GameConfiguration configuration)
++		{
+ 			int num7 = Main.maxTilesX / 7;
+ 			int num8 = Main.maxTilesX / 14;
+ 			if (Main.dungeonX < Main.maxTilesX / 2) {
+@@ -19382,11 +_,44 @@
+ 				}
  			}
  		}
- 		else {
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Good", HardmodeGoodTask));
-+			hardmodeTasks.Add(new PassLegacy("Hardmode Evil", HardmodeEvilTask));
-+		}
+-		else {
 +
 +		void HardmodeGoodTask(GenerationProgress progress, GameConfiguration configuration)
 +		{
  			GERunner(num3, 0, 3 * num5, 5.0);
 +		}
-+		
++
 +		void HardmodeEvilTask(GenerationProgress progress, GameConfiguration configuration)
 +		{
  			GERunner(num4, 0, 3 * -num5, 5.0, good: false);
  		}
  
++		var HardmodeGoodRemixPass = new PassLegacy("Hardmode Good Remix", HardmodeGoodRemixTask);
++		var HardmodeGoodPass = new PassLegacy("Hardmode Good", HardmodeGoodTask);
++		var HardmodeEvilPass = new PassLegacy("Hardmode Evil", HardmodeEvilTask);
++
++		hardmodeTasks.Add(HardmodeGoodRemixPass);
++		hardmodeTasks.Add(HardmodeGoodPass);
++		hardmodeTasks.Add(HardmodeEvilPass);
++
++		// Main.remixWorld checks removed from Pass code, we want all passes present in the list no matter what and disable those that don't apply for consistency with other tModLoader approaches and modder expectations. #3606 discussion
++		if (Main.remixWorld) {
++			HardmodeGoodPass.Disable();
++			HardmodeEvilPass.Disable();
++		}
++		else {
++			HardmodeGoodRemixPass.Disable();
++		}
++
 +		hardmodeTasks.Add(new PassLegacy("Hardmode Walls", HardmodeWallsTask));
 +		hardmodeTasks.Add(new PassLegacy("Hardmode Announcement", HardmodeAnnouncementTask));
 +

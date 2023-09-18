@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// While there are several different ways to change how our projectile could behave differently, lets make it so
 		// when our projectile finally dies, it will explode into 4 regular Meowmere projectiles.
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			Vector2 launchVelocity = new Vector2(-4, 0); // Create a velocity moving the left.
 			for (int i = 0; i < 4; i++) {
 				// Every iteration, rotate the newly spawned projectile by the equivalent 1/4th of a circle (MathHelper.PiOver4)

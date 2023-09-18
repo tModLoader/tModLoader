@@ -115,6 +115,11 @@
 		// "ModConfigCollapse": "Collapse",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		"BossBarStyle": "Boss血条样式: {0}",
@@ -960,6 +965,10 @@
 		"ModLoader.Items.Squid_Body.DisplayName": "Squid之铠",
 		"ModLoader.Items.Squid_Head.DisplayName": "Squid之盔",
 		"ModLoader.Items.Squid_Legs.DisplayName": "Squid护腿",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		"ModLoader.Items.toplayz_Body.DisplayName": "toplayz之铠",
 		"ModLoader.Items.toplayz_Head.DisplayName": "toplayz之盔",
 		"ModLoader.Items.toplayz_Legs.DisplayName": "toplayz护腿",

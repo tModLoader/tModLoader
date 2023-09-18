@@ -158,7 +158,7 @@ namespace ExampleMod.Content.Projectiles
 			return tracker.IsActiveAndInGame();
 		}
 
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			// For long sounds, the sound can be stopped when the projectile is killed.
 			// This approach is not foolproof, so it should NOT be used, especially for looped sounds.
 			// See SoundUpdateCallbackApproach for the better approach. This example, however, does show how an ActiveSound can be modified from another hook other than where the sound was played.

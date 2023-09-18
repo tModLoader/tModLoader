@@ -298,9 +298,9 @@ internal static class ModOrganizer
 
 	internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
-	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> mods, CancellationToken token)
+	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> availableMods, CancellationToken token)
 	{
-		var missing = ModLoader.EnabledMods.Except(mods.Select(mod => mod.Name)).ToList();
+		var missing = ModLoader.EnabledMods.Except(availableMods.Select(mod => mod.Name)).ToList();
 		if (missing.Any()) {
 			Logging.tML.Info("Missing previously enabled mods: " + string.Join(", ", missing));
 			foreach (var name in missing)
@@ -316,7 +316,7 @@ internal static class ModOrganizer
 			return new();
 		}
 
-		CommandLineModPackOverride(mods);
+		CommandLineModPackOverride(availableMods);
 
 		// Alternate fix for updating enabled mods
 		//foreach (string fileName in Directory.GetFiles(modPath, "*.tmod.update", SearchOption.TopDirectoryOnly)) {
@@ -324,10 +324,13 @@ internal static class ModOrganizer
 		//	File.Delete(fileName);
 		//}
 		Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
-		var modsToLoad = mods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
 
-		VerifyNames(modsToLoad);
+		foreach (var mod in GetModsToLoad(availableMods)) {
+			EnableWithDeps(mod, availableMods);
+		}
+		SaveEnabledMods();
 
+		var modsToLoad = GetModsToLoad(availableMods);
 		try {
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
@@ -338,6 +341,13 @@ internal static class ModOrganizer
 			e.Data["hideStackTrace"] = true;
 			throw;
 		}
+	}
+
+	private static List<LocalMod> GetModsToLoad(IEnumerable<LocalMod> availableMods)
+	{
+		var modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
+		VerifyNames(modsToLoad);
+		return modsToLoad;
 	}
 
 	private static void CommandLineModPackOverride(IEnumerable<LocalMod> mods)
@@ -364,6 +374,17 @@ internal static class ModOrganizer
 		}
 		finally {
 			commandLineModPack = null;
+		}
+	}
+
+	//TODO: This duplicates some of the logic in UIModItem
+	internal static void EnableWithDeps(LocalMod mod, IEnumerable<LocalMod> availableMods)
+	{
+		mod.Enabled = true;
+
+		foreach (var depName in mod.properties.RefNames(includeWeak: false)) {
+			if (availableMods.SingleOrDefault(m => m.Name == depName) is LocalMod { Enabled: false } dep)
+				EnableWithDeps(dep, availableMods);
 		}
 	}
 
@@ -535,8 +556,11 @@ internal static class ModOrganizer
 
 	internal static string GetActiveTmodInRepo(string repo)
 	{
-		var information = AnalyzeWorkshopTmods(repo);
-		if (information == null || information.Count == 0) {
+		var information = AnalyzeWorkshopTmods(repo).Where(t => 
+			// Ignore Transitive versions of tModLoader, such as 1.4.4-transitive. See 'GetBrowserVersionNumber' for why
+			!SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion).Contains("Transitive")
+		);
+		if (information == null || information.Count() == 0) {
 			Logging.tML.Warn($"Unexpectedly missing .tMods in Workshop Folder {repo}");
 			return null;
 		}
@@ -548,41 +572,6 @@ internal static class ModOrganizer
 		}
 
 		return recommendedTmod.file;
-	}
-
-	public static bool CheckIfPublishedForThisBrowserVersion(LocalMod mod, out string modBrowserVersion)
-	{
-		string thisVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
-		modBrowserVersion = thisVersion;
-		// If Can't Read Manifest, assume local build and thus must be compatible
-		if (!TryReadManifest(GetParentDir(mod.modFile.path), out var info))
-			return true;
-
-		// If Tags is null, it would be a pre-1.4 release mod. IE "1.4-alpha". 
-		if (info.tags == null) {
-			modBrowserVersion = "1.4.3";
-			return modBrowserVersion == thisVersion;
-		}
-
-		// Attempt checking if it's supported on this version, if so, then it's for this duh.
-		if (info.tags.Contains(thisVersion))
-			return true;
-
-		// Attempt checking if the version it is for matches the tags it has, to ensure we recommend correct version
-		modBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(mod.tModLoaderVersion);
-		if (info.tags.Contains(modBrowserVersion))
-			return false;
-
-		// Version unknown. Assume 1.4.3
-		modBrowserVersion = "1.4.3";
-		return false;
-	}
-
-
-	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
-	{
-		var summary = AnalyzeWorkshopTmods(repo);
-		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 	}
 
 	/// <summary>
@@ -608,7 +597,7 @@ internal static class ModOrganizer
 			return;
 
 		(string browserVersion, int keepCount)[] keepRequirements =
-			{ ("1.4.3", 1), ("1.4.4", 3) };
+			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
 
 		foreach (var requirement in keepRequirements) {
 			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);

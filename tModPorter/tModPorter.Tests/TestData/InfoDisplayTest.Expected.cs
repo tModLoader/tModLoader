@@ -15,9 +15,16 @@ public class InfoDisplayTest144 : InfoDisplay {
 
 public class GlobalInfoDisplayTest : GlobalInfoDisplay
 {
-	public override void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor, ref Color displayShadowColor)
+	public override void ModifyDisplayParameters(InfoDisplay currentDisplay, ref string displayValue, ref string displayName, ref Color displayColor, ref Color displayShadowColor)/* tModPorter ModifyDisplayValue, ModifyDisplayName, and ModifyDisplayColor are all combined into ModifyDisplayParameters now. */
 	{
 		if (currentDisplay == InfoDisplay.Radar)
 			displayColor = Color.Red;
+	}
+}
+
+public class GlobalInfoDisplayTest2 : GlobalInfoDisplay
+{
+	public override void ModifyDisplayParameters(InfoDisplay currentDisplay, ref string displayValue, ref string displayName, ref Color displayColor, ref Color displayShadowColor)/* tModPorter ModifyDisplayValue, ModifyDisplayName, and ModifyDisplayColor are all combined into ModifyDisplayParameters now. */
+	{
 	}
 }
