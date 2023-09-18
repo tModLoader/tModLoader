@@ -10,11 +10,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.5" GeneratePathProperty="true" PrivateAssets="all" />
-        <Reference Include="ImageSharp">
-            <HintPath>$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll</HintPath>
-        </Reference>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.5" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>
