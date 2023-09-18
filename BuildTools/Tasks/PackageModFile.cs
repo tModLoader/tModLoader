@@ -55,12 +55,6 @@ public class PackageModFile : TaskBase
 	public string AssemblyName { get; set; } = string.Empty;
 
 	/// <summary>
-	/// The version of tModLoader this mod was built for.
-	/// </summary>
-	[Required]
-	public string TmlVersion { get; set; } = string.Empty;
-
-	/// <summary>
 	/// The path to tModLoader's assembly file.
 	/// </summary>
 	[Required]
@@ -98,12 +92,13 @@ public class PackageModFile : TaskBase
 		BuildProperties modProperties = GetModProperties();
 		Log.LogMessage(MessageImportance.Normal, $"Loaded build properties: {modProperties}");
 
-		TmodFile tmodFile = new(OutputTmodPath, AssemblyName, modProperties.Version, Version.Parse(TmlVersion));
+		Version tmlVersion = SavePathLocator.GetTmlVersion(TmlDllPath);
+		TmodFile tmodFile = new(OutputTmodPath, AssemblyName, modProperties.Version, tmlVersion);
 
 		// Add files to the .tmod file
 		tmodFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
 		AddAllReferences(tmodFile, modProperties);
-		tmodFile.AddFile("Info", modProperties.ToBytes(TmlVersion));
+		tmodFile.AddFile("Info", modProperties.ToBytes(tmlVersion.ToString()));
 
 		string modPdbPath = Path.ChangeExtension(modDllPath, ".pdb");
 		string modPdbName = Path.ChangeExtension(modDllName, ".pdb");

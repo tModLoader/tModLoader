@@ -59,16 +59,6 @@
 			<ModProperty Include="TranslationMod" Value="$(TranslationMod)" Condition="$(TranslationMod) != ''" />
 		</ItemGroup>
 
-		<GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">
-			<Output TaskParameter="Assemblies" ItemName="TmlAssemblyIdentity" />
-		</GetAssemblyIdentity>
-		
-		<PropertyGroup>
-			<!-- Use default values in case they have not been provided -->
-			<TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity!=''">%(TmlAssemblyIdentity.Version)</TmlVersion>
-			<TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity==''">1.4</TmlVersion>
-		</PropertyGroup>
-
 		<PackageModFile
 				PackageReferences="@(PackageReference)"
 				ProjectReferences="@(_ResolvedProjectReferencePaths)"
@@ -77,7 +67,6 @@
 				ProjectDirectory="$(MSBuildProjectDirectory)"
 				OutputPath="$(OutputPath)"
 				AssemblyName="$(AssemblyName)"
-				TmlVersion="$(TmlVersion)"
 				TmlDllPath="$(tMLSteamPath)$(tMLPath)"
 				OutputTmodPath="$(OutputTmodPath)"
 				ModProperties="@(ModProperty)" >

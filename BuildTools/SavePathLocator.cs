@@ -97,6 +97,15 @@ public static class SavePathLocator
 		logger.LogWarning("Couldn't parse the build purpose, defaulting to 'Stable' build.");
 		return BuildPurpose.Stable;
 	}
+
+	public static Version GetTmlVersion(string tmlDllPath)
+	{
+		FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(tmlDllPath);
+		string tmlVersion = versionInfo.ProductVersion;
+		tmlVersion = tmlVersion.Substring(tmlVersion.IndexOf("+", StringComparison.Ordinal) + 1);
+		tmlVersion = tmlVersion.Split('|')[0];
+		return Version.Parse(tmlVersion);
+	}
 }
 
 public enum BuildPurpose
