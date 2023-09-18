@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"class_sandstorm_shader_data.html":[3,0,1078],
 "class_sandstorm_sky.html":[3,0,1079],
 "class_santank_mount_jump.html":[3,0,1080],
 "class_santank_mount_jump.html#a16611ec047196e615b2e83608819b6aa":[3,0,1080,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4":[3,0,1231,0,41],
 "class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77":[3,0,1231,0,49],
 "class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6":[3,0,1231,0,35],
-"class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c":[3,0,1231,0,5],
-"class_tile_i_d_1_1_sets.html#a304253e883fca925c1e09382f562b50d":[3,0,1231,0,23]
+"class_tile_i_d_1_1_sets.html#a28b877889a9de6d3e591146b297e028c":[3,0,1231,0,5]
 };

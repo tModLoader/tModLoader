@@ -1,9 +1,10 @@
 var class_info_display =
 [
     [ "Active", "class_info_display.html#a7799c04325bac7bc63c691f08ad60992", null ],
-    [ "DisplayValue", "class_info_display.html#aa967a2fca070ff418d46b861d0ca30cb", null ],
+    [ "DisplayValue", "class_info_display.html#abb354080de326a4a37588fe8e3acba08", null ],
     [ "Register", "class_info_display.html#a3ec287f9bdc143eb8426b67dac705265", null ],
     [ "SetupContent", "class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb", null ],
+    [ "ValidateType", "class_info_display.html#a23c1cff3c642ce5d11bcd850b534d7da", null ],
     [ "DisplayName", "class_info_display.html#ae84cd7f72e3961efdaa6b6e4b8d76983", null ],
     [ "GoldInfoTextColor", "class_info_display.html#a9bd7094ef53193988d006d8a8e9beb5d", null ],
     [ "GoldInfoTextShadowColor", "class_info_display.html#a7a1159dc2118d41425359cd3e9f27502", null ],

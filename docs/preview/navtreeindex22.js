@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"struct_game_animation_segment.html":[3,0,413],
 "struct_game_mode_data.html":[3,0,419],
 "struct_gen_shape_action_pair.html":[3,0,440],
 "struct_get_item_settings.html":[3,0,443],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "struct_tile.html#a46a5fa0a5aa2277fd277107ff7fbf465":[3,0,1217,11],
 "struct_tile.html#a48a5ec5fe17941af7e405f3e31e4916a":[3,0,1217,4],
 "struct_tile.html#a519bd492b733fd5ebf265dd266b33660":[3,0,1217,28],
-"struct_tile.html#a53d034267b724dc7073497163cfeb7a1":[3,0,1217,33],
-"struct_tile.html#a5b4aae72b50c181b6b7223ca09a2b10b":[3,0,1217,24]
+"struct_tile.html#a53d034267b724dc7073497163cfeb7a1":[3,0,1217,33]
 };

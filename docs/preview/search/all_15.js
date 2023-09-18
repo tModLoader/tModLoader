@@ -1,7 +1,7 @@
 var searchData=
 [
   ['v_0',['V',['../struct_n_p_c_1_1_n_p_c_name_fake_language_category_passthrough_1_1_v.html',1,'NPC::NPCNameFakeLanguageCategoryPassthrough']]],
-  ['validatetype_1',['ValidateType',['../class_global_type.html#ad559e16891e41411948ee05ead117f10',1,'GlobalType.ValidateType()'],['../class_mod_item.html#ab049d0ec5d7010feae3de7e412c36b6f',1,'ModItem.ValidateType()'],['../class_mod_player.html#a7713a58bdcc2e6f469cd83ed09c1d739',1,'ModPlayer.ValidateType()'],['../class_mod_system.html#a1e04a6103bc38e027690f50e7f09f3dc',1,'ModSystem.ValidateType()'],['../class_mod_type.html#a68ae9d7e81b3ef0a93b540db9fa62ae7',1,'ModType.ValidateType()']]],
+  ['validatetype_1',['ValidateType',['../class_global_type.html#ad559e16891e41411948ee05ead117f10',1,'GlobalType.ValidateType()'],['../class_info_display.html#a23c1cff3c642ce5d11bcd850b534d7da',1,'InfoDisplay.ValidateType()'],['../class_mod_item.html#ab049d0ec5d7010feae3de7e412c36b6f',1,'ModItem.ValidateType()'],['../class_mod_player.html#a7713a58bdcc2e6f469cd83ed09c1d739',1,'ModPlayer.ValidateType()'],['../class_mod_system.html#a1e04a6103bc38e027690f50e7f09f3dc',1,'ModSystem.ValidateType()'],['../class_mod_type.html#a68ae9d7e81b3ef0a93b540db9fa62ae7',1,'ModType.ValidateType()']]],
   ['validhousingcheckinhousingui_2',['ValidHousingCheckInHousingUI',['../class_game_tip_i_d.html#a6559bed1bdd221f8f35295506047258e',1,'GameTipID']]],
   ['validteleportcheck_5fanydanger_3',['ValidTeleportCheck_AnyDanger',['../class_mod_pylon.html#a20282cb665f2cea48d22361c291878c0',1,'ModPylon']]],
   ['validteleportcheck_5fbiomerequirements_4',['ValidTeleportCheck_BiomeRequirements',['../class_mod_pylon.html#aa8bf18a82194c5ed1ab819f84f6070d4',1,'ModPylon']]],
@@ -11,8 +11,8 @@ var searchData=
   ['validteleportcheck_5fpreanydanger_8',['ValidTeleportCheck_PreAnyDanger',['../class_global_pylon.html#a2c8f5e2d76f4fd04331c795d42f288f3',1,'GlobalPylon']]],
   ['validteleportcheck_5fprebiomerequirements_9',['ValidTeleportCheck_PreBiomeRequirements',['../class_global_pylon.html#a114b455615796e3c112be914ee4f73de',1,'GlobalPylon']]],
   ['validteleportcheck_5fprenpccount_10',['ValidTeleportCheck_PreNPCCount',['../class_global_pylon.html#a146ee9e4e2102063caaac80101a830ed',1,'GlobalPylon']]],
-  ['value_11',['Value',['../class_localized_text.html#ac00724fa218d8c72912eb3b5eb4ab514',1,'LocalizedText']]],
-  ['value_12',['value',['../class_item.html#a0495e4ae68c9b8eef643464e738ca1c0',1,'Item.value()'],['../class_n_p_c.html#a561c4d93c6f0ece100ea64c264589e33',1,'NPC.value()']]],
+  ['value_11',['value',['../class_item.html#a0495e4ae68c9b8eef643464e738ca1c0',1,'Item.value()'],['../class_n_p_c.html#a561c4d93c6f0ece100ea64c264589e33',1,'NPC.value()']]],
+  ['value_12',['Value',['../class_localized_text.html#ac00724fa218d8c72912eb3b5eb4ab514',1,'LocalizedText']]],
   ['valuenottranslationkeyexception_13',['ValueNotTranslationKeyException',['../class_value_not_translation_key_exception.html',1,'']]],
   ['valueproviderdecorator_14',['ValueProviderDecorator',['../class_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html',1,'ReferenceDefaultsPreservingResolver']]],
   ['valuetoname_15',['ValueToName',['../class_popup_text.html#adb0b049c55d39adeb4f58e61ab03125e',1,'PopupText']]],
@@ -37,7 +37,7 @@ var searchData=
   ['variantsweights_34',['VariantsWeights',['../struct_sound_style.html#a5202c2e6b1a467becfbd430387484c43',1,'SoundStyle']]],
   ['vector2tagserializer_35',['Vector2TagSerializer',['../class_vector2_tag_serializer.html',1,'']]],
   ['vector3tagserializer_36',['Vector3TagSerializer',['../class_vector3_tag_serializer.html',1,'']]],
-  ['velocity_37',['velocity',['../class_dust.html#adcb451dc788d3e82cd37c1fed56e9bf8',1,'Dust.velocity()'],['../class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168',1,'Entity.velocity()'],['../class_popup_text.html#a5298cb6f1bd49647ec1f4172bb71c406',1,'PopupText.velocity()']]],
+  ['velocity_37',['velocity',['../class_popup_text.html#a5298cb6f1bd49647ec1f4172bb71c406',1,'PopupText.velocity()'],['../class_dust.html#adcb451dc788d3e82cd37c1fed56e9bf8',1,'Dust.velocity()'],['../class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168',1,'Entity.velocity()']]],
   ['velocity_38',['Velocity',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a53f0e730271b23e614707e8d55cf796c',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
   ['vendornpc_39',['VendorNPC',['../class_buy_item_creation_context.html#a82870731c5d736b48637f2102a270dbb',1,'BuyItemCreationContext']]],
   ['version_40',['Version',['../class_mod.html#ac06290a5264e10bc183201a18452e7c0',1,'Mod']]],

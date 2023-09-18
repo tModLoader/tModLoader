@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_mod_pylon.html#af904ea05fe76856174712f05baa50a25":[3,0,807,16],
 "class_mod_pylon.html#afce2640ed4af061869f6aa5d59380ba5":[3,0,807,8],
 "class_mod_rarity.html":[3,0,808],
 "class_mod_rarity.html#a05d1932808db66e93cee376f112f6dc7":[3,0,808,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_mod_water_style.html#a24a18db8eedfa61f1e06184ab6d69b8d":[3,0,828,8],
 "class_mod_water_style.html#a2831334ce6d55d1df9bc2ce35699b274":[3,0,828,7],
 "class_mod_water_style.html#a2a0c680bfc88a279976ec43f8046482d":[3,0,828,5],
-"class_mod_water_style.html#a622b9eb0536352251bfb6daa897d617c":[3,0,828,6],
-"class_mod_water_style.html#a6c90c6575c585cbc6caae4e076ca2e70":[3,0,828,2]
+"class_mod_water_style.html#a622b9eb0536352251bfb6daa897d617c":[3,0,828,6]
 };

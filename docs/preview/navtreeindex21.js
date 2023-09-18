@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"functions_vars_m.html":[3,3,2,12],
 "functions_vars_n.html":[3,3,2,13],
 "functions_vars_o.html":[3,3,2,14],
 "functions_vars_p.html":[3,3,2,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX21 =
 "struct_fishing_attempt.html#afd71021b28ef076b070f2935b9b33fcd":[3,0,390,6],
 "struct_flame_lash_drawer.html":[3,0,393],
 "struct_float_range.html":[3,0,399],
-"struct_frame_event_data.html":[3,0,405],
-"struct_game_animation_segment.html":[3,0,413]
+"struct_frame_event_data.html":[3,0,405]
 };
