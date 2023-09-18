@@ -13,13 +13,15 @@ public static class SavePathLocator
 	public const string ReleaseFolder = "tModLoader";
 	public const string DevFolder = "tModLoader-dev";
 
-	public static string FindSavePath(TaskLoggingHelper logger, string tmlDllPath, string assemblyName) {
+	public static string FindSavePath(TaskLoggingHelper logger, string tmlDllPath, string assemblyName)
+	{
 		string saveFolder = FindSaveFolder(logger, tmlDllPath);
 
 		return Path.Combine(saveFolder, "Mods", Path.ChangeExtension(assemblyName, ".tmod"));
 	}
 
-	public static string FindSaveFolder(TaskLoggingHelper logger, string tmlDllPath) {
+	public static string FindSaveFolder(TaskLoggingHelper logger, string tmlDllPath)
+	{
 		logger.LogMessage(MessageImportance.Normal, "Searching for save path...");
 
 		string tmlSteamPath = Path.GetDirectoryName(tmlDllPath) ?? throw new Exception($"Getting directory of {nameof(tmlDllPath)} failed");
@@ -46,7 +48,8 @@ public static class SavePathLocator
 
 	private static string GetStoragePath(string subfolder) => Path.Combine(GetStoragePath(), subfolder);
 
-	private static string GetStoragePath() {
+	private static string GetStoragePath()
+	{
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 			return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
 		}
@@ -73,7 +76,8 @@ public static class SavePathLocator
 		return text;
 	}
 
-	private static BuildPurpose GetBuildPurpose(TaskLoggingHelper logger, string tmlDllPath) {
+	private static BuildPurpose GetBuildPurpose(TaskLoggingHelper logger, string tmlDllPath)
+	{
 		FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(tmlDllPath);
 		string tmlInfoVersion = versionInfo.ProductVersion;
 

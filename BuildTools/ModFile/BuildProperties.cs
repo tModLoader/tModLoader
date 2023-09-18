@@ -35,14 +35,16 @@ public class BuildProperties
 
 	public static IEnumerable<string> ReadList(string value) => value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
 
-	public static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
+	public static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer)
+	{
 		foreach (var item in list)
 			writer.Write(item!.ToString()!);
 
 		writer.Write("");
 	}
 
-	public static BuildProperties ReadTaskItems(IEnumerable<ITaskItem> taskItems) {
+	public static BuildProperties ReadTaskItems(IEnumerable<ITaskItem> taskItems)
+	{
 		BuildProperties properties = new();
 
 		foreach (ITaskItem property in taskItems) {
@@ -58,7 +60,8 @@ public class BuildProperties
 		return properties;
 	}
 
-	public static BuildProperties ReadBuildInfo(string buildFile) {
+	public static BuildProperties ReadBuildInfo(string buildFile)
+	{
 		BuildProperties properties = new BuildProperties();
 
 		foreach (string line in File.ReadAllLines(buildFile)) {
@@ -80,7 +83,8 @@ public class BuildProperties
 		return properties;
 	}
 
-	private static void ProcessProperty(BuildProperties properties, string property, string value) {
+	private static void ProcessProperty(BuildProperties properties, string property, string value)
+	{
 		switch (property) {
 			case "dllReferences":
 				properties.DllReferences = ReadList(value).ToList();
@@ -137,18 +141,21 @@ public class BuildProperties
 		}
 	}
 
-	internal void AddDllReference(string name) {
+	internal void AddDllReference(string name)
+	{
 		DllReferences.Add(name);
 	}
 
-	internal void AddModReference(string modName, bool weak) {
+	internal void AddModReference(string modName, bool weak)
+	{
 		if (weak)
 			WeakReferences.Add(ModReference.Parse(modName));
 		else
 			ModReferences.Add(ModReference.Parse(modName));
 	}
 
-	internal byte[] ToBytes(string buildVersion) {
+	internal byte[] ToBytes(string buildVersion)
+	{
 		using MemoryStream memoryStream = new MemoryStream();
 		using BinaryWriter writer = new BinaryWriter(memoryStream);
 
@@ -156,59 +163,74 @@ public class BuildProperties
 			writer.Write("dllReferences");
 			WriteList(DllReferences, writer);
 		}
+
 		if (ModReferences.Count > 0) {
 			writer.Write("modReferences");
 			WriteList(ModReferences, writer);
 		}
+
 		if (WeakReferences.Count > 0) {
 			writer.Write("weakReferences");
 			WriteList(WeakReferences, writer);
 		}
+
 		if (SortAfter.Length > 0) {
 			writer.Write("sortAfter");
 			WriteList(SortAfter, writer);
 		}
+
 		if (SortBefore.Length > 0) {
 			writer.Write("sortBefore");
 			WriteList(SortBefore, writer);
 		}
+
 		if (Author.Length > 0) {
 			writer.Write("author");
 			writer.Write(Author);
 		}
+
 		writer.Write("version");
 		writer.Write(Version.ToString());
 		if (DisplayName.Length > 0) {
 			writer.Write("displayName");
 			writer.Write(DisplayName);
 		}
+
 		if (Homepage.Length > 0) {
 			writer.Write("homepage");
 			writer.Write(Homepage);
 		}
+
 		if (Description.Length > 0) {
 			writer.Write("description");
 			writer.Write(Description);
 		}
+
 		if (NoCompile) {
 			writer.Write("noCompile");
 		}
+
 		if (!HideResources) {
 			writer.Write("!hideResources");
 		}
+
 		if (IncludeSource) {
 			writer.Write("includeSource");
 		}
+
 		if (!PlayableOnPreview) {
 			writer.Write("!playableOnPreview");
 		}
+
 		if (TranslationMod) {
 			writer.Write("translationMod");
 		}
+
 		if (EacPath.Length > 0) {
 			writer.Write("eacPath");
 			writer.Write(EacPath);
 		}
+
 		if (Side != ModSide.Both) {
 			writer.Write("side");
 			writer.Write((byte)Side);
@@ -224,7 +246,8 @@ public class BuildProperties
 	internal bool IgnoreFile(string resource) =>
 		BuildIgnores.Any(fileMask => FitsMask(resource, fileMask)) || DllReferences.Contains("lib/" + Path.GetFileName(resource));
 
-	private bool FitsMask(string fileName, string fileMask) {
+	private bool FitsMask(string fileName, string fileMask)
+	{
 		string pattern =
 			'^' +
 			Regex.Escape(fileMask.Replace(".", "__DOT__")
@@ -237,7 +260,8 @@ public class BuildProperties
 		return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileName);
 	}
 
-	private static void VerifyRefs(List<string> refs) {
+	private static void VerifyRefs(List<string> refs)
+	{
 		if (refs.Distinct().Count() != refs.Count) throw new DuplicateNameException("Duplicate mod or weak references.");
 	}
 

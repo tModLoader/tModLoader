@@ -8,7 +8,8 @@ public static class ContentConverters
 {
 	private const int Version = 1;
 
-	public static bool Convert(ref string resourceName, FileStream src, MemoryStream dst) {
+	public static bool Convert(ref string resourceName, FileStream src, MemoryStream dst)
+	{
 		switch (Path.GetExtension(resourceName).ToLower()) {
 			case ".png":
 				if (resourceName != "icon.png") {
@@ -16,6 +17,7 @@ public static class ContentConverters
 					resourceName = Path.ChangeExtension(resourceName, "rawimg");
 					return true;
 				}
+
 				src.Position = 0;
 				return false;
 			default:
@@ -23,7 +25,8 @@ public static class ContentConverters
 		}
 	}
 
-	public static void ToRaw(Stream src, Stream dst) {
+	public static void ToRaw(Stream src, Stream dst)
+	{
 		using Image<Rgba32> image = Image.Load<Rgba32>(src);
 
 		using BinaryWriter writer = new(dst);

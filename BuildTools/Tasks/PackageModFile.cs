@@ -77,10 +77,11 @@ public class PackageModFile : TaskBase
 	[Required]
 	public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
-	private static readonly IList<string> SourceExtensions = new List<string> {".csproj", ".cs", ".sln"};
-	private static readonly IList<string> IgnoredNugetPackages = new List<string> {"tModLoader.CodeAssist"};
+	private static readonly IList<string> SourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
+	private static readonly IList<string> IgnoredNugetPackages = new List<string> { "tModLoader.CodeAssist" };
 
-	protected override void Run() {
+	protected override void Run()
+	{
 		// Verify the .tmod path exists, and find it if it doesn't
 		if (string.IsNullOrEmpty(OutputTmodPath))
 			OutputTmodPath = SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName);
@@ -136,7 +137,8 @@ public class PackageModFile : TaskBase
 		EnableMod(AssemblyName, modsFolder);
 	}
 
-	private void AddAllReferences(TmodFile tmodFile, BuildProperties modProperties) {
+	private void AddAllReferences(TmodFile tmodFile, BuildProperties modProperties)
+	{
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 		List<ITaskItem> modReferences = GetModReferences();
 		List<ITaskItem> projectReferences = GetProjectReferences();
@@ -202,7 +204,8 @@ public class PackageModFile : TaskBase
 		modProperties.SortAfter = modProperties.GetDistinctRefs();
 	}
 
-	private List<ITaskItem> GetNugetReferences() {
+	private List<ITaskItem> GetNugetReferences()
+	{
 		Dictionary<string, ITaskItem> nugetLookup = PackageReferences.ToDictionary(x => x.ItemSpec);
 		// Check if any packages in IgnoredNugetPackages are present in nugetLookup, and if they are, remove them
 		foreach (string ignoredNugetPackage in IgnoredNugetPackages) {
@@ -231,7 +234,8 @@ public class PackageModFile : TaskBase
 		return nugetReferences;
 	}
 
-	private List<ITaskItem> GetModReferences() {
+	private List<ITaskItem> GetModReferences()
+	{
 		List<ITaskItem> modReferences = new List<ITaskItem>();
 		foreach (ITaskItem modReference in ModReferences) {
 			string modPath = modReference.GetMetadata("HintPath");
@@ -242,7 +246,8 @@ public class PackageModFile : TaskBase
 			bool isWeak = string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase);
 
 			if (modName.Length == 0)
-				throw new Exception("A mod reference must have an identity (Include=\"ModName\"). It should match the internal name of the mod you are referencing.");
+				throw new Exception(
+					"A mod reference must have an identity (Include=\"ModName\"). It should match the internal name of the mod you are referencing.");
 
 			Log.LogMessage(MessageImportance.Normal, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");
 			modReferences.Add(modReference);
@@ -252,7 +257,8 @@ public class PackageModFile : TaskBase
 		return modReferences;
 	}
 
-	private List<ITaskItem> GetProjectReferences() {
+	private List<ITaskItem> GetProjectReferences()
+	{
 		List<ITaskItem> projectReferences = new();
 		foreach (ITaskItem projectReference in ProjectReferences) {
 			string dllPath = projectReference.ItemSpec;
@@ -267,7 +273,8 @@ public class PackageModFile : TaskBase
 		return projectReferences;
 	}
 
-	private BuildProperties GetModProperties() {
+	private BuildProperties GetModProperties()
+	{
 		// Check there are at least 2 properties because `Version` always exists
 		if (ModProperties.Length < 2) {
 			Log.LogMessage(MessageImportance.Low, "No mod properties found in csproj.");
@@ -284,12 +291,14 @@ public class PackageModFile : TaskBase
 			Log.LogWarning("Mod description not found with path: " + descriptionFilePath);
 			return properties;
 		}
+
 		properties.Description = File.ReadAllText(descriptionFilePath);
 
 		return properties;
 	}
 
-	private void EnableMod(string modName, string modsFolderPath){
+	private void EnableMod(string modName, string modsFolderPath)
+	{
 		string enabledPath = Path.Combine(modsFolderPath, "enabled.json");
 		if (!File.Exists(enabledPath)) {
 			Log.LogMessage(MessageImportance.Low, $"enabled.json not found at '{enabledPath}', the mod will not be enabled.");
@@ -309,7 +318,8 @@ public class PackageModFile : TaskBase
 		}
 	}
 
-	private bool IgnoreResource(BuildProperties properties, string resourcePath) {
+	private bool IgnoreResource(BuildProperties properties, string resourcePath)
+	{
 		string relPath = resourcePath.Substring(ProjectDirectory.Length + 1);
 		return properties.IgnoreFile(relPath) ||
 		       relPath[0] == '.' ||
@@ -320,7 +330,8 @@ public class PackageModFile : TaskBase
 		       Path.GetFileName(resourcePath) == "Thumbs.db";
 	}
 
-	private void AddResource(TmodFile tmodFile, string resourcePath) {
+	private void AddResource(TmodFile tmodFile, string resourcePath)
+	{
 		string relPath = resourcePath.Substring(ProjectDirectory.Length + 1);
 
 		Log.LogMessage(MessageImportance.Low, "Adding resource: {0}", relPath);

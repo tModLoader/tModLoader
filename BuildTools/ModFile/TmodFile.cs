@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
+
 // ReSharper disable IdentifierTypo
 
 namespace tModLoader.BuildTools.ModFile;
@@ -25,7 +26,8 @@ public class TmodFile
 
 	private Version Version { get; }
 
-	internal TmodFile(string path, string name, Version version, Version modLoaderVersion) {
+	internal TmodFile(string path, string name, Version version, Version modLoaderVersion)
+	{
 		_path = path;
 		Name = name;
 		Version = version;
@@ -38,7 +40,8 @@ public class TmodFile
 	/// </summary>
 	/// <param name="fileName">The internal filepath, will be slash sanitised automatically</param>
 	/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
-	internal void AddFile(string fileName, byte[] data) {
+	internal void AddFile(string fileName, byte[] data)
+	{
 		fileName = Sanitize(fileName);
 		int size = data.Length;
 
@@ -55,7 +58,8 @@ public class TmodFile
 		_files.Add(new FileEntry(fileName, -1, size, data.Length, data));
 	}
 
-	internal void Save() {
+	internal void Save()
+	{
 		// write the general TMOD header and data blob
 		// TMOD ascii identifier
 		// tModLoader version
