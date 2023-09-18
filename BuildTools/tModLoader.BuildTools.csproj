@@ -15,7 +15,6 @@
         <Reference Include="ImageSharp">
             <HintPath>$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll</HintPath>
         </Reference>
-        <PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
     </ItemGroup>
 
 </Project>

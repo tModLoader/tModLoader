@@ -1,9 +1,8 @@
 ﻿using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace tModLoader.BuildTools;
@@ -75,21 +74,8 @@ public static class SavePathLocator
 	}
 
 	private static BuildPurpose GetBuildPurpose(TaskLoggingHelper logger, string tmlDllPath) {
-		string[] runtimeAssemblies = Directory.GetFiles(RuntimeEnvironment.GetRuntimeDirectory(), "*.dll");
-		List<string> paths = new(runtimeAssemblies) { tmlDllPath };
-
-		PathAssemblyResolver pathResolver = new(paths);
-		using MetadataLoadContext context = new(pathResolver);
-		Assembly tmlAssembly = context.LoadFromAssemblyPath(tmlDllPath);
-		string infoAttributeName = typeof(AssemblyInformationalVersionAttribute).FullName!;
-
-		string? tmlInfoVersion = null;
-		foreach (CustomAttributeData customAttributeData in tmlAssembly.GetCustomAttributesData()) {
-			if (customAttributeData.AttributeType.FullName != infoAttributeName) continue;
-
-			tmlInfoVersion = customAttributeData.ConstructorArguments[0].Value as string;
-			break;
-		}
+		FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(tmlDllPath);
+		string tmlInfoVersion = versionInfo.ProductVersion;
 
 		if (string.IsNullOrEmpty(tmlInfoVersion)) {
 			logger.LogWarning("Couldn't get tModLoader's informational version, defaulting to 'Stable' build.");
