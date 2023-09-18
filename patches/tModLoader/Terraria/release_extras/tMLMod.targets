@@ -25,6 +25,15 @@
 			<Visible>false</Visible>
 		</ModReference>
 	</ItemDefinitionGroup>
+	<UsingTask TaskName="GetTmlVersionSymbol" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTools/1.0.0/tModLoader.BuildTools.dll" />
+	<Target Name="AddPreprocessorVersionSymbol" BeforeTargets="Compile">
+		<GetTmlVersionSymbol TmlDllPath="$(tMLSteamPath)$(tMLPath)">
+			<Output TaskParameter="TmlVersionSymbol" PropertyName="TmlVersionSymbol" />
+		</GetTmlVersionSymbol>
+		<PropertyGroup>
+			<DefineConstants>$(DefineConstants);$(TmlVersionSymbol)</DefineConstants>
+		</PropertyGroup>
+	</Target>
 	<Target Name="IncludeModReferences" BeforeTargets="BeforeResolveReferences">
 		<Message Text="Adding %(ModReference.Identity) as a reference" />
 
