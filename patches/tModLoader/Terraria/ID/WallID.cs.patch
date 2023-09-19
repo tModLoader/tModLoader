@@ -1,12 +1,23 @@
 --- src/TerrariaNetCore/Terraria/ID/WallID.cs
 +++ src/tModLoader/Terraria/ID/WallID.cs
-@@ -1,3 +_,6 @@
+@@ -1,7 +_,17 @@
 +using ReLogic.Reflection;
++
++#if !TMLCODEASSIST
 +using Terraria.ModLoader;
++#endif
 +
  namespace Terraria.ID;
  
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Wall)]
++#endif
  public class WallID
+ {
++#if !TMLCODEASSIST
+ 	public static class Sets
+ 	{
+ 		public static class Conversion
 @@ -20,7 +_,7 @@
  			public static bool[] NewWall4 = Factory.CreateBoolSet(191, 195, 203, 207, 215, 279, 283, 291, 295, 303);
  		}
@@ -16,6 +27,14 @@
  		public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
  		public static bool[] AllowsUndergroundDesertEnemiesToSpawn = Factory.CreateBoolSet(187, 220, 222, 221, 216, 217, 219, 218);
  		public static bool[] Transparent = Factory.CreateBoolSet(88, 89, 90, 91, 92, 241);
+@@ -33,6 +_,7 @@
+ 		public static bool[] WallSpreadStopsAtAir = Factory.CreateBoolSet(63, 62);
+ 		public static int[] BlendType = Factory.CreateIntSet(-1, 66, 63, 68, 63, 65, 63, 16, 2, 59, 2, 261, 2, 284, 196, 285, 197, 286, 198, 287, 199, 256, 54, 257, 55, 258, 56, 259, 57, 260, 58, 262, 61, 274, 185, 300, 212, 301, 213, 302, 214, 303, 215, 296, 208, 297, 209, 298, 210, 299, 211, 48, 1, 49, 1, 50, 1, 51, 1, 52, 1, 53, 1, 250, 1, 251, 1, 252, 1, 253, 1, 254, 1, 255, 1, 69, 264, 3, 246, 217, 305, 220, 308, 188, 276, 189, 277, 190, 278, 191, 279, 81, 77, 268, 77, 83, 269, 218, 306, 221, 309, 192, 280, 193, 281, 194, 282, 195, 283, 70, 265, 28, 248, 219, 307, 222, 310, 200, 288, 201, 289, 202, 290, 203, 291, 15, 247, 64, 67, 204, 292, 205, 293, 206, 294, 207, 295, 86, 108, 87, 112, 40, 249, 71, 266, 216, 304, 187, 275, 62, 263, 80, 74, 180, 184, 178, 183, 79, 267, 20, 14, 7, 17, 94, 17, 95, 17, 8, 18, 98, 18, 99, 18, 9, 19, 96, 19, 97, 19);
+ 	}
++#endif
+ 
+ 	public const ushort None = 0;
+ 	public const ushort Stone = 1;
 @@ -382,4 +_,7 @@
  	public const ushort VioletMossBlockWall = 345;
  	public const ushort RainbowMossBlockWall = 346;

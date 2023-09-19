@@ -8,11 +8,12 @@
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
  using Terraria.DataStructures;
-@@ -13,12 +_,14 @@
+@@ -13,12 +_,15 @@
  using Terraria.GameContent.UI;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -24,7 +25,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,455 @@
+@@ -37,78 +_,459 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -141,6 +142,7 @@
 +	/// If greater than 0, this item cannot be used unless the player has the item type <c>tileWand</c> is set to. The item also gains a counter for said item type.<br/>
 +	/// Defaults to -1.<br/>
 +	/// </summary>
++	[IDType(IDTypeAttribute.Item)]
  	public int tileWand = -1;
 +
 +	/// <summary>
@@ -280,6 +282,7 @@
 +	/// <summary>
 +	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement. 
 +	/// </summary>
++	[IDType(IDTypeAttribute.Item)]
  	public int type;
 +
 +	/// <summary>
@@ -370,12 +373,14 @@
 +	/// The ID of the tile this item places on use. Either a <see cref="TileID"/> entry or <see cref="ModContent.TileType{T}"/>, for example <see cref="TileID.WorkBenches"/> or ModContent.ItemType&lt;ExampleWorkbench&gt;()
 +	/// <br/> Defaults to -1.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Tile)]
  	public int createTile = -1;
 +
 +	/// <summary>
 +	/// The ID of the wall this item places on use. Either a <see cref="WallID"/> entry or <see cref="ModContent.WallType{T}"/>, for example <see cref="WallID.TopazGemspark"/> or ModContent.ItemType&lt;ExampleWall&gt;()
 +	/// <br/> Defaults to -1.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Wall)]
  	public int createWall = -1;
 +
 +	/// <summary>
@@ -484,7 +489,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,242 @@
+@@ -121,49 +_,249 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -520,6 +525,7 @@
 +	/// <br/> If this weapon uses <see cref="useAmmo"/>, then this value is ignored as the projectile will be decided by the ammo item, but shoot should still be 10 by convention.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Projectile)]
  	public int shoot;
 +
 +	/// <summary>
@@ -532,6 +538,7 @@
 +	/// The Ammo ID this item belongs to. Weapons with <see cref="useAmmo"/> set to the same AmmoID will consume this item as ammo. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information.
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Item)] // TODO: Should it be Item or Ammo?
  	public int ammo = AmmoID.None;
 +
 +	/// <summary>
@@ -544,6 +551,7 @@
 +	/// The Ammo ID this weapon will consume. Ammo items with <see cref="ammo"/> set to this same AmmoID will be consumed as ammo for this weapon to be used. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information.
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Item)]
  	public int useAmmo = AmmoID.None;
 +
 +	/// <summary>
@@ -604,6 +612,7 @@
 +	/// <br/> Make sure to set <see cref="buffTime"/> as well or the buff will instantly disappear.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Buff)]
  	public int buffType;
 +
 +	/// <summary>
@@ -617,6 +626,7 @@
 +	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Mount)]
  	public int mountType = -1;
  	public bool cartTrack;
 +
@@ -656,6 +666,7 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool DD2Summon;
++	[IDType(IDTypeAttribute.Item)]
  	public int netID;
 +
 +	/// <summary>
@@ -674,6 +685,7 @@
 +	/// The current prefix applied to this item. Either a <see cref="PrefixID"/> entry or <see cref="ModContent.PrefixType{T}"/>. Prefixes are assigned by calling the <see cref="Item.Prefix(int)"/> method.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Prefix)]
 +	public int prefix; //TML: Changed from byte to int.
 +
 +	internal bool melee {
@@ -740,7 +752,7 @@
 +	public Item() { }
 +
 +	// Added by TML.
-+	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
++	public Item([IDType(IDTypeAttribute.Item)] int setDefaultsToType, int stack = 1, int prefix = 0)
 +	{
 +		SetDefaults(setDefaultsToType);
 +
@@ -793,17 +805,18 @@
  
  	public ItemVariant Variant { get; private set; }
  
-@@ -254,12 +_,27 @@
+@@ -254,13 +_,28 @@
  		}
  	}
  
+-	public static void StartCachingType(int t)
 +	/// <summary>
 +	/// Begins caching items spawns for a given item type (<see cref="Item.type"/>).
 +	/// <br/> Cached item types will not be spawned into the world when created with Item.NewItem().
 +	/// <br/> Cache sizes can be checked by indexing <see cref="cachedItemSpawnsByType"/> and dropped using <see cref="DropCache(IEntitySource, Vector2, Vector2, int, bool)"/>.
 +	/// </summary>
 +	/// <param name="t">The item type to start caching.</param>
- 	public static void StartCachingType(int t)
++	public static void StartCachingType([IDType(IDTypeAttribute.Item)] int t)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
  			cachedItemSpawnsByType[t] = 0;
@@ -818,9 +831,11 @@
 +	/// <param name="spread">The random spread of the dropped items in world coordinates.</param>
 +	/// <param name="t">The item type (<see cref="Item.type"/>) to drop.</param>
 +	/// <param name="stopCaching">If <see langword="true"/>, then <paramref name="t"/> will no longer be cached, allowing future drops to spawn as normal.</param>
- 	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
+-	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
++	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, [IDType(IDTypeAttribute.Item)] int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
+ 			return;
 @@ -279,12 +_,26 @@
  		}
  	}
@@ -850,7 +865,7 @@
  		if (type != 0 && maxStack == 1) {
  			if (damage <= 0)
  				return accessory;
-@@ -293,8 +_,36 @@
+@@ -293,9 +_,37 @@
  		}
  
  		return false;
@@ -863,6 +878,7 @@
 +			&& (damage > 0 || IsAPrefixableAccessory());
  	}
  
+-	public bool Prefix(int prefixWeWant)
 +	/// <summary>
 +	/// Attempts to apply a prefix to this <see cref="Item"/>.
 +	/// </summary>
@@ -884,9 +900,10 @@
 +	/// </list>
 +	/// Otherwise, return <see langword="true"/>.
 +	/// </returns>
- 	public bool Prefix(int prefixWeWant)
++	public bool Prefix([IDType(IDTypeAttribute.Prefix)] int prefixWeWant)
  	{
  		if (!WorldGen.gen && Main.rand == null)
+ 			Main.rand = new UnifiedRandom();
 @@ -306,7 +_,19 @@
  		if (!CanHavePrefixes())
  			return false;
@@ -907,12 +924,13 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -318,12 +_,18 @@
+@@ -318,12 +_,19 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
 +
-+			if (applyPrefixOverride is true) { } else
++			if (applyPrefixOverride is true) { }
++			else
  			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
 -				rolledPrefix = 0;
 +				return true; //rolledPrefix = 0;
@@ -927,11 +945,12 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -331,8 +_,9 @@
+@@ -331,8 +_,10 @@
  				case -3:
  					return true;
  				case -1:
-+					if (applyPrefixOverride is true) { } else
++					if (applyPrefixOverride is true) { }
++					else
  					if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
 -						rolledPrefix = 0;
 +						return true; //rolledPrefix = 0;
@@ -998,13 +1017,14 @@
  		return true;
  	}
  
+-	public bool CanRollPrefix(int prefix)
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can roll the given prefix.
 +	/// </summary>
 +	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
 +	/// <returns><see langword="true"/> if this <see cref="Item"/> can receive prefixes (<see cref="CanHavePrefixes"/>) and if <see cref="PrefixLoader.CanRoll(Item, int)"/> returns <see langword="true"/>, <see langword="false"/> otherwise.</returns>
 +	/// <remarks>Just because a prefix can be rolled does not mean it can be applied -- use <see cref="CanApplyPrefix(int)"/> to check for that.</remarks>
- 	public bool CanRollPrefix(int prefix)
++	public bool CanRollPrefix([IDType(IDTypeAttribute.Prefix)] int prefix)
  	{
  		if (!CanHavePrefixes())
  			return false;
@@ -1013,7 +1033,7 @@
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -407,8 +_,16 @@
+@@ -407,9 +_,17 @@
  		}
  
  		return false;
@@ -1022,14 +1042,16 @@
 +		return PrefixLoader.CanRoll(this, prefix);
  	}
  
+-	public bool CanApplyPrefix(int prefix)
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive the given prefix.
 +	/// </summary>
 +	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
 +	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
- 	public bool CanApplyPrefix(int prefix)
++	public bool CanApplyPrefix([IDType(IDTypeAttribute.Prefix)] int prefix)
  	{
  		if (!CanRollPrefix(prefix))
+ 			return false;
 @@ -706,6 +_,13 @@
  				dmg = 1.05f;
  				crt = 2;
@@ -1067,7 +1089,7 @@
 +	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 +			return PrefixCategory.Melee;
-+		
++
 +		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
 +			return PrefixCategory.Ranged;
 +
@@ -1146,7 +1168,7 @@
  	public bool checkMat()
  	{
  		if (type >= 71 && type <= 74) {
-@@ -839,9 +_,11 @@
+@@ -839,11 +_,13 @@
  
  				material = false;
  				return false;
@@ -1156,8 +1178,11 @@
  	}
 +	*/
  
- 	public void netDefaults(int type)
+-	public void netDefaults(int type)
++	public void netDefaults([IDType(IDTypeAttribute.Item)] int type)
  	{
+ 		if (type < 0) {
+ 			switch (type) {
 @@ -998,8 +_,20 @@
  		}
  	}
@@ -1179,18 +1204,20 @@
  		int num = 0;
  		if (banner == 289)
  			return 5352;
-@@ -1037,6 +_,11 @@
+@@ -1037,7 +_,12 @@
  		return 1615 + banner - 1;
  	}
  
+-	public static int NPCtoBanner(int i)
 +	/// <summary>
 +	/// Converts an NPC type (<see cref="NPC.type"/>) into the equivalent banner ID.
 +	/// </summary>
 +	/// <param name="i">The NPC type to convert.</param>
 +	/// <returns>The banner ID associated with the given NPC type, or <c>0</c> if the NPC type has no associated banner.</returns>
- 	public static int NPCtoBanner(int i)
++	public static int NPCtoBanner([IDType(IDTypeAttribute.NPC)] int i)
  	{
  		switch (i) {
+ 			case 102:
 @@ -1771,15 +_,24 @@
  				return 286;
  			case 176:
@@ -1232,6 +1259,15 @@
  				return 0;
  		}
  	}
+@@ -2372,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	public void SetDefaults1(int type)
++	public void SetDefaults1([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		switch (type) {
+ 			case 1:
 @@ -7679,6 +_,8 @@
  				value = 300;
  				break;
@@ -1267,6 +1303,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -14592,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void SetDefaults2(int type)
++	public void SetDefaults2([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		switch (type) {
+ 			case 1001:
 @@ -22766,6 +_,8 @@
  				melee = true;
  				return;
@@ -1276,6 +1321,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -23488,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void SetDefaults3(int type)
++	public void SetDefaults3([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		switch (type) {
+ 			case 2002:
 @@ -30150,6 +_,17 @@
  			value = buyPrice(0, 2, 70);
  	}
@@ -1294,6 +1348,15 @@
  	public void DefaultToQuestFish()
  	{
  		questItem = true;
+@@ -30160,7 +_,7 @@
+ 		rare = -11;
+ 	}
+ 
+-	public void SetDefaults4(int type)
++	public void SetDefaults4([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		switch (type) {
+ 			case 3001:
 @@ -35265,6 +_,7 @@
  				rare = 2;
  				UseSound = SoundID.Item64;
@@ -1311,10 +1374,11 @@
  				useStyle = 5;
  				useAnimation = 25;
  				useTime = 3;
-@@ -38322,6 +_,26 @@
+@@ -38322,7 +_,27 @@
  		}
  	}
  
+-	public void DefaultToGolfBall(int projid)
 +	/// <summary>
 +	/// This method sets a variety of Item values common to golf ball items.<br/>
 +	/// Specifically:<code>
@@ -1335,9 +1399,19 @@
 +	/// </code>
 +	/// </summary>
 +	/// <param name="projid"></param>
- 	public void DefaultToGolfBall(int projid)
++	public void DefaultToGolfBall([IDType(IDTypeAttribute.Projectile)] int projid)
  	{
  		shoot = projid;
+ 		useStyle = 1;
+@@ -38341,7 +_,7 @@
+ 		hasVanityEffects = true;
+ 	}
+ 
+-	public void SetDefaults5(int type)
++	public void SetDefaults5([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		switch (type) {
+ 			case 3990:
 @@ -43082,6 +_,8 @@
  				expert = true;
  				break;
@@ -1357,10 +1431,11 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -46345,6 +_,20 @@
+@@ -46345,7 +_,21 @@
  		}
  	}
  
+-	public void DefaultToSolution(int projectileId)
 +	/// <summary>
 +	/// This method sets a variety of Item values common to Clentaminator ammo solution items.<br/>
 +	/// Specifically:<code>
@@ -1375,10 +1450,11 @@
 +	/// </code>
 +	/// </summary>
 +	/// <param name="projectileId"></param>
- 	public void DefaultToSolution(int projectileId)
++	public void DefaultToSolution([IDType(IDTypeAttribute.Projectile)] int projectileId)
  	{
  		shoot = projectileId - 145;
-@@ -46357,6 +_,30 @@
+ 		ammo = AmmoID.Solution;
+@@ -46357,7 +_,31 @@
  		consumable = true;
  	}
  
@@ -1406,10 +1482,12 @@
 +	/// <param name="kb"></param>
 +	/// <param name="shootspeed"></param>
 +	/// <param name="animationTotalTime"></param>
- 	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
+-	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
++	public void DefaultToWhip([IDType(IDTypeAttribute.Projectile)] int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46368,7 +_,10 @@
+ 		useStyle = 1;
+@@ -46368,14 +_,17 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
@@ -1420,6 +1498,31 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
+ 		shootSpeed = shootspeed;
+ 	}
+ 
+-	public void DefaultTokite(int projId)
++	public void DefaultTokite([IDType(IDTypeAttribute.Projectile)] int projId)
+ 	{
+ 		width = 20;
+ 		height = 28;
+@@ -46387,14 +_,14 @@
+ 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+ 	}
+ 
+-	public void ChangeItemType(int to)
++	public void ChangeItemType([IDType(IDTypeAttribute.Item)] int to)
+ 	{
+ 		bool flag = favorited;
+ 		SetDefaults(to);
+ 		favorited = flag;
+ 	}
+ 
+-	public void DefaultToVanitypet(int projId, int buffID)
++	public void DefaultToVanitypet([IDType(IDTypeAttribute.Projectile)] int projId, [IDType(IDTypeAttribute.Buff)] int buffID)
+ 	{
+ 		damage = 0;
+ 		useStyle = 1;
 @@ -46422,7 +_,7 @@
  		return false;
  	}
@@ -1433,16 +1536,17 @@
  		}
  	}
  
-+	//TML: Changed to take an int instead of a short for convenience and consistency purposes
 -	public void DefaultToCapturedCritter(short npcIdToSpawnOnUse)
-+	public void DefaultToCapturedCritter(int npcIdToSpawnOnUse)
++	//TML: Changed to take an int instead of a short for convenience and consistency purposes
++	public void DefaultToCapturedCritter([IDType(IDTypeAttribute.NPC)] int npcIdToSpawnOnUse)
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46471,6 +_,21 @@
+@@ -46471,7 +_,22 @@
  		makeNPC = npcIdToSpawnOnUse;
  	}
  
+-	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
 +	/// <summary>
 +	/// This method sets a variety of Item values common to staff magic weapons.<br/>
 +	/// Specifically:<code>
@@ -1458,13 +1562,15 @@
 +	/// <param name="pushForwardSpeed">Passed into DefaultToMagicWeapon as the shotVelocity parameter</param>
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="manaPerShot"></param>
- 	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
++	public void DefaultToStaff([IDType(IDTypeAttribute.Projectile)] int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
  	{
  		DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
-@@ -46480,6 +_,25 @@
+ 		mana = manaPerShot;
+@@ -46480,7 +_,26 @@
  		UseSound = SoundID.Item43;
  	}
  
+-	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
 +	/// <summary>
 +	/// This method sets a variety of Item values common to spear weapons.<br/>
 +	/// Specifically:<code>
@@ -1484,13 +1590,32 @@
 +	/// <param name="projType"></param>
 +	/// <param name="pushForwardSpeed"></param>
 +	/// <param name="animationTime"></param>
- 	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
++	public void DefaultToSpear([IDType(IDTypeAttribute.Projectile)] int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -46852,7 +_,24 @@
+ 		useAnimation = 31;
+@@ -46496,7 +_,7 @@
+ 		useAnimation = (useTime = animationTime);
+ 	}
+ 
+-	private void SetFoodDefaults(int type)
++	private void SetFoodDefaults([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		switch (type) {
+ 			case 4022:
+@@ -46845,14 +_,31 @@
+ 		rare = (int)(num / 4f);
+ 	}
+ 
+-	public void DefaultToMount(int mount)
++	public void DefaultToMount([IDType(IDTypeAttribute.Mount)] int mount)
+ 	{
+ 		width = 36;
+ 		height = 26;
  		mountType = mount;
  	}
  
+-	public void DefaultToPlaceableWall(ushort wallToPlace)
 +	// tML: changed to take an int instead of a ushort for convenience and consistency purposes
 +	/// <summary>
 +	/// This method sets a variety of Item values common to placeable walls.<br/>
@@ -1508,8 +1633,7 @@
 +	///	</code>
 +	/// </summary>
 +	/// <param name="wallToPlace"></param>
--	public void DefaultToPlaceableWall(ushort wallToPlace)
-+	public void DefaultToPlaceableWall(int wallToPlace)
++	public void DefaultToPlaceableWall([IDType(IDTypeAttribute.Wall)] int wallToPlace)
  	{
  		useStyle = 1;
  		useTurn = true;
@@ -1541,7 +1665,7 @@
  	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
-@@ -46881,6 +_,23 @@
+@@ -46881,7 +_,24 @@
  		UseSound = SoundID.Item5;
  	}
  
@@ -1562,13 +1686,16 @@
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
 +	/// <param name="hasAutoReuse"></param>
- 	public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
+-	public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
++	public void DefaultToMagicWeapon([IDType(IDTypeAttribute.Projectile)] int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46893,6 +_,25 @@
+ 		useStyle = 5;
+@@ -46893,7 +_,26 @@
  		magic = true;
  	}
  
+-	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
 +	/// <summary>
 +	/// This method sets a variety of Item values common to ranged weapons.<br/>
 +	/// Specifically:<code>
@@ -1588,10 +1715,11 @@
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
 +	/// <param name="hasAutoReuse"></param>
- 	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
++	public void DefaultToRangedWeapon([IDType(IDTypeAttribute.Projectile)] int baseProjType, [IDType(IDTypeAttribute.Item)] int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46906,6 +_,25 @@
+ 		useStyle = 5;
+@@ -46906,7 +_,26 @@
  		ranged = true;
  	}
  
@@ -1614,9 +1742,11 @@
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
 +	/// <param name="hasAutoReuse"></param>
- 	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
+-	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
++	public void DefaultToThrownWeapon([IDType(IDTypeAttribute.Projectile)] int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
+ 		useStyle = 1;
 @@ -46920,7 +_,36 @@
  		maxStack = CommonMaxStack;
  	}
@@ -1644,7 +1774,7 @@
 +	/// <param name="tileIDToPlace"></param>
 +	/// <param name="tileStyleToPlace"></param>
 +	/// <param name="allowWaterPlacement"></param>
-+	public void DefaultToTorch(int tileIDToPlace, int tileStyleToPlace, bool allowWaterPlacement = false)
++	public void DefaultToTorch([IDType(IDTypeAttribute.Tile)] int tileIDToPlace, int tileStyleToPlace, bool allowWaterPlacement = false)
 +	{
 +		DefaultToTorch(tileStyleToPlace, allowWaterPlacement);
 +		createTile = tileIDToPlace;
@@ -1655,16 +1785,18 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -46939,11 +_,30 @@
+@@ -46939,12 +_,31 @@
  		useTime = 10;
  	}
  
+-	public void DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace = 0)
 +	/// <inheritdoc cref="DefaultToPlaceableTile(ushort, int)"/>
- 	public void DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace = 0)
++	public void DefaultToPlaceableTile([IDType(IDTypeAttribute.Tile)] int tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		DefaultToPlaceableTile((ushort)tileIDToPlace, tileStyleToPlace);
  	}
  
+-	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
 +	/// <summary>
 +	/// This method sets a variety of Item values common to items that place tiles.<br/>
 +	/// Specifically:<code>
@@ -1683,10 +1815,11 @@
 +	/// </summary>
 +	/// <param name="tileIDToPlace"></param>
 +	/// <param name="tileStyleToPlace"></param>
- 	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
++	public void DefaultToPlaceableTile([IDType(IDTypeAttribute.Item)] ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
-@@ -46995,6 +_,27 @@
+ 		placeStyle = tileStyleToPlace;
+@@ -46995,7 +_,28 @@
  		autoReuse = true;
  	}
  
@@ -1711,9 +1844,11 @@
 +	/// <param name="foodbuffduration"></param>
 +	/// <param name="useGulpSound">If true, the gulp sound is set, otherwise the crunch sound is set</param>
 +	/// <param name="animationTime"></param>
- 	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
+-	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
++	public void DefaultToFood(int newwidth, int newheight, [IDType(IDTypeAttribute.Buff)] int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
  	{
  		if (useGulpSound)
+ 			UseSound = SoundID.Item3;
 @@ -47035,12 +_,18 @@
  		healLife = healingAmount;
  	}
@@ -1758,7 +1893,7 @@
 +	/// </summary>
 +	/// <param name="tileIDToPlace"></param>
 +	/// <param name="style"></param>
-+	public void DefaultToMusicBox(int tileIDToPlace, int style = 0)
++	public void DefaultToMusicBox([IDType(IDTypeAttribute.Tile)] int tileIDToPlace, int style = 0)
 +	{
 +		DefaultToMusicBox(style);
 +		createTile = tileIDToPlace;
@@ -1769,12 +1904,18 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,22 @@
+@@ -47083,12 +_,28 @@
+ 		hasVanityEffects = true;
+ 	}
+ 
+-	public void SetDefaults(int Type = 0)
++	public void SetDefaults([IDType(IDTypeAttribute.Item)] int Type = 0)
+ 	{
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
 +	// Added by TML.
-+	public void CloneDefaults(int TypeToClone)
++	public void CloneDefaults([IDType(IDTypeAttribute.Item)] int TypeToClone)
 +	{
 +		int originalType = type;
 +		int originalNetID = netID;
@@ -1789,9 +1930,11 @@
 +		_globals = originalGlobals;
 +	}
 +
- 	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
+-	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
++	public void SetDefaults([IDType(IDTypeAttribute.Item)] int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
+ 			netDefaults(Type);
 @@ -47101,8 +_,11 @@
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
@@ -1824,7 +1967,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,27 @@
+@@ -47297,35 +_,61 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
@@ -1853,7 +1996,9 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,32 @@
+ 
+-	public void ResetStats(int Type)
++	public void ResetStats([IDType(IDTypeAttribute.Item)] int Type)
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1911,16 +2056,18 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
-@@ -47623,6 +_,9 @@
+@@ -47623,7 +_,10 @@
  		return new Color(num, num2, num3, num4);
  	}
  
+-	public static bool MechSpawn(float x, float y, int type)
 +	/// <summary>
 +	/// Use to check if a mechanism is allowed to spawn an Item of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
 +	/// </summary>
- 	public static bool MechSpawn(float x, float y, int type)
++	public static bool MechSpawn(float x, float y, [IDType(IDTypeAttribute.Item)] int type)
  	{
  		int num = 0;
+ 		int num2 = 0;
 @@ -47649,7 +_,18 @@
  		return true;
  	}
@@ -2050,7 +2197,16 @@
  				if (item.stack <= 0) {
  					item.SetDefaults();
  					item.active = false;
-@@ -49077,21 +_,68 @@
+@@ -49049,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static Rectangle GetDrawHitbox(int type, Player user)
++	public static Rectangle GetDrawHitbox([IDType(IDTypeAttribute.Item)] int type, Player user)
+ 	{
+ 		if (Main.dedServ)
+ 			return Rectangle.Empty;
+@@ -49077,14 +_,58 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);
  			default:
@@ -2068,20 +2224,24 @@
  		}
  	}
  
+-	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+-	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+-
+-	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 +	/// <br/><br/>This particular overload uses two Vector2 to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
++	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, [IDType(IDTypeAttribute.Item)] int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 +
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 +	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
- 
++	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, [IDType(IDTypeAttribute.Item)] int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
++
 +	/// <summary>
 +	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
 +	/// <br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
@@ -2100,16 +2260,16 @@
 +	/// <param name="noGrabDelay"></param>
 +	/// <param name="reverseLookup"></param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
- 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
- 	{
++	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, [IDType(IDTypeAttribute.Item)] int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
++	{
 +		return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
 +	}
 +
-+	private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
-+	{
++	private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, [IDType(IDTypeAttribute.Item)] int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
+ 	{
  		if (WorldGen.gen)
  			return 0;
- 
+@@ -49092,6 +_,9 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
@@ -2143,7 +2303,7 @@
  		item.SetDefaults(Type);
  		item.Prefix(pfix);
  		item.stack = Stack;
-+		skipItemCreation:
++	skipItemCreation:
 +
  		item.position.X = X + Width / 2 - item.width / 2;
  		item.position.Y = Y + Height / 2 - item.height / 2;

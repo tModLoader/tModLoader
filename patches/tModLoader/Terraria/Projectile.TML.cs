@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Annotations;
 using Terraria.ModLoader.Core;
 
 namespace Terraria;
@@ -17,7 +18,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// </summary>
 	public ModProjectile ModProjectile { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalProjectile>.Type => type;
 	internal GlobalProjectile[] _globals;
 	public RefReadOnlyArray<GlobalProjectile> EntityGlobals => _globals;
@@ -43,14 +44,14 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	/// <summary>
 	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
 	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual Projectile instance rather than the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 	/// <br/> A short-hand for <code> Main.projectile[Projectile.NewProjectile(...)] </code>
 	/// </summary>
-	public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
+	public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, [IDType(IDTypeAttribute.Projectile)] int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
 		=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1, ai2)];
 
 	private DamageClass _damageClass = DamageClass.Default;
@@ -122,7 +123,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		OriginalCritChance = CritChance;
 		OriginalArmorPenetration = ArmorPenetration;
 
-		 if (spawnSource is EntitySource_Parent { Entity: Player player }) {
+		if (spawnSource is EntitySource_Parent { Entity: Player player }) {
 			if (spawnSource is IEntitySource_WithStatsFromItem { Item: Item item }) {
 				// Apply the weapon and player bonuses to the base stats
 				CritChance += player.GetWeaponCrit(item);

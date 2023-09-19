@@ -1,10 +1,11 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Annotations;
 using Terraria.ModLoader.Core;
 
 namespace Terraria;
@@ -15,7 +16,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 	public ModNPC ModNPC { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalNPC>.Type => type;
 	internal GlobalNPC[] _globals;
 	public RefReadOnlyArray<GlobalNPC> EntityGlobals => _globals;
@@ -41,7 +42,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
 	public NPCHappiness Happiness => NPCHappiness.Get(type);
@@ -79,7 +80,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	}
 
 	/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
-	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
+	public bool HasBuff([IDType(IDTypeAttribute.Buff)] int type) => FindBuffIndex(type) != -1;
 
 	/// <inheritdoc cref="HasBuff(int)" />
 	public bool HasBuff<T>() where T : ModBuff
@@ -90,7 +91,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <br/><br/>This particular overload returns the actual NPC instance rather than the index of the spawned NPC within the <see cref="Main.npc"/> array.
 	/// <br/> A short-hand for <code> Main.npc[NPC.NewNPC(...)] </code>
 	/// </summary>
-	public static NPC NewNPCDirect(IEntitySource source, int x, int y, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
+	public static NPC NewNPCDirect(IEntitySource source, int x, int y, [IDType(IDTypeAttribute.NPC)] int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 		=> Main.npc[NewNPC(source, x, y, type, start, ai0, ai1, ai2, ai3, target)];
 
 	/// <summary>
@@ -98,7 +99,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <br/><br/>This particular overload returns the actual NPC instance rather than the index of the spawned NPC within the <see cref="Main.npc"/> array. It also uses a Vector2 for the spawn position instead of X and Y.
 	/// <br/> A short-hand for <code> Main.npc[NPC.NewNPC(...)] </code>
 	/// </summary>
-	public static NPC NewNPCDirect(IEntitySource source, Vector2 position, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
+	public static NPC NewNPCDirect(IEntitySource source, Vector2 position, [IDType(IDTypeAttribute.NPC)] int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 		=> NewNPCDirect(source, (int)position.X, (int)position.Y, type, start, ai0, ai1, ai2, ai3, target);
 
 	/// <summary>
@@ -276,9 +277,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
 	/// </summary>
 	/// <param name="buffType"></param>
-	public void BecomeImmuneTo(int buffType)
+	public void BecomeImmuneTo([IDType(IDTypeAttribute.Buff)] int buffType)
 	{
-		buffImmune[buffType] = true; 
+		buffImmune[buffType] = true;
 
 		for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
 			var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
@@ -306,7 +307,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 				anyBuffsCleared = true;
 			}
 
-			if (buffTime[i] == 0 || buffType[i] == 0) { 
+			if (buffTime[i] == 0 || buffType[i] == 0) {
 				for (int j = i + 1; j < maxBuffs; j++) {
 					buffTime[j - 1] = buffTime[j];
 					buffType[j - 1] = buffType[j];

@@ -1,10 +1,18 @@
-﻿namespace Terraria.GameContent.UI;
+﻿using ReLogic.Reflection;
 
+namespace Terraria.GameContent.UI;
+
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Emote)]
+#endif
 public partial class EmoteID
 {
 	/// <summary>
 	/// This class is added by TML for easily adding mod emotes to a specific category.
 	/// </summary>
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.EmoteCategory)]
+#endif
 	public class Category
 	{
 		/// <summary>
@@ -41,5 +49,7 @@ public partial class EmoteID
 		/// <b>Dangers</b> Emotes (For bosses)
 		/// </summary>
 		public const int Dangers = 6;
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Category, int>();
 	}
 }

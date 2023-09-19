@@ -1,0 +1,19 @@
+--- src/TerrariaNetCore/Terraria/ID/PlayerTextureID.cs
++++ src/tModLoader/Terraria/ID/PlayerTextureID.cs
+@@ -1,5 +_,10 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.PlayerTexture)]
++#endif
+ public static class PlayerTextureID
+ {
+ 	public const int Head = 0;
+@@ -19,4 +_,5 @@
+ 	public const int Extra = 14;
+ 	public const int EyeBlink = 15;
+ 	public static readonly int Count = 16;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(PlayerTextureID), typeof(int)); // TML
+ }

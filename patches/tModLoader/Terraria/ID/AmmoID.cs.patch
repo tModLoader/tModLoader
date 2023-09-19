@@ -1,6 +1,9 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
-@@ -2,10 +_,14 @@
+@@ -1,11 +_,18 @@
++#if !TMLCODEASSIST
+ using System.Collections.Generic;
++#endif
  
  namespace Terraria.ID;
  
@@ -8,6 +11,7 @@
 +public static partial class AmmoID
  {
 -	public class Sets
++#if !TMLCODEASSIST
 +	public partial class Sets
  	{
 +		/// <summary>
@@ -17,3 +21,11 @@
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
  				759,
+@@ -94,6 +_,7 @@
+ 			}
+ 		};
+ 	}
++#endif
+ 
+ 	public static int None = 0;
+ 	public static int Gel = 23;

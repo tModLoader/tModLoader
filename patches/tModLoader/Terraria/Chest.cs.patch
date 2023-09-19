@@ -5,12 +5,13 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
-@@ -8,34 +_,130 @@
+@@ -8,34 +_,131 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
  using Terraria.ObjectData;
  
  namespace Terraria;
@@ -223,7 +224,7 @@
 +					if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int numTransfered))
 +						continue;
 +
-+					if(numTransfered > 0)
++					if (numTransfered > 0)
 +						VisualizeChestTransfer(position, vector, item, numTransfered);
 +
 +					if (item.stack <= 0) {
@@ -320,7 +321,7 @@
  				return false;
  		}
  
-+		PostVanillaChests:
++	PostVanillaChests:
 +
  		SoundEngine.PlaySound(22, X * 16, Y * 16);
  		for (int i = X; i <= X + 1; i++) {
@@ -375,7 +376,7 @@
  				return false;
  		}
  
-+		PostVanillaChests:
++	PostVanillaChests:
 +
  		SoundEngine.PlaySound(22, X * 16, Y * 16);
  		for (int i = X; i <= X + 1; i++) {
@@ -604,11 +605,11 @@
  			if (item[i] == null || item[i].type == 0) {
  				item[i] = newItem.Clone();
  				item[i].favorited = false;
-@@ -651,9 +_,15 @@
+@@ -651,12 +_,18 @@
  				item[i].stack -= num;
  				_ = item[i].value;
  				_ = 0;
-+				
++
 +				/*
  				break;
 +				*/
@@ -619,7 +620,20 @@
 +		return 0;
  	}
  
- 	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count)
+-	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count)
++	public static void SetupTravelShop_AddToShop([IDType(IDTypeAttribute.Item)] int it, ref int added, ref int count)
+ 	{
+ 		if (it == 0)
+ 			return;
+@@ -735,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static bool SetupTravelShop_CanAddItemToShop(int it)
++	public static bool SetupTravelShop_CanAddItemToShop([IDType(IDTypeAttribute.Item)] int it)
+ 	{
+ 		if (it == 0)
+ 			return false;
 @@ -1077,6 +_,9 @@
  		}
  	}

@@ -1,16 +1,25 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,109 @@
+@@ -1,31 +_,117 @@
+-using System;
+ using System.Collections.Generic;
++
++#if !TMLCODEASSIST
++using System;
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
++#else
++using ReLogic.Reflection;
++#endif
  
  namespace Terraria.ID;
  
 -public class NPCID
 +public partial class NPCID
  {
++#if !TMLCODEASSIST
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -647,3 +656,11 @@
  			}
  
  			return dictionary;
+@@ -9973,6 +_,7 @@
+ 			};
+ 		}
+ 	}
++#endif
+ 
+ 	private static readonly int[] NetIdMap = new int[65] {
+ 		81,

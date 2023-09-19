@@ -1,23 +1,23 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.OS;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
 using Terraria.UI.Chat;
-using ReLogic.Content;
 using Terraria.UI.Gamepad;
 
 namespace Terraria;
@@ -169,8 +169,9 @@ public partial class Main
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 		}
 	}
-	
-	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
+
+	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex)
+	{
 		startIndex = 0;
 		endIndex = activeToggles;
 		moveDownForButton = false;
@@ -315,7 +316,6 @@ public partial class Main
 				mouseLeftRelease = false;
 			}
 
-
 			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
 
 			if (mouseText && hover && HoverItem.type <= 0) {
@@ -396,7 +396,7 @@ public partial class Main
 
 		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
-	
+
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
 	{
 		List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
@@ -436,7 +436,8 @@ public partial class Main
 
 	public static void AddSignalTraps()
 	{
-		static void Handle(PosixSignalContext ctx) {
+		static void Handle(PosixSignalContext ctx)
+		{
 			ctx.Cancel = true;
 			Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");
 			Netplay.Disconnect = true;

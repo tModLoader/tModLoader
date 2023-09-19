@@ -1,7 +1,11 @@
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Projectile)]
+#endif
 partial class ProjectileID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		/// <summary>
@@ -19,4 +23,5 @@ partial class ProjectileID
 			ProjectileID.DD2LightningAuraT3, 0.5f
 		);
 	}
+#endif
 }

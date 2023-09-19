@@ -2,6 +2,9 @@ using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.NPCAIStyle)]
+#endif
 public class NPCAIStyleID
 {
 	public static readonly IdDictionary Search = IdDictionary.Create<NPCAIStyleID, short>();

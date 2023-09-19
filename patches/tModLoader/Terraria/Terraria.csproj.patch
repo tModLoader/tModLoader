@@ -39,13 +39,15 @@
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
  		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
  		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-@@ -38,8 +_,12 @@
+@@ -38,8 +_,14 @@
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
 +		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
++    <ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
++    <ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
  	</ItemGroup>
  	<ItemGroup>
 +		<EmbeddedResource Include="**\*.png" />

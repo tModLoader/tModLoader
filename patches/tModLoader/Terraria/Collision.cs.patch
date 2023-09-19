@@ -4,10 +4,18 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.ID;
-+using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
  
  namespace Terraria;
  
+@@ -10,6 +_,7 @@
+ {
+ 	public struct HurtTile
+ 	{
++		[IDType(IDTypeAttribute.Tile)]
+ 		public int type;
+ 		public int x;
+ 		public int y;
 @@ -1030,7 +_,7 @@
  		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
  			return false;
@@ -17,6 +25,15 @@
  			return false;
  
  		int num = tile.blockType();
+@@ -2211,7 +_,7 @@
+ 		return result;
+ 	}
+ 
+-	public static bool CanTileHurt(ushort type, int i, int j, Player player)
++	public static bool CanTileHurt([IDType(IDTypeAttribute.Tile)] ushort type, int i, int j, Player player)
+ 	{
+ 		if (type == 230 && !Main.getGoodWorld)
+ 			return false;
 @@ -2614,7 +_,10 @@
  			tile = Main.tile[num2, num3];
  			tile2 = Main.tile[num2, num3 - 1];
