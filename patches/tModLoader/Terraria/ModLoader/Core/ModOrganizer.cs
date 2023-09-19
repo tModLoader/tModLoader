@@ -108,7 +108,7 @@ internal static class ModOrganizer
 				var m = list[i];
 				if (condition(m)) {
 					if (!quiet)
-						Logging.tML.Debug($"Rejected {m}. Reason: {reason}.");
+						Logging.tML.Debug($"Skipped {m}. Reason: {reason}.");
 
 					list.RemoveAt(i);
 				}
