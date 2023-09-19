@@ -1,0 +1,134 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>TMLCODEASSIST</DefineConstants>
+
+    <!-- Avoid ID conflicts with the package project. -->
+    <PackageId>*$(MSBuildProjectFile)*</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\tModLoader\ReLogic\Reflection\IdDictionary.cs" Link="IDType\Sets\IdDictionary.cs" />
+    <Compile Include="..\..\src\tModLoader\Terraria\ModLoader\Annotations\Annotations.cs" Link="IDType\Annotations.cs" />
+    
+    <Compile Include="..\..\src\tModLoader\Terraria\ID\**\*.cs" />
+    <Compile Include="..\..\src\tModLoader\Terraria\GameContent\UI\EmoteID.cs" Link="IDType\Sets\EmoteID.cs" />
+    <Compile Include="..\..\src\tModLoader\Terraria\GameContent\UI\EmoteID.TML.cs" Link="IDType\Sets\EmoteID.TML.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\SetFactory.cs" />
+    
+    <!-- Those are enums. More explanation needed? -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\BlockType.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\SlopeType.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\TeleportationSide.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\TileChangeType.cs" />
+    <!-- Not needed. -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\Colors*.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\ContentSamples.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\ItemSourceID.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\ProjectileSourceID.cs" />
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\TileEntityID.cs" />
+    <!-- All IDs are literally just -1. -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\CustomCurrencyID.cs" />
+    <!-- Dusts are excluded for now, because of how weird their IDs are. -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\DustID*.cs" />
+    <!-- Excluded cause the only thing this has is Count field. -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\HairID.cs" />
+    <!-- Is it really necessary? -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\MenuID.cs" />
+    <!-- Could be re-added if Old_IlluminantPaint is removed. -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\PaintID.cs" />
+    <!-- Not even constants... -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\PlayerItemSlotID.cs" />
+    <!-- Quite confusing. TODO: Later? -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\SoundID*.cs" />
+    <!-- Literally just one ID. -->
+    <Compile Remove="..\..\src\tModLoader\Terraria\ID\TreeTopID.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\AchievementHelperID.cs" Link="IDType\Sets\AchievementHelperID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\AmmoID.cs" Link="IDType\Sets\AmmoID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\AmmoID.TML.cs" Link="IDType\Sets\AmmoID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\AnimationID.cs" Link="IDType\Sets\AnimationID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ArmorIDs.cs" Link="IDType\Sets\ArmorIDs.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ArmorIDs.TML.cs" Link="IDType\Sets\ArmorIDs.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\BiomeConversionID.cs" Link="IDType\Sets\BiomeConversionID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\BuffID.cs" Link="IDType\Sets\BuffID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\BuffID.TML.cs" Link="IDType\Sets\BuffID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ChainID.cs" Link="IDType\Sets\ChainID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\CloudID.cs" Link="IDType\Sets\CloudID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\CursorOverrideID.cs" Link="IDType\Sets\CursorOverrideID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ExtrasID.cs" Link="IDType\Sets\ExtrasID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\GameEventClearedID.cs" Link="IDType\Sets\GameEventClearedID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\GameModeID.cs" Link="IDType\Sets\GameModeID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\GlowMaskID.cs" Link="IDType\Sets\GlowMaskID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\GoreID.cs" Link="IDType\Sets\GoreID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\GoreID.TML.cs" Link="IDType\Sets\GoreID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\HousingCategoryID.cs" Link="IDType\Sets\HousingCategoryID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ImmunityCooldownID.cs" Link="IDType\Sets\ImmunityCooldownID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\InvasionID.cs" Link="IDType\Sets\InvasionID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ItemAlternativeFunctionID.cs" Link="IDType\Sets\ItemAlternativeFunctionID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ItemHoldStyleID.cs" Link="IDType\Sets\ItemHoldStyleID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ItemID.cs" Link="IDType\Sets\ItemID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ItemID.TML.cs" Link="IDType\Sets\ItemID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ItemRarityID.cs" Link="IDType\Sets\ItemRarityID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ItemUseStyleID.cs" Link="IDType\Sets\ItemUseStyleID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\LangID.cs" Link="IDType\Sets\LangID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\LiquidID.cs" Link="IDType\Sets\LiquidID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\MessageID.cs" Link="IDType\Sets\MessageID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\MessageID.TML.cs" Link="IDType\Sets\MessageID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\MountID.cs" Link="IDType\Sets\MountID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\MusicID.cs" Link="IDType\Sets\MusicID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\NetmodeID.cs" Link="IDType\Sets\NetmodeID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\NPCAIStyleID.cs" Link="IDType\Sets\NPCAIStyleID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\NPCHeadID.cs" Link="IDType\Sets\NPCHeadID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\NPCID.cs" Link="IDType\Sets\NPCID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\NPCID.TML.cs" Link="IDType\Sets\NPCID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\PaintCoatingID.cs" Link="IDType\Sets\PaintCoatingID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\PlayerDifficultyID.cs" Link="IDType\Sets\PlayerDifficultyID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\PlayerTextureID.cs" Link="IDType\Sets\PlayerTextureID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\PlayerVariantID.cs" Link="IDType\Sets\PlayerVariantID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\PrefixID.cs" Link="IDType\Sets\PrefixID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ProjAIStyleID.cs" Link="IDType\Sets\ProjAIStyleID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ProjectileID.cs" Link="IDType\Sets\ProjectileID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\ProjectileID.TML.cs" Link="IDType\Sets\ProjectileID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\RecipeGroupID.cs" Link="IDType\Sets\RecipeGroupID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\StatusID.cs" Link="IDType\Sets\StatusID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\SurfaceBackgroundID.cs" Link="IDType\Sets\SurfaceBackgroundID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\TeleportationSide.cs" Link="IDType\Sets\TeleportationSide.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\TeleportationStyleID.cs" Link="IDType\Sets\TeleportationStyleID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\TileID.cs" Link="IDType\Sets\TileID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\TileID.TML.cs" Link="IDType\Sets\TileID.TML.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\TorchID.cs" Link="IDType\Sets\TorchID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\WallID.cs" Link="IDType\Sets\WallID.cs" />
+    <Compile Update="..\..\src\tModLoader\Terraria\ID\WaterStyleID.cs" Link="IDType\Sets\WaterStyleID.cs" />
+    
+    <Compile Update="IDType\IDTypeResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IDTypeResources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="IDType\IDTypeResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IDTypeResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <Target Name="CopyDllToTmlLibs" AfterTargets="Build">
+    <ItemGroup>
+      <DllFile Include="bin/$(Configuration)/$(TargetFramework)/tModCodeAssist.dll" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(DllFile)" DestinationFolder="../../src/tModLoader/Terraria/bin/$(Configuration)/net6.0/Analyzers/tModCodeAssist.dll" />
+  </Target>
+
+</Project>

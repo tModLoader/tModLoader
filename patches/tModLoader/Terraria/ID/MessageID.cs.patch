@@ -1,11 +1,9 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,84 +_,369 @@
+@@ -1,84 +_,379 @@
++#if !TMLCODEASSIST
  using Terraria.Utilities;
-+using System;
-+using System.Collections.Generic;
-+using System.Reflection;
-+using System.Linq;
++#endif
  
  namespace Terraria.ID;
  
@@ -80,7 +78,9 @@
 +	// Frames a rectangle of tile sections
 +	// TModLoader changes walls from byte to short
 +	// Sent after a NetMessage.SendSection block
++#if !TMLCODEASSIST
  	[Old("Deprecated. Framing happens as needed after TileSection is sent.")]
++#endif
  	public const byte TileFrameSection = 11;
 +
 +	// Sent from Player.Spawn
@@ -100,7 +100,9 @@
 +	// Sent from NetMessage.syncPlayers
  	public const byte PlayerActive = 14;
 +
++#if !TMLCODEASSIST
  	[Old("Deprecated.")]
++#endif
 -	public const byte Unknown15 = 15;
 +	public const byte Unused15 = 15;
 +
@@ -157,13 +159,17 @@
  	public const byte UnusedMeleeStrike = 24;
 +
 +	// A line of chat text, with sender and colour information
++#if !TMLCODEASSIST
  	[Old("Deprecated. Use NetTextModule instead.")]
++#endif
 -	public const byte Unused25 = 25;
 +	public const byte ChatText = 25;
 +
 +	// Damage, direction, pvp, deathText, crit, cooldown
 +	// Forwarded to other clients
++#if !TMLCODEASSIST
  	[Old("Deprecated.")]
++#endif
 -	public const byte Unused26 = 26;
 +	public const byte HurtPlayer = 26;
 +
@@ -255,11 +261,13 @@
 +
 +	// Player.KillMe
 +	// Forwarded to other clients
++#if !TMLCODEASSIST
  	[Old("Deprecated.")]
 -	public const byte Unknown44 = 44;
 -	public const byte Unknown45 = 45;
 -	public const byte Unknown46 = 46;
 -	public const byte Unknown47 = 47;
++#endif
 +	public const byte KillPlayer = 44;
 +
 +	// Forwarded to clients
@@ -276,7 +284,9 @@
 +
 +	// X, y, liquid, liquidType
 +	// If NetPlayer.spamCheck will kick the player if the placement position is more than 10 tiles from the player
++#if !TMLCODEASSIST
  	[Old("Deprecated. Use NetLiquidModule instead.")]
++#endif
  	public const byte LiquidUpdate = 48;
 +
 +	// Spawns a newly joined player

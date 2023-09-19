@@ -1,9 +1,15 @@
+#if !TMLCODEASSIST
 using System.Collections.Generic;
+#endif
 
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Item)]
+#endif
 partial class ItemID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		/// <summary>
@@ -72,9 +78,9 @@ partial class ItemID
 		/// </summary>
 		/// <remarks>Coin luck application takes precedence over other actions related to shimmer.</remarks>
 		public static int[] CoinLuckValue = Factory.CreateIntSet(0,
-			CopperCoin,   1,
-			SilverCoin,	  100,
-			GoldCoin,	  10000,
+			CopperCoin, 1,
+			SilverCoin, 100,
+			GoldCoin, 10000,
 			PlatinumCoin, 1000000
 		);
 
@@ -126,4 +132,5 @@ partial class ItemID
 		/// </summary>
 		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
 	}
+#endif
 }

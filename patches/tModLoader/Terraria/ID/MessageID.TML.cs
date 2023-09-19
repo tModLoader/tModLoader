@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Message)]
+#endif
 partial class MessageID
 {
 	// Sent by Clients who wish to change ConfigScope.ServerSide ModConfigs. Clients send Modname, configname, and json string.

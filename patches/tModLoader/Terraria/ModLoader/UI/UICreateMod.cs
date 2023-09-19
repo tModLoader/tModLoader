@@ -1,9 +1,9 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -263,9 +263,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
-  </ItemGroup>
 </Project>";
 	}
 

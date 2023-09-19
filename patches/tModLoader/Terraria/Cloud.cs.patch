@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/Cloud.cs
++++ src/tModLoader/Terraria/Cloud.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Terraria.GameContent;
++using Terraria.ModLoader.Annotations;
+ using Terraria.Utilities;
+ 
+ namespace Terraria;
+@@ -14,6 +_,7 @@
+ 	public float sSpeed;
+ 	public bool active;
+ 	public SpriteEffects spriteDir;
++	[IDType(IDTypeAttribute.Cloud)]
+ 	public int type;
+ 	public int width;
+ 	public int height;

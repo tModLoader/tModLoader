@@ -1,7 +1,10 @@
-using System;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Music)]
+#endif
 public static class MusicID
 {
 	// Names derived from the music box that plays each: https://terraria.wiki.gg/wiki/Music_Box
@@ -95,4 +98,5 @@ public static class MusicID
 	public const short Deerclops = 90;
 	public const short Shimmer = 91;
 	public const short Count = 92;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(MusicID), typeof(short)); // TML
 }

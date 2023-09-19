@@ -1,0 +1,19 @@
+--- src/TerrariaNetCore/Terraria/ID/WaterStyleID.cs
++++ src/tModLoader/Terraria/ID/WaterStyleID.cs
+@@ -1,5 +_,10 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.WaterStyle)]
++#endif
+ public static class WaterStyleID
+ {
+ 	public const int Purity = 0;
+@@ -16,4 +_,5 @@
+ 	public const int Honey = 11;
+ 	public const int UndergroundDesert = 12;
+ 	public static readonly int Count = 13;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(WaterStyleID), typeof(int)); // TML
+ }

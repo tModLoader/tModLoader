@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/Animation.cs
++++ src/tModLoader/Terraria/Animation.cs
+@@ -1,5 +_,6 @@
+ using System.Collections.Generic;
+ using Terraria.DataStructures;
++using Terraria.ModLoader.Annotations;
+ 
+ namespace Terraria;
+ 
+@@ -89,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void NewTemporaryAnimation(int type, ushort tileType, int x, int y)
++	public static void NewTemporaryAnimation([IDType(IDTypeAttribute.Animation)] int type, ushort tileType, int x, int y)
+ 	{
+ 		Point16 coordinates = new Point16(x, y);
+ 		if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY) {

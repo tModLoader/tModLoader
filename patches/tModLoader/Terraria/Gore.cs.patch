@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Gore.cs
 +++ src/tModLoader/Terraria/Gore.cs
-@@ -6,11 +_,12 @@
+@@ -6,11 +_,13 @@
  using Terraria.GameContent.Shaders;
  using Terraria.Graphics.Effects;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
  using Terraria.Utilities;
  
  namespace Terraria;
@@ -14,6 +15,14 @@
  {
  	public static int goreTime = 600;
  	public Vector2 position;
+@@ -18,6 +_,7 @@
+ 	public float rotation;
+ 	public float scale;
+ 	public int alpha;
++	[IDType(IDTypeAttribute.Gore)]
+ 	public int type;
+ 	public float light;
+ 	public bool active;
 @@ -262,6 +_,11 @@
  		if (Main.netMode == 2 || !active)
  			return;
@@ -70,7 +79,7 @@
 +	/// <param name="Type"></param>
 +	/// <param name="Scale"></param>
 +	/// <returns></returns>
-+	public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++	public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, [IDType(IDTypeAttribute.Gore)] int Type, float Scale = 1f)
  	{
 -		Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
 +		Gore gore = NewGoreDirect(source, Position, Velocity, Type, Scale);
@@ -89,9 +98,10 @@
 +	/// <param name="Type"></param>
 +	/// <param name="Scale"></param>
 +	/// <returns>A reference to the gore</returns>
-+	public static Gore NewGoreDirect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++	public static Gore NewGoreDirect(IEntitySource source, Vector2 Position, Vector2 Velocity, [IDType(IDTypeAttribute.Gore)] int Type, float Scale = 1f)
 +		=> Main.gore[NewGore(source, Position, Velocity, Type, Scale)];
  
+-	public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +	/// <summary>
 +	/// Spawns a gore with given properties
 +	/// </summary>
@@ -101,8 +111,7 @@
 +	/// <param name="Type"></param>
 +	/// <param name="Scale"></param>
 +	/// <returns>The index of the gore in the <see cref="Main.gore"/> array</returns>
--	public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+	public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++	public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, [IDType(IDTypeAttribute.Gore)] int Type, float Scale = 1f)
  	{
  		if (Main.netMode == 2)
  			return 600;

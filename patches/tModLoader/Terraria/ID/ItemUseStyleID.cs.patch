@@ -1,12 +1,17 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
-@@ -1,20 +_,61 @@
+@@ -1,20 +_,67 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 +/// <summary>
 +/// Assign <see cref="Item.useStyle"/> to one of these to give your item an animation while in use. The <see href="https://terraria.wiki.gg/wiki/Use_Style_IDs">Use Style IDs wiki page</see> has examples and animations of each of these use styles.
 +/// <br/> If none of these animations match what you want, consider making the animation a behavior of a held projectile or use the <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
 +/// </summary>
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.ItemUseStyle)]
++#endif
  public class ItemUseStyleID
  {
  	public const int None = 0;
@@ -61,4 +66,5 @@
 +	/// <br/> Used by Nightglow.
 +	/// </summary>
  	public const int RaiseLamp = 14;
++	public static readonly IdDictionary Search = IdDictionary.Create<ItemUseStyleID, int>(); // TML
  }

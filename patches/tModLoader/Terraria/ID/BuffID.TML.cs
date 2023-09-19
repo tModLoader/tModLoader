@@ -1,9 +1,15 @@
+#if !TMLCODEASSIST
 using System.Collections.Generic;
+#endif
 
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Buff)]
+#endif
 public partial class BuffID
 {
+#if !TMLCODEASSIST
 	public partial class Sets
 	{
 		// Created based on 'Player.AddBuff_DetermineBuffTimeToAdd'.
@@ -29,7 +35,7 @@ public partial class BuffID
 			Frostburn, new List<int>() { Frostburn2 },
 			// These are not fully reciprocal. If immune to Venom, then immune to Poisoned, but not necessarily the other way.
 			Poisoned, new List<int>() { Venom } // 5
-		    // Ichor, new List<int>() { BetsysCurse } // 3
+												// Ichor, new List<int>() { BetsysCurse } // 3
 		);
 
 		static Sets()
@@ -39,4 +45,5 @@ public partial class BuffID
 			}
 		}
 	}
+#endif
 }

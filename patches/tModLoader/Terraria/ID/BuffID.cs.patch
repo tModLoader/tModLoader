@@ -1,15 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -1,25 +_,86 @@
+@@ -1,25 +_,90 @@
  using ReLogic.Reflection;
-+using Terraria.ModLoader;
  
++#if !TMLCODEASSIST
++using Terraria.ModLoader;
++#endif
++
  namespace Terraria.ID;
  
 -public class BuffID
 +public partial class BuffID
  {
 -	public class Sets
++#if !TMLCODEASSIST
 +	public partial class Sets
  	{
 +		/// <summary>
@@ -91,3 +95,11 @@
  		public static BuffMountData[] BasicMountData = Factory.CreateCustomSet<BuffMountData>(null, new object[108] {
  			118,
  			new BuffMountData {
+@@ -293,6 +_,7 @@
+ 			}
+ 		});
+ 	}
++#endif
+ 
+ 	public const int ObsidianSkin = 1;
+ 	public const int Regeneration = 2;

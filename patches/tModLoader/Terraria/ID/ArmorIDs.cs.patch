@@ -1,9 +1,11 @@
 --- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
-@@ -1,18 +_,43 @@
+@@ -1,20 +_,49 @@
++#if !TMLCODEASSIST
  using System.Collections.Generic;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
++#endif
  
  namespace Terraria.ID;
  
@@ -14,6 +16,7 @@
 +	public partial class Head
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -47,8 +50,11 @@
 +			/// </summary>
  			public static bool[] UseAltFaceHeadDraw = Factory.CreateBoolSet(false, 3, 4, 6, 7, 9, 17, 22, 27, 28, 31, 32, 37, 38, 39, 40, 42, 43, 45, 46, 47, 48, 49, 50, 57, 58, 61, 66, 69, 70, 72, 74, 75, 76, 77, 78, 82, 83, 86, 89, 93, 98, 101, 103, 104, 105, 107, 108, 109, 110, 111, 115, 118, 120, 122, 123, 124, 127, 128, 129, 131, 132, 134, 135, 136, 137, 142, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 162, 164, 165, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 185, 186, 187, 188, 189, 192, 193, 194, 200, 201, 202, 204, 207, 208, 209, 210, 211, 213, 214, 230, 236, 237, 239, 240, 241, 251, 254, 255, 258, 260, 266, 268, 269, 270, 271, 261, 8, 12, 30, 35, 36, 73, 79, 80, 84, 85, 87, 88, 90, 91, 102, 112, 141, 160, 180, 196, 205, 257, 256);
  		}
++#endif
  
-@@ -301,15 +_,29 @@
+ 		public const int FamiliarWig = 0;
+ 		public const int CopperHelmet = 1;
+@@ -301,15 +_,30 @@
  		public static readonly int Count = 282;
  	}
  
@@ -56,6 +62,7 @@
 +	public partial class Body
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 +			/// <summary>
@@ -132,7 +139,7 @@
  			public static IncludeCapeFrontAndBackInfo[] IncludeCapeFrontAndBack = Factory.CreateCustomSet(new IncludeCapeFrontAndBackInfo {
  				backCape = -1,
  				frontCape = -1
-@@ -338,10 +_,32 @@
+@@ -338,12 +_,35 @@
  				backCape = 31,
  				frontCape = 10
  			});
@@ -165,8 +172,11 @@
 +			/// </summary>
  			public static bool[] DisableBeltAccDraw = Factory.CreateBoolSet(83, 82);
  		}
++#endif
  
-@@ -538,12 +_,21 @@
+ 		public const int FamiliarShirt = 0;
+ 		public const int CopperChainmail = 1;
+@@ -538,14 +_,25 @@
  		public static readonly int Count = 248;
  	}
  
@@ -174,6 +184,7 @@
 +	public partial class Legs
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -190,8 +201,11 @@
 +			/// </summary>
  			public static bool[] IncompatibleWithFrogLeg = Factory.CreateBoolSet(106, 143, 217, 222, 226, 228, 138);
  		}
++#endif
  
-@@ -762,12 +_,21 @@
+ 		public const int FamiliarPants = 0;
+ 		public const int CopperGreaves = 1;
+@@ -762,14 +_,25 @@
  		public static readonly int Count = 236;
  	}
  
@@ -199,6 +213,7 @@
 +	public partial class HandOn
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -216,8 +231,11 @@
 +			/// </remarks>
  			public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
  		}
++#endif
  
-@@ -800,12 +_,13 @@
+ 		public const sbyte ManaRegenerationBand = 1;
+ 		public const sbyte BandofRegeneration = 2;
+@@ -800,13 +_,16 @@
  		public static readonly int Count = 25;
  	}
  
@@ -225,6 +243,7 @@
 +	public partial class HandOff
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -233,9 +252,11 @@
 +			// Made internal to avoid confusion.
 +			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
  		}
++#endif
  
  		public const sbyte FireGauntlet = 1;
-@@ -828,12 +_,22 @@
+ 		public const sbyte HandWarmer = 2;
+@@ -828,14 +_,26 @@
  		public static readonly int Count = 16;
  	}
  
@@ -243,6 +264,7 @@
 +	public partial class Back
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -260,8 +282,11 @@
 +			/// </summary>
  			public static bool[] DrawInTailLayer = Factory.CreateBoolSet(false, 18, 19, 21, 25, 26, 27, 28);
  		}
++#endif
  
-@@ -876,11 +_,19 @@
+ 		public const sbyte BeeCloak = 1;
+ 		public const sbyte StarCloak = 2;
+@@ -876,13 +_,23 @@
  		public static readonly int Count = 37;
  	}
  
@@ -269,6 +294,7 @@
 +	public partial class Front
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -283,8 +309,11 @@
 +			/// </remarks>
  			public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
  		}
++#endif
  
-@@ -899,11 +_,16 @@
+ 		public const sbyte CrimsonCloak = 1;
+ 		public const sbyte MysteriousCape = 2;
+@@ -899,13 +_,20 @@
  		public static readonly int Count = 13;
  	}
  
@@ -292,6 +321,7 @@
 +	public partial class Shoe
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -303,8 +333,11 @@
 +			/// </summary>
  			public static int[] MaleToFemaleID = Factory.CreateIntSet(-1, 25, 26);
  		}
++#endif
  
-@@ -937,12 +_,22 @@
+ 		public const sbyte Flipper = 1;
+ 		public const sbyte WaterWalkingBoots = 2;
+@@ -937,14 +_,26 @@
  		public static readonly int Count = 27;
  	}
  
@@ -312,6 +345,7 @@
 +	public partial class Waist
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -329,8 +363,11 @@
 +			/// </summary>
  			public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  		}
++#endif
  
-@@ -966,10 +_,14 @@
+ 		public const sbyte CloudinaBottle = 1;
+ 		public const sbyte CopperWatch = 2;
+@@ -966,12 +_,18 @@
  		public static readonly int Count = 17;
  	}
  
@@ -338,6 +375,7 @@
 +	public partial class Wing
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 +			/// <summary>
@@ -346,8 +384,29 @@
 +			/// </summary>
  			public static WingStats[] Stats;
  		}
++#endif
  
-@@ -1053,16 +_,48 @@
+ 		public const sbyte DemonWings = 1;
+ 		public const sbyte AngelWings = 2;
+@@ -1022,7 +_,7 @@
+ 		public static readonly int Count = 47;
+ 	}
+ 
+-	public class Shield
++	public partial class Shield
+ 	{
+ 		public const sbyte CobaltShield = 1;
+ 		public const sbyte PaladinsShield = 2;
+@@ -1036,7 +_,7 @@
+ 		public static readonly int Count = 10;
+ 	}
+ 
+-	public class Neck
++	public partial class Neck
+ 	{
+ 		public const sbyte JellyfishNecklace = 1;
+ 		public const sbyte CrossNecklace = 2;
+@@ -1053,18 +_,52 @@
  		public static readonly int Count = 13;
  	}
  
@@ -355,6 +414,7 @@
 +	public partial class Face
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -398,8 +458,11 @@
 +			/// </summary>
  			public static int[] AltFaceHead = Factory.CreateIntSet(-1, 12, 17, 10, 15, 13, 18, 11, 16);
  		}
++#endif
  
-@@ -1090,12 +_,23 @@
+ 		public const sbyte NaturesGift = 1;
+ 		public const sbyte ArcticDivingGear = 2;
+@@ -1090,14 +_,27 @@
  		public static readonly sbyte Count = 22;
  	}
  
@@ -407,6 +470,7 @@
 +	public partial class Balloon
  	{
 -		public class Sets
++#if !TMLCODEASSIST
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -425,9 +489,27 @@
 +			/// </summary>
  			public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 18);
  		}
++#endif
  
-@@ -1135,7 +_,16 @@
+ 		public const sbyte BlizzardinaBalloon = 1;
+ 		public const sbyte BlueHorseshoeBalloon = 2;
+@@ -1121,7 +_,7 @@
+ 		public static readonly int Count = 20;
+ 	}
+ 
+-	public class RocketBoots
++	public partial class RocketBoots
  	{
+ 		public const int None = 0;
+ 		public const int SimpleRocketBoots = 1;
+@@ -1131,13 +_,24 @@
+ 		public const int HellfireTreads = 5;
+ 	}
+ 
+-	public class Beard
++	public partial class Beard
+ 	{
++#if !TMLCODEASSIST
  		public class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -443,4 +525,7 @@
 +			/// </remarks>
  			public static bool[] UseHairColor = Factory.CreateBoolSet(false, 2, 3, 4);
  		}
++#endif
  
+ 		public const sbyte GingerBeard = 1;
+ 		public const sbyte WilsonBeardShort = 2;

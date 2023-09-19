@@ -1,15 +1,20 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,12 @@
+@@ -1,11 +_,17 @@
++#if !TMLCODEASSIST
  using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
++#else
++using ReLogic.Reflection;
++#endif
  
  namespace Terraria.ID;
  
 -public class TileID
 +public partial class TileID
  {
++#if !TMLCODEASSIST
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -169,3 +174,11 @@
  		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
  		public static bool[] IsAContainer = Factory.CreateBoolSet(21, 467, 88);
  		public static bool[] IsAMechanism = Factory.CreateBoolSet(137, 443, 105, 349, 141, 142, 143, 42, 34, 130, 131, 506, 546, 557, 593, 594);
+@@ -259,6 +_,7 @@
+ 		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
+ 		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633);
+ 	}
++#endif
+ 
+ 	public const ushort Dirt = 0;
+ 	public const ushort Stone = 1;
