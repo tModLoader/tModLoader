@@ -124,7 +124,7 @@ internal static class ModOrganizer
 		// FilterOut currently does not _enforce_ the condition, because we must currently leave at least one mod version. Thus the order of these calls matters :(
 		FilterOut(m => IsUnsupportedTransitionVersion(m.tModLoaderVersion), "The tML version is transitional with no distribution or mod browser support");
 		FilterOut(SkipModForPreviewNotPlayable, "preview early-access disabled");
-		FilterOut(m => BuildInfo.tMLVersion < m.tModLoaderVersion, "mod is for a newer tML version"); // condition ignored if it applies to all versions of the mod. Ordering logic below will choose the newest version of the mod. This may be misleading, showing the maximum supported tML version rather than the minimum.
+		FilterOut(m => BuildInfo.tMLVersion < m.tModLoaderVersion.MajorMinor(), "mod is for a newer tML monthly release"); // condition ignored if it applies to all versions of the mod. Ordering logic below will choose the newest version of the mod. This may be misleading, showing the maximum supported tML version rather than the minimum.
 		OrderByDescending(m => m.location == ModLocation.Modpack, "a local copy is present in the active modpack"); // the condition above means that we may ignore items in the local modpack if they are for a newer tML version, preferring a loadable version in the local or workshop directories
 		OrderByDescending(m => m.Version, "a newer version exists");
 		OrderByDescending(m => m.tModLoaderVersion, "a matching version for a newer tModLoader exists");
