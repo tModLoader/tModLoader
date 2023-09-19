@@ -377,9 +377,11 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
 		Task.Run(() => {
 			var modSources = ModCompile.FindModSources();
-			var modFiles = ModOrganizer.FindDevFolderMods();
+
+			var modFiles = ModOrganizer.FindAllMods();
 			foreach (string sourcePath in modSources) {
-				var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+				var modName = Path.GetFileName(sourcePath);
+				var builtMod = modFiles.Where(m => m.Name == modName).Where(m => m.location == ModLocation.Local).OrderByDescending(m => m.Version).FirstOrDefault();
 				_items.Add(new UIModSourceItem(sourcePath, builtMod));
 			}
 			_updateNeeded = true;

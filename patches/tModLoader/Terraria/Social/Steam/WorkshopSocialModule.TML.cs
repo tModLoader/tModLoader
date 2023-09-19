@@ -176,7 +176,7 @@ public partial class WorkshopSocialModule
 	{
 		var sModFile = new TmodFile(path);
 		using (sModFile.Open())
-			return new LocalMod(sModFile);
+			return new LocalMod(ModLocation.Workshop, sModFile);
 	}
 
 	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
