@@ -97,6 +97,7 @@
 		"AskForCommand": "Введите команду: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Фильтр",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация мода",
@@ -106,6 +107,8 @@
 		"ModConfigRestoreDefaults": "Сбросить по умолчанию",
 		"ModConfigAskingServerToAcceptChanges": "Запрос сервера на принятие изменений...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Не удаётся сохранить, поскольку изменения требуют перезагрузки",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		"ModConfigAdd": "Добавить",
 		"ModConfigRemove": "Удалить",
 		"ModConfigInitialize": "Инициализировать",

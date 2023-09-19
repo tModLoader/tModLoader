@@ -184,20 +184,13 @@ internal class UIModConfig : UIState
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.menuMode = Interface.modsMenuID;
 
-		//Main.menuMode = 1127;
 		if (!Main.gameMenu) {
 			Main.InGameUI.SetState(Interface.modConfigList);
 		}
-
-		/*
-		IngameFancyUI.Close();
-
-		if (ConfigManager.ModNeedsReload(mod)) {
-			Main.menuMode = Interface.reloadModsID;
+		else {
+			Main.menuMode = Interface.modConfigListID;
 		}
-		*/
 	}
 
 	internal void Unload()
@@ -400,7 +393,7 @@ internal class UIModConfig : UIState
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
