@@ -11,11 +11,12 @@
  using System.IO;
  using System.Linq;
  using System.Reflection;
-@@ -64,9 +_,16 @@
+@@ -64,9 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
 +using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Default;
 +using Terraria.ModLoader.Engine;
@@ -509,7 +510,15 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
-@@ -1860,11 +_,19 @@
+@@ -1149,6 +_,7 @@
+ 	public static int PendingResolutionWidth = 800;
+ 	public static int PendingResolutionHeight = 600;
+ 	public static bool PendingBorderlessState;
++	[IDType(IDTypeAttribute.Invasion)]
+ 	public static int invasionType;
+ 	public static double invasionX;
+ 	public static int invasionSize;
+@@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
  	public static float reforgeScale = 0.8f;
@@ -526,6 +535,7 @@
 +	/// Using <see cref="ID.NetmodeID"/> entries instead of 0, 1, and 2 will greatly enhance code readability.<br/>
 +	/// Modders must properly use netMode to selectively run code. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
 +	/// </summary>
++	[IDType(IDTypeAttribute.Netmode)]
  	public static int netMode;
  	private static int _targetNetMode;
  	private static bool _hasPendingNetmodeChange;
@@ -670,6 +680,24 @@
  
  	public static string playerPathName => ActivePlayerFileData.Path;
  
+@@ -2483,7 +_,7 @@
+ 		return box;
+ 	}
+ 
+-	public void SetMouseNPC(int index, int type)
++	public void SetMouseNPC(int index, [IDType(IDTypeAttribute.NPC)] int type)
+ 	{
+ 		mouseNPCIndex = index;
+ 		mouseNPCType = type;
+@@ -2508,7 +_,7 @@
+ 
+ 	public static MoonPhase GetMoonPhase() => (MoonPhase)moonPhase;
+ 
+-	public static Vector2 DrawPlayerItemPos(float gravdir, int itemtype)
++	public static Vector2 DrawPlayerItemPos(float gravdir, [IDType(IDTypeAttribute.Item)] int itemtype)
+ 	{
+ 		float num = 10f;
+ 		GetItemDrawFrame(itemtype, out var _, out var r);
 @@ -2831,6 +_,8 @@
  		}
  
@@ -679,7 +707,7 @@
  		return result;
  	}
  
-@@ -2842,12 +_,34 @@
+@@ -2842,13 +_,35 @@
  			tileMerge[i] = new bool[count];
  		}
  
@@ -706,15 +734,17 @@
  		}
  	}
  
+-	public static void RegisterItemAnimation(int index, DrawAnimation animation)
 +	/// <summary>
 +	/// Registers an animation for an item type to draw inside UI (not world or held item on player).
 +	/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
 +	/// </summary>
 +	/// <param name="index">Item type</param>
 +	/// <param name="animation">Draw animation</param>
- 	public static void RegisterItemAnimation(int index, DrawAnimation animation)
++	public static void RegisterItemAnimation([IDType(IDTypeAttribute.Item)] int index, DrawAnimation animation)
  	{
  		if (!itemAnimationsRegistered.Contains(index))
+ 			itemAnimationsRegistered.Add(index);
 @@ -2896,6 +_,8 @@
  		}
  	}
@@ -2328,6 +2358,15 @@
  		chatMonitor.Update();
  		upTimer = (float)sw.Elapsed.TotalMilliseconds;
  		if (upTimerMaxDelay > 0f)
+@@ -14433,7 +_,7 @@
+ 			NPC.crimsonBoss = -1;
+ 	}
+ 
+-	public static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types)
++	public static bool IsNPCActiveAndOneOfTypes(int npcIndex, [IDType(IDTypeAttribute.NPC)] params int[] types)
+ 	{
+ 		if (npcIndex < 0)
+ 			return false;
 @@ -14508,6 +_,7 @@
  	private static void DoUpdate_Enter_ToggleChat()
  	{
@@ -3450,7 +3489,16 @@
  		npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  		if (type == 50) {
  			Vector2 zero = Vector2.Zero;
-@@ -21675,6 +_,12 @@
+@@ -21625,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static void DrawNPC_SlimeItem(NPC rCurrentNPC, int typeCache, Microsoft.Xna.Framework.Color npcColor, float addedRotation)
++	private static void DrawNPC_SlimeItem(NPC rCurrentNPC, [IDType(IDTypeAttribute.NPC)] int typeCache, Microsoft.Xna.Framework.Color npcColor, float addedRotation)
+ 	{
+ 		int num = (int)rCurrentNPC.ai[1];
+ 		float num2 = 1f;
+@@ -21675,7 +_,13 @@
  		spriteBatch.Draw(itemTexture, new Vector2(rCurrentNPC.Center.X - screenPosition.X + num8, rCurrentNPC.Center.Y - screenPosition.Y + rCurrentNPC.gfxOffY + num9), rectangle, npcColor, num11, rectangle.Size() / 2f, num2, SpriteEffects.None, 0f);
  	}
  
@@ -3460,9 +3508,11 @@
 +	/// <param name="item">The item type to use.</param>
 +	/// <param name="itemTexture">The <see cref="Texture2D"/> in <see cref="TextureAssets.Item"/> of <paramref name="item"/>.</param>
 +	/// <param name="itemFrame">The <see cref="Rectangle"/> covering this item's current frame on <paramref name="itemTexture"/>.</param>
- 	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
+-	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
++	public static void GetItemDrawFrame([IDType(IDTypeAttribute.Item)] int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
+ 		itemTexture = TextureAssets.Item[item].Value;
 @@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
@@ -3688,6 +3738,15 @@
  		stringColor = TryApplyingPlayerStringColor(Main.player[proj.owner].stringColor, stringColor);
  		float gravDir = Main.player[proj.owner].gravDir;
  		switch (type) {
+@@ -30089,7 +_,7 @@
+ 		return 0;
+ 	}
+ 
+-	public static void PlayInteractiveProjectileOpenCloseSound(int projType, bool open)
++	public static void PlayInteractiveProjectileOpenCloseSound([IDType(IDTypeAttribute.Projectile)] int projType, bool open)
+ 	{
+ 		switch (projType) {
+ 			case 525:
 @@ -30272,10 +_,13 @@
  			}
  			else if (npc[i].type == 516 || npc[i].type == 519) {
@@ -4587,7 +4646,7 @@
  						Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)(player.position.X + (float)(player.width / 2) - (float)(Player.tileRangeX * 16)), (int)(player.position.Y + (float)(player.height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  						Microsoft.Xna.Framework.Rectangle value2 = new Microsoft.Xna.Framework.Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  						if (rectangle.Intersects(value2))
-@@ -35027,10 +_,18 @@
+@@ -35027,14 +_,22 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
  
@@ -4606,6 +4665,11 @@
  		}
  	}
  
+-	public static string GetBuffTooltip(Player player, int buffType)
++	public static string GetBuffTooltip(Player player, [IDType(IDTypeAttribute.Buff)] int buffType)
+ 	{
+ 		string text = Lang.GetBuffDescription(buffType);
+ 		switch (buffType) {
 @@ -35060,6 +_,14 @@
  		return text;
  	}
@@ -4707,6 +4771,15 @@
  	public static void TryRemovingBuff(int i, int b)
  	{
  		bool flag = false;
+@@ -35133,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void TryRemovingBuff_CheckBuffHideMisc(int slot, int buffID)
++	public static void TryRemovingBuff_CheckBuffHideMisc(int slot, [IDType(IDTypeAttribute.Buff)] int buffID)
+ 	{
+ 		if (!player[myPlayer].hideMisc[slot]) {
+ 			bool flag = player[myPlayer].miscEquips[slot].buffType == buffID;
 @@ -35410,7 +_,13 @@
  			return;
  		}
@@ -4797,6 +4870,15 @@
  					if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  						if (type >= 134 && type <= 136) {
  							scale = 1.5f;
+@@ -37478,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void DrawInterface_Healthbar_Worm(NPC head, int tailID, float scale)
++	private void DrawInterface_Healthbar_Worm(NPC head, [IDType(IDTypeAttribute.NPC)] int tailID, float scale)
+ 	{
+ 		NPC nPC = head;
+ 		for (int i = head.whoAmI + 1; i < 200; i++) {
 @@ -38044,6 +_,7 @@
  		if (!CanShowInfoAccs)
  			return;
@@ -5780,7 +5862,13 @@
  				if (remixWorld) {
  					if ((double)(screenPosition.Y / 16f) > rockLayer)
  						return 7;
-@@ -47271,6 +_,10 @@
+@@ -47266,11 +_,15 @@
+ 		}
+ 	}
+ 
+-	public static bool IsLiquidStyleWater(int liquidStyle)
++	public static bool IsLiquidStyleWater([IDType(IDTypeAttribute.WaterStyle)] int liquidStyle)
+ 	{
  		if (liquidStyle != 1)
  			return liquidStyle != 11;
  
@@ -5825,6 +5913,172 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
+@@ -48744,43 +_,43 @@
+ 		}
+ 	}
+ 
+-	public void LoadItem(int i)
++	public void LoadItem([IDType(IDTypeAttribute.Item)] int i)
+ 	{
+ 		if (TextureAssets.Item[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Item[i].Name);
+ 	}
+ 
+-	public void LoadNPC(int i)
++	public void LoadNPC([IDType(IDTypeAttribute.NPC)] int i)
+ 	{
+ 		if (TextureAssets.Npc[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Npc[i].Name);
+ 	}
+ 
+-	public void LoadProjectile(int i)
++	public void LoadProjectile([IDType(IDTypeAttribute.Projectile)] int i)
+ 	{
+ 		if (TextureAssets.Projectile[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Projectile[i].Name);
+ 	}
+ 
+-	public void LoadGore(int i)
++	public void LoadGore([IDType(IDTypeAttribute.Gore)] int i)
+ 	{
+ 		if (TextureAssets.Gore[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Gore[i].Name);
+ 	}
+ 
+-	public void LoadWall(int i)
++	public void LoadWall([IDType(IDTypeAttribute.Wall)] int i)
+ 	{
+ 		if (TextureAssets.Wall[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Wall[i].Name);
+ 	}
+ 
+-	public void LoadTiles(int i)
++	public void LoadTiles([IDType(IDTypeAttribute.Tile)] int i)
+ 	{
+ 		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Tile[i].Name);
+ 	}
+ 
+-	public void LoadItemFlames(int i)
++	public void LoadItemFlames([IDType(IDTypeAttribute.Item)] int i)
+ 	{
+ 		if (TextureAssets.ItemFlame[i].State == AssetState.NotLoaded) {
+ 			try {
+@@ -48791,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void LoadWings(int i)
++	public void LoadWings([IDType(IDTypeAttribute.Armor_Wing)] int i)
+ 	{
+ 		if (TextureAssets.Wings[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Wings[i].Name);
+@@ -48805,13 +_,13 @@
+ 		}
+ 	}
+ 
+-	public void LoadArmorHead(int i)
++	public void LoadArmorHead([IDType(IDTypeAttribute.Armor_Head)] int i)
+ 	{
+ 		if (TextureAssets.ArmorHead[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.ArmorHead[i].Name);
+ 	}
+ 
+-	public void LoadArmorBody(int i)
++	public void LoadArmorBody([IDType(IDTypeAttribute.Armor_Body)] int i)
+ 	{
+ 		if (ArmorIDs.Body.Sets.UsesNewFramingCode[i]) {
+ 			if (TextureAssets.ArmorBodyComposite[i].State == AssetState.NotLoaded)
+@@ -48824,13 +_,13 @@
+ 		}
+ 	}
+ 
+-	public void LoadArmorLegs(int i)
++	public void LoadArmorLegs([IDType(IDTypeAttribute.Armor_Legs)] int i)
+ 	{
+ 		if (TextureAssets.ArmorLeg[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.ArmorLeg[i].Name);
+ 	}
+ 
+-	public void LoadAccHandsOn(int i)
++	public void LoadAccHandsOn([IDType(IDTypeAttribute.Armor_HandOn)] int i)
+ 	{
+ 		bool flag = !ArmorIDs.HandOn.Sets.UsesNewFramingCode[i];
+ 		if (ArmorIDs.HandOn.Sets.UsesOldFramingTexturesForWalking[i])
+@@ -48843,7 +_,7 @@
+ 			Assets.Request<Texture2D>(TextureAssets.AccHandsOnComposite[i].Name);
+ 	}
+ 
+-	public void LoadAccHandsOff(int i)
++	public void LoadAccHandsOff([IDType(IDTypeAttribute.Armor_HandOff)] int i)
+ 	{
+ 		if (!ArmorIDs.HandOff.Sets.UsesNewFramingCode[i] && TextureAssets.AccHandsOff[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccHandsOff[i].Name);
+@@ -48852,55 +_,55 @@
+ 			Assets.Request<Texture2D>(TextureAssets.AccHandsOffComposite[i].Name);
+ 	}
+ 
+-	public void LoadAccBack(int i)
++	public void LoadAccBack([IDType(IDTypeAttribute.Armor_Back)] int i)
+ 	{
+ 		if (TextureAssets.AccBack[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccBack[i].Name);
+ 	}
+ 
+-	public void LoadAccFront(int i)
++	public void LoadAccFront([IDType(IDTypeAttribute.Armor_Front)] int i)
+ 	{
+ 		if (TextureAssets.AccFront[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccFront[i].Name);
+ 	}
+ 
+-	public void LoadAccShoes(int i)
++	public void LoadAccShoes([IDType(IDTypeAttribute.Armor_Shoe)] int i)
+ 	{
+ 		if (TextureAssets.AccShoes[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccShoes[i].Name);
+ 	}
+ 
+-	public void LoadAccWaist(int i)
++	public void LoadAccWaist([IDType(IDTypeAttribute.Armor_Waist)] int i)
+ 	{
+ 		if (TextureAssets.AccWaist[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccWaist[i].Name);
+ 	}
+ 
+-	public void LoadAccShield(int i)
++	public void LoadAccShield([IDType(IDTypeAttribute.Armor_Shield)] int i)
+ 	{
+ 		if (TextureAssets.AccShield[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccShield[i].Name);
+ 	}
+ 
+-	public void LoadAccNeck(int i)
++	public void LoadAccNeck([IDType(IDTypeAttribute.Armor_Neck)] int i)
+ 	{
+ 		if (TextureAssets.AccNeck[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccNeck[i].Name);
+ 	}
+ 
+-	public void LoadAccFace(int i)
++	public void LoadAccFace([IDType(IDTypeAttribute.Armor_Face)] int i)
+ 	{
+ 		if (TextureAssets.AccFace[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccFace[i].Name);
+ 	}
+ 
+-	public void LoadAccBalloon(int i)
++	public void LoadAccBalloon([IDType(IDTypeAttribute.Armor_Balloon)] int i)
+ 	{
+ 		if (TextureAssets.AccBalloon[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccBalloon[i].Name);
+ 	}
+ 
+-	public void LoadAccBeard(int i)
++	public void LoadAccBeard([IDType(IDTypeAttribute.Armor_Beard)] int i)
+ 	{
+ 		if (TextureAssets.AccBeard[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.AccBeard[i].Name);
 @@ -48974,12 +_,12 @@
  		if (!WorldGen.drunkWorldGen && flag && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  			if (BackgroundEnabled) {
@@ -6298,7 +6552,16 @@
  
  		if (invasionX > (double)spawnTileX) {
  			invasionX -= num;
-@@ -53221,7 +_,10 @@
+@@ -53211,7 +_,7 @@
+ 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(empty.Key), new Microsoft.Xna.Framework.Color(175, 75, 255));
+ 	}
+ 
+-	public static bool CanStartInvasion(int type = 1, bool ignoreDelay = false)
++	public static bool CanStartInvasion([IDType(IDTypeAttribute.Invasion)] int type = 1, bool ignoreDelay = false)
+ 	{
+ 		if (invasionType != 0)
+ 			return false;
+@@ -53221,14 +_,17 @@
  
  		int num = 0;
  		for (int i = 0; i < 255; i++) {
@@ -6309,6 +6572,14 @@
  				num++;
  		}
  
+ 		return num > 0;
+ 	}
+ 
+-	public static void StartInvasion(int type = 1)
++	public static void StartInvasion([IDType(IDTypeAttribute.Invasion)] int type = 1)
+ 	{
+ 		if (invasionType != 0 && invasionSize == 0)
+ 			invasionType = 0;
 @@ -53238,7 +_,10 @@
  
  		int num = 0;

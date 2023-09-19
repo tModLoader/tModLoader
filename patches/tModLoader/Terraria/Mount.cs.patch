@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Mount.cs
 +++ src/tModLoader/Terraria/Mount.cs
-@@ -10,6 +_,7 @@
+@@ -10,6 +_,8 @@
  using Terraria.GameContent.Drawing;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
  
  namespace Terraria;
  
@@ -20,6 +21,16 @@
  		public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureExtra = Asset<Texture2D>.Empty;
+@@ -107,7 +_,9 @@
+ 		public int bodyFrame;
+ 		public int playerHeadOffset;
+ 		public int heightBoost;
++		[IDType(IDTypeAttribute.Buff)]
+ 		public int buff;
++		[IDType(IDTypeAttribute.Buff)]
+ 		public int extraBuff;
+ 		public int flightTimeMax;
+ 		public bool usesHover;
 @@ -150,7 +_,8 @@
  		public int dashingFrameCount;
  		public int dashingFrameDelay;
@@ -39,12 +50,13 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -182,29 +_,29 @@
+@@ -182,29 +_,30 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
 -	private MountData _data;
 +	public MountData _data;
++	[IDType(IDTypeAttribute.Mount)]
 -	private int _type;
 +	public int _type;
 -	private bool _flipDraw;
@@ -91,6 +103,19 @@
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
+@@ -214,10 +_,12 @@
+ 
+ 	public bool Active => _active;
+ 
++	[IDType(IDTypeAttribute.Mount)]
+ 	public int Type => _type;
+ 
+ 	public int FlyTime => _flyTime;
+ 
++	[IDType(IDTypeAttribute.Buff)]
+ 	public int BuffType => _data.buff;
+ 
+ 	public int BodyFrame => _data.bodyFrame;
 @@ -2013,7 +_,7 @@
  		}
  	}
@@ -113,9 +138,12 @@
  	private static void SetAsMinecart(MountData newMount, int buffToLeft, int buffToRight, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
  	{
  		newMount.Minecart = true;
-@@ -2131,13 +_,14 @@
+@@ -2129,15 +_,16 @@
+ 		}
+ 	}
  
- 	public static int GetHeightBoost(int MountType)
+-	public static int GetHeightBoost(int MountType)
++	public static int GetHeightBoost([IDType(IDTypeAttribute.Mount)] int MountType)
  	{
 -		if (MountType <= -1 || MountType >= MountID.Count)
 +		if (MountType <= -1 || MountType >= mounts.Length)
@@ -164,6 +192,15 @@
  
  		return num;
  	}
+@@ -2239,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public bool CheckBuff(int buffID)
++	public bool CheckBuff([IDType(IDTypeAttribute.Buff)] int buffID)
+ 	{
+ 		if (_data.buff != buffID)
+ 			return _data.extraBuff == buffID;
 @@ -2503,7 +_,10 @@
  						Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
  						Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);
@@ -290,9 +327,12 @@
  			Reset();
  			mountedPlayer.position.Y += mountedPlayer.height;
  			mountedPlayer.height = 42;
-@@ -4634,7 +_,7 @@
+@@ -4632,9 +_,9 @@
+ 		}
+ 	}
  
- 	public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
+-	public void SetMount(int m, Player mountedPlayer, bool faceLeft = false)
++	public void SetMount([IDType(IDTypeAttribute.Mount)] int m, Player mountedPlayer, bool faceLeft = false)
  	{
 -		if (_type == m || m <= -1 || m >= MountID.Count || (m == 5 && mountedPlayer.wet))
 +		if (_type == m || m <= -1 || m >= mounts.Length || (m == 5 && mountedPlayer.wet))
@@ -315,3 +355,12 @@
  		if (mountedPlayer.whoAmI == Main.myPlayer)
  			NetMessage.SendData(13, -1, -1, null, mountedPlayer.whoAmI);
  	}
+@@ -4802,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public bool CanMount(int m, Player mountingPlayer) => mountingPlayer.CanFitSpace(mounts[m].heightBoost);
++	public bool CanMount([IDType(IDTypeAttribute.Mount)] int m, Player mountingPlayer) => mountingPlayer.CanFitSpace(mounts[m].heightBoost);
+ 
+ 	public bool FindTileHeight(Vector2 position, int maxTilesDown, out float tileHeight)
+ 	{

@@ -7,16 +7,17 @@
  using Ionic.Zlib;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
-@@ -10,6 +_,8 @@
+@@ -10,6 +_,9 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
  
  namespace Terraria;
-@@ -54,7 +_,7 @@
+@@ -54,11 +_,11 @@
  	private static short[] _compressChestList = new short[8000];
  	private static short[] _compressSignList = new short[1000];
  	private static short[] _compressEntities = new short[1000];
@@ -25,6 +26,20 @@
  	private static NetSoundInfo _currentNetSoundInfo;
  	private static CoinLossRevengeSystem.RevengeMarker _currentRevengeMarker;
  
+-	public static bool TrySendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
++	public static bool TrySendData([IDType(IDTypeAttribute.Message)] int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
+ 	{
+ 		try {
+ 			SendData(msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+@@ -70,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public static void SendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
++	public static void SendData([IDType(IDTypeAttribute.Message)] int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
+ 	{
+ 		if (Main.netMode == 0)
+ 			return;
 @@ -85,6 +_,9 @@
  		if (Main.netMode == 2 && remoteClient >= 0)
  			num = remoteClient;
@@ -551,7 +566,14 @@
  			}
  
  			buffer[bufferIndex].checkBytes = false;
-@@ -2262,8 +_,12 @@
+@@ -2256,14 +_,18 @@
+ 		SendData(79, remoteClient, ignoreClient, null, x, y, type, style, alternative, random, direction);
+ 	}
+ 
+-	public static void SendTemporaryAnimation(int whoAmi, int animationType, int tileType, int xCoord, int yCoord)
++	public static void SendTemporaryAnimation(int whoAmi, int animationType, [IDType(IDTypeAttribute.Tile)] int tileType, int xCoord, int yCoord)
+ 	{
+ 		if (Main.netMode == 2)
  			SendData(77, whoAmi, -1, null, animationType, tileType, xCoord, yCoord);
  	}
  
