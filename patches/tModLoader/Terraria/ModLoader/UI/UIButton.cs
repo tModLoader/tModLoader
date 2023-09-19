@@ -7,7 +7,7 @@ using Terraria.UI;
 namespace Terraria.ModLoader.UI;
 
 /// <summary>
-/// A text panel that supports hover and click sounds, hover colours, and alternate colours.
+/// A text panel that supports hover and click sounds, hover colors, and alternate colors.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public class UIButton<T> : UIAutoScaleTextTextPanel<T>
@@ -28,7 +28,7 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 	public Color? AltHoverPanelColor = null;
 	public Color? AltHoverBorderColor = null;
 
-	public Func<bool> UseAltColours = () => false;
+	public Func<bool> UseAltColors = () => false;
 
 	private Color? _panelColor = null;
 	private Color? _borderColor = null;
@@ -51,9 +51,9 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 		AltHoverBorderColor ??= HoverBorderColor;
 	}
 
-	protected void SetPanelColours()
+	protected void SetPanelColors()
 	{
-		bool altCondition = UseAltColours();
+		bool altCondition = UseAltColors();
 		if (IsMouseHovering) {
 			BackgroundColor = altCondition ? AltHoverPanelColor.Value : HoverPanelColor;
 			BorderColor = altCondition ? AltHoverBorderColor.Value : HoverBorderColor;
@@ -66,17 +66,17 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 
 	public override void OnActivate()
 	{
-		SetPanelColours();
+		SetPanelColors();
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
 		base.Draw(spriteBatch);
 
-		SetPanelColours();
+		SetPanelColors();
 
 		if (IsMouseHovering) {
-			string text = UseAltColours() ? AltHoverText?.ToString() : HoverText?.ToString();
+			string text = UseAltColors() ? AltHoverText?.ToString() : HoverText?.ToString();
 
 			if (text is null)
 				return;

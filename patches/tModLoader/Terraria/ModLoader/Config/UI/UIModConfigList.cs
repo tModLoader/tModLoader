@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -160,7 +161,7 @@ internal class UIModConfigList : UIState
 					ScalePanel = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
-					UseAltColours = () => SelectedMod != mod,
+					UseAltColors = () => SelectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
 
@@ -182,6 +183,7 @@ internal class UIModConfigList : UIState
 			return;
 
 		// Have to sort by display name because normally configs are sorted by internal names
+		// TODO: Support sort by attribute or some other custom ordering.
 		configs.Sort((x, y) => x.DisplayName.Value.CompareTo(y.DisplayName.Value));
 
 		foreach (var config in configs) {
@@ -221,13 +223,21 @@ internal class UIModConfigList : UIState
 
 			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
 				if (sideIndicator.IsMouseHovering) {
-					string colourCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
+					string colorCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
-					Main.instance.MouseText($"[c/{colourCode}:{hoverText}]");
+					Main.instance.MouseText($"[c/{colorCode}:{hoverText}]");
 				}
 			};
 
 			configPanel.Append(sideIndicator);
 		}
+	}
+
+	public override void Draw(SpriteBatch spriteBatch)
+	{
+		base.Draw(spriteBatch);
+
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
+		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
 	}
 }

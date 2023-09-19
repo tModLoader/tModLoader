@@ -393,7 +393,7 @@ internal class UIModConfig : UIState
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
