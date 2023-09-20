@@ -81,7 +81,7 @@ partial class TileID
 		};
 
 		/// <summary>
-		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
+		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
 		/// </summary>
 		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
 
