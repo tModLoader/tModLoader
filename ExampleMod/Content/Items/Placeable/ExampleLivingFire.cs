@@ -14,30 +14,25 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true; // This set stops the item from burning in lava even with White rarity.
 		}
+
 		public override void SetDefaults() {
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTurn = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.autoReuse = true;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.ExampleLivingFireTile>(); // Set this to the tile that we want to create.
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleLivingFireTile>());
 			Item.width = 12;
 			Item.height = 12;
 		}
+
 		public override void PostUpdate() {
 			// Add some lighting when the item is dropped in the world.
 			// Curiously, only the regular Living Fire Block creates light.
-			Lighting.AddLight((int)((Item.position.X + (Item.width / 2)) / 16f), (int)((Item.position.Y + (Item.height / 2)) / 16f), LightColor.X, LightColor.Y, LightColor.Z);
+			Lighting.AddLight(Item.Center, LightColor);
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe(20)
 				.AddIngredient(ItemID.LivingFireBlock, 20)
 				.AddIngredient<ExampleItem>()
 				.AddTile(TileID.CrystalBall)
+				.SortAfterFirstRecipesOf(ItemID.LivingUltrabrightFireBlock)
 				.Register();
 		}
 	}

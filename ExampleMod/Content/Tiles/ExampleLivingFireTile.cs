@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Here we set the map color to the same color as the light color.
 			// We are accessing a variable that we defined inside of the item so we don't have to repeat entering the values.
-			AddMapEntry(new Color(ExampleLivingFire.LightColor.X, ExampleLivingFire.LightColor.Y, ExampleLivingFire.LightColor.Z));
+			AddMapEntry(new Color(ExampleLivingFire.LightColor));
 
 			// There are 4 frames of animation for our texture.
 			// The texture 360 pixels tall / 4 frames of animation = 90.
@@ -37,11 +37,18 @@ namespace ExampleMod.Content.Tiles
 			// The Living Fire Blocks are drawn 2 pixels lower so that they sink into the tile below it.
 			offsetY = 2;
 		}
-		public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
+
+		public override void AnimateTile(ref int frame, ref int frameCounter) {
 			// Here is where the tiles are animated.
-			// This approach, instead of using AnimateTile(), lets each tile be animated at different frames, adding more variety.
-			// We are reusing the regular Living Fire Block's animation rate which changes frame every 5 ticks.
-			frameYOffset = Main.tileFrame[TileID.LivingFire] * AnimationFrameHeight;
+			// Since we are just mimicking an existing tile, we can just use the same frame value.
+			frame = Main.tileFrame[TileID.LivingFire];
+
+			/* This is how it would be done manually, spending 5 ticks on each of 4 frames, looping.
+			if (++frameCounter >= 5) {
+				frameCounter = 0;
+				frame = ++frame % 4;
+			}
+			*/
 		}
 	}
 }
