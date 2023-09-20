@@ -123,6 +123,7 @@ internal static class ModOrganizer
 		}
 
 		// FilterOut currently does not _enforce_ the condition, because we must currently leave at least one mod version. Thus the order of these calls matters :(
+		FilterOut(ModNet.ServerRequiresDifferentVersion, "connecting to a server which requires a different version");
 		FilterOut(m => SocialBrowserModule.GetBrowserVersionNumber(m.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion), "mod is for a different Terraria version/LTS release stream");
 		FilterOut(m => SocialBrowserModule.GetBrowserVersionNumber(m.tModLoaderVersion).Contains("Transitive"), "The tML version is transitional with no distribution or mod browser support");
 		FilterOut(SkipModForPreviewNotPlayable, "preview early-access disabled");

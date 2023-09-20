@@ -72,6 +72,8 @@ public static class ModNet
 	internal static bool ShouldDrawModNetDiagnosticsUI = false;
 	internal static INetDiagnosticsUI ModNetDiagnosticsUI { get; private set; }
 
+	private static List<ModHeader> SyncModHeaders = new List<ModHeader>();
+
 	private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
 	internal static List<NetConfig> pendingConfigs = new List<NetConfig>();
 	private static ModHeader downloadingMod;
@@ -201,19 +203,17 @@ public static class ModNet
 
 		Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 		Mod[] clientMods = ModLoader.Mods;
-		LocalMod[] modFiles = ModOrganizer.FindMods(); // TODO: find all versions of mods, regardless of if a local is present
+		LocalMod[] modFiles = ModOrganizer.FindAllMods();
 		needsReload = false;
+		SyncModHeaders.Clear();
 		downloadQueue.Clear();
 		pendingConfigs.Clear();
-		var syncList = new List<ModHeader>();
-		var syncSet = new HashSet<string>();
 		var blockedList = new List<ModHeader>();
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
 			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
-			syncList.Add(header);
-			syncSet.Add(header.name);
+			SyncModHeaders.Add(header);
 
 			int configCount = reader.ReadInt32();
 			for (int c = 0; c < configCount; c++)
@@ -225,16 +225,11 @@ public static class ModNet
 
 			needsReload = true;
 
-			LocalMod[] localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
-			LocalMod matching = Array.Find(localVersions, mod => header.Matches(mod.modFile));
+			LocalMod matching = modFiles.FirstOrDefault(mod => header.Matches(mod.modFile));
 			if (matching != null) {
 				matching.Enabled = true;
 				continue;
 			}
-
-			// overwrite an existing version of the mod if there is one
-			if (localVersions.Length > 0)
-				header.path = localVersions[0].modFile.path;
 
 			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
 				downloadQueue.Enqueue(header);
@@ -242,17 +237,16 @@ public static class ModNet
 				blockedList.Add(header);
 		}
 
-		Logging.tML.Debug($"Server mods: " + string.Join(", ", syncList));
+		Logging.tML.Debug($"Server mods: " + string.Join(", ", SyncModHeaders));
 		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
 
-
-		foreach (Mod mod in clientMods)
-			if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
-				ModLoader.DisableMod(mod.Name);
-				needsReload = true;
-			}
+		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
+		foreach (var name in toDisable) {
+			ModLoader.DisableMod(name);
+			needsReload = true;
+		}
 
 		if (blockedList.Count > 0) {
 			string msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
@@ -445,6 +439,8 @@ public static class ModNet
 			}
 		};
 	}
+
+	internal static bool ServerRequiresDifferentVersion(LocalMod mod) => NetReloadActive && SyncModHeaders.Any(h => h.name == mod.Name && !h.Matches(mod.modFile));
 
 	internal static void SendNetIDs(int toClient)
 	{
