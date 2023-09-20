@@ -14,11 +14,12 @@
 -	public static class Sets
 +	public static partial class Sets
  	{
+-		public struct NPCBestiaryDrawModifiers
 +		/// <summary>
 +		/// Stores the draw parameters for an NPC type (<see cref="NPC.type"/>) in the Bestiary.
 +		/// <br/> <strong>Do not use the parameterless constructor or <c>default</c> to create this struct.</strong> Use <see cref="NPCBestiaryDrawModifiers(int)"/> instead with any parameter -- it sets proper default values.
 +		/// </summary>
- 		public struct NPCBestiaryDrawModifiers
++		public partial struct NPCBestiaryDrawModifiers
  		{
 +			/// <summary>
 +			/// The offset of this <see cref="NPC"/>'s Bestiary image in pixels.
