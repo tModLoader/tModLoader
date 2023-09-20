@@ -16,7 +16,7 @@ namespace ExampleMod.Content.NPCs
 		public override int TailType => ModContent.NPCType<ExampleWormTail>();
 
 		public override void SetStaticDefaults() {
-			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
+			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers() { // Influences how the NPC looks in the Bestiary
 				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
 				Position = new Vector2(40f, 24f),
 				PortraitPositionXOverride = 0f,
@@ -92,7 +92,7 @@ namespace ExampleMod.Content.NPCs
 	internal class ExampleWormBody : WormBody
 	{
 		public override void SetStaticDefaults() {
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
@@ -111,7 +111,7 @@ namespace ExampleMod.Content.NPCs
 	internal class ExampleWormTail : WormTail
 	{
 		public override void SetStaticDefaults() {
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);

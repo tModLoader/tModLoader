@@ -97,6 +97,7 @@
 		"AskForCommand": "Escribe un comando: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Opciones de filtro",
 		"ModConfigNotification": "Notificación: ",
 		"ModConfigModConfig": "Config. del mod",
@@ -106,6 +107,8 @@
 		"ModConfigRestoreDefaults": "Restablecer valores",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando al servidor aceptar los cambios...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "No se puede guardar porque los cambios requieren recargar el mod",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",

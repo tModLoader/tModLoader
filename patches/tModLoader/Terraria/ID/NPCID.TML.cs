@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Terraria.ID;
@@ -10,6 +6,15 @@ public partial class NPCID
 {
 	public static partial class Sets
 	{
+		public partial struct NPCBestiaryDrawModifiers
+		{
+			/// <inheritdoc cref="NPCBestiaryDrawModifiers(int)"/>
+			public NPCBestiaryDrawModifiers()
+			{
+				this = new(0);
+			}
+		}
+
 		//IDs taken from start of NPC.NewNPC when determining num
 		/// <summary>
 		/// Whether or not the spawned NPC will start looking for a suitable slot from the end of <seealso cref="Main.npc"/>, ignoring the Start parameter of <see cref="NPC.NewNPC"/>.

@@ -97,6 +97,7 @@
 		"AskForCommand": "Type a command: ",
 
 		//Mod Config
+		"ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Filter Options",
 		"ModConfigNotification": "Notification: ",
 		"ModConfigModConfig": "Mod Config",
@@ -106,6 +107,8 @@
 		"ModConfigRestoreDefaults": "Restore Defaults",
 		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		"ModConfigServerSide": "Server Side Config",
+		"ModConfigClientSide": "Client Side Config",
 		"ModConfigAdd": "Add",
 		"ModConfigRemove": "Remove",
 		"ModConfigInitialize": "Initialize",

@@ -52,7 +52,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// Optional: If you don't want this NPC to show on the bestiary (if there is no reason to show a boss minion separately)
 			// Make sure to remove SetBestiary code aswell
-			// NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			// NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 			//	Hide = true // Hides this NPC from the bestiary
 			// };
 			// NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
