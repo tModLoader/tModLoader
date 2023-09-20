@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Normally, non-solid tiles cannot be placed on other non-solid tiles. This set allows that.
 			// This set includes Cobwebs, Coin Piles, Living Fire Blocks, Smoke Blocks, and Bubble Blocks.
-			TileID.Sets.NonSolidCanPlaceOnEachOther[Type] = true;
+			TileID.Sets.CanPlaceNextToNonSolidTile[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>(); // Set the dust type.
 

@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Placeable
 				.AddIngredient(ItemID.LivingFireBlock, 20)
 				.AddIngredient<ExampleItem>()
 				.AddTile(TileID.CrystalBall)
-				.SortAfterFirstRecipesOf(ItemID.LivingUltrabrightFireBlock)
+				.SortAfterFirstRecipesOf(ItemID.LivingUltrabrightFireBlock) // places the recipe right after vanilla fire block recipes
 				.Register();
 		}
 	}
