@@ -237,7 +237,7 @@ public static class ModNet
 				blockedList.Add(header);
 		}
 
-		Logging.tML.Debug($"Server mods: " + string.Join(", ", SyncModHeaders));
+		Logging.tML.Debug($"Server mods:\n\t\t" + string.Join("\n\t\t", SyncModHeaders));
 		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
