@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -127,7 +128,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		// Update Localization Tags Automatically if the mod is loaded. (Can only publish if enabled, but just in case.)
 		if (ModLoader.ModLoader.TryGetMod(_dataObject.Name, out ModLoader.Mod mod)) {
 			var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(mod);
-			int countEnglishEntries = localizationCounts[GameCulture.FromName("en-US")];
+			int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
 			ModLoader.Logging.tML.Info($"Determining localization progress for {mod.Name}:");
 			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
 				if (tagOption.OptionValue.NameKey.StartsWith("tModLoader.TagsLanguage_")) {
@@ -147,8 +148,8 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 					int countOtherEntries;
 					localizationCounts.TryGetValue(culture, out countOtherEntries);
-					float localizationProgress = (float)countOtherEntries / countEnglishEntries;
-					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countEnglishEntries}, {localizationProgress:P0}, missing {countEnglishEntries - countOtherEntries}");
+					float localizationProgress = (float)countOtherEntries / countMaxEntries;
+					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countMaxEntries}, {localizationProgress:P0}, missing {countMaxEntries - countOtherEntries}");
 
 					bool languageMostlyLocalized = localizationProgress > 0.75f; // Suitable threshold?
 

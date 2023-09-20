@@ -43,4 +43,5 @@ public class ModProjectileTest : ModProjectile
 
 	public override void ModifyHitPvp(Player target, ref int damage, ref bool crit) { }
 	public override void OnHitPvp(Player target, int damage, bool crit) { }
+	public override void Kill(int timeLeft) { }
 }

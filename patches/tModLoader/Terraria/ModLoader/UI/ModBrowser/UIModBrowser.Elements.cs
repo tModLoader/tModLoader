@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -12,8 +14,7 @@ internal partial class UIModBrowser
 	/* Layout */
 	private UIElement _rootElement;
 	private UIPanel _backgroundElement;
-	private UILoaderAnimatedImage _loaderElement;
-	public UIList ModList;
+	public UIAsyncList_ModDownloadItem ModList;
 	public UIText NoModsFoundText;
 	public UITextPanel<LocalizedText> HeaderTextPanel;
 	private UIElement _upperMenuContainer;
@@ -25,6 +26,7 @@ internal partial class UIModBrowser
 	private UITextPanel<LocalizedText> _updateAllButton;
 	private UIPanel _filterTextBoxBackground;
 	internal UIInputTextField FilterTextBox;
+	private UIBrowserStatus _browserStatus;
 
 	/* Filters */
 	public UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle;
@@ -34,29 +36,33 @@ internal partial class UIModBrowser
 
 	internal void Reset()
 	{
-		ModList?.Clear();
-		_items?.Clear();
-		_missingMods?.Clear();
+		ModList?.SetEnumerable(null);
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
-		Loading = false;
+	}
+
+	private void UpdateHandler(object sender, EventArgs e)
+	{
 		UpdateNeeded = true;
 	}
 
 	private void InitializeInteractions()
 	{
 		_reloadButton.OnLeftClick += ReloadList;
-		_backButton.OnLeftClick += BackClick;
-		_clearButton.OnLeftClick += ClearFilters;
+		_backButton.OnLeftClick += (_, _) => HandleBackButtonUsage();
+		_clearButton.OnLeftClick += ClearTextFilters;
 		_downloadAllButton.OnLeftClick += DownloadAllFilteredMods;
 		_updateAllButton.OnLeftClick += UpdateAllMods;
+		ModList.OnStartLoading += ModListStartLoading;
+		ModList.OnFinished += ModListFinished;
 		_filterTextBoxBackground.OnRightClick += (a, b) => FilterTextBox.Text = "";
 		FilterTextBox.OnRightClick += (a, b) => FilterTextBox.Text = "";
-		FilterTextBox.OnTextChange += (sender, e) => {
-			UpdateNeeded = true;
-		};
+		FilterTextBox.OnTextChange += UpdateHandler;
+		foreach (var btn in CategoryButtons) {
+			btn.OnStateChanged += UpdateHandler;
+		}
 	}
 
 	public override void OnInitialize()
@@ -77,9 +83,7 @@ internal partial class UIModBrowser
 		};
 		_rootElement.Append(_backgroundElement);
 
-		_loaderElement = new UILoaderAnimatedImage(0.5f, 0.5f);
-
-		ModList = new UIList {
+		ModList = new UIAsyncList_ModDownloadItem {
 			Width = { Pixels = -25, Percent = 1f },
 			Height = { Pixels = -50, Percent = 1f },
 			Top = { Pixels = 50 },
@@ -103,7 +107,7 @@ internal partial class UIModBrowser
 		}.WithPadding(15f);
 		_backgroundElement.Append(HeaderTextPanel);
 
-		_reloadButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBGettingData")) {
+		_reloadButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.MBCancelLoading")) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 25 },
 			VAlign = 1f,
@@ -185,7 +189,12 @@ internal partial class UIModBrowser
 		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
 
-		InitializeInteractions();
+		_browserStatus = new UIBrowserStatus() {
+			VAlign = 1f,
+			Top = { Pixels = -65 +25 -32 }, // Allign with _reloadButton
+			Left = { Pixels = 545f } // Allign with SearchFilterToggle
+		};
+		_rootElement.Append(_browserStatus);
 
 		_rootElement.Append(_reloadButton);
 		_rootElement.Append(_backButton);
@@ -198,6 +207,8 @@ internal partial class UIModBrowser
 		_upperMenuContainer.Append(ModSideFilterToggle);
 		CategoryButtons.Add(SearchFilterToggle);
 		_upperMenuContainer.Append(SearchFilterToggle);
+
+		InitializeInteractions();
 
 		_upperMenuContainer.Append(_filterTextBoxBackground);
 		_upperMenuContainer.Append(FilterTextBox);

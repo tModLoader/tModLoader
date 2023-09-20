@@ -194,3 +194,10 @@ public class RectangleSerializer : TagSerializer<Rectangle, TagCompound>
 
 	public override Rectangle Deserialize(TagCompound tag) => new Rectangle(tag.GetInt("x"), tag.GetInt("y"), tag.GetInt("width"), tag.GetInt("height"));
 }
+
+public class VersionSerializer : TagSerializer<Version, string>
+{
+	public override string Serialize(Version value) => value.ToString(); // Since 1.0 and 1.0.0 are different, it's simpler to just use ToString than implement all the branching logic.
+
+	public override Version Deserialize(string tag) => new Version(tag);
+}

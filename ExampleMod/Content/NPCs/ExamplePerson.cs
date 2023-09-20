@@ -1,5 +1,6 @@
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Armor;
@@ -21,6 +22,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using System.Collections.Generic;
+using ReLogic.Content;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader.IO;
 using ExampleMod.Common.Configs;
 using ExampleMod.Common;
@@ -56,6 +59,11 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
 
 			NPCID.Sets.ShimmerTownTransform[Type] = true; // Allows for this NPC to have a different texture after touching the Shimmer liquid.
+
+			// Connects this NPC with a custom emote.
+			// This makes it when the NPC is in the world, other NPCs will "talk about him".
+			// By setting this you don't have to override the PickEmote method for the emote to appear.
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
@@ -385,6 +393,24 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SaveData(TagCompound tag) {
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
+		}
+
+		// Let the NPC "talk about" minion boss
+		public override int? PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+			// By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
+			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
+			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
+			if (otherAnchor.entity is NPC {type: NPCID.Demolitionist}) {
+				type = EmoteID.EmotionAnger;
+			}
+
+			// Make the selection more likely by adding it to the list multiple times
+			for (int i = 0; i < 4; i++) {
+				emoteList.Add(type);
+			}
+
+			// Use this or return null if you don't want to override the emote selection totally
+			return base.PickEmote(closestPlayer, emoteList, otherAnchor);
 		}
 	}
 }

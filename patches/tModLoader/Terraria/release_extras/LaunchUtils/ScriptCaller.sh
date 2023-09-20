@@ -58,11 +58,14 @@ fi
 export install_dir="$dotnet_dir/$dotnet_version"
 echo "Success!"  2>&1 | tee -a "$LogFile"
 
+if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
+	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"
+	rm -rf "$dotnet_dir"
+	mkdir "$dotnet_dir"
+fi
+
 run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
 
-# Gather CommandLine arguments from config
-customargs=$(cat "$root_dir/cli-argsConfig.txt")
-echo "Loaded Custom Arguments: $customargs"  2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
 

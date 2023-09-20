@@ -59,13 +59,15 @@
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии.\nВключайте на свой страх и риск",
 		"ModDependencyTooltip": "Этот мод требует установки: {0}\n (Они будут автоматически включены)",
+		"TranslationModTooltip": "В этом моде доступны переводы для таких языков: {0}",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
 		"ModDidNotFullyUnloadWarning": "Мод не смог полностью выгрузиться\nво время последней выгрузки.\n(Это сообщение для разработчика мода)",
-		"BetaModCantPublish": "Этот мод собран на бета-версии и его публикация невозможна",
 		"BetaModCantPublishError": "Вы не можете опубликовать мод, собранный на бета-версии tModLoader",
 		"OutdatedModCantPublishError": "Вы не можете опубликовать мод, собранный на устаревшей версии tModLoader",
+		"WrongVersionCantPublishError": "Вы не можете опубликовать мод, собранный на версии tModLoader, отличной от той, на которой он был собран",
 		"ModReloadRequired": "Требуется перезагрузка",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
 		"ModsByline": "Автор: {0}",
@@ -95,6 +97,7 @@
 		"AskForCommand": "Введите команду: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Фильтр",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация мода",
@@ -104,6 +107,8 @@
 		"ModConfigRestoreDefaults": "Сбросить по умолчанию",
 		"ModConfigAskingServerToAcceptChanges": "Запрос сервера на принятие изменений...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Не удаётся сохранить, поскольку изменения требуют перезагрузки",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		"ModConfigAdd": "Добавить",
 		"ModConfigRemove": "Удалить",
 		"ModConfigInitialize": "Инициализировать",
@@ -112,6 +117,11 @@
 		"ModConfigCollapse": "Свернуть",
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		"BossBarStyle": "Стиль шкалы здоровья босса: {0}",
@@ -246,6 +256,12 @@
 		"MPErrorModDownloadError": "Произошла ошибка во время скачивания {0}",
 		"MPPacketTooLarge": "Сетевой пакет слишком большой - {0} > {1}",
 
+		// UIAsyncList
+		"ALLoading": "Загрузка...",
+		"ALNoEntries": "Нет подходящих записей",
+		"ALCancel": "Загрузка отменена. Чтобы увидеть все записи, обновите страницу",
+		"ALError": "Произошла ошибка. Попробуйте обновить страницу",
+
 		// Mod Browser
 		"MBDownload": "Скачать",
 		"MBDownloadAll": "Скачать всё",
@@ -265,6 +281,7 @@
 		"MBUpdateAll": "Обновить все моды",
 		"MBReloadBrowser": "Перезагрузить Браузер",
 		"MBGettingData": "Получение данных...",
+		"MBCancelLoading": "Отмена загрузки",
 		"MBPopulatingBrowser": "Наполнение Браузера...",
 		"MBSortByRecentlyUpdated": "Сортировка: Последние обновлённые моды",
 		"MBSortByPopularity": "Сортировка: Моды по популярности",
@@ -343,8 +360,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Автоматически включать и перезагружать моды при выходе из «Браузера модов»: Нет",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Автоматически перезагружать моды при выходе из списка модов: Да",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Автоматически перезагружать моды при выходе из списка модов: Нет",
-		"ReloadModsReminder": "Вы обновили выключенный мод. Не забудьте его включить и перезагрузить моды, чтобы изменения вступили в силу.",
-		"EnableModsReminder": "Последние загружённые вами моды в данный момент выключены. Если вы собираетесь их использовать, то следует включить их и перезагрузить.",
 		"DontShowAgain": "Не показывать снова",
 		"ModControls": "Управление модов",
 
@@ -373,7 +388,7 @@
 		"PlayerWithThisNameExistsWillBeOverwritten": "Персонаж с таким именем уже существует и будет перезаписан",
 		"WorldWithThisNameExistsWillBeOverwritten": "Мир с таким именем уже существует и будет перезаписан",
 		"ExistingPlayerPlayedMoreRecently": "Существующий персонаж в последний раз играл совсем недавно",
-		"ExistingWorldPlayedMoreRecently": "В существующий мир в последний раз играл совсем недавно",
+		"ExistingWorldPlayedMoreRecently": "В существующий мир в последний раз играли совсем недавно",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",
@@ -820,7 +835,7 @@
 		"AnotherTownNPCNearby": "Когда рядом с торговцем находится другой житель",
 		"ForestPylon": "Нужно находится на поверхности, не входящем в другой биом с пилоном",
 		"UndergroundPylon": "Нужно находится в подземелье, не входящем в другой биом с пилоном",
-		"MoonPhasesHalf0OrPreHardmode": "В любое время до начала хардмода или во время a полнолуния, старой полной луны, последней четверти или старой луны",
+		"MoonPhasesHalf0OrPreHardmode": "В любое время до начала хардмода или во время полнолуния, старой полной луны, последней четверти или старой луны",
 
 		"FullMoon": "Во время полнолуния",
 		"WaningGibbousMoon": "Во время старой полной луны",
@@ -952,6 +967,10 @@
 		"ModLoader.Items.Squid_Body.DisplayName": "Тело Squid",
 		"ModLoader.Items.Squid_Head.DisplayName": "Голова Squid",
 		"ModLoader.Items.Squid_Legs.DisplayName": "Ноги Squid",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		"ModLoader.Items.toplayz_Body.DisplayName": "Тело toplayz",
 		"ModLoader.Items.toplayz_Head.DisplayName": "Голова toplayz",
 		"ModLoader.Items.toplayz_Legs.DisplayName": "Ноги toplayz",

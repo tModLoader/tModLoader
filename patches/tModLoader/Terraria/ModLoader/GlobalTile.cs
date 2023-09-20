@@ -44,7 +44,7 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
-	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. Use <see cref="Drop"/> to spawn additional items.
+	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's item(s). Returns true by default. Use <see cref="Drop"/> to spawn additional items.
 	/// </summary>
 	public virtual bool CanDrop(int i, int j, int type)
 	{

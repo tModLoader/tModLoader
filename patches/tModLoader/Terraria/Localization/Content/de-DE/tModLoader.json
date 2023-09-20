@@ -59,13 +59,15 @@
 		"ModOldWarning": "Mod veraltet. Benutzung auf eigene Gefahr!",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Dieser Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
 		"ModDidNotFullyUnloadWarning": "Dieser Mod wurde beim letzten Entladen nicht vollständig entladen.\n(Dies ist eine Nachricht für den Modentwickler)",
-		"BetaModCantPublish": "Dieser Mod wurde in einer Beta-Version erstellt und kann nicht veröffentlicht werden.",
 		"BetaModCantPublishError": "Du kannst keinen Mod der in einer Beta-Version von tModLoader erstellt wurde veröffentlichen",
 		"OutdatedModCantPublishError": "Du kannst keinen Mod der in einer alten tModLoader Version erstellt wurde veröffentlichen",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Neu laden erforderlich",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Neu laden erzwingen",
 		"ModIsServerSide": "Dies ist ein serverseitiger Mod",
 		"ModsByline": "Mod von: {0}",
@@ -95,6 +97,7 @@
 		"AskForCommand": "Gib einen Befehl ein: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Filtereinstellungen",
 		"ModConfigNotification": "Benachrichtigung: ",
 		"ModConfigModConfig": "Modkonfiguration",
@@ -104,6 +107,8 @@
 		"ModConfigRestoreDefaults": "Einstellungen zurücksetzen",
 		"ModConfigAskingServerToAcceptChanges": "Anfrage an Server, die Änderungen zu akzeptieren...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Kann nicht gespeichert werden, da Änderungen neu laden erfordern würden",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -112,6 +117,11 @@
 		// "ModConfigCollapse": "Collapse",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		"BossBarStyle": "Bossleisten-Stil: {0}",
@@ -246,6 +256,12 @@
 		"MPErrorModDownloadError": "Beim herunterladen ist ein Fehler aufgetreten {0}",
 		"MPPacketTooLarge": "Paket zu groß {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Herunterladen",
 		"MBDownloadAll": "Alle herunterladen",
@@ -265,6 +281,7 @@
 		"MBUpdateAll": "Alle aktualisieren",
 		"MBReloadBrowser": "Mod-Browser neu laden",
 		"MBGettingData": "Sammle Daten...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Browser aktivieren...",
 		"MBSortByRecentlyUpdated": "Nach kürzlich aktualisierten sortieren",
 		"MBSortByPopularity": "Nach Beliebtheit sortieren",
@@ -343,8 +360,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Mods automatisch aktivieren und neu laden, wenn der Mod-Browser verlassen wird: Aus",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Erforderliche Mods automatisch neu laden, wenn der Modbildschirm verlassen wird: An",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Erforderliche Mods automatisch neu laden, wenn der Modbildschirm verlassen wird: Aus",
-		"ReloadModsReminder": "Du hast einen Mod aktualisiert. Vergiss nicht sie neu zu laden, damit die Änderungen wirksam werden!",
-		"EnableModsReminder": "Deine neu heruntergeladenen Mods sind im Moment deaktiviert, vergiss nicht sie zu aktivieren, wenn du sie benutzen willst!",
 		"DontShowAgain": "Nie wieder zeigen",
 		"ModControls": "Mod-Steuerung",
 
@@ -952,6 +967,10 @@
 		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
 		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
 		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
 		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
 		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",

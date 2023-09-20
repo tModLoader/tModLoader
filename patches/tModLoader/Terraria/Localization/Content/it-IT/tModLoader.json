@@ -61,13 +61,15 @@
 		// "ModOldWarning": "Old mod, enable at own risk",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		// "ModDependencyModsNotFound": "The following mods were not found: {0}",
 		// "ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
-		// "BetaModCantPublish": "This mod was built on beta version and can't be published",
-		// "BetaModCantPublishError": "You cannot publish a Mod built on a Beta version of tModLoader",
+		// "BetaModCantPublishError": "You cannot publish a Mod built on a beta version of tModLoader",
 		// "OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		// "ModReloadRequired": "Reload Required",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		// "ModReloadForced": "Reload Forced",
 		// "ModIsServerSide": "This is a server side mod",
 		// "ModsByline": "By: {0}",
@@ -97,6 +99,7 @@
 		// "AskForCommand": "Type a command: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		// "ModConfigFilterOptions": "Filter Options",
 		// "ModConfigNotification": "Notification: ",
 		// "ModConfigModConfig": "Mod Config",
@@ -106,6 +109,8 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -114,6 +119,11 @@
 		// "ModConfigCollapse": "Collapse",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		// "BossBarStyle": "Boss Bar Style: {0}",
@@ -248,6 +258,12 @@
 		// "MPErrorModDownloadError": "An error occurred while downloading {0}",
 		// "MPPacketTooLarge": "Packet too large {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		// "MBDownload": "Download",
 		// "MBDownloadAll": "Download All",
@@ -267,6 +283,7 @@
 		// "MBUpdateAll": "Update All",
 		// "MBReloadBrowser": "Reload browser",
 		// "MBGettingData": "Getting data...",
+		// "MBCancelLoading": "Cancel loading",
 		// "MBPopulatingBrowser": "Populating browser...",
 		// "MBSortByRecentlyUpdated": "Sort by recently updated",
 		// "MBSortByPopularity": "Sort by popularity",
@@ -345,8 +362,6 @@
 		// "AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatically Enable and Reload Mods When Leaving Mod Browser: Off",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
-		// "ReloadModsReminder": "You have updated a disabled mod. Remember to enable it and reload mods for it to take effect.",
-		// "EnableModsReminder": "Your recently downloaded mods are currently disabled. Remember to enable them and reload if you intend to use them.",
 		// "DontShowAgain": "Don't show again",
 		// "ModControls": "Mod Controls",
 
@@ -954,6 +969,10 @@
 		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
 		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
 		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
 		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
 		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",

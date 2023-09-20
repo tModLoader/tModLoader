@@ -73,6 +73,7 @@ Mods: {
 
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
+			// ExampleCritterNPC.DisplayName: Lava Frog
 		}
 
 		Tiles: {
@@ -93,6 +94,20 @@ Mods: {
 		}
 
 		Items: {
+			ExampleStaff: {
+				// DisplayName: Example Staff
+				// Tooltip: This is a modded magic staff weapon
+			}
+
+			ExampleLastPrism: {
+				// DisplayName: Example Last Prism
+				/* Tooltip:
+					'''
+					A slightly different laser-firing Prism
+					Ignores NPC immunity frames and fires 10 beams at once instead of 6
+					''' */
+			}
+
 			ExamplePetItem: {
 				# This example omits "Mods.ExampleMod." from the substitution key and still works. The game will test variations of the translation key to check for other keys in the scope.
 				// DisplayName: "{$Common.PaperAirplane}"
@@ -860,6 +875,16 @@ Mods: {
 			ExampleLivingFire: {
 				// DisplayName: Example Living Fire Block
 				// Tooltip: ""
+      }
+
+			ExampleCritterItem: {
+				// DisplayName: Lava Frog
+				// Tooltip: A spicy boi
+			}
+
+			ExampleCritterCageItem: {
+				// DisplayName: Lava Frog Cage
+				// Tooltip: A sad spicy boi
 			}
 		}
 
@@ -898,6 +923,8 @@ Mods: {
 			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			// ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
 			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
+			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
+			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
 		}
 
 		Buffs: {
@@ -1079,6 +1106,28 @@ Mods: {
 
 		// UI.ExampleResource: Example Resource: {0} / {1}
 		// WorldGen.ExampleOrePassMessage: Example Mod Ores
+
+		BuilderToggles: {
+			ExampleBuilderToggleDimmedLight: {
+				// OnText: Example On
+				// OffText: Example Off
+			}
+		}
+
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
+		Emotes: {
+			// ExampleBiomeEmote.Command: exbiome
+			// ExampleBoneMerchantEmote.Command: exbonemerchant
+			// ExampleItemEmote.Command: exitem
+			// ExamplePersonEmote.Command: experson
+			// ExamplePickaxeEmote.Command: expickaxe
+			// ExampleTravellingMerchantEmote.Command: extravelingmerchant
+			// MinionBossEmote.Command: exminionboss
+		}
+
+		// NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 	}
 }
 

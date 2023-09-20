@@ -279,7 +279,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
 	/// All fields are measured in in-game minutes per real-life second (min/sec).
-	/// You may want to consider <see cref="Main.fastForwardTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
+	/// You may want to consider <see cref="Main.IsFastForwardingTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
 	/// </summary>
 	/// <param name="timeRate">The speed at which time flows in min/sec.</param>
 	/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
@@ -302,6 +302,17 @@ public abstract partial class ModSystem : ModType
 	/// </summary>
 	/// <param name="tag"> The TagCompound to load data from. </param>
 	public virtual void LoadWorldData(TagCompound tag) { }
+
+	/// <summary>
+	/// <br/>Allows you to save custom data for this system in the current world, and have that data accessible in the world select UI and during vanilla world loading.
+	/// <br/><b>WARNING:</b> Saving too much data here will cause lag when opening the world select menu for users with many worlds.
+	/// <br/>Can be retrieved via <see cref="WorldFileData.TryGetHeaderData(ModSystem, out TagCompound)"/> and <see cref="Main.ActiveWorldFileData"/>
+	/// <br/>
+	/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+	/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+	/// </summary>
+	/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+	public virtual void SaveWorldHeader(TagCompound tag) { }
 
 	/// <summary>
 	/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
@@ -356,7 +367,8 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. <para/>
-	/// For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.
+	/// For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. <para/>
+	/// To disable or hide generation passes, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) { }
 
@@ -371,7 +383,9 @@ public abstract partial class ModSystem : ModType
 	public virtual void ResetNearbyTileEffects() { }
 
 	/// <summary>
-	/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement"
+	/// Similar to <see cref="ModifyWorldGenTasks(List{GenPass}, ref double)"/>, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. <para/>
+	/// By default the list will only contain 5 items, the vanilla hardmode tasks called "Hardmode Good Remix", "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement". "Hardmode Good Remix" will only be enabled on <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up</see> worlds (<see cref="Main.remixWorld"/>) while "Hardmode Good" and "Hardmode Evil" will be enabled otherwise.<para/>
+	/// To disable or hide tasks, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
 
