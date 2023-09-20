@@ -875,7 +875,7 @@ Mods: {
 			ExampleLivingFire: {
 				DisplayName: Example Living Fire Block
 				Tooltip: ""
-      }
+			}
 
 			ExampleCritterItem: {
 				DisplayName: Lava Frog
