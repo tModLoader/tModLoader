@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -690,20 +691,32 @@ internal static class ModOrganizer
 		}
 	}
 
+	internal static bool CanDeleteFrom(ModLocation location)
+	{
+		return location == ModLocation.Local || location == ModLocation.Workshop;
+	}
+
 	internal static void DeleteMod(LocalMod tmod)
 	{
-		string tmodPath = tmod.modFile.path;
-		string parentDir = GetParentDir(tmodPath);
-
-		if (TryReadManifest(parentDir, out var info)) {
-			// Is a mod on Steam Workshop
-			SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId), parentDir);
+		if (tmod.location == ModLocation.Local) {
+			File.Delete(tmod.modFile.path);
+		}
+		else if (tmod.location == ModLocation.Workshop) {
+			string parentDir = GetParentDir(tmod.modFile.path);
+			if (TryReadManifest(parentDir, out var info)) {
+				// Is a mod on Steam Workshop
+				SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId), parentDir);
+			}
+			else {
+				Logging.tML.Error($"Failed to read manifest for workshop mod {tmod.Name} @ {parentDir}");
+				return;
+			}
 		}
 		else {
-			// Is a Mod in Mods Folder
-			File.Delete(tmodPath);
+			throw new InvalidOperationException("Cannot delete mod from " + tmod.location);
 		}
 
+		// TODO, notify the mod workshop module directly instead. Only for workshop mods.
 		LocalModsChanged(new HashSet<string> { tmod.Name }, isDeletion: true);
 	}
 

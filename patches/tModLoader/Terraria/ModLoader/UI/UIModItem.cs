@@ -261,7 +261,7 @@ internal class UIModItem : UIPanel
 				_uiModStateText.LeftClick(e);
 		};
 
-		if (!_loaded) {
+		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
 			bottomRightRowOffset -= 36;
 			_deleteModButton = new UIImage(TextureAssets.Trash) {
 				Width = { Pixels = 36 },
