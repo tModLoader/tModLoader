@@ -101,7 +101,7 @@ public partial class LocalizedText
 			return string.Format(value, args);
 		}
 		catch (FormatException e) {
-			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{value}\"\nfailed to be formatted with the inputs:\n  \"{string.Join(", ", args)}\"", e);
+			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{value}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
 		}
 	}
 
