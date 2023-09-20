@@ -229,11 +229,7 @@ internal class UIModItem : UIPanel
 			Append(_keyImage);
 		}
 
-		if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
-			BackgroundColor = Color.MediumPurple * 0.7f;
-			modFromLocalModFolder = true;
-		}
-		else {
+		if (_mod.location == ModLocation.Workshop) {
 			var steamIcon = new UIImage(TextureAssets.Extra[243]) {
 				Left = { Pixels = -22, Percent = 1f }
 			};
@@ -290,6 +286,8 @@ internal class UIModItem : UIPanel
 
 			Append(updatedModDot);
 		}
+
+		SetHoverColors(hovered: false);
 	}
 
 	// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -380,19 +378,22 @@ internal class UIModItem : UIPanel
 	public override void MouseOver(UIMouseEvent evt)
 	{
 		base.MouseOver(evt);
-		BackgroundColor = UICommon.DefaultUIBlue;
-		BorderColor = new Color(89, 116, 213);
-		if(modFromLocalModFolder)
-			BackgroundColor = Color.MediumPurple;
+		SetHoverColors(hovered: true);
 	}
 
 	public override void MouseOut(UIMouseEvent evt)
 	{
 		base.MouseOut(evt);
-		BackgroundColor = new Color(63, 82, 151) * 0.7f;
-		BorderColor = new Color(89, 116, 213) * 0.7f;
-		if (modFromLocalModFolder)
-			BackgroundColor = Color.MediumPurple * 0.7f;
+		SetHoverColors(hovered: false);
+	}
+
+	private void SetHoverColors(bool hovered)
+	{
+		BorderColor = hovered ? new Color(89, 116, 213) : new Color(89, 116, 213) * 0.7f;
+		if (_mod.location == ModLocation.Local)
+			BackgroundColor = hovered ? Color.MediumPurple : Color.MediumPurple * 0.7f;
+		else
+			BackgroundColor = hovered ? UICommon.DefaultUIBlueMouseOver : UICommon.DefaultUIBlue;
 	}
 
 	private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)
