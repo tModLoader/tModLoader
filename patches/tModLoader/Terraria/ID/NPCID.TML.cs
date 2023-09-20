@@ -9,10 +9,9 @@ public partial class NPCID
 		public partial struct NPCBestiaryDrawModifiers
 		{
 			/// <inheritdoc cref="NPCBestiaryDrawModifiers(int)"/>
-			public NPCBestiaryDrawModifiers()
-			{
-				this = new(0);
-			}
+#pragma warning disable CS0618
+			public NPCBestiaryDrawModifiers() : this(0) { }
+#pragma warning restore CS0618
 		}
 
 		//IDs taken from start of NPC.NewNPC when determining num

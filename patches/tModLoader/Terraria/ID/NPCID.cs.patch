@@ -617,7 +617,7 @@
  		public static int[][] TownNPCsFramingGroups = new int[8][] {
  			new int[26] {
  				0,
-@@ -5246,16 +_,28 @@
+@@ -5246,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
@@ -649,3 +649,17 @@
  			}
  
  			return dictionary;
+ 		}
+ 
++#pragma warning disable CS0618
+ 		private static Dictionary<int, NPCBestiaryDrawModifiers> GetRedigitEntries()
+ 		{
+ 			return new Dictionary<int, NPCBestiaryDrawModifiers> {
+@@ -9972,6 +_,7 @@
+ 				}
+ 			};
+ 		}
++#pragma warning restore CS0618
+ 	}
+ 
+ 	private static readonly int[] NetIdMap = new int[65] {
