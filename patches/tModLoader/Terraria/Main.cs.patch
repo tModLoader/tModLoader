@@ -470,7 +470,7 @@
  		0.75f
  	};
 +	/// <summary>
-+	/// A value that ossilates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create <see cref="Color"/>s by passing in this value as either all 4 parameters or just the alpha parameter.<br/><br/>
++	/// A value that oscillates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create <see cref="Color"/>s by passing in this value as either all 4 parameters or just the alpha parameter.<br/><br/>
 +	/// <see cref="Main.MouseTextColorReal"/> can be used to access the typical pulsing white <see cref="Color"/> value.
 +	/// </summary>
  	public static byte mouseTextColor;
