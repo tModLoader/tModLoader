@@ -1,11 +1,11 @@
-﻿using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 
-namespace tModLoader.BuildTools;
+namespace tModPackager;
 
 public static class SavePathLocator
 {

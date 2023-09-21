@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp.PixelFormats;
 using System.IO;
 
-namespace tModLoader.BuildTools.ModFile;
+namespace tModPackager.ModFile;
 
 public static class ContentConverters
 {

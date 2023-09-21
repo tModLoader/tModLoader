@@ -1,4 +1,4 @@
-﻿namespace tModLoader.BuildTools.ModFile;
+﻿namespace tModPackager.ModFile;
 
 public enum ModSide
 {

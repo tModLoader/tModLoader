@@ -1,13 +1,13 @@
-﻿using Microsoft.Build.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework;
 using Newtonsoft.Json;
-using tModLoader.BuildTools.ModFile;
+using tModPackager.ModFile;
 
-namespace tModLoader.BuildTools.Tasks;
+namespace tModPackager.Tasks;
 
 public class PackageModFile : TaskBase
 {

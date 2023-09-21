@@ -7,7 +7,7 @@ using System.Text;
 
 // ReSharper disable IdentifierTypo
 
-namespace tModLoader.BuildTools.ModFile;
+namespace tModPackager.ModFile;
 
 public class TmodFile
 {

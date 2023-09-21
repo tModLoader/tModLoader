@@ -16,7 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModPorter.Tests", "..\tModPorter\tModPorter.Tests\tModPorter.Tests.csproj", "{97334941-ACE4-4BB2-A8E6-7F239722EA24}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoaderTests", "..\test\tModLoaderTests.csproj", "{D7D3267F-5E12-47C8-A853-5BA8D0F15890}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.BuildTools", "..\BuildTools\tModLoader.BuildTools.csproj", "{AFD14A09-718E-43BC-BFCE-175DBB8B612F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModPackager", "..\BuildTools\tModPackager.csproj", "{AFD14A09-718E-43BC-BFCE-175DBB8B612F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

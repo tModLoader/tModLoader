@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace tModLoader.BuildTools.ModFile;
+namespace tModPackager.ModFile;
 
 public class BuildProperties
 {

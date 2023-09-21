@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Build.Framework;
 
-namespace tModLoader.BuildTools.Tasks;
+namespace tModPackager.Tasks;
 
 public class GetTmlVersionSymbol : TaskBase
 {
