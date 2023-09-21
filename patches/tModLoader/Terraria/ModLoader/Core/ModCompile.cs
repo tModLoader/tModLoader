@@ -174,7 +174,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			Process process = new() {
 				StartInfo = new ProcessStartInfo {
 					FileName = UIModSources.GetSystemDotnetPath() ?? "dotnet",
-					Arguments = $"build -c Release -v q -p:OutputTmodPath=\"{outputPath}\" -p:TmlVersion=\"{tmlVersion}\"",
+					Arguments = $"build --no-incremental -c Release -v q -p:OutputTmodPath=\"{outputPath}\" -p:TmlVersion=\"{tmlVersion}\"",
 					WorkingDirectory = mod.path,
 					UseShellExecute = false,
 					RedirectStandardOutput = true,
