@@ -388,7 +388,7 @@ public static class ModContent
 
 	private static void SetupBestiary()
 	{
-		//Beastiary DB
+		//Bestiary DB
 		var bestiaryDatabase = new BestiaryDatabase();
 		new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 		Main.BestiaryDB = bestiaryDatabase;

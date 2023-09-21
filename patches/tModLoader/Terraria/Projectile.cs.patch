@@ -1206,7 +1206,7 @@
 +					if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
 +						velocity = Collision.AnyCollisionWithSpecificTiles(vector2, base.velocity, num2, num3, TileID.Sets.Falling, evenActuated: true);
 +
-+					//TML: This section was rewriten above so it is affected by ProjectileLoader.TileCollideStyle
++					//TML: This section was rewritten above so it is affected by ProjectileLoader.TileCollideStyle
 +					/*
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);

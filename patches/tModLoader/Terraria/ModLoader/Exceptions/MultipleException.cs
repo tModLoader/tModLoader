@@ -5,7 +5,7 @@ namespace Terraria.ModLoader.Exceptions;
 
 public class MultipleException : AggregateException
 {
-	public static readonly string DefaultMessage = "Multiple errors occured.";
+	public static readonly string DefaultMessage = "Multiple errors occurred.";
 
 	private readonly string _message;
 
