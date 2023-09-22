@@ -176,18 +176,21 @@ public static class ModLoader
 			if (e.Data.Contains("contentType") && e.Data["contentType"] is Type contentType)
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
-			Logging.tML.Error(msg, e);
-
 			foreach (var mod in responsibleMods) {
 				DisableMod(mod);
 
 				var dependents = from m in availableMods
 					where m.properties.modReferences.Any(reference => reference.mod.Equals(mod))
 					select m.Name;
+
+				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDependentsDisabled", mod,
+					string.Join(", ", dependents));
 				
 				foreach (var dependent in dependents)
 					DisableMod(dependent);
 			}
+			
+			Logging.tML.Error(msg, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
