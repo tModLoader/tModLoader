@@ -178,8 +178,16 @@ public static class ModLoader
 
 			Logging.tML.Error(msg, e);
 
-			foreach (var mod in responsibleMods)
+			foreach (var mod in responsibleMods) {
 				DisableMod(mod);
+
+				var dependents = from m in availableMods
+					where m.properties.modReferences.Any(reference => reference.mod.Equals(mod))
+					select m.Name;
+				
+				foreach (var dependent in dependents)
+					DisableMod(dependent);
+			}
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
