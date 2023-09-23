@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.Drawing;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -157,6 +158,11 @@ namespace ExampleMod.Content.Tiles
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 			var tile = Main.tile[i, j];
+
+			if (!TileDrawing.IsVisible(tile)) {
+				return;
+			}
+
 			if(tile.TileFrameY < 36) {
 				Color color = new Color(255, 255, 255, 0);
 
