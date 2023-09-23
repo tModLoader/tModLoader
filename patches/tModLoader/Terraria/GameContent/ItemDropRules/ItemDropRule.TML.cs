@@ -17,4 +17,5 @@ partial class ItemDropRule
 		return Coins((long)npc.value, withRandomBonus: true);
 	}
 	public static IItemDropRule AlwaysAtleastOneSuccess(params IItemDropRule[] rules) => new AlwaysAtleastOneSuccessDropRule(rules);
+	public static IItemDropRule NotScalingWithLuckWithNumerator(int itemId, int chanceDenominator = 1, int chanceNumerator = 1, int minimumDropped = 1, int maximumDropped = 1) => new CommonDropNotScalingWithLuckWithNumerator(itemId, chanceDenominator, chanceNumerator, minimumDropped, maximumDropped);
 }

@@ -105,9 +105,9 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.TheAxe, 20));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.PygmyStaff, 2));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.ThornHook, 10));
-		IItemDropRule itemDropRule2 = ItemDropRule.Common(758);
-		itemDropRule2.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
-		RegisterToItem(item, new OneFromRulesRule(1, itemDropRule2, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
+		IItemDropRule itemDropRuleGrenadeLauncher = ItemDropRule.Common(758);
+		itemDropRuleGrenadeLauncher.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
+		RegisterToItem(item, new OneFromRulesRule(1, itemDropRuleGrenadeLauncher, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Plantera));
 
 		item = ItemID.SkeletronPrimeBossBag;
@@ -132,31 +132,37 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Retinazer));
 
 		item = ItemID.EyeOfCthulhuBossBag;
-		Conditions.IsCrimson condition4 = new Conditions.IsCrimson();
-		Conditions.IsCorruption condition5 = new Conditions.IsCorruption();
+		Conditions.IsCrimson conditionIsCrimson = new Conditions.IsCrimson();
+		Conditions.IsCorruption conditionIsCorruption = new Conditions.IsCorruption();
 		RegisterToItem(item, ItemDropRule.Common(ItemID.EoCShield));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EyeMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Binoculars, 30));
-		RegisterToItem(item, ItemDropRule.ByCondition(condition4, ItemID.CrimtaneOre, 1, 30, 87));
-		RegisterToItem(item, ItemDropRule.ByCondition(condition4, ItemID.CrimsonSeeds, 1, 1, 3));
-		RegisterToItem(item, ItemDropRule.ByCondition(condition5, 47, 1, 20, 49));
-		RegisterToItem(item, ItemDropRule.ByCondition(condition5, 56, 1, 30, 87));
-		RegisterToItem(item, ItemDropRule.ByCondition(condition5, 59, 1, 1, 3));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimtaneOre, 1, 30, 87));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimsonSeeds, 1, 1, 3));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, 47, 1, 20, 49));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, 56, 1, 30, 87));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, 59, 1, 1, 3));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.EyeofCthulhu));
 
 		item = ItemID.BrainOfCthulhuBossBag;
+		Conditions.NotMasterMode conditionIsNotMaster = new Conditions.NotMasterMode();
+		Conditions.IsMasterMode conditionIsMaster = new Conditions.IsMasterMode();
 		RegisterToItem(item, ItemDropRule.Common(ItemID.BrainOfConfusion));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BrainMask, 7));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.CrimtaneOre, 1, 40, 90));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.TissueSample, 1, 10, 19));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsNotMaster, ItemID.CrimtaneOre, 1, 80, 110));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsNotMaster, ItemID.TissueSample, 1, 20, 40));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsMaster, ItemID.CrimtaneOre, 1, 110, 135)); // Correctly gives the Master drop in For the Worthy worlds set to Expert Mode.
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsMaster, ItemID.TissueSample, 1, 30, 50));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BoneRattle, 20));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.BrainofCthulhu));
 
 		item = ItemID.EaterOfWorldsBossBag;
 		RegisterToItem(item, ItemDropRule.Common(ItemID.WormScarf));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EaterMask, 7));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 59));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.ShadowScale, 1, 10, 19));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsNotMaster, ItemID.DemoniteOre, 1, 80, 110));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsNotMaster, ItemID.ShadowScale, 1, 20, 40));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsMaster, ItemID.DemoniteOre, 1, 110, 135));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsMaster, ItemID.ShadowScale, 1, 30, 50));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EatersBone, 20));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.EaterofWorldsHead));
 
@@ -219,9 +225,9 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.ShinyStone));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.GolemMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Picksaw, 3));
-		IItemDropRule itemDropRule3 = ItemDropRule.Common(1258);
-		itemDropRule3.OnSuccess(ItemDropRule.Common(1261, 1, 60, 180), hideLootReport: true);
-		RegisterToItem(item, new OneFromRulesRule(1, itemDropRule3, ItemDropRule.Common(1122), ItemDropRule.Common(899), ItemDropRule.Common(1248), ItemDropRule.Common(1295), ItemDropRule.Common(1296), ItemDropRule.Common(1297)));
+		IItemDropRule itemDropRuleStynger = ItemDropRule.Common(1258);
+		itemDropRuleStynger.OnSuccess(ItemDropRule.Common(1261, 1, 60, 180), hideLootReport: true);
+		RegisterToItem(item, new OneFromRulesRule(1, itemDropRuleStynger, ItemDropRule.Common(1122), ItemDropRule.Common(899), ItemDropRule.Common(1248), ItemDropRule.Common(1295), ItemDropRule.Common(1296), ItemDropRule.Common(1297)));
 		RegisterToItem(item, ItemDropRule.Common(ItemID.BeetleHusk, 1, 18, 23));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Golem));
 
@@ -434,16 +440,16 @@ partial class ItemDropDatabase
 		#endregion
 
 		#region Gold Crate and Titanium Crate
-		themed = new IItemDropRule[] //TODO: Needs validation in 1.4.4
+		themed = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.LifeCrystal, 8),
-			ItemDropRule.NotScalingWithLuck(ItemID.HardySaddle, 12),
+			ItemDropRule.NotScalingWithLuckWithNumerator(ItemID.HardySaddle, 80, 7),
 		};
-		hardmodeThemed = new IItemDropRule[] //TODO: Needs validation in 1.4.4
+		hardmodeThemed = new IItemDropRule[]
 		{
 			ItemDropRule.ByCondition(new Conditions.IsHardmode(), ItemID.Sundial, 20),
-			ItemDropRule.NotScalingWithLuck(ItemID.LifeCrystal, 8),
-			ItemDropRule.NotScalingWithLuck(ItemID.HardySaddle, 12),
+			ItemDropRule.NotScalingWithLuckWithNumerator(ItemID.LifeCrystal, 160, 19),
+			ItemDropRule.NotScalingWithLuckWithNumerator(ItemID.HardySaddle, 1600, 133),
 		};
 		oresTier1 = new IItemDropRule[]
 		{
@@ -466,7 +472,7 @@ partial class ItemDropDatabase
 			ItemDropRule.NotScalingWithLuck(ItemID.GoldBar, 1, 8, 11),
 			ItemDropRule.NotScalingWithLuck(ItemID.PlatinumBar, 1, 8, 11)
 		};
-		hardmodeBarsTier1 = new IItemDropRule[] //TODO: Needs validation in 1.4.4
+		hardmodeBarsTier1 = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.MythrilBar, 1, 8, 11),
 			ItemDropRule.NotScalingWithLuck(ItemID.OrichalcumBar, 1, 8, 11),
@@ -542,7 +548,19 @@ partial class ItemDropDatabase
 		IItemDropRule bc_lockbox = ItemDropRule.Common(ItemID.LockBox);
 		IItemDropRule bc_book = ItemDropRule.NotScalingWithLuck(ItemID.Book, 2, 5, 15);
 
-		IItemDropRule bc_ice = ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.IceBoomerang, ItemID.IceBlade, ItemID.IceSkates, ItemID.SnowballCannon, ItemID.BlizzardinaBottle, ItemID.FlurryBoots);
+		//IItemDropRule bc_ice = ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.IceBoomerang, ItemID.IceBlade, ItemID.IceSkates, ItemID.SnowballCannon, ItemID.BlizzardinaBottle, ItemID.FlurryBoots);
+		IItemDropRule[] bc_iceList = new IItemDropRule[]
+		{
+			ItemDropRule.NotScalingWithLuck(ItemID.IceBoomerang),
+			ItemDropRule.NotScalingWithLuck(ItemID.IceBlade),
+			ItemDropRule.NotScalingWithLuck(ItemID.IceSkates),
+			ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.SnowballCannon),
+			ItemDropRule.ByCondition(new Conditions.RemixSeed(), ItemID.IceBow),
+			ItemDropRule.NotScalingWithLuck(ItemID.BlizzardinaBottle),
+			ItemDropRule.NotScalingWithLuck(ItemID.FlurryBoots),
+		};
+		IItemDropRule bc_ice = new OneFromRulesRule(1, bc_iceList);
+
 		IItemDropRule bc_fish = ItemDropRule.NotScalingWithLuck(ItemID.Fish, 20);
 
 		IItemDropRule bc_scarab = ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.AncientChisel, ItemID.ScarabFishingRod, ItemID.SandBoots, ItemID.ThunderSpear, ItemID.ThunderStaff, ItemID.CatBast, ItemID.MysticCoilSnake, ItemID.MagicConch);
@@ -553,9 +571,9 @@ partial class ItemDropDatabase
 		IItemDropRule[] bc_lava = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.LavaCharm, 20),
-			ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.FlameWakerBoots, ItemID.SuperheatedBlood, ItemID.LavaFishbowl, 4881, ItemID.VolcanoSmall),
+			ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.FlameWakerBoots, ItemID.SuperheatedBlood, ItemID.LavaFishbowl, ItemID.LavaFishingHook, ItemID.VolcanoSmall),
 		};
-		IItemDropRule bc_pot = ItemDropRule.NotScalingWithLuck(4858, 4, 2, 2);
+		IItemDropRule bc_pot = ItemDropRule.NotScalingWithLuck(ItemID.PotSuspended, 4, 2, 2);
 		IItemDropRule bc_obsi = ItemDropRule.Common(ItemID.ObsidianLockbox);
 		IItemDropRule bc_wet = ItemDropRule.NotScalingWithLuck(ItemID.WetBomb, 3, 7, 10);
 		IItemDropRule bc_plant = ItemDropRule.OneFromOptionsNotScalingWithLuck(2, ItemID.PottedLavaPlantPalm, ItemID.PottedLavaPlantBush, ItemID.PottedLavaPlantBramble, ItemID.PottedLavaPlantBulb, ItemID.PottedLavaPlantTendrils);
@@ -881,12 +899,37 @@ partial class ItemDropDatabase
 
 	private void RegisterObsidianLockbox()
 	{
-		RegisterToItem(ItemID.ObsidianLockbox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.DarkLance, ItemID.Sunfury, ItemID.FlowerofFire, ItemID.Flamelash, ItemID.HellwingBow, ItemID.TreasureMagnet));
+		IItemDropRule[] obsidianLockBoxList = new IItemDropRule[]
+		{
+			ItemDropRule.NotScalingWithLuck(ItemID.DarkLance),
+			ItemDropRule.NotScalingWithLuck(ItemID.Sunfury),
+			ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.FlowerofFire),
+			ItemDropRule.ByCondition(new Conditions.RemixSeed(), ItemID.UnholyTrident),
+			ItemDropRule.NotScalingWithLuck(ItemID.Flamelash),
+			ItemDropRule.NotScalingWithLuck(ItemID.HellwingBow),
+		};
+
+		// RegisterToItem(ItemID.ObsidianLockbox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.DarkLance, ItemID.Sunfury, ItemID.FlowerofFire, ItemID.Flamelash, ItemID.HellwingBow, ItemID.TreasureMagnet));
+		RegisterToItem(ItemID.ObsidianLockbox, new OneFromRulesRule(1, obsidianLockBoxList));
+		RegisterToItem(ItemID.ObsidianLockbox, ItemDropRule.NotScalingWithLuck(ItemID.TreasureMagnet, 5));
 	}
 
 	private void RegisterLockbox()
 	{
-		RegisterToItem(ItemID.LockBox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Valor, ItemID.Muramasa, ItemID.CobaltShield, ItemID.AquaScepter, ItemID.BlueMoon, ItemID.MagicMissile, ItemID.Handgun));
+		IItemDropRule[] goldenLockBoxList = new IItemDropRule[]
+		{
+			ItemDropRule.NotScalingWithLuck(ItemID.Valor),
+			ItemDropRule.NotScalingWithLuck(ItemID.Muramasa),
+			ItemDropRule.NotScalingWithLuck(ItemID.CobaltShield),
+			ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.AquaScepter),
+			ItemDropRule.ByCondition(new Conditions.RemixSeed(), ItemID.BubbleGun),
+			ItemDropRule.NotScalingWithLuck(ItemID.BlueMoon),
+			ItemDropRule.NotScalingWithLuck(ItemID.MagicMissile),
+			ItemDropRule.NotScalingWithLuck(ItemID.Handgun),
+		};
+
+		// RegisterToItem(ItemID.LockBox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Valor, ItemID.Muramasa, ItemID.CobaltShield, ItemID.AquaScepter, ItemID.BlueMoon, ItemID.MagicMissile, ItemID.Handgun));
+		RegisterToItem(ItemID.LockBox, new OneFromRulesRule(1, goldenLockBoxList));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 	}
 
@@ -1066,21 +1109,21 @@ partial class ItemDropDatabase
 	private void RegisterCanOfWorms()
 	{
 		RegisterToItem(ItemID.CanOfWorms, ItemDropRule.Common(ItemID.Worm, 1, 5, 8));
-		RegisterToItem(ItemID.CanOfWorms, new CommonDrop(3191, 10, 1, 3, 3));
-		RegisterToItem(ItemID.CanOfWorms, ItemDropRule.Common(2895, 20));
+		RegisterToItem(ItemID.CanOfWorms, new CommonDrop(ItemID.EnchantedNightcrawler, 10, 1, 3, 3));
+		RegisterToItem(ItemID.CanOfWorms, ItemDropRule.Common(ItemID.GoldWorm, 20));
 	}
 
 	private void RegisterOyster()
 	{
 		IItemDropRule[] rules = new IItemDropRule[]
 		{
-			ItemDropRule.NotScalingWithLuck(4414, 15),
-			ItemDropRule.NotScalingWithLuck(4413, 3),
-			ItemDropRule.NotScalingWithLuck(4412),
+			ItemDropRule.NotScalingWithLuck(ItemID.PinkPearl, 15),
+			ItemDropRule.NotScalingWithLuck(ItemID.BlackPearl, 3),
+			ItemDropRule.NotScalingWithLuck(ItemID.WhitePearl),
 		};
 
 		RegisterToItem(ItemID.Oyster, ItemDropRule.SequentialRulesNotScalingWithLuck(5, rules));
-		RegisterToItem(ItemID.Oyster, ItemDropRule.Common(4411));
+		RegisterToItem(ItemID.Oyster, ItemDropRule.Common(ItemID.ShuckedOyster));
 	}
 
 	private void RegisterCapricorns()
