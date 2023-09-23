@@ -548,14 +548,15 @@ partial class ItemDropDatabase
 		IItemDropRule bc_lockbox = ItemDropRule.Common(ItemID.LockBox);
 		IItemDropRule bc_book = ItemDropRule.NotScalingWithLuck(ItemID.Book, 2, 5, 15);
 
-		//IItemDropRule bc_ice = ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.IceBoomerang, ItemID.IceBlade, ItemID.IceSkates, ItemID.SnowballCannon, ItemID.BlizzardinaBottle, ItemID.FlurryBoots);
+		IItemDropRule ruleSnowballCannonIceBow = ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.SnowballCannon);
+		ruleSnowballCannonIceBow.OnFailedConditions(ItemDropRule.NotScalingWithLuck(ItemID.IceBow), hideLootReport: true);
+
 		IItemDropRule[] bc_iceList = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.IceBoomerang),
 			ItemDropRule.NotScalingWithLuck(ItemID.IceBlade),
 			ItemDropRule.NotScalingWithLuck(ItemID.IceSkates),
-			ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.SnowballCannon),
-			ItemDropRule.ByCondition(new Conditions.RemixSeed(), ItemID.IceBow),
+			ruleSnowballCannonIceBow,
 			ItemDropRule.NotScalingWithLuck(ItemID.BlizzardinaBottle),
 			ItemDropRule.NotScalingWithLuck(ItemID.FlurryBoots),
 		};
@@ -899,36 +900,38 @@ partial class ItemDropDatabase
 
 	private void RegisterObsidianLockbox()
 	{
+		IItemDropRule ruleFlowerOfFireUnholyTrident = ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.FlowerofFire);
+		ruleFlowerOfFireUnholyTrident.OnFailedConditions(ItemDropRule.NotScalingWithLuck(ItemID.UnholyTrident), hideLootReport: true);
+
 		IItemDropRule[] obsidianLockBoxList = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.DarkLance),
 			ItemDropRule.NotScalingWithLuck(ItemID.Sunfury),
-			ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.FlowerofFire),
-			ItemDropRule.ByCondition(new Conditions.RemixSeed(), ItemID.UnholyTrident),
+			ruleFlowerOfFireUnholyTrident,
 			ItemDropRule.NotScalingWithLuck(ItemID.Flamelash),
 			ItemDropRule.NotScalingWithLuck(ItemID.HellwingBow),
 		};
 
-		// RegisterToItem(ItemID.ObsidianLockbox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.DarkLance, ItemID.Sunfury, ItemID.FlowerofFire, ItemID.Flamelash, ItemID.HellwingBow, ItemID.TreasureMagnet));
 		RegisterToItem(ItemID.ObsidianLockbox, new OneFromRulesRule(1, obsidianLockBoxList));
 		RegisterToItem(ItemID.ObsidianLockbox, ItemDropRule.NotScalingWithLuck(ItemID.TreasureMagnet, 5));
 	}
 
 	private void RegisterLockbox()
 	{
+		IItemDropRule ruleAquaScepterBubbleGun = ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.AquaScepter);
+		ruleAquaScepterBubbleGun.OnFailedConditions(ItemDropRule.NotScalingWithLuck(ItemID.BubbleGun), hideLootReport: true);
+
 		IItemDropRule[] goldenLockBoxList = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.Valor),
 			ItemDropRule.NotScalingWithLuck(ItemID.Muramasa),
 			ItemDropRule.NotScalingWithLuck(ItemID.CobaltShield),
-			ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.AquaScepter),
-			ItemDropRule.ByCondition(new Conditions.RemixSeed(), ItemID.BubbleGun),
+			ruleAquaScepterBubbleGun,
 			ItemDropRule.NotScalingWithLuck(ItemID.BlueMoon),
 			ItemDropRule.NotScalingWithLuck(ItemID.MagicMissile),
 			ItemDropRule.NotScalingWithLuck(ItemID.Handgun),
 		};
 
-		// RegisterToItem(ItemID.LockBox, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Valor, ItemID.Muramasa, ItemID.CobaltShield, ItemID.AquaScepter, ItemID.BlueMoon, ItemID.MagicMissile, ItemID.Handgun));
 		RegisterToItem(ItemID.LockBox, new OneFromRulesRule(1, goldenLockBoxList));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 	}
