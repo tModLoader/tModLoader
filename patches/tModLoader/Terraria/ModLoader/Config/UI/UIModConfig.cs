@@ -542,6 +542,9 @@ internal class UIModConfig : UIState
 		else if (type == typeof(PrefixDefinition)) {
 			e = new PrefixDefinitionElement();
 		}
+		else if (type == typeof(BuffDefinition)) {
+			e = new BuffDefinitionElement();
+		}
 		else if (type == typeof(Color)) {
 			e = new ColorElement();
 		}

@@ -185,7 +185,7 @@ ModConfigShowcaseDataTypes: {
 	}
 
 	buffDefinitionExample: {
-		// Label: BuffDefinition Dictionary Example
+		// Label: BuffDefinition Example
 		// Tooltip: ""
 	}
 }
