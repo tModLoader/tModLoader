@@ -1715,7 +1715,7 @@
 +	/// <param name="singleShotTime"></param>
 +	/// <param name="shotVelocity"></param>
 +	/// <param name="hasAutoReuse"></param>
-+	public void DefaultToRangedWeapon([IDType(IDTypeAttribute.Projectile)] int baseProjType, [IDType(IDTypeAttribute.Item)] int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
++	public void DefaultToRangedWeapon([IDType(IDTypeAttribute.Projectile)] int baseProjType, [IDType(IDTypeAttribute.Ammo)] int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
  		useStyle = 5;

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\src\tModLoader\ReLogic\Reflection\IdDictionary.cs" Link="IDType\Sets\IdDictionary.cs" />
-    <Compile Include="..\..\src\tModLoader\Terraria\ModLoader\Annotations\Annotations.cs" Link="IDType\Annotations.cs" />
+    <Compile Include="..\..\src\tModLoader\Terraria\ModLoader\Annotations\Annotations.cs" Link="Annotations.cs" />
     
     <Compile Include="..\..\src\tModLoader\Terraria\ID\**\*.cs" />
     <Compile Include="..\..\src\tModLoader\Terraria\GameContent\UI\EmoteID.cs" Link="IDType\Sets\EmoteID.cs" />
@@ -111,12 +111,32 @@
     <Compile Update="..\..\src\tModLoader\Terraria\ID\TorchID.cs" Link="IDType\Sets\TorchID.cs" />
     <Compile Update="..\..\src\tModLoader\Terraria\ID\WallID.cs" Link="IDType\Sets\WallID.cs" />
     <Compile Update="..\..\src\tModLoader\Terraria\ID\WaterStyleID.cs" Link="IDType\Sets\WaterStyleID.cs" />
+    <Compile Update="BadRandomResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BadRandomResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="DefaultResearchCount\DefaultResearchCountResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DefaultResearchCountResources.resx</DependentUpon>
+    </Compile>
     
     <Compile Update="IDType\IDTypeResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>IDTypeResources.resx</DependentUpon>
     </Compile>
+    
+    <EmbeddedResource Update="BadRandomResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BadRandomResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    
+    <EmbeddedResource Update="DefaultResearchCount\DefaultResearchCountResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultResearchCountResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="IDType\IDTypeResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>IDTypeResources.Designer.cs</LastGenOutput>

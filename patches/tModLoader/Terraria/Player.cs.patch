@@ -8,11 +8,12 @@
  using System.Security.Cryptography;
  using System.Text;
  using Microsoft.Xna.Framework;
-@@ -28,6 +_,10 @@
+@@ -28,6 +_,11 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
@@ -345,38 +346,63 @@
  	public float gfxOffY;
  	public float stepSpeed = 1f;
  	public static bool deadForGood = false;
-@@ -853,6 +_,7 @@
+@@ -850,9 +_,13 @@
+ 	public HitTile hitTile;
+ 	public HitTile hitReplace;
+ 	public int jump;
++	[IDType(IDTypeAttribute.Armor_Head)]
  	public int head = -1;
++	[IDType(IDTypeAttribute.Armor_Body)]
  	public int body = -1;
++	[IDType(IDTypeAttribute.Armor_Legs)]
  	public int legs = -1;
 +	/* sbyte -> int
  	public sbyte handon = -1;
  	public sbyte handoff = -1;
  	public sbyte back = -1;
-@@ -869,6 +_,23 @@
+@@ -869,6 +_,34 @@
  	public sbyte faceFlower = -1;
  	public sbyte balloonFront = -1;
  	public sbyte beard = -1;
 +	*/
++	[IDType(IDTypeAttribute.Armor_HandOn)]
 +	public int handon = -1;
++	[IDType(IDTypeAttribute.Armor_HandOff)]
 +	public int handoff = -1;
++	[IDType(IDTypeAttribute.Armor_Back)]
 +	public int back = -1;
++	[IDType(IDTypeAttribute.Armor_Front)]
 +	public int front = -1;
++	[IDType(IDTypeAttribute.Armor_Shoe)]
 +	public int shoe = -1;
++	[IDType(IDTypeAttribute.Armor_Waist)]
 +	public int waist = -1;
++	[IDType(IDTypeAttribute.Armor_Shield)]
 +	public int shield = -1;
++	[IDType(IDTypeAttribute.Armor_Neck)]
 +	public int neck = -1;
++	[IDType(IDTypeAttribute.Armor_Face)]
 +	public int face = -1;
++	[IDType(IDTypeAttribute.Armor_Balloon)]
 +	public int balloon = -1;
 +	public int backpack = -1;
 +	public int tail = -1;
 +	public int faceHead = -1;
 +	public int faceFlower = -1;
 +	public int balloonFront = -1;
++	[IDType(IDTypeAttribute.Armor_Beard)]
 +	public int beard = -1;
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
+@@ -932,6 +_,7 @@
+ 	public const int defaultHeight = 42;
+ 	public bool cursorItemIconEnabled;
+ 	public bool cursorItemIconReversed;
++	[IDType(IDTypeAttribute.Item)]
+ 	public int cursorItemIconID;
+ 	public int cursorItemIconPush;
+ 	public string cursorItemIconText = "";
 @@ -943,6 +_,11 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
@@ -1070,7 +1096,16 @@
  			theItemWeDrop.position = Main.item[num].position;
  			Main.item[num] = theItemWeDrop;
  			theItemWeDrop = new Item();
-@@ -2923,6 +_,14 @@
+@@ -2910,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public int FindBuffIndex(int type)
++	public int FindBuffIndex([IDType(IDTypeAttribute.Buff)] int type)
+ 	{
+ 		if (buffImmune[type])
+ 			return -1;
+@@ -2923,7 +_,15 @@
  		return -1;
  	}
  
@@ -1082,9 +1117,11 @@
 +	/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>
 +	/// <param name="quiet">If true, the network sync message is skipped.</param>
 +	/// <param name="foodHack">unused</param>
- 	public void AddBuff(int type, int timeToAdd, bool quiet = true, bool foodHack = false)
+-	public void AddBuff(int type, int timeToAdd, bool quiet = true, bool foodHack = false)
++	public void AddBuff([IDType(IDTypeAttribute.Buff)] int type, int timeToAdd, bool quiet = true, bool foodHack = false)
  	{
  		if (buffImmune[type])
+ 			return;
 @@ -3020,6 +_,7 @@
  			if (buffType[i] != type)
  				continue;
@@ -1119,11 +1156,12 @@
  		}
  	}
  
+-	public void ClearBuff(int type)
 +	/// <summary>
 +	/// Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.DelBuff(int)"/> if you only know the buff index
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
- 	public void ClearBuff(int type)
++	public void ClearBuff([IDType(IDTypeAttribute.Buff)] int type)
  	{
 +		//TML: Small optimization.
 +		if (type == 0)
@@ -1324,9 +1362,12 @@
  		bool flag = victim is NPC && (((NPC)victim).type == 488 || ((NPC)victim).SpawnedFromStatue);
  		if (titaniumStormCooldown > 0)
  			flag = true;
-@@ -4148,6 +_,9 @@
+@@ -4146,8 +_,11 @@
+ 		}
+ 	}
  
- 	public void OpenPresent(int itemType)
+-	public void OpenPresent(int itemType)
++	public void OpenPresent([IDType(IDTypeAttribute.Item)] int itemType)
  	{
 +		DropFromItem(itemType);
 +
@@ -1341,7 +1382,8 @@
 +		*/
  	}
  
- 	public void OpenLegacyPresent(int itemType)
+-	public void OpenLegacyPresent(int itemType)
++	public void OpenLegacyPresent([IDType(IDTypeAttribute.Item)] int itemType)
  	{
 +		DropFromItem(itemType);
 +		/*
@@ -1359,6 +1401,7 @@
 +		*/
  	}
  
+-	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
 +	// Return value added by TML.
 +	/// <summary>
 +	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
@@ -1368,8 +1411,7 @@
 +	/// <param name="item"></param>
 +	/// <param name="stack"></param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
--	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
-+	public int QuickSpawnItem(IEntitySource source, int item, int stack = 1)
++	public int QuickSpawnItem(IEntitySource source, [IDType(IDTypeAttribute.Item)] int item, int stack = 1)
  	{
  		int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
 +
@@ -1379,7 +1421,8 @@
 +		return number;
  	}
  
- 	public void OpenBossBag(int type)
+-	public void OpenBossBag(int type)
++	public void OpenBossBag([IDType(IDTypeAttribute.Item)] int type)
  	{
 +		DropFromItem(type);
 +
@@ -1413,9 +1456,12 @@
  		if (Main.rand.Next(Main.tenthAnniversaryWorld ? 8 : 16) == 0) {
  			switch (Main.rand.Next(18)) {
  				case 0:
-@@ -5106,6 +_,9 @@
+@@ -5104,8 +_,11 @@
+ 		}
+ 	}
  
- 	public void OpenFishingCrate(int crateItemID)
+-	public void OpenFishingCrate(int crateItemID)
++	public void OpenFishingCrate([IDType(IDTypeAttribute.Item)] int crateItemID)
  	{
 +		DropFromItem(crateItemID);
 +
@@ -1423,7 +1469,7 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
  		bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  		switch (crateItemID) {
-@@ -6465,12 +_,22 @@
+@@ -6465,13 +_,23 @@
  					break;
  			}
  
@@ -1435,6 +1481,7 @@
 +		*/
  	}
  
+-	public int CountItem(int type, int stopCountingAt = 0)
 +	/// <summary>
 +	/// Counts the total stack of the specified item type in this players <see cref="inventory"/>. <br/>
 +	/// Does not check Void Bag. <br/>
@@ -1443,10 +1490,11 @@
 +	/// <param name="type">The item type to count</param>
 +	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
 +	/// <returns>The total amount counted</returns>
- 	public int CountItem(int type, int stopCountingAt = 0)
++	public int CountItem([IDType(IDTypeAttribute.Item)] int type, int stopCountingAt = 0)
  	{
  		int num = 0;
-@@ -6485,6 +_,16 @@
+ 		for (int i = 0; i != 58; i++) {
+@@ -6485,7 +_,17 @@
  		return num;
  	}
  
@@ -1460,9 +1508,11 @@
 +	/// <param name="reverseOrder">If true, the search for the item will start at the end of the player inventory</param>
 +	/// <param name="includeVoidBag">If true, the void bag, if open, will also be considered for finding an item to consume</param>
 +	/// <returns>True if the item was found and attempted to be consumed</returns>
- 	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
+-	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
++	public bool ConsumeItem([IDType(IDTypeAttribute.Item)] int type, bool reverseOrder = false, bool includeVoidBag = false)
  	{
  		int num = 0;
+ 		int num2 = 58;
 @@ -6498,7 +_,9 @@
  
  		for (int i = num; i != num2; i += num3) {
@@ -1474,9 +1524,12 @@
  				if (inventory[i].stack <= 0)
  					inventory[i].SetDefaults();
  
-@@ -6524,6 +_,9 @@
+@@ -6522,8 +_,11 @@
+ 		return false;
+ 	}
  
- 	public void OpenShadowLockbox(int boxType)
+-	public void OpenShadowLockbox(int boxType)
++	public void OpenShadowLockbox([IDType(IDTypeAttribute.Item)] int boxType)
  	{
 +		DropFromItem(boxType);
 +
@@ -1497,7 +1550,8 @@
 +		*/
  	}
  
- 	public void OpenLockBox(int lockboxItemType)
+-	public void OpenLockBox(int lockboxItemType)
++	public void OpenLockBox([IDType(IDTypeAttribute.Item)] int lockboxItemType)
  	{
 +		DropFromItem(lockboxItemType);
 +
@@ -1519,7 +1573,8 @@
 +		*/
  	}
  
- 	public void OpenHerbBag(int bagType)
+-	public void OpenHerbBag(int bagType)
++	public void OpenHerbBag([IDType(IDTypeAttribute.Item)] int bagType)
  	{
 +		DropFromItem(bagType);
 +
@@ -1539,7 +1594,8 @@
 +		*/
  	}
  
- 	public void OpenCanofWorms(int sourceItemType)
+-	public void OpenCanofWorms(int sourceItemType)
++	public void OpenCanofWorms([IDType(IDTypeAttribute.Item)] int sourceItemType)
  	{
 +		DropFromItem(sourceItemType);
 +
@@ -1555,7 +1611,8 @@
 +		*/
  	}
  
- 	public void OpenOyster(int sourceItemType)
+-	public void OpenOyster(int sourceItemType)
++	public void OpenOyster([IDType(IDTypeAttribute.Item)] int sourceItemType)
  	{
 +		DropFromItem(sourceItemType);
 +
@@ -1574,7 +1631,8 @@
 +		*/
  	}
  
- 	public void OpenGoodieBag(int itemType)
+-	public void OpenGoodieBag(int itemType)
++	public void OpenGoodieBag([IDType(IDTypeAttribute.Item)] int itemType)
  	{
 +		DropFromItem(itemType);
 +
@@ -2036,17 +2094,26 @@
  	}
  
 +	// Added by tML.
+-	public void RefreshInfoAccsFromItemType(int accType)
 +	public void RefreshInfoAccsFromItemType(Item item)
 +	{
 +		RefreshInfoAccsFromItemType(item.type);
 +		ItemLoader.UpdateInfoAccessory(item, this);
 +	}
 +
--	public void RefreshInfoAccsFromItemType(int accType)
-+	private void RefreshInfoAccsFromItemType(int accType)
++	private void RefreshInfoAccsFromItemType([IDType(IDTypeAttribute.Item)] int accType)
  	{
  		if ((accType == 15 || accType == 707) && accWatch < 1)
  			accWatch = 1;
+@@ -9356,7 +_,7 @@
+ 			accDreamCatcher = true;
+ 	}
+ 
+-	public void RefreshMechanicalAccsFromItemType(int accType)
++	public void RefreshMechanicalAccsFromItemType([IDType(IDTypeAttribute.Item)] int accType)
+ 	{
+ 		if (accType == 3619 || accType == 3611)
+ 			InfoAccMechShowWires = true;
 @@ -9431,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
@@ -2551,6 +2618,15 @@
  	}
  
  	private void DoEyebrellaRainEffect()
+@@ -10662,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public WingStats GetWingStats(int wingID)
++	public WingStats GetWingStats([IDType(IDTypeAttribute.Armor_Wing)] int wingID)
+ 	{
+ 		if (wingID <= 0 || wingID >= ArmorIDs.Wing.Sets.Stats.Length)
+ 			return default(WingStats);
 @@ -10670,9 +_,13 @@
  		return ArmorIDs.Wing.Sets.Stats[wingID];
  	}
@@ -4570,7 +4646,7 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
-@@ -27643,6 +_,9 @@
+@@ -27643,11 +_,14 @@
  		if (adjLava != oldAdjLava)
  			flag = true;
  
@@ -4580,6 +4656,21 @@
  		if (flag)
  			Recipe.FindRecipes();
  	}
+ 
+-	public bool IsTileTypeInInteractionRange(int targetTileType, TileReachCheckSettings settings)
++	public bool IsTileTypeInInteractionRange([IDType(IDTypeAttribute.Tile)] int targetTileType, TileReachCheckSettings settings)
+ 	{
+ 		Point point = position.ToTileCoordinates();
+ 		Point point2 = base.BottomRight.ToTileCoordinates();
+@@ -27673,7 +_,7 @@
+ 			UpdateMiscCounter();
+ 	}
+ 
+-	public bool IsColorfulDye(int dye)
++	public bool IsColorfulDye([IDType(IDTypeAttribute.Item)] int dye)
+ 	{
+ 		if (dye > 0)
+ 			return ItemID.Sets.ColorfulDyeValues[dye];
 @@ -27759,7 +_,7 @@
  			waist = 0;
  
@@ -5577,7 +5668,7 @@
  	{
  		if (!UsingBiomeTorches || style != 0)
  			return style;
-@@ -31011,6 +_,12 @@
+@@ -31011,10 +_,16 @@
  		else if (ZoneDesert && Main.remixWorld)
  			style = 16;
  
@@ -5590,6 +5681,11 @@
  		return style;
  	}
  
+-	public int BiomeTorchHoldStyle(int style)
++	public int BiomeTorchHoldStyle([IDType(IDTypeAttribute.Torch)] int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 8)
+ 			return style;
 @@ -31044,10 +_,17 @@
  		else if (ZoneDesert && Main.remixWorld)
  			style = 4383;
@@ -5608,7 +5704,7 @@
  	{
  		if (!UsingBiomeTorches || style != 0)
  			return style;
-@@ -31077,6 +_,12 @@
+@@ -31077,10 +_,16 @@
  		else if (ZoneDesert && Main.remixWorld)
  			style = 8;
  
@@ -5621,6 +5717,11 @@
  		return style;
  	}
  
+-	public int BiomeCampfireHoldStyle(int itemType)
++	public int BiomeCampfireHoldStyle([IDType(IDTypeAttribute.Item)] int itemType)
+ 	{
+ 		if (!UsingBiomeTorches || itemType != 966)
+ 			return itemType;
 @@ -31110,6 +_,10 @@
  		else if (ZoneDesert && Main.remixWorld)
  			itemType = 4689;
@@ -5714,6 +5815,15 @@
  		if (num8 > 0)
  			DropItemFromExtractinator(num8, num9);
  	}
+@@ -32826,7 +_,7 @@
+ 		Projectile.NewProjectile(GetProjectileSource_Item(HeldItem), num, num2, num3, num4, 321, dmg, kb, whoAmI, npcIndex);
+ 	}
+ 
+-	public void PutItemInInventoryFromItemUsage(int type, int theSelectedItem = -1)
++	public void PutItemInInventoryFromItemUsage([IDType(IDTypeAttribute.Item)] int type, int theSelectedItem = -1)
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+ 			Item item = inventory[i];
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
@@ -5827,6 +5937,15 @@
  				if (bank4.item[j].stack <= 0)
  					bank4.item[j].SetDefaults();
  
+@@ -33176,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public Rectangle GetItemDrawFrame(int type)
++	public Rectangle GetItemDrawFrame([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		if (Main.dedServ)
+ 			return Rectangle.Empty;
 @@ -33191,12 +_,21 @@
  		return TextureAssets.Item[type].Frame();
  	}
@@ -7317,7 +7436,7 @@
 +	/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
 +	/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
 +	/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
-+	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot)
++	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, [IDType(IDTypeAttribute.Projectile)] int projToShoot)
 +	{
 +		Item sItem = weapon;
 +		Item item = ammo;
@@ -7436,6 +7555,15 @@
  			}
  			else {
  				bool flag = Main.tile[x, y].active();
+@@ -41224,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	public bool isNearNPC(int type, float range = -1f)
++	public bool isNearNPC([IDType(IDTypeAttribute.NPC)] int type, float range = -1f)
+ 	{
+ 		if (range == -1f)
+ 			range = NPC.sWidth;
 @@ -41260,7 +_,14 @@
  		if (Main.tileNoFail[tileTarget.type])
  			num = 100;
@@ -8024,10 +8152,11 @@
  			}
  
  			return playerFileData;
-@@ -42907,6 +_,13 @@
+@@ -42907,7 +_,14 @@
  		return GameShaders.Hair.GetColor(hairDye, this, useLighting ? color : Color.White);
  	}
  
+-	public bool HasItem(int type)
 +	/// <summary>
 +	/// Checks if the player has the specified item in their <see cref="inventory"/>. <br/>
 +	/// Does not check Void Bag. <br/>
@@ -8035,29 +8164,70 @@
 +	/// </summary>
 +	/// <param name="type">The item type to count</param>
 +	/// <returns>True if the player has the item</returns>
- 	public bool HasItem(int type)
++	public bool HasItem([IDType(IDTypeAttribute.Item)] int type)
  	{
  		for (int i = 0; i < 58; i++) {
-@@ -42917,6 +_,9 @@
+ 			if (type == inventory[i].type && inventory[i].stack > 0)
+@@ -42917,7 +_,10 @@
  		return false;
  	}
  
+-	public bool HasItem(int type, Item[] collection)
 +	/// <summary>
 +	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instead. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
 +	/// </summary>
- 	public bool HasItem(int type, Item[] collection)
++	public bool HasItem([IDType(IDTypeAttribute.Item)] int type, Item[] collection)
  	{
  		for (int i = 0; i < collection.Length; i++) {
-@@ -42927,6 +_,9 @@
+ 			if (type == collection[i].type && collection[i].stack > 0)
+@@ -42927,7 +_,10 @@
  		return false;
  	}
  
+-	public bool HasItemInInventoryOrOpenVoidBag(int type)
 +	/// <summary>
 +	/// Similar to <see cref="HasItem(int)"/>, but also checks the Void Bag.
 +	/// </summary>
- 	public bool HasItemInInventoryOrOpenVoidBag(int type)
++	public bool HasItemInInventoryOrOpenVoidBag([IDType(IDTypeAttribute.Item)] int type)
  	{
  		if (!HasItem(type)) {
+ 			if (useVoidBag())
+@@ -42939,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public bool HasItemInAnyInventory(int type)
++	public bool HasItemInAnyInventory([IDType(IDTypeAttribute.Item)] int type)
+ 	{
+ 		if (HasItem(type, inventory))
+ 			return true;
+@@ -42971,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	public int FindItem(int netid)
++	public int FindItem([IDType(IDTypeAttribute.Item)] int netid)
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+ 			if (netid == inventory[i].netID && inventory[i].stack > 0)
+@@ -43001,7 +_,7 @@
+ 		return -1;
+ 	}
+ 
+-	public int FindItem(int type, Item[] collection)
++	public int FindItem([IDType(IDTypeAttribute.Item)] int type, Item[] collection)
+ 	{
+ 		for (int i = 0; i < collection.Length; i++) {
+ 			if (inventory[i].stack > 0 && type == collection[i].type)
+@@ -43011,7 +_,7 @@
+ 		return -1;
+ 	}
+ 
+-	public int FindItemInInventoryOrOpenVoidBag(int type, out bool inVoidBag)
++	public int FindItemInInventoryOrOpenVoidBag([IDType(IDTypeAttribute.Item)] int type, out bool inVoidBag)
+ 	{
+ 		inVoidBag = false;
+ 		int num = FindItem(type);
 @@ -43028,6 +_,17 @@
  
  	public Player()
@@ -8304,3 +8474,12 @@
  		IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  		_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  	}
+@@ -44138,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void NebulaLevelup(int type)
++	public void NebulaLevelup([IDType(IDTypeAttribute.Buff)] int type)
+ 	{
+ 		if (whoAmI != Main.myPlayer)
+ 			return;

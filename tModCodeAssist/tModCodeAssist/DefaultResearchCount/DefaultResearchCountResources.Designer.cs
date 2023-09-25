@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace tModCodeAssist.IDType {
+namespace tModCodeAssist.DefaultResearchCount {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace tModCodeAssist.IDType {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class IDTypeResources {
+    internal class DefaultResearchCountResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal IDTypeResources() {
+        internal DefaultResearchCountResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace tModCodeAssist.IDType {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("tModCodeAssist.IDType.IDTypeResources", typeof(IDTypeResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("tModCodeAssist.DefaultResearchCount.DefaultResearchCountResources", typeof(DefaultResearchCountResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,33 +57,6 @@ namespace tModCodeAssist.IDType {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to D.
-        /// </summary>
-        internal static string BadDescription {
-            get {
-                return ResourceManager.GetString("BadDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to E.
-        /// </summary>
-        internal static string BadMessageFormat {
-            get {
-                return ResourceManager.GetString("BadMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to F.
-        /// </summary>
-        internal static string BadTitle {
-            get {
-                return ResourceManager.GetString("BadTitle", resourceCulture);
             }
         }
         

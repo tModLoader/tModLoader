@@ -7,11 +7,12 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -21,12 +_,13 @@
+@@ -21,12 +_,14 @@
  using Terraria.Graphics.Effects;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
  
@@ -22,7 +23,7 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -65,19 +_,52 @@
+@@ -65,19 +_,53 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
  	public Vector2 netOffset = Vector2.Zero;
@@ -33,6 +34,7 @@
 +	/// Mainly used for critters that can be caught with bug nets, such as butterflies and worms.<br/>
 +	/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
 +	/// </summary>
++	[IDType(IDTypeAttribute.Item)]
 +	public int catchItem; //TML: Changed from short to int for convenience and consistency purposes.
 +	/// <summary>
 +	/// Identifies the player who released this NPC into the world. Used mainly for released critters. Helps limit how many critters a player can release. Default to 255, indicating that the npc was not released by a player.
@@ -296,7 +298,7 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,172 @@
+@@ -233,51 +_,177 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -311,17 +313,20 @@
 +	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
 +	/// </summary>
 +	/// <negativenote>There are a few NPC that share the same <see cref="type"/> number, usually slight variations of enemies. <see cref="NPCID.GreenSlime"/> and <see cref="NPCID.RedSlime"/> have values of -3 and -8, respectively, but after they are spawned they will have the type equal to 1, which is the same value as <see cref="NPCID.BlueSlime"/>. If code logic requires differentiating between these variations, use <see cref="netID"/> instead.</negativenote>
++	[IDType(IDTypeAttribute.NPC)]
  	public int type;
 +	/// <summary>
 +	/// An array with 4 slots used for any sort of data storage, which is occasionally synced from the server to clients. Each vanilla <see cref="NPCAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true to manually sync. The advantage of using these 4 floats is that they are synced automatically. Using fields in your <see cref="ModNPC"/> class will work just the same, but they might need to be synced via <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModNPC.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
 +	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleCustomAISlimeNPC.cs#L36">ExampleCustomAISlimeNPC.cs</see> can be used to reuse the ai array entries with readable names.
 +	/// <br/> Defaults to the values passed into <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>, usually [0, 0, 0, 0].
 +	/// </summary>
++	[ArrayRange(4)]
  	public float[] ai = new float[maxAI];
 +	/// <summary>
 +	/// Acts like <see cref="ai"/>, but does not sync to the server. Many vanilla <see cref="NPCAIStyleID"/> use these slots for various purposes.
 +	/// <br/> Defaults to [0, 0, 0, 0]
 +	/// </summary>
++	[ArrayRange(4)]
  	public float[] localAI = new float[maxAI];
  	public int aiAction;
 +
@@ -331,6 +336,7 @@
 +	/// <br/> If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
++	[IDType(IDTypeAttribute.NPCAIStyle)]
  	public int aiStyle;
  	public bool justHit;
  	public int timeLeft;
@@ -468,6 +474,7 @@
 +	/// Similar to <see cref="type"/>, but accounts for negative <see cref="NPCID"/> values. <br/>
 +	/// <br/><br/><inheritdoc cref="type" path="/negativenote/node()"/>
 +	/// </summary>
++	[IDType(IDTypeAttribute.NPC)]
  	public int netID;
  	public int statsAreScaledForThisManyPlayers;
  	public float strengthMultiplier = 1f;
@@ -551,18 +558,20 @@
  				return true;
  
  			return townNPC;
-@@ -726,6 +_,11 @@
+@@ -726,7 +_,12 @@
  		return array;
  	}
  
+-	public static string GetFullnameByID(int npcID)
 +	/// <summary>
 +	/// Returns the <see cref="FullName"/> of the first active NPC of the given type in the world. If not found, the type name is returned instead.
 +	/// </summary>
 +	/// <param name="npcID"></param>
 +	/// <returns></returns>
- 	public static string GetFullnameByID(int npcID)
++	public static string GetFullnameByID([IDType(IDTypeAttribute.NPC)] int npcID)
  	{
  		for (int i = 0; i < 200; i++) {
+ 			if (Main.npc[i].active && Main.npc[i].type == npcID)
 @@ -863,7 +_,10 @@
  
  		for (int i = 0; i < 255; i++) {
@@ -583,6 +592,15 @@
  				npcsFoundForCheckActive[nPC.type] = true;
  		}
  
+@@ -1028,7 +_,7 @@
+ 		despawnEncouraged = false;
+ 	}
+ 
+-	public static bool WouldBeEncouragedToDespawn(int aistyle, int type)
++	public static bool WouldBeEncouragedToDespawn([IDType(IDTypeAttribute.NPCAIStyle)] int aistyle, [IDType(IDTypeAttribute.NPC)] int type)
+ 	{
+ 		if (aistyle == 4)
+ 			return Main.dayTime;
 @@ -1036,10 +_,37 @@
  		return false;
  	}
@@ -621,6 +639,15 @@
  		switch (npcType) {
  			case 17:
  				return Language.RandomFromCategory("MerchantNames", WorldGen.genRand).Value;
+@@ -1158,7 +_,7 @@
+ 
+ 	public NetworkText GetGivenNetName() => NetworkText.FromLiteral(_givenName);
+ 
+-	public static void setNPCName(string newName, int npcType, bool resetExtras = false)
++	public static void setNPCName(string newName, [IDType(IDTypeAttribute.NPC)] int npcType, bool resetExtras = false)
+ 	{
+ 		bool flag = false;
+ 		for (int i = 0; i < 200; i++) {
 @@ -1166,7 +_,7 @@
  				continue;
  
@@ -638,30 +665,43 @@
  	public static string firstNPCName(int npcType)
  	{
  		for (int i = 0; i < 200; i++) {
-@@ -1188,7 +_,13 @@
+@@ -1188,8 +_,14 @@
  
  		return getNewNPCName(npcType);
  	}
 +	*/
  
+-	public static string GetFirstNPCNameOrNull(int npcType)
 +	/// <summary>
 +	/// Returns the <see cref="GivenOrTypeName"/> of the first active NPC of the given type in the world. If not found, null is returned.
 +	/// </summary>
 +	/// <param name="npcType"></param>
 +	/// <returns></returns>
- 	public static string GetFirstNPCNameOrNull(int npcType)
++	public static string GetFirstNPCNameOrNull([IDType(IDTypeAttribute.NPC)] int npcType)
  	{
  		for (int i = 0; i < 200; i++) {
-@@ -1199,6 +_,9 @@
+ 			if (Main.npc[i].active && Main.npc[i].type == npcType)
+@@ -1199,7 +_,10 @@
  		return null;
  	}
  
+-	public static bool MechSpawn(float x, float y, int type)
 +	/// <summary>
 +	/// Use to check if a mechanism is allowed to spawn an NPC of the provided type at the provided world coordinates. Checks nearby area to see if the <see href="https://terraria.wiki.gg/wiki/Statues#Spawn_limits">Spawn Limits</see> have been reached.
 +	/// </summary>
- 	public static bool MechSpawn(float x, float y, int type)
++	public static bool MechSpawn(float x, float y, [IDType(IDTypeAttribute.NPC)] int type)
  	{
  		int num = 0;
+ 		int num2 = 0;
+@@ -1263,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public static int TypeToDefaultHeadIndex(int type)
++	public static int TypeToDefaultHeadIndex([IDType(IDTypeAttribute.NPC)] int type)
+ 	{
+ 		switch (type) {
+ 			case 0:
 @@ -1345,7 +_,10 @@
  			case 684:
  				return 53;
@@ -706,7 +746,7 @@
  		return result;
  	}
  
-@@ -2105,9 +_,25 @@
+@@ -2105,12 +_,28 @@
  		defDamage = damage;
  		defDefense = defense;
  		if (flag) {
@@ -714,10 +754,11 @@
 +			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
  			life = lifeMax;
  		}
-+	}
-+
+ 	}
+ 
+-	public void SetDefaultsKeepPlayerInteraction(int Type)
 +	// Added by TML.
-+	public void CloneDefaults(int Type)
++	public void CloneDefaults([IDType(IDTypeAttribute.NPC)] int Type)
 +	{
 +		int originalType = type;
 +		int originalNetID = netID;
@@ -730,9 +771,39 @@
 +		netID = originalNetID;
 +		ModNPC = originalModNPC;
 +		_globals = originalGlobals;
++	}
++
++	public void SetDefaultsKeepPlayerInteraction([IDType(IDTypeAttribute.NPC)] int Type)
+ 	{
+ 		bool[] array = new bool[playerInteraction.Length];
+ 		for (int i = 0; i < playerInteraction.Length; i++) {
+@@ -2123,7 +_,7 @@
+ 		}
  	}
  
- 	public void SetDefaultsKeepPlayerInteraction(int Type)
+-	public void SetDefaults_ForNetId(int Type, float scaleOverride)
++	public void SetDefaults_ForNetId([IDType(IDTypeAttribute.NPC)] int Type, float scaleOverride)
+ 	{
+ 		SetDefaults(Type, new NPCSpawnParams {
+ 			playerCountForMultiplayerDifficultyOverride = 1,
+@@ -2132,7 +_,7 @@
+ 		});
+ 	}
+ 
+-	public void SetDefaults_ForNetId(int Type, NPCSpawnParams spawnparams, float scaleOverride)
++	public void SetDefaults_ForNetId([IDType(IDTypeAttribute.NPC)] int Type, NPCSpawnParams spawnparams, float scaleOverride)
+ 	{
+ 		SetDefaults(Type, spawnparams.WithScale(scaleOverride));
+ 	}
+@@ -2143,7 +_,7 @@
+ 		shimmerTransparency = 1f;
+ 	}
+ 
+-	public void SetDefaults(int Type, NPCSpawnParams spawnparams = default(NPCSpawnParams))
++	public void SetDefaults([IDType(IDTypeAttribute.NPC)] int Type, NPCSpawnParams spawnparams = default(NPCSpawnParams))
+ 	{
+ 		if (spawnparams.gameModeData == null)
+ 			spawnparams.gameModeData = Main.GameModeInfo;
 @@ -2156,6 +_,15 @@
  			return;
  		}
@@ -934,7 +1005,7 @@
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter < 1) {
++		if (type >= 0 && Main.npcCatchable[type]) {
  			catchableNPCTempImmunityCounter = 90;
 +			catchableNPCOriginallyFriendly = friendly; 
  			friendly = true;
@@ -1000,6 +1071,24 @@
  		if (timeLeft < 0)
  			timeLeft = 0;
  
+@@ -32475,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void AI_000_TransformBoundNPC(int playerID, int npcType)
++	public void AI_000_TransformBoundNPC(int playerID, [IDType(IDTypeAttribute.NPC)] int npcType)
+ 	{
+ 		Transform(npcType);
+ 		Main.BestiaryTracker.Chats.RegisterChatStartWith(this);
+@@ -39156,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static bool DespawnEncouragement_AIStyle2_FloatingEye_IsDiscouraged(int npcID, Vector2 npcPosition, int target = 255)
++	public static bool DespawnEncouragement_AIStyle2_FloatingEye_IsDiscouraged([IDType(IDTypeAttribute.NPC)] int npcID, Vector2 npcPosition, int target = 255)
+ 	{
+ 		if (!Main.player[target].ZoneGraveyard && Main.IsItDay() && (double)npcPosition.Y <= Main.worldSurface * 16.0) {
+ 			if (npcID != 2 && npcID != 133 && npcID != 190 && npcID != 191 && npcID != 192 && npcID != 193 && npcID != 194 && npcID != 317)
 @@ -39208,13 +_,18 @@
  
  		int num2 = 7;
@@ -1428,6 +1517,24 @@
  								bool flag26 = WorldGen.OpenDoor(num194, num195 - 1, direction);
  								if (!flag26) {
  									ai[3] = num56;
+@@ -45046,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static bool DespawnEncouragement_AIStyle3_Fighters_NotDiscouraged(int npcID, Vector2 position, NPC npcInstance)
++	public static bool DespawnEncouragement_AIStyle3_Fighters_NotDiscouraged([IDType(IDTypeAttribute.NPC)] int npcID, Vector2 position, NPC npcInstance)
+ 	{
+ 		if (!Main.eclipse && Main.IsItDay() && (npcInstance == null || !npcInstance.SpawnedFromStatue) && !((double)position.Y > Main.worldSurface * 16.0) && (npcInstance == null || !Main.player[npcInstance.target].ZoneGraveyard) && (!Main.snowMoon || (npcID != 343 && npcID != 350)) && (Main.invasionType != 1 || (npcID != 26 && npcID != 27 && npcID != 28 && npcID != 111 && npcID != 471)) && (!Main.dontStarveWorld || (npcID != 164 && npcID != 163)) && npcID != 73 && npcID != 624 && (npcID != 631 || !(npcInstance.ai[2] > 0f)) && (Main.invasionType != 3 || npcID < 212 || npcID > 216) && (Main.invasionType != 4 || (npcID != 381 && npcID != 382 && npcID != 383 && npcID != 385 && npcID != 386 && npcID != 389 && npcID != 391 && npcID != 520)) && npcID != 31 && npcID != 294 && npcID != 295 && npcID != 296 && npcID != 47 && npcID != 67 && npcID != 77 && npcID != 78 && npcID != 79 && npcID != 80 && npcID != 630 && npcID != 110 && npcID != 120 && npcID != 168 && npcID != 181 && npcID != 185 && npcID != 198 && npcID != 199 && npcID != 206 && npcID != 217 && npcID != 218 && npcID != 219 && npcID != 220 && npcID != 239 && npcID != 243 && npcID != 254 && npcID != 255 && npcID != 257 && npcID != 258 && npcID != 291 && npcID != 292 && npcID != 293 && npcID != 379 && npcID != 380 && npcID != 464 && npcID != 470 && npcID != 424 && (npcID != 411 || (npcInstance != null && !(npcInstance.ai[1] >= 180f) && !(npcInstance.ai[1] < 90f)))) {
+ 			switch (npcID) {
+@@ -45075,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public static bool DespawnEncouragement_AIStyle3_Fighters_CanBeBusyWithAction(int npcID)
++	public static bool DespawnEncouragement_AIStyle3_Fighters_CanBeBusyWithAction([IDType(IDTypeAttribute.NPC)] int npcID)
+ 	{
+ 		if (npcID != 110 && npcID != 111 && npcID != 206 && npcID != 216 && npcID != 214 && npcID != 215 && npcID != 291 && npcID != 292 && npcID != 293 && npcID != 350 && npcID != 381 && npcID != 382 && npcID != 383 && npcID != 385 && npcID != 386 && npcID != 389 && npcID != 391 && npcID != 469 && npcID != 166 && npcID != 466 && npcID != 471 && npcID != 411 && npcID != 409 && npcID != 424 && npcID != 425 && npcID != 426 && npcID != 415 && npcID != 419)
+ 			return npcID == 520;
 @@ -45741,9 +_,12 @@
  						return 58;
  				}
@@ -1509,7 +1616,7 @@
 +		NPCLoader.FindFrame(this, num);
 +	}
 +
-+	public void VanillaFindFrame(int num, bool isLikeATownNPC, int type)
++	public void VanillaFindFrame(int num, bool isLikeATownNPC, [IDType(IDTypeAttribute.NPC)] int type)
 +	{
  		int num2 = 0;
  		if (aiAction == 0)
@@ -1594,6 +1701,7 @@
  		}
  	}
  
+-	public static int GetNPCInvasionGroup(int npcID)
 +	/// <summary>
 +	/// Gets the <see cref="InvasionID"/> associated with the given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
@@ -1603,7 +1711,7 @@
 +	/// <br/> A positive <see cref="InvasionID"/> for NPCs affiliated with standard events, such as the Goblin Army.
 +	/// <br/> A negative <see cref="InvasionID"/> for NPCs affiliated with a wave-based event, such as the Pumpkin Moon. Wave-based events are prefixed with "Cached" in <see cref="InvasionID"/>.
 +	/// </returns>
- 	public static int GetNPCInvasionGroup(int npcID)
++	public static int GetNPCInvasionGroup([IDType(IDTypeAttribute.NPC)] int npcID)
  	{
  		int result = 0;
  		switch (npcID) {
@@ -1668,6 +1776,24 @@
  	public bool AnyInteractions()
  	{
  		if (Main.netMode == 0) {
+@@ -59245,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void SetEventFlagCleared(ref bool eventFlag, int gameEventId)
++	public static void SetEventFlagCleared(ref bool eventFlag, [IDType(IDTypeAttribute.GameEventCleared)] int gameEventId)
+ 	{
+ 		bool flag = eventFlag;
+ 		eventFlag = true;
+@@ -59253,7 +_,7 @@
+ 			OnGameEventClearedForTheFirstTime(gameEventId);
+ 	}
+ 
+-	public static void OnGameEventClearedForTheFirstTime(int gameEventId)
++	public static void OnGameEventClearedForTheFirstTime([IDType(IDTypeAttribute.GameEventCleared)] int gameEventId)
+ 	{
+ 		switch (gameEventId) {
+ 			default:
 @@ -59279,7 +_,7 @@
  
  	public void NPCLoot()
@@ -1782,7 +1908,7 @@
  	{
  		if (!Main.npc[i].active)
  			return;
-@@ -60114,8 +_,14 @@
+@@ -60114,15 +_,21 @@
  				NetMessage.SendData(106, -1, -1, null, (int)vector.X, vector.Y);
  			}
  			else {
@@ -1797,7 +1923,22 @@
  				Main.npc[i].active = false;
  				NetMessage.SendData(23, -1, -1, null, i);
  			}
-@@ -60261,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public void DropItemInstanced(Vector2 Position, Vector2 HitboxSize, int itemType, int itemStack = 1, bool interactionRequired = true)
++	public void DropItemInstanced(Vector2 Position, Vector2 HitboxSize, [IDType(IDTypeAttribute.Item)] int itemType, int itemStack = 1, bool interactionRequired = true)
+ 	{
+ 		if (itemType <= 0)
+ 			return;
+@@ -60255,13 +_,13 @@
+ 		return false;
+ 	}
+ 
+-	public static int ReleaseNPC(int x, int y, int Type, int Style, int who)
++	public static int ReleaseNPC(int x, int y, [IDType(IDTypeAttribute.NPC)] int Type, int Style, int who)
+ 	{
+ 		int num = -1;
  		if (Main.netMode == 1) {
  			NetMessage.SendData(71, -1, -1, null, x, y, Type, Style);
  		}
@@ -2010,7 +2151,25 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[k].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
-@@ -64272,6 +_,23 @@
+@@ -64000,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void SpawnOnPlayer(int plr, int Type)
++	public static void SpawnOnPlayer(int plr, [IDType(IDTypeAttribute.NPC)] int Type)
+ 	{
+ 		if (Main.netMode == 1 || (Type == 262 && AnyNPCs(262)))
+ 			return;
+@@ -64217,7 +_,7 @@
+ 
+ 	public static IEntitySource GetBossSpawnSource(int targetPlayerIndex) => new EntitySource_BossSpawn(Main.player[targetPlayerIndex]);
+ 
+-	public static void SpawnBoss(int spawnPositionX, int spawnPositionY, int Type, int targetPlayerIndex)
++	public static void SpawnBoss(int spawnPositionX, int spawnPositionY, [IDType(IDTypeAttribute.NPC)] int Type, int targetPlayerIndex)
+ 	{
+ 		int num = 200;
+ 		if (Type == 127 && mechQueen != -1) {
+@@ -64272,7 +_,24 @@
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
  	}
  
@@ -2031,9 +2190,11 @@
 +	/// <param name="ai3"></param>
 +	/// <param name="Target">Optionally, provide a <c>Player.whoAmI</c> to set <see cref="NPC.target"/> to a specific Player immediately on spawn.</param>
 +	/// <returns>The index of the spawned NPC within the <see cref="Main.npc"/> array</returns>
- 	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
+-	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
++	public static int NewNPC(IEntitySource source, int X, int Y, int Type, [IDType(IDTypeAttribute.NPC)] int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
  	{
  		if (Main.getGoodWorld && Main.rand.Next(3) != 0) {
+ 			if (Type == 46)
 @@ -64305,6 +_,8 @@
  					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[availableNPCSlot].GetTypeNetName()), new Color(175, 75, 255));
  			}
@@ -2066,6 +2227,24 @@
  				nPC.townNpcVariationIndex = profile.RollVariation();
  				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
+@@ -64352,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void UnlockOrExchangePet(ref bool petBoughtFlag, int npcType, string textKeyForLicense, int netMessageData)
++	public static void UnlockOrExchangePet(ref bool petBoughtFlag, [IDType(IDTypeAttribute.NPC)] int npcType, string textKeyForLicense, int netMessageData)
+ 	{
+ 		Color color = new Color(50, 255, 130);
+ 		if (Main.netMode == 1) {
+@@ -64372,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static bool RerollVariationForNPCType(int npcType)
++	public static bool RerollVariationForNPCType([IDType(IDTypeAttribute.NPC)] int npcType)
+ 	{
+ 		for (int i = 0; i < 200; i++) {
+ 			NPC nPC = Main.npc[i];
 @@ -64385,7 +_,7 @@
  
  	public bool RerollVariation()
@@ -2075,6 +2254,24 @@
  			return false;
  
  		int num = townNpcVariationIndex;
+@@ -64411,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	public void TransformVisuals(int oldType, int newType)
++	public void TransformVisuals([IDType(IDTypeAttribute.NPC)] int oldType, [IDType(IDTypeAttribute.NPC)] int newType)
+ 	{
+ 		position += netOffset;
+ 		if ((oldType == 158 && newType == 159) || (oldType == 159 && newType == 158)) {
+@@ -64498,7 +_,7 @@
+ 			NetMessage.SendData(65, -1, -1, null, 1, whoAmI, newPos.X, newPos.Y, Style);
+ 	}
+ 
+-	public void Transform(int newType)
++	public void Transform([IDType(IDTypeAttribute.NPC)] int newType)
+ 	{
+ 		if (Main.netMode != 1) {
+ 			int num = extraValue;
 @@ -64574,6 +_,8 @@
  		}
  	}
@@ -2364,46 +2561,62 @@
  			for (int num96 = 0; num96 < 6; num96++) {
  				int num97 = Gore.NewGore(base.Center - new Vector2(10f), Vector2.UnitY.RotatedByRandom(6.2831854820251465) * 5f, 728 + num96);
  			}
-@@ -72123,6 +_,11 @@
+@@ -72123,7 +_,12 @@
  		}
  	}
  
+-	public static int CountNPCS(int Type)
 +	/// <summary>
 +	/// Returns the number of active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
 +	/// <param name="Type"></param>
 +	/// <returns></returns>
- 	public static int CountNPCS(int Type)
++	public static int CountNPCS([IDType(IDTypeAttribute.NPC)] int Type)
  	{
  		int num = 0;
-@@ -72144,6 +_,11 @@
+ 		for (int i = 0; i < 200; i++) {
+@@ -72144,7 +_,12 @@
  		return false;
  	}
  
+-	public static bool AnyNPCs(int Type)
 +	/// <summary>
 +	/// Returns true if there are any active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
 +	/// <param name="Type"></param>
 +	/// <returns></returns>
- 	public static bool AnyNPCs(int Type)
++	public static bool AnyNPCs([IDType(IDTypeAttribute.NPC)] int Type)
  	{
  		for (int i = 0; i < 200; i++) {
-@@ -72154,6 +_,11 @@
+ 			if (Main.npc[i].active && Main.npc[i].type == Type)
+@@ -72154,7 +_,12 @@
  		return false;
  	}
  
+-	public static int FindFirstNPC(int Type)
 +	/// <summary>
 +	/// Returns the index within <see cref="Main.npc"/> of the the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
 +	/// <param name="Type"></param>
 +	/// <returns></returns>
- 	public static int FindFirstNPC(int Type)
++	public static int FindFirstNPC([IDType(IDTypeAttribute.NPC)] int Type)
  	{
  		for (int i = 0; i < 200; i++) {
-@@ -72191,6 +_,14 @@
+ 			if (Main.npc[i].active && Main.npc[i].type == Type)
+@@ -72178,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	public int FindBuffIndex(int type)
++	public int FindBuffIndex([IDType(IDTypeAttribute.Buff)] int type)
+ 	{
+ 		if (buffImmune[type])
+ 			return -1;
+@@ -72191,7 +_,15 @@
  		return -1;
  	}
  
+-	public void AddBuff(int type, int time, bool quiet = false)
 +	/// <summary>
 +	/// Gives this NPC the provided buff. This accounts for if the NPC is immune to the buff.
 +	/// <br/> If the NPC already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>.
@@ -2412,9 +2625,10 @@
 +	/// <param name="type">The buff type</param>
 +	/// <param name="time">The desired buff time in ticks. 60 ticks is 1 second</param>
 +	/// <param name="quiet">If true, the network sync message is skipped.</param>
- 	public void AddBuff(int type, int time, bool quiet = false)
++	public void AddBuff([IDType(IDTypeAttribute.Buff)] int type, int time, bool quiet = false)
  	{
  		if (buffImmune[type])
+ 			return;
 @@ -72206,6 +_,9 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
@@ -2429,29 +2643,32 @@
  		buffTime[num] = time;
  	}
  
+-	public void RequestBuffRemoval(int buffTypeToRemove)
 +	/// <summary>
 +	/// Removes the buff type and shuffles the remaining buff indexes down to fill the gap. Note that only buffs contained in <see cref="BuffID.Sets.CanBeRemovedByNetMessage"/> can be removed with this method. The intention is that those specific buffs are "owned" by the player who inflicts them, so they can be freely removed by multiplayer clients.
 +	/// <br/><br/>  In all other cases code running on the server or in single player is in charge of the NPC debuffs and <see cref="NPC.DelBuff"/> should be used directly.
 +	/// </summary>
 +	/// <param name="buffTypeToRemove">The buff type</param>
- 	public void RequestBuffRemoval(int buffTypeToRemove)
++	public void RequestBuffRemoval([IDType(IDTypeAttribute.Buff)] int buffTypeToRemove)
  	{
 -		if (buffTypeToRemove < 0 || buffTypeToRemove >= BuffID.Count || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
 +		if (buffTypeToRemove < 0 || !BuffID.Sets.CanBeRemovedByNetMessage[buffTypeToRemove])
  			return;
  
  		int num = FindBuffIndex(buffTypeToRemove);
-@@ -72253,6 +_,10 @@
+@@ -72253,7 +_,11 @@
  		}
  	}
  
+-	public void DelBuff(int buffIndex)
 +	/// <summary>
 +	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player. 
 +	/// </summary>
 +	/// <param name="buffIndex">The index of the buff to remove.</param>
- 	public void DelBuff(int buffIndex)
++	public void DelBuff([IDType(IDTypeAttribute.Buff)] int buffIndex)
  	{
  		buffTime[buffIndex] = 0;
+ 		buffType[buffIndex] = 0;
 @@ -72432,9 +_,16 @@
  	public void UpdateNPC(int i)
  	{
@@ -2522,7 +2739,7 @@
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
 +		// TML: changed logic to not assume npcCatchable npc should not be friendly after invulnerability period. Also only run code during period to prevent undoing intentional changes to friendly in AI code.
-+		if (type >= 0 && catchableNPCTempImmunityCounter > 0) {
++		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter > 0) {
  			if (releaseOwner != 255 || SpawnedFromStatue)
  				catchableNPCTempImmunityCounter = 0;
  

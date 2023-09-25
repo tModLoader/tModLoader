@@ -81,3 +81,25 @@ public sealed class IDTypeAttribute : Attribute
 		Type = type;
 	}
 }
+
+[AttributeUsage(
+	AttributeTargets.Property | AttributeTargets.Field,
+	AllowMultiple = false,
+	Inherited = false
+)]
+public sealed class ArrayRangeAttribute : Attribute
+{
+	public int Minimum { get; }
+	public int Maximum { get; }
+
+	public ArrayRangeAttribute(int maximum)
+	{
+		Maximum = maximum;
+	}
+
+	public ArrayRangeAttribute(int minimum, int maximum)
+	{
+		Minimum = minimum;
+		Maximum = maximum;
+	}
+}

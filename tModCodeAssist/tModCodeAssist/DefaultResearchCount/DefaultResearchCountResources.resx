@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BadDescription" xml:space="preserve">
-    <value>D</value>
-  </data>
-  <data name="BadMessageFormat" xml:space="preserve">
-    <value>E</value>
-  </data>
-  <data name="BadTitle" xml:space="preserve">
-    <value>F</value>
-  </data>
   <data name="Description" xml:space="preserve">
     <value>C</value>
   </data>
