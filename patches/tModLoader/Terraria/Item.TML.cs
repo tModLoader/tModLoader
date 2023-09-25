@@ -63,7 +63,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <summary>
 	/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
 	/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
-	/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.
+	/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.<para/>
+	/// Tools should typically set this to true to prevent the tool from mining quicker when the player has attack speed modifiers. By convention tool speed should not be affected by attack speed. They will still attack quicker, but their use time (mine/hammer/axe speed) should not be affected.
 	/// </summary>
 	public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
 
