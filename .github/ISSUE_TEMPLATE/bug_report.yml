@@ -78,19 +78,16 @@ body:
     label: Log File
     description: |
       Please attach the log files here. You'll find the log files in the logs folder. Look for the `client.log`, `Launch.log`, `Natives.log`, and `environment-client.log` files. If the issue relates to multiplayer post the `server.log` and `environment-sever.log` files as well.
-      On the 1.4+ versions it can be found in the "tModLoader-Logs" folder in your tModLoader [install directory](https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-Guide#install) (to find your install directory on Steam right click on tModloader, then Manage and "Browse local files") 
       
-      In 1.3 it can be found in the following folders:
-      Windows Logs: `C:\Documents\My Games\Terraria\ModLoader\Logs`
-      Linux Logs: `~/.local/share/Terraria/ModLoader/Logs/` or `$XDG_DATA_HOME/Terraria/ModLoader/Logs/`
-      Mac Logs: `~/Library/Application support/Terraria/ModLoader/Logs/`
+      On 1.4+ versions they can be found in the "tModLoader-Logs" folder in your tModLoader [install directory](https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-Guide#install) (to find your install directory on Steam right click on tModloader, then Manage and "Browse local files") 
       
+      On 1.3 it can be found in the Logs folder within the [saves folder](https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-Guide#saves).
       
       Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
 - type: textarea
   attributes:
     label: Steps to reproduce
-    description: Please describe the steps to reproduce this issue
+    description: Please describe the steps to reproduce this issue.
     placeholder: |
       1. [First Step]
       2. [Second Step]
