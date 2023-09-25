@@ -39,14 +39,14 @@ public sealed partial class IDTypeDiagnosticAnalyzer : AbstractDiagnosticAnalyze
 
 	protected sealed override void InitializeWorker(AnalysisContext context)
 	{
-		// TEMPORARILY DISABLED
 		// item.type = 5 (-> item.type = ItemID.Mushroom)
-		//context.RegisterOperationAction(AnalyzeAssignment, OperationKind.SimpleAssignment);
+		context.RegisterOperationAction(AnalyzeAssignment, OperationKind.SimpleAssignment);
 
 		// AddTile(18) (-> AddTile(TileID.WorkBenches))
 		context.RegisterOperationAction(AnalyzeArgument_MagicNumber, OperationKind.Literal, OperationKind.FieldReference, OperationKind.PropertyReference);
 
 		// item.type == 5 (-> item.type == ItemID.Mushroom)
+		// Works so good that its broken
 		context.RegisterOperationAction(AnalyzeComparison_MagicNumber, OperationKind.Binary);
 
 		// switch (item.type) {

@@ -538,7 +538,7 @@
 +	/// The Ammo ID this item belongs to. Weapons with <see cref="useAmmo"/> set to the same AmmoID will consume this item as ammo. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information.
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
 +	/// </summary>
-+	[IDType(IDTypeAttribute.Item)] // TODO: Should it be Item or Ammo?
++	[IDType(IDTypeAttribute.Ammo)]
  	public int ammo = AmmoID.None;
 +
 +	/// <summary>
@@ -551,7 +551,7 @@
 +	/// The Ammo ID this weapon will consume. Ammo items with <see cref="ammo"/> set to this same AmmoID will be consumed as ammo for this weapon to be used. See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Ammo Guide</see> for more information.
 +	/// <br/> Defaults to <see cref="AmmoID.None"/>.
 +	/// </summary>
-+	[IDType(IDTypeAttribute.Item)]
++	[IDType(IDTypeAttribute.Ammo)]
  	public int useAmmo = AmmoID.None;
 +
 +	/// <summary>
@@ -1815,7 +1815,7 @@
 +	/// </summary>
 +	/// <param name="tileIDToPlace"></param>
 +	/// <param name="tileStyleToPlace"></param>
-+	public void DefaultToPlaceableTile([IDType(IDTypeAttribute.Item)] ushort tileIDToPlace, int tileStyleToPlace = 0)
++	public void DefaultToPlaceableTile([IDType(IDTypeAttribute.Tile)] ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
  		placeStyle = tileStyleToPlace;
