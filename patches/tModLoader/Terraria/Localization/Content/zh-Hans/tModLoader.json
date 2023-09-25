@@ -469,6 +469,8 @@
 		"MSUnloading": "卸载中: {0}",
 		"MSFinishingResourceLoading": "资源加载完成",
 		"MSAddingRecipes": "添加合成配方...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "无名氏",

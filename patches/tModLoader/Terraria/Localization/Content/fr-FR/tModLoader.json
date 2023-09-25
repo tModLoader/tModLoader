@@ -468,6 +468,8 @@
 		"MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finalisation du chargement des ressources",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Sans-Nom",

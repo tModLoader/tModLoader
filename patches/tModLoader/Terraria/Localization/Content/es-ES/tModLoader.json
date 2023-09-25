@@ -468,6 +468,8 @@
 		"MSUnloading": "Desactivando: {0}",
 		"MSFinishingResourceLoading": "Finalizando carga de recursos",
 		"MSAddingRecipes": "Añadiendo recetas...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Sin nombre",

@@ -468,6 +468,8 @@
 		"MSUnloading": "Entlade Mod: {0}",
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Kein Name",

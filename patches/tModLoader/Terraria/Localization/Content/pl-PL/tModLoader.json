@@ -468,6 +468,8 @@
 		"MSUnloading": "Rozładowywanie: {0}",
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
 		"MSAddingRecipes": "Dodawanie przepisów...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Bez nazwy",
