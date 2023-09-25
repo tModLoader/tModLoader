@@ -12,7 +12,7 @@ public sealed class DefaultResearchCountDiagnosticAnalyzer : AbstractDiagnosticA
 	private static readonly LocalizableString Title = new LocalizableResourceString(nameof(MyResources.Title), MyResources.ResourceManager, typeof(MyResources));
 	private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(MyResources.MessageFormat), MyResources.ResourceManager, typeof(MyResources));
 	private static readonly LocalizableString Description = new LocalizableResourceString(nameof(MyResources.Description), MyResources.ResourceManager, typeof(MyResources));
-	public static readonly DiagnosticDescriptor Rule = new(DiagnosticIDs.IDType, Title, MessageFormat, Categories.Usage, DiagnosticSeverity.Info, isEnabledByDefault: true, description: Description);
+	public static readonly DiagnosticDescriptor Rule = new(DiagnosticIDs.DefaultResearchCount, Title, MessageFormat, Categories.Usage, DiagnosticSeverity.Info, isEnabledByDefault: true, description: Description);
 
 	public DefaultResearchCountDiagnosticAnalyzer() : base(Rule)
 	{
