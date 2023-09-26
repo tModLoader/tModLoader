@@ -16,7 +16,7 @@ This directory contains utilities for a dedicated server on Linux or Docker
 [Updating the Management Script](#updating-the-management-script)
 
 ## 1.4.4 Migration
-The 1.4.4 script is a **backwards-incompatible update** that introduces a new [folder structure](#folder-structure) that both the management script and the Docker container need to conform to. Additionally, the management script has moved from flags to commands for installing, updating and starting the server. Run `./manage-tModLoaderServer.sh help` to see a list of available commands/flags.
+The 1.4.4 script is a **backwards-incompatible update** that introduces a new [folder structure](#folder-structure) that both the management script and the Docker container need to conform to. Additionally, the management script has moved from flags to commands for installing, updating and starting the server. Run `./manage-tModLoaderServer.sh -h` to see a list of available commands/flags.
 
 ---
 
@@ -27,7 +27,8 @@ Both the Docker and Management script use the same folder structure, so make sur
 ├── Mods
 │   ├── localmod1.tmod
 │   ├── localmod2.tmod
-│   └── enabled.json
+│   ├── enabled.json
+│   └── install.txt
 ├── Worlds
 │   ├── world1.twld
 │   ├── world1.wld
@@ -39,7 +40,6 @@ Both the Docker and Management script use the same folder structure, so make sur
 │   └── * contains Steam workshop mods *
 ├── logs
 │   └── * contains tModLoader logs *
-├── install.txt
 ├── manage-tModLoaderServer.sh
 ├── serverconfig.txt
 └── tmlversion.txt
@@ -53,8 +53,8 @@ Because the steam workshop does not use mod names to identify mods, you must cre
 3. Click `Save Enabled as New Mod Pack`
 4. Click `Open Mod Pack Folder`.
 5. Enter the folder with the name of your modpack
-6. Copy `install.txt` to your script directory. Then make a `Mods` folder and copy the `enabled.json` file into the Mods folder.
-7. Run `./manage-tModLoaderServer.sh install --skip-tml` to install the mods on your server. **This is not necessary if you are using Docker, it will be done automatically**
+6. Make a `Mods` folder and copy `install.txt` and `enabled.json` file into it
+7. Run `./manage-tModLoaderServer.sh install-mods` to install the mods on your server. **This is not necessary if you are using Docker, it will be done automatically**
 
 ### Server Configuration
 If you want to run tModLoader without needing any input on startup (such as from an init system), copy the example [serverconfig.txt](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/serverconfig.txt) and change the settings how you like. Key options are defined below, and other options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file).
@@ -87,20 +87,20 @@ The `manage-tModLoaderServer.sh` script can be used to install tModLoader either
 ### Installing tModLoader
 #### SteamCMD (recommended)
 1. Ensure SteamCMD is installed and on your PATH. You can install SteamCMD from your package manager or [Valve's Wiki](https://developer.valvesoftware.com/wiki/SteamCMD). If your distribution cannot install SteamCMD the standard way, download it manually and pass in `steamcmdpath` to the management script.
-2. Run `./manage-tModLoaderServer.sh install --username your_steam_username` and enter any password/2fa if necessary. tModLoader will install to the `server` directory in your installation folder.
+2. Run `./manage-tModLoaderServer.sh install-tml --username your_steam_username` and enter any password/2fa if necessary. tModLoader will install to the `server` directory in your installation folder.
 
 #### GitHub
-1. Run `./manage-tModLoaderServer.sh install --github`. This will install the latest GitHub release, which is the same version as released on Steam. 
-   * If you wish to use a custom/legacy tModLoader version from Github, provide either a `tmlversion.txt` file from a modpack or pass the `--tml-version` flag with a specified version, ex. `v2022.06.96.4`
+1. Run `./manage-tModLoaderServer.sh install-tml --github`. This will install the latest GitHub release, which is the same version as released on Steam. 
+   * If you wish to use a specific/legacy tModLoader version from Github, provide either a `tmlversion.txt` file from a modpack or pass the `--tml-version` flag with a specified version, ex. `v2022.06.96.4`
 
 ### Installing Mods
-Mods will be automatically installed during the tModLoader installation step, but can also be installed separately by running `./manage-tModLoaderServer.sh install --skip-tml`. Provide `install.txt` for workshop mods, and make a `Mods` folder with `enabled.json` to enable any necessary mods. Any local mod files can also be copied into the Mods directory. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled**. 
+Mods will be automatically installed during the tModLoader installation step, but can also be installed separately by running `./manage-tModLoaderServer.sh install-mods`. No mods will be installed if `install.txt` is missing, and no mods will be enabled if `enabled.json` is missing. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled**. 
 
 ### Launching
 To start a server, run `./manage-tModLoaderServer.sh start`. Be sure to pass in `--folder` again if you used a custom location during installation.
 
 ### Updating
-Run `./manage-tModLoaderServer.sh update` to update both Mods and TML to their latest versions. You can optionally skip mod updating with `--skip-mods`, or skip tModLoader updating with `--skip-tml`
+`./manage-tModLoaderServer.sh install` will update both TML and your mods. To update just mods, run the `install-mods` command. To only update TML, run the `install-tml` command.
 
 ---
 

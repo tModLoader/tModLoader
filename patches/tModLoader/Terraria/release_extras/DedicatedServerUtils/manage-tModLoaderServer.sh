@@ -25,7 +25,7 @@ function is_in_docker {
 
 function update_script {
 	if [[ -z "$1" ]]; then
-		read -t 5 -p "Would you like to check for script updates? (y/n): " update_now
+		read -t 10 -p "Would you like to check for script updates? (y/n): " update_now
 		if [[ "$update_now" = [Yy]* ]]; then
 			echo "Checking for updates"
 			update_script
@@ -91,8 +91,6 @@ function verify_download_tools {
 }
 
 function install_dotnet {
-	pushd server
-
 	if ! [[ -r tModLoader.runtimeconfig.json ]]; then
 		echo "tModLoader not installed or missing files. Quitting..."
 		exit 1
@@ -108,8 +106,15 @@ function install_dotnet {
 	fi
 	export install_dir="$dotnet_dir/$dotnet_version"
 	chmod +x "$folder/server/LaunchUtils/InstallNetFramework.sh" && bash $_
+}
 
-	popd
+# If serverconfig doesn't exist, move the one from the server files. If it does delete the server files one
+function move_serverconfig {
+	if [[ -f "$folder/serverconfig.txt" ]]; then
+		rm serverconfig.txt
+	else
+		mv serverconfig.txt "$folder"
+	fi
 }
 
 # Gets version of tML to install from github, prioritizing --tml-version and tmlversion.txt
@@ -141,61 +146,42 @@ function download_release {
 	echo "$1" > .ver
 }
 
-function update_tml_github {
-	pushd server
-
-	if ! [[ -r .ver ]]; then
-		echo "tModLoader is not installed"
-		exit 1
-	fi
-
+function install_tml_github {
 	local ver="$(get_version)"
-	local oldver="$(cat .ver)"
-	if [[ "$ver" = "$oldver" ]]; then
-		echo "No version change of tModLoader available"
-		return
-	fi
 
-	echo "New version of tModLoader $ver is available, current version is $oldver"
-
-	# Backup old tML versions in case something implodes
-	mkdir "$oldver"
-	for file in *; do
-		if ! [[ "$file" = "manage-tModLoaderServer.sh" ]] && ! [[ "$file" = v*.tar.gz ]]; then
-			mv "$file" "$oldver"
+	# If .ver exists we're doing an update instead, compare versions to see if it's already installed and backup if it isn't
+	if [[ -r .ver ]]; then		
+		local oldver="$(cat .ver)"
+		if [[ "$ver" = "$oldver" ]]; then
+			echo "No version change of tModLoader available"
+			return
 		fi
-	done
 
-	# Delete all backups but the most recent if we aren't keeping them
-	if ! keep_backups; then
-		echo "Removing old backups"
-		for file in v*.tar.gz; do
-			rm "$file"
-			echo "Removed $file"
+		echo "New version of tModLoader $ver is available, current version is $oldver"
+
+		# Backup old tML versions in case something implodes
+		mkdir "$oldver"
+		for file in *; do
+			if ! [[ "$file" = "manage-tModLoaderServer.sh" ]] && ! [[ "$file" = v*.tar.gz ]]; then
+				mv "$file" "$oldver"
+			fi
 		done
-	fi
 
-	echo "Compressing $oldver backup"
-	tar czf "$oldver.tar.gz" "$oldver"/*
-	rm -r "$oldver"
+		# Delete all backups but the most recent if we aren't keeping them
+		if ! keep_backups; then
+			echo "Removing old backups"
+			for file in v*.tar.gz; do
+				rm "$file"
+				echo "Removed $file"
+			done
+		fi
+
+		echo "Compressing $oldver backup"
+		tar czf "$oldver.tar.gz" "$oldver"/*
+		rm -r "$oldver"
+	fi
 
 	download_release "$ver"
-	popd
-}
-
-function install_tml_github {
-	pushd server
-
-	# Check for an empty directory, skipping checks on any backed up versions
-	# TODO: This throws an error in the Docker container. It's not important since no backups are kept but it should be fixed eventually.
-	if [[ -n "$(ls -A --ignore='v*.tar.gz' .)" ]]; then
-		echo "Install directory not empty, please make sure your $folder/server directory is empty or run update to update an existing installation"
-		exit 1
-	fi
-
-	# Install tml from github, leave some file containing what version
-	download_release "$(get_version)"
-	popd
 }
 
 function install_tml_steam {
@@ -222,10 +208,13 @@ function install_tml_steam {
 }
 
 function install_workshop_mods {
-	# If the user forgot to move enabled.json, move it for them
-	if [[ -r enabled.json ]]; then
-		mkdir Mods 2>/dev/null && mv enabled.json Mods/enabled.json
+	verify_download_tools
+
+	if ! [[ -d "$folder/Mods" ]]; then
+		mkdir "$folder/Mods"
 	fi
+
+	pushd "$folder/Mods"
 
 	if ! [[ -r install.txt ]]; then
 		echo "No workshop mods to install"
@@ -246,6 +235,8 @@ function install_workshop_mods {
 	done
 
 	eval "$steam_cmd +force_install_dir $folder +login anonymous $steamcmd_command +quit"
+
+	popd
 }
 
 function print_version {
@@ -268,18 +259,16 @@ Options:
  -h|--help           Show command line help.
  -v|--version        Display the current version of the tool and a tModLoader Github install.
  -g|--github         Use the binary off of Github instead of using steamcmd.
- -f|--folder         The folder containing all of your server data (Mods, Mods/enabled.json, Worlds, install.txt).
+ -f|--folder         The folder containing all of your server data (Mods, Worlds, serverconfig.txt, etc..).
  -u|--username       The steam username to login with. Only applies when using steamcmd.
  --tml-version       The version of tML to download. Only applies when using Github. This should be the exact tag off of Github (ex. v2022.06.96.4).
- --skip-tml          Only install/update mods.
- --skip-mods         Only install/update tModLoader.
  --steamcmdpath      Custom SteamCMD path for users who do not have a installation in PATH. This should point to the steamcmd.sh script.
  --keepbackups       Will save every tML backup instead of the most recent one.
 
 Commands:
- help                Equivalent to --help.
- install             Installs tModLoader and any mods provided. Will copy any world files, will not overwrite any existing ones.
- update              Updates an existing tModLoader installation and its mods.
+ install-mods        Installs any mods from install.txt, or nothing if the file doesn't exist
+ install-tml         Installs tModLoader from Steam or Github if --github is provided
+ install             Equivalent to install-mods and install-tml
  start               Launches the server with no updating or installing of mods. This should be run after one of the above commands.
  uninstall           Uninstalls the current tML installation, removing ALL server files and workshop mods.
  update-script       Update the script to the latest version on Github.
@@ -289,19 +278,20 @@ Commands:
 
 # Set SteamCMD by default. Checks are done to ensure it's installed and the user will be notified if any issues arise
 steamcmd=true
-skip_mods=false
-skip_tml=false
 keep_backups=false
+start_args=""
 
 if [ $# -eq 0 ]; then # Check for commands
 	echo "No command supplied"
 	print_help
 fi
 
+# Covers cases where you only want to provide -h or -v without a command
 cmd="$1"
-shift
+if [[ "${cmd:0:1}" != "-" ]]; then
+	shift
+fi
 
-# TODO: Currently --version MUST be provided after --folder and --github to get a proper version print... which is inconvenient
 while [[ $# -gt 0 ]]; do
 	case $1 in
 		-h|--help)
@@ -312,43 +302,35 @@ while [[ $# -gt 0 ]]; do
 			;;
 		-g|--github)
 			steamcmd=false
-			shift
 			;;
 		-u|--username)
 			username="$2"
-			shift; shift
+			shift
 			;;
 		-f|--folder)
 			folder="$2"
-			shift; shift;
+			shift
 			;;
 		--tml-version)
 			tmlversion="$2"
 			steamcmd=false
-			shift; shift
-			;;
-		--skip-tml)
-			skip_tml=true
-			shift
-			;;
-		--skip-mods)
-			skip_mods=true
 			shift
 			;;
 		--steamcmdpath)
 			steamcmd_path="$2"
-			shift; shift
+			shift
 			;;
 		--keepbackups)
 			keep_backups=true
-			shift
 			;;
 		*)
-			echo "Invalid Argument: $1"
-			print_help
+			start_args="$start_args $1"
 			;;
 	esac
+	shift
 done
+
+echo "test $start_args"
 
 # Set folder to the script's folder if it isn't set
 if ! [[ -v folder ]]; then
@@ -356,34 +338,33 @@ if ! [[ -v folder ]]; then
 	folder="$(dirname $(realpath "$0"))"
 fi
 
-mkdir -p "$folder" && pushd "$folder"
+mkdir -p "$folder" && pushd $_
 
 case $cmd in
-	help)
-		print_help
+	install-mods)
+		install_workshop_mods
 		;;
-	install|update)
+	install)
+		install_workshop_mods
+		;&
+	install-tml)
 		verify_download_tools
 
-		if ! $skip_tml; then
-			mkdir -p "$folder/server"
-			if $steamcmd; then
-				install_tml_steam
-			elif [[ "$cmd" = "install" ]]; then
-				install_tml_github
-			else
-				update_tml_github
-			fi
+		mkdir -p "$folder/server" && pushd $_
+
+		if $steamcmd; then
+			install_tml_steam
+		elif [[ "$cmd" = "install" ]]; then
+			install_tml_github
 		fi
 
 		install_dotnet
+		move_serverconfig
 
-		if ! $skip_mods; then
-			install_workshop_mods
-		fi
+		popd
 		;;
 	uninstall)
-		read -t 5 -p "This will delete ALL server files and workshop mods but will keep local Mod/World Data. Uninstall now? (y/n): " uninstall_now
+		read -t 10 -p "This will delete ALL server files and workshop mods but will keep local Mod/World Data. Uninstall now? (y/n): " uninstall_now
 		if [[ "$uninstall_now" = [Yy]* ]]; then
 			echo "Uninstalled tML server"
 			rm -r "$folder/server" "$folder/steamapps" "$folder/logs"
@@ -400,7 +381,6 @@ case $cmd in
 			exit 1
 		fi
 
-		verify_download_tools
 		install_workshop_mods
 
 		# Link the server folder to the Docker installation and cli args for debugging (if it exists)
@@ -426,7 +406,7 @@ case $cmd in
 
 		cd "$folder/server" || exit
 		chmod u+x start-tModLoaderServer.sh
-		./start-tModLoaderServer.sh -config "$folder/serverconfig.txt" -nosteam -tmlsavedirectory "$folder"
+		./start-tModLoaderServer.sh -config "$folder/serverconfig.txt" -nosteam -tmlsavedirectory "$folder" "$start_args"
 		;;
 	*)
 		echo "Invalid Command: $1"
