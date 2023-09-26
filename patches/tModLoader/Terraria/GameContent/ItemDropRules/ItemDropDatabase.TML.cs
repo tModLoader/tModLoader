@@ -443,13 +443,13 @@ partial class ItemDropDatabase
 		themed = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.LifeCrystal, 8),
-			ItemDropRule.NotScalingWithLuckWithNumerator(ItemID.HardySaddle, 80, 7),
+			ItemDropRule.NotScalingWithLuck(ItemID.HardySaddle, 10),
 		};
 		hardmodeThemed = new IItemDropRule[]
 		{
 			ItemDropRule.ByCondition(new Conditions.IsHardmode(), ItemID.Sundial, 20),
-			ItemDropRule.NotScalingWithLuckWithNumerator(ItemID.LifeCrystal, 160, 19),
-			ItemDropRule.NotScalingWithLuckWithNumerator(ItemID.HardySaddle, 1600, 133),
+			ItemDropRule.NotScalingWithLuck(ItemID.LifeCrystal, 8),
+			ItemDropRule.NotScalingWithLuck(ItemID.HardySaddle, 10),
 		};
 		oresTier1 = new IItemDropRule[]
 		{
