@@ -2809,6 +2809,18 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
+@@ -13526,6 +_,11 @@
+ 			controlTorch = false;
+ 
+ 		if (controlTorch && itemAnimation == 0) {
++
++			// TML feature, prevent changing the smart selected item while the use button is held. This prevents switching from pickaxe to torch after mining a block for eg
++			if (controlUseItem && nonTorch != -1)
++				return;
++
+ 			PlayerInput.smartSelectPointer.SmartSelectLookup_GetTargetTile(this, out var tX, out var tY);
+ 			SmartSelect_GetToolStrategy(tX, tY, out var toolStrategy, out var wetTile);
+ 			if (PlayerInput.UsingGamepad && _lastSmartCursorToolStrategy != -1)
 @@ -13538,6 +_,16 @@
  					toolStrategy = 5;
  			}
@@ -5878,7 +5890,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,59 @@
+@@ -33268,6 +_,66 @@
  			}
  		}
  
@@ -5932,8 +5944,15 @@
 +		ReuseDelayAndAnimationStart:
 +
 +		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (selectedItem != 58)
++		if (selectedItem != 58) {
++			int oldSelect = selectedItem;
 +			SmartSelectLookup();
++			if (selectedItem != oldSelect) {
++				item = inventory[selectedItem];
++				// TML feature, allow the item to be instantly used
++				releaseUseItem = true;
++			}
++		}
 +
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
