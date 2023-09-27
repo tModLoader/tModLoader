@@ -41,7 +41,7 @@ public class NPCShimmerShowcase : ModNPC
 
 		CreateShimmerTransformation()
 			.AddCondition(Condition.DownedPlantera)
-			.AddModItemResult<ExampleItem>(20)
+			.AddItemResult<ExampleItem>(20)
 			.Register();
 
 		CreateShimmerTransformation()

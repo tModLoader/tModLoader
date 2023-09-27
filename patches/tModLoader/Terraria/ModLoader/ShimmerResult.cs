@@ -25,14 +25,12 @@ public abstract record class ModShimmerResult(int Count = 1)
 		=> false;
 
 	/// <summary>
-	/// Spawns <see cref="Count"/> * <paramref name="allowedStack"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement
-	/// <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/>
+	/// Spawns <see cref="Count"/> * <paramref name="allowedStack"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement <see cref="IModShimmerable.Stack"/>,
+	/// use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/>
 	/// </summary>
 	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> that is shimmering, does not affect this </param>
 	/// <param name="allowedStack"> The amount of the <see cref="IModShimmerable"/> that is used, actual spawned amount will be <paramref name="allowedStack"/> * <see cref="Count"/> </param>
-	/// <returns>
-	/// yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself
-	/// </returns>
+	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself </returns>
 	public abstract IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack);
 
 	/// <summary> Added to the the velocity of the <see cref="IModShimmerable"/> to prevent stacking </summary>
@@ -56,10 +54,10 @@ public record class CoinLuckShimmerResult(int Count = 1) : ModShimmerResult(Coun
 }
 
 /// <param name="Type"> The type of the to spawn </param>
-/// <param name="Count"> <inheritdoc/> </param>
+/// <param name="Count"> <inheritdoc cref="ModShimmerResult(int)"/> </param>
 /// <summary>
-/// <inheritdoc cref="ModShimmerResult(int)"/><br/> Using <see cref="ModShimmerResult.IsItemResult(int)"/> and its relatives, this type can be used for inter-mod
-/// compatibility when implementing custom spawning behaviour across known types
+/// <inheritdoc cref="ModShimmerResult(int)"/><br/> Using <see cref="ModShimmerResult.IsItemResult(int)"/> and its relatives, this type can be used for inter-mod compatibility when implementing custom
+/// spawning behaviour across known types
 /// </summary>
 public abstract record class TypedShimmerResult(int Type, int Count = 1) : ModShimmerResult(Count);
 
@@ -172,6 +170,11 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 	}
 }
 
+/// <summary>
+/// <inheritdoc/><br/> Projectiles are rarely both autonomous and do not require an owner, due to this there is no <see cref="ShimmerTransformation.AddItemResult(int, int)"/> for projectiles.
+/// <see cref="ShimmerTransformation.AddResult(ModShimmerResult)"/> must be used instead. This class is more as a framework to derive from rather than a working class since for the large majority of
+/// projectiles spawn behaviour or a target will need to be defined.
+/// </summary>
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
 /// <param name="Type"> <inheritdoc/> </param>
 /// <param name="Count"> <inheritdoc/> </param>
@@ -189,12 +192,12 @@ public record class ProjectileShimmerResult(int Type, int Damage, int Knockback,
 	public float AI2 { get; init; }
 	/// <summary> Wraps <see cref="AI0"/>, <see cref="AI1"/>, and <see cref="AI2"/> </summary>
 	public float[] AI { get => new float[3] { AI0, AI1, AI2 }; init { AI0 = value[0]; AI1 = value[1]; AI2 = value[2]; } }
-	/// <summary> Assigned to <see cref="Projectile.scale"/> </summary>
+	/// <summary> Assigned to <see cref="Projectile.scale"/> if a value is present </summary>
 	public float? Scale { get; init; }
 
 	/// <summary>
-	/// If true, when spawning a projectile this will check if the entity shimmering into this was a projectile, and if it was, will set <see cref="Projectile.friendly"/>
-	/// and <see cref="Projectile.hostile"/> to its values. <br/> Overrides <see cref="Hostile"/> and <see cref="Friendly"/>.
+	/// If true, when spawning a projectile this will check if the entity shimmering into this was a projectile, and if it was, will set <see cref="Projectile.friendly"/> and
+	/// <see cref="Projectile.hostile"/> to its values. <br/> Overrides <see cref="Hostile"/> and <see cref="Friendly"/>.
 	/// </summary>
 	public bool TryCopyHostileFriendly;
 	public override bool IsProjectileResult(int type)

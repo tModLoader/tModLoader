@@ -111,21 +111,23 @@ public abstract class ShimmerTransformation : ICloneable
 	/// <exception cref="ArgumentException"> thrown when <paramref name="result"/> has a <see cref="ModShimmerResult.Count"/> that is less than or equal to zero </exception>
 	public abstract ShimmerTransformation AddResult(ModShimmerResult result);
 
-	/// <inheritdoc cref=" AddItemResult(int, int)"/>
-	public abstract ShimmerTransformation AddModItemResult<T>(int stack = 1) where T : ModItem;
-
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="type"> The <see cref="Item.type"/> of the <see cref="Item"/> </param>
 	/// <param name="stack"> The amount of Item to be spawned </param>
 	public abstract ShimmerTransformation AddItemResult(int type, int stack = 1);
 
-	/// <inheritdoc cref="AddNPCResult(int, int)"/>
-	public abstract ShimmerTransformation AddModNPCResult<T>(int count = 1) where T : ModNPC;
+	/// <inheritdoc cref=" AddItemResult(int, int)"/>
+	/// <typeparam name="T"> The type of a class deriving from <see cref="ModItem"/> </typeparam>
+	public abstract ShimmerTransformation AddItemResult<T>(int stack = 1) where T : ModItem;
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="type"> The <see cref="NPC.type"/> of the <see cref="NPC"/> </param>
 	/// <param name="count"> The amount of NPC to be spawned </param>
 	public abstract ShimmerTransformation AddNPCResult(int type, int count = 1);
+
+	/// <inheritdoc cref="AddNPCResult(int, int)"/>
+	/// <typeparam name="T"> The type of a class deriving from <see cref="ModNPC"/> </typeparam>
+	public abstract ShimmerTransformation AddNPCResult<T>(int count = 1) where T : ModNPC;
 
 	/// <inheritdoc cref=" AddResult(ModShimmerResult)"/>
 	/// <param name="coinLuck"> The amount of coin luck to be added </param>
@@ -367,13 +369,13 @@ public sealed class ShimmerTransformation<TModShimmerable> : ShimmerTransformati
 		return this;
 	}
 
-	public override ShimmerTransformation<TModShimmerable> AddModItemResult<T>(int stack = 1)
+	public override ShimmerTransformation<TModShimmerable> AddItemResult<T>(int stack = 1)
 		=> AddItemResult(ModContent.ItemType<T>(), stack);
 
 	public override ShimmerTransformation<TModShimmerable> AddItemResult(int type, int stack = 1)
 		=> AddResult(new ItemShimmerResult(type, stack));
 
-	public override ShimmerTransformation<TModShimmerable> AddModNPCResult<T>(int count = 1)
+	public override ShimmerTransformation<TModShimmerable> AddNPCResult<T>(int count = 1)
 		=> AddNPCResult(ModContent.NPCType<T>(), count);
 
 	public override ShimmerTransformation<TModShimmerable> AddNPCResult(int type, int count = 1)
