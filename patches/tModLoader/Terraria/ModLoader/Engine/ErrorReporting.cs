@@ -46,6 +46,12 @@ internal class ErrorReporting
 
 	public static void FatalExit(string message, Exception e)
 	{
+		try {
+			if (SDL2.SDL.SDL_GetError() is string error)
+				message += "\n\nSDL Error: " + error;
+		}
+		catch { }
+
 		if (e.HelpLink != null) {
 			try {
 				Utils.OpenToURL(e.HelpLink);
