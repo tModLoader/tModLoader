@@ -202,7 +202,7 @@ function install_tml {
 
 	if $steamcmd; then
 		install_tml_steam
-	elif [[ "$cmd" = "install" ]]; then
+	else
 		install_tml_github
 	fi
 
