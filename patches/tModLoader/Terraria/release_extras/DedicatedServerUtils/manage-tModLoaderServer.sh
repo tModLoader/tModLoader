@@ -2,6 +2,7 @@
 
 #shellcheck disable=2164
 
+# Only update the major version of 
 script_version="3.0.0.0"
 script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
@@ -36,22 +37,25 @@ function update_script {
 	local new_version=$(echo -e "$script_version\n$latest_script_version" | sort -rV | head -n1)
 	if [[ "$script_version" = "$new_version" ]]; then
 		echo "No script update found"
-		exit
+		return
+	fi
+
+	if is_in_docker; then
+		echo "There is a script update from v$script_version to v$new_version, consider rebuilding your Docker container for the updated script"
+		return
 	fi
 	
 	if [[ "${script_version:0:1}" != "${new_version:0:1}" ]]; then
-		read -t 15 -p "A major version change has been detected ($script_version -> $new_version) Major versions mean incompatibilities with previous versions, so you should check the wiki for any updates to how the script works. Update anyways? (y/n): " update_major
+		read -t 15 -p "A major version change has been detected (v$script_version -> v$new_version) Major versions mean incompatibilities with previous versions, so you should check the wiki for any updates to how the script works. Update anyways? (y/n): " update_major
 		if [[ "$update_major" != [Yy]* ]]; then
 			echo "Skipping major version update"
-			exit
+			return
 		fi
 	else
-		if [[ -z "$1" ]]; then
-			read -t 10 -p "An update for the management script is available ($script_version -> $new_version). Update now? (y/n): " update_minor
-			if [[ "$update_minor" != [Yy]* ]]; then
-				echo "Skipping version update"
-				exit
-			fi
+		read -t 10 -p "An update for the management script is available (v$script_version -> v$new_version). Update now? (y/n): " update_minor
+		if [[ "$update_minor" != [Yy]* ]]; then
+			echo "Skipping version update"
+			return
 		fi
 	fi
 
@@ -273,7 +277,6 @@ Commands:
  install             Alias for install-tml install-mods
  update              Alias for install
  start [args]        Launches the server and passes through any extra args
- update-script       Update the script to the latest version on Github
 "
 	exit
 }
@@ -282,6 +285,9 @@ Commands:
 steamcmd=true
 keep_backups=false
 start_args=""
+
+# Check for updates to the script if it's not running in a Docker container
+update_script
 
 if [ $# -eq 0 ]; then # Check for commands
 	echo "No command supplied"
@@ -354,14 +360,13 @@ case $cmd in
 		install_tml
 		install_workshop_mods
 		;;
-	update-script)
-		update_script 1
-		;;
 	docker)
 		if ! is_in_docker; then
 			echo "The script is not running in a docker container, so the 'docker' command cannot be used"
 			exit 1
 		fi
+
+		mkdir Mods Worlds server logs 2>/dev/null
 
 		install_workshop_mods
 
@@ -403,8 +408,3 @@ case $cmd in
 esac
 
 popd
-
-# Check for updates to the script if it's not running in a Docker container
-if ! is_in_docker; then
-	update_script
-fi

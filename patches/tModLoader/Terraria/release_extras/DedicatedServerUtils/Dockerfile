@@ -27,7 +27,8 @@ RUN steamcmd +quit
 
 RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
   && chmod u+x manage-tModLoaderServer.sh \
-  && ./manage-tModLoaderServer.sh install --github --skip-mods
+  && ./manage-tModLoaderServer.sh install --github --skip-mods \
+  && rm Mods Worlds logs
 
 EXPOSE 7777
 
