@@ -35,7 +35,7 @@ function update_script {
 
 	local new_version=$(echo -e "$script_version\n$latest_script_version" | sort -rV | head -n1)
 	if [[ "$script_version" = "$new_version" ]]; then
-		echo "No version change detected"
+		echo "No script update found"
 		exit
 	fi
 	
@@ -91,24 +91,6 @@ function verify_download_tools {
 			echo "unzip found..."
 		fi
 	fi
-}
-
-function install_dotnet {
-	if ! [[ -r tModLoader.runtimeconfig.json ]]; then
-		echo "tModLoader not installed or missing files. Quitting..."
-		exit 1
-	fi
-
-	echo "Installing dotnet..."
-	dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' < $folder/server/tModLoader.runtimeconfig.json)
-	export dotnet_version=${dotnet_version%$'\r'} # Remove carriage return, see ScriptCaller.sh
-	export dotnet_dir="$folder/server/dotnet"
-	if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
-		echo "wsl detected. Setting dotnet_dir=dotnet_wsl"
-		export dotnet_dir="$folder/server/dotnet_wsl"
-	fi
-	export install_dir="$dotnet_dir/$dotnet_version"
-	chmod +x "$folder/server/LaunchUtils/InstallNetFramework.sh" && bash $_
 }
 
 # If serverconfig doesn't exist, move the one from the server files. If it does delete the server files one
@@ -211,9 +193,7 @@ function install_tml_steam {
 }
 
 function install_tml {
-	verify_download_tools
-
-	mkdir Mods Worlds server logs
+	mkdir Mods Worlds server logs 2>/dev/null
 	pushd server
 
 	if $steamcmd; then
@@ -222,7 +202,21 @@ function install_tml {
 		install_tml_github
 	fi
 
-	install_dotnet
+	# Install .NET
+	root_dir="$folder/server"
+	LogFile="/dev/null"
+	if [[ -f "$root_dir/LaunchUtils/DotNetVersion.sh" ]]; then
+		source "$root_dir/LaunchUtils/DotNetVersion.sh"
+		chmod a+x "$root_dir/LaunchUtils/InstallDotNet.sh" && bash $_
+	else
+		echo "The .NET install could not be ran due to missing scripts. It will install on server start."
+
+		# TODO: Right now Docker hard fails. How should we get this part of the launch utils to previous versions of TML that don't have it?
+		if is_in_docker; then
+			exit 1
+		fi
+	fi
+
 	move_serverconfig
 
 	popd
@@ -241,6 +235,7 @@ function install_workshop_mods {
 		return
 	fi
 
+	steamcmd=true
 	verify_download_tools
 
 	echo "Installing workshop mods"
@@ -351,9 +346,11 @@ case $cmd in
 		install_workshop_mods
 		;;
 	install-tml)
+		verify_download_tools
 		install_tml
 		;;
 	install|update)
+		verify_download_tools
 		install_tml
 		install_workshop_mods
 		;;
