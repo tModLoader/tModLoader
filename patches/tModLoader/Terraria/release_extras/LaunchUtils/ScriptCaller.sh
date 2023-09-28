@@ -19,6 +19,7 @@ if [ -f "$LogFile" ]; then
 	rm "$LogFile"
 fi
 touch "$LogFile"
+echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
 
 NativeLog="$LaunchLogs/Natives.log"
 if [ -f "$NativeLog" ]; then
@@ -35,7 +36,6 @@ fi
 
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
-echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
 
 if [[ "$_uname" == *"_NT"* ]]; then
 	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"
@@ -43,31 +43,18 @@ fi
 
 . ./UnixLinkerFix.sh
 
-#Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
-echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
-dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
-export dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
-#echo $version
-# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
-# echo $(hexdump -C <<< "$version")
-export dotnet_dir="$root_dir/dotnet"
-if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
-	echo "wsl detected. Setting dotnet_dir=dotnet_wsl"
-	export dotnet_dir="$root_dir/dotnet_wsl"
-fi
-export install_dir="$dotnet_dir/$dotnet_version"
-echo "Success!"  2>&1 | tee -a "$LogFile"
+source ./DotNetVersion.sh
 
 if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
-	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"
+	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 	rm -rf "$dotnet_dir"
 	mkdir "$dotnet_dir"
 fi
 
-run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
+run_script ./InstallDotNet.sh  2>&1 | tee -a "$LogFile"
 
 
-echo "Attempting Launch..."
+echo "Attempting Launch..."  2>&1 | tee -a "$LogFile"
 
 # Actually run tML with the passed arguments
 # Move to the root folder
