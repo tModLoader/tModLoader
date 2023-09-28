@@ -257,6 +257,8 @@ function install_workshop_mods {
 	eval "$steam_cmd +force_install_dir $folder +login anonymous $steamcmd_command +quit"
 
 	popd
+	
+	echo "Done"
 }
 
 function print_help {
