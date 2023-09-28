@@ -100,10 +100,10 @@ function verify_download_tools {
 # If serverconfig doesn't exist, move the one from the server files. If it does delete the server files one
 function move_serverconfig {
 	if [[ -f "$folder/serverconfig.txt" ]]; then
-		echo "Removing duplicate serverconfig"
+		echo "Removing duplicate server/serverconfig.txt"
 		rm serverconfig.txt
 	else
-		echo "Moving default serverconfig to $folder"
+		echo "Moving default serverconfig.txt"
 		mv serverconfig.txt "$folder"
 	fi
 }
@@ -197,14 +197,20 @@ function install_tml_steam {
 }
 
 function install_tml {
-	mkdir Mods Worlds server logs 2>/dev/null
+	mkdir server 2>/dev/null
 	pushd server
-
 	if $steamcmd; then
 		install_tml_steam
 	else
 		install_tml_github
 	fi
+	
+	move_serverconfig
+	popd
+
+	# make folder structure
+	echo "Creating folder structure"
+	mkdir Mods Worlds server logs 2>/dev/null
 
 	# Install .NET
 	root_dir="$folder/server"
@@ -213,17 +219,13 @@ function install_tml {
 		source "$root_dir/LaunchUtils/DotNetVersion.sh"
 		chmod a+x "$root_dir/LaunchUtils/InstallDotNet.sh" && bash $_
 	else
-		echo "The .NET install could not be ran due to missing scripts. It will install on server start."
+		echo ".NET could not be pre-installed due to missing scripts. It should install on server start."
 
 		# TODO: Right now Docker hard fails. How should we get this part of the launch utils to previous versions of TML that don't have it?
 		if is_in_docker; then
 			exit 1
 		fi
 	fi
-
-	move_serverconfig
-
-	popd
 }
 
 function install_workshop_mods {
