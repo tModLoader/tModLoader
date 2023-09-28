@@ -100,8 +100,10 @@ function verify_download_tools {
 # If serverconfig doesn't exist, move the one from the server files. If it does delete the server files one
 function move_serverconfig {
 	if [[ -f "$folder/serverconfig.txt" ]]; then
-		echo "Removing duplicate server/serverconfig.txt"
-		rm serverconfig.txt
+		if [[ -f "serverconfig.txt" ]]; then
+			echo "Removing duplicate server/serverconfig.txt"
+			rm serverconfig.txt
+		fi
 	else
 		echo "Moving default serverconfig.txt"
 		mv serverconfig.txt "$folder"
