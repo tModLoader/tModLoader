@@ -145,7 +145,7 @@ function install_tml_github {
 	if [[ -r .ver ]]; then		
 		local oldver="$(cat .ver)"
 		if [[ "$ver" = "$oldver" ]]; then
-			echo "No version change of tModLoader available"
+			echo "Current tModLoader $ver is up to date!"
 			return
 		fi
 
