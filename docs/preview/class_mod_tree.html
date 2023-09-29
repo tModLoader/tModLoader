@@ -104,7 +104,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac3fb70e3e0c9c91069f5e162e38adc42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tree can drop acorns. Returns true by default.  <a href="class_mod_tree.html#ac3fb70e3e0c9c91069f5e162e38adc42">More...</a><br /></td></tr>
 <tr class="separator:ac3fb70e3e0c9c91069f5e162e38adc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4a4a3ac6b6f566b8995c8521c1a1fc6"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#ab4a4a3ac6b6f566b8995c8521c1a1fc6">CreateDust</a> ()</td></tr>
-<tr class="memdesc:ab4a4a3ac6b6f566b8995c8521c1a1fc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of dust created when this tree is destroyed. Assigns the dust based on TreeTypes, using WoodFurniture by default.  <a href="class_mod_tree.html#ab4a4a3ac6b6f566b8995c8521c1a1fc6">More...</a><br /></td></tr>
+<tr class="memdesc:ab4a4a3ac6b6f566b8995c8521c1a1fc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of dust created when this tree is destroyed. Returns 7 by default.  <a href="class_mod_tree.html#ab4a4a3ac6b6f566b8995c8521c1a1fc6">More...</a><br /></td></tr>
 <tr class="separator:ab4a4a3ac6b6f566b8995c8521c1a1fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab357b6ae38cb22eda08e684ba462b11a"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#ab357b6ae38cb22eda08e684ba462b11a">DropWood</a> ()</td></tr>
 <tr class="memdesc:ab357b6ae38cb22eda08e684ba462b11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the item that is dropped in bulk when this tree is destroyed.  <a href="class_mod_tree.html#ab357b6ae38cb22eda08e684ba462b11a">More...</a><br /></td></tr>
@@ -115,8 +115,9 @@ abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bot
 <tr class="separator:a265aeccc9960e081b98bf641cc29f144"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2207bac4543178f3bd17be0fbc954e20"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#a2207bac4543178f3bd17be0fbc954e20">GetTexture</a> ()</td></tr>
 <tr class="separator:a2207bac4543178f3bd17be0fbc954e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab46a6e35fd9abec17a39127b8e82cb99"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#ab46a6e35fd9abec17a39127b8e82cb99">GetTopTextures</a> ()</td></tr>
-<tr class="memdesc:ab46a6e35fd9abec17a39127b8e82cb99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this tree. The framing was determined under &lt;cref&gt;SetTreeFoliageSettings&lt;/cref&gt;  <a href="class_mod_tree.html#ab46a6e35fd9abec17a39127b8e82cb99">More...</a><br /></td></tr>
+<tr class="memitem:ab46a6e35fd9abec17a39127b8e82cb99"><td class="memItemLeft" align="right" valign="top"><a id="ab46a6e35fd9abec17a39127b8e82cb99" name="ab46a6e35fd9abec17a39127b8e82cb99"></a>
+abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetTopTextures</b> ()</td></tr>
+<tr class="memdesc:ab46a6e35fd9abec17a39127b8e82cb99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this tree. The framing was determined under &lt;cref&gt;SetTreeFoliageSettings&lt;/cref&gt; <br /></td></tr>
 <tr class="separator:ab46a6e35fd9abec17a39127b8e82cb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1aec4f01de33343d20e438361764c6a"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#ab1aec4f01de33343d20e438361764c6a">SaplingGrowthType</a> (ref int style)</td></tr>
 <tr class="memdesc:ab1aec4f01de33343d20e438361764c6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same ID; even if you only have a single sapling in an ID, you must still set this to 0.  <a href="class_mod_tree.html#ab1aec4f01de33343d20e438361764c6a">More...</a><br /></td></tr>
@@ -133,25 +134,10 @@ abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTreeFolia
 <tr class="memitem:a61ccfa03e735ae06fd1532de2795ffe7"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#a61ccfa03e735ae06fd1532de2795ffe7">TreeLeaf</a> ()</td></tr>
 <tr class="memdesc:a61ccfa03e735ae06fd1532de2795ffe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default  <a href="class_mod_tree.html#a61ccfa03e735ae06fd1532de2795ffe7">More...</a><br /></td></tr>
 <tr class="separator:a61ccfa03e735ae06fd1532de2795ffe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9a44ab046d9058a490a89d821142d6a"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#af9a44ab046d9058a490a89d821142d6a">CreateDust</a> ()</td></tr>
-<tr class="memdesc:af9a44ab046d9058a490a89d821142d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of dust created when this tree is destroyed. Assigns the dust based on TreeTypes, using WoodFurniture by default.  <a href="interface_i_tree.html#af9a44ab046d9058a490a89d821142d6a">More...</a><br /></td></tr>
-<tr class="separator:af9a44ab046d9058a490a89d821142d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0126c2661b8d251a3278e1fa14cca672"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#a0126c2661b8d251a3278e1fa14cca672">DropWood</a> ()</td></tr>
-<tr class="memdesc:a0126c2661b8d251a3278e1fa14cca672"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the item that is dropped in bulk when this tree is destroyed.  <a href="interface_i_tree.html#a0126c2661b8d251a3278e1fa14cca672">More...</a><br /></td></tr>
-<tr class="separator:a0126c2661b8d251a3278e1fa14cca672"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c0d33a927737e0d24bbf819d2dd4e7d"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#a8c0d33a927737e0d24bbf819d2dd4e7d">GetTopTextures</a> ()</td></tr>
-<tr class="memdesc:a8c0d33a927737e0d24bbf819d2dd4e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this tree.  <a href="interface_i_tree.html#a8c0d33a927737e0d24bbf819d2dd4e7d">More...</a><br /></td></tr>
-<tr class="separator:a8c0d33a927737e0d24bbf819d2dd4e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a463364d8bfdcc1d69335164c81212e1d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#a463364d8bfdcc1d69335164c81212e1d">SaplingGrowthType</a> (ref int style)</td></tr>
-<tr class="memdesc:a463364d8bfdcc1d69335164c81212e1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same ID; even if you only have a single sapling in an ID, you must still set this to 0.  <a href="interface_i_tree.html#a463364d8bfdcc1d69335164c81212e1d">More...</a><br /></td></tr>
-<tr class="separator:a463364d8bfdcc1d69335164c81212e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9834a89b8dfa9e452e1a9694e24d7377"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#a9834a89b8dfa9e452e1a9694e24d7377">Shake</a> (int x, int y, ref bool createLeaves)</td></tr>
-<tr class="memdesc:a9834a89b8dfa9e452e1a9694e24d7377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on tree shake, return false to skip vanilla tree shake drops.<br  />
- The x and y coordinates correspond to the top of the tree, where items usually spawn.  <a href="interface_i_tree.html#a9834a89b8dfa9e452e1a9694e24d7377">More...</a><br /></td></tr>
-<tr class="separator:a9834a89b8dfa9e452e1a9694e24d7377"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69b1f8f6a194154dc71ff6da325048a4"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#a69b1f8f6a194154dc71ff6da325048a4">TreeLeaf</a> ()</td></tr>
-<tr class="memdesc:a69b1f8f6a194154dc71ff6da325048a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default  <a href="interface_i_tree.html#a69b1f8f6a194154dc71ff6da325048a4">More...</a><br /></td></tr>
-<tr class="separator:a69b1f8f6a194154dc71ff6da325048a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd6e2b3dbdcb82595a55d46420855ea4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#afd6e2b3dbdcb82595a55d46420855ea4">Shake</a> (int x, int y, ref bool createLeaves)</td></tr>
+<tr class="separator:afd6e2b3dbdcb82595a55d46420855ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5135ae158941ee6fe328b4487a59839a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#a5135ae158941ee6fe328b4487a59839a">TreeLeaf</a> ()</td></tr>
+<tr class="separator:a5135ae158941ee6fe328b4487a59839a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_interface_i_plant"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_i_plant')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_i_plant.html">IPlant</a></td></tr>
 <tr class="memitem:a0f76d1941cba66674b664557d0b7a6bc inherit pub_methods_interface_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="a0f76d1941cba66674b664557d0b7a6bc" name="a0f76d1941cba66674b664557d0b7a6bc"></a>
 abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetTexture</b> ()</td></tr>
@@ -202,7 +188,6 @@ abstract <a class="el" href="class_tree_painting_settings.html">TreePaintingSett
 <tr class="separator:a4b850bf2876d138dcf14fdde774f9e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_tree"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_tree')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_tree.html">ITree</a></td></tr>
 <tr class="memitem:ac1c4dfee7c34968c2e7cbbfe2bc680c9 inherit properties_interface_i_tree"><td class="memItemLeft" align="right" valign="top">TreeTypes&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_tree.html#ac1c4dfee7c34968c2e7cbbfe2bc680c9">CountsAsTreeType</a><code> [get]</code></td></tr>
-<tr class="memdesc:ac1c4dfee7c34968c2e7cbbfe2bc680c9 inherit properties_interface_i_tree"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used mostly for vanilla tree shake loot tables  <a href="interface_i_tree.html#ac1c4dfee7c34968c2e7cbbfe2bc680c9">More...</a><br /></td></tr>
 <tr class="separator:ac1c4dfee7c34968c2e7cbbfe2bc680c9 inherit properties_interface_i_tree"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_plant"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_plant')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_plant.html">IPlant</a></td></tr>
 <tr class="memitem:a496dce8f22a5df584dbedf87bf7449d8 inherit properties_interface_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="a496dce8f22a5df584dbedf87bf7449d8" name="a496dce8f22a5df584dbedf87bf7449d8"></a>
@@ -268,10 +253,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 </table>
 </div><div class="memdoc">
 
-<p>Return the type of dust created when this tree is destroyed. Assigns the dust based on TreeTypes, using WoodFurniture by default. </p>
+<p>Return the type of dust created when this tree is destroyed. Returns 7 by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Implements <a class="el" href="interface_i_tree.html#af9a44ab046d9058a490a89d821142d6a">ITree</a>.</p>
 
 </div>
 </div>
@@ -301,8 +284,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 <p>The ID of the item that is dropped in bulk when this tree is destroyed. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="interface_i_tree.html#a0126c2661b8d251a3278e1fa14cca672">ITree</a>.</p>
-
 </div>
 </div>
 <a id="a2207bac4543178f3bd17be0fbc954e20" name="a2207bac4543178f3bd17be0fbc954e20"></a>
@@ -329,35 +310,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interface_i_plant.html">IPlant</a>.</p>
-
-</div>
-</div>
-<a id="ab46a6e35fd9abec17a39127b8e82cb99" name="ab46a6e35fd9abec17a39127b8e82cb99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab46a6e35fd9abec17a39127b8e82cb99">&#9670;&nbsp;</a></span>GetTopTextures()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">abstract Asset&lt; Texture2D &gt; ModTree.GetTopTextures </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return the texture containing the possible tree tops that can be drawn above this tree. The framing was determined under &lt;cref&gt;SetTreeFoliageSettings&lt;/cref&gt; </p>
-
-<p>Implements <a class="el" href="interface_i_tree.html#a8c0d33a927737e0d24bbf819d2dd4e7d">ITree</a>.</p>
 
 </div>
 </div>
@@ -393,8 +345,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Implements <a class="el" href="interface_i_tree.html#a463364d8bfdcc1d69335164c81212e1d">ITree</a>.</p>
 
 </div>
 </div>
@@ -469,7 +419,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
  The x and y coordinates correspond to the top of the tree, where items usually spawn. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="interface_i_tree.html#a9834a89b8dfa9e452e1a9694e24d7377">ITree</a>.</p>
+<p>Implements <a class="el" href="interface_i_tree.html">ITree</a>.</p>
 
 </div>
 </div>
@@ -499,7 +449,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 <p>Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="interface_i_tree.html#a69b1f8f6a194154dc71ff6da325048a4">ITree</a>.</p>
+<p>Implements <a class="el" href="interface_i_tree.html">ITree</a>.</p>
 
 </div>
 </div>
@@ -526,7 +476,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 
 <p>Used mostly for vanilla tree shake loot tables </p>
 
-<p>Implements <a class="el" href="interface_i_tree.html#ac1c4dfee7c34968c2e7cbbfe2bc680c9">ITree</a>.</p>
+<p>Implements <a class="el" href="interface_i_tree.html">ITree</a>.</p>
 
 </div>
 </div>

@@ -55,6 +55,7 @@ var class_item =
     [ "sellPrice", "class_item.html#ad30ec39319d94558e35650cf2350e2cf", null ],
     [ "SetNameOverride", "class_item.html#a678e9da8f2b078fbf0b90905b322dc81", null ],
     [ "SetShopValues", "class_item.html#a31ed2d402ea04272696879770ff21a5b", null ],
+    [ "SetWeaponValues", "class_item.html#a69c624003358019f1bcd0137badcd637", null ],
     [ "StartCachingType", "class_item.html#adea320fc6b603c2416e6049f7fc8c233", null ],
     [ "TryGetGlobalItem< T >", "class_item.html#a284a8eac203bfc10f67a140fd288f255", null ],
     [ "TryGetGlobalItem< T >", "class_item.html#afde4aad6d39d51ef587dab0e7e3e630c", null ],

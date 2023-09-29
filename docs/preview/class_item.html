@@ -364,10 +364,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults5</b> (int
 <tr class="memdesc:a678e9da8f2b078fbf0b90905b322dc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a>.  <a href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81">More...</a><br /></td></tr>
 <tr class="separator:a678e9da8f2b078fbf0b90905b322dc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31ed2d402ea04272696879770ff21a5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a31ed2d402ea04272696879770ff21a5b">SetShopValues</a> (ItemRarityColor rarity, int coinValue)</td></tr>
-<tr class="memdesc:a31ed2d402ea04272696879770ff21a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that sets item rarity and item value.  <a href="class_item.html#a31ed2d402ea04272696879770ff21a5b">More...</a><br /></td></tr>
+<tr class="memdesc:a31ed2d402ea04272696879770ff21a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that sets item rarity (<a class="el" href="class_item.html#a145323c0b871d18ceb4f44f657f9fdac" title="Indicates the rarity of an item. Assign to a ItemRarityID value. Vanilla values range from -1 to 13....">Item.rare</a>) and item value (<a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>).  <a href="class_item.html#a31ed2d402ea04272696879770ff21a5b">More...</a><br /></td></tr>
 <tr class="separator:a31ed2d402ea04272696879770ff21a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c624003358019f1bcd0137badcd637"><td class="memItemLeft" align="right" valign="top"><a id="a69c624003358019f1bcd0137badcd637" name="a69c624003358019f1bcd0137badcd637"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWeaponValues</b> (int dmg, float knockback, int bonusCritChance=0)</td></tr>
+<tr class="memitem:a69c624003358019f1bcd0137badcd637"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a69c624003358019f1bcd0137badcd637">SetWeaponValues</a> (int dmg, float knockback, int bonusCritChance=0)</td></tr>
+<tr class="memdesc:a69c624003358019f1bcd0137badcd637"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method conviniently sets <a class="el" href="class_item.html#a26d10a605b43706b07db3f314be4c0a0" title="The base damage inflicted by this item. The List of weapons wiki pagecan be a useful guide for decidi...">Item.damage</a>, <a class="el" href="class_item.html#a98c6c332c5aa30e68e8d366571d87c95" title="The force of the knock back. Max value is 20. The Knockback wiki pagehas info on existing values....">Item.knockBack</a>, and <a class="el" href="class_item.html#a885130c63118f0397f3f5f1c61c7f068" title="The base critical chance for this item. Remember that the player has a base crit chance of 4....">Item.crit</a>.  <a href="class_item.html#a69c624003358019f1bcd0137badcd637">More...</a><br /></td></tr>
 <tr class="separator:a69c624003358019f1bcd0137badcd637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9e10448ffcbd6c38e9cdd38fa17ff20"><td class="memItemLeft" align="right" valign="top"><a id="ae9e10448ffcbd6c38e9cdd38fa17ff20" name="ae9e10448ffcbd6c38e9cdd38fa17ff20"></a>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
@@ -3700,11 +3700,55 @@ Otherwise, return <code>true</code>. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>A helper method that sets item rarity and item value. </p>
+<p>A helper method that sets item rarity (<a class="el" href="class_item.html#a145323c0b871d18ceb4f44f657f9fdac" title="Indicates the rarity of an item. Assign to a ItemRarityID value. Vanilla values range from -1 to 13....">Item.rare</a>) and item value (<a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rarity</td><td></td></tr>
     <tr><td class="paramname">coinValue</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a69c624003358019f1bcd0137badcd637" name="a69c624003358019f1bcd0137badcd637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c624003358019f1bcd0137badcd637">&#9670;&nbsp;</a></span>SetWeaponValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Item.SetWeaponValues </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dmg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>knockback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>bonusCritChance</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method conviniently sets <a class="el" href="class_item.html#a26d10a605b43706b07db3f314be4c0a0" title="The base damage inflicted by this item. The List of weapons wiki pagecan be a useful guide for decidi...">Item.damage</a>, <a class="el" href="class_item.html#a98c6c332c5aa30e68e8d366571d87c95" title="The force of the knock back. Max value is 20. The Knockback wiki pagehas info on existing values....">Item.knockBack</a>, and <a class="el" href="class_item.html#a885130c63118f0397f3f5f1c61c7f068" title="The base critical chance for this item. Remember that the player has a base crit chance of 4....">Item.crit</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dmg</td><td></td></tr>
+    <tr><td class="paramname">knockback</td><td></td></tr>
+    <tr><td class="paramname">bonusCritChance</td><td></td></tr>
   </table>
   </dd>
 </dl>

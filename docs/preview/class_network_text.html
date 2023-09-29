@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_network_text.html',''); initResi
   <div class="headertitle"><div class="title">NetworkText Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents text that will be sent over the network in multiplayer and displayed to the receiving user in their selected language. Use FromKey(string, object[]) to send a localization key and optional substitutions. <a class="el" href="class_localized_text.html#a08cc2c3a27a44eda49ff8813c08c2dbf" title="Convert this LocalizedText to a NetworkText for use in various network code applications....">LocalizedText.ToNetworkText()</a> can be used directly as well for the same effect.Use FromFormattable(string, object[]) to send a string with string formatting substitutions and associated substitutions. This is typically used with language-agnostic strings that don't need a localization entry, such as "{0} - {1}".Use <a class="el" href="class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4" title="Creates a NetworkText object from a string. Use this for text that can&#39;t be localized.">FromLiteral(string)</a> to send a string directly. This should be used to send text that can't be localized.  
+ <a href="class_network_text.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,22 +119,155 @@ static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><t
 <tr class="memitem:abc7ef41b87f67cc539ce6e6a9597a528"><td class="memItemLeft" align="right" valign="top"><a id="abc7ef41b87f67cc539ce6e6a9597a528" name="abc7ef41b87f67cc539ce6e6a9597a528"></a>
 static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>From</b> (object o)</td></tr>
 <tr class="separator:abc7ef41b87f67cc539ce6e6a9597a528"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d99e2833761c441a1a4427649242132"><td class="memItemLeft" align="right" valign="top"><a id="a5d99e2833761c441a1a4427649242132" name="a5d99e2833761c441a1a4427649242132"></a>
-static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FromFormattable</b> (string text, params object[] substitutions)</td></tr>
+<tr class="memitem:a5d99e2833761c441a1a4427649242132"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_network_text.html#a5d99e2833761c441a1a4427649242132">FromFormattable</a> (string text, params object[] substitutions)</td></tr>
+<tr class="memdesc:a5d99e2833761c441a1a4427649242132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> object from a string with string formatting substitutions and associated substitutions. This is typically used with language-agnostic strings that don't need a localization entry, such as "{0} - {1}".  <a href="class_network_text.html#a5d99e2833761c441a1a4427649242132">More...</a><br /></td></tr>
 <tr class="separator:a5d99e2833761c441a1a4427649242132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3f73dfc810df7bc77c39621ed5b8644"><td class="memItemLeft" align="right" valign="top"><a id="ae3f73dfc810df7bc77c39621ed5b8644" name="ae3f73dfc810df7bc77c39621ed5b8644"></a>
-static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FromKey</b> (string key, params object[] substitutions)</td></tr>
+<tr class="memitem:ae3f73dfc810df7bc77c39621ed5b8644"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_network_text.html#ae3f73dfc810df7bc77c39621ed5b8644">FromKey</a> (string key, params object[] substitutions)</td></tr>
+<tr class="memdesc:ae3f73dfc810df7bc77c39621ed5b8644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> object from a localization key and optional substitutions. The receiving client will see the resulting text in their selected language.  <a href="class_network_text.html#ae3f73dfc810df7bc77c39621ed5b8644">More...</a><br /></td></tr>
 <tr class="separator:ae3f73dfc810df7bc77c39621ed5b8644"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d4e628b9e5f77296c00a7a39127d1b4"><td class="memItemLeft" align="right" valign="top"><a id="a7d4e628b9e5f77296c00a7a39127d1b4" name="a7d4e628b9e5f77296c00a7a39127d1b4"></a>
-static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FromLiteral</b> (string text)</td></tr>
+<tr class="memitem:a7d4e628b9e5f77296c00a7a39127d1b4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4">FromLiteral</a> (string text)</td></tr>
+<tr class="memdesc:a7d4e628b9e5f77296c00a7a39127d1b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> object from a string. Use this for text that can't be localized.  <a href="class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4">More...</a><br /></td></tr>
 <tr class="separator:a7d4e628b9e5f77296c00a7a39127d1b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a2719e7eecee71961738a413b68aa6eac"><td class="memItemLeft" align="right" valign="top"><a id="a2719e7eecee71961738a413b68aa6eac" name="a2719e7eecee71961738a413b68aa6eac"></a>
-static readonly <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Empty</b> = FromLiteral(&quot;&quot;)</td></tr>
+static readonly <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Empty</b> = <a class="el" href="class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4">FromLiteral</a>(&quot;&quot;)</td></tr>
 <tr class="separator:a2719e7eecee71961738a413b68aa6eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents text that will be sent over the network in multiplayer and displayed to the receiving user in their selected language. </p>
+<p >Use FromKey(string, object[]) to send a localization key and optional substitutions. <a class="el" href="class_localized_text.html#a08cc2c3a27a44eda49ff8813c08c2dbf" title="Convert this LocalizedText to a NetworkText for use in various network code applications....">LocalizedText.ToNetworkText()</a> can be used directly as well for the same effect.</p>
+<p >Use FromFormattable(string, object[]) to send a string with string formatting substitutions and associated substitutions. This is typically used with language-agnostic strings that don't need a localization entry, such as "{0} - {1}".</p>
+<p >Use <a class="el" href="class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4" title="Creates a NetworkText object from a string. Use this for text that can&#39;t be localized.">FromLiteral(string)</a> to send a string directly. This should be used to send text that can't be localized. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5d99e2833761c441a1a4427649242132" name="a5d99e2833761c441a1a4427649242132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d99e2833761c441a1a4427649242132">&#9670;&nbsp;</a></span>FromFormattable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_network_text.html">NetworkText</a> NetworkText.FromFormattable </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params object[]&#160;</td>
+          <td class="paramname"><em>substitutions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> object from a string with string formatting substitutions and associated substitutions. This is typically used with language-agnostic strings that don't need a localization entry, such as "{0} - {1}". </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td></td></tr>
+    <tr><td class="paramname">substitutions</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae3f73dfc810df7bc77c39621ed5b8644" name="ae3f73dfc810df7bc77c39621ed5b8644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3f73dfc810df7bc77c39621ed5b8644">&#9670;&nbsp;</a></span>FromKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_network_text.html">NetworkText</a> NetworkText.FromKey </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params object[]&#160;</td>
+          <td class="paramname"><em>substitutions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> object from a localization key and optional substitutions. The receiving client will see the resulting text in their selected language. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+    <tr><td class="paramname">substitutions</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a7d4e628b9e5f77296c00a7a39127d1b4" name="a7d4e628b9e5f77296c00a7a39127d1b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d4e628b9e5f77296c00a7a39127d1b4">&#9670;&nbsp;</a></span>FromLiteral()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_network_text.html">NetworkText</a> NetworkText.FromLiteral </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> object from a string. Use this for text that can't be localized. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

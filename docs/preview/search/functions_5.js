@@ -16,9 +16,12 @@ var searchData=
   ['findtargetwithlineofsight_13',['FindTargetWithLineOfSight',['../class_projectile.html#a780516db1f9ddea8551003ad41b9adbc',1,'Projectile']]],
   ['finishloading_14',['FinishLoading',['../class_global_list.html#aff9a43509781a5cbf8eae7512cafe42d',1,'GlobalList']]],
   ['fixloadeddata_15',['FixLoadedData',['../class_chest.html#a80c90d1bd1100e8103dc9ce9c754df85',1,'Chest']]],
-  ['floorvisuals_16',['FloorVisuals',['../class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320',1,'GlobalTile.FloorVisuals()'],['../class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a',1,'ModTile.FloorVisuals()']]],
+  ['floorvisuals_16',['FloorVisuals',['../class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a',1,'ModTile.FloorVisuals()'],['../class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320',1,'GlobalTile.FloorVisuals()']]],
   ['format_17',['Format',['../class_localized_text.html#a390d22b406bdaf9afbd725569fcbc181',1,'LocalizedText']]],
   ['formatwith_18',['FormatWith',['../class_localized_text.html#a293e37e2678717137ac1e28a79365a96',1,'LocalizedText']]],
   ['frameeffects_19',['FrameEffects',['../class_equip_texture.html#afa1857188c214545b261d4a4836b6666',1,'EquipTexture.FrameEffects()'],['../class_mod_player.html#a4c43f816c48cdfdfab5ffe524f27ec3e',1,'ModPlayer.FrameEffects()']]],
-  ['freedodge_20',['FreeDodge',['../class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618',1,'ModPlayer']]]
+  ['freedodge_20',['FreeDodge',['../class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618',1,'ModPlayer']]],
+  ['fromformattable_21',['FromFormattable',['../class_network_text.html#a5d99e2833761c441a1a4427649242132',1,'NetworkText']]],
+  ['fromkey_22',['FromKey',['../class_network_text.html#ae3f73dfc810df7bc77c39621ed5b8644',1,'NetworkText']]],
+  ['fromliteral_23',['FromLiteral',['../class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4',1,'NetworkText']]]
 ];

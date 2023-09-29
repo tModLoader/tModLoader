@@ -1,5 +1,9 @@
 var NAVTREEINDEX21 =
 {
+"functions_vars_i.html":[3,3,2,8],
+"functions_vars_j.html":[3,3,2,9],
+"functions_vars_k.html":[3,3,2,10],
+"functions_vars_l.html":[3,3,2,11],
 "functions_vars_m.html":[3,3,2,12],
 "functions_vars_n.html":[3,3,2,13],
 "functions_vars_o.html":[3,3,2,14],
@@ -129,13 +133,6 @@ var NAVTREEINDEX21 =
 "interface_i_tile_data.html":[3,0,652],
 "interface_i_town_n_p_c_profile.html":[3,0,653],
 "interface_i_tree.html":[3,0,654],
-"interface_i_tree.html#a0126c2661b8d251a3278e1fa14cca672":[3,0,654,1],
-"interface_i_tree.html#a463364d8bfdcc1d69335164c81212e1d":[3,0,654,3],
-"interface_i_tree.html#a69b1f8f6a194154dc71ff6da325048a4":[3,0,654,5],
-"interface_i_tree.html#a8c0d33a927737e0d24bbf819d2dd4e7d":[3,0,654,2],
-"interface_i_tree.html#a9834a89b8dfa9e452e1a9694e24d7377":[3,0,654,4],
-"interface_i_tree.html#ac1c4dfee7c34968c2e7cbbfe2bc680c9":[3,0,654,6],
-"interface_i_tree.html#af9a44ab046d9058a490a89d821142d6a":[3,0,654,0],
 "interface_i_u_pn_p_n_a_t.html":[3,0,656],
 "interface_i_update_before_sorting.html":[3,0,655],
 "interface_segments_1_1_player_segment_1_1_i_shader_effect.html":[3,0,1093,6,1],
@@ -249,5 +246,8 @@ var NAVTREEINDEX21 =
 "struct_fishing_attempt.html#afd71021b28ef076b070f2935b9b33fcd":[3,0,390,6],
 "struct_flame_lash_drawer.html":[3,0,393],
 "struct_float_range.html":[3,0,399],
-"struct_frame_event_data.html":[3,0,405]
+"struct_frame_event_data.html":[3,0,405],
+"struct_game_animation_segment.html":[3,0,413],
+"struct_game_mode_data.html":[3,0,419],
+"struct_gen_shape_action_pair.html":[3,0,440]
 };

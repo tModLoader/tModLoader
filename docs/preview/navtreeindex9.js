@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"class_micro_biome.html":[3,0,759],
 "class_minecart.html":[3,0,760],
 "class_minecart_digger_helper.html":[3,0,761],
 "class_minimap_frame.html":[3,0,762],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "class_mod_hair.html#a763c2b0235036b084e8406d0213f4b53":[3,0,790,2],
 "class_mod_hair.html#aae116dab2b3c375df543bd734aaa316c":[3,0,790,5],
 "class_mod_hair.html#abd0eef43640723884217054ae3309347":[3,0,790,3],
-"class_mod_item.html":[3,0,792],
-"class_mod_item.html#a01171947b14d51941c92facc015ab84e":[3,0,792,15]
+"class_mod_item.html":[3,0,792]
 };
