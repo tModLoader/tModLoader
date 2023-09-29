@@ -12,6 +12,8 @@ RUN mkdir /steamlib \
 ENV LD_LIBRARY_PATH /steamlib
 
 # Create tModLoader user and drop root permissions
+ARG TML_VERSION=v2023.08.2.13
+
 ARG UID
 ARG GID
 RUN addgroup -g $GID tml \
@@ -27,8 +29,7 @@ RUN steamcmd +quit
 
 RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
   && chmod u+x manage-tModLoaderServer.sh \
-  && ./manage-tModLoaderServer.sh install --github --skip-mods \
-  && rm Mods Worlds logs
+  && /bin/bash ./manage-tModLoaderServer.sh install-tml --github --tml-version $TML_VERSION
 
 EXPOSE 7777
 

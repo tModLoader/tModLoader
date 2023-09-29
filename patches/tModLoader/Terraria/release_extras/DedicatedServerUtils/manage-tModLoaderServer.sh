@@ -2,7 +2,7 @@
 
 #shellcheck disable=2164
 
-# Only update the major version of 
+# Only update the major version when a breaking change is introduced
 script_version="3.0.0.0"
 script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
@@ -87,7 +87,7 @@ function verify_download_tools {
 				echo "steamcmd found in PATH..."
 			fi
 		fi
-	else 
+	else
 		if ! command -v unzip &> /dev/null; then
 			echo "unzip could not be found on the PATH, please install unzip"
 			exit 1
@@ -144,7 +144,7 @@ function install_tml_github {
 	local ver="$(get_version)"
 
 	# If .ver exists we're doing an update instead, compare versions to see if it's already installed and backup if it isn't
-	if [[ -r .ver ]]; then		
+	if [[ -r .ver ]]; then
 		local oldver="$(cat .ver)"
 		if [[ "$ver" = "$oldver" ]]; then
 			echo "Current tModLoader $ver is up to date!"
@@ -210,9 +210,11 @@ function install_tml {
 	move_serverconfig
 	popd
 
-	# make folder structure
-	echo "Creating folder structure"
-	mkdir Mods Worlds server logs 2>/dev/null
+	# Make folder structure
+	if !is_in_docker; then
+		echo "Creating folder structure"
+		mkdir Mods Worlds server logs 2>/dev/null
+	fi
 
 	# Install .NET
 	root_dir="$folder/server"
@@ -372,7 +374,8 @@ case $cmd in
 			exit 1
 		fi
 
-		mkdir Mods Worlds server logs 2>/dev/null
+		# Make proper directories to bypass install_workshop_mods warnings
+		mkdir Mods Worlds 2>/dev/null
 
 		install_workshop_mods
 
@@ -393,9 +396,7 @@ case $cmd in
 		fi
 
 		# Link logs to a more convenient place
-		if ! [[ -d "$folder/logs" ]]; then
-			mkdir "$folder/logs"
-		fi
+		mkdir "$folder/logs" 2>/dev/null
 		ln -s "$folder/logs" "$folder/server/tModLoader-Logs"
 
 		# Link workshop to tMod dir so we don't need to pass -steamworkshopfolder
