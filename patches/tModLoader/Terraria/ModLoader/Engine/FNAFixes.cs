@@ -10,7 +10,7 @@ internal static class FNAFixes
 	{
 		if (OperatingSystem.IsWindows()) {
 			// FNA sets this to "1" on Windows. Terraria does not want this. See #2020
-			SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0" );
+			SDL.SDL_SetHintWithPriority(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0", SDL.SDL_HintPriority.SDL_HINT_OVERRIDE);
 		}
 
 		ConfigureDrivers();
