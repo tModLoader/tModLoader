@@ -1,4 +1,4 @@
-namespace Terraria.GameContent.ItemDropRules;
+﻿namespace Terraria.GameContent.ItemDropRules;
 
 partial class ItemDropRule
 {
