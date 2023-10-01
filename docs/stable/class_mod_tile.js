@@ -20,6 +20,7 @@ var class_mod_tile =
     [ "HasWalkDust", "class_mod_tile.html#a8bc2e68dcc241caec4ff70215e295013", null ],
     [ "HitWire", "class_mod_tile.html#a5b1684845a6ec628f504c00f9a514c5c", null ],
     [ "IsLockedChest", "class_mod_tile.html#a34781632344a7dbd94b386994be42349", null ],
+    [ "IsTileBiomeSightable", "class_mod_tile.html#ab78796b53df1fbe7b4a3888e523668f0", null ],
     [ "IsTileDangerous", "class_mod_tile.html#af551fdea1eb13d886fd6b09151f58612", null ],
     [ "IsTileSpelunkable", "class_mod_tile.html#a442bc92e90e61588278fdf7f89376ca7", null ],
     [ "KillMultiTile", "class_mod_tile.html#a5b8ac3afe10944cf94c39fb87cd6bf1d", null ],

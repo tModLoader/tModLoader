@@ -200,6 +200,7 @@ var hierarchy =
     [ "BuffLoader", "class_buff_loader.html", null ],
     [ "BuffID.Sets.BuffMountData", "class_buff_i_d_1_1_sets_1_1_buff_mount_data.html", null ],
     [ "Player.BuilderAccToggleIDs", "class_player_1_1_builder_acc_toggle_i_ds.html", null ],
+    [ "BuilderToggleLoader", "class_builder_toggle_loader.html", null ],
     [ "BuildInfo", "class_build_info.html", null ],
     [ "ChestUI.ButtonID", "class_chest_u_i_1_1_button_i_d.html", null ],
     [ "CachedBuffer", "class_cached_buffer.html", null ],
@@ -210,6 +211,7 @@ var hierarchy =
     [ "CaptureBiome", "class_capture_biome.html", null ],
     [ "CaptureInterface", "class_capture_interface.html", null ],
     [ "CaptureSettings", "class_capture_settings.html", null ],
+    [ "EmoteID.Category", "class_emote_i_d_1_1_category.html", null ],
     [ "ChainID", "class_chain_i_d.html", null ],
     [ "Chains", "class_chains.html", null ],
     [ "ChambersEntrance", "class_chambers_entrance.html", null ],
@@ -390,7 +392,7 @@ var hierarchy =
     [ "EffectManager< Overlay >", "class_effect_manager.html", [
       [ "OverlayManager", "class_overlay_manager.html", null ]
     ] ],
-    [ "EmoteBubble", "class_emote_bubble.html", null ],
+    [ "EmoteBubbleLoader", "class_emote_bubble_loader.html", null ],
     [ "EmoteID", "class_emote_i_d.html", null ],
     [ "EmpressBladeDrawer", "struct_empress_blade_drawer.html", null ],
     [ "EnabledFilterModesExtensions", "class_enabled_filter_modes_extensions.html", null ],
@@ -438,6 +440,8 @@ var hierarchy =
     ] ],
     [ "ExtensionFilter", "struct_extension_filter.html", null ],
     [ "ExtraBestiaryInfoPageInformation", "struct_extra_bestiary_info_page_information.html", null ],
+    [ "ExtraJumpLoader", "class_extra_jump_loader.html", null ],
+    [ "ExtraJumpState", "struct_extra_jump_state.html", null ],
     [ "ExtraSeatInfo", "struct_extra_seat_info.html", null ],
     [ "ExtrasID", "class_extras_i_d.html", null ],
     [ "ArmorIDs.Face", "class_armor_i_ds_1_1_face.html", null ],
@@ -639,6 +643,9 @@ var hierarchy =
     [ "GlobalList< TGlobal >", "class_global_list.html", null ],
     [ "GlobalLoaderUtils< TGlobal, TEntity >", "class_global_loader_utils.html", null ],
     [ "GlobalRecipe", "class_global_recipe.html", null ],
+    [ "GlobalType< EmoteBubble, GlobalEmoteBubble >", "class_global_type.html", [
+      [ "GlobalEmoteBubble", "class_global_emote_bubble.html", null ]
+    ] ],
     [ "GlobalType< Item, GlobalItem >", "class_global_type.html", [
       [ "GlobalItem", "class_global_item.html", [
         [ "UnloadedGlobalItem", "class_unloaded_global_item.html", null ]
@@ -1149,6 +1156,9 @@ var hierarchy =
       [ "EntitySource_ItemUse", "class_entity_source___item_use.html", null ]
     ] ],
     [ "IEntityWithGlobals< TGlobal >", "interface_i_entity_with_globals.html", null ],
+    [ "IEntityWithGlobals< GlobalEmoteBubble >", "interface_i_entity_with_globals.html", [
+      [ "EmoteBubble", "class_emote_bubble.html", null ]
+    ] ],
     [ "IEntityWithGlobals< GlobalItem >", "interface_i_entity_with_globals.html", [
       [ "Item", "class_item.html", null ]
     ] ],
@@ -1312,6 +1322,9 @@ var hierarchy =
       [ "LightingEngine", "class_lighting_engine.html", null ]
     ] ],
     [ "ILoadable", "interface_i_loadable.html", [
+      [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", [
+        [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ]
+      ] ],
       [ "ModType< Item, ModItem >", "class_mod_type.html", [
         [ "ModItem", "class_mod_item.html", [
           [ "ModLoaderModItem", "class_mod_loader_mod_item.html", [
@@ -1365,6 +1378,9 @@ var hierarchy =
           [ "TagSerializer< Vector3, TagCompound >", "class_tag_serializer.html", [
             [ "Vector3TagSerializer", "class_vector3_tag_serializer.html", null ]
           ] ],
+          [ "TagSerializer< Version, string >", "class_tag_serializer.html", [
+            [ "VersionSerializer", "class_version_serializer.html", null ]
+          ] ],
           [ "DamageClass", "class_damage_class.html", [
             [ "VanillaDamageClass", "class_vanilla_damage_class.html", [
               [ "DefaultDamageClass", "class_default_damage_class.html", null ],
@@ -1377,6 +1393,20 @@ var hierarchy =
               [ "SummonDamageClass", "class_summon_damage_class.html", null ],
               [ "SummonMeleeSpeedDamageClass", "class_summon_melee_speed_damage_class.html", null ],
               [ "ThrowingDamageClass", "class_throwing_damage_class.html", null ]
+            ] ]
+          ] ],
+          [ "ExtraJump", "class_extra_jump.html", [
+            [ "VanillaExtraJump", "class_vanilla_extra_jump.html", [
+              [ "BasiliskMountJump", "class_basilisk_mount_jump.html", null ],
+              [ "BlizzardInABottleJump", "class_blizzard_in_a_bottle_jump.html", null ],
+              [ "CloudInABottleJump", "class_cloud_in_a_bottle_jump.html", null ],
+              [ "FartInAJarJump", "class_fart_in_a_jar_jump.html", null ],
+              [ "FlipperJump", "class_flipper_jump.html", null ],
+              [ "GoatMountJump", "class_goat_mount_jump.html", null ],
+              [ "SandstormInABottleJump", "class_sandstorm_in_a_bottle_jump.html", null ],
+              [ "SantankMountJump", "class_santank_mount_jump.html", null ],
+              [ "TsunamiInABottleJump", "class_tsunami_in_a_bottle_jump.html", null ],
+              [ "UnicornMountJump", "class_unicorn_mount_jump.html", null ]
             ] ]
           ] ],
           [ "GlobalBackgroundStyle", "class_global_background_style.html", null ],
@@ -1413,6 +1443,24 @@ var hierarchy =
             [ "UnloadedSystem", "class_unloaded_system.html", null ]
           ] ],
           [ "ModTexturedType", "class_mod_textured_type.html", [
+            [ "BuilderToggle", "class_builder_toggle.html", [
+              [ "VanillaBuilderToggle", "class_vanilla_builder_toggle.html", [
+                [ "AutoActuateBuilderToggle", "class_auto_actuate_builder_toggle.html", null ],
+                [ "AutoPaintBuilderToggle", "class_auto_paint_builder_toggle.html", null ],
+                [ "BlockSwapBuilderToggle", "class_block_swap_builder_toggle.html", null ],
+                [ "RulerGridBuilderToggle", "class_ruler_grid_builder_toggle.html", null ],
+                [ "RulerLineBuilderToggle", "class_ruler_line_builder_toggle.html", null ],
+                [ "TorchBiomeBuilderToggle", "class_torch_biome_builder_toggle.html", null ],
+                [ "WireVisibilityBuilderToggle", "class_wire_visibility_builder_toggle.html", [
+                  [ "ActuatorsVisibilityBuilderToggle", "class_actuators_visibility_builder_toggle.html", null ],
+                  [ "BlueWireVisibilityBuilderToggle", "class_blue_wire_visibility_builder_toggle.html", null ],
+                  [ "GreenWireVisibilityBuilderToggle", "class_green_wire_visibility_builder_toggle.html", null ],
+                  [ "HideAllWiresBuilderToggle", "class_hide_all_wires_builder_toggle.html", null ],
+                  [ "RedWireVisibilityBuilderToggle", "class_red_wire_visibility_builder_toggle.html", null ],
+                  [ "YellowWireVisibilityBuilderToggle", "class_yellow_wire_visibility_builder_toggle.html", null ]
+                ] ]
+              ] ]
+            ] ],
             [ "InfoDisplay", "class_info_display.html", [
               [ "VanillaInfoDisplay", "class_vanilla_info_display.html", [
                 [ "CompassInfoDisplay", "class_compass_info_display.html", null ],
@@ -1525,6 +1573,7 @@ var hierarchy =
     ] ],
     [ "ImmunityCooldownID", "class_immunity_cooldown_i_d.html", null ],
     [ "IModType", "interface_i_mod_type.html", [
+      [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", null ],
       [ "ModType< Item, ModItem >", "class_mod_type.html", null ],
       [ "ModType< Mount.MountData, ModMount >", "class_mod_type.html", null ],
       [ "ModType< NPC, ModNPC >", "class_mod_type.html", null ],
@@ -1532,12 +1581,14 @@ var hierarchy =
       [ "ModType< Projectile, ModProjectile >", "class_mod_type.html", null ],
       [ "ModType< TEntity >", "class_mod_type.html", null ],
       [ "ILocalizedModType", "interface_i_localized_mod_type.html", [
+        [ "BuilderToggle", "class_builder_toggle.html", null ],
         [ "DamageClass", "class_damage_class.html", null ],
         [ "InfoDisplay", "class_info_display.html", null ],
         [ "ModBiome", "class_mod_biome.html", null ],
         [ "ModBlockType", "class_mod_block_type.html", null ],
         [ "ModBuff", "class_mod_buff.html", null ],
         [ "ModConfig", "class_mod_config.html", null ],
+        [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ],
         [ "ModItem", "class_mod_item.html", null ],
         [ "ModNPC", "class_mod_n_p_c.html", null ],
         [ "ModPrefix", "class_mod_prefix.html", null ],
@@ -2158,6 +2209,10 @@ var hierarchy =
     [ "PortalHelper", "class_portal_helper.html", null ],
     [ "PosData< T >", "struct_pos_data.html", null ],
     [ "PosData< ushort >", "struct_pos_data.html", null ],
+    [ "ExtraJump.Position", "class_extra_jump_1_1_position.html", [
+      [ "ExtraJump.After", "class_extra_jump_1_1_after.html", null ],
+      [ "ExtraJump.Before", "class_extra_jump_1_1_before.html", null ]
+    ] ],
     [ "PlayerDrawLayer.Position", "class_player_draw_layer_1_1_position.html", [
       [ "PlayerDrawLayer.AfterParent", "class_player_draw_layer_1_1_after_parent.html", null ],
       [ "PlayerDrawLayer.BeforeParent", "class_player_draw_layer_1_1_before_parent.html", null ],

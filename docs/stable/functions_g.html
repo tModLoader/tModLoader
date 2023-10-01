@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GamePadTrash&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#adb4f130c8d44b5fc3937488a3967aa05">GameTipID</a></li>
 <li>GamepadWholeScreenUseRange&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a80bc6931916d232f4c31254af30be4d0">ItemID.Sets</a></li>
 <li>GemStaffBolt&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#aaea7d5440d014b394b4d93ec3716d889">ProjAIStyleID</a></li>
-<li>General&#160;:&#160;<a class="el" href="class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e">ImmunityCooldownID</a></li>
+<li>General&#160;:&#160;<a class="el" href="class_emote_i_d_1_1_category.html#a200f4766a70cd7a6bbf5237a2706ae17">EmoteID.Category</a>, <a class="el" href="class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e">ImmunityCooldownID</a></li>
 <li>Generic&#160;:&#160;<a class="el" href="class_damage_class.html#a6503fd93169adfe37c2a0a7f08d12e48">DamageClass</a></li>
 <li>GeodeDrops&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a3299be186ab7b34b4ec9ebd48b4bb515">ItemID.Sets</a></li>
 <li>Get&lt; T &gt;()&#160;:&#160;<a class="el" href="struct_tile.html#a879ec7788912120723902cd5a6702691">Tile</a></li>
@@ -126,6 +126,8 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetBossHeadSlot()&#160;:&#160;<a class="el" href="class_n_p_c_head_loader.html#a2c971cf191e3dc8b98470b52b9975feb">NPCHeadLoader</a></li>
 <li>GetBranchTextures()&#160;:&#160;<a class="el" href="class_mod_tree.html#a265aeccc9960e081b98bf641cc29f144">ModTree</a></li>
 <li>GetBuff()&#160;:&#160;<a class="el" href="class_buff_loader.html#a4cc7ecf68d64e96827188c24189eec03">BuffLoader</a></li>
+<li>GetBuffDescription()&#160;:&#160;<a class="el" href="class_lang.html#ad3b7286301326e1518065725a90acd05">Lang</a></li>
+<li>GetBuffName()&#160;:&#160;<a class="el" href="class_lang.html#a98d60cfed6f11babaec5be9a50015601">Lang</a></li>
 <li>GetChat()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#af21083d8a27d30ce0d150a8a4983c154">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a89a98a8894fe9bbf1cfa5da5e5676d43">ModNPC</a></li>
 <li>GetCompletedPercentByMod()&#160;:&#160;<a class="el" href="class_bestiary_database.html#a4f9b9553af2cee692447b8fa465a6178">BestiaryDatabase</a></li>
 <li>GetContent()&#160;:&#160;<a class="el" href="class_mod.html#a5db06c11402aaed3e9dbcb26ebbc3abb">Mod</a></li>
@@ -136,24 +138,29 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetDamage()&#160;:&#160;<a class="el" href="class_player.html#afb5ba132b05a7e2abf19f970eefd4634">Player</a></li>
 <li>GetDamage&lt; T &gt;()&#160;:&#160;<a class="el" href="class_player.html#a927f1454f1a2d12a612959bb7b5cefd1">Player</a></li>
 <li>GetDamageClass()&#160;:&#160;<a class="el" href="class_damage_class_loader.html#a221801c4da12ec95a30e463b09590319">DamageClassLoader</a></li>
-<li>GetDefaultPosition()&#160;:&#160;<a class="el" href="class_player_draw_layer.html#ad1abf53d0ac67bbd2cc16b1ee91d1c81">PlayerDrawLayer</a></li>
+<li>GetDefaultPosition()&#160;:&#160;<a class="el" href="class_extra_jump.html#af1dab013ba93bcdad238c9b21fa264f4">ExtraJump</a>, <a class="el" href="class_player_draw_layer.html#ad1abf53d0ac67bbd2cc16b1ee91d1c81">PlayerDrawLayer</a>, <a class="el" href="class_vanilla_extra_jump.html#a4f8e2eddf78bb1ea731c1696dbb5d98c">VanillaExtraJump</a></li>
 <li>GetDefaultVisibility()&#160;:&#160;<a class="el" href="class_player_draw_layer.html#aace7bac01413c45ecaa2464d31105cf5">PlayerDrawLayer</a></li>
 <li>GetDrawLayers()&#160;:&#160;<a class="el" href="class_player_draw_layer_loader.html#abe1ba3a5dbbd3bd7fefeb396b336bbfb">PlayerDrawLayerLoader</a></li>
 <li>GetDropletGore()&#160;:&#160;<a class="el" href="class_mod_water_style.html#a6c90c6575c585cbc6caae4e076ca2e70">ModWaterStyle</a></li>
+<li>GetDurationMultiplier()&#160;:&#160;<a class="el" href="class_basilisk_mount_jump.html#a8919cf0a56aed6fa599d5b04490bce2d">BasiliskMountJump</a>, <a class="el" href="class_blizzard_in_a_bottle_jump.html#a500da045d3fcfd23a2aeaf4d3eb2e5d8">BlizzardInABottleJump</a>, <a class="el" href="class_cloud_in_a_bottle_jump.html#a4c0cd870dce80be9cf93c665980e81d9">CloudInABottleJump</a>, <a class="el" href="class_extra_jump.html#a668b509e357d5633d8e660ca074ec07a">ExtraJump</a>, <a class="el" href="class_fart_in_a_jar_jump.html#a7844dd670be3856cc561e5f1e59c83f7">FartInAJarJump</a>, <a class="el" href="class_flipper_jump.html#ad36390df28126e62a3390bc589c070d5">FlipperJump</a>, <a class="el" href="class_goat_mount_jump.html#ad656a852c55802aaf98a413599fa1e03">GoatMountJump</a>, <a class="el" href="class_sandstorm_in_a_bottle_jump.html#aadfa4f5de6e297447a7e797ce6402a19">SandstormInABottleJump</a>, <a class="el" href="class_santank_mount_jump.html#a16611ec047196e615b2e83608819b6aa">SantankMountJump</a>, <a class="el" href="class_tsunami_in_a_bottle_jump.html#a2fbeaecf7682245a525d682c9f2e3102">TsunamiInABottleJump</a>, <a class="el" href="class_unicorn_mount_jump.html#a5e78a60f578b61cb35eca2348d8a13fd">UnicornMountJump</a></li>
 <li>GetDust()&#160;:&#160;<a class="el" href="class_dust_loader.html#a52469c1b5d88be3f9b080e3db271c608">DustLoader</a></li>
 <li>GetDyeTraderReward()&#160;:&#160;<a class="el" href="class_mod_player.html#a839b0c83e115caf35a0ed5ecf50d216d">ModPlayer</a></li>
 <li>GetEffectInheritance()&#160;:&#160;<a class="el" href="class_damage_class.html#a77b2b674f7dce78e0087e4470ee82800">DamageClass</a>, <a class="el" href="class_magic_summon_hybrid_damage_class.html#a46b1433058e94f0bd1aa6b58f38f56de">MagicSummonHybridDamageClass</a>, <a class="el" href="class_melee_no_speed_damage_class.html#ad55950418511c652bdd2f5ab4389eb7f">MeleeNoSpeedDamageClass</a>, <a class="el" href="class_summon_melee_speed_damage_class.html#ad88cef6295d0f1368fc253da802d3e60">SummonMeleeSpeedDamageClass</a></li>
+<li>GetEmoteBubble()&#160;:&#160;<a class="el" href="class_emote_bubble_loader.html#af7f41a3aafdadb01ed0d4bafe40fad0f">EmoteBubbleLoader</a></li>
 <li>GetEquipSlot()&#160;:&#160;<a class="el" href="class_equip_loader.html#ac378c4e1c2cb0d04bbb3546e587480bb">EquipLoader</a></li>
 <li>GetEquipTexture()&#160;:&#160;<a class="el" href="class_equip_loader.html#a618ef57bc59a5fb46ac38add0a2b9103">EquipLoader</a>, <a class="el" href="class_mod_content.html#a451852ddd21b93396592e505203a4562">ModContent</a></li>
+<li>GetExistingEmoteBubble()&#160;:&#160;<a class="el" href="class_emote_bubble.html#a6a32e2e0f75946b000b5c0de309c0e62">EmoteBubble</a></li>
 <li>GetFileBytes()&#160;:&#160;<a class="el" href="class_mod.html#af3a49430cf7766fd70d52004d355b830">Mod</a>, <a class="el" href="class_mod_content.html#a51a9bb4ad25c40f1d95b4d5a6979f5da">ModContent</a></li>
 <li>GetFileNames()&#160;:&#160;<a class="el" href="class_mod.html#a0336ef4f24454d009a80fa4ebf2bc4fc">Mod</a></li>
 <li>GetFileStream()&#160;:&#160;<a class="el" href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">Mod</a></li>
 <li>GetFirstNPCNameOrNull()&#160;:&#160;<a class="el" href="class_n_p_c.html#a95a4782b11f8b4df2a5f538259e68808">NPC</a></li>
 <li>GetFishingLevel()&#160;:&#160;<a class="el" href="class_mod_player.html#ace6ca2c984f8e19d95d73920f3817486">ModPlayer</a></li>
+<li>GetFrame()&#160;:&#160;<a class="el" href="class_global_emote_bubble.html#a211dd4b8505e54ce1328bd8c02a02f00">GlobalEmoteBubble</a>, <a class="el" href="class_mod_emote_bubble.html#a5ef2a2875786440b25fac89c1d52899d">ModEmoteBubble</a></li>
+<li>GetFrameInEmoteMenu()&#160;:&#160;<a class="el" href="class_global_emote_bubble.html#ac04d13e37c96487dc8fddc357d108e93">GlobalEmoteBubble</a>, <a class="el" href="class_mod_emote_bubble.html#aa581a7eb850b5ac07c5c4354d597b649">ModEmoteBubble</a></li>
 <li>GetFullnameByID()&#160;:&#160;<a class="el" href="class_n_p_c.html#ae0c0fec13f68fb0ec581f938f7d68708">NPC</a></li>
 <li>GetGlobalItem&lt; T &gt;()&#160;:&#160;<a class="el" href="class_item.html#a46460b23a0f4435c6c7af34a1dbf21ab">Item</a></li>
 <li>GetGlobalNPC&lt; T &gt;()&#160;:&#160;<a class="el" href="class_n_p_c.html#af1195fe993cfaabb9904add0ac83a9e2">NPC</a></li>
-<li>GetGlobalProjectile&lt; T &gt;()&#160;:&#160;<a class="el" href="class_projectile.html#a170b569b76e182d7456ec8536b475ca6">Projectile</a></li>
+<li>GetGlobalProjectile&lt; T &gt;()&#160;:&#160;<a class="el" href="class_projectile.html#a456099c2f6b5674d489e2d360429d789">Projectile</a></li>
 <li>GetHeadSlot()&#160;:&#160;<a class="el" href="class_n_p_c_head_loader.html#a21dad1ad1f42ad387cfcfd1cf956fbe3">NPCHeadLoader</a></li>
 <li>GetHealLife()&#160;:&#160;<a class="el" href="class_global_item.html#aa07715038b129492da940c0e3e94046b">GlobalItem</a>, <a class="el" href="class_item_loader.html#aaf563647e746fa0c3493d8e4c33ee187">ItemLoader</a>, <a class="el" href="class_mod_item.html#ac0a3ef07d02c41d808d8165f354b682f">ModItem</a>, <a class="el" href="class_mod_player.html#aea058be17af7e3152a456a5951fae5c6">ModPlayer</a></li>
 <li>GetHealMana()&#160;:&#160;<a class="el" href="class_global_item.html#a2848d1b6955448e14b2705c1c1d73e52">GlobalItem</a>, <a class="el" href="class_item_loader.html#abd634865f7413f78b9397bc0681c00d5">ItemLoader</a>, <a class="el" href="class_mod_item.html#a4c237098d3332af3f255d0e7f9c0669d">ModItem</a>, <a class="el" href="class_mod_player.html#ac203467fd37be0e5e373f91a542bc0d3">ModPlayer</a></li>
@@ -165,6 +172,8 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetItemDropFromTypeAndStyle()&#160;:&#160;<a class="el" href="class_tile_loader.html#aa8236777f81075fbafb4005dafc07aef">TileLoader</a></li>
 <li>GetItemDrops()&#160;:&#160;<a class="el" href="class_mod_tile.html#afcc3bd178d7d93e906f8c65e4112699b">ModTile</a></li>
 <li>GetItemGrabRange()&#160;:&#160;<a class="el" href="class_player.html#a22cc9a0354b38ac9f9fe4010c5415993">Player</a></li>
+<li>GetItemName()&#160;:&#160;<a class="el" href="class_lang.html#a53ba7504e4b0e51bfe2309a140cd3fda">Lang</a></li>
+<li>GetItemNameValue()&#160;:&#160;<a class="el" href="class_lang.html#a9154157ab24b308ffdfe0b463dc8347f">Lang</a></li>
 <li>GetKnockback()&#160;:&#160;<a class="el" href="class_player.html#a9914fa71ab8a375d6474cca582f49f8a">Player</a></li>
 <li>GetKnockback&lt; T &gt;()&#160;:&#160;<a class="el" href="class_player.html#a2909430ec761087579f4cdafc89a1dff">Player</a></li>
 <li>GetLocalization()&#160;:&#160;<a class="el" href="class_i_localized_mod_type_extensions.html#ab5df6bd8d314d84b6770c551d353acc7">ILocalizedModTypeExtensions</a></li>
@@ -176,6 +185,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetModBackgroundSlot()&#160;:&#160;<a class="el" href="class_mod_content.html#ad57f8184381c0d43c16e7a8c70aeb6d4">ModContent</a></li>
 <li>GetModBossHeadSlot()&#160;:&#160;<a class="el" href="class_mod_content.html#a0f9b12a89d7252be96248ce8eaf91b94">ModContent</a></li>
 <li>GetModBuff()&#160;:&#160;<a class="el" href="class_mod_content.html#a9ab5fcecdaac3039355f3cd15885448f">ModContent</a></li>
+<li>GetModdedConstraints()&#160;:&#160;<a class="el" href="class_extra_jump.html#a2eb467696fc892b30b212a3eeeceb2cf">ExtraJump</a>, <a class="el" href="class_vanilla_extra_jump.html#a81443187cd842469e1c67a961a56657f">VanillaExtraJump</a></li>
 <li>GetModDust()&#160;:&#160;<a class="el" href="class_mod_content.html#a11452a234fc3389096b4ff3706ded038">ModContent</a></li>
 <li>GetModHeadSlot()&#160;:&#160;<a class="el" href="class_mod_content.html#adc929a836ade8342e7777e9958dbdfe1">ModContent</a></li>
 <li>GetModifierInheritance()&#160;:&#160;<a class="el" href="class_damage_class.html#aab80440ac274eea48cfc06d12d292aab">DamageClass</a>, <a class="el" href="class_default_damage_class.html#a2be31e99383e3603168e382e969c8b8a">DefaultDamageClass</a>, <a class="el" href="class_generic_damage_class.html#a75f57f5741f579e866922b97dc554ad4">GenericDamageClass</a>, <a class="el" href="class_magic_summon_hybrid_damage_class.html#a3370b5404ad840d63267dcd6e9a79a8f">MagicSummonHybridDamageClass</a>, <a class="el" href="class_melee_no_speed_damage_class.html#a46afc156bc357723bf64d95e465b7255">MeleeNoSpeedDamageClass</a>, <a class="el" href="class_summon_melee_speed_damage_class.html#a82b3fefb7a33286a6d5ba5a9627913ac">SummonMeleeSpeedDamageClass</a></li>
@@ -196,6 +206,8 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetMusicSlot()&#160;:&#160;<a class="el" href="class_music_loader.html#a6f10534a3f624119790340431f9d7481">MusicLoader</a></li>
 <li>GetNPC()&#160;:&#160;<a class="el" href="class_n_p_c_loader.html#a1a8675596a73cde0a76c1c01ba5ed5bd">NPCLoader</a></li>
 <li>GetNPCInvasionGroup()&#160;:&#160;<a class="el" href="class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5">NPC</a></li>
+<li>GetNPCName()&#160;:&#160;<a class="el" href="class_lang.html#ade47ad54b95ae830dc13ce96f624de1f">Lang</a></li>
+<li>GetNPCNameValue()&#160;:&#160;<a class="el" href="class_lang.html#a39797e2af4c2a7fdda2bd94f02983ca6">Lang</a></li>
 <li>GetNPCShopEntry()&#160;:&#160;<a class="el" href="class_mod_pylon.html#ad1ed9277882319241603bc0c9002af9d">ModPylon</a></li>
 <li>GetOasisTopTextures()&#160;:&#160;<a class="el" href="class_mod_palm_tree.html#af32727e80d17c9a70845b1476b0de396">ModPalmTree</a></li>
 <li>GetOrRegister()&#160;:&#160;<a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3">Language</a></li>
@@ -206,6 +218,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetPrefixedRarity()&#160;:&#160;<a class="el" href="class_mod_rarity.html#abcd6d71f45161838b948627933aff1db">ModRarity</a></li>
 <li>GetPrefixesInCategory()&#160;:&#160;<a class="el" href="class_prefix_loader.html#aad3ace589df2f44e1b432b91d9d153d5">PrefixLoader</a></li>
 <li>GetProjectile()&#160;:&#160;<a class="el" href="class_projectile_loader.html#ad6d96262b1eb9b2239eed15529e085b2">ProjectileLoader</a></li>
+<li>GetProjectileName()&#160;:&#160;<a class="el" href="class_lang.html#a13dfa77ae118c3306f8b838fae11ab58">Lang</a></li>
 <li>GetRainTexture()&#160;:&#160;<a class="el" href="class_mod_water_style.html#a18d9414ab784437fa917b24530a5f0d8">ModWaterStyle</a></li>
 <li>GetRainVariant()&#160;:&#160;<a class="el" href="class_mod_water_style.html#a07f5a3891e3c3170399609bdad472671">ModWaterStyle</a></li>
 <li>getRect()&#160;:&#160;<a class="el" href="class_item.html#a615d25ad7102e5b63c7e3392ccacd85c">Item</a></li>
@@ -215,7 +228,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetSplashDust()&#160;:&#160;<a class="el" href="class_mod_water_style.html#a2a0c680bfc88a279976ec43f8046482d">ModWaterStyle</a></li>
 <li>GetText()&#160;:&#160;<a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc">Language</a></li>
 <li>GetTexture()&#160;:&#160;<a class="el" href="class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99">BossBarLoader</a></li>
-<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408">Language</a></li>
+<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a3b2e720502c67915d529cbfdb8e0ec7c">Language</a></li>
 <li>GetTextValueWith()&#160;:&#160;<a class="el" href="class_language.html#ac8d9b980c93eddf3589cc778348bf8cd">Language</a></li>
 <li>GetTile()&#160;:&#160;<a class="el" href="class_tile_loader.html#a7538e67b4dca6b9aa9505afbf94a7486">TileLoader</a></li>
 <li>GetTileEntity&lt; T &gt;()&#160;:&#160;<a class="el" href="class_tile_entities_manager.html#acce9e0b7fa32ed7b97ce52d78c4cd370">TileEntitiesManager</a></li>
@@ -229,6 +242,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetVariants()&#160;:&#160;<a class="el" href="class_item_variants.html#a3870b77f0615176e938710333be97de8">ItemVariants</a></li>
 <li>GetWall()&#160;:&#160;<a class="el" href="class_wall_loader.html#a8876f1ec446ad97e23a1afb268ff3208">WallLoader</a></li>
 <li>GetWeight()&#160;:&#160;<a class="el" href="class_mod_scene_effect.html#a70b141bb586a09d371f25e959c81f6c7">ModSceneEffect</a></li>
+<li>GetWereThereAnyInteractions()&#160;:&#160;<a class="el" href="class_n_p_c.html#ae8131d7ccdecc4cc92b2206182bf2f03">NPC</a></li>
 <li>GetWindCycle()&#160;:&#160;<a class="el" href="class_tile_drawing.html#a83f6a59143a27550c03d09505fed1b3c">TileDrawing</a></li>
 <li>GetWindGridPush()&#160;:&#160;<a class="el" href="class_tile_drawing.html#abe15be9a969503e07756f13a89d5923e">TileDrawing</a></li>
 <li>GetWindGridPushComplex()&#160;:&#160;<a class="el" href="class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e">TileDrawing</a></li>
@@ -249,6 +263,8 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GoblinArmyCrowdControl&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#aa307d5fcecf58e3616fb20142dc92674">GameTipID</a></li>
 <li>GoblinTinkererLocation&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#a6386f291ef8bcc9f14fc6fe651b37730">GameTipID</a></li>
 <li>GoldCrittersCollection&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a11f7f9f183efc8f962591ee8e977177b">NPCID.Sets</a></li>
+<li>GoldInfoTextColor&#160;:&#160;<a class="el" href="class_info_display.html#a9bd7094ef53193988d006d8a8e9beb5d">InfoDisplay</a></li>
+<li>GoldInfoTextShadowColor&#160;:&#160;<a class="el" href="class_info_display.html#a7a1159dc2118d41425359cd3e9f27502">InfoDisplay</a></li>
 <li>GolemBody&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#a0b5ed8916091ca62781f179585bd061c">NPCAIStyleID</a></li>
 <li>GolemFist&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#a4d1d99f326b91657aecf444dccf81f0f">NPCAIStyleID</a></li>
 <li>GolemHead&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#a23cdc1c513267768f7d23844aff23ea1">NPCAIStyleID</a></li>
@@ -262,6 +278,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GrabStyle()&#160;:&#160;<a class="el" href="class_global_item.html#adb6e6ae025430a0157096b70604ad4c7">GlobalItem</a>, <a class="el" href="class_item_loader.html#adcdc00f8123198c3346006f6b6c92a8a">ItemLoader</a>, <a class="el" href="class_mod_item.html#a4dbbce9d4b781213f61a938e16e61669">ModItem</a></li>
 <li>Granite&#160;:&#160;<a class="el" href="struct_n_p_c_spawn_info.html#a2639f3b35ad5f88ffe1a5d87e599a6e3">NPCSpawnInfo</a></li>
 <li>GraniteElemental&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#ace63622de1949a61a2dc2558dc5aa954">NPCAIStyleID</a></li>
+<li>GrantImmunityWith&#160;:&#160;<a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8">BuffID.Sets</a></li>
 <li>GrappleCanLatchOnTo()&#160;:&#160;<a class="el" href="class_global_projectile.html#a8cff32f253b958654907864b83c1687c">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#aeeb70d196aa3088063b117bed4c2d6ff">ModProjectile</a></li>
 <li>GrapplePullSpeed()&#160;:&#160;<a class="el" href="class_global_projectile.html#a697d37549978cf832d78bbd33ed59985">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#a1d4a446cf802064f0d5c27633d8baf96">ModProjectile</a></li>
 <li>GrappleRange()&#160;:&#160;<a class="el" href="class_mod_projectile.html#a38c0489531b79e978ce096873b2f8178">ModProjectile</a></li>

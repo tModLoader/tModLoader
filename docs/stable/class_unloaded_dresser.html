@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -169,7 +169,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddToArray</b> (ref i
  The default item drop is determined by finding an item with <a class="el" href="class_item.html#ae29d9481e1255f3585af41383841396c" title="The ID of the tile this item places on use. Either a TileID entry or ModContent.TileType&lt;T&gt;,...">Item.createTile</a> and <a class="el" href="class_item.html#ae34214b6739ef1f2b45f182d9b398dca" title="The style of the tile being placed. Used for tiles that have a different look depending on the item u...">Item.placeStyle</a> matching the type and style of this tile. ModTile.RegisterItemDrop(int, int[]) can be used to manually register item drops for tile styles with no corresponding item. It can also be used to register a fallback item, which will be dropped if no suitable item is found.<br  />
 <br  />
  The default behavior should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br  />
- When overriding, use <code>yield return new <a class="el" href="class_item.html">Item(ItemTypeHere)</a>;</code> for each spawned item.<br  />
+<br  />
+ When overriding, use <code>yield return new <a class="el" href="class_item.html">Item(ItemTypeHere)</a>;</code> for each spawned item. Note that a random prefix will be applied to these items, if applicable, so if specific prefixes or no prefix is needed for an item drop, it will have to be spawned in manually using <a class="el" href="class_mod_tile.html#a5b8ac3afe10944cf94c39fb87cd6bf1d" title="This hook is called exactly once whenever a block encompassing multiple tiles is destroyed....">KillMultiTile(int, int, int, int)</a> or <a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a" title="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p...">KillTile(int, int, ref bool, ref bool, ref bool)</a>.<br  />
+<br  />
  The style based drop logic is based on <a class="el" href="class_tile_object_data.html">TileObjectData</a>. If a tile has custom 'styles' but still wants to make use of ModTile.RegisterItemDrop(int, int[]), <code>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</code> can be used to retrieve the associated item drop.<br  />
 <br  />
  Use CanDrop to conditionally prevent any item drops. Use <a class="el" href="class_mod_tile.html#a5b8ac3afe10944cf94c39fb87cd6bf1d" title="This hook is called exactly once whenever a block encompassing multiple tiles is destroyed....">KillMultiTile(int, int, int, int)</a> or <a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a" title="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p...">KillTile(int, int, ref bool, ref bool, ref bool)</a> for other logic such as cleaning up TileEntities or killing chests or signs.<br  />
@@ -192,6 +194,11 @@ Only called on the server and single player. All wiring happens on the world, no
 <tr class="memitem:a34781632344a7dbd94b386994be42349 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a34781632344a7dbd94b386994be42349">IsLockedChest</a> (int i, int j)</td></tr>
 <tr class="memdesc:a34781632344a7dbd94b386994be42349 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if this <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.  <a href="class_mod_tile.html#a34781632344a7dbd94b386994be42349">More...</a><br /></td></tr>
 <tr class="separator:a34781632344a7dbd94b386994be42349 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab78796b53df1fbe7b4a3888e523668f0 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#ab78796b53df1fbe7b4a3888e523668f0">IsTileBiomeSightable</a> (int i, int j, ref Color sightColor)</td></tr>
+<tr class="memdesc:ab78796b53df1fbe7b4a3888e523668f0 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows <em>sightColor</em>  while the local player has the Biome Sight buff. <br  />
+Return true and assign to <em>sightColor</em>  to allow this tile to glow. <br  />
+This is only called on the local client.  <a href="class_mod_tile.html#ab78796b53df1fbe7b4a3888e523668f0">More...</a><br /></td></tr>
+<tr class="separator:ab78796b53df1fbe7b4a3888e523668f0 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af551fdea1eb13d886fd6b09151f58612 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#af551fdea1eb13d886fd6b09151f58612">IsTileDangerous</a> (int i, int j, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:af551fdea1eb13d886fd6b09151f58612 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows red when the given player has the Dangersense buff. <br  />
 This is only called on the local client.  <a href="class_mod_tile.html#af551fdea1eb13d886fd6b09151f58612">More...</a><br /></td></tr>
@@ -235,7 +242,7 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
 <tr class="separator:a5d51258e65d17bdb13cfe225fd44aea9 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="a225cb3ba315b70347fd305b049ffa497" name="a225cb3ba315b70347fd305b049ffa497"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetDefaults</b> ()</td></tr>
-<tr class="memdesc:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override some default properties of this tile, such as Main.tileNoSunLight and Main.tileObsidianKill. <br /></td></tr>
+<tr class="memdesc:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override some default properties of this tile, such as Main.tileNoSunLight and <a class="el" href="class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5" title="If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it...">Main.tileObsidianKill</a>. <br /></td></tr>
 <tr class="separator:a225cb3ba315b70347fd305b049ffa497 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f80b7cf1635e81f45a31d7ca4d3d98a inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="a3f80b7cf1635e81f45a31d7ca4d3d98a" name="a3f80b7cf1635e81f45a31d7ca4d3d98a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTileMerge</b> ()</td></tr>

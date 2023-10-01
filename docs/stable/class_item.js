@@ -55,6 +55,7 @@ var class_item =
     [ "sellPrice", "class_item.html#ad30ec39319d94558e35650cf2350e2cf", null ],
     [ "SetNameOverride", "class_item.html#a678e9da8f2b078fbf0b90905b322dc81", null ],
     [ "SetShopValues", "class_item.html#a31ed2d402ea04272696879770ff21a5b", null ],
+    [ "SetWeaponValues", "class_item.html#a69c624003358019f1bcd0137badcd637", null ],
     [ "StartCachingType", "class_item.html#adea320fc6b603c2416e6049f7fc8c233", null ],
     [ "TryGetGlobalItem< T >", "class_item.html#a284a8eac203bfc10f67a140fd288f255", null ],
     [ "TryGetGlobalItem< T >", "class_item.html#afde4aad6d39d51ef587dab0e7e3e630c", null ],
@@ -152,6 +153,7 @@ var class_item =
     [ "AllowReforgeForStackableItem", "class_item.html#a05aded61d6735ef333959e15d11e202a", null ],
     [ "ArmorPenetration", "class_item.html#aa681f8f65ccb0983c4349c07ae0bff07", null ],
     [ "attackSpeedOnlyAffectsWeaponAnimation", "class_item.html#a91c7b416021f195c3a6505d35c1bc7d2", null ],
+    [ "ChangePlayerDirectionOnShoot", "class_item.html#ac583a83e73a1a59a9158e9c20c4aca16", null ],
     [ "consumeAmmoOnFirstShotOnly", "class_item.html#af50e755297ab9529ba9282c0a16aa0c4", null ],
     [ "consumeAmmoOnLastShotOnly", "class_item.html#aa1ba575eb88a5eb7de33b27efa4ece6b", null ],
     [ "DamageType", "class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1", null ],
@@ -162,5 +164,6 @@ var class_item =
     [ "PaintOrCoating", "class_item.html#a6206f7bf649546467ee0b9e347fad5ba", null ],
     [ "ResearchUnlockCount", "class_item.html#ab7fcb405aa707d7031409bb397b39738", null ],
     [ "StopAnimationOnHurt", "class_item.html#a5398785fbab9e41cb1002a898cb59dc3", null ],
-    [ "useLimitPerAnimation", "class_item.html#a45a9bea6cb7b8b8f088460c128326172", null ]
+    [ "useLimitPerAnimation", "class_item.html#a45a9bea6cb7b8b8f088460c128326172", null ],
+    [ "useTurnOnAnimationStart", "class_item.html#a7b69df7f6c806d9bf33332a82d295234", null ]
 ];

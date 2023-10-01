@@ -6,5 +6,6 @@ var class_tooltip_line =
     [ "Mod", "class_tooltip_line.html#ab3db926da6847ff80f35ced18aa758b4", null ],
     [ "Name", "class_tooltip_line.html#ae3e22079f327ae9558f570d92a7587d1", null ],
     [ "OverrideColor", "class_tooltip_line.html#adc6a212a9b0baa54b2e0c4be7fdf6f1a", null ],
-    [ "Text", "class_tooltip_line.html#ae01f383ca11ba6637f03d4cb5d8e6ddf", null ]
+    [ "Text", "class_tooltip_line.html#ae01f383ca11ba6637f03d4cb5d8e6ddf", null ],
+    [ "FullName", "class_tooltip_line.html#ab69093e489122490516e3b8c29689bbe", null ]
 ];

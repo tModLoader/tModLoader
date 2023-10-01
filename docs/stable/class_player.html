@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -166,6 +166,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addDPS</b> (int dmg)<
 <tr class="memitem:a2809192a3770e8cf12c056d09e434633"><td class="memItemLeft" align="right" valign="top"><a id="a2809192a3770e8cf12c056d09e434633" name="a2809192a3770e8cf12c056d09e434633"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AdjTiles</b> ()</td></tr>
 <tr class="separator:a2809192a3770e8cf12c056d09e434633"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2948ab59a87614d4db77c7701b469529"><td class="memItemLeft" align="right" valign="top"><a id="a2948ab59a87614d4db77c7701b469529" name="a2948ab59a87614d4db77c7701b469529"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyExtraJumpUsable</b> ()</td></tr>
+<tr class="memdesc:a2948ab59a87614d4db77c7701b469529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if any extra jump is <a class="el" href="struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71" title="true if the extra jump has not been consumed. Will be set to false when the extra jump starts....">ExtraJumpState.Available</a> and <a class="el" href="class_flipper_jump.html#a3773b40bced6e307cb4ca7b142e7db01" title="An extra condition for whether this extra jump can be started. Used by vanilla for flippers (Entity....">ExtraJump.CanStart</a>.<br  />
+ Setting <a class="el" href="class_player.html#a17723372fe66f95973d2f455b0981cb1" title="When true, all extra jumps will be blocked, including Flipper usage.  Setting this field to true will...">blockExtraJumps</a> will cause this method to return <code>false</code> instead. <br /></td></tr>
+<tr class="separator:a2948ab59a87614d4db77c7701b469529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad889dfa356de6fee891227aa6125ca5c"><td class="memItemLeft" align="right" valign="top"><a id="ad889dfa356de6fee891227aa6125ca5c" name="ad889dfa356de6fee891227aa6125ca5c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyArmorSoundAndDustChanges</b> ()</td></tr>
 <tr class="separator:ad889dfa356de6fee891227aa6125ca5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -376,6 +381,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CollideWithNPCs</b> (R
 <tr class="memitem:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memItemLeft" align="right" valign="top"><a id="a95cb58122a6654bfc0a5d4e5a504905a" name="a95cb58122a6654bfc0a5d4e5a504905a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CommandForbiddenStorm</b> ()</td></tr>
 <tr class="separator:a95cb58122a6654bfc0a5d4e5a504905a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ea38bbdc0320b5aca184252442a471"><td class="memItemLeft" align="right" valign="top"><a id="a52ea38bbdc0320b5aca184252442a471" name="a52ea38bbdc0320b5aca184252442a471"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumeAllExtraJumps</b> ()</td></tr>
+<tr class="memdesc:a52ea38bbdc0320b5aca184252442a471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the <a class="el" href="struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71" title="true if the extra jump has not been consumed. Will be set to false when the extra jump starts....">ExtraJumpState.Available</a> flag for all extra jumps to <code>false</code>.<br  />
+ If you want to disable an extra jump, use <a class="el" href="struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd" title="Forces this extra jump to be disabled, consuming it and preventing the usage of it during the current...">ExtraJumpState.Disable</a> instead.<br  />
+ If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <a class="el" href="class_player.html#a17723372fe66f95973d2f455b0981cb1" title="When true, all extra jumps will be blocked, including Flipper usage.  Setting this field to true will...">blockExtraJumps</a> instead. <br /></td></tr>
+<tr class="separator:a52ea38bbdc0320b5aca184252442a471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8894857f3ee4202362ac2d3947fc7e84"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a8894857f3ee4202362ac2d3947fc7e84">ConsumeItem</a> (int type, bool reverseOrder=false, bool includeVoidBag=false)</td></tr>
 <tr class="memdesc:a8894857f3ee4202362ac2d3947fc7e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to consume a single item. The item does not have to be <a class="el" href="class_item.html#ac6ff27af31d1bf259434de86917579fb" title="Whether the item is consumed after use. If consumed, the item stack will decrease by 1....">Item.consumable</a>. <br  />
  Attempts to reduce the <a class="el" href="class_item.html#a87032523d0721bc622ae3d37452f78b8" title="The current stack of the item. maxStack indicates the max possible stack.">Item.stack</a> of the first <a class="el" href="class_item.html">Item</a> found in the <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> by 1. <br  />
@@ -630,6 +641,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemExpectedPrice<
 <tr class="memdesc:a22cc9a0354b38ac9f9fe4010c5415993"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the range at which the given item begins to gravitate towards the player.<br  />
  This range, referred to as item grab range, is measured in pixels.  <a href="class_player.html#a22cc9a0354b38ac9f9fe4010c5415993">More...</a><br /></td></tr>
 <tr class="separator:a22cc9a0354b38ac9f9fe4010c5415993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0245437bd61497869b9f4f587b388c6"><td class="memItemLeft" align="right" valign="top">ref <a class="el" href="struct_extra_jump_state.html">ExtraJumpState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ac0245437bd61497869b9f4f587b388c6">GetJumpState&lt; T &gt;</a> ()</td></tr>
+<tr class="separator:ac0245437bd61497869b9f4f587b388c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e692bb8c0ca37f228d4847fe74ca555"><td class="memItemLeft" align="right" valign="top">ref <a class="el" href="struct_extra_jump_state.html">ExtraJumpState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a2e692bb8c0ca37f228d4847fe74ca555">GetJumpState&lt; T &gt;</a> (T baseInstance)</td></tr>
+<tr class="separator:a2e692bb8c0ca37f228d4847fe74ca555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9914fa71ab8a375d6474cca582f49f8a"><td class="memItemLeft" align="right" valign="top"><a id="a9914fa71ab8a375d6474cca582f49f8a" name="a9914fa71ab8a375d6474cca582f49f8a"></a>
 ref <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetKnockback</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
 <tr class="memdesc:a9914fa71ab8a375d6474cca582f49f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. <br /></td></tr>
@@ -1082,6 +1097,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QuickStackAllChests</
 <tr class="memitem:a06001078ab1bab3d55845f129e630965"><td class="memItemLeft" align="right" valign="top"><a id="a06001078ab1bab3d55845f129e630965" name="a06001078ab1bab3d55845f129e630965"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RecalculateLuck</b> ()</td></tr>
 <tr class="separator:a06001078ab1bab3d55845f129e630965"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc5081609eced6c17012c68fd1444e6"><td class="memItemLeft" align="right" valign="top"><a id="a0cc5081609eced6c17012c68fd1444e6" name="a0cc5081609eced6c17012c68fd1444e6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RefreshExtraJumps</b> ()</td></tr>
+<tr class="memdesc:a0cc5081609eced6c17012c68fd1444e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each extra jump that is <a class="el" href="struct_extra_jump_state.html#ae499c81e723ad86fa7269d42b4cb7038" title="Whether the extra jump can be used. This property is set by Enable and Disable.  This property is aut...">ExtraJumpState.Enabled</a>, its <a class="el" href="struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71" title="true if the extra jump has not been consumed. Will be set to false when the extra jump starts....">ExtraJumpState.Available</a> property set to <code>true</code>, allowing the extra jump to be used again.<br  />
+ Vanilla calls this method when the player is grounded and when jumping off of a grappling hook. <br /></td></tr>
+<tr class="separator:a0cc5081609eced6c17012c68fd1444e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8c93958802a030ab13f11de1185d63e"><td class="memItemLeft" align="right" valign="top"><a id="ab8c93958802a030ab13f11de1185d63e" name="ab8c93958802a030ab13f11de1185d63e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RefreshInfoAccs</b> ()</td></tr>
 <tr class="separator:ab8c93958802a030ab13f11de1185d63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1233,6 +1253,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StatusToPlayerPvP</b>
 <tr class="memitem:a94ff765349093bc5c3238ffd48d7b4d3"><td class="memItemLeft" align="right" valign="top"><a id="a94ff765349093bc5c3238ffd48d7b4d3" name="a94ff765349093bc5c3238ffd48d7b4d3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StickyMovement</b> ()</td></tr>
 <tr class="separator:a94ff765349093bc5c3238ffd48d7b4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12b29ebfe9672d1317b9534c874c6e0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a12b29ebfe9672d1317b9534c874c6e0e">StopExtraJumpInProgress</a> ()</td></tr>
+<tr class="memdesc:a12b29ebfe9672d1317b9534c874c6e0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels any extra jump in progress.<br  />
+ Sets all <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">ExtraJumpState.Active</a> flags to <code>false</code> and calls OnExtraJumpEnded hooks.<br  />
+ Also sets jump to 0 if a an extra jump was active.<br  />
+<br  />
+  <a href="class_player.html#a12b29ebfe9672d1317b9534c874c6e0e">More...</a><br /></td></tr>
+<tr class="separator:a12b29ebfe9672d1317b9534c874c6e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a4160de9a4e478262a9ba25b33cd03a"><td class="memItemLeft" align="right" valign="top"><a id="a3a4160de9a4e478262a9ba25b33cd03a" name="a3a4160de9a4e478262a9ba25b33cd03a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StopVanityActions</b> (bool multiplayerBroadcast=true)</td></tr>
 <tr class="separator:a3a4160de9a4e478262a9ba25b33cd03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1634,9 +1661,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFishingBobber</b><
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFishingLine</b></td></tr>
 <tr class="memdesc:a39a13c4eeca802d67f88f96ccb050844"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this player's fishing line will never break. <br /></td></tr>
 <tr class="separator:a39a13c4eeca802d67f88f96ccb050844"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24a96800734406d818eb5121aa21a6c"><td class="memItemLeft" align="right" valign="top"><a id="ae24a96800734406d818eb5121aa21a6c" name="ae24a96800734406d818eb5121aa21a6c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFlipper</b></td></tr>
-<tr class="separator:ae24a96800734406d818eb5121aa21a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cafd9b36f98113cf0918349ec2b51de"><td class="memItemLeft" align="right" valign="top"><a id="a0cafd9b36f98113cf0918349ec2b51de" name="a0cafd9b36f98113cf0918349ec2b51de"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>accJarOfSouls</b></td></tr>
 <tr class="separator:a0cafd9b36f98113cf0918349ec2b51de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1887,6 +1911,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>bleed</b></td></tr>
 <tr class="memitem:a4f7831d80ad85ba7a5f1f9425d163f14"><td class="memItemLeft" align="right" valign="top"><a id="a4f7831d80ad85ba7a5f1f9425d163f14" name="a4f7831d80ad85ba7a5f1f9425d163f14"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>blind</b></td></tr>
 <tr class="separator:a4f7831d80ad85ba7a5f1f9425d163f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17723372fe66f95973d2f455b0981cb1"><td class="memItemLeft" align="right" valign="top"><a id="a17723372fe66f95973d2f455b0981cb1" name="a17723372fe66f95973d2f455b0981cb1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>blockExtraJumps</b></td></tr>
+<tr class="memdesc:a17723372fe66f95973d2f455b0981cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">When <code>true</code>, all extra jumps will be blocked, including Flipper usage.<br  />
+ Setting this field to <code>true</code> will not stop any currently active extra jumps. <br /></td></tr>
+<tr class="separator:a17723372fe66f95973d2f455b0981cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45ab1ed13540e05bebeb237a9916b58f"><td class="memItemLeft" align="right" valign="top"><a id="a45ab1ed13540e05bebeb237a9916b58f" name="a45ab1ed13540e05bebeb237a9916b58f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>blockRange</b></td></tr>
 <tr class="separator:a45ab1ed13540e05bebeb237a9916b58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1962,7 +1991,7 @@ int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffType</b> = new i
  <a class="el" href="class_player.html#ac31b2c55747dc1b540e5b60282f58623" title="Gives the player the provided buff. This accounts for if the player is immune to the buff....">AddBuff(int, int, bool, bool)</a>, <a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">ClearBuff(int)</a>, and <a class="el" href="class_player.html#a8fef443273ca334f9b1cc6b7e341824c" title="Removes the buff at the provided index in buffType and buffTime and shuffles the remaining buff index...">DelBuff(int)</a> should be used to manipulate player buffs. <br /></td></tr>
 <tr class="separator:a167e74e57e96b01416e55b17c21c7df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1803f98e6e0f707bde36ae0e3ff4b43f"><td class="memItemLeft" align="right" valign="top"><a id="a1803f98e6e0f707bde36ae0e3ff4b43f" name="a1803f98e6e0f707bde36ae0e3ff4b43f"></a>
-int[]&#160;</td><td class="memItemRight" valign="bottom"><b>builderAccStatus</b> = new int[BuilderAccToggleIDs.Count]</td></tr>
+int[]&#160;</td><td class="memItemRight" valign="bottom"><b>builderAccStatus</b> = new int[BuilderToggleLoader.BuilderToggleCount]</td></tr>
 <tr class="separator:a1803f98e6e0f707bde36ae0e3ff4b43f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd5db20495078fe4783246a274e2c283"><td class="memItemLeft" align="right" valign="top"><a id="afd5db20495078fe4783246a274e2c283" name="afd5db20495078fe4783246a274e2c283"></a>
 <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bulletDamage</b> = StatModifier.Default</td></tr>
@@ -1988,33 +2017,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>canFloatInWater</b></
 <tr class="memitem:a5de72c84d6def197e022da0ae1954674"><td class="memItemLeft" align="right" valign="top"><a id="a5de72c84d6def197e022da0ae1954674" name="a5de72c84d6def197e022da0ae1954674"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cAngelHalo</b></td></tr>
 <tr class="separator:a5de72c84d6def197e022da0ae1954674"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a920a8de85fcd2b31586e92d2faa5299b"><td class="memItemLeft" align="right" valign="top"><a id="a920a8de85fcd2b31586e92d2faa5299b" name="a920a8de85fcd2b31586e92d2faa5299b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Basilisk</b></td></tr>
-<tr class="separator:a920a8de85fcd2b31586e92d2faa5299b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a85518d412966d743bfd61ae9fd9b53"><td class="memItemLeft" align="right" valign="top"><a id="a9a85518d412966d743bfd61ae9fd9b53" name="a9a85518d412966d743bfd61ae9fd9b53"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Blizzard</b></td></tr>
-<tr class="separator:a9a85518d412966d743bfd61ae9fd9b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fd7ba7f03b5c033375a2225a95064ca"><td class="memItemLeft" align="right" valign="top"><a id="a9fd7ba7f03b5c033375a2225a95064ca" name="a9fd7ba7f03b5c033375a2225a95064ca"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Cloud</b></td></tr>
-<tr class="separator:a9fd7ba7f03b5c033375a2225a95064ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad72ba7d5da0d9c8a40c1063b21393ebd"><td class="memItemLeft" align="right" valign="top"><a id="ad72ba7d5da0d9c8a40c1063b21393ebd" name="ad72ba7d5da0d9c8a40c1063b21393ebd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Fart</b></td></tr>
-<tr class="separator:ad72ba7d5da0d9c8a40c1063b21393ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65cbfc9f95d77c9236d40c48df1effdb"><td class="memItemLeft" align="right" valign="top"><a id="a65cbfc9f95d77c9236d40c48df1effdb" name="a65cbfc9f95d77c9236d40c48df1effdb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Sail</b></td></tr>
-<tr class="separator:a65cbfc9f95d77c9236d40c48df1effdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0098cd0aa1598a683aefe50e35653749"><td class="memItemLeft" align="right" valign="top"><a id="a0098cd0aa1598a683aefe50e35653749" name="a0098cd0aa1598a683aefe50e35653749"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Sandstorm</b></td></tr>
-<tr class="separator:a0098cd0aa1598a683aefe50e35653749"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17ad54c96ce38981af5057623f2e9c9f"><td class="memItemLeft" align="right" valign="top"><a id="a17ad54c96ce38981af5057623f2e9c9f" name="a17ad54c96ce38981af5057623f2e9c9f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Santank</b></td></tr>
-<tr class="separator:a17ad54c96ce38981af5057623f2e9c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa395517ab28a3775d6d05b5c9dea9ea"><td class="memItemLeft" align="right" valign="top"><a id="aaa395517ab28a3775d6d05b5c9dea9ea" name="aaa395517ab28a3775d6d05b5c9dea9ea"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_Unicorn</b></td></tr>
-<tr class="separator:aaa395517ab28a3775d6d05b5c9dea9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada77afd6673443b0dd37525802997a8e"><td class="memItemLeft" align="right" valign="top"><a id="ada77afd6673443b0dd37525802997a8e" name="ada77afd6673443b0dd37525802997a8e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>canJumpAgain_WallOfFleshGoat</b></td></tr>
-<tr class="separator:ada77afd6673443b0dd37525802997a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a8a01ca1801d49428875708c9d8bd33"><td class="memItemLeft" align="right" valign="top"><a id="a3a8a01ca1801d49428875708c9d8bd33" name="a3a8a01ca1801d49428875708c9d8bd33"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>canRocket</b></td></tr>
 <tr class="separator:a3a8a01ca1801d49428875708c9d8bd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2056,6 +2058,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>cBeard</b></td></tr>
 <tr class="separator:ab981a4abcef5ce2eefe1a6afb16eb3d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedfe38a0dca8724c5603f770e7da34bb"><td class="memItemLeft" align="right" valign="top"><a id="aedfe38a0dca8724c5603f770e7da34bb" name="aedfe38a0dca8724c5603f770e7da34bb"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cBody</b></td></tr>
+<tr class="memdesc:aedfe38a0dca8724c5603f770e7da34bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the EquipType.Body equip texture by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:aedfe38a0dca8724c5603f770e7da34bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1139b3b1b720280e5093157a0e1de8d8"><td class="memItemLeft" align="right" valign="top"><a id="a1139b3b1b720280e5093157a0e1de8d8" name="a1139b3b1b720280e5093157a0e1de8d8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cCarpet</b></td></tr>
@@ -2080,6 +2083,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>cFront</b></td></tr>
 <tr class="separator:a3f64f996a382d245144432e100e036cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac37980e2353e327c0472187785b5f87c"><td class="memItemLeft" align="right" valign="top"><a id="ac37980e2353e327c0472187785b5f87c" name="ac37980e2353e327c0472187785b5f87c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cGrapple</b></td></tr>
+<tr class="memdesc:ac37980e2353e327c0472187785b5f87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the Hook equipment slot by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:ac37980e2353e327c0472187785b5f87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ae0c4451a7cf2552abec14aa56534dd"><td class="memItemLeft" align="right" valign="top"><a id="a8ae0c4451a7cf2552abec14aa56534dd" name="a8ae0c4451a7cf2552abec14aa56534dd"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cHandOff</b></td></tr>
@@ -2101,6 +2105,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>chaosState</b></td></
 <tr class="separator:a8c5da8b6a67e301942d899bc11240676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af256236fe3e68c7a679f4e2439977ab2"><td class="memItemLeft" align="right" valign="top"><a id="af256236fe3e68c7a679f4e2439977ab2" name="af256236fe3e68c7a679f4e2439977ab2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cHead</b></td></tr>
+<tr class="memdesc:af256236fe3e68c7a679f4e2439977ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the EquipType.Head equip texture by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:af256236fe3e68c7a679f4e2439977ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac20590051011862e88d28c6c96ec526d"><td class="memItemLeft" align="right" valign="top"><a id="ac20590051011862e88d28c6c96ec526d" name="ac20590051011862e88d28c6c96ec526d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>chest</b> = -1</td></tr>
@@ -2128,21 +2133,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>chloroAmmoCost80</b><
 <tr class="separator:adcc9bd3b4f95ca0664225de0a484e3f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23aee08e58866223d9dd28a1fc4ebdc8"><td class="memItemLeft" align="right" valign="top"><a id="a23aee08e58866223d9dd28a1fc4ebdc8" name="a23aee08e58866223d9dd28a1fc4ebdc8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cLegs</b></td></tr>
+<tr class="memdesc:a23aee08e58866223d9dd28a1fc4ebdc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the EquipType.Legs equip texture by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:a23aee08e58866223d9dd28a1fc4ebdc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36b59d896a24cd5d60073c5b8b466aa1"><td class="memItemLeft" align="right" valign="top"><a id="a36b59d896a24cd5d60073c5b8b466aa1" name="a36b59d896a24cd5d60073c5b8b466aa1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cLeinShampoo</b></td></tr>
 <tr class="separator:a36b59d896a24cd5d60073c5b8b466aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52834ce9682c09d204e64fd58e91b3f4"><td class="memItemLeft" align="right" valign="top"><a id="a52834ce9682c09d204e64fd58e91b3f4" name="a52834ce9682c09d204e64fd58e91b3f4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cLight</b></td></tr>
+<tr class="memdesc:a52834ce9682c09d204e64fd58e91b3f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the Light Pet equipment slot by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:a52834ce9682c09d204e64fd58e91b3f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3b57804b851c62d934c8c6909f16344"><td class="memItemLeft" align="right" valign="top"><a id="ae3b57804b851c62d934c8c6909f16344" name="ae3b57804b851c62d934c8c6909f16344"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cMinecart</b></td></tr>
+<tr class="memdesc:ae3b57804b851c62d934c8c6909f16344"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the <a class="el" href="class_minecart.html">Minecart</a> equipment slot by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:ae3b57804b851c62d934c8c6909f16344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af693905ebd55a0d7c42e0403578e0e74"><td class="memItemLeft" align="right" valign="top"><a id="af693905ebd55a0d7c42e0403578e0e74" name="af693905ebd55a0d7c42e0403578e0e74"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cMinion</b></td></tr>
 <tr class="separator:af693905ebd55a0d7c42e0403578e0e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9550fe46e8de3cdd16d8b6f16bcf223e"><td class="memItemLeft" align="right" valign="top"><a id="a9550fe46e8de3cdd16d8b6f16bcf223e" name="a9550fe46e8de3cdd16d8b6f16bcf223e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cMount</b></td></tr>
+<tr class="memdesc:a9550fe46e8de3cdd16d8b6f16bcf223e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the <a class="el" href="class_mount.html">Mount</a> equipment slot by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:a9550fe46e8de3cdd16d8b6f16bcf223e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92fc249bf93edc975190207e9847030a"><td class="memItemLeft" align="right" valign="top"><a id="a92fc249bf93edc975190207e9847030a" name="a92fc249bf93edc975190207e9847030a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cNeck</b></td></tr>
@@ -2230,6 +2239,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>counterWeight</b></td>
 <tr class="separator:ab883bbc14816e2b2ed344b66104dc73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5f8c1f87657d8f228b6c7653a302523"><td class="memItemLeft" align="right" valign="top"><a id="ad5f8c1f87657d8f228b6c7653a302523" name="ad5f8c1f87657d8f228b6c7653a302523"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cPet</b></td></tr>
+<tr class="memdesc:ad5f8c1f87657d8f228b6c7653a302523"><td class="mdescLeft">&#160;</td><td class="mdescRight">The armor shader ID applied to the Pet equipment slot by a dye item (<a class="el" href="class_item.html#ab6e880491db6e30a6dce29b4589bf65a" title="The numerical ID of the armor shader in GameShaders.Armor this item activates when worn in a dye slot...">Item.dye</a>) in the dye slot.<br /></td></tr>
 <tr class="separator:ad5f8c1f87657d8f228b6c7653a302523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bd601ef8c708458b202a2fe72780ccd"><td class="memItemLeft" align="right" valign="top"><a id="a5bd601ef8c708458b202a2fe72780ccd" name="a5bd601ef8c708458b202a2fe72780ccd"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cPortableStool</b></td></tr>
@@ -2724,33 +2734,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasFootball</b></td><
 <tr class="memitem:a532b8c8af55fdc8bcd27d59a86d9fb5a"><td class="memItemLeft" align="right" valign="top"><a id="a532b8c8af55fdc8bcd27d59a86d9fb5a" name="a532b8c8af55fdc8bcd27d59a86d9fb5a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasGardenGnomeNearby</b></td></tr>
 <tr class="separator:a532b8c8af55fdc8bcd27d59a86d9fb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73514779fca8626624501da6cb6af723"><td class="memItemLeft" align="right" valign="top"><a id="a73514779fca8626624501da6cb6af723" name="a73514779fca8626624501da6cb6af723"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Basilisk</b></td></tr>
-<tr class="separator:a73514779fca8626624501da6cb6af723"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8f8d3f4ce083b99af5c6c22ef5d6986"><td class="memItemLeft" align="right" valign="top"><a id="aa8f8d3f4ce083b99af5c6c22ef5d6986" name="aa8f8d3f4ce083b99af5c6c22ef5d6986"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Blizzard</b></td></tr>
-<tr class="separator:aa8f8d3f4ce083b99af5c6c22ef5d6986"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bd4d2a55e004ef7e486af1a68988e43"><td class="memItemLeft" align="right" valign="top"><a id="a6bd4d2a55e004ef7e486af1a68988e43" name="a6bd4d2a55e004ef7e486af1a68988e43"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Cloud</b></td></tr>
-<tr class="separator:a6bd4d2a55e004ef7e486af1a68988e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a006712cab6232c1683cbc5a7cab9f3d8"><td class="memItemLeft" align="right" valign="top"><a id="a006712cab6232c1683cbc5a7cab9f3d8" name="a006712cab6232c1683cbc5a7cab9f3d8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Fart</b></td></tr>
-<tr class="separator:a006712cab6232c1683cbc5a7cab9f3d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac77f5f5eb6a308bfad8105c410290a0d"><td class="memItemLeft" align="right" valign="top"><a id="ac77f5f5eb6a308bfad8105c410290a0d" name="ac77f5f5eb6a308bfad8105c410290a0d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Sail</b></td></tr>
-<tr class="separator:ac77f5f5eb6a308bfad8105c410290a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e3410e549690a29dad97cbd33db1110"><td class="memItemLeft" align="right" valign="top"><a id="a2e3410e549690a29dad97cbd33db1110" name="a2e3410e549690a29dad97cbd33db1110"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Sandstorm</b></td></tr>
-<tr class="separator:a2e3410e549690a29dad97cbd33db1110"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac6fde997e93de3fba59ad7c00af9350"><td class="memItemLeft" align="right" valign="top"><a id="aac6fde997e93de3fba59ad7c00af9350" name="aac6fde997e93de3fba59ad7c00af9350"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Santank</b></td></tr>
-<tr class="separator:aac6fde997e93de3fba59ad7c00af9350"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20897008ead9c2060520d1213fe74ed3"><td class="memItemLeft" align="right" valign="top"><a id="a20897008ead9c2060520d1213fe74ed3" name="a20897008ead9c2060520d1213fe74ed3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_Unicorn</b></td></tr>
-<tr class="separator:a20897008ead9c2060520d1213fe74ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab16676db788bce7e38474628de6de47d"><td class="memItemLeft" align="right" valign="top"><a id="ab16676db788bce7e38474628de6de47d" name="ab16676db788bce7e38474628de6de47d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasJumpOption_WallOfFleshGoat</b></td></tr>
-<tr class="separator:ab16676db788bce7e38474628de6de47d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee700ce062cb24d42c1ba7a2952b7450"><td class="memItemLeft" align="right" valign="top"><a id="aee700ce062cb24d42c1ba7a2952b7450" name="aee700ce062cb24d42c1ba7a2952b7450"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasLuck_LuckyCoin</b></td></tr>
 <tr class="separator:aee700ce062cb24d42c1ba7a2952b7450"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2959,33 +2942,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isHatRackDoll</b></td
 <tr class="memitem:ac863d0472d62d319bc1e6daa5d1f39bb"><td class="memItemLeft" align="right" valign="top"><a id="ac863d0472d62d319bc1e6daa5d1f39bb" name="ac863d0472d62d319bc1e6daa5d1f39bb"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOperatingAnotherEntity</b></td></tr>
 <tr class="separator:ac863d0472d62d319bc1e6daa5d1f39bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19dd001f97370212027d6f5882ff02c1"><td class="memItemLeft" align="right" valign="top"><a id="a19dd001f97370212027d6f5882ff02c1" name="a19dd001f97370212027d6f5882ff02c1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Basilisk</b></td></tr>
-<tr class="separator:a19dd001f97370212027d6f5882ff02c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9dc01aad410d38cbd2f584cf2bd7b0f"><td class="memItemLeft" align="right" valign="top"><a id="ac9dc01aad410d38cbd2f584cf2bd7b0f" name="ac9dc01aad410d38cbd2f584cf2bd7b0f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Blizzard</b></td></tr>
-<tr class="separator:ac9dc01aad410d38cbd2f584cf2bd7b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7c5be36389db8f978ea5817c470c16a"><td class="memItemLeft" align="right" valign="top"><a id="ad7c5be36389db8f978ea5817c470c16a" name="ad7c5be36389db8f978ea5817c470c16a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Cloud</b></td></tr>
-<tr class="separator:ad7c5be36389db8f978ea5817c470c16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cc6235fae5e4f768fab2eb3033e19b9"><td class="memItemLeft" align="right" valign="top"><a id="a6cc6235fae5e4f768fab2eb3033e19b9" name="a6cc6235fae5e4f768fab2eb3033e19b9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Fart</b></td></tr>
-<tr class="separator:a6cc6235fae5e4f768fab2eb3033e19b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07d1b328cbdea222376f88743732ee74"><td class="memItemLeft" align="right" valign="top"><a id="a07d1b328cbdea222376f88743732ee74" name="a07d1b328cbdea222376f88743732ee74"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Sail</b></td></tr>
-<tr class="separator:a07d1b328cbdea222376f88743732ee74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad71dcd93d410431002bdc556644f7ad4"><td class="memItemLeft" align="right" valign="top"><a id="ad71dcd93d410431002bdc556644f7ad4" name="ad71dcd93d410431002bdc556644f7ad4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Sandstorm</b></td></tr>
-<tr class="separator:ad71dcd93d410431002bdc556644f7ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7895dd37b7a45bbb172eeba020c5ff3b"><td class="memItemLeft" align="right" valign="top"><a id="a7895dd37b7a45bbb172eeba020c5ff3b" name="a7895dd37b7a45bbb172eeba020c5ff3b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Santank</b></td></tr>
-<tr class="separator:a7895dd37b7a45bbb172eeba020c5ff3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27d3fe0cd86a3fc6560443e3eafd7fe4"><td class="memItemLeft" align="right" valign="top"><a id="a27d3fe0cd86a3fc6560443e3eafd7fe4" name="a27d3fe0cd86a3fc6560443e3eafd7fe4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_Unicorn</b></td></tr>
-<tr class="separator:a27d3fe0cd86a3fc6560443e3eafd7fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af32eabb504a4df9ca24fd61780aa1337"><td class="memItemLeft" align="right" valign="top"><a id="af32eabb504a4df9ca24fd61780aa1337" name="af32eabb504a4df9ca24fd61780aa1337"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingJump_WallOfFleshGoat</b></td></tr>
-<tr class="separator:af32eabb504a4df9ca24fd61780aa1337"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2e1aecece7c2e43db9360c8bcb35bf0"><td class="memItemLeft" align="right" valign="top"><a id="ae2e1aecece7c2e43db9360c8bcb35bf0" name="ae2e1aecece7c2e43db9360c8bcb35bf0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isPerformingPogostickTricks</b></td></tr>
 <tr class="separator:ae2e1aecece7c2e43db9360c8bcb35bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3890,9 +3846,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>runSoundDelay</b></td>
 <tr class="memitem:ae72773b181fed61b894c7ee6289b5565"><td class="memItemLeft" align="right" valign="top"><a id="ae72773b181fed61b894c7ee6289b5565" name="ae72773b181fed61b894c7ee6289b5565"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>sailDash</b></td></tr>
 <tr class="separator:ae72773b181fed61b894c7ee6289b5565"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab314a4573756572cd67a9fa04c509e95"><td class="memItemLeft" align="right" valign="top"><a id="ab314a4573756572cd67a9fa04c509e95" name="ab314a4573756572cd67a9fa04c509e95"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>sandStorm</b></td></tr>
-<tr class="separator:ab314a4573756572cd67a9fa04c509e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a075e32a6e0436a6ec25ed937f9436663"><td class="memItemLeft" align="right" valign="top"><a id="a075e32a6e0436a6ec25ed937f9436663" name="a075e32a6e0436a6ec25ed937f9436663"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>sapling</b></td></tr>
 <tr class="separator:a075e32a6e0436a6ec25ed937f9436663"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3993,6 +3946,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>shieldParryTimeLeft</b
 <tr class="memitem:aa75f11067b43594a4bf6f44760c8e60d"><td class="memItemLeft" align="right" valign="top"><a id="aa75f11067b43594a4bf6f44760c8e60d" name="aa75f11067b43594a4bf6f44760c8e60d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>shieldRaised</b></td></tr>
 <tr class="separator:aa75f11067b43594a4bf6f44760c8e60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148c76f55f7c7ff033d11c99478fd1a5"><td class="memItemLeft" align="right" valign="top"><a id="a148c76f55f7c7ff033d11c99478fd1a5" name="a148c76f55f7c7ff033d11c99478fd1a5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>shimmerImmune</b></td></tr>
+<tr class="separator:a148c76f55f7c7ff033d11c99478fd1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3148bf8c47712b71f7fdbb08d350dc8"><td class="memItemLeft" align="right" valign="top"><a id="ac3148bf8c47712b71f7fdbb08d350dc8" name="ac3148bf8c47712b71f7fdbb08d350dc8"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>shimmering</b></td></tr>
 <tr class="separator:ac3148bf8c47712b71f7fdbb08d350dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4794,6 +4750,9 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>tileTargetY</b>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:ae24a96800734406d818eb5121aa21a6c"><td class="memItemLeft" align="right" valign="top"><a id="ae24a96800734406d818eb5121aa21a6c" name="ae24a96800734406d818eb5121aa21a6c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFlipper</b><code> [set]</code></td></tr>
+<tr class="separator:ae24a96800734406d818eb5121aa21a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fa0e95446dbfdadd6665973ee84bc02"><td class="memItemLeft" align="right" valign="top"><a id="a5fa0e95446dbfdadd6665973ee84bc02" name="a5fa0e95446dbfdadd6665973ee84bc02"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>adjTile</b><code> [get, set]</code></td></tr>
 <tr class="separator:a5fa0e95446dbfdadd6665973ee84bc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4839,6 +4798,9 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultSize</b><co
 <tr class="memitem:a76c20d10171633a097c8ab53770098ef"><td class="memItemLeft" align="right" valign="top"><a id="a76c20d10171633a097c8ab53770098ef" name="a76c20d10171633a097c8ab53770098ef"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Directions</b><code> [get]</code></td></tr>
 <tr class="separator:a76c20d10171633a097c8ab53770098ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f8054c6d080eae3d844ee86d9a131df"><td class="memItemLeft" align="right" valign="top"><a id="a4f8054c6d080eae3d844ee86d9a131df" name="a4f8054c6d080eae3d844ee86d9a131df"></a>
+Span&lt; <a class="el" href="struct_extra_jump_state.html">ExtraJumpState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraJumps</b><code> [get]</code></td></tr>
+<tr class="separator:a4f8054c6d080eae3d844ee86d9a131df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee535dace4c62e5793a953f066e02037"><td class="memItemLeft" align="right" valign="top"><a id="aee535dace4c62e5793a953f066e02037" name="aee535dace4c62e5793a953f066e02037"></a>
 Vector2?&#160;</td><td class="memItemRight" valign="bottom"><b>HandPosition</b><code> [get]</code></td></tr>
 <tr class="separator:aee535dace4c62e5793a953f066e02037"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4934,6 +4896,9 @@ bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>oldAdjTile</b><code
 <tr class="memitem:a77a53a92830dc4030968171eceac4adc"><td class="memItemLeft" align="right" valign="top"><a id="a77a53a92830dc4030968171eceac4adc" name="a77a53a92830dc4030968171eceac4adc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>PortalPhysicsEnabled</b><code> [get]</code></td></tr>
 <tr class="separator:a77a53a92830dc4030968171eceac4adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab314a4573756572cd67a9fa04c509e95"><td class="memItemLeft" align="right" valign="top"><a id="ab314a4573756572cd67a9fa04c509e95" name="ab314a4573756572cd67a9fa04c509e95"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>sandStorm</b><code> [get, set]</code></td></tr>
+<tr class="separator:ab314a4573756572cd67a9fa04c509e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb71b90244bcb0979a1016e72e758a24"><td class="memItemLeft" align="right" valign="top"><a id="adb71b90244bcb0979a1016e72e758a24" name="adb71b90244bcb0979a1016e72e758a24"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShoppingZone_AnyBiome</b><code> [get]</code></td></tr>
 <tr class="separator:adb71b90244bcb0979a1016e72e758a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5818,6 +5783,63 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The item grab range of the player, in pixels.</dd></dl>
+
+</div>
+</div>
+<a id="ac0245437bd61497869b9f4f587b388c6" name="ac0245437bd61497869b9f4f587b388c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0245437bd61497869b9f4f587b388c6">&#9670;&nbsp;</a></span>GetJumpState&lt; T &gt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ref <a class="el" href="struct_extra_jump_state.html">ExtraJumpState</a> Player.GetJumpState&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_extra_jump.html">ExtraJump</a></em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ref</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GetJumpState</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ModContent.GetInstance&lt;T&gt;()</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
+<a id="a2e692bb8c0ca37f228d4847fe74ca555" name="a2e692bb8c0ca37f228d4847fe74ca555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e692bb8c0ca37f228d4847fe74ca555">&#9670;&nbsp;</a></span>GetJumpState&lt; T &gt;() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ref <a class="el" href="struct_extra_jump_state.html">ExtraJumpState</a> Player.GetJumpState&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>baseInstance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_extra_jump.html">ExtraJump</a></em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ref</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>extraJumps</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>baseInstance.Type</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
 
 </div>
 </div>
@@ -6725,6 +6747,34 @@ Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a12b29ebfe9672d1317b9534c874c6e0e" name="a12b29ebfe9672d1317b9534c874c6e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12b29ebfe9672d1317b9534c874c6e0e">&#9670;&nbsp;</a></span>StopExtraJumpInProgress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Player.StopExtraJumpInProgress </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cancels any extra jump in progress.<br  />
+ Sets all <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">ExtraJumpState.Active</a> flags to <code>false</code> and calls OnExtraJumpEnded hooks.<br  />
+ Also sets jump to 0 if a an extra jump was active.<br  />
+<br  />
+ </p>
+<p >Used by vanilla when performing an action which would cancel jumping, such as grappling, grabbing a rope or getting frozen.<br  />
+<br  />
+</p>
+<p >To prevent the use of remaining jumps, use <a class="el" href="class_player.html#a52ea38bbdc0320b5aca184252442a471" title="Sets the ExtraJumpState.Available flag for all extra jumps to false.  If you want to disable an extra...">ConsumeAllExtraJumps</a> or <a class="el" href="class_player.html#a17723372fe66f95973d2f455b0981cb1" title="When true, all extra jumps will be blocked, including Flipper usage.  Setting this field to true will...">blockExtraJumps</a>.<br  />
+ To cancel a regular jump as well, do <code>Player.jump = 0;</code> </p>
 
 </div>
 </div>

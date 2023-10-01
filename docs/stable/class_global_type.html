@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -102,15 +102,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab5e97b8867e8ef797fa2b0d15c962be0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to control whether or not this global should be run on the provided entity instance. <br  />
   <a href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0">More...</a><br /></td></tr>
 <tr class="separator:ab5e97b8867e8ef797fa2b0d15c962be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad342288414184c6c96865f48ab00f7fb"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">Clone</a> (TEntity from, TEntity to)</td></tr>
-<tr class="memdesc:ad342288414184c6c96865f48ab00f7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">More...</a><br /></td></tr>
-<tr class="separator:ad342288414184c6c96865f48ab00f7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc54b91085b8ef8769f3b309087c8fb5"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">Clone</a> (TEntity? from, TEntity to)</td></tr>
+<tr class="memdesc:afc54b91085b8ef8769f3b309087c8fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">More...</a><br /></td></tr>
+<tr class="separator:afc54b91085b8ef8769f3b309087c8fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a090a7d8ee299e93dc2ffc29dce08077e"><td class="memItemLeft" align="right" valign="top"><a id="a090a7d8ee299e93dc2ffc29dce08077e" name="a090a7d8ee299e93dc2ffc29dce08077e"></a>
 TGlobal&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b> (TEntity entity)</td></tr>
 <tr class="separator:a090a7d8ee299e93dc2ffc29dce08077e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30da78ae6788e76ecde97732fda4bce8"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">NewInstance</a> (TEntity target)</td></tr>
-<tr class="memdesc:a30da78ae6788e76ecde97732fda4bce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true  <a href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">More...</a><br /></td></tr>
-<tr class="separator:a30da78ae6788e76ecde97732fda4bce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e23130d01cf1716f18fee6129499bd2"><td class="memItemLeft" align="right" valign="top">virtual ? TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">NewInstance</a> (TEntity target)</td></tr>
+<tr class="memdesc:a2e23130d01cf1716f18fee6129499bd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true. <br  />
+ <br  />
+ Returning null is permitted but <b>not recommended</b> over <code>AppliesToEntity</code> for performance reasons. <br  />
+ Only return null when the global is disabled based on some runtime property (eg world seed).  <a href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">More...</a><br /></td></tr>
+<tr class="separator:a2e23130d01cf1716f18fee6129499bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a271c6018622a55db24bf270e604d4edb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a271c6018622a55db24bf270e604d4edb">SetDefaults</a> (TEntity entity)</td></tr>
 <tr class="memdesc:a271c6018622a55db24bf270e604d4edb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the properties of any and every instance that gets created.  <a href="class_global_type.html#a271c6018622a55db24bf270e604d4edb">More...</a><br /></td></tr>
 <tr class="separator:a271c6018622a55db24bf270e604d4edb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,15 +122,18 @@ TGlobal&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b> (TEnt
 <tr class="memdesc:ab5e97b8867e8ef797fa2b0d15c962be0 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to control whether or not this global should be run on the provided entity instance. <br  />
   <a href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0">More...</a><br /></td></tr>
 <tr class="separator:ab5e97b8867e8ef797fa2b0d15c962be0 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad342288414184c6c96865f48ab00f7fb inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">Clone</a> (TEntity from, TEntity to)</td></tr>
-<tr class="memdesc:ad342288414184c6c96865f48ab00f7fb inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">More...</a><br /></td></tr>
-<tr class="separator:ad342288414184c6c96865f48ab00f7fb inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc54b91085b8ef8769f3b309087c8fb5 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">Clone</a> (TEntity? from, TEntity to)</td></tr>
+<tr class="memdesc:afc54b91085b8ef8769f3b309087c8fb5 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">More...</a><br /></td></tr>
+<tr class="separator:afc54b91085b8ef8769f3b309087c8fb5 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a090a7d8ee299e93dc2ffc29dce08077e inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a090a7d8ee299e93dc2ffc29dce08077e" name="a090a7d8ee299e93dc2ffc29dce08077e"></a>
 TGlobal&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b> (TEntity entity)</td></tr>
 <tr class="separator:a090a7d8ee299e93dc2ffc29dce08077e inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30da78ae6788e76ecde97732fda4bce8 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">NewInstance</a> (TEntity target)</td></tr>
-<tr class="memdesc:a30da78ae6788e76ecde97732fda4bce8 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true  <a href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">More...</a><br /></td></tr>
-<tr class="separator:a30da78ae6788e76ecde97732fda4bce8 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e23130d01cf1716f18fee6129499bd2 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual ? TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">NewInstance</a> (TEntity target)</td></tr>
+<tr class="memdesc:a2e23130d01cf1716f18fee6129499bd2 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true. <br  />
+ <br  />
+ Returning null is permitted but <b>not recommended</b> over <code>AppliesToEntity</code> for performance reasons. <br  />
+ Only return null when the global is disabled based on some runtime property (eg world seed).  <a href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">More...</a><br /></td></tr>
+<tr class="separator:a2e23130d01cf1716f18fee6129499bd2 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a271c6018622a55db24bf270e604d4edb inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a271c6018622a55db24bf270e604d4edb">SetDefaults</a> (TEntity entity)</td></tr>
 <tr class="memdesc:a271c6018622a55db24bf270e604d4edb inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the properties of any and every instance that gets created.  <a href="class_global_type.html#a271c6018622a55db24bf270e604d4edb">More...</a><br /></td></tr>
 <tr class="separator:a271c6018622a55db24bf270e604d4edb inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,12 +298,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="memitem:a8aa049c6973320e8314d4cab2d82c5cb"><td class="memItemLeft" align="right" valign="top"><a id="a8aa049c6973320e8314d4cab2d82c5cb" name="a8aa049c6973320e8314d4cab2d82c5cb"></a>
 short&#160;</td><td class="memItemRight" valign="bottom"><b>PerEntityIndex</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8aa049c6973320e8314d4cab2d82c5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array <br  />
- -1 if this global does not have a <a class="el" href="class_global_type.html#a32d984d3fe4e197e3259a7dc3824e8cb" title="Whether this global has InstancePerEntity or can be conditionally applied (overrides GlobalType&lt;TEnti...">SlotPerEntity</a> <br /></td></tr>
+ -1 if this global does not have a <a class="el" href="class_global_type.html#a32d984d3fe4e197e3259a7dc3824e8cb" title="If true, the global will be assigned a PerEntityIndex at load time, which can be used to access the i...">SlotPerEntity</a> <br /></td></tr>
 <tr class="separator:a8aa049c6973320e8314d4cab2d82c5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d984d3fe4e197e3259a7dc3824e8cb"><td class="memItemLeft" align="right" valign="top"><a id="a32d984d3fe4e197e3259a7dc3824e8cb" name="a32d984d3fe4e197e3259a7dc3824e8cb"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>SlotPerEntity</b><code> [get]</code></td></tr>
-<tr class="memdesc:a32d984d3fe4e197e3259a7dc3824e8cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this global has InstancePerEntity or can be conditionally applied (overrides <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity(TEntity, bool)</a>) <br  />
- If true, the global will be assigned a <a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb" title="Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array   -1 if this global does no...">PerEntityIndex</a> at load time, which can be used to access the instance in the IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array. <br  />
+<tr class="memdesc:a32d984d3fe4e197e3259a7dc3824e8cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the global will be assigned a <a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb" title="Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array   -1 if this global does no...">PerEntityIndex</a> at load time, which can be used to access the instance in the IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array. <br  />
  If false, the global will be a singleton applying to all entities <br /></td></tr>
 <tr class="separator:a32d984d3fe4e197e3259a7dc3824e8cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d522f091015ff89f0840eaa0df53a28"><td class="memItemLeft" align="right" valign="top"><a id="a7d522f091015ff89f0840eaa0df53a28" name="a7d522f091015ff89f0840eaa0df53a28"></a>
@@ -307,7 +312,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 <tr class="inherit_header properties_class_global_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_global_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_global_type.html">GlobalType&lt; TGlobal &gt;</a></td></tr>
 <tr class="memitem:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a3edb6a3637f175e4c77aeb823449d40f" name="a3edb6a3637f175e4c77aeb823449d40f"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloneNewInstances</b><code> [get]</code></td></tr>
-<tr class="memdesc:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
+<tr class="memdesc:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
 <tr class="separator:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0240fc42f87dcf06829f05808a29dcbf inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a0240fc42f87dcf06829f05808a29dcbf" name="a0240fc42f87dcf06829f05808a29dcbf"></a>
 abstract bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConditionallyAppliesToEntities</b><code> [get]</code></td></tr>
@@ -330,12 +335,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="memitem:a8aa049c6973320e8314d4cab2d82c5cb inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a8aa049c6973320e8314d4cab2d82c5cb" name="a8aa049c6973320e8314d4cab2d82c5cb"></a>
 short&#160;</td><td class="memItemRight" valign="bottom"><b>PerEntityIndex</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8aa049c6973320e8314d4cab2d82c5cb inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array <br  />
- -1 if this global does not have a <a class="el" href="class_global_type.html#a32d984d3fe4e197e3259a7dc3824e8cb" title="Whether this global has InstancePerEntity or can be conditionally applied (overrides GlobalType&lt;TEnti...">SlotPerEntity</a> <br /></td></tr>
+ -1 if this global does not have a <a class="el" href="class_global_type.html#a32d984d3fe4e197e3259a7dc3824e8cb" title="If true, the global will be assigned a PerEntityIndex at load time, which can be used to access the i...">SlotPerEntity</a> <br /></td></tr>
 <tr class="separator:a8aa049c6973320e8314d4cab2d82c5cb inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a32d984d3fe4e197e3259a7dc3824e8cb" name="a32d984d3fe4e197e3259a7dc3824e8cb"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>SlotPerEntity</b><code> [get]</code></td></tr>
-<tr class="memdesc:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this global has <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">InstancePerEntity</a> or can be conditionally applied (overrides <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity(TEntity, bool)</a>) <br  />
- If true, the global will be assigned a <a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb" title="Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array   -1 if this global does no...">PerEntityIndex</a> at load time, which can be used to access the instance in the IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array. <br  />
+<tr class="memdesc:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the global will be assigned a <a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb" title="Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array   -1 if this global does no...">PerEntityIndex</a> at load time, which can be used to access the instance in the IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array. <br  />
  If false, the global will be a singleton applying to all entities <br /></td></tr>
 <tr class="separator:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d522f091015ff89f0840eaa0df53a28 inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a7d522f091015ff89f0840eaa0df53a28" name="a7d522f091015ff89f0840eaa0df53a28"></a>
@@ -450,8 +454,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 
 </div>
 </div>
-<a id="ad342288414184c6c96865f48ab00f7fb" name="ad342288414184c6c96865f48ab00f7fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad342288414184c6c96865f48ab00f7fb">&#9670;&nbsp;</a></span>Clone()</h2>
+<a id="afc54b91085b8ef8769f3b309087c8fb5" name="afc54b91085b8ef8769f3b309087c8fb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc54b91085b8ef8769f3b309087c8fb5">&#9670;&nbsp;</a></span>Clone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -462,7 +466,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
         <tr>
           <td class="memname">virtual TGlobal <a class="el" href="class_global_type.html">GlobalType</a>&lt; TEntity, TGlobal &gt;.Clone </td>
           <td>(</td>
-          <td class="paramtype">TEntity&#160;</td>
+          <td class="paramtype">TEntity?&#160;</td>
           <td class="paramname"><em>from</em>, </td>
         </tr>
         <tr>
@@ -487,16 +491,16 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <p>Create a copy of this instanced global. Called when an entity is cloned. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">from</td><td>The entity being cloned</td></tr>
+    <tr><td class="paramname">from</td><td>The entity being cloned. May be null if <a class="el" href="class_global_type.html#a3edb6a3637f175e4c77aeb823449d40f" title="Whether to create new instances of this mod type via Clone or via the default constructor Defaults to...">CloneNewInstances</a> is true (via call from <a class="el" href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2" title="Only called if GlobalType&lt;TGlobal&gt;.InstancePerEntity and AppliesToEntity(target , ....">NewInstance(TEntity)</a>)</td></tr>
     <tr><td class="paramname">to</td><td>The new clone of the entity</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A clone of this global</dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">GlobalType&lt; TGlobal &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">GlobalType&lt; TGlobal &gt;</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">GlobalType&lt; TEntity, TGlobal &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">GlobalType&lt; TEntity, TGlobal &gt;</a>.</p>
 
 </div>
 </div>
@@ -619,8 +623,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 
 </div>
 </div>
-<a id="a30da78ae6788e76ecde97732fda4bce8" name="a30da78ae6788e76ecde97732fda4bce8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30da78ae6788e76ecde97732fda4bce8">&#9670;&nbsp;</a></span>NewInstance()</h2>
+<a id="a2e23130d01cf1716f18fee6129499bd2" name="a2e23130d01cf1716f18fee6129499bd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e23130d01cf1716f18fee6129499bd2">&#9670;&nbsp;</a></span>NewInstance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -629,7 +633,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual TGlobal <a class="el" href="class_global_type.html">GlobalType</a>&lt; TEntity, TGlobal &gt;.NewInstance </td>
+          <td class="memname">virtual ? TGlobal <a class="el" href="class_global_type.html">GlobalType</a>&lt; TEntity, TGlobal &gt;.NewInstance </td>
           <td>(</td>
           <td class="paramtype">TEntity&#160;</td>
           <td class="paramname"><em>target</em></td><td>)</td>
@@ -643,7 +647,10 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true </p>
+<p>Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true. <br  />
+ <br  />
+ Returning null is permitted but <b>not recommended</b> over <code>AppliesToEntity</code> for performance reasons. <br  />
+ Only return null when the global is disabled based on some runtime property (eg world seed). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The entity instance the global is being instantiated for</td></tr>
@@ -652,9 +659,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">GlobalType&lt; TGlobal &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">GlobalType&lt; TGlobal &gt;</a>.</p>
 
-<p>Reimplemented in <a class="el" href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">GlobalType&lt; TEntity, TGlobal &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">GlobalType&lt; TEntity, TGlobal &gt;</a>.</p>
 
 </div>
 </div>

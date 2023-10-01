@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -95,7 +95,9 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 <li>MagicSummonHybrid&#160;:&#160;<a class="el" href="class_damage_class.html#ae3f7b44cdc2b1ffe85ecb066ca6180f7">DamageClass</a></li>
 <li>MagnetSphere&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#aff97e9ab2685355956831cfda121c6a2">ProjAIStyleID</a></li>
 <li>Magnifiers&#160;:&#160;<a class="el" href="class_cursor_override_i_d.html#a25e099af35fac6ca1f05a2282c253d57">CursorOverrideID</a></li>
+<li>MakeLocalPlayerEmote()&#160;:&#160;<a class="el" href="class_emote_bubble.html#acbee0d23cc137d7bf7a08ce441e3eb28">EmoteBubble</a></li>
 <li>makeNPC&#160;:&#160;<a class="el" href="class_item.html#a15ee11cea8fa8a34361bf437ba32f987">Item</a></li>
+<li>MakePlayerEmote()&#160;:&#160;<a class="el" href="class_emote_bubble.html#acebe3b2cfac218777753f0c14891b1a7">EmoteBubble</a></li>
 <li>Male&#160;:&#160;<a class="el" href="class_player_variant_i_d_1_1_sets.html#a0b2b5d05bedba2ad7931b927984953ea">PlayerVariantID.Sets</a></li>
 <li>MaleToFemaleID&#160;:&#160;<a class="el" href="class_armor_i_ds_1_1_shoe_1_1_sets.html#ab41b85a961354813e379fc25c7eac790">ArmorIDs.Shoe.Sets</a></li>
 <li>mana&#160;:&#160;<a class="el" href="class_item.html#a58c1d23d287efddbfcf7c208af3b2395">Item</a></li>
@@ -170,11 +172,13 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 <li>ModifyCollisionData()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a841136ffed6b0a17595b4ea11200407e">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">ModNPC</a></li>
 <li>ModifyDamageHitbox()&#160;:&#160;<a class="el" href="class_global_projectile.html#a95833a5b7ef90ea821dba19c39cf498c">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#a35179410325aca3d1066c580bef14b73">ModProjectile</a></li>
 <li>ModifyDefaultSwapSlot()&#160;:&#160;<a class="el" href="class_accessory_slot_loader.html#a4698f69afa126a264e2f1fae7e3a9920">AccessorySlotLoader</a>, <a class="el" href="class_mod_accessory_slot.html#a4565fff40451022eb34a727f48c469a2">ModAccessorySlot</a></li>
-<li>ModifyDisplayColor()&#160;:&#160;<a class="el" href="class_global_info_display.html#a6957256afa1c234d9689f17387fdf51c">GlobalInfoDisplay</a></li>
+<li>ModifyDisplayColor()&#160;:&#160;<a class="el" href="class_global_info_display.html#a1a7398a083f1decf88b55d385b4ddd45">GlobalInfoDisplay</a></li>
 <li>ModifyDisplayName()&#160;:&#160;<a class="el" href="class_global_info_display.html#af509cba5c53ec9136786f6a1e172bce9">GlobalInfoDisplay</a></li>
+<li>ModifyDisplayParameters()&#160;:&#160;<a class="el" href="class_global_info_display.html#a5f92782d745e1daa5b3fec925acf2055">GlobalInfoDisplay</a></li>
 <li>ModifyDisplayValue()&#160;:&#160;<a class="el" href="class_global_info_display.html#ae596e684e0958c9d418688787d9dc9a2">GlobalInfoDisplay</a></li>
 <li>ModifyDrawInfo()&#160;:&#160;<a class="el" href="class_mod_player.html#a28202e1fe8077dea8de0d427d00cf9d7">ModPlayer</a></li>
 <li>ModifyDrawLayerOrdering()&#160;:&#160;<a class="el" href="class_mod_player.html#a94cd29d983860c0570caa16ef0a09600">ModPlayer</a></li>
+<li>ModifyExtraJumpDurationMultiplier()&#160;:&#160;<a class="el" href="class_mod_player.html#aba9d25f451910d87e2c2811ce7f5bcde">ModPlayer</a></li>
 <li>ModifyFarFades()&#160;:&#160;<a class="el" href="class_mod_surface_background_style.html#a68fb2a373add71fca58b01bdafc032fe">ModSurfaceBackgroundStyle</a></li>
 <li>ModifyFarSurfaceFades()&#160;:&#160;<a class="el" href="class_global_background_style.html#ab5b38851c67c5605350b09de84a34e45">GlobalBackgroundStyle</a></li>
 <li>ModifyFishingAttempt()&#160;:&#160;<a class="el" href="class_mod_player.html#a6f1888c345019158a7c25485b0208b26">ModPlayer</a></li>
@@ -258,6 +262,8 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 <li>MouseOverFar()&#160;:&#160;<a class="el" href="class_global_tile.html#a86355a0bac4b8cfcc6e3d5990a4c82bf">GlobalTile</a>, <a class="el" href="class_mod_tile.html#a0724d779606ce78efa790344f8434678">ModTile</a></li>
 <li>MouseRectangle&#160;:&#160;<a class="el" href="struct_buff_draw_params.html#a23153311248df2a8b45a30c7b13b80b5">BuffDrawParams</a></li>
 <li>MouseScreen&#160;:&#160;<a class="el" href="class_main.html#a4061437db22d405c4ca0303118ddc190">Main</a></li>
+<li>mouseTextColor&#160;:&#160;<a class="el" href="class_main.html#a840ecd742352ec5b2328759d7eabca22">Main</a></li>
+<li>MouseTextColorReal&#160;:&#160;<a class="el" href="class_main.html#ac31657e96915be3b51540aa9e1c131d5">Main</a></li>
 <li>MouseWorld&#160;:&#160;<a class="el" href="class_main.html#a606125db0209ce97a04b55448fac79c9">Main</a></li>
 <li>MoveShort&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#a3e846dd95d935448182cbe4d342ce3d6">ProjAIStyleID</a></li>
 <li>moveSpeed&#160;:&#160;<a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb">Player</a></li>

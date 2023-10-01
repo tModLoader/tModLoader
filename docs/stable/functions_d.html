@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>DamageVar()&#160;:&#160;<a class="el" href="class_main.html#a4f02e6297c668111515ccde9946f51a3">Main</a></li>
 <li>DamageVariationScale&#160;:&#160;<a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a60d31d35ff6f6a49b071d355bfd6f64e">NPC.HitModifiers</a></li>
 <li>DangerDetectRange&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a60b67bfab7ef4ac6f5d5e358a50c1ae5">NPCID.Sets</a></li>
+<li>Dangers&#160;:&#160;<a class="el" href="class_emote_i_d_1_1_category.html#adffe3d2b871e0b53fe59678fbb6a4787">EmoteID.Category</a></li>
 <li>DangerThatPreventsOtherDangers&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#ada11bdb09a7a6392e42e9ec02687f5c3">NPCID.Sets</a></li>
 <li>dash&#160;:&#160;<a class="el" href="class_player.html#aa822f8427c775a6267fd12eaba4daf2b">Player</a></li>
 <li>dashDelay&#160;:&#160;<a class="el" href="class_player.html#a4814a8539146fccabe91b4720cbf1c97">Player</a></li>
@@ -121,7 +122,6 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>DD2Victory&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#ad072a41424d9611e1aa0782abdcb0444">ProjAIStyleID</a></li>
 <li>DeathSound&#160;:&#160;<a class="el" href="class_n_p_c.html#acc33ee907bc411928c23823901c7dcd4">NPC</a></li>
 <li>debuff&#160;:&#160;<a class="el" href="class_main.html#a59423ffeea5a4ed3c5cc9e2a9d1d2a68">Main</a></li>
-<li>DebuffImmunitySets&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a8fac041e663b2e39a1682bd1eeb2c818">NPCID.Sets</a></li>
 <li>DecraftAvailable()&#160;:&#160;<a class="el" href="class_recipe_loader.html#aa917a2e31a58005a7175adcf752883d0">RecipeLoader</a></li>
 <li>Default&#160;:&#160;<a class="el" href="class_damage_class.html#aeb1da59c707bbc5621253ac7c15ad56f">DamageClass</a></li>
 <li>DefaultContainerName()&#160;:&#160;<a class="el" href="class_mod_tile.html#a17cbd651fec01999f1512cf6c67b5c2d">ModTile</a>, <a class="el" href="class_tile_loader.html#a0a521ef33273565fff0b6ce97f616d66">TileLoader</a>, <a class="el" href="class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51">UnloadedChest</a></li>
@@ -168,6 +168,7 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>DigDeeperForUnderworld&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#aea07c4df0eb7339947948c76d7c0ea2b">GameTipID</a></li>
 <li>Direction&#160;:&#160;<a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7">NPCID.Sets.NPCBestiaryDrawModifiers</a></li>
 <li>DirectionOffset&#160;:&#160;<a class="el" href="struct_tile_resting_info.html#a39d423f6c3955e995a96f3c79a4f7059">TileRestingInfo</a></li>
+<li>Disable()&#160;:&#160;<a class="el" href="struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd">ExtraJumpState</a></li>
 <li>DisableAutomaticPlaceableDrop&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a6ead921d2646f54442ddc30dc4d320a0">ItemID.Sets</a></li>
 <li>DisableBeltAccDraw&#160;:&#160;<a class="el" href="class_armor_i_ds_1_1_body_1_1_sets.html#abaa4d5457537a93f106b61ce4475945e">ArmorIDs.Body.Sets</a></li>
 <li>DisableCrit()&#160;:&#160;<a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a2a299a33d0fbe711818cf22c6d561fec">NPC.HitModifiers</a></li>
@@ -181,13 +182,15 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>DisableSound()&#160;:&#160;<a class="el" href="struct_player_1_1_hurt_modifiers.html#a4eb3681039301ffd4896697254a99afa">Player.HurtModifiers</a></li>
 <li>DisappearSpeed&#160;:&#160;<a class="el" href="class_gore_i_d_1_1_sets.html#a6a46814572bb797343e30f27bf8852ac">GoreID.Sets</a></li>
 <li>DisappearSpeedAlpha&#160;:&#160;<a class="el" href="class_gore_i_d_1_1_sets.html#a83ad7f1713ff91ab6c9e0c976fdc7389">GoreID.Sets</a></li>
+<li>DiscoColor&#160;:&#160;<a class="el" href="class_main.html#a34866c5522dd2830f1e21306624a54c8">Main</a></li>
 <li>Dismount()&#160;:&#160;<a class="el" href="class_mod_mount.html#a69d8c8cdda412bcc7da5edb02105d0f5">ModMount</a>, <a class="el" href="class_mount_loader.html#ae72a118282580739074afb6fc03a1088">MountLoader</a></li>
 <li>DismountsPlayersOnHit&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#a869092048447a3e8e237ec4981754090">ProjectileID.Sets</a></li>
+<li>DisplayColorTexture()&#160;:&#160;<a class="el" href="class_block_swap_builder_toggle.html#adb826a06cf2ae110475e583d7ad07bed">BlockSwapBuilderToggle</a>, <a class="el" href="class_builder_toggle.html#a91163893b0d74991ebb3141e0a97250f">BuilderToggle</a>, <a class="el" href="class_torch_biome_builder_toggle.html#a898c91b132267b71bfc6d0a8e5773ad4">TorchBiomeBuilderToggle</a>, <a class="el" href="class_vanilla_builder_toggle.html#ac040bea2eb1e6a3002cf1def331c8535">VanillaBuilderToggle</a>, <a class="el" href="class_wire_visibility_builder_toggle.html#aeee0f4935ee5030488a86fe9e733d9c5">WireVisibilityBuilderToggle</a></li>
 <li>DisplayedName&#160;:&#160;<a class="el" href="class_mod_resource_display_set.html#ad2403e42b4234886d1fd01d4cb8dd564">ModResourceDisplaySet</a></li>
 <li>DisplayHoverText()&#160;:&#160;<a class="el" href="class_mod_resource_overlay.html#ac6122d587b27561eeb048b8e66fe7e3f">ModResourceOverlay</a></li>
 <li>DisplayName&#160;:&#160;<a class="el" href="class_damage_class.html#ab1146bc8248cf1960ed4d53e96c4912f">DamageClass</a>, <a class="el" href="class_info_display.html#ae84cd7f72e3961efdaa6b6e4b8d76983">InfoDisplay</a>, <a class="el" href="class_mod.html#aef45efd720eec50524fba05d7466f5d7">Mod</a>, <a class="el" href="class_mod_biome.html#ab727aa7efb5f1428de536388e0342a35">ModBiome</a>, <a class="el" href="class_mod_boss_bar_style.html#a163a3330a3cf0fa00be6d6a6c8ae7743">ModBossBarStyle</a>, <a class="el" href="class_mod_buff.html#a4afe137031293a85527798944e486e86">ModBuff</a>, <a class="el" href="class_mod_item.html#adf748ca73e805eeb4ad1ec42d7f102d8">ModItem</a>, <a class="el" href="class_mod_menu.html#aa949e673babbe63f2ef9dd5263adb756">ModMenu</a>, <a class="el" href="class_mod_n_p_c.html#a6e58015c1877da49930f0de7d4dbbf68">ModNPC</a>, <a class="el" href="class_mod_projectile.html#aac5223d9c5925a081a727535131f67fa">ModProjectile</a>, <a class="el" href="class_mod_resource_display_set.html#a3c59316eb7c01221da873ef2ce72949d">ModResourceDisplaySet</a></li>
 <li>DisplaySet&#160;:&#160;<a class="el" href="struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1">ResourceOverlayDrawContext</a></li>
-<li>DisplayValue()&#160;:&#160;<a class="el" href="class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a">InfoDisplay</a>, <a class="el" href="class_vanilla_info_display.html#ad7b52a0aaf6b6b0e2c63076b9cd8314c">VanillaInfoDisplay</a></li>
+<li>DisplayValue()&#160;:&#160;<a class="el" href="class_auto_actuate_builder_toggle.html#a1c220982ce5c7cec1f4ca835472f0e53">AutoActuateBuilderToggle</a>, <a class="el" href="class_auto_paint_builder_toggle.html#a39441e8b8a393b7c8e4dc0b83e51583d">AutoPaintBuilderToggle</a>, <a class="el" href="class_block_swap_builder_toggle.html#ab468dbec09681265a0c631573ded4ba6">BlockSwapBuilderToggle</a>, <a class="el" href="class_builder_toggle.html#aa4ef27b4b875408f3c30f426634073a0">BuilderToggle</a>, <a class="el" href="class_hide_all_wires_builder_toggle.html#ad883422cf58f38ab01c41f8f0b359914">HideAllWiresBuilderToggle</a>, <a class="el" href="class_info_display.html#abb354080de326a4a37588fe8e3acba08">InfoDisplay</a>, <a class="el" href="class_ruler_grid_builder_toggle.html#aded9a80ddf83819e432959717bb422fd">RulerGridBuilderToggle</a>, <a class="el" href="class_ruler_line_builder_toggle.html#af43951a953389357c939806d6ff66547">RulerLineBuilderToggle</a>, <a class="el" href="class_torch_biome_builder_toggle.html#a754a091b7c78f427439089bc467c57be">TorchBiomeBuilderToggle</a>, <a class="el" href="class_vanilla_builder_toggle.html#aef8733daa432b3b305d9f6686d74f8c8">VanillaBuilderToggle</a>, <a class="el" href="class_vanilla_info_display.html#ab6ff823c3bc6399f0e8def372af34700">VanillaInfoDisplay</a>, <a class="el" href="class_wire_visibility_builder_toggle.html#a6f40afb5cf6bc01b17b779b274e0d276">WireVisibilityBuilderToggle</a></li>
 <li>Dodgeable&#160;:&#160;<a class="el" href="struct_player_1_1_hurt_info.html#a932995c5c67ad2875496015ab83c0893">Player.HurtInfo</a>, <a class="el" href="struct_player_1_1_hurt_modifiers.html#a32fd83a16f941de2d034462d26f76ee1">Player.HurtModifiers</a></li>
 <li>DoesntGetReplacedWithTileReplacement&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#a40fcb33e079653d8b942406323a72370">TileID.Sets</a></li>
 <li>DoesntPlaceWithTileReplacement&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#a74c822a6ceca1ff049b828022f023805">TileID.Sets</a></li>

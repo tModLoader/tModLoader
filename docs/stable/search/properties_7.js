@@ -11,5 +11,6 @@ var searchData=
   ['hitdirection_8',['HitDirection',['../struct_n_p_c_1_1_hit_modifiers.html#a5391fd24824e040dc7dc7931c3b01ed9',1,'NPC.HitModifiers.HitDirection()'],['../struct_player_1_1_hurt_modifiers.html#a45de05587597f4746aa93b9325f5ec6c',1,'Player.HurtModifiers.HitDirection()']]],
   ['hitdirectionoverride_9',['HitDirectionOverride',['../struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf',1,'NPC.HitModifiers.HitDirectionOverride()'],['../struct_player_1_1_hurt_modifiers.html#a873d28ec48235b3cc3c4489cd9629133',1,'Player.HurtModifiers.HitDirectionOverride()']]],
   ['hitsound_10',['HitSound',['../class_mod_block_type.html#aaf6985e10e0ba2cc9e28729604013f0d',1,'ModBlockType']]],
-  ['hovername_11',['HoverName',['../class_item.html#a2344c936885a4f4b07e3c7055118f070',1,'Item']]]
+  ['hovername_11',['HoverName',['../class_item.html#a2344c936885a4f4b07e3c7055118f070',1,'Item']]],
+  ['hovertexture_12',['HoverTexture',['../class_builder_toggle.html#ac5dfea70b309c652c505bf4f8de4fa9e',1,'BuilderToggle.HoverTexture()'],['../class_info_display.html#a8eabe8c9419823d27aca515d12e6030b',1,'InfoDisplay.HoverTexture()']]]
 ];

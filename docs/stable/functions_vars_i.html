@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -106,7 +106,9 @@ $(document).ready(function(){initNavTree('functions_vars_i.html',''); initResiza
 <li>ignoreWater&#160;:&#160;<a class="el" href="class_projectile.html#a6f5ae5824573cdee738d6d68996d7612">Projectile</a></li>
 <li>ImmediatelyUpdatesNPCBuffFlags&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#a0aed86a0717c8b9a5a4f4375a615aca7">ProjectileID.Sets</a></li>
 <li>immune&#160;:&#160;<a class="el" href="class_n_p_c.html#aa4d5cb97dff20ac9a01c5915e4f75837">NPC</a></li>
+<li>ImmuneToAllBuffs&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a61ba2efd1da00acfce242144b569382d">NPCID.Sets</a></li>
 <li>ImmuneToAllBuffsThatAreNotWhips&#160;:&#160;<a class="el" href="class_n_p_c_debuff_immunity_data.html#a09c62858d2383537df08de4da51bed9b">NPCDebuffImmunityData</a></li>
+<li>ImmuneToRegularBuffs&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#aa75bcc108bf7911dfca3171f60adae7e">NPCID.Sets</a></li>
 <li>ImmuneToWhips&#160;:&#160;<a class="el" href="class_n_p_c_debuff_immunity_data.html#a164ab7150ef00bc2a2786c38a8da1afa">NPCDebuffImmunityData</a></li>
 <li>IncludeCapeFrontAndBack&#160;:&#160;<a class="el" href="class_armor_i_ds_1_1_body_1_1_sets.html#add2e98f63084cf9f4deb5cba62bb3bc9">ArmorIDs.Body.Sets</a></li>
 <li>IncludedCapeBack&#160;:&#160;<a class="el" href="class_armor_i_ds_1_1_body_1_1_sets.html#a057040f613b7406336de788fbf0eb98b">ArmorIDs.Body.Sets</a></li>
@@ -123,6 +125,7 @@ $(document).ready(function(){initNavTree('functions_vars_i.html',''); initResiza
 <li>instanced&#160;:&#160;<a class="el" href="class_item.html#a721ada78521fd509b1a073844e797cb0">Item</a></li>
 <li>InstantKill&#160;:&#160;<a class="el" href="struct_n_p_c_1_1_hit_info.html#ac4a5eb8b2a4ef1ef7efed2116015ef47">NPC.HitInfo</a></li>
 <li>Invasion&#160;:&#160;<a class="el" href="struct_n_p_c_spawn_info.html#aa7fb95941b585bc29e71980a239b538a">NPCSpawnInfo</a></li>
+<li>InvasionSlotCount&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0">NPCID.Sets</a></li>
 <li>inventory&#160;:&#160;<a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64">Player</a></li>
 <li>InventoryToChest&#160;:&#160;<a class="el" href="class_cursor_override_i_d.html#abd5a21c39b72a9a887f299d6b6beed1f">CursorOverrideID</a></li>
 <li>IsABelt&#160;:&#160;<a class="el" href="class_armor_i_ds_1_1_waist_1_1_sets.html#acf5f34a0601d881b6dd42683bd0d2d31">ArmorIDs.Waist.Sets</a></li>
@@ -134,11 +137,12 @@ $(document).ready(function(){initNavTree('functions_vars_i.html',''); initResiza
 <li>IsAMaterial&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#af804349b0e39d4afc1f4bd64f19cd157">ItemID.Sets</a></li>
 <li>IsAMineThatDealsTripleDamageWhenStationary&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#ac7ed1f1aa4f77dc27bc8861761606216">ProjectileID.Sets</a></li>
 <li>IsAnNPCAttachedExplosive&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#a59775f465d4a23eb22c94b9978a6d39c">ProjectileID.Sets</a></li>
-<li>IsAnNPCWhipDebuff&#160;:&#160;<a class="el" href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c">BuffID.Sets</a></li>
 <li>IsAPickup&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#aeb1ca6bc73a4f68f4ebac5e7d788bdd4">ItemID.Sets</a></li>
 <li>IsARocketThatDealsDoubleDamageToPrimaryEnemy&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#a920c94eec033dd963675c0a5079a7a96">ProjectileID.Sets</a></li>
 <li>IsArrow&#160;:&#160;<a class="el" href="class_ammo_i_d_1_1_sets.html#aa460d6262ba47215727b76d32a116813">AmmoID.Sets</a></li>
 <li>isAShopItem&#160;:&#160;<a class="el" href="class_item.html#a91add9133005239825ff0976ee3ed0ff">Item</a></li>
+<li>IsATagBuff&#160;:&#160;<a class="el" href="class_buff_i_d_1_1_sets.html#ad5119610f280c11e2c565a153202d0fc">BuffID.Sets</a></li>
+<li>IsAToilet&#160;:&#160;<a class="el" href="struct_extra_seat_info.html#a32f9a194db09ff3f5d27f69677ae2cfd">ExtraSeatInfo</a></li>
 <li>IsATreeTrunk&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#af6d219061ccc5d59b713d81ef0767c67">TileID.Sets</a></li>
 <li>IsAWhip&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#afbaef65e8e6c93acda4f938196f87d5b">ProjectileID.Sets</a></li>
 <li>IsBullet&#160;:&#160;<a class="el" href="class_ammo_i_d_1_1_sets.html#aa9646bfa248e310e03f257eeea7660a7">AmmoID.Sets</a></li>
@@ -157,7 +161,9 @@ $(document).ready(function(){initNavTree('functions_vars_i.html',''); initResiza
 <li>IsPaintScraper&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a8f8cfe18c1284b798eddefd95f46f29a">ItemID.Sets</a></li>
 <li>IsRangedSpecialistWeapon&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a297f9b0902b38844c6fa6f923e8244c8">ItemID.Sets</a></li>
 <li>IsShakeable&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#aaac5a9a525fa956faaac081834865189">TileID.Sets</a></li>
+<li>IsSpaceGun&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a67216aacee77cd3c3a4808b20ba15581">ItemID.Sets</a></li>
 <li>IsSpecialist&#160;:&#160;<a class="el" href="class_ammo_i_d_1_1_sets.html#aaaf5c74febfd5e2931212d21f06810ac">AmmoID.Sets</a></li>
+<li>IsTallHat&#160;:&#160;<a class="el" href="class_armor_i_ds_1_1_head_1_1_sets.html#a2760b8117235bcccf0c3c0fe1bab78f1">ArmorIDs.Head.Sets</a></li>
 <li>IsTownPet&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a04ebfeaf9e6bee36b7175079dd1246bf">NPCID.Sets</a></li>
 <li>IsTownSlime&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9870bcf547a77f4f7e9b382a9060f2fe">NPCID.Sets</a></li>
 <li>IsValidSpawnPoint&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#ad6912ddfda80b5c2bcf9e2c0d92a50f7">TileID.Sets</a></li>
@@ -169,6 +175,7 @@ $(document).ready(function(){initNavTree('functions_vars_i.html',''); initResiza
 <li>ItemNetIdsByPersistentIds&#160;:&#160;<a class="el" href="class_content_samples.html#a0436d4c4434a13c690c2738ccb60df44">ContentSamples</a></li>
 <li>ItemNoGravity&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#ab62512ced60329185a90ed0622544f48">ItemID.Sets</a></li>
 <li>ItemPersistentIdsByNetIds&#160;:&#160;<a class="el" href="class_content_samples.html#aa134b4e4260f0b3845dfa7b11f9973ee">ContentSamples</a></li>
+<li>Items&#160;:&#160;<a class="el" href="class_emote_i_d_1_1_category.html#a607bc5eb597053c298de2568b774707e">EmoteID.Category</a></li>
 <li>ItemsByType&#160;:&#160;<a class="el" href="class_content_samples.html#aa84d888ec52caceb7c7cb4bd5d470b7e">ContentSamples</a></li>
 <li>ItemsForStuffCannon&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a817bee37179f797f793d0d8c28ddae8a">ItemID.Sets</a></li>
 <li>ItemSpawnDecaySpeed&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a868af17401926417d1b73b6cd586ec93">ItemID.Sets</a></li>

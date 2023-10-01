@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -232,7 +232,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsARocketTha
 <tr class="memitem:aab31733abf774f4ff20b82e655bc4590"><td class="memItemLeft" align="right" valign="top"><a id="aab31733abf774f4ff20b82e655bc4590" name="aab31733abf774f4ff20b82e655bc4590"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>LightPet</b> = Factory.CreateBoolSet(18, 500, 72, 87, 86, 211, 492, 650, 702, 891, 896, 895)</td></tr>
 <tr class="memdesc:aab31733abf774f4ff20b82e655bc4590"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given projectile type (<a class="el" href="class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c" title="The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectil...">Projectile.type</a>), then that projectile is a light pet. <br  />
- Items that summon light pets can be equipped in the light pet slot, and light pets are dyed according to their owner's Player.cLight shader. <br  />
+ Items that summon light pets can be equipped in the light pet slot, and light pets are dyed according to their owner's <a class="el" href="class_player.html#a52834ce9682c09d204e64fd58e91b3f4" title="The armor shader ID applied to the Light Pet equipment slot by a dye item (Item.dye) in the dye slot.">Player.cLight</a> shader. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aab31733abf774f4ff20b82e655bc4590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6476098c135953f1f8a6c5542caeb037"><td class="memItemLeft" align="right" valign="top"><a id="a6476098c135953f1f8a6c5542caeb037" name="a6476098c135953f1f8a6c5542caeb037"></a>
@@ -266,6 +266,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NoMeleeSpeed
  Useful for melee projectiles (shortswords, lances, etc.) that use velocity as an offset from the player. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a3c2ee8f243e0d857d43d71d43b4b1b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f030d00e0a13cfe52c7148d01b2564a"><td class="memItemLeft" align="right" valign="top"><a id="a4f030d00e0a13cfe52c7148d01b2564a" name="a4f030d00e0a13cfe52c7148d01b2564a"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerHurtDamageIgnoresDifficultyScaling</b> = Factory.CreateBoolSet(28, 29, 30, 37, 108, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 164, 397, 470, 516, 517, 519, 588, 637, 773, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 903, 904, 905, 906, 910, 911, 1002)</td></tr>
+<tr class="memdesc:a4f030d00e0a13cfe52c7148d01b2564a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given projectile type (<a class="el" href="class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c" title="The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectil...">Projectile.type</a>), then that projectile will do the same damage to players regardless of difficulty (expert/master etc). <br  />
+ This set includes all the friendly vanilla explosives which can hurt players from vanilla <br /></td></tr>
+<tr class="separator:a4f030d00e0a13cfe52c7148d01b2564a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafd3ad11f973341222a7e8e4cdba8988"><td class="memItemLeft" align="right" valign="top"><a id="aafd3ad11f973341222a7e8e4cdba8988" name="aafd3ad11f973341222a7e8e4cdba8988"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>RocketsSkipDamageForPlayers</b> = Factory.CreateBoolSet(338, 339, 340, 341, 803, 804, 862, 863, 805, 806, 807, 808, 809, 810, 930)</td></tr>
 <tr class="memdesc:aafd3ad11f973341222a7e8e4cdba8988"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given projectile type (<a class="el" href="class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c" title="The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectil...">Projectile.type</a>), then that projectile, despite exploding, will not deal damage to players. <br  />

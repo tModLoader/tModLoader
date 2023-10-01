@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -364,10 +364,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults5</b> (int
 <tr class="memdesc:a678e9da8f2b078fbf0b90905b322dc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a>.  <a href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81">More...</a><br /></td></tr>
 <tr class="separator:a678e9da8f2b078fbf0b90905b322dc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31ed2d402ea04272696879770ff21a5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a31ed2d402ea04272696879770ff21a5b">SetShopValues</a> (ItemRarityColor rarity, int coinValue)</td></tr>
-<tr class="memdesc:a31ed2d402ea04272696879770ff21a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that sets item rarity and item value.  <a href="class_item.html#a31ed2d402ea04272696879770ff21a5b">More...</a><br /></td></tr>
+<tr class="memdesc:a31ed2d402ea04272696879770ff21a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that sets item rarity (<a class="el" href="class_item.html#a145323c0b871d18ceb4f44f657f9fdac" title="Indicates the rarity of an item. Assign to a ItemRarityID value. Vanilla values range from -1 to 13....">Item.rare</a>) and item value (<a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>).  <a href="class_item.html#a31ed2d402ea04272696879770ff21a5b">More...</a><br /></td></tr>
 <tr class="separator:a31ed2d402ea04272696879770ff21a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c624003358019f1bcd0137badcd637"><td class="memItemLeft" align="right" valign="top"><a id="a69c624003358019f1bcd0137badcd637" name="a69c624003358019f1bcd0137badcd637"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWeaponValues</b> (int dmg, float knockback, int bonusCritChance=0)</td></tr>
+<tr class="memitem:a69c624003358019f1bcd0137badcd637"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a69c624003358019f1bcd0137badcd637">SetWeaponValues</a> (int dmg, float knockback, int bonusCritChance=0)</td></tr>
+<tr class="memdesc:a69c624003358019f1bcd0137badcd637"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method conviniently sets <a class="el" href="class_item.html#a26d10a605b43706b07db3f314be4c0a0" title="The base damage inflicted by this item. The List of weapons wiki pagecan be a useful guide for decidi...">Item.damage</a>, <a class="el" href="class_item.html#a98c6c332c5aa30e68e8d366571d87c95" title="The force of the knock back. Max value is 20. The Knockback wiki pagehas info on existing values....">Item.knockBack</a>, and <a class="el" href="class_item.html#a885130c63118f0397f3f5f1c61c7f068" title="The base critical chance for this item. Remember that the player has a base crit chance of 4....">Item.crit</a>.  <a href="class_item.html#a69c624003358019f1bcd0137badcd637">More...</a><br /></td></tr>
 <tr class="separator:a69c624003358019f1bcd0137badcd637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9e10448ffcbd6c38e9cdd38fa17ff20"><td class="memItemLeft" align="right" valign="top"><a id="ae9e10448ffcbd6c38e9cdd38fa17ff20" name="ae9e10448ffcbd6c38e9cdd38fa17ff20"></a>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
@@ -1342,11 +1342,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ArmorPenetration</b><c
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>attackSpeedOnlyAffectsWeaponAnimation</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a91c7b416021f195c3a6505d35c1bc7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br  />
  Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br  />
- Used in vanilla by all melee weapons which shoot a projectile and have <a class="el" href="class_item.html#af12f64d3bea397bd4d322c2321f3339c" title="If true, the item&#39;s using animation will not deal damage. Set to true on most weapons that aren&#39;t swo...">noMelee</a> set to false. <br /></td></tr>
+ Used in vanilla by all melee weapons which shoot a projectile and have <a class="el" href="class_item.html#af12f64d3bea397bd4d322c2321f3339c" title="If true, the item&#39;s using animation will not deal damage. Set to true on most weapons that aren&#39;t swo...">noMelee</a> set to false.Tools should typically set this to true to prevent the tool from mining quicker when the player has attack speed modifiers. By convention tool speed should not be affected by attack speed. They will still attack quicker, but their use time (mine/hammer/axe speed) should not be affected. <br /></td></tr>
 <tr class="separator:a91c7b416021f195c3a6505d35c1bc7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ef460ebcac4b552f99f95840216cac"><td class="memItemLeft" align="right" valign="top"><a id="a19ef460ebcac4b552f99f95840216cac" name="a19ef460ebcac4b552f99f95840216cac"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeQuickUsed</b><code> [get]</code></td></tr>
 <tr class="separator:a19ef460ebcac4b552f99f95840216cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac583a83e73a1a59a9158e9c20c4aca16"><td class="memItemLeft" align="right" valign="top"><a id="ac583a83e73a1a59a9158e9c20c4aca16" name="ac583a83e73a1a59a9158e9c20c4aca16"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ChangePlayerDirectionOnShoot</b> = true<code> [get, set]</code></td></tr>
+<tr class="memdesc:ac583a83e73a1a59a9158e9c20c4aca16"><td class="mdescLeft">&#160;</td><td class="mdescRight">When true, shooting any projectile from this item will make the owner face the projectile. Defaults to true.<br  />
+ The only 2 vanilla items that change this from true to false are the Grand Design and Beam Sword<br  />
+ This is different to <a class="el" href="class_item.html#a454f5012981a5be2b2b526c72477b889" title="Whether the player can turn around while the using animation of this item is happening....">Item.useTurn</a>. <a class="el" href="class_item.html#a454f5012981a5be2b2b526c72477b889" title="Whether the player can turn around while the using animation of this item is happening....">Item.useTurn</a> will prevent the player from changing their direction while the animation is playing if it is set to true.<br  />
+ <br /></td></tr>
+<tr class="separator:ac583a83e73a1a59a9158e9c20c4aca16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af50e755297ab9529ba9282c0a16aa0c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#af50e755297ab9529ba9282c0a16aa0c4">consumeAmmoOnFirstShotOnly</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:af50e755297ab9529ba9282c0a16aa0c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictates whether or not this item should only consume ammo on its first shot of each use.<br  />
  Defaults to false.<br  />
@@ -1433,6 +1440,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>StopAnimationOnHurt</
  Used in vanilla by the following:<br  />
   <a href="class_item.html#a45a9bea6cb7b8b8f088460c128326172">More...</a><br /></td></tr>
 <tr class="separator:a45a9bea6cb7b8b8f088460c128326172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b69df7f6c806d9bf33332a82d295234"><td class="memItemLeft" align="right" valign="top"><a id="a7b69df7f6c806d9bf33332a82d295234" name="a7b69df7f6c806d9bf33332a82d295234"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>useTurnOnAnimationStart</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a7b69df7f6c806d9bf33332a82d295234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a7b69df7f6c806d9bf33332a82d295234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f3c4c189bf37852038ded6b11b910bb"><td class="memItemLeft" align="right" valign="top"><a id="a2f3c4c189bf37852038ded6b11b910bb" name="a2f3c4c189bf37852038ded6b11b910bb"></a>
 <a class="el" href="class_item_variant.html">ItemVariant</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Variant</b><code> [get]</code></td></tr>
 <tr class="separator:a2f3c4c189bf37852038ded6b11b910bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3688,11 +3700,55 @@ Otherwise, return <code>true</code>. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>A helper method that sets item rarity and item value. </p>
+<p>A helper method that sets item rarity (<a class="el" href="class_item.html#a145323c0b871d18ceb4f44f657f9fdac" title="Indicates the rarity of an item. Assign to a ItemRarityID value. Vanilla values range from -1 to 13....">Item.rare</a>) and item value (<a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rarity</td><td></td></tr>
     <tr><td class="paramname">coinValue</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a69c624003358019f1bcd0137badcd637" name="a69c624003358019f1bcd0137badcd637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c624003358019f1bcd0137badcd637">&#9670;&nbsp;</a></span>SetWeaponValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Item.SetWeaponValues </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dmg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>knockback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>bonusCritChance</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method conviniently sets <a class="el" href="class_item.html#a26d10a605b43706b07db3f314be4c0a0" title="The base damage inflicted by this item. The List of weapons wiki pagecan be a useful guide for decidi...">Item.damage</a>, <a class="el" href="class_item.html#a98c6c332c5aa30e68e8d366571d87c95" title="The force of the knock back. Max value is 20. The Knockback wiki pagehas info on existing values....">Item.knockBack</a>, and <a class="el" href="class_item.html#a885130c63118f0397f3f5f1c61c7f068" title="The base critical chance for this item. Remember that the player has a base crit chance of 4....">Item.crit</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dmg</td><td></td></tr>
+    <tr><td class="paramname">knockback</td><td></td></tr>
+    <tr><td class="paramname">bonusCritChance</td><td></td></tr>
   </table>
   </dd>
 </dl>

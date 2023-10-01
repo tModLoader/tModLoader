@@ -13,6 +13,7 @@ var searchData=
   ['bossbar_10',['BossBar',['../class_n_p_c.html#a19da99bc7becda9172cb9002eacdd3d0',1,'NPC']]],
   ['bossheadtexture_11',['BossHeadTexture',['../class_mod_n_p_c.html#af2700325531a60ac9e61e01970a0c3b0',1,'ModNPC']]],
   ['bottomslope_12',['BottomSlope',['../struct_tile.html#a31802c0a3113b205b15f7154c420735e',1,'Tile']]],
-  ['buffid_13',['BuffId',['../class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652',1,'EntitySource_Buff']]],
-  ['buffindex_14',['BuffIndex',['../class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4',1,'EntitySource_Buff']]]
+  ['boundargs_13',['BoundArgs',['../class_localized_text.html#ae45fade564ccb84088f81047233a84d7',1,'LocalizedText']]],
+  ['buffid_14',['BuffId',['../class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652',1,'EntitySource_Buff']]],
+  ['buffindex_15',['BuffIndex',['../class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4',1,'EntitySource_Buff']]]
 ];

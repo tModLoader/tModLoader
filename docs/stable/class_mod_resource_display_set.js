@@ -9,7 +9,7 @@ var class_mod_resource_display_set =
     [ "ConfigKey", "class_mod_resource_display_set.html#ab45cf25c2051acd6a151571b051f2b5b", null ],
     [ "DisplayedName", "class_mod_resource_display_set.html#ad2403e42b4234886d1fd01d4cb8dd564", null ],
     [ "DisplayName", "class_mod_resource_display_set.html#a3c59316eb7c01221da873ef2ce72949d", null ],
-    [ "LocalizationCategory", "class_mod_resource_display_set.html#aee5f2b914a22694f52ded70745ba986e", null ],
+    [ "LocalizationCategory", "class_mod_resource_display_set.html#a732a65d4fb3e058f01bf107149de7b25", null ],
     [ "NameKey", "class_mod_resource_display_set.html#a10e4b48a715efec112b7cbb4ccbbf52f", null ],
     [ "PlayerStats", "class_mod_resource_display_set.html#a36a7ce2f7446ca0506fed596144e7137", null ]
 ];

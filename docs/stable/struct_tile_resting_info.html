@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -97,12 +97,12 @@ $(document).ready(function(){initNavTree('struct_tile_resting_info.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abb2dc33f5e9bc8595f6ff6cfe76c2b0f"><td class="memItemLeft" align="right" valign="top"><a id="abb2dc33f5e9bc8595f6ff6cfe76c2b0f" name="abb2dc33f5e9bc8595f6ff6cfe76c2b0f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TileRestingInfo</b> (<a class="el" href="class_entity.html">Entity</a> restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset=0, Vector2 finalOffset=default)</td></tr>
-<tr class="separator:abb2dc33f5e9bc8595f6ff6cfe76c2b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a925955bbf636b53b838f7cbba511d796"><td class="memItemLeft" align="right" valign="top"><a id="a925955bbf636b53b838f7cbba511d796" name="a925955bbf636b53b838f7cbba511d796"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Deconstruct</b> (out <a class="el" href="class_entity.html">Entity</a> restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset)</td></tr>
-<tr class="separator:a925955bbf636b53b838f7cbba511d796"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c18dba858b26266eaf8543a79ef9f8"><td class="memItemLeft" align="right" valign="top"><a id="a44c18dba858b26266eaf8543a79ef9f8" name="a44c18dba858b26266eaf8543a79ef9f8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TileRestingInfo</b> (<a class="el" href="class_entity.html">Entity</a> restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset=0, Vector2 finalOffset=default, <a class="el" href="struct_extra_seat_info.html">ExtraSeatInfo</a> extraInfo=default)</td></tr>
+<tr class="separator:a44c18dba858b26266eaf8543a79ef9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a597c88b3cb1a73a3600344c58dd49102"><td class="memItemLeft" align="right" valign="top"><a id="a597c88b3cb1a73a3600344c58dd49102" name="a597c88b3cb1a73a3600344c58dd49102"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Deconstruct</b> (out <a class="el" href="class_entity.html">Entity</a> restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset, out <a class="el" href="struct_extra_seat_info.html">ExtraSeatInfo</a> extraInfo)</td></tr>
+<tr class="separator:a597c88b3cb1a73a3600344c58dd49102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -114,6 +114,10 @@ Point&#160;</td><td class="memItemRight" valign="bottom"><b>AnchorTilePosition</
 int&#160;</td><td class="memItemRight" valign="bottom"><b>DirectionOffset</b></td></tr>
 <tr class="memdesc:a39d423f6c3955e995a96f3c79a4f7059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the entity position offset applied in the X direction based on targetDirection. <br /></td></tr>
 <tr class="separator:a39d423f6c3955e995a96f3c79a4f7059"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c6556bd4ea8b6ac4c49063ed83713c8"><td class="memItemLeft" align="right" valign="top"><a id="a6c6556bd4ea8b6ac4c49063ed83713c8" name="a6c6556bd4ea8b6ac4c49063ed83713c8"></a>
+<a class="el" href="struct_extra_seat_info.html">ExtraSeatInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraInfo</b></td></tr>
+<tr class="memdesc:a6c6556bd4ea8b6ac4c49063ed83713c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains additional information, such as <a class="el" href="struct_extra_seat_info.html#a32f9a194db09ff3f5d27f69677ae2cfd" title="If true, player will generate ID.ItemID.PoopBlock after a short period of time while any tier of ID....">ExtraSeatInfo.IsAToilet</a>. <br /></td></tr>
+<tr class="separator:a6c6556bd4ea8b6ac4c49063ed83713c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad173a06f5544ace90a5a1d3791321287"><td class="memItemLeft" align="right" valign="top"><a id="ad173a06f5544ace90a5a1d3791321287" name="ad173a06f5544ace90a5a1d3791321287"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>FinalOffset</b></td></tr>
 <tr class="memdesc:ad173a06f5544ace90a5a1d3791321287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset applied to the final anchor position. Use with caution, vanilla does not utilize it! <br /></td></tr>
@@ -124,7 +128,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>FinalOffset</b></t
 <tr class="separator:a283a8aa7db79a3c09cdf3b2a2576d58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7977752c6b9c60fa52749c41fd2eda21"><td class="memItemLeft" align="right" valign="top"><a id="a7977752c6b9c60fa52749c41fd2eda21" name="a7977752c6b9c60fa52749c41fd2eda21"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>TargetDirection</b></td></tr>
-<tr class="memdesc:a7977752c6b9c60fa52749c41fd2eda21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction the entity is facing while resting. <br /></td></tr>
+<tr class="memdesc:a7977752c6b9c60fa52749c41fd2eda21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction the entity is facing while resting. Is 0 by default for beds. <br /></td></tr>
 <tr class="separator:a7977752c6b9c60fa52749c41fd2eda21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada30d8bdeb7ed59797958a2368df7e76"><td class="memItemLeft" align="right" valign="top"><a id="ada30d8bdeb7ed59797958a2368df7e76" name="ada30d8bdeb7ed59797958a2368df7e76"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualOffset</b></td></tr>

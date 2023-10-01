@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -136,8 +136,12 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 <li>CanRollPrefix()&#160;:&#160;<a class="el" href="class_item.html#ab996e4fb774cb5494446147a6eb22d73">Item</a></li>
 <li>CanSellItem()&#160;:&#160;<a class="el" href="class_mod_player.html#a4af73652b2691c5b47a94d7ec0a362ab">ModPlayer</a></li>
 <li>CanShoot()&#160;:&#160;<a class="el" href="class_global_item.html#ab349cbd062c7c482f29b6e9192f82e12">GlobalItem</a>, <a class="el" href="class_item_loader.html#a76135a35e07002d77e9a66a4e553235b">ItemLoader</a>, <a class="el" href="class_mod_item.html#a11bcfb78762023a6f3279e976b4363f6">ModItem</a>, <a class="el" href="class_mod_player.html#a4fea8cca07ffc958393215da13f5c9ca">ModPlayer</a></li>
+<li>CanShowExtraJumpVisuals()&#160;:&#160;<a class="el" href="class_mod_player.html#aa2900167a2517c5017d997dd87e97243">ModPlayer</a></li>
+<li>CanShowVisuals()&#160;:&#160;<a class="el" href="class_extra_jump.html#a0a040afc57de081ec96929b32ce7e967">ExtraJump</a></li>
 <li>CanStack()&#160;:&#160;<a class="el" href="class_global_item.html#a1256459afe9e1391256f354bd36606a8">GlobalItem</a>, <a class="el" href="class_item_loader.html#a0576a329e0d90fd0ee4f09b3f1a7f871">ItemLoader</a>, <a class="el" href="class_mod_item.html#abe74a706630de7e7c6f60dd5f6855f99">ModItem</a>, <a class="el" href="class_unloaded_item.html#a4c529a6605bdcf48c8fed90b9a2a1db4">UnloadedItem</a></li>
 <li>CanStackInWorld()&#160;:&#160;<a class="el" href="class_global_item.html#aae6443f0157cd5c0ff4cb2798a9c88e7">GlobalItem</a>, <a class="el" href="class_item_loader.html#a707a1a9f2047897d335563936b8d0f49">ItemLoader</a>, <a class="el" href="class_mod_item.html#a453b418e0a6eada1997713d3c2123ac6">ModItem</a></li>
+<li>CanStart()&#160;:&#160;<a class="el" href="class_extra_jump.html#a22ea392c58b1861dc2a49698d5ddc648">ExtraJump</a>, <a class="el" href="class_flipper_jump.html#a3773b40bced6e307cb4ca7b142e7db01">FlipperJump</a></li>
+<li>CanStartExtraJump()&#160;:&#160;<a class="el" href="class_mod_player.html#aec723167088d7619ec79bd5f261013e6">ModPlayer</a></li>
 <li>CanTownNPCSpawn()&#160;:&#160;<a class="el" href="class_mod_n_p_c.html#adee4ae354ba3ad2285be2cf7a3ab3234">ModNPC</a></li>
 <li>CanUseGrapple()&#160;:&#160;<a class="el" href="class_global_projectile.html#a4198a3eb67f263b0908a34670a747560">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#a04425dbe931a2eea72098144d0025a1e">ModProjectile</a></li>
 <li>CanUseItem()&#160;:&#160;<a class="el" href="class_global_item.html#a397d6589e63f4fba06366c311234f620">GlobalItem</a>, <a class="el" href="class_mod_item.html#ad49d48612c92aa85d7aed09c3751116b">ModItem</a>, <a class="el" href="class_mod_player.html#a06d300d3a15d328a3a504e100318efc5">ModPlayer</a></li>
@@ -149,6 +153,7 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 <li>CheckCatchNPC()&#160;:&#160;<a class="el" href="class_n_p_c.html#a64991e8657153fdce11c33746dc806fa">NPC</a></li>
 <li>CheckConditions()&#160;:&#160;<a class="el" href="class_mod_n_p_c.html#a7959b63210678df1758aa7443ee5fb89">ModNPC</a></li>
 <li>CheckDead()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a9facc782cf01267bb84c214e19628f41">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a97227f609d5ff431ab34b2e5f7f56376">ModNPC</a></li>
+<li>CheckForNPCsToReactToEmoteBubble()&#160;:&#160;<a class="el" href="class_emote_bubble.html#a908997c7c9c3ac606f461c502c9d24ad">EmoteBubble</a></li>
 <li>CheckMana()&#160;:&#160;<a class="el" href="class_player.html#a782b58d9c3dfc2ce794de1d9c280f046">Player</a></li>
 <li>CheckMech()&#160;:&#160;<a class="el" href="class_wiring.html#ad7fbb5d56f7b478111edba34c4beeef9">Wiring</a></li>
 <li>Chest()&#160;:&#160;<a class="el" href="class_chest.html#a7f2301e8961ff97a88380400a09d31ef">Chest</a></li>
@@ -165,18 +170,20 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 <li>ClearBlockPaintAndCoating()&#160;:&#160;<a class="el" href="struct_tile.html#a6689150e347d80787fd7d2ce776d9075">Tile</a></li>
 <li>ClearBuff()&#160;:&#160;<a class="el" href="class_player.html#a4246123cbafbcbf002f8acfa06c03ea2">Player</a></li>
 <li>ClearEverything()&#160;:&#160;<a class="el" href="struct_tile.html#a3fd0f74e9285ff77cf6427831bf769db">Tile</a></li>
+<li>ClearImmuneToBuffs()&#160;:&#160;<a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">NPC</a></li>
 <li>ClearNameOverride()&#160;:&#160;<a class="el" href="class_item.html#a98eb0daeff26b7342d2fcf37232d2984">Item</a></li>
 <li>ClearSonarText()&#160;:&#160;<a class="el" href="class_popup_text.html#a17b464f634ed32f77fbbbe7225b5406e">PopupText</a></li>
 <li>ClearTile()&#160;:&#160;<a class="el" href="struct_tile.html#a48a5ec5fe17941af7e405f3e31e4916a">Tile</a></li>
 <li>ClearWallPaintAndCoating()&#160;:&#160;<a class="el" href="struct_tile.html#a259277529cfc1f6cfd4f75c543daea64">Tile</a></li>
 <li>ClearWorld()&#160;:&#160;<a class="el" href="class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3">ModSystem</a>, <a class="el" href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79">UnloadedSystem</a></li>
-<li>Clone()&#160;:&#160;<a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">GlobalType&lt; TEntity, TGlobal &gt;</a>, <a class="el" href="class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a">ModConfig</a>, <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">ModType&lt; TEntity, TModType &gt;</a>, <a class="el" href="class_recipe.html#a19108cd242ac564fae40dfb601d1b968">Recipe</a></li>
+<li>Clone()&#160;:&#160;<a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">GlobalType&lt; TEntity, TGlobal &gt;</a>, <a class="el" href="class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a">ModConfig</a>, <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">ModType&lt; TEntity, TModType &gt;</a>, <a class="el" href="class_recipe.html#a19108cd242ac564fae40dfb601d1b968">Recipe</a></li>
 <li>Close()&#160;:&#160;<a class="el" href="class_mod.html#a724f996256e98a550dbf6358c3d9d4b9">Mod</a></li>
 <li>Colliding()&#160;:&#160;<a class="el" href="class_global_projectile.html#a879804e1fe16878669c695542bce30ac">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#a3a9d755be9e1f31ceecd8b99f53703de">ModProjectile</a></li>
 <li>ColorMultiplier()&#160;:&#160;<a class="el" href="class_mod_waterfall_style.html#a131cbc0499db548575b1bffefa00a17c">ModWaterfallStyle</a></li>
 <li>ConstructFromBase()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#ad373ed2d9adf27645bbd575c8aafd658">ModTileEntity</a></li>
 <li>ConstructFromType()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#af7238b15e8012a7506c9a789b94e2991">ModTileEntity</a></li>
 <li>ConsumableDodge()&#160;:&#160;<a class="el" href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf">ModPlayer</a></li>
+<li>ConsumeAllExtraJumps()&#160;:&#160;<a class="el" href="class_player.html#a52ea38bbdc0320b5aca184252442a471">Player</a></li>
 <li>ConsumeItem()&#160;:&#160;<a class="el" href="class_global_item.html#ad2b18f62232732eae106b48de1904eb3">GlobalItem</a>, <a class="el" href="class_item_loader.html#af34577b89d0660a6b252315cb49f0521">ItemLoader</a>, <a class="el" href="class_mod_item.html#a899ed968444cbf89a032cd401f6f3f90">ModItem</a>, <a class="el" href="class_player.html#a8894857f3ee4202362ac2d3947fc7e84">Player</a>, <a class="el" href="class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c">RecipeLoader</a></li>
 <li>Convert()&#160;:&#160;<a class="el" href="class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494">WorldGen</a></li>
 <li>ConvertToRelativePath()&#160;:&#160;<a class="el" href="class_file_utilities.html#a52326b317f487061a491dc474577ce76">FileUtilities</a></li>
@@ -187,6 +194,7 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 <li>CopyPaintAndCoating()&#160;:&#160;<a class="el" href="struct_tile.html#aa08a918d6dee2a9687a6b855cf81f0c0">Tile</a></li>
 <li>CountInWorld()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#a3dfc878cc8094fe9835ae95f4721d475">ModTileEntity</a></li>
 <li>CountItem()&#160;:&#160;<a class="el" href="class_player.html#a20ef75ff3d503eb08673d5048e653858">Player</a></li>
+<li>CountNPCS()&#160;:&#160;<a class="el" href="class_n_p_c.html#a865f6d2c61c4ee05593397b3f990d165">NPC</a></li>
 <li>CountsAsClass()&#160;:&#160;<a class="el" href="class_damage_class.html#a3cd4770a051bbaf124cbed5ebce0a9c1">DamageClass</a>, <a class="el" href="class_item.html#afa18d73137643eeff54c636e6728f6a9">Item</a>, <a class="el" href="class_projectile.html#ac40596ec0c75dea27a09b9ded8a21f4f">Projectile</a></li>
 <li>CountsAsClass&lt; T &gt;()&#160;:&#160;<a class="el" href="class_damage_class.html#ad873ee1178673c074e86106a3aaa575f">DamageClass</a>, <a class="el" href="class_item.html#aae13cf054f98781555a4f50ff417cc88">Item</a>, <a class="el" href="class_projectile.html#aa563376ec59229db5f0f0be3c8ac3f9b">Projectile</a></li>
 <li>Create()&#160;:&#160;<a class="el" href="class_recipe.html#a474a5953b0fbbdec4c68881277228d79">Recipe</a></li>

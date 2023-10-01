@@ -11,7 +11,7 @@ var class_damage_class =
     [ "Default", "class_damage_class.html#aeb1da59c707bbc5621253ac7c15ad56f", null ],
     [ "DisplayName", "class_damage_class.html#ab1146bc8248cf1960ed4d53e96c4912f", null ],
     [ "Generic", "class_damage_class.html#a6503fd93169adfe37c2a0a7f08d12e48", null ],
-    [ "LocalizationCategory", "class_damage_class.html#aac1263b561f259b3956597f8ddd7e06c", null ],
+    [ "LocalizationCategory", "class_damage_class.html#a72d92013202aff38123e4072a0ccb2d2", null ],
     [ "MagicSummonHybrid", "class_damage_class.html#ae3f7b44cdc2b1ffe85ecb066ca6180f7", null ],
     [ "MeleeNoSpeed", "class_damage_class.html#a5aedce0d8f481a549ead933d80a31175", null ],
     [ "SummonMeleeSpeed", "class_damage_class.html#af73ff3cb3f79309368ad6a09924c2af9", null ],

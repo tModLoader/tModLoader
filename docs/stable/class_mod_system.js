@@ -57,6 +57,7 @@ var class_mod_system =
     [ "Register", "class_mod_system.html#a70af7c348c20c25bcfc4fc15b9d648d1", null ],
     [ "ResetNearbyTileEffects", "class_mod_system.html#a652c4e0c15bd065e016bb0c741334a49", null ],
     [ "SaveWorldData", "class_mod_system.html#a926129e278ac9c460685bd2a326cd998", null ],
+    [ "SaveWorldHeader", "class_mod_system.html#aff4cf839033cb3bfe58f2994c778ebf2", null ],
     [ "SetupContent", "class_mod_system.html#ab5dafb524e0b67f6ff1f760fec82523c", null ],
     [ "TileCountsAvailable", "class_mod_system.html#ad11c0c49cd1848449fb3e876c7c22960", null ],
     [ "UpdateUI", "class_mod_system.html#a24d1823ab9c6c0ebfe87825cf3e47fa7", null ],

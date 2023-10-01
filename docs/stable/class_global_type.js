@@ -1,8 +1,8 @@
 var class_global_type =
 [
     [ "AppliesToEntity", "class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0", null ],
-    [ "Clone", "class_global_type.html#ad342288414184c6c96865f48ab00f7fb", null ],
-    [ "NewInstance", "class_global_type.html#a30da78ae6788e76ecde97732fda4bce8", null ],
+    [ "Clone", "class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5", null ],
+    [ "NewInstance", "class_global_type.html#a2e23130d01cf1716f18fee6129499bd2", null ],
     [ "Register", "class_global_type.html#ae7df52a8eff48ddf67673396610ad4d7", null ],
     [ "SetDefaults", "class_global_type.html#a271c6018622a55db24bf270e604d4edb", null ],
     [ "ValidateType", "class_global_type.html#ad559e16891e41411948ee05ead117f10", null ],

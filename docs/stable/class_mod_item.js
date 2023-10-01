@@ -128,7 +128,7 @@ var class_mod_item =
     [ "WingUpdate", "class_mod_item.html#a119bbb1160e79491555445544b0744ff", null ],
     [ "DisplayName", "class_mod_item.html#adf748ca73e805eeb4ad1ec42d7f102d8", null ],
     [ "Item", "class_mod_item.html#ae7cd71216cb932d036dd916f67b2cdd1", null ],
-    [ "LocalizationCategory", "class_mod_item.html#aacf7d133cb9d97ef83fc8ada6030e293", null ],
+    [ "LocalizationCategory", "class_mod_item.html#a31ac3dcb5c22f990e3ea63b613f34559", null ],
     [ "Texture", "class_mod_item.html#a4451e8e94662601603427838e9a67ffd", null ],
     [ "Tooltip", "class_mod_item.html#aa068daaeb7ca62b7783322205759af5d", null ],
     [ "Type", "class_mod_item.html#a1ccba31e65aa5a486663c098135c54f8", null ]

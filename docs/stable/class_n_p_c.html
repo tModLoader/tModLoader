@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -138,8 +138,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AI_122_PirateGhost</b
 <tr class="memitem:a3c94189851d5d41497ace0d3d75822ce"><td class="memItemLeft" align="right" valign="top"><a id="a3c94189851d5d41497ace0d3d75822ce" name="a3c94189851d5d41497ace0d3d75822ce"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AI_AttemptToFindTeleportSpot</b> (ref Vector2 chosenTile, int targetTileX, int targetTileY, int rangeFromTargetTile=20, int telefragPreventionDistanceInTiles=5, int solidTileCheckFluff=1, bool solidTileCheckCentered=false, bool teleportInAir=false)</td></tr>
 <tr class="separator:a3c94189851d5d41497ace0d3d75822ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe60ba5bdf081fffe741c01d43494f23"><td class="memItemLeft" align="right" valign="top"><a id="abe60ba5bdf081fffe741c01d43494f23" name="abe60ba5bdf081fffe741c01d43494f23"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyInteractions</b> ()</td></tr>
+<tr class="memitem:abe60ba5bdf081fffe741c01d43494f23"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23">AnyInteractions</a> ()</td></tr>
+<tr class="memdesc:abe60ba5bdf081fffe741c01d43494f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if any player has damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Individual player participation can be determined by checking <a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">playerInteraction</a> directly. Use <a class="el" href="class_n_p_c.html#ae8131d7ccdecc4cc92b2206182bf2f03" title="Returns true if any player has damaged this NPC. Individual player participation can be determined by...">GetWereThereAnyInteractions</a> if <a class="el" href="class_n_p_c.html#afcca3c242b80ef23de93ebb6135acc9c" title="Stores the index (the Entity.whoAmI) of a single NPC. This NPC will then share a health pool with tha...">realLife</a> might be in use.  <a href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23">More...</a><br /></td></tr>
 <tr class="separator:abe60ba5bdf081fffe741c01d43494f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ec96526d2c2bc1237390f06102bba20"><td class="memItemLeft" align="right" valign="top"><a id="a8ec96526d2c2bc1237390f06102bba20" name="a8ec96526d2c2bc1237390f06102bba20"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyInteraction</b> (int player)</td></tr>
@@ -150,6 +150,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AttemptToConvertNPCTo
 <tr class="memitem:ae5f8517b9d4a7a2715f1d941911d7f53"><td class="memItemLeft" align="right" valign="top"><a id="ae5f8517b9d4a7a2715f1d941911d7f53" name="ae5f8517b9d4a7a2715f1d941911d7f53"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>BannerID</b> ()</td></tr>
 <tr class="separator:ae5f8517b9d4a7a2715f1d941911d7f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47734a424b7de36e26c312f21a1e78de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de">BecomeImmuneTo</a> (int buffType)</td></tr>
+<tr class="memdesc:a47734a424b7de36e26c312f21a1e78de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> to make this <a class="el" href="class_n_p_c.html">NPC</a> immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>). This method can be followed by <a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">ClearImmuneToBuffs(out bool)</a> if the <a class="el" href="class_n_p_c.html">NPC</a> should clear any buff it currently has that it is now immune to.  <a href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de">More...</a><br /></td></tr>
+<tr class="separator:a47734a424b7de36e26c312f21a1e78de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb9c4dce59daec3e1d29539c558117f"><td class="memItemLeft" align="right" valign="top"><a id="a8eb9c4dce59daec3e1d29539c558117f" name="a8eb9c4dce59daec3e1d29539c558117f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>BigMimicSpawnSmoke</b> ()</td></tr>
 <tr class="separator:a8eb9c4dce59daec3e1d29539c558117f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,6 +185,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>checkDead</b> ()</td>
 <tr class="memitem:ae346fe07a46972ce8ce9317878ab222d"><td class="memItemLeft" align="right" valign="top"><a id="ae346fe07a46972ce8ce9317878ab222d" name="ae346fe07a46972ce8ce9317878ab222d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckDrowning</b> ()</td></tr>
 <tr class="separator:ae346fe07a46972ce8ce9317878ab222d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2bbac57680c18975aa4570d63b0d808"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">ClearImmuneToBuffs</a> (out bool anyBuffsCleared)</td></tr>
+<tr class="separator:ad2bbac57680c18975aa4570d63b0d808"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d07abe0af162a753b3e337b51893ff3"><td class="memItemLeft" align="right" valign="top"><a id="a5d07abe0af162a753b3e337b51893ff3" name="a5d07abe0af162a753b3e337b51893ff3"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
 <tr class="separator:a5d07abe0af162a753b3e337b51893ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,8 +197,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CloneDefaults</b> (in
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyInteractions</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="separator:abfe2c4b50da73c7a82e90ccd04b710d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fb8a84720c0274214029182e64ddd60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60">DelBuff</a> (int buffIndex)</td></tr>
-<tr class="memdesc:a2fb8a84720c0274214029182e64ddd60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. <br  />
- Use <a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119" title="Removes the buff type and shuffles the remaining buff indexes down to fill the gap....">NPC.RequestBuffRemoval</a> if you only know the buff type.  <a href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60">More...</a><br /></td></tr>
+<tr class="memdesc:a2fb8a84720c0274214029182e64ddd60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player.  <a href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60">More...</a><br /></td></tr>
 <tr class="separator:a2fb8a84720c0274214029182e64ddd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45e048ced0044b66940792d124879534"><td class="memItemLeft" align="right" valign="top"><a id="a45e048ced0044b66940792d124879534" name="a45e048ced0044b66940792d124879534"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DiscourageDespawn</b> (int despawnTime)</td></tr>
@@ -348,8 +352,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileCollisionParam
 <tr class="memitem:ab94d37cd6f18c3edd5e6b741c1faedb9"><td class="memItemLeft" align="right" valign="top"><a id="ab94d37cd6f18c3edd5e6b741c1faedb9" name="ab94d37cd6f18c3edd5e6b741c1faedb9"></a>
 <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetTypeNetName</b> ()</td></tr>
 <tr class="separator:ab94d37cd6f18c3edd5e6b741c1faedb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8131d7ccdecc4cc92b2206182bf2f03"><td class="memItemLeft" align="right" valign="top"><a id="ae8131d7ccdecc4cc92b2206182bf2f03" name="ae8131d7ccdecc4cc92b2206182bf2f03"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetWereThereAnyInteractions</b> ()</td></tr>
+<tr class="memitem:ae8131d7ccdecc4cc92b2206182bf2f03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ae8131d7ccdecc4cc92b2206182bf2f03">GetWereThereAnyInteractions</a> ()</td></tr>
+<tr class="memdesc:ae8131d7ccdecc4cc92b2206182bf2f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if any player has damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Individual player participation can be determined by checking <a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">playerInteraction</a> directly.  <a href="class_n_p_c.html#ae8131d7ccdecc4cc92b2206182bf2f03">More...</a><br /></td></tr>
 <tr class="separator:ae8131d7ccdecc4cc92b2206182bf2f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8811fd936a1656a412d1367ec06e9cf"><td class="memItemLeft" align="right" valign="top"><a id="aa8811fd936a1656a412d1367ec06e9cf" name="aa8811fd936a1656a412d1367ec06e9cf"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasBuff</b> (int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>)</td></tr>
@@ -406,8 +410,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReflectProjectile</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ReflectProjectiles</b> (Rectangle myRect)</td></tr>
 <tr class="separator:a149431807fc97c5b9e3f71982a1c271a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119">RequestBuffRemoval</a> (int buffTypeToRemove)</td></tr>
-<tr class="memdesc:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff type and shuffles the remaining buff indexes down to fill the gap. <br  />
- Use <a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">NPC.DelBuff</a> if you only know the buff index.  <a href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119">More...</a><br /></td></tr>
+<tr class="memdesc:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff type and shuffles the remaining buff indexes down to fill the gap. Note that only buffs contained in <a class="el" href="class_buff_i_d_1_1_sets.html#a350949b499fcca7db0c86d9aac40517d" title="If true for a given BuffID, then that buff can be removed from an NPC using NPC.RequestBuffRemoval(in...">BuffID.Sets.CanBeRemovedByNetMessage</a> can be removed with this method. The intention is that those specific buffs are "owned" by the player who inflicts them, so they can be freely removed by multiplayer clients. <br  />
+<br  />
+ In all other cases code running on the server or in single player is in charge of the <a class="el" href="class_n_p_c.html">NPC</a> debuffs and <a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">NPC.DelBuff</a> should be used directly.  <a href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119">More...</a><br /></td></tr>
 <tr class="separator:aa0030c39514c7cfce2a9ffcbbbd24119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aea95f3bc3ee888e1f4290ed23ad14e"><td class="memItemLeft" align="right" valign="top"><a id="a8aea95f3bc3ee888e1f4290ed23ad14e" name="a8aea95f3bc3ee888e1f4290ed23ad14e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>RerollVariation</b> ()</td></tr>
@@ -592,8 +597,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyDanger</b> 
 <tr class="memitem:a0c46106e5246dce103c2fa80983bbe26"><td class="memItemLeft" align="right" valign="top"><a id="a0c46106e5246dce103c2fa80983bbe26" name="a0c46106e5246dce103c2fa80983bbe26"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyHelpfulFairies</b> ()</td></tr>
 <tr class="separator:a0c46106e5246dce103c2fa80983bbe26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2825cb01f6e95f6e025f09993ef6914"><td class="memItemLeft" align="right" valign="top"><a id="ac2825cb01f6e95f6e025f09993ef6914" name="ac2825cb01f6e95f6e025f09993ef6914"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyNPCs</b> (int Type)</td></tr>
+<tr class="memitem:ac2825cb01f6e95f6e025f09993ef6914"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ac2825cb01f6e95f6e025f09993ef6914">AnyNPCs</a> (int Type)</td></tr>
+<tr class="memdesc:ac2825cb01f6e95f6e025f09993ef6914"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if there are any active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#ac2825cb01f6e95f6e025f09993ef6914">More...</a><br /></td></tr>
 <tr class="separator:ac2825cb01f6e95f6e025f09993ef6914"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3605c3b462ecb621e5dda0ef45b0d5e"><td class="memItemLeft" align="right" valign="top"><a id="aa3605c3b462ecb621e5dda0ef45b0d5e" name="aa3605c3b462ecb621e5dda0ef45b0d5e"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyoneNearCultists</b> ()</td></tr>
@@ -622,8 +627,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFoundActi
 <tr class="memitem:ab5f602299d762146e7489b4482b02746"><td class="memItemLeft" align="right" valign="top"><a id="ab5f602299d762146e7489b4482b02746" name="ab5f602299d762146e7489b4482b02746"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFoundNPCTypesForBestiary</b> ()</td></tr>
 <tr class="separator:ab5f602299d762146e7489b4482b02746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a865f6d2c61c4ee05593397b3f990d165"><td class="memItemLeft" align="right" valign="top"><a id="a865f6d2c61c4ee05593397b3f990d165" name="a865f6d2c61c4ee05593397b3f990d165"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>CountNPCS</b> (int Type)</td></tr>
+<tr class="memitem:a865f6d2c61c4ee05593397b3f990d165"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a865f6d2c61c4ee05593397b3f990d165">CountNPCS</a> (int Type)</td></tr>
+<tr class="memdesc:a865f6d2c61c4ee05593397b3f990d165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a865f6d2c61c4ee05593397b3f990d165">More...</a><br /></td></tr>
 <tr class="separator:a865f6d2c61c4ee05593397b3f990d165"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb199295917371439a62e20c31d7ca79"><td class="memItemLeft" align="right" valign="top"><a id="adb199295917371439a62e20c31d7ca79" name="adb199295917371439a62e20c31d7ca79"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle2_FloatingEye_IsDiscouraged</b> (int npcID, Vector2 npcPosition, int target=255)</td></tr>
@@ -640,8 +645,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FairyEffects</
 <tr class="memitem:aa457e958c04776538756b3917746216d"><td class="memItemLeft" align="right" valign="top"><a id="aa457e958c04776538756b3917746216d" name="aa457e958c04776538756b3917746216d"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindCattailTop</b> (int landX, int landY, out int cattailX, out int cattailY)</td></tr>
 <tr class="separator:aa457e958c04776538756b3917746216d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5272dd7834b4c553bcb08fea42c2630c"><td class="memItemLeft" align="right" valign="top"><a id="a5272dd7834b4c553bcb08fea42c2630c" name="a5272dd7834b4c553bcb08fea42c2630c"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>FindFirstNPC</b> (int Type)</td></tr>
+<tr class="memitem:a5272dd7834b4c553bcb08fea42c2630c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">FindFirstNPC</a> (int Type)</td></tr>
+<tr class="memdesc:a5272dd7834b4c553bcb08fea42c2630c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index within Main.npc of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">More...</a><br /></td></tr>
 <tr class="separator:a5272dd7834b4c553bcb08fea42c2630c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac48691e54026c0363369b329d7a44a25"><td class="memItemLeft" align="right" valign="top"><a id="ac48691e54026c0363369b329d7a44a25" name="ac48691e54026c0363369b329d7a44a25"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindTreeBranch</b> (int landX, int landY, out int treeBranchX, out int treeBranchY)</td></tr>
@@ -919,7 +924,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>breathCounter</b></td>
 <tr class="separator:aca790395a6ee5db640a85d9167f1802b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad19fc84eb9f1df055f4ce033fb091243"><td class="memItemLeft" align="right" valign="top"><a id="ad19fc84eb9f1df055f4ce033fb091243" name="ad19fc84eb9f1df055f4ce033fb091243"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffImmune</b> = new bool[BuffLoader.BuffCount]</td></tr>
-<tr class="memdesc:ad19fc84eb9f1df055f4ce033fb091243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the <a class="el" href="class_n_p_c.html">NPC</a> immune to buffs/debuffs. Example: <code><a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Make the NPC immune to buffs/debuffs. Example: NPC.buffImmune[BuffID.OnFire] = true;">NPC.buffImmune</a>[BuffID.OnFire] = true;</code> <br /></td></tr>
+<tr class="memdesc:ad19fc84eb9f1df055f4ce033fb091243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the <a class="el" href="class_n_p_c.html">NPC</a> buff immunities for this <a class="el" href="class_n_p_c.html">NPC</a>. The default values in this array are populated from <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a61ba2efd1da00acfce242144b569382d" title="If true, this NPC type (NPC.type) will be immune to all debuffs and &quot;tag&quot; buffs by default....">NPCID.Sets.ImmuneToAllBuffs</a>, <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aa75bcc108bf7911dfca3171f60adae7e" title="If true, this NPC type (NPC.type) will be immune to all debuffs except tag debuffs (BuffID....">NPCID.Sets.ImmuneToRegularBuffs</a>, <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a05f57493f54c2153fab5a4c4254defb3" title="Indexed by NPC type and then Buff type. If true, this NPC type (NPC.type) will be immune (NPC....">NPCID.Sets.SpecificDebuffImmunity</a>, and <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>. <br /></td></tr>
 <tr class="separator:ad19fc84eb9f1df055f4ce033fb091243"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae25fb0855d099dba31ff1215d8296602"><td class="memItemLeft" align="right" valign="top"><a id="ae25fb0855d099dba31ff1215d8296602" name="ae25fb0855d099dba31ff1215d8296602"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffTime</b> = new int[maxBuffs]</td></tr>
@@ -1132,6 +1137,11 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>knockBackResist</b> 
 <tr class="separator:a19671fea508f786929fb6b46b35d94cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f507768340df00ef17c4b275a909346"><td class="memItemLeft" align="right" valign="top"><a id="a9f507768340df00ef17c4b275a909346" name="a9f507768340df00ef17c4b275a909346"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lastInteraction</b> = 255</td></tr>
+<tr class="memdesc:a9f507768340df00ef17c4b275a909346"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a> of the <a class="el" href="class_player.html">Player</a> that last damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Used to award Banner items to the player that killed the <a class="el" href="class_n_p_c.html">NPC</a>, but can be used for many other effects.<br  />
+<br  />
+ The default value is 255. If the value is 255, the <a class="el" href="class_n_p_c.html">NPC</a> has not been damaged by any <a class="el" href="class_player.html">Player</a>.<br  />
+<br  />
+ The <a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">playerInteraction</a> array tracks all players that have damaged this <a class="el" href="class_n_p_c.html">NPC</a>. <br /></td></tr>
 <tr class="separator:a9f507768340df00ef17c4b275a909346"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d01c93767d726ed7179c33ae6559712"><td class="memItemLeft" align="right" valign="top"><a id="a3d01c93767d726ed7179c33ae6559712" name="a3d01c93767d726ed7179c33ae6559712"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lastPortalColorIndex</b></td></tr>
@@ -1262,6 +1272,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>onFrostBurn2</b></td>
 <tr class="separator:a8d34d3af3350fdcc1d159083c461ba78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2733db98473f44858e9a5ec94c3a1698"><td class="memItemLeft" align="right" valign="top"><a id="a2733db98473f44858e9a5ec94c3a1698" name="a2733db98473f44858e9a5ec94c3a1698"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>playerInteraction</b> = new bool[256]</td></tr>
+<tr class="memdesc:a2733db98473f44858e9a5ec94c3a1698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks which <a class="el" href="class_player.html">Player</a>s have damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Damaging boss minions or other parts of a boss is usually counted as damaging the main body of the boss. Used to determine which players participated in a boss fight and should receive a boss bag.<br  />
+<br  />
+ Indexed by each players <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a> (or <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a> for code running locally).<br  />
+<br  />
+ <a class="el" href="class_n_p_c.html#a9f507768340df00ef17c4b275a909346" title="The Entity.whoAmI of the Player that last damaged this NPC. Used to award Banner items to the player ...">lastInteraction</a> tracks which player was the last player to damage this <a class="el" href="class_n_p_c.html">NPC</a>. <a class="el" href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23" title="Returns true if any player has damaged this NPC. Individual player participation can be determined by...">AnyInteractions</a> can be used to easily check if any player has damaged the <a class="el" href="class_n_p_c.html">NPC</a>. <br /></td></tr>
 <tr class="separator:a2733db98473f44858e9a5ec94c3a1698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab6879913e8de85bcba73b217c77ab95"><td class="memItemLeft" align="right" valign="top"><a id="aab6879913e8de85bcba73b217c77ab95" name="aab6879913e8de85bcba73b217c77ab95"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>poisoned</b></td></tr>
@@ -2077,6 +2092,87 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 
 </div>
 </div>
+<a id="abe60ba5bdf081fffe741c01d43494f23" name="abe60ba5bdf081fffe741c01d43494f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe60ba5bdf081fffe741c01d43494f23">&#9670;&nbsp;</a></span>AnyInteractions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool NPC.AnyInteractions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if any player has damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Individual player participation can be determined by checking <a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">playerInteraction</a> directly. Use <a class="el" href="class_n_p_c.html#ae8131d7ccdecc4cc92b2206182bf2f03" title="Returns true if any player has damaged this NPC. Individual player participation can be determined by...">GetWereThereAnyInteractions</a> if <a class="el" href="class_n_p_c.html#afcca3c242b80ef23de93ebb6135acc9c" title="Stores the index (the Entity.whoAmI) of a single NPC. This NPC will then share a health pool with tha...">realLife</a> might be in use. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ac2825cb01f6e95f6e025f09993ef6914" name="ac2825cb01f6e95f6e025f09993ef6914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2825cb01f6e95f6e025f09993ef6914">&#9670;&nbsp;</a></span>AnyNPCs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool NPC.AnyNPCs </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if there are any active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a47734a424b7de36e26c312f21a1e78de" name="a47734a424b7de36e26c312f21a1e78de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47734a424b7de36e26c312f21a1e78de">&#9670;&nbsp;</a></span>BecomeImmuneTo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.BecomeImmuneTo </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adjusts <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> to make this <a class="el" href="class_n_p_c.html">NPC</a> immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>). This method can be followed by <a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">ClearImmuneToBuffs(out bool)</a> if the <a class="el" href="class_n_p_c.html">NPC</a> should clear any buff it currently has that it is now immune to. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a77e09a18418cc3ce69c59f4fb9ada67d" name="a77e09a18418cc3ce69c59f4fb9ada67d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77e09a18418cc3ce69c59f4fb9ada67d">&#9670;&nbsp;</a></span>CalculateHitInfo()</h2>
 
@@ -2222,6 +2318,70 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 
 </div>
 </div>
+<a id="ad2bbac57680c18975aa4570d63b0d808" name="ad2bbac57680c18975aa4570d63b0d808"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2bbac57680c18975aa4570d63b0d808">&#9670;&nbsp;</a></span>ClearImmuneToBuffs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.ClearImmuneToBuffs </td>
+          <td>(</td>
+          <td class="paramtype">out bool&#160;</td>
+          <td class="paramname"><em>anyBuffsCleared</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Clears all buffs on this <a class="el" href="class_n_p_c.html">NPC</a> that the <a class="el" href="class_n_p_c.html">NPC</a> is currently immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a>) to. The buff types and times will then be synced to clients. Use after manually changing <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> or using <a class="el" href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de" title="Adjusts buffImmune to make this NPC immune to the provided buff as well as all other buffs that inher...">BecomeImmuneTo(int)</a>.<br  />
+<br  />
+ <em>anyBuffsCleared</em>  will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br  />
+<br  />
+ This should not be called on multiplayer clients. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">anyBuffsCleared</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a865f6d2c61c4ee05593397b3f990d165" name="a865f6d2c61c4ee05593397b3f990d165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a865f6d2c61c4ee05593397b3f990d165">&#9670;&nbsp;</a></span>CountNPCS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int NPC.CountNPCS </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a2fb8a84720c0274214029182e64ddd60" name="a2fb8a84720c0274214029182e64ddd60"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fb8a84720c0274214029182e64ddd60">&#9670;&nbsp;</a></span>DelBuff()</h2>
 
@@ -2238,14 +2398,48 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
       </table>
 </div><div class="memdoc">
 
-<p>Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. <br  />
- Use <a class="el" href="class_n_p_c.html#aa0030c39514c7cfce2a9ffcbbbd24119" title="Removes the buff type and shuffles the remaining buff indexes down to fill the gap....">NPC.RequestBuffRemoval</a> if you only know the buff type. </p>
+<p>Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buffIndex</td><td>The index of the buff to remove.</td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a5272dd7834b4c553bcb08fea42c2630c" name="a5272dd7834b4c553bcb08fea42c2630c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5272dd7834b4c553bcb08fea42c2630c">&#9670;&nbsp;</a></span>FindFirstNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int NPC.FindFirstNPC </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the index within Main.npc of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2503,6 +2697,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </div><div class="memdoc">
 
 <p>Returns the gore type of the party hat this <a class="el" href="class_n_p_c.html">NPC</a> is currently wearing. If the <a class="el" href="class_n_p_c.html">NPC</a> isn't wearing a party hat, 0 is returned. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae8131d7ccdecc4cc92b2206182bf2f03" name="ae8131d7ccdecc4cc92b2206182bf2f03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8131d7ccdecc4cc92b2206182bf2f03">&#9670;&nbsp;</a></span>GetWereThereAnyInteractions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool NPC.GetWereThereAnyInteractions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if any player has damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Individual player participation can be determined by checking <a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">playerInteraction</a> directly. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
@@ -2832,8 +3046,9 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
       </table>
 </div><div class="memdoc">
 
-<p>Removes the buff type and shuffles the remaining buff indexes down to fill the gap. <br  />
- Use <a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">NPC.DelBuff</a> if you only know the buff index. </p>
+<p>Removes the buff type and shuffles the remaining buff indexes down to fill the gap. Note that only buffs contained in <a class="el" href="class_buff_i_d_1_1_sets.html#a350949b499fcca7db0c86d9aac40517d" title="If true for a given BuffID, then that buff can be removed from an NPC using NPC.RequestBuffRemoval(in...">BuffID.Sets.CanBeRemovedByNetMessage</a> can be removed with this method. The intention is that those specific buffs are "owned" by the player who inflicts them, so they can be freely removed by multiplayer clients. <br  />
+<br  />
+ In all other cases code running on the server or in single player is in charge of the <a class="el" href="class_n_p_c.html">NPC</a> debuffs and <a class="el" href="class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">NPC.DelBuff</a> should be used directly. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buffTypeToRemove</td><td>The buff type</td></tr>

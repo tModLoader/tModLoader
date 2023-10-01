@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -115,15 +115,29 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeRemoved
 <tr class="memitem:ad03faf1fe541ee0e8767c9d1a3f4280a"><td class="memItemLeft" align="right" valign="top"><a id="ad03faf1fe541ee0e8767c9d1a3f4280a" name="ad03faf1fe541ee0e8767c9d1a3f4280a"></a>
 static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(BuffLoader.BuffCount)</td></tr>
 <tr class="separator:ad03faf1fe541ee0e8767c9d1a3f4280a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e5b6b563b38ef01fa787b0733b3c4a8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_list.html">List</a>&lt; int &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8">GrantImmunityWith</a></td></tr>
+<tr class="memdesc:a6e5b6b563b38ef01fa787b0733b3c4a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">An <a class="el" href="class_n_p_c.html">NPC</a> will automatically become immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">NPC.buffImmune</a>) to the indexed buff type if it is already immune to any buff in the corresponding <a class="el" href="class_list.html">List</a>. <br  />
+ For NPCs with <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a61ba2efd1da00acfce242144b569382d" title="If true, this NPC type (NPC.type) will be immune to all debuffs and &quot;tag&quot; buffs by default....">NPCID.Sets.ImmuneToAllBuffs</a> or <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aa75bcc108bf7911dfca3171f60adae7e" title="If true, this NPC type (NPC.type) will be immune to all debuffs except tag debuffs (BuffID....">NPCID.Sets.ImmuneToRegularBuffs</a> set to true, the reverse of that logic is used to automatically set the <a class="el" href="class_n_p_c.html">NPC</a> as vulnerable: The <a class="el" href="class_n_p_c.html">NPC</a> will automatically become vulnerable to the indexed buff type if it is specifically vulnerable to all of the buffs in the corresponding <a class="el" href="class_list.html">List</a>.<br  />
+<br  />
+ This set helps standardize several buff immunity inheritance rules that are effectively present in <a class="el" href="namespace_terraria.html">Terraria</a> while providing modders the ability to do the same. For example, all <a class="el" href="class_n_p_c.html">NPC</a> with immunity to OnFire are also immune to OnFire3 (aka, "On Fire!" and "Hellfire").<br  />
+ Modders can use this set to create buffs that act as variants of existing buffs, and should inherit the immunity value of those existing buffs. <a class="el" href="class_n_p_c.html">NPC</a> from <a class="el" href="namespace_terraria.html">Terraria</a> and other mods will automatically have these immunity rules applied, regardless of mod load order.  <a href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8">More...</a><br /></td></tr>
+<tr class="separator:a6e5b6b563b38ef01fa787b0733b3c4a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57199ee81be55d41be118c4ebfc836aa"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets.html#a57199ee81be55d41be118c4ebfc836aa">IsAFlaskBuff</a> = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79)</td></tr>
 <tr class="memdesc:a57199ee81be55d41be118c4ebfc836aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff corresponds to a flask item. <br  />
  Flask items are categorized into the ContentSamples.CreativeHelper.ItemGroup.Flask group in Journey Mode. <br  />
  Defaults to <code>false</code>.  <a href="class_buff_i_d_1_1_sets.html#a57199ee81be55d41be118c4ebfc836aa">More...</a><br /></td></tr>
 <tr class="separator:a57199ee81be55d41be118c4ebfc836aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8591b6facf84f64dad6a13a2750df97c"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c">IsAnNPCWhipDebuff</a> = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340)</td></tr>
-<tr class="memdesc:a8591b6facf84f64dad6a13a2750df97c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is a whip debuff and can be applied to NPCs that use DataStructures.NPCDebuffImmunityData.ImmuneToAllBuffsThatAreNotWhips. <br  />
- Defaults to <code>false</code>.  <a href="class_buff_i_d_1_1_sets.html#a8591b6facf84f64dad6a13a2750df97c">More...</a><br /></td></tr>
-<tr class="separator:a8591b6facf84f64dad6a13a2750df97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5119610f280c11e2c565a153202d0fc"><td class="memItemLeft" align="right" valign="top"><a id="ad5119610f280c11e2c565a153202d0fc" name="ad5119610f280c11e2c565a153202d0fc"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsATagBuff</b> = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340)</td></tr>
+<tr class="memdesc:ad5119610f280c11e2c565a153202d0fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is not considered a typical debuff, but is a buff used to "tag" entities for other purposes.<br  />
+<br  />
+ Whip debuffs are the primary example of tag buffs, they facilitate a combat mechanic rather than affect the <a class="el" href="class_n_p_c.html">NPC</a> directly.<br  />
+<br  />
+ <br  />
+ Buffs in this set can be applied to all NPCs unless that <a class="el" href="class_n_p_c.html">NPC</a> sets <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a61ba2efd1da00acfce242144b569382d" title="If true, this NPC type (NPC.type) will be immune to all debuffs and &quot;tag&quot; buffs by default....">NPCID.Sets.ImmuneToAllBuffs</a> to prevent it.<br  />
+<br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:ad5119610f280c11e2c565a153202d0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a320a30f2a00aff56f251560af14522cb"><td class="memItemLeft" align="right" valign="top"><a id="a320a30f2a00aff56f251560af14522cb" name="a320a30f2a00aff56f251560af14522cb"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsFedState</b> = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334)</td></tr>
 <tr class="memdesc:a320a30f2a00aff56f251560af14522cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is related to player hunger. <br  />
@@ -151,6 +165,44 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TimeLeftDoes
 <tr class="separator:a158f6f2a144fc1b0c1c73fdcd8a735fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a6e5b6b563b38ef01fa787b0733b3c4a8" name="a6e5b6b563b38ef01fa787b0733b3c4a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e5b6b563b38ef01fa787b0733b3c4a8">&#9670;&nbsp;</a></span>GrantImmunityWith</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_list.html">List</a>&lt;int&gt; [] BuffID.Sets.GrantImmunityWith</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= Factory.CreateCustomSet&lt;<a class="code hl_class" href="class_list.html">List&lt;int&gt;</a>&gt;(<span class="keyword">null</span>,</div>
+<div class="line">            OnFire3, <span class="keyword">new</span> <a class="code hl_class" href="class_list.html">List&lt;int&gt;</a>() { OnFire }, </div>
+<div class="line">            OnFire, <span class="keyword">new</span> <a class="code hl_class" href="class_list.html">List&lt;int&gt;</a>() { OnFire3 },</div>
+<div class="line">            Frostburn2, <span class="keyword">new</span> <a class="code hl_class" href="class_list.html">List&lt;int&gt;</a>() { Frostburn }, </div>
+<div class="line">            Frostburn, <span class="keyword">new</span> <a class="code hl_class" href="class_list.html">List&lt;int&gt;</a>() { Frostburn2 },</div>
+<div class="line">            </div>
+<div class="line">            Poisoned, <span class="keyword">new</span> <a class="code hl_class" href="class_list.html">List&lt;int&gt;</a>() { Venom } </div>
+<div class="line">            </div>
+<div class="line">        )</div>
+<div class="ttc" id="aclass_list_html"><div class="ttname"><a href="class_list.html">List</a></div></div>
+</div><!-- fragment -->
+<p>An <a class="el" href="class_n_p_c.html">NPC</a> will automatically become immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">NPC.buffImmune</a>) to the indexed buff type if it is already immune to any buff in the corresponding <a class="el" href="class_list.html">List</a>. <br  />
+ For NPCs with <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a61ba2efd1da00acfce242144b569382d" title="If true, this NPC type (NPC.type) will be immune to all debuffs and &quot;tag&quot; buffs by default....">NPCID.Sets.ImmuneToAllBuffs</a> or <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aa75bcc108bf7911dfca3171f60adae7e" title="If true, this NPC type (NPC.type) will be immune to all debuffs except tag debuffs (BuffID....">NPCID.Sets.ImmuneToRegularBuffs</a> set to true, the reverse of that logic is used to automatically set the <a class="el" href="class_n_p_c.html">NPC</a> as vulnerable: The <a class="el" href="class_n_p_c.html">NPC</a> will automatically become vulnerable to the indexed buff type if it is specifically vulnerable to all of the buffs in the corresponding <a class="el" href="class_list.html">List</a>.<br  />
+<br  />
+ This set helps standardize several buff immunity inheritance rules that are effectively present in <a class="el" href="namespace_terraria.html">Terraria</a> while providing modders the ability to do the same. For example, all <a class="el" href="class_n_p_c.html">NPC</a> with immunity to OnFire are also immune to OnFire3 (aka, "On Fire!" and "Hellfire").<br  />
+ Modders can use this set to create buffs that act as variants of existing buffs, and should inherit the immunity value of those existing buffs. <a class="el" href="class_n_p_c.html">NPC</a> from <a class="el" href="namespace_terraria.html">Terraria</a> and other mods will automatically have these immunity rules applied, regardless of mod load order. </p>
+
+</div>
+</div>
 <a id="a57199ee81be55d41be118c4ebfc836aa" name="a57199ee81be55d41be118c4ebfc836aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57199ee81be55d41be118c4ebfc836aa">&#9670;&nbsp;</a></span>IsAFlaskBuff</h2>
 
@@ -175,32 +227,6 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TimeLeftDoes
  Flask items are categorized into the ContentSamples.CreativeHelper.ItemGroup.Flask group in Journey Mode. <br  />
  Defaults to <code>false</code>. </p>
 <p >This set does <b>not</b> handle any logic for flasks. </p>
-
-</div>
-</div>
-<a id="a8591b6facf84f64dad6a13a2750df97c" name="a8591b6facf84f64dad6a13a2750df97c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8591b6facf84f64dad6a13a2750df97c">&#9670;&nbsp;</a></span>IsAnNPCWhipDebuff</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool [] BuffID.Sets.IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If <code>true</code> for a given <a class="el" href="class_buff_i_d.html">BuffID</a>, then that buff is a whip debuff and can be applied to NPCs that use DataStructures.NPCDebuffImmunityData.ImmuneToAllBuffsThatAreNotWhips. <br  />
- Defaults to <code>false</code>. </p>
-<p >NPCs can be made immune to whip debuffs using DataStructures.NPCDebuffImmunityData.ImmuneToWhips.</p>
 
 </div>
 </div>

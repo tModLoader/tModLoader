@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -417,6 +417,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyPlayerReady
 <tr class="memitem:ac3519d9e5602d7937d8c0fe31dfd39ae"><td class="memItemLeft" align="right" valign="top"><a id="ac3519d9e5602d7937d8c0fe31dfd39ae" name="ac3519d9e5602d7937d8c0fe31dfd39ae"></a>
 static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="bottom"><b>buffColor</b> (Microsoft.Xna.Framework.Color newColor, float R, float G, float B, float A)</td></tr>
 <tr class="separator:ac3519d9e5602d7937d8c0fe31dfd39ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e6a28ce5350143caa53f4fb3bcc4802"><td class="memItemLeft" align="right" valign="top"><a id="a4e6a28ce5350143caa53f4fb3bcc4802" name="a4e6a28ce5350143caa53f4fb3bcc4802"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>BuilderTogglePageHandler</b> (int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex)</td></tr>
+<tr class="separator:a4e6a28ce5350143caa53f4fb3bcc4802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9384deb7ddf1164cbc5794c1b6a1db04"><td class="memItemLeft" align="right" valign="top"><a id="a9384deb7ddf1164cbc5794c1b6a1db04" name="a9384deb7ddf1164cbc5794c1b6a1db04"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>BuyHairWindow</b> ()</td></tr>
 <tr class="separator:a9384deb7ddf1164cbc5794c1b6a1db04"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -663,9 +666,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLiquidStyleW
 <tr class="memitem:ad2cf3687a06bff68f997f0aa1126092e"><td class="memItemLeft" align="right" valign="top"><a id="ad2cf3687a06bff68f997f0aa1126092e" name="ad2cf3687a06bff68f997f0aa1126092e"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNPCActiveAndOneOfTypes</b> (int npcIndex, params int[] types)</td></tr>
 <tr class="separator:ad2cf3687a06bff68f997f0aa1126092e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfc5bf2b146246e0fe5f145e2bfb495c"><td class="memItemLeft" align="right" valign="top"><a id="abfc5bf2b146246e0fe5f145e2bfb495c" name="abfc5bf2b146246e0fe5f145e2bfb495c"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileBiomeSightable</b> (ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)</td></tr>
-<tr class="separator:abfc5bf2b146246e0fe5f145e2bfb495c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6d01005b45ad27c8aa951298795a88"><td class="memItemLeft" align="right" valign="top"><a id="a0b6d01005b45ad27c8aa951298795a88" name="a0b6d01005b45ad27c8aa951298795a88"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileBiomeSightable</b> (int tileX, int tileY, ref Color sightColor)</td></tr>
+<tr class="memdesc:a0b6d01005b45ad27c8aa951298795a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a tile at the given coordinates counts towards tile coloring from the Biome Sight buff. <br /></td></tr>
+<tr class="separator:a0b6d01005b45ad27c8aa951298795a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af632a20e0c6ec7f274f4e63a8e0e0353"><td class="memItemLeft" align="right" valign="top"><a id="af632a20e0c6ec7f274f4e63a8e0e0353" name="af632a20e0c6ec7f274f4e63a8e0e0353"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileSpelunkable</b> (int tileX, int tileY)</td></tr>
 <tr class="memdesc:af632a20e0c6ec7f274f4e63a8e0e0353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets. <br /></td></tr>
@@ -2685,6 +2689,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>mouseText</b><
 <tr class="separator:a66c9b999a0c528b407aced525cb52b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840ecd742352ec5b2328759d7eabca22"><td class="memItemLeft" align="right" valign="top"><a id="a840ecd742352ec5b2328759d7eabca22" name="a840ecd742352ec5b2328759d7eabca22"></a>
 static byte&#160;</td><td class="memItemRight" valign="bottom"><b>mouseTextColor</b></td></tr>
+<tr class="memdesc:a840ecd742352ec5b2328759d7eabca22"><td class="mdescLeft">&#160;</td><td class="mdescRight">A value that oscillates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create Colors by passing in this value as either all 4 parameters or just the alpha parameter.<br  />
+<br  />
+ <a class="el" href="class_main.html#ac31657e96915be3b51540aa9e1c131d5" title="The typical pulsing white color used for much of the text shown in-game.">Main.MouseTextColorReal</a> can be used to access the typical pulsing white Color value. <br /></td></tr>
 <tr class="separator:a840ecd742352ec5b2328759d7eabca22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2b9a4b1d58455d96a97c8d267d49589"><td class="memItemLeft" align="right" valign="top"><a id="ac2b9a4b1d58455d96a97c8d267d49589" name="ac2b9a4b1d58455d96a97c8d267d49589"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>mouseTextColorChange</b> = 1</td></tr>
@@ -3568,7 +3575,7 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrameCoun
 <tr class="memitem:ae49a753c6a45feca9bacc58d520efc1a"><td class="memItemLeft" align="right" valign="top"><a id="ae49a753c6a45feca9bacc58d520efc1a" name="ae49a753c6a45feca9bacc58d520efc1a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrameImportant</b> = new bool[TileID.Count]</td></tr>
 <tr class="memdesc:ae49a753c6a45feca9bacc58d520efc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a <a class="el" href="class_tile_object_data.html">TileObjectData</a>. <br  />
- All non-1x1 tiles should set this to true. All 1x1 tiles that have a <a class="el" href="class_tile_object_data.html">TileObjectData</a> or that shoud preserve frame data should set this to true. <br /></td></tr>
+ All non-1x1 tiles should set this to true. All 1x1 tiles that have a <a class="el" href="class_tile_object_data.html">TileObjectData</a> or that should preserve frame data should set this to true. <br /></td></tr>
 <tr class="separator:ae49a753c6a45feca9bacc58d520efc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d76914db6aad6e3500711979e49976d"><td class="memItemLeft" align="right" valign="top"><a id="a3d76914db6aad6e3500711979e49976d" name="a3d76914db6aad6e3500711979e49976d"></a>
 static ulong&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrameSeed</b> = (ulong)Guid.NewGuid().GetHashCode()</td></tr>
@@ -3596,7 +3603,7 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLargeFra
 <tr class="separator:a31efd2fbedd7a4071162d6678c0da706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memItemLeft" align="right" valign="top"><a id="ae4e747a8a660d98c8fd21b613e1fc2d4" name="ae4e747a8a660d98c8fd21b613e1fc2d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLavaDeath</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. <br /></td></tr>
+<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. Use <a class="el" href="class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5" title="If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it...">tileObsidianKill</a> instead if the tile should only be killed by obsidian forming over it. <br /></td></tr>
 <tr class="separator:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735063a3cb2816b52d2e861269294589"><td class="memItemLeft" align="right" valign="top"><a id="a735063a3cb2816b52d2e861269294589" name="a735063a3cb2816b52d2e861269294589"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLighted</b> = new bool[TileID.Count]</td></tr>
@@ -3626,6 +3633,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileNoSunLig
 <tr class="separator:a045bb155cfc729b80a6b7be8987af6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="memItemLeft" align="right" valign="top"><a id="ac8f3eeb77b730712be9268d5d8ca9cf5" name="ac8f3eeb77b730712be9268d5d8ca9cf5"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileObsidianKill</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <a class="el" href="class_main.html#ae4e747a8a660d98c8fd21b613e1fc2d4" title="If true for the given tile type, tiles of the type will be destroyed if in contact with lava....">tileLavaDeath</a> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils. <br /></td></tr>
 <tr class="separator:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f9ffde4d29e185014fb024d3e6ed24"><td class="memItemLeft" align="right" valign="top"><a id="a34f9ffde4d29e185014fb024d3e6ed24" name="a34f9ffde4d29e185014fb024d3e6ed24"></a>
 static short[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileOreFinderPriority</b> = new short[TileID.Count]</td></tr>
@@ -4224,6 +4232,7 @@ static SamplerState&#160;</td><td class="memItemRight" valign="bottom"><b>Defaul
 <tr class="separator:aba92757dbde978794970862ca4c79ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34866c5522dd2830f1e21306624a54c8"><td class="memItemLeft" align="right" valign="top"><a id="a34866c5522dd2830f1e21306624a54c8" name="a34866c5522dd2830f1e21306624a54c8"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>DiscoColor</b><code> [get]</code></td></tr>
+<tr class="memdesc:a34866c5522dd2830f1e21306624a54c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">A color that cycles through the colors like Rainbow Brick does. <br /></td></tr>
 <tr class="separator:a34866c5522dd2830f1e21306624a54c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03b02e2e8dbe5623836170e09168858c"><td class="memItemLeft" align="right" valign="top"><a id="a03b02e2e8dbe5623836170e09168858c" name="a03b02e2e8dbe5623836170e09168858c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>expertMode</b><code> [get]</code></td></tr>
@@ -4274,6 +4283,7 @@ static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MouseScreen
 <tr class="separator:a4061437db22d405c4ca0303118ddc190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac31657e96915be3b51540aa9e1c131d5"><td class="memItemLeft" align="right" valign="top"><a id="ac31657e96915be3b51540aa9e1c131d5" name="ac31657e96915be3b51540aa9e1c131d5"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>MouseTextColorReal</b><code> [get]</code></td></tr>
+<tr class="memdesc:ac31657e96915be3b51540aa9e1c131d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The typical pulsing white color used for much of the text shown in-game. <br /></td></tr>
 <tr class="separator:ac31657e96915be3b51540aa9e1c131d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a606125db0209ce97a04b55448fac79c9"><td class="memItemLeft" align="right" valign="top"><a id="a606125db0209ce97a04b55448fac79c9" name="a606125db0209ce97a04b55448fac79c9"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MouseWorld</b><code> [get]</code></td></tr>

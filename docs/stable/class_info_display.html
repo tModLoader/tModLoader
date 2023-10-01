@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -89,9 +89,12 @@ $(document).ready(function(){initNavTree('class_info_display.html',''); initResi
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_info_display-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">InfoDisplay Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">InfoDisplay Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents an informational display toggle typically provided by informational accessories.The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> property determines if the <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> could be shown to the user. The game tracks the players desired visibility of active <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> through the Player.hideInfo array.  
+ <a href="class_info_display.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_textured_type.html">ModTexturedType</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
 
@@ -100,12 +103,15 @@ $(document).ready(function(){initNavTree('class_info_display.html',''); initResi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7799c04325bac7bc63c691f08ad60992"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">Active</a> ()</td></tr>
-<tr class="memdesc:a7799c04325bac7bc63c691f08ad60992"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this info display should be active.  <a href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">More...</a><br /></td></tr>
+<tr class="memdesc:a7799c04325bac7bc63c691f08ad60992"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this info display should be active.This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>.  <a href="class_info_display.html#a7799c04325bac7bc63c691f08ad60992">More...</a><br /></td></tr>
 <tr class="separator:a7799c04325bac7bc63c691f08ad60992"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68694249905ac8cc4b8e0988fed0c24a"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a">DisplayValue</a> (ref Color displayColor)</td></tr>
-<tr class="memdesc:a68694249905ac8cc4b8e0988fed0c24a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when viewing this display in normal play, right next to the icon. <br  />
-Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763" title="The color when no valuable information is displayed">InactiveInfoTextColor</a> if your display value is "zero"/shows no valuable information.  <a href="class_info_display.html#a68694249905ac8cc4b8e0988fed0c24a">More...</a><br /></td></tr>
-<tr class="separator:a68694249905ac8cc4b8e0988fed0c24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc91274fa6f158f489ad2f64091c5859"><td class="memItemLeft" align="right" valign="top"><a id="afc91274fa6f158f489ad2f64091c5859" name="afc91274fa6f158f489ad2f64091c5859"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayValue</b> (ref Color displayColor)</td></tr>
+<tr class="separator:afc91274fa6f158f489ad2f64091c5859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb354080de326a4a37588fe8e3acba08"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#abb354080de326a4a37588fe8e3acba08">DisplayValue</a> (ref Color displayColor, ref Color displayShadowColor)</td></tr>
+<tr class="memdesc:abb354080de326a4a37588fe8e3acba08"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when viewing this display in normal play, right next to the icon. <br  />
+Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763" title="The color when no valuable information is displayed.">InactiveInfoTextColor</a> if your display value is "zero"/shows no valuable information.  <a href="class_info_display.html#abb354080de326a4a37588fe8e3acba08">More...</a><br /></td></tr>
+<tr class="separator:abb354080de326a4a37588fe8e3acba08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76df1097e31d98a5588d42ae7ac6d1cb"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a76df1097e31d98a5588d42ae7ac6d1cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_info_display.html#a76df1097e31d98a5588d42ae7ac6d1cb">More...</a><br /></td></tr>
 <tr class="separator:a76df1097e31d98a5588d42ae7ac6d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,6 +180,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a3ec287f9bdc143eb8426b67dac705265"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a3ec287f9bdc143eb8426b67dac705265">Register</a> ()</td></tr>
 <tr class="memdesc:a3ec287f9bdc143eb8426b67dac705265"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_info_display.html#a3ec287f9bdc143eb8426b67dac705265">More...</a><br /></td></tr>
 <tr class="separator:a3ec287f9bdc143eb8426b67dac705265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23c1cff3c642ce5d11bcd850b534d7da"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a23c1cff3c642ce5d11bcd850b534d7da">ValidateType</a> ()</td></tr>
+<tr class="memdesc:a23c1cff3c642ce5d11bcd850b534d7da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for the correct overrides of different hook methods and fields and properties  <a href="class_info_display.html#a23c1cff3c642ce5d11bcd850b534d7da">More...</a><br /></td></tr>
+<tr class="separator:a23c1cff3c642ce5d11bcd850b534d7da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
 <tr class="memitem:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">abstract TEntity&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#ad88e5eb64bf9e58f2051b1d95dc2f554">CreateTemplateEntity</a> ()</td></tr>
 <tr class="separator:ad88e5eb64bf9e58f2051b1d95dc2f554 inherit pro_methods_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,16 +234,30 @@ static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><t
 <tr class="memitem:a229a8cf2e80ec23bd19efbc2a7d12e89"><td class="memItemLeft" align="right" valign="top"><a id="a229a8cf2e80ec23bd19efbc2a7d12e89" name="a229a8cf2e80ec23bd19efbc2a7d12e89"></a>
 static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FishFinder</b> = new <a class="el" href="class_fish_finder_info_display.html">FishFinderInfoDisplay</a>()<code> [get]</code></td></tr>
 <tr class="separator:a229a8cf2e80ec23bd19efbc2a7d12e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd7094ef53193988d006d8a8e9beb5d"><td class="memItemLeft" align="right" valign="top"><a id="a9bd7094ef53193988d006d8a8e9beb5d" name="a9bd7094ef53193988d006d8a8e9beb5d"></a>
+static Color&#160;</td><td class="memItemRight" valign="bottom"><b>GoldInfoTextColor</b><code> [get]</code></td></tr>
+<tr class="memdesc:a9bd7094ef53193988d006d8a8e9beb5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The golden color variant of the displays text.<br  />
+ Used by the Lifeform Analyzer. <br /></td></tr>
+<tr class="separator:a9bd7094ef53193988d006d8a8e9beb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a1159dc2118d41425359cd3e9f27502"><td class="memItemLeft" align="right" valign="top"><a id="a7a1159dc2118d41425359cd3e9f27502" name="a7a1159dc2118d41425359cd3e9f27502"></a>
+static Color&#160;</td><td class="memItemRight" valign="bottom"><b>GoldInfoTextShadowColor</b><code> [get]</code></td></tr>
+<tr class="memdesc:a7a1159dc2118d41425359cd3e9f27502"><td class="mdescLeft">&#160;</td><td class="mdescRight">The golden color variant of the displays text shadow.<br  />
+ Used by the Lifeform Analyzer. <br /></td></tr>
+<tr class="separator:a7a1159dc2118d41425359cd3e9f27502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eabe8c9419823d27aca515d12e6030b"><td class="memItemLeft" align="right" valign="top"><a id="a8eabe8c9419823d27aca515d12e6030b" name="a8eabe8c9419823d27aca515d12e6030b"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>HoverTexture</b><code> [get]</code></td></tr>
+<tr class="memdesc:a8eabe8c9419823d27aca515d12e6030b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The outline texture drawn when the icon is hovered and toggleable. By default a circular outline texture is used. Override this method and return <code>Texture + "_Hover"</code> or any other texture path to specify a custom outline texture for use with icons that are not circular. <br /></td></tr>
+<tr class="separator:a8eabe8c9419823d27aca515d12e6030b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3521473ab7aa1df4b5e1ec6757371763"><td class="memItemLeft" align="right" valign="top"><a id="a3521473ab7aa1df4b5e1ec6757371763" name="a3521473ab7aa1df4b5e1ec6757371763"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>InactiveInfoTextColor</b><code> [get]</code></td></tr>
-<tr class="memdesc:a3521473ab7aa1df4b5e1ec6757371763"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color when no valuable information is displayed <br /></td></tr>
+<tr class="memdesc:a3521473ab7aa1df4b5e1ec6757371763"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color when no valuable information is displayed. <br /></td></tr>
 <tr class="separator:a3521473ab7aa1df4b5e1ec6757371763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e7c90486d6bd2218652d4c5dc179d6"><td class="memItemLeft" align="right" valign="top"><a id="aa5e7c90486d6bd2218652d4c5dc179d6" name="aa5e7c90486d6bd2218652d4c5dc179d6"></a>
 static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LifeformAnalyzer</b> = new <a class="el" href="class_lifeform_analyzer_info_display.html">LifeformAnalyzerInfoDisplay</a>()<code> [get]</code></td></tr>
 <tr class="separator:aa5e7c90486d6bd2218652d4c5dc179d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1503b6cca74087c7acb8bd1368a46c06"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a1503b6cca74087c7acb8bd1368a46c06">LocalizationCategory</a><code> [get]</code></td></tr>
-<tr class="memdesc:a1503b6cca74087c7acb8bd1368a46c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">The category used by this modded content for use in localization keys. Localization keys follow the pattern of "Mods.{ModName}.{Category}.{ContentName}.{DataName}". The Localization wiki pageexplains how custom <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a> classes can utilize this.  <a href="class_info_display.html#a1503b6cca74087c7acb8bd1368a46c06">More...</a><br /></td></tr>
-<tr class="separator:a1503b6cca74087c7acb8bd1368a46c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c4f7bfa5a050914ff57a19b5178c8c6"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_info_display.html#a3c4f7bfa5a050914ff57a19b5178c8c6">LocalizationCategory</a><code> [get]</code></td></tr>
+<tr class="memdesc:a3c4f7bfa5a050914ff57a19b5178c8c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The category used by this modded content for use in localization keys. Localization keys follow the pattern of "Mods.{ModName}.{Category}.{ContentName}.{DataName}". The Localization wiki pageexplains how custom <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a> classes can utilize this.  <a href="class_info_display.html#a3c4f7bfa5a050914ff57a19b5178c8c6">More...</a><br /></td></tr>
+<tr class="separator:a3c4f7bfa5a050914ff57a19b5178c8c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c1b55cfd3930232d455541bca0aea7"><td class="memItemLeft" align="right" valign="top"><a id="af6c1b55cfd3930232d455541bca0aea7" name="af6c1b55cfd3930232d455541bca0aea7"></a>
 static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MetalDetector</b> = new <a class="el" href="class_metal_detector_info_display.html">MetalDetectorInfoDisplay</a>()<code> [get]</code></td></tr>
 <tr class="separator:af6c1b55cfd3930232d455541bca0aea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,8 +275,12 @@ static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><t
 <tr class="separator:a57125d4e01379e9d8e1281d00321af29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="memItemLeft" align="right" valign="top"><a id="ac53cc325cd4be38efbf6c00d972a9c4b" name="ac53cc325cd4be38efbf6c00d972a9c4b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the internal ID of this <a class="el" href="class_info_display.html">InfoDisplay</a>. <br /></td></tr>
+<tr class="memdesc:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the internal ID of this <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a>.Also serves as the index for Player.hideInfo. <br /></td></tr>
 <tr class="separator:ac53cc325cd4be38efbf6c00d972a9c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacf2f77d9b3590a69b905b6a7e015480"><td class="memItemLeft" align="right" valign="top"><a id="aacf2f77d9b3590a69b905b6a7e015480" name="aacf2f77d9b3590a69b905b6a7e015480"></a>
+static string&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaHoverTexture</b><code> [get]</code></td></tr>
+<tr class="memdesc:aacf2f77d9b3590a69b905b6a7e015480"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path to the texture vanilla info displays use when hovering over an info display. <br /></td></tr>
+<tr class="separator:aacf2f77d9b3590a69b905b6a7e015480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f3bdd8c3d7f646540fcab3fda064f5"><td class="memItemLeft" align="right" valign="top"><a id="a57f3bdd8c3d7f646540fcab3fda064f5" name="a57f3bdd8c3d7f646540fcab3fda064f5"></a>
 static <a class="el" href="class_info_display.html">InfoDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Watches</b> = new <a class="el" href="class_watches_info_display.html">WatchesInfoDisplay</a>()<code> [get]</code></td></tr>
 <tr class="separator:a57f3bdd8c3d7f646540fcab3fda064f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -324,7 +351,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="memdesc:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The category used by this modded content for use in localization keys. Localization keys follow the pattern of "Mods.{ModName}.{Category}.{ContentName}.{DataName}". The Localization wiki pageexplains how custom <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a> classes can utilize this.  <a href="interface_i_localized_mod_type.html#ac939fd71685c5b25062243257f03e1db">More...</a><br /></td></tr>
 <tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents an informational display toggle typically provided by informational accessories</p>
+<p >.</p>
+<p >The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> property determines if the <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> could be shown to the user. The game tracks the players desired visibility of active <a class="el" href="class_info_display.html" title="Represents an informational display toggle typically provided by informational accessories....">InfoDisplay</a> through the Player.hideInfo array. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7799c04325bac7bc63c691f08ad60992" name="a7799c04325bac7bc63c691f08ad60992"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7799c04325bac7bc63c691f08ad60992">&#9670;&nbsp;</a></span>Active()</h2>
 
@@ -348,14 +379,14 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>This dictates whether or not this info display should be active. </p>
+<p>This dictates whether or not this info display should be active.This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>. </p>
 
 <p>Reimplemented in <a class="el" href="class_watches_info_display.html#a12ebe98f820700550500d304ebdc1228">WatchesInfoDisplay</a>, <a class="el" href="class_weather_radio_info_display.html#ae605de379c86a11effbb5430eca05b66">WeatherRadioInfoDisplay</a>, <a class="el" href="class_sextant_info_display.html#a747b1cd51057d2d10d353e9161882721">SextantInfoDisplay</a>, <a class="el" href="class_fish_finder_info_display.html#a716ad3524337148ccdad4a5fa8c193ad">FishFinderInfoDisplay</a>, <a class="el" href="class_metal_detector_info_display.html#ab710e3c000d437ac2fc1af905b8a2439">MetalDetectorInfoDisplay</a>, <a class="el" href="class_lifeform_analyzer_info_display.html#a6a6296dc87a0ea5f6cbc935082a55a44">LifeformAnalyzerInfoDisplay</a>, <a class="el" href="class_radar_info_display.html#ab5c8441816d070bea037bd6d2a66ec38">RadarInfoDisplay</a>, <a class="el" href="class_tally_counter_info_display.html#a760d62fe493673620e4b0e0aeac90a06">TallyCounterInfoDisplay</a>, <a class="el" href="class_dummy_info_display.html#a5a8ed157499ddf2502ff8ee1ab2ce719">DummyInfoDisplay</a>, <a class="el" href="class_d_p_s_meter_info_display.html#a96b85b5fa2f4c4cd426a63215c6e1d9e">DPSMeterInfoDisplay</a>, <a class="el" href="class_stopwatch_info_display.html#a10031152437ee1fa39696762bfd75e6c">StopwatchInfoDisplay</a>, <a class="el" href="class_compass_info_display.html#aedeff6bacc6190faaa71b5d73de05f38">CompassInfoDisplay</a>, and <a class="el" href="class_depth_meter_info_display.html#a900662526d87d59cecc48e4c3ef0eb85">DepthMeterInfoDisplay</a>.</p>
 
 </div>
 </div>
-<a id="a68694249905ac8cc4b8e0988fed0c24a" name="a68694249905ac8cc4b8e0988fed0c24a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68694249905ac8cc4b8e0988fed0c24a">&#9670;&nbsp;</a></span>DisplayValue()</h2>
+<a id="abb354080de326a4a37588fe8e3acba08" name="abb354080de326a4a37588fe8e3acba08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb354080de326a4a37588fe8e3acba08">&#9670;&nbsp;</a></span>DisplayValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -364,30 +395,41 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract string InfoDisplay.DisplayValue </td>
+          <td class="memname">virtual string InfoDisplay.DisplayValue </td>
           <td>(</td>
           <td class="paramtype">ref Color&#160;</td>
-          <td class="paramname"><em>displayColor</em></td><td>)</td>
+          <td class="paramname"><em>displayColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>displayShadowColor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>This is the value that will show up when viewing this display in normal play, right next to the icon. <br  />
-Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763" title="The color when no valuable information is displayed">InactiveInfoTextColor</a> if your display value is "zero"/shows no valuable information. </p>
+Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a3521473ab7aa1df4b5e1ec6757371763" title="The color when no valuable information is displayed.">InactiveInfoTextColor</a> if your display value is "zero"/shows no valuable information. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">displayColor</td><td>The color the text is displayed as.</td></tr>
+    <tr><td class="paramname">displayShadowColor</td><td>The outline color text is displayed as.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_vanilla_info_display.html#ad7b52a0aaf6b6b0e2c63076b9cd8314c">VanillaInfoDisplay</a>.</p>
+<p>Reimplemented in <a class="el" href="class_vanilla_info_display.html#ab6ff823c3bc6399f0e8def372af34700">VanillaInfoDisplay</a>.</p>
 
 </div>
 </div>
@@ -449,9 +491,8 @@ Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a35214
 
 </div>
 </div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a1503b6cca74087c7acb8bd1368a46c06" name="a1503b6cca74087c7acb8bd1368a46c06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1503b6cca74087c7acb8bd1368a46c06">&#9670;&nbsp;</a></span>LocalizationCategory</h2>
+<a id="a23c1cff3c642ce5d11bcd850b534d7da" name="a23c1cff3c642ce5d11bcd850b534d7da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23c1cff3c642ce5d11bcd850b534d7da">&#9670;&nbsp;</a></span>ValidateType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -460,7 +501,37 @@ Set <em>displayColor</em>  to <a class="el" href="class_info_display.html#a35214
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string InfoDisplay.LocalizationCategory</td>
+          <td class="memname">override void InfoDisplay.ValidateType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check for the correct overrides of different hook methods and fields and properties </p>
+
+<p>Reimplemented from <a class="el" href="class_mod_type.html#a68ae9d7e81b3ef0a93b540db9fa62ae7">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a3c4f7bfa5a050914ff57a19b5178c8c6" name="a3c4f7bfa5a050914ff57a19b5178c8c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c4f7bfa5a050914ff57a19b5178c8c6">&#9670;&nbsp;</a></span>LocalizationCategory</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string InfoDisplay.LocalizationCategory</td>
         </tr>
       </table>
   </td>

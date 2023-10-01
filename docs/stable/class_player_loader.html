@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -146,6 +146,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanSellItem</b
 <tr class="memitem:a761e59d7a6410f308c2b67b95a906ff1"><td class="memItemLeft" align="right" valign="top"><a id="a761e59d7a6410f308c2b67b95a906ff1" name="a761e59d7a6410f308c2b67b95a906ff1"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShoot</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="separator:a761e59d7a6410f308c2b67b95a906ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af230a1acc0a1dc35264b5faef7bc4373"><td class="memItemLeft" align="right" valign="top"><a id="af230a1acc0a1dc35264b5faef7bc4373" name="af230a1acc0a1dc35264b5faef7bc4373"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowExtraJumpVisuals</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="separator:af230a1acc0a1dc35264b5faef7bc4373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4105233b629868ad0a1a87da8e122767"><td class="memItemLeft" align="right" valign="top"><a id="a4105233b629868ad0a1a87da8e122767" name="a4105233b629868ad0a1a87da8e122767"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanStartExtraJump</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="separator:a4105233b629868ad0a1a87da8e122767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e5c5b4d83d26bdf28847996e7c1097c"><td class="memItemLeft" align="right" valign="top"><a id="a3e5c5b4d83d26bdf28847996e7c1097c" name="a3e5c5b4d83d26bdf28847996e7c1097c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="separator:a3e5c5b4d83d26bdf28847996e7c1097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +167,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyClientStat
 <tr class="memitem:aa889cc63852669cd66d3971d98ec1d10"><td class="memItemLeft" align="right" valign="top"><a id="aa889cc63852669cd66d3971d98ec1d10" name="aa889cc63852669cd66d3971d98ec1d10"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawEffects</b> (<a class="el" href="struct_player_draw_set.html">PlayerDrawSet</a> drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)</td></tr>
 <tr class="separator:aa889cc63852669cd66d3971d98ec1d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec3de6fef45c84bf4834132fa3dfd8bf"><td class="memItemLeft" align="right" valign="top"><a id="aec3de6fef45c84bf4834132fa3dfd8bf" name="aec3de6fef45c84bf4834132fa3dfd8bf"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraJumpVisuals</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="separator:aec3de6fef45c84bf4834132fa3dfd8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a414644d763e826d1eed9320d55cd37ca"><td class="memItemLeft" align="right" valign="top"><a id="a414644d763e826d1eed9320d55cd37ca" name="a414644d763e826d1eed9320d55cd37ca"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FrameEffects</b> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a414644d763e826d1eed9320d55cd37ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,6 +218,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDrawInfo
 <tr class="memitem:a6698e020a100eb4e646171c4c2e4eb16"><td class="memItemLeft" align="right" valign="top"><a id="a6698e020a100eb4e646171c4c2e4eb16" name="a6698e020a100eb4e646171c4c2e4eb16"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDrawLayerOrdering</b> (IDictionary&lt; <a class="el" href="class_player_draw_layer.html">PlayerDrawLayer</a>, <a class="el" href="class_player_draw_layer_1_1_position.html">PlayerDrawLayer.Position</a> &gt; positions)</td></tr>
 <tr class="separator:a6698e020a100eb4e646171c4c2e4eb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17590293d0a56439412654408002c0a"><td class="memItemLeft" align="right" valign="top"><a id="aa17590293d0a56439412654408002c0a" name="aa17590293d0a56439412654408002c0a"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyExtraJumpDurationMultiplier</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player, ref float duration)</td></tr>
+<tr class="separator:aa17590293d0a56439412654408002c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0aca7b39fbb213900a23f06d70f778f"><td class="memItemLeft" align="right" valign="top"><a id="aa0aca7b39fbb213900a23f06d70f778f" name="aa0aca7b39fbb213900a23f06d70f778f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyFishingAttempt</b> (<a class="el" href="class_player.html">Player</a> player, ref <a class="el" href="struct_fishing_attempt.html">FishingAttempt</a> attempt)</td></tr>
 <tr class="separator:aa0aca7b39fbb213900a23f06d70f778f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -282,6 +294,15 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnConsumeMana<
 <tr class="memitem:a444eafd85937f317c14d9880b1c53f39"><td class="memItemLeft" align="right" valign="top"><a id="a444eafd85937f317c14d9880b1c53f39" name="a444eafd85937f317c14d9880b1c53f39"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnEnterWorld</b> (int playerIndex)</td></tr>
 <tr class="separator:a444eafd85937f317c14d9880b1c53f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28dd1a8bf08fc053eb442c6313215192"><td class="memItemLeft" align="right" valign="top"><a id="a28dd1a8bf08fc053eb442c6313215192" name="a28dd1a8bf08fc053eb442c6313215192"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnExtraJumpEnded</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="separator:a28dd1a8bf08fc053eb442c6313215192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa031ef2ddc570967dbe88ad584e9d747"><td class="memItemLeft" align="right" valign="top"><a id="aa031ef2ddc570967dbe88ad584e9d747" name="aa031ef2ddc570967dbe88ad584e9d747"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnExtraJumpRefreshed</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="separator:aa031ef2ddc570967dbe88ad584e9d747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af13c43c57420e5ec578f4fef012fbc8e"><td class="memItemLeft" align="right" valign="top"><a id="af13c43c57420e5ec578f4fef012fbc8e" name="af13c43c57420e5ec578f4fef012fbc8e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnExtraJumpStarted</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump, <a class="el" href="class_player.html">Player</a> player, ref bool playSound)</td></tr>
+<tr class="separator:af13c43c57420e5ec578f4fef012fbc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad15b474b50251bc532e7f68ada9d5872"><td class="memItemLeft" align="right" valign="top"><a id="ad15b474b50251bc532e7f68ada9d5872" name="ad15b474b50251bc532e7f68ada9d5872"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHitAnything</b> (<a class="el" href="class_player.html">Player</a> player, float x, float y, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
 <tr class="separator:ad15b474b50251bc532e7f68ada9d5872"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,6 +327,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHurt</b> (<a
 <tr class="memitem:ae93607af175b05bc333f6130d0be45cd"><td class="memItemLeft" align="right" valign="top"><a id="ae93607af175b05bc333f6130d0be45cd" name="ae93607af175b05bc333f6130d0be45cd"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnMissingMana</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, int manaNeeded)</td></tr>
 <tr class="separator:ae93607af175b05bc333f6130d0be45cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafe0b82186934d1af8e4ff8ba887e1eb"><td class="memItemLeft" align="right" valign="top"><a id="aafe0b82186934d1af8e4ff8ba887e1eb" name="aafe0b82186934d1af8e4ff8ba887e1eb"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>OnPickup</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item)</td></tr>
+<tr class="separator:aafe0b82186934d1af8e4ff8ba887e1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b29252701c765a45c42f88c5c14fbe6"><td class="memItemLeft" align="right" valign="top"><a id="a1b29252701c765a45c42f88c5c14fbe6" name="a1b29252701c765a45c42f88c5c14fbe6"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnRespawn</b> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a1b29252701c765a45c42f88c5c14fbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>

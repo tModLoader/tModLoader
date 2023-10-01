@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -151,8 +151,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleRetrea
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleTargetPoint</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, ref float grappleX, ref float grappleY)</td></tr>
 <tr class="memdesc:a9bca3eda926bf9c9f33709c29c974c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile. <br /></td></tr>
 <tr class="separator:a9bca3eda926bf9c9f33709c29c974c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8549625bd6f77b103d841c06bd4358f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a8549625bd6f77b103d841c06bd4358f3">Kill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
-<tr class="memdesc:a8549625bd6f77b103d841c06bd4358f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds).  <a href="class_global_projectile.html#a8549625bd6f77b103d841c06bd4358f3">More...</a><br /></td></tr>
+<tr class="memitem:a8549625bd6f77b103d841c06bd4358f3"><td class="memItemLeft" align="right" valign="top"><a id="a8549625bd6f77b103d841c06bd4358f3" name="a8549625bd6f77b103d841c06bd4358f3"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Kill</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
 <tr class="separator:a8549625bd6f77b103d841c06bd4358f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88d91943cb6bc13dae77215521fbfd3f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">MinionContactDamage</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
 <tr class="memdesc:a88d91943cb6bc13dae77215521fbfd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet.  <a href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">More...</a><br /></td></tr>
@@ -177,6 +177,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NumGrappleHoo
 <tr class="memdesc:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a hostile projectile hits a player. <br  />
  Only runs on the local client in multiplayer.  <a href="class_global_projectile.html#a124c3a586e8c1eeb6fd81eb8b59b1c0f">More...</a><br /></td></tr>
 <tr class="separator:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4b89da038710058b217f6b8a309ae5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">OnKill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
+<tr class="memdesc:afd4b89da038710058b217f6b8a309ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds).  <a href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">More...</a><br /></td></tr>
+<tr class="separator:afd4b89da038710058b217f6b8a309ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5a20d5923e842b14cfe959ca515138"><td class="memItemLeft" align="right" valign="top"><a id="a5e5a20d5923e842b14cfe959ca515138" name="a5e5a20d5923e842b14cfe959ca515138"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:a5e5a20d5923e842b14cfe959ca515138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any projectiles spawns in world <br /></td></tr>
@@ -231,15 +234,18 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UseGrapple</b
 <tr class="memdesc:ab5e97b8867e8ef797fa2b0d15c962be0 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to control whether or not this global should be run on the provided entity instance. <br  />
   <a href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0">More...</a><br /></td></tr>
 <tr class="separator:ab5e97b8867e8ef797fa2b0d15c962be0 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad342288414184c6c96865f48ab00f7fb inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">Clone</a> (TEntity from, TEntity to)</td></tr>
-<tr class="memdesc:ad342288414184c6c96865f48ab00f7fb inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb">More...</a><br /></td></tr>
-<tr class="separator:ad342288414184c6c96865f48ab00f7fb inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc54b91085b8ef8769f3b309087c8fb5 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">Clone</a> (TEntity? from, TEntity to)</td></tr>
+<tr class="memdesc:afc54b91085b8ef8769f3b309087c8fb5 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">More...</a><br /></td></tr>
+<tr class="separator:afc54b91085b8ef8769f3b309087c8fb5 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a090a7d8ee299e93dc2ffc29dce08077e inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a090a7d8ee299e93dc2ffc29dce08077e" name="a090a7d8ee299e93dc2ffc29dce08077e"></a>
 TGlobal&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b> (TEntity entity)</td></tr>
 <tr class="separator:a090a7d8ee299e93dc2ffc29dce08077e inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30da78ae6788e76ecde97732fda4bce8 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">NewInstance</a> (TEntity target)</td></tr>
-<tr class="memdesc:a30da78ae6788e76ecde97732fda4bce8 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true  <a href="class_global_type.html#a30da78ae6788e76ecde97732fda4bce8">More...</a><br /></td></tr>
-<tr class="separator:a30da78ae6788e76ecde97732fda4bce8 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e23130d01cf1716f18fee6129499bd2 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual ? TGlobal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">NewInstance</a> (TEntity target)</td></tr>
+<tr class="memdesc:a2e23130d01cf1716f18fee6129499bd2 inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only called if <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">GlobalType&lt;TGlobal&gt;.InstancePerEntity</a> and <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">AppliesToEntity</a>(<em>target</em> , ...) are both true. <br  />
+ <br  />
+ Returning null is permitted but <b>not recommended</b> over <code>AppliesToEntity</code> for performance reasons. <br  />
+ Only return null when the global is disabled based on some runtime property (eg world seed).  <a href="class_global_type.html#a2e23130d01cf1716f18fee6129499bd2">More...</a><br /></td></tr>
+<tr class="separator:a2e23130d01cf1716f18fee6129499bd2 inherit pub_methods_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a271c6018622a55db24bf270e604d4edb inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a271c6018622a55db24bf270e604d4edb" name="a271c6018622a55db24bf270e604d4edb"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</b> (TEntity entity)</td></tr>
 <tr class="memdesc:a271c6018622a55db24bf270e604d4edb inherit pub_methods_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the properties of any and every instance that gets created. <br /></td></tr>
@@ -281,7 +287,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 <tr class="inherit_header properties_class_global_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_global_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_global_type.html">GlobalType&lt; Projectile, GlobalProjectile &gt;</a></td></tr>
 <tr class="memitem:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a3edb6a3637f175e4c77aeb823449d40f" name="a3edb6a3637f175e4c77aeb823449d40f"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloneNewInstances</b><code> [get]</code></td></tr>
-<tr class="memdesc:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_global_type.html#ad342288414184c6c96865f48ab00f7fb" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
+<tr class="memdesc:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone</a> or via the default constructor Defaults to false (default constructor). <br /></td></tr>
 <tr class="separator:a3edb6a3637f175e4c77aeb823449d40f inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0240fc42f87dcf06829f05808a29dcbf inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a0240fc42f87dcf06829f05808a29dcbf" name="a0240fc42f87dcf06829f05808a29dcbf"></a>
 abstract bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConditionallyAppliesToEntities</b><code> [get]</code></td></tr>
@@ -304,12 +310,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="memitem:a8aa049c6973320e8314d4cab2d82c5cb inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a8aa049c6973320e8314d4cab2d82c5cb" name="a8aa049c6973320e8314d4cab2d82c5cb"></a>
 short&#160;</td><td class="memItemRight" valign="bottom"><b>PerEntityIndex</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8aa049c6973320e8314d4cab2d82c5cb inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array <br  />
- -1 if this global does not have a <a class="el" href="class_global_type.html#a32d984d3fe4e197e3259a7dc3824e8cb" title="Whether this global has InstancePerEntity or can be conditionally applied (overrides GlobalType&lt;TEnti...">SlotPerEntity</a> <br /></td></tr>
+ -1 if this global does not have a <a class="el" href="class_global_type.html#a32d984d3fe4e197e3259a7dc3824e8cb" title="If true, the global will be assigned a PerEntityIndex at load time, which can be used to access the i...">SlotPerEntity</a> <br /></td></tr>
 <tr class="separator:a8aa049c6973320e8314d4cab2d82c5cb inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a32d984d3fe4e197e3259a7dc3824e8cb" name="a32d984d3fe4e197e3259a7dc3824e8cb"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>SlotPerEntity</b><code> [get]</code></td></tr>
-<tr class="memdesc:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this global has <a class="el" href="class_global_type.html#a6005d29d8935218f22eb698a759baa23" title="Whether to create a new instance of this Global for every entity that exists. Useful for storing info...">InstancePerEntity</a> or can be conditionally applied (overrides <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity(TEntity, bool)</a>) <br  />
- If true, the global will be assigned a <a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb" title="Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array   -1 if this global does no...">PerEntityIndex</a> at load time, which can be used to access the instance in the IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array. <br  />
+<tr class="memdesc:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the global will be assigned a <a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb" title="Index of this global in a IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array   -1 if this global does no...">PerEntityIndex</a> at load time, which can be used to access the instance in the IEntityWithGlobals&lt;TGlobal&gt;.EntityGlobals array. <br  />
  If false, the global will be a singleton applying to all entities <br /></td></tr>
 <tr class="separator:a32d984d3fe4e197e3259a7dc3824e8cb inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d522f091015ff89f0840eaa0df53a28 inherit properties_class_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a7d522f091015ff89f0840eaa0df53a28" name="a7d522f091015ff89f0840eaa0df53a28"></a>
@@ -775,51 +780,6 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 
 </div>
 </div>
-<a id="a8549625bd6f77b103d841c06bd4358f3" name="a8549625bd6f77b103d841c06bd4358f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8549625bd6f77b103d841c06bd4358f3">&#9670;&nbsp;</a></span>Kill()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalProjectile.Kill </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_projectile.html">Projectile</a>&#160;</td>
-          <td class="paramname"><em>projectile</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timeLeft</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">projectile</td><td></td></tr>
-    <tr><td class="paramname">timeLeft</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a88d91943cb6bc13dae77215521fbfd3f" name="a88d91943cb6bc13dae77215521fbfd3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88d91943cb6bc13dae77215521fbfd3f">&#9670;&nbsp;</a></span>MinionContactDamage()</h2>
 
@@ -1110,6 +1070,51 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
     <tr><td class="paramname">projectile</td><td></td></tr>
     <tr><td class="paramname">target</td><td></td></tr>
     <tr><td class="paramname">info</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afd4b89da038710058b217f6b8a309ae5" name="afd4b89da038710058b217f6b8a309ae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd4b89da038710058b217f6b8a309ae5">&#9670;&nbsp;</a></span>OnKill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void GlobalProjectile.OnKill </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeLeft</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projectile</td><td></td></tr>
+    <tr><td class="paramname">timeLeft</td><td></td></tr>
   </table>
   </dd>
 </dl>

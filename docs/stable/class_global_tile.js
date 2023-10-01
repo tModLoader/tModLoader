@@ -13,6 +13,7 @@ var class_global_tile =
     [ "DropCritterChance", "class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0", null ],
     [ "FloorVisuals", "class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320", null ],
     [ "HitWire", "class_global_tile.html#aac0b41a49c4d1eeb01f99d4aa258e64e", null ],
+    [ "IsTileBiomeSightable", "class_global_tile.html#aaa2dd1c766d28f39ac2217e3d6b2717c", null ],
     [ "IsTileDangerous", "class_global_tile.html#ab40cdeb72ef161dde8abf61ab2486f57", null ],
     [ "IsTileSpelunkable", "class_global_tile.html#ad97f4af4e5fcaecbdfebeda0ad2a23f7", null ],
     [ "KillTile", "class_global_tile.html#a046addeed932e165854601d41cd965d3", null ],

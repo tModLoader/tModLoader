@@ -16,8 +16,9 @@ var searchData=
   ['mountedcenter_13',['MountedCenter',['../class_player.html#a1fb16534ae211b195f04bf6303a06711',1,'Player']]],
   ['mountid_14',['MountId',['../class_entity_source___mount.html#ad4379b3a24bd1eb34496dcd7e08da034',1,'EntitySource_Mount']]],
   ['mousescreen_15',['MouseScreen',['../class_main.html#a4061437db22d405c4ca0303118ddc190',1,'Main']]],
-  ['mouseworld_16',['MouseWorld',['../class_main.html#a606125db0209ce97a04b55448fac79c9',1,'Main']]],
-  ['multiplicative_17',['Multiplicative',['../struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602',1,'StatModifier']]],
-  ['music_18',['Music',['../class_mod_menu.html#ad16504b80acc89ed6949a7d58244d9c3',1,'ModMenu.Music()'],['../class_mod_n_p_c.html#a549e73e1a27d710b62f18401ff26bd18',1,'ModNPC.Music()'],['../class_mod_scene_effect.html#a07514b30903f12946072d5e6fb5993f6',1,'ModSceneEffect.Music()']]],
-  ['musicautoloadingenabled_19',['MusicAutoloadingEnabled',['../class_mod.html#a00d5eed93524439d8a47da0bc5bff0de',1,'Mod']]]
+  ['mousetextcolorreal_16',['MouseTextColorReal',['../class_main.html#ac31657e96915be3b51540aa9e1c131d5',1,'Main']]],
+  ['mouseworld_17',['MouseWorld',['../class_main.html#a606125db0209ce97a04b55448fac79c9',1,'Main']]],
+  ['multiplicative_18',['Multiplicative',['../struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602',1,'StatModifier']]],
+  ['music_19',['Music',['../class_mod_menu.html#ad16504b80acc89ed6949a7d58244d9c3',1,'ModMenu.Music()'],['../class_mod_n_p_c.html#a549e73e1a27d710b62f18401ff26bd18',1,'ModNPC.Music()'],['../class_mod_scene_effect.html#a07514b30903f12946072d5e6fb5993f6',1,'ModSceneEffect.Music()']]],
+  ['musicautoloadingenabled_20',['MusicAutoloadingEnabled',['../class_mod.html#a00d5eed93524439d8a47da0bc5bff0de',1,'Mod']]]
 ];

@@ -79,7 +79,7 @@ var searchData=
   ['portalhelper_76',['PortalHelper',['../class_portal_helper.html',1,'']]],
   ['posdata_77',['PosData',['../struct_pos_data.html',1,'']]],
   ['posdata_3c_20ushort_20_3e_78',['PosData&lt; ushort &gt;',['../struct_pos_data.html',1,'']]],
-  ['position_79',['Position',['../class_player_draw_layer_1_1_position.html',1,'PlayerDrawLayer']]],
+  ['position_79',['Position',['../class_extra_jump_1_1_position.html',1,'ExtraJump.Position'],['../class_player_draw_layer_1_1_position.html',1,'PlayerDrawLayer.Position']]],
   ['potionofreturngatehelper_80',['PotionOfReturnGateHelper',['../struct_potion_of_return_gate_helper.html',1,'']]],
   ['potionofreturngateinteractionchecker_81',['PotionOfReturnGateInteractionChecker',['../class_potion_of_return_gate_interaction_checker.html',1,'']]],
   ['potionofreturnhelper_82',['PotionOfReturnHelper',['../class_potion_of_return_helper.html',1,'']]],

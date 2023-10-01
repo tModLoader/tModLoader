@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_n_p_c_i_d_1_1_sets.html',''); in
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html">NPCBestiaryDrawModifiers</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the draw parameters for an <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) in the Bestiary. <br  />
- <b>Do not use the parameterless constructor or <code>default</code> to create this struct.</b> Use <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134" title="Creates a new NPCBestiaryDrawModifiers with default values.">NPCBestiaryDrawModifiers(int)</a> instead with any parameter &ndash; it sets proper default values.  <a href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#details">More...</a><br /></td></tr>
+ <b>Do not use <code>default</code> to create this struct.</b> Use <code>new</code> <a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134" title="Creates a new NPCBestiaryDrawModifiers with default values.">NPCBestiaryDrawModifiers()</a> instead to set proper default values.  <a href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -144,6 +144,27 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>AttackTime</b
  For <code>3</code>, this <a class="el" href="class_n_p_c.html">NPC</a> will swing a weapon. <br  />
  Defaults to <code>-1</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a00330581d37514acedb24a24afda2a4f">More...</a><br /></td></tr>
 <tr class="separator:a00330581d37514acedb24a24afda2a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e5110e221fd9c6a429a19a9f0b2782"><td class="memItemLeft" align="right" valign="top"><a id="ab8e5110e221fd9c6a429a19a9f0b2782" name="ab8e5110e221fd9c6a429a19a9f0b2782"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionFrostLegion</b> = Factory.CreateBoolSet(143, 144, 145)</td></tr>
+<tr class="memdesc:ab8e5110e221fd9c6a429a19a9f0b2782"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Frost Legion invasion. <br  />
+ During the Frost Legion invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Boss 3 music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:ab8e5110e221fd9c6a429a19a9f0b2782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce00df6aa862fd11ebf2458ba1113c8"><td class="memItemLeft" align="right" valign="top"><a id="a6ce00df6aa862fd11ebf2458ba1113c8" name="a6ce00df6aa862fd11ebf2458ba1113c8"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionGoblinArmy</b> = Factory.CreateBoolSet(26, 27, 28, 29, 111, 471, 472)</td></tr>
+<tr class="memdesc:a6ce00df6aa862fd11ebf2458ba1113c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Goblin Army invasion. <br  />
+ During the Goblin Army invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Goblin Army music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a6ce00df6aa862fd11ebf2458ba1113c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10fa9399de5feda78813e1c543c43da1"><td class="memItemLeft" align="right" valign="top"><a id="a10fa9399de5feda78813e1c543c43da1" name="a10fa9399de5feda78813e1c543c43da1"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionMartianMadness</b> = Factory.CreateBoolSet(381, 382, 383, 385, 386, 387, 388, 389, 390, 391, 395, 520)</td></tr>
+<tr class="memdesc:a10fa9399de5feda78813e1c543c43da1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Martian Madness invasion. <br  />
+ During the Martian Madness invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Martian Madness music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a10fa9399de5feda78813e1c543c43da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7de67559dee090ce476ea630b6fd3c47"><td class="memItemLeft" align="right" valign="top"><a id="a7de67559dee090ce476ea630b6fd3c47" name="a7de67559dee090ce476ea630b6fd3c47"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionOldOnesArmy</b> = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 548, 549, 564, 565, 574, 575, 551, 578)</td></tr>
 <tr class="memdesc:a7de67559dee090ce476ea630b6fd3c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Old One's Army event. <br  />
@@ -151,6 +172,13 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInv
  NPCs in this set will target the DD2EterniaCrystal if it is alive (using Utilities.NPCUtils.TargetClosestOldOnesInvasion(NPC, bool, Vector2?)). <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a7de67559dee090ce476ea630b6fd3c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc643349a501d0e3e326ae62e54fe444"><td class="memItemLeft" align="right" valign="top"><a id="acc643349a501d0e3e326ae62e54fe444" name="acc643349a501d0e3e326ae62e54fe444"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BelongsToInvasionPirate</b> = Factory.CreateBoolSet(212, 213, 214, 215, 216, 491)</td></tr>
+<tr class="memdesc:acc643349a501d0e3e326ae62e54fe444"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> belongs to the Pirate invasion. <br  />
+ During the Pirate invasion, NPCs in this set will decrement Main.invasionSize by the amount specified in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> when killed. <br  />
+ If any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0, the Pirate Invasion music will play. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:acc643349a501d0e3e326ae62e54fe444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f2f3b2f5345490fdd06752c5eef8480"><td class="memItemLeft" align="right" valign="top"><a id="a3f2f3b2f5345490fdd06752c5eef8480" name="a3f2f3b2f5345490fdd06752c5eef8480"></a>
 static <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BossBestiaryPriority</b></td></tr>
 <tr class="memdesc:a3f2f3b2f5345490fdd06752c5eef8480"><td class="mdescLeft">&#160;</td><td class="mdescRight">The order of boss <a class="el" href="class_n_p_c.html">NPC</a> types (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) in the Bestiary. <br /></td></tr>
@@ -201,9 +229,6 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DangerThatPr
  Main.CurrentFrameFlags.AnyActiveBossNPC will be set to <code>true</code> if any <a class="el" href="class_n_p_c.html">NPC</a> in this set is alive, and NPC.AnyDanger(bool, bool) will return <code>true</code> if any NPCs in this set are alive. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ada11bdb09a7a6392e42e9ec02687f5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fac041e663b2e39a1682bd1eeb2c818"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; int, <a class="el" href="class_n_p_c_debuff_immunity_data.html">NPCDebuffImmunityData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a8fac041e663b2e39a1682bd1eeb2c818">DebuffImmunitySets</a></td></tr>
-<tr class="memdesc:a8fac041e663b2e39a1682bd1eeb2c818"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default debuff immunities for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c_i_d_1_1_sets.html#a8fac041e663b2e39a1682bd1eeb2c818">More...</a><br /></td></tr>
-<tr class="separator:a8fac041e663b2e39a1682bd1eeb2c818"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa026211dff83787043791734914174c1"><td class="memItemLeft" align="right" valign="top"><a id="aa026211dff83787043791734914174c1" name="aa026211dff83787043791734914174c1"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DemonEyes</b> = Factory.CreateBoolSet(2, 190, 192, 193, 191, 194, 317, 318)</td></tr>
 <tr class="memdesc:aa026211dff83787043791734914174c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Unused in vanilla.</b> <br  />
@@ -259,6 +284,28 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>HurtingBees<
 <tr class="memdesc:af91b19ed47a3c0ba3b3404e8f1865890"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is a bee that will hurt other non-bee NPCs on contact. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:af91b19ed47a3c0ba3b3404e8f1865890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ba2efd1da00acfce242144b569382d"><td class="memItemLeft" align="right" valign="top"><a id="a61ba2efd1da00acfce242144b569382d" name="a61ba2efd1da00acfce242144b569382d"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ImmuneToAllBuffs</b></td></tr>
+<tr class="memdesc:a61ba2efd1da00acfce242144b569382d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) will be immune to all debuffs and "tag" buffs by default.<br  />
+<br  />
+ Use this for special NPCs that cannot be hit at all, such as fairy critters, container NPCs like Martian Saucer and Pirate Ship, bound town slimes, and Blazing Wheel. Dungeon Guardian also is in this set to prevent the bonus damage from "tag" buffs.<br  />
+<br  />
+ If the <a class="el" href="class_n_p_c.html">NPC</a> should be attacked, it is recommended to set <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aa75bcc108bf7911dfca3171f60adae7e" title="If true, this NPC type (NPC.type) will be immune to all debuffs except tag debuffs (BuffID....">ImmuneToRegularBuffs</a> to <code>true</code> instead. This will prevent all debuffs except "tag" buffs (<a class="el" href="class_buff_i_d_1_1_sets.html#ad5119610f280c11e2c565a153202d0fc" title="If true for a given BuffID, then that buff is not considered a typical debuff, but is a buff used to ...">BuffID.Sets.IsATagBuff</a>), which are intended to affect enemies typically seen as immune to all debuffs. Tag debuffs are special debuffs that facilitate combat mechanics, they are not something that adversely affects <a class="el" href="class_n_p_c.html">NPC</a>.<br  />
+<br  />
+ Modders can specify specific buffs to be vulnerable to by assigning <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a05f57493f54c2153fab5a4c4254defb3" title="Indexed by NPC type and then Buff type. If true, this NPC type (NPC.type) will be immune (NPC....">SpecificDebuffImmunity</a> to false. <br /></td></tr>
+<tr class="separator:a61ba2efd1da00acfce242144b569382d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa75bcc108bf7911dfca3171f60adae7e"><td class="memItemLeft" align="right" valign="top"><a id="aa75bcc108bf7911dfca3171f60adae7e" name="aa75bcc108bf7911dfca3171f60adae7e"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ImmuneToRegularBuffs</b></td></tr>
+<tr class="memdesc:aa75bcc108bf7911dfca3171f60adae7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) will be immune to all debuffs except tag debuffs (<a class="el" href="class_buff_i_d_1_1_sets.html#ad5119610f280c11e2c565a153202d0fc" title="If true for a given BuffID, then that buff is not considered a typical debuff, but is a buff used to ...">BuffID.Sets.IsATagBuff</a>) by default.<br  />
+<br  />
+ Use this for NPCs that can be attacked that should be immune to all normal debuffs. Tag debuffs are special debuffs that facilitate combat mechanics, such as the "summon tag damage" applied by whip weapons. Wraith, Reaper, Lunatic Cultist, the Celestial Pillars, The Destroyer, and the Martian Saucer Turret/Cannon/Core are examples of NPCs that use this setting.<br  />
+<br  />
+ Modders can specify specific buffs to be vulnerable to by assigning <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a05f57493f54c2153fab5a4c4254defb3" title="Indexed by NPC type and then Buff type. If true, this NPC type (NPC.type) will be immune (NPC....">SpecificDebuffImmunity</a> to false. <br /></td></tr>
+<tr class="separator:aa75bcc108bf7911dfca3171f60adae7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a716a915355776a0d8cf1f2bb294237f0"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0">InvasionSlotCount</a> = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0)</td></tr>
+<tr class="memdesc:a716a915355776a0d8cf1f2bb294237f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If above 0 for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), and its associated invasion is NOT a wave-based one, then that <a class="el" href="class_n_p_c.html">NPC</a> will decrement Main.invasionSize by that amount when killed. <br  />
+ If this <a class="el" href="class_n_p_c.html">NPC</a>'s entry is 0, it won't play its associated invasion's music when alive.  <a href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0">More...</a><br /></td></tr>
+<tr class="separator:a716a915355776a0d8cf1f2bb294237f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71f6e0f48654fbfd02617d9a3ef69d73"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73">IsDragonfly</a> = Factory.CreateBoolSet(595, 596, 597, 598, 599, 600, 601)</td></tr>
 <tr class="memdesc:a71f6e0f48654fbfd02617d9a3ef69d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is categorized as a dragonfly. <br  />
  Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73">More...</a><br /></td></tr>
@@ -302,6 +349,12 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NoEarlymodeL
 <tr class="memdesc:aad5305202f4d313bb5084dae67f92151"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will not drop loot in pre-hardmode. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aad5305202f4d313bb5084dae67f92151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc99a9e61b7e69850e692359ee0b7aa"><td class="memItemLeft" align="right" valign="top"><a id="addc99a9e61b7e69850e692359ee0b7aa" name="addc99a9e61b7e69850e692359ee0b7aa"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NoInvasionMusic</b> = Factory.CreateBoolSet(387)</td></tr>
+<tr class="memdesc:addc99a9e61b7e69850e692359ee0b7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> will not play its associated invasion music. <br  />
+ By default, alive NPCs in any BelongsToInvasion set will automatically play the associated invasion music if <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0" title="If above 0 for a given NPC type (NPC.type), and its associated invasion is NOT a wave-based one,...">InvasionSlotCount</a> is above 0. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:addc99a9e61b7e69850e692359ee0b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af612a2c9d58d51a1606f2212ff6abbe4"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#af612a2c9d58d51a1606f2212ff6abbe4">NoMultiplayerSmoothingByAI</a> = Factory.CreateBoolSet(6, 8, 37)</td></tr>
 <tr class="memdesc:af612a2c9d58d51a1606f2212ff6abbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <b><a class="el" href="class_n_p_c_a_i_style_i_d.html">NPCAIStyleID</a></b> (<a class="el" href="class_n_p_c.html#aaf900063a620a46f2408436b8ab1bbdb" title="Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the NPCA...">NPC.aiStyle</a>), then that AI style will not smooth its visual position in multiplayer. <br  />
  Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#af612a2c9d58d51a1606f2212ff6abbe4">More...</a><br /></td></tr>
@@ -355,10 +408,6 @@ static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="b
  If an <a class="el" href="class_n_p_c.html">NPC</a> type is not a key in this dictionary, then that <a class="el" href="class_n_p_c.html">NPC</a> respawns as itself. <br  />
  If the value for an <a class="el" href="class_n_p_c.html">NPC</a> type is <code>0</code>, then that <a class="el" href="class_n_p_c.html">NPC</a> won't be cached (GameContent.CoinLossRevengeSystem.CacheEnemy(NPC)). <br /></td></tr>
 <tr class="separator:a346685ba200fa2c32c234a4da8376e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a0e509ad970d78790a989d877edfea4"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6a0e509ad970d78790a989d877edfea4">ShimmerImmunity</a> = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578)</td></tr>
-<tr class="memdesc:a6a0e509ad970d78790a989d877edfea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is immune to the effects of the shimmer. <br  />
- Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a6a0e509ad970d78790a989d877edfea4">More...</a><br /></td></tr>
-<tr class="separator:a6a0e509ad970d78790a989d877edfea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67199ed896c9ce221bab5a2a5d90aa3a"><td class="memItemLeft" align="right" valign="top"><a id="a67199ed896c9ce221bab5a2a5d90aa3a" name="a67199ed896c9ce221bab5a2a5d90aa3a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ShimmerTownTransform</b> = Factory.CreateBoolSet(22, 17, 18, 227, 207, 633, 588, 208, 369, 353, 38, 20, 550, 19, 107, 228, 54, 124, 441, 229, 160, 108, 178, 209, 142, 663, 37, 453, 368)</td></tr>
 <tr class="memdesc:a67199ed896c9ce221bab5a2a5d90aa3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is a town <a class="el" href="class_n_p_c.html">NPC</a> with an alternate shimmered texture. <br  />
@@ -400,6 +449,17 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnsWithCu
 <tr class="memdesc:a655e4421f3192f951c576e6ddb83837c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the special spawning rules for an <a class="el" href="class_n_p_c.html">NPC</a> to use when respawning using the coin loss system (GameContent.CoinLossRevengeSystem). <br  />
  If <code>0</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then <code><a class="el" href="class_n_p_c.html#aa057189d345452f8afe82acb7a5dbec3" title="An array with 4 slots used for any sort of data storage, which is occasionally synced from the server...">NPC.ai</a>[0]</code> and <code><a class="el" href="class_n_p_c.html#aa057189d345452f8afe82acb7a5dbec3" title="An array with 4 slots used for any sort of data storage, which is occasionally synced from the server...">NPC.ai</a>[1]</code> are set to this <a class="el" href="class_n_p_c.html">NPC</a>'s position in tile coordinates.  <a href="class_n_p_c_i_d_1_1_sets.html#a655e4421f3192f951c576e6ddb83837c">More...</a><br /></td></tr>
 <tr class="separator:a655e4421f3192f951c576e6ddb83837c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05f57493f54c2153fab5a4c4254defb3"><td class="memItemLeft" align="right" valign="top"><a id="a05f57493f54c2153fab5a4c4254defb3" name="a05f57493f54c2153fab5a4c4254defb3"></a>
+static ? bool[][]&#160;</td><td class="memItemRight" valign="bottom"><b>SpecificDebuffImmunity</b></td></tr>
+<tr class="memdesc:a05f57493f54c2153fab5a4c4254defb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indexed by <a class="el" href="class_n_p_c.html">NPC</a> type and then Buff type. If <code>true</code>, this <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) will be immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">NPC.buffImmune</a>) to the specified buff type. If <code>false</code>, the <a class="el" href="class_n_p_c.html">NPC</a> will not be immune.<br  />
+<br  />
+ By default, NPCs aren't immune to any buffs, but <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aa75bcc108bf7911dfca3171f60adae7e" title="If true, this NPC type (NPC.type) will be immune to all debuffs except tag debuffs (BuffID....">ImmuneToRegularBuffs</a> or <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a61ba2efd1da00acfce242144b569382d" title="If true, this NPC type (NPC.type) will be immune to all debuffs and &quot;tag&quot; buffs by default....">ImmuneToAllBuffs</a> can make an <a class="el" href="class_n_p_c.html">NPC</a> immune to all buffs. The values in this set override those settings.<br  />
+<br  />
+ Additionally, the effects of <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a> will also be applied. Inherited buff immunities do not need to be specifically assigned, as they will be automatically applied. Setting an inherited debuff to false in this set can be used to undo the effects of <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>, if needed.<br  />
+<br  />
+ Defaults to <code>null</code>, indicating no immunity override.<br  />
+ <br /></td></tr>
+<tr class="separator:a05f57493f54c2153fab5a4c4254defb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af82e5d780fe41c1b14d430a5181c3490"><td class="memItemLeft" align="right" valign="top">static float[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#af82e5d780fe41c1b14d430a5181c3490">StatueSpawnedDropRarity</a> = Factory.CreateCustomSet(-1f, (short)480, 0.05f, (short)82, 0.05f, (short)86, 0.05f, (short)48, 0.05f, (short)490, 0.05f, (short)489, 0.05f, (short)170, 0.05f, (short)180, 0.05f, (short)171, 0.05f, (short)167, 0.25f, (short)73, 0.01f, (short)24, 0.05f, (short)481, 0.05f, (short)42, 0.05f, (short)6, 0.05f, (short)2, 0.05f, (short)49, 0.2f, (short)3, 0.2f, (short)58, 0.2f, (short)21, 0.2f, (short)65, 0.2f, (short)449, 0.2f, (short)482, 0.2f, (short)103, 0.2f, (short)64, 0.2f, (short)63, 0.2f, (short)85, 0f)</td></tr>
 <tr class="memdesc:af82e5d780fe41c1b14d430a5181c3490"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>!= -1f</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will have a (retrieved value)% chance to actually drop loot when killed. <br  />
  Defaults to <code>-1f</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#af82e5d780fe41c1b14d430a5181c3490">More...</a><br /></td></tr>
@@ -630,31 +690,6 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 
 </div>
 </div>
-<a id="a8fac041e663b2e39a1682bd1eeb2c818" name="a8fac041e663b2e39a1682bd1eeb2c818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fac041e663b2e39a1682bd1eeb2c818">&#9670;&nbsp;</a></span>DebuffImmunitySets</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Dictionary&lt;int, <a class="el" href="class_n_p_c_debuff_immunity_data.html">NPCDebuffImmunityData</a>&gt; NPCID.Sets.DebuffImmunitySets</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The default debuff immunities for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
-<p ><a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Make the NPC immune to buffs/debuffs. Example: NPC.buffImmune[BuffID.OnFire] = true;">NPC.buffImmune</a> can still be manually changed to grant temporary immunity.</p>
-
-</div>
-</div>
 <a id="a1f8cab6d7197eeddf58f343478747171" name="a1f8cab6d7197eeddf58f343478747171"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f8cab6d7197eeddf58f343478747171">&#9670;&nbsp;</a></span>ExtraFramesCount</h2>
 
@@ -774,6 +809,32 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 <p>The vertical offset, in pixels, that an <a class="el" href="class_n_p_c.html">NPC</a>'s party hat will draw with. <br  />
  Defaults to <code>0</code>. </p>
 <p ><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93" title="The vertical offset, in pixels, that this NPC&#39;s party hat will draw. Indexed using values from NPCFra...">TownNPCsFramingGroups</a> applies a specific offset per frame, this applies the same offset to all frames.</p>
+
+</div>
+</div>
+<a id="a716a915355776a0d8cf1f2bb294237f0" name="a716a915355776a0d8cf1f2bb294237f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a716a915355776a0d8cf1f2bb294237f0">&#9670;&nbsp;</a></span>InvasionSlotCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] NPCID.Sets.InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If above 0 for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), and its associated invasion is NOT a wave-based one, then that <a class="el" href="class_n_p_c.html">NPC</a> will decrement Main.invasionSize by that amount when killed. <br  />
+ If this <a class="el" href="class_n_p_c.html">NPC</a>'s entry is 0, it won't play its associated invasion's music when alive. </p>
+<p >Note: Even though this defaults to 1, this set should only be checked if <a class="el" href="class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5" title="Gets the InvasionID associated with the given NPC type (NPC.type).">NPC.GetNPCInvasionGroup(int)</a> is above 0 or if any BelongsToInvasion sets are <code>true</code>. </p>
 
 </div>
 </div>
@@ -908,32 +969,6 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 
 </div>
 </div>
-<a id="a6a0e509ad970d78790a989d877edfea4" name="a6a0e509ad970d78790a989d877edfea4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a0e509ad970d78790a989d877edfea4">&#9670;&nbsp;</a></span>ShimmerImmunity</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool [] NPCID.Sets.ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is immune to the effects of the shimmer. <br  />
- Defaults to <code>false</code>. </p>
-<p >To make an <a class="el" href="class_n_p_c.html">NPC</a> ignore the player's shimmer invulnerability, use <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aab4f72ef6e793b89647c254c81f3b42d" title="If true for a given NPC type (NPC.type), then that NPC can hit players that are submerged in shimmer....">CanHitPastShimmer</a> instead.</p>
-
-</div>
-</div>
 <a id="a80165edcb902e866f3f756b4c5afe100" name="a80165edcb902e866f3f756b4c5afe100"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a80165edcb902e866f3f756b4c5afe100">&#9670;&nbsp;</a></span>ShimmerTransformToItem</h2>
 
@@ -1016,7 +1051,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 
 <p>If <code>!= -1f</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will have a (retrieved value)% chance to actually drop loot when killed. <br  />
  Defaults to <code>-1f</code>. </p>
-<p >NPCs in this set will never drop loot unless interacted with by a player (NPC.AnyInteractions).</p>
+<p >NPCs in this set will never drop loot unless interacted with by a player (<a class="el" href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23" title="Returns true if any player has damaged this NPC. Individual player participation can be determined by...">NPC.AnyInteractions</a>).</p>
 
 </div>
 </div>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -137,7 +137,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>HijackSendDat
 <tr class="separator:a84b01505699245fb95b9c0a0df5944fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3224849ab5d16570434c13e66a4eb9e"><td class="memItemLeft" align="right" valign="top"><a id="ab3224849ab5d16570434c13e66a4eb9e" name="ab3224849ab5d16570434c13e66a4eb9e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHardmodeTasks</b> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_gen_pass.html">GenPass</a> &gt; list)</td></tr>
-<tr class="memdesc:ab3224849ab5d16570434c13e66a4eb9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement" <br /></td></tr>
+<tr class="memdesc:ab3224849ab5d16570434c13e66a4eb9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to ModifyWorldGenTasks(List&lt;GenPass&gt;, ref double), but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 5 items, the vanilla hardmode tasks called "Hardmode Good Remix", "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement". "Hardmode Good Remix" will only be enabled on Don't dig upworlds (Main.remixWorld) while "Hardmode Good" and "Hardmode Evil" will be enabled otherwise.To disable or hide tasks, please use GenPass.Disable and defensive coding. <br /></td></tr>
 <tr class="separator:ab3224849ab5d16570434c13e66a4eb9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895054130daea8301afbd74af6168490"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a895054130daea8301afbd74af6168490">ModifyInterfaceLayers</a> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_game_interface_layer.html">GameInterfaceLayer</a> &gt; layers)</td></tr>
 <tr class="memdesc:a895054130daea8301afbd74af6168490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the elements of the in-game interface that get drawn. <a class="el" href="class_game_interface_layer.html">GameInterfaceLayer</a> can be found in the Terraria.UI namespace. Check the Vanilla Interface layers values wiki pagefor vanilla interface layer names  <a href="class_mod_system.html#a895054130daea8301afbd74af6168490">More...</a><br /></td></tr>
@@ -154,7 +154,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyScreenP
 <tr class="memdesc:ae8c0698f1cdd3074ba8e265d9c167a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify color of light the sun emits.  <a href="class_mod_system.html#ae8c0698f1cdd3074ba8e265d9c167a46">More...</a><br /></td></tr>
 <tr class="separator:ae8c0698f1cdd3074ba8e265d9c167a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b2d0fe626e467d40fd4b058d7fba93b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a1b2d0fe626e467d40fd4b058d7fba93b">ModifyTimeRate</a> (ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate)</td></tr>
-<tr class="memdesc:a1b2d0fe626e467d40fd4b058d7fba93b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it. All fields are measured in in-game minutes per real-life second (min/sec). You may want to consider Main.fastForwardTime and CreativePowerManager.Instance.GetPower&lt;<a class="el" href="class_creative_powers_1_1_freeze_time.html">CreativePowers.FreezeTime</a>&gt;().Enabled here.  <a href="class_mod_system.html#a1b2d0fe626e467d40fd4b058d7fba93b">More...</a><br /></td></tr>
+<tr class="memdesc:a1b2d0fe626e467d40fd4b058d7fba93b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it. All fields are measured in in-game minutes per real-life second (min/sec). You may want to consider Main.IsFastForwardingTime and CreativePowerManager.Instance.GetPower&lt;<a class="el" href="class_creative_powers_1_1_freeze_time.html">CreativePowers.FreezeTime</a>&gt;().Enabled here.  <a href="class_mod_system.html#a1b2d0fe626e467d40fd4b058d7fba93b">More...</a><br /></td></tr>
 <tr class="separator:a1b2d0fe626e467d40fd4b058d7fba93b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40c60741a007b1f5a69facc175c0614e"><td class="memItemLeft" align="right" valign="top"><a id="a40c60741a007b1f5a69facc175c0614e" name="a40c60741a007b1f5a69facc175c0614e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTransformMatrix</b> (ref <a class="el" href="class_sprite_view_matrix.html">SpriteViewMatrix</a> Transform)</td></tr>
@@ -162,7 +162,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTransfo
 <tr class="separator:a40c60741a007b1f5a69facc175c0614e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d3537099fd511aa551fa4d28052387b"><td class="memItemLeft" align="right" valign="top"><a id="a6d3537099fd511aa551fa4d28052387b" name="a6d3537099fd511aa551fa4d28052387b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyWorldGenTasks</b> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_gen_pass.html">GenPass</a> &gt; tasks, ref double totalWeight)</td></tr>
-<tr class="memdesc:a6d3537099fd511aa551fa4d28052387b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation <a class="el" href="class_passes.html">Passes</a> before a new world begins to be generated. For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. <br /></td></tr>
+<tr class="memdesc:a6d3537099fd511aa551fa4d28052387b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation <a class="el" href="class_passes.html">Passes</a> before a new world begins to be generated. For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. To disable or hide generation passes, please use GenPass.Disable and defensive coding. <br /></td></tr>
 <tr class="separator:a6d3537099fd511aa551fa4d28052387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a144ef598fa0b3bcc2a0ac6bd1c5467aa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a144ef598fa0b3bcc2a0ac6bd1c5467aa">NetReceive</a> (BinaryReader reader)</td></tr>
 <tr class="memdesc:a144ef598fa0b3bcc2a0ac6bd1c5467aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_tile_entity.html#a85d2692b4774c6140a968ef92accc6df" title="Allows you to send custom data for this tile entity between client and server, which will be handled ...">NetSend</a>. <br  />
@@ -329,6 +329,15 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 <b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
 <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_mod_system.html#a926129e278ac9c460685bd2a326cd998">More...</a><br /></td></tr>
 <tr class="separator:a926129e278ac9c460685bd2a326cd998"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4cf839033cb3bfe58f2994c778ebf2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#aff4cf839033cb3bfe58f2994c778ebf2">SaveWorldHeader</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:aff4cf839033cb3bfe58f2994c778ebf2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+Allows you to save custom data for this system in the current world, and have that data accessible in the world select UI and during vanilla world loading. <br  />
+<b>WARNING:</b> Saving too much data here will cause lag when opening the world select menu for users with many worlds. <br  />
+Can be retrieved via WorldFileData.TryGetHeaderData(ModSystem, out TagCompound) and Main.ActiveWorldFileData <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_mod_system.html#aff4cf839033cb3bfe58f2994c778ebf2">More...</a><br /></td></tr>
+<tr class="separator:aff4cf839033cb3bfe58f2994c778ebf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5dafb524e0b67f6ff1f760fec82523c"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#ab5dafb524e0b67f6ff1f760fec82523c">SetupContent</a> ()</td></tr>
 <tr class="memdesc:ab5dafb524e0b67f6ff1f760fec82523c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults. This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent  <a href="class_mod_system.html#ab5dafb524e0b67f6ff1f760fec82523c">More...</a><br /></td></tr>
 <tr class="separator:ab5dafb524e0b67f6ff1f760fec82523c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -811,7 +820,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it. All fields are measured in in-game minutes per real-life second (min/sec). You may want to consider Main.fastForwardTime and CreativePowerManager.Instance.GetPower&lt;<a class="el" href="class_creative_powers_1_1_freeze_time.html">CreativePowers.FreezeTime</a>&gt;().Enabled here. </p>
+<p>Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it. All fields are measured in in-game minutes per real-life second (min/sec). You may want to consider Main.IsFastForwardingTime and CreativePowerManager.Instance.GetPower&lt;<a class="el" href="class_creative_powers_1_1_freeze_time.html">CreativePowers.FreezeTime</a>&gt;().Enabled here. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeRate</td><td>The speed at which time flows in min/sec.</td></tr>
@@ -1103,6 +1112,46 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 </dl>
 
 <p>Reimplemented in <a class="el" href="class_unloaded_system.html#af4c01545e1b6f9ded8df75c6c3918119">UnloadedSystem</a>.</p>
+
+</div>
+</div>
+<a id="aff4cf839033cb3bfe58f2994c778ebf2" name="aff4cf839033cb3bfe58f2994c778ebf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff4cf839033cb3bfe58f2994c778ebf2">&#9670;&nbsp;</a></span>SaveWorldHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModSystem.SaveWorldHeader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+Allows you to save custom data for this system in the current world, and have that data accessible in the world select UI and during vanilla world loading. <br  />
+<b>WARNING:</b> Saving too much data here will cause lag when opening the world select menu for users with many worlds. <br  />
+Can be retrieved via WorldFileData.TryGetHeaderData(ModSystem, out TagCompound) and Main.ActiveWorldFileData <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -10,5 +10,6 @@ var class_language =
     [ "GetTextValue", "class_language.html#ae2cefca59ea518398c2a740b1098376c", null ],
     [ "GetTextValue", "class_language.html#a3b2e720502c67915d529cbfdb8e0ec7c", null ],
     [ "GetTextValueWith", "class_language.html#ac8d9b980c93eddf3589cc778348bf8cd", null ],
-    [ "SelectRandom", "class_language.html#a888a684fddaa7e720e28ea0e88d9595b", null ]
+    [ "SelectRandom", "class_language.html#a888a684fddaa7e720e28ea0e88d9595b", null ],
+    [ "ActiveCulture", "class_language.html#ab29445df6a42420ac4794550a084d521", null ]
 ];
