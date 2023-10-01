@@ -1,0 +1,13 @@
+{
+	"HomePage": {
+		"AreaTitle": "开发者推荐",
+		"AreaDescription": "这些模组是由tModLoader的开发人员精心挑选的，旨在突出高品质但可能不太知名的Terraria模组。",
+	},
+	"General": {
+		"WorkshopTitle": "tModLoader模组",
+		"WorkshopDescription": "从Steam创意工坊查看并下载tModLoader模组。请注意，此处列出的模组仅可在默认在tModLoader分支上使用。可在1.3旧版上使用的模组可在其他网站找到",
+	},
+	"StorePage": {
+		"ShortDescription": "在玩家的世界里挖掘、战斗和建造你的家园。此DLC使修改Terraria成为现实！使用tModLoader在Terraria上制作模组。",
+	},
+}}
