@@ -468,8 +468,8 @@
 		"MSUnloading": "Выгрузка: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Добавление рецептов...",
-		// "CancellingLoading": "Cancelling loading...",
-		// "LoadingCancelled": "Loading Cancelled",
+		// "CancellingLoading": "Отменение загрузки...",
+		// "LoadingCancelled": "Загрузка отменена",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Безымянный",
