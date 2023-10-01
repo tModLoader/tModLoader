@@ -14,6 +14,7 @@ var class_mod =
     [ "GetFileBytes", "class_mod.html#af3a49430cf7766fd70d52004d355b830", null ],
     [ "GetFileNames", "class_mod.html#a0336ef4f24454d009a80fa4ebf2bc4fc", null ],
     [ "GetFileStream", "class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373", null ],
+    [ "GetLocalization", "class_mod.html#a3c54b351c403d26a0fcff074be8a9589", null ],
     [ "GetLocalizationKey", "class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81", null ],
     [ "GetPacket", "class_mod.html#ae95db58d653971959368e4a7e56c1d94", null ],
     [ "HandlePacket", "class_mod.html#a08e8033a39338a74eee50b782f451a47", null ],

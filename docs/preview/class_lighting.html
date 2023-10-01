@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -95,20 +95,19 @@ $(document).ready(function(){initNavTree('class_lighting.html',''); initResizabl
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a657943484e31f0e345c978bcdcd47feb"><td class="memItemLeft" align="right" valign="top"><a id="a657943484e31f0e345c978bcdcd47feb" name="a657943484e31f0e345c978bcdcd47feb"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLight</b> (int i, int j, float r, float g, float b)</td></tr>
+<tr class="memitem:a657943484e31f0e345c978bcdcd47feb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lighting.html#a657943484e31f0e345c978bcdcd47feb">AddLight</a> (int i, int j, float r, float g, float b)</td></tr>
+<tr class="memdesc:a657943484e31f0e345c978bcdcd47feb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds light to the world at the specified coordinates.This overload takes in tile coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther.  <a href="class_lighting.html#a657943484e31f0e345c978bcdcd47feb">More...</a><br /></td></tr>
 <tr class="separator:a657943484e31f0e345c978bcdcd47feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a809cab7e42bb037cecb84bdf76e2fc19"><td class="memItemLeft" align="right" valign="top"><a id="a809cab7e42bb037cecb84bdf76e2fc19" name="a809cab7e42bb037cecb84bdf76e2fc19"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLight</b> (int i, int j, int torchID, float lightAmount)</td></tr>
 <tr class="separator:a809cab7e42bb037cecb84bdf76e2fc19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad42651b51f7f55a8cfa3e518631dc53"><td class="memItemLeft" align="right" valign="top"><a id="aad42651b51f7f55a8cfa3e518631dc53" name="aad42651b51f7f55a8cfa3e518631dc53"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLight</b> (Vector2 position, float r, float g, float b)</td></tr>
+<tr class="memitem:aad42651b51f7f55a8cfa3e518631dc53"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lighting.html#aad42651b51f7f55a8cfa3e518631dc53">AddLight</a> (Vector2 position, float r, float g, float b)</td></tr>
 <tr class="separator:aad42651b51f7f55a8cfa3e518631dc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae771e60d67a4f4680811342773531e02"><td class="memItemLeft" align="right" valign="top"><a id="ae771e60d67a4f4680811342773531e02" name="ae771e60d67a4f4680811342773531e02"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLight</b> (Vector2 position, int torchID)</td></tr>
 <tr class="separator:ae771e60d67a4f4680811342773531e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a231da45b0b9d4569fa06bd6f031f88f1"><td class="memItemLeft" align="right" valign="top"><a id="a231da45b0b9d4569fa06bd6f031f88f1" name="a231da45b0b9d4569fa06bd6f031f88f1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLight</b> (Vector2 position, Vector3 rgb)</td></tr>
+<tr class="memitem:a231da45b0b9d4569fa06bd6f031f88f1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lighting.html#a231da45b0b9d4569fa06bd6f031f88f1">AddLight</a> (Vector2 position, Vector3 rgb)</td></tr>
+<tr class="memdesc:a231da45b0b9d4569fa06bd6f031f88f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds light to the world at the specified coordinates.This overload takes in world coordinates and a Vector3 containing float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther. A Vector3 is used for this method instead of Color to allow these overflow values.  <a href="class_lighting.html#a231da45b0b9d4569fa06bd6f031f88f1">More...</a><br /></td></tr>
 <tr class="separator:a231da45b0b9d4569fa06bd6f031f88f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cc03007aa459da86d76a8e06e9cf25a"><td class="memItemLeft" align="right" valign="top"><a id="a5cc03007aa459da86d76a8e06e9cf25a" name="a5cc03007aa459da86d76a8e06e9cf25a"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>Brightness</b> (int x, int y)</td></tr>
@@ -186,6 +185,179 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateEveryFra
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingNewLighting</b><code> [get]</code></td></tr>
 <tr class="separator:a9446f0c56d60a9059b33af44aff753cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a657943484e31f0e345c978bcdcd47feb" name="a657943484e31f0e345c978bcdcd47feb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a657943484e31f0e345c978bcdcd47feb">&#9670;&nbsp;</a></span>AddLight() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Lighting.AddLight </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds light to the world at the specified coordinates.This overload takes in tile coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">r</td><td></td></tr>
+    <tr><td class="paramname">g</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aad42651b51f7f55a8cfa3e518631dc53" name="aad42651b51f7f55a8cfa3e518631dc53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad42651b51f7f55a8cfa3e518631dc53">&#9670;&nbsp;</a></span>AddLight() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Lighting.AddLight </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p></p>
+<p >Adds light to the world at the specified coordinates.</p>
+<p >This overload takes in world coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">r</td><td></td></tr>
+    <tr><td class="paramname">g</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a231da45b0b9d4569fa06bd6f031f88f1" name="a231da45b0b9d4569fa06bd6f031f88f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a231da45b0b9d4569fa06bd6f031f88f1">&#9670;&nbsp;</a></span>AddLight() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Lighting.AddLight </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector3&#160;</td>
+          <td class="paramname"><em>rgb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds light to the world at the specified coordinates.This overload takes in world coordinates and a Vector3 containing float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther. A Vector3 is used for this method instead of Color to allow these overflow values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">rgb</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

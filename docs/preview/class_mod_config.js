@@ -1,5 +1,6 @@
 var class_mod_config =
 [
+    [ "AcceptClientChanges", "class_mod_config.html#ad0c330e9e01d768b16078b119049a325", null ],
     [ "AcceptClientChanges", "class_mod_config.html#a46ab3d9d5dfb2f2ec440bbb281a3c740", null ],
     [ "Clone", "class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a", null ],
     [ "NeedsReload", "class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9", null ],

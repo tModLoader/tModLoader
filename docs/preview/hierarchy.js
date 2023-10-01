@@ -967,7 +967,9 @@ var hierarchy =
             [ "UIWorldListItem", "class_u_i_world_list_item.html", null ]
           ] ],
           [ "UIAchievementListItem", "class_u_i_achievement_list_item.html", null ],
-          [ "UIAutoScaleTextTextPanel< T >", "class_u_i_auto_scale_text_text_panel.html", null ],
+          [ "UIAutoScaleTextTextPanel< T >", "class_u_i_auto_scale_text_text_panel.html", [
+            [ "UIButton< T >", "class_u_i_button.html", null ]
+          ] ],
           [ "UIBestiaryEntryInfoPage", "class_u_i_bestiary_entry_info_page.html", null ],
           [ "UIBestiaryFilteringOptionsGrid", "class_u_i_bestiary_filtering_options_grid.html", null ],
           [ "UIBestiaryInfoItemLine", "class_u_i_bestiary_info_item_line.html", null ],
@@ -2430,6 +2432,7 @@ var hierarchy =
     [ "TagPrinter", "class_tag_printer.html", null ],
     [ "TagSerializable", "interface_tag_serializable.html", [
       [ "EntityDefinition", "class_entity_definition.html", [
+        [ "BuffDefinition", "class_buff_definition.html", null ],
         [ "ItemDefinition", "class_item_definition.html", null ],
         [ "NPCDefinition", "class_n_p_c_definition.html", null ],
         [ "PrefixDefinition", "class_prefix_definition.html", null ],

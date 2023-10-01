@@ -1,6 +1,7 @@
 var struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers =
 [
     [ "NPCBestiaryDrawModifiers", "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134", null ],
+    [ "NPCBestiaryDrawModifiers", "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0a54dd36b7a2841b4bdc110c60bc994c", null ],
     [ "CustomTexturePath", "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a9ec84c3e6c2315ee515307a0385c4ba0", null ],
     [ "Direction", "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7", null ],
     [ "Frame", "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0b1897baaae40a4669246c5b5ef7f1e9", null ],

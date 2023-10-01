@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -133,7 +133,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a3fa9b012ea8d39910e0fa6ec31f828e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do something when this tile/wall is placed. Called on the local Client and Single <a class="el" href="class_player.html">Player</a>.  <a href="class_mod_block_type.html#a3fa9b012ea8d39910e0fa6ec31f828e3">More...</a><br /></td></tr>
 <tr class="separator:a3fa9b012ea8d39910e0fa6ec31f828e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1c16c7d2fe88f1f337caba5d5d367aa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_block_type.html#ab1c16c7d2fe88f1f337caba5d5d367aa">PostDraw</a> (int i, int j, SpriteBatch spriteBatch)</td></tr>
-<tr class="memdesc:ab1c16c7d2fe88f1f337caba5d5d367aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.  <a href="class_mod_block_type.html#ab1c16c7d2fe88f1f337caba5d5d367aa">More...</a><br /></td></tr>
+<tr class="memdesc:ab1c16c7d2fe88f1f337caba5d5d367aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.Note that this method will be called for tiles even when the tile is <a class="el" href="struct_tile.html#a1c90e89e281a54ae9fffc8ff08517f41" title="Whether the tile at this position is invisible. Used by ItemID.EchoCoating.  Legacy/vanilla equivalen...">Tile.IsTileInvisible</a> due to Echo Coating. Use the GameContent.Drawing.TileDrawing.IsVisible(Tile) method to skip effects that shouldn't show when the tile is invisible. This method won't be called for invisible walls.  <a href="class_mod_block_type.html#ab1c16c7d2fe88f1f337caba5d5d367aa">More...</a><br /></td></tr>
 <tr class="separator:ab1c16c7d2fe88f1f337caba5d5d367aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae90049343517dba97b49f417764ebb15"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_block_type.html#ae90049343517dba97b49f417764ebb15">PreDraw</a> (int i, int j, SpriteBatch spriteBatch)</td></tr>
 <tr class="memdesc:ae90049343517dba97b49f417764ebb15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.  <a href="class_mod_block_type.html#ae90049343517dba97b49f417764ebb15">More...</a><br /></td></tr>
@@ -822,7 +822,7 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust. </p>
+<p>Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.Note that this method will be called for tiles even when the tile is <a class="el" href="struct_tile.html#a1c90e89e281a54ae9fffc8ff08517f41" title="Whether the tile at this position is invisible. Used by ItemID.EchoCoating.  Legacy/vanilla equivalen...">Tile.IsTileInvisible</a> due to Echo Coating. Use the GameContent.Drawing.TileDrawing.IsVisible(Tile) method to skip effects that shouldn't show when the tile is invisible. This method won't be called for invisible walls. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>

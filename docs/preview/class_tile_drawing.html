@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -174,14 +174,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae4ebb14e00bef966dbe25253eb63e9b0"><td class="memItemLeft" align="right" valign="top"><a id="ae4ebb14e00bef966dbe25253eb63e9b0" name="ae4ebb14e00bef966dbe25253eb63e9b0"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetBigAnimalCageFrame</b> (int x, int y, int tileFrameX, int tileFrameY)</td></tr>
+<tr class="separator:ae4ebb14e00bef966dbe25253eb63e9b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a763e820e7c493c59f3e0907811469938"><td class="memItemLeft" align="right" valign="top"><a id="a763e820e7c493c59f3e0907811469938" name="a763e820e7c493c59f3e0907811469938"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSmallAnimalCageFrame</b> (int x, int y, int tileFrameX, int tileFrameY)</td></tr>
+<tr class="separator:a763e820e7c493c59f3e0907811469938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ada521b8b03bbcb34ba2637f1b320ca"><td class="memItemLeft" align="right" valign="top"><a id="a8ada521b8b03bbcb34ba2637f1b320ca" name="a8ada521b8b03bbcb34ba2637f1b320ca"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTreeVariant</b> (int x, int y)</td></tr>
 <tr class="separator:a8ada521b8b03bbcb34ba2637f1b320ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a806965d9580dd9fd7daa270c4e7115f4"><td class="memItemLeft" align="right" valign="top"><a id="a806965d9580dd9fd7daa270c4e7115f4" name="a806965d9580dd9fd7daa270c4e7115f4"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWaterAnimalCageFrame</b> (int x, int y, int tileFrameX, int tileFrameY)</td></tr>
+<tr class="separator:a806965d9580dd9fd7daa270c4e7115f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86bf3a6bcd0fc5ccc57622c2d8ab7557"><td class="memItemLeft" align="right" valign="top"><a id="a86bf3a6bcd0fc5ccc57622c2d8ab7557" name="a86bf3a6bcd0fc5ccc57622c2d8ab7557"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileDangerous</b> (int tileX, int tileY, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a86bf3a6bcd0fc5ccc57622c2d8ab7557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff. <br  />
 Vanilla only uses <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> for <em>player</em>  <br /></td></tr>
 <tr class="separator:a86bf3a6bcd0fc5ccc57622c2d8ab7557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a659c5f36626e9f85d00ba2da8c2bd6d0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0">IsVisible</a> (<a class="el" href="struct_tile.html">Tile</a> tile)</td></tr>
+<tr class="memdesc:a659c5f36626e9f85d00ba2da8c2bd6d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the tile is visible. Tiles painted with Echo Coating as well as the Echo Platform, Echo Block, and Ghostly Stinkbug Blocker tiles will all be invisible unless the player has Echo Sight (Nearby active Echo Chamber tile or wearing Spectre Goggles)  <a href="class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0">More...</a><br /></td></tr>
+<tr class="separator:a659c5f36626e9f85d00ba2da8c2bd6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -486,6 +498,41 @@ Properties</h2></td></tr>
     <tr><td class="paramname">totalPushForce</td><td></td></tr>
     <tr><td class="paramname">loops</td><td></td></tr>
     <tr><td class="paramname">flipDirectionPerLoop</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a659c5f36626e9f85d00ba2da8c2bd6d0" name="a659c5f36626e9f85d00ba2da8c2bd6d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a659c5f36626e9f85d00ba2da8c2bd6d0">&#9670;&nbsp;</a></span>IsVisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool TileDrawing.IsVisible </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_tile.html">Tile</a>&#160;</td>
+          <td class="paramname"><em>tile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the tile is visible. Tiles painted with Echo Coating as well as the Echo Platform, Echo Block, and Ghostly Stinkbug Blocker tiles will all be invisible unless the player has Echo Sight (Nearby active Echo Chamber tile or wearing Spectre Goggles) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tile</td><td></td></tr>
   </table>
   </dd>
 </dl>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -717,7 +717,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>rotation</b></td></t
 <tr class="separator:a1930b7d39f4eb350478ad2d5e24b4dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e6ef8c8986be5cca4335001e4fcb8d"><td class="memItemLeft" align="right" valign="top"><a id="a70e6ef8c8986be5cca4335001e4fcb8d" name="a70e6ef8c8986be5cca4335001e4fcb8d"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> = 1f</td></tr>
-<tr class="memdesc:a70e6ef8c8986be5cca4335001e4fcb8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the projectile drawing, but not the hitbox, making this not suitable for affecting hitbox. Avoid large values. <br  />
+<tr class="memdesc:a70e6ef8c8986be5cca4335001e4fcb8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales how large the projectile will be drawn. Will also affect the hitbox (<a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">Entity.width</a>, <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">Entity.height</a>) if assigned in SetDefaults. If changed elsewhere it will not affect the hitbox, so that will have to be adjusted manually via code in that situation if needed. Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <a class="el" href="class_mod_projectile.html#affad3a0951d8c55b4cd2541378b8dc99" title="Allows you to draw things behind this projectile, or to modify the way it is drawn....">ModProjectile.PreDraw(ref Color)</a>.<br  />
  Defaults to 1f. <br /></td></tr>
 <tr class="separator:a70e6ef8c8986be5cca4335001e4fcb8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefcc822f644ea2ff3758de8263c93c20"><td class="memItemLeft" align="right" valign="top"><a id="aefcc822f644ea2ff3758de8263c93c20" name="aefcc822f644ea2ff3758de8263c93c20"></a>
