@@ -19,6 +19,8 @@ public partial class WorkshopSocialModule
 	private ulong currPublishID = 0;
 	private ulong existingAuthorID = 0;
 
+
+	// Need to call this in commmand line Publish path
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
@@ -60,7 +62,8 @@ public partial class WorkshopSocialModule
 
 	private bool _PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
 	{
-		if (!SteamedWraps.SteamClient) {
+		// You cannot publish on GoG Client NOR publish new items from SteamGameServer via Token
+		if (!SteamedWraps.SteamClient && !(SteamedWraps.SteamToken && currPublishID != 0)) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
 			return false;
 		}
@@ -81,12 +84,14 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			var currID = Steamworks.SteamUser.GetSteamID();
+			if (SteamedWraps.SteamClient) {
+				var currID = Steamworks.SteamUser.GetSteamID();
 
-			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (existingAuthorID != currID.m_SteamID) {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-				return false;
+				// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
+				if (existingAuthorID != currID.m_SteamID) {
+					IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
+					return false;
+				}
 			}
 
 			// Publish by updating the files available on the current published version
@@ -216,95 +221,5 @@ public partial class WorkshopSocialModule
 		if (Directory.Exists(devRemnant)) {
 			Directory.Delete(devRemnant, true);
 		}
-	}
-
-	public static void SteamCMDPublishPreparer(string modFolder)
-	{
-		if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
-			return;
-
-		Console.WriteLine("Preparing Files for CI...");
-		Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
-
-		// Folder containing all the current copies of the mod on the workshop
-		Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
-
-		// folder which will be used for the upload when the artifact is downloaded in post-build action. 
-		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder); 
-
-		// The Folder where we will put all the files that should be included in the build artifact
-		string publishFolder = $"{ModOrganizer.modPath}/Workshop"; 
-
-		string modName = Directory.GetParent(modFolder).Name;
-
-
-		// Create a namevalue collection for checking versioning
-		string newModPath = Path.Combine(ModOrganizer.modPath, $"{modName}.tmod");
-		LocalMod newMod = OpenModFile(newModPath);
-
-		var buildData = new NameValueCollection() {
-			["version"] = newMod.properties.version.ToString(),
-			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.properties.version}",
-			["description"] = newMod.properties.description
-		};
-
-		if (!CalculateVersionsData(publishedModFiles, ref buildData)) {
-			Utils.LogAndConsoleErrorMessage($"Unable to update mod. {buildData["version"]} is not higher than existing version");
-			return;
-		}
-
-		Console.WriteLine($"Built Mod Version is: {buildData["version"]}. tMod Version is: {BuildInfo.tMLVersion}");
-
-
-		// Create the directory that the new tmod file will be added to, if it doesn't exist
-		string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.MajorMinor()}";
-		if (!Directory.Exists(contentFolder))
-			Directory.CreateDirectory(contentFolder);
-
-
-		// Ensure the publish folder has all published information needed.
-		FileUtilities.CopyFolder(publishedModFiles, publishFolder); // Copy all existing workshop files to output
-		File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true); // Copy the new file to the output
-
-		// Cleanup Old Folders
-		ModOrganizer.CleanupOldPublish(publishFolder);
-
-
-		// Assign Workshop Description
-		string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
-		string workshopDesc;
-		if (!File.Exists(workshopDescFile))
-			workshopDesc = buildData["description"];
-		else
-			workshopDesc = File.ReadAllText(workshopDescFile);
-
-		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
-			$"{workshopDesc}";
-
-
-		// Make the publish.vdf file
-		string manifest = Path.Combine(publishedModFiles, "workshop.json");
-		AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
-
-		string vdf = $"{ModOrganizer.modPath}/publish.vdf";
-
-		string[] lines =
-		{
-				"\"workshopitem\"",
-				"{",
-				"\"appid\" \"" + "1281930"  + "\"",
-				"\"publishedfileid\" \"" + steamInfo.workshopEntryId + "\"",
-				"\"contentfolder\" \"" + $"{uploadFolder}/Workshop" + "\"",
-				"\"changenote\" \"" + changeNotes + "\"",
-				"\"description\" \"" + descriptionFinal + "\"",
-				"}"
-			};
-
-		if (File.Exists(vdf))
-			File.Delete(vdf);
-		File.WriteAllLines(vdf, lines);
-
-		Console.WriteLine("CI Files Prepared");
 	}
 }

@@ -244,11 +244,12 @@
  			private void UpdateItem()
  			{
  				string headerText = GetHeaderText();
-@@ -245,15 +_,23 @@
+@@ -245,39 +_,96 @@
  					_endAction(this);
  					return;
  				}
 +			*/
++
 +			private void UpdateItem(bool creatingItem = false)
 +			{
 +				WrappedWriteManifest();
@@ -256,85 +257,25 @@
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.UpdateItem", _entryData.Title));
  
  				PrepareContentForUpdate();
- 				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
- 				if (_entryData.Title != null)
- 					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
- 
+-				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
+-				if (_entryData.Title != null)
+-					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+-
 -				if (_entryData.Description != null)
-+				if (!string.IsNullOrEmpty(_entryData.Description))
- 					SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
- 
-+				Logging.tML.Info("Adding tags and visibility");
-+
- 				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
- 				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
- 				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,92 @@
- 				if (_entryData.Visibility.HasValue)
- 					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
- 
-+				Logging.tML.Info("Setting the language for default description");
-+				SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
-+
-+				string patchNotes = "";
-+
-+				// Needed for backwards compat on version metadata change
-+				_entryData.BuildData["version"] = "0.0.0";
-+
-+				if (_entryData.BuildData != null) {
-+					Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
-+					foreach (var key in MetadataKeys) {
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
-+					}
-+
-+					patchNotes = _entryData.ChangeNotes;
-+					// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
-+					if (string.IsNullOrWhiteSpace(patchNotes)) {
-+						patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
-+						if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
-+							patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
-+					}
-+
-+					// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
-+					// This allows us to use substitution keys such as {ModVersion}
-+					patchNotes = Language.GetText(patchNotes).FormatWith(new {
-+						ModVersion      = _entryData.BuildData["trueversion"],
-+						ModHomepage     = _entryData.BuildData["homepage"],
-+						tMLVersion      = BuildInfo.tMLVersion.MajorMinor().ToString(),
-+						tMLBuildPurpose = BuildInfo.Purpose.ToString(),
-+					});
-+
-+					string refs = _entryData.BuildData["workshopdeps"];
-+
-+					if (!string.IsNullOrWhiteSpace(refs)) {
-+						Logging.tML.Info("Adding dependencies to Workshop Upload");
-+						string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
-+
-+						foreach (string dependency in dependencies) {
-+							try {
-+								var child = new PublishedFileId_t(uint.Parse(dependency));
-+
-+								SteamUGC.AddDependency(_publishedFileID, child);
-+							}
-+							catch (Exception) {
-+								Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
-+							}
-+						}
-+					}
-+				}
-+
+-					SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
+-
+-				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+-				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+-				if (_entryData.PreviewImagePath != null)
+-					SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+-
+-				if (_entryData.Visibility.HasValue)
+-					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+-
 +				_updateCallback = EResult.k_EResultNone;
 +
-+				Logging.tML.Info("Submitting workshop update handle to Steam");
- 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
--				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
-+				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
- 				_updateHandle = uGCUpdateHandle_t;
- 				_updateItemHook.Set(hAPICall, UpdateItemResult);
- 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
-+
-+				Logging.tML.Info("Handle submitted. Waiting on Steam");
++				var uGCUpdateHandle_t = GenerateUgcUpdateHandle(out var patchNotes);
++				SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
 +
 +				if (!Main.dedServ || creatingItem)
 +					return;
@@ -344,6 +285,59 @@
 +					SteamedWraps.RunCallbacks();
 +				}
 +				while (_updateCallback == EResult.k_EResultNone);
++			}
++
++			private bool WrappedWriteManifest()
++			{
++				string headerText = GetHeaderText();
++
++				if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
++					return true;
++
++				_endAction(this);
++
++				return false;
++			}
++
++			internal UGCUpdateHandle_t GenerateUgcUpdateHandle(out string patchNotes)
++			{
++				UGCUpdateHandle_t uGCUpdateHandle_t = default;
++				if (SteamedWraps.SteamClient)
++					uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
++				else if (SteamedWraps.SteamToken)
++					uGCUpdateHandle_t = SteamGameServerUGC.StartItemUpdate(SteamGameServerUtils.GetAppID(), _publishedFileID);
++
++				SteamedWraps.ModifyUgcUpdateHandleCommon(ref uGCUpdateHandle_t, _entryData);
++
++				patchNotes = "";
++
++				if (_entryData.BuildData != null) {
++					// Needed for backwards compat on version metadata change
++					_entryData.BuildData["version"] = "0.0.0";
++
++					SteamedWraps.ModifyUgcUpdateHandleTModLoader(ref uGCUpdateHandle_t, ref patchNotes, _entryData, _publishedFileID);
++				}
++
++				return uGCUpdateHandle_t;
++			}
++
++			internal void SubmitItemUpdate(UGCUpdateHandle_t uGCUpdateHandle_t, string patchNotes)
++			{
++				Logging.tML.Info("Submitting workshop update handle to Steam");
+ 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
+-				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
++
++				SteamAPICall_t hAPICall = default;
++				if (SteamedWraps.SteamClient)
++					hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
++				else if (SteamedWraps.SteamToken)
++					hAPICall = SteamGameServerUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
++
+ 				_updateHandle = uGCUpdateHandle_t;
+ 				_updateItemHook.Set(hAPICall, UpdateItemResult);
+ 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
++
++				Logging.tML.Info("Handle submitted. Waiting on Steam");
  			}
  
  			private void UpdateItemResult(SubmitItemUpdateResult_t param, bool bIOFailure)
@@ -364,32 +358,13 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -301,6 +_,8 @@
+@@ -300,6 +_,9 @@
+ 						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_LimitExceeded");
  						break;
  				}
- 
-+				SteamUGC.SubscribeItem(_publishedFileID);
 +
++				if (SteamedWraps.SteamClient)
++					SteamUGC.SubscribeItem(_publishedFileID);
+ 
  				_endAction(this);
  			}
- 
-@@ -316,6 +_,19 @@
- 					_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
- 					return false;
- 				}
-+			}
-+
-+			// Added by TML.
-+			private bool WrappedWriteManifest()
-+			{
-+				string headerText = GetHeaderText();
-+
-+				if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
-+					return true;
-+
-+				_endAction(this);
-+
-+				return false;
- 			}
- 
- 			public bool TryGetProgress(out float progress)

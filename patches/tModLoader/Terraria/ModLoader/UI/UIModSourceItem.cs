@@ -347,10 +347,12 @@ internal class UIModSourceItem : UIPanel
 		catch (Exception e) {
 			Console.WriteLine("Something went wrong with command line mod publishing.");
 			Console.WriteLine(e.ToString());
+
 			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(1);
 		}
 		Console.WriteLine("exiting ");
+
 		Steamworks.SteamAPI.Shutdown();
 		Environment.Exit(0);
 	}

@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using ReLogic.OS;
 using Steamworks;
 using System;
@@ -11,6 +12,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
+using static Terraria.Social.Steam.WorkshopHelper.UGCBased;
 
 namespace Terraria.Social.Steam;
 
@@ -20,6 +22,7 @@ public static class SteamedWraps
 
 	public static bool SteamClient { get; set; }
 	public static bool FamilyShared { get; set; } = false;
+	public static bool SteamToken { get; set; } = false;
 	internal static bool SteamAvailable { get; set; }
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
@@ -80,7 +83,7 @@ public static class SteamedWraps
 		// Thus, for dedicated servers we delay game-server init until someone tries to use steam features (eg mod browser)
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-		if (!Main.dedServ && !TryInitViaGameServer())
+		if ((!Main.dedServ || Program.LaunchParameters.ContainsKey("-steamtoken") && !TryInitViaGameServer()))
 			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
 	}
 
@@ -93,7 +96,15 @@ public static class SteamedWraps
 
 			SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 			SteamGameServer.SetProduct(thisApp.ToString());
-			SteamGameServer.LogOnAnonymous();
+
+			if (Program.LaunchParameters.TryGetValue("-steamtoken", out var serverToken)) {
+				SteamGameServer.LogOn(serverToken);
+				Logging.tML.Info("SteamBackend: Logged in to Server via Protected Token");
+				SteamToken = true;
+			}
+				
+			else
+				SteamGameServer.LogOnAnonymous();
 		}
 		catch (Exception e) {
 			Logging.tML.Error(e);
@@ -550,6 +561,103 @@ public static class SteamedWraps
 			float progressRaw = dlBytes / totalBytes;
 			if (progressRaw == 1) {
 				break;
+			}
+		}
+	}
+
+	internal static void ModifyUgcUpdateHandleCommon(ref UGCUpdateHandle_t uGCUpdateHandle_t, SteamWorkshopItem _entryData)
+	{
+		if (SteamedWraps.SteamClient) {
+			if (_entryData.Title != null)
+				SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+
+			if (!string.IsNullOrEmpty(_entryData.Description))
+				SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
+
+			Logging.tML.Info("Adding tags and visibility");
+
+			SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+			SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+			if (_entryData.PreviewImagePath != null)
+				SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+
+			if (_entryData.Visibility.HasValue)
+				SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+
+			Logging.tML.Info("Setting the language for default description");
+			SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
+		}
+		else if (SteamedWraps.SteamToken) {
+			if (_entryData.Title != null)
+				SteamGameServerUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+
+			if (!string.IsNullOrEmpty(_entryData.Description))
+				SteamGameServerUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
+
+			Logging.tML.Info("Adding tags and visibility");
+
+			SteamGameServerUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+			SteamGameServerUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+			if (_entryData.PreviewImagePath != null)
+				SteamGameServerUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+
+			if (_entryData.Visibility.HasValue)
+				SteamGameServerUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+
+			Logging.tML.Info("Setting the language for default description");
+			SteamGameServerUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
+		}
+	}
+
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	{
+		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
+		foreach (var key in WorkshopHelper.MetadataKeys) {
+			if (SteamClient) {
+				SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
+				SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
+			}
+			else if (SteamToken) {
+				SteamGameServerUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
+				SteamGameServerUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
+			}
+		}
+
+		patchNotes = _entryData.ChangeNotes;
+		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
+		if (string.IsNullOrWhiteSpace(patchNotes)) {
+			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
+				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
+		// This allows us to use substitution keys such as {ModVersion}
+		patchNotes = Language.GetText(patchNotes).FormatWith(new {
+			ModVersion = _entryData.BuildData["trueversion"],
+			ModHomepage = _entryData.BuildData["homepage"],
+			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
+			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
+		});
+
+		string refs = _entryData.BuildData["workshopdeps"];
+
+		if (!string.IsNullOrWhiteSpace(refs)) {
+			Logging.tML.Info("Adding dependencies to Workshop Upload");
+			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+
+			foreach (string dependency in dependencies) {
+				try {
+					var child = new PublishedFileId_t(uint.Parse(dependency));
+
+					if (SteamClient)
+						SteamUGC.AddDependency(_publishedFileID, child);
+					else if (SteamToken)
+						SteamGameServerUGC.AddDependency(_publishedFileID, child);
+				}
+				catch (Exception) {
+					Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
+				}
 			}
 		}
 	}

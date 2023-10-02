@@ -121,7 +121,7 @@ public partial class WorkshopHelper
 	}
 
 	/////// Workshop Version Calculation Helpers ////////////////////
-	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
+	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(NameValueCollection metadata)
 	{
 		(System.Version modV, System.Version tmlV) selectVersion = new(new System.Version(metadata["version"].Replace("v", "")), new System.Version(metadata["modloaderversion"].Replace("tModLoader v", "")));
 		// Backwards compat after metadata version change
@@ -129,13 +129,6 @@ public partial class WorkshopHelper
 			return selectVersion;
 
 		InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
-
-		// Handle Github Actions metadata from description
-		// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
-		Match match = MetadataInDescriptionFallbackRegex.Match(mbDescription);
-		if (match.Success) {
-			InnerCalculateRelevantVersion(ref selectVersion, (match.Groups[1].Value));
-		}
 
 		return selectVersion;
 	}
@@ -209,14 +202,31 @@ public partial class WorkshopHelper
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
 		}
 		else {
-			SocialAPI.LoadSteam();
+			// Command Line / Server Publishing. Steam Token for Credential-less environments
+			if (Program.LaunchParameters.ContainsKey("-steamtoken"))
+				SocialAPI.Initialize(SocialMode.None);
+			else
+				SocialAPI.Initialize(SocialMode.Steam);
+
+			SocialAPI.Workshop = new WorkshopSocialModule();
+			SocialAPI.Workshop.Initialize();
+
+			Thread.Sleep(3000); // Wait for Steam to initialize
+
+			var usedTags = Array.Empty<WorkshopTagOption>();
+			var publicity = WorkshopItemPublicSettingId.Public;
+
+			if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
+				usedTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToArray();
+				publicity = info.publicity;
+			}
 
 			var publishSetttings = new WorkshopItemPublishSettings {
-				Publicity = WorkshopItemPublicSettingId.Public,
-				UsedTags = Array.Empty<WorkshopTagOption>(),
+				Publicity = publicity,
+				UsedTags = usedTags,
 				PreviewImagePath = iconPath
 			};
-			SteamedWraps.SteamClient = true;
+
 			SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 		}
 	}
@@ -472,10 +482,7 @@ public partial class WorkshopHelper
 
 				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();
 
-				// Partial Description - we don't include Long Description so this is only first handful of characters
-				string description = pDetails.m_rgchDescription;
-
-				var cVersion = CalculateRelevantVersion(description, metadata);
+				var cVersion = CalculateRelevantVersion(metadata);
 
 				// Assign ModSide Enum
 				ModSide modside = ModSide.Both;
