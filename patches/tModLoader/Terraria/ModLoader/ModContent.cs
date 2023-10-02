@@ -451,6 +451,7 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	internal static void Unload()
 	{
+		MonoModHooks.Clear();
 		TypeCaching.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
