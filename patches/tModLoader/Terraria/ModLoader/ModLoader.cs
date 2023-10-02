@@ -180,7 +180,7 @@ public static class ModLoader
 				DisableMod(mod);
 
 				var dependents = availableMods
-					.Where(m => m.properties.modReferences.Any(reference => reference.mod.Equals(mod)))
+					.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
 					.Select(m => m.Name);
 
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDependentsDisabled", mod,
