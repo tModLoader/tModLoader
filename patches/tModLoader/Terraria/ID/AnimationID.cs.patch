@@ -1,19 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/AnimationID.cs
 +++ src/tModLoader/Terraria/ID/AnimationID.cs
-@@ -1,5 +_,10 @@
-+using ReLogic.Reflection;
-+
+@@ -1,6 +_,6 @@
  namespace Terraria.ID;
  
-+#if TMLCODEASSIST
-+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Animation)]
-+#endif
- public class AnimationID
+-public class AnimationID
++public partial class AnimationID
  {
  	public const short MushroomStatueTurningOn = 0;
-@@ -7,4 +_,5 @@
- 	public const short FakeChestOpening = 2;
- 	public const short VolcanosTurningOn = 3;
- 	public const short VolcanosTurningOff = 4;
-+	public static readonly IdDictionary Search = IdDictionary.Create<AnimationID, short>(); // TML
- }
+ 	public const short MushroomStatueTurningOff = 1;

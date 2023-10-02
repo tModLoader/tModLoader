@@ -1,19 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/GlowMaskID.cs
 +++ src/tModLoader/Terraria/ID/GlowMaskID.cs
-@@ -1,5 +_,10 @@
-+using ReLogic.Reflection;
-+
+@@ -1,6 +_,6 @@
  namespace Terraria.ID;
  
-+#if TMLCODEASSIST
-+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.GlowMask)]
-+#endif
- public class GlowMaskID
+-public class GlowMaskID
++public partial class GlowMaskID
  {
  	public const short FakeUser = -2;
-@@ -358,4 +_,5 @@
- 	public const short CyborgShimmeredParty = 351;
- 	public const short TruffleShimmered = 352;
- 	public static readonly short Count = 353;
-+	public static readonly IdDictionary Search = IdDictionary.Create<GlowMaskID, short>(); // TML
- }
+ 	public const short None = -1;

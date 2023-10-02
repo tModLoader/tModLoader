@@ -1,18 +1,14 @@
 --- src/TerrariaNetCore/Terraria/ID/WallID.cs
 +++ src/tModLoader/Terraria/ID/WallID.cs
-@@ -1,7 +_,17 @@
-+using ReLogic.Reflection;
-+
+@@ -1,7 +_,12 @@
 +#if !TMLCODEASSIST
 +using Terraria.ModLoader;
 +#endif
 +
  namespace Terraria.ID;
  
-+#if TMLCODEASSIST
-+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Wall)]
-+#endif
- public class WallID
+-public class WallID
++public partial class WallID
  {
 +#if !TMLCODEASSIST
  	public static class Sets
@@ -35,11 +31,3 @@
  
  	public const ushort None = 0;
  	public const ushort Stone = 1;
-@@ -382,4 +_,7 @@
- 	public const ushort VioletMossBlockWall = 345;
- 	public const ushort RainbowMossBlockWall = 346;
- 	public static readonly ushort Count = 347;
-+
-+	// Added by TML.
-+	public static readonly IdDictionary Search = IdDictionary.Create<WallID, ushort>();
- }

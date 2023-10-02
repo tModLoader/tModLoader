@@ -1,19 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/InvasionID.cs
 +++ src/tModLoader/Terraria/ID/InvasionID.cs
-@@ -1,5 +_,10 @@
-+using ReLogic.Reflection;
-+
+@@ -1,6 +_,6 @@
  namespace Terraria.ID;
  
-+#if TMLCODEASSIST
-+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Invasion)]
-+#endif
- public static class InvasionID
+-public static class InvasionID
++public static partial class InvasionID
  {
  	public const short CachedInvasions = 3;
-@@ -12,4 +_,5 @@
- 	public const short PirateInvasion = 3;
- 	public const short MartianMadness = 4;
- 	public static readonly short Count = 5;
-+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(InvasionID), typeof(int)); // TML
- }
+ 	public const short CachedFrostMoon = 1;

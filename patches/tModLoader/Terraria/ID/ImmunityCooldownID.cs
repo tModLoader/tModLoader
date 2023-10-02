@@ -1,11 +1,6 @@
-using ReLogic.Reflection;
-
 namespace Terraria.ID;
 
-#if TMLCODEASSIST
-[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.ImmunityCooldown)]
-#endif
-public static class ImmunityCooldownID
+public static partial class ImmunityCooldownID
 {
 	/// <summary>
 	/// Default, no special slot, just Player.immuneTime
@@ -29,5 +24,4 @@ public static class ImmunityCooldownID
 	/// Damage from lava
 	/// </summary>
 	public const int Lava = 4;
-	public static readonly IdDictionary Search = IdDictionary.Create(typeof(ImmunityCooldownID), typeof(int)); // TML
 }

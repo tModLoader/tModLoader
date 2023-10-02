@@ -1,35 +1,22 @@
 --- src/TerrariaNetCore/Terraria/ID/AchievementHelperID.cs
 +++ src/tModLoader/Terraria/ID/AchievementHelperID.cs
-@@ -1,7 +_,12 @@
-+using ReLogic.Reflection;
-+
+@@ -1,8 +_,8 @@
  namespace Terraria.ID;
  
- public class AchievementHelperID
+-public class AchievementHelperID
++public partial class AchievementHelperID
  {
-+#if TMLCODEASSIST
-+	[tModCodeAssist.IDType.Sets.AssociatedName(Terraria.ModLoader.Annotations.IDTypeAttribute.AchievementHelper_Events)]
-+#endif
- 	public class Events
+-	public class Events
++	public partial class Events
  	{
  		public const int NightStart = 0;
-@@ -33,8 +_,12 @@
- 		public const int HousedAllTownSlimes = 26;
- 		public const int TransmuteItem = 27;
+ 		public const int DayStart = 1;
+@@ -35,7 +_,7 @@
  		public const int DroneDiedInSpace = 28;
-+		public static readonly IdDictionary Search = IdDictionary.Create<Events, int>(); // TML
  	}
  
-+#if TMLCODEASSIST
-+	[tModCodeAssist.IDType.Sets.AssociatedName(Terraria.ModLoader.Annotations.IDTypeAttribute.AchievementHelper_Special)]
-+#endif
- 	public class Special
+-	public class Special
++	public partial class Special
  	{
  		public const int ConsumeHeart = 0;
-@@ -65,5 +_,6 @@
- 		public const int DrinkBottledWaterWhileDrowning = 25;
- 		public const int PlayOnASpecialSeed = 26;
- 		public const int PurifyEntireWorld = 27;
-+		public static readonly IdDictionary Search = IdDictionary.Create<Special, int>(); // TML
- 	}
- }
+ 		public const int ConsumeStar = 1;

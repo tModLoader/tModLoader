@@ -1,17 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/PaintCoatingID.cs
 +++ src/tModLoader/Terraria/ID/PaintCoatingID.cs
-@@ -1,8 +_,14 @@
-+using ReLogic.Reflection;
-+
+@@ -1,6 +_,6 @@
  namespace Terraria.ID;
  
-+#if TMLCODEASSIST
-+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.PaintCoating)]
-+#endif
- public static class PaintCoatingID
+-public static class PaintCoatingID
++public static partial class PaintCoatingID
  {
  	public const byte None = 0;
  	public const byte Glow = 1;
- 	public const byte Echo = 2;
-+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(PaintCoatingID), typeof(byte)); // TML
- }
