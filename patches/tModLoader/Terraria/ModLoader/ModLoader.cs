@@ -179,9 +179,9 @@ public static class ModLoader
 			foreach (var mod in responsibleMods) {
 				DisableMod(mod);
 
-				var dependents = from m in availableMods
-					where m.properties.modReferences.Any(reference => reference.mod.Equals(mod))
-					select m.Name;
+				var dependents = availableMods
+					.Where(m => m.properties.modReferences.Any(reference => reference.mod.Equals(mod)))
+					.Select(m => m.Name);
 
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDependentsDisabled", mod,
 					string.Join(", ", dependents));
