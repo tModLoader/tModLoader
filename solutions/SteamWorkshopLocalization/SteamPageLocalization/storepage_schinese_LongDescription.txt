@@ -1,0 +1,39 @@
+使用tModLoader在玩家制作的模组世界中挖掘、战斗和建造你的家园 - 此DLC让使修改Terraria成为现实！
+
+tModLoader（TML）是Terraria的开源、社区驱动的修改和扩展，使制作与游玩模组成为可能。TML通过Terraria社区制作的新模组内容来扩展你的Terraria冒险！ TML允许玩家制作或使用Terraria模组，并通过这种设计好的方式让你独自或和朋友一起游玩-加载一个模组或许多个模组，选择你喜欢的方式游玩！
+
+注意：如果你想和朋友一起游玩，那么你的朋友必须安装TML；因为原版用户无法和与TML用户一起游玩
+
+---
+
+[b][u][h2]支持[/h2][/u][/b]
+
+需要帮助？你可以在Terraria社区论坛（Terraria Community Forums）或Discord服务器上的论坛帖子上获得支持！这些是我们获得支持的最佳处，它们都直接从我们的网站链接，你也可以在Steam商店页面上找到这些网站。
+
+tModLoader是一个开源项目。这意味着代码是公开可用的，任何人都可以为项目做出贡献。我们的项目可以在Github上找到，通过我们的网站链接。
+
+你想了解更多关于tModLoader的内部工作原理吗？也许你现在就想使用tModLoader？你可以在我们的Steam商店页面上找到“查看手册”并链接到我们的玩家指南，还有面向开发人员和贡献者的页面。我们的wiki充满了学习如何使用tModLoader进行制作模组的指南。
+
+---
+
+[b][u][h2]FAQ[/h2][/u][/b]
+
+以下是安装并准备深入了解tModLoader时需要了解的一些重要事项：
+
+[b][list][*]无需做任何备份
+[*]只需将Terraria更新到1.4并在Steam上安装tModLoader
+[*]你可以同时玩原版Terraria和TML； Steam上的tModLoader被视为一个单独的游戏。
+[*]tModLoader支持Terraria 1.3和1.4
+[*]支持Steam创意工坊（这不是必要的，因为我们有一个游戏内模组浏览器）
+[*]在新版本中，tModLoader可以安装在任何文件夹，无论文件夹或是否是Steam安装。
+
+[*]tModLoader 适用于 Windows、Mac 和 Linux[/list][/b]
+
+[b]这对我有什么影响？Terraria 1.4发布后，我的模组还能用吗？[/b]
+因为这次1.4更新给tModLoader带来了很多变化, 即使不是全部，也有很多模组无法使用。尽管我们已经给了模组制作者更新模组的时间, 某些模组可能永远不会更新到1.4版本。 所以请记住，你可能无法使用1.3中能够使用的所有模组
+
+[b]这是否意味着tModLoader已更新到1.4？[/b]
+Steam上的tModLoader支持Terraria 1.3.5和Terraria 1.4。
+
+[b]支持Steam创意工坊？[/b]
+支持Steam创意工坊。
