@@ -2791,11 +2791,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13287,6 +_,7 @@
+@@ -13287,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		selectItemOnNextUse = false; // Added by TML
  		ResetVisibleAccessories();
  		poisoned = false;
  		venom = false;
@@ -2809,29 +2810,24 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13526,6 +_,11 @@
+@@ -13522,6 +_,10 @@
+ 
+ 	public void SmartSelectLookup()
+ 	{
++		// Added by TML to preserve mouse item with moved call location
++		if (selectedItem == 58)
++			return;
++
+ 		if (mouseInterface)
  			controlTorch = false;
  
- 		if (controlTorch && itemAnimation == 0) {
-+
-+			// TML feature, prevent changing the smart selected item while the use button is held. This prevents switching from pickaxe to torch after mining a block for eg
-+			if (controlUseItem && nonTorch != -1)
-+				return;
-+
- 			PlayerInput.smartSelectPointer.SmartSelectLookup_GetTargetTile(this, out var tX, out var tY);
- 			SmartSelect_GetToolStrategy(tX, tY, out var toolStrategy, out var wetTile);
- 			if (PlayerInput.UsingGamepad && _lastSmartCursorToolStrategy != -1)
-@@ -13538,6 +_,16 @@
+@@ -13538,6 +_,12 @@
  					toolStrategy = 5;
  			}
  
 +			int modSelect = TileLoader.AutoSelect(tX, tY, this);
-+
 +			if (modSelect >= 0) {
-+				if (nonTorch == -1)
-+					nonTorch = selectedItem;
-+
-+				selectedItem = modSelect;
++				SmartSelect_SelectItem(modSelect);
 +				return;
 +			}
 +
@@ -3751,6 +3747,20 @@
  				if (controlInv) {
  					if (releaseInventory)
  						ToggleInv();
+@@ -19323,8 +_,12 @@
+ 							DpadRadial.ChangeSelection(-1);
+ 							CircularRadial.ChangeSelection(-1);
+ 						}
+-
++						/*
+ 						if (controlTorch && flag7) {
++						*/
++						// TML: minor tweak, smart select item is held with controlUse even when item cannot be used right now.
++						// In any case where nonTorch has a value, we should be setting nonTorch instead of selectedItem
++						if (nonTorch != -1 && flag7) {
+ 							if (selectedItem != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
 @@ -19357,6 +_,7 @@
  						CaptureManager.Instance.Scrolling();
  					}
@@ -3773,7 +3783,14 @@
  					}
  				}
  				else {
-@@ -19467,8 +_,10 @@
+@@ -19461,14 +_,17 @@
+ 							if (num15 != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
++							selectItemOnNextUse = true; // Added by TML
+ 							nonTorch = num15;
+ 						}
+ 					}
  				}
  			}
  
@@ -5890,7 +5907,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,66 @@
+@@ -33268,6 +_,68 @@
  			}
  		}
  
@@ -5944,7 +5961,9 @@
 +		ReuseDelayAndAnimationStart:
 +
 +		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (selectedItem != 58) {
++		if (itemAnimation == 0 && (!controlUseItem || selectItemOnNextUse)) {
++			selectItemOnNextUse = false;
++
 +			int oldSelect = selectedItem;
 +			SmartSelectLookup();
 +			if (selectedItem != oldSelect) {
