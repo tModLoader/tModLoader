@@ -39,7 +39,7 @@
 		"SteamFamilyShareWarning": "检测到Terraria为Steam家庭共享。\n由于Steam不支持家庭共享tModLoader，因此启用试验性方案。\n以下功能无法使用：\n - 游戏内 Steam 界面\n - Steam 多人",
 		"WaitXSeconds": "等待{0} {^0:second;seconds}……",
 		"ViewInstructions": "查看说明",
-		"ModReadyFor144": "此模组已更新为1.4.4",
+		"ModReadyFor144": "此模组已更新至1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -66,7 +66,7 @@
 		"ModDidNotFullyUnloadWarning": "该模组在上次卸载时未完全卸载.\n(这是给模组作者的信息)",
 		"BetaModCantPublishError": "你无法发布基于测试版本tModLoader的模组",
 		"OutdatedModCantPublishError": "你无法发布基于旧版本tModLoader的模组",
-		"WrongVersionCantPublishError": "你无法发布基于tModLoader版本与构建版本不同的模组构建的模组",
+  // "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "需要重新加载",
 		"ModReloadRequiredMemberTooltip": "如果要更改，必须重新加载",
 		"ModReloadForced": "强制重新加载",
@@ -150,7 +150,7 @@
 		"LoadErrorDisabled": "该模组已被自动禁用.",
 		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
 		"LoadErrorContentType": "此错误是由“{0}”类引起的。",
-		"LoadErrorMissingModQualifier": "文件路径“{0}”缺少模组修饰符。文件路径应以模组名称或Terraria开头，后跟斜杠 (\"/\").",
+		"LoadErrorMissingModQualifier": "文件路径“{0}”缺少模组修饰符。文件路径应以模组名称或Terraria开头，后跟斜杠 (“/”).",
 		"LoadErrorModNotFoundDuringAsset": "尝试加载路径为“{1}”的资源时未找到名为“{0}”的模组。检查此路径是否以正确的模组名称开头。",
 		"LoadErrorVersionMessage": "该模组是基于tModLoader v{0}开发的\n但是, 你正在使用 {1}\n(版本不同不一定是加载错误的原因)",
 		"LoadErrorDotNet45Required": "需要[.NET Framework 4.5]或更高版本才能使用模组.请下载最新版本的[.NET Framework]",
@@ -388,8 +388,8 @@
 		"WorldFromNewerTModMightNotWork": "该世界来自较新的tModLoader，可能无法正常工作",
 		"PlayerWithThisNameExistsWillBeOverwritten": "已存在使用此名称的人物，该名称将被覆盖",
 		"WorldWithThisNameExistsWillBeOverwritten": "已存在使用此名称的世界，该名称将被覆盖",
-		"ExistingPlayerPlayedMoreRecently": "现有人物最近一次游玩时间",
-		"ExistingWorldPlayedMoreRecently": "现有世界最近一次游玩的时间",
+		"ExistingPlayerPlayedMoreRecently": "此人物最近一次游玩时间",
+		"ExistingWorldPlayedMoreRecently": "此世界最近一次游玩的时间",
 
 		// Mod Sources
 		"MSBuild": "生成",
@@ -523,7 +523,7 @@
 		"SteamAPIHashMismatch": "SteamAPI校验失败，检测为盗版。\n\ntModLoader需要购买安装正版Terraria。",
 		"SteamInitFailed": "调用SteamAPI.Init失败，请尝试重新登陆Steam后启动游戏。查看terrariasteamclient.log和Natives.Log获取详情。",
 		"TerrariaNotInstalled": "tModLoader运行时需要安装原版Terraria。 请打开你的Steam客户端以安装原版Terraria，并启动至少一次以确认所有内容都安装成功且可用。",
-		"GOGHashMismatch": "{0}校验失败。\r\n\r\n该tModLoader发行版应与泰拉瑞亚{1}版一同安装。如果泰拉瑞亚最近更新了，你可能需要在GOG Galaxy中将其降至早前的发行版。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"{2}\"",
+		"GOGHashMismatch": "{0}校验失败。\r\n\r\n该tModLoader发行版应与泰拉瑞亚{1}版一同安装。如果泰拉瑞亚最近更新了，你可能需要在GOG Galaxy中将其降至早前的发行版。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为“{2}”",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
 		"LogPathHint": "你可以在{1}中找到一个名为{0}的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
 		"OutOfMemoryHint": "提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。",
