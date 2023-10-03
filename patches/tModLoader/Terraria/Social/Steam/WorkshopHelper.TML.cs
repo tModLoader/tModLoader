@@ -211,6 +211,9 @@ public partial class WorkshopHelper
 			SocialAPI.Workshop = new WorkshopSocialModule();
 			SocialAPI.Workshop.Initialize();
 
+			if (!SteamedWraps.SteamAvailable)
+				return;
+
 			Thread.Sleep(3000); // Wait for Steam to initialize
 
 			var usedTags = Array.Empty<WorkshopTagOption>();

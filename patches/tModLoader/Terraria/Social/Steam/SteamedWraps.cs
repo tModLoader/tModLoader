@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
@@ -83,7 +84,7 @@ public static class SteamedWraps
 		// Thus, for dedicated servers we delay game-server init until someone tries to use steam features (eg mod browser)
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-		if ((!Main.dedServ || Program.LaunchParameters.ContainsKey("-steamtoken") && !TryInitViaGameServer()))
+		if ((!Main.dedServ || Program.LaunchParameters.ContainsKey("-steamtoken")) && !TryInitViaGameServer())
 			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
 	}
 
@@ -91,7 +92,7 @@ public static class SteamedWraps
 	{
 		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
 		try {
-			if (!GameServer.Init(0, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+			if (!GameServer.Init(0, 27030, 27031, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
 				return false;
 
 			SteamGameServer.SetGameDescription("tModLoader Mod Browser");
@@ -375,7 +376,8 @@ public static class SteamedWraps
 			SteamAPI.Shutdown();
 			return;
 		}
-		
+
+		SteamGameServer.LogOff();
 		GameServer.Shutdown();
 		CleanupACF();
 	}
