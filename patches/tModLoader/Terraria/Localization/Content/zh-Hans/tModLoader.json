@@ -172,7 +172,7 @@
 		"BuildErrorMissingNoCompile": "缺少用于[noCompile]的dll文件: {0} 或 {1}\n\n[All.dll]不得引用[Microsoft.Xna.Framework]或[FNA]\n[XNA.dll]必须引用相应的[tModLoader.exe]和框架",
 		"BuildErrorModNameDoesntMatchAssemblyName": "模组名称 {0} 与程序集名称 {1} 不匹配",
 		"BuildErrorNamespaceFolderDontMatch": "命名空间与文件夹名不匹配，顶级命名空间必须与文件夹名匹配。",
-		"BuildErrorNoModClass": "请确保只有一个类继承自模组",
+		"BuildErrorNoModClass": "请确保只有一个类继承自Mod",
 		"BuildErrorLoadingPrecompiled": "无法加载预编译：{0}",
 		"BuildErrorFailedLoadBuildTxt": "加载失败 {0}",
 		"BuildWarningEACWindowsOnly": "只有Windows支持编辑并继续",
@@ -293,7 +293,7 @@
 		"MBShowUpdates": "只显示可更新的模组",
 		"MBShowInstalled": "显示已安装的模组",
 		"MBShowMSAll": "显示全部模组",
-		"MBShowMSBoth": "只显示双端/客户端和服务端的模组",
+		"MBShowMSBoth": "只显示客户端兼服务端的模组",
 		"MBShowMSClient": "只显示客户端的模组",
 		"MBShowMSServer": "只显示服务器的模组",
 		"MBShowMSNoSync": "只显示不同步的模组",
@@ -868,7 +868,7 @@
 		"Patreon": "Patreon"
 	},
 	"Config": {
-		"Color.Hue.Label": "色度",
+		"Color.Hue.Label": "色相",
 		"Color.Saturation.Label": "饱和度",
 		"Color.Lightness.Label": "亮度",
 		"Color.Red.Label": "红",
