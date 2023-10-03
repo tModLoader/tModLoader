@@ -109,7 +109,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,26 @@
+@@ -164,6 +_,28 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -127,6 +127,8 @@
 +	public static void LaunchGame_(bool isServer)
 +	{
 +		Main.dedServ = isServer;
++		if (isServer)
++			Main.myPlayer = 255;
 +
 +		//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?
 +		if (LaunchInitializer.TryParameter("-build") is string build)
