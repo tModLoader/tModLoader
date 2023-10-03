@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/SupportedWorkshopTags.cs
 +++ src/tModLoader/Terraria/Social/Steam/SupportedWorkshopTags.cs
-@@ -30,5 +_,31 @@
+@@ -30,5 +_,32 @@
  		AddResourcePackTag("WorkshopTags.Overhaul", "Overhaul");
  		AddResourcePackTag("WorkshopTags.Tweaks", "Tweaks");
  		AddResourcePackTag("WorkshopTags.OtherResourcePacks", "Other Packs");
@@ -9,6 +9,7 @@
 +		AddModTag("tModLoader.TagsContent", "New Content");
 +		AddModTag("tModLoader.TagsUtility", "Utilities");
 +		AddModTag("tModLoader.TagsLibrary", "Library");
++		AddModTag("tModLoader.TagsTranslation", "Translation");
 +		AddModTag("tModLoader.TagsQoL", "Quality of Life");
 +
 +		// Tweaks

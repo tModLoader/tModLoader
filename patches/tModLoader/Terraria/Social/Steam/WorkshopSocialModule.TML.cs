@@ -32,7 +32,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (!mods.Any())
+		if (!mods.Any() || mods.All(x => x == null))
 			return false;
 
 		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
