@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"class_ruler_line_builder_toggle.html#a339b300b83c990c23495aff8bf5365fb":[3,0,1073,0],
 "class_ruler_line_builder_toggle.html#af43951a953389357c939806d6ff66547":[3,0,1073,1],
 "class_salamander_shelly_dad_u_i_collection_info_provider.html":[3,0,1074],
 "class_sand_mound.html":[3,0,1075],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "class_tile_entity.html#a934f3672efab8bde6e17b872d215d3ef":[3,0,1227,0],
 "class_tile_entity_i_d.html":[3,0,1228],
 "class_tile_entry.html":[3,0,1229],
-"class_tile_font.html":[3,0,1230],
-"class_tile_golf_physics.html":[3,0,1231]
+"class_tile_font.html":[3,0,1230]
 };

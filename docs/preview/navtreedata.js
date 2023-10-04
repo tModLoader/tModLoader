@@ -63,14 +63,14 @@ var NAVTREEINDEX =
 "class_mod_wall.html#afed9a03c9d3af4ca6357b23427f1ef98",
 "class_n_p_c_a_i_style_i_d.html#a60fa89b61a99382a84fa5d60651d1662",
 "class_particle_orchestrator.html",
-"class_player_draw_layers.html#afa95a551d5e2027e073ca45f6f163a0b",
-"class_proj_a_i_style_i_d.html#ad0199038e44647a09c6f42aaf627861e",
-"class_ruler_line_builder_toggle.html#af43951a953389357c939806d6ff66547",
-"class_tile_i_d.html",
-"class_unified_random.html",
-"functions_v.html",
-"struct_fishing_attempt.html#aed7f28b54ca72c9a95a001b21a5cbb83",
-"struct_tile.html#a3d7bd8c478e2aa49b36d1c451fc2b87b"
+"class_player_draw_layers.html#af7afa1af98f09df26a27f92f3c27de38",
+"class_proj_a_i_style_i_d.html#acfc6c5238a5e3b0135dedbaca5a217ee",
+"class_ruler_line_builder_toggle.html#a339b300b83c990c23495aff8bf5365fb",
+"class_tile_golf_physics.html",
+"class_unicorn_mount_jump.html#abe6498ea95f70746779ff6a5cd303364",
+"functions_u.html",
+"struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a",
+"struct_tile.html#a3bd249192cdad8bfac0af378c5d6206a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

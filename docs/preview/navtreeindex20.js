@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"class_unicorn_mount_jump.html#abe6498ea95f70746779ff6a5cd303364":[3,0,1397,2],
 "class_unified_random.html":[3,0,1398],
 "class_unified_random.html#a4040681602b93f1eed92662395230f13":[3,0,1398,0],
 "class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[3,0,1398,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "functions_q.html":[3,3,0,16],
 "functions_r.html":[3,3,0,17],
 "functions_s.html":[3,3,0,18],
-"functions_t.html":[3,3,0,19],
-"functions_u.html":[3,3,0,20]
+"functions_t.html":[3,3,0,19]
 };

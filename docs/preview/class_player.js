@@ -123,6 +123,7 @@ var class_player =
     [ "ownedProjectileCounts", "class_player.html#a0c756f83a2e3b6e39904eda03030b15f", null ],
     [ "resistCold", "class_player.html#a35399bea3ca0caff04615abdc7889d6f", null ],
     [ "runAcceleration", "class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3", null ],
+    [ "selectItemOnNextUse", "class_player.html#a3c89a5232e70d6c6cf64226ecaab515c", null ],
     [ "setBonus", "class_player.html#aac7534f273ac452bf83c0f6087926480", null ],
     [ "slotsMinions", "class_player.html#a8275f0a867c848e7b098427467379792", null ],
     [ "spikedBoots", "class_player.html#aa072a19eec28e2bdf4a825b36222bdd9", null ],

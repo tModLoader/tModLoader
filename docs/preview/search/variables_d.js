@@ -2,9 +2,9 @@ var searchData=
 [
   ['nado_0',['Nado',['../class_proj_a_i_style_i_d.html#ac287843cf5b25787ef769668964daaf5',1,'ProjAIStyleID']]],
   ['nail_1',['Nail',['../class_proj_a_i_style_i_d.html#a42e20528e17295a74c9777da1336f852',1,'ProjAIStyleID']]],
-  ['name_2',['name',['../class_player.html#ac8bcb50bf826874dfa2d162af367d013',1,'Player.name()'],['../class_chest.html#a36fff2ef1f14fb62a0776989eb387f47',1,'Chest.name()']]],
+  ['name_2',['name',['../class_chest.html#a36fff2ef1f14fb62a0776989eb387f47',1,'Chest']]],
   ['name_3',['Name',['../class_tooltip_line.html#ae3e22079f327ae9558f570d92a7587d1',1,'TooltipLine']]],
-  ['name_4',['name',['../class_popup_text.html#a6f804e078d02d0e7990cd857deddd2a9',1,'PopupText']]],
+  ['name_4',['name',['../class_popup_text.html#a6f804e078d02d0e7990cd857deddd2a9',1,'PopupText.name()'],['../class_player.html#ac8bcb50bf826874dfa2d162af367d013',1,'Player.name()']]],
   ['natureandweather_5',['NatureAndWeather',['../class_emote_i_d_1_1_category.html#a20c9336b4a2451f9543d637a1fc1eb2f',1,'EmoteID::Category']]],
   ['nebulaarcanum_6',['NebulaArcanum',['../class_proj_a_i_style_i_d.html#a02fa86d4de19b6d33d72e9650796ecd9',1,'ProjAIStyleID']]],
   ['nebulafloater_7',['NebulaFloater',['../class_n_p_c_a_i_style_i_d.html#ad6d90b52541ec45d8c2a242b412a5410',1,'NPCAIStyleID']]],
