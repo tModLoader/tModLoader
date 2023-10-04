@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_player_input_1_1_misc_settings_t_e_m_p.html":[3,0,974,0],
 "class_player_input_1_1_settings_for_u_i.html":[3,0,974,1],
 "class_player_input_profile.html":[3,0,975],
 "class_player_item_slot_i_d.html":[3,0,977],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_proj_a_i_style_i_d.html#ad0e3908941e262e44f79ed1534173590":[3,0,1013,134],
 "class_proj_a_i_style_i_d.html#ad13b18a4de85b5baacaefb77e039c2c2":[3,0,1013,75],
 "class_proj_a_i_style_i_d.html#ad1a598beff4af5aa1d5729db93e1b69f":[3,0,1013,168],
-"class_proj_a_i_style_i_d.html#ad246af3742cb022ffbd708e20e76a0c3":[3,0,1013,103],
-"class_proj_a_i_style_i_d.html#ad24d33831c31e821f24ce8af87ea3ec0":[3,0,1013,36]
+"class_proj_a_i_style_i_d.html#ad246af3742cb022ffbd708e20e76a0c3":[3,0,1013,103]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"class_unloaded_chest.html#aedbfa84a1f9064e56981b813926cf047":[3,0,1398,1],
 "class_unloaded_dresser.html":[3,0,1399],
 "class_unloaded_dresser.html#a533cf0c2ff2eafab314b746e6e265461":[3,0,1399,0],
 "class_unloaded_global_item.html":[3,0,1400],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "functions_vars_d.html":[3,3,2,3],
 "functions_vars_e.html":[3,3,2,4],
 "functions_vars_f.html":[3,3,2,5],
-"functions_vars_g.html":[3,3,2,6],
-"functions_vars_h.html":[3,3,2,7]
+"functions_vars_g.html":[3,3,2,6]
 };

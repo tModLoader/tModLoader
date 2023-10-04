@@ -63,14 +63,14 @@ var NAVTREEINDEX =
 "class_mod_water_style.html#a622b9eb0536352251bfb6daa897d617c",
 "class_n_p_c_a_i_style_i_d.html#a78ae0d71cd0d4a322f090c99853e2c68",
 "class_passes_1_1_clear.html",
-"class_player_input_1_1_settings_for_u_i.html",
-"class_proj_a_i_style_i_d.html#ad3d1ebfee0c7c20ad9fa1e61b4b0556f",
-"class_sandstorm_in_a_bottle_jump.html#a2a24f169408292e524343fd7f68e9b52",
-"class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4",
-"class_unloaded_dresser.html",
-"functions_vars_i.html",
-"struct_get_item_settings.html",
-"struct_tile.html#a6c7169c7c6413c29f23ddb234e796fd6"
+"class_player_input_1_1_misc_settings_t_e_m_p.html",
+"class_proj_a_i_style_i_d.html#ad24d33831c31e821f24ce8af87ea3ec0",
+"class_sandstorm_in_a_bottle_jump.html",
+"class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638",
+"class_unloaded_chest.html#aedbfa84a1f9064e56981b813926cf047",
+"functions_vars_h.html",
+"struct_gen_shape_action_pair.html",
+"struct_tile.html#a6689150e347d80787fd7d2ce776d9075"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

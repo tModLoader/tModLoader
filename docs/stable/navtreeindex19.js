@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638":[3,0,1231,0,46],
 "class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4":[3,0,1231,0,41],
 "class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77":[3,0,1231,0,49],
 "class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6":[3,0,1231,0,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[3,0,1397,0],
 "class_unloaded_chest.html":[3,0,1398],
 "class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51":[3,0,1398,0],
-"class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[3,0,1398,2],
-"class_unloaded_chest.html#aedbfa84a1f9064e56981b813926cf047":[3,0,1398,1]
+"class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[3,0,1398,2]
 };
