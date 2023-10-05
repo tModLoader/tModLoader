@@ -329,9 +329,11 @@ while [[ $# -gt 0 ]]; do
 			shift
 			;;
 		--tml-version)
-			tmlversion="$2"
-			steamcmd=false
-			shift
+			if [[ -n "$2" ]]; then
+				tmlversion="$2"
+				steamcmd=false
+				shift
+			fi
 			;;
 		--steamcmdpath)
 			steamcmd_path="$2"

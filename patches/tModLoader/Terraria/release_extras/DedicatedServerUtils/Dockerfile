@@ -11,9 +11,10 @@ RUN mkdir /steamlib \
  && mv /lib/libgcc_s.so.1 /steamlib
 ENV LD_LIBRARY_PATH /steamlib
 
-# Create tModLoader user and drop root permissions
-ARG TML_VERSION=v2023.08.2.13
+# Set a specific tModLoader version, defaults to the latest Github release
+ARG TML_VERSION
 
+# Create tModLoader user and drop root permissions
 ARG UID
 ARG GID
 RUN addgroup -g $GID tml \
