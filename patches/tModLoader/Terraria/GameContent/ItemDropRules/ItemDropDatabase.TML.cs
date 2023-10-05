@@ -69,12 +69,12 @@ partial class ItemDropDatabase
 	{
 		short item = ItemID.QueenSlimeBossBag;
 		RegisterToItem(item, ItemDropRule.Common(ItemID.VolatileGelatin));
-		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.GelBalloon, 1, 25, 75));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.GelBalloon, 1, 25, 74));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.QueenSlimeMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.QueenSlimeMountSaddle, 2));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.QueenSlimeHook, 2));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Smolstar, 3));
-		RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
+		RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 1, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.QueenSlimeBoss));
 
 		item = ItemID.FairyQueenBossBag;
@@ -91,9 +91,8 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.RoyalGel));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.KingSlimeMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimySaddle, 2));
-		RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
-		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeGun, 2));
-		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeHook, 2));
+		RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 1, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
+		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.SlimeGun, ItemID.SlimeHook));
 		RegisterToItem(item, ItemDropRule.Common(ItemID.Solidifier));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.KingSlime));
 
@@ -106,7 +105,7 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.PygmyStaff, 2));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.ThornHook, 10));
 		IItemDropRule itemDropRuleGrenadeLauncher = ItemDropRule.Common(ItemID.GrenadeLauncher);
-		itemDropRuleGrenadeLauncher.OnSuccess(ItemDropRule.Common(ItemID.RocketI, 1, 50, 150), hideLootReport: true);
+		itemDropRuleGrenadeLauncher.OnSuccess(ItemDropRule.Common(ItemID.RocketI, 1, 50, 149), hideLootReport: true);
 		RegisterToItem(item, new OneFromRulesRule(1, itemDropRuleGrenadeLauncher, ItemDropRule.Common(ItemID.VenusMagnum), ItemDropRule.Common(ItemID.NettleBurst), ItemDropRule.Common(ItemID.LeafBlower), ItemDropRule.Common(ItemID.FlowerPow), ItemDropRule.Common(ItemID.WaspGun), ItemDropRule.Common(ItemID.Seedler)));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Plantera));
 
@@ -169,7 +168,10 @@ partial class ItemDropDatabase
 		item = ItemID.DeerclopsBossBag;
 		RegisterToItem(item, ItemDropRule.Common(ItemID.BoneHelm));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DeerclopsMask, 7));
-		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.ChesterPetItem, ItemID.Eyebrella, ItemID.DontStarveShaderItem));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DizzyHat, 14));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.ChesterPetItem, 3));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Eyebrella, 3));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DontStarveShaderItem, 3));
 		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.PewMaticHorn, ItemID.WeatherPain, ItemID.HoundiusShootius, ItemID.LucyTheAxe));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Deerclops));
 
@@ -178,12 +180,12 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BeeMask, 7));
 		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeGun, ItemID.BeeKeeper, ItemID.BeesKnees));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.HoneyComb, 3));
-		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Nectar, 11));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Nectar, 9));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.HoneyedGoggles, 9));
 		RegisterToItem(item, ItemDropRule.Common(ItemID.HiveWand));
 		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeHat, ItemID.BeeShirt, ItemID.BeePants));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.Beenade, 1, 10, 30));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.BeeWax, 1, 17, 30));
+		RegisterToItem(item, ItemDropRule.Common(ItemID.Beenade, 1, 10, 29));
+		RegisterToItem(item, ItemDropRule.Common(ItemID.BeeWax, 1, 17, 29));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.QueenBee));
 
 		item = ItemID.SkeletronBossBag;
@@ -226,7 +228,7 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.GolemMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Picksaw, 3));
 		IItemDropRule itemDropRuleStynger = ItemDropRule.Common(ItemID.Stynger);
-		itemDropRuleStynger.OnSuccess(ItemDropRule.Common(ItemID.StyngerBolt, 1, 60, 180), hideLootReport: true);
+		itemDropRuleStynger.OnSuccess(ItemDropRule.Common(ItemID.StyngerBolt, 1, 60, 99), hideLootReport: true);
 		RegisterToItem(item, new OneFromRulesRule(1, itemDropRuleStynger, ItemDropRule.Common(ItemID.PossessedHatchet), ItemDropRule.Common(ItemID.SunStone), ItemDropRule.Common(ItemID.EyeoftheGolem), ItemDropRule.Common(ItemID.HeatRay), ItemDropRule.Common(ItemID.StaffofEarth), ItemDropRule.Common(ItemID.GolemFist)));
 		RegisterToItem(item, ItemDropRule.Common(ItemID.BeetleHusk, 1, 18, 23));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Golem));
@@ -235,8 +237,8 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.ShrimpyTruffle));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DukeFishronMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.FishronWings, 10));
-		RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Flairon, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.BubbleGun));
-		RegisterToItem(item, ItemDropRule.Common(ItemID.SilverCoin, 1, 20, 20));
+		RegisterToItem(item, new LeadingConditionRule(new Conditions.NotRemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.Flairon, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.BubbleGun));
+		RegisterToItem(item, new LeadingConditionRule(new Conditions.RemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.Flairon, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.AquaScepter));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.DukeFishron));
 	}
 
