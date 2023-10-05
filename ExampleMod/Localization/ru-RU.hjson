@@ -91,6 +91,7 @@ Mods: {
 			}
 
 			// ExampleDresser.MapEntry: Example Dresser
+			// ExampleStatue.MapEntry: Example Statue
 		}
 
 		Items: {
@@ -885,6 +886,11 @@ Mods: {
 			ExampleCritterCageItem: {
 				// DisplayName: Lava Frog Cage
 				// Tooltip: A sad spicy boi
+			}
+
+			ExampleStatue: {
+				// DisplayName: Example Statue
+				// Tooltip: The power of examplium flows in this inanimate fish
 			}
 		}
 
