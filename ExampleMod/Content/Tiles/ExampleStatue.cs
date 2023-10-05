@@ -22,12 +22,6 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(144, 148, 144), CreateMapEntryName());
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			var source = WorldGen.GetItemSource_FromTileBreak(i, j);
-
-			Item.NewItem(source, i * 16, j * 16, 32, 48, ModContent.ItemType<Items.Placeable.ExampleStatue>());
-		}
-
 		// This hook allows you to make anything happen when this statue is powered by wiring.
 		// In this example, powering the statue either spawns a random coin with a 95% chance, or, with a 5% chance - a goldfish.
 		public override void HitWire(int i, int j) {
