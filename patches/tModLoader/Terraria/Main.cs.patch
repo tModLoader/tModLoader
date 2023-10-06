@@ -1164,15 +1164,6 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4541,6 +_,8 @@
- 		catch {
- 		}
- 
-+		myPlayer = 255; // Added by TML
-+
- 		Task task2 = WorldGen.serverLoadWorld();
- 		Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
- 		Console.WriteLine("");
 @@ -4563,6 +_,11 @@
  		catch {
  		}
