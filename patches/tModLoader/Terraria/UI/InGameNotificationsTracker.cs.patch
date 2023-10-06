@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/UI/InGameNotificationsTracker.cs
++++ src/tModLoader/Terraria/UI/InGameNotificationsTracker.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.UI;
+ 
+-public class InGameNotificationsTracker
++public partial class InGameNotificationsTracker
+ {
+ 	private static List<IInGameNotification> _notifications = new List<IInGameNotification>();
+ 
