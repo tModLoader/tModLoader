@@ -1127,6 +1127,10 @@ Mods: {
 			MinionBossEmote.Command: exminionboss
 		}
 
+		UI: {
+		    InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+		}
+
 		NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 	}
 }
