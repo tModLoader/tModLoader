@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -82,11 +83,40 @@ public class ExampleJoinWorldInGameNotification : IInGameNotification
 		float effectiveScale = Scale * 1.1f;
 		Vector2 size = (FontAssets.ItemStack.Value.MeasureString(title) + new Vector2(58f, 10f)) * effectiveScale;
 		Rectangle panelSize = Utils.CenteredRectangle(bottomAnchorPosition + new Vector2(0f, (0f - size.Y) * 0.5f), size);
-		Utils.DrawInvBG(spriteBatch, panelSize, new Color(64, 109, 164) * 0.5f);
+
+		// Check if the mouse is hovering over the notification.
+		bool hovering = panelSize.Contains(Main.MouseScreen.ToPoint());
+
+		Utils.DrawInvBG(spriteBatch, panelSize, new Color(64, 109, 164) * (hovering ? 0.75f : 0.5f));
 		float iconScale = effectiveScale * 0.7f;
 		Vector2 vector = panelSize.Right() - Vector2.UnitX * effectiveScale * (12f + iconScale * iconTexture.Width());
 		spriteBatch.Draw(iconTexture.Value, vector, null, Color.White * Opacity, 0f, new Vector2(0f, iconTexture.Width() / 2f), iconScale, SpriteEffects.None, 0f);
 		Utils.DrawBorderString(color: new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor / 5, Main.mouseTextColor) * Opacity, sb: spriteBatch, text: title, pos: vector - Vector2.UnitX * 10f, scale: effectiveScale * 0.9f, anchorx: 1f, anchory: 0.4f);
+
+		if (hovering)
+			OnMouseOver();
+	}
+
+	private void OnMouseOver()
+	{
+		// This method is called when the user hovers over the notification.
+
+		// Skip if we're ignoring mouse input.
+		if (PlayerInput.IgnoreMouseInterface)
+			return;
+
+		// We are now interacting with a UI.
+		Main.LocalPlayer.mouseInterface = true;
+
+		if (!Main.mouseLeft || !Main.mouseLeftRelease)
+			return;
+
+		Main.mouseLeftRelease = false;
+
+		// In our example, we just accelerate the exiting process on click.
+		// If you want it to close immediately, you can just set timeLeft to 0.
+		if (timeLeft > 30)
+			timeLeft = 30;
 	}
 
 	public void PushAnchor(ref Vector2 positionAnchorBottom)
