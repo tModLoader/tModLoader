@@ -13,7 +13,7 @@ namespace ExampleMod.Common.UI.ExampleInGameNotification
 			// Show our on-join notification when we join the world.
 			// This should only display for our player.
 			if (Player.whoAmI == Main.myPlayer)
-				InGameNotificationsTracker.Notifications.Add(new ExampleJoinWorldInGameNotification());
+				InGameNotificationsTracker.AddNotification(new ExampleJoinWorldInGameNotification());
 		}
 	}
 }
