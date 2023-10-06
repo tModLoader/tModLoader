@@ -92,13 +92,14 @@ public static class SteamedWraps
 	{
 		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
 		try {
-			if (!GameServer.Init(0, 27030, 27031, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+			if (!GameServer.Init(0, 27030, Steamworks.Constants.STEAMGAMESERVER_QUERY_PORT_SHARED, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
 				return false;
 
 			SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 			SteamGameServer.SetProduct(thisApp.ToString());
 
 			if (Program.LaunchParameters.TryGetValue("-steamtoken", out var serverToken)) {
+				Thread.Sleep(3000);
 				SteamGameServer.LogOn(serverToken);
 				Logging.tML.Info("SteamBackend: Logged in to Server via Protected Token");
 				SteamToken = true;
@@ -378,6 +379,7 @@ public static class SteamedWraps
 		}
 
 		SteamGameServer.LogOff();
+		Thread.Sleep(3000);
 		GameServer.Shutdown();
 		CleanupACF();
 	}

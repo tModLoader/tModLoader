@@ -146,7 +146,7 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,14 @@
+@@ -184,10 +_,16 @@
  				Main.instance.IsMouseVisible = false;
  			};
  		}
@@ -160,8 +160,10 @@
 +			using Main main = new Main();
 +
  			Lang.InitializeLegacyLocalization();
++			//TODO: This needs to run after LoadParams for token publish?
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
+ 			Main.OnEnginePreload += StartForceLoad;
 @@ -197,10 +_,14 @@
  				main.Run();
  		}

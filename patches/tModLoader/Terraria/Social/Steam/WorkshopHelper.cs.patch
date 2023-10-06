@@ -107,7 +107,7 @@
 +			//TML: Added 'buildData', 'existingID', 'changeNotes' parameters.
 +			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
  			{
-+				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
++				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.PublishItem", itemTitle));
  				_issueReporter = issueReporter;
  				_endAction = endAction;
  				_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);
@@ -244,7 +244,7 @@
  			private void UpdateItem()
  			{
  				string headerText = GetHeaderText();
-@@ -245,39 +_,96 @@
+@@ -245,39 +_,97 @@
  					_endAction(this);
  					return;
  				}
@@ -305,6 +305,7 @@
 +				if (SteamedWraps.SteamClient)
 +					uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
 +				else if (SteamedWraps.SteamToken)
++					//NOTE: This just straight up crashes in natives with no error thrown
 +					uGCUpdateHandle_t = SteamGameServerUGC.StartItemUpdate(SteamGameServerUtils.GetAppID(), _publishedFileID);
 +
 +				SteamedWraps.ModifyUgcUpdateHandleCommon(ref uGCUpdateHandle_t, _entryData);

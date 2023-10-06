@@ -202,35 +202,36 @@ public partial class WorkshopHelper
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
 		}
 		else {
-			// Command Line / Server Publishing. Steam Token for Credential-less environments
-			if (Program.LaunchParameters.ContainsKey("-steamtoken"))
-				SocialAPI.Initialize(SocialMode.None);
-			else
-				SocialAPI.Initialize(SocialMode.Steam);
+			try {
+				// Command Line / Server Publishing. Steam Token for Credential-less environments
 
-			SocialAPI.Workshop = new WorkshopSocialModule();
-			SocialAPI.Workshop.Initialize();
+				SocialAPI.Workshop = new WorkshopSocialModule();
+				SocialAPI.Workshop.Initialize();
 
-			if (!SteamedWraps.SteamAvailable)
-				return;
+				if (!SteamedWraps.SteamAvailable)
+					return;
 
-			Thread.Sleep(3000); // Wait for Steam to initialize
+				Thread.Sleep(3000); // Wait for Steam to initialize
 
-			var usedTags = Array.Empty<WorkshopTagOption>();
-			var publicity = WorkshopItemPublicSettingId.Public;
+				var usedTags = Array.Empty<WorkshopTagOption>();
+				var publicity = WorkshopItemPublicSettingId.Public;
 
-			if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
-				usedTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToArray();
-				publicity = info.publicity;
+				if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
+					usedTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToArray();
+					publicity = info.publicity;
+				}
+
+				var publishSetttings = new WorkshopItemPublishSettings {
+					Publicity = publicity,
+					UsedTags = usedTags,
+					PreviewImagePath = iconPath
+				};
+
+				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 			}
-
-			var publishSetttings = new WorkshopItemPublishSettings {
-				Publicity = publicity,
-				UsedTags = usedTags,
-				PreviewImagePath = iconPath
-			};
-
-			SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+			finally {
+				SteamedWraps.OnGameExitCleanup();
+			}
 		}
 	}
 

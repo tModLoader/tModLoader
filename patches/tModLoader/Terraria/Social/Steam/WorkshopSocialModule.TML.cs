@@ -10,6 +10,7 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 using Terraria.Utilities;
+using Steamworks;
 
 namespace Terraria.Social.Steam;
 
@@ -40,10 +41,14 @@ public partial class WorkshopSocialModule
 		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
 		existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
+		SteamGameServerUGC.SubscribeItem(new Steamworks.PublishedFileId_t(currPublishID));
+
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		SteamedWraps.Download(new Steamworks.PublishedFileId_t(currPublishID), forceUpdate: true);
+		WorkshopBrowserModule.EnsureInstallationComplete(mods[0]);
 
 		// Grab the tags from workshop.json
+		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 		string searchFolder = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 
 		return ModOrganizer.TryReadManifest(searchFolder, out info);
@@ -73,13 +78,13 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (BuildInfo.IsDev) {
+		if (!BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
 
 		string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
-		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
+		buildData["versionsummary"] = $"{new System.Version(buildData["modloaderversion"])}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
 		buildData["trueversion"] = buildData["version"];
 
@@ -161,7 +166,7 @@ public partial class WorkshopSocialModule
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 			var mod = OpenModFile(tmod);
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor())
-				if (mod.properties.version >= new Version(buildData["version"]))
+				if (mod.properties.version >= new System.Version(buildData["version"]))
 					return false;
 
 			if (mod.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor())

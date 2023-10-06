@@ -105,7 +105,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		EnsureInstallationComplete(item);
 	}
 
-	public void EnsureInstallationComplete(ModDownloadItem item)
+	public static void EnsureInstallationComplete(ModDownloadItem item)
 	{
 		Logging.tML.Info("Validating Installation Has Completed: Step 1 / 2");
 		string workshopFolder = WorkshopHelper.GetWorkshopFolder(ModLoader.Engine.Steam.TMLAppID_t);
