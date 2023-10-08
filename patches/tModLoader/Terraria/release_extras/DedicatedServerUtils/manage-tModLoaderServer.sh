@@ -114,9 +114,9 @@ function move_serverconfig {
 function get_version {
 	if [[ -v tmlversion ]]; then
 		echo "$tmlversion"
-	elif [[ -r "$folder/tmlversion.txt" ]]; then
+	elif [[ -r "$folder/Mods/tmlversion.txt" ]]; then
 		# Format the tmlversion file appropriately, as it is missing padded 0's on months/days
-		echo "v$(cat $folder/tmlversion.txt | sed -E "s/\.([0-9])\./\.0\1\./g")"
+		echo "v$(cat $folder/Mods/tmlversion.txt | sed -E "s/\.([0-9])\./\.0\1\./g")"
 	else
 		# Get the latest release if no other options are provided
 		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases"
@@ -384,6 +384,11 @@ case $cmd in
 		# Link the server folder to the Docker installation and cli args for debugging (if it exists)
 		if ! [[ -L "$folder/server" ]]; then
 			ln -s "$HOME/server" "$folder/server"
+		fi
+
+		# Also symlink banlist
+		if ! [[ -L "$folder/banlist.txt" ]]; then
+			ln -s "$folder/banlist.txt" "$folder/server/banlist.txt"
 		fi
 
 		if [[ -f "$folder/cli-argsConfig.txt" ]]; then
