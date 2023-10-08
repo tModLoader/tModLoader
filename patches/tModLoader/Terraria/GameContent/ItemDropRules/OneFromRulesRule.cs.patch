@@ -1,6 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/OneFromRulesRule.cs
-@@ -6,12 +_,18 @@
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+@@ -6,14 +_,24 @@
  {
  	public IItemDropRule[] options;
  	public int chanceDenominator;
@@ -18,7 +23,13 @@
 +		this.chanceNumerator = chanceNumerator;
  		this.options = options;
  		ChainedRules = new List<IItemDropRuleChainAttempt>();
++
++		if (chanceNumerator > chanceDenominator) {
++			throw new ArgumentOutOfRangeException(nameof(chanceNumerator), $"{nameof(chanceNumerator)} must be lesser or equal to {nameof(chanceDenominator)}.");
++		}
  	}
+ 
+ 	public bool CanDrop(DropAttemptInfo info) => true;
 @@ -29,7 +_,11 @@
  	{
  		int num = -1;
@@ -31,13 +42,15 @@
  			num = info.rng.Next(options.Length);
  			resolveAction(options[num], info);
  			result = default(ItemDropAttemptResult);
-@@ -44,7 +_,8 @@
+@@ -44,8 +_,9 @@
  
  	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
  	{
-+		//TML: chanceNumerator inserted in place of '1.0'.
 -		float num = 1f / (float)chanceDenominator;
+-		float num2 = num * ratesInfo.parentDroprateChance;
++		//TML: chanceNumerator inserted in place of '1.0'. Fix double application of ratesInfo.parentDroprateChance
 +		float num = chanceNumerator / (float)chanceDenominator;
- 		float num2 = num * ratesInfo.parentDroprateChance;
++		float num2 = num;
  		float multiplier = 1f / (float)options.Length * num2;
  		for (int i = 0; i < options.Length; i++) {
+ 			options[i].ReportDroprates(drops, ratesInfo.With(multiplier));
