@@ -103,6 +103,26 @@ public static class SteamedWraps
 				SteamGameServer.LogOn(serverToken);
 				Logging.tML.Info("SteamBackend: Logged in to Server via Protected Token");
 				SteamToken = true;
+
+				// This works if Steam Desktop Client is running
+				var pipe = Steamworks.SteamGameServerClient.CreateSteamPipe(); // pipe = 2
+				var user = Steamworks.SteamGameServerClient.ConnectToGlobalUser(pipe); // user = 1 in pipe 2 
+				Logging.tML.Info($"pipe1 is {pipe}. user1 is {user}");
+				var customIUser = SteamGameServerClient.GetISteamUser(user, pipe, Constants.STEAMUSER_INTERFACE_VERSION);
+				Logging.tML.Info($"customIUser is {customIUser}");
+
+				// This always works if SteamCMD or SteamClient is installed
+				var serverPipe = GameServer.GetHSteamPipe(); // pipe = 1
+				var serverUser = GameServer.GetHSteamUser(); // user = 1 in pipe 1
+				Logging.tML.Info($"serverPipe is {serverPipe}. serverUser is {serverUser}");
+
+				// This never works
+				var user2 = Steamworks.SteamGameServerClient.ConnectToGlobalUser(serverPipe);
+				Logging.tML.Info($"user2 is {user2}");
+
+				OnGameExitCleanup();
+				Environment.Exit(0);
+				int b = 0;
 			}
 				
 			else
