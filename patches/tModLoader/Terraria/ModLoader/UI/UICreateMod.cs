@@ -193,7 +193,6 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 				Directory.CreateDirectory(sourceFolder);
 
 				// TODO: verbatim line endings, localization.
-				File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), GetModBuild());
 				File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
 				using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.Default.iconTemplate.png"))
 				using (var fs = File.OpenWrite(Path.Combine(sourceFolder, $"icon.png")))
@@ -226,13 +225,6 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 	}
 
 	// TODO Let's embed all these files
-	private string GetModBuild()
-	{
-		return $"displayName = {_modDiplayName.CurrentString}" +
-			$"{Environment.NewLine}author = {_modAuthor.CurrentString}" +
-			$"{Environment.NewLine}version = 0.1";
-	}
-
 	private string GetModDescription()
 	{
 		return $"{_modDiplayName.CurrentString} is a pretty cool mod, it does...this. Modify this file with a description of your mod.";
@@ -266,6 +258,11 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
   </ItemGroup>
+  <PropertyGroup>
+    <DisplayName>{_modDiplayName.CurrentString}</DisplayName>
+    <Author>{_modAuthor.CurrentString}</Author>
+    <Version>0.1</Version>
+  </PropertyGroup>
 </Project>";
 	}
 
@@ -312,7 +309,7 @@ Items: {{
 		DisplayName: {Regex.Replace(basicSwordTrimmed, "([A-Z])", " $1").Trim()}
 		Tooltip: """"
 	}}
-}} 
+}}
 ";
 	}
 
