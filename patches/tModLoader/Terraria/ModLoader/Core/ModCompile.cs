@@ -164,6 +164,12 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		try {
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
+			string csprojFile = Path.Combine(mod.path, mod.Name);
+			csprojFile = Path.ChangeExtension(csprojFile, ".csproj");
+			if (!File.Exists(csprojFile)) {
+				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorMissingCsproj"));
+			}
+
 			if (ModLoader.TryGetMod(mod.Name, out var loadedMod)) {
 				loadedMod.Close();
 			}

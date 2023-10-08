@@ -164,6 +164,7 @@
 		"BuildErrorNoModClass": "Make sure you have exactly one class extending Mod.",
 		"BuildErrorLoadingPrecompiled": "Failed to load precompiled: {0}",
 		"BuildErrorFailedLoadBuildTxt": "Failed to load {0}",
+		"BuildErrorMissingCsproj": "Missing .csproj file. You can create one by clicking the 'Upgrade .csproj file' button in the Mod Sources menu.",
 		"BuildWarningEACWindowsOnly": "Edit and continue is only supported on windows.",
 		"LoadErrorTextureFailedToLoad": "The texture file at {0} failed to load",
 		"LoadErrorWavSoundFailedToLoad": "The wav sound file at {0} failed to load",
