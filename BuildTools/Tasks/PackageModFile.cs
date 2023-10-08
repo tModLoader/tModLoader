@@ -98,12 +98,15 @@ public class PackageModFile : TaskBase
 		// Add files to the .tmod file
 		tmodFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
 		AddAllReferences(tmodFile, modProperties);
-		tmodFile.AddFile("Info", modProperties.ToBytes(tmlVersion.ToString()));
 
 		string modPdbPath = Path.ChangeExtension(modDllPath, ".pdb");
 		string modPdbName = Path.ChangeExtension(modDllName, ".pdb");
-		if (File.Exists(modPdbPath))
+		if (File.Exists(modPdbPath)) {
 			tmodFile.AddFile(modPdbName, File.ReadAllBytes(modPdbPath));
+			modProperties.EacPath = modPdbPath;
+		}
+
+		tmodFile.AddFile("Info", modProperties.ToBytes(tmlVersion.ToString()));
 
 		Log.LogMessage(MessageImportance.Normal, "Adding resources...");
 		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
@@ -175,14 +178,14 @@ public class PackageModFile : TaskBase
 		foreach (ITaskItem projectReference in projectReferences) {
 			string dllPath = projectReference.ItemSpec;
 			string outputPath = "lib/" + Path.GetFileName(dllPath);
-			string originalItemSpec = projectReference.GetMetadata("OriginalItemSpec"); // Path to .csproj
+			string csprojPath = projectReference.GetMetadata("OriginalItemSpec"); // Path to .csproj
 
 			if (string.Equals(projectReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) {
-				Log.LogMessage(MessageImportance.Normal, $"Skipping private project reference: {originalItemSpec}");
+				Log.LogMessage(MessageImportance.Normal, $"Skipping private project reference: {csprojPath}");
 				continue;
 			}
 
-			Log.LogMessage(MessageImportance.Normal, $"Adding project reference with path {originalItemSpec}");
+			Log.LogMessage(MessageImportance.Normal, $"Adding project reference with path {csprojPath}");
 			tmodFile.AddFile(outputPath, File.ReadAllBytes(dllPath));
 			modProperties.AddDllReference(Path.GetFileNameWithoutExtension(dllPath));
 		}
