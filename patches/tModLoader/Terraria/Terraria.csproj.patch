@@ -53,7 +53,7 @@
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -48,28 +_,53 @@
+@@ -48,28 +_,55 @@
  		<EmbeddedResource Include="Microsoft/**" />
  	</ItemGroup>
  	<ItemGroup>
@@ -105,6 +105,8 @@
 +		<!-- Copy the ImageSharp library from the .nuget folder to the tModPackager library folder in tModLoader/Libraries -->
 +		<!-- Needed for the tModPackager to be able to convert images to .rawimg that can be packed into the .tmod file -->
 +		<Copy SourceFiles="$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModPackager/1.0.0/" SkipUnchangedFiles="True" />
++		<!-- Newtonsoft.Json is needed for enabling mods in tModPackager -->
++		<Copy SourceFiles="$(TargetDir)Libraries/newtonsoft.json/12.0.3/lib/netstandard2.0/Newtonsoft.Json.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModPackager/1.0.0/" SkipUnchangedFiles="True" />
 +
  		<Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
  	</Target>
