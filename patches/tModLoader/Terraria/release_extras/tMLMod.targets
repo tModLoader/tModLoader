@@ -38,7 +38,7 @@
 		<Message Text="Adding %(ModReference.Identity) as a reference" />
 
 		<ItemGroup>
-			<Reference Include="%(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''">
+			<Reference Include="%(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''" Private="true">
 				<HintPath>%(ModReference.HintPath)</HintPath>
 			</Reference>
 		</ItemGroup>
