@@ -174,13 +174,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				loadedMod.Close();
 			}
 
-			string tmlVersion = BuildInfo.tMLVersion.ToString();
 			string outputPath = mod.modFile.path;
-
 			Process process = new() {
 				StartInfo = new ProcessStartInfo {
 					FileName = UIModSources.GetSystemDotnetPath() ?? "dotnet",
-					Arguments = $"build --no-incremental -c Release -v q -p:OutputTmodPath=\"{outputPath}\" -p:TmlVersion=\"{tmlVersion}\"",
+					Arguments = $"build --no-incremental -c Release -v q -p:OutputTmodPath=\"{outputPath}\"",
 					WorkingDirectory = mod.path,
 					UseShellExecute = false,
 					RedirectStandardOutput = true,
