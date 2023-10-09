@@ -107,8 +107,12 @@ jobs:
           export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
-          echo ::group::Building ExampleMod
-          dotnet build ExampleMod/ExampleMod.csproj --nologo
+          #
+          #TODO: NEED TO REVIEW HOW BUILD WITHOUT RUNNING TMOD ONCE BEFORE?
+          #
+          
+          echo ::group::FUTURE: ExampleMod.csproj without building tmodloader
+          #dotnet build ExampleMod/ExampleMod.csproj --nologo
           echo ::endgroup::
           
           mkdir -p artifacts/Mods
