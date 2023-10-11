@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Buffs
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
-				// Player.lifeRegenTime uses to increase the speed at which the player reaches its maximum natural life regeneration
+				// Player.lifeRegenTime used to increase the speed at which the player reaches its maximum natural life regeneration
 				// So we set it to 0, and while this debuff is active, it never reaches it
 				Player.lifeRegenTime = 0;
 				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second

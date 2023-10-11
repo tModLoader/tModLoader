@@ -275,7 +275,7 @@ public class UIModConfig : UIState
 		base.Update(gameTime);
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
 
 		// Updating the UI list (can't do in a normal method call because otherwise crash)
 		if (needsListRefresh) {
@@ -305,7 +305,6 @@ public class UIModConfig : UIState
 		mod = null;
 		config = null;
 		pendingConfig = null;
-
 		configList?.Clear();
 		subConfigs?.Clear();
 		configElements?.Clear();

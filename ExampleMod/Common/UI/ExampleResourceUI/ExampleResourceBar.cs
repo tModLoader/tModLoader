@@ -114,7 +114,7 @@ namespace ExampleMod.Common.UI.ExampleResourceUI
 			ExampleResourceBarUserInterface.SetState(ExampleResourceBar);
 
 			string category = "UI";
-			ExampleResourceText ??= Language.GetOrRegister(Mod.GetLocalizationKey($"{category}.ExampleResource"));
+			ExampleResourceText ??= Mod.GetLocalization($"{category}.ExampleResource");
 		}
 
 		public override void UpdateUI(GameTime gameTime) {

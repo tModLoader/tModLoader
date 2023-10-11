@@ -42,10 +42,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public SimpleData SomeClassA;
 		// EntityDefinition classes store the identity of an Entity (Item, NPC, Projectile, etc) added by a mod or vanilla. Only the identity is preserved, not other mod data or stack.
 		// When using XDefinition classes, you can the .Type property to get the ID of the item. You can use .IsUnloaded to check if the item in question is loaded.
-		// Note that since configs load before content, modders using XDefinition classes in ModConfig code must use the constuctors with string parameters. Using ModContent.XType<ClassName>() in the constuctor taking an int, for example, will lead to troublesome bugs.
+		// Note that since configs load before content, modders using XDefinition classes in ModConfig code must use the constructors with string parameters. Using ModContent.XType<ClassName>() in the constructor taking an int, for example, will lead to troublesome bugs.
 		public ItemDefinition itemDefinitionExample;
 		public NPCDefinition npcDefinitionExample = new NPCDefinition(NPCID.Bunny);
 		public ProjectileDefinition projectileDefinitionExample = new ProjectileDefinition("ExampleMod", nameof(Content.Projectiles.ExampleHomingProjectile));
+		public BuffDefinition buffDefinitionExample = new BuffDefinition("ExampleMod", nameof(Content.Buffs.ExampleDefenseBuff));
 
 		// Data Structures of reference types
 		public Dictionary<PrefixDefinition, float> prefixDefinitionDictionaryExample = new Dictionary<PrefixDefinition, float>() {

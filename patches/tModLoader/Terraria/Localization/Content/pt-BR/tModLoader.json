@@ -97,6 +97,7 @@
 		"AskForCommand": "Digite um comando: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Opções de Filtro",
 		"ModConfigNotification": "Notificação: ",
 		"ModConfigModConfig": "Config. do Mod",
@@ -106,6 +107,8 @@
 		"ModConfigRestoreDefaults": "Restaurar Padrões",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando ao servidor para aceitar as mudanças...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Não foi possível salvar pois as mudanças exigiriam um recarregamento",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -465,6 +468,8 @@
 		"MSUnloading": "Descarregando: {0}",
 		"MSFinishingResourceLoading": "Terminando o Carregamento de Recursos",
 		"MSAddingRecipes": "Adicionando Receitas...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Sem Nome",

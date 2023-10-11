@@ -104,11 +104,21 @@ internal class UIModSourceItem : UIPanel
 				Top = { Pixels = 4 }
 			};
 			openCSProjButton.OnLeftClick += (a, b) => {
-				Process.Start(
-					new ProcessStartInfo(csprojFile) {
-						UseShellExecute = true
-					}
-				);
+				// Due to "DOTNET_ROLL_FORWARD=Disable" environment variable being set for normal game launches, launching the .csproj directly results in a prompt to install .net 6.0.0 because of the inherited environment variables. This works around that for Windows users.
+				if (Platform.IsWindows) {
+					Process.Start(
+						new ProcessStartInfo("explorer", csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				}
+				else {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				}
 			};
 			Append(openCSProjButton);
 

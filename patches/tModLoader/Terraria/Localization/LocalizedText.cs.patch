@@ -39,7 +39,7 @@
  
 +	/// <summary>
 +	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="obj"/> parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/>, the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br/><br/>
-+	/// When used in conjuction with <see cref="Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom)"/> and <see cref="Lang.CreateDialogFilter(string, object)"/>, simple boolean conditions expressed in each LocalizedText can be used to filter a collection of LocalizedText.  <br/><br/>
++	/// When used in conjunction with <see cref="Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom)"/> and <see cref="Lang.CreateDialogFilter(string, object)"/>, simple boolean conditions expressed in each LocalizedText can be used to filter a collection of LocalizedText.  <br/><br/>
 +	/// <see cref="Format(object[])"/> is more commonly used to format LocalizedText placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided.
 +	/// </summary>
 +	/// <param name="obj"></param>
