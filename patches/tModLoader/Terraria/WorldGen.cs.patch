@@ -25,6 +25,14 @@
  {
  	public static class WorldSize
  	{
+@@ -989,6 +_,7 @@
+ 		list.Add(new Point16(105, 37));
+ 		list.Add(new Point16(105, 2));
+ 		GenVars.statueList = list.ToArray();
++		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience. 
+ 	}
+ 
+ 	public static void PlaceStatueTrap(int x, int y)
 @@ -1284,7 +_,7 @@
  			}
  		}

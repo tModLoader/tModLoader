@@ -886,6 +886,11 @@ Mods: {
 				DisplayName: Lava Frog Cage
 				Tooltip: A sad spicy boi
 			}
+
+			ExampleStatue: {
+				DisplayName: Example Statue
+				Tooltip: The power of examplium flows in this inanimate fish
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
