@@ -456,6 +456,9 @@ public static class ConfigManager
 		else if (type == typeof(PrefixDefinition)) {
 			e = new PrefixDefinitionElement();
 		}
+		else if (type == typeof(BuffDefinitionElement)) {
+			e = new BuffDefinitionElement();
+		}
 		else if (type == typeof(Color)) {
 			e = new ColorElement();
 		}

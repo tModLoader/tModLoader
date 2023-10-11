@@ -15,6 +15,8 @@ namespace Terraria.ModLoader.Config.UI;
 
 internal class ObjectElement : ConfigElement<object>
 {
+	public List<Tuple<UIElement, UIElement>> elements = new();
+
 	protected Func<string> AbridgedTextDisplayFunction { get; set; }
 
 	private readonly bool ignoreSeparatePage;
@@ -29,8 +31,6 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage expandButton;
 	private UIPanel separatePagePanel;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
-
-	private List<Tuple<UIElement, UIElement>> elements;
 
 	// Label:
 	//  Members
@@ -256,6 +256,8 @@ internal class ObjectElement : ConfigElement<object>
 	private void SetupList()
 	{
 		dataList.Clear();
+		elements.Clear();
+		ConfigManager.PopulateElements(elements, Value);
 
 		object data = Value;
 
@@ -264,8 +266,6 @@ internal class ObjectElement : ConfigElement<object>
 				return;
 			}
 
-			elements = new();
-			ConfigManager.PopulateElements(elements, this);
 			foreach (var element in elements) {
 				dataList.Append(element.Item1);
 			}

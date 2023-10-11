@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.GameContent;
 using Terraria.ModLoader.UI;
 using Microsoft.CodeAnalysis;
+using System.Xml.Linq;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -29,7 +30,7 @@ public class UIModConfig : UIState
 	private UIFocusInputTextField searchBar;
 
 	private UIAutoScaleTextTextPanel<string> subConfigNamePanel;
-	private UITextPanel<LocalizedText> subConfigBackButton;
+	private UIButton<LocalizedText> subConfigBackButton;
 
 	private UIButton<LocalizedText> saveConfigButton;
 	private UIButton<LocalizedText> backButton;
@@ -51,8 +52,8 @@ public class UIModConfig : UIState
 	private ModConfig config;// Config from ConfigManager.Configs
 	private ModConfig pendingConfig; // The clone of the config that is modified
 
-	private ConfigElement CurrentSubConfig => subConfigs.TryPeek(out var element) ? element : null;
-	private Stack<ConfigElement> subConfigs = new();
+	private ObjectElement CurrentSubConfig => subConfigs.TryPeek(out var element) ? element : null;
+	private Stack<ObjectElement> subConfigs = new();
 	private List<Tuple<UIElement, UIElement>> configElements = new();
 	private bool hasUnsavedChanges = false;
 	private bool needsDelayedUpdate = false;
@@ -87,24 +88,25 @@ public class UIModConfig : UIState
 		uIElement.Append(headerTextPanel);
 
 		// TODO: clean this up
-		subConfigBackButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back")) {
+		subConfigBackButton = new UIButton<LocalizedText>(Language.GetText("UI.Back")) {// TODO: "close subpage" instead?
 			Width = { Pixels = 75 },
 			Height = { Pixels = 40 },
-			Top = { Pixels = 5 },
+			Top = { Pixels = 10 },
+			ClickSound = SoundID.MenuClose,
+			HoverSound = SoundID.MenuTick,
 		};
-		uIPanel.Append(subConfigBackButton);
+		subConfigBackButton.OnLeftClick += (_, _) => ExitSubpage();
 		// Don't append
 
 		// TODO: fix name overflowing
 		subConfigNamePanel = new UIAutoScaleTextTextPanel<string>("") {
-			Width = { Pixels = -185 - 85, Percent = 1f },
+			Width = { Pixels = -175 - 85, Percent = 1f },
 			Height = { Pixels = 40 },
 			Top = { Pixels = 5 },
 			Left = { Pixels = 80 },
 			ScalePanel = true,
 			UseInnerDimensions = true,
 		};
-		uIPanel.Append(subConfigNamePanel);
 		// Don't append
 
 		var textBoxBackground = new UIPanel {
@@ -323,11 +325,22 @@ public class UIModConfig : UIState
 		modderOnClose = onClose;
 	}
 
-	public void OpenSeparatePage(ConfigElement element)
+	#region Subpages
+	internal void OpenSeparatePage(ObjectElement element)
 	{
 		subConfigs.Push(element);
-		UpdateSeparatePage();
+		RefreshUI();
 	}
+
+	private void ExitSubpage()
+	{
+		if (!subConfigs.Any())
+			return;
+
+		subConfigs.Pop();
+		RefreshUI();
+	}
+	#endregion
 
 	#region UI Updating
 	public void RefreshUI(bool delayUpdate = true)
@@ -349,7 +362,6 @@ public class UIModConfig : UIState
 	}
 
 	// Updates the header panel, separate page back button, and separate page contents
-	// TODO: separate pages
 	private void UpdateSeparatePage()
 	{
 		subConfigBackButton.Remove();
@@ -359,9 +371,8 @@ public class UIModConfig : UIState
 			uIPanel.Append(subConfigBackButton);
 			uIPanel.Append(subConfigNamePanel);
 
-			string configName = mod.DisplayName + " - " + config.DisplayName.Value;
 			string subPagesText = string.Join(" > ", subConfigs.Reverse());
-			subConfigNamePanel.SetText(configName + subPagesText);
+			subConfigNamePanel.SetText(subPagesText);
 		}
 	}
 
@@ -370,9 +381,9 @@ public class UIModConfig : UIState
 	private void UpdateConfigList()
 	{
 		// Filtering elements
-		var elements = configElements;
+		var elements = CurrentSubConfig?.elements ?? configElements;
 		if (!string.IsNullOrEmpty(searchBar.CurrentString)) {
-			elements = (from element in configElements
+			elements = (from element in elements
 						where (element.Item2 is ConfigElement configElement && configElement.TextDisplayFunction().ToLower().Contains(searchBar.CurrentString.ToLower()))
 							|| element.Item2 is HeaderElement
 						select element).ToList();
@@ -402,9 +413,9 @@ public class UIModConfig : UIState
 
 	private void UpdatePanelBackground()
 	{
-		// TODO: subpage support
 		var backgroundColorAttribute = Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute)) as BackgroundColorAttribute;
-		uIPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
+		var subPageColor = CurrentSubConfig?.BackgroundColor;
+		uIPanel.BackgroundColor = (subPageColor ?? backgroundColorAttribute?.Color) ?? UICommon.MainPanelBackground;
 	}
 
 	private void UpdateHeaderPanel()
