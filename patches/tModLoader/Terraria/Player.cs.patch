@@ -6039,15 +6039,18 @@
  		if (itemAnimation > 0)
  			ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  		else
-@@ -33364,14 +_,19 @@
+@@ -33364,14 +_,22 @@
  			ItemCheck_EmitHeldItemLight(item);
  			ItemCheck_EmitFoodParticles(item);
  			ItemCheck_EmitDrinkParticles(item);
 -			if (whoAmI == Main.myPlayer)
 +
 +			// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed. #ItemTimeOnAllClients
-+			if (whoAmI == Main.myPlayer || true)
++			if (whoAmI == Main.myPlayer || true) {
  				ItemCheck_OwnerOnlyCode(ref context, item, weaponDamage, drawHitbox);
++				if (itemAnimation > 0) // Fix #2613
++					ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
++			}
  
  			if (ItemTimeIsZero && itemAnimation > 0) {
 +				if (ItemLoader.UseItem(item, this) == true)
