@@ -1066,6 +1066,7 @@ Mods: {
 				StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
 				StandardDialogue2: What's your favorite color? My favorite colors are white and black.
 				StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
+				StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
 				CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
 				TalkALot: I'm getting tired of talking to you. I have to go.
