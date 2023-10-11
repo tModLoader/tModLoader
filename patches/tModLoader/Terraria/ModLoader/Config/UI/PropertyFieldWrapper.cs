@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Terraria.ModLoader.Config;
+namespace Terraria.ModLoader.Config.UI;
 
 public class PropertyFieldWrapper
 {

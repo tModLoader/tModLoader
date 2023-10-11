@@ -56,7 +56,6 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 	protected void SetPanelColors()
 	{
 		bool altCondition = UseAltColors();
-
 		if (IsMouseHovering) {
 			BackgroundColor = altCondition ? AltHoverPanelColor.Value : HoverPanelColor;
 			BorderColor = altCondition ? AltHoverBorderColor.Value : HoverBorderColor;
@@ -79,7 +78,7 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 		SetPanelColors();
 
 		if (IsMouseHovering) {
-			string text = UseAltColors() ? AltHoverText?.ToString() : HoverText?.ToString();\
+			string text = UseAltColors() ? AltHoverText?.ToString() : HoverText?.ToString();
 
 			if (text is null)
 				return;

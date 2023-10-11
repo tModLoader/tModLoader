@@ -154,7 +154,7 @@ public class UIModConfig : UIState
 			VAlign = 1f,
 			AltPanelColor = Color.Red * 0.7f,
 			AltHoverPanelColor = Color.Red,
-			UseAltColours = () => hasUnsavedChanges,
+			UseAltColors = () => hasUnsavedChanges,
 			ClickSound = SoundID.MenuClose,
 			HoverSound = SoundID.MenuTick,
 			AltHoverText = Language.GetText("tModLoader.ModConfigUnsavedChanges"),
@@ -270,12 +270,17 @@ public class UIModConfig : UIState
 			uIScrollbar.ViewPosition -= evt.ScrollWheelValue;
 	}
 
-	public override void Update(GameTime gameTime)
+	public override void Draw(SpriteBatch spriteBatch)
 	{
-		base.Update(gameTime);
+		base.Draw(spriteBatch);
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
+	}
+
+	public override void Update(GameTime gameTime)
+	{
+		base.Update(gameTime);
 
 		// Updating the UI list (can't do in a normal method call because otherwise crash)
 		if (needsListRefresh) {
@@ -286,7 +291,7 @@ public class UIModConfig : UIState
 
 	public override void OnActivate()
 	{
-		// Resetting and initializing various 
+		// Resetting and initializing various elements
 		pendingConfig = ConfigManager.GeneratePopulatedClone(config);
 		searchBar.SetText("");
 		uIScrollbar.ViewPosition = 0f;
