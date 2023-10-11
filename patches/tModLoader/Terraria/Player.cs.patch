@@ -656,13 +656,16 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
-@@ -1297,9 +_,21 @@
+@@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
  	public bool accDivingHelm;
 -	public bool accFlipper;
 +	//public bool accFlipper;
 +	public bool accFlipper {
++		get {
++			return GetJumpState<FlipperJump>().Enabled;
++		}
 +		set {
 +			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
 +			if (value) {
