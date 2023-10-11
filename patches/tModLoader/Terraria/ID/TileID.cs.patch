@@ -135,7 +135,7 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -243,13 +_,33 @@
+@@ -243,16 +_,42 @@
  		public static bool[] HousingWalls = Factory.CreateBoolSet(11, 389, 386);
  		public static bool[] BreakableWhenPlacing = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624);
  		public static bool[] TouchDamageDestroyTile = Factory.CreateBoolSet(32, 69, 352, 655);
@@ -168,4 +168,13 @@
 +		/// </summary>
  		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
  		public static bool[] IsAContainer = Factory.CreateBoolSet(21, 467, 88);
++		/// <summary>
++		/// Indicates that the tile is an appropriate tile to be connected to a trigger tile (<see cref="IsATrigger"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
++		/// </summary>
  		public static bool[] IsAMechanism = Factory.CreateBoolSet(137, 443, 105, 349, 141, 142, 143, 42, 34, 130, 131, 506, 546, 557, 593, 594);
++		/// <summary>
++		/// Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<see cref="IsAMechanism"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
++		/// </summary>
+ 		public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468);
+ 		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
+ 		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);

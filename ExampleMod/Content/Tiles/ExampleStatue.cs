@@ -2,24 +2,28 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles
 {
+	// ExampleStatue shows off correctly using wiring to spawn items and NPC.
+	// See StatueWorldGen to see how ExampleStatue is added as an option for naturally spawning statues during worldgen.
 	public class ExampleStatue : ModTile
 	{
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileObsidianKill[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.IsAMechanism[Type] = true; // Ensures that this tile and connected pressure plate won't be removed during the "Remove Broken Traps" worlden step
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.addTile(Type);
 
-			DustType = 11;
+			DustType = DustID.Silver;
 
-			AddMapEntry(new Color(144, 148, 144), CreateMapEntryName());
+			AddMapEntry(new Color(144, 148, 144), Language.GetText("MapObject.Statue"));
 		}
 
 		// This hook allows you to make anything happen when this statue is powered by wiring.
@@ -32,6 +36,7 @@ namespace ExampleMod.Content.Tiles
 			const int TileWidth = 2;
 			const int TileHeight = 3;
 
+			// Here we call SkipWire on all tile coordinates covered by this tile. This ensures a wire signal won't run multiple times.
 			for (int yy = y; yy < y + TileHeight; yy++) {
 				for (int xx = x; xx < x + TileWidth; xx++) {
 					Wiring.SkipWire(xx, yy);

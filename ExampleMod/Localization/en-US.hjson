@@ -91,7 +91,6 @@ Mods: {
 			}
 
 			ExampleDresser.MapEntry: Example Dresser
-			ExampleStatue.MapEntry: Example Statue
 		}
 
 		Items: {
