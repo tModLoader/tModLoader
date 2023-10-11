@@ -55,7 +55,7 @@ public class UIModConfig : UIState
 	private Stack<ConfigElement> subConfigs = new();
 	private List<Tuple<UIElement, UIElement>> configElements = new();
 	private bool hasUnsavedChanges = false;
-	private bool needsListRefresh = false;
+	private bool needsDelayedUpdate = false;
 
 	private bool openedFromModder = false;
 	private Action modderOnClose = null;
@@ -280,10 +280,10 @@ public class UIModConfig : UIState
 
 	public override void Update(GameTime gameTime)
 	{
-		// Updating the UI list (can't do in a normal method call because otherwise crash)
-		if (needsListRefresh) {
-			needsListRefresh = false;
-			UpdateConfigList(delayUpdate: false);
+		// Delayed update of UI
+		if (needsDelayedUpdate) {
+			needsDelayedUpdate = false;
+			RefreshUI(delayUpdate: false);
 		}
 
 		base.Update(gameTime);
@@ -332,8 +332,15 @@ public class UIModConfig : UIState
 	#region UI Updating
 	public void RefreshUI(bool delayUpdate = true)
 	{
+		// Have to do this because if an element is drawing or updating and we modify the collection that is containing it
+		// That means we get a crash because the collection was modified during an enumeration
+		if (delayUpdate) {
+			needsDelayedUpdate = true;
+			return;
+		}
+
 		UpdateSeparatePage();
-		UpdateConfigList(delayUpdate);
+		UpdateConfigList();
 		UpdateSaveButtons();
 		UpdatePanelBackground();
 		UpdateHeaderPanel();
@@ -360,15 +367,8 @@ public class UIModConfig : UIState
 
 	// Updates the main config list
 	// TODO: separate page support
-	private void UpdateConfigList(bool delayUpdate = true)
+	private void UpdateConfigList()
 	{
-		// Have to do this because if an element is drawing or updating and we modify the collection that is containing it
-		// That means we get a crash because the collection was modified during an enumeration
-		if (delayUpdate) {
-			needsListRefresh = true;
-			return;
-		}
-
 		// Filtering elements
 		var elements = configElements;
 		if (!string.IsNullOrEmpty(searchBar.CurrentString)) {
