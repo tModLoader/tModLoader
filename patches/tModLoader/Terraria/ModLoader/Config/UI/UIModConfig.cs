@@ -280,18 +280,18 @@ public class UIModConfig : UIState
 
 	public override void Update(GameTime gameTime)
 	{
-		base.Update(gameTime);
-
 		// Updating the UI list (can't do in a normal method call because otherwise crash)
 		if (needsListRefresh) {
 			needsListRefresh = false;
 			UpdateConfigList(delayUpdate: false);
 		}
+
+		base.Update(gameTime);
 	}
 
 	public override void OnActivate()
 	{
-		// Resetting and initializing various elements
+		// Resetting and initializing various things
 		pendingConfig = ConfigManager.GeneratePopulatedClone(config);
 		searchBar.SetText("");
 		uIScrollbar.ViewPosition = 0f;
@@ -321,6 +321,12 @@ public class UIModConfig : UIState
 		this.mod = mod;
 		this.config = config;
 		modderOnClose = onClose;
+	}
+
+	public void OpenSeparatePage(ConfigElement element)
+	{
+		subConfigs.Push(element);
+		UpdateSeparatePage();
 	}
 
 	#region UI Updating
@@ -353,6 +359,7 @@ public class UIModConfig : UIState
 	}
 
 	// Updates the main config list
+	// TODO: separate page support
 	private void UpdateConfigList(bool delayUpdate = true)
 	{
 		// Have to do this because if an element is drawing or updating and we modify the collection that is containing it
@@ -395,6 +402,7 @@ public class UIModConfig : UIState
 
 	private void UpdatePanelBackground()
 	{
+		// TODO: subpage support
 		var backgroundColorAttribute = Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute)) as BackgroundColorAttribute;
 		uIPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
 	}
@@ -402,12 +410,6 @@ public class UIModConfig : UIState
 	private void UpdateHeaderPanel()
 	{
 		headerTextPanel.SetText(mod.Name + " - " + pendingConfig.DisplayName.Value);
-	}
-
-	public void OpenSeparatePage(ConfigElement element)
-	{
-		subConfigs.Push(element);
-		UpdateSeparatePage();
 	}
 	#endregion
 
@@ -442,7 +444,7 @@ public class UIModConfig : UIState
 		notificationModalHeader.SetText(header);
 		notificationModalHeader.TextColor = color;
 
-		if (sendChatMessage)// && !Main.gameMenu && Main.InGameUI.CurrentState != this)
+		if (sendChatMessage && !Main.gameMenu && Main.InGameUI.CurrentState != this)
 			Main.NewText($"[c/{color.Hex3()}:{header}] - {text}");
 	}
 	#endregion

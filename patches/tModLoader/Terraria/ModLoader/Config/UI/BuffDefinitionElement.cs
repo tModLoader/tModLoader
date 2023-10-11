@@ -88,7 +88,7 @@ internal class BuffDefinitionOptionElement : DefinitionOptionElement<BuffDefinit
 				buffTexture = TextureAssets.Buff[type].Value;
 			}
 
-			int frameCounter = Interface.modConfig.UpdateCount / 4;
+			int frameCounter = (int)(Main.GlobalTimeWrappedHourly / 60f / 4f);
 			//int frames = Main.projFrames[type];
 			int frames = 1;
 
@@ -123,6 +123,6 @@ internal class BuffDefinitionOptionElement : DefinitionOptionElement<BuffDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }
