@@ -44,6 +44,9 @@ namespace ExampleMod.Content.NPCs
   		// synced by the server to clients in multi player
 		public readonly List<Item> shopItems = new();
 
+		private bool netShopItemsUpdate;
+  		private int oldActivePlayerCount;
+
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
 
@@ -224,10 +227,12 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-  			// OnSpawn is run on the server in multi player, so after retrieving the shop items make sure it is synced with the clients
   			shopItems.Clear();
 			shopItems.AddRange(Shop.GenerateNewInventoryList());
+
+   			// In multi player, ensure the shop items are synced with clients
    			if (Main.netMode == NetmodeID.Server) {
+	  			netShopItemsUpdate = true;
 				NPC.netUpdate = true;
    			}
 		}
@@ -248,18 +253,30 @@ namespace ExampleMod.Content.NPCs
 		}
 
   		public override void SendExtraAI(BinaryWriter writer) {
+			if (!netShopItemsUpdate) {
+				writer.Write(false);
+				return;
+			}
+
+   			// To avoid packet spam we only send the shopItems sometimes (see OnSpawn and AI)
+			netShopItemsUpdate = false;
+			writer.Write(true);
 			writer.Write(shopItems.Count);
-   			foreach (Item item in shopItems) {
-	  			ItemIO.Send(item, writer, writeStack: true);
-	  		}
+			foreach (Item item in shopItems) {
+				ItemIO.Send(item, writer, true);
+			}
  		}
 
    		public override void ReceiveExtraAI(BinaryReader reader) {
-	 		shopItems.Clear();
+			if(!reader.ReadBoolean()) {
+				return;
+			}
+            
+			shopItems.Clear();
 			int count = reader.ReadInt32();
-   			for (int i = 0; i < count; i++) {
-	  			shopItems.Add(ItemIO.Receive(reader, readStack: true));
-	  		}
+			for(int i = 0; i < count; i++) {
+				shopItems.Add(ItemIO.Receive(reader, true));
+			}
 	 	}
 
 		public override void HitEffect(NPC.HitInfo hit) {
@@ -355,6 +372,16 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void AI() {
+  			// In multi player, the server should sync the shop items when a new player joins
+			if(Main.netMode == NetmodeID.Server) {
+				int activePlayerCount = NPC.GetActivePlayerCount();
+				if(activePlayerCount != oldActivePlayerCount) {
+					netShopItemsUpdate = true;
+					NPC.netUpdate = true;
+					oldActivePlayerCount = activePlayerCount;
+				}
+			}
+  
 			NPC.homeless = true; // Make sure it stays homeless
 		}
 
