@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Chat;
@@ -40,7 +41,8 @@ namespace ExampleMod.Content.NPCs
 		public static ExampleTravelingMerchantShop Shop;
 
 		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
-		public List<Item> shopItems;
+  		// synced by the server to clients in multi player
+		public readonly List<Item> shopItems = new();
 
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
@@ -222,7 +224,12 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-			shopItems = Shop.GenerateNewInventoryList();
+  			// OnSpawn is run on the server in multi player, so after retrieving the shop items make sure it is synced with the clients
+  			shopItems.Clear();
+			shopItems.AddRange(Shop.GenerateNewInventoryList());
+   			if (Main.netMode == NetmodeID.Server) {
+				NPC.netUpdate = true;
+   			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -236,8 +243,24 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void LoadData(TagCompound tag) {
-			shopItems = tag.Get<List<Item>>("shopItems");
+  			shopItems.Clear();
+			shopItems.AddRange(tag.Get<List<Item>>("shopItems"));
 		}
+
+  		public override void SendExtraAI(BinaryWriter writer) {
+			writer.Write(shopItems.Count);
+   			foreach (Item item in shopItems) {
+	  			ItemIO.Send(item, writer, writeStack: true);
+	  		}
+ 		}
+
+   		public override void ReceiveExtraAI(BinaryReader reader) {
+	 		shopItems.Clear();
+			int count = reader.ReadInt32();
+   			for (int i = 0; i < count; i++) {
+	  			shopItems.Add(ItemIO.Receive(reader, readStack: true));
+	  		}
+	 	}
 
 		public override void HitEffect(NPC.HitInfo hit) {
 			int num = NPC.life > 0 ? 1 : 5;
