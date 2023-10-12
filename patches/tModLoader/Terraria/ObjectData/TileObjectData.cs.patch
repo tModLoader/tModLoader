@@ -173,6 +173,23 @@
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
+@@ -4381,14 +_,14 @@
+ 
+ 		newTile.CoordinateWidth = 16;
+ 		newTile.CoordinatePadding = 2;
+-		newTile.AnchorValidTiles = new int[6] {
++		/*newTile.AnchorValidTiles = new int[6] {
+ 			2,
+ 			477,
+ 			109,
+ 			60,
+ 			492,
+ 			633
+-		};
++		};*/ //Worldgen.cs manually adds tile attaching to sunflowers making this code redundant.
+ 
+ 		newTile.StyleHorizontal = true;
+ 		newTile.RandomStyleRange = 3;
 @@ -4579,7 +_,10 @@
  		newTile.StyleMultiplier = 3;
  		newTile.StyleHorizontal = true;

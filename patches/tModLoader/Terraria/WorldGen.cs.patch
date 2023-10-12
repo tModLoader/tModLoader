@@ -1622,6 +1622,15 @@
  
  		if (type == 548) {
  			if (num3 >= 7)
+@@ -38164,7 +_,7 @@
+ 			if (Main.tile[k, num2 + 4] == null)
+ 				Main.tile[k, num2 + 4] = new Tile();
+ 
+-			if (!Main.tile[k, num2 + 4].nactive() || (Main.tile[k, num2 + 4].type != 2 && Main.tile[k, num2 + 4].type != 477 && Main.tile[k, num2 + 4].type != 492 && Main.tile[k, num2 + 4].type != 109 && Main.tile[k, num2 + 4].type != 60 && Main.tile[k, num2 + 4].type != 633))
++			if (!Main.tile[k, num2 + 4].nactive() || !TileID.Sets.SunflowerPlaceable[Main.tile[k, num2 + 4].type]/*(Main.tile[k, num2 + 4].type != 2 && Main.tile[k, num2 + 4].type != 477 && Main.tile[k, num2 + 4].type != 492 && Main.tile[k, num2 + 4].type != 109 && Main.tile[k, num2 + 4].type != 60 && Main.tile[k, num2 + 4].type != 633)*/)
+ 				flag = true;
+ 
+ 			if (!SolidTile(k, num2 + 4))
 @@ -38175,12 +_,14 @@
  			return;
  

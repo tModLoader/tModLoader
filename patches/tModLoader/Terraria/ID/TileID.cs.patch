@@ -108,7 +108,7 @@
  		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
  		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
  		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
-@@ -159,14 +_,26 @@
+@@ -159,14 +_,35 @@
  		public static bool[] DrawsWalls = Factory.CreateBoolSet(10, 54, 138, 664, 484, 388, 191, 137, 328, 162, 387, 48, 232, 127, 459, 541, 546);
  		public static ushort[] GemsparkFramingTypes = Factory.CreateUshortSet(0, 265, 265, 258, 258, 264, 264, 257, 257, 267, 267, 260, 260, 266, 266, 259, 259, 263, 263, 256, 256, 262, 262, 255, 255, 268, 268, 261, 261, 385, 385, 446, 446, 447, 447, 448, 448);
  		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
@@ -119,7 +119,16 @@
 +		/// <br/> Defaults to <c>0</c>.
 +		/// </summary>
  		public static int[] ConveyorDirection = Factory.CreateIntSet(0, 421, 1, 422, -1);
++		/// <summary>
++		/// Sets the tile to use the vine threading for wind physic drawing for vines. This is required for adding wind to any type of vine to properly draw the vines when blowing in the wind.
++		/// NOTE: this does NOT add wind to vines, this just allows tiles to use the vine threading for wind physics.
++		/// </summary>
  		public static bool[] VineThreads = Factory.CreateBoolSet(382, 62, 115, 205, 52, 528, 636, 638);
++		/// <summary>
++		/// This is only used for seaweed (tile 549) which is basically a reverse vine and is refrenced as so in the code.
++		/// Sets the tile to use the reverse vine threading for wind physic drawing for reverse vines. This is required for adding wind to any type of reverse vine to properly draw the reverse vines when blowing in the wind.
++		/// NOTE: this does NOT add wind to reverse vines, this just allows tiles to use the reverse vine threading for wind physics.
++		/// </summary>
  		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
  		public static bool[] HasSlopeFrames = Factory.CreateBoolSet(421, 422);
  		public static bool[] TileInteractRead = Factory.CreateBoolSet(55, 85, 425, 573);
