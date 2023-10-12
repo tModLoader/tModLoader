@@ -263,19 +263,19 @@ namespace ExampleMod.Content.NPCs
 			writer.Write(true);
 			writer.Write(shopItems.Count);
 			foreach (Item item in shopItems) {
-				ItemIO.Send(item, writer, true);
+				ItemIO.Send(item, writer, writeStack: true);
 			}
  		}
 
    		public override void ReceiveExtraAI(BinaryReader reader) {
-			if(!reader.ReadBoolean()) {
+			if (!reader.ReadBoolean()) {
 				return;
 			}
             
 			shopItems.Clear();
 			int count = reader.ReadInt32();
-			for(int i = 0; i < count; i++) {
-				shopItems.Add(ItemIO.Receive(reader, true));
+			for (int i = 0; i < count; i++) {
+				shopItems.Add(ItemIO.Receive(reader, readStack: true));
 			}
 	 	}
 
@@ -373,9 +373,9 @@ namespace ExampleMod.Content.NPCs
 
 		public override void AI() {
   			// In multi player, the server should sync the shop items when a new player joins
-			if(Main.netMode == NetmodeID.Server) {
+			if (Main.netMode == NetmodeID.Server) {
 				int activePlayerCount = NPC.GetActivePlayerCount();
-				if(activePlayerCount != oldActivePlayerCount) {
+				if (activePlayerCount != oldActivePlayerCount) {
 					netShopItemsUpdate = true;
 					NPC.netUpdate = true;
 					oldActivePlayerCount = activePlayerCount;
