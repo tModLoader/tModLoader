@@ -5757,6 +5757,35 @@
  		if (num8 > 0)
  			DropItemFromExtractinator(num8, num9);
  	}
+@@ -32784,6 +_,10 @@
+ 
+ 	public void ChangeDir(int dir)
+ 	{
++		// added by TML, forward port from 1.4.5
++		if (dir == direction)
++			return;
++
+ 		if (!pulley || pulleyDir != 2) {
+ 			direction = dir;
+ 		}
+@@ -32800,7 +_,17 @@
+ 				position.X = num;
+ 				direction = dir;
+ 			}
++			// added by TML, forward port from 1.4.5
++			else {
++				return;
++			}
+ 		}
++
++		// Added by TML, forward port from 1.4.5
++		compositeBackArm.rotation *= -1;
++		compositeFrontArm.rotation *= -1;
++		itemRotation *= -1;
++		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
+ 	}
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
