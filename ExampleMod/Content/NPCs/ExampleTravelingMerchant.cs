@@ -232,7 +232,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SaveData(TagCompound tag) {
-			tag["itemIds"] = shopItems;
+			tag["shopItems"] = shopItems;
 		}
 
 		public override void LoadData(TagCompound tag) {
