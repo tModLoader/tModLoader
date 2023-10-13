@@ -1383,6 +1383,15 @@
  		if (type == 235)
  			Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1263);
  
+@@ -33909,7 +_,7 @@
+ 						if (Main.tile[k, num8] != null && Main.tile[k, num8].active())
+ 							num9 = Main.tile[k, num8].type;
+ 
+-						if (num9 != 2 && num9 != 477 && num9 != 109 && num9 != 492)
++						if (!TileID.Sets.FallenLogPlaceable[num9])
+ 							flag = true;
+ 
+ 						break;
 @@ -34038,6 +_,7 @@
  		if (flag2)
  			num8--;
@@ -1547,6 +1556,24 @@
  
  		switch (type) {
  			case 254:
+@@ -37029,7 +_,7 @@
+ 					flag = false;
+ 			}
+ 
+-			if (!SolidTile(i, superY + 1) || (Main.tile[i, superY + 1].type != 2 && Main.tile[i, superY + 1].type != 109))
++			if (!SolidTile(i, superY + 1) || (TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[i, superY + 1].type) && TileID.Sets.Conversion.GolfGrass[Main.tile[i, superY + 1].type]) || !TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[i, superY + 1].type))//(Main.tile[i, superY + 1].type != 2 && Main.tile[i, superY + 1].type != 109))
+ 				flag = false;
+ 		}
+ 
+@@ -37086,7 +_,7 @@
+ 					flag = true;
+ 			}
+ 
+-			if (!SolidTile(k, num + 2) || (Main.tile[k, num + 2].type != 2 && Main.tile[k, num + 2].type != 477 && Main.tile[k, num + 2].type != 492 && Main.tile[k, num + 2].type != 109))
++			if (!SolidTile(k, num + 2) || !TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[k, num + 2].type))//(Main.tile[k, num + 2].type != 2 && Main.tile[k, num + 2].type != 477 && Main.tile[k, num + 2].type != 492 && Main.tile[k, num + 2].type != 109))
+ 				flag = true;
+ 		}
+ 
 @@ -37366,12 +_,14 @@
  			return;
  
@@ -1622,12 +1649,13 @@
  
  		if (type == 548) {
  			if (num3 >= 7)
-@@ -38164,7 +_,7 @@
+@@ -38164,7 +_,8 @@
  			if (Main.tile[k, num2 + 4] == null)
  				Main.tile[k, num2 + 4] = new Tile();
  
 -			if (!Main.tile[k, num2 + 4].nactive() || (Main.tile[k, num2 + 4].type != 2 && Main.tile[k, num2 + 4].type != 477 && Main.tile[k, num2 + 4].type != 492 && Main.tile[k, num2 + 4].type != 109 && Main.tile[k, num2 + 4].type != 60 && Main.tile[k, num2 + 4].type != 633))
-+			if (!Main.tile[k, num2 + 4].nactive() || !TileID.Sets.SunflowerPlaceable[Main.tile[k, num2 + 4].type]/*(Main.tile[k, num2 + 4].type != 2 && Main.tile[k, num2 + 4].type != 477 && Main.tile[k, num2 + 4].type != 492 && Main.tile[k, num2 + 4].type != 109 && Main.tile[k, num2 + 4].type != 60 && Main.tile[k, num2 + 4].type != 633)*/)
++			//if (!Main.tile[k, num2 + 4].nactive() || (Main.tile[k, num2 + 4].type != 2 && Main.tile[k, num2 + 4].type != 477 && Main.tile[k, num2 + 4].type != 492 && Main.tile[k, num2 + 4].type != 109 && Main.tile[k, num2 + 4].type != 60 && Main.tile[k, num2 + 4].type != 633))
++			if (!Main.tile[k, num2 + 4].nactive() || !TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[k, num2 + 4].type))
  				flag = true;
  
  			if (!SolidTile(k, num2 + 4))

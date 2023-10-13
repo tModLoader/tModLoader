@@ -5684,7 +5684,7 @@
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
  			}
-@@ -31729,10 +_,18 @@
+@@ -31729,7 +_,10 @@
  		else if (inventory[selectedItem].createTile == 275 || inventory[selectedItem].createTile == 276 || inventory[selectedItem].createTile == 277) {
  			canPlace = true;
  		}
@@ -5695,14 +5695,6 @@
  			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
  				canPlace = true;
  		}
-+		else if (inventory[selectedItem].createTile == 27) {
-+			if (TileID.Sets.SunflowerPlaceable[Main.tile[tileTargetX, tileTargetY + 1].type]) {
-+				canPlace = true;
-+			}
-+		}
- 		else if (inventory[selectedItem].createTile == 314) {
- 			for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
- 				for (int j = tileTargetY - 1; j <= tileTargetY + 1; j++) {
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
