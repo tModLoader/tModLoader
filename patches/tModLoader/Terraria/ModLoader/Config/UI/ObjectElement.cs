@@ -19,6 +19,8 @@ internal class ObjectElement : ConfigElement<object>
 
 	protected Func<string> AbridgedTextDisplayFunction { get; set; }
 
+	public object Data => Value;
+
 	private readonly bool ignoreSeparatePage;
 	//private SeparatePageAttribute separatePageAttribute;
 	//private object data;
@@ -172,7 +174,6 @@ internal class ObjectElement : ConfigElement<object>
 			//Append(expandButton);
 
 			SetupList();
-			Interface.modConfig.RecalculateChildren();
 			Interface.modConfig.RefreshUI();
 		};
 
@@ -267,7 +268,7 @@ internal class ObjectElement : ConfigElement<object>
 			}
 
 			foreach (var element in elements) {
-				dataList.Append(element.Item1);
+				dataList.Add(element.Item1);
 			}
 		}
 	}

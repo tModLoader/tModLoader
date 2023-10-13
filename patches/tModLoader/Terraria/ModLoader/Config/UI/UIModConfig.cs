@@ -80,6 +80,7 @@ public class UIModConfig : UIState
 		};
 		uIElement.Append(uIPanel);
 
+		// TODO: name overflows a lot
 		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
@@ -87,10 +88,9 @@ public class UIModConfig : UIState
 		}.WithPadding(15f);
 		uIElement.Append(headerTextPanel);
 
-		// TODO: clean this up
-		subConfigBackButton = new UIButton<LocalizedText>(Language.GetText("UI.Back")) {// TODO: "close subpage" instead?
-			Width = { Pixels = 75 },
-			Height = { Pixels = 40 },
+		subConfigBackButton = new UIButton<LocalizedText>(Language.GetText("UI.Back")) {
+			Width = { Pixels = 60 },
+			Height = { Pixels = 30 },
 			Top = { Pixels = 10 },
 			ClickSound = SoundID.MenuClose,
 			HoverSound = SoundID.MenuTick,
@@ -98,14 +98,11 @@ public class UIModConfig : UIState
 		subConfigBackButton.OnLeftClick += (_, _) => ExitSubpage();
 		// Don't append
 
-		// TODO: fix name overflowing
 		subConfigNamePanel = new UIAutoScaleTextTextPanel<string>("") {
-			Width = { Pixels = -175 - 85, Percent = 1f },
-			Height = { Pixels = 40 },
-			Top = { Pixels = 5 },
-			Left = { Pixels = 80 },
-			ScalePanel = true,
-			UseInnerDimensions = true,
+			Width = { Pixels = -175 - 60 - 5 - 5, Percent = 1f },
+			Height = { Pixels = 30 },
+			Top = { Pixels = 10 },
+			Left = { Pixels = 60 + 5 },
 		};
 		// Don't append
 
@@ -371,13 +368,13 @@ public class UIModConfig : UIState
 			uIPanel.Append(subConfigBackButton);
 			uIPanel.Append(subConfigNamePanel);
 
-			string subPagesText = string.Join(" > ", subConfigs.Reverse());
+			// TODO: get name properly
+			string subPagesText = string.Join(" > ", subConfigs.Select(s => s.Data).Reverse());
 			subConfigNamePanel.SetText(subPagesText);
 		}
 	}
 
 	// Updates the main config list
-	// TODO: separate page support
 	private void UpdateConfigList()
 	{
 		// Filtering elements
