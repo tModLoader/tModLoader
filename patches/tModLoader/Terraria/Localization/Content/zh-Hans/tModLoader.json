@@ -66,7 +66,7 @@
 		"ModDidNotFullyUnloadWarning": "该模组在上次卸载时未完全卸载.\n（这是给模组作者的信息）",
 		"BetaModCantPublishError": "你无法发布基于测试版本tModLoader的模组",
 		"OutdatedModCantPublishError": "你无法发布基于旧版本tModLoader的模组",
-  // "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "需要重新加载",
 		"ModReloadRequiredMemberTooltip": "若要更改此项，必须重新加载",
 		"ModReloadForced": "强制重新加载",
@@ -414,7 +414,7 @@
 		"MSPortToLatest": "运行tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "使用Visual Studio制作tModLoader模组现在需要安装.NET 6.0的SDK，对此最简单的方案是安装Visual Studio 2022。\n\nGitHub上有教程（The Migration Guide）描述了关于将模组升级到1.4的必要变更，也有关于如何使用tModPorter来自动完成很大一部分的变动",
 		"DownloadNetSDK": "下载.NET软件开发工具包",
-  "DevModsInSandbox": "在沙盒中运行的tModLoader无法在运行时开发模组，请确保直接在你的系统上安装Steam",
+		"DevModsInSandbox": "在沙盒中运行的tModLoader无法在运行时开发模组，请确保直接在你的系统上安装Steam",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库。（缺少[ModCompile]文件夹）",
@@ -501,6 +501,7 @@
 		// In Game UI additions
 		"slotStack": "平铺式",
 		"slotScroll": "滚动式",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "好的",

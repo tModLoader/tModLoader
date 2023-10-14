@@ -500,6 +500,7 @@
 		// In Game UI additions
 		"slotStack": "Tabela slotów",
 		"slotScroll": "Przewijalna lista slotów",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",

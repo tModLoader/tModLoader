@@ -500,6 +500,7 @@
 		// In Game UI additions
 		"slotStack": "Stack",
 		"slotScroll": "Scroll",
+		"PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",
