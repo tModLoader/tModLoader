@@ -398,7 +398,7 @@ public static class ConfigManager
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
-			var header = GetHeader(ref order, variable);
+			var header = GetHeaderElement(ref order, variable);
 			if (header != null)
 				elements.Add(header);
 
@@ -456,7 +456,7 @@ public static class ConfigManager
 		else if (type == typeof(PrefixDefinition)) {
 			e = new PrefixDefinitionElement();
 		}
-		else if (type == typeof(BuffDefinitionElement)) {
+		else if (type == typeof(BuffDefinition)) {
 			e = new BuffDefinitionElement();
 		}
 		else if (type == typeof(Color)) {
@@ -465,8 +465,7 @@ public static class ConfigManager
 		else if (type == typeof(Vector2)) {
 			e = new Vector2Element();
 		}
-		else if (type == typeof(bool)) // isassignedfrom?
-		{
+		else if (type == typeof(bool)) { // isassignedfrom?
 			e = new BooleanElement();
 		}
 		else if (type == typeof(float)) {
@@ -479,7 +478,7 @@ public static class ConfigManager
 			e = new UIntElement();
 		}
 		else if (type == typeof(int)) {
-			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
+			SliderAttribute sliderAttribute = GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
 
 			if (sliderAttribute != null)
 				e = new IntRangeElement();
@@ -487,7 +486,7 @@ public static class ConfigManager
 				e = new IntInputElement();
 		}
 		else if (type == typeof(string)) {
-			OptionStringsAttribute ost = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
+			OptionStringsAttribute ost = GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
 			if (ost != null)
 				e = new StringOptionElement();
 			else
@@ -550,7 +549,7 @@ public static class ConfigManager
 		return null;
 	}
 
-	public static Tuple<UIElement, UIElement> GetHeader(ref int order, PropertyFieldWrapper variable)
+	public static Tuple<UIElement, UIElement> GetHeaderElement(ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = GetLocalizedHeader(variable.MemberInfo);
 

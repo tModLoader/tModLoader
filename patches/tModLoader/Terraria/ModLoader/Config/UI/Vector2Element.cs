@@ -113,8 +113,10 @@ internal class Vector2Element : ConfigElement
 				wrapped.Item1.Width.Pixels += 20;
 			}
 
+			wrapped.Item1.Top.Pixels += order * 60;
 			Append(wrapped.Item1);
 		}
+		Height.Pixels += order * 60;
 	}
 
 	// Draw axis? ticks?
