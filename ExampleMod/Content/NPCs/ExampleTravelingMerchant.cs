@@ -33,19 +33,14 @@ namespace ExampleMod.Content.NPCs
 		// Time of day for traveller to leave (6PM)
 		public const double despawnTime = 48600.0;
 
-		// the time of day the traveler will spawn (double.MaxValue for no spawn)
-		// saved and loaded with the world in TravelingMerchantSystem
+		// the time of day the traveler will spawn (double.MaxValue for no spawn). Saved and loaded with the world in TravelingMerchantSystem
 		public static double spawnTime = double.MaxValue;
+
+		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns. Synced by the server to clients in multi player
+		public readonly static List<Item> shopItems = new();
 
 		// A static instance of the declarative shop, defining all the items which can be brought. Used to create a new inventory when the NPC spawns
 		public static ExampleTravelingMerchantShop Shop;
-
-		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
-  		// synced by the server to clients in multi player
-		public readonly List<Item> shopItems = new();
-
-		private bool netShopItemsUpdate;
-  		private int oldActivePlayerCount;
 
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
@@ -227,13 +222,12 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-  			shopItems.Clear();
-			shopItems.AddRange(Shop.GenerateNewInventoryList());
+			shopItems.Clear();
+   			shopItems.AddRange(Shop.GenerateNewInventoryList());
 
-   			// In multi player, ensure the shop items are synced with clients
+   			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
    			if (Main.netMode == NetmodeID.Server) {
-	  			netShopItemsUpdate = true;
-				NPC.netUpdate = true;
+				NetMessage.SendData(MessageID.WorldData);
    			}
 		}
 
@@ -242,42 +236,6 @@ namespace ExampleMod.Content.NPCs
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
 			});
 		}
-
-		public override void SaveData(TagCompound tag) {
-			tag["itemIds"] = shopItems;
-		}
-
-		public override void LoadData(TagCompound tag) {
-  			shopItems.Clear();
-			shopItems.AddRange(tag.Get<List<Item>>("shopItems"));
-		}
-
-  		public override void SendExtraAI(BinaryWriter writer) {
-			if (!netShopItemsUpdate) {
-				writer.Write(false);
-				return;
-			}
-
-   			// To avoid packet spam we only send the shopItems sometimes (see OnSpawn and AI)
-			netShopItemsUpdate = false;
-			writer.Write(true);
-			writer.Write(shopItems.Count);
-			foreach (Item item in shopItems) {
-				ItemIO.Send(item, writer, writeStack: true);
-			}
- 		}
-
-   		public override void ReceiveExtraAI(BinaryReader reader) {
-			if (!reader.ReadBoolean()) {
-				return;
-			}
-            
-			shopItems.Clear();
-			int count = reader.ReadInt32();
-			for (int i = 0; i < count; i++) {
-				shopItems.Add(ItemIO.Receive(reader, readStack: true));
-			}
-	 	}
 
 		public override void HitEffect(NPC.HitInfo hit) {
 			int num = NPC.life > 0 ? 1 : 5;
@@ -371,17 +329,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void AI() {
-  			// In multi player, the server should sync the shop items when a new player joins
-			if (Main.netMode == NetmodeID.Server) {
-				int activePlayerCount = NPC.GetActivePlayerCount();
-				if (activePlayerCount != oldActivePlayerCount) {
-					netShopItemsUpdate = true;
-					NPC.netUpdate = true;
-					oldActivePlayerCount = activePlayerCount;
-				}
-			}
-  
+		public override void AI() { 
 			NPC.homeless = true; // Make sure it stays homeless
 		}
 
@@ -489,7 +437,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void FillShop(ICollection<Item> items, NPC npc) {
 			// use the items which were selected when the NPC spawned.
-			foreach (var item in ((ExampleTravelingMerchant)npc.ModNPC).shopItems) {
+			foreach (var item in ExampleTravelingMerchant.shopItems) {
 				// make sure to add a clone of the item, in case any ModifyActiveShop hooks adjust the item when the shop is opened
 				items.Add(item.Clone());
 			}
@@ -499,7 +447,7 @@ namespace ExampleMod.Content.NPCs
 			overflow = false;
 			int i = 0;
 			// use the items which were selected when the NPC spawned.
-			foreach (var item in ((ExampleTravelingMerchant)npc.ModNPC).shopItems) {
+			foreach (var item in ExampleTravelingMerchant.shopItems) {
 
 				if (i == items.Length - 1) {
 					// leave the last slot empty for selling
