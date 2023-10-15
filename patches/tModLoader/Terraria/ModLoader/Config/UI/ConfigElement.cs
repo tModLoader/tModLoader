@@ -21,8 +21,7 @@ public abstract class ConfigElement<T> : ConfigElement
 
 public abstract class ConfigElement : UIElement
 {
-	private Color backgroundColor; // TODO inherit parent object color?
-
+	public Color BackgroundColor { get; private set; } // TODO inherit parent object color?
 	public int Index { get; set; }
 
 	protected Asset<Texture2D> PlayTexture { get; set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
@@ -73,7 +72,7 @@ public abstract class ConfigElement : UIElement
 		Item = item;
 		List = array;
 		Index = index;
-		backgroundColor = UICommon.DefaultUIBlue;
+		BackgroundColor = UICommon.DefaultUIBlue;
 	}
 
 	public virtual void OnBind()
@@ -92,7 +91,7 @@ public abstract class ConfigElement : UIElement
 		BackgroundColorAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(MemberInfo, Item, List);
 
 		if (BackgroundColorAttribute != null) {
-			backgroundColor = BackgroundColorAttribute.Color;
+			BackgroundColor = BackgroundColorAttribute.Color;
 		}
 
 		RangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(MemberInfo, Item, List);
@@ -114,7 +113,7 @@ public abstract class ConfigElement : UIElement
 	{
 		if (List != null) {
 			List[Index] = value;
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.RefreshUI();
 			return;
 		}
 
@@ -122,7 +121,7 @@ public abstract class ConfigElement : UIElement
 			return;
 
 		MemberInfo.SetValue(Item, value);
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.RefreshUI();
 	}
 
 	protected virtual object GetObject()
@@ -146,7 +145,7 @@ public abstract class ConfigElement : UIElement
 			color = Color.Gray;
 
 		//color = Color.Lerp(color, Color.White, base.IsMouseHovering ? 1f : 0f);
-		Color panelColor = base.IsMouseHovering ? backgroundColor : backgroundColor.MultiplyRGBA(new Color(180, 180, 180));
+		Color panelColor = base.IsMouseHovering ? BackgroundColor : BackgroundColor.MultiplyRGBA(new Color(180, 180, 180));
 		Vector2 position = vector;
 
 		DrawPanel2(spriteBatch, position, TextureAssets.SettingsPanel.Value, settingsWidth, dimensions.Height, panelColor);
@@ -174,7 +173,7 @@ public abstract class ConfigElement : UIElement
 				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
 			}
 
-			UIModConfig.Tooltip = tooltip;
+			UICommon.TooltipMouseText(tooltip);
 		}
 	}
 

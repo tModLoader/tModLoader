@@ -1,7 +1,12 @@
 using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
+using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -91,5 +96,87 @@ public abstract class ModConfig : ILocalizedModType
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Opens this config in the config UI.<br/>
+	/// Can be used to allow your own UI to access the config.
+	/// </summary>
+	/// <param name="playSound">Whether <see cref="SoundID.MenuOpen"/> will be played when the UI is opened.</param>
+	/// <param name="onClose">
+	/// A delegate that is called when the back button is pressed to allow for custom back button behaviour.<br/>
+	/// Normally, the user will be taken to the main menu or have the in-game UI closed.
+	/// </param>
+	public void Open(bool playSound = true, Action onClose = null)
+	{
+		if (playSound)
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+
+		UIModConfig.Instance.SetMod(Mod, this, openedFromModder: true, onClose);
+
+		if (Main.gameMenu) {
+			Main.menuMode = Interface.modConfigID;
+		}
+		else {
+			IngameFancyUI.CoverNextFrame();
+
+			Main.playerInventory = false;
+			Main.editChest = false;
+			Main.npcChatText = "";
+			Main.inFancyUI = true;
+
+			Main.InGameUI.SetState(Interface.modConfig);
+		}
+	}
+
+	/// <summary>
+	/// Saves any changes to this config.
+	/// </summary>
+	/// <param name="showErrors">Whether messages in the config UI and in chat should be shown.</param>
+	/// <returns>Whether the config was successfully saved.</returns>
+	public bool Save(bool showErrors = true)
+	{
+		// TODO: finish
+		// Since this can be called on a clone, we need to get the real config to load the data into
+		var realConfig = ConfigManager.GetConfig(Mod, Name); // Used to load changes back into
+		var loadTimeConfig = ConfigManager.GetLoadTimeConfig(Mod, Name); // Used to check if a reload is required
+
+		// Main Menu - Save, leave reload for later
+		// MP with ServerSide - Send request to server
+		// SP or MP with ClientSide - Apply immediately if !NeedsReload
+
+		// Game, client, server side config
+		if (!Main.gameMenu && Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
+			if (showErrors)
+				UIModConfig.Instance.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Language.GetTextValue("tModLoader.ModConfigChangesPending"), Color.Yellow);
+
+			var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
+			requestChanges.Write(Mod.Name);
+			requestChanges.Write(Name);
+			string json = JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact);
+			requestChanges.Write(json);
+			requestChanges.Send();
+
+			return true;
+		}
+
+		// Game, singleplayer, NeedsReload
+		if (!Main.gameMenu && loadTimeConfig.NeedsReload(this)) {
+			if (showErrors)
+				UIModConfig.Instance.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
+
+			return false;
+		}
+
+		// Menu or singleplayer
+		ConfigManager.Save(this);
+		ConfigManager.Load(realConfig);
+
+		// ModConfig.OnChanged() delayed until ReloadRequired checked
+		// Reload will be forced by back button in UIMods if needed
+		if (!Main.gameMenu)
+			OnChanged();
+
+		return true;
 	}
 }

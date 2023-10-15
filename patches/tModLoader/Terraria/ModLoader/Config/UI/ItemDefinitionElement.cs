@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -132,7 +133,7 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }
 

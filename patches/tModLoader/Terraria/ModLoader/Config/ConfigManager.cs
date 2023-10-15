@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
@@ -294,21 +296,13 @@ public static class ConfigManager
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
 
-				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(Interface.modConfig);
-					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
-				}
+				UIModConfig.Instance.RefreshUI();
+				UIModConfig.Instance.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesAccepted"), Color.Green);
 			}
 			else {
-				// rejection only sent back to requester.
+				// Rejection only sent back to requester
 				// Update UI with message
-
-				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
-					//Main.InGameUI.SetState(Interface.modConfig);
-				}
+				UIModConfig.Instance.SetMessage(message.ToString(), Language.GetTextValue("tModLoader.ModConfigChangesRejected"), Color.Red);
 
 			}
 		}
@@ -325,7 +319,7 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigAccepted");
+			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigSharedConfigChanged", modname, configname);
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
 				message = NetworkText.FromKey("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload");
@@ -383,10 +377,199 @@ public static class ConfigManager
 
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
-		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
+		string json = JsonConvert.SerializeObject(original, serializerSettings);
 		ModConfig properClone = original.Clone();
-		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+		JsonConvert.PopulateObject(json, properClone, serializerSettings);
 		return properClone;
+	}
+
+	// Separate from GeneratePopulatedClone because otherwise config elements can't track the original and the elements have to be recreated, which resets their state
+	public static void RevertConfig(ModConfig pendingConfig, ModConfig original)
+	{
+		string json = JsonConvert.SerializeObject(original, serializerSettings);
+		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
+	}
+
+	public static void PopulateElements(List<Tuple<UIElement, UIElement>> elements, object parent)
+	{
+		// Note to future readers: we have to have an order variable and a sorted UI element because the UI list order gets messed up
+		int order = 0;
+		foreach (PropertyFieldWrapper variable in GetFieldsAndProperties(parent)) {
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+				continue;
+
+			var header = GetHeaderElement(ref order, variable);
+			if (header != null)
+				elements.Add(header);
+
+			var element = GetConfigElement(variable, parent, order++);
+			if (element != null)
+				elements.Add(element);
+
+		}
+	}
+
+	public static Tuple<UIElement, UIElement> GetConfigElement(PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	{
+		int elementHeight;
+		Type type = memberInfo.Type;
+
+		if (arrayType != null) {
+			type = arrayType;
+		}
+		UIElement e;
+
+		// TODO: Other common structs? -- Rectangle, Point
+		var customUI = GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
+
+		#region If-Else Train
+		if (customUI != null) {
+			Type customUIType = customUI.Type;
+
+			if (typeof(ConfigElement).IsAssignableFrom(customUIType)) {
+				ConstructorInfo ctor = customUIType.GetConstructor(Array.Empty<Type>());
+
+				if (ctor != null) {
+					object instance = ctor.Invoke(new object[0]);
+					e = instance as UIElement;
+				}
+				else {
+					e = new UIText($"{customUIType.Name} specified via CustomModConfigItem for {memberInfo.Name} does not have an empty constructor.");
+				}
+			}
+			else {
+				e = new UIText($"{customUIType.Name} specified via CustomModConfigItem for {memberInfo.Name} does not inherit from ConfigElement.");
+			}
+		}
+		else if (item.GetType() == typeof(HeaderAttribute)) {
+			e = new HeaderElement((string)memberInfo.GetValue(item));
+		}
+		else if (type == typeof(ItemDefinition)) {
+			e = new ItemDefinitionElement();
+		}
+		else if (type == typeof(ProjectileDefinition)) {
+			e = new ProjectileDefinitionElement();
+		}
+		else if (type == typeof(NPCDefinition)) {
+			e = new NPCDefinitionElement();
+		}
+		else if (type == typeof(PrefixDefinition)) {
+			e = new PrefixDefinitionElement();
+		}
+		else if (type == typeof(BuffDefinition)) {
+			e = new BuffDefinitionElement();
+		}
+		else if (type == typeof(Color)) {
+			e = new ColorElement();
+		}
+		else if (type == typeof(Vector2)) {
+			e = new Vector2Element();
+		}
+		else if (type == typeof(bool)) { // isassignedfrom?
+			e = new BooleanElement();
+		}
+		else if (type == typeof(float)) {
+			e = new FloatElement();
+		}
+		else if (type == typeof(byte)) {
+			e = new ByteElement();
+		}
+		else if (type == typeof(uint)) {
+			e = new UIntElement();
+		}
+		else if (type == typeof(int)) {
+			SliderAttribute sliderAttribute = GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
+
+			if (sliderAttribute != null)
+				e = new IntRangeElement();
+			else
+				e = new IntInputElement();
+		}
+		else if (type == typeof(string)) {
+			OptionStringsAttribute ost = GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
+			if (ost != null)
+				e = new StringOptionElement();
+			else
+				e = new StringInputElement();
+		}
+		else if (type.IsEnum) {
+			if (list != null)
+				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
+			else
+				e = new EnumElement();
+		}
+		else if (type.IsArray) {
+			e = new ArrayElement();
+		}
+		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>)) {
+			e = new ListElement();
+		}
+		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>)) {
+			e = new SetElement();
+		}
+		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
+			e = new DictionaryElement();
+		}
+		else if (type.IsClass) {
+			e = new ObjectElement(/*, ignoreSeparatePage: ignoreSeparatePage*/);
+		}
+		else if (type.IsValueType && !type.IsPrimitive) {
+			e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}) Structs need special UI.");
+			//e.Top.Pixels += 6;
+			e.Height.Pixels += 6;
+			e.Left.Pixels += 4;
+
+			//object subitem = memberInfo.GetValue(item);
+		}
+		else {
+			e = new UIText($"{memberInfo.Name} not handled yet ({type.Name})");
+			e.Top.Pixels += 6;
+			e.Left.Pixels += 4;
+		}
+		#endregion
+
+		if (e != null) {
+			if (e is ConfigElement configElement) {
+				configElement.Bind(memberInfo, item, (IList)list, index);
+				configElement.OnBind();
+			}
+
+			e.Recalculate();
+
+			elementHeight = (int)e.GetOuterDimensions().Height;
+
+			var container = GetContainer(e, index == -1 ? order : index);
+			container.Height.Pixels = elementHeight;
+
+			var tuple = new Tuple<UIElement, UIElement>(container, e);
+
+			return tuple;
+		}
+
+		return null;
+	}
+
+	public static Tuple<UIElement, UIElement> GetHeaderElement(ref int order, PropertyFieldWrapper variable)
+	{
+		HeaderAttribute header = GetLocalizedHeader(variable.MemberInfo);
+
+		if (header != null) {
+			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+			return GetConfigElement(wrapper, header, order++);
+		}
+		else {
+			return null;
+		}
+	}
+
+	public static UIElement GetContainer(UIElement containee, int sortid)
+	{
+		UIElement container = new UISortableElement(sortid);
+		container.Width.Set(0f, 1f);
+		container.Height.Set(30f, 0f);
+		//container.HAlign = 1f;
+		container.Append(containee);
+		return container;
 	}
 
 	public static object? AlternateCreateInstance(Type type)
@@ -411,18 +594,6 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
-	}
-
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
-	{
-		// public api for modders.
-		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
-	}
-
-	public static void SetPendingChanges(bool changes = true)
-	{
-		// public api for modders.
-		Interface.modConfig.SetPendingChanges(changes);
 	}
 
 	// TODO: better home?

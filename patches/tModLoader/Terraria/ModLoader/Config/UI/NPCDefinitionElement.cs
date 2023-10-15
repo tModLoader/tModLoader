@@ -75,7 +75,7 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 			Main.instance.LoadNPC(type);
 			Texture2D npcTexture = TextureAssets.Npc[type].Value;
 
-			int frameCounter = Interface.modConfig.UpdateCount / 8;
+			int frameCounter = (int)(Main.GlobalTimeWrappedHourly / 60f / 8f);
 			int frames = Main.npcFrameCount[type];
 
 			if (Unloaded) {
@@ -113,6 +113,6 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			UICommon.TooltipMouseText(Tooltip);
 	}
 }

@@ -87,7 +87,7 @@ internal abstract class CollectionElement : ConfigElement
 				InitializeCollection();
 				SetupList();
 				Interface.modConfig.RecalculateChildren(); // not needed?
-				Interface.modConfig.SetPendingChanges();
+				Interface.modConfig.RefreshUI();
 				expanded = true;
 				pendingChanges = true;
 			};
@@ -100,7 +100,7 @@ internal abstract class CollectionElement : ConfigElement
 				AddItem();
 				SetupList();
 				Interface.modConfig.RecalculateChildren();
-				Interface.modConfig.SetPendingChanges();
+				Interface.modConfig.RefreshUI();
 				expanded = true;
 				pendingChanges = true;
 			};
@@ -116,7 +116,7 @@ internal abstract class CollectionElement : ConfigElement
 					ClearCollection();
 				SetupList();
 				Interface.modConfig.RecalculateChildren();
-				Interface.modConfig.SetPendingChanges();
+				Interface.modConfig.RefreshUI();
 				pendingChanges = true;
 			};
 		}

@@ -123,7 +123,7 @@ internal class DictionaryElement : CollectionElement
 			((IDictionary)Data).Add(keyValue, CreateCollectionElementInstance(valueType));
 		}
 		catch (Exception e) {
-			Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
+			Interface.modConfig.SetMessage(e.Message, Language.GetTextValue("tModLoader.ModConfigError"), Color.Red, sendChatMessage: false);
 		}
 	}
 
@@ -216,8 +216,8 @@ internal class DictionaryElement : CollectionElement
 				var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
 				int index = i;
 				//TODO: Sometime key is below value for some reason. IntFloatDictionary.
-				var wrapped = UIModConfig.WrapIt(DataList, ref top, wrappermemberInfo, this, 0, dataWrapperList, genericType, i);
-				//var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, wrapperwrapper, ref sliderID);
+				var wrapped = ConfigManager.GetConfigElement(wrappermemberInfo, this, 0, dataWrapperList, genericType, i);
+				DataList.Add(wrapped.Item1);
 
 				// Save wrap, pre save check?
 				wrapped.Item2.Left.Pixels += 24;
@@ -233,7 +233,7 @@ internal class DictionaryElement : CollectionElement
 				deleteButton.OnLeftClick += (a, b) => {
 					((IDictionary)Data).Remove(o);
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					Interface.modConfig.RefreshUI();
 				};
 
 				wrapped.Item1.Append(deleteButton);

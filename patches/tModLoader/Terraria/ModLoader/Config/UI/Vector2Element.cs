@@ -45,7 +45,7 @@ internal class Vector2Element : ConfigElement
 			else
 				array[index] = current;
 
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.RefreshUI();
 		}
 
 		public Vector2Object(PropertyFieldWrapper memberInfo, object item)
@@ -98,7 +98,7 @@ internal class Vector2Element : ConfigElement
 
 		int order = 0;
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(c)) {
-			var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
+			var wrapped = ConfigManager.GetConfigElement(variable, c, order++);
 
 			// Can X and Y inherit range and increment automatically? Pass in "fake PropertyFieldWrapper" to achieve? Real one desired for label.
 			if (wrapped.Item2 is FloatElement floatElement) {
@@ -112,7 +112,11 @@ internal class Vector2Element : ConfigElement
 				wrapped.Item1.Left.Pixels -= 20;
 				wrapped.Item1.Width.Pixels += 20;
 			}
+
+			wrapped.Item1.Top.Pixels += order * 60;
+			Append(wrapped.Item1);
 		}
+		Height.Pixels += order * 60;
 	}
 
 	// Draw axis? ticks?
