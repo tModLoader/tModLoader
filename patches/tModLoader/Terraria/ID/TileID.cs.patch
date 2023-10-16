@@ -120,13 +120,13 @@
 +		/// </summary>
  		public static int[] ConveyorDirection = Factory.CreateIntSet(0, 421, 1, 422, -1);
 +		/// <summary>
-+		/// Sets the tile to use the vine threading for wind physic drawing for vines. This is required for adding wind to any type of vine to properly draw the vines when blowing in the wind.
++		/// Sets the tile to use the wind physics drawing for vines. This is required for adding wind to any type of vine to properly draw the vines when blowing in the wind.<para/>
 +		/// NOTE: this does NOT add wind to vines, this just allows tiles to use the vine threading for wind physics.
 +		/// </summary>
  		public static bool[] VineThreads = Factory.CreateBoolSet(382, 62, 115, 205, 52, 528, 636, 638);
 +		/// <summary>
-+		/// This is only used for seaweed (tile 549) which is basically a reverse vine and is refrenced as so in the code.
-+		/// Sets the tile to use the reverse vine threading for wind physic drawing for reverse vines. This is required for adding wind to any type of reverse vine to properly draw the reverse vines when blowing in the wind.
++		/// Sets the tile to use the wind physics drawing for reverse vines, vines that go up instead of hanging down. This is required for adding wind to any type of reverse vine to properly draw the reverse vines when blowing in the wind.<para/>
++		/// This is only used for <see cref="TileID.Seaweed"/> (549).<para/>
 +		/// NOTE: this does NOT add wind to reverse vines, this just allows tiles to use the reverse vine threading for wind physics.
 +		/// </summary>
  		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
