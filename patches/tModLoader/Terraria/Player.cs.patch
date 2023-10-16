@@ -7987,19 +7987,26 @@
  			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
-@@ -42267,16 +_,30 @@
- 		if (cloudSave && SocialAPI.Cloud == null)
- 			return playerFileData;
+@@ -42263,20 +_,35 @@
  
+ 	public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
+ 	{
+-		PlayerFileData playerFileData = new PlayerFileData(playerPath, cloudSave);
+ 		if (cloudSave && SocialAPI.Cloud == null)
+-			return playerFileData;
++			return new PlayerFileData(playerPath, cloudSave);
++
 +		var data = FileUtilities.ReadAllBytes(playerPath, cloudSave);
 +		if (!PlayerIO.TryLoadData(playerPath, cloudSave, out var tag))
 +			tag = null;
 +
-+		return LoadPlayerFromStream(playerFileData, data, tag);
++		return LoadPlayerFromStream(playerPath, cloudSave, data, tag);
 +	}
 +
-+	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] data, TagCompound tag)
++	public static PlayerFileData LoadPlayerFromStream(string playerPath, bool cloudSave, byte[] data, TagCompound tag)
 +	{
++		PlayerFileData playerFileData = new PlayerFileData(playerPath, cloudSave);
+ 
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
