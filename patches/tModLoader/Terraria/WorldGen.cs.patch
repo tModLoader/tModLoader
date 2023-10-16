@@ -1390,7 +1390,7 @@
 +						/*
  						if (num9 != 2 && num9 != 477 && num9 != 109 && num9 != 492)
 +						*/
-+						if (!TileID.Sets.FallenLogPlaceable[num9])
++						if (!TileObjectData.GetTileData(488, 0).AnchorValidTiles.Contains(num9))
  							flag = true;
  
  						break;

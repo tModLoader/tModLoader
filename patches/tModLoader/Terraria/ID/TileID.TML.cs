@@ -64,9 +64,6 @@ partial class TileID
 		/// <remarks> Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <see cref="BasicChest"/> and <see cref="Main.tileDungeon"/>)</remarks>
 		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 448, 597);
 
-		/// <summary> Whether or not this tile can have the fallen log tile placed above them without breaking. </summary>
-		public static bool[] FallenLogPlaceable = Factory.CreateBoolSet(TileID.Grass, GolfGrass, HallowedGrass, GolfGrassHallowed);
-
 		/// <summary>
 		/// Whether or not this tile will prevent sand/slush from falling beneath it.
 		/// </summary>
