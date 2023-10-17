@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.width = 12; // The width of projectile hitbox
 			Projectile.height = 12; // The height of projectile hitbox
 
-			// Ccopy the ai of any given projectile using AIType, since we want
+			// Copy the ai of any given projectile using AIType, since we want
 			// the projectile to essentially behave the same way as the vanilla projectile.
 			AIType = ProjectileID.Bullet;
 
