@@ -138,15 +138,7 @@ public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroun
 
 	public virtual bool PreDrawBackground(int style, SpriteBatch spriteBatch)
 	{
-		bool result = true;
-
-		var bgtype = Get(style);
-
-		if (result && bgtype != null) {
-			return bgtype.PreDrawBackground(spriteBatch);
-		}
-
-		return result;
+		return Get(style)?.PreDrawBackground(spriteBatch) ?? true;
 	}
 }
 
