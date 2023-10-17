@@ -434,6 +434,8 @@ public partial class Main
 		return tcs.Task;
 	}
 
+	private static PosixSignalRegistration SIGINTHandler;
+	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
 		static void Handle(PosixSignalContext ctx) {
@@ -442,7 +444,7 @@ public partial class Main
 			Netplay.Disconnect = true;
 		}
 
-		PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
-		PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+		SIGINTHandler = PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
+		SIGTERMHandler = PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
 	}
 }
