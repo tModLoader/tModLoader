@@ -11,7 +11,7 @@ Looking for some help? You can receive support on our forum thread on Terraria C
 
 tModLoader is an open-source project. This means the code is publicly available and anyone can make contributions to the project. Our project can be found on Github, linked via our Website.
 
-Do you want to learn more about the inner workings for tModLoader? Maybe you want to use tModLoader right now? You can get started with our guide for players linked below on our Steam Page under "View the Manual. There are also pages for developers and contributors. Our wiki is filled with guides that learn you how to mod using tModLoader.
+Do you want to learn more about the inner workings for tModLoader? Maybe you want to use tModLoader right now? You can get started with our guide for players linked below on our Steam Page under "View the Manual". There are also pages for developers and contributors. Our wiki is filled with guides that learn you how to mod using tModLoader.
 
 ---
 

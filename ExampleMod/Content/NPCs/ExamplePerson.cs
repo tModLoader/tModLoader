@@ -66,7 +66,7 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
 				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
@@ -243,6 +243,7 @@ namespace ExampleMod.Content.NPCs
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
 
@@ -252,7 +253,15 @@ namespace ExampleMod.Content.NPCs
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
-			return chat; // chat is implicitly cast to a string.
+			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
+
+			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
+			if (chosenChat == Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4")) {
+				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
+				Main.npcChatCornerItem = ItemID.HiveBackpack;
+			}
+
+			return chosenChat;
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI

@@ -149,7 +149,7 @@
  	public int dashDelay;
  	public int eocDash;
  	public int eocHit;
-@@ -601,6 +_,24 @@
+@@ -601,8 +_,32 @@
  	public int gem = -1;
  	public int gemCount;
  	public BitsByte ownedLargeGems;
@@ -172,8 +172,16 @@
 +	// Concrete use cases exist. Just gotta find a way to make a system for them intuitive.
 +	// - Thomas
  	public byte meleeEnchant;
++	/// <summary>
++	/// While attached to a rope or similar tile (<see cref="pulley"/>), this value represents the how close to the rope the player is. A value of 1 means the player is centered on the rope, while a value of 2 represents that the player has nudged away from the rope but is still attached. <see cref="Entity.direction"/> is used still for the players direction.
++	/// </summary>
  	public byte pulleyDir;
++	/// <summary>
++	/// If true, the player is attached to a rope or similar tile.
++	/// </summary>
  	public bool pulley;
+ 	public int pulleyFrame;
+ 	public float pulleyFrameCounter;
 @@ -612,6 +_,13 @@
  	public int snowBallLauncherInteractionCooldown;
  	public bool iceSkate;
@@ -656,13 +664,16 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
-@@ -1297,9 +_,21 @@
+@@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
  	public bool accDivingHelm;
 -	public bool accFlipper;
 +	//public bool accFlipper;
 +	public bool accFlipper {
++		get {
++			return GetJumpState<FlipperJump>().Enabled;
++		}
 +		set {
 +			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
 +			if (value) {
@@ -2791,11 +2802,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13287,6 +_,7 @@
+@@ -13287,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		selectItemOnNextUse = false; // Added by TML
  		ResetVisibleAccessories();
  		poisoned = false;
  		venom = false;
@@ -2809,17 +2821,24 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13538,6 +_,16 @@
+@@ -13522,6 +_,10 @@
+ 
+ 	public void SmartSelectLookup()
+ 	{
++		// Added by TML to preserve mouse item with moved call location
++		if (selectedItem == 58)
++			return;
++
+ 		if (mouseInterface)
+ 			controlTorch = false;
+ 
+@@ -13538,6 +_,12 @@
  					toolStrategy = 5;
  			}
  
 +			int modSelect = TileLoader.AutoSelect(tX, tY, this);
-+
 +			if (modSelect >= 0) {
-+				if (nonTorch == -1)
-+					nonTorch = selectedItem;
-+
-+				selectedItem = modSelect;
++				SmartSelect_SelectItem(modSelect);
 +				return;
 +			}
 +
@@ -3739,6 +3758,20 @@
  				if (controlInv) {
  					if (releaseInventory)
  						ToggleInv();
+@@ -19323,8 +_,12 @@
+ 							DpadRadial.ChangeSelection(-1);
+ 							CircularRadial.ChangeSelection(-1);
+ 						}
+-
++						/*
+ 						if (controlTorch && flag7) {
++						*/
++						// TML: minor tweak, smart select item is held with controlUse even when item cannot be used right now.
++						// In any case where nonTorch has a value, we should be setting nonTorch instead of selectedItem
++						if (nonTorch != -1 && flag7) {
+ 							if (selectedItem != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
 @@ -19357,6 +_,7 @@
  						CaptureManager.Instance.Scrolling();
  					}
@@ -3761,7 +3794,14 @@
  					}
  				}
  				else {
-@@ -19467,8 +_,10 @@
+@@ -19461,14 +_,17 @@
+ 							if (num15 != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
++							selectItemOnNextUse = true; // Added by TML
+ 							nonTorch = num15;
+ 						}
+ 					}
  				}
  			}
  
@@ -5652,6 +5692,17 @@
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
  			}
+@@ -31729,7 +_,10 @@
+ 		else if (inventory[selectedItem].createTile == 275 || inventory[selectedItem].createTile == 276 || inventory[selectedItem].createTile == 277) {
+ 			canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 51 || inventory[selectedItem].createTile == 330 || inventory[selectedItem].createTile == 331 || inventory[selectedItem].createTile == 332 || inventory[selectedItem].createTile == 333 || inventory[selectedItem].createTile == 336 || inventory[selectedItem].createTile == 340 || inventory[selectedItem].createTile == 342 || inventory[selectedItem].createTile == 341 || inventory[selectedItem].createTile == 343 || inventory[selectedItem].createTile == 344 || inventory[selectedItem].createTile == 379 || inventory[selectedItem].createTile == 351) {
++		*/
++		else if (TileID.Sets.CanPlaceNextToNonSolidTile[inventory[selectedItem].createTile]) {
+ 			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
+ 				canPlace = true;
+ 		}
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
@@ -5714,6 +5765,41 @@
  		if (num8 > 0)
  			DropItemFromExtractinator(num8, num9);
  	}
+@@ -32782,8 +_,16 @@
+ 			NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 	}
+ 
++	/// <summary>
++	/// Changes the player's direction (<see cref="Entity.direction"/>) while adjusting arm and item rotations to be consistent. Will also account for <see cref="pulley"/> and <see cref="pulleyDir"/>. The player direction change will be prevented if the player is on a rope but there isn't space for the player to face the new direction.
++	/// </summary>
++	/// <param name="dir"></param>
+ 	public void ChangeDir(int dir)
+ 	{
++		// added by TML, forward port from 1.4.5
++		if (dir == direction)
++			return;
++
+ 		if (!pulley || pulleyDir != 2) {
+ 			direction = dir;
+ 		}
+@@ -32800,7 +_,17 @@
+ 				position.X = num;
+ 				direction = dir;
+ 			}
++			// added by TML, forward port from 1.4.5
++			else {
++				return;
++			}
+ 		}
++
++		// Added by TML, forward port from 1.4.5
++		compositeBackArm.rotation *= -1;
++		compositeFrontArm.rotation *= -1;
++		itemRotation *= -1;
++		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
+ 	}
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
@@ -5878,7 +5964,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,59 @@
+@@ -33268,6 +_,70 @@
  			}
  		}
  
@@ -5932,8 +6018,19 @@
 +		ReuseDelayAndAnimationStart:
 +
 +		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (selectedItem != 58)
++		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
++			selectItemOnNextUse = false;
++
++			int oldSelect = selectedItem;
 +			SmartSelectLookup();
++			if (selectedItem != oldSelect) {
++				item = inventory[selectedItem];
++				// TML feature, allow the item to be instantly used
++				releaseUseItem = true;
++				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
++				itemTime = itemTimeMax = 0;
++			}
++		}
 +
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);

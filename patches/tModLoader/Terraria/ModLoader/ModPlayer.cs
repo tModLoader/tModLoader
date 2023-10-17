@@ -99,7 +99,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Similar to UpdateDead, except this is only called when the player is dead. If this is called, then ResetEffects will not be called.
+	/// Similar to <see cref="ResetEffects"/>, except this is only called when the player is dead. If this is called, then <see cref="ResetEffects"/> will not be called.
 	/// </summary>
 	public virtual void UpdateDead()
 	{

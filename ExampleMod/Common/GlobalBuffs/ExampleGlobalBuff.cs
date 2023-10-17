@@ -15,7 +15,7 @@ namespace ExampleMod.Common.GlobalBuffs
 		public static LocalizedText RemainingTimeText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			RemainingTimeText = Language.GetOrRegister(Mod.GetLocalizationKey($"{nameof(ExampleGlobalBuff)}.RemainingTime"));
+			RemainingTimeText = Mod.GetLocalization($"{nameof(ExampleGlobalBuff)}.RemainingTime");
 		}
 
 		public override void Update(int type, Player player, ref int buffIndex) {

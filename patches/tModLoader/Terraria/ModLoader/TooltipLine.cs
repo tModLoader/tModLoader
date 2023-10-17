@@ -51,11 +51,14 @@ public class TooltipLine
 	/// <item><description>"ItemName" - The name of the item.</description></item>
 	/// <item><description>"Favorite" - Tells if the item is favorited.</description></item>
 	/// <item><description>"FavoriteDesc" - Tells what it means when an item is favorited.</description></item>
+	/// <item><description>"NoTransfer" - Warning that this item cannot be placed inside itself, used by Money Trough and Void Bag/Vault.</description></item>
 	/// <item><description>"Social" - Tells if the item is in a social slot.</description></item>
 	/// <item><description>"SocialDesc" - Tells what it means for an item to be in a social slot.</description></item>
 	/// <item><description>"Damage" - The damage value and type of the weapon.</description></item>
 	/// <item><description>"CritChance" - The critical strike chance of the weapon.</description></item>
 	/// <item><description>"Speed" - The use speed of the weapon.</description></item>
+	/// <item><description>"NoSpeedScaling" - Whether this item does not scale with attack speed, added by tModLoader.</description></item>
+	/// <item><description>"SpecialSpeedScaling" - The multiplier this item applies to attack speed bonuses, added by tModLoader.</description></item>
 	/// <item><description>"Knockback" - The knockback of the weapon.</description></item>
 	/// <item><description>"FishingPower" - Tells the fishing power of the fishing pole.</description></item>
 	/// <item><description>"NeedsBait" - Tells that a fishing pole requires bait.</description></item>
@@ -96,6 +99,10 @@ public class TooltipLine
 	/// <item><description>"PrefixAccMeleeSpeed" - The melee speed modifier of the accessory prefix.</description></item>
 	/// <item><description>"SetBonus" - The set bonus description of the armor set.</description></item>
 	/// <item><description>"Expert" - Tells whether the item is from expert-mode.</description></item>
+	/// <item><description>"Master" - Whether the item is exclusive to Master Mode.</description></item>
+	/// <item><description>"JourneyResearch" - How many more items need to be researched to unlock duplication in Journey Mode.</description></item>
+	/// <item><description>"ModifiedByMods" - Whether the item has been modified by any mods and what mods when holding shift, added by tModLoader.</description></item>
+	/// <item><description>"BestiaryNotes" - Any bestiary notes, used when hovering items in the bestiary.</description></item>
 	/// <item><description>"SpecialPrice" - Tells the alternate currency price of an item.</description></item>
 	/// <item><description>"Price" - Tells the price of an item.</description></item>
 	/// </list>

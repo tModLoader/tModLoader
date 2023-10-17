@@ -57,7 +57,7 @@ namespace ExampleMod.Common.Players
 
 		public override void PostUpdateEquips() {
 			// If the conditions for the player having the buff are no longer true, remove the buff.
-			// This could could techinically go in ExampleDodgeBuff.Update, but typically these effects are given by armor or accessories, so showing this example here is more useful.
+			// This could could technically go in ExampleDodgeBuff.Update, but typically these effects are given by armor or accessories, so showing this example here is more useful.
 			if (exampleDodge && Player.HeldItem.type != ModContent.ItemType<HitModifiersShowcase>()) {
 				Player.ClearBuff(ModContent.BuffType<ExampleDodgeBuff>());
 			}
@@ -150,7 +150,7 @@ namespace ExampleMod.Common.Players
 				// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
 				// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
 				// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
-				// Working throught the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
+				// Working through the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
 				float percent = AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 				int damage = (int)(info.Damage * (percent / (1 - percent)));
 
@@ -187,7 +187,7 @@ namespace ExampleMod.Common.Players
 			}
 
 			float distance = player.Distance(target);
-			if (distance > AbsorbTeamDamageAccessory.DamageAbsorbtionRange) {
+			if (distance > AbsorbTeamDamageAccessory.DamageAbsorptionRange) {
 				return false; // player we're out of range, so can't take the hit
 			}
 
