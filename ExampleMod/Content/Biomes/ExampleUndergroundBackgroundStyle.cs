@@ -1,4 +1,5 @@
 using Terraria.ModLoader;
+using Terraria;
 
 namespace ExampleMod.Backgrounds
 {
@@ -9,6 +10,7 @@ namespace ExampleMod.Backgrounds
 			textureSlots[1] = BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeUnderground1");
 			textureSlots[2] = BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeUnderground2");
 			textureSlots[3] = BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeUnderground3");
+			textureSlots[4] = BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeUndergroundLava_" + Main.hellBackStyle);
 		}
 	}
 }

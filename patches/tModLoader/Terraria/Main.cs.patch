@@ -5666,15 +5666,1425 @@
  			LoadBackground(array3[0]);
  			LoadBackground(array3[1]);
  			LoadBackground(array3[2]);
-@@ -43698,7 +_,7 @@
- 									Lighting.GetCornerColors(num24, num25, out var vertices);
- 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
- 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+@@ -43599,231 +_,248 @@
+ 			}
+ 		}
+ 
++		if (LoaderManager.Get<UndergroundBackgroundStylesLoader>().PreDrawBackground(undergroundBackground, Main.spriteBatch))
++		{
+-		globalBrightness = 1.2f - 0.2f * value;
++			globalBrightness = 1.2f - 0.2f * value;
+-		float x = vector2.X;
++			float x = vector2.X;
+-		float y = vector2.Y;
++			float y = vector2.Y;
+-		float z = vector2.Z;
++			float z = vector2.Z;
+-		num6 = TextureAssets.Background[array[0]].Width() - 32;
++			num6 = TextureAssets.Background[array[0]].Width() - 32;
+-		bgParallax = caveParallax;
+-		bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+-		bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-		bgTopY = (int)((float)((int)worldSurface * 16 - 16) - screenPosition.Y + 16f);
+-		for (int l = 0; l < bgLoops; l++) {
+-			for (int m = 0; m < num6 / 16; m++) {
+-				int num11 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
+-				if (num11 == -8)
+-					num11 = 8;
+-
+-				float num12 = bgStartX + num6 * l + m * 16 + 8;
+-				float num13 = bgTopY;
+-				Microsoft.Xna.Framework.Color color = Lighting.GetColor((int)((num12 + screenPosition.X) / 16f), (int)((screenPosition.Y + num13) / 16f));
+-				color.R = (byte)((float)(int)color.R * x);
+-				color.G = (byte)((float)(int)color.G * y);
+-				color.B = (byte)((float)(int)color.B * z);
+-				if (num > 0f)
+-					color *= 1f - num;
+-
+-				spriteBatch.Draw(TextureAssets.Background[array[0]].Value, new Vector2(bgStartX + num6 * l + 16 * m + num11, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * m + num11 + 16, 0, 16, 16), color);
+-			}
+-		}
+-
+-		if (ugBackTransition > 0f) {
+-			num6 = TextureAssets.Background[array2[0]].Width() - 32;
+-			bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+-			bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-			for (int n = 0; n < bgLoops; n++) {
+-				for (int num14 = 0; num14 < num6 / 16; num14++) {
+-					int num15 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
+-					if (num15 == -8)
+-						num15 = 8;
+-
+-					float num16 = bgStartX + num6 * n + num14 * 16 + 8;
+-					float num17 = bgTopY;
+-					Microsoft.Xna.Framework.Color color2 = Lighting.GetColor((int)((num16 + screenPosition.X) / 16f), (int)((screenPosition.Y + num17) / 16f));
+-					color2.R = (byte)((float)(int)color2.R * x);
+-					color2.G = (byte)((float)(int)color2.G * y);
+-					color2.B = (byte)((float)(int)color2.B * z);
+-					Microsoft.Xna.Framework.Color color3 = color2;
+-					color3.R = (byte)((float)(int)color3.R * ugBackTransition);
+-					color3.G = (byte)((float)(int)color3.G * ugBackTransition);
+-					color3.B = (byte)((float)(int)color3.B * ugBackTransition);
+-					color3.A = (byte)((float)(int)color3.A * ugBackTransition);
+-					spriteBatch.Draw(TextureAssets.Background[array2[0]].Value, new Vector2(bgStartX + num6 * n + 16 * num14 + num15, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num14 + num15 + 16, 0, 16, 16), color3);
+-				}
+-			}
+-		}
+-
+-		bool flag = false;
+-		bool flag2 = false;
+-		bgTopY = (int)((float)((int)worldSurface * 16) - screenPosition.Y + 16f);
+-		if (worldSurface * 16.0 <= (double)(screenPosition.Y + (float)screenHeight + (float)offScreenRange)) {
+ 			bgParallax = caveParallax;
+-			num6 = TextureAssets.Background[array[1]].Width() - 32;
+ 			bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+ 			bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
++			bgTopY = (int)((float)((int)worldSurface * 16 - 16) - screenPosition.Y + 16f);
++			for (int l = 0; l < bgLoops; l++) {
++				for (int m = 0; m < num6 / 16; m++) {
++					int num11 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
++					if (num11 == -8)
++						num11 = 8;
++
++					float num12 = bgStartX + num6 * l + m * 16 + 8;
++					float num13 = bgTopY;
++					Microsoft.Xna.Framework.Color color = Lighting.GetColor((int)((num12 + screenPosition.X) / 16f), (int)((screenPosition.Y + num13) / 16f));
++					color.R = (byte)((float)(int)color.R * x);
++					color.G = (byte)((float)(int)color.G * y);
++					color.B = (byte)((float)(int)color.B * z);
++					if (num > 0f)
++						color *= 1f - num;
++
++					spriteBatch.Draw(TextureAssets.Background[array[0]].Value, new Vector2(bgStartX + num6 * l + 16 * m + num11, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * m + num11 + 16, 0, 16, 16), color);
++				}
++			}
++
++			if (ugBackTransition > 0f) {
++				num6 = TextureAssets.Background[array2[0]].Width() - 32;
++				bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
++				bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
++				for (int n = 0; n < bgLoops; n++) {
++					for (int num14 = 0; num14 < num6 / 16; num14++) {
++						int num15 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
++						if (num15 == -8)
++							num15 = 8;
++
++						float num16 = bgStartX + num6 * n + num14 * 16 + 8;
++						float num17 = bgTopY;
++						Microsoft.Xna.Framework.Color color2 = Lighting.GetColor((int)((num16 + screenPosition.X) / 16f), (int)((screenPosition.Y + num17) / 16f));
++						color2.R = (byte)((float)(int)color2.R * x);
++						color2.G = (byte)((float)(int)color2.G * y);
++						color2.B = (byte)((float)(int)color2.B * z);
++						Microsoft.Xna.Framework.Color color3 = color2;
++						color3.R = (byte)((float)(int)color3.R * ugBackTransition);
++						color3.G = (byte)((float)(int)color3.G * ugBackTransition);
++						color3.B = (byte)((float)(int)color3.B * ugBackTransition);
++						color3.A = (byte)((float)(int)color3.A * ugBackTransition);
++						spriteBatch.Draw(TextureAssets.Background[array2[0]].Value, new Vector2(bgStartX + num6 * n + 16 * num14 + num15, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num14 + num15 + 16, 0, 16, 16), color3);
++					}
++				}
++			}
++
++			bool flag = false;
++			bool flag2 = false;
++			bgTopY = (int)((float)((int)worldSurface * 16) - screenPosition.Y + 16f);
++			if (worldSurface * 16.0 <= (double)(screenPosition.Y + (float)screenHeight + (float)offScreenRange)) {
++				bgParallax = caveParallax;
++				num6 = TextureAssets.Background[array[1]].Width() - 32;
++				bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
++				bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-			if (worldSurface * 16.0 < (double)(screenPosition.Y - 16f)) {
++				if (worldSurface * 16.0 < (double)(screenPosition.Y - 16f)) {
+-				bgStartY = (int)(Math.IEEERemainder(bgTopY, backgroundHeight[2]) - (double)backgroundHeight[2]);
++					bgStartY = (int)(Math.IEEERemainder(bgTopY, backgroundHeight[2]) - (double)backgroundHeight[2]);
+-				bgLoopsY = (screenHeight - bgStartY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
++					bgLoopsY = (screenHeight - bgStartY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
+-			}
++				}
+-			else {
++				else {
+-				bgStartY = bgTopY;
++					bgStartY = bgTopY;
+-				bgLoopsY = (screenHeight - bgTopY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
++					bgLoopsY = (screenHeight - bgTopY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
+-			}
++				}
+ 
+-			if (rockLayer * 16.0 < (double)(Camera.ScaledPosition.Y + 600f)) {
++				if (rockLayer * 16.0 < (double)(Camera.ScaledPosition.Y + 600f)) {
+-				bgLoopsY = (int)(rockLayer * 16.0 - (double)screenPosition.Y + 600.0 - (double)bgStartY) / backgroundHeight[2];
++					bgLoopsY = (int)(rockLayer * 16.0 - (double)screenPosition.Y + 600.0 - (double)bgStartY) / backgroundHeight[2];
+-				flag2 = true;
++					flag2 = true;
+-			}
++				}
+ 
+-			int num18 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
++				int num18 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
+-			if (num18 == -8)
++				if (num18 == -8)
+-				num18 = 8;
++					num18 = 8;
+ 
+-			for (int num19 = 0; num19 < bgLoops; num19++) {
++				for (int num19 = 0; num19 < bgLoops; num19++) {
+-				for (int num20 = 0; num20 < bgLoopsY; num20++) {
++					for (int num20 = 0; num20 < bgLoopsY; num20++) {
+-					for (int num21 = 0; num21 < num6 / 16; num21++) {
++						for (int num21 = 0; num21 < num6 / 16; num21++) {
+-						for (int num22 = 0; num22 < 6; num22++) {
++							for (int num22 = 0; num22 < 6; num22++) {
+-							float num23 = bgStartY + num20 * 96 + num22 * 16 + 8;
++								float num23 = bgStartY + num20 * 96 + num22 * 16 + 8;
+-							int num24 = (int)(((float)(bgStartX + num6 * num19 + num21 * 16 + 8) + screenPosition.X) / 16f);
++								int num24 = (int)(((float)(bgStartX + num6 * num19 + num21 * 16 + 8) + screenPosition.X) / 16f);
+-							int num25 = (int)((num23 + screenPosition.Y) / 16f);
++								int num25 = (int)((num23 + screenPosition.Y) / 16f);
+-							Microsoft.Xna.Framework.Color color4 = Lighting.GetColor(num24, num25);
++								Microsoft.Xna.Framework.Color color4 = Lighting.GetColor(num24, num25);
+-							if (!WorldGen.InWorld(num24, num25))
++								if (!WorldGen.InWorld(num24, num25))
+-								continue;
++									continue;
+ 
+-							if (tile[num24, num25] == null)
++								if (tile[num24, num25] == null)
+-								tile[num24, num25] = new Tile();
++									tile[num24, num25] = new Tile();
+ 
+-							if (num == 0f && (color4.R > 0 || color4.G > 0 || color4.B > 0)) {
++								if (num == 0f && (color4.R > 0 || color4.G > 0 || color4.B > 0)) {
+-								if (!drawToScreen) {
++									if (!drawToScreen) {
+-									Lighting.GetCornerColors(num24, num25, out var vertices);
++										Lighting.GetCornerColors(num24, num25, out var vertices);
+-									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
++										vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+-									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
++										vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
 -									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++										tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+-								}
++									}
+-								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
++									else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+-									Lighting.GetColor9Slice(num24, num25, ref slices);
++										Lighting.GetColor9Slice(num24, num25, ref slices);
+-									try {
++										try {
+-										for (int num26 = 0; num26 < 9; num26++) {
++											for (int num26 = 0; num26 < 9; num26++) {
+-											int num27 = 0;
++												int num27 = 0;
+-											int num28 = 0;
++												int num28 = 0;
+-											int width = 4;
++												int width = 4;
+-											int height = 4;
++												int height = 4;
+-											Microsoft.Xna.Framework.Color color5 = color4;
++												Microsoft.Xna.Framework.Color color5 = color4;
+-											Microsoft.Xna.Framework.Color color6 = color4;
++												Microsoft.Xna.Framework.Color color6 = color4;
+-											switch (num26) {
++												switch (num26) {
+-												case 0:
++													case 0:
+-													if (!tile[num24 - 1, num25 - 1].active())
++														if (!tile[num24 - 1, num25 - 1].active())
+-														color6 = slices[num26];
++															color6 = slices[num26];
+-													break;
++														break;
++													case 1:
++														width = 8;
++														num27 = 4;
++														if (!tile[num24, num25 - 1].active())
++															color6 = slices[num26];
++														break;
++													case 2:
++														num27 = 12;
++														if (!tile[num24 + 1, num25 - 1].active())
++															color6 = slices[num26];
++														break;
++													case 3:
++														height = 8;
++														num28 = 4;
++														if (!tile[num24 - 1, num25].active())
++															color6 = slices[num26];
++														break;
++													case 4:
++														width = 8;
++														height = 8;
++														num27 = 4;
++														num28 = 4;
++														break;
++													case 5:
++														num27 = 12;
++														num28 = 4;
++														height = 8;
++														if (!tile[num24 + 1, num25].active())
++															color6 = slices[num26];
++														break;
++													case 6:
++														num28 = 12;
++														if (!tile[num24 - 1, num25 + 1].active())
++															color6 = slices[num26];
++														break;
++													case 7:
++														width = 8;
++														height = 4;
++														num27 = 4;
++														num28 = 12;
++														if (!tile[num24, num25 + 1].active())
++															color6 = slices[num26];
++														break;
++													case 8:
++														num27 = 12;
++														num28 = 12;
++														if (!tile[num24 + 1, num25 + 1].active())
++															color6 = slices[num26];
++														break;
++												}
++
++												color5.R = (byte)((color4.R + color6.R) / 2);
++												color5.G = (byte)((color4.G + color6.G) / 2);
++												color5.B = (byte)((color4.B + color6.B) / 2);
++												color5.R = (byte)((float)(int)color5.R * x);
++												color5.G = (byte)((float)(int)color5.G * y);
++												color5.B = (byte)((float)(int)color5.B * z);
++												spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num27 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22 + num28) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num27 + num18 + 16, 16 * num22 + num28, width, height), color5);
++												if (ugBackTransition > 0f) {
++													Microsoft.Xna.Framework.Color color7 = color5;
++													color7.R = (byte)((float)(int)color7.R * ugBackTransition);
++													color7.G = (byte)((float)(int)color7.G * ugBackTransition);
++													color7.B = (byte)((float)(int)color7.B * ugBackTransition);
++													color7.A = (byte)((float)(int)color7.A * ugBackTransition);
++													spriteBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num27 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22 + num28) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num27 + num18 + 16, 16 * num22 + num28, width, height), color7);
++												}
++											}
++										}
++										catch {
++											color4.R = (byte)((float)(int)color4.R * x);
++											color4.G = (byte)((float)(int)color4.G * y);
++											color4.B = (byte)((float)(int)color4.B * z);
++											spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), color4);
++										}
++									}
++									else if ((color4.R > num5 || (double)(int)color4.G > (double)num5 * 1.1 || (double)(int)color4.B > (double)num5 * 1.2) && ugBackTransition == 0f) {
++										Lighting.GetColor4Slice(num24, num25, ref slices);
++										for (int num29 = 0; num29 < 4; num29++) {
++											int num30 = 0;
++											int num31 = 0;
++											Microsoft.Xna.Framework.Color color8 = color4;
++											Microsoft.Xna.Framework.Color color9 = slices[num29];
++											switch (num29) {
+ 												case 1:
+-													width = 8;
++													num30 = 8;
+-													num27 = 4;
+-													if (!tile[num24, num25 - 1].active())
+-														color6 = slices[num26];
+ 													break;
+ 												case 2:
+-													num27 = 12;
+-													if (!tile[num24 + 1, num25 - 1].active())
+-														color6 = slices[num26];
++													num31 = 8;
+ 													break;
+ 												case 3:
+-													height = 8;
+-													num28 = 4;
+-													if (!tile[num24 - 1, num25].active())
+-														color6 = slices[num26];
+-													break;
+-												case 4:
+-													width = 8;
++													num30 = 8;
+-													height = 8;
++													num31 = 8;
+-													num27 = 4;
+-													num28 = 4;
+-													break;
+-												case 5:
+-													num27 = 12;
+-													num28 = 4;
+-													height = 8;
+-													if (!tile[num24 + 1, num25].active())
+-														color6 = slices[num26];
+-													break;
+-												case 6:
+-													num28 = 12;
+-													if (!tile[num24 - 1, num25 + 1].active())
+-														color6 = slices[num26];
+-													break;
+-												case 7:
+-													width = 8;
+-													height = 4;
+-													num27 = 4;
+-													num28 = 12;
+-													if (!tile[num24, num25 + 1].active())
+-														color6 = slices[num26];
+-													break;
+-												case 8:
+-													num27 = 12;
+-													num28 = 12;
+-													if (!tile[num24 + 1, num25 + 1].active())
+-														color6 = slices[num26];
+ 													break;
+ 											}
+ 
+-											color5.R = (byte)((color4.R + color6.R) / 2);
++											color8.R = (byte)((color4.R + color9.R) / 2);
+-											color5.G = (byte)((color4.G + color6.G) / 2);
++											color8.G = (byte)((color4.G + color9.G) / 2);
+-											color5.B = (byte)((color4.B + color6.B) / 2);
++											color8.B = (byte)((color4.B + color9.B) / 2);
+-											color5.R = (byte)((float)(int)color5.R * x);
++											color8.R = (byte)((float)(int)color8.R * x);
+-											color5.G = (byte)((float)(int)color5.G * y);
++											color8.G = (byte)((float)(int)color8.G * y);
+-											color5.B = (byte)((float)(int)color5.B * z);
++											color8.B = (byte)((float)(int)color8.B * z);
+-											spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num27 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22 + num28) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num27 + num18 + 16, 16 * num22 + num28, width, height), color5);
++											spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num30 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22 + num31) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num30 + num18 + 16, 16 * num22 + num31, 8, 8), color8);
+ 											if (ugBackTransition > 0f) {
+-												Microsoft.Xna.Framework.Color color7 = color5;
++												Microsoft.Xna.Framework.Color color10 = color8;
+-												color7.R = (byte)((float)(int)color7.R * ugBackTransition);
++												color10.R = (byte)((float)(int)color10.R * ugBackTransition);
+-												color7.G = (byte)((float)(int)color7.G * ugBackTransition);
++												color10.G = (byte)((float)(int)color10.G * ugBackTransition);
+-												color7.B = (byte)((float)(int)color7.B * ugBackTransition);
++												color10.B = (byte)((float)(int)color10.B * ugBackTransition);
+-												color7.A = (byte)((float)(int)color7.A * ugBackTransition);
++												color10.A = (byte)((float)(int)color10.A * ugBackTransition);
+-												spriteBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num27 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22 + num28) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num27 + num18 + 16, 16 * num22 + num28, width, height), color7);
++												spriteBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num30 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22 + num31) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num30 + num18 + 16, 16 * num22 + num31, 8, 8), color10);
+ 											}
+ 										}
+ 									}
+-									catch {
++									else {
+ 										color4.R = (byte)((float)(int)color4.R * x);
+ 										color4.G = (byte)((float)(int)color4.G * y);
+ 										color4.B = (byte)((float)(int)color4.B * z);
+ 										spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), color4);
+-									}
+-								}
+-								else if ((color4.R > num5 || (double)(int)color4.G > (double)num5 * 1.1 || (double)(int)color4.B > (double)num5 * 1.2) && ugBackTransition == 0f) {
+-									Lighting.GetColor4Slice(num24, num25, ref slices);
+-									for (int num29 = 0; num29 < 4; num29++) {
+-										int num30 = 0;
+-										int num31 = 0;
+-										Microsoft.Xna.Framework.Color color8 = color4;
+-										Microsoft.Xna.Framework.Color color9 = slices[num29];
+-										switch (num29) {
+-											case 1:
+-												num30 = 8;
+-												break;
+-											case 2:
+-												num31 = 8;
+-												break;
+-											case 3:
+-												num30 = 8;
+-												num31 = 8;
+-												break;
+-										}
+-
+-										color8.R = (byte)((color4.R + color9.R) / 2);
+-										color8.G = (byte)((color4.G + color9.G) / 2);
+-										color8.B = (byte)((color4.B + color9.B) / 2);
+-										color8.R = (byte)((float)(int)color8.R * x);
+-										color8.G = (byte)((float)(int)color8.G * y);
+-										color8.B = (byte)((float)(int)color8.B * z);
+-										spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num30 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22 + num31) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num30 + num18 + 16, 16 * num22 + num31, 8, 8), color8);
+ 										if (ugBackTransition > 0f) {
+-											Microsoft.Xna.Framework.Color color10 = color8;
++											Microsoft.Xna.Framework.Color color11 = color4;
+-											color10.R = (byte)((float)(int)color10.R * ugBackTransition);
++											color11.R = (byte)((float)(int)color11.R * ugBackTransition);
+-											color10.G = (byte)((float)(int)color10.G * ugBackTransition);
++											color11.G = (byte)((float)(int)color11.G * ugBackTransition);
+-											color10.B = (byte)((float)(int)color10.B * ugBackTransition);
++											color11.B = (byte)((float)(int)color11.B * ugBackTransition);
+-											color10.A = (byte)((float)(int)color10.A * ugBackTransition);
++											color11.A = (byte)((float)(int)color11.A * ugBackTransition);
+-											spriteBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num30 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22 + num31) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num30 + num18 + 16, 16 * num22 + num31, 8, 8), color10);
++											spriteBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), color11);
+ 										}
+ 									}
  								}
- 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
- 									Lighting.GetColor9Slice(num24, num25, ref slices);
+@@ -43831,60 +_,78 @@
+ 									color4.R = (byte)((float)(int)color4.R * x);
+ 									color4.G = (byte)((float)(int)color4.G * y);
+ 									color4.B = (byte)((float)(int)color4.B * z);
++									if (num > 0f)
++										color4 *= 1f - num;
++
+ 									spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), color4);
+-									if (ugBackTransition > 0f) {
+-										Microsoft.Xna.Framework.Color color11 = color4;
+-										color11.R = (byte)((float)(int)color11.R * ugBackTransition);
+-										color11.G = (byte)((float)(int)color11.G * ugBackTransition);
+-										color11.B = (byte)((float)(int)color11.B * ugBackTransition);
+-										color11.A = (byte)((float)(int)color11.A * ugBackTransition);
+-										spriteBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), color11);
++								}
++							}
++						}
++					}
++				}
++
++				if (ugBackTransition > 0f) {
++					num6 = TextureAssets.Background[array2[1]].Width() - 32;
++					bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
++					bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
++					num18 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
++					if (num18 == -8)
++						num18 = 8;
++
++					for (int num32 = 0; num32 < bgLoops; num32++) {
++						for (int num33 = 0; num33 < bgLoopsY; num33++) {
++							for (int num34 = 0; num34 < num6 / 16; num34++) {
++								for (int num35 = 0; num35 < 6; num35++) {
++									float num36 = bgStartY + num33 * 96 + num35 * 16 + 8;
++									int num37 = (int)(((float)(bgStartX + num6 * num32 + num34 * 16 + 8) + screenPosition.X) / 16f);
++									int num38 = (int)((num36 + screenPosition.Y) / 16f);
++									if (WorldGen.InWorld(num37, num38)) {
++										Microsoft.Xna.Framework.Color color12 = Lighting.GetColor(num37, num38);
++										if (tile[num37, num38] == null)
++											tile[num37, num38] = new Tile();
++
++										if (color12.R > 0 || color12.G > 0 || color12.B > 0) {
++											Lighting.GetCornerColors(num37, num38, out var vertices2, ugBackTransition);
++											byte a = (byte)(255f * ugBackTransition);
++											vertices2.BottomLeftColor.A = a;
++											vertices2.BottomRightColor.A = a;
++											vertices2.TopLeftColor.A = a;
++											vertices2.TopRightColor.A = a;
++											tileBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num32 + 16 * num34 + num18, bgStartY + backgroundHeight[array2[1]] * num33 + 16 * num35) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num34 + num18 + 16, 16 * num35, 16, 16), vertices2, Vector2.Zero, 1f, SpriteEffects.None);
++										}
+ 									}
+ 								}
+ 							}
++						}
++					}
++				}
++
++				num6 = 128;
++				if (flag2) {
++					bgParallax = caveParallax;
++					bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
++					bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
++					bgTopY = bgStartY + bgLoopsY * backgroundHeight[2];
++					if (bgTopY > -32) {
++						for (int num39 = 0; num39 < bgLoops; num39++) {
++							for (int num40 = 0; num40 < num6 / 16; num40++) {
++								float num41 = bgStartX + num6 * num39 + num40 * 16 + 8;
++								float num42 = bgTopY;
+-							else {
++								Microsoft.Xna.Framework.Color color13 = Lighting.GetColor((int)((num41 + screenPosition.X) / 16f), (int)((screenPosition.Y + num42) / 16f));
+-								color4.R = (byte)((float)(int)color4.R * x);
++								color13.R = (byte)((float)(int)color13.R * x);
+-								color4.G = (byte)((float)(int)color4.G * y);
++								color13.G = (byte)((float)(int)color13.G * y);
+-								color4.B = (byte)((float)(int)color4.B * z);
++								color13.B = (byte)((float)(int)color13.B * z);
+ 								if (num > 0f)
+-									color4 *= 1f - num;
+-
+-								spriteBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), color4);
+-							}
+-						}
+-					}
+-				}
+-			}
+-
+-			if (ugBackTransition > 0f) {
+-				num6 = TextureAssets.Background[array2[1]].Width() - 32;
+-				bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+-				bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-				num18 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
+-				if (num18 == -8)
+-					num18 = 8;
+-
+-				for (int num32 = 0; num32 < bgLoops; num32++) {
+-					for (int num33 = 0; num33 < bgLoopsY; num33++) {
+-						for (int num34 = 0; num34 < num6 / 16; num34++) {
+-							for (int num35 = 0; num35 < 6; num35++) {
+-								float num36 = bgStartY + num33 * 96 + num35 * 16 + 8;
+-								int num37 = (int)(((float)(bgStartX + num6 * num32 + num34 * 16 + 8) + screenPosition.X) / 16f);
+-								int num38 = (int)((num36 + screenPosition.Y) / 16f);
+-								if (WorldGen.InWorld(num37, num38)) {
+-									Microsoft.Xna.Framework.Color color12 = Lighting.GetColor(num37, num38);
+-									if (tile[num37, num38] == null)
+-										tile[num37, num38] = new Tile();
+-
+-									if (color12.R > 0 || color12.G > 0 || color12.B > 0) {
+-										Lighting.GetCornerColors(num37, num38, out var vertices2, ugBackTransition);
+-										byte a = (byte)(255f * ugBackTransition);
+-										vertices2.BottomLeftColor.A = a;
+-										vertices2.BottomRightColor.A = a;
+-										vertices2.TopLeftColor.A = a;
+-										vertices2.TopRightColor.A = a;
+-										tileBatch.Draw(TextureAssets.Background[array2[1]].Value, new Vector2(bgStartX + num6 * num32 + 16 * num34 + num18, bgStartY + backgroundHeight[array2[1]] * num33 + 16 * num35) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num34 + num18 + 16, 16 * num35, 16, 16), vertices2, Vector2.Zero, 1f, SpriteEffects.None);
+-									}
++									color13 *= 1f - num;
++
++								spriteBatch.Draw(TextureAssets.Background[array[2]].Value, new Vector2(bgStartX + num6 * num39 + 16 * num40 + num18, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num40 + num18 + 16, 0, 16, 16), color13);
++								if (ugBackTransition > 0f) {
++									Microsoft.Xna.Framework.Color color14 = color13;
++									color14.R = (byte)((float)(int)color14.R * ugBackTransition);
++									color14.G = (byte)((float)(int)color14.G * ugBackTransition);
++									color14.B = (byte)((float)(int)color14.B * ugBackTransition);
++									color14.A = (byte)((float)(int)color14.A * ugBackTransition);
++									spriteBatch.Draw(TextureAssets.Background[array2[2]].Value, new Vector2(bgStartX + num6 * num39 + 16 * num40 + num18, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num40 + num18 + 16, 0, 16, 16), color14);
+ 								}
+ 							}
+ 						}
+@@ -43892,208 +_,190 @@
+ 				}
+ 			}
+ 
+-			num6 = 128;
+-			if (flag2) {
++			if (num2 * 16.0 <= (double)(screenPosition.Y + (float)screenHeight) && (!remixWorld || maxTilesX >= 5000)) {
++				int y2 = 0;
++				int x2 = 0;
++				int num43 = screenHeight + 200;
++				int width2 = screenWidth + 100;
++				if ((float)UnderworldLayer * 16f < screenPosition.Y + (float)screenHeight) {
++					int num44 = (int)(hellBlackBoxBottom - screenPosition.Y + vector.Y);
++					if (num43 > num44)
++						num43 = num44;
++				}
++
++				spriteBatch.Draw(TextureAssets.BlackTile.Value, new Microsoft.Xna.Framework.Rectangle(x2, y2, width2, num43), new Microsoft.Xna.Framework.Color(0, 0, 0));
++			}
++
++			hellBlackBoxBottom = screenPosition.Y + (float)screenHeight + 100f;
++			bgTopY = (int)((float)((int)rockLayer * 16) - screenPosition.Y + 16f + 600f - 8f);
++			if (rockLayer * 16.0 <= (double)(screenPosition.Y + (float)screenHeight)) {
+ 				bgParallax = caveParallax;
+ 				bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+ 				bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-				bgTopY = bgStartY + bgLoopsY * backgroundHeight[2];
+-				if (bgTopY > -32) {
+-					for (int num39 = 0; num39 < bgLoops; num39++) {
+-						for (int num40 = 0; num40 < num6 / 16; num40++) {
+-							float num41 = bgStartX + num6 * num39 + num40 * 16 + 8;
+-							float num42 = bgTopY;
+-							Microsoft.Xna.Framework.Color color13 = Lighting.GetColor((int)((num41 + screenPosition.X) / 16f), (int)((screenPosition.Y + num42) / 16f));
+-							color13.R = (byte)((float)(int)color13.R * x);
+-							color13.G = (byte)((float)(int)color13.G * y);
+-							color13.B = (byte)((float)(int)color13.B * z);
+-							if (num > 0f)
+-								color13 *= 1f - num;
+-
+-							spriteBatch.Draw(TextureAssets.Background[array[2]].Value, new Vector2(bgStartX + num6 * num39 + 16 * num40 + num18, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num40 + num18 + 16, 0, 16, 16), color13);
+-							if (ugBackTransition > 0f) {
+-								Microsoft.Xna.Framework.Color color14 = color13;
+-								color14.R = (byte)((float)(int)color14.R * ugBackTransition);
+-								color14.G = (byte)((float)(int)color14.G * ugBackTransition);
+-								color14.B = (byte)((float)(int)color14.B * ugBackTransition);
+-								color14.A = (byte)((float)(int)color14.A * ugBackTransition);
+-								spriteBatch.Draw(TextureAssets.Background[array2[2]].Value, new Vector2(bgStartX + num6 * num39 + 16 * num40 + num18, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num40 + num18 + 16, 0, 16, 16), color14);
+-							}
+-						}
+-					}
+-				}
+-			}
+-		}
+-
+-		if (num2 * 16.0 <= (double)(screenPosition.Y + (float)screenHeight) && (!remixWorld || maxTilesX >= 5000)) {
+-			int y2 = 0;
+-			int x2 = 0;
+-			int num43 = screenHeight + 200;
+-			int width2 = screenWidth + 100;
+-			if ((float)UnderworldLayer * 16f < screenPosition.Y + (float)screenHeight) {
+-				int num44 = (int)(hellBlackBoxBottom - screenPosition.Y + vector.Y);
+-				if (num43 > num44)
+-					num43 = num44;
+-			}
+-
+-			spriteBatch.Draw(TextureAssets.BlackTile.Value, new Microsoft.Xna.Framework.Rectangle(x2, y2, width2, num43), new Microsoft.Xna.Framework.Color(0, 0, 0));
+-		}
+-
+-		hellBlackBoxBottom = screenPosition.Y + (float)screenHeight + 100f;
+-		bgTopY = (int)((float)((int)rockLayer * 16) - screenPosition.Y + 16f + 600f - 8f);
+-		if (rockLayer * 16.0 <= (double)(screenPosition.Y + (float)screenHeight)) {
+-			bgParallax = caveParallax;
+-			bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+-			bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-			if (rockLayer * 16.0 + (double)screenHeight < (double)(screenPosition.Y - 16f)) {
+-				bgStartY = (int)(Math.IEEERemainder(bgTopY, backgroundHeight[3]) - (double)backgroundHeight[3]);
+-				bgLoopsY = (screenHeight - bgStartY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
+-			}
+-			else {
+-				bgStartY = bgTopY;
+-				bgLoopsY = (screenHeight - bgTopY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
+-			}
+-
+-			if (num2 * 16.0 < (double)(screenPosition.Y + (float)screenHeight)) {
+-				bgLoopsY = (int)(num2 * 16.0 - (double)screenPosition.Y + 600.0 - (double)bgStartY) / backgroundHeight[2];
+-				flag = true;
+-			}
+-
+-			int num45 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
+-			if (num45 == -8)
+-				num45 = 8;
+-
+-			for (int num46 = 0; num46 < bgLoops; num46++) {
+-				for (int num47 = 0; num47 < bgLoopsY; num47++) {
+-					for (int num48 = 0; num48 < num6 / 16; num48++) {
+-						for (int num49 = 0; num49 < 6; num49++) {
+-							float num50 = bgStartY + num47 * 96 + num49 * 16 + 8;
+-							int num51 = (int)(((float)(bgStartX + num6 * num46 + num48 * 16 + 8) + screenPosition.X) / 16f);
+-							int num52 = (int)((num50 + screenPosition.Y) / 16f);
+-							if (!WorldGen.InWorld(num51, num52, 1))
+-								continue;
+-
+-							Microsoft.Xna.Framework.Color color15 = Lighting.GetColor(num51, num52);
+-							if ((!ShouldDrawBackgroundTileAt(num51, num52) && color15.R != 0 && color15.G != 0 && color15.B != 0) || (color15.R <= 0 && color15.G <= 0 && color15.B <= 0) || (!WallLightAt(num51, num52) && caveParallax == 0f))
+-								continue;
+-
+-							if (num == 0f && Lighting.NotRetro && color15.R < 230 && color15.G < 230 && color15.B < 230 && ugBackTransition == 0f) {
+-								if ((color15.R > num4 || (double)(int)color15.G > (double)num4 * 1.1 || (double)(int)color15.B > (double)num4 * 1.2) && !tile[num51, num52].active()) {
+-									Lighting.GetColor9Slice(num51, num52, ref slices);
+-									for (int num53 = 0; num53 < 9; num53++) {
+-										int num54 = 0;
+-										int num55 = 0;
+-										int width3 = 4;
+-										int height2 = 4;
+-										Microsoft.Xna.Framework.Color color16 = color15;
+-										Microsoft.Xna.Framework.Color color17 = color15;
+-										switch (num53) {
+-											case 0:
+-												if (!tile[num51 - 1, num52 - 1].active())
+-													color17 = slices[num53];
+-												break;
+-											case 1:
+-												width3 = 8;
+-												num54 = 4;
+-												if (!tile[num51, num52 - 1].active())
+-													color17 = slices[num53];
+-												break;
+-											case 2:
+-												num54 = 12;
+-												if (!tile[num51 + 1, num52 - 1].active())
+-													color17 = slices[num53];
+-												break;
+-											case 3:
+-												height2 = 8;
+-												num55 = 4;
+-												if (!tile[num51 - 1, num52].active())
+-													color17 = slices[num53];
+-												break;
+-											case 4:
+-												width3 = 8;
+-												height2 = 8;
+-												num54 = 4;
+-												num55 = 4;
+-												break;
+-											case 5:
+-												num54 = 12;
+-												num55 = 4;
+-												height2 = 8;
+-												if (!tile[num51 + 1, num52].active())
+-													color17 = slices[num53];
+-												break;
+-											case 6:
+-												num55 = 12;
+-												if (!tile[num51 - 1, num52 + 1].active())
+-													color17 = slices[num53];
+-												break;
+-											case 7:
+-												width3 = 8;
+-												height2 = 4;
+-												num54 = 4;
+-												num55 = 12;
+-												if (!tile[num51, num52 + 1].active())
+-													color17 = slices[num53];
+-												break;
+-											case 8:
+-												num54 = 12;
+-												num55 = 12;
+-												if (!tile[num51 + 1, num52 + 1].active())
+-													color17 = slices[num53];
+-												break;
+-										}
+-
+-										color16.R = (byte)((color15.R + color17.R) / 2);
+-										color16.G = (byte)((color15.G + color17.G) / 2);
+-										color16.B = (byte)((color15.B + color17.B) / 2);
+-										color16.R = (byte)((float)(int)color16.R * x);
+-										color16.G = (byte)((float)(int)color16.G * y);
+-										color16.B = (byte)((float)(int)color16.B * z);
+-										spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num54 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49 + num55) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num54 + num45 + 16, 16 * num49 + num55, width3, height2), color16);
+-										if (ugBackTransition > 0f) {
+-											Microsoft.Xna.Framework.Color color18 = color16;
+-											color18.R = (byte)((float)(int)color18.R * ugBackTransition);
+-											color18.G = (byte)((float)(int)color18.G * ugBackTransition);
+-											color18.B = (byte)((float)(int)color18.B * ugBackTransition);
+-											color18.A = (byte)((float)(int)color18.A * ugBackTransition);
+-											spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num54 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49 + num55) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num54 + num45 + 16, 16 * num49 + num55, width3, height2), color18);
+-										}
+-									}
+-								}
+-								else if (color15.R > num5 || (double)(int)color15.G > (double)num5 * 1.1 || (double)(int)color15.B > (double)num5 * 1.2) {
+-									Lighting.GetColor4Slice(num51, num52, ref slices);
+-									for (int num56 = 0; num56 < 4; num56++) {
+-										int num57 = 0;
+-										int num58 = 0;
+-										Microsoft.Xna.Framework.Color color19 = color15;
+-										Microsoft.Xna.Framework.Color color20 = slices[num56];
+-										switch (num56) {
+-											case 1:
+-												num57 = 8;
+-												break;
+-											case 2:
+-												num58 = 8;
+-												break;
+-											case 3:
+-												num57 = 8;
+-												num58 = 8;
+-												break;
+-										}
+-
+-										color19.R = (byte)((color15.R + color20.R) / 2);
+-										color19.G = (byte)((color15.G + color20.G) / 2);
+-										color19.B = (byte)((color15.B + color20.B) / 2);
+-										color19.R = (byte)((float)(int)color19.R * x);
+-										color19.G = (byte)((float)(int)color19.G * y);
+-										color19.B = (byte)((float)(int)color19.B * z);
+-										spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num57 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49 + num58) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num57 + num45 + 16, 16 * num49 + num58, 8, 8), color19);
+-										if (ugBackTransition > 0f) {
+-											Microsoft.Xna.Framework.Color color21 = color19;
+-											color21.R = (byte)((float)(int)color21.R * ugBackTransition);
+-											color21.G = (byte)((float)(int)color21.G * ugBackTransition);
+-											color21.B = (byte)((float)(int)color21.B * ugBackTransition);
+-											color21.A = (byte)((float)(int)color21.A * ugBackTransition);
+-											spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num57 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49 + num58) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num57 + num45 + 16, 16 * num49 + num58, 8, 8), color21);
++				if (rockLayer * 16.0 + (double)screenHeight < (double)(screenPosition.Y - 16f)) {
++					bgStartY = (int)(Math.IEEERemainder(bgTopY, backgroundHeight[3]) - (double)backgroundHeight[3]);
++					bgLoopsY = (screenHeight - bgStartY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
++				}
++				else {
++					bgStartY = bgTopY;
++					bgLoopsY = (screenHeight - bgTopY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
++				}
++
++				if (num2 * 16.0 < (double)(screenPosition.Y + (float)screenHeight)) {
++					bgLoopsY = (int)(num2 * 16.0 - (double)screenPosition.Y + 600.0 - (double)bgStartY) / backgroundHeight[2];
++					flag = true;
++				}
++
++				int num45 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
++				if (num45 == -8)
++					num45 = 8;
++
++				for (int num46 = 0; num46 < bgLoops; num46++) {
++					for (int num47 = 0; num47 < bgLoopsY; num47++) {
++						for (int num48 = 0; num48 < num6 / 16; num48++) {
++							for (int num49 = 0; num49 < 6; num49++) {
++								float num50 = bgStartY + num47 * 96 + num49 * 16 + 8;
++								int num51 = (int)(((float)(bgStartX + num6 * num46 + num48 * 16 + 8) + screenPosition.X) / 16f);
++								int num52 = (int)((num50 + screenPosition.Y) / 16f);
++								if (!WorldGen.InWorld(num51, num52, 1))
++									continue;
++
++								Microsoft.Xna.Framework.Color color15 = Lighting.GetColor(num51, num52);
++								if ((!ShouldDrawBackgroundTileAt(num51, num52) && color15.R != 0 && color15.G != 0 && color15.B != 0) || (color15.R <= 0 && color15.G <= 0 && color15.B <= 0) || (!WallLightAt(num51, num52) && caveParallax == 0f))
++									continue;
++
++								if (num == 0f && Lighting.NotRetro && color15.R < 230 && color15.G < 230 && color15.B < 230 && ugBackTransition == 0f) {
++									if ((color15.R > num4 || (double)(int)color15.G > (double)num4 * 1.1 || (double)(int)color15.B > (double)num4 * 1.2) && !tile[num51, num52].active()) {
++										Lighting.GetColor9Slice(num51, num52, ref slices);
++										for (int num53 = 0; num53 < 9; num53++) {
++											int num54 = 0;
++											int num55 = 0;
++											int width3 = 4;
++											int height2 = 4;
++											Microsoft.Xna.Framework.Color color16 = color15;
++											Microsoft.Xna.Framework.Color color17 = color15;
++											switch (num53) {
++												case 0:
++													if (!tile[num51 - 1, num52 - 1].active())
++														color17 = slices[num53];
++													break;
++												case 1:
++													width3 = 8;
++													num54 = 4;
++													if (!tile[num51, num52 - 1].active())
++														color17 = slices[num53];
++													break;
++												case 2:
++													num54 = 12;
++													if (!tile[num51 + 1, num52 - 1].active())
++														color17 = slices[num53];
++													break;
++												case 3:
++													height2 = 8;
++													num55 = 4;
++													if (!tile[num51 - 1, num52].active())
++														color17 = slices[num53];
++													break;
++												case 4:
++													width3 = 8;
++													height2 = 8;
++													num54 = 4;
++													num55 = 4;
++													break;
++												case 5:
++													num54 = 12;
++													num55 = 4;
++													height2 = 8;
++													if (!tile[num51 + 1, num52].active())
++														color17 = slices[num53];
++													break;
++												case 6:
++													num55 = 12;
++													if (!tile[num51 - 1, num52 + 1].active())
++														color17 = slices[num53];
++													break;
++												case 7:
++													width3 = 8;
++													height2 = 4;
++													num54 = 4;
++													num55 = 12;
++													if (!tile[num51, num52 + 1].active())
++														color17 = slices[num53];
++													break;
++												case 8:
++													num54 = 12;
++													num55 = 12;
++													if (!tile[num51 + 1, num52 + 1].active())
++														color17 = slices[num53];
++													break;
++											}
++
++											color16.R = (byte)((color15.R + color17.R) / 2);
++											color16.G = (byte)((color15.G + color17.G) / 2);
++											color16.B = (byte)((color15.B + color17.B) / 2);
++											color16.R = (byte)((float)(int)color16.R * x);
++											color16.G = (byte)((float)(int)color16.G * y);
++											color16.B = (byte)((float)(int)color16.B * z);
++											spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num54 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49 + num55) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num54 + num45 + 16, 16 * num49 + num55, width3, height2), color16);
++											if (ugBackTransition > 0f) {
++												Microsoft.Xna.Framework.Color color18 = color16;
++												color18.R = (byte)((float)(int)color18.R * ugBackTransition);
++												color18.G = (byte)((float)(int)color18.G * ugBackTransition);
++												color18.B = (byte)((float)(int)color18.B * ugBackTransition);
++												color18.A = (byte)((float)(int)color18.A * ugBackTransition);
++												spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num54 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49 + num55) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num54 + num45 + 16, 16 * num49 + num55, width3, height2), color18);
++											}
++										}
++									}
++									else if (color15.R > num5 || (double)(int)color15.G > (double)num5 * 1.1 || (double)(int)color15.B > (double)num5 * 1.2) {
++										Lighting.GetColor4Slice(num51, num52, ref slices);
++										for (int num56 = 0; num56 < 4; num56++) {
++											int num57 = 0;
++											int num58 = 0;
++											Microsoft.Xna.Framework.Color color19 = color15;
++											Microsoft.Xna.Framework.Color color20 = slices[num56];
++											switch (num56) {
++												case 1:
++													num57 = 8;
++													break;
++												case 2:
++													num58 = 8;
++													break;
++												case 3:
++													num57 = 8;
++													num58 = 8;
++													break;
++											}
++
++											color19.R = (byte)((color15.R + color20.R) / 2);
++											color19.G = (byte)((color15.G + color20.G) / 2);
++											color19.B = (byte)((color15.B + color20.B) / 2);
++											color19.R = (byte)((float)(int)color19.R * x);
++											color19.G = (byte)((float)(int)color19.G * y);
++											color19.B = (byte)((float)(int)color19.B * z);
++											spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num57 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49 + num58) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num57 + num45 + 16, 16 * num49 + num58, 8, 8), color19);
++											if (ugBackTransition > 0f) {
++												Microsoft.Xna.Framework.Color color21 = color19;
++												color21.R = (byte)((float)(int)color21.R * ugBackTransition);
++												color21.G = (byte)((float)(int)color21.G * ugBackTransition);
++												color21.B = (byte)((float)(int)color21.B * ugBackTransition);
++												color21.A = (byte)((float)(int)color21.A * ugBackTransition);
++												spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num57 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49 + num58) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num57 + num45 + 16, 16 * num49 + num58, 8, 8), color21);
++											}
++										}
++									}
++									else {
++										color15.R = (byte)((float)(int)color15.R * x);
++										color15.G = (byte)((float)(int)color15.G * y);
++										color15.B = (byte)((float)(int)color15.B * z);
++										spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color15);
++										if (ugBackTransition > 0f) {
++											Microsoft.Xna.Framework.Color color22 = color15;
++											color22.R = (byte)((float)(int)color22.R * ugBackTransition);
++											color22.G = (byte)((float)(int)color22.G * ugBackTransition);
++											color22.B = (byte)((float)(int)color22.B * ugBackTransition);
++											color22.A = (byte)((float)(int)color22.A * ugBackTransition);
++											spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color22);
+ 										}
+ 									}
+ 								}
+@@ -44101,208 +_,200 @@
+ 									color15.R = (byte)((float)(int)color15.R * x);
+ 									color15.G = (byte)((float)(int)color15.G * y);
+ 									color15.B = (byte)((float)(int)color15.B * z);
++									if (num > 0f)
++										color15 *= 1f - num;
++
+ 									spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color15);
+ 									if (ugBackTransition > 0f) {
+-										Microsoft.Xna.Framework.Color color22 = color15;
++										Microsoft.Xna.Framework.Color color23 = color15;
+-										color22.R = (byte)((float)(int)color22.R * ugBackTransition);
++										color23.R = (byte)((float)(int)color23.R * ugBackTransition);
+-										color22.G = (byte)((float)(int)color22.G * ugBackTransition);
++										color23.G = (byte)((float)(int)color23.G * ugBackTransition);
+-										color22.B = (byte)((float)(int)color22.B * ugBackTransition);
++										color23.B = (byte)((float)(int)color23.B * ugBackTransition);
+-										color22.A = (byte)((float)(int)color22.A * ugBackTransition);
++										color23.A = (byte)((float)(int)color23.A * ugBackTransition);
+-										spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color22);
++										spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color23);
+ 									}
+ 								}
+ 							}
+-							else {
+-								color15.R = (byte)((float)(int)color15.R * x);
+-								color15.G = (byte)((float)(int)color15.G * y);
+-								color15.B = (byte)((float)(int)color15.B * z);
+-								if (num > 0f)
+-									color15 *= 1f - num;
++						}
++					}
++				}
+ 
++				num6 = 128;
++				if (flag) {
++					bgParallax = caveParallax;
++					bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
++					bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
++					bgTopY = bgStartY + bgLoopsY * backgroundHeight[2];
++					for (int num59 = 0; num59 < bgLoops; num59++) {
++						for (int num60 = 0; num60 < num6 / 16; num60++) {
++							float num61 = bgStartX + num6 * num59 + num60 * 16 + 8;
++							float num62 = bgTopY;
++							Microsoft.Xna.Framework.Color color24 = Lighting.GetColor((int)((num61 + screenPosition.X) / 16f), (int)((screenPosition.Y + num62) / 16f));
++							color24.R = (byte)((float)(int)color24.R * x);
++							color24.G = (byte)((float)(int)color24.G * y);
++							color24.B = (byte)((float)(int)color24.B * z);
+-								spriteBatch.Draw(TextureAssets.Background[array[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color15);
++							spriteBatch.Draw(TextureAssets.Background[array[4]].Value, new Vector2(bgStartX + num6 * num59 + 16 * num60 + num45, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num60 + num45 + 16, magmaBGFrame * 16, 16, 16), color24);
+-								if (ugBackTransition > 0f) {
++							if (ugBackTransition > 0f) {
+-									Microsoft.Xna.Framework.Color color23 = color15;
++								Microsoft.Xna.Framework.Color color25 = color24;
+-									color23.R = (byte)((float)(int)color23.R * ugBackTransition);
++								color25.R = (byte)((float)(int)color25.R * ugBackTransition);
+-									color23.G = (byte)((float)(int)color23.G * ugBackTransition);
++								color25.G = (byte)((float)(int)color25.G * ugBackTransition);
+-									color23.B = (byte)((float)(int)color23.B * ugBackTransition);
++								color25.B = (byte)((float)(int)color25.B * ugBackTransition);
+-									color23.A = (byte)((float)(int)color23.A * ugBackTransition);
++								color25.A = (byte)((float)(int)color25.A * ugBackTransition);
+-									spriteBatch.Draw(TextureAssets.Background[array2[3]].Value, new Vector2(bgStartX + num6 * num46 + 16 * num48 + num45, bgStartY + backgroundHeight[array2[3]] * num47 + 16 * num49) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num48 + num45 + 16, 16 * num49, 16, 16), color23);
++								spriteBatch.Draw(TextureAssets.Background[array2[4]].Value, new Vector2(bgStartX + num6 * num59 + 16 * num60 + num45, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num60 + num45 + 16, magmaBGFrame * 16, 16, 16), color25);
+-								}
+ 							}
+ 						}
+ 					}
+ 				}
+ 			}
+ 
+-			num6 = 128;
+-			if (flag) {
+-				bgParallax = caveParallax;
++			bgTopY = (int)((float)((int)num2 * 16) - screenPosition.Y + 16f + 600f) - 8;
++			bool flag3 = false;
++			if (num2 * 16.0 <= (double)(screenPosition.Y + (float)screenHeight)) {
+ 				bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+ 				bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-				bgTopY = bgStartY + bgLoopsY * backgroundHeight[2];
+-				for (int num59 = 0; num59 < bgLoops; num59++) {
+-					for (int num60 = 0; num60 < num6 / 16; num60++) {
+-						float num61 = bgStartX + num6 * num59 + num60 * 16 + 8;
+-						float num62 = bgTopY;
+-						Microsoft.Xna.Framework.Color color24 = Lighting.GetColor((int)((num61 + screenPosition.X) / 16f), (int)((screenPosition.Y + num62) / 16f));
+-						color24.R = (byte)((float)(int)color24.R * x);
+-						color24.G = (byte)((float)(int)color24.G * y);
+-						color24.B = (byte)((float)(int)color24.B * z);
+-						spriteBatch.Draw(TextureAssets.Background[array[4]].Value, new Vector2(bgStartX + num6 * num59 + 16 * num60 + num45, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num60 + num45 + 16, magmaBGFrame * 16, 16, 16), color24);
+-						if (ugBackTransition > 0f) {
+-							Microsoft.Xna.Framework.Color color25 = color24;
+-							color25.R = (byte)((float)(int)color25.R * ugBackTransition);
+-							color25.G = (byte)((float)(int)color25.G * ugBackTransition);
+-							color25.B = (byte)((float)(int)color25.B * ugBackTransition);
+-							color25.A = (byte)((float)(int)color25.A * ugBackTransition);
+-							spriteBatch.Draw(TextureAssets.Background[array2[4]].Value, new Vector2(bgStartX + num6 * num59 + 16 * num60 + num45, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num60 + num45 + 16, magmaBGFrame * 16, 16, 16), color25);
+-						}
+-					}
+-				}
+-			}
+-		}
+-
+-		bgTopY = (int)((float)((int)num2 * 16) - screenPosition.Y + 16f + 600f) - 8;
+-		bool flag3 = false;
+-		if (num2 * 16.0 <= (double)(screenPosition.Y + (float)screenHeight)) {
+-			bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+-			bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-			if (num2 * 16.0 + (double)screenHeight < (double)(screenPosition.Y - 16f)) {
+-				bgStartY = (int)(Math.IEEERemainder(bgTopY, backgroundHeight[2]) - (double)backgroundHeight[2]);
+-				bgLoopsY = (screenHeight - bgStartY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
+-			}
+-			else {
+-				bgStartY = bgTopY;
+-				bgLoopsY = (screenHeight - bgTopY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
+-			}
+-
+-			if ((float)UnderworldLayer * 16f < screenPosition.Y + (float)screenHeight) {
+-				bgLoopsY = (int)Math.Ceiling(((float)UnderworldLayer * 16f - screenPosition.Y - (float)bgStartY) / (float)backgroundHeight[2]);
+-				flag3 = true;
+-			}
+-
+-			num4 = (int)((double)num4 * 1.5);
+-			num5 = (int)((double)num5 * 1.5);
+-			int num63 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
+-			if (num63 == -8)
+-				num63 = 8;
+-
+-			for (int num64 = 0; num64 < bgLoops; num64++) {
+-				for (int num65 = 0; num65 < bgLoopsY; num65++) {
+-					for (int num66 = 0; num66 < num6 / 16; num66++) {
+-						for (int num67 = 0; num67 < 6; num67++) {
+-							float num68 = bgStartY + num65 * 96 + num67 * 16 + 8;
+-							int num69 = (int)(((float)(bgStartX + num6 * num64 + num66 * 16 + 8) + screenPosition.X) / 16f);
+-							int num70 = (int)((num68 + screenPosition.Y) / 16f);
+-							if (!WorldGen.InWorld(num69, num70, 1))
+-								continue;
+-
+-							Microsoft.Xna.Framework.Color color26 = Lighting.GetColor(num69, num70);
+-							if ((!ShouldDrawBackgroundTileAt(num69, num70) && color26.R != 0 && color26.G != 0 && color26.B != 0) || (color26.R <= 0 && color26.G <= 0 && color26.B <= 0 && num70 <= maxTilesY - 300) || (!WallLightAt(num69, num70) && caveParallax == 0f))
+-								continue;
+-
+-							if (Lighting.NotRetro && color26.R < 230 && color26.G < 230 && color26.B < 230) {
+-								if ((color26.R > num4 || (double)(int)color26.G > (double)num4 * 1.1 || (double)(int)color26.B > (double)num4 * 1.2) && !tile[num69, num70].active()) {
+-									Lighting.GetColor9Slice(num69, num70, ref slices);
+-									for (int num71 = 0; num71 < 9; num71++) {
+-										int num72 = 0;
+-										int num73 = 0;
+-										int width4 = 4;
+-										int height3 = 4;
+-										Microsoft.Xna.Framework.Color color27 = color26;
+-										Microsoft.Xna.Framework.Color color28 = color26;
+-										switch (num71) {
+-											case 0:
+-												if (!tile[num69 - 1, num70 - 1].active())
+-													color28 = slices[num71];
+-												break;
+-											case 1:
+-												width4 = 8;
+-												num72 = 4;
+-												if (!tile[num69, num70 - 1].active())
+-													color28 = slices[num71];
+-												break;
+-											case 2:
+-												num72 = 12;
+-												if (!tile[num69 + 1, num70 - 1].active())
+-													color28 = slices[num71];
+-												break;
+-											case 3:
+-												height3 = 8;
+-												num73 = 4;
+-												if (!tile[num69 - 1, num70].active())
+-													color28 = slices[num71];
+-												break;
+-											case 4:
+-												width4 = 8;
+-												height3 = 8;
+-												num72 = 4;
+-												num73 = 4;
+-												break;
+-											case 5:
+-												num72 = 12;
+-												num73 = 4;
+-												height3 = 8;
+-												if (!tile[num69 + 1, num70].active())
+-													color28 = slices[num71];
+-												break;
+-											case 6:
+-												num73 = 12;
+-												if (!tile[num69 - 1, num70 + 1].active())
+-													color28 = slices[num71];
+-												break;
+-											case 7:
+-												width4 = 8;
+-												height3 = 4;
+-												num72 = 4;
+-												num73 = 12;
+-												if (!tile[num69, num70 + 1].active())
+-													color28 = slices[num71];
+-												break;
+-											case 8:
+-												num72 = 12;
+-												num73 = 12;
+-												if (!tile[num69 + 1, num70 + 1].active())
+-													color28 = slices[num71];
+-												break;
+-										}
+-
+-										color27.R = (byte)((color26.R + color28.R) / 2);
+-										color27.G = (byte)((color26.G + color28.G) / 2);
+-										color27.B = (byte)((color26.B + color28.B) / 2);
+-										color27.R = (byte)((float)(int)color27.R * x);
+-										color27.G = (byte)((float)(int)color27.G * y);
+-										color27.B = (byte)((float)(int)color27.B * z);
+-										spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num72 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67 + num73) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num72 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame + num73, width4, height3), color27, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-									}
+-								}
+-								else if (color26.R > num5 || (double)(int)color26.G > (double)num5 * 1.1 || (double)(int)color26.B > (double)num5 * 1.2) {
+-									Lighting.GetColor4Slice(num69, num70, ref slices);
+-									for (int num74 = 0; num74 < 4; num74++) {
+-										int num75 = 0;
+-										int num76 = 0;
+-										Microsoft.Xna.Framework.Color color29 = color26;
+-										Microsoft.Xna.Framework.Color color30 = slices[num74];
+-										switch (num74) {
+-											case 1:
+-												num75 = 8;
+-												break;
+-											case 2:
+-												num76 = 8;
+-												break;
+-											case 3:
+-												num75 = 8;
+-												num76 = 8;
+-												break;
+-										}
+-
+-										color29.R = (byte)((color26.R + color30.R) / 2);
+-										color29.G = (byte)((color26.G + color30.G) / 2);
+-										color29.B = (byte)((color26.B + color30.B) / 2);
+-										color29.R = (byte)((float)(int)color29.R * x);
+-										color29.G = (byte)((float)(int)color29.G * y);
+-										color29.B = (byte)((float)(int)color29.B * z);
+-										spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num75 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67 + num76) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num75 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame + num76, 8, 8), color29, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				if (num2 * 16.0 + (double)screenHeight < (double)(screenPosition.Y - 16f)) {
++					bgStartY = (int)(Math.IEEERemainder(bgTopY, backgroundHeight[2]) - (double)backgroundHeight[2]);
++					bgLoopsY = (screenHeight - bgStartY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
++				}
++				else {
++					bgStartY = bgTopY;
++					bgLoopsY = (screenHeight - bgTopY + (int)vector.Y * 2) / backgroundHeight[2] + 1;
++				}
++
++				if ((float)UnderworldLayer * 16f < screenPosition.Y + (float)screenHeight) {
++					bgLoopsY = (int)Math.Ceiling(((float)UnderworldLayer * 16f - screenPosition.Y - (float)bgStartY) / (float)backgroundHeight[2]);
++					flag3 = true;
++				}
++
++				num4 = (int)((double)num4 * 1.5);
++				num5 = (int)((double)num5 * 1.5);
++				int num63 = (int)(float)Math.Round(0f - (float)Math.IEEERemainder((float)bgStartX + screenPosition.X, 16.0));
++				if (num63 == -8)
++					num63 = 8;
++
++				for (int num64 = 0; num64 < bgLoops; num64++) {
++					for (int num65 = 0; num65 < bgLoopsY; num65++) {
++						for (int num66 = 0; num66 < num6 / 16; num66++) {
++							for (int num67 = 0; num67 < 6; num67++) {
++								float num68 = bgStartY + num65 * 96 + num67 * 16 + 8;
++								int num69 = (int)(((float)(bgStartX + num6 * num64 + num66 * 16 + 8) + screenPosition.X) / 16f);
++								int num70 = (int)((num68 + screenPosition.Y) / 16f);
++								if (!WorldGen.InWorld(num69, num70, 1))
++									continue;
++
++								Microsoft.Xna.Framework.Color color26 = Lighting.GetColor(num69, num70);
++								if ((!ShouldDrawBackgroundTileAt(num69, num70) && color26.R != 0 && color26.G != 0 && color26.B != 0) || (color26.R <= 0 && color26.G <= 0 && color26.B <= 0 && num70 <= maxTilesY - 300) || (!WallLightAt(num69, num70) && caveParallax == 0f))
++									continue;
++
++								if (Lighting.NotRetro && color26.R < 230 && color26.G < 230 && color26.B < 230) {
++									if ((color26.R > num4 || (double)(int)color26.G > (double)num4 * 1.1 || (double)(int)color26.B > (double)num4 * 1.2) && !tile[num69, num70].active()) {
++										Lighting.GetColor9Slice(num69, num70, ref slices);
++										for (int num71 = 0; num71 < 9; num71++) {
++											int num72 = 0;
++											int num73 = 0;
++											int width4 = 4;
++											int height3 = 4;
++											Microsoft.Xna.Framework.Color color27 = color26;
++											Microsoft.Xna.Framework.Color color28 = color26;
++											switch (num71) {
++												case 0:
++													if (!tile[num69 - 1, num70 - 1].active())
++														color28 = slices[num71];
++													break;
++												case 1:
++													width4 = 8;
++													num72 = 4;
++													if (!tile[num69, num70 - 1].active())
++														color28 = slices[num71];
++													break;
++												case 2:
++													num72 = 12;
++													if (!tile[num69 + 1, num70 - 1].active())
++														color28 = slices[num71];
++													break;
++												case 3:
++													height3 = 8;
++													num73 = 4;
++													if (!tile[num69 - 1, num70].active())
++														color28 = slices[num71];
++													break;
++												case 4:
++													width4 = 8;
++													height3 = 8;
++													num72 = 4;
++													num73 = 4;
++													break;
++												case 5:
++													num72 = 12;
++													num73 = 4;
++													height3 = 8;
++													if (!tile[num69 + 1, num70].active())
++														color28 = slices[num71];
++													break;
++												case 6:
++													num73 = 12;
++													if (!tile[num69 - 1, num70 + 1].active())
++														color28 = slices[num71];
++													break;
++												case 7:
++													width4 = 8;
++													height3 = 4;
++													num72 = 4;
++													num73 = 12;
++													if (!tile[num69, num70 + 1].active())
++														color28 = slices[num71];
++													break;
++												case 8:
++													num72 = 12;
++													num73 = 12;
++													if (!tile[num69 + 1, num70 + 1].active())
++														color28 = slices[num71];
++													break;
++											}
++
++											color27.R = (byte)((color26.R + color28.R) / 2);
++											color27.G = (byte)((color26.G + color28.G) / 2);
++											color27.B = (byte)((color26.B + color28.B) / 2);
++											color27.R = (byte)((float)(int)color27.R * x);
++											color27.G = (byte)((float)(int)color27.G * y);
++											color27.B = (byte)((float)(int)color27.B * z);
++											spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num72 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67 + num73) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num72 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame + num73, width4, height3), color27, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++										}
++									}
++									else if (color26.R > num5 || (double)(int)color26.G > (double)num5 * 1.1 || (double)(int)color26.B > (double)num5 * 1.2) {
++										Lighting.GetColor4Slice(num69, num70, ref slices);
++										for (int num74 = 0; num74 < 4; num74++) {
++											int num75 = 0;
++											int num76 = 0;
++											Microsoft.Xna.Framework.Color color29 = color26;
++											Microsoft.Xna.Framework.Color color30 = slices[num74];
++											switch (num74) {
++												case 1:
++													num75 = 8;
++													break;
++												case 2:
++													num76 = 8;
++													break;
++												case 3:
++													num75 = 8;
++													num76 = 8;
++													break;
++											}
++
++											color29.R = (byte)((color26.R + color30.R) / 2);
++											color29.G = (byte)((color26.G + color30.G) / 2);
++											color29.B = (byte)((color26.B + color30.B) / 2);
++											color29.R = (byte)((float)(int)color29.R * x);
++											color29.G = (byte)((float)(int)color29.G * y);
++											color29.B = (byte)((float)(int)color29.B * z);
++											spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num75 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67 + num76) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num75 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame + num76, 8, 8), color29, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++										}
++									}
++									else {
++										color26.R = (byte)((float)(int)color26.R * x);
++										color26.G = (byte)((float)(int)color26.G * y);
++										color26.B = (byte)((float)(int)color26.B * z);
++										spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame, 16, 16), color26, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 									}
+ 								}
+ 								else {
+@@ -44312,39 +_,33 @@
+ 									spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame, 16, 16), color26, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 								}
+ 							}
+-							else {
+-								color26.R = (byte)((float)(int)color26.R * x);
+-								color26.G = (byte)((float)(int)color26.G * y);
+-								color26.B = (byte)((float)(int)color26.B * z);
+-								spriteBatch.Draw(TextureAssets.Background[array[5]].Value, new Vector2(bgStartX + num6 * num64 + 16 * num66 + num63, bgStartY + backgroundHeight[2] * num65 + 16 * num67) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num66 + num63 + 16, 16 * num67 + backgroundHeight[2] * magmaBGFrame, 16, 16), color26, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+-							}
+ 						}
+ 					}
+ 				}
+-			}
+ 
+-			if (flag3) {
++				if (flag3) {
+-				bgParallax = caveParallax;
++					bgParallax = caveParallax;
+-				bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
++					bgStartX = (int)(0.0 - Math.IEEERemainder((double)num6 + (double)screenPosition.X * bgParallax, num6) - (double)(num6 / 2)) - (int)vector.X;
+-				bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
++					bgLoops = (screenWidth + (int)vector.X * 2) / num6 + 2;
+-				bgTopY = bgStartY + bgLoopsY * backgroundHeight[2];
++					bgTopY = bgStartY + bgLoopsY * backgroundHeight[2];
+-				hellBlackBoxBottom = (float)bgTopY + screenPosition.Y;
++					hellBlackBoxBottom = (float)bgTopY + screenPosition.Y;
+-				for (int num77 = 0; num77 < bgLoops; num77++) {
++					for (int num77 = 0; num77 < bgLoops; num77++) {
+-					for (int num78 = 0; num78 < num6 / 16; num78++) {
++						for (int num78 = 0; num78 < num6 / 16; num78++) {
+-						float num79 = bgStartX + num6 * num77 + num78 * 16 + 8;
++							float num79 = bgStartX + num6 * num77 + num78 * 16 + 8;
+-						float num80 = bgTopY;
++							float num80 = bgTopY;
+-						Microsoft.Xna.Framework.Color color31 = Lighting.GetColor((int)((num79 + screenPosition.X) / 16f), (int)((screenPosition.Y + num80) / 16f));
++							Microsoft.Xna.Framework.Color color31 = Lighting.GetColor((int)((num79 + screenPosition.X) / 16f), (int)((screenPosition.Y + num80) / 16f));
+-						color31.R = (byte)((float)(int)color31.R * x);
++							color31.R = (byte)((float)(int)color31.R * x);
+-						color31.G = (byte)((float)(int)color31.G * y);
++							color31.G = (byte)((float)(int)color31.G * y);
+-						color31.B = (byte)((float)(int)color31.B * z);
++							color31.B = (byte)((float)(int)color31.B * z);
+-						spriteBatch.Draw(TextureAssets.Background[array[6]].Value, new Vector2(bgStartX + num6 * num77 + 16 * num78 + num63, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num78 + num63 + 16, magmaBGFrame * 16, 16, 16), color31);
++							spriteBatch.Draw(TextureAssets.Background[array[6]].Value, new Vector2(bgStartX + num6 * num77 + 16 * num78 + num63, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num78 + num63 + 16, magmaBGFrame * 16, 16, 16), color31);
+-						if (ugBackTransition > 0f) {
++							if (ugBackTransition > 0f) {
+-							Microsoft.Xna.Framework.Color color32 = color31;
++								Microsoft.Xna.Framework.Color color32 = color31;
+-							color32.R = (byte)((float)(int)color32.R * ugBackTransition);
++								color32.R = (byte)((float)(int)color32.R * ugBackTransition);
+-							color32.G = (byte)((float)(int)color32.G * ugBackTransition);
++								color32.G = (byte)((float)(int)color32.G * ugBackTransition);
+-							color32.B = (byte)((float)(int)color32.B * ugBackTransition);
++								color32.B = (byte)((float)(int)color32.B * ugBackTransition);
+-							color32.A = (byte)((float)(int)color32.A * ugBackTransition);
++								color32.A = (byte)((float)(int)color32.A * ugBackTransition);
+-							spriteBatch.Draw(TextureAssets.Background[array2[6]].Value, new Vector2(bgStartX + num6 * num77 + 16 * num78 + num63, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num78 + num63 + 16, magmaBGFrame * 16, 16, 16), color32);
++								spriteBatch.Draw(TextureAssets.Background[array2[6]].Value, new Vector2(bgStartX + num6 * num77 + 16 * num78 + num63, bgTopY) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num78 + num63 + 16, magmaBGFrame * 16, 16, 16), color32);
++							}
+ 						}
+ 					}
+ 				}
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
@@ -5865,7 +7275,7 @@
  					}
 +
 +					if (num21 >= BG_STYLES_COUNT) {
-+						LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawCloseBackground(num21);
++						LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawCloseBackground(num4, num5, num6, num21);
 +					}
  				}
  			}
@@ -5885,7 +7295,7 @@
  			DrawSurfaceBG_DrawBackMountainsLayer(246);
  		}
  
-+		LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawFarTexture();
++		LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawFarTexture(backgroundTopMagicNumber, bgGlobalScaleMultiplier, pushBGTopHack);
 +
  		SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  	}
@@ -5901,10 +7311,19 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(treeMntBGSet4[1]);
  		}
 +
-+		LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawMiddleTexture();
++		LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawMiddleTexture(pushBGTopHack);
  	}
  
  	private void UpdateOceanWaterLineForAmbience()
+@@ -49826,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void SetBackgroundOffsets(int backgroundID, double backgroundTopMagicNumber, int pushBGTopHack)
++	public void SetBackgroundOffsets(int backgroundID, double backgroundTopMagicNumber, int pushBGTopHack) //Made public by TML
+ 	{
+ 		int num = 0;
+ 		int num2 = 0;
 @@ -50677,7 +_,7 @@
  
  			bool flag3 = false;
@@ -6205,7 +7624,7 @@
  		UpdateBGVisibility_BackLayer(null, null);
  		UpdateBGVisibility_FrontLayer(null, null);
 +
-+		LoaderManager.Get<SurfaceBackgroundStylesLoader>().ModifyFarFades(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
++		LoaderManager.Get<SurfaceBackgroundStylesLoader>().ModifyStyleFade(bgStyle, bgAlphaFrontLayer, backgroundLayerTransitionSpeed);
 +
  		try {
  			DrawSurfaceBG();

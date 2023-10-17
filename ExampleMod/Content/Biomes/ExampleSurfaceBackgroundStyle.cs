@@ -5,7 +5,7 @@ namespace ExampleMod.Backgrounds
 	public class ExampleSurfaceBackgroundStyle : ModSurfaceBackgroundStyle
 	{
 		// Use this to keep far Backgrounds like the mountains.
-		public override void ModifyFarFades(float[] fades, float transitionSpeed) {
+		public override void ModifyStyleFade(float[] fades, float transitionSpeed) {
 			for (int i = 0; i < fades.Length; i++) {
 				if (i == Slot) {
 					fades[i] += transitionSpeed;
@@ -22,13 +22,14 @@ namespace ExampleMod.Backgrounds
 			}
 		}
 
-		public override int ChooseFarTexture() {
+		public override int ChooseFarTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceFar");
 		}
 
 		private static int SurfaceFrameCounter;
 		private static int SurfaceFrame;
-		public override int ChooseMiddleTexture() {
+
+		public override int ChooseMiddleTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
 			if (++SurfaceFrameCounter > 12) {
 				SurfaceFrame = (SurfaceFrame + 1) % 4;
 				SurfaceFrameCounter = 0;
@@ -47,7 +48,15 @@ namespace ExampleMod.Backgrounds
 			}
 		}
 
-		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) {
+		public override int ChooseCloseFarTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceCloseFar");
+		}
+
+		public override int ChooseCloseMidTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceCloseMid");
+		}
+
+		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceClose");
 		}
 	}

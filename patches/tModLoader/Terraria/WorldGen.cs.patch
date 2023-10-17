@@ -370,6 +370,15 @@
  		worldCleared = true;
  	}
  
+@@ -3596,7 +_,7 @@
+ 				setBG(7, random.Next(6));
+ 			}
+ 		}
+-		else {
++		else if (!player.modBiomeFlags.Cast<bool>().Contains(true)) { //Normally an else, else if check added by TML
+ 			int num2 = (int)(player.Center.X / 16f);
+ 			if (num2 < Main.treeX[0]) {
+ 				int num = treeBG1;
 @@ -5231,17 +_,17 @@
  
  	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
