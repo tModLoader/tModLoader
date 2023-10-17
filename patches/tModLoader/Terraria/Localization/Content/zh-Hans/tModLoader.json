@@ -36,6 +36,7 @@
 		"MenuModUpdatesAvailable": "（{0} 个模组可更新！）",
 		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
 		"SwitchVersionInfoButton": "切换到另一版本",
+		// "LatestNews": "Latest News: {0}",
 		"SteamFamilyShareWarning": "检测到Terraria为Steam家庭共享。\n由于Steam不支持家庭共享tModLoader，因此启用试验性方案。\n以下功能无法使用：\n - 游戏内 Steam 界面\n - Steam 多人",
 		"WaitXSeconds": "等待{0}秒……",
 		"ViewInstructions": "查看说明",
