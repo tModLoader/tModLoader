@@ -8055,7 +8055,7 @@
  			player2.name = array[array.Length - 1].Split('.')[0];
  		}
  
-@@ -42322,11 +_,11 @@
+@@ -42322,12 +_,12 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
@@ -8066,9 +8066,11 @@
  
 -	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
 +	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
- 	{
+-	{
++ 	{
  		gotToReadName = false;
  		newPlayer.name = fileIO.ReadString();
+ 		gotToReadName = true;
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
