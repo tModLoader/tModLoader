@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
@@ -38,12 +39,24 @@ public abstract class ModUndergroundBackgroundStyle : ModBackgroundStyle
 /// </summary>
 public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 {
+	public enum BackgroundDistance
+	{
+		Close,
+		Middle,
+		Far
+	}
+
 	protected override sealed void Register()
 	{
 		Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
+
+	[Obsolete($"Use {nameof(ModifyStyleFade)} instead", error: true)]
+	public virtual void ModifyFarFades(float[] fades, float transitionSpeed)
+	{
+	}
 
 	/// <summary>
 	/// Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.
@@ -61,12 +74,9 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the very back of the background. This also lets you modify the scale, parallax, Y value and Looping Width.
 	/// </summary>
-	/// <param name="scale">The scale.</param>
-	/// <param name="parallax">The parallax value.</param>
-	/// <param name="topY">The Top Y level that the BG is drawn at</param>
-	/// <param name="loopWidth">The looping width that the texture loops at. Defaults to (Main.screenWidth / Main.bgWidthScaled + 2)</param>
+	/// <param name="layerParams">Parameters of background.</param>
 	/// <returns></returns>
-	public virtual int ChooseFarTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth)
+	public virtual int ChooseFarTexture(in BackgroundLayerParams layerParams)
 	{
 		return -1;
 	}
@@ -74,12 +84,9 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the middle of the background. This also lets you modify the scale, parallax, Y value and Looping Width.
 	/// </summary>
-	/// <param name="scale">The scale.</param>
-	/// <param name="parallax">The parallax value.</param>
-	/// <param name="topY">The Top Y level that the BG is drawn at</param>
-	/// <param name="loopWidth">The looping width that the texture loops at. Defaults to (Main.screenWidth / Main.bgWidthScaled + 2)</param>
+	/// <param name="layerParams">Parameters of background.</param>
 	/// <returns></returns>
-	public virtual int ChooseMiddleTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth)
+	public virtual int ChooseMiddleTexture(in BackgroundLayerParams layerParams)
 	{
 		return -1;
 	}
@@ -87,12 +94,9 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the closest part of the background. This also lets you modify the scale, parallax, Y value and Looping Width.
 	/// </summary>
-	/// <param name="scale">The scale.</param>
-	/// <param name="parallax">The parallax value.</param>
-	/// <param name="topY">The Top Y level that the BG is drawn at</param>
-	/// <param name="loopWidth">The looping width that the texture loops at. Defaults to (Main.screenWidth / Main.bgWidthScaled + 2)</param>
+	/// <param name="layerParams">Parameters of background.</param>
 	/// <returns></returns>
-	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth)
+	public virtual int ChooseCloseTexture(in BackgroundLayerParams layerParams)
 	{
 		return -1;
 	}
@@ -100,12 +104,9 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the closest middle part of the background. This also lets you modify the scale, parallax, Y value and Looping Width.
 	/// </summary>
-	/// <param name="scale">The scale.</param>
-	/// <param name="parallax">The parallax value.</param>
-	/// <param name="topY">The Top Y level that the BG is drawn at</param>
-	/// <param name="loopWidth">The looping width that the texture loops at. Defaults to (Main.screenWidth / Main.bgWidthScaled + 2)</param>
+	/// <param name="layerParams">Parameters of background.</param>
 	/// <returns></returns>
-	public virtual int ChooseCloseMidTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth)
+	public virtual int ChooseCloseMidTexture(in BackgroundLayerParams layerParams)
 	{
 		return -1;
 	}
@@ -113,21 +114,11 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <summary>
 	/// Allows you to determine which texture is drawn in the closest furthest part of the background. This also lets you modify the scale, parallax, Y value and Looping Width.
 	/// </summary>
-	/// <param name="scale">The scale.</param>
-	/// <param name="parallax">The parallax value.</param>
-	/// <param name="topY">The Top Y level that the BG is drawn at</param>
-	/// <param name="loopWidth">The looping width that the texture loops at. Defaults to (Main.screenWidth / Main.bgWidthScaled + 2)</param>
+	/// <param name="layerParams">Parameters of background.</param>
 	/// <returns></returns>
-	public virtual int ChooseCloseFarTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth)
+	public virtual int ChooseCloseFarTexture(in BackgroundLayerParams layerParams)
 	{
 		return -1;
-	}
-
-	public enum BackgroundDistance
-	{
-		Close,
-		Middle,
-		Far
 	}
 }
 

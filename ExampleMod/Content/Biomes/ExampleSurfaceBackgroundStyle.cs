@@ -22,14 +22,14 @@ namespace ExampleMod.Backgrounds
 			}
 		}
 
-		public override int ChooseFarTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+		public override int ChooseFarTexture(in BackgroundLayerParams layerParams) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceFar");
 		}
 
 		private static int SurfaceFrameCounter;
 		private static int SurfaceFrame;
 
-		public override int ChooseMiddleTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+		public override int ChooseMiddleTexture(in BackgroundLayerParams layerParams) {
 			if (++SurfaceFrameCounter > 12) {
 				SurfaceFrame = (SurfaceFrame + 1) % 4;
 				SurfaceFrameCounter = 0;
@@ -48,15 +48,15 @@ namespace ExampleMod.Backgrounds
 			}
 		}
 
-		public override int ChooseCloseFarTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+		public override int ChooseCloseFarTexture(in BackgroundLayerParams layerParams) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceCloseFar");
 		}
 
-		public override int ChooseCloseMidTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+		public override int ChooseCloseMidTexture(in BackgroundLayerParams layerParams) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceCloseMid");
 		}
 
-		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref int topY, ref int loopWidth) {
+		public override int ChooseCloseTexture(in BackgroundLayerParams layerParams) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceClose");
 		}
 	}

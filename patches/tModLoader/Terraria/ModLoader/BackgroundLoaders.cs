@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
 using Terraria.Localization;
@@ -195,7 +196,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawFarTexture(double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack)
+	public unsafe void DrawFarTexture(double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack)
 	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
@@ -221,7 +222,18 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 				continue;
 			}
 
-			int textureSlot = style.ChooseFarTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref Main.instance.bgTopY, ref Main.instance.bgLoops);
+			int textureSlot;
+			fixed (float* bgScalePtr = &Main.bgScale)
+			fixed (double* bgParallaxPtr = &Main.instance.bgParallax)
+			fixed (int* bgTopYPtr = &Main.instance.bgTopY)
+			fixed (int* bgLoopsPtr = &Main.instance.bgLoops) {
+				textureSlot = style.ChooseCloseFarTexture(new BackgroundLayerParams {
+					ScalePtr = bgScalePtr,
+					ParallaxPtr = bgParallaxPtr,
+					TopYPtr = bgTopYPtr,
+					LoopWidthPtr = bgLoopsPtr
+				});
+			}
 
 			if (textureSlot < 0 || textureSlot >= TextureAssets.Background.Length) {
 				continue;
@@ -245,7 +257,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawMiddleTexture(int pushBGTopHack)
+	public unsafe void DrawMiddleTexture(int pushBGTopHack)
 	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
@@ -265,7 +277,18 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 				continue;
 			}
 
-			int textureSlot = style.ChooseMiddleTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref Main.instance.bgTopY, ref Main.instance.bgLoops);
+			int textureSlot;
+			fixed (float* bgScalePtr = &Main.bgScale)
+			fixed (double* bgParallaxPtr = &Main.instance.bgParallax)
+			fixed (int* bgTopYPtr = &Main.instance.bgTopY)
+			fixed (int* bgLoopsPtr = &Main.instance.bgLoops) {
+				textureSlot = style.ChooseMiddleTexture(new BackgroundLayerParams {
+					ScalePtr = bgScalePtr,
+					ParallaxPtr = bgParallaxPtr,
+					TopYPtr = bgTopYPtr,
+					LoopWidthPtr = bgLoopsPtr
+				});
+			}
 
 			if (textureSlot < 0 || textureSlot >= TextureAssets.Background.Length) {
 				continue;
@@ -289,7 +312,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawCloseBackground(double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack, int style)
+	public unsafe void DrawCloseBackground(double backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack, int style)
 	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
@@ -304,8 +327,19 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		if (surfaceBackgroundStyle == null || !surfaceBackgroundStyle.PreDrawBackground(ModSurfaceBackgroundStyle.BackgroundDistance.Close, Main.spriteBatch, backgroundTopMagicNumber, bgGlobalScaleMultiplier, pushBGTopHack)) {
 			return;
 		}
-		
-		int textureSlot = surfaceBackgroundStyle.ChooseCloseFarTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref Main.instance.bgTopY, ref Main.instance.bgLoops);
+
+		int textureSlot;
+		fixed (float* bgScalePtr = &Main.bgScale)
+		fixed (double* bgParallaxPtr = &Main.instance.bgParallax)
+		fixed (int* bgTopYPtr = &Main.instance.bgTopY)
+		fixed (int* bgLoopsPtr = &Main.instance.bgLoops) {
+			textureSlot = surfaceBackgroundStyle.ChooseCloseFarTexture(new BackgroundLayerParams {
+				ScalePtr = bgScalePtr,
+				ParallaxPtr = bgParallaxPtr,
+				TopYPtr = bgTopYPtr,
+				LoopWidthPtr = bgLoopsPtr
+			});
+		}
 
 		if (textureSlot != -1) {
 			Main.bgScale = 1.25f;
@@ -328,7 +362,18 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 			}
 		}
 
-		int textureSlot2 = surfaceBackgroundStyle.ChooseCloseMidTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref Main.instance.bgTopY, ref Main.instance.bgLoops);
+		int textureSlot2;
+		fixed (float* bgScalePtr = &Main.bgScale)
+		fixed (double* bgParallaxPtr = &Main.instance.bgParallax)
+		fixed (int* bgTopYPtr = &Main.instance.bgTopY)
+		fixed (int* bgLoopsPtr = &Main.instance.bgLoops) {
+			textureSlot2 = surfaceBackgroundStyle.ChooseCloseMidTexture(new BackgroundLayerParams {
+				ScalePtr = bgScalePtr,
+				ParallaxPtr = bgParallaxPtr,
+				TopYPtr = bgTopYPtr,
+				LoopWidthPtr = bgLoopsPtr
+			});
+		}
 
 		if (textureSlot2 != -1) {
 			Main.bgScale = 1.31f;
@@ -353,7 +398,18 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 			}
 		}
 
-		int textureSlot3 = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref Main.instance.bgTopY, ref Main.instance.bgLoops);
+		int textureSlot3;
+		fixed (float* bgScalePtr = &Main.bgScale)
+		fixed (double* bgParallaxPtr = &Main.instance.bgParallax)
+		fixed (int* bgTopYPtr = &Main.instance.bgTopY)
+		fixed (int* bgLoopsPtr = &Main.instance.bgLoops) {
+			textureSlot3 = surfaceBackgroundStyle.ChooseCloseTexture(new BackgroundLayerParams {
+				ScalePtr = bgScalePtr,
+				ParallaxPtr = bgParallaxPtr,
+				TopYPtr = bgTopYPtr,
+				LoopWidthPtr = bgLoopsPtr
+			});
+		}
 
 		if (textureSlot3 != -1) {
 			Main.bgScale = 1.34f;
@@ -398,10 +454,8 @@ internal static class GlobalBackgroundStyleLoader
 
 	internal static void ResizeAndFillArrays(bool unloading = false)
 	{
-		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
-		// Remove generic arguments once fixed.
-		ModLoader.BuildGlobalHook<GlobalBackgroundStyle, DelegateChooseUndergroundBackgroundStyle>(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
-		ModLoader.BuildGlobalHook<GlobalBackgroundStyle, DelegateChooseSurfaceBackgroundStyle>(ref HookChooseSurfaceBackgroundStyle, globalBackgroundStyles, g => g.ChooseSurfaceBackgroundStyle);
+		ModLoader.BuildGlobalHook(ref HookChooseUndergroundBackgroundStyle, globalBackgroundStyles, g => g.ChooseUndergroundBackgroundStyle);
+		ModLoader.BuildGlobalHook(ref HookChooseSurfaceBackgroundStyle, globalBackgroundStyles, g => g.ChooseSurfaceBackgroundStyle);
 		ModLoader.BuildGlobalHook(ref HookFillUndergroundTextureArray, globalBackgroundStyles, g => g.FillUndergroundTextureArray);
 		ModLoader.BuildGlobalHook(ref HookModifyFarSurfaceFades, globalBackgroundStyles, g => g.ModifyFarSurfaceFades);
 
