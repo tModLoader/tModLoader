@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
@@ -51,6 +52,11 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
+
+	[Obsolete($"Use {nameof(ModifyStyleFade)} instead", error: true)]
+	public virtual void ModifyFarFades(float[] fades, float transitionSpeed)
+	{
+	}
 
 	/// <summary>
 	/// Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.
