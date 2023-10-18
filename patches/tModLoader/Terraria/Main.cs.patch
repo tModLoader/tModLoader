@@ -5688,6 +5688,117 @@
  		Lighting.GlobalBrightness = globalBrightness;
  		TimeLogger.DrawTime(3, stopwatch.Elapsed.TotalMilliseconds);
  	}
+@@ -44382,12 +_,16 @@
+ 
+ 		num7 = MathHelper.Clamp(num7 / 800f, 0f, 1f);
+ 		float num8 = (float)((double)screenPosition.Y - worldSurface * 16.0) / 300f;
++
++		LoaderManager.Get<UndergroundBackgroundStylesLoader>().ChooseStyle(out var modBG, out var priority);
++
+ 		if (num8 < 0f)
+ 			num8 = 0f;
+ 		else if (num8 > 1f)
+ 			num8 = 1f;
+ 
+ 		float num9 = 1f * (1f - num8) + num4 * num8;
++
+ 		float globalBrightness = Lighting.GlobalBrightness;
+ 		Lighting.GlobalBrightness = globalBrightness * (1f - num8) + 1f * num8;
+ 		float value = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
+@@ -44411,11 +_,16 @@
+ 		num4 = 1f * (num9 - value) + num4 * value;
+ 		num5 = 1f * (num9 - value) + num5 * value;
+ 		num6 = 1f * (num9 - value) + num6 * value;
++
+ 		int num10 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
+ 		int num11 = 3;
+ 		num11 = ((num10 <= caveBackX[0]) ? caveBackStyle[0] : ((num10 <= caveBackX[1]) ? caveBackStyle[1] : ((num10 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
+ 		num11 += 3;
++		if (priority == SceneEffectPriority.BiomeLow) {
++			num11 = modBG;
++		}
++
+-		if (SceneMetrics.SnowTileCount > SceneMetrics.SnowTileThreshold && (screenPosition.Y + (float)screenHeight) / 16f < (float)(maxTilesY - 250))
++		if (SceneMetrics.SnowTileCount > SceneMetrics.SnowTileThreshold && (screenPosition.Y + (float)screenHeight + 1200f) / 16f < (float)(maxTilesY - 250))
+ 			num11 = 1;
+ 
+ 		if (SceneMetrics.JungleTileCount > SceneMetrics.JungleTileThreshold) {
+@@ -44428,9 +_,46 @@
+ 			}
+ 		}
+ 
+-		if (SceneMetrics.EnoughTilesForGlowingMushroom)
++		if (priority == SceneEffectPriority.BiomeMedium) {
++			num11 = modBG;
++		}
++
++		if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenHeight / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
++			num11 = (player[myPlayer].ZoneCorrupt ? 19 : (player[myPlayer].ZoneCrimson ? 21 : ((!player[myPlayer].ZoneHallow) ? 18 : 20)));
++		}
++		else if ((double)(screenPosition.Y / 16f) > rockLayer + 60.0 && (double)(screenPosition.Y / 16f) < num2 - 60.0) {
++			if (player[myPlayer].ZoneSnow) {
++				if (player[myPlayer].ZoneCorrupt)
++					num11 = 15;
++				else if (player[myPlayer].ZoneCrimson)
++					num11 = 16;
++				else if (player[myPlayer].ZoneHallow)
++					num11 = 17;
++			}
++			else if (player[myPlayer].ZoneCorrupt) {
++				num11 = 12;
++			}
++			else if (player[myPlayer].ZoneCrimson) {
++				num11 = 13;
++			}
++			else if (player[myPlayer].ZoneHallow) {
++				num11 = 14;
++			}
++		}
++
++		if (player[myPlayer].ZoneGlowshroom)
+ 			num11 = 2;
+ 
++		if (priority >= SceneEffectPriority.BiomeHigh) {
++			num11 = modBG;
++		}
++
++		if (GlobalBackgroundStyleLoader.loaded) {
++			foreach (var hook in GlobalBackgroundStyleLoader.HookChooseUndergroundBackgroundStyle) {
++				hook(ref num11);
++			}
++		}
++
+ 		if (num11 != undergroundBackground) {
+ 			oldUndergroundBackground = undergroundBackground;
+ 			undergroundBackground = num11;
+@@ -44577,6 +_,8 @@
+ 			if (hellBackStyle == 2)
+ 				array3[5] = 127;
+ 
++			LoaderManager.Get<UndergroundBackgroundStylesLoader>().FillTextureArray(num12, array3);
++
+ 			LoadBackground(array3[0]);
+ 			LoadBackground(array3[1]);
+ 			LoadBackground(array3[2]);
+@@ -44595,6 +_,10 @@
+ 			}
+ 		}
+ 
++		if (!LoaderManager.Get<UndergroundBackgroundStylesLoader>().PreDrawBackground(undergroundBackground, Main.spriteBatch)) {
++			goto FinishDrawingOldBackgrounds;
++		}
++
+ 		globalBrightness = 1.2f * (1f - value) + 1f * value;
+ 		bgParallax = caveParallax;
+ 		bgStartX = (int)(0.0 - Math.IEEERemainder((double)num3 + (double)screenPosition.X * bgParallax, num3) - (double)(num3 / 2)) - (int)vector.X;
+@@ -45246,6 +_,7 @@
+ 			}
+ 		}
+ 
++		FinishDrawingOldBackgrounds:
+ 		Lighting.GlobalBrightness = globalBrightness;
+ 		TimeLogger.DrawTime(3, stopwatch.Elapsed.TotalMilliseconds);
+ 	}
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
