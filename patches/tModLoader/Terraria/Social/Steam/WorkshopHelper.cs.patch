@@ -88,9 +88,11 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -156,18 +_,29 @@
+@@ -155,19 +_,32 @@
+ 
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
++			protected bool _isOwner;
  			protected PublishedFileId_t _publishedFileID;
 +
 +			// Fields added by TML:
@@ -105,7 +107,7 @@
  
 -			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags)
 +			//TML: Added 'buildData', 'existingID', 'changeNotes' parameters.
-+			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
++			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null, bool isOwner = true)
  			{
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  				_issueReporter = issueReporter;
@@ -115,6 +117,7 @@
 +
 +				//TML: Looks like vanilla forgot to set this.
 +				_publicity = publicity;
++				_isOwner = isOwner;
 +				
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
@@ -244,7 +247,7 @@
  			private void UpdateItem()
  			{
  				string headerText = GetHeaderText();
-@@ -245,15 +_,23 @@
+@@ -245,39 +_,117 @@
  					_endAction(this);
  					return;
  				}
@@ -268,8 +271,10 @@
 +
  				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
  				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
- 				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,92 @@
+-				if (_entryData.PreviewImagePath != null)
++				if (_isOwner && _entryData.PreviewImagePath != null)
+ 					SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+ 
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
