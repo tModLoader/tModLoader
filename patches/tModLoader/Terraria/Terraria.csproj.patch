@@ -39,13 +39,14 @@
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
  		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
  		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-@@ -38,8 +_,12 @@
+@@ -38,8 +_,13 @@
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
 +		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
++		<ProjectReference Include="../../../tModLoader.SourceGenerators/tModLoader.SourceGenerators/tModLoader.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
  	</ItemGroup>
  	<ItemGroup>
 +		<EmbeddedResource Include="**\*.png" />
@@ -66,8 +67,8 @@
  	<ItemGroup>
 +		<PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.0.2" />
-+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
-+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
++		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.6.0" />
++		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
  		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +		<PackageReference Include="System.CodeDom" Version="6.0.0" />

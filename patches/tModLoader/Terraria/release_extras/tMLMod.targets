@@ -22,6 +22,10 @@
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
+		<Reference Remove="$(tMLLibraryPath)/tModLoader.SourceGenerators/tModLoader.SourceGenerators.dll" />
+	</ItemGroup>
+	<ItemGroup>
+		<Analyzer Include="$(tMLLibraryPath)/tModLoader.SourceGenerators/tModLoader.SourceGenerators.dll" />
 	</ItemGroup>
 	<Target Name="BuildMod" AfterTargets="Build">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>

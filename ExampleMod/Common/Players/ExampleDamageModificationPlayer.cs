@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Buffs;
+﻿using ExampleMod.Common.Packets;
+using ExampleMod.Content.Buffs;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
@@ -114,26 +115,11 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
-		public static void HandleExampleDodgeMessage(BinaryReader reader, int whoAmI) {
-			int player = reader.ReadByte();
-			if (Main.netMode == NetmodeID.Server) {
-				player = whoAmI;
-			}
-
-			Main.player[player].GetModPlayer<ExampleDamageModificationPlayer>().ExampleDodgeEffects();
-
-			if (Main.netMode == NetmodeID.Server) {
-				// If the server receives this message, it sends it to all other clients to sync the effects.
-				SendExampleDodgeMessage(player);
-			}
-		}
-
 		public static void SendExampleDodgeMessage(int whoAmI) {
-			// This code is called by both the initial 
-			ModPacket packet = ModContent.GetInstance<ExampleMod>().GetPacket();
-			packet.Write((byte)ExampleMod.MessageType.ExampleDodge);
-			packet.Write((byte)whoAmI);
-			packet.Send(ignoreClient: whoAmI);
+			// This code is called by both the initial
+			new ExampleDodgePacket {
+				PlayerWhoAmI = (byte)whoAmI
+			}.Send(ignoreClient: whoAmI);
 		}
 
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {

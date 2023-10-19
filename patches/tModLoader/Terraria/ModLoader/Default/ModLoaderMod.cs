@@ -13,7 +13,7 @@ using Terraria.ModLoader.Default.Patreon;
 
 namespace Terraria.ModLoader.Default;
 
-internal class ModLoaderMod : Mod
+internal partial class ModLoaderMod : Mod
 {
 	private static PatreonItem[][] PatronSets;
 	private static DeveloperItem[][] DeveloperSets;
@@ -71,6 +71,7 @@ internal class ModLoaderMod : Mod
 		return false;
 	}
 
+	/*
 	public override void HandlePacket(BinaryReader reader, int whoAmI)
 	{
 		byte packetType = reader.ReadByte();
@@ -84,6 +85,7 @@ internal class ModLoaderMod : Mod
 				break;
 		}
 	}
+	*/
 
 	internal static ModPacket GetPacket(byte packetType)
 	{

@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModPorter.Tests", "..\tMod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoaderTests", "..\test\tModLoaderTests.csproj", "{D7D3267F-5E12-47C8-A853-5BA8D0F15890}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.SourceGenerators", "..\tModLoader.SourceGenerators\tModLoader.SourceGenerators\tModLoader.SourceGenerators.csproj", "{34BD1903-72B6-4614-9202-3BD6E8E6128A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.SourceGenerators.Tests", "..\tModLoader.SourceGenerators\tModLoader.SourceGenerators.Tests\tModLoader.SourceGenerators.Tests.csproj", "{26E7897D-6646-4E4A-B9CB-6879428522A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{D7D3267F-5E12-47C8-A853-5BA8D0F15890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D3267F-5E12-47C8-A853-5BA8D0F15890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7D3267F-5E12-47C8-A853-5BA8D0F15890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34BD1903-72B6-4614-9202-3BD6E8E6128A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34BD1903-72B6-4614-9202-3BD6E8E6128A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34BD1903-72B6-4614-9202-3BD6E8E6128A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34BD1903-72B6-4614-9202-3BD6E8E6128A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26E7897D-6646-4E4A-B9CB-6879428522A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26E7897D-6646-4E4A-B9CB-6879428522A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26E7897D-6646-4E4A-B9CB-6879428522A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26E7897D-6646-4E4A-B9CB-6879428522A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

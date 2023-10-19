@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Items.Consumables;
+﻿using ExampleMod.Common.Packets;
+using ExampleMod.Content.Items.Consumables;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -21,18 +22,11 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)ExampleMod.MessageType.ExampleStatIncreasePlayerSync);
-			packet.Write((byte)Player.whoAmI);
-			packet.Write((byte)exampleLifeFruits);
-			packet.Write((byte)exampleManaCrystals);
-			packet.Send(toWho, fromWho);
-		}
-
-		// Called in ExampleMod.Networking.cs
-		public void ReceivePlayerSync(BinaryReader reader) {
-			exampleLifeFruits = reader.ReadByte();
-			exampleManaCrystals = reader.ReadByte();
+			new ExampleStatIncreasePlayerPacket {
+				PlayerWhoAmI = (byte)Player.whoAmI,
+				PlayerExampleLifeFruits = (byte)exampleLifeFruits,
+				PlayerExampleManaCrystals = (byte)exampleManaCrystals
+			}.Send(toWho, fromWho);
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {

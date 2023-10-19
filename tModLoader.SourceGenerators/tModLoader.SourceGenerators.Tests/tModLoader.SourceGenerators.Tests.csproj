@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.6.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.2-beta1.23411.1" />
+
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.2.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="log4net" Version="2.0.8.0" />
+		<ProjectReference Include="..\..\src\tModLoader\Terraria\Terraria.csproj" />
+		<ProjectReference Include="..\tModLoader.SourceGenerators\tModLoader.SourceGenerators.csproj" />
+	</ItemGroup>
+
+</Project>

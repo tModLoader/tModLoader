@@ -245,7 +245,7 @@ $@"using Terraria.ModLoader;
 
 namespace {modNameTrimmed}
 {{
-	public class {modNameTrimmed} : Mod
+	public partial class {modNameTrimmed} : Mod
 	{{
 	}}
 }}";

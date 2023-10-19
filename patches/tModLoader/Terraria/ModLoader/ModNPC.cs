@@ -4,7 +4,6 @@ using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -12,13 +11,14 @@ using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Packets;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 /// </summary>
-public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
+public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType, IDefaultEncoder<ModNPCEncoder>
 {
 	/// <summary> The NPC object that this ModNPC controls. </summary>
 	public NPC NPC => Entity;

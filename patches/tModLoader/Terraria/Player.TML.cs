@@ -2,17 +2,24 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Packets;
 
 namespace Terraria;
 
-public partial class Player : IEntityWithInstances<ModPlayer>
+public partial class Player : IEntityWithInstances<ModPlayer>, IDefaultEncoder<Player.Encoder>
 {
+	public readonly struct Encoder : INetEncoder<Player>
+	{
+		public readonly void Write(ModPacket packet, Player value) => packet.Write((byte)value.whoAmI);
+		public readonly Player Read(BinaryReader reader) => Main.player[reader.ReadByte()];
+	}
+
 	internal IList<string> usedMods;
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();

@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+
+		<PackageReference Include="PolySharp" Version="1.13.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+
+		<!--
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" />
+		<Publicize Include="Microsoft.CodeAnalysis" />
+		-->
+	</ItemGroup>
+	
+	<Target Name="CopyDllToTmlLibs" AfterTargets="Build">
+		<ItemGroup>
+			<DllFile Include="bin/$(Configuration)/$(TargetFramework)/tModLoader.SourceGenerators.dll"/>
+		</ItemGroup>
+
+		<Copy
+            SourceFiles="@(DllFile)"
+            DestinationFolder="../../src/tModLoader/Terraria/bin/$(Configuration)/net6.0/Libraries/tModLoader.SourceGenerators"
+		/>
+	</Target>
+
+</Project>
