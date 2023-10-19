@@ -114,7 +114,7 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	/// <summary>
 	/// Use this to control whether or not this global should be run on the provided entity instance. <br/>
 	/// </summary>
-	/// <param name="entity"> The entity for which the global instantion is being checked. </param>
+	/// <param name="entity"> The entity for which the global instantiation is being checked. </param>
 	/// <param name="lateInstantiation">
 	/// Whether this check occurs before or after the ModX.SetDefaults call.
 	/// <br/> If you're relying on entity values that can be changed by that call, you should likely prefix your return value with the following:

@@ -30,7 +30,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Manages content added by mods.
-/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
+/// Liaisons between mod content and Terraria's arrays and oversees the Loader classes.
 /// </summary>
 public static class ModContent
 {

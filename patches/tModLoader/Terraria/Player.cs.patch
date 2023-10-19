@@ -201,7 +201,7 @@
  	public int insanityShadowCooldown;
  	public int starCloakCooldown;
 -	public bool sandStorm;
-+	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behaviour
++	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behavior
 +	private bool _sandStormLogicEnabled;
 +	public bool sandStorm {
 +		get => _sandStormLogicEnabled && GetJumpState<SandstormInABottleJump>().Active;

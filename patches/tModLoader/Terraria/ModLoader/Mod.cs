@@ -168,7 +168,7 @@ public partial class Mod
 	public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
 	/// <summary>
-	/// Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <see cref="Language.GetOrRegister(string, Func{string})"/> to retrieve a <see cref="LocalizedText"/> for custom localization keys. Alternatively <see cref="GetLocalization(string, Func{string})"/> can be used directly instead. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files.
+	/// Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <see cref="Language.GetOrRegister(string, Func{string})"/> to retrieve a <see cref="LocalizedText"/> for custom localization keys. Alternatively <see cref="GetLocalization(string, Func{string})"/> can be used directly instead. Custom localization keys need to be registered during the mod loading process to appear automatically in the localization files.
 	/// </summary>
 	/// <param name="suffix"></param>
 	/// <returns></returns>
