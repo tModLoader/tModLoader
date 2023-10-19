@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
@@ -348,7 +347,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
 				MinionBossMinion minion = (MinionBossMinion)minionNPC.ModNPC;
 				minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
-				minion.PositionOffset = i / (float) count; // Give it a separate position offset
+				minion.PositionOffset = i / (float)count; // Give it a separate position offset
 
 				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield texxt
 

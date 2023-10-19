@@ -1,10 +1,10 @@
 ﻿using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Enums;
-using Terraria.ModLoader;
 using Terraria.ID;
-using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {

@@ -1,13 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using ExampleMod.Content.Dusts;
-using Terraria.GameContent;
-using ReLogic.Content;
 
 namespace ExampleMod.Content.Projectiles
 {

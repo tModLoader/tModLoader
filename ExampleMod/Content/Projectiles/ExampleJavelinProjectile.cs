@@ -3,9 +3,9 @@ using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -196,8 +196,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 			// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
-			if (IsStickingToTarget)
-			{
+			if (IsStickingToTarget) {
 				int npcIndex = TargetWhoAmI;
 				if (npcIndex >= 0 && npcIndex < 200 && Main.npc[npcIndex].active) {
 					if (Main.npc[npcIndex].behindTiles) {

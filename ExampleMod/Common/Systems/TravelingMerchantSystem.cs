@@ -1,5 +1,4 @@
 using ExampleMod.Content.NPCs;
-using System;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 

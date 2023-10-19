@@ -2,8 +2,8 @@ using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.UI;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools

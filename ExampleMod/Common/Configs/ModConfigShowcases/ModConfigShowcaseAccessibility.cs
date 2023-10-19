@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
 
 // This file contains fake ModConfig class that showcase using
 // access modifiers (to control which fields should be visible and have their value saved to file)

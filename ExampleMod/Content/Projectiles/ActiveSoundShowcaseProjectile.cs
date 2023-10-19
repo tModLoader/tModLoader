@@ -150,7 +150,7 @@ namespace ExampleMod.Content.Projectiles
 			soundInstance.Pitch = (Projectile.maxPenetrate - Projectile.penetrate) * 0.15f;
 
 			// Muffle the sound if the projectile is wet
-			if(Projectile.wet) {
+			if (Projectile.wet) {
 				soundInstance.Pitch -= 0.4f;
 				soundInstance.Volume = MathHelper.Clamp(soundInstance.Style.Volume - 0.4f, 0f, 1f);
 			}

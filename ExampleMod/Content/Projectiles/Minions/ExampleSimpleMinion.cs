@@ -1,7 +1,7 @@
-using System;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;

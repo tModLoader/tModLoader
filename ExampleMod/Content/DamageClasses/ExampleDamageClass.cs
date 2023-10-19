@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.Localization;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.DamageClasses

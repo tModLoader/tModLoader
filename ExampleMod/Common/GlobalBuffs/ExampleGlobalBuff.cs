@@ -75,7 +75,7 @@ namespace ExampleMod.Common.GlobalBuffs
 			// This code showcases adjusting buffName. Try it out by activating a Slice of Cake block
 			if (player.HasBuff(BuffID.SugarRush) && buffName.Length > 2) {
 				if (Main.GameUpdateCount % 10 == 0 || randomBuffTypeCache != type) {
-					if(randomBuffTypeCache != type) {
+					if (randomBuffTypeCache != type) {
 						randomBuffTextCache = buffName;
 						randomBuffTypeCache = type;
 					}

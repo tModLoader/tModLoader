@@ -163,7 +163,7 @@ namespace ExampleMod.Content.Tiles
 				return;
 			}
 
-			if(tile.TileFrameY < 36) {
+			if (tile.TileFrameY < 36) {
 				Color color = new Color(255, 255, 255, 0);
 
 				Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
@@ -185,7 +185,7 @@ namespace ExampleMod.Content.Tiles
 				Rectangle drawRectangle = new Rectangle(tile.TileFrameX, tile.TileFrameY + addFrY, 16, 16);
 
 				// The flame is manually drawn separate from the tile texture so that it can be drawn at full brightness.
-				Main.spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + offsetY) + zero , drawRectangle, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				Main.spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + offsetY) + zero, drawRectangle, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 			}
 		}
 	}

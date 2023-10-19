@@ -6,10 +6,8 @@ using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.Items.Placeable.Furniture;
 using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.Items.Weapons;
-using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -163,7 +161,9 @@ namespace ExampleMod.Content.NPCs
 			Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
 			foreach (Player player in Main.player) {
 				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
-				if (player.active && player.getRect().Intersects(npcScreenRect)) return true;
+				if (player.active && player.getRect().Intersects(npcScreenRect)) {
+					return true;
+				}
 			}
 			return false;
 		}

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.ModLoader.Config;
 
 // This file contains fake ModConfig class that showcase making config fields more readable
 // with use of labels, headers and tooltips.

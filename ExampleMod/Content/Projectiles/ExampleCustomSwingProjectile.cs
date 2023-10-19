@@ -1,12 +1,12 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.DataStructures;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -119,7 +119,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void ReceiveExtraAI(BinaryReader reader) {
-			Projectile.spriteDirection = reader.ReadSByte(); 
+			Projectile.spriteDirection = reader.ReadSByte();
 		}
 
 		public override void AI() {

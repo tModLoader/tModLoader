@@ -1,13 +1,13 @@
-using System;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using ExampleMod.Content.Dusts;
-using Terraria.GameContent;
-using ReLogic.Content;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -152,8 +152,7 @@ namespace ExampleMod.Content.Projectiles
 							*/
 							break;
 						}
-						if (shouldSwitchToRetracting)
-						{
+						if (shouldSwitchToRetracting) {
 							CurrentAIState = AIState.Retracting;
 							StateTimer = 0f;
 							Projectile.netUpdate = true;
@@ -493,8 +492,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			// Add a motion trail when moving forward, like most flails do (don't add trail if already hit a tile)
-			if (CurrentAIState == AIState.LaunchingForward)
-			{
+			if (CurrentAIState == AIState.LaunchingForward) {
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;

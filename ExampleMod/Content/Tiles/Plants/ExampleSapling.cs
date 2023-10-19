@@ -1,5 +1,4 @@
 using ExampleMod.Content.Dusts;
-using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -28,7 +27,7 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = new[] { ModContent.TileType<ExampleBlock>() , TileID.Gold };
+			TileObjectData.newTile.AnchorValidTiles = new[] { ModContent.TileType<ExampleBlock>(), TileID.Gold };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;

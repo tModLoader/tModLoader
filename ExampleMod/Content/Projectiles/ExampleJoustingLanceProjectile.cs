@@ -97,7 +97,7 @@ namespace ExampleMod.Content.Projectiles
 			// What this means in this context is that the speed value will be closer to positive 1 if the player is moving in the same direction as the direction the lance was shot.
 			// Example: if the lance is shot up and to the right, the value here will be closer to 1 if the player is also moving up and to the right.
 			float movementInLanceDirection = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));
-			
+
 			float playerVelocity = owner.velocity.Length();
 
 			if (playerVelocity > minimumDustVelocity && movementInLanceDirection > 0.8f) {
@@ -130,7 +130,7 @@ namespace ExampleMod.Content.Projectiles
 				}
 			}
 		}
-		
+
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 			// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
 			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;

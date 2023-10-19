@@ -7,7 +7,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
@@ -56,7 +55,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
 
 			// remove these 3 lines if you don't want the charging mechanic
-			if (!Charge(owner)) { 
+			if (!Charge(owner)) {
 				return; // timer doesn't update while charging, freezing the animation at the start.
 			}
 

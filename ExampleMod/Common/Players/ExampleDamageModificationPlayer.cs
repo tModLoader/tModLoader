@@ -61,7 +61,7 @@ namespace ExampleMod.Common.Players
 			if (exampleDodge && Player.HeldItem.type != ModContent.ItemType<HitModifiersShowcase>()) {
 				Player.ClearBuff(ModContent.BuffType<ExampleDodgeBuff>());
 			}
-			
+
 			// exampleDodgeVisualCounter should be updated here, not in DrawEffects, to work properly
 			exampleDodgeVisualCounter = Math.Clamp(exampleDodgeVisualCounter + (exampleDodge ? 1 : -1), 0, 30);
 		}

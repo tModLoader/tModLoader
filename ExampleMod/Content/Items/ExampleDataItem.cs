@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -19,7 +19,9 @@ namespace ExampleMod.Content.Items
 		public override void UpdateInventory(Player player) {
 			if (--timer <= 0) {
 				player.statLife += 100;
-				if (player.statLife > player.statLifeMax2) player.statLife = player.statLifeMax2;
+				if (player.statLife > player.statLifeMax2) {
+					player.statLife = player.statLifeMax2;
+				}
 				player.HealEffect(100);
 				Item.TurnToAir();
 			}

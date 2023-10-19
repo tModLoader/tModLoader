@@ -1,5 +1,4 @@
-﻿using ExampleMod.Common.Systems;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -94,7 +93,7 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 
 		public UIMoneyDisplay() {
 			startTime = null;
-			
+
 			for (int j = 0; j < 4; j++) {
 				// Textures may not be loaded without it
 				Main.instance.LoadItem(74 - j);
