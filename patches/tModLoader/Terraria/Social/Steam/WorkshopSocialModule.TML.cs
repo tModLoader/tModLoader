@@ -70,7 +70,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (BuildInfo.IsDev) {
+		if (!BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -84,10 +84,12 @@ public partial class WorkshopSocialModule
 			var currID = Steamworks.SteamUser.GetSteamID();
 
 			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
+			/*
 			if (existingAuthorID != currID.m_SteamID) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
 				return false;
 			}
+			*/
 
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
