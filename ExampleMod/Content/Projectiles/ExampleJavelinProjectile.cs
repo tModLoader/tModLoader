@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.DamageType = DamageClass.Ranged; // Makes the projectile deal ranged damage. You can set in to DamageClass.Throwing, but that is not used by any vanilla items
 			Projectile.penetrate = 2; // How many monsters the projectile can penetrate.
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-			Projectile.alpha = 255; // The transparency of the projectile, 255 for completely transparent. Our custom AI below fades our projectile in. Make sure to delete this if you aren't usinga an aiStyle that fades in.
+			Projectile.alpha = 255; // The transparency of the projectile, 255 for completely transparent. Our custom AI below fades our projectile in. Make sure to delete this if you aren't using an aiStyle that fades in.
 			Projectile.light = 0.5f; // How much light emit around the projectile
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.tileCollide = true; // Can the projectile collide with tiles?
@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Projectiles
 				Projectile.velocity.Y += 0.35f;
 			}
 
-			// Offset the rotation by 90 degrees because the sprite is oriented vertiacally.
+			// Offset the rotation by 90 degrees because the sprite is oriented vertically.
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
 
 			// Spawn some random dusts as the javelin travels
@@ -127,7 +127,7 @@ namespace ExampleMod.Content.Projectiles
 			SoundEngine.PlaySound(SoundID.Dig, Projectile.position); // Play a death sound
 			Vector2 usePos = Projectile.position; // Position to use for dusts
 
-			// Offset the rotation by 90 degrees because the sprite is oriented vertiacally.
+			// Offset the rotation by 90 degrees because the sprite is oriented vertically.
 			Vector2 rotationVector = (Projectile.rotation - MathHelper.ToRadians(90f)).ToRotationVector2(); // rotation vector to use for dust velocity
 			usePos += rotationVector * 16f;
 

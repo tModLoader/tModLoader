@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1; // Infinite penetration. The projectile can hit an infinite number of enemies.
 			Projectile.tileCollide = false; // Don't kill the projectile if it hits a tile.
 			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
-			Projectile.hide = true; // We are drawing the projectile ourself. See PreDraw() below.
+			Projectile.hide = true; // We are drawing the projectile ourselves. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 

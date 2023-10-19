@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Tiles
 	public class ExampleTree : ModTree
 	{
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
-		//TODO: This needs some explanations
+		// TODO: This needs some explanations
 		public override TreePaintingSettings TreeShaderSettings => new TreePaintingSettings {
 			UseSpecialGroups = true,
 			SpecialGroupMinimalHueValue = 11f / 72f,

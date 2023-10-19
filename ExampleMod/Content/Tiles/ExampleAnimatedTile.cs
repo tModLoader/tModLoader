@@ -81,7 +81,7 @@ namespace ExampleMod.Content.Tiles
 			return base.KillSound(i, j, fail);
 		}
 
-		//TODO: It's better to have an actual class for this example, instead of comments
+		// TODO: It's better to have an actual class for this example, instead of comments
 
 		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things
 		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {

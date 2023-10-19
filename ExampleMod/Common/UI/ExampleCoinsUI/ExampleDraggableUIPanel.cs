@@ -5,12 +5,12 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
-	// This DragableUIPanel class inherits from UIPanel
+	// This DraggableUIPanel class inherits from UIPanel
 	// Inheriting is a great tool for UI design. By inheriting, we get the background drawing for free from UIPanel
 	// We've added some code to allow the panel to be dragged around
 	// We've also added some code to ensure that the panel will bounce back into bounds if it is dragged outside or the screen resizes
 	// UIPanel does not prevent the player from using items when the mouse is clicked, so we've added that as well
-	public class ExampleDragableUIPanel : UIPanel
+	public class ExampleDraggableUIPanel : UIPanel
 	{
 		// Stores the offset from the top left of the UIPanel while dragging
 		private Vector2 offset;
@@ -63,8 +63,8 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 				Recalculate();
 			}
 
-			// Here we check if the DragableUIPanel is outside the Parent UIElement rectangle
-			// (In our example, the parent would be ExampleCoinsUI, a UIState. This means that we are checking that the DragableUIPanel is outside the whole screen)
+			// Here we check if the DraggableUIPanel is outside the Parent UIElement rectangle
+			// (In our example, the parent would be ExampleCoinsUI, a UIState. This means that we are checking that the DraggableUIPanel is outside the whole screen)
 			// By doing this and some simple math, we can snap the panel back on screen if the user resizes his window or otherwise changes resolution
 			var parentSpace = Parent.GetDimensions().ToRectangle();
 			if (!GetDimensions().ToRectangle().Intersects(parentSpace)) {

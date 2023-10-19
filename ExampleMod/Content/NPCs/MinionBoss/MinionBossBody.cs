@@ -18,7 +18,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.NPCs.MinionBoss
 {
-	// The main part of the boss, usually refered to as "body"
+	// The main part of the boss, usually referred to as "body"
 	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head icon
 	public class MinionBossBody : ModNPC
 	{
@@ -33,7 +33,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			get => NPC.ai[0] == 1f;
 			set => NPC.ai[0] = value ? 1f : 0f;
 		}
-		// If your boss has more than two stages, and since this is a boolean and can only be two things (true, false), concider using an integer or enum
+		// If your boss has more than two stages, and since this is a boolean and can only be two things (true, false), consider using an integer or enum
 
 		// More advanced usage of a property, used to wrap around to floats to act as a Vector2
 		public Vector2 FirstStageDestination {
@@ -163,7 +163,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Example Minion Boss that spawns minions on spawn, summoned with a spawn item. Showcases boss minion handling, multiplayer conciderations, and custom boss bar.")
+				new FlavorTextBestiaryInfoElement("Example Minion Boss that spawns minions on spawn, summoned with a spawn item. Showcases boss minion handling, multiplayer considerations, and custom boss bar.")
 			});
 		}
 
@@ -349,7 +349,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
 				minion.PositionOffset = i / (float)count; // Give it a separate position offset
 
-				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield texxt
+				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield text
 
 				// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
 				if (Main.netMode == NetmodeID.Server) {
@@ -404,7 +404,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				Vector2 fromPlayer = NPC.Center - player.Center;
 
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
-					// Important multiplayer concideration: drastic change in behavior (that is also decided by randomness) like this requires
+					// Important multiplayer consideration: drastic change in behavior (that is also decided by randomness) like this requires
 					// to be executed on the server (or singleplayer) to keep the boss in sync
 
 					float angle = fromPlayer.ToRotation();

@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Items
 				GenerateNewColors();
 			}
 			else {
-				// cycle through the colours
+				// cycle through the colors
 				colors = colors.Skip(1).Concat(colors.Take(1)).ToArray();
 			}
 		}

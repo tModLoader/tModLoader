@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items
 		public int timer;
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPatato", $"You have {timer / 60f:N1} seconds left!") { OverrideColor = Color.Red };
+			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPotato", $"You have {timer / 60f:N1} seconds left!") { OverrideColor = Color.Red };
 			tooltips.Add(tooltip);
 		}
 

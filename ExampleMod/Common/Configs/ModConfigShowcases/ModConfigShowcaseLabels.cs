@@ -51,7 +51,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public bool InterpolatedTextC;
 
 		// This example shows advanced capabilities of string formatting. Values can be formatted to appear as percentages, with language appropriate thousandths separators, and with specific padding or precision.
-		// The c# documentaion has more information: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
+		// The c# documentation has more information: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
 		[LabelArgs(.15753f, 1234567890, 12, 1.77777f)]
 		public bool StringFormatting;
 

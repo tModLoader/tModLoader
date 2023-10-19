@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Projectiles
 {
 	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
-	// This is great if you want to make melee weapons with complex swing behaviour
+	// This is great if you want to make melee weapons with complex swing behavior
 	// Note that this projectile only covers 2 relatively simple swings, everything else is up to you
 	// Aside from the custom animation, the custom collision code in Colliding is very important to this weapon
 	public class ExampleCustomSwingProjectile : ModProjectile
@@ -135,7 +135,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// AI depends on stage and attack
 			// Note that these stages are to facilitate the scaling effect at the beginning and end
-			// If this is not desireable for you, feel free to simplify
+			// If this is not desirable for you, feel free to simplify
 			switch (CurrentStage) {
 				case AttackStage.Prepare:
 					PrepareStrike();

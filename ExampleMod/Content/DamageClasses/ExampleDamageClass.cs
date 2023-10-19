@@ -70,7 +70,7 @@ namespace ExampleMod.Content.DamageClasses
 			player.GetCritChance<ExampleDamageClass>() += 4;
 			player.GetArmorPenetration<ExampleDamageClass>() += 10;
 			// These sorts of modifiers also exist for damage (GetDamage), knockback (GetKnockback), and attack speed (GetAttackSpeed).
-			// You'll see these used all around in referencce to vanilla classes and our example class here. Familiarize yourself with them.
+			// You'll see these used all around in reference to vanilla classes and our example class here. Familiarize yourself with them.
 		}
 
 		// This property lets you decide whether or not your damage class can use standard critical strike calculations.

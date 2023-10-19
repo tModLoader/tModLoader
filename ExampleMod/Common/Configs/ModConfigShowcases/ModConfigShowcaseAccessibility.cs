@@ -33,7 +33,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		// Get only properties will show up, but will be grayed out to show that they can't be changed.
 		public float Getter => Main.rand?.NextFloat(1f) ?? 0; // This is just an example, please don't do this.
 
-		// AutoProperies work the same as fields.
+		// AutoProperties work the same as fields.
 		public float AutoProperty { get; set; }
 
 		// Properties work as well. The backing field will be ignored when writing the json out.

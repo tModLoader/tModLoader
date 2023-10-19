@@ -170,7 +170,7 @@ namespace ExampleMod.NPCs
 		/// Override this method to use custom body-spawning code.<br/>
 		/// This method only runs if <see cref="HasCustomBodySegments"/> returns <see langword="true"/>.
 		/// </summary>
-		/// <param name="segmentCount">How many body segements are expected to be spawned</param>
+		/// <param name="segmentCount">How many body segments are expected to be spawned</param>
 		/// <returns>The whoAmI of the most-recently spawned NPC, which is the result of calling <see cref="NPC.NewNPC(Terraria.DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/></returns>
 		public virtual int SpawnBodySegments(int segmentCount) {
 			// Defaults to just returning this NPC's whoAmI, since the tail segment uses the return value as its "following" NPC index
@@ -400,7 +400,7 @@ namespace ExampleMod.NPCs
 			if (NPC.velocity.Y > speed)
 				NPC.velocity.Y = speed;
 
-			// The following behaviour mimicks vanilla worm movement
+			// The following behavior mimics vanilla worm movement
 			if (Math.Abs(NPC.velocity.X) + Math.Abs(NPC.velocity.Y) < speed * 0.4f) {
 				// Velocity is sufficiently fast, but not too fast
 				if (NPC.velocity.X < 0.0f)
@@ -547,7 +547,7 @@ namespace ExampleMod.NPCs
 
 			NPC following = worm.NPC.ai[1] >= Main.maxNPCs ? null : worm.FollowingNPC;
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				// Some of these conditions are possble if the body/tail segment was spawned individually
+				// Some of these conditions are possible if the body/tail segment was spawned individually
 				// Kill the segment if the segment NPC it's following is no longer valid
 				if (following is null || !following.active || following.friendly || following.townNPC || following.lifeMax <= 5) {
 					worm.NPC.life = 0;

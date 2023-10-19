@@ -115,7 +115,7 @@ namespace ExampleMod.Content.Projectiles
 					}
 
 					// SlotId can be stored as a float, such as in Projectile.localAI entries. This can be an alternative to making a SlotId field in the class.
-					// Don't use ai slots for SlotId, since those will sync and sounds and sound slots are completelly local and are not synced
+					// Don't use ai slots for SlotId, since those will sync and sounds and sound slots are completely local and are not synced
 					// SlotId soundSlot = SlotId.FromFloat(Projectile.localAI[0]);
 					// Projectile.localAI[0] = soundSlot.ToFloat();
 

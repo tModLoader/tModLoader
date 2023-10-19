@@ -11,7 +11,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 	public class ExampleProjectileNetSync : GlobalProjectile
 	{
 		public override bool InstancePerEntity => true;
-		private bool differentBehaviour;
+		private bool differentBehavior;
 		private float distance;
 
 		// This reduces how many projectiles actually have this GlobalProjectile
@@ -29,39 +29,39 @@ namespace ExampleMod.Common.GlobalProjectiles
 				&& npc.type == NPCID.DukeFishron
 				&& Main.bloodMoon) {
 
-				differentBehaviour = true;
+				differentBehavior = true;
 				distance = projectile.Distance(Main.player[npc.target].Center);
 			}
 		}
 
 		// Because this GlobalProjectile only applies to typhoons, this data is not attached to all projectile sync packets
 		public override void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter) {
-			bitWriter.WriteBit(differentBehaviour);
+			bitWriter.WriteBit(differentBehavior);
 
 			// This check further avoids sending distance when it wouldn't be necessary
-			if (differentBehaviour) {
+			if (differentBehavior) {
 				binaryWriter.Write(distance);
 			}
 		}
 
 		// Make sure you always read exactly as much data as you sent!
 		public override void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader) {
-			differentBehaviour = bitReader.ReadBit();
+			differentBehavior = bitReader.ReadBit();
 
-			if (differentBehaviour) {
+			if (differentBehavior) {
 				distance = binaryReader.ReadSingle();
 			}
 		}
 
 		public override void AI(Projectile projectile) {
-			if (differentBehaviour) {
+			if (differentBehavior) {
 				int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
 				float currentDistance = p == -1 ? 0 : projectile.Distance(Main.player[p].Center);
 				int dustType = DustID.GemSapphire;
 
-				// Ends behaviour when in very close range
+				// Ends behavior when in very close range
 				if (currentDistance < distance / 4) {
-					differentBehaviour = false;
+					differentBehavior = false;
 					projectile.netUpdate = true;
 				}
 				// Move at normal speed but can speed back up
@@ -74,7 +74,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 					dustType = DustID.GemRuby;
 				}
 
-				// Visually indicates this typhoon has special behaviour and which mode it is in
+				// Visually indicates this typhoon has special behavior and which mode it is in
 				int d = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType, Scale: 5f);
 				Main.dust[d].noGravity = true;
 			}

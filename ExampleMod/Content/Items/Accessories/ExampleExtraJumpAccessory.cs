@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override IEnumerable<Position> GetModdedConstraints() {
 			// By default, modded extra jumps set to be between two vanilla extra jumps (via After and Before) are ordered in load order.
 			// This hook allows you to organize where this extra jump is located relative to other modded extra jumps that are also
-			// placed between the same two vanila extra jumps.
+			// placed between the same two vanilla extra jumps.
 			yield return new Before(ModContent.GetInstance<MultipleUseExtraJump>());
 		}
 
@@ -54,7 +54,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 		public override void OnStarted(Player player, ref bool playSound) {
 			// Use this hook to trigger effects that should appear at the start of the extra jump
-			// This example mimicks the logic for spawning the puff of smoke from the Cloud in a Bottle
+			// This example mimics the logic for spawning the puff of smoke from the Cloud in a Bottle
 			int offsetY = player.height;
 			if (player.gravDir == -1f)
 				offsetY = 0;

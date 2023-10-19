@@ -27,7 +27,7 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	class ExampleTravelingMerchant : ModNPC
 	{
-		// Time of day for traveller to leave (6PM)
+		// Time of day for traveler to leave (6PM)
 		public const double despawnTime = 48600.0;
 
 		// the time of day the traveler will spawn (double.MaxValue for no spawn)
@@ -112,12 +112,12 @@ namespace ExampleMod.Content.NPCs
 
 			// Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
 			if (Main.dayTime && Main.time == 0) {
-				// insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
+				// insert code here to change the spawn chance based on other conditions (say, NPCs which have arrived, or milestones the player has passed)
 				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
 				// NPC won't spawn today if it stayed all night
 				if (!travelerIsThere && Main.rand.NextBool(4)) { // 4 = 25% Chance
-																// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
+					// Here we can make it so the NPC doesn't spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 				}
 				else {
@@ -136,7 +136,7 @@ namespace ExampleMod.Content.NPCs
 				// Prevents the traveler from spawning again the same day
 				spawnTime = double.MaxValue;
 
-				// Annouce that the traveler has spawned in!
+				// Announce that the traveler has spawned in!
 				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
 				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
 			}
@@ -367,7 +367,7 @@ namespace ExampleMod.Content.NPCs
 	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
 	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
 	// 
-	// This uses some fairly advanced C# to avoid being accessively long, so make sure you learn the language before trying to adapt it significantly
+	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
 	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{
 		public new record Entry(Item Item, List<Condition> Conditions) : AbstractNPCShop.Entry

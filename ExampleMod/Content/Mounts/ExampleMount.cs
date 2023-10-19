@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
-	// This mount is a car with wheels which behaves simillarly to the unicorn mount. The car has 3 baloons attached to the back.
+	// This mount is a car with wheels which behaves similarly to the unicorn mount. The car has 3 balloons attached to the back.
 	public class ExampleMount : ModMount
 	{
 		// Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.
@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Mounts
 			// Movement
 			MountData.jumpHeight = 5; // How high the mount can jump.
 			MountData.acceleration = 0.19f; // The rate at which the mount speeds up.
-			MountData.jumpSpeed = 4f; // The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is presssed.
+			MountData.jumpSpeed = 4f; // The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is pressed.
 			MountData.blockExtraJumps = false; // Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
 			MountData.constantJump = true; // Allows you to hold the jump button down.
 			MountData.heightBoost = 20; // Height between the mount and the ground
@@ -89,15 +89,15 @@ namespace ExampleMod.Content.Mounts
 		public override void UpdateEffects(Player player) {
 			// This code simulates some wind resistance for the balloons.
 			var balloons = (CarSpecificData)player.mount._mountSpecificData;
-			float ballonMovementScale = 0.05f;
+			float balloonMovementScale = 0.05f;
 
 			for (int i = 0; i < balloons.count; i++) {
 				ref float rotation = ref balloons.rotations[i]; // This is a reference variable. It's set to point directly to the 'i' index in the rotations array, so it works like an alias here.
 
 				if (Math.Abs(rotation) > MathHelper.PiOver2)
-					ballonMovementScale *= -1;
+					balloonMovementScale *= -1;
 
-				rotation += -player.velocity.X * ballonMovementScale * Main.rand.NextFloat();
+				rotation += -player.velocity.X * balloonMovementScale * Main.rand.NextFloat();
 				rotation = rotation.AngleLerp(0, 0.05f);
 			}
 
