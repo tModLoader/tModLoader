@@ -173,6 +173,18 @@
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
+@@ -2830,6 +_,11 @@
+ 		addTile(486);
+ 		newTile.CopyFrom(Style3x2);
+ 		newTile.LavaDeath = false;
++		// TML: Added to allow modders to spawn Fallen Log in custom biomes.
++		newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, newTile.Width, 0);
++		newTile.AnchorValidTiles = new int[4] {
++			TileID.Grass, TileID.GolfGrass, TileID.HallowedGrass, TileID.GolfGrassHallowed
++		};
+ 		addTile(488);
+ 		newTile.CopyFrom(Style3x2);
+ 		newTile.DrawYOffset = 2;
 @@ -4579,7 +_,10 @@
  		newTile.StyleMultiplier = 3;
  		newTile.StyleHorizontal = true;

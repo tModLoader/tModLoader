@@ -243,6 +243,7 @@ namespace ExampleMod.Content.NPCs
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
 
@@ -252,7 +253,15 @@ namespace ExampleMod.Content.NPCs
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
-			return chat; // chat is implicitly cast to a string.
+			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
+
+			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
+			if (chosenChat == Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4")) {
+				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
+				Main.npcChatCornerItem = ItemID.HiveBackpack;
+			}
+
+			return chosenChat;
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI

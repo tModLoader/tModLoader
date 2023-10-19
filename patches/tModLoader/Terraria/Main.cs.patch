@@ -488,9 +488,13 @@
  	public static int myPlayer;
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
-@@ -1045,7 +_,7 @@
+@@ -1044,8 +_,11 @@
+ 	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
  	public static int oldNPCShop;
++	/// <summary>
++	/// The item type of the item icon to display at the bottom right corner of the NPC chat window. The Angler uses this functionality to display the fishing quest fish item, but it can be used to show any item. Assign during <see cref="ModNPC.GetChat"/>. Defaults to 0.
++	/// </summary>
  	public static int npcChatCornerItem;
 -	public Chest[] shop = new Chest[100];
 +	public Chest[] shop = new Chest[2]; // technically only need a single Chest for the shop, but npcShop 0 is used for 'no shop' and we don't want to patch 20 places
@@ -4763,7 +4767,13 @@
  	}
  
  	private static void DrawInterface_20_MultiplayerPlayerNames()
-@@ -37182,6 +_,11 @@
+@@ -37178,10 +_,17 @@
+ 		num22 = 240;
+ 		text9 = $"{upTimerMax:F2}ms";
+ 		spriteBatch.DrawString(FontAssets.MouseText.Value, text9, new Vector2(num22, num23), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 	}
  
  	private static void DrawInterface_17_DiagnoseNet()
  	{
