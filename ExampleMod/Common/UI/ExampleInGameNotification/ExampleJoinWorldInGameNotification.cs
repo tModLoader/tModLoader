@@ -12,14 +12,9 @@ using Terraria.UI;
 namespace ExampleMod.Common.UI.ExampleInGameNotification;
 
 // This is a custom implementation of IInGameNotification for usage with the InGameNotificationSystem class.
-// It displays a welcome message to the player when they join a world, controlled through ExampleInGameNotifiationPlayer.
+// It displays a welcome message to the player when they join a world, controlled through ExampleInGameNotificationPlayer.
 public class ExampleJoinWorldInGameNotification : IInGameNotification
 {
-	// Since our behavior is always consistent, we don't need a creation object.
-	// This property just exists so there's a consistent object to keep track of
-	// in relation to the notifications. In vanilla, it's only used for join requests.
-	public object CreationObject => null;
-
 	// Remove this notification once the 5-second timer is up.
 	public bool ShouldBeRemoved => timeLeft <= 0;
 
@@ -34,11 +29,13 @@ public class ExampleJoinWorldInGameNotification : IInGameNotification
 	// and are directly taken from the vanilla achievement popup UI. This is done for consistency.
 	private float Scale {
 		get {
-			if (timeLeft < 30)
+			if (timeLeft < 30) {
 				return MathHelper.Lerp(0f, 1f, timeLeft / 30f);
+			}
 
-			if (timeLeft > 285)
+			if (timeLeft > 285) {
 				return MathHelper.Lerp(1f, 0f, (timeLeft - 285) / 15f);
+			}
 
 			return 1f;
 		}
@@ -47,29 +44,30 @@ public class ExampleJoinWorldInGameNotification : IInGameNotification
 	// See the comments for Scale.
 	private float Opacity {
 		get {
-			if (Scale <= 0.5f)
+			if (Scale <= 0.5f) {
 				return 0f;
+			}
 
 			return (Scale - 0.5f) / 0.5f;
 		}
 	}
 
-	public void Update()
-	{
+	public void Update() {
 		timeLeft--;
 
 		// Keep the timer kept to a minimum value of 0 to avoid issues, since we
 		// use it for lerping and other effects.
-		if (timeLeft < 0)
+		if (timeLeft < 0) {
 			timeLeft = 0;
+		}
 	}
 
-	public void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition)
-	{
+	public void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition) {
 		// No reason to continue drawing if the notification is no longer visible.
 
-		if (Opacity <= 0f)
+		if (Opacity <= 0f) {
 			return;
+		}
 
 		string title = Language.GetTextValue("Mods.ExampleMod.UI.InGameNotificationTitle");
 
@@ -93,42 +91,40 @@ public class ExampleJoinWorldInGameNotification : IInGameNotification
 		spriteBatch.Draw(iconTexture.Value, vector, null, Color.White * Opacity, 0f, new Vector2(0f, iconTexture.Width() / 2f), iconScale, SpriteEffects.None, 0f);
 		Utils.DrawBorderString(color: new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor / 5, Main.mouseTextColor) * Opacity, sb: spriteBatch, text: title, pos: vector - Vector2.UnitX * 10f, scale: effectiveScale * 0.9f, anchorx: 1f, anchory: 0.4f);
 
-		if (hovering)
+		if (hovering) {
 			OnMouseOver();
+		}
 	}
 
-	private void OnMouseOver()
-	{
+	private void OnMouseOver() {
 		// This method is called when the user hovers over the notification.
 
 		// Skip if we're ignoring mouse input.
-		if (PlayerInput.IgnoreMouseInterface)
+		if (PlayerInput.IgnoreMouseInterface) {
 			return;
+		}
 
 		// We are now interacting with a UI.
 		Main.LocalPlayer.mouseInterface = true;
 
-		if (!Main.mouseLeft || !Main.mouseLeftRelease)
+		if (!Main.mouseLeft || !Main.mouseLeftRelease) {
 			return;
+		}
 
 		Main.mouseLeftRelease = false;
 
 		// In our example, we just accelerate the exiting process on click.
 		// If you want it to close immediately, you can just set timeLeft to 0.
-		if (timeLeft > 30)
+		// This allows the notification time to shrink and fade away, as expected.
+		if (timeLeft > 30) {
 			timeLeft = 30;
+		}
 	}
 
-	public void PushAnchor(ref Vector2 positionAnchorBottom)
-	{
+	public void PushAnchor(ref Vector2 positionAnchorBottom) {
 		// Anchoring is used for determining how much space a popup takes up, essentially.
 		// This is because notifications visually stack. In our case, we want to let other notifications
 		// go in front of ours once we start fading off, so we scale the offset based on opacity.
 		positionAnchorBottom.Y -= 50f * Opacity;
-	}
-
-	public void DrawInNotificationsArea(SpriteBatch spriteBatch, Rectangle area, ref int gamepadPointLocalIndexTouse)
-	{
-		// This method goes entirely unused. It's only called in InGameNotificationsTracker::DrawInIngameOptions, which is never called.
 	}
 }

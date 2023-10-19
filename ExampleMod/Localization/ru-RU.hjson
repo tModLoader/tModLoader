@@ -1104,7 +1104,11 @@ Mods: {
 			// Example: Drops during daytime
 		}
 
-		// UI.ExampleResource: Example Resource: {0} / {1}
+		UI: {
+			// ExampleResource: Example Resource: {0} / {1}
+			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+		}
+
 		// WorldGen.ExampleOrePassMessage: Example Mod Ores
 
 		BuilderToggles: {
