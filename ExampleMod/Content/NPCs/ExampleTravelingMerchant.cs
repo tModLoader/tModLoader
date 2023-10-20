@@ -9,7 +9,6 @@ using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Chat;
@@ -20,7 +19,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
@@ -225,8 +223,10 @@ namespace ExampleMod.Content.NPCs
 			shopItems.Clear();
    			shopItems.AddRange(Shop.GenerateNewInventoryList());
 
-   			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
-   			if (Main.netMode == NetmodeID.Server) {
+			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
+			if (Main.netMode == NetmodeID.Server) {
+				// We recommend modders avoid sending WorldData too often, or filling it with too much data, lest too much bandwidth be consumed sending redundant data repeatedly
+				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronise
 				NetMessage.SendData(MessageID.WorldData);
    			}
 		}
