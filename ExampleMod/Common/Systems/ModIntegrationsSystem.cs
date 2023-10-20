@@ -11,7 +11,7 @@ namespace ExampleMod.Common.Systems
 	// This only showcases one way to implement such integrations, you are free to explore your own options and other mods examples
 
 	// You need to look for resources the mod developers provide regarding how they want you to add mod compatibility
-	// This can be their homepage, workshop page, wiki, github, discord, other contacts etc.
+	// This can be their homepage, workshop page, wiki, GitHub, Discord, other contacts etc.
 	// If the mod is open source, you can visit its code distribution platform (usually GitHub) and look for "Call" in its Mod class
 
 	// In addition to the examples shown here, ExampleMod also integrates with the Census Mod (https://steamcommunity.com/sharedfiles/filedetails/?id=2687866031)

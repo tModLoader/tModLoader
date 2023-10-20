@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using ExampleMod.Common.Configs.CustomUI;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
-using ExampleMod.Common.Configs.CustomUI;
 
 // This file contains fake ModConfig class that showcase various attributes
 // that can be used to customize behavior config fields.

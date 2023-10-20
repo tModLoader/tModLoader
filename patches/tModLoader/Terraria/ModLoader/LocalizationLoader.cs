@@ -139,7 +139,7 @@ public static class LocalizationLoader
 					continue;
 				}
 				if (parsedCulture == null && culture != null) {
-					prefix = underscorePart;
+					prefix = string.Join("_", splitByUnderscore.Skip(underscoreSplitIndex)); // Some mod names have '_' in them
 					return (culture, prefix);
 				}
 			}

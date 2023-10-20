@@ -1,18 +1,18 @@
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Weapons;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using System.Collections.Generic;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ExampleMod.Content.Items.Weapons;
 
 namespace ExampleMod.Content.NPCs
 {

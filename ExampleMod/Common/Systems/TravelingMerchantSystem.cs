@@ -1,48 +1,51 @@
 using ExampleMod.Content.NPCs;
-using System;
+using System.Collections.Generic;
+using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace ExampleMod.Common.Systems;
-
-public class TravelingMerchantSystem : ModSystem
+namespace ExampleMod.Common.Systems
 {
-	public override void PreUpdateWorld() {
-		ExampleTravelingMerchant.UpdateTravelingMerchant();
-	}
-
-	public override void SaveWorldData(TagCompound tag) {
- 		tag["shopItems"] = ExampleTravelingMerchant.shopItems;
-		if (ExampleTravelingMerchant.spawnTime != double.MaxValue) {
-			tag["ExampleTravelingMerchantSpawnTime"] = ExampleTravelingMerchant.spawnTime;
+	public class TravelingMerchantSystem : ModSystem
+	{
+		public override void PreUpdateWorld() {
+			ExampleTravelingMerchant.UpdateTravelingMerchant();
 		}
-	}
 
-	public override void LoadWorldData(TagCompound tag) {
-        ExampleTravelingMerchant.shopItems.Clear();
-        ExampleTravelingMerchant.shopItems.AddRange(tag.Get<List<Item>>("shopItems"));
-  		if (!tag.TryGet("ExampleTravelingMerchantSpawnTime", out ExampleTravelingMerchant.spawnTime)) {
+		public override void SaveWorldData(TagCompound tag) {
+			tag["shopItems"] = ExampleTravelingMerchant.shopItems;
+			if (ExampleTravelingMerchant.spawnTime != double.MaxValue) {
+				tag["spawnTime"] = ExampleTravelingMerchant.spawnTime;
+			}
+		}
+
+		public override void LoadWorldData(TagCompound tag) {
+			ExampleTravelingMerchant.shopItems.Clear();
+			ExampleTravelingMerchant.shopItems.AddRange(tag.Get<List<Item>>("shopItems"));
+			if (!tag.TryGet("spawnTime", out ExampleTravelingMerchant.spawnTime)) {
+				ExampleTravelingMerchant.spawnTime = double.MaxValue;
+			}
+		}
+
+		public override void ClearWorld() {
+			ExampleTravelingMerchant.shopItems.Clear();
 			ExampleTravelingMerchant.spawnTime = double.MaxValue;
 		}
-	}
-
-    public override void ClearWorld() {
-        ExampleTravelingMerchant.shopItems.Clear();
-        ExampleTravelingMerchant.spawnTime = double.MaxValue;
-    }
  
-    public override void NetSend(BinaryWriter writer) {
-        writer.Write(ExampleTravelingMerchant.shopItems.Count);
-        foreach (Item item in ExampleTravelingMerchant.shopItems) {
-            ItemIO.Send(item, writer, writeStack: true);
-        }
-    }
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write(ExampleTravelingMerchant.shopItems.Count);
+			foreach (Item item in ExampleTravelingMerchant.shopItems) {
+				ItemIO.Send(item, writer, writeStack: true);
+			}
+		}
 
-    public override void NetReceive(BinaryReader reader) {
-        ExampleTravelingMerchant.shopItems.Clear();
-        int count = reader.ReadInt32();
-        for (int i = 0; i < count; i++) {
-            ExampleTravelingMerchant.shopItems.Add(ItemIO.Receive(reader, readStack: true));
-        }
-    }
+		public override void NetReceive(BinaryReader reader) {
+			ExampleTravelingMerchant.shopItems.Clear();
+			int count = reader.ReadInt32();
+			for (int i = 0; i < count; i++) {
+				ExampleTravelingMerchant.shopItems.Add(ItemIO.Receive(reader, readStack: true));
+			}
+		}
+	}
 }

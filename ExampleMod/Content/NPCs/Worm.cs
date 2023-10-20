@@ -1,13 +1,8 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -105,8 +100,10 @@ namespace ExampleMod.NPCs
 						}
 					}
 				}
-			} else
+			}
+			else {
 				BodyTailAI();
+			}
 
 			return true;
 		}
@@ -173,7 +170,7 @@ namespace ExampleMod.NPCs
 		/// Override this method to use custom body-spawning code.<br/>
 		/// This method only runs if <see cref="HasCustomBodySegments"/> returns <see langword="true"/>.
 		/// </summary>
-		/// <param name="segmentCount">How many body segements are expected to be spawned</param>
+		/// <param name="segmentCount">How many body segments are expected to be spawned</param>
 		/// <returns>The whoAmI of the most-recently spawned NPC, which is the result of calling <see cref="NPC.NewNPC(Terraria.DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/></returns>
 		public virtual int SpawnBodySegments(int segmentCount) {
 			// Defaults to just returning this NPC's whoAmI, since the tail segment uses the return value as its "following" NPC index
@@ -238,7 +235,8 @@ namespace ExampleMod.NPCs
 					if (HasCustomBodySegments) {
 						// Call the method that'll handle spawning the body segments
 						latestNPC = SpawnBodySegments(distance);
-					} else {
+					}
+					else {
 						// Spawn the body segments like usual
 						while (distance > 0) {
 							latestNPC = SpawnSegment(source, BodyType, latestNPC);
@@ -293,7 +291,7 @@ namespace ExampleMod.NPCs
 				minTilePosY = 0;
 			if (maxTilePosY > Main.maxTilesY)
 				maxTilePosY = Main.maxTilesY;
- 
+
 			bool collision = false;
 
 			// This is the initial check for collision with tiles.
@@ -402,20 +400,22 @@ namespace ExampleMod.NPCs
 			if (NPC.velocity.Y > speed)
 				NPC.velocity.Y = speed;
 
-			// The following behaviour mimicks vanilla worm movement
+			// The following behavior mimics vanilla worm movement
 			if (Math.Abs(NPC.velocity.X) + Math.Abs(NPC.velocity.Y) < speed * 0.4f) {
 				// Velocity is sufficiently fast, but not too fast
 				if (NPC.velocity.X < 0.0f)
 					NPC.velocity.X -= acceleration * 1.1f;
 				else
 					NPC.velocity.X += acceleration * 1.1f;
-			} else if (NPC.velocity.Y == speed) {
+			}
+			else if (NPC.velocity.Y == speed) {
 				// NPC has reached terminal velocity
 				if (NPC.velocity.X < dirX)
 					NPC.velocity.X += acceleration;
 				else if (NPC.velocity.X > dirX)
 					NPC.velocity.X -= acceleration;
-			} else if (NPC.velocity.Y > 4) {
+			}
+			else if (NPC.velocity.Y > 4) {
 				if (NPC.velocity.X < 0)
 					NPC.velocity.X += acceleration * 0.9f;
 				else
@@ -447,7 +447,7 @@ namespace ExampleMod.NPCs
 			dirX *= newSpeed;
 			dirY *= newSpeed;
 
-			if ((NPC.velocity.X > 0 && dirX > 0) || (NPC.velocity.X < 0 && dirX < 0 )|| (NPC.velocity.Y > 0 && dirY > 0) || (NPC.velocity.Y < 0 && dirY < 0)) {
+			if ((NPC.velocity.X > 0 && dirX > 0) || (NPC.velocity.X < 0 && dirX < 0) || (NPC.velocity.Y > 0 && dirY > 0) || (NPC.velocity.Y < 0 && dirY < 0)) {
 				// The NPC is moving towards the target location
 				if (NPC.velocity.X < dirX)
 					NPC.velocity.X += acceleration;
@@ -474,7 +474,8 @@ namespace ExampleMod.NPCs
 					else
 						NPC.velocity.X = NPC.velocity.X - acceleration * 2f;
 				}
-			} else if (absDirX > absDirY) {
+			}
+			else if (absDirX > absDirY) {
 				// The X distance is larger than the Y distance.  Force movement along the X-axis to be stronger
 				if (NPC.velocity.X < dirX)
 					NPC.velocity.X += acceleration * 1.1f;
@@ -487,7 +488,8 @@ namespace ExampleMod.NPCs
 					else
 						NPC.velocity.Y -= acceleration;
 				}
-			} else {
+			}
+			else {
 				// The X distance is larger than the Y distance.  Force movement along the X-axis to be stronger
 				if (NPC.velocity.Y < dirY)
 					NPC.velocity.Y += acceleration * 1.1f;
@@ -507,14 +509,15 @@ namespace ExampleMod.NPCs
 			// Set the correct rotation for this NPC.
 			// Assumes the sprite for the NPC points upward.  You might have to modify this line to properly account for your NPC's orientation
 			NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-		   
+
 			// Some netupdate stuff (multiplayer compatibility).
 			if (collision) {
 				if (NPC.localAI[0] != 1)
 					NPC.netUpdate = true;
 
 				NPC.localAI[0] = 1f;
-			} else {
+			}
+			else {
 				if (NPC.localAI[0] != 0)
 					NPC.netUpdate = true;
 
@@ -544,7 +547,7 @@ namespace ExampleMod.NPCs
 
 			NPC following = worm.NPC.ai[1] >= Main.maxNPCs ? null : worm.FollowingNPC;
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				// Some of these conditions are possble if the body/tail segment was spawned individually
+				// Some of these conditions are possible if the body/tail segment was spawned individually
 				// Kill the segment if the segment NPC it's following is no longer valid
 				if (following is null || !following.active || following.friendly || following.townNPC || following.lifeMax <= 5) {
 					worm.NPC.life = 0;
@@ -567,7 +570,7 @@ namespace ExampleMod.NPCs
 				float dist = (length - worm.NPC.width) / length;
 				float posX = dirX * dist;
 				float posY = dirY * dist;
- 
+
 				// Reset the velocity of this NPC, because we don't want it to move on its own
 				worm.NPC.velocity = Vector2.Zero;
 				// And set this NPCs position accordingly to that of this NPCs parent NPC.

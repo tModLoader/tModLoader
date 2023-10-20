@@ -11,3 +11,15 @@
  		_counterByMessageId[messageId].CountReadMessage(messageLength);
  	}
  
+@@ -82,6 +_,11 @@
+ 	{
+ 		int num = _counterByMessageId.Length + _counterByModuleId.Count;
+ 		for (int i = 0; i <= num / 51; i++) {
++			if(i == 0) {
++				Utils.DrawInvBG(spriteBatch, 190 + 400 * i, 90, 390, 703);
++				spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F8), new Vector2(200, 96), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				continue;
++			}
+ 			Utils.DrawInvBG(spriteBatch, 190 + 400 * i, 110, 390, 683);
+ 		}
+ 

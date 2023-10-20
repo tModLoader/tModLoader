@@ -1,6 +1,6 @@
 ﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Items.Placeable.Furniture;
 using ExampleMod.Content.Items.Placeable;
+using ExampleMod.Content.Items.Placeable.Furniture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

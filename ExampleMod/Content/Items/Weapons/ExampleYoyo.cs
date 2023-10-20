@@ -1,7 +1,7 @@
-﻿using System;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Rarities;
 using ExampleMod.Content.Tiles.Furniture;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

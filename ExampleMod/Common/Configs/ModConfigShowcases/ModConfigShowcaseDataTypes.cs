@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using ExampleMod.Content.Prefixes;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
-using ExampleMod.Content.Prefixes;
 
 // This file contains fake ModConfig class that showcase creating config section
 // by using fields with various data types.

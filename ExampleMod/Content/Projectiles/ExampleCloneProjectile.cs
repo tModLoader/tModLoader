@@ -1,9 +1,9 @@
+using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items.Weapons;
-using Terraria.Audio;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -46,15 +46,15 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Now, using CloneDefaults() and aiType doesn't copy EVERY aspect of the projectile. In Vanilla, several other methods
-		// are used to generate different effects that aren't included in AI. For the case of the Meowmete projectile, since the
-		// richochet sound is not included in the AI, we must add it ourselves:
+		// are used to generate different effects that aren't included in AI. For the case of the Meowmere projectile, since the
+		// ricochet sound is not included in the AI, we must add it ourselves:
 		public override bool OnTileCollide(Vector2 oldVelocity) {
-			// Since there are two Richochet sounds for the Meowmere, we can randomly choose between them like this:
+			// Since there are two ricochet sounds for the Meowmere, we can randomly choose between them like this:
 
 			SoundEngine.PlaySound(Main.rand.NextBool() ? SoundID.Item57 : SoundID.Item58, Projectile.position);
 
 			// Essentially, using ? and : is a glorified and shortened method of creating a simple if statement in
-			// a single line. If Main.rand.NextBool() reurns true, it plays SoundID.Item57. If it returns false, then it
+			// a single line. If Main.rand.NextBool() returns true, it plays SoundID.Item57. If it returns false, then it
 			// will play SoundID.Item58. The condition goes before the ? and the two possibilities follow, separated by a :
 
 			// This line calls the base (empty) implementation of this hook method to return its default value, which in its case is always 'true'.

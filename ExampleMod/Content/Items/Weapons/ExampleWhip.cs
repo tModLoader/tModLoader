@@ -10,11 +10,11 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleWhip : ModItem
 	{
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(ExampleWhipDebuff.TagDamage);
-		
+
 		public override void SetDefaults() {
 			// This method quickly sets the whip's properties.
 			// Mouse over to see its parameters.
-			Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectile>(), 20, 2, 4); 
+			Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectile>(), 20, 2, 4);
 			Item.rare = ItemRarityID.Green;
 			Item.channel = true;
 		}
@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items.Weapons
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}
-		
+
 		// Makes the whip receive melee prefixes
 		public override bool MeleePrefix() {
 			return true;
