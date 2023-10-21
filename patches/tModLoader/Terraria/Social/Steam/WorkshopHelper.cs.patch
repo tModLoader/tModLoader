@@ -88,7 +88,7 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -155,19 +_,32 @@
+@@ -155,19 +_,31 @@
  
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
@@ -107,7 +107,7 @@
  
 -			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags)
 +			//TML: Added 'buildData', 'existingID', 'changeNotes' parameters.
-+			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null, bool isOwner = true)
++			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
  			{
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  				_issueReporter = issueReporter;
@@ -117,7 +117,6 @@
 +
 +				//TML: Looks like vanilla forgot to set this.
 +				_publicity = publicity;
-+				_isOwner = isOwner;
 +				
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {

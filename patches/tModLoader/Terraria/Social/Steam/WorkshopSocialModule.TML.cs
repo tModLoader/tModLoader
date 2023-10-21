@@ -69,7 +69,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (!BuildInfo.IsDev) {
+		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -79,20 +79,7 @@ public partial class WorkshopSocialModule
 		// Needed for backwards compat from previous version metadata
 		buildData["trueversion"] = buildData["version"];
 
-		bool owner = true;
 		if (currPublishID != 0) {
-			var currID = Steamworks.SteamUser.GetSteamID();
-
-
-			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			owner = existingAuthorID == currID.m_SteamID;
-			/*
-			if () {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-				return false;
-			}
-			*/
-
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 
@@ -145,7 +132,7 @@ public partial class WorkshopSocialModule
 
 			_publisherInstances.Add(modPublisherInstance);
 
-			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes, isOwner: owner);
+			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes);
 
 			return true;
 		}
