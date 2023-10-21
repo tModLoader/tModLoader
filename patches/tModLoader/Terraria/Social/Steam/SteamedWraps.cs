@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.DownloadManager;
@@ -364,7 +363,9 @@ public static class SteamedWraps
 			SteamAPI.Shutdown();
 			return;
 		}
-		
+
+		SteamGameServer.LogOff();
+		Thread.Sleep(1000); // Solxan: It takes a second or two for steam to shutdown all the api. Avoids native exceptions.
 		GameServer.Shutdown();
 		CleanupACF();
 	}
@@ -552,5 +553,80 @@ public static class SteamedWraps
 				break;
 			}
 		}
+	}
+
+	internal static void ModifyUgcUpdateHandleCommon(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
+
+		if (_entryData.Title != null)
+			SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+
+		if (!string.IsNullOrEmpty(_entryData.Description))
+			SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
+
+		Logging.tML.Info("Adding tags and visibility");
+
+		SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+		SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+		if (_entryData.PreviewImagePath != null)
+			SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+
+		if (_entryData.Visibility.HasValue)
+			SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+
+		Logging.tML.Info("Setting the language for default description");
+		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
+	}
+
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
+
+		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
+		foreach (var key in WorkshopHelper.MetadataKeys) {
+			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
+			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
+		}
+
+		patchNotes = _entryData.ChangeNotes;
+		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
+		if (string.IsNullOrWhiteSpace(patchNotes)) {
+			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
+				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		UpdatePatchNotesWithModData(ref patchNotes, _entryData.BuildData);	
+		string refs = _entryData.BuildData["workshopdeps"];
+
+		if (!string.IsNullOrWhiteSpace(refs)) {
+			Logging.tML.Info("Adding dependencies to Workshop Upload");
+			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+
+			foreach (string dependency in dependencies) {
+				try {
+					var child = new PublishedFileId_t(uint.Parse(dependency));
+					SteamUGC.AddDependency(_publishedFileID, child);
+				}
+				catch (Exception) {
+					Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
+				}
+			}
+		}
+	}
+
+	internal static void UpdatePatchNotesWithModData(ref string patchNotes, NameValueCollection buildData)
+	{
+		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
+		// This allows us to use substitution keys such as {ModVersion}
+		patchNotes = Language.GetText(patchNotes).FormatWith(new {
+			ModVersion = buildData["trueversion"],
+			ModHomepage = buildData["homepage"],
+			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
+			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
+		});
 	}
 }
