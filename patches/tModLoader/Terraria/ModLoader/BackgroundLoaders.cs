@@ -341,6 +341,9 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 			});
 		}
 
+		if (textureSlot == -1)
+			textureSlot = surfaceBackgroundStyle.ChooseFarTexture();
+
 		if (textureSlot != -1) {
 			Main.bgScale = 1.25f;
 			Main.instance.bgParallax = 0.4;
@@ -374,6 +377,9 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 				LoopWidthPtr = bgLoopsPtr
 			});
 		}
+
+		if (textureSlot2 == -1)
+			textureSlot2 = surfaceBackgroundStyle.ChooseMiddleTexture();
 
 		if (textureSlot2 != -1) {
 			Main.bgScale = 1.31f;
@@ -409,6 +415,12 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 				TopYPtr = bgTopYPtr,
 				LoopWidthPtr = bgLoopsPtr
 			});
+		}
+
+		if (textureSlot3 == -1) {
+			float a = 1800.0f;
+			float b = 1750.0f;
+			textureSlot3 = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref a, ref b);
 		}
 
 		if (textureSlot3 != -1) {

@@ -53,30 +53,30 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
-	[Obsolete($"Use {nameof(ModifyStyleFade)} instead", error: true)]
+	[Obsolete($"Use {nameof(ModifyStyleFade)} instead"/*, error: true*/)]
 	public virtual void ModifyFarFades(float[] fades, float transitionSpeed)
 	{
 	}
 
-	[Obsolete("Updated hook's parameters", error: true)]
+	[Obsolete("Updated hook's parameters"/*, error: true*/)]
 	public virtual int ChooseFarTexture()
 	{
 		return -1;
 	}
 
-	[Obsolete("Updated hook's parameters", error: true)]
+	[Obsolete("Updated hook's parameters"/*, error: true*/)]
 	public virtual int ChooseMiddleTexture()
 	{
 		return -1;
 	}
 
-	[Obsolete($"Use {nameof(PreDrawBackground)} instead", error: true)]
+	[Obsolete($"Use {nameof(PreDrawBackground)} instead"/*, error: true*/)]
 	public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch)
 	{
 		return true;
 	}
 
-	[Obsolete("Updated hook's parameters", error: true)]
+	[Obsolete("Updated hook's parameters"/*, error: true*/)]
 	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
 	{
 		return -1;
