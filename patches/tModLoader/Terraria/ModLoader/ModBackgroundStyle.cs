@@ -58,6 +58,30 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	{
 	}
 
+	[Obsolete("Updated hook's parameters", error: true)]
+	public virtual int ChooseFarTexture()
+	{
+		return -1;
+	}
+
+	[Obsolete("Updated hook's parameters", error: true)]
+	public virtual int ChooseMiddleTexture()
+	{
+		return -1;
+	}
+
+	[Obsolete($"Use {nameof(PreDrawBackground)} instead", error: true)]
+	public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch)
+	{
+		return true;
+	}
+
+	[Obsolete("Updated hook's parameters", error: true)]
+	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
+	{
+		return -1;
+	}
+
 	/// <summary>
 	/// Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.
 	/// </summary>
