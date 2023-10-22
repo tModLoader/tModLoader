@@ -468,7 +468,7 @@
 		"MSUnloading": "Выгрузка: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Добавление рецептов...",
-		"CancellingLoading": "Отменение загрузки...",
+		"CancellingLoading": "Отмена загрузки...",
 		"LoadingCancelled": "Загрузка отменена",
 
 		// Default Unimplemented
@@ -500,7 +500,7 @@
 		// In Game UI additions
 		"slotStack": "Стак",
 		"slotScroll": "Прокрутка",
-		// "PressXToClose": "Press {0} to close",
+		"PressXToClose": "Нажмите {0}, чтобы закрыть",
 
 		// Misc
 		"OK": "ОК",
