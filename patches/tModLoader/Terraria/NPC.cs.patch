@@ -935,7 +935,7 @@
  			getTenthAnniversaryAdjustments();
  
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
-+		if (type >= 0 && Main.npcCatchable[type]) {
++		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter < 1) {
  			catchableNPCTempImmunityCounter = 90;
 +			catchableNPCOriginallyFriendly = friendly; 
  			friendly = true;
@@ -2523,7 +2523,7 @@
  	{
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
 +		// TML: changed logic to not assume npcCatchable npc should not be friendly after invulnerability period. Also only run code during period to prevent undoing intentional changes to friendly in AI code.
-+		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter > 0) {
++		if (type >= 0 && catchableNPCTempImmunityCounter > 0) {
  			if (releaseOwner != 255 || SpawnedFromStatue)
  				catchableNPCTempImmunityCounter = 0;
  

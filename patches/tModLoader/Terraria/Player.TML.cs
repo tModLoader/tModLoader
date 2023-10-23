@@ -19,6 +19,12 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public Item equippedWings = null;
 
+	/// <summary>
+	/// Causes <see cref="SmartSelectLookup"/> to run the next time an item animation is finished, even if <see cref="controlUseItem"/> is held. <br/>
+	/// Used internally by tML to when a hotbar key is pressed while using an item.
+	/// </summary>
+	public bool selectItemOnNextUse;
+
 	private int consumedLifeCrystals;
 
 	/// <summary>

@@ -1,7 +1,7 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Commands
 {
@@ -85,8 +85,8 @@ namespace ExampleMod.Common.Commands
 				}
 			}
 
+			// Spawning numToSpawn NPCs with a given position and type
 			for (int k = 0; k < numToSpawn; k++) {
-				// Spawning numToSpawn NPCs with a given postions and type
 				// NPC.NewNPC return 200 (Main.maxNPCs) if there are not enough NPC slots to spawn
 				int slot = NPC.NewNPC(new EntitySource_DebugCommand($"{nameof(ExampleMod)}_{nameof(ExampleSummonCommand)}"), xSpawnPosition, ySpawnPosition, type);
 

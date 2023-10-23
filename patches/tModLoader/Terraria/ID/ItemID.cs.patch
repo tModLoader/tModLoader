@@ -701,13 +701,13 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// To make a torch placable underwater, use <see cref="WaterTorches"/> as well.
++		/// To make a torch placeable underwater, use <see cref="WaterTorches"/> as well.
 +		/// </remarks>
  		public static bool[] Torches = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388, 5293, 5353);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a water torch.
-+		/// <br/> Funtionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
++		/// <br/> Functionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] WaterTorches = Factory.CreateBoolSet(523, 1333, 4384);

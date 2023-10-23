@@ -1,11 +1,11 @@
-﻿using Terraria;
+﻿using ExampleMod.Backgrounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.ModLoader;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using ExampleMod.Backgrounds;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content
 {

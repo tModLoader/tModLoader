@@ -30,7 +30,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Manages content added by mods.
-/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
+/// Liaisons between mod content and Terraria's arrays and oversees the Loader classes.
 /// </summary>
 public static class ModContent
 {
@@ -389,7 +389,7 @@ public static class ModContent
 
 	private static void SetupBestiary()
 	{
-		//Beastiary DB
+		//Bestiary DB
 		var bestiaryDatabase = new BestiaryDatabase();
 		new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 		Main.BestiaryDB = bestiaryDatabase;
@@ -452,6 +452,7 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	internal static void Unload()
 	{
+		MonoModHooks.Clear();
 		TypeCaching.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();

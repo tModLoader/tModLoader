@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,320 @@
+@@ -66,76 +_,321 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -41,7 +41,8 @@
  	public bool counterweight;
 +
 +	/// <summary>
-+	/// Scales the projectile drawing, but not the hitbox, making this not suitable for affecting hitbox. Avoid large values.
++	/// Scales how large the projectile will be drawn. Will also affect the hitbox (<see cref="Entity.width"/>, <see cref="Entity.height"/>) if assigned in SetDefaults. If changed elsewhere it will not affect the hitbox, so that will have to be adjusted manually via code in that situation if needed. <para/>
++	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(ref Color)"/>.<para/>
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -1207,7 +1208,7 @@
 +					if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
 +						velocity = Collision.AnyCollisionWithSpecificTiles(vector2, base.velocity, num2, num3, TileID.Sets.Falling, evenActuated: true);
 +
-+					//TML: This section was rewriten above so it is affected by ProjectileLoader.TileCollideStyle
++					//TML: This section was rewritten above so it is affected by ProjectileLoader.TileCollideStyle
 +					/*
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);

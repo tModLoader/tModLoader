@@ -1,6 +1,6 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Common.Players
 {
@@ -20,7 +20,7 @@ namespace ExampleMod.Common.Players
 		// Here are additional things you might need to implement if you intend to make a custom resource:
 		// - Multiplayer Syncing: The current example doesn't require MP code, but pretty much any additional functionality will require this. ModPlayer.SendClientChanges and CopyClientState will be necessary, as well as SyncPlayer if you allow the user to increase exampleResourceMax.
 		// - Save/Load permanent changes to max resource: You'll need to implement Save/Load to remember increases to your exampleResourceMax cap.
-		// - Resouce replenishment item: Use GlobalNPC.OnKill to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource.
+		// - Resource replenishment item: Use GlobalNPC.OnKill to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource.
 
 		public override void Initialize() {
 			exampleResourceMax = DefaultExampleResourceMax;
@@ -34,7 +34,7 @@ namespace ExampleMod.Common.Players
 			ResetVariables();
 		}
 
-		// We need this to ensure that regeneration rate and maximum amount are reset to default values after increasing when conditions are no longer satisfied (e.g. we unequip an accessory that increaces our recource)
+		// We need this to ensure that regeneration rate and maximum amount are reset to default values after increasing when conditions are no longer satisfied (e.g. we unequip an accessory that increases our resource)
 		private void ResetVariables() {
 			exampleResourceRegenRate = 1f;
 			exampleResourceMax2 = exampleResourceMax;

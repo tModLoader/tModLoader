@@ -78,7 +78,7 @@ public abstract class EntityDefinition : TagSerializable
 }
 
 /// <summary>
-/// ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig, perhapse to facilitate an Item tweaking mod.
+/// ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig, perhaps to facilitate an Item tweaking mod.
 /// </summary>
 // JSONItemConverter should allow this to be used as a dictionary key.
 [TypeConverter(typeof(ToFromStringConverter<ItemDefinition>))]
@@ -186,10 +186,38 @@ public class PrefixDefinition : EntityDefinition
 	}
 }
 
+[TypeConverter(typeof(ToFromStringConverter<BuffDefinition>))]
+public class BuffDefinition : EntityDefinition
+{
+	public static readonly Func<TagCompound, BuffDefinition> DESERIALIZER = Load;
+
+	public override int Type {
+		get {
+			if (Mod == "Terraria" && Name == "None")
+				return 0;
+			return BuffID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
+		}
+	}
+
+	public BuffDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="BuffDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
+	public BuffDefinition(int type) : base(BuffID.Search.GetName(type)) { }
+	public BuffDefinition(string key) : base(key) { }
+	public BuffDefinition(string mod, string name) : base(mod, name) { }
+
+	public static BuffDefinition FromString(string s)
+		=> new(s);
+
+	public static BuffDefinition Load(TagCompound tag)
+		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetBuffName(Type);
+}
+
 /// <summary>
 /// This TypeConverter facilitates converting to and from the string Type. This is necessary for Objects that are to be used as Dictionary keys, since the JSON for keys needs to be a string. Classes annotated with this TypeConverter need to implement a static FromString method that returns T.
 /// </summary>
-/// <typeparam name="T">The Type that implementes the static FromString method that returns Type T.</typeparam>
+/// <typeparam name="T">The Type that implements the static FromString method that returns Type T.</typeparam>
 public class ToFromStringConverter<T> : TypeConverter
 {
 	public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ExampleMod.Common;
+﻿using ExampleMod.Common;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

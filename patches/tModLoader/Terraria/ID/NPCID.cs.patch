@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,109 @@
+@@ -3,29 +_,110 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -14,11 +14,12 @@
 -	public static class Sets
 +	public static partial class Sets
  	{
+-		public struct NPCBestiaryDrawModifiers
 +		/// <summary>
 +		/// Stores the draw parameters for an NPC type (<see cref="NPC.type"/>) in the Bestiary.
-+		/// <br/> <strong>Do not use the parameterless constructor or <c>default</c> to create this struct.</strong> Use <see cref="NPCBestiaryDrawModifiers(int)"/> instead with any parameter -- it sets proper default values.
++		/// <br/> <strong>Do not use <see langword="default" /> to create this struct.</strong> Use <see langword="new"/> <see cref="NPCBestiaryDrawModifiers()"/> instead to set proper default values.
 +		/// </summary>
- 		public struct NPCBestiaryDrawModifiers
++		public partial struct NPCBestiaryDrawModifiers
  		{
 +			/// <summary>
 +			/// The offset of this <see cref="NPC"/>'s Bestiary image in pixels.
@@ -109,6 +110,7 @@
 +			/// Creates a new <see cref="NPCBestiaryDrawModifiers"/> with default values.
 +			/// </summary>
 +			/// <param name="seriouslyWhyCantStructsHaveParameterlessConstructors">Unused.</param>
++			[Obsolete("Use the no argument constructor instead")]
  			public NPCBestiaryDrawModifiers(int seriouslyWhyCantStructsHaveParameterlessConstructors)
  			{
  				Position = default(Vector2);
@@ -400,7 +402,7 @@
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a critter that can spawn in towns.
 +		/// <br/> Town critters use <see cref="NPCAIStyleID.Passive"/>.
-+		/// <br/> Defauts to <see langword="false"/>.
++		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Make sure to also set <see cref="CountsAsCritter"/> for NPCs in this set.</remarks>
  		public static bool[] TownCritter = Factory.CreateBoolSet(46, 148, 149, 230, 299, 300, 303, 337, 361, 362, 364, 366, 367, 443, 445, 447, 538, 539, 540, 583, 584, 585, 592, 593, 602, 607, 608, 610, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 687);
@@ -615,7 +617,7 @@
  		public static int[][] TownNPCsFramingGroups = new int[8][] {
  			new int[26] {
  				0,
-@@ -5246,16 +_,28 @@
+@@ -5246,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
@@ -647,3 +649,17 @@
  			}
  
  			return dictionary;
+ 		}
+ 
++#pragma warning disable CS0618
+ 		private static Dictionary<int, NPCBestiaryDrawModifiers> GetRedigitEntries()
+ 		{
+ 			return new Dictionary<int, NPCBestiaryDrawModifiers> {
+@@ -9972,6 +_,7 @@
+ 				}
+ 			};
+ 		}
++#pragma warning restore CS0618
+ 	}
+ 
+ 	private static readonly int[] NetIdMap = new int[65] {

@@ -18,7 +18,7 @@ internal class UILoadMods : UIProgress
 
 		_cts = new CancellationTokenSource();
 		OnCancel += () => {
-			SetLoadStage("Loading Cancelled");
+			SetLoadStage("tModLoader.LoadingCancelled");
 			_cts.Cancel();
 		};
 		gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel
