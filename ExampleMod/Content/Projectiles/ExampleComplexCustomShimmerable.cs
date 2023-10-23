@@ -45,10 +45,10 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 	/// <inheritdoc cref="ProjectileShimmerResult(int, int, int, bool, bool, int)"/>
 	public record class EvilGrenadeShimmerResult(int Damage, int Knockback) : ProjectileShimmerResult(ProjectileID.Grenade, Damage, Knockback, true, false, 5)
 	{
-		public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, int allowedStack) {
+		public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo) {
 			Player closestPlayer = Main.player[Player.FindClosest(shimmerable.Center, 1, 1)];
-			foreach (Projectile projectile in base.SpawnFrom(shimmerable, allowedStack)) {
-				Vector2 velocityMod = GetShimmerSpawnVelocityModifier();
+			foreach (Projectile projectile in base.SpawnFrom(shimmerable, shimmerInfo)) {
+				Vector2 velocityMod = ShimmerManager.GetShimmerSpawnVelocityModifier();
 				projectile.velocity = (shimmerable.Velocity / 2) + velocityMod + 5 * Vector2.Normalize(closestPlayer.Center - shimmerable.Center);
 				yield return projectile;
 			}

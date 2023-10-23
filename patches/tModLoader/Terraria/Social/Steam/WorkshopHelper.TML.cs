@@ -427,12 +427,12 @@ public partial class WorkshopHelper
 				WaitForQueryResultAsync(query).GetAwaiter().GetResult();
 			}
 
-			/////// Process Query Result per Item ////////////////////
+			/////// Process Query Results per Item ////////////////////
 
 			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
 			internal ModDownloadItem GenerateModDownloadItemFromQuery(uint i)
 			{
-				// Item Result call data
+				// Item Results call data
 				SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);
 
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;

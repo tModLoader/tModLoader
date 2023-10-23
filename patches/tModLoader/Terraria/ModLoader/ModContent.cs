@@ -346,7 +346,7 @@ public static class ModContent
 		SetupBestiary();
 		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
-		ShimmerTransformation.OrderKnown();
+		ShimmerManager.OrderKnown();
 		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
@@ -494,7 +494,7 @@ public static class ModContent
 		Recipe.numRecipes = 0;
 		RecipeGroupHelper.ResetRecipeGroups();
 		Recipe.SetupRecipes();
-		ShimmerTransformation.ResetKnown();
+		ShimmerManager.ResetKnown();
 		TileEntity.manager.Reset();
 		MapLoader.UnloadModMap();
 		ItemSorting.SetupWhiteLists();

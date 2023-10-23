@@ -351,7 +351,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	// Legacy Thrower properties (uppercase+property in TML)
 
 	/// <summary>
-	/// Multiplier to shot projectile velocity before throwing. Result will be capped to 16f.
+	/// Multiplier to shot projectile velocity before throwing. Results will be capped to 16f.
 	/// <br/>Only applies to items counted as the <see cref="DamageClass.Throwing"/> damage type
 	/// </summary>
 	public float ThrownVelocity { get; set; }

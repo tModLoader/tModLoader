@@ -7,17 +7,10 @@ namespace ExampleMod.Common.GlobalNPCs
 	public class ExampleShimmerGlobalNPC : GlobalNPC
 	{
 		public override void SetStaticDefaults() {
-			int[] transformationFor = new int[] {
-				NPCID.Goldfish,
-				NPCID.Crab,
-				NPCID.Penguin,
-				NPCID.PartyBunny,
-			};
-
 			new ShimmerTransformation<NPC>() // Since we're not in ModNPC we instantiate manually
 				.AddNPCResult(NPCID.Frog, 1) // Vanilla frog
 				.AddCondition(Condition.InBeach) // On the beach
-				.Register(transformationFor); // Registers for every entity passed within the array
+				.Register(NPCID.Goldfish, NPCID.Crab, NPCID.Penguin, NPCID.PartyBunny); // Registers for every integer passed
 
 			NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[NPCID.Goldfish] = true; // The goldfish statue spawns can undergo any shimmer operation
 		}

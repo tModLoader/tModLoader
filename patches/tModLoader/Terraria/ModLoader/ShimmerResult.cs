@@ -4,81 +4,81 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
+public record class ShimmerInfo(int AllowedSpawnStack);
+public interface IShimmerResult<in TShimmerable> where TShimmerable : IModShimmerable
+{
+	public abstract bool HandlesCleanup { get; }
+	public abstract int Count { get; }
+
+	/// <summary> Used to check if this is an <see cref="Item"/> of <paramref name="type"/> </summary>
+	public bool IsItemResult(int type) => false;
+
+	/// <summary> Used to check if this is an <see cref="NPC"/> of <paramref name="type"/> </summary>
+	public bool IsNPCResult(int type) => false;
+
+	/// <summary> Used to check if this is an <see cref="Projectile"/> of <paramref name="type"/> </summary>
+	public bool IsProjectileResult(int type) => false;
+
+	/// <summary>
+	/// Spawns <see cref="IShimmerResult{T}.Count"/> * <paramref name="shimmerInfo"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement
+	/// <see cref="IModShimmerable.Stack"/>, use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/>
+	/// </summary>
+	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> that is shimmering, does not affect this </param>
+	/// <param name="shimmerInfo"> The amount of the <see cref="IModShimmerable"/> that is used, actual spawned amount will be <paramref name="shimmerInfo"/> * <see cref="Count"/> </param>
+	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself </returns>
+	public abstract IEnumerable<IModShimmerable> SpawnFrom(TShimmerable shimmerable, ShimmerInfo shimmerInfo);
+}
 
 /// <summary> A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation </summary>
 /// <param name="Count"> The number of this result to spawn, true count will be multiplied by the stack size of the <see cref="IModShimmerable"/> source </param>
-public abstract record class ModShimmerResult(int Count = 1)
+public abstract record class GeneralShimmerResult(int Count = 1) : IShimmerResult<IModShimmerable>
 {
-	/// <summary> Checks using 'is' keyword and for <see cref="TypedShimmerResult"/> types checks <see cref="TypedShimmerResult.Type"/> as well. </summary>
-	public abstract bool IsSameResultType(ModShimmerResult result);
+	public virtual bool HandlesCleanup
+		=> false;
 
-	/// <summary> Used to check if this is an <see cref="Item"/> of <paramref name="type"/> </summary>
 	public virtual bool IsItemResult(int type)
 		=> false;
-
-	/// <summary> Used to check if this is an <see cref="NPC"/> of <paramref name="type"/> </summary>
 	public virtual bool IsNPCResult(int type)
 		=> false;
-
-	/// <summary> Used to check if this is an <see cref="Projectile"/> of <paramref name="type"/> </summary>
 	public virtual bool IsProjectileResult(int type)
 		=> false;
-
-	/// <summary>
-	/// Spawns <see cref="Count"/> * <paramref name="allowedStack"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement <see cref="IModShimmerable.Stack"/>,
-	/// use <see cref="IModShimmerable.ShimmerRemoveStacked(int)"/>
-	/// </summary>
-	/// <param name="shimmerable"> The <see cref="IModShimmerable"/> that is shimmering, does not affect this </param>
-	/// <param name="allowedStack"> The amount of the <see cref="IModShimmerable"/> that is used, actual spawned amount will be <paramref name="allowedStack"/> * <see cref="Count"/> </param>
-	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself </returns>
-	public abstract IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack);
-
-	/// <summary> Added to the the velocity of the <see cref="IModShimmerable"/> to prevent stacking </summary>
-	public static Vector2 GetShimmerSpawnVelocityModifier()
-		=> new Vector2(Main.rand.Next(-30, 31), Main.rand.Next(-40, -15)) * 0.1f;
-	// => new(count * (1f + count * 0.05f) * ((count % 2 == 0) ? -1 : 1), 0);
-	// What vanilla does for items with more than one ingredient, flings stuff everywhere as it's never supposed to do more than 15
-	//So we're using the random spawn values from shimmered items instead, items push each other away when in the shimmer state anyway, so this is more for NPCs
+	public abstract IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo);
 }
 
-public record class CoinLuckShimmerResult(int Count = 1) : ModShimmerResult(Count)
+public record class CoinLuckShimmerResult(int Count = 1) : GeneralShimmerResult(Count)
 {
-	public override bool IsSameResultType(ModShimmerResult result)
-		=> result is CoinLuckShimmerResult;
-	public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<IModShimmerable> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo)
 	{
-		Main.player[Main.myPlayer].AddCoinLuck(shimmerable.Center, allowedStack * Count);
-		NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, shimmerable.Center.X, shimmerable.Center.Y, allowedStack * Count);
+		Main.player[Main.myPlayer].AddCoinLuck(shimmerable.Center, shimmerInfo.AllowedSpawnStack * Count);
+		NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 1, shimmerable.Center.X, shimmerable.Center.Y, shimmerInfo.AllowedSpawnStack * Count);
 		yield return null;
 	}
 }
 
 /// <param name="Type"> The type of the to spawn </param>
-/// <param name="Count"> <inheritdoc cref="ModShimmerResult(int)"/> </param>
+/// <param name="Count"> <inheritdoc cref="GeneralShimmerResult(int)"/> </param>
 /// <summary>
-/// <inheritdoc cref="ModShimmerResult(int)"/><br/> Using <see cref="ModShimmerResult.IsItemResult(int)"/> and its relatives, this type can be used for inter-mod compatibility when implementing custom
-/// spawning behaviour across known types
+/// <inheritdoc cref="GeneralShimmerResult(int)"/><br/> Using <see cref="IShimmerResult{T}.IsItemResult(int)"/> and its relatives, this type can be used for inter-mod compatibility when implementing
+/// custom spawning behaviour across known types
 /// </summary>
-public abstract record class TypedShimmerResult(int Type, int Count = 1) : ModShimmerResult(Count);
+public abstract record class TypedShimmerResult(int Type, int Count = 1) : GeneralShimmerResult(Count);
 
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
-public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerResult(Type, Count)
+public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerResult(Type, Count), IShimmerResult<IModShimmerable>
 {
 	public override bool IsItemResult(int type)
 		=> Type == type;
-	public override bool IsSameResultType(ModShimmerResult result)
-		=> result is ItemShimmerResult r && r.Type == Type;
 
-	public override IEnumerable<Item> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<Item> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo)
 	{
-		int spawnTotal = Count * allowedStack;
+		int spawnTotal = Count * shimmerInfo.AllowedSpawnStack;
 		while (spawnTotal > 0) {
 			Item item = Main.item[Item.NewItem(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type)];
 			item.position -= item.Size / 2; // Centre
 			item.stack = Math.Min(item.maxStack, spawnTotal);
 			item.shimmerTime = 1f;
 			item.shimmered = true;
-			item.velocity = shimmerable.Velocity + GetShimmerSpawnVelocityModifier();
+			item.velocity = shimmerable.Velocity + ShimmerManager.GetShimmerSpawnVelocityModifier();
 			item.playerIndexTheItemIsReservedFor = Main.myPlayer;
 			NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, item.whoAmI, 1f); // net sync spawning the item
 
@@ -122,14 +122,12 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 	public float[] AI { get => new float[4] { AI0, AI1, AI2, AI3 }; init { AI0 = value[0]; AI1 = value[1]; AI2 = value[2]; AI3 = value[3]; } }
 	/// <summary> Assigned to <see cref="NPC.scale"/> </summary>
 	public float? Scale { get; init; }
-	public override bool IsSameResultType(ModShimmerResult result)
-		=> result is NPCShimmerResult r && r.Type == Type;
 	public override bool IsNPCResult(int type)
 		=> Type == type;
 
-	public override IEnumerable<NPC> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<NPC> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo)
 	{
-		int spawnTotal = Count * allowedStack;
+		int spawnTotal = Count * shimmerInfo.AllowedSpawnStack;
 		while (spawnTotal > 0) {
 			NPC newNPC = NPC.NewNPCDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, Type, Start, AI0, AI1, AI2, AI3);
 			newNPC.position -= newNPC.Size / 2; // Centre
@@ -153,7 +151,7 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 			else {
 				newNPC.shimmerTransparency = 1f;
 			}
-			newNPC.velocity = shimmerable.Velocity + GetShimmerSpawnVelocityModifier();
+			newNPC.velocity = shimmerable.Velocity + ShimmerManager.GetShimmerSpawnVelocityModifier();
 			if (Scale != null)
 				newNPC.scale = Scale.Value;
 			newNPC.TargetClosest();
@@ -171,9 +169,9 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 }
 
 /// <summary>
-/// <inheritdoc/><br/> Projectiles are rarely both autonomous and do not require an owner, due to this there is no <see cref="ShimmerTransformation.AddItemResult(int, int)"/> for projectiles.
-/// <see cref="ShimmerTransformation.AddResult(ModShimmerResult)"/> must be used instead. This class is more as a framework to derive from rather than a working class since for the large majority of
-/// projectiles spawn behaviour or a target will need to be defined.
+/// <inheritdoc/><br/> Projectiles are rarely both autonomous and do not require an owner, due to this there is no <see cref="ShimmerManager.AddItemResult{TSelf}(TSelf, int, int)"/> for projectiles.
+/// <see cref="ShimmerManager.AddResult{TSelf}(TSelf, GeneralShimmerResult)"/> must be used instead. This class is more as a framework to derive from rather than a working class since for the large
+/// majority of projectiles spawn behaviour or a target will need to be defined.
 /// </summary>
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
 /// <param name="Type"> <inheritdoc/> </param>
@@ -202,14 +200,12 @@ public record class ProjectileShimmerResult(int Type, int Damage, int Knockback,
 	public bool TryCopyHostileFriendly;
 	public override bool IsProjectileResult(int type)
 		=> Type == type;
-	public override bool IsSameResultType(ModShimmerResult result)
-		=> result is ProjectileShimmerResult r && r.Type == Type;
 
-	public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, int allowedStack)
+	public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo)
 	{
-		int spawnTotal = Count * allowedStack;
+		int spawnTotal = Count * shimmerInfo.AllowedSpawnStack;
 		while (spawnTotal > 0) {
-			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback, ai0: AI0, ai1: AI1, ai2: AI2);
+			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + ShimmerManager.GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback, ai0: AI0, ai1: AI1, ai2: AI2);
 			projectile.position -= projectile.Size / 2;
 			if (Scale != null)
 				projectile.scale = Scale.Value;

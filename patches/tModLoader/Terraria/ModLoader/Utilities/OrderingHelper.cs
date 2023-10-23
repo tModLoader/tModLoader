@@ -4,22 +4,23 @@ using System.Linq;
 
 namespace Terraria.ModLoader.Utilities;
 
-public interface IOrderable<TSelf> where TSelf : class, IOrderable<TSelf>
+public interface IOrderable<out T> where T : class, IOrderable<T>
 {
-	public (TSelf target, bool after) Ordering { get; }
+	public T Target { get; }
+
+	public bool After { get; }
 }
 
 public static class OrderableExtensions
 {
-	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable{TSelf}"/>. </summary>
+	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable{T}"/>. </summary>
 	public static IEnumerable<TOrderable> GetOrdered<TOrderable>(this IList<TOrderable> orderableIList) where TOrderable : class, IOrderable<TOrderable>
 	{
-		// first-pass, collect sortBefore and sortAfter
-		Dictionary<TOrderable, List<TOrderable>> sortBefore = new();
-		Dictionary<TOrderable, List<TOrderable>> sortAfter = new();
+		Dictionary<object, List<TOrderable>> sortBefore = new();
+		Dictionary<object, List<TOrderable>> sortAfter = new();
 		List<TOrderable> baseOrder = new List<TOrderable>(orderableIList.Count);
 		foreach (TOrderable orderable in orderableIList) {
-			switch (orderable.Ordering) {
+			switch ((orderable.Target, orderable.After)) {
 				case (null, _):
 					baseOrder.Add(orderable);
 					break;

@@ -29,11 +29,11 @@ public class NPCShimmerShowcase : ModNPC
 
 		CreateShimmerTransformation()
 			// A shimmer callback applies to the one transformation, whereas ModNPC.CanShimmer applies to every transformation this NPC does
-			.AddCanShimmerCallBack((ShimmerTransformation transformation, IModShimmerable target) => target.Center.X <= Main.maxTilesX * 8)
-			// Results
+			.AddCanShimmerCallBack((transformation, target) => target.Center.X <= Main.maxTilesX * 8)
+			// GetResults()
 			.AddItemResult(ItemID.ExplosiveBunny, 30)
 			.AddNPCResult(NPCID.Frog)
-			.AddModifyShimmerCallBack((ShimmerTransformation transformation, IModShimmerable source) => transformation.Results[^1] = transformation.Results[^1] with { Count = Main.rand.Next(5, 11) }) // Spawn 5 - 10 frogs inclusive
+			.AddModifyShimmerCallBack((transformation, source) => transformation.Results[^1] = (GeneralShimmerResult)transformation.Results[^1] with { Count = Main.rand.Next(5, 11) }) // Spawn 5 - 10 frogs inclusive
 			.AddModifyShimmerCallBack(ModifyShimmer_GildFrogs) // Applies the gold critter chance to the frogs in the transformation
 			.AddOnShimmerCallBack(OnShimmer_SpawnFriendlyBullets)
 			.DisableChainedShimmers() // Ensures the results must leave shimmer and become fully opaque before they can shimmer. By default shimmers chain into each other
@@ -83,7 +83,7 @@ public class NPCShimmerShowcase : ModNPC
 
 	// This is static and not an override, it is used earlier to pass as a ShimmerTransformation.OnShimmerCallBack, OnShimmerCallBack is a delegate, a reference to a
 	// method. While it does not need to be static it should as, as any modification to ModNPC.NPC is instance based (affecting the instance created for SetStaticDefaults), use "origin" for modifying the spawner
-	public static void OnShimmer_SpawnFriendlyBullets(ShimmerTransformation transformation, IModShimmerable origin, IEnumerable<IModShimmerable> spawnedShimmerables) {
+	public static void OnShimmer_SpawnFriendlyBullets<T>(ShimmerTransformation<T> transformation, T target, IEnumerable<IModShimmerable> spawnedShimmerables) where T : IModShimmerable {
 		foreach (IModShimmerable spawnedShimmerable in spawnedShimmerables) {
 			Projectile p = Projectile.NewProjectileDirect(spawnedShimmerable.GetSource_Misc("Shimmer"), spawnedShimmerable.Center, spawnedShimmerable.Velocity + Vector2.UnitY * -2, ProjectileID.Bullet, 20, 1);
 			p.friendly = true;
@@ -95,7 +95,7 @@ public class NPCShimmerShowcase : ModNPC
 
 
 	// Checks for NPCID.Frog and rolls for golden critters, then replaces the frog with the golden version if needed
-	public static void ModifyShimmer_GildFrogs(ShimmerTransformation transformation, IModShimmerable target) {
+	public static void ModifyShimmer_GildFrogs<T>(ShimmerTransformation<T> transformation, T target) where T : IModShimmerable {
 		Player closestPlayer = Main.player[Player.FindClosest(target.Center, 1, 1)];
 		int rollGoldCritters(int rollCount) {
 			int successes = 0;
@@ -117,8 +117,8 @@ public class NPCShimmerShowcase : ModNPC
 				if (removeFrogCount >= transformation.Results[index].Count)
 					transformation.Results.RemoveAt(index);
 				else
-					transformation.Results[index] = transformation.Results[index] with { Count = transformation.Results[index].Count - removeFrogCount };
-
+					transformation.Results[index] = (IShimmerResult<T>)((GeneralShimmerResult)transformation.Results[index] with { Count = transformation.Results[index].Count - removeFrogCount });
+				// TODO: Make the feel less like a war crime
 				changeFrogCount -= removeFrogCount;
 			}
 		}
