@@ -25,6 +25,7 @@ internal class UIModSourceItem : UIPanel
 	internal readonly string modName;
 	private readonly Asset<Texture2D> _dividerTexture;
 	private readonly UIText _modName;
+	private readonly UIText _lastBuildTime;
 	private readonly UIAutoScaleTextTextPanel<string> needRebuildButton;
 	private readonly LocalMod _builtMod;
 	private bool _upgradePotentialChecked;
@@ -47,7 +48,18 @@ internal class UIModSourceItem : UIPanel
 			Left = { Pixels = 10 },
 			Top = { Pixels = 5 }
 		};
+
 		Append(_modName);
+
+		string lastBuildTimeMessage = builtMod?.GetTimeSinceLastBuilt() ?? string.Empty;
+		if (!string.IsNullOrEmpty(lastBuildTimeMessage)) {
+			_lastBuildTime = new UIText(lastBuildTimeMessage) {
+				Left = { Pixels = 150 },
+				Top = { Pixels = 5 }
+			};
+
+			Append(_lastBuildTime);
+		}
 
 		var buildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuild")) {
 			Width = { Pixels = 100 },

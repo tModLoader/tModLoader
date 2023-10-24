@@ -404,6 +404,8 @@
 		"MSManagePublished": "Gérer les publications",
 		"MSPublish": "Publier",
 		"MSModSourcesCantHaveSpaces": "(Les noms de dossiers de Mods sources ne peuvent pas avoir d'espace)",
+		// "MSTimeSinceBuild":  "Last build {0} {1} ago",
+		// "MSLastBuildJustNow":  "Last build just now",
 		"MSCreateMod": "Créer un Mod",
 		"VersionUpgrade": "LIEN: En savoir plus sur la migration des Mods pour la dernière mise à jour",
 		// "WikiLink": "Explore the Wiki",

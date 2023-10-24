@@ -404,6 +404,8 @@
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
+		// "MSTimeSinceBuild":  "Last build {0} {1} ago",
+		// "MSLastBuildJustNow":  "Last build just now",
 		"MSCreateMod": "Stwórz Moda",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		// "WikiLink": "Explore the Wiki",
