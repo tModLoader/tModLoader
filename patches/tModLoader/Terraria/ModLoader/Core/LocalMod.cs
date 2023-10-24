@@ -10,6 +10,7 @@ internal class LocalMod
 	public readonly TmodFile modFile;
 	public readonly BuildProperties properties;
 	public DateTime lastModified;
+	private const string TIME_SINCE_BUILD_KEY = "tModLoader.MSTimeSinceBuild";
 
 	public string Name => modFile.Name;
 	public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
@@ -40,22 +41,22 @@ internal class LocalMod
 			int years = (span.Days / 365);
 			if (span.Days % 365 != 0)
 				years += 1;
-			return string.Format(Language.GetTextValue("tModLoader.MSTimeSinceBuild"), years, years == 1 ? "year" : "years");
+			return string.Format(Language.GetTextValue(TIME_SINCE_BUILD_KEY), years, years == 1 ? "year" : "years");
 		}
 		if (span.Days > 30) {
 			int months = (span.Days / 30);
 			if (span.Days % 31 != 0)
 				months += 1;
-			return string.Format(Language.GetTextValue("tModLoader.MSTimeSinceBuild"), months, months == 1 ? "month" : "months");
+			return string.Format(Language.GetTextValue(TIME_SINCE_BUILD_KEY), months, months == 1 ? "month" : "months");
 		}
 		if (span.Days > 0)
-			return string.Format(Language.GetTextValue("tModLoader.MSTimeSinceBuild"), span.Days, span.Days == 1 ? "day" : "days");
+			return string.Format(Language.GetTextValue(TIME_SINCE_BUILD_KEY), span.Days, span.Days == 1 ? "day" : "days");
 		if (span.Hours > 0)
-			return string.Format(Language.GetTextValue("tModLoader.MSTimeSinceBuild"), span.Hours, span.Hours == 1 ? "hour" : "hours");
+			return string.Format(Language.GetTextValue(TIME_SINCE_BUILD_KEY), span.Hours, span.Hours == 1 ? "hour" : "hours");
 		if (span.Minutes > 0)
-			return string.Format(Language.GetTextValue("tModLoader.MSTimeSinceBuild"), span.Minutes, span.Minutes == 1 ? "minute" : "minutes");
+			return string.Format(Language.GetTextValue(TIME_SINCE_BUILD_KEY), span.Minutes, span.Minutes == 1 ? "minute" : "minutes");
 		if (span.Seconds > 5)
-			return string.Format(Language.GetTextValue("tModLoader.MSTimeSinceBuild"), span.Seconds, span.Seconds == 1 ? "second" : "seconds");
+			return string.Format(Language.GetTextValue(TIME_SINCE_BUILD_KEY), span.Seconds, span.Seconds == 1 ? "second" : "seconds");
 		if (span.Seconds <= 5)
 			return Language.GetTextValue("tModLoader.MSLastBuildJustNow");
 		return string.Empty;
