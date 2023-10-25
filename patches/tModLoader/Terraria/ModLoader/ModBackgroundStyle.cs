@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
@@ -53,39 +55,43 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
-	[Obsolete($"Use {nameof(ModifyStyleFade)} instead"/*, error: true*/)]
-	public virtual void ModifyFarFades(float[] fades, float transitionSpeed)
-	{
-	}
+	[Obsolete]
+	private void ModifyFarFades_Obsolete(float[] fades, float transitionSpeed) => ModifyFarFades(fades, transitionSpeed);
 
-	[Obsolete("Updated hook's parameters"/*, error: true*/)]
-	public virtual int ChooseFarTexture()
-	{
-		return -1;
-	}
+	[Obsolete($"Use {nameof(ModifyStyleFade)} instead", error: true)]
+	public virtual void ModifyFarFades(float[] fades, float transitionSpeed) => throw new NotImplementedException();
 
-	[Obsolete("Updated hook's parameters"/*, error: true*/)]
-	public virtual int ChooseMiddleTexture()
-	{
-		return -1;
-	}
+	[Obsolete]
+	private int ChooseFarTexture_Obsolete() => ChooseFarTexture();
 
-	[Obsolete($"Use {nameof(PreDrawBackground)} instead"/*, error: true*/)]
-	public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch)
-	{
-		return true;
-	}
+	[Obsolete("Updated hook's parameters", error: true)]
+	public virtual int ChooseFarTexture() => -1;
 
-	[Obsolete("Updated hook's parameters"/*, error: true*/)]
-	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
-	{
-		return -1;
-	}
+	[Obsolete]
+	private int ChooseMiddleTexture_Obsolete() => ChooseMiddleTexture();
+
+	[Obsolete("Updated hook's parameters", error: true)]
+	public virtual int ChooseMiddleTexture() => -1;
+
+	[Obsolete]
+	private bool PreDrawCloseBackground_Obsolete(SpriteBatch spriteBatch) => PreDrawCloseBackground(spriteBatch);
+
+	[Obsolete($"Use {nameof(PreDrawBackground)} instead", error: true)]
+	public virtual bool PreDrawCloseBackground(SpriteBatch spriteBatch) => true;
+
+	[Obsolete]
+	private int ChooseCloseTexture_Obsolete(ref float scale, ref double parallax, ref float a, ref float b) => ChooseCloseTexture(ref scale, ref parallax, ref a, ref b);
+
+	[Obsolete("Updated hook's parameters", error: true)]
+	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) => -1;
 
 	/// <summary>
 	/// Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.
 	/// </summary>
-	public abstract void ModifyStyleFade(float[] fades, float transitionSpeed);
+	public virtual void ModifyStyleFade(float[] fades, float transitionSpeed)
+	{
+		ModifyFarFades_Obsolete(fades, transitionSpeed);
+	}
 
 	/// <summary>
 	/// Gives you complete freedom over how the background is drawn. Return true for ChooseCloseTexture, ChooseCloseMidTexture, ChooseCloseFarTexture, ChooseMiddleTexture and ChooseFarTexture to have an effect; return false to disable tModLoader's own code for drawing the close background.
@@ -102,7 +108,7 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <returns></returns>
 	public virtual int ChooseFarTexture(in BackgroundLayerParams layerParams)
 	{
-		return -1;
+		return ChooseFarTexture_Obsolete();
 	}
 
 	/// <summary>
@@ -112,7 +118,7 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <returns></returns>
 	public virtual int ChooseMiddleTexture(in BackgroundLayerParams layerParams)
 	{
-		return -1;
+		return ChooseMiddleTexture_Obsolete();
 	}
 
 	/// <summary>
@@ -122,7 +128,12 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	/// <returns></returns>
 	public virtual int ChooseCloseTexture(in BackgroundLayerParams layerParams)
 	{
-		return -1;
+		float a = layerParams.TopY;
+		float b = layerParams.LoopWidth;
+		int textureSlot = ChooseCloseTexture_Obsolete(ref layerParams.Scale, ref layerParams.Parallax, ref a, ref b);
+		layerParams.TopY = (int)a;
+		layerParams.LoopWidth = (int)b;
+		return textureSlot;
 	}
 
 	/// <summary>
@@ -143,6 +154,19 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	public virtual int ChooseCloseFarTexture(in BackgroundLayerParams layerParams)
 	{
 		return -1;
+	}
+
+	private static readonly MethodInfo modifyFadesMethod = typeof(ModSurfaceBackgroundStyle).GetMethod(nameof(ModifyStyleFade));
+
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		var t = GetType();
+
+		if (!LoaderUtils.HasOverride(t, modifyFadesMethod)) {
+			throw new Exception($"{t} must override {nameof(ModifyStyleFade)}.");
+		}
 	}
 }
 
