@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			Main.projPet[Projectile.type] = true;
 
 			// Basics of CharacterPreviewAnimations explained in ExamplePetProjectile
-			// Notice we define our own method to use in .WithCode() below. This technically allows us to animate the projectile manually using frameCounter and frame aswell
+			// Notice we define our own method to use in .WithCode() below. This technically allows us to animate the projectile manually using frameCounter and frame as well
 			ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, Main.projFrames[Projectile.type], 5)
 				.WithOffset(-2, -22f)
 				.WithCode(CharacterPreviewCustomization);
@@ -75,7 +75,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			// Draw surrounding eyes to mimic the boss
 			Texture2D eyeTexture = EyeAsset.Value;
 
-			Vector2 offset = new Vector2(0, Projectile.gfxOffY); // Vertical offset when the projectile is changing elevation on tiles (does not apply to this particular projectile because it is always airbone)
+			Vector2 offset = new Vector2(0, Projectile.gfxOffY); // Vertical offset when the projectile is changing elevation on tiles (does not apply to this particular projectile because it is always airborne)
 			Vector2 orbitingCenter = Projectile.Center + offset;
 
 			// Don't need to draw the eyes if the pet is fully faded in
@@ -120,7 +120,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			// Handles movement, returns true if moving fast (used for animation)
 			float velDistanceChange = 2f;
 
-			// Calculates the desired resting position, aswell as some vectors used in velocity/rotation calculations
+			// Calculates the desired resting position, as well as some vectors used in velocity/rotation calculations
 			int dir = player.direction;
 			Projectile.direction = Projectile.spriteDirection = dir;
 

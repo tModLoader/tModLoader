@@ -1,33 +1,32 @@
+using ExampleMod.Common;
+using ExampleMod.Common.Configs;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Armor;
+using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
-using System.Collections.Generic;
-using ReLogic.Content;
-using Terraria.GameContent.UI;
 using Terraria.ModLoader.IO;
-using ExampleMod.Common.Configs;
-using ExampleMod.Common;
-using ExampleMod.Content.Projectiles;
+using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -320,8 +319,8 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
-		 	 	npcShop.Add(bloodTalisman.Type);
-		 	}
+				npcShop.Add(bloodTalisman.Type);
+			}
 			npcShop.Register(); // Name of this shop tab
 		}
 
@@ -409,7 +408,7 @@ namespace ExampleMod.Content.NPCs
 			// By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
 			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
 			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
-			if (otherAnchor.entity is NPC {type: NPCID.Demolitionist}) {
+			if (otherAnchor.entity is NPC { type: NPCID.Demolitionist }) {
 				type = EmoteID.EmotionAnger;
 			}
 

@@ -14,7 +14,7 @@
  namespace Terraria;
  
 +/// <summary>
-+/// Dust are particles effects used to add visual elements to weapons and other effects. Dust are completely visual and should never be used as a gameplay element. Dust count limits are imposed by the game to keep perfomance consistent, so Dust are not guaranteed to spawn when code attempts to spawn them.<para/>
++/// Dust are particles effects used to add visual elements to weapons and other effects. Dust are completely visual and should never be used as a gameplay element. Dust count limits are imposed by the game to keep performance consistent, so Dust are not guaranteed to spawn when code attempts to spawn them.<para/>
 +/// Vanilla Dust are enumerated in the <see cref="DustID"/> class.<para/>
 +/// New Dust can be implemented using the <see cref="ModDust"/> class.<para/>
 +/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Dust">Basic Dust Guide</see> teaches the basics on using Dust. In addition, the guide has resources teaching how to discover and use vanilla Dust.
@@ -68,7 +68,7 @@
 +	/// </summary>
  	public int alpha;
 +	/// <summary>
-+	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly choosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired. 
++	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly chosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired. 
 +	/// </summary>
  	public Rectangle frame;
 +	/// <summary>

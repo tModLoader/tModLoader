@@ -1,8 +1,8 @@
-﻿using System;
-using ExampleMod.Content.Tiles;
+﻿using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -99,7 +99,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 						// Convert all walls to ExampleWall (or ExampleWallUnsafe for SpiderUnsafe)
 						if (wall != 0 && wall != ModContent.WallType<ExampleWallUnsafe>()) {
-							if(wall == WallID.SpiderUnsafe)
+							if (wall == WallID.SpiderUnsafe)
 								Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWallUnsafe>();
 							else
 								Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWall>();
