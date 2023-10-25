@@ -13,6 +13,12 @@ internal class TimeHelper
 
 	public static string HumanTimeSpanString(DateTime yourDate) => HumanTimeSpanString(yourDate, localTime: false);
 
+	/// <summary>
+	/// Returns a localized string in the form of "X timeunit(s) ago" comparing the current time to the provided DateTime. Use <paramref name="localTime"/> to indicate if the provided DateTime is expressed as local time or coordinated universal time (UTC).
+	/// </summary>
+	/// <param name="yourDate"></param>
+	/// <param name="localTime"></param>
+	/// <returns></returns>
 	public static string HumanTimeSpanString(DateTime yourDate, bool localTime)
 	{
 		var ts = new TimeSpan((localTime ? DateTime.Now.Ticks : DateTime.UtcNow.Ticks) - yourDate.Ticks);
