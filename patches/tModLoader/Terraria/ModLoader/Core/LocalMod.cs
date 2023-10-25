@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using Terraria.Localization;
 
 [assembly: InternalsVisibleTo("tModLoaderTests")]
 namespace Terraria.ModLoader.Core;
