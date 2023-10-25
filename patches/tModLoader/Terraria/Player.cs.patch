@@ -7773,7 +7773,7 @@
  			return false;
  
  		for (int i = x - 1; i <= x + 1; i++) {
-@@ -41963,7 +_,13 @@
+@@ -41963,11 +_,76 @@
  			}
  		}
  		catch (Exception exception) {
@@ -7787,56 +7787,134 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,52 @@
+ 
++	// private static void InternalSavePlayerFile(PlayerFileData playerFile)
++	// {
++	// 	if (playerFile.ServerSideCharacter)
++	// 		return;
++	//
++	// 	string path = playerFile.Path;
++	// 	Player player = playerFile.Player;
++	// 	bool isCloudSave = playerFile.IsCloudSave;
++	// 	if (string.IsNullOrEmpty(path))
++	// 		return;
++	//
++	// 	// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
++	// 	// Moved to the bottom
++	// 	/*
++	// 	if (FileUtilities.Exists(path, isCloudSave))
++	// 		FileUtilities.Copy(path, path + ".bak", isCloudSave);
++	// 	*/
++	//
++	// 	RijndaelManaged rijndaelManaged = new RijndaelManaged();
++	//
++	// 	/*
++	// 	using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
++	// 	*/
++	// 	using Stream stream = new MemoryStream(2000);
++	// 	using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
++	// 	using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
++	//
++	// 	PlayerLoader.PreSavePlayer(player);
++	//
++	// 	binaryWriter.Write(279);
++	// 	playerFile.Metadata.Write(binaryWriter);
++	// 	Serialize(playerFile, player, binaryWriter);
++	// 	binaryWriter.Flush();
++	// 	cryptoStream.FlushFinalBlock();
++	// 	stream.Flush();
++	//
++	// 	// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
++	// 	// Replaced with FileUtilities.WriteAllBytes at the bottom
++	// 	/*
++	// 	if (isCloudSave && SocialAPI.Cloud != null)
++	// 		SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
++	// 	*/
++	//
++	// 	byte[] bytes = ((MemoryStream)stream).ToArray();
++	//
++	// 	PlayerLoader.PostSavePlayer(player); // For native data only
++	//
++	// 	//TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
++	// 	var tag = PlayerIO.SaveData(player);
++	//
++	// 	BackupIO.Player.ArchivePlayer(path, isCloudSave);
++	// 	if (FileUtilities.Exists(path, isCloudSave))
++	// 		FileUtilities.Copy(path, path + ".bak", isCloudSave);
++	//
++	// 	FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
++	//
++	// 	PlayerIO.Save(tag, path, isCloudSave);
++	// }
++
+ 	private static void InternalSavePlayerFile(PlayerFileData playerFile)
+ 	{
+ 		if (playerFile.ServerSideCharacter)
+@@ -41979,21 +_,60 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
-+		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Moved to the bottom
-+		/*
- 		if (FileUtilities.Exists(path, isCloudSave))
- 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
-+		*/
- 
- 		RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-		if (FileUtilities.Exists(path, isCloudSave))
+-			FileUtilities.Copy(path, path + ".bak", isCloudSave);
+-
++		PlayerLoader.PreSavePlayer(player);
 +
-+		/*
- 		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
-+		*/
++		var plrData = GeneratePlayerData(playerFile);
++
++		PlayerLoader.PostSavePlayer(player);
++
++		var tplrData = PlayerIO.SaveData(player);
++
++		UpdateLocalPlayerFile(playerFile, plrData, tplrData);
++	}
++
++	public static byte[] GeneratePlayerData(PlayerFileData playerFile)
++	{
+ 		RijndaelManaged rijndaelManaged = new RijndaelManaged();
+-		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
++
 +		using Stream stream = new MemoryStream(2000);
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
 +
-+		PlayerLoader.PreSavePlayer(player);
-+
  		binaryWriter.Write(279);
  		playerFile.Metadata.Write(binaryWriter);
- 		Serialize(playerFile, player, binaryWriter);
+-		Serialize(playerFile, player, binaryWriter);
++		Serialize(playerFile, playerFile.Player, binaryWriter);
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
+-		if (isCloudSave && SocialAPI.Cloud != null)
+-			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +
-+		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Replaced with FileUtilities.WriteAllBytes at the bottom
-+		/*
- 		if (isCloudSave && SocialAPI.Cloud != null)
- 			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
-+		*/
++		return ((MemoryStream)stream).ToArray();
++	}
 +
-+		byte[] bytes = ((MemoryStream)stream).ToArray();
-+
-+		PlayerLoader.PostSavePlayer(player); // For native data only
-+
-+		//TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		var tag = PlayerIO.SaveData(player);
++	private static void UpdateLocalPlayerFile(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
++	{
++		string path = playerFile.Path;
++		Player player = playerFile.Player;
++		bool isCloudSave = playerFile.IsCloudSave;
++		if (string.IsNullOrEmpty(path))
++			return;
 +
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+		FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
++		Exception error = null;
++		try {
++			FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
++		}
++		catch (Exception e) {
++			error = e;
++		}
 +
-+		PlayerIO.Save(tag, path, isCloudSave);
++		PlayerIO.Save(tplrData, path, isCloudSave);
++
++		if (error != null) {
++			throw error;
++		}
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
@@ -7964,8 +8042,89 @@
  			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
-@@ -42272,6 +_,10 @@
+@@ -42261,6 +_,68 @@
+ 			Utils.TryCreatingDirectory(Main.PlayerPath);
+ 	}
  
++	// public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
++	// {
++	// 	PlayerFileData playerFileData = new PlayerFileData(playerPath, cloudSave);
++	// 	if (cloudSave && SocialAPI.Cloud == null)
++	// 		return playerFileData;
++	//
++	// 	if (Main.rand == null)
++	// 		Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
++	//
++	// 	Player player = new Player();
++	// 	bool gotToReadName = false;
++	//
++	// 	// Override Main.CurrentPlayer until the end of this method.
++	// 	using var _currentPlr = new Main.CurrentPlayerOverride(player);
++	//
++	// 	try {
++	// 		RijndaelManaged rijndaelManaged = new RijndaelManaged();
++	// 		rijndaelManaged.Padding = PaddingMode.None;
++	// 		using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++	// 			using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
++	// 			using BinaryReader binaryReader = new BinaryReader(input);
++	// 			int num = binaryReader.ReadInt32();
++	// 			if (num >= 135)
++	// 				playerFileData.Metadata = FileMetadata.Read(binaryReader, FileType.Player);
++	// 			else
++	// 				playerFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.Player);
++	//
++	// 			if (num > 279) {
++	// 				player.loadStatus = 1;
++	// 				player.name = binaryReader.ReadString();
++	// 				playerFileData.Player = player;
++	// 				return playerFileData;
++	// 			}
++	//
++	// 			Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
++	// 		}
++	//
++	// 		player.PlayerFrame();
++	// 		player.loadStatus = 0;
++	// 		playerFileData.Player = player;
++	// 		return playerFileData;
++	// 	}
++	// 	catch (CustomModDataException e) {
++	// 		playerFileData.customDataFail = e;
++	// 	}
++	// 	catch {
++	// 	}
++	//
++	// 	Player player2 = new Player();
++	// 	player2.loadStatus = 2;
++	// 	if (gotToReadName && player.name.Length <= nameLen) {
++	// 		player2.name = player.name;
++	// 	}
++	// 	else {
++	// 		string[] array = playerPath.Replace('/', Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
++	// 		player2.name = array[array.Length - 1].Split('.')[0];
++	// 	}
++	//
++	// 	playerFileData.Player = player2;
++	// 	return playerFileData;
++	// }
++
+ 	public static PlayerFileData LoadPlayer(string playerPath, bool cloudSave)
+ 	{
+ 		PlayerFileData playerFileData = new PlayerFileData(playerPath, cloudSave);
+@@ -42270,12 +_,26 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
++		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
++		// Read data in advance instead of halfway
++		if (!PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tplrData))
++			tplrData = null;
++
++		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
++	}
++
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData,TagCompound tplrData)
++	{
  		Player player = new Player();
  		bool gotToReadName = false;
 +
@@ -7975,6 +8134,20 @@
  		try {
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
  			rijndaelManaged.Padding = PaddingMode.None;
+-			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			using (MemoryStream stream = new MemoryStream(plrData)) {
+ 				using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
+ 				using BinaryReader binaryReader = new BinaryReader(input);
+ 				int num = binaryReader.ReadInt32();
+@@ -42291,7 +_,7 @@
+ 					return playerFileData;
+ 				}
+ 
+-				Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
++				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName);
+ 			}
+ 
+ 			player.PlayerFrame();
 @@ -42299,6 +_,9 @@
  			playerFileData.Player = player;
  			return playerFileData;
@@ -7985,7 +8158,17 @@
  		catch {
  		}
  
-@@ -42322,12 +_,20 @@
+@@ -42308,7 +_,8 @@
+ 			player2.name = player.name;
+ 		}
+ 		else {
+-			string[] array = playerPath.Replace('/', Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
++			string[] array = playerFileData.Path.Replace('/', Path.DirectorySeparatorChar)
++				.Split(Path.DirectorySeparatorChar);
+ 			player2.name = array[array.Length - 1].Split('.')[0];
+ 		}
+ 
+@@ -42322,11 +_,11 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
@@ -7994,19 +8177,11 @@
  		return player;
  	}
  
- 	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
- 	{
-+		if (!PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
-+			tag = null;
-+
-+		Deserialize(data, newPlayer, fileIO, tag, release, out gotToReadName);
-+	}
-+
+-	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
 +	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
-+	{
+ 	{
  		gotToReadName = false;
  		newPlayer.name = fileIO.ReadString();
- 		gotToReadName = true;
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
