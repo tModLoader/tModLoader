@@ -83,24 +83,29 @@ internal class TileDefinitionOptionElement : DefinitionOptionElement<TileDefinit
 			if (Main.tileFrameImportant[type]) {
 				// TODO: frameimportatnt tiles
 				var objData = TileObjectData.GetTileData(type, 0);
-				// Coordinates for where a tile isn't attached to anything
-				var texture = TextureAssets.Tile[type];
-				var frameCoords = new Vector2(0, 0) * 18;
-				var source = new Rectangle((int)frameCoords.X, (int)frameCoords.Y, 16, 16);
 
-				spriteBatch.Draw(texture.Value, dimensions.Center(), source, Color.White, 0f, Vector2.One * 8, Scale * 2, SpriteEffects.None, 0);
+				Draw1x1Tile(type, new Point(0, 0));
 			}
 			else {
-				// Coordinates for where a tile isn't attached to anything
-				var texture = TextureAssets.Tile[type];
-				var frameCoords = new Vector2(9, 3) * 18;
-				var source = new Rectangle((int)frameCoords.X, (int)frameCoords.Y, 16, 16);
-
-				spriteBatch.Draw(texture.Value, dimensions.Center(), source, Color.White, 0f, Vector2.One * 8, Scale * 2, SpriteEffects.None, 0);
+				// Coordinates for where a tile isn't attached to anything (eg in the air)
+				Draw1x1Tile(type, new Point(9, 3));
 			}
 		}
 
 		if (IsMouseHovering)
 			UIModConfig.Tooltip = Tooltip;
+
+		void Draw1x1Tile(int type, Point coords, Point? offsetFromCenter = null)
+		{
+			var offset = offsetFromCenter ?? new Point(0, 0);
+			var texture = TextureAssets.Tile[type];
+
+			int frameX = coords.X * 18;
+			int frameY = coords.Y * 18;
+			var sourceRect = new Rectangle(frameX, frameY, 16, 16);
+			var position = dimensions.Center() + offset.ToVector2() * 16;
+
+			spriteBatch.Draw(texture.Value, position, sourceRect, Color.White, 0f, Vector2.One * 8, Scale * 2, SpriteEffects.None, 0);
+		}
 	}
 }
