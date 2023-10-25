@@ -38,4 +38,4 @@ RUN ./manage-tModLoaderServer.sh install-tml --github --tml-version $TML_VERSION
 
 EXPOSE 7777
 
-ENTRYPOINT [ "./manage-tModLoaderServer.sh", "docker", "--folder", "~/.local/share/Terraria/tModLoader" ]
+ENTRYPOINT [ "./manage-tModLoaderServer.sh", "docker", "--folder", "/home/tml/.local/share/Terraria/tModLoader" ]
