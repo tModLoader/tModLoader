@@ -11,9 +11,11 @@ internal class TimeHelper
 	private const int DAY = 24 * HOUR;
 	private const int MONTH = 30 * DAY;
 
-	public static string HumanTimeSpanString(DateTime yourDate)
+	public static string HumanTimeSpanString(DateTime yourDate) => HumanTimeSpanString(yourDate, localTime: false);
+
+	public static string HumanTimeSpanString(DateTime yourDate, bool localTime)
 	{
-		var ts = new TimeSpan(DateTime.UtcNow.Ticks - yourDate.Ticks);
+		var ts = new TimeSpan((localTime ? DateTime.Now.Ticks : DateTime.UtcNow.Ticks) - yourDate.Ticks);
 		double delta = Math.Abs(ts.TotalSeconds);
 
 		if (delta < 1 * MINUTE)
