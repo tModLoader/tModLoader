@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Config;
@@ -20,7 +21,7 @@ public abstract class EntityDefinition : TagSerializable
 	public string Name;
 
 	// Check if the type is invalid and the Mod/Name pair is NOT vanilla
-	public bool IsUnloaded
+	public virtual bool IsUnloaded
 		=> Type <= 0 && !(Mod == "Terraria" && Name == "None" || Mod == "" && Name == "");
 
 	[JsonIgnore]
@@ -212,6 +213,38 @@ public class BuffDefinition : EntityDefinition
 		=> new(tag.GetString("mod"), tag.GetString("name"));
 
 	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetBuffName(Type);
+}
+
+[TypeConverter(typeof(ToFromStringConverter<TileDefinition>))]
+public class TileDefinition : EntityDefinition
+{
+	public static readonly Func<TagCompound, TileDefinition> DESERIALIZER = Load;
+
+	// Tile ids start from 0 for some reason
+	public override bool IsUnloaded
+		=> Type < 0 && !(Mod == "Terraria" && Name == "None" || Mod == "" && Name == "");
+
+	// TODO: doesn't handle tile styles, should implement when NPCs get negative id support
+	public override int Type => TileID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
+
+	public TileDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="TileDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
+	public TileDefinition(int type) : base(TileID.Search.GetName(type)) { }
+	public TileDefinition(string key) : base(key) { }
+	public TileDefinition(string mod, string name) : base(mod, name) { }
+
+	public static TileDefinition FromString(string s)
+		=> new(s);
+
+	public static TileDefinition Load(TagCompound tag)
+		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	public override string DisplayName
+		=> IsUnloaded || Type == -1
+		? Language.GetTextValue("Mods.ModLoader.Unloaded")
+		: (string.IsNullOrEmpty(Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0)))
+		? Name
+		: Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0)));
 }
 
 /// <summary>
