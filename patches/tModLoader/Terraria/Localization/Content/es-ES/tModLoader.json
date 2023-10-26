@@ -404,6 +404,7 @@
 		"MSManagePublished": "Gestionar publicaciones",
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Crear mod",
 		"VersionUpgrade": "Haz clic para más info. sobre la migración de mods",
 		// "WikiLink": "Explore the Wiki",

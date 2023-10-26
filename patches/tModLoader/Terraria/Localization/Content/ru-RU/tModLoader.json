@@ -404,6 +404,7 @@
 		"MSManagePublished": "Управление опубликованными",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",

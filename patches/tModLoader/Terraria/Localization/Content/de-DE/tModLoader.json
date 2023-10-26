@@ -404,6 +404,7 @@
 		"MSManagePublished": "Veröffentlichte verwalten",
 		"MSPublish": "Veröffentlichen",
 		"MSModSourcesCantHaveSpaces": "(Modquellen-Ordner können keine Leerzeichen haben!)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Mod erstellen",
 		"VersionUpgrade": "LINK: Über die Mod-Migration der neuesten Aktualisierung erfahren",
 		// "WikiLink": "Explore the Wiki",

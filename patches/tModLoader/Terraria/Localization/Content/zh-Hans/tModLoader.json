@@ -405,6 +405,7 @@
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "（Mod Sources文件夹不能含有空格）",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "创建模组",
 		"VersionUpgrade": "链接：了解如何迁移到tModLoader 1.4",
 		"WikiLink": "查看Wiki",
