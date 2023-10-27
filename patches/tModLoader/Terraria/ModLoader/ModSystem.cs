@@ -408,12 +408,12 @@ public abstract partial class ModSystem : ModType
 	/// </summary>
 	public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 
-	/// <inheritdoc cref="ShimmerTransformation.CanShimmerCallBack"/>
+	/// <inheritdoc cref="ShimmerTransformation{TModShimmerable}.CanShimmerCallBack"/>
 	public virtual bool CanModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable) where TShimmerable : IModShimmerable => true;
 
-	/// <inheritdoc cref="ShimmerTransformation.ModifyShimmerCallBack"/>
+	/// <inheritdoc cref="ShimmerTransformation{TModShimmerable}.ModifyShimmerCallBack"/>
 	public virtual void ModifyModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable) where TShimmerable : IModShimmerable { }
 
-	/// <inheritdoc cref="ShimmerTransformation.OnShimmerCallBack"/>
+	/// <inheritdoc cref="ShimmerTransformation{TModShimmerable}.OnShimmerCallBack"/>
 	public virtual void OnModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable source, IEnumerable<IModShimmerable> spawnedEntities) where TShimmerable : IModShimmerable { }
 }

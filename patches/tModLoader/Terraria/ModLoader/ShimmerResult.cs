@@ -11,13 +11,13 @@ public interface IShimmerResult<in TShimmerable> where TShimmerable : IModShimme
 	public abstract int Count { get; }
 
 	/// <summary> Used to check if this is an <see cref="Item"/> of <paramref name="type"/> </summary>
-	public bool IsItemResult(int type) => false;
+	public bool IsItemResult(int type);
 
 	/// <summary> Used to check if this is an <see cref="NPC"/> of <paramref name="type"/> </summary>
-	public bool IsNPCResult(int type) => false;
+	public bool IsNPCResult(int type);
 
 	/// <summary> Used to check if this is an <see cref="Projectile"/> of <paramref name="type"/> </summary>
-	public bool IsProjectileResult(int type) => false;
+	public bool IsProjectileResult(int type);
 
 	/// <summary>
 	/// Spawns <see cref="IShimmerResult{T}.Count"/> * <paramref name="shimmerInfo"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement
@@ -28,7 +28,6 @@ public interface IShimmerResult<in TShimmerable> where TShimmerable : IModShimme
 	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself </returns>
 	public abstract IEnumerable<IModShimmerable> SpawnFrom(TShimmerable shimmerable, ShimmerInfo shimmerInfo);
 }
-
 /// <summary> A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation </summary>
 /// <param name="Count"> The number of this result to spawn, true count will be multiplied by the stack size of the <see cref="IModShimmerable"/> source </param>
 public abstract record class GeneralShimmerResult(int Count = 1) : IShimmerResult<IModShimmerable>

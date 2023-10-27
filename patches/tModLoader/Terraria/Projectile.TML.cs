@@ -218,10 +218,10 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShim
 	/// </summary>
 	/// <inheritdoc/>
 	public bool CanShimmer()
-		=> ProjectileLoader.CanShimmer(this) && ShimmerTransformation<Projectile>.AnyValidModShimmer(this);
+		=> ProjectileLoader.CanShimmer(this) && ShimmerManager<Projectile>.AnyValidModShimmer(this);
 
 	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
-	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<Projectile>.GetRedirectedType(type);
+	int IModShimmerable.ShimmerRedirectedType => ShimmerManager<Projectile>.GetRedirectedType(type);
 	int IModShimmerable.Type => type;
 
 	void IModShimmerable.ShimmerRemoveStacked(int amount)
@@ -247,7 +247,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>, IModShim
 			shimmerTransformTime += 0.01f;
 			if (Main.netMode != NetmodeID.MultiplayerClient && shimmerTransformTime > 0.9f && !PreventingChainedShimmers) {
 				shimmerTransformTime = 0.9f; // server/single-client side we stop at 0.9 bc NPC does
-				ShimmerTransformation<Projectile>.TryModShimmer(this);
+				ShimmerManager<Projectile>.TryModShimmer(this);
 				OnShimmer();
 			}
 

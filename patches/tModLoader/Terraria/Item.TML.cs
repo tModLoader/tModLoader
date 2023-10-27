@@ -297,7 +297,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IMo
 	}
 
 	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
-	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<Item>.GetRedirectedType(type);
+	int IModShimmerable.ShimmerRedirectedType => ShimmerManager<Item>.GetRedirectedType(type);
 	int IModShimmerable.Type => type;
 	int IModShimmerable.Stack => stack;
 	public bool PreventingChainedShimmers { get; set; }

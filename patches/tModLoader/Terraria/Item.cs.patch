@@ -1943,7 +1943,7 @@
 +	/// <summary> <inheritdoc/> <br/>
 +	/// For this <see cref="Item"/> override it checks for <see cref="ItemLoader.CanShimmer(Item)"/> and for any of the following:
 +	/// <list type="number">
-+	/// <item/> <see cref="ShimmerTransformation{Item}.AnyValidModShimmer"/>
++	/// <item/> <see cref="ShimmerManager{Item}.AnyValidModShimmer"/>
 +	/// <item/> (type == 1326 || type == 779 || type == 3031 || type == 5364) and NPC.downedMoonlord
 +	/// <item/> (type == 4986 and !NPC.unlockedSlimeRainbowSpawn)
 +	/// <item/> (type == 3461 || createTile == 139)
@@ -1955,7 +1955,7 @@
  	{
 +		if (!ItemLoader.CanShimmer(this)) // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
 +			return false;
-+		if (ShimmerTransformation<Item>.AnyValidModShimmer(this))
++		if (ShimmerManager<Item>.AnyValidModShimmer(this))
 +			return true;
 +
  		int shimmerEquivalentType = GetShimmerEquivalentType();
@@ -2003,7 +2003,7 @@
  
  	private void GetShimmered()
  	{
-+		if (ShimmerTransformation<Item>.TryModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++		if (ShimmerManager<Item>.TryModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
 +			OnShimmer(); // ModItem and GlobalItem
 +			return;
 +		}
