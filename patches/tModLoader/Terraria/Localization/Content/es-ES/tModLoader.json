@@ -396,9 +396,9 @@
 		"MSBuildAll": "Compilar todo",
 		"MSBuildReloadAll": "Compilar y recargar todo",
 		"MSUpgradeCSProj": "Actualizar archivo .csproj",
-	 "MSOpenCSProj": "Abrir .csproj",
+		"MSOpenCSProj": "Abrir .csproj",
 		"MSUpgradeLangFiles": "Actualizar archivos .lang a .hjson (no destructivo)",
-	 "MSRebuildRequired": "Recompilación necesaria",
+		"MSRebuildRequired": "Recompilación necesaria",
 		"MSLocalizationFilesChangedCantPublish": "Se han realizado cambios en los archivos de traducción,\nes necesario realizar una recompilación antes de publicar el mod",
 		"MSOpenSources": "Abrir fuente",
 		"MSManagePublished": "Gestionar publicaciones",
@@ -637,7 +637,7 @@
 		"PercentSummonTagCritChance": "Probabilidad del {0}% de impacto crítico por conexión por invocación"
 	},
 	"Bestiary_ItemDropConditions": {
- "SimpleCondition": "Suelta: {0}"
+		"SimpleCondition": "Suelta: {0}"
 	},
 	"Conditions": {
 		"NearWater": "Necesita agua",
