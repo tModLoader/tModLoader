@@ -7787,11 +7787,12 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,70 @@
+@@ -41979,21 +_,71 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
 +		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
++		// TML: Delay vanilla saving until modded data is serialized(in case of exceptions)
 +		// Moved to UpdateLocalPlayerFile
 +		/*
  		if (FileUtilities.Exists(path, isCloudSave))
@@ -8032,13 +8033,12 @@
  		catch {
  		}
  
-@@ -42308,7 +_,8 @@
+@@ -42308,7 +_,7 @@
  			player2.name = player.name;
  		}
  		else {
 -			string[] array = playerPath.Replace('/', Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
-+			string[] array = playerFileData.Path.Replace('/', Path.DirectorySeparatorChar)
-+				.Split(Path.DirectorySeparatorChar);
++			string[] array = playerFileData.Path.Replace('/', Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
  			player2.name = array[array.Length - 1].Split('.')[0];
  		}
  
