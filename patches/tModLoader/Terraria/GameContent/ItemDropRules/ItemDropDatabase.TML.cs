@@ -1069,6 +1069,7 @@ partial class ItemDropDatabase
 			ItemDropRule.NotScalingWithLuck(ItemID.CatEars),
 			spaceCreatureSet,
 			wolfSet,
+			treasureHunterSet
 		};
 
 		IItemDropRule[] rules = new IItemDropRule[]
