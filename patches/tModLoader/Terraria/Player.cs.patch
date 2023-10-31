@@ -8140,12 +8140,9 @@
  	}
  
  	public static PlayerFileData GetFileData(string file, bool cloudSave)
-@@ -42886,13 +_,20 @@
- 
+@@ -42887,12 +_,17 @@
  		PlayerFileData playerFileData = LoadPlayer(file, cloudSave);
  		if (playerFileData.Player != null) {
-+			// When loading fails, backup will overwrite. So how about loading plr success && loading tplr fail?
-+			// Just tplrData = null, will result in different versions of PLR and TPLR. (feature)
  			if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1) {
 +				CustomModDataException customDataFail = playerFileData.customDataFail;
 -				if (FileUtilities.Exists(file + ".bak", cloudSave))
