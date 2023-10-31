@@ -7787,7 +7787,7 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,71 @@
+@@ -41979,21 +_,60 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
@@ -7845,19 +7845,8 @@
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+		Exception error = null;
-+		try { // Why was this added?
-+			FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
-+		}
-+		catch (Exception e) {
-+			error = e;
-+		}
-+
++		FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
 +		PlayerIO.Save(tplrData, path, isCloudSave);
-+
-+		if (error != null) {
-+			throw error;
-+		}
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
@@ -8151,9 +8140,12 @@
  	}
  
  	public static PlayerFileData GetFileData(string file, bool cloudSave)
-@@ -42887,12 +_,17 @@
+@@ -42886,13 +_,20 @@
+ 
  		PlayerFileData playerFileData = LoadPlayer(file, cloudSave);
  		if (playerFileData.Player != null) {
++			// When loading fails, backup will overwrite. So how about loading plr success && loading tplr fail?
++			// Just tplrData = null, will result in different versions of PLR and TPLR. (feature)
  			if (playerFileData.Player.loadStatus != 0 && playerFileData.Player.loadStatus != 1) {
 +				CustomModDataException customDataFail = playerFileData.customDataFail;
 -				if (FileUtilities.Exists(file + ".bak", cloudSave))
