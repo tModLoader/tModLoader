@@ -452,7 +452,7 @@ public partial class Main
 		SIGTERMHandler = PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
 	}
 
-	private static string newsText = "Checking...";
+	private static string newsText = "???";
 	private static string newsURL = null;
 	private static bool newsChecked = false;
 	private static bool newsIsNew = false;
@@ -460,10 +460,15 @@ public partial class Main
 	{
 		if (menuMode == 0) {
 			if (!newsChecked) {
+				newsText = Language.GetTextValue("tModLoader.LatestNewsChecking");
 				newsChecked = true;
 				// Download latest news, save to config.json.
 				// https://partner.steamgames.com/doc/webapi/ISteamNews
 				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+					if (!response.IsCompletedSuccessfully || response.Exception != null) {
+						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
+						return;
+					}
 					JObject o = JObject.Parse(response.Result);
 					newsText = (string)o["appnews"]["newsitems"][0]["title"]; // No way to access specific language results in API.
 					newsURL = (string)o["appnews"]["newsitems"][0]["url"];

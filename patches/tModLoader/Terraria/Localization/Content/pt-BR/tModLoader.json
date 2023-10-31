@@ -36,6 +36,8 @@
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		"SteamFamilyShareWarning": "Foi detectado que você está usando uma cópia do Terraria de uma biblioteca compartilhada.\nO Steam não oferece suporte ao tModLoader em uma biblioteca compartilhada.\nA solução experimental para o tModLoader de bibliotecas compartilhadas foi carregada.\nOs seguintes recursos não estão disponíveis:\n - Overlay do Steam\n - Multijogador do Steam",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",

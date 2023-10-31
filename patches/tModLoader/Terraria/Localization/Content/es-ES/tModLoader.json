@@ -36,6 +36,8 @@
 		"AudioNotSupported": "No se han detectado dispositivos de audio. Se desactivará el sonido.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
 		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		"SteamFamilyShareWarning": "Se ha detectado que estás utilizando una copia de Terraria compartida en familia.\nSteam no admite el préstamo familiar de tModLoader.\nSe ha cargado la solución experimental para ejecutar tModLoader.\nLas siguientes funciones no están disponibles:\n - Superposición de Steam\n - Multijugador de Steam",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
