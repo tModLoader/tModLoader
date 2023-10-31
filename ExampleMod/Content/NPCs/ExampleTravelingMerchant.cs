@@ -1,4 +1,4 @@
-﻿using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Armor;
@@ -6,10 +6,8 @@ using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.Items.Placeable.Furniture;
 using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.Items.Weapons;
-using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -21,7 +19,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
@@ -29,18 +26,17 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	class ExampleTravelingMerchant : ModNPC
 	{
-		// Time of day for traveller to leave (6PM)
+		// Time of day for traveler to leave (6PM)
 		public const double despawnTime = 48600.0;
 
-		// the time of day the traveler will spawn (double.MaxValue for no spawn)
-		// saved and loaded with the world in TravelingMerchantSystem
+		// the time of day the traveler will spawn (double.MaxValue for no spawn). Saved and loaded with the world in TravelingMerchantSystem
 		public static double spawnTime = double.MaxValue;
+
+		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns. Synced by the server to clients in multi player
+		public readonly static List<Item> shopItems = new();
 
 		// A static instance of the declarative shop, defining all the items which can be brought. Used to create a new inventory when the NPC spawns
 		public static ExampleTravelingMerchantShop Shop;
-
-		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
-		public List<Item> shopItems;
 
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
@@ -114,12 +110,12 @@ namespace ExampleMod.Content.NPCs
 
 			// Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
 			if (Main.dayTime && Main.time == 0) {
-				// insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
+				// insert code here to change the spawn chance based on other conditions (say, NPCs which have arrived, or milestones the player has passed)
 				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
 				// NPC won't spawn today if it stayed all night
 				if (!travelerIsThere && Main.rand.NextBool(4)) { // 4 = 25% Chance
-																// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
+					// Here we can make it so the NPC doesn't spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 				}
 				else {
@@ -138,7 +134,7 @@ namespace ExampleMod.Content.NPCs
 				// Prevents the traveler from spawning again the same day
 				spawnTime = double.MaxValue;
 
-				// Annouce that the traveler has spawned in!
+				// Announce that the traveler has spawned in!
 				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
 				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
 			}
@@ -163,7 +159,9 @@ namespace ExampleMod.Content.NPCs
 			Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
 			foreach (Player player in Main.player) {
 				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
-				if (player.active && player.getRect().Intersects(npcScreenRect)) return true;
+				if (player.active && player.getRect().Intersects(npcScreenRect)) {
+					return true;
+				}
 			}
 			return false;
 		}
@@ -222,21 +220,21 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-			shopItems = Shop.GenerateNewInventoryList();
+			shopItems.Clear();
+   			shopItems.AddRange(Shop.GenerateNewInventoryList());
+
+			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
+			if (Main.netMode == NetmodeID.Server) {
+				// We recommend modders avoid sending WorldData too often, or filling it with too much data, lest too much bandwidth be consumed sending redundant data repeatedly
+				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronise
+				NetMessage.SendData(MessageID.WorldData);
+   			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
 			});
-		}
-
-		public override void SaveData(TagCompound tag) {
-			tag["shopItems"] = shopItems;
-		}
-
-		public override void LoadData(TagCompound tag) {
-			shopItems = tag.Get<List<Item>>("shopItems");
 		}
 
 		public override void HitEffect(NPC.HitInfo hit) {
@@ -331,7 +329,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void AI() {
+		public override void AI() { 
 			NPC.homeless = true; // Make sure it stays homeless
 		}
 
@@ -367,7 +365,7 @@ namespace ExampleMod.Content.NPCs
 	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
 	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
 	// 
-	// This uses some fairly advanced C# to avoid being accessively long, so make sure you learn the language before trying to adapt it significantly
+	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
 	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{
 		public new record Entry(Item Item, List<Condition> Conditions) : AbstractNPCShop.Entry
@@ -439,7 +437,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void FillShop(ICollection<Item> items, NPC npc) {
 			// use the items which were selected when the NPC spawned.
-			foreach (var item in ((ExampleTravelingMerchant)npc.ModNPC).shopItems) {
+			foreach (var item in ExampleTravelingMerchant.shopItems) {
 				// make sure to add a clone of the item, in case any ModifyActiveShop hooks adjust the item when the shop is opened
 				items.Add(item.Clone());
 			}
@@ -449,7 +447,7 @@ namespace ExampleMod.Content.NPCs
 			overflow = false;
 			int i = 0;
 			// use the items which were selected when the NPC spawned.
-			foreach (var item in ((ExampleTravelingMerchant)npc.ModNPC).shopItems) {
+			foreach (var item in ExampleTravelingMerchant.shopItems) {
 
 				if (i == items.Length - 1) {
 					// leave the last slot empty for selling

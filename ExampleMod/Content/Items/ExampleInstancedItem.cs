@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Items
 				GenerateNewColors();
 			}
 			else {
-				// cycle through the colours
+				// cycle through the colors
 				colors = colors.Skip(1).Concat(colors.Take(1)).ToArray();
 			}
 		}

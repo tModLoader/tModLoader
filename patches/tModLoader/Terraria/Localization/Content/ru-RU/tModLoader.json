@@ -407,6 +407,7 @@
 		"MSManagePublished": "Управление опубликованными",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",
@@ -471,7 +472,7 @@
 		"MSUnloading": "Выгрузка: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Добавление рецептов...",
-		"CancellingLoading": "Отменение загрузки...",
+		"CancellingLoading": "Отмена загрузки...",
 		"LoadingCancelled": "Загрузка отменена",
 
 		// Default Unimplemented
@@ -503,7 +504,7 @@
 		// In Game UI additions
 		"slotStack": "Стак",
 		"slotScroll": "Прокрутка",
-		// "PressXToClose": "Press {0} to close",
+		"PressXToClose": "Нажмите {0}, чтобы закрыть",
 
 		// Misc
 		"OK": "ОК",

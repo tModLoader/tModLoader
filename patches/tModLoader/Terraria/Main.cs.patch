@@ -2681,16 +2681,18 @@
  				if (item.melee) {
  					int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
  					toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-@@ -16406,8 +_,18 @@
+@@ -16406,8 +_,20 @@
  					toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  					numLines++;
  				}
 +				*/
 +				if (item.DamageType.UseStandardCritCalcs && item.DamageType.ShowStatTooltipLine(player[myPlayer], "CritChance")) {
 +					int crit = player[myPlayer].GetWeaponCrit(item);
-+					toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+					toolTipNames[numLines] = "CritChance";
-+					numLines++;
++					if (crit > 0) { // Fix #3895, see comments for justification.
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
++						numLines++;
++					}
 +				}
  
 +				/*

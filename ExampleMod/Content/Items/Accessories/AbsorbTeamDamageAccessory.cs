@@ -1,9 +1,9 @@
 ﻿using ExampleMod.Common.Players;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
 using ExampleMod.Content.Buffs;
+using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Accessories
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 6;
-			Item.value = Item.buyPrice(0, 30, 0, 0); 
+			Item.value = Item.buyPrice(0, 30, 0, 0);
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {

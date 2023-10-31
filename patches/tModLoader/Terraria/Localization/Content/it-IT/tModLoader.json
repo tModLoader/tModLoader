@@ -409,6 +409,7 @@
 		// "MSManagePublished": "Manage Published",
 		// "MSPublish": "Publish",
 		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
+		// "MSLastBuilt": "Last built: {0}",
 		// "MSCreateMod": "Create Mod",
 		// "VersionUpgrade": "Learn about Mod Migration",
 		// "WikiLink": "Explore the Wiki",
