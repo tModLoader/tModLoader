@@ -2065,7 +2065,7 @@
 +				DoUpdate(ref gameTime);
 +			}
 +			catch (Exception e) {
-+				Logging.Terraria.Error(e);
++				// Logging.Terraria.Error(e); Removed, duplicate log messages.
 +			}
 +
  			CinematicManager.Instance.Update(gameTime);
