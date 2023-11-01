@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -213,6 +213,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanDropFromR
 <tr class="memitem:a2d2bb989f5affa90f95c561c6288475d"><td class="memItemLeft" align="right" valign="top"><a id="a2d2bb989f5affa90f95c561c6288475d" name="a2d2bb989f5affa90f95c561c6288475d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanGrowCrystalShards</b> = Factory.CreateBoolSet(117, 116, 164, 402, 403)</td></tr>
 <tr class="separator:a2d2bb989f5affa90f95c561c6288475d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e33b306f153cde4f64a91c69e9436dd"><td class="memItemLeft" align="right" valign="top"><a id="a0e33b306f153cde4f64a91c69e9436dd" name="a0e33b306f153cde4f64a91c69e9436dd"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanPlaceNextToNonSolidTile</b> = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble)</td></tr>
+<tr class="memdesc:a0e33b306f153cde4f64a91c69e9436dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows tiles to be placed next to any tile or wall. (Tiles normally need a Main.tileSolid tile, Rope tile, IsBeam tile, or a wall adjacent to the target position to be placeable.) <br  />
+Used by: Cobweb, Coin Piles, Living Fire Blocks, Smoke Blocks, Bubble Blocks <br /></td></tr>
+<tr class="separator:a0e33b306f153cde4f64a91c69e9436dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3b66e6eabc45d3523c261098b89567"><td class="memItemLeft" align="right" valign="top"><a id="a1c3b66e6eabc45d3523c261098b89567" name="a1c3b66e6eabc45d3523c261098b89567"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ChecksForMerge</b> = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407)</td></tr>
 <tr class="separator:a1c3b66e6eabc45d3523c261098b89567"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -617,7 +622,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>VineThreads<
 <tr class="separator:aff1403f322dfd6e9126e89ef2d1de620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ba678d04aba86dbfbfe4867aefec77"><td class="memItemLeft" align="right" valign="top"><a id="a21ba678d04aba86dbfbfe4867aefec77" name="a21ba678d04aba86dbfbfe4867aefec77"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WallsMergeWith</b> = Factory.CreateBoolSet(Glass)</td></tr>
-<tr class="memdesc:a21ba678d04aba86dbfbfe4867aefec77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles. <br /></td></tr>
+<tr class="memdesc:a21ba678d04aba86dbfbfe4867aefec77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles. <br /></td></tr>
 <tr class="separator:a21ba678d04aba86dbfbfe4867aefec77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>

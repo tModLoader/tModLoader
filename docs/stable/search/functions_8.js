@@ -27,10 +27,11 @@ var searchData=
   ['istilevalidforentity_24',['IsTileValidForEntity',['../class_unloaded_tile_entity.html#af4f5531f8fe60bf9c8a8636565d57760',1,'UnloadedTileEntity.IsTileValidForEntity()'],['../class_mod_tile_entity.html#a8415b71088157d5fcf4ed024cffe868d',1,'ModTileEntity.IsTileValidForEntity()'],['../class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d',1,'TEModdedPylon.IsTileValidForEntity()']]],
   ['isunlocked_25',['IsUnlocked',['../class_mod_emote_bubble.html#a23c94e078a4557e3e6178cf2eea92c4e',1,'ModEmoteBubble']]],
   ['isvanityset_26',['IsVanitySet',['../class_equip_texture.html#ae81962cf01a71fa05a0b86273be79261',1,'EquipTexture.IsVanitySet()'],['../class_global_item.html#a4b3036692f1d949e21b156255a7776ab',1,'GlobalItem.IsVanitySet()'],['../class_mod_item.html#acd9039fd1fe2ea548c1162d8207f9563',1,'ModItem.IsVanitySet()']]],
-  ['isvisiblewhennotenabled_27',['IsVisibleWhenNotEnabled',['../class_mod_accessory_slot.html#aa390402f3cadc98ac3eb38712e15563e',1,'ModAccessorySlot']]],
-  ['itemconsumedcallback_28',['ItemConsumedCallback',['../class_mod_player.html#a6b34e5ab775f0b0e547870de325edb66',1,'ModPlayer']]],
-  ['itemdefinition_29',['ItemDefinition',['../class_item_definition.html#a5209f4f531e28faebf7c941a03a3fae2',1,'ItemDefinition']]],
-  ['itemspace_30',['ItemSpace',['../class_global_item.html#a06dc12c3d4fefe54b4d17a54d2e18e36',1,'GlobalItem.ItemSpace()'],['../class_mod_item.html#acfc46a2a397ebe4dc8b01308ec1d3126',1,'ModItem.ItemSpace()']]],
-  ['itemtype_3c_20t_20_3e_31',['ItemType&lt; T &gt;',['../class_mod_content.html#a9b116a7709430393751b7c562bf978d0',1,'ModContent']]],
-  ['itemvariant_32',['ItemVariant',['../class_item_variant.html#a04b24d40434156cfe40bd870f7c54378',1,'ItemVariant']]]
+  ['isvisible_27',['IsVisible',['../class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0',1,'TileDrawing']]],
+  ['isvisiblewhennotenabled_28',['IsVisibleWhenNotEnabled',['../class_mod_accessory_slot.html#aa390402f3cadc98ac3eb38712e15563e',1,'ModAccessorySlot']]],
+  ['itemconsumedcallback_29',['ItemConsumedCallback',['../class_mod_player.html#a6b34e5ab775f0b0e547870de325edb66',1,'ModPlayer']]],
+  ['itemdefinition_30',['ItemDefinition',['../class_item_definition.html#a5209f4f531e28faebf7c941a03a3fae2',1,'ItemDefinition']]],
+  ['itemspace_31',['ItemSpace',['../class_global_item.html#a06dc12c3d4fefe54b4d17a54d2e18e36',1,'GlobalItem.ItemSpace()'],['../class_mod_item.html#acfc46a2a397ebe4dc8b01308ec1d3126',1,'ModItem.ItemSpace()']]],
+  ['itemtype_3c_20t_20_3e_32',['ItemType&lt; T &gt;',['../class_mod_content.html#a9b116a7709430393751b7c562bf978d0',1,'ModContent']]],
+  ['itemvariant_33',['ItemVariant',['../class_item_variant.html#a04b24d40434156cfe40bd870f7c54378',1,'ItemVariant']]]
 ];

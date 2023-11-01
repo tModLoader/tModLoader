@@ -7,6 +7,7 @@ var class_tile_drawing =
     [ "GetWindGridPush", "class_tile_drawing.html#abe15be9a969503e07756f13a89d5923e", null ],
     [ "GetWindGridPushComplex", "class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e", null ],
     [ "IsTileDangerous", "class_tile_drawing.html#a86bf3a6bcd0fc5ccc57622c2d8ab7557", null ],
+    [ "IsVisible", "class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0", null ],
     [ "ShouldSwayInWind", "class_tile_drawing.html#af6b0020a25d865cef73b65a1085f0a7c", null ],
     [ "Wind", "class_tile_drawing.html#aa6e95bf8aaced1dd91bc75f266b7727c", null ]
 ];

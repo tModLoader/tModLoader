@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -168,8 +168,12 @@ This only includes the 'template' instance for each piece of content, not all th
 <tr class="memitem:a6bfa0ce3609d5ad9cea40676acc08373"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">GetFileStream</a> (string name, bool newFileStream=false)</td></tr>
 <tr class="memdesc:a6bfa0ce3609d5ad9cea40676acc08373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve contents of files within the tmod file  <a href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">More...</a><br /></td></tr>
 <tr class="separator:a6bfa0ce3609d5ad9cea40676acc08373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c54b351c403d26a0fcff074be8a9589"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a3c54b351c403d26a0fcff074be8a9589">GetLocalization</a> (string suffix, Func&lt; string &gt; makeDefaultValue=null)</td></tr>
+<tr class="memdesc:a3c54b351c403d26a0fcff074be8a9589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for this <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the provided <em>suffix</em> . The suffix will be used to generate a key by providing it to <a class="el" href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81" title="Creates a localization key following the pattern of &quot;Mods.{ModName}.{suffix}&quot;. Use this with Language...">GetLocalizationKey(string)</a>. <br  />
+If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file.  <a href="class_mod.html#a3c54b351c403d26a0fcff074be8a9589">More...</a><br /></td></tr>
+<tr class="separator:a3c54b351c403d26a0fcff074be8a9589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3cc0ce693c21784b185d1da10d5fd81"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81">GetLocalizationKey</a> (string suffix)</td></tr>
-<tr class="memdesc:ae3cc0ce693c21784b185d1da10d5fd81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">Language.GetOrRegister(string, Func&lt;string&gt;)</a> to retrieve a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for custom localization keys. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files.  <a href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81">More...</a><br /></td></tr>
+<tr class="memdesc:ae3cc0ce693c21784b185d1da10d5fd81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">Language.GetOrRegister(string, Func&lt;string&gt;)</a> to retrieve a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for custom localization keys. Alternatively <a class="el" href="class_mod.html#a3c54b351c403d26a0fcff074be8a9589" title="Returns a LocalizedText for this Mod with the provided suffix . The suffix will be used to generate a...">GetLocalization(string, Func&lt;string&gt;)</a> can be used directly instead. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files.  <a href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81">More...</a><br /></td></tr>
 <tr class="separator:ae3cc0ce693c21784b185d1da10d5fd81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae95db58d653971959368e4a7e56c1d94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mod_packet.html">ModPacket</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#ae95db58d653971959368e4a7e56c1d94">GetPacket</a> (int capacity=256)</td></tr>
 <tr class="memdesc:ae95db58d653971959368e4a7e56c1d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_mod_packet.html" title="This class inherits from BinaryWriter. This means that you can use all of its writing functions to se...">ModPacket</a> object that you can write to and then send between servers and clients.  <a href="class_mod.html#ae95db58d653971959368e4a7e56c1d94">More...</a><br /></td></tr>
@@ -575,6 +579,45 @@ This only includes the 'template' instance for each piece of content, not all th
 
 </div>
 </div>
+<a id="a3c54b351c403d26a0fcff074be8a9589" name="a3c54b351c403d26a0fcff074be8a9589"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c54b351c403d26a0fcff074be8a9589">&#9670;&nbsp;</a></span>GetLocalization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_localized_text.html">LocalizedText</a> Mod.GetLocalization </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>suffix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Func&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>makeDefaultValue</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for this <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the provided <em>suffix</em> . The suffix will be used to generate a key by providing it to <a class="el" href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81" title="Creates a localization key following the pattern of &quot;Mods.{ModName}.{suffix}&quot;. Use this with Language...">GetLocalizationKey(string)</a>. <br  />
+If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">suffix</td><td></td></tr>
+    <tr><td class="paramname">makeDefaultValue</td><td>A factory method for creating the default value, used to update localization files with missing entries</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="ae3cc0ce693c21784b185d1da10d5fd81" name="ae3cc0ce693c21784b185d1da10d5fd81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3cc0ce693c21784b185d1da10d5fd81">&#9670;&nbsp;</a></span>GetLocalizationKey()</h2>
 
@@ -591,7 +634,7 @@ This only includes the 'template' instance for each piece of content, not all th
       </table>
 </div><div class="memdoc">
 
-<p>Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">Language.GetOrRegister(string, Func&lt;string&gt;)</a> to retrieve a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for custom localization keys. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files. </p>
+<p>Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3" title="Returns a LocalizedText for a given key.  If no existing localization exists for the key,...">Language.GetOrRegister(string, Func&lt;string&gt;)</a> to retrieve a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for custom localization keys. Alternatively <a class="el" href="class_mod.html#a3c54b351c403d26a0fcff074be8a9589" title="Returns a LocalizedText for this Mod with the provided suffix . The suffix will be used to generate a...">GetLocalization(string, Func&lt;string&gt;)</a> can be used directly instead. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">suffix</td><td></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -99,8 +99,11 @@ $(document).ready(function(){initNavTree('class_mod_config.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a46ab3d9d5dfb2f2ec440bbb281a3c740"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#a46ab3d9d5dfb2f2ec440bbb281a3c740">AcceptClientChanges</a> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig, int whoAmI, ref string message)</td></tr>
-<tr class="memdesc:a46ab3d9d5dfb2f2ec440bbb281a3c740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload.  <a href="class_mod_config.html#a46ab3d9d5dfb2f2ec440bbb281a3c740">More...</a><br /></td></tr>
+<tr class="memitem:ad0c330e9e01d768b16078b119049a325"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#ad0c330e9e01d768b16078b119049a325">AcceptClientChanges</a> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig, int whoAmI, ref <a class="el" href="class_network_text.html">NetworkText</a> message)</td></tr>
+<tr class="memdesc:ad0c330e9e01d768b16078b119049a325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload.  <a href="class_mod_config.html#ad0c330e9e01d768b16078b119049a325">More...</a><br /></td></tr>
+<tr class="separator:ad0c330e9e01d768b16078b119049a325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46ab3d9d5dfb2f2ec440bbb281a3c740"><td class="memItemLeft" align="right" valign="top"><a id="a46ab3d9d5dfb2f2ec440bbb281a3c740" name="a46ab3d9d5dfb2f2ec440bbb281a3c740"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptClientChanges</b> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig, int whoAmI, ref string message)</td></tr>
 <tr class="separator:a46ab3d9d5dfb2f2ec440bbb281a3c740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbf4f3a3b504accec52ddcff3919fa53"><td class="memItemLeft" align="right" valign="top"><a id="afbf4f3a3b504accec52ddcff3919fa53" name="afbf4f3a3b504accec52ddcff3919fa53"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Autoload</b> (ref string name)</td></tr>
@@ -158,8 +161,8 @@ abstract ConfigScope&#160;</td><td class="memItemRight" valign="bottom"><b>Mode<
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p ><a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> provides a way for mods to be configurable. ModConfigs can either be Client specific or Server specific. When joining a MP server, Client configs are kept but Server configs are synced from the server. Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. tModLoader also provides its own attributes such as <a class="el" href="class_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a> and <a class="el" href="class_label_attribute.html">LabelAttribute</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a46ab3d9d5dfb2f2ec440bbb281a3c740" name="a46ab3d9d5dfb2f2ec440bbb281a3c740"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46ab3d9d5dfb2f2ec440bbb281a3c740">&#9670;&nbsp;</a></span>AcceptClientChanges()</h2>
+<a id="ad0c330e9e01d768b16078b119049a325" name="ad0c330e9e01d768b16078b119049a325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0c330e9e01d768b16078b119049a325">&#9670;&nbsp;</a></span>AcceptClientChanges()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,7 +185,7 @@ abstract ConfigScope&#160;</td><td class="memItemRight" valign="bottom"><b>Mode<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref string&#160;</td>
+          <td class="paramtype">ref <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td>
           <td class="paramname"><em>message</em>&#160;</td>
         </tr>
         <tr>

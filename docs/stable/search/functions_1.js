@@ -11,9 +11,10 @@ var searchData=
   ['bossheadslot_8',['BossHeadSlot',['../class_global_n_p_c.html#a56d56c9882578bbc593ac502e76ba787',1,'GlobalNPC.BossHeadSlot()'],['../class_mod_n_p_c.html#a704bc149b03d1f47c98a66332a6ab4bd',1,'ModNPC.BossHeadSlot()']]],
   ['bossheadspriteeffects_9',['BossHeadSpriteEffects',['../class_global_n_p_c.html#a01b00fea7c53919930daa172299190d2',1,'GlobalNPC.BossHeadSpriteEffects()'],['../class_mod_n_p_c.html#a36c6b4be1fe85b2f7190e0c07889cd97',1,'ModNPC.BossHeadSpriteEffects(ref SpriteEffects spriteEffects)']]],
   ['bossloot_10',['BossLoot',['../class_mod_n_p_c.html#a527fc50bcfa60dc62d776c34bae8d04e',1,'ModNPC']]],
-  ['buffhandle_5fspawnpetifneededandsettime_11',['BuffHandle_SpawnPetIfNeededAndSetTime',['../class_player.html#ab82d74f402f08d852ee0a22e813ff74b',1,'Player']]],
-  ['bufftownnpc_12',['BuffTownNPC',['../class_global_n_p_c.html#a9a2c4748629a5ab96841d881cd59b0af',1,'GlobalNPC']]],
-  ['bufftype_3c_20t_20_3e_13',['BuffType&lt; T &gt;',['../class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837',1,'ModContent']]],
-  ['buyitem_14',['BuyItem',['../class_player.html#a799f662fe42d4adb193a66bed79f3b47',1,'Player']]],
-  ['buyprice_15',['buyPrice',['../class_item.html#ae9396042f559601050ad34dfe823ee89',1,'Item']]]
+  ['buffdefinition_11',['BuffDefinition',['../class_buff_definition.html#a89318b69103f467949e649599b88708c',1,'BuffDefinition']]],
+  ['buffhandle_5fspawnpetifneededandsettime_12',['BuffHandle_SpawnPetIfNeededAndSetTime',['../class_player.html#ab82d74f402f08d852ee0a22e813ff74b',1,'Player']]],
+  ['bufftownnpc_13',['BuffTownNPC',['../class_global_n_p_c.html#a9a2c4748629a5ab96841d881cd59b0af',1,'GlobalNPC']]],
+  ['bufftype_3c_20t_20_3e_14',['BuffType&lt; T &gt;',['../class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837',1,'ModContent']]],
+  ['buyitem_15',['BuyItem',['../class_player.html#a799f662fe42d4adb193a66bed79f3b47',1,'Player']]],
+  ['buyprice_16',['buyPrice',['../class_item.html#ae9396042f559601050ad34dfe823ee89',1,'Item']]]
 ];
