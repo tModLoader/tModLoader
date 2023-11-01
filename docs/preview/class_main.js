@@ -34,6 +34,7 @@ var class_main =
     [ "myPlayer", "class_main.html#a42ee3929161f68a93443261b95643df4", null ],
     [ "netMode", "class_main.html#a5b7c21c478b58b72ea5c4e6921e940bd", null ],
     [ "npcCatchable", "class_main.html#a68c6c0e4e719b5dc56055829b988ba0b", null ],
+    [ "npcChatCornerItem", "class_main.html#acc13a928989ab193f1f2aa1700a9ae53", null ],
     [ "persistentBuff", "class_main.html#a8ebb90ade0b89892ebd4e7ea242904db", null ],
     [ "projFrames", "class_main.html#ae81ceb8f5a3cca051abd73284a261efb", null ],
     [ "pvpBuff", "class_main.html#acdf515b495d7cd84bdb2142e67afcc19", null ],

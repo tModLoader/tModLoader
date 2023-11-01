@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -271,7 +271,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IgnoresEncum
 <tr class="memitem:a8a68fbd9e4708165484c15b8bb48ceb1"><td class="memItemLeft" align="right" valign="top"><a id="a8a68fbd9e4708165484c15b8bb48ceb1" name="a8a68fbd9e4708165484c15b8bb48ceb1"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsAKite</b> = Factory.CreateBoolSet(false, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4674, 4675, 4676, 4677, 4681, 4683, 4684)</td></tr>
 <tr class="memdesc:a8a68fbd9e4708165484c15b8bb48ceb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item is a kite. <br  />
- Kites cannot be used if a player is on a rope (Player.pulley). <br  />
+ Kites cannot be used if a player is on a rope (<a class="el" href="class_player.html#ab986cae22c047ddaf9fb39fa86facbad" title="If true, the player is attached to a rope or similar tile.">Player.pulley</a>). <br  />
  Kites are held out using <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a> if their projectile is active and not held out at all if it is not. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a8a68fbd9e4708165484c15b8bb48ceb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -532,7 +532,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>UsesCursedBy
 <tr class="memitem:a08c03fe0db09709611170c8d90392355"><td class="memItemLeft" align="right" valign="top"><a id="a08c03fe0db09709611170c8d90392355" name="a08c03fe0db09709611170c8d90392355"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WaterTorches</b> = Factory.CreateBoolSet(523, 1333, 4384)</td></tr>
 <tr class="memdesc:a08c03fe0db09709611170c8d90392355"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item is a water torch. <br  />
- Funtionally identical to <a class="el" href="class_item_i_d_1_1_sets.html#acadf8e3829cbae2a0bc9b37c289c813f" title="If true for a given item type (Item.type), then that item is a torch.   Torches can be auto-selected ...">Torches</a>, but items in this set also function whilst underwater. Make sure to set <a class="el" href="class_item_i_d_1_1_sets.html#acadf8e3829cbae2a0bc9b37c289c813f" title="If true for a given item type (Item.type), then that item is a torch.   Torches can be auto-selected ...">Torches</a> as well if using this. <br  />
+ Functionally identical to <a class="el" href="class_item_i_d_1_1_sets.html#acadf8e3829cbae2a0bc9b37c289c813f" title="If true for a given item type (Item.type), then that item is a torch.   Torches can be auto-selected ...">Torches</a>, but items in this set also function whilst underwater. Make sure to set <a class="el" href="class_item_i_d_1_1_sets.html#acadf8e3829cbae2a0bc9b37c289c813f" title="If true for a given item type (Item.type), then that item is a torch.   Torches can be auto-selected ...">Torches</a> as well if using this. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a08c03fe0db09709611170c8d90392355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c6936feb9fd9cb87b28acf72fc37990"><td class="memItemLeft" align="right" valign="top"><a id="a8c6936feb9fd9cb87b28acf72fc37990" name="a8c6936feb9fd9cb87b28acf72fc37990"></a>
@@ -1511,7 +1511,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
  Torches can be auto-selected by Smart Cursor. <br  />
  <b>Vanilla</b> torches have an associated <a class="el" href="class_torch_i_d.html">TorchID</a>, which determines what color light they produce when held. <br  />
  Defaults to <code>false</code>. </p>
-<p >To make a torch placable underwater, use <a class="el" href="class_item_i_d_1_1_sets.html#a08c03fe0db09709611170c8d90392355" title="If true for a given item type (Item.type), then that item is a water torch.   Funtionally identical t...">WaterTorches</a> as well. </p>
+<p >To make a torch placeable underwater, use <a class="el" href="class_item_i_d_1_1_sets.html#a08c03fe0db09709611170c8d90392355" title="If true for a given item type (Item.type), then that item is a water torch.   Functionally identical ...">WaterTorches</a> as well. </p>
 
 </div>
 </div>

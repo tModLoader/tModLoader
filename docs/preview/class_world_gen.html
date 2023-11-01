@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -887,8 +887,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>kickOut</b> (i
 <tr class="memitem:a9a6af7796b587b87dd5b740a2cbca293"><td class="memItemLeft" align="right" valign="top"><a id="a9a6af7796b587b87dd5b740a2cbca293" name="a9a6af7796b587b87dd5b740a2cbca293"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>KillActuator</b> (int i, int j)</td></tr>
 <tr class="separator:a9a6af7796b587b87dd5b740a2cbca293"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab8789310665bd013cbc7cbc955137ed"><td class="memItemLeft" align="right" valign="top"><a id="aab8789310665bd013cbc7cbc955137ed" name="aab8789310665bd013cbc7cbc955137ed"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>KillTile</b> (int i, int j, bool fail=false, bool effectOnly=false, bool noItem=false)</td></tr>
+<tr class="memitem:aab8789310665bd013cbc7cbc955137ed"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#aab8789310665bd013cbc7cbc955137ed">KillTile</a> (int i, int j, bool fail=false, bool effectOnly=false, bool noItem=false)</td></tr>
+<tr class="memdesc:aab8789310665bd013cbc7cbc955137ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to destroy the tile at the provided tile coordinates.Callers can use <em>fail</em> , <em>effectOnly</em> , and <em>noItem</em>  to dictate if the intention is to not actually kill the tile, only spawn kill tile effects, and not drop items respectively. For example, worms typically use <code>fail: true, effectOnly: true</code> to spawn dust indicating the worm burrowing through the ground. <a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a" title="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p...">ModTile.KillTile(int, int, ref bool, ref bool, ref bool)</a> and GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool) will be called to modify those values.Note that this method will destroy a single tile and then call the tile framing code. The <em>noItem</em>  parameter is only relevant for 1x1 tiles, not multi-tiles. The tile framing code is what triggers multi-tiles to destroy all of their remaining tiles and drop their placement item. <a class="el" href="class_global_tile.html#a7bbde788cba66acfd18f62fec2b139af" title="Allows you to spawn additional items when the tile at the given coordinates drops....">GlobalTile.Drop(int, int, int)</a> must be used by the caller if the intention is to prevent item drops from a multi-tile. <a href="class_world_gen.html#aab8789310665bd013cbc7cbc955137ed">More...</a><br /></td></tr>
 <tr class="separator:aab8789310665bd013cbc7cbc955137ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48e992d0ed39a9a70c34ba7e3e1241a8"><td class="memItemLeft" align="right" valign="top"><a id="a48e992d0ed39a9a70c34ba7e3e1241a8" name="a48e992d0ed39a9a70c34ba7e3e1241a8"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>KillTile_GetTileDustAmount</b> (bool fail, <a class="el" href="struct_tile.html">Tile</a> tileCache, int x, int y)</td></tr>
@@ -2096,6 +2096,72 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
     <tr><td class="paramname">size</td><td>When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br  />
  This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br  />
  Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aab8789310665bd013cbc7cbc955137ed" name="aab8789310665bd013cbc7cbc955137ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab8789310665bd013cbc7cbc955137ed">&#9670;&nbsp;</a></span>KillTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WorldGen.KillTile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fail</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>effectOnly</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noItem</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to destroy the tile at the provided tile coordinates.Callers can use <em>fail</em> , <em>effectOnly</em> , and <em>noItem</em>  to dictate if the intention is to not actually kill the tile, only spawn kill tile effects, and not drop items respectively. For example, worms typically use <code>fail: true, effectOnly: true</code> to spawn dust indicating the worm burrowing through the ground. <a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a" title="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p...">ModTile.KillTile(int, int, ref bool, ref bool, ref bool)</a> and GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool) will be called to modify those values.Note that this method will destroy a single tile and then call the tile framing code. The <em>noItem</em>  parameter is only relevant for 1x1 tiles, not multi-tiles. The tile framing code is what triggers multi-tiles to destroy all of their remaining tiles and drop their placement item. <a class="el" href="class_global_tile.html#a7bbde788cba66acfd18f62fec2b139af" title="Allows you to spawn additional items when the tile at the given coordinates drops....">GlobalTile.Drop(int, int, int)</a> must be used by the caller if the intention is to prevent item drops from a multi-tile.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">fail</td><td>Prevents the tile from being destroyed, but still plays a hit sound</td></tr>
+    <tr><td class="paramname">effectOnly</td><td>Prevents the tile from being destroyed but still spawns hit dust and prevents the hit sound.</td></tr>
+    <tr><td class="paramname">noItem</td><td>Prevents the item from dropping. Only relevant for 1x1 tiles.</td></tr>
   </table>
   </dd>
 </dl>

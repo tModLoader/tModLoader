@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -192,7 +192,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuf
 <tr class="memitem:aa10790d4d3b5b448ab842361895c5926"><td class="memItemLeft" align="right" valign="top"><a id="aa10790d4d3b5b448ab842361895c5926" name="aa10790d4d3b5b448ab842361895c5926"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyBannerOffenseBuff</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="separator:aa10790d4d3b5b448ab842361895c5926"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a579382395e10ab8a10ba1c52254892d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a579382395e10ab8a10ba1c52254892d5">ApplyDamageToNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int direction, bool crit=false, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null, bool damageVariation=false)</td></tr>
+<tr class="memitem:a579382395e10ab8a10ba1c52254892d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a579382395e10ab8a10ba1c52254892d5">ApplyDamageToNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, int damage, float knockback, int <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b">direction</a>, bool crit=false, <a class="el" href="class_damage_class.html">DamageClass</a>? damageType=null, bool damageVariation=false)</td></tr>
 <tr class="memdesc:a579382395e10ab8a10ba1c52254892d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deals damage to an <a class="el" href="class_n_p_c.html">NPC</a> (and syncs the hit in multiplayer). <br  />
  The damage will be affected by modifiers, armor pen, enemy resistances etc. <br  />
  Will not apply damage class modifiers/knockback. Use <a class="el" href="class_player.html#a8cec04cc5be51d4f2a194081cc2962fd">GetTotalDamage&lt;T&gt;</a> to adjust the damage before calling if necessary. <br  />
@@ -322,8 +322,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanVisuallyHoldItem</
 <tr class="memitem:a1732ed50806793b9b3b3af20a27a5a83"><td class="memItemLeft" align="right" valign="top"><a id="a1732ed50806793b9b3b3af20a27a5a83" name="a1732ed50806793b9b3b3af20a27a5a83"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CarpetMovement</b> ()</td></tr>
 <tr class="separator:a1732ed50806793b9b3b3af20a27a5a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac17c1879dcc239fdb4b11fbaed9f8589"><td class="memItemLeft" align="right" valign="top"><a id="ac17c1879dcc239fdb4b11fbaed9f8589" name="ac17c1879dcc239fdb4b11fbaed9f8589"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeDir</b> (int dir)</td></tr>
+<tr class="memitem:ac17c1879dcc239fdb4b11fbaed9f8589"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ac17c1879dcc239fdb4b11fbaed9f8589">ChangeDir</a> (int dir)</td></tr>
+<tr class="memdesc:ac17c1879dcc239fdb4b11fbaed9f8589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the player's direction (<a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a>) while adjusting arm and item rotations to be consistent. Will also account for <a class="el" href="class_player.html#ab986cae22c047ddaf9fb39fa86facbad" title="If true, the player is attached to a rope or similar tile.">pulley</a> and <a class="el" href="class_player.html#a2fbbfa6eb4a875d1f5e39087ea356c24" title="While attached to a rope or similar tile (pulley), this value represents the how close to the rope th...">pulleyDir</a>. The player direction change will be prevented if the player is on a rope but there isn't space for the player to face the new direction.  <a href="class_player.html#ac17c1879dcc239fdb4b11fbaed9f8589">More...</a><br /></td></tr>
 <tr class="separator:ac17c1879dcc239fdb4b11fbaed9f8589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdd49c9aded05e16067e0379b9c1c702"><td class="memItemLeft" align="right" valign="top"><a id="abdd49c9aded05e16067e0379b9c1c702" name="abdd49c9aded05e16067e0379b9c1c702"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeSpawn</b> (int x, int y)</td></tr>
@@ -3694,9 +3694,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>pStone</b></td></tr>
 <tr class="separator:adaace708faac7c2479c9a5a130b576d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab986cae22c047ddaf9fb39fa86facbad"><td class="memItemLeft" align="right" valign="top"><a id="ab986cae22c047ddaf9fb39fa86facbad" name="ab986cae22c047ddaf9fb39fa86facbad"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>pulley</b></td></tr>
+<tr class="memdesc:ab986cae22c047ddaf9fb39fa86facbad"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the player is attached to a rope or similar tile. <br /></td></tr>
 <tr class="separator:ab986cae22c047ddaf9fb39fa86facbad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fbbfa6eb4a875d1f5e39087ea356c24"><td class="memItemLeft" align="right" valign="top"><a id="a2fbbfa6eb4a875d1f5e39087ea356c24" name="a2fbbfa6eb4a875d1f5e39087ea356c24"></a>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>pulleyDir</b></td></tr>
+<tr class="memdesc:a2fbbfa6eb4a875d1f5e39087ea356c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">While attached to a rope or similar tile (<a class="el" href="class_player.html#ab986cae22c047ddaf9fb39fa86facbad" title="If true, the player is attached to a rope or similar tile.">pulley</a>), this value represents the how close to the rope the player is. A value of 1 means the player is centered on the rope, while a value of 2 represents that the player has nudged away from the rope but is still attached. <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a> is used still for the players direction. <br /></td></tr>
 <tr class="separator:a2fbbfa6eb4a875d1f5e39087ea356c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dfc118d8773254511c99c80fcbdfed3"><td class="memItemLeft" align="right" valign="top"><a id="a6dfc118d8773254511c99c80fcbdfed3" name="a6dfc118d8773254511c99c80fcbdfed3"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>pulleyFrame</b></td></tr>
@@ -4544,6 +4546,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
 <tr class="separator:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6bcffb2620b7dbf790114c5fea1bc50b" name="a6bcffb2620b7dbf790114c5fea1bc50b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>direction</b> = 1</td></tr>
+<tr class="memdesc:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The direction this entity is facing. A value of 1 means the entity is facing to the right. -1 means facing to the left. <br /></td></tr>
 <tr class="separator:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aeb2eecb2f55bd15f630e2d8e1bb6cad1" name="aeb2eecb2f55bd15f630e2d8e1bb6cad1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
@@ -4566,7 +4569,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>oldVelocity</b></t
 <tr class="separator:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aea6af1b1841c5129ac2ddce832b53075" name="aea6af1b1841c5129ac2ddce832b53075"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
-<tr class="memdesc:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of this <a class="el" href="class_entity.html">Entity</a> in world coordinates. <br /></td></tr>
+<tr class="memdesc:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of this <a class="el" href="class_entity.html">Entity</a> in world coordinates. Note that this corresponds to the top left corner of the entity. Use <a class="el" href="class_entity.html#a15845e02eda396ef77c53297c53cae9e" title="The center position of this entity in world coordinates. Calculated from position,...">Center</a> instead for logic that needs the position at the center of the entity. <br /></td></tr>
 <tr class="separator:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bcf83f80dd7e4b185ab6e997a0de5f inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a03bcf83f80dd7e4b185ab6e997a0de5f" name="a03bcf83f80dd7e4b185ab6e997a0de5f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>shimmerWet</b></td></tr>
@@ -5101,6 +5104,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>BottomRight</b><co
 <tr class="separator:ae39981197972e1fd55a5534f99d8db48 inherit properties_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15845e02eda396ef77c53297c53cae9e inherit properties_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a15845e02eda396ef77c53297c53cae9e" name="a15845e02eda396ef77c53297c53cae9e"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Center</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a15845e02eda396ef77c53297c53cae9e inherit properties_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The center position of this entity in world coordinates. Calculated from <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075" title="The position of this Entity in world coordinates. Note that this corresponds to the top left corner o...">position</a>, <a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">width</a>, and <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">height</a>. <br /></td></tr>
 <tr class="separator:a15845e02eda396ef77c53297c53cae9e inherit properties_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee38522d5319999a7de02e1ac9eed23f inherit properties_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aee38522d5319999a7de02e1ac9eed23f" name="aee38522d5319999a7de02e1ac9eed23f"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>Hitbox</b><code> [get, set]</code></td></tr>
@@ -5389,6 +5393,32 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the player had enough currency to pay the price.</dd></dl>
+
+</div>
+</div>
+<a id="ac17c1879dcc239fdb4b11fbaed9f8589" name="ac17c1879dcc239fdb4b11fbaed9f8589"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac17c1879dcc239fdb4b11fbaed9f8589">&#9670;&nbsp;</a></span>ChangeDir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Player.ChangeDir </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Changes the player's direction (<a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a>) while adjusting arm and item rotations to be consistent. Will also account for <a class="el" href="class_player.html#ab986cae22c047ddaf9fb39fa86facbad" title="If true, the player is attached to a rope or similar tile.">pulley</a> and <a class="el" href="class_player.html#a2fbbfa6eb4a875d1f5e39087ea356c24" title="While attached to a rope or similar tile (pulley), this value represents the how close to the rope th...">pulleyDir</a>. The player direction change will be prevented if the player is on a rope but there isn't space for the player to face the new direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
