@@ -136,7 +136,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 		private bool CanUseDash() {
 			return DashAccessoryEquipped
-				&& Player.dashType == DashID.None; // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
+				&& Player.dashType == DashID.None // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
 				&& !Player.setSolar // player isn't wearing solar armor
 				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
 		}
