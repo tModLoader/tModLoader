@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 
-namespace ExampleModTesting.Items
+namespace ExampleMod.Content.ExampleMod.Projectiles.Minions
 {
 	public class ExampleUpgradeableMinionBuff : ModBuff
 	{
