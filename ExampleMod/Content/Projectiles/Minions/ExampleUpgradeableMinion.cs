@@ -72,7 +72,7 @@ namespace ExampleModTesting.Items
         {
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<ExampleUpgradeableMinion>() && Main.projectile[i].ai[0] == player.maxMinions)
+                if (Main.projectile[i].type == ModContent.ProjectileType<ExampleUpgradeableMinion>() && Main.projectile[i].ai[0] == player.maxMinions && Main.projectile[i].owner == Main.myPlayer)
                 {
                     return false;
                 }
@@ -100,7 +100,7 @@ namespace ExampleModTesting.Items
             // If there is enough room for the next summon, raise the damage of it, and make it take up more minion slots
 			for (int i = 0; i< Main.maxProjectiles; i++)
 			{
-				if (Main.projectile[i].type == ModContent.ProjectileType<ExampleUpgradeableMinion>() && Main.projectile[i].ai[0] < player.maxMinions)
+				if (Main.projectile[i].type == ModContent.ProjectileType<ExampleUpgradeableMinion>() && Main.projectile[i].ai[0] < player.maxMinions && Main.projectile[i].owner == Main.myPlayer)
 				{
 					Main.projectile[i].ai[0]++;
 					Main.projectile[i].minionSlots++;
