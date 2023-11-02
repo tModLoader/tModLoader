@@ -891,6 +891,15 @@ Mods: {
 				DisplayName: Example Statue
 				Tooltip: The power of examplium flows in this inanimate fish
 			}
+
+			ExampleUpgradeableMinionItem: {
+				DisplayName: Example Upgradeable Minion Staff
+				Tooltip: 
+					'''
+					Summons a minion to fight for you.
+					Summon it again to raise its damage instead of summoning a second copy.
+					'''
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -930,6 +939,7 @@ Mods: {
 			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			ExampleUpgradeableMinion.DisplayName: Example Upgradeable Minion
 		}
 
 		Buffs: {
@@ -1016,6 +1026,15 @@ Mods: {
 			ExampleJavelinDebuff: {
 				DisplayName: Example Javelin Debuff
 				Description: Losing life
+			}
+
+			ExampleUpgradeableMinionBuff: {
+				DisplayName: Example Upgradeable Minion Buff
+				Description: 
+					'''
+					The example upgradeable minion will fight for you. 
+					Summon it again to give it bonus damage.
+					'''
 			}
 		}
 
