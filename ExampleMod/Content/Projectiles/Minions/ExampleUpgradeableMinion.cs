@@ -147,18 +147,14 @@ namespace ExampleMod.Content.ExampleMod.Projectiles.Minions
 		}
 		
 		// As this minion uses the Finch AI, both of the things are done in PreAI and PostAI, if you would use custom AI just put them in the AI() code itself
-		public override bool PreAI() {
-			if (CheckActive(Main.player[Projectile.owner])) {
-				SearchForTargets(Main.player[Projectile.owner], out bool ft, out float dft, out Vector2 tc);
-				Projectile.damage = Projectile.originalDamage * (int)Projectile.ai[0]; // Basically, originalDamage * how many time you summoned the minion
-				return true;
+		public override void AI() {
+			if (!CheckActive(Main.player[Projectile.owner])) {
+				return;
 			}
 
-			//Doesnt run the Finch AI code
-			return false;
-		}
-		
-		public override void PostAI() {
+			SearchForTargets(Main.player[Projectile.owner], out bool ft, out float dft, out Vector2 tc);
+			Projectile.damage = Projectile.originalDamage * (int)Projectile.ai[0]; // Basically, originalDamage * how many time you summoned the minion
+			base.AI(); // Run Finch AI
 			Visuals();
 		}
 		
@@ -229,6 +225,20 @@ namespace ExampleMod.Content.ExampleMod.Projectiles.Minions
 		private void Visuals() {
 			// So it will lean slightly towards the direction it's moving
 			Projectile.rotation = Projectile.velocity.X * 0.05f;
+
+			// Change the minions frame every other time you upgrade it up to max frame counter
+			// First spawned or upgraded once -> frame 0
+			// Upgraded 2 or 3 times -> frame 1
+			// Upgraded 4 or more times -> frame 2
+			int currentFrame = (int)((Projectile.ai[0] - 1f) / 2);
+
+			// Doesn't allow for the frames to exceed the max
+			if (currentFrame >= Main.projFrames[Projectile.type]) {
+				Projectile.frame = Main.projFrames[Projectile.type];
+			}
+
+			// Set the frame to 
+			Projectile.frame = currentFrame;
 
 			// Some visuals here
 			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
