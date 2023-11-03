@@ -1,17 +1,28 @@
-**Last updated as of September 3rd, 2023**
+**Last updated as of November 3rd, 2023**
 
 # DEFINITIONS
 TML Software: This Github repository representing our software (otherwise known as: 'tModLoader')
+
 TML Team: The official team that is developing TML Software (see TML_TEAM.md in the root folder of TML Software)
+
 Open-source: Denoting software for which the original source code is made freely available and may be redistributed and modified
+
 TML Mod Browser: Part of the TML Software that allows users to browse mods made using this software, read information about mods, download and install mods. Additionally, people that have made mods can upload them to the TML Mod Browser using Steam's verification system
+
 Steam: Steam is a video game digital distribution service and storefront developed by Valve Corporation
+
 Good Old Games: A digital distribution platform for video games and films similar to Steam
+
 Terraria: The base game TML Software is built for
+
 Mod: A piece of new or altered content for the baser game (Terraria) that can be used and played with using TML Software
+
 Re-Logic, Inc: The Terraria independent game developer and publisher of Terraria
+
 Github: GitHub, Inc. is a platform and cloud-based service for software development and version control using Git, allowing developers to store and manage their code
+
 Dropbox: A file hosting service operated by the American company Dropbox, Inc.
+
 Imgur: An American online image sharing and image hosting service 
 
 # TERMS OF USE
