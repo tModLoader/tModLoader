@@ -2351,7 +2351,7 @@
  		UpdateViewZoomKeys();
  		PlayerInput.SetZoom_Unscaled();
  		UILinkPointNavigator.Update();
-@@ -14667,7 +_,20 @@
+@@ -14667,7 +_,25 @@
  		if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F8) && !drawingPlayerChat && !editSign && !editChest) {
  			if (netRelease) {
  				SoundEngine.PlaySound(12);
@@ -2359,15 +2359,20 @@
 +				/*
  				shouldDrawNetDiagnosticsUI = !shouldDrawNetDiagnosticsUI;
 +				*/
-+				if (!shouldDrawNetDiagnosticsUI && !ModNet.ShouldDrawModNetDiagnosticsUI)
++				if (!shouldDrawNetDiagnosticsUI && !ModNet.ShouldDrawModNetDiagnosticsUI && !Logging.ShouldDrawModExceptionDiagnosticsUI)
 +					shouldDrawNetDiagnosticsUI = true; // From off to on (vanilla)
 +				else {
 +					if (shouldDrawNetDiagnosticsUI && !ModNet.ShouldDrawModNetDiagnosticsUI) {
 +						shouldDrawNetDiagnosticsUI = false; // From on (vanilla) to off (vanilla)
 +						ModNet.ShouldDrawModNetDiagnosticsUI = true; // +on (modded)
 +					}
-+					else if (ModNet.ShouldDrawModNetDiagnosticsUI)
++					else if (ModNet.ShouldDrawModNetDiagnosticsUI) {
 +						ModNet.ShouldDrawModNetDiagnosticsUI = false; // From on (modded) to off (all)
++						Logging.ShouldDrawModExceptionDiagnosticsUI = true; 
++					}
++					else if (Logging.ShouldDrawModExceptionDiagnosticsUI) {
++						Logging.ShouldDrawModExceptionDiagnosticsUI = false;
++					}
 +				}
  			}
  
@@ -4769,7 +4774,7 @@
  	}
  
  	private static void DrawInterface_20_MultiplayerPlayerNames()
-@@ -37178,10 +_,17 @@
+@@ -37178,10 +_,22 @@
  		num22 = 240;
  		text9 = $"{upTimerMax:F2}ms";
  		spriteBatch.DrawString(FontAssets.MouseText.Value, text9, new Vector2(num22, num23), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -4779,6 +4784,11 @@
  
  	private static void DrawInterface_17_DiagnoseNet()
  	{
++		if (Logging.ShouldDrawModExceptionDiagnosticsUI) {
++			Logging.ModExceptionDiagnostics.Draw(spriteBatch);
++			return;
++		}
++
 +		if (ModNet.ShouldDrawModNetDiagnosticsUI) {
 +			ModNet.ModNetDiagnosticsUI.Draw(spriteBatch);
 +			return;

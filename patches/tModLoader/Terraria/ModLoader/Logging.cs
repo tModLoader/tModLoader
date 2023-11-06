@@ -14,6 +14,8 @@ using log4net.Layout;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader;
 
@@ -104,10 +106,17 @@ public static partial class Logging
 
 		var appenders = new List<IAppender>();
 		if (logFile == LogFile.Client) {
-			appenders.Add(new ConsoleAppender {
+			var consoleAppender = new ManagedColoredConsoleAppender {
 				Name = "ConsoleAppender",
-				Layout = layout
-			});
+				Layout = layout,
+			};
+			// Color mapping adapted from https://code-maze.com/csharp-log4net-appenders-introduction/
+			consoleAppender.AddMapping(new () { Level = Level.Error, ForeColor = ConsoleColor.DarkRed, BackColor = ConsoleColor.White } );
+			consoleAppender.AddMapping(new() { Level = Level.Warn, ForeColor = ConsoleColor.Yellow });
+			consoleAppender.AddMapping(new() { Level = Level.Info, ForeColor = ConsoleColor.White });
+			consoleAppender.AddMapping(new() { Level = Level.Debug, ForeColor = ConsoleColor.Blue });
+			consoleAppender.ActivateOptions();
+			appenders.Add(consoleAppender);
 		}
 
 		appenders.Add(new DebugAppender {
@@ -265,5 +274,10 @@ public static partial class Logging
 		catch (Exception e) {
 			tML.Error("Failed to dump env vars", e);
 		}
+	}
+
+	internal static void SetModExceptionDiagnosticsUI(Mod[] mods)
+	{
+		ModExceptionDiagnostics = Main.dedServ ? null : new UIModExceptionDiagnostics(mods);
 	}
 }

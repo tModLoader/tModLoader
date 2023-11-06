@@ -8,6 +8,7 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
@@ -19,9 +20,13 @@ public static partial class Logging
 		public readonly void Dispose() => quietExceptionCount--;
 	}
 
+	internal static UIModExceptionDiagnostics ModExceptionDiagnostics;
+	internal static bool ShouldDrawModExceptionDiagnosticsUI = false;
+
 	[ThreadStatic]
 	private static int quietExceptionCount;
-	private static readonly HashSet<string> pastExceptions = new();
+	internal static readonly Dictionary<string, int> nonIgnoredExceptionCountByMod = new();
+	private static readonly Dictionary<string, int> pastExceptions = new();
 	private static readonly HashSet<string> ignoreTypes = new() {
 		"ReLogic.Peripherals.RGB.DeviceInitializationException",
 		"System.Threading.Tasks.TaskCanceledException",
@@ -75,6 +80,7 @@ public static partial class Logging
 
 	internal static void ResetPastExceptions()
 	{
+		// TODO: should this reset on mod reload?
 		pastExceptions.Clear();
 	}
 
@@ -118,12 +124,29 @@ public static partial class Logging
 
 			string exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 
+			AssemblyManager.FirstModInStackTrace(stackTrace, out var stackMod);
+			if (stackMod == null)
+				stackMod = "Unattributed";
+			nonIgnoredExceptionCountByMod.TryGetValue(stackMod, out int modNonIgnoredExceptionCount);
+			nonIgnoredExceptionCountByMod[stackMod] = modNonIgnoredExceptionCount + 1;
+
+			int exceptionRepetitionCount;
 			lock (pastExceptions) {
-				if (!pastExceptions.Add(exString))
+				pastExceptions.TryGetValue(exString, out exceptionRepetitionCount);
+				exceptionRepetitionCount = exceptionRepetitionCount + 1;
+				pastExceptions[exString] = exceptionRepetitionCount;
+
+				if(exceptionRepetitionCount != 1 && exceptionRepetitionCount != 10 && exceptionRepetitionCount != 100)
 					return;
 			}
 
-			tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+			if (exceptionRepetitionCount != 1) {
+				exString = $"The following exception has been repeated {exceptionRepetitionCount} times:" + '\n' + exString;
+				tML.Error(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+			}
+			else {
+				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+			}
 
 			previousException = args.Exception;
 
