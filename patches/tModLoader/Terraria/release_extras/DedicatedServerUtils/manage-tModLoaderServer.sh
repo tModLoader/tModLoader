@@ -15,14 +15,6 @@ function popd {
 	command popd > /dev/null || return
 }
 
-function try_make_dir {
-	for dir in "$@"; do
-		if ! [[ -d "$dir" ]]; then
-			mkdir "$dir"
-		fi
-	done
-}
-
 function try_make_link {
 	if ! [[ -L "$2" ]]; then
 		ln -s "$1" "$2"
@@ -217,7 +209,7 @@ function install_tml_steam {
 }
 
 function install_tml {
-	try_make_dir server
+	mkdir -p server
 	pushd server
 	if $steamcmd; then
 		install_tml_steam
@@ -231,7 +223,7 @@ function install_tml {
 	# Make folder structure
 	if ! is_in_docker; then
 		echo "Creating folder structure"
-		try_make_dir Mods Worlds logs
+		mkdir -p Mods Worlds logs
 	fi
 
 	# Install .NET
@@ -395,7 +387,7 @@ case $cmd in
 		fi
 
 		# Make proper directories to bypass install_workshop_mods warnings
-		try_make_dir Mods Worlds
+		mkdir -p Mods Worlds
 
 		install_workshop_mods
 
@@ -418,7 +410,7 @@ case $cmd in
 		fi
 
 		# Link logs to a more convenient place
-		try_make_dir "$folder/logs"
+		mkdir -p "$folder/logs"
 		try_make_link "$folder/logs" "$folder/server/tModLoader-Logs"
 
 		# Link workshop to tMod dir so we don't need to pass -steamworkshopfolder
