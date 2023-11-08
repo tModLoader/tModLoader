@@ -3780,7 +3780,7 @@
  						if (!Main.playerInventory) {
  							HandleHotbar();
  						}
-@@ -19397,10 +_,13 @@
+@@ -19397,62 +_,66 @@
  								if (Main.focusRecipe > Main.numAvailableRecipes - 1)
  									Main.focusRecipe = Main.numAvailableRecipes - 1;
  
@@ -3794,6 +3794,69 @@
  					}
  				}
  				else {
+ 					bool flag10 = false;
+ 					if (!Main.drawingPlayerChat && selectedItem != 58 && !Main.editSign && !Main.editChest) {
+ 						int num15 = -1;
+-						if (Main.keyState.IsKeyDown(Keys.D1)) {
++						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
++						if (PlayerInput.Triggers.Current.Hotbar1) { 
+ 							num15 = 0;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D2)) {
++						if (PlayerInput.Triggers.Current.Hotbar2) {
+ 							num15 = 1;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D3)) {
++						if (PlayerInput.Triggers.Current.Hotbar3) {
+ 							num15 = 2;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D4)) {
++						if (PlayerInput.Triggers.Current.Hotbar4) {
+ 							num15 = 3;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D5)) {
++						if (PlayerInput.Triggers.Current.Hotbar5) {
+ 							num15 = 4;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D6)) {
++						if (PlayerInput.Triggers.Current.Hotbar6) {
+ 							num15 = 5;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D7)) {
++						if (PlayerInput.Triggers.Current.Hotbar7) {
+ 							num15 = 6;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D8)) {
++						if (PlayerInput.Triggers.Current.Hotbar8) {
+ 							num15 = 7;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D9)) {
++						if (PlayerInput.Triggers.Current.Hotbar9) {
+ 							num15 = 8;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D0)) {
++						if (PlayerInput.Triggers.Current.Hotbar10) {
+ 							num15 = 9;
+ 							flag10 = true;
+ 						}
 @@ -19461,14 +_,17 @@
  							if (num15 != nonTorch)
  								SoundEngine.PlaySound(12);
