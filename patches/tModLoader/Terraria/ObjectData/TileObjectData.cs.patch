@@ -97,6 +97,24 @@
  		get {
  			if (_subTiles == null)
  				return _baseObject.SubTiles;
+@@ -1259,6 +_,17 @@
+ 			_tileObjectDraw = copy._tileObjectDraw;
+ 			_tileObjectStyle = copy._tileObjectStyle;
+ 			_tileObjectCoords = copy._tileObjectCoords;
++			// TML: Fix modder error that would result in modder inadvertently changing _baseObject, which would cause many other tiles to be broken. Assigning DrawYOffset and then calling CopyFrom would result in _hasOwnTileObjectDraw being true but sharing a _tileObjectDraw reference with _baseObject. A subsequent DrawYOffset assignment (likely in the next ModTile to load) would modify the shared _tileObjectDraw instead of creating a new _tileObjectDraw.
++			if (_hasOwnAlternates || _hasOwnAnchor || _hasOwnAnchorTiles || _hasOwnLiquidDeath || _hasOwnLiquidPlacement || _hasOwnPlacementHooks || _hasOwnSubTiles || _hasOwnTileObjectBase || _hasOwnTileObjectDraw || _hasOwnTileObjectStyle || _hasOwnTileObjectCoords) {
++				_hasOwnAlternates = _hasOwnAnchor = _hasOwnAnchorTiles = _hasOwnLiquidDeath = _hasOwnLiquidPlacement = _hasOwnPlacementHooks = _hasOwnSubTiles = _hasOwnTileObjectBase = _hasOwnTileObjectDraw = _hasOwnTileObjectStyle = _hasOwnTileObjectCoords = false;
++				// Force modder to fix. Silently fixing would keep modders in the dark about their code mistake and lead to confusion about the correct behavior of TileObjectData. Don't crash in normal usage.
++				if (ModLoader.Core.ModCompile.activelyModding) {
++					throw new Exception($"Bad TileObjectData values detected.\nLook at this ModTile and the ModTile that would load immediately before this ModTile and ensure that all modifications to TileObjectData.newTile are done between CopyFrom and AddTile.\nThe previous ModTile would typically be alphabetically before the tile in this stack trace.") {
++						HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#basic-tileobjectdatanewtile-structure"
++					};
++				}
++				return;
++			}
+ 		}
+ 	}
+ 
 @@ -1372,6 +_,19 @@
  			if (_liquidDeath.water)
  				WaterPlacement = LiquidPlacement.NotAllowed;
@@ -185,6 +203,20 @@
  		addTile(488);
  		newTile.CopyFrom(Style3x2);
  		newTile.DrawYOffset = 2;
+@@ -3842,11 +_,13 @@
+ 		};
+ 
+ 		newTile.StyleHorizontal = true;
++		/* Unused, addAlternate never called.
+ 		newAlternate.CopyFrom(newTile);
+ 		newAlternate.Origin = new Point16(0, 1);
+ 		newAlternate.AnchorAlternateTiles = new int[1] {
+ 			419
+ 		};
++		*/
+ 
+ 		addTile(419);
+ 		newTile.CopyFrom(Style1x1);
 @@ -4579,7 +_,10 @@
  		newTile.StyleMultiplier = 3;
  		newTile.StyleHorizontal = true;
