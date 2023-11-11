@@ -469,88 +469,122 @@ public static class SteamedWraps
 			(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
 	}
 
-	/// <summary>
-	/// Updates and/or Downloads the Item specified by publishId
-	/// </summary>
-	internal static void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
+	internal class ModDownloadInstance
 	{
-		if (!SteamAvailable)
-			return;
+		// All of the below are for actually verifying a download has completed in the 'proper' steam method, but hasn't worked for gameserver?
+		private EResult _downloadCallback;
+		protected Callback<DownloadItemResult_t> _downloadHook;
 
-		if (SteamClient)
-			SteamUGC.SubscribeItem(publishId);
-
-		if (DoesWorkshopItemNeedUpdate(publishId) || forceUpdate) {
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
-
-			bool downloadStarted;
+		public ModDownloadInstance()
+		{
+			// For Steam Users
 			if (SteamClient)
-				downloadStarted = SteamUGC.DownloadItem(publishId, true);
-			else 
-				downloadStarted = SteamGameServerUGC.DownloadItem(publishId, true);
+				_downloadHook = Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
+			else // For Non-Steam Users
+				_downloadHook = Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
+		}
 
-			if (!downloadStarted) {
-				ReportCheckSteamLogs();
-				throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
+		internal void MarkDownloadComplete(DownloadItemResult_t result)
+		{
+			_downloadCallback = result.m_eResult;
+			Logging.tML.Debug($"Download Callback Received From Steam: {_downloadCallback}");
+		}
+
+		/// <summary>
+		/// Updates and/or Downloads the Item specified by publishId
+		/// </summary>
+		internal void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
+		{
+			if (!SteamAvailable)
+				return;
+
+			if (SteamClient)
+				SteamUGC.SubscribeItem(publishId);
+
+			if (DoesWorkshopItemNeedUpdate(publishId) || forceUpdate) {
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
+
+				bool downloadStarted;
+				if (SteamClient)
+					downloadStarted = SteamUGC.DownloadItem(publishId, true);
+				else
+					downloadStarted = SteamGameServerUGC.DownloadItem(publishId, true);
+
+				if (!downloadStarted) {
+					ReportCheckSteamLogs();
+					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
+				}
+
+				InnerDownloadHandler(uiProgress, publishId);
+
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
 			}
-
-			InnerDownloadHandler(uiProgress, publishId);
-
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
+			else {
+				// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
+				Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
+			}
 		}
-		else {
-			// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-			Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
-		}
-	}
 
-	private static void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
-	{
-		ulong dlBytes, totalBytes;
+		private void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
+		{
+			ulong dlBytes, totalBytes;
 
-		const int LogEveryXPercent = 10;
-		const int MaxFailures = 10;
+			const int LogEveryXPercent = 10;
+			const int MaxFailures = 10;
 
-		int nextPercentageToLog = LogEveryXPercent;
-		int numFailures = 0;
+			int nextPercentageToLog = LogEveryXPercent;
+			int numFailures = 0;
 
-		while (!IsWorkshopItemInstalled(publishId)) {
-			if (SteamClient)
-				SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
-			else
-				SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+			while (!IsWorkshopItemInstalled(publishId)) {
+				if (SteamClient)
+					SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+				else
+					SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
 
-			if (totalBytes == 0) {
-				// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
-				if (numFailures++ >= MaxFailures) {
+				if (totalBytes == 0) {
+					// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
+					if (numFailures++ >= MaxFailures) {
+						break;
+					}
+					else {
+						Thread.Sleep(100);
+						continue;
+					}
+				}
+
+				uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+
+				int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
+
+				if (percentage >= nextPercentageToLog) {
+					string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
+
+					Utils.LogAndConsoleInfoMessage(str);
+
+					nextPercentageToLog = percentage + LogEveryXPercent;
+
+					if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
+						nextPercentageToLog = 100;
+					}
+				}
+
+				// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
+				float progressRaw = dlBytes / totalBytes;
+				if (progressRaw == 1) {
 					break;
 				}
-				else {
-					Thread.Sleep(100);
-					continue;
-				}
 			}
 
-			uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-			int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
-
-			if (percentage >= nextPercentageToLog) {
-				string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
-
-				Utils.LogAndConsoleInfoMessage(str);
-
-				nextPercentageToLog = percentage + LogEveryXPercent;
-
-				if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
-					nextPercentageToLog = 100;
-				}
+			// Due to issues with Steam moving files from downloading folder to installed folder,
+			// there can be some latency in detecting it's installed. - Solxan
+			while (_downloadCallback == EResult.k_EResultNone) {
+				Thread.Sleep(100);
+				RunCallbacks();
 			}
 
-			// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
-			float progressRaw = dlBytes / totalBytes;
-			if (progressRaw == 1) {
-				break;
+			if (_downloadCallback != EResult.k_EResultOK) {
+				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
+				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
 			}
 		}
 	}
