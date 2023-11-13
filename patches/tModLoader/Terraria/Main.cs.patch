@@ -209,15 +209,17 @@
  	private int firstTileY;
  	private int lastTileY;
 -	private double bgParallax;
-+	internal double bgParallax;
++	public double bgParallax;
 -	private int bgStartX;
-+	internal int bgStartX;
++	public int bgStartX;
 -	private int bgLoops;
-+	internal int bgLoops;
- 	private int bgStartY;
- 	private int bgLoopsY;
++	public int bgLoops;
+-	private int bgStartY;
++	public int bgStartY;
+-	private int bgLoopsY;
++	public int bgLoopsY;
 -	private int bgTopY;
-+	internal int bgTopY;
++	public int bgTopY;
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
@@ -608,18 +610,18 @@
  	private static float backgroundLayerTransitionSpeed = 0.05f;
  	public static float atmo;
 -	private static float bgScale = 1f;
-+	internal static float bgScale = 1f;
++	public  static float bgScale = 1f;
 -	private static int bgWidthScaled = (int)(1024f * bgScale);
-+	internal static int bgWidthScaled = (int)(1024f * bgScale);
++	public static int bgWidthScaled = (int)(1024f * bgScale);
  	public static Microsoft.Xna.Framework.Color ColorOfTheSkies;
 -	private static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsBase = Microsoft.Xna.Framework.Color.White;
-+	internal static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsBase = Microsoft.Xna.Framework.Color.White;
++	public static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsBase = Microsoft.Xna.Framework.Color.White;
 -	private static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsModified = Microsoft.Xna.Framework.Color.White;
-+	internal static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsModified = Microsoft.Xna.Framework.Color.White;
++	public static Microsoft.Xna.Framework.Color ColorOfSurfaceBackgroundsModified = Microsoft.Xna.Framework.Color.White;
 -	private float screenOff;
-+	internal float screenOff;
++	public float screenOff;
 -	private float scAdj;
-+	internal float scAdj;
++	public float scAdj;
  	private float cTop;
  	private bool _isDrawingOrUpdating;
  	public static List<INeedRenderTargetContent> ContentThatNeedsRenderTargets = new List<INeedRenderTargetContent>();
@@ -4767,13 +4769,7 @@
  	}
  
  	private static void DrawInterface_20_MultiplayerPlayerNames()
-@@ -37178,10 +_,17 @@
- 		num22 = 240;
- 		text9 = $"{upTimerMax:F2}ms";
- 		spriteBatch.DrawString(FontAssets.MouseText.Value, text9, new Vector2(num22, num23), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+
-+		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 	}
+@@ -37182,6 +_,11 @@
  
  	private static void DrawInterface_17_DiagnoseNet()
  	{
@@ -5694,7 +5690,7 @@
  		Lighting.GlobalBrightness = globalBrightness;
  		TimeLogger.DrawTime(3, stopwatch.Elapsed.TotalMilliseconds);
  	}
-@@ -44382,6 +_,9 @@
+@@ -44382,12 +_,16 @@
  
  		num7 = MathHelper.Clamp(num7 / 800f, 0f, 1f);
  		float num8 = (float)((double)screenPosition.Y - worldSurface * 16.0) / 300f;
@@ -5704,7 +5700,19 @@
  		if (num8 < 0f)
  			num8 = 0f;
  		else if (num8 > 1f)
-@@ -44415,7 +_,11 @@
+ 			num8 = 1f;
+ 
+ 		float num9 = 1f * (1f - num8) + num4 * num8;
++
+ 		float globalBrightness = Lighting.GlobalBrightness;
+ 		Lighting.GlobalBrightness = globalBrightness * (1f - num8) + 1f * num8;
+ 		float value = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
+@@ -44411,11 +_,16 @@
+ 		num4 = 1f * (num9 - value) + num4 * value;
+ 		num5 = 1f * (num9 - value) + num5 * value;
+ 		num6 = 1f * (num9 - value) + num6 * value;
++
+ 		int num10 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
  		int num11 = 3;
  		num11 = ((num10 <= caveBackX[0]) ? caveBackStyle[0] : ((num10 <= caveBackX[1]) ? caveBackStyle[1] : ((num10 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
  		num11 += 3;
