@@ -5690,7 +5690,7 @@
  		Lighting.GlobalBrightness = globalBrightness;
  		TimeLogger.DrawTime(3, stopwatch.Elapsed.TotalMilliseconds);
  	}
-@@ -44382,12 +_,16 @@
+@@ -44382,6 +_,9 @@
  
  		num7 = MathHelper.Clamp(num7 / 800f, 0f, 1f);
  		float num8 = (float)((double)screenPosition.Y - worldSurface * 16.0) / 300f;
@@ -5700,19 +5700,7 @@
  		if (num8 < 0f)
  			num8 = 0f;
  		else if (num8 > 1f)
- 			num8 = 1f;
- 
- 		float num9 = 1f * (1f - num8) + num4 * num8;
-+
- 		float globalBrightness = Lighting.GlobalBrightness;
- 		Lighting.GlobalBrightness = globalBrightness * (1f - num8) + 1f * num8;
- 		float value = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
-@@ -44411,11 +_,16 @@
- 		num4 = 1f * (num9 - value) + num4 * value;
- 		num5 = 1f * (num9 - value) + num5 * value;
- 		num6 = 1f * (num9 - value) + num6 * value;
-+
- 		int num10 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
+@@ -44415,7 +_,11 @@
  		int num11 = 3;
  		num11 = ((num10 <= caveBackX[0]) ? caveBackStyle[0] : ((num10 <= caveBackX[1]) ? caveBackStyle[1] : ((num10 > caveBackX[2]) ? caveBackStyle[3] : caveBackStyle[2])));
  		num11 += 3;
