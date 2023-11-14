@@ -16,36 +16,36 @@ float2 uImageSize1;
 float4 uLegacyArmorSourceRect;
 float2 uLegacyArmorSheetSize;
 
-// This is a shader. You are on your own with shaders. Compile shaders in an XNB project.
+// This is a shader. You are on your own with shaders.
+float4 ArmorBasic(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
+{
+    float4 color = tex2D(uImage0, coords);
+    return color * sampleColor;
+}
 
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
 	float4 color = tex2D(uImage0, coords);
 
 	if (!any(color))
 		return color;
-
+	
 	int choice = uTime % 4;
 
-	if(choice == 0)
+	if (choice == 0)
 		color.r = 1;
-	else if(choice == 1)
-		color.g = 1;
+	else if (choice == 1)
+        color.g = 1;
 	else if (choice == 2)
-		color.b = 1;
-		// color = float4(0, 0, 1, 1);
-	// else if (choice == 3)
-	//   color = color;
+        color.b = 1;
 
-	return color;
-
-	// return color * tex2D(uImage0, coords).a;
+	return color * sampleColor;
 }
 
 technique Technique1
 {
 	pass ExampleDyePass
 	{
-		PixelShader = compile ps_2_0 PixelShaderFunction();
+		PixelShader = compile ps_3_0 PixelShaderFunction(); // Use ps_3_0 instead of ps_2_0 because it allows more instructions
 	}
 }

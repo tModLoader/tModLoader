@@ -1,0 +1,33 @@
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Shader settings -->
+	<PropertyGroup>
+		<tMLCompileEffects>true</tMLCompileEffects>
+		<tMLEffectsVersion>fx_2_0</tMLEffectsVersion>
+	</PropertyGroup>
+	
+	<!-- Effect files -->
+	<ItemGroup>
+		<EffectFiles Include="**/*.fx" />
+		<EffectFiles Include="**/*.hlsl" />
+		<FxcFiles Include="**/*.fxc" />
+	</ItemGroup>
+
+	<!-- Disable the compiler warning about effect files being deprecated -->
+	<PropertyGroup Condition="$(tMLCompileEffects)">
+		<NoWarn>X4717$(NoWarn)</NoWarn>
+	</PropertyGroup>
+	
+	<!-- Remove compiled shader files from editor -->
+	<ItemGroup Condition="$(tMLCompileEffects)">
+		<None Remove="**/*.fxc" />
+	</ItemGroup>
+	
+	<!-- Compiling the effects -->
+	<Target Name="CompileEffects" BeforeTargets="Build" Condition="$(tMLCompileEffects)">
+		<!-- Delete the old fxc files -->
+		<Delete Files="%(FxcFiles.Identity)" Condition="Exists('%(FxcFiles.Identity)')" />
+		
+		<!-- Compile the fx files -->
+		<Exec Command="fxc /T $(tMLEffectsVersion) /Fo Assets/Effects/$([System.IO.Path]::GetFileNameWithoutExtension('%(EffectFiles.FullPath)')).fxc /Od %(EffectFiles.Identity)" Condition="Exists('%(EffectFiles.Identity)')" />
+	</Target>
+</Project>

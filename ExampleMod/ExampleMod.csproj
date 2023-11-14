@@ -14,5 +14,6 @@
     <Compile Remove="Old\**" />
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
+    <EffectFiles Remove="Old\**" />
   </ItemGroup>
 </Project>
