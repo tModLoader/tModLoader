@@ -28,6 +28,6 @@
 		<Delete Files="%(FxcFiles.Identity)" Condition="Exists('%(FxcFiles.Identity)')" />
 		
 		<!-- Compile the fx files -->
-		<Exec Command="fxc /T $(tMLEffectsVersion) /Fo Assets/Effects/$([System.IO.Path]::GetFileNameWithoutExtension('%(EffectFiles.FullPath)')).fxc /Od %(EffectFiles.Identity)" Condition="Exists('%(EffectFiles.Identity)')" />
+		<Exec Command="&quot;$(tMLSteamPath)fxc&quot; /T $(tMLEffectsVersion) /Fo Assets/Effects/$([System.IO.Path]::GetFileNameWithoutExtension('%(EffectFiles.FullPath)')).fxc /Od %(EffectFiles.Identity)" Condition="Exists('%(EffectFiles.Identity)')" />
 	</Target>
 </Project>
