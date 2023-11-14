@@ -35,6 +35,9 @@
 		"MenuModUpdatesAvailable": "(Доступно {0} {^0:обновление;обновления;обновлений}!)",
 		"AudioNotSupported": "Звуковое оборудование не найдено. Всё аудио будет отключено.",
 		"SwitchVersionInfoButton": "Переключиться на другую версию tModLoader",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		"SteamFamilyShareWarning": "Было обнаружено, что вы используете копию Terraria через Steam Family Share.\nSteam не поддерживает tModLoader из семейной библиотеки.\nПоэтому, был загружён экспериментальный обход Steam Family Share.\nБудут недоступны следующие функции:\n - Оверлей Steam\n - Мультиплеер через Steam",
 		"WaitXSeconds": "Подождите {0} {^0:секунду;секунды;секунд}...",
 		"ViewInstructions": "Просмотреть инструкции",
@@ -404,6 +407,7 @@
 		"MSManagePublished": "Управление опубликованными",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",
@@ -468,7 +472,7 @@
 		"MSUnloading": "Выгрузка: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Добавление рецептов...",
-		"CancellingLoading": "Отменение загрузки...",
+		"CancellingLoading": "Отмена загрузки...",
 		"LoadingCancelled": "Загрузка отменена",
 
 		// Default Unimplemented
@@ -500,7 +504,7 @@
 		// In Game UI additions
 		"slotStack": "Стак",
 		"slotScroll": "Прокрутка",
-		// "PressXToClose": "Press {0} to close",
+		"PressXToClose": "Нажмите {0}, чтобы закрыть",
 
 		// Misc
 		"OK": "ОК",

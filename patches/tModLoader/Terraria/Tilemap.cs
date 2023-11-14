@@ -31,6 +31,8 @@ public readonly struct Tilemap
 	
 	public Tile this[Point pos] => this[pos.X, pos.Y];
 
+	public Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];
+
 	internal Tilemap(ushort width, ushort height)
 	{
 		Width = width;
