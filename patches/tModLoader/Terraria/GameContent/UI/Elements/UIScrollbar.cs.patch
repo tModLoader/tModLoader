@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIScrollbar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIScrollbar.cs
-@@ -6,11 +_,13 @@
+@@ -6,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
@@ -9,12 +9,6 @@
  {
  	private float _viewPosition;
  	private float _viewSize = 1f;
- 	private float _maxViewSize = 20f;
-+	public float ViewSize => _viewSize;
-+	public float MaxViewSize => _maxViewSize;
- 	private bool _isDragging;
- 	private bool _isHoveringOverHandle;
- 	private float _dragYOffset;
 @@ -64,7 +_,7 @@
  		return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
  	}
