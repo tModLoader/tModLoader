@@ -97,7 +97,7 @@
  		get {
  			if (_subTiles == null)
  				return _baseObject.SubTiles;
-@@ -1259,6 +_,17 @@
+@@ -1259,6 +_,15 @@
  			_tileObjectDraw = copy._tileObjectDraw;
  			_tileObjectStyle = copy._tileObjectStyle;
  			_tileObjectCoords = copy._tileObjectCoords;
@@ -106,9 +106,7 @@
 +				_hasOwnAlternates = _hasOwnAnchor = _hasOwnAnchorTiles = _hasOwnLiquidDeath = _hasOwnLiquidPlacement = _hasOwnPlacementHooks = _hasOwnSubTiles = _hasOwnTileObjectBase = _hasOwnTileObjectDraw = _hasOwnTileObjectStyle = _hasOwnTileObjectCoords = false;
 +				// Force modder to fix. Silently fixing would keep modders in the dark about their code mistake and lead to confusion about the correct behavior of TileObjectData. Don't crash in normal usage.
 +				if (ModLoader.Core.ModCompile.activelyModding) {
-+					throw new Exception($"Bad TileObjectData values detected.\nLook at this ModTile and the ModTile that would load immediately before this ModTile and ensure that all modifications to TileObjectData.newTile are done between CopyFrom and AddTile.\nThe previous ModTile would typically be alphabetically before the tile in this stack trace.") {
-+						HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#basic-tileobjectdatanewtile-structure"
-+					};
++					Logging.tML.Warn($"Bad TileObjectData values detected.\nLook at this ModTile and the ModTile that would load immediately before this ModTile and ensure that all modifications to TileObjectData.newTile are done between CopyFrom and AddTile.\nThe previous ModTile would typically be alphabetically before the tile in this stack trace.\nSee https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#basic-tileobjectdatanewtile-structure for more information.\n{new System.Diagnostics.StackTrace(true)}");
 +				}
 +				return;
 +			}
