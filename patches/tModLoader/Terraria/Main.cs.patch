@@ -5122,7 +5122,7 @@
  		screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);
  		MenuXMovement = 4f;
 -		if (alreadyGrabbingSunOrMoon) {
-+		if (alreadyGrabbingSunOrMoon && !playOldTile) { // Added && !playOldTile
++		if (alreadyGrabbingSunOrMoon && !playOldTile && MenuLoader.CurrentMenu == MenuLoader.MenuJourneysEnd) { // Added && !playOldTile. Added check for MenuJourneysEnd to limit easter egg to only the vanilla logo/menu
  			playOldTile = true;
 +
 +			MenuLoader.ActivateOldVanillaMenu();
