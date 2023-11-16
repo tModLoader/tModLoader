@@ -78,10 +78,10 @@ fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	export DOTNET_ROLL_FORWARD=Disable
-	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
+	echo "Launched Using Local Dotnet. Launch command: \"$install_dir/dotnet\" tModLoader.dll \"$customargs\" \"$@\"" 2>&1 | tee -a "$LogFile"
 	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
 	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
 else
-	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
+	echo "Launched Using System Dotnet. Launch command: dotnet tModLoader.dll \"$customargs\" \"$@\"" 2>&1 | tee -a "$LogFile"
 	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
 fi
