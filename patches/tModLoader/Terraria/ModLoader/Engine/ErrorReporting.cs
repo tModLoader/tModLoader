@@ -47,7 +47,7 @@ internal class ErrorReporting
 	public static void FatalExit(string message, Exception e)
 	{
 		try {
-			if (SDL2.SDL.SDL_GetError() is string error)
+			if (SDL2.SDL.SDL_GetError() is string error && !string.IsNullOrWhiteSpace(error))
 				message += "\n\nSDL Error: " + error;
 		}
 		catch { }
