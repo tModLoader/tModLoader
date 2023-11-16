@@ -2,17 +2,21 @@
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
 	// This projectile demonstrates exploding tiles (like a bomb or dynamite), spawning child projectiles, and explosive visual effects.
-	// TODO: This projectile does not currently damage the owner, or damage other players on the For the worthy secret seed.
 	public class ExampleExplosive : ModProjectile
 	{
 		private const int DefaultWidthHeight = 15;
 		private const int ExplosionWidthHeight = 250;
+
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
+		}
 
 		public override void SetDefaults() {
 			// While the sprite is actually bigger than 15x15, we use 15x15 since it lets the projectile clip into tiles as it bounces. It looks better.
@@ -42,6 +46,9 @@ namespace ExampleMod.Content.Projectiles
 		public override bool OnTileCollide(Vector2 oldVelocity) {
 			// Die immediately if ai[1] isn't 0 (We set this to 1 for the 5 extra explosives we spawn in Kill)
 			if (Projectile.ai[1] != 0) {
+				// These two are so the bomb will damage the player correctly.
+				Projectile.timeLeft = 0;
+				PrepareBombToBlow();
 				return true;
 			}
 			// OnTileCollide can trigger quite frequently, so using soundDelay helps prevent the sound from overlapping too much.
@@ -68,15 +75,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void AI() {
 			// The projectile is in the midst of exploding during the last 3 updates.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				Projectile.tileCollide = false;
-				// Set to transparent. This projectile technically lives as transparent for about 3 frames
-				Projectile.alpha = 255;
-
-				// change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
-				Projectile.Resize(ExplosionWidthHeight, ExplosionWidthHeight);
-
-				Projectile.damage = 250;
-				Projectile.knockBack = 10f;
+				PrepareBombToBlow(); // Get ready to explode.
 			}
 			else {
 				// Smoke and fuse dust spawn. The position is calculated to spawn the dust directly on the fuse.
@@ -110,9 +109,93 @@ namespace ExampleMod.Content.Projectiles
 			}
 			// Rotation increased by velocity.X 
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
+
+			// Explosives behave differently when touching Shimmer.
+			if (Projectile.shimmerWet) {
+				int projTileX = (int)(Projectile.Center.X / 16f);
+				int projTileY = (int)(Projectile.position.Y / 16f);
+				// If the projectile is inside of Shimmer:
+				if (WorldGen.InWorld(projTileX, projTileY) && Main.tile[projTileX, projTileY] != null &&
+						Main.tile[projTileX, projTileY].LiquidAmount == byte.MaxValue &&
+						Main.tile[projTileX, projTileY].LiquidType == LiquidID.Shimmer &&
+						WorldGen.InWorld(projTileX, projTileY - 1) && Main.tile[projTileX, projTileY - 1] != null &&
+						Main.tile[projTileX, projTileY - 1].LiquidAmount > 0 &&
+						Main.tile[projTileX, projTileY - 1].LiquidType == LiquidID.Shimmer) {
+					Projectile.Kill(); // Kill the projectile with no (player or enemy damaging) blast radius.
+				}
+				// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
+				else if (Projectile.velocity.Y > 0f) {
+					Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
+					Projectile.netUpdate = true; // Sync the change in multiplayer.
+					if (Projectile.timeLeft > 600) {
+						Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
+					}
+
+					Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
+					Projectile.shimmerWet = false;
+					Projectile.wet = false;
+				}
+			}
+		}
+
+		/// <summary> Resizes the projectile for the explosion blast radius. </summary>
+		private void PrepareBombToBlow() {
+			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the bomb explodes on slopes.
+			Projectile.alpha = 255; // Set to transparent. This projectile technically lives as transparent for about 3 frames
+
+			// Change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
+			Projectile.Resize(ExplosionWidthHeight, ExplosionWidthHeight);
+
+			Projectile.damage = 250; // Bomb: 100, Dynamite: 250
+			Projectile.knockBack = 10f; // Bomb: 8f, Dynamite: 10f
+		}
+
+		/// <summary>
+		/// This function will manually damage players if applicable.
+		/// </summary>
+		/// <param name="projRectangle">Position and hitbox of the projectile.</param>
+		/// <param name="playerIndex">The index of the player in Main.player[]</param>
+		private void BombsHurtPlayers(Rectangle projRectangle, int playerIndex) {
+			Player targetPlayer = Main.player[playerIndex];
+			// Check that the bomb should damage the player in the first place. If not, return.
+			if (Projectile.timeLeft > 1 || !targetPlayer.active || targetPlayer.dead || targetPlayer.immune) {
+				return;
+			}
+
+			// Check that the blast radius intersects the player's hitbox. If not, return.
+			Rectangle playerHitbox = new Rectangle((int)targetPlayer.position.X, (int)targetPlayer.position.Y, targetPlayer.width, targetPlayer.height);
+			if (!projRectangle.Intersects(playerHitbox)) {
+				return;
+			}
+
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			Projectile.direction = (targetPlayer.Center.X > Projectile.Center.X).ToDirectionInt();
+
+			int damageVariation = Main.DamageVar(Projectile.damage, 0f - targetPlayer.luck); // Get the damage variation (affected by luck).
+			PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(Projectile.owner, Projectile.whoAmI); // Get the death message.
+
+			// Apply damage to the player.
+			targetPlayer.Hurt(damageSource, damageVariation, Projectile.direction, pvp: true, quiet: false, -1, Projectile.IsDamageDodgable(), armorPenetration: Projectile.ArmorPenetration);
 		}
 
 		public override void OnKill(int timeLeft) {
+			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
+			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer) {
+				PrepareBombToBlow();
+			}
+
+			Rectangle blastRectangle = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
+
+			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
+			if (Projectile.friendly && Main.getGoodWorld && Main.netMode == NetmodeID.MultiplayerClient && Projectile.owner != Main.myPlayer && !Projectile.npcProj) {
+				BombsHurtPlayers(blastRectangle, Main.myPlayer);
+			}
+			// Damage the player who threw the bomb.
+			else if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
+				BombsHurtPlayers(blastRectangle, Projectile.owner);
+				CutTiles(); // Destroy tall grass and flowers around the explosion.
+			}
+
 			// If we are the original projectile running on the owner, spawn the 5 child projectiles.
 			if (Projectile.owner == Main.myPlayer && Projectile.ai[1] == 0) {
 				for (int i = 0; i < 5; i++) {
@@ -165,7 +248,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Finally, actually explode the tiles and walls. Run this code only for the owner
 			if (Projectile.owner == Main.myPlayer) {
-				int explosionRadius = 7;
+				int explosionRadius = 7; // Bomb: 4, Dynamite: 7, Explosives & TNT Barrel: 10
 				int minTileX = (int)(Projectile.Center.X / 16f - explosionRadius);
 				int maxTileX = (int)(Projectile.Center.X / 16f + explosionRadius);
 				int minTileY = (int)(Projectile.Center.Y / 16f - explosionRadius);

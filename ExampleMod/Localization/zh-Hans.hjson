@@ -819,7 +819,7 @@ Mods: {
 
 			ExampleExplosive: {
 				// DisplayName: Example Explosive
-				// Tooltip: ""
+				// Tooltip: "{$ItemTooltip.Dynamite}"
 			}
 
 			ExampleJavelin: {
@@ -891,6 +891,11 @@ Mods: {
 				// DisplayName: Example Statue
 				// Tooltip: The power of examplium flows in this inanimate fish
 			}
+
+			ExampleRocket: {
+				// DisplayName: Example Rocket
+				// Tooltip: "{$ItemTooltip.RocketI}"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -930,6 +935,10 @@ Mods: {
 			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			// ExampleGrenadeProjectile.DisplayName: Example Grenade Projectile
+			// ExampleProximityMineProjectile.DisplayName: Example Proximity Mine Projectile
+			// ExampleRocketProjectile.DisplayName: Example Rocket Projectile
+			// ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
 		}
 
 		Buffs: {
