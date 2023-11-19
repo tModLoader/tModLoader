@@ -202,7 +202,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Previous Page";
+					text = Language.GetTextValue("tModLoader.PreviousInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -226,7 +226,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Next Page";
+					text = Language.GetTextValue("tModLoader.NextInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
