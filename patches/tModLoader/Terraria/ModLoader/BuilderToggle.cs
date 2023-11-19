@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Localization;
 
@@ -75,8 +76,48 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	/// </summary>
 	public abstract string DisplayValue();
 
+	/// <summary>
+	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.
+	/// This is for the icon itself. See <see cref="DrawHover"/> if you want to modify icon hover drawing
+	/// Return false to stop vanilla drawing code from running. Returns true by default.
+	/// </summary>
+	/// <param name="spriteBatch">The spritebatch to draw on</param>
+	/// <param name="texture">The icon texture</param>
+	/// <param name="position">The position</param>
+	/// <param name="frame">The frame rectangle (aka source rectangle)</param>
+	/// <param name="color">The color the icon is drawn in. Modifications in <see cref="DisplayColorTexture"/> is applied to this value</param>
+	/// <param name="scale">The scale of the icon</param>
+	/// <param name="spriteEffects">The spriteEffects</param>
+	/// <returns>Whether to run vanilla icon drawing code</returns>
+	public virtual bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) => true;
+
+
+	/// <summary>
+	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.
+	/// This is for the icon hover. See <see cref="DrawHover"/> if you want to modify icon drawing
+	/// Return false to stop vanilla drawing code from running. Returns true by default.
+	/// </summary>
+	/// <param name="spriteBatch">The spritebatch to draw on</param>
+	/// <param name="texture">The icon hover texture</param>
+	/// <param name="position">The position</param>
+	/// <param name="frame">The frame rectangle (aka source rectangle)</param>
+	/// <param name="color">The color the icon hover is drawn in</param>
+	/// <param name="scale">The scale of the icon hover</param>
+	/// <param name="spriteEffects">The spriteEffects</param>
+	/// <returns>Whether to run vanilla icon hover drawing code</returns>
+	public virtual bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) => true;
+
+	/// <summary>
+	/// Called when the toggle is clicked and before vanilla operation takes place.
+	/// Return false to stop vanilla click code (switching between states and playing sound) from running. Returns true by default.
+	/// </summary>
+	/// <param name="sound">The click sound that will be played. Return null to mute.</param>
+	/// <returns>Whether to run vanilla click code</returns>
+	public virtual bool OnClick(ref SoundStyle? sound) => true;
+
 	public sealed override void SetupContent() {
 		ModContent.Request<Texture2D>(Texture);
+		ModContent.Request<Texture2D>(HoverTexture);
 		SetStaticDefaults();
 	}
 

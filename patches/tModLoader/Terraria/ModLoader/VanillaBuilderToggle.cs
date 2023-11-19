@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
+using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -15,6 +18,11 @@ public abstract class VanillaBuilderToggle : BuilderToggle
 
 	public override Color DisplayColorTexture() {
 		return CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+	}
+
+	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		frame = Type < 10 ? new Rectangle(Type * 16, 16, 14, 14) : frame;
+		return true;
 	}
 }
 
@@ -192,6 +200,7 @@ public class ActuatorsVisibilityBuilderToggle : WireVisibilityBuilderToggle { }
 public class BlockSwapBuilderToggle : VanillaBuilderToggle
 {
 	public override string Texture => "Terraria/Images/UI/BlockReplace_0";
+	public override string HoverTexture => "Terraria/Images/UI/BlockReplace_0";
 	public override bool Active() => true;
 
 	public override string DisplayValue() {
@@ -209,11 +218,30 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 	}
 
 	public override Color DisplayColorTexture() => Color.White;
+
+	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		frame = texture.Frame(3, 1, CurrentState == 0 ? 0 : 1);
+		position += new Vector2(1, 0);
+		return true;
+	}
+
+	public override bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		frame = texture.Frame(3, 1, 2);
+		position += new Vector2(1, 0);
+		scale = 0.9f;
+		return true;
+	}
+
+	public override bool OnClick(ref SoundStyle? sound) {
+		sound = SoundID.Unlock;
+		return true;
+	}
 }
 
 public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 {
 	public override string Texture => "Terraria/Images/Extra_211";
+	public override string HoverTexture => "Terraria/Images/Extra_211";
 	public override bool Active() => Main.player[Main.myPlayer].unlockedBiomeTorches;
 
 	public override string DisplayValue() {
@@ -231,4 +259,22 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 	}
 
 	public override Color DisplayColorTexture() => Color.White;
+
+	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		frame = texture.Frame(4, 1, CurrentState == 0 ? 1 : 0);
+		position += new Vector2(1, 0);
+		return true;
+	}
+
+	public override bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		frame = texture.Frame(4, 1, CurrentState == 0 ? 3 : 2);
+		position += new Vector2(1, 0);
+		scale = 0.9f;
+		return true;
+	}
+
+	public override bool OnClick(ref SoundStyle? sound) {
+		sound = SoundID.Unlock;
+		return true;
+	}
 }
