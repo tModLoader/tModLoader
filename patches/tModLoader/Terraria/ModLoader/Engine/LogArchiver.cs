@@ -123,7 +123,9 @@ internal static class LogArchiver
 		try {
 			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
 				foreach (var logFile in logFiles) {
-					var entryName = Path.GetFileNameWithoutExtension(logFile); // Note this gives client.log from client.log.old
+					string oldExtensionNumber = Path.GetExtension(logFile).Replace(".old", ""); // This gives a number
+					var entryName = oldExtensionNumber + Path.GetFileNameWithoutExtension(logFile); // this will store it as 2client.log, 3client.log etc
+
 					using (var stream = File.OpenRead(logFile)) {
 						if (stream.Length > 10_000_000) {
 							// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
