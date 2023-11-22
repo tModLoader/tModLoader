@@ -316,6 +316,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			yield return $"{dotnetRoot}/dotnet";
 		}
 
+		// The Scripted install installs the SDK to "$HOME/.dotnet" by default on Linux/Mac but will not permanently change $PATH. (Many Linux distributions have package manager instructions, but not all, so some might use scripted install: "./dotnet-install.sh -channel 6.0".) https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
+		yield return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet", "dotnet");
+
 		// general unix fallback
 		yield return "/usr/bin/dotnet";
 	}
