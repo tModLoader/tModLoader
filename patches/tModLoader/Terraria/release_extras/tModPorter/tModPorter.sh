@@ -4,13 +4,25 @@ if [ ! -t 0 ]; then
 	echo "Not in a terminal, attempting to open terminal"
 	. ../LaunchUtils/BashUtils.sh
 	if machine_has "konsole"; then
-		konsole -e "$0 $@"
+		konsole -e "$0" "$@"
 	elif machine_has "gnome-terminal"; then
-		gnome-terminal -- "$0 $@"
+		gnome-terminal -- "$0" "$@"
+	elif machine_has "gnome-xterm"; then
+		xterm -e "$0" "$@"
+	elif [ "$_uname" = Darwin ]; then
+		osascript \
+			-e "on run(argv)" \
+			-e "set tmodporter to item 1 of argv" \
+			-e "set csproj to item 2 of argv" \
+			-e "tell application \"Terminal\" to activate" \
+			-e "tell application \"Terminal\" to do script the quoted form of tmodporter & \" \" & the quoted form of csproj" \
+			-e "end" \
+			-- "$0" "$@"
 	else
-		xterm -e "$0 $@"
+		echo "Could not find terminal app"
+		exit 1
 	fi
-	echo "Done"
+	echo "Launched in another terminal. See tModPorter.log for details"
 	exit
 fi
 
@@ -21,4 +33,4 @@ if [[ ! -z "$DOTNET_ROOT" ]]; then
 	export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 fi
 export DOTNET_ROLL_FORWARD=Minor
-dotnet tModLoader.dll -tModPorter $@ 2>&1 | tee ./tModLoader-Logs/tModPorter.log
+dotnet tModLoader.dll -tModPorter "$@" 2>&1 | tee ./tModLoader-Logs/tModPorter.log
