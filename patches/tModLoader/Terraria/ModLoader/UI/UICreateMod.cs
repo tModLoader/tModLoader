@@ -262,6 +262,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
+    <DotNetPath Condition="" '$(OS)' == 'Windows_NT' "">dotnet.exe</DotNetPath>
+    <DotNetPath Condition="" '$(OS)' == 'Unix' "">dotnet</DotNetPath>
+    <DotNetPath Condition="" '$(DotNetPath)' == '' "">dotnet</DotNetPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
@@ -286,13 +289,13 @@ $@"{{
   ""profiles"": {{
     ""Terraria"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""dotnet"",
+      ""executablePath"": ""$(DotNetPath)"",
       ""commandLineArgs"": ""$(tMLPath)"",
       ""workingDirectory"": ""$(tMLSteamPath)""
     }},
     ""TerrariaServer"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""dotnet"",
+      ""executablePath"": ""$(DotNetPath)"",
       ""commandLineArgs"": ""$(tMLServerPath)"",
       ""workingDirectory"": ""$(tMLSteamPath)""
     }}
