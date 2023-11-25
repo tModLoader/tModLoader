@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.BuilderToggles;
 
 // This example shows almost all BuilderToggle hooks.
-// This is more likely a "button" instead of "toggle", which left clicking allows you to select bait type,
+// More like a "button" than a "toggle", which left clicking allows you to select bait type,
 // while right clicking gives you free baits of the selected type.
 // Custom drawing is contained in this example to handle frame changes.
 public class FreeBaitBuilderToggle : BuilderToggle
