@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content
+namespace ExampleMod.Content.BuilderToggles
 {
 	// The examples in this file don't actually affect anything, they just show typical approaches for the BuilderToggle half of the effect.
 	// A full example would have code doing something, such as drawing an overlay, after checking ModContent.GetInstance<YourBuilderToggle>().Active and ModContent.GetInstance<YourBuilderToggle>().CurrentState.
@@ -14,6 +16,7 @@ namespace ExampleMod.Content
 		public override bool Active() => Main.LocalPlayer.HeldItem.IsAir;
 
 		public override int NumberOfStates => 4;
+
 		public override string DisplayValue() {
 			string text = "Color: ";
 			string[] textMessages = new[] { "Red", "Blue", "Green", "Yellow" };
@@ -26,6 +29,16 @@ namespace ExampleMod.Content
 
 			return colors[CurrentState];
 		}
+
+		// Right click to cycle through states backwards.
+		public override void OnRightClick() {
+			CurrentState -= 1;
+			if (CurrentState < 0) {
+				CurrentState = NumberOfStates - 1;
+			}
+
+			SoundEngine.PlaySound(SoundID.Coins);
+		}
 	}
 
 	public class ExampleBuilderToggleDimmedLight : BuilderToggle
@@ -33,7 +46,7 @@ namespace ExampleMod.Content
 		public static LocalizedText OnText { get; private set; }
 		public static LocalizedText OffText { get; private set; }
 
-		public override string Texture => "ExampleMod/Content/ExampleBuilderToggle";
+		public override string Texture => "ExampleMod/Content/BuilderToggles/ExampleBuilderToggle";
 		public override bool Active() => true;
 		public override int NumberOfStates => 2;
 

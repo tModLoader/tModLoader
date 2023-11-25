@@ -279,7 +279,8 @@ public partial class Main
 			*/
 
 			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
-			bool click = hover && mouseLeft && mouseLeftRelease;
+			bool leftClick = hover && mouseLeft && mouseLeftRelease;
+			bool rightClick = hover && mouseRight && mouseRightRelease;
 
 			/*
 			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
@@ -309,13 +310,18 @@ public partial class Main
 				}
 			}
 
-			if (click) {
+			if (leftClick) {
 				SoundStyle? sound = SoundID.MenuTick;
-				if (builderToggle.OnClick(ref sound)) {
+				if (builderToggle.OnLeftClick(ref sound)) {
 					builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
 					SoundEngine.PlaySound(sound);
 				}
 				mouseLeftRelease = false;
+			}
+
+			if (rightClick) {
+				builderToggle.OnRightClick();
+				mouseRightRelease = false;
 			}
 
 

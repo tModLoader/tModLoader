@@ -59,10 +59,20 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	public virtual int NumberOfStates { get; internal set; } = 2;
 
 	/// <summary>
+	/// Modify this if you want your builder toggle have custom ordering.
+	/// You can specify which BuilderToggle to sort before/after
+	/// </summary>
+	public virtual Position OrderPosition { get; internal set; } = new Default();
+
+	/// <summary>
 	/// This is the current state of this builder toggle. Every time the toggle is clicked, it will change.<para/>
 	/// The default state is 0. The state will be saved and loaded for the player to be consistent.
 	/// </summary>
-	public int CurrentState => Main.player[Main.myPlayer].builderAccStatus[Type];
+	public int CurrentState
+	{ 
+		get => Main.LocalPlayer.builderAccStatus[Type]; 
+		set => Main.LocalPlayer.builderAccStatus[Type] = value; 
+	}
 
 	/// <summary>
 	/// This is the overlay color that is drawn on top of the texture.
@@ -77,8 +87,8 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	public abstract string DisplayValue();
 
 	/// <summary>
-	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.
-	/// This is for the icon itself. See <see cref="DrawHover"/> if you want to modify icon hover drawing
+	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.<para/>
+	/// This is for the icon itself. See <see cref="DrawHover"/> if you want to modify icon hover drawing<para/>
 	/// Return false to stop vanilla drawing code from running. Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
@@ -93,8 +103,8 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 
 
 	/// <summary>
-	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.
-	/// This is for the icon hover. See <see cref="DrawHover"/> if you want to modify icon drawing
+	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.<para/>
+	/// This is for the icon hover. See <see cref="DrawHover"/> if you want to modify icon drawing<para/>
 	/// Return false to stop vanilla drawing code from running. Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
@@ -108,12 +118,18 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	public virtual bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) => true;
 
 	/// <summary>
-	/// Called when the toggle is clicked and before vanilla operation takes place.
-	/// Return false to stop vanilla click code (switching between states and playing sound) from running. Returns true by default.
+	/// Called when the toggle is left clicked and before vanilla operation takes place.
+	/// Return false to stop vanilla left click code (switching between states and playing sound) from running. Returns true by default.
 	/// </summary>
 	/// <param name="sound">The click sound that will be played. Return null to mute.</param>
 	/// <returns>Whether to run vanilla click code</returns>
-	public virtual bool OnClick(ref SoundStyle? sound) => true;
+	public virtual bool OnLeftClick(ref SoundStyle? sound) => true;
+
+	/// <summary>
+	/// Called when the toggle is right clicked.
+	/// Use this if you want to implement special right click feature (such as cycling through states backwards)
+	/// </summary>
+	public virtual void OnRightClick() {}
 
 	public sealed override void SetupContent() {
 		ModContent.Request<Texture2D>(Texture);
@@ -125,4 +141,32 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 		ModTypeLookup<BuilderToggle>.Register(this);
 		Type = BuilderToggleLoader.Add(this);
 	}
+
+	#region Sort Positions
+
+	public abstract class Position { }
+
+	public sealed class Default : Position { }
+
+	public sealed class Before : Position
+	{
+		public BuilderToggle Toggle { get; }
+
+		public Before(BuilderToggle toggle)
+		{
+			Toggle = toggle;
+		}
+	}
+
+	public sealed class After : Position
+	{
+		public BuilderToggle Toggle { get; }
+
+		public After(BuilderToggle toggle)
+		{
+			Toggle = toggle;
+		}
+	}
+
+	#endregion
 }

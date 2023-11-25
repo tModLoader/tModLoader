@@ -232,7 +232,7 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 		return true;
 	}
 
-	public override bool OnClick(ref SoundStyle? sound) {
+	public override bool OnLeftClick(ref SoundStyle? sound) {
 		sound = SoundID.Unlock;
 		return true;
 	}
@@ -273,7 +273,7 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 		return true;
 	}
 
-	public override bool OnClick(ref SoundStyle? sound) {
+	public override bool OnLeftClick(ref SoundStyle? sound) {
 		sound = SoundID.Unlock;
 		return true;
 	}
