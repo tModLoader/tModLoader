@@ -402,7 +402,7 @@
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a critter that can spawn in towns.
 +		/// <br/> Town critters use <see cref="NPCAIStyleID.Passive"/>.
-+		/// <br/> Defauts to <see langword="false"/>.
++		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Make sure to also set <see cref="CountsAsCritter"/> for NPCs in this set.</remarks>
  		public static bool[] TownCritter = Factory.CreateBoolSet(46, 148, 149, 230, 299, 300, 303, 337, 361, 362, 364, 366, 367, 443, 445, 447, 538, 539, 540, 583, 584, 585, 592, 593, 602, 607, 608, 610, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 687);

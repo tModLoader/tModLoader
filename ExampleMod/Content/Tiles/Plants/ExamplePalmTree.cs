@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Items;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -34,7 +33,7 @@ namespace ExampleMod.Content.Tiles
 			style = 1;
 			return ModContent.TileType<Plants.ExampleSapling>();
 		}
-		
+
 		public override Asset<Texture2D> GetOasisTopTextures() {
 			// Palm Trees come in an Oasis variant. The Top Textures for it:
 			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");

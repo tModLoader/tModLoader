@@ -1,33 +1,32 @@
+using ExampleMod.Common;
+using ExampleMod.Common.Configs;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Armor;
+using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
-using System.Collections.Generic;
-using ReLogic.Content;
-using Terraria.GameContent.UI;
 using Terraria.ModLoader.IO;
-using ExampleMod.Common.Configs;
-using ExampleMod.Common;
-using ExampleMod.Content.Projectiles;
+using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -243,6 +242,7 @@ namespace ExampleMod.Content.NPCs
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
 
@@ -252,7 +252,15 @@ namespace ExampleMod.Content.NPCs
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
-			return chat; // chat is implicitly cast to a string.
+			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
+
+			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
+			if (chosenChat == Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4")) {
+				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
+				Main.npcChatCornerItem = ItemID.HiveBackpack;
+			}
+
+			return chosenChat;
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
@@ -311,8 +319,8 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
-		 	 	npcShop.Add(bloodTalisman.Type);
-		 	}
+				npcShop.Add(bloodTalisman.Type);
+			}
 			npcShop.Register(); // Name of this shop tab
 		}
 
@@ -400,7 +408,7 @@ namespace ExampleMod.Content.NPCs
 			// By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
 			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
 			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
-			if (otherAnchor.entity is NPC {type: NPCID.Demolitionist}) {
+			if (otherAnchor.entity is NPC { type: NPCID.Demolitionist }) {
 				type = EmoteID.EmotionAnger;
 			}
 

@@ -37,6 +37,9 @@
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
@@ -73,7 +76,7 @@
 		// "ModReloadForced": "Reload Forced",
 		// "ModIsServerSide": "This is a server side mod",
 		// "ModsByline": "By: {0}",
-		// "ModsMoreInfo": "More info",
+		// "ModsMoreInfo": "More Info",
 		// "ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
 		// "ModsTypeToSearch": "Type to search",
 		// "ModsSearchByModName": "Search by Mod name",
@@ -406,6 +409,7 @@
 		// "MSManagePublished": "Manage Published",
 		// "MSPublish": "Publish",
 		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
+		// "MSLastBuilt": "Last built: {0}",
 		// "MSCreateMod": "Create Mod",
 		// "VersionUpgrade": "Learn about Mod Migration",
 		// "WikiLink": "Explore the Wiki",
@@ -502,6 +506,7 @@
 		// In Game UI additions
 		// "slotStack": "Stack",
 		// "slotScroll": "Scroll",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		// "OK": "OK",

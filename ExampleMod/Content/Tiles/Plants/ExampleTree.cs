@@ -1,12 +1,9 @@
-using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
@@ -14,7 +11,7 @@ namespace ExampleMod.Content.Tiles
 	public class ExampleTree : ModTree
 	{
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
-		//TODO: This needs some explanations
+		// TODO: This needs some explanations
 		public override TreePaintingSettings TreeShaderSettings => new TreePaintingSettings {
 			UseSpecialGroups = true,
 			SpecialGroupMinimalHueValue = 11f / 72f,

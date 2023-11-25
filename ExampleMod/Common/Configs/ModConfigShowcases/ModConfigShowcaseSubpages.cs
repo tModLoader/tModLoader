@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
 
 // This file contains fake ModConfig class that showcase defining subpages
 // that can be used to separate config section into sub-configs for easier management.

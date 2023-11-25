@@ -1,5 +1,5 @@
-﻿using ExampleMod.Content.Items.Accessories;
-using ExampleMod.Common.Players;
+﻿using ExampleMod.Common.Players;
+using ExampleMod.Content.Items.Accessories;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;

@@ -35,6 +35,9 @@
 		"MenuModUpdatesAvailable": "({0} {^0:Aktualisierung;Aktualisierungen} verfügbar!)",
 		"AudioNotSupported": "Keine Audio-Hardware gefunden. Ton wird deaktiviert.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
@@ -404,6 +407,7 @@
 		"MSManagePublished": "Veröffentlichte verwalten",
 		"MSPublish": "Veröffentlichen",
 		"MSModSourcesCantHaveSpaces": "(Modquellen-Ordner können keine Leerzeichen haben!)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Mod erstellen",
 		"VersionUpgrade": "LINK: Über die Mod-Migration der neuesten Aktualisierung erfahren",
 		// "WikiLink": "Explore the Wiki",
@@ -500,6 +504,7 @@
 		// In Game UI additions
 		"slotStack": "Stapel",
 		"slotScroll": "Scroll",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",

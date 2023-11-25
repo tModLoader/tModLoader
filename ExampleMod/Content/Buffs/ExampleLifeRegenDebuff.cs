@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Buffs
 
 		// Allows you to make this buff give certain effects to the given player
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().lifeRegenDebuff= true;
+			player.GetModPlayer<ExampleLifeRegenDebuffPlayer>().lifeRegenDebuff = true;
 		}
 	}
 

@@ -1,8 +1,8 @@
-﻿using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using ExampleMod.Content.Items.Mounts;
+﻿using ExampleMod.Content.Items.Mounts;
 using ExampleMod.Content.Pets.ExampleLightPet;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Systems
 {
@@ -24,7 +24,7 @@ namespace ExampleMod.Common.Systems
 			// Loop over all the chests
 			for (int chestIndex = 0; chestIndex < Main.maxChests; chestIndex++) {
 				Chest chest = Main.chest[chestIndex];
-				if(chest == null) {
+				if (chest == null) {
 					continue;
 				}
 				Tile chestTile = Main.tile[chest.x, chest.y];
@@ -49,7 +49,7 @@ namespace ExampleMod.Common.Systems
 					}
 				}
 				// Once we've placed as many items as we wanted, break out of the loop
-				if(itemsPlaced >= maxItems) {
+				if (itemsPlaced >= maxItems) {
 					break;
 				}
 			}

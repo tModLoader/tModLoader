@@ -47,8 +47,8 @@ namespace ExampleMod.Content.Items
 
 		private static int CalculateStyle(Player player) {
 			Vector2 playerToMouse = Main.MouseScreen + Main.screenPosition - player.Center;
-			float disatanceToScreenEdge = Math.Min(Main.screenHeight / 2, Main.screenWidth / 2) / Main.GameViewMatrix.Zoom.X;
-			int style = Utils.Clamp((int)(playerToMouse.Length() * 6 / disatanceToScreenEdge), 0, 5);
+			float distanceToScreenEdge = Math.Min(Main.screenHeight / 2, Main.screenWidth / 2) / Main.GameViewMatrix.Zoom.X;
+			int style = Utils.Clamp((int)(playerToMouse.Length() * 6 / distanceToScreenEdge), 0, 5);
 			return style;
 		}
 
