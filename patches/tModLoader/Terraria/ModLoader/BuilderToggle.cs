@@ -104,7 +104,7 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.<para/>
-	/// This is for the icon hover. See <see cref="DrawHover"/> if you want to modify icon drawing<para/>
+	/// This is for the icon hover. See <see cref="Draw"/> if you want to modify icon drawing<para/>
 	/// Return false to stop vanilla drawing code from running. Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
