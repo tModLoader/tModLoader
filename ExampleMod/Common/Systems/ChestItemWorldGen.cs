@@ -29,8 +29,10 @@ namespace ExampleMod.Common.Systems
 				}
 				Tile chestTile = Main.tile[chest.x, chest.y];
 				// We need to check if the current chest is the Frozen Chest. We need to check that it exists and has the TileType and TileFrameX values corresponding to the Frozen Chest.
-				// If you look at the sprite for Chests by extracting Tiles_21.xnb, you'll see that the 12th chest is the Frozen Chest. Since we are counting from 0, this is where 11 comes from. 36 comes from the width of each tile including padding. An alternate approach is to check the wiki and looking for the "Internal Tile ID" section in the infobox: https://terraria.wiki.gg/wiki/Frozen_Chest
-				if (chestTile.TileType == TileID.Containers && chestTile.TileFrameX == 11 * 36) {
+				// The correct value for the chest can be found in ContainerID or in ContainerID2 in some cases. Then multiply the value by 36 which is the width of the tile (including padding).
+				// Where does this ID come from? If you look at the sprite for Chests by extracting Tiles_21.xnb, you'll see that the 12th chest is the Frozen Chest. Since we are counting from 0, this is where 11 comes from.
+				// This information is also available on the wiki. Look for the "Internal Tile ID" section in the infobox: https://terraria.wiki.gg/wiki/Frozen_Chest
+				if (chestTile.TileType == TileID.Containers && chestTile.TileFrameX == ContainerID.FrozenChest * 36) {
 					// We have found a Frozen Chest
 					// If we don't want to add one of the items to every Frozen Chest, we can randomly skip this chest with a 33% chance.
 					if (WorldGen.genRand.NextBool(3))
