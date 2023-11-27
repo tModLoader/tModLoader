@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 if [ ! -t 0 ]; then
 	cd "$(dirname "$0")"
-	echo "Not in a terminal, attempting to open terminal"
+	echo "Not in a terminal, attempting to open terminal" >&2
 	. ../LaunchUtils/BashUtils.sh
 	if machine_has "konsole"; then
 		konsole -e "$0" "$@"
 	elif machine_has "gnome-terminal"; then
 		gnome-terminal -- "$0" "$@"
 	elif machine_has "gnome-xterm"; then
+		gnome-xterm -- "$0" "$@"
+	elif machine_has "xterm"; then
 		xterm -e "$0" "$@"
 	elif [ "$_uname" = Darwin ]; then
 		osascript \
