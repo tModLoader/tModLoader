@@ -249,7 +249,6 @@ internal class UIModSourceItem : UIPanel
 
 					string args = $"\"{csprojFile}\"";
 					var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-					// TODO: We need to find some way of launching Linux scripts in a console window that is shown, not hidden. Probably requires logic to call "gnome-terminal/xterm/konsole -e command" depending on whatever is installed (https://askubuntu.com/a/46630)
 					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
 
 					var porterInfo = new ProcessStartInfo() {
