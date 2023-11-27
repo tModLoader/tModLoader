@@ -417,8 +417,9 @@
 		"DiscordLink": "前往 Discord 群组寻求帮助",
 		"MSPortToLatest": "运行 tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "用 Visual Studio 制作 tModLoader 模组现在需要安装 .NET 6.0 SDK（不是运行时）。该 SDK 不再随 Visual Studio 2022 安装，所以您需要手动安装它。点击下方的“下载 .NET 6.0 SDK”按钮以下载其安装包。\n\nGitHub 上的迁移指南（Update Migration Guide）包含将模组升级到1.4.4所需的代码改动，还会教您如何使用 tModPorter 帮您完成大部分改动。",
+		"MSNetSDKNotFound": "用 Visual Studio 制作 tModLoader 模组现在需要安装 .NET 6.0 SDK（不是运行时）。该 SDK 不再随 Visual Studio 2022 安装，所以您需要手动安装它。点击下方的“下载 .NET 6.0 SDK”按钮以下载其安装包。\n\nGitHub 上的迁移指南（Update Migration Guide）包含将模组升级到1.4.4所需的代码改动，还会教您如何使用 tModPorter 帮您完成大部分改动。",
 		"DownloadNetSDK": "下载 .NET 6.0 SDK",
-  "DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
+		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库。（缺少[ModCompile]文件夹）",
