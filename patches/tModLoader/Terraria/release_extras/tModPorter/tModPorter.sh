@@ -7,8 +7,6 @@ if [ ! -t 0 ]; then
 		konsole -e "$0" "$@"
 	elif machine_has "gnome-terminal"; then
 		gnome-terminal -- "$0" "$@"
-	elif machine_has "gnome-xterm"; then
-		gnome-xterm -- "$0" "$@"
 	elif machine_has "xterm"; then
 		xterm -e "$0" "$@"
 	elif [ "$_uname" = Darwin ]; then
