@@ -87,22 +87,13 @@ internal static class PlayerIO
 		LoadHair(player, tag.GetString("hair"));
 	}
 
-	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
+	internal static byte[] ReadDataBytes(string path, bool isCloudSave)
 	{
 		path = Path.ChangeExtension(path, ".tplr");
-		tag = new TagCompound();
-
 		if (!FileUtilities.Exists(path, isCloudSave))
-			return false;
+			return null;
 
-		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
-		}
-
-		tag = TagIO.FromStream(buf.ToMemoryStream());
-		return true;
+		return FileUtilities.ReadAllBytes(path, isCloudSave);
 	}
 
 	public static List<TagCompound> SaveInventory(Item[] inv)
