@@ -7975,20 +7975,16 @@
  			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
-@@ -42270,12 +_,27 @@
+@@ -42270,12 +_,23 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
 +		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
-+		// Read data in advance instead of halfway
-+		// What if there is an exception in PlayerIO.TryLoadData? It is not handled the same as before
-+		if (!PlayerIO.TryLoadData(playerFileData.Path, playerFileData.IsCloudSave, out var tplrData))
-+			tplrData = null;
-+
++		var tplrData = PlayerIO.ReadDataBytes(playerPath, cloudSave);
 +		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
 +	}
 +
-+	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData,TagCompound tplrData)
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
 +	{
  		Player player = new Player();
  		bool gotToReadName = false;
@@ -8032,20 +8028,36 @@
  			player2.name = array[array.Length - 1].Split('.')[0];
  		}
  
-@@ -42322,11 +_,11 @@
+@@ -42322,8 +_,28 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
 +		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
  		return player;
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, tplrData);
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, byte[] tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, TagIO.FromStream(tplrData.ToMemoryStream()));
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
--	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
-+	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
- 	{
- 		gotToReadName = false;
- 		newPlayer.name = fileIO.ReadString();
+ 	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
@@ -8063,16 +8075,17 @@
  
  		if (release >= 125)
  			newPlayer.extraAccessory = fileIO.ReadBoolean();
-@@ -42795,6 +_,9 @@
+@@ -42795,7 +_,10 @@
  			}
  		}
  
-+		if (modData != null)
-+			PlayerIO.Load(newPlayer, modData);
-+
++		// Moved to the tplr variants of Deserialize, after modded data is read
++		/*
  		LoadPlayer_LastMinuteFixes(newPlayer);
++		*/
  	}
  
+ 	private static void AdjustRespawnTimerForWorldJoining(Player newPlayer)
 @@ -42834,7 +_,7 @@
  	{
  		for (int i = 3; i < 10; i++) {
