@@ -1051,7 +1051,7 @@
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
 +				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
-+				Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
++				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();

@@ -494,11 +494,9 @@ internal static class Interface
 		while (true) {
 			foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties)
 			{
-				LabelAttribute labelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(variable, null, null); //I don't know what the item and array variables are for and they are unused
-				string text = labelAttribute?.Label ?? variable.Name;
-				text += " :";
+				string text = ConfigManager.GetLocalizedLabel(variable) + ":";
 				int size = text.Length;
-				text = key + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 0));
+				text = key + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
 				if (config != null) {
 					text += variable.GetValue(config);
 					Console.WriteLine(text);
@@ -509,14 +507,15 @@ internal static class Interface
 					Console.WriteLine(Language.GetTextValue("tModLoader.DedConfigNotSupported"));
 					Console.ResetColor();
 				}
-				TooltipAttribute tooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(variable, null, null);
-				if (tooltipAttribute != null) {
+				string tooltip = ConfigManager.GetLocalizedTooltip(variable);
+				if (!string.IsNullOrWhiteSpace(tooltip)) {
 					Console.ForegroundColor = ConsoleColor.Cyan;
-					Console.WriteLine("\t" + tooltipAttribute.Tooltip);
+					Console.WriteLine("\t" + tooltip);
 					Console.ResetColor();
 				}
 			}
 
+			Console.WriteLine();
 			Console.WriteLine("m <number> <new config> :\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigEditConfig"));
 			Console.WriteLine("d :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigRestoreConfig"));
 			Console.WriteLine("e :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigExit"));
@@ -536,8 +535,8 @@ internal static class Interface
 						object parsedValue = Convert.ChangeType(match.Groups[2].Value, ((FieldInfo) value.Item1.MemberInfo).FieldType);
 
 						//Validate value
-						OptionStringsAttribute optionStringsAttribute = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(value.Item1, null, null);
-						RangeAttribute rangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(value.Item1, null, null);
+						OptionStringsAttribute optionStringsAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(value.Item1, null, null);
+						RangeAttribute rangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(value.Item1, null, null);
 						if (optionStringsAttribute != null &&
 						    !optionStringsAttribute.OptionLabels.Any(s => s.Equals(parsedValue))) {
 							string text = Language.GetTextValue("tModLoader.DedConfigErrorOutOfOptionStrings");
@@ -577,6 +576,7 @@ internal static class Interface
 				}
 			}
 			else if (command == "e") {
+				// Note: No need to check for reload required, this returns to mods menu and only exit from mods menu is "Reload and return to world menu"
 				break;
 			}
 		}
