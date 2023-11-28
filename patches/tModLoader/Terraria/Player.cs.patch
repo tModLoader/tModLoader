@@ -7787,7 +7787,7 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,60 @@
+@@ -41979,11 +_,32 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
@@ -7798,28 +7798,29 @@
  		if (FileUtilities.Exists(path, isCloudSave))
  			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +		*/
-+		PlayerLoader.PreSavePlayer(player);
- 
-+		byte[] plrData = GeneratePlayerData(playerFile);
 +
++		PlayerLoader.PreSavePlayer(player);
++		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
 +		PlayerLoader.PostSavePlayer(player);
 +
 +		TagCompound tplrData = PlayerIO.SaveData(player);
 +
-+		UpdateLocalPlayerFile(playerFile, plrData, tplrData);
++		SavePlayerFile_Write(playerFile, plrData, tplrData);
 +	}
 +
-+	public static byte[] GeneratePlayerData(PlayerFileData playerFile)
++	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
 +	{
++		var player = playerFile.Player;
+ 
  		RijndaelManaged rijndaelManaged = new RijndaelManaged();
--		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
++		/*
+ 		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
++		*/
 +		using Stream stream = new MemoryStream(2000);
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
  		binaryWriter.Write(279);
- 		playerFile.Metadata.Write(binaryWriter);
--		Serialize(playerFile, player, binaryWriter);
-+		Serialize(playerFile, playerFile.Player, binaryWriter);
+@@ -41992,8 +_,30 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
@@ -7833,7 +7834,7 @@
 +		return ((MemoryStream)stream).ToArray();
 +	}
 +
-+	private static void UpdateLocalPlayerFile(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
++	private static void SavePlayerFile_Write(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
 +	{
 +		string path = playerFile.Path;
 +		Player player = playerFile.Player;
