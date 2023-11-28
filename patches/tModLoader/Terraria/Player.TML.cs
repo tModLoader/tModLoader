@@ -201,12 +201,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Gets the crit chance modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.
 	/// </summary>
 	public ref float GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the crit chance modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.
 	/// </summary>
 	public ref float GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
 
@@ -215,36 +217,42 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// This returns a reference, and as such, you can freely modify this method's return values with operators.
 	/// Setting this such that it results in zero or a negative value will throw an exception.
 	/// NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.
+	/// <para/> Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.
 	/// </summary>
 	public ref float GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the attack speed modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return values with operators.
+	/// <para/> Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.
 	/// </summary>
 	public ref float GetAttackSpeed(DamageClass damageClass) => ref damageData[damageClass.Type].attackSpeed;
 
 	/// <summary>
 	/// Gets the armor penetration modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.
 	/// </summary>
 	public ref float GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the armor penetration modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.
 	/// </summary>
 	public ref float GetArmorPenetration(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
 
 	/// <summary>
 	/// Gets the knockback modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.
 	/// </summary>
 	public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the knockback modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.
 	/// </summary>
 	public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
