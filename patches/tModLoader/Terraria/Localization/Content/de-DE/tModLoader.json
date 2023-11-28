@@ -416,7 +416,8 @@
 		// "DiscordLink": "Find Help on the Discord Server",
 		"MSPortToLatest": "tModPorter ausführen",
 		"MSFirstLaunchModderWelcomeMessage": "Mods für tModLoader mit Visual Studio zu machen erfordert nun das .NET 6 SDK installiert ist. Dies wird am einfachsten durch das Installieren von Visual Studio 2022 gemacht. Die Migrationsanleitung, die auf Github zu finden ist, erklärt die erforderlichen Code-Änderungen um Mods auf 1.4 zu aktualisieren. Die Anleitung erklärt auch wie man tModPorter verwendet um einen Großteil deines Mods für dich zu migrieren.",
-		// "DownloadNetSDK": "Download .NET SDK",
+		"MSNetSDKNotFound": "Mods für tModLoader mit Visual Studio zu machen erfordert nun das .NET 6 SDK installiert ist. Dies wird am einfachsten durch das Installieren von Visual Studio 2022 gemacht. Die Migrationsanleitung, die auf Github zu finden ist, erklärt die erforderlichen Code-Änderungen um Mods auf 1.4 zu aktualisieren. Die Anleitung erklärt auch wie man tModPorter verwendet um einen Großteil deines Mods für dich zu migrieren.",
+		// "DownloadNetSDK": "Download .NET 6.0 SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
@@ -680,7 +681,7 @@
 		"InMarble": "Muss im Marmor-Biom sein",
 		"InHive": "Muss in einem Bienennest sein",
 		"InGemCave": "Muss in einer Edelsteinhöhle sein",
-		"InLihzardTemple": "Muss im Lihzahrdtempel sein",
+		"InLihzardTemple": "Muss im Lihzahrdtempel sein"
 		// "InGraveyard": "In a Graveyard biome",
 		// "InAether": "In an Aether biome",
 		// "InShoppingForest": "When above the surface and not in another major biome",
