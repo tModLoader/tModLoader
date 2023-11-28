@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -431,7 +430,7 @@ internal static class Interface
 				if (modIndex < mods.Length) {
 					if (ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod)) {
 						if (ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs) && configs.Any(config => config.Mode == ConfigScope.ServerSide)) {
-							ConfigureMod(configs);
+							ConfigureMod(mod, configs);
 						}
 						else {
 							Console.ForegroundColor = ConsoleColor.Yellow;
@@ -469,7 +468,7 @@ internal static class Interface
 		}
 	}
 
-	internal static void ConfigureMod(List<ModConfig> configs)
+	internal static void ConfigureMod(Mod mod, List<ModConfig> configs)
 	{
 		Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties = new();
 		int index = 1;
@@ -480,20 +479,30 @@ internal static class Interface
 					if (variable.IsProperty && variable.Name == "Mode")
 						continue;
 
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 						continue;
 
 					if (variable.Type.IsAssignableTo(typeof(IConvertible)))
 						properties.Add(index++, (variable, config));
 					else
-						properties.Add(index++, (variable, null)); //Not convertible aren't supported, this is remembered by a null config
+						properties.Add(index++, (variable, null)); // Not convertible aren't supported, this is remembered by a null config
 				}
 			}
 		}
 
 		while (true) {
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.WriteLine($"{mod.DisplayName}");
+			Console.ResetColor();
+			ModConfig currentConfig = null;
 			foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties)
 			{
+				if(currentConfig != config) {
+					currentConfig = config;
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.WriteLine($"{config.DisplayName}:");
+					Console.ResetColor();
+				}
 				string text = ConfigManager.GetLocalizedLabel(variable) + ":";
 				int size = text.Length;
 				text = key + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
@@ -510,7 +519,7 @@ internal static class Interface
 				string tooltip = ConfigManager.GetLocalizedTooltip(variable);
 				if (!string.IsNullOrWhiteSpace(tooltip)) {
 					Console.ForegroundColor = ConsoleColor.Cyan;
-					Console.WriteLine("\t" + tooltip);
+					Console.WriteLine("\t" + tooltip.Replace("\n", "\n\t"));
 					Console.ResetColor();
 				}
 			}
