@@ -415,8 +415,9 @@
 		// "DocumentationLink": "Read the Documentation",
 		// "DiscordLink": "Find Help on the Discord Server",
 		// "MSPortToLatest": "Run tModPorter",
-		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. After installing, you may need to restart tModLoader. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
-		// "DownloadNetSDK": "Download .NET SDK",
+		// "MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
+		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET 6 SDK to be installed, but it has not been detected. Click the \"Download .NET 6.0 SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
+		// "DownloadNetSDK": "Download .NET 6.0 SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
@@ -680,7 +681,7 @@
 		"InMarble": "Doit être dans le Biome de Marbre",
 		"InHive": "Doit être dans la Ruche",
 		"InGemCave": "Doit être dans la Grotte des Gemmes",
-		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd",
+		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd"
 		// "InGraveyard": "In a Graveyard biome",
 		// "InAether": "In an Aether biome",
 		// "InShoppingForest": "When above the surface and not in another major biome",

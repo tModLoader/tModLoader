@@ -416,8 +416,9 @@
 		"DiscordLink": "Encuentra ayuda en el servidor de Discord",
 		"MSPortToLatest": "Ejecutar tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
-		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema."
+		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
@@ -515,7 +516,7 @@
 		"WorldIODataException": "Se ha encontrado un error en los datos de un mod para un mundo.",
 		"ServerCrash": "Servidor caído: {0}\n{1}\n\nPor favor, comprueba server.log para determinar si el responsable es un mod. En caso contrario, dirígete a #support en el Discord de tModLoader.",
 		"WatchLocalizationFileMessage": "Los siguientes archivos de localización han cambiado y se volverán a cargar: {0}",
-		
+
 		// MessageBox
 		"ContentFolderNotFound": "No se ha encontrado la carpeta de contenido de Terraria. Si instalaste tModLoader a través de Steam, asegúrate de que Terraria esté instalado. Si no, asegúrate de instalar el tModLoader en una carpeta ubicada dentro del directorio de instalación de Terraria o en una carpeta junto al directorio de instalación de Terraria.",
 		"GraphicsEngineFailure": "Fallo del motor de gráficos",
@@ -536,7 +537,7 @@
 		"AntivirusHint": "Sugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
 		"TypeInitializationHint": "Sugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstala el juego a través de Steam y vuelve a instalar tModLoader.",
 		"TerrariaOutOfDateMessage": "El juego está desactualizado. Debes actualizar Terraria en Steam.",
-		
+
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Características del mod",
 		"TagsCategoryModSide": "Lado del mod",
@@ -579,13 +580,13 @@
 		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Página siguiente",
 		"PreviousInfoAccPage": "Página anterior",
 		"FirstInfoAccPage": "Ir a la primera página",
-		"LastInfoAccPage": "Ir a la última página",
+		"LastInfoAccPage": "Ir a la última página"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Aumenta la defensa en {0}",
