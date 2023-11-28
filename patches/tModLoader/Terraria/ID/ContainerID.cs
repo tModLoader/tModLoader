@@ -79,5 +79,5 @@ public static class ContainerID2
 	public const int SandstoneChest = 10;
 	public const int BambooChest = 11;
 	public const int DesertChest = 12;
-	public const int DesertChest = 13;
+	public const int LockedDesertChest = 13;
 }
