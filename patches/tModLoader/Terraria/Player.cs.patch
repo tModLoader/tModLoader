@@ -7975,7 +7975,7 @@
  			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
-@@ -42270,12 +_,23 @@
+@@ -42270,12 +_,28 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
@@ -7986,6 +7986,8 @@
 +
 +	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
 +	{
++		string playerPath = playerFileData.Path;
++
  		Player player = new Player();
  		bool gotToReadName = false;
 +
@@ -7995,7 +7997,9 @@
  		try {
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
  			rijndaelManaged.Padding = PaddingMode.None;
--			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			/*
+ 			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			*/
 +			using (MemoryStream stream = new MemoryStream(plrData)) {
  				using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
  				using BinaryReader binaryReader = new BinaryReader(input);
@@ -8005,7 +8009,7 @@
  				}
  
 -				Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
-+				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName);
++				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName); // Added tplrData argument
  			}
  
  			player.PlayerFrame();
@@ -8017,15 +8021,6 @@
 +			playerFileData.customDataFail = e;
 +		}
  		catch {
- 		}
- 
-@@ -42308,7 +_,7 @@
- 			player2.name = player.name;
- 		}
- 		else {
--			string[] array = playerPath.Replace('/', Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
-+			string[] array = playerFileData.Path.Replace('/', Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
- 			player2.name = array[array.Length - 1].Split('.')[0];
  		}
  
 @@ -42322,8 +_,28 @@
