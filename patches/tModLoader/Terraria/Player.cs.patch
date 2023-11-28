@@ -7792,8 +7792,8 @@
  			return;
  
 +		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
-+		// TML: Delay vanilla saving until modded data is serialized(in case of exceptions)
-+		// Moved to UpdateLocalPlayerFile
++		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
++		// Moved to SavePlayerFile_Write
 +		/*
  		if (FileUtilities.Exists(path, isCloudSave))
  			FileUtilities.Copy(path, path + ".bak", isCloudSave);
@@ -7824,8 +7824,9 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
++
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Replaced with FileUtilities.WriteAllBytes in UpdateLocalPlayerFile
++		// Replaced with FileUtilities.WriteAllBytes in SavePlayerFile_Write
 +		/*
  		if (isCloudSave && SocialAPI.Cloud != null)
  			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
@@ -7837,7 +7838,6 @@
 +	private static void SavePlayerFile_Write(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
 +	{
 +		string path = playerFile.Path;
-+		Player player = playerFile.Player;
 +		bool isCloudSave = playerFile.IsCloudSave;
 +		if (string.IsNullOrEmpty(path))
 +			return;
