@@ -58,7 +58,7 @@ public static class ContainerID
 	public const int GraniteChest = 50;
 	public const int MarbleChest = 51;
 	public const int CrystalChest = 52;
-	public const int GoldenChest = 53;
+	public const int GoldenPirateChest = 53;
 }
 
 /// <summary>
