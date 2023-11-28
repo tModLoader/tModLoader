@@ -14,7 +14,7 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	/// <summary> The buff id of this buff. </summary>
 	public int Type { get; internal set; }
 
-	public string LocalizationCategory => "Buffs";
+	public virtual string LocalizationCategory => "Buffs";
 
 	/// <summary> The translations of this buff's display name. </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
@@ -55,6 +55,8 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	/// <summary>
 	/// Allows you to make this buff give certain effects to the given player. If you remove the buff from the player, make sure the decrement the buffIndex parameter by 1.
 	/// </summary>
+	/// <param name="player">The player to update this buff on.</param>
+	/// <param name="buffIndex">The index in <see cref="Player.buffType"/> and <see cref="Player.buffType"/> of this buff. For use with <see cref="Player.DelBuff(int)"/>.</param>
 	public virtual void Update(Player player, ref int buffIndex)
 	{
 	}
@@ -83,9 +85,9 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
+	/// Allows you to modify the name and tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
 	/// </summary>
-	public virtual void ModifyBuffTip(ref string tip, ref int rare)
+	public virtual void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 	{
 	}
 

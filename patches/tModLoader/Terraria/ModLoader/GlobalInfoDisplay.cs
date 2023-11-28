@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
@@ -23,6 +24,7 @@ public abstract class GlobalInfoDisplay : ModType
 	/// </summary>
 	/// <param name="currentDisplay">The display you're modifying the display name for.</param>
 	/// <param name="displayName">The display name of the current display.</param>
+	[Obsolete("Use ModifyDisplayParameters instead", error: true)]
 	public virtual void ModifyDisplayName(InfoDisplay currentDisplay, ref string displayName) { }
 
 	/// <summary>
@@ -30,12 +32,25 @@ public abstract class GlobalInfoDisplay : ModType
 	/// </summary>
 	/// <param name="currentDisplay">The display you're modifying the display value for.</param>
 	/// <param name="displayValue">The display value of the current display</param>
+	[Obsolete("Use ModifyDisplayParameters instead", error: true)]
 	public virtual void ModifyDisplayValue(InfoDisplay currentDisplay, ref string displayValue) { }
 
 	/// <summary>
 	/// Allows you to modify the display color (the color of the text displayed next to the icon) of an InfoDisplay.
 	/// </summary>
 	/// <param name="currentDisplay">The display you're modifying the display color for.</param>
-	/// <param name="displayColor">The display color of the current display</param>
-	public virtual void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor) { }
+	/// <param name="displayColor">The display color of the current display.</param>
+	/// <param name="displayShadowColor">The text outline color of the current display.</param>
+	[Obsolete("Use ModifyDisplayParameters instead", error: true)]
+	public virtual void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor, ref Color displayShadowColor) { }
+
+	/// <summary>
+	/// Allows modifying the display value (the text displayed next to the icon), the display name (texxt shown when hovering over the InfoDisplay in-game), and the display colors of an InfoDisplay.
+	/// </summary>
+	/// <param name="currentDisplay">The display you're modifying the parameters for.</param>
+	/// <param name="displayValue">The display value of the current display.</param>
+	/// <param name="displayName">The display name of the current display.</param>
+	/// <param name="displayColor">The display color of the current display.</param>
+	/// <param name="displayShadowColor">The text outline color of the current display.</param>
+	public virtual void ModifyDisplayParameters(InfoDisplay currentDisplay, ref string displayValue, ref string displayName, ref Color displayColor, ref Color displayShadowColor) { }
 }

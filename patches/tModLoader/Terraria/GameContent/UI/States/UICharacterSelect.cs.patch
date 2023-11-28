@@ -29,13 +29,21 @@
  	private UITextPanel<LocalizedText> _backPanel;
  	private UITextPanel<LocalizedText> _newPanel;
  	private UIPanel _containerPanel;
+@@ -127,6 +_,7 @@
+ 	{
+ 		Main.LoadPlayers();
+ 		Main.ActivePlayerFileData = new PlayerFileData();
++		LoadMigratablePlayers();
+ 		UpdatePlayersList();
+ 		if (PlayerInput.UsingGamepadUI)
+ 			UILinkPointNavigator.ChangePoint(3000 + ((_playerList.Count == 0) ? 1 : 2));
 @@ -149,6 +_,12 @@
  		int num = 0;
  		foreach (PlayerFileData item in list) {
  			_playerList.Add(new UICharacterListItem(item, num++));
 +		}
 +
-+		AddIndividualPlayerMigrationButtons();
++		_playerList.Add(_migrationPanel);
 +
 +		if (list.Count == 0) {
 +			AddAutomaticPlayerMigrationButtons();

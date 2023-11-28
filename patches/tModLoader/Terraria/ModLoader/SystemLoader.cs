@@ -3,12 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
-using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -21,8 +19,6 @@ public static partial class SystemLoader
 {
 	internal static readonly List<ModSystem> Systems = new();
 	internal static readonly Dictionary<Mod, List<ModSystem>> SystemsByMod = new();
-
-	internal static ModSystem[] NetSystems { get; private set; }
 
 	internal static void Add(ModSystem modSystem)
 	{
@@ -42,30 +38,7 @@ public static partial class SystemLoader
 
 	internal static void ResizeArrays()
 	{
-		NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
-
 		RebuildHooks();
-	}
-
-	internal static void WriteNetSystemOrder(BinaryWriter w)
-	{
-		w.Write((short)NetSystems.Length);
-
-		foreach (var netWorld in NetSystems) {
-			w.Write(netWorld.Mod.netID);
-			w.Write(netWorld.Name);
-		}
-	}
-
-	internal static void ReadNetSystemOrder(BinaryReader r)
-	{
-		short n = r.ReadInt16();
-
-		NetSystems = new ModSystem[n];
-
-		for (short i = 0; i < n; i++) {
-			NetSystems[i] = ModContent.Find<ModSystem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
-		}
 	}
 
 	internal static void OnModLoad(Mod mod)
@@ -97,7 +70,7 @@ public static partial class SystemLoader
 
 	internal static void OnLocalizationsLoaded()
 	{
-		foreach (var system in HookOnLocalizationsLoaded.arr) {
+		foreach (var system in HookOnLocalizationsLoaded.Enumerate()) {
 			system.OnLocalizationsLoaded();
 		}
 	}
@@ -140,21 +113,28 @@ public static partial class SystemLoader
 
 	public static void OnWorldLoad()
 	{
-		foreach (var system in HookOnWorldLoad.arr) {
+		foreach (var system in HookOnWorldLoad.Enumerate()) {
 			system.OnWorldLoad();
 		}
 	}
 
 	public static void OnWorldUnload()
 	{
-		foreach (var system in HookOnWorldUnload.arr) {
+		foreach (var system in HookOnWorldUnload.Enumerate()) {
 			system.OnWorldUnload();
+		}
+	}
+
+	public static void ClearWorld()
+	{
+		foreach (var system in HookClearWorld.Enumerate()) {
+			system.ClearWorld();
 		}
 	}
 
 	public static bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldData, out ModSystem rejector)
 	{
-		foreach (var system in HookCanWorldBePlayed.arr) {
+		foreach (var system in HookCanWorldBePlayed.Enumerate()) {
 			if (!system.CanWorldBePlayed(playerData, worldData)) {
 				rejector = system;
 				return false;
@@ -167,14 +147,14 @@ public static partial class SystemLoader
 
 	public static void ModifyScreenPosition()
 	{
-		foreach (var system in HookModifyScreenPosition.arr) {
+		foreach (var system in HookModifyScreenPosition.Enumerate()) {
 			system.ModifyScreenPosition();
 		}
 	}
 
 	public static void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
 	{
-		foreach (var system in HookModifyTransformMatrix.arr) {
+		foreach (var system in HookModifyTransformMatrix.Enumerate()) {
 			system.ModifyTransformMatrix(ref Transform);
 		}
 	}
@@ -184,7 +164,7 @@ public static partial class SystemLoader
 		if (Main.gameMenu)
 			return;
 
-		foreach (var system in HookModifySunLightColor.arr) {
+		foreach (var system in HookModifySunLightColor.Enumerate()) {
 			system.ModifySunLightColor(ref tileColor, ref backgroundColor);
 		}
 	}
@@ -193,7 +173,7 @@ public static partial class SystemLoader
 	{
 		float scale = 1f;
 
-		foreach (var system in HookModifyLightingBrightness.arr) {
+		foreach (var system in HookModifyLightingBrightness.Enumerate()) {
 			system.ModifyLightingBrightness(ref scale);
 		}
 
@@ -212,14 +192,14 @@ public static partial class SystemLoader
 
 	public static void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext)
 	{
-		foreach (var system in HookPreDrawMapIconOverlay.arr) {
+		foreach (var system in HookPreDrawMapIconOverlay.Enumerate()) {
 			system.PreDrawMapIconOverlay(layers, mapOverlayDrawContext);
 		}
 	}
 
 	public static void PostDrawFullscreenMap(ref string mouseText)
 	{
-		foreach (var system in HookPostDrawFullscreenMap.arr) {
+		foreach (var system in HookPostDrawFullscreenMap.Enumerate()) {
 			system.PostDrawFullscreenMap(ref mouseText);
 		}
 	}
@@ -229,147 +209,147 @@ public static partial class SystemLoader
 		if (Main.gameMenu)
 			return;
 
-		foreach (var system in HookUpdateUI.arr) {
+		foreach (var system in HookUpdateUI.Enumerate()) {
 			system.UpdateUI(gameTime);
 		}
 	}
 
 	public static void PreUpdateEntities()
 	{
-		foreach (var system in HookPreUpdateEntities.arr) {
+		foreach (var system in HookPreUpdateEntities.Enumerate()) {
 			system.PreUpdateEntities();
 		}
 	}
 
 	public static void PreUpdatePlayers()
 	{
-		foreach (var system in HookPreUpdatePlayers.arr) {
+		foreach (var system in HookPreUpdatePlayers.Enumerate()) {
 			system.PreUpdatePlayers();
 		}
 	}
 
 	public static void PostUpdatePlayers()
 	{
-		foreach (var system in HookPostUpdatePlayers.arr) {
+		foreach (var system in HookPostUpdatePlayers.Enumerate()) {
 			system.PostUpdatePlayers();
 		}
 	}
 
 	public static void PreUpdateNPCs()
 	{
-		foreach (var system in HookPreUpdateNPCs.arr) {
+		foreach (var system in HookPreUpdateNPCs.Enumerate()) {
 			system.PreUpdateNPCs();
 		}
 	}
 
 	public static void PostUpdateNPCs()
 	{
-		foreach (var system in HookPostUpdateNPCs.arr) {
+		foreach (var system in HookPostUpdateNPCs.Enumerate()) {
 			system.PostUpdateNPCs();
 		}
 	}
 
 	public static void PreUpdateGores()
 	{
-		foreach (var system in HookPreUpdateGores.arr) {
+		foreach (var system in HookPreUpdateGores.Enumerate()) {
 			system.PreUpdateGores();
 		}
 	}
 
 	public static void PostUpdateGores()
 	{
-		foreach (var system in HookPostUpdateGores.arr) {
+		foreach (var system in HookPostUpdateGores.Enumerate()) {
 			system.PostUpdateGores();
 		}
 	}
 
 	public static void PreUpdateProjectiles()
 	{
-		foreach (var system in HookPreUpdateProjectiles.arr) {
+		foreach (var system in HookPreUpdateProjectiles.Enumerate()) {
 			system.PreUpdateProjectiles();
 		}
 	}
 
 	public static void PostUpdateProjectiles()
 	{
-		foreach (var system in HookPostUpdateProjectiles.arr) {
+		foreach (var system in HookPostUpdateProjectiles.Enumerate()) {
 			system.PostUpdateProjectiles();
 		}
 	}
 
 	public static void PreUpdateItems()
 	{
-		foreach (var system in HookPreUpdateItems.arr) {
+		foreach (var system in HookPreUpdateItems.Enumerate()) {
 			system.PreUpdateItems();
 		}
 	}
 
 	public static void PostUpdateItems()
 	{
-		foreach (var system in HookPostUpdateItems.arr) {
+		foreach (var system in HookPostUpdateItems.Enumerate()) {
 			system.PostUpdateItems();
 		}
 	}
 
 	public static void PreUpdateDusts()
 	{
-		foreach (var system in HookPreUpdateDusts.arr) {
+		foreach (var system in HookPreUpdateDusts.Enumerate()) {
 			system.PreUpdateDusts();
 		}
 	}
 
 	public static void PostUpdateDusts()
 	{
-		foreach (var system in HookPostUpdateDusts.arr) {
+		foreach (var system in HookPostUpdateDusts.Enumerate()) {
 			system.PostUpdateDusts();
 		}
 	}
 
 	public static void PreUpdateTime()
 	{
-		foreach (var system in HookPreUpdateTime.arr) {
+		foreach (var system in HookPreUpdateTime.Enumerate()) {
 			system.PreUpdateTime();
 		}
 	}
 
 	public static void PostUpdateTime()
 	{
-		foreach (var system in HookPostUpdateTime.arr) {
+		foreach (var system in HookPostUpdateTime.Enumerate()) {
 			system.PostUpdateTime();
 		}
 	}
 
 	public static void PreUpdateWorld()
 	{
-		foreach (var system in HookPreUpdateWorld.arr) {
+		foreach (var system in HookPreUpdateWorld.Enumerate()) {
 			system.PreUpdateWorld();
 		}
 	}
 
 	public static void PostUpdateWorld()
 	{
-		foreach (var system in HookPostUpdateWorld.arr) {
+		foreach (var system in HookPostUpdateWorld.Enumerate()) {
 			system.PostUpdateWorld();
 		}
 	}
 
 	public static void PreUpdateInvasions()
 	{
-		foreach (var system in HookPreUpdateInvasions.arr) {
+		foreach (var system in HookPreUpdateInvasions.Enumerate()) {
 			system.PreUpdateInvasions();
 		}
 	}
 
 	public static void PostUpdateInvasions()
 	{
-		foreach (var system in HookPostUpdateInvasions.arr) {
+		foreach (var system in HookPostUpdateInvasions.Enumerate()) {
 			system.PostUpdateInvasions();
 		}
 	}
 
 	public static void PostUpdateEverything()
 	{
-		foreach (var system in HookPostUpdateEverything.arr) {
+		foreach (var system in HookPostUpdateEverything.Enumerate()) {
 			system.PostUpdateEverything();
 		}
 	}
@@ -380,63 +360,63 @@ public static partial class SystemLoader
 			layer.Active = true;
 		}
 
-		foreach (var system in HookModifyInterfaceLayers.arr) {
+		foreach (var system in HookModifyInterfaceLayers.Enumerate()) {
 			system.ModifyInterfaceLayers(layers);
 		}
 	}
 
 	public static void ModifyGameTipVisibility(IReadOnlyList<GameTipData> tips)
 	{
-		foreach (var system in HookModifyGameTipVisibility.arr) {
+		foreach (var system in HookModifyGameTipVisibility.Enumerate()) {
 			system.ModifyGameTipVisibility(tips);
 		}
 	}
 
 	public static void PostDrawInterface(SpriteBatch spriteBatch)
 	{
-		foreach (var system in HookPostDrawInterface.arr) {
+		foreach (var system in HookPostDrawInterface.Enumerate()) {
 			system.PostDrawInterface(spriteBatch);
 		}
 	}
 
 	public static void PostUpdateInput()
 	{
-		foreach (var system in HookPostUpdateInput.arr) {
+		foreach (var system in HookPostUpdateInput.Enumerate()) {
 			system.PostUpdateInput();
 		}
 	}
 
 	public static void PreSaveAndQuit()
 	{
-		foreach (var system in HookPreSaveAndQuit.arr) {
+		foreach (var system in HookPreSaveAndQuit.Enumerate()) {
 			system.PreSaveAndQuit();
 		}
 	}
 
 	public static void PostDrawTiles()
 	{
-		foreach (var system in HookPostDrawTiles.arr) {
+		foreach (var system in HookPostDrawTiles.Enumerate()) {
 			system.PostDrawTiles();
 		}
 	}
 
 	public static void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate)
 	{
-		foreach (var system in HookModifyTimeRate.arr) {
+		foreach (var system in HookModifyTimeRate.Enumerate()) {
 			system.ModifyTimeRate(ref timeRate, ref tileUpdateRate, ref eventUpdateRate);
 		}
 	}
 
 	public static void PreWorldGen()
 	{
-		foreach (var system in HookPreWorldGen.arr) {
+		foreach (var system in HookPreWorldGen.Enumerate()) {
 			system.PreWorldGen();
 		}
 	}
 
 	public static void ModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight)
 	{
-		foreach (var system in HookModifyWorldGenTasks.arr) {
+		foreach (var system in HookModifyWorldGenTasks.Enumerate()) {
 			try {
 				system.ModifyWorldGenTasks(passes, ref totalWeight);
 			}
@@ -451,34 +431,38 @@ public static partial class SystemLoader
 				throw;
 			}
 		}
+
+		passes.RemoveAll(x => !x.Enabled);
 	}
 
 	public static void PostWorldGen()
 	{
-		foreach (var system in HookPostWorldGen.arr) {
+		foreach (var system in HookPostWorldGen.Enumerate()) {
 			system.PostWorldGen();
 		}
 	}
 
 	public static void ResetNearbyTileEffects()
 	{
-		foreach (var system in HookResetNearbyTileEffects.arr) {
+		foreach (var system in HookResetNearbyTileEffects.Enumerate()) {
 			system.ResetNearbyTileEffects();
 		}
 	}
 
 	public static void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
 	{
-		foreach (var system in HookTileCountsAvailable.arr) {
+		foreach (var system in HookTileCountsAvailable.Enumerate()) {
 			system.TileCountsAvailable(tileCounts);
 		}
 	}
 
 	public static void ModifyHardmodeTasks(List<GenPass> passes)
 	{
-		foreach (var system in HookModifyHardmodeTasks.arr) {
+		foreach (var system in HookModifyHardmodeTasks.Enumerate()) {
 			system.ModifyHardmodeTasks(passes);
 		}
+
+		passes.RemoveAll(x => !x.Enabled);
 	}
 
 	internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)
@@ -487,7 +471,7 @@ public static partial class SystemLoader
 		long readerPos = reader.BaseStream.Position;
 		long biggestReaderPos = readerPos;
 
-		foreach (var system in HookHijackGetData.arr) {
+		foreach (var system in HookHijackGetData.Enumerate()) {
 			if (system.HijackGetData(ref messageType, ref reader, playerNumber)) {
 				hijacked = true;
 				biggestReaderPos = Math.Max(reader.BaseStream.Position, biggestReaderPos);
@@ -507,7 +491,7 @@ public static partial class SystemLoader
 	{
 		bool result = false;
 
-		foreach (var system in HookHijackSendData.arr) {
+		foreach (var system in HookHijackSendData.Enumerate()) {
 			result |= system.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 		}
 

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,15 +_,16 @@
+@@ -1,25 +_,80 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -17,10 +17,148 @@
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount);
++
++		/// <summary>
++		/// Determines the idle animation of a player's pets on the player select screen.
++		/// <br/> Common code for these can be found in <see cref="DelegateMethods.CharacterPreview"/>.
++		/// <br/> Defaults to a new <see cref="SettingsForCharacterPreview"/> instance, which does nothing.
++		/// </summary>
  		public static SettingsForCharacterPreview[] CharacterPreviewAnimations = Factory.CreateCustomSet(new SettingsForCharacterPreview(), (short)111, SimpleLoop(0, 6).WithOffset(6f, 0f).WhenNotSelected(0, 0).WithSpriteDirection(-1), (short)112, SimpleLoop(0, 3, 5).WhenNotSelected(0, 0).WithSpriteDirection(-1), (short)127, SimpleLoop(0, 5).WhenNotSelected(0, 0).WithOffset(-6f, 0f).WithSpriteDirection(-1), (short)175, SimpleLoop(0, 2, 8).WhenNotSelected(0, 2, 10).WithOffset(-4f, -6f).WithCode(DelegateMethods.CharacterPreview.Float), (short)197, SimpleLoop(0, 0).WithOffset(-8f, -4f).WithCode(DelegateMethods.CharacterPreview.FloatAndSpinWhenWalking), (short)198, SimpleLoop(0, 4).WhenNotSelected(0, 4, 4).WithOffset(-8f, -20f).WithSpriteDirection(-1)
  			.WithCode(DelegateMethods.CharacterPreview.Float), (short)199, SimpleLoop(0, 8, 6).WhenNotSelected(0, 8, 6).WithOffset(-2f, -18f).WithCode(DelegateMethods.CharacterPreview.Float), (short)200, SimpleLoop(0, 6, 5).WhenNotSelected(0, 0).WithOffset(-2f, 0f).WithSpriteDirection(-1), (short)208, SimpleLoop(1, 4, 5).WhenNotSelected(1, 4, 7).WithOffset(-2f, -12f).WithSpriteDirection(-1)
  			.WithCode(DelegateMethods.CharacterPreview.Float), (short)209, SimpleLoop(2, 10, 5).WhenNotSelected(0, 0).WithOffset(6f, 0f).WithSpriteDirection(-1), (short)210, SimpleLoop(1, 6, 6).WhenNotSelected(0, 0).WithOffset(4f, 0f).WithSpriteDirection(-1), (short)236, SimpleLoop(2, 7, 5).WhenNotSelected(0, 0).WithOffset(-16f, 0f).WithSpriteDirection(-1), (short)268, SimpleLoop(0, 6, 6).WhenNotSelected(0, 0).WithOffset(4f, 0f).WithSpriteDirection(-1), (short)269, SimpleLoop(0, 4, 6).WhenNotSelected(0, 0).WithOffset(0f, 0f).WithSpriteDirection(-1), (short)313, SimpleLoop(0, 4, 5).WhenNotSelected(0, 0).WithOffset(-6f, 0f).WithSpriteDirection(-1), (short)314, SimpleLoop(1, 6, 5).WhenNotSelected(0, 0).WithOffset(-4f, 0f).WithSpriteDirection(-1), (short)319, SimpleLoop(2, 4, 6).WhenNotSelected(0, 0).WithOffset(-14f, 0f).WithSpriteDirection(-1), (short)324, SimpleLoop(2, 4, 6).WhenNotSelected(0, 0).WithOffset(-4f, 0f).WithSpriteDirection(-1), (short)334, SimpleLoop(2, 5, 5).WhenNotSelected(0, 0).WithOffset(-10f, 0f).WithSpriteDirection(-1), (short)353, SimpleLoop(2, 8, 6).WhenNotSelected(0, 0).WithOffset(4f, 0f).WithSpriteDirection(-1), (short)380, SimpleLoop(0, 4, 6).WithOffset(-10f, -20f).WithSpriteDirection(-1).WithCode(DelegateMethods.CharacterPreview.Float), (short)398, SimpleLoop(1, 5, 7).WhenNotSelected(0, 0).WithOffset(6f, 0f), (short)499, SimpleLoop(2, 6, 7).WhenNotSelected(0, 0).WithOffset(-18f, 0f).WithSpriteDirection(-1), (short)653, SimpleLoop(0, 0).WithOffset(-2f, 0f).WithCode(DelegateMethods.CharacterPreview.CompanionCubePet), (short)703, SimpleLoop(0, 4).WhenNotSelected(0, 4, 4).WithOffset(4f, -10f).WithCode(DelegateMethods.CharacterPreview.Float), (short)701, SimpleLoop(0, 3, 6).WhenNotSelected(0, 3, 6).WithOffset(-2f, -18f).WithCode(DelegateMethods.CharacterPreview.Float), (short)764, SimpleLoop(0, 0).WithOffset(2f, -18f).WithCode(DelegateMethods.CharacterPreview.EtsyPet), (short)765, SimpleLoop(2, 4, 6).WhenNotSelected(0, 0).WithOffset(-4f, 0f).WithSpriteDirection(-1), (short)774, SimpleLoop(4, 4, 6).WithOffset(-14f, -24f).WithSpriteDirection(-1).WithCode(DelegateMethods.CharacterPreview.Float), (short)825, SimpleLoop(14, 6, 6).WhenNotSelected(0, 0).WithOffset(-6f, 0f).WithSpriteDirection(-1), (short)821, SimpleLoop(13, 6, 6).WhenNotSelected(0, 0).WithOffset(0f, 0f).WithSpriteDirection(-1), (short)815, SimpleLoop(0, 6, 6).WhenNotSelected(0, 6, 6).WithOffset(-20f, -30f).WithSpriteDirection(-1)
-@@ -241,11 +_,25 @@
+ 			.WithCode(DelegateMethods.CharacterPreview.Float), (short)816, SimpleLoop(4, 7, 6).WhenNotSelected(0, 0).WithOffset(-10f, 0f).WithSpriteDirection(-1), (short)817, SimpleLoop(0, 3, 6, bounceLoop: true).WithSpriteDirection(-1).WithOffset(-6f, -12f).WithCode(DelegateMethods.CharacterPreview.Float), (short)854, SimpleLoop(0, 4, 6).WithOffset(6f, 0f).WithSpriteDirection(-1).WhenSelected(4, 9, 4), (short)858, SimpleLoop(0, 1).WithOffset(-6f, 0f).WithSpriteDirection(-1).WhenSelected(2, 8, 4), (short)859, SimpleLoop(0, 1).WithOffset(4f, 0f).WithSpriteDirection(-1).WhenSelected(5, 13, 3), (short)860, SimpleLoop(0, 1).WithOffset(2f, 0f).WithSpriteDirection(-1).WhenSelected(5, 1), (short)875, SimpleLoop(0, 1).WithOffset(4f, 0f).WithSpriteDirection(-1).WhenSelected(0, 7, 4), (short)881, SimpleLoop(0, 1).WhenSelected(1, 5, 6).WithCode(DelegateMethods.CharacterPreview.SlimePet), (short)882, SimpleLoop(0, 6, 5).WithOffset(4f, -16f).WithCode(DelegateMethods.CharacterPreview.Float), (short)883, SimpleLoop(0, 1).WithOffset(2f, -8f).WithCode(DelegateMethods.CharacterPreview.WormPet), (short)884, SimpleLoop(0, 1).WhenSelected(2, 7, 5), (short)885, SimpleLoop(0, 5, 5).WithOffset(4f, -16f).WithCode(DelegateMethods.CharacterPreview.FloatAndSpinWhenWalking), (short)886, SimpleLoop(0, 8).WithOffset(4f, -16f).WithSpriteDirection(-1).WithCode(DelegateMethods.CharacterPreview.Float), (short)887, SimpleLoop(0, 1).WithOffset(2f, -8f).WithCode(DelegateMethods.CharacterPreview.WormPet), (short)888, SimpleLoop(0, 6, 5).WithOffset(4f, -16f).WithCode(DelegateMethods.CharacterPreview.Float), (short)889, SimpleLoop(0, 5, 5).WithOffset(4f, -16f).WithCode(DelegateMethods.CharacterPreview.FloatAndSpinWhenWalking), (short)890, SimpleLoop(0, 1).WithOffset(2f, 0f).WhenSelected(2, 6, 5), (short)892, SimpleLoop(0, 6, 6).WithOffset(-4f, -12f).WithSpriteDirection(-1).WithCode(DelegateMethods.CharacterPreview.Float), (short)893, SimpleLoop(0, 1).WithOffset(0f, -8f).WithCode(DelegateMethods.CharacterPreview.WormPet), (short)894, SimpleLoop(0, 8).WithOffset(-2f, -12f).WithSpriteDirection(-1).WithCode(DelegateMethods.CharacterPreview.Float), (short)897, SimpleLoop(0, 1).WithOffset(2f, 0f).WhenSelected(2, 6, 5), (short)898, SimpleLoop(0, 16, 5).WithOffset(-2f, -16f), (short)899, SimpleLoop(0, 1).WithOffset(2f, 0f).WhenSelected(2, 7, 4), (short)900, SimpleLoop(0, 1).WithOffset(6f, 0f).WhenSelected(2, 7, 4), (short)901, SimpleLoop(0, 5).WithOffset(-2f, -12f).WithSpriteDirection(-1).WithCode(DelegateMethods.CharacterPreview.Float), (short)934, SimpleLoop(0, 1).WhenSelected(1, 5, 5).WithCode(DelegateMethods.CharacterPreview.SlimePet), (short)956, SimpleLoop(0, 1).WithOffset(0f, 0f).WhenSelected(1, 8, 4).WithCode(DelegateMethods.CharacterPreview.BerniePet), (short)957, SimpleLoop(0, 24, 3).WithOffset(0f, -14f).WithCode(DelegateMethods.CharacterPreview.Float), (short)958, SimpleLoop(0, 1).WithOffset(-2f, 0f).WhenSelected(5, 8, 4), (short)959, SimpleLoop(0, 1).WhenSelected(1, 7, 4).WithOffset(4f, 0f), (short)960, SimpleLoop(0, 4).WithOffset(4f, 0f).WhenSelected(5, 7, 4), (short)994, SimpleLoop(0, 4, 5).WithOffset(2f, 0f).WhenSelected(5, 7, 5), (short)998, SimpleLoop(0, 1).WithOffset(6f, 0f).WithSpriteDirection(-1).WhenSelected(0, 6, 5), (short)1003, SimpleLoop(0, 1).WithOffset(2f, 0f).WithSpriteDirection(-1).WhenSelected(2, 9, 4), (short)1004, SimpleLoop(0, 1).WithOffset(-2f, 0f).WithSpriteDirection(-1).WhenSelected(2, 7, 4), (short)1018, SimpleLoop(0, 0).WithOffset(8f, 0f).WithCode(DelegateMethods.CharacterPreview.CompanionCubePet));
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile won't receive the +400% damage boost from the <see cref="BuffID.ParryDamageBuff"/>.
++		/// <br/> Only applies to melee projectiles.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile handles player hits in a special way.
++		/// <br/> If a projectile in this set hits a player, it's <see cref="Projectile.ai"/>[0] value is used instead of <see cref="Projectile.owner"/> when assigning the damage source.
++		/// <br/> This has the effect of making the player who dropped the gravestone be responsible for any potential deaths rather than the server.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsAGravestone = Factory.CreateBoolSet(false, 202, 201, 204, 43, 203, 205, 527, 528, 529, 530, 531);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will use whip collision and can have flasks applied to it.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>You can adjust whip settings using <see cref="Projectile.WhipSettings"/>.</remarks>
+ 		public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915, 952);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will zap the player if used to attack a zapping jellyfish. See <see cref="NPCID.Sets.ZappingJellyfish"/> for more info.
++		/// </summary>
+ 		public static bool[] AllowsContactDamageFromJellyfish = Factory.CreateBoolSet(false, 972, 982, 984, 997);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will immediately update NPC buff flags (<see cref="NPC.poisoned"/>, for example) on hit.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] ImmediatelyUpdatesNPCBuffFlags = Factory.CreateBoolSet(636);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is an explosive that can attach to an NPC.
++		/// <br/> NPC-attached explosives will be killed when <see cref="NPC.PopAllAttachedProjectilesAndTakeDamageForThem"/> is called.
++		/// <br/> Used exclusively for the <see cref="Daybreak"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>Check <see cref="Projectile.IsAttachedTo(NPC)"/> for the conditions in which a projectile in this set will actually explode.</remarks>
+ 		public static bool[] IsAnNPCAttachedExplosive = Factory.CreateBoolSet(636);
++
++		/// <summary>
++		/// Wind Physics is <b>completely disabled</b> and unfunctional in Terraria, but the presence of the code suggest that it might be enabled in a future update. There is no need to use WindPhysicsImmunity currently.<br/>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will always use wind physics.
++		/// <br/> If <see langword="false"/> for a given projectile type, then that projectile will never use wind physics.
++		/// <br/> If <see langword="null"/> for a given projectile type, then vanilla decides if that projectile will use wind physics by checking <see cref="Projectile.aiStyle"/>.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
++		/// <remarks>
++		/// Wind physics slightly slow down projectiles facing into the wind.
++		/// <br/> Projectiles with the following AI styles will use wind physics if not blocked: <see cref="ProjAIStyleID.Arrow"/>, <see cref="ProjAIStyleID.ThrownProjectile"/>, <see cref="ProjAIStyleID.Bounce"/>, <see cref="ProjAIStyleID.FallingTile"/>, <see cref="ProjAIStyleID.GroundProjectile"/>, <see cref="ProjAIStyleID.Explosive"/>, <see cref="ProjAIStyleID.GraveMarker"/>, <see cref="ProjAIStyleID.MusicNote"/>, <see cref="ProjAIStyleID.CrystalShard"/>, <see cref="ProjAIStyleID.ColdBolt"/>, <see cref="ProjAIStyleID.GemStaffBolt"/>, <see cref="ProjAIStyleID.BeachBall"/>, <see cref="ProjAIStyleID.Flare"/>, <see cref="ProjAIStyleID.FireWork"/>, <see cref="ProjAIStyleID.RopeCoil"/>, <see cref="ProjAIStyleID.ExplosiveBunny"/>, <see cref="ProjAIStyleID.Bubble"/>, <see cref="ProjAIStyleID.Nail"/>, <see cref="ProjAIStyleID.IchorSplash"/>, <see cref="ProjAIStyleID.SporeGas"/>.
++		/// </remarks>
+ 		public static bool?[] WindPhysicsImmunity = Factory.CreateCustomSet<bool?>(null, new object[138] {
+ 			(short)20,
+ 			true,
+@@ -160,15 +_,73 @@
+ 			(short)731,
+ 			true
+ 		});
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile, despite exploding, will not deal damage to players.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] RocketsSkipDamageForPlayers = Factory.CreateBoolSet(338, 339, 340, 341, 803, 804, 862, 863, 805, 806, 807, 808, 809, 810, 930);
++
++		/// <summary>
++		/// The lifetime of a yoyo projectile (<see cref="ProjAIStyleID.Yoyo"/>) in seconds.
++		/// <br/> A value of <c>-1f</c> means that yoyo has an infinite lifetime.
++		/// <br/> Defaults to <c>-1f</c>.
++		/// </summary>
+ 		public static float[] YoyosLifeTimeMultiplier = Factory.CreateFloatSet(-1f, 541f, 3f, 548f, 5f, 542f, 7f, 543f, 6f, 544f, 8f, 534f, 9f, 564f, 11f, 999f, 11f, 545f, 13f, 563f, 10f, 562f, 8f, 553f, 12f, 546f, 16f, 552f, 15f, 549f, 14f);
++
++		/// <summary>
++		/// The maximum distance a yoyo projectile (<see cref="ProjAIStyleID.Yoyo"/>) can be from its owner in pixels.
++		/// <br/> Defaults to <c>200f</c> (12.5 tiles).
++		/// </summary>
+ 		public static float[] YoyosMaximumRange = Factory.CreateFloatSet(200f, 541f, 130f, 548f, 170f, 542f, 195f, 543f, 207f, 544f, 215f, 534f, 220f, 564f, 225f, 999f, 225f, 545f, 235f, 562f, 235f, 563f, 250f, 546f, 275f, 552f, 270f, 553f, 275f, 547f, 280f, 549f, 290f, 554f, 340f, 550f, 370f, 551f, 370f, 555f, 360f, 603f, 400f);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is a kind of golf ball.
++		/// <br/> Items that "shoot" golf balls can be placed onto tees. if one of these items is in the player's inventory or equipped, then its projectile will be preferred over the standard golf ball.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsAGolfBall = Factory.CreateBoolSet(false, 721, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752);
++
++		/// <summary>
++		/// The maximum speed a yoyo projectile (<see cref="ProjAIStyleID.Yoyo"/>) can go in pixels per tick.
++		/// <br/> Defaults to <c>10f</c>.
++		/// </summary>
+ 		public static float[] YoyosTopSpeed = Factory.CreateFloatSet(10f, 541f, 9f, 548f, 11f, 542f, 12.5f, 543f, 12f, 544f, 13f, 534f, 13f, 564f, 14f, 999f, 14f, 545f, 14f, 562f, 15f, 563f, 12f, 546f, 17f, 552f, 14f, 553f, 15f, 547f, 17f, 549f, 16f, 554f, 16f, 550f, 16f, 551f, 16f, 555f, 16.5f, 603f, 17.5f);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile can create waves in water.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// </summary>
++		/// <remarks>This set only handles water. Use <see cref="NoLiquidDistortion"/> to prevent any liquid distortion.</remarks>
+ 		public static bool[] CanDistortWater = Factory.CreateBoolSet(true, 7, 8, 152, 151, 150, 493, 494);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is shot by some minion.
++		/// <br/> Used for tracking whip effects and preventing minions from cutting tiles.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] MinionShot = Factory.CreateBoolSet(374, 376, 389, 195, 408, 433, 614, 818);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is shot by some sentry.
++		/// <br/> Used for tracking whip effects and preventing sentries from cutting tiles.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] SentryShot = Factory.CreateBoolSet(680, 664, 666, 668, 694, 695, 696, 644, 642, 378, 379, 309, 967);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will not fall through platforms.
++		/// <br/> only applies to projectiles using <see cref="ProjAIStyleID.FallingTile"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] FallingBlockDoesNotFallThroughPlatforms = Factory.CreateBoolSet(false, 71, 179, 40, 39, 17, 812, 411, 412, 413, 414, 31, 67, 56, 241, 42, 68, 65, 354);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile can trigger <see cref="TileID.ProjectilePressurePad"/>s.
++		/// <br/> If <see langword="false"/> for a given projectile type, then that projectile cannot trigger <see cref="TileID.ProjectilePressurePad"/>s.
++		/// <br/> If <see langword="null"/> for a given projectile type, then that projectile can trigger <see cref="TileID.ProjectilePressurePad"/>s if <see cref="Projectile.tileCollide"/> is <see langword="true"/>.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
+ 		public static bool?[] ForcePlateDetection = Factory.CreateCustomSet<bool?>(null, new object[70] {
+ 			(short)397,
+ 			true,
+@@ -241,17 +_,84 @@
  			(short)1014,
  			false
  		});
@@ -28,21 +166,151 @@
 +		/// <summary>
 +		/// Determines what data will be remembered for projectile trails. Each projectile type defaults to -1, meaning no information is saved. Use values of 0 or 2 most of the time.<br/>0: only position data is remembered.<br/>1: should not be used.<br/>2: position, rotation, and spriteDirection data is remembered<br/>3: same as 2, but attempts to smooth out old data by interpolating values<br/>4: same as 2, but adjusts old data to follow the player owner.
 +		/// <br/>Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/>, <see cref="Projectile.oldPos"/>, <see cref="Projectile.oldRot"/>, <see cref="Projectile.oldSpriteDirection"/> to be used properly. 
-+		/// <br/>Refer to <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet.cs</see> in ExampleMod for sample usage.
++		/// <br/>Refer to <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet.cs</see> in ExampleMod for sample usage.
 +		/// </summary>
  		public static int[] TrailingMode = Factory.CreateIntSet(-1, 94, 0, 301, 0, 388, 0, 385, 0, 408, 0, 409, 0, 435, 0, 436, 0, 437, 0, 438, 0, 452, 0, 459, 0, 462, 0, 502, 0, 503, 0, 466, 1, 532, 0, 533, 0, 573, 0, 580, 1, 582, 0, 585, 0, 592, 0, 601, 0, 617, 0, 636, 0, 638, 0, 639, 0, 640, 0, 424, 0, 425, 0, 426, 0, 660, 0, 661, 0, 671, 2, 664, 0, 666, 0, 668, 0, 675, 0, 680, 2, 682, 0, 684, 0, 686, 2, 700, 0, 706, 0, 709, 0, 710, 2, 711, 2, 712, 0, 715, 2, 716, 2, 717, 2, 718, 2, 261, 0, 721, 0, 729, 2, 732, 0, 731, 0, 739, 0, 740, 0, 741, 0, 742, 0, 743, 0, 744, 0, 745, 0, 746, 0, 747, 0, 748, 0, 749, 0, 750, 0, 751, 0, 752, 0, 755, 2, 766, 2, 767, 2, 768, 2, 769, 2, 770, 2, 771, 2, 811, 2, 814, 2, 822, 2, 823, 2, 824, 2, 826, 2, 827, 2, 828, 2, 829, 2, 830, 2, 838, 2, 839, 2, 840, 2, 843, 2, 844, 2, 845, 2, 846, 2, 850, 2, 852, 2, 853, 2, 856, 0, 857, 0, 864, 2, 873, 2, 872, 2, 833, 2, 834, 2, 835, 2, 818, 2, 902, 0, 883, 0, 887, 0, 893, 0, 894, 0, 909, 0, 916, 2, 34, 3, 16, 3, 79, 3, 931, 2, 933, 4, 946, 2, 964, 0, 965, 0, 977, 2, 976, 2, 973, 2, 106, 5, 85, 3, 1001, 3, 1020, 2);
 +
 +		/// <summary>
-+		/// The length of the the trail to store. Each projectile type defaults to 10. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly. 
++		/// The length of the trail to store. Each projectile type defaults to 10. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly. 
 +		/// </summary>
  		public static int[] TrailCacheLength = Factory.CreateIntSet(10, 466, 20, 502, 25, 580, 20, 636, 20, 640, 20, 686, 20, 711, 20, 715, 20, 716, 20, 717, 20, 718, 20, 261, 20, 721, 20, 729, 20, 731, 20, 739, 20, 740, 20, 741, 20, 742, 20, 743, 20, 744, 20, 745, 20, 746, 20, 747, 20, 748, 20, 749, 20, 750, 20, 751, 20, 752, 20, 766, 60, 767, 60, 768, 60, 769, 60, 770, 60, 771, 80, 814, 40, 822, 80, 823, 80, 824, 60, 826, 60, 827, 65, 828, 60, 829, 60, 830, 80, 838, 80, 839, 60, 840, 60, 843, 60, 844, 65, 845, 80, 846, 80, 850, 80, 852, 60, 853, 60, 856, 2, 857, 2, 864, 60, 873, 60, 872, 120, 833, 20, 834, 20, 835, 20, 818, 20, 883, 41, 887, 51, 893, 71, 894, 10, 909, 5, 916, 20, 34, 30, 16, 30, 79, 60, 931, 20, 933, 60, 946, 20, 977, 30, 976, 60, 973, 20, 106, 15, 85, 60, 1001, 12, 1020, 20);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is a light pet.
++		/// <br/> Items that summon light pets can be equipped in the light pet slot, and light pets are dyed according to their owner's <see cref="Player.cLight"/> shader.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] LightPet = Factory.CreateBoolSet(18, 500, 72, 87, 86, 211, 492, 650, 702, 891, 896, 895);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will not be visually offset by <see cref="Player.gfxOffY"/>.
++		/// <br/> Set to true for held projectiles that are already accounting for <see cref="Player.gfxOffY"/> in their position. If the held projectile doesn't follow the players position, then set to true.
++		/// <br/> Used in vanilla for flails.
++		/// <br/> Defaults to <see langword="false"/>,
++		/// </summary>
  		public static bool[] HeldProjDoesNotUsePlayerGfxOffY = Factory.CreateBoolSet(947, 948, 25, 26, 35, 63, 154, 247, 757, 699);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will not call <see cref="Player.TryCancelChannel(Projectile)"/> when it dies.
++		/// <br/> Used in vanilla for the Piranha Gun.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] DontCancelChannelOnKill = Factory.CreateBoolSet(190);
 +
 +		/// <summary>
 +		/// Indicates that the Lunatic Cultist takes 75% damage from this projectile. All projectiles in this set are homing projectiles, so this set can be seen as an indicator that this projectile homes in on the target. Use this set in <see cref="ModNPC.ModifyHitByProjectile"/> and adjust the <c>damage</c> parameter to implement a similar penalty for homing projectiles.
 +		/// </summary>
  		public static bool[] CultistIsResistantTo = Factory.CreateBoolSet(207, 182, 338, 339, 340, 341, 266, 390, 391, 392, 307, 316, 190, 227, 255, 297, 317, 321, 356, 407, 376, 374, 379, 408, 389, 388, 405, 409, 535, 536, 484, 477, 16, 34, 79, 634, 635, 616, 189, 181, 566, 837, 659, 803, 804, 805, 806, 807, 808, 809, 810, 856, 931, 248, 393, 394, 395, 378, 379, 664, 666, 668, 680, 625, 626, 627, 628, 613, 614, 309, 195, 433, 755, 864, 758, 759, 832, 833, 834, 835, 951, 644, 642, 946, 930, 937, 225, 285, 917, 700, 916, 640, 221, 606, 567, 568, 569, 570, 571, 617, 618, 619, 620, 963, 967);
++
++		/// <summary>
++		/// Iff <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is counted as a DD2 turret.
++		/// <br/> Items that create DD2 turrets cannot be used before the Old One's Army is cleared at least once, but can be infinitely used during the event for 20 Etherian Mana.
++		/// <br/> All DD2 turrets are cleared when the Old One's Army ends.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IsADD2Turret = Factory.CreateBoolSet(663, 665, 667, 677, 678, 679, 688, 689, 690, 691, 692, 693);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then any item that shoots that projectile will have an alt. use function to clear all projectiles the using player owns that are in this set.
++		/// <br/> Unused in vanilla.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] TurretFeature = Factory.CreateBoolSet();
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then any item that shoots that projectile can be right-clicked to force minion targeting.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] MinionTargettingFeature = Factory.CreateBoolSet(191, 192, 193, 194, 266, 317, 373, 375, 387, 388, 390, 393, 407, 423, 533, 613, 625, 755, 758, 759, 831, 833, 834, 835, 864, 946, 951, 963, 970, 377, 308, 643, 641, 663, 665, 667, 677, 678, 679, 688, 689, 690, 691, 692, 693, 966);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then other minions will be sacrificed to make room to summon this minion.
++		/// <br/> Used for all standard minions.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] MinionSacrificable = Factory.CreateBoolSet(191, 192, 193, 194, 266, 317, 373, 375, 387, 388, 390, 393, 407, 423, 533, 613, 755, 758, 759, 831, 970, 864, 946, 951, 963, 625, 626, 627, 628);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will always draw using the lighting color at its center, even if <see cref="Projectile.hide"/> is <see langword="true"/>. If not in this set, these projectiles would use the lighting color at their owner's center.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] DontAttachHideToAlpha = Factory.CreateBoolSet(598, 641, 617, 636, 579, 578, 625, 626, 627, 628, 759, 813, 525, 960, 971);
++
++		/// <summary>
++		/// A <see cref="GenSearch"/> to use when checking for collisions, in addition to standard hitbox checks.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
+ 		public static GenSearch[] ExtendedCanHitCheckSearch = Factory.CreateCustomSet<GenSearch>(null, new object[6] {
+ 			(short)833,
+ 			new Searches.Up(3),
+@@ -260,6 +_,12 @@
+ 			(short)835,
+ 			new Searches.Up(3)
+ 		});
++
++		/// <summary>
++		/// If non-zero, then the given projectile type (<see cref="Projectile.type"/>) will check for collisions that many pixels above itself and its target if it doesn't directly collide.
++		/// <br/> For example, a value of <c>48f</c> allow a hit if there was an empty line from 48 pixels above the projectile's <see cref="Entity.Top"/> to 48 pixels above the target's Top.
++		/// <br/> Defaults to <c>0f</c>.
++		/// </summary>
+ 		public static float[] ExtendedCanHitCheckRange = Factory.CreateFloatSet(0f, 833f, 48f, 834f, 48f, 835f, 48f);
+ 		public static bool[] NeedsUUID = Factory.CreateBoolSet(625, 626, 627, 628);
+ 		public static bool[] StardustDragon = Factory.CreateBoolSet(625, 626, 627, 628);
+@@ -269,13 +_,57 @@
+ 			834,
+ 			835
+ 		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will deal double damage as long as <c><see cref="Projectile.timeLeft"/> &gt; 3</c>.
++		/// <br/> Defauls to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsARocketThatDealsDoubleDamageToPrimaryEnemy = Factory.CreateBoolSet(134, 137, 140, 143, 776, 780, 793, 796, 799, 784, 787, 790, 246);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will deal triple damage when moving less than 0.5 pixels per tick.
++		/// <br/> Defauls to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsAMineThatDealsTripleDamageWhenStationary = Factory.CreateBoolSet(135, 138, 141, 144, 778, 782, 795, 798, 801, 786, 789, 792);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will never distort liquids.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] NoLiquidDistortion = Factory.CreateBoolSet(511, 512, 513);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will forcibly dismount any player it hits
++		/// <br/> Used in vanilla for the jousting lances.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] DismountsPlayersOnHit = Factory.CreateBoolSet(877, 878, 879);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then its velocity will not scale with the player's melee speed.
++		/// <br/> Useful for melee projectiles (shortswords, lances, etc.) that use velocity as an offset from the player.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] NoMeleeSpeedVelocityScaling = Factory.CreateBoolSet(false, 699, 707, 877, 878, 879, 985, 973);
++
++		/// <summary>
++		/// The distance off-screen, in pixels, that projectiles of the given projectile type (<see cref="Projectile.type"/>) can be whilst still drawing.
++		/// <br/> Useful for projectiles with drawn effects much larger than their hitbox.
++		/// <br/> Defaults to <c>480</c> (30 tiles).
++		/// </summary>
+ 		public static int[] DrawScreenCheckFluff = Factory.CreateIntSet(480, 461, 1600, 632, 1600, 447, 1600, 455, 2400, 754, 1600, 872, 1600, 873, 1600, 871, 1600, 919, 2400, 923, 2400, 931, 960, 16, 960, 34, 960, 79, 960, 933, 480, 642, 2400, 106, 960, 1020, 960);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile can hit players submerged in shimmer.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CanHitPastShimmer = Factory.CreateBoolSet(605, 270, 719, 961, 962, 926, 922, 100, 84, 83, 96, 101, 102, 275, 276, 277, 258, 259, 384, 385, 386, 874, 872, 873, 871, 683, 676, 670, 675, 686, 687, 467, 468, 464, 465, 466, 526, 456, 462, 455, 452, 454, 949);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will do the same damage to players regardless of difficulty (expert/master etc). <br/>
++		/// This set includes all the friendly vanilla explosives which can hurt players from vanilla
++		/// </summary>
++		public static bool[] PlayerHurtDamageIgnoresDifficultyScaling = Factory.CreateBoolSet(28, 29, 30, 37, 108, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 164, 397, 470, 516, 517, 519, 588, 637, 773, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 903, 904, 905, 906, 910, 911, 1002);
+ 
+ 		public static SettingsForCharacterPreview SimpleLoop(int startFrame, int frameCount, int delayPerFrame = 4, bool bounceLoop = false)
+ 		{

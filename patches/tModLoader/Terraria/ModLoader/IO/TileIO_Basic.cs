@@ -81,7 +81,7 @@ internal static partial class TileIO
 				return;
 			}
 
-			using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
+			using var reader = new BinaryReader(tag.GetByteArray(dataKey).ToMemoryStream());
 			var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
 
 			for (int x = 0; x < Main.maxTilesX; x++) {
@@ -258,8 +258,7 @@ internal static partial class TileIO
 
 	internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
-	// Called to ensure proper loading/unloaded behaviour with respect to Unloaded Placeholders
-	internal static void ResizeArrays()
+	internal static void ResetUnloadedTypes()
 	{
 		Tiles.unloadedTypes.Clear();
 		Walls.unloadedTypes.Clear();

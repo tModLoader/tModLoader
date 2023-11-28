@@ -1,8 +1,11 @@
+using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -38,7 +41,13 @@ public static class MonoModHooks
 	}
 
 	private static Dictionary<Assembly, DetourList> assemblyDetours = new();
-	private static DetourList GetDetourList(Assembly asm) => assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+	private static DetourList GetDetourList(Assembly asm)
+	{
+		if (asm == typeof(Action).Assembly)
+			throw new ArgumentException("Cannot identify owning assembly of hook. Make sure there are no delegate type changing wrappers between the method/lambda and the Modify/Add/+= call. Eg `new ILContext.Manipulator(action)` is bad");
+
+		return assemblyDetours.TryGetValue(asm, out var list) ? list : assemblyDetours[asm] = new();
+	}
 
 	[Obsolete("No longer required. NativeDetour is gone. Detour should not be used. Hook is safe to use", true)]
 	public static void RequestNativeAccess() { }
@@ -109,8 +118,108 @@ public static class MonoModHooks
 						ilHook.Undo();
 			}
 		}
+	}
 
+	internal static void Clear()
+	{
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
+		_hookCache.Clear();
+	}
+
+	#region Obsolete HookEndpointManager method replacement
+	// just exists to extend lifetime of Hook/ILHook so mods don't have to store the instances in static variables
+	private static ConcurrentDictionary<(MethodBase, Delegate), IDisposable> _hookCache = new();
+	private const string HookAlreadyAppliedMsg = "Delegate has already been applied to this method as a hook!";
+
+	/// <summary>
+	/// Adds a hook (implemented by <paramref name="hookDelegate"/>) to <paramref name="method"/>.
+	/// </summary>
+	/// <param name="method">The method to hook.</param>
+	/// <param name="hookDelegate">The hook delegate to use.</param>
+	public static void Add(MethodBase method, Delegate hookDelegate)
+	{
+		if (!_hookCache.TryAdd((method, hookDelegate), new Hook(method, hookDelegate)))
+			throw new ArgumentException(HookAlreadyAppliedMsg);
+	}
+
+	/// <summary>
+	/// Adds an IL hook (implemented by <paramref name="callback"/>) to <paramref name="method"/>.
+	/// </summary>
+	/// <param name="method">The method to hook.</param>
+	/// <param name="callback">The hook delegate to use.</param>
+	public static void Modify(MethodBase method, ILContext.Manipulator callback)
+	{
+		if (!_hookCache.TryAdd((method, callback), new ILHook(method, callback)))
+			throw new ArgumentException(HookAlreadyAppliedMsg);
+	}
+	#endregion
+
+	/// <summary>
+	/// Dumps the list of currently registered IL hooks to the console. Useful for checking if a hook has been correctly added.
+	/// </summary>
+	/// <exception cref="Exception"></exception>
+	public static void DumpILHooks()
+	{
+		var ilHooksField = typeof(HookEndpointManager).GetField("ILHooks", BindingFlags.NonPublic | BindingFlags.Static);
+		object ilHooksFieldValue = ilHooksField.GetValue(null);
+		if (ilHooksFieldValue is IReadOnlyDictionary<(MethodBase, Delegate), ILHook> ilHooks) {
+			Logging.tML.Debug("Dump of registered IL Hooks:");
+			foreach (var item in ilHooks) {
+				Logging.tML.Debug(item.Key + ": " + item.Value);
+			}
+		}
+		else {
+			throw new Exception($"Failed to get HookEndpointManager.ILHooks: Type is {ilHooksFieldValue.GetType()}");
+		}
+	}
+
+	/// <summary>
+	/// Dumps the list of currently registered On hooks to the console. Useful for checking if a hook has been correctly added.
+	/// </summary>
+	/// <exception cref="Exception"></exception>
+	public static void DumpOnHooks()
+	{
+		var hooksField = typeof(HookEndpointManager).GetField("Hooks", BindingFlags.NonPublic | BindingFlags.Static);
+		object hooksFieldValue = hooksField.GetValue(null);
+		if (hooksFieldValue is IReadOnlyDictionary<(MethodBase, Delegate), Hook> detours) {
+			Logging.tML.Debug("Dump of registered Detours:");
+			foreach (var item in detours) {
+				Logging.tML.Debug(item.Key + ": " + item.Value);
+			}
+		}
+		else {
+			throw new Exception($"Failed to get HookEndpointManager.Hooks: Type is {hooksFieldValue.GetType()}");
+		}
+	}
+
+	/// <summary>
+	/// Dumps the information about the given ILContext to a file in Logs/ILDumps/{Mod Name}/{Method Name}.txt<br/>
+	/// It may be useful to use a tool such as <see href="https://www.diffchecker.com/"/> to compare the IL before and after edits
+	/// </summary>
+	/// <param name="mod"></param>
+	/// <param name="il"></param>
+	public static void DumpIL(Mod mod, ILContext il)
+	{
+		string methodName = il.Method.FullName.Replace(':', '_');
+		if (methodName.Contains('?')) // MonoMod IL copies are created with mangled names like DMD<Terraria.Player::beeType>?38504011::Terraria.Player::beeType(Terraria.Player)
+			methodName = methodName[(methodName.LastIndexOf('?') + 1)..];
+
+		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, methodName + ".txt");
+		string folderPath = Path.GetDirectoryName(filePath);
+
+		if (!Directory.Exists(folderPath))
+			Directory.CreateDirectory(folderPath);
+		File.WriteAllText(filePath, il.ToString());
+
+		Logging.tML.Debug($"Dumped ILContext \"{il.Method.FullName}\" to \"{filePath}\"");
+	}
+}
+
+public class ILPatchFailureException : Exception
+{
+	public ILPatchFailureException(Mod mod, ILContext il, Exception innerException) : base($"Mod \"{mod.Name}\" failed to IL edit method \"{il.Method.FullName}\"", innerException)
+	{
+		MonoModHooks.DumpIL(mod, il);
 	}
 }

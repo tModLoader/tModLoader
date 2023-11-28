@@ -19,6 +19,12 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public Item equippedWings = null;
 
+	/// <summary>
+	/// Causes <see cref="SmartSelectLookup"/> to run the next time an item animation is finished, even if <see cref="controlUseItem"/> is held. <br/>
+	/// Used internally by tML to when a hotbar key is pressed while using an item.
+	/// </summary>
+	public bool selectItemOnNextUse;
+
 	private int consumedLifeCrystals;
 
 	/// <summary>
@@ -64,9 +70,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
-	public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
+	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
-	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);
+	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;
 
 	public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
@@ -195,12 +201,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Gets the crit chance modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.
 	/// </summary>
 	public ref float GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the crit chance modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.
 	/// </summary>
 	public ref float GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
 
@@ -209,41 +217,58 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// This returns a reference, and as such, you can freely modify this method's return values with operators.
 	/// Setting this such that it results in zero or a negative value will throw an exception.
 	/// NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.
+	/// <para/> Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.
 	/// </summary>
 	public ref float GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the attack speed modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return values with operators.
+	/// <para/> Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.
 	/// </summary>
 	public ref float GetAttackSpeed(DamageClass damageClass) => ref damageData[damageClass.Type].attackSpeed;
 
 	/// <summary>
 	/// Gets the armor penetration modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.
 	/// </summary>
 	public ref float GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the armor penetration modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.
 	/// </summary>
 	public ref float GetArmorPenetration(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
 
 	/// <summary>
 	/// Gets the knockback modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.
 	/// </summary>
 	public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the knockback modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.
 	/// </summary>
 	public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
+	/// <inheritdoc cref="GetTotalDamage"/>
 	public StatModifier GetTotalDamage<T>() where T : DamageClass => GetTotalDamage(ModContent.GetInstance<T>());
 
+	/// <summary>
+	/// Calculates a total damage modifier for the player for the provided <see cref="DamageClass"/>.<br/>
+	/// Use in conjunction with <see cref="StatModifier.ApplyTo(float)"/> to calculate a final damage value for a given <see cref="DamageClass"/> and base damage: <c>int finalDamage = (int)player.GetTotalDamage(item.DamageType).ApplyTo(30);</c>
+	/// </summary>
+	/// <remarks>The modifiers calculated here are important due to the possibility of
+	/// damage classes inheriting modifiers from other damage classes. For instance, an attack
+	/// can be classified as multiple damage types and each could have different modifiers to apply to the damage
+	/// </remarks>
+	/// <param name="damageClass">The <see cref="DamageClass"/> to use for total damage calculation</param>
+	/// <returns>All modifiers combined</returns>
 	public StatModifier GetTotalDamage(DamageClass damageClass)
 	{
 		StatModifier stat = damageData[damageClass.Type].damage;
@@ -486,27 +511,17 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public bool CanBuyItem(int price, int customCurrency = -1)
-	{
-		if (customCurrency != -1)
-			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-
-		long num = Utils.CoinsCount(out _, inventory, new[] { 58, 57, 56, 55, 54 });
-		long num2 = Utils.CoinsCount(out _, bank.item, Array.Empty<int>());
-		long num3 = Utils.CoinsCount(out _, bank2.item, Array.Empty<int>());
-		long num4 = Utils.CoinsCount(out _, bank3.item, Array.Empty<int>());
-
-		long num5 = Utils.CoinsCombineStacks(out _, new[] { num, num2, num3, num4 });
-
-		return num5 >= price;
-	}
-
+	/// <summary>
+	/// Calculates the mana needed to use the given item.
+	/// </summary>
+	/// <param name="item">The item to check.</param>
+	/// <returns>The amount of mana needed to use <paramref name="item"/>. Cannot be less than <c>0</c>.</returns>
 	public int GetManaCost(Item item)
 	{
 		float reduce = manaCost;
 		float mult = 1;
-		// TODO: Make a space gun set
-		if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray || item.type == ItemID.ZapinatorOrange))
+
+		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
 		if(item.type == ItemID.BookStaff && altFunctionUse == 2)
@@ -517,6 +532,16 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return mana >= 0 ? mana : 0;
 	}
 
+	/// <summary>
+	/// Determines if this player has enough mana to use an item.
+	/// <br/> If the player doesn't have enough mana and <paramref name="blockQuickMana"/> is <see langword="false"/>, the player will activate any missing mana effects they have and try again.
+	/// <br/> The <paramref name="pay"/> parameter can be used to consume the mana amount.
+	/// </summary>
+	/// <param name="item">The item to use.</param>
+	/// <param name="amount">The amount of mana needed. If <c>-1</c>, calculate using <see cref="GetManaCost(Item)"/>.</param>
+	/// <param name="pay">If <see langword="true"/>, actually use the mana requested.</param>
+	/// <param name="blockQuickMana">If <see langword="true"/>, prevent on missing mana effects like the Mana Flower from activating if the player doesn't have enough mana.</param>
+	/// <returns><see langword="true"/> if the player has enough mana to use the item, <see langword="false"/> otherwise.</returns>
 	public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false)
 	{
 		if (amount <= -1)
@@ -582,5 +607,55 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		else {
 			hurtCooldowns[cooldownCounterId] += immuneTime;
 		}
+	}
+
+	// Extra jumps
+	private ExtraJumpState[] extraJumps = new ExtraJumpState[ExtraJumpLoader.ExtraJumpCount];
+
+	public ref ExtraJumpState GetJumpState<T>(T baseInstance) where T : ExtraJump => ref extraJumps[baseInstance.Type];
+
+	public ref ExtraJumpState GetJumpState<T>() where T : ExtraJump => ref GetJumpState(ModContent.GetInstance<T>());
+
+	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
+
+	/// <summary>
+	/// When <see langword="true"/>, all extra jumps will be blocked, including Flipper usage.<br/>
+	/// Setting this field to <see langword="true"/> will not stop any currently active extra jumps.
+	/// </summary>
+	public bool blockExtraJumps;
+
+	/// <summary>
+	/// Returns <see langword="true"/> if any extra jump is <see cref="ExtraJumpState.Available"/> and <see cref="ExtraJump.CanStart"/>.<br/>
+	/// Setting <see cref="blockExtraJumps"/> will cause this method to return <see langword="false"/> instead.
+	/// </summary>
+	public bool AnyExtraJumpUsable()
+	{
+		if (blockExtraJumps)
+			return false;
+
+		foreach (ExtraJump jump in ExtraJumpLoader.OrderedJumps) {
+			if (GetJumpState(jump).Available && jump.CanStart(this) && PlayerLoader.CanStartExtraJump(jump, this))
+				return true;
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	/// Cancels any extra jump in progress.<br/>
+	/// Sets all <see cref="ExtraJumpState.Active"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
+	/// Also sets <see cref="jump"/> to 0 if a an extra jump was active.<br/><br/>
+	///
+	/// Used by vanilla when performing an action which would cancel jumping, such as grappling, grabbing a rope or getting frozen.<br/><br/>
+	///
+	/// To prevent the use of remaining jumps, use <see cref="ConsumeAllExtraJumps"/> or <see cref="blockExtraJumps"/>.<br/>
+	/// To cancel a regular jump as well, do <c>Player.jump = 0;</c>
+	/// </summary>
+	public void StopExtraJumpInProgress()
+	{
+		ExtraJumpLoader.StopActiveJump(this, out bool anyJumpCancelled);
+
+		if (anyJumpCancelled)
+			jump = 0;
 	}
 }

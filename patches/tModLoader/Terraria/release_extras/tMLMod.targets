@@ -11,6 +11,12 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<AdditionalFiles Include="**/*.hjson" />
+		<AdditionalFiles Include="**/*.txt" />
+		<AdditionalFiles Include="**/*.png" />
+		<AdditionalFiles Include="**/*.fx" />
+		<!-- Remove the txt files that can be found in build folders, causing them to appear in the editor -->
+		<AdditionalFiles Remove="bin/**" />
+		<AdditionalFiles Remove="obj/**" />
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
 		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />

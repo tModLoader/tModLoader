@@ -14,6 +14,11 @@ namespace ExampleMod.Content.Items.Tools
 			Item.CloneDefaults(ItemID.AmethystHook);
 			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
 			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+
+			// If you do not use Item.CloneDefaults(), you must set the following values for the hook to work properly:
+			// Item.useStyle = ItemUseStyleID.None;
+			// Item.useTime = 0;
+			// Item.useAnimation = 0;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -39,6 +44,13 @@ namespace ExampleMod.Content.Items.Tools
 			chainTexture = null;
 		}
 
+		/*
+		public override void SetStaticDefaults() {
+			// If you wish for your hook projectile to have ONE copy of it PER player, uncomment this section.
+			ProjectileID.Sets.SingleGrappleHook[Type] = true;
+		}
+		*/
+
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
 		}
@@ -54,12 +66,6 @@ namespace ExampleMod.Content.Items.Tools
 
 			return hooksOut <= 2;
 		}
-
-		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
-		// public override bool? SingleGrappleHook(Player player)
-		// {
-		//	return true;
-		// }
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook
@@ -112,7 +118,7 @@ namespace ExampleMod.Content.Items.Tools
 			grappleY += dirToPlayer.Y * hangDist;
 		}
 
-		// Can customize what tiles this hook can latch onto, or force/prevent latching alltogether, like Squirrel Hook also latching to trees
+		// Can customize what tiles this hook can latch onto, or force/prevent latching altogether, like Squirrel Hook also latching to trees
 		public override bool? GrappleCanLatchOnTo(Player player, int x, int y) {
 			// By default, the hook returns null to apply the vanilla conditions for the given tile position (this tile position could be air or an actuated tile!)
 			// If you want to return true here, make sure to check for Main.tile[x, y].HasUnactuatedTile (and Main.tileSolid[Main.tile[x, y].TileType] and/or Main.tile[x, y].HasTile if needed)

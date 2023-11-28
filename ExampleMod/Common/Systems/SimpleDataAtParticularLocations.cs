@@ -30,7 +30,7 @@ namespace ExampleMod.Common.Systems
 		public PosData<byte>[] myMap;
 
 		// Next, we ensure we initialize the map on world load to an empty map.
-		public override void OnWorldLoad() {
+		public override void ClearWorld() {
 			myMap = new PosData<byte>[0];
 		}
 
@@ -58,11 +58,6 @@ namespace ExampleMod.Common.Systems
 			myMap = list.ToArray();
 		}
 
-		public override void OnWorldUnload() {
-			// We discard our map after unloading, because we don't need it anymore.
-			myMap = null;
-		}
-
 		// We define what we want to generate as additional location data, for this example, in PostWorldGen.
 		// We will create a simple column of byte data going down the horizontal center of the world that we will later use in PreUpdateWorld.
 		public override void PostWorldGen() {
@@ -70,7 +65,7 @@ namespace ExampleMod.Common.Systems
 
 			int xCenter = Main.maxTilesX / 2;
 
-			for (int y = 0; y < Main.maxTilesY ; y++) {
+			for (int y = 0; y < Main.maxTilesY; y++) {
 				builder.Add(
 					xCenter, y, // The locations
 					(byte)(y % 255) // The data we want to store at the location

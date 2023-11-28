@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.GlobalNPCs;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using ExampleMod.Common.GlobalNPCs;
 
 namespace ExampleMod.Common.GlobalProjectiles
 {
@@ -22,7 +22,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 			trailActive = true;
 		}
 
-		public override void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (sayTimesHitOnThirdHit) {
 				ProjectileModificationGlobalNPC globalNPC = target.GetGlobalNPC<ProjectileModificationGlobalNPC>();
 				if (globalNPC.timesHitByModifiedProjectiles % 3 == 0) {

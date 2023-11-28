@@ -113,11 +113,6 @@ public struct NPCSpawnInfo
 	public bool DesertCave;
 
 	/// <summary>
-	/// Whether Plantera is defeated and the world is in hardmode. This isn't needed (it's easy to find by yourself), but it's a local flag in NPC.SpawnNPC, so it is included for completeness.
-	/// </summary>
-	public bool PlanteraDefeated;
-
-	/// <summary>
 	/// Whether or not the NPC is horizontally within the range near the player in which NPCs cannot spawn. If this is true, it also means that it is vertically outside of the range near the player in which NPCs cannot spawn.
 	/// </summary>
 	public bool SafeRangeX;

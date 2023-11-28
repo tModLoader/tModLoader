@@ -1,4 +1,7 @@
+using System;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -11,13 +14,22 @@ namespace Terraria.ModLoader.Config;
 /// Using serialization attributes such as [DefaultValue(5)] or [JsonIgnore] are critical for proper usage of ModConfig.
 /// tModLoader also provides its own attributes such as ReloadRequiredAttribute and LabelAttribute.
 /// </summary>
-public abstract class ModConfig
+public abstract class ModConfig : ILocalizedModType
 {
 	[JsonIgnore]
 	public Mod Mod { get; internal set; }
 
 	[JsonIgnore]
 	public string Name { get; internal set; }
+
+	[JsonIgnore]
+	public string FullName => $"{Mod.Name}/{Name}";
+
+	[JsonIgnore]
+	public virtual string LocalizationCategory => "Configs";
+
+	[JsonIgnore]
+	public virtual LocalizedText DisplayName => Language.GetOrRegister(this.GetLocalizationKey(nameof(DisplayName)), () => ConfigManager.GetLegacyLabelAttribute(GetType())?.LocalizationEntry ?? Regex.Replace(Name, "([A-Z])", " $1").Trim());
 
 	[JsonIgnore]
 	public abstract ConfigScope Mode { get; }
@@ -36,6 +48,11 @@ public abstract class ModConfig
 	/// </summary>
 	public virtual void OnChanged() { }
 
+	/// <inheritdoc cref="AcceptClientChanges(ModConfig, int, ref NetworkText)"/>
+	[Obsolete("Use the updated hook signature")]
+	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
+		=> true;
+
 	/// <summary>
 	/// Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload.
 	/// </summary>
@@ -43,7 +60,7 @@ public abstract class ModConfig
 	/// <param name="whoAmI">The client whoAmI</param>
 	/// <param name="message">A message that will be returned to the client, set this to the reason the server rejects the changes.</param>
 	/// <returns>Return false to reject client changes</returns>
-	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
+	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
 		=> true;
 
 	// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
@@ -61,7 +78,7 @@ public abstract class ModConfig
 	public virtual bool NeedsReload(ModConfig pendingConfig)
 	{
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(this)) {
-			var reloadRequired = ConfigManager.GetCustomAttribute<ReloadRequiredAttribute>(variable, this, null);
+			var reloadRequired = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(variable, this, null);
 
 			if (reloadRequired == null) {
 				continue;

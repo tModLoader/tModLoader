@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// Enables content instances to register with <see cref="Register(T)"/> towards retrieval via <see cref="ModContent.Find{T}(string)"/> and similar methods.
+/// </summary>
 public static class ModTypeLookup<T> where T : IModType
 {
 	private static readonly Dictionary<string, T> dict = new Dictionary<string, T>();
@@ -20,12 +24,25 @@ public static class ModTypeLookup<T> where T : IModType
 		}
 	}
 
+	/// <summary>
+	/// Registers the instance towards lookup via <see cref="ModContent.Find{T}(string)"/> and similar methods.
+	/// <br/>Should only be called once per instance. Registers legacy names specified via <see cref="LegacyNameAttribute"/> on the instance's type automatically.
+	/// </summary>
 	public static void Register(T instance)
 	{
 		RegisterWithName(instance, instance.Name, instance.FullName);
 
-		//Add legacy aliases, if the type has any.
-		foreach (string legacyName in LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType())) {
+		// Add legacy aliases, if the type has any.
+		RegisterLegacyNames(instance, LegacyNameAttribute.GetLegacyNamesOfType(instance.GetType()).ToArray());
+	}
+
+	/// <summary>
+	/// Registers the instance towards lookup via <see cref="ModContent.Find{T}(string)"/> and similar methods using any number of specified <paramref name="legacyNames"/>.
+	/// <br/>Also see <seealso cref="LegacyNameAttribute"/> which may be more convenient.
+	/// </summary>
+	public static void RegisterLegacyNames(T instance, params string[] legacyNames)
+	{
+		foreach (string legacyName in legacyNames) {
 			RegisterWithName(instance, legacyName, $"{instance.Mod?.Name ?? "Terraria"}/{legacyName}");
 		}
 	}

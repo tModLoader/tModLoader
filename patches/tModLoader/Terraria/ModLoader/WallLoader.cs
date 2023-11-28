@@ -19,6 +19,8 @@ public static class WallLoader
 	private static int nextWall = WallID.Count;
 	internal static readonly IList<ModWall> walls = new List<ModWall>();
 	internal static readonly IList<GlobalWall> globalWalls = new List<GlobalWall>();
+	/// <summary> Maps Wall type to the Item type that places the wall. </summary>
+	internal static readonly Dictionary<int, int> wallTypeToItemType = new();
 	private static bool loaded = false;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
@@ -79,7 +81,7 @@ public static class WallLoader
 		Array.Resize(ref TextureAssets.Wall, nextWall);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(WallID), true);
+		LoaderUtils.ResetStaticMembers(typeof(WallID));
 
 		//Etc
 		Array.Resize(ref Main.wallHouse, nextWall);
@@ -117,6 +119,7 @@ public static class WallLoader
 		walls.Clear();
 		nextWall = WallID.Count;
 		globalWalls.Clear();
+		wallTypeToItemType.Clear();
 	}
 
 	//change type of Terraria.Tile.wall to ushort and fix associated compile errors
@@ -196,7 +199,14 @@ public static class WallLoader
 				return false;
 			}
 		}
-		return GetWall(type)?.Drop(i, j, ref dropType) ?? true;
+		ModWall modWall = GetWall(type);
+		if (modWall != null) {
+			if (wallTypeToItemType.TryGetValue(type, out int value)) {
+				dropType = value;
+			}
+			return modWall.Drop(i, j, ref dropType);
+		}
+		return true;
 	}
 	//in Terraria.WorldGen.KillWall after if statements setting fail to true call
 	//  WallLoader.KillWall(i, j, tile.wall, ref fail);
@@ -260,7 +270,7 @@ public static class WallLoader
 		ModWall modWall = GetWall(type);
 
 		if (modWall != null) {
-			if(!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
+			if (!modWall.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber))
 				return false;
 		}
 
@@ -316,5 +326,18 @@ public static class WallLoader
 		}
 
 		GetWall(type)?.PlaceInWorld(i, j, item);
+	}
+
+	internal static void FinishSetup()
+	{
+		for (int k = 0; k < ItemLoader.ItemCount; k++) {
+			Item item = ContentSamples.ItemsByType[k];
+			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
+				if (item.createWall > -1) {
+					// TryAdd won't override existing value if present. Existing ModWall.RegisterItemDrop entries take precedence
+					WallLoader.wallTypeToItemType.TryAdd(item.createWall, item.type);
+				}
+			}
+		}
 	}
 }

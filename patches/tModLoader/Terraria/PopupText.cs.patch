@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -1,7 +_,9 @@
+@@ -1,36 +_,145 @@
  using System;
  using Microsoft.Xna.Framework;
  using Terraria.GameContent;
@@ -10,24 +10,225 @@
  
  namespace Terraria;
  
-@@ -31,6 +_,9 @@
++/// <summary>
++/// Represents an in-world floating text object. <br/>
++/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
++/// </summary>
+ public class PopupText
+ {
++	/// <summary>
++	/// The position of this <see cref="PopupText"/> in world coordinates.
++	/// </summary>
+ 	public Vector2 position;
++
++	/// <summary>
++	/// The velocity of this <see cref="PopupText"/> in world coordinates per tick.
++	/// </summary>
+ 	public Vector2 velocity;
++
++	/// <summary>
++	/// The opacity of this <see cref="PopupText"/> in the range [0f, 1f], where <c>0f</c> is transparent and <c>1f</c> is opaque.
++	/// </summary>
+ 	public float alpha;
++
++	/// <summary>
++	/// The direction this <see cref="PopupText"/>'s <see cref="alpha"/> changes in.
++	/// </summary>
+ 	public int alphaDir = 1;
++
++	/// <summary>
++	/// The text displayed by this <see cref="PopupText"/>.
++	/// </summary>
+ 	public string name;
++
++	/// <summary>
++	/// The optional stack size appended to <see cref="name"/>.
++	/// <br/> Will only be displayed is <c><see cref="stack"/> &gt; 1</c>.
++	/// </summary>
+ 	public long stack;
++
++	/// <summary>
++	/// The scale this <see cref="PopupText"/> draws at.
++	/// </summary>
+ 	public float scale = 1f;
++
++	/// <summary>
++	/// The clockwise rotation of this <see cref="PopupText"/> in radians.
++	/// </summary>
+ 	public float rotation;
++
++	/// <summary>
++	/// The color of this <see cref="PopupText"/>'s text.
++	/// </summary>
+ 	public Color color;
++
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> is visible in the world.
++	/// </summary>
+ 	public bool active;
++
++	/// <summary>
++	/// The time in ticks this <see cref="PopupText"/> will remain for until it starts to disappear.
++	/// </summary>
+ 	public int lifeTime;
++
++	/// <summary>
++	/// The default <see cref="lifeTime"/> of a <see cref="PopupText"/>.
++	/// </summary>
+ 	public static int activeTime = 60;
++
++	/// <summary>
++	/// The number of <see cref="active"/> <see cref="PopupText"/>s in <see cref="Main.popupText"/>.
++	/// <br/> Assigned after <see cref="UpdateItemText"/> runs.
++	/// </summary>
+ 	public static int numActive;
++
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> can't be modified when creating a new item <see cref="PopupText"/>.
++	/// </summary>
+ 	public bool NoStack;
++
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> is specifically for coins.
++	/// </summary>
+ 	public bool coinText;
++
++	/// <summary>
++	/// The value of coins this <see cref="PopupText"/> represents in the range [0, 999999999].
++	/// </summary>
+ 	public long coinValue;
++
++	/// <summary>
++	/// The index in <see cref="Main.popupText"/> of the last known sonar text.
++	/// <br/> Assign and clear using <see cref="AssignAsSonarText(int)"/> and <see cref="ClearSonarText"/>.
++	/// </summary>
+ 	public static int sonarText = -1;
++
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> will draw in the Expert Mode rarity color.
++	/// </summary>
+ 	public bool expert;
++
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> will draw in the Master Mode rarity color.
++	/// </summary>
+ 	public bool master;
++
++	/// <summary>
++	/// Marks this <see cref="PopupText"/> as this player's Sonar Potion text.
++	/// </summary>
+ 	public bool sonar;
++
++	/// <summary>
++	/// The context in which this <see cref="PopupText"/> was created.
++	/// </summary>
+ 	public PopupTextContext context;
++
++	/// <summary>
++	/// The NPC type (<see cref="NPC.type"/>) this <see cref="PopupText"/> is bound to, or <c>0</c> if not bound to an NPC.
++	/// </summary>
  	public int npcNetID;
++
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> is not bound to an item or NPC.
++	/// </summary>
  	public bool freeAdvanced;
  
 +	// Added by TML.
++	/// <summary>
++	/// The <see cref="ItemRarityID"/> this <see cref="PopupText"/> uses for its main color.
++	/// </summary>
 +	public int rarity;
 +
++	/// <summary>
++	/// If <see langword="true"/>, this <see cref="PopupText"/> is not for an item.
++	/// </summary>
  	public bool notActuallyAnItem {
  		get {
  			if (npcNetID == 0)
-@@ -64,6 +_,7 @@
+@@ -42,6 +_,9 @@
+ 
+ 	public static float TargetScale => Main.UIScale / Main.GameViewMatrix.Zoom.X;
+ 
++	/// <summary>
++	/// Destroys the <see cref="PopupText"/> in <see cref="Main.popupText"/> at the index <see cref="sonarText"/> if that text has <see cref="sonar"/> set to <see langword="true"/>.
++	/// </summary>
+ 	public static void ClearSonarText()
+ 	{
+ 		if (sonarText >= 0 && Main.popupText[sonarText].sonar) {
+@@ -50,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Resets a <see cref="PopupText"/> to its default values.
++	/// </summary>
++	/// <param name="text">The <see cref="PopupText"/> to reset.</param>
+ 	public static void ResetText(PopupText text)
+ 	{
+ 		text.NoStack = false;
+@@ -64,8 +_,20 @@
  		text.rotation = 0f;
  		text.alpha = 1f;
  		text.alphaDir = -1;
 +		text.rarity = 0;
  	}
  
++	/// <summary>
++	/// Creates a new <see cref="PopupText"/> in <see cref="Main.popupText"/> at <paramref name="position"/> using the settings from <paramref name="request"/>.
++	/// <br/> The new <see cref="PopupText"/> is not bound to a specific <see cref="Item"/> or <see cref="NPCID"/>.
++	/// <br/> All <see cref="PopupText"/>s created using this method have <c><see cref="context"/> == <see cref="PopupTextContext.Advanced"/></c> and <see cref="freeAdvanced"/> set to <see langword="true"/>.
++	/// </summary>
++	/// <param name="request">The settings for the new <see cref="PopupText"/>.</param>
++	/// <param name="position">The position of the new <see cref="PopupText"/> in world coordinates.</param>
++	/// <returns>
++	/// <c>-1</c> if a new <see cref="PopupText"/> could not be made, if <c><see cref="Main.netMode"/> == <see cref="NetmodeID.Server"/></c>, or if the current player has item text disabled (<see cref="Main.showItemText"/>).
++	/// <br/> Otherwise, return the index in <see cref="Main.popupText"/> of the new <see cref="PopupText"/>
++	/// </returns>
  	public static int NewText(AdvancedPopupRequest request, Vector2 position)
+ 	{
+ 		if (!Main.showItemText)
+@@ -94,6 +_,20 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Creates a new <see cref="PopupText"/> in <see cref="Main.popupText"/> at <paramref name="position"/> bound to a given <paramref name="npcNetID"/>.
++	/// </summary>
++	/// <param name="context">
++	/// The <see cref="PopupTextContext"/> in which this <see cref="PopupText"/> was created.
++	/// <br/> If <c><paramref name="context"/> == <see cref="PopupTextContext.SonarAlert"/></c>, then <see cref="color"/> will be a shade of red.
++	/// </param>
++	/// <param name="npcNetID">The <see cref="NPCID"/> this <see cref="PopupText"/> represents.</param>
++	/// <param name="position"></param>
++	/// <param name="stay5TimesLonger">If <see langword="true"/>, then this <see cref="PopupText"/> will spawn with <c><see cref="lifeTime"/> == 5 * 60</c>.</param>
++	/// <returns>
++	/// <inheritdoc cref="NewText(AdvancedPopupRequest, Vector2)"/>
++	/// <br/> Also returns <c>-1</c> if <c><paramref name="npcNetID"/> == 0</c>.
++	/// </returns>
+ 	public static int NewText(PopupTextContext context, int npcNetID, Vector2 position, bool stay5TimesLonger)
+ 	{
+ 		if (!Main.showItemText)
+@@ -132,6 +_,19 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Creates a new <see cref="PopupText"/> in <see cref="Main.popupText"/> at the center of the picked-up <paramref name="newItem"/>.
++	/// <br/> If a <see cref="PopupText"/> already exists with the <see cref="Item.AffixName"/> of <paramref name="newItem"/>, that text will instead be modified unless <paramref name="noStack"/> is <see langword="true"/>.
++	/// </summary>
++	/// <param name="context">The <see cref="PopupTextContext"/> in which this <see cref="PopupText"/> was created.</param>
++	/// <param name="newItem">The <see cref="Item"/> to ceate the new text from.</param>
++	/// <param name="stack">The stack of <paramref name="newItem"/>.</param>
++	/// <param name="noStack">If <see langword="true"/>, always create a new <see cref="PopupText"/> instead of modifying an existing one.</param>
++	/// <param name="longText">If <see langword="true"/>, then this <see cref="PopupText"/> will spawn with <c><see cref="lifeTime"/> == 5 * 60</c>.</param>
++	/// <returns>
++	/// <inheritdoc cref="NewText(AdvancedPopupRequest, Vector2)"/>
++	/// <br/> Also returns <c>-1</c> if <see cref="Item.Name"/> is <see langword="null"/>.
++	/// </returns>
+ 	public static int NewText(PopupTextContext context, Item newItem, int stack, bool noStack = false, bool longText = false)
+ 	{
+ 		if (!Main.showItemText)
 @@ -256,10 +_,14 @@
  				popupText2.color = new Color(5, 200, 255);
  			else if (newItem.rare == 10)
@@ -44,13 +245,67 @@
  			popupText2.name = newItem.AffixName();
  			popupText2.stack = stack;
  			popupText2.velocity.Y = -7f;
-@@ -460,6 +_,9 @@
- 			color = new Color((byte)Main.DiscoR, (byte)Main.DiscoG, (byte)Main.DiscoB, Main.mouseTextColor);
+@@ -343,6 +_,10 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Marks the <see cref="PopupText"/> in <see cref="Main.popupText"/> at <paramref name="sonarTextIndex"/> as sonar text, assigning <see cref="sonarText"/> and setting <see cref="sonar"/> to <see langword="true"/>.
++	/// </summary>
++	/// <param name="sonarTextIndex"></param>
+ 	public static void AssignAsSonarText(int sonarTextIndex)
+ 	{
+ 		sonarText = sonarTextIndex;
+@@ -350,6 +_,11 @@
+ 			Main.popupText[sonarText].sonar = true;
+ 	}
+ 
++	/// <summary>
++	/// Converts a value in copper coins to a formatted string.
++	/// </summary>
++	/// <param name="coinValue">The value to format in copper coins.</param>
++	/// <returns>The formatted text.</returns>
+ 	public static string ValueToName(long coinValue)
+ 	{
+ 		int num = 0;
+@@ -439,6 +_,10 @@
+ 			name = name.Substring(0, name.Length - 1);
+ 	}
+ 
++	/// <summary>
++	/// Updates this <see cref="PopupText"/>.
++	/// </summary>
++	/// <param name="whoAmI">The index in <see cref="Main.popupText"/> of this <see cref="PopupText"/>.</param>
+ 	public void Update(int whoAmI)
+ 	{
+ 		if (!active)
+@@ -461,6 +_,9 @@
  		else if (master)
  			color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
-+
+ 
 +		if (rarity > ItemRarityID.Purple)
 +			color = RarityLoader.GetRarity(rarity).RarityColor;
- 
++
  		bool flag = false;
  		Vector2 textHitbox = GetTextHitbox();
+ 		Rectangle rectangle = new Rectangle((int)(position.X - textHitbox.X / 2f), (int)(position.Y - textHitbox.Y / 2f), (int)textHitbox.X, (int)textHitbox.Y);
+@@ -528,6 +_,9 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="Update(int)"/> on all <see cref="active"/> <see cref="PopupText"/>s in <see cref="Main.popupText"/> and assigns  <see cref="numActive"/>.
++	/// </summary>
+ 	public static void UpdateItemText()
+ 	{
+ 		int num = 0;
+@@ -541,6 +_,9 @@
+ 		numActive = num;
+ 	}
+ 
++	/// <summary>
++	/// Sets all <see cref="PopupText"/>s in <see cref="Main.popupText"/> to a new instance and assigns <see cref="numActive"/> to <c>0</c>.
++	/// </summary>
+ 	public static void ClearAll()
+ 	{
+ 		for (int i = 0; i < 20; i++) {

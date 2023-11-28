@@ -36,3 +36,13 @@
  				writer.Write((short)item2.stack);
  			}
  		}
+@@ -172,7 +_,8 @@
+ 			return;
+ 
+ 		Kill(num, num2);
++		if (ModLoader.TileLoader.Drop(callX, callY, 475))
+-		Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, 3977);
++			Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, 3977);
+ 		WorldGen.destroyObject = true;
+ 		for (int k = num; k < num + 3; k++) {
+ 			for (int l = num2; l < num2 + 4; l++) {

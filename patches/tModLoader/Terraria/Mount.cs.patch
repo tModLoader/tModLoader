@@ -20,6 +20,16 @@
  		public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureExtra = Asset<Texture2D>.Empty;
+@@ -150,7 +_,8 @@
+ 		public int dashingFrameCount;
+ 		public int dashingFrameDelay;
+ 		public bool Minecart;
++		//TODO TML: Made internal, will go away in 1.4.5
+-		public bool MinecartDirectional;
++		internal bool MinecartDirectional;
+ 		public Vector3 lightColor = Vector3.One;
+ 		public bool emitsLight;
+ 		public MountDelegatesData delegations = new MountDelegatesData();
 @@ -168,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
@@ -81,6 +91,28 @@
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
+@@ -2013,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static void SetAsHorse(MountData newMount, int buff, Asset<Texture2D> texture)
++	public static void SetAsHorse(MountData newMount, int buff, Asset<Texture2D> texture)
+ 	{
+ 		newMount.spawnDust = 3;
+ 		newMount.buff = buff;
+@@ -2075,6 +_,12 @@
+ 		}
+ 	}
+ 
++	//TODO 1.4.5: Vanilla will remove the 2 buff overload
++	public static void SetAsMinecart(MountData newMount, int buff, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
++	{
++		SetAsMinecart(newMount, buff, buff, texture, verticalOffset, playerVerticalOffset);
++	}
++
+ 	private static void SetAsMinecart(MountData newMount, int buffToLeft, int buffToRight, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
+ 	{
+ 		newMount.Minecart = true;
 @@ -2131,13 +_,14 @@
  
  	public static int GetHeightBoost(int MountType)

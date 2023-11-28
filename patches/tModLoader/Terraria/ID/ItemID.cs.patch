@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -2,10 +_,11 @@
+@@ -2,21 +_,57 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -11,21 +11,292 @@
 -public class ItemID
 +public partial class ItemID
  {
++	/// <summary>
++	/// Determines the strength an NPC's banner has on players' interactions with that NPC. Used in <see cref="Sets.BannerStrength"/>
++	/// </summary>
  	public struct BannerEffect
  	{
-@@ -36,9 +_,9 @@
++		/// <summary>
++		/// Represents a completely decorative banner.
++		/// </summary>
+ 		public static readonly BannerEffect None = new BannerEffect(0f);
++
++		/// <summary>
++		/// Represents a significantly weakened banner.
++		/// </summary>
+ 		public static readonly BannerEffect Reduced = new BannerEffect(0.2f);
++
++		/// <summary>
++		/// The percent of damage dealt to the NPC this banner represents in Normal Mode.
++		/// </summary>
+ 		public readonly float NormalDamageDealt;
++
++		/// <summary>
++		/// The percent of damage dealt to the NPC this banner represents in Expert Mode or higher.
++		/// </summary>
+ 		public readonly float ExpertDamageDealt;
++
++		/// <summary>
++		/// The percent of damage dealt to players by the NPC this banner represents in Normal Mode.
++		/// </summary>
+ 		public readonly float NormalDamageReceived;
++
++		/// <summary>
++		/// The percent of damage dealt to players by the NPC this banner represents in Expert Mode or higher.
++		/// </summary>
+ 		public readonly float ExpertDamageReceived;
++
++		/// <summary>
++		/// If <see langword="true"/>, this banner actually affects players' interactions with NPCs.
++		/// </summary>
+ 		public readonly bool Enabled;
+ 
++		/// <summary>
++		/// Creates a new <see cref="BannerEffect"/> of <paramref name="strength"/> strength.
++		/// </summary>
++		/// <param name="strength">The strength of this banner compared to a standard banner.</param>
++		/// <remarks>This banner sets <see cref="Enabled"/> to <see langword="true"/> as long as <c><paramref name="strength"/> != 0f</c>.</remarks>
+ 		public BannerEffect(float strength = 1f)
+ 		{
+ 			NormalDamageDealt = 1f + strength * 0.5f;
+@@ -26,6 +_,10 @@
+ 			Enabled = strength != 0f;
+ 		}
+ 
++		/// <summary>
++		/// Creates a new <see cref="BannerEffect"/> with <see cref="NormalDamageDealt"/>, <see cref="ExpertDamageDealt"/>, <see cref="NormalDamageReceived"/>, and <see cref="ExpertDamageReceived"/> set to the provided values.
++		/// </summary>
++		/// <remarks>This banner always has <see cref="Enabled"/> set to <see langword="true"/>, even if all provided values are <c>0f</c>.</remarks>
+ 		public BannerEffect(float normalDamageDealt, float expertDamageDealt, float normalDamageReceived, float expertDamageReceived)
+ 		{
+ 			NormalDamageDealt = normalDamageDealt;
+@@ -36,9 +_,17 @@
  		}
  	}
  
 -	public class Sets
 +	public partial class Sets
  	{
++		/// <summary>
++		/// Used for creating sets indexed by item type (<see cref="Item.type"/>).
++		/// </summary>
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
++
++		/// <summary>
++		/// The list of items processed after normal items in <see cref="ContentSamples.Initialize"/>.
++		/// <br/> Used for the biome keys, as the old biome key molds interfere with the keys' data in <see cref="ContentSamples.ItemPersistentIdsByNetIds"/> and <see cref="ContentSamples.ItemNetIdsByPersistentIds"/>.
++		/// </summary>
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
-@@ -303,17 +_,26 @@
+@@ -46,17 +_,85 @@
+ 			1536,
+ 			1537
+ 		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will not burn when dropped in lava, even if it has a <see cref="Item.rare"/> of <see cref="ItemRarityID.White"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// This set does not affect <see cref="GuideVoodooDoll"/>, which will always burn when dropped into lava.
++		/// </remarks>
+ 		public static bool[] IsLavaImmuneRegardlessOfRarity = Factory.CreateBoolSet(false, 318, 312, 173, 174, 175, 4422, 2701, 205, 206, 207, 1128, 2340, 2739, 2492, 1127, 85);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item has a right-click features that can be auto-reused as long as the right mouse button is held.
++		/// <br/>Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] ItemsThatAllowRepeatedRightClick = Factory.CreateBoolSet(false, 3384, 3858, 3852);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then the <see cref="NPCID.Demolitionist"/> can move in as long as any player has an item of that type in their inventory.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] ItemsThatCountAsBombsForDemolitionistToSpawn = Factory.CreateBoolSet(false, 168, 2586, 3116, 166, 235, 3115, 167, 2896, 3547, 3196, 4423, 1130, 1168, 4824, 4825, 4826, 4827, 4908, 4909);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will be deleted from inventories on world or player load.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] ItemsThatShouldNotBeInInventory = Factory.CreateBoolSet(false, 58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 5013);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will have a small skull icon (<see cref="ExtrasID.UnsafeIndicator"/>) drawn over them in the world and in inventories.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] DrawUnsafeIndicator = Factory.CreateBoolSet(false, 5363, 5365, 5366, 5367, 5368, 5369, 5370, 5371, 5372, 5373, 5376, 5375, 5374, 3988, 5384);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>) and if <c><see cref="Item.useStyle"/> == <see cref="ItemUseStyleID.Swing"/></c>, then that item will use a slightly offset <see cref="Player.itemLocation"/> when being used.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] UsesBetterMeleeItemLocation = Factory.CreateBoolSet(false, 426);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will have its in-inventory effects even when contained in the Void Vault (<see cref="Player.bank4"/>).
++		/// Defaults to <see langword="true"/>.
++		/// </summary>
+ 		public static bool[] WorksInVoidBag = Factory.CreateBoolSet(true, 4346, 5095);
++
++		/// <summary>
++		/// <strong>Only checked for vanilla IDs.</strong>
++		/// <br/> If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be placed using Smart Cursor on dirt.
++		/// <br/> Additionally, those items cannot be used when trying to smart-place blocks.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] GrassSeeds = Factory.CreateBoolSet(false, 62, 59, 2171, 369, 195, 194, 5214);
++
++		/// <summary>
++		/// If <c>&gt; 0</c> for a given item type (<see cref="Item.type"/>), then that item will transform into the retrieved item type when dropped into shimmer (<see cref="Entity.shimmerWet"/>).
++		/// <br/> If <c>&lt;= 0</c> for a given item type, then that item will attempt to decraft itself.
++		/// <br/> Defaults to <c>-1</c>.
++		/// <br/> This takes precedence over both critter items (<c><see cref="Item.makeNPC"/> &gt; 0</c>) transforming into NPCs and items decrafting into the ingredients used to craft the item.
++		/// </summary>
+ 		public static int[] ShimmerTransformToItem = Factory.CreateIntSet(-1, 3460, 947, 947, 1106, 1106, 366, 366, 1105, 1105, 365, 365, 1104, 1104, 364, 364, 702, 702, 13, 13, 701, 701, 14, 14, 700, 700, 11, 11, 699, 699, 12, 12, 3, 3, 2, 182, 178, 178, 179, 179, 177, 177, 180, 180, 181, 181, 3, 4843, 182, 4836, 182, 4842, 178, 4835, 178, 4841, 179, 4834, 179, 4840, 177, 4833, 177, 4832, 180, 4839, 180, 4838, 181, 4831, 181, 4844, 999, 4837, 999, 620, 9, 619, 9, 911, 9, 621, 9, 2503, 9, 2504, 9, 2260, 9, 1729, 9, 5215, 9, 9, 2, 3271, 169, 3272, 169, 3276, 370, 3274, 370, 3339, 408, 3338, 408, 3277, 1246, 3275, 1246, 1127, 1124, 1125, 1124, 4503, 5363, 134, 5417, 137, 5419, 139, 5421, 141, 5423, 143, 5425, 145, 5427, 415, 5429, 416, 5431, 192, 5433, 214, 5435, 135, 5365, 1379, 5367, 1378, 5366, 140, 5368, 1381, 5370, 1380, 5369, 138, 5371, 1383, 5373, 1382, 5372, 1102, 5376, 3340, 5375, 3273, 5374, 664, 593, 3982, 3203, 3983, 3204, 3984, 3205, 3985, 3206, 4406, 4405, 3981, 2336, 3986, 3207, 3980, 2335, 3987, 3208, 4878, 4877, 4408, 4407, 5003, 5002, 3979, 2334, 3064, 5381, 3086, 3081, 3081, 3086, 1534, 1529, 1535, 1530, 1536, 1531, 1537, 1532, 4714, 4712, 1533, 1528, 206, 207, 207, 1128, 1128, 206, 832, 4281, 3818, 3824, 3824, 3832, 3832, 3829, 3829, 3818, 3819, 3825, 3825, 3833, 3833, 3830, 3830, 3819, 3820, 3826, 3826, 3834, 3834, 3831, 3831, 3820, 960, 228, 961, 229, 962, 230, 228, 960, 229, 961, 230, 962, 956, 102, 957, 101, 958, 100, 102, 956, 101, 957, 100, 958, 959, 151, 151, 959, 955, 92, 92, 955, 954, 90, 90, 954, 3093, 4345, 4345, 3093, 215, 5346, 5356, 5346, 3000, 2999, 2999, 3000, 411, 410, 410, 411, 1725, 276, 276, 1725, 2886, 66, 67, 66, 195, 194, 194, 195, 4389, 5128, 4377, 5128, 4378, 5128, 4354, 5128, 5127, 5128, 8, 5353, 427, 5353, 3004, 5353, 523, 5353, 433, 5353, 429, 5353, 974, 5353, 1333, 5353, 1245, 5353, 3114, 5353, 430, 5353, 3045, 5353, 428, 5353, 2274, 5353, 431, 5353, 432, 5353, 4383, 5353, 4384, 5353, 4385, 5353, 4386, 5353, 4387, 5353, 4388, 5353, 5293, 5353, 966, 5357, 52, 5347, 280, 277, 1304, 215, 40, 5348, 265, 5348, 931, 5380, 1614, 5380, 848, 857, 857, 848, 866, 934, 934, 866, 532, 5355, 3225, 159, 3120, 3096, 3096, 3037, 3037, 3120, 2373, 2374, 2374, 2375, 2375, 2373, 855, 3033, 854, 855, 3033, 854, 490, 491, 491, 489, 489, 2998, 2998, 490, 892, 886, 886, 892, 885, 887, 887, 885, 891, 890, 890, 891, 893, 889, 889, 893, 888, 3781, 3781, 888, 1322, 906, 906, 1322, 531, 5336, 29, 5337, 1291, 5338, 109, 5339, 4414, 5340, 2895, 5341, 2222, 5343, 4009, 5342, 4282, 5342, 4290, 5342, 4291, 5342, 4293, 5342, 4286, 5342, 4295, 5342, 4284, 5342, 4289, 5342, 4285, 5342, 4296, 5342, 4292, 5342, 4294, 5342, 4283, 5342, 4287, 5342, 4288, 5342, 4297, 5342, 5278, 5342, 5277, 5342);
++
++		/// <summary>
++		/// If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will be treated as the retrieved item type when dropped into shimmer (<see cref="Entity.shimmerWet"/>).
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
+ 		public static int[] ShimmerCountsAsItem = Factory.CreateIntSet(-1, 5358, 5437, 5361, 5437, 5360, 5437, 5359, 5437, 5455, 5323);
++
++		/// <summary>
++		/// If <c>!= 0</c> for a given item type (<see cref="Item.type"/>), then that item will spawn with <see cref="Item.timeSinceItemSpawned"/> set to the retrieved value.
++		/// <br/> If <c>== 0</c> for a given item type, then that item is eligible for spawn protection, which massively decreases <see cref="Item.timeSinceItemSpawned"/> to prevent natural despawning.
++		/// <br/> Defaults to <c>0</c>.
++		/// </summary>
++		/// <remarks>Items with non-zero values in this set are extremely common drops and thus should be despawned first if the item cap is reached.</remarks>
+ 		public static int[] OverflowProtectionTimeOffset = Factory.CreateIntSet(0, 2, 200, 3, 150, 61, 150, 836, 150, 409, 150, 593, 200, 664, 100, 834, 100, 833, 100, 835, 100, 169, 100, 370, 100, 1246, 100, 408, 100, 3271, 150, 3277, 150, 3339, 150, 3276, 150, 3272, 150, 3274, 150, 3275, 150, 3338, 150, 176, 100, 172, 200, 424, 50, 1103, 50, 3087, 100, 3066, 100);
++
++		/// <summary>
++		/// The list of valid item types (<see cref="Item.type"/>) to be thrown by the <see cref="NPCID.BigMimicJungle"/>.
++		/// </summary>
+ 		public static int[] ItemsForStuffCannon = new int[50] {
+ 			2,
+ 			3,
+@@ -109,6 +_,18 @@
+ 			192,
+ 			412
+ 		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can always be quick-used on gamepads.
++		/// <br/> If <see langword="false"/> for a given item type, then that item can never be quick-used on gamepads.
++		/// <br/> If <see langword="null"/> for a given item type, then vanilla decides if that item can be quick used on gamepads.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
++		/// <remarks>
++		/// Checked in <see cref="Item.CanBeQuickUsed"/>.
++		/// <br/> By default, items that heal health (<c><see cref="Item.healLife"/> &gt; 0</c>), heal mana (<c><see cref="Item.healMana"/> &gt; 0</c>), or apply a temporary buff (<c><see cref="Item.buffType"/> &gt; 0 &amp;&amp; <see cref="Item.buffTime"/> &gt; 0</c>) can be quick used.
++		/// <br/> The value of this set overrides the default value.
++		/// </remarks>
+ 		public static bool?[] CanBeQuickusedOnGamepad = Factory.CreateCustomSet<bool?>(null, new object[30] {
+ 			(short)50,
+ 			true,
+@@ -141,6 +_,18 @@
+ 			(short)4819,
+ 			true
+ 		});
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will always forcibly wake up any players who use it.
++		/// <br/> If <see langword="false"/> for a given item type, then that item will never forcibly wake up any players who use it.
++		/// <br/> If <see langword="null"/> for a given item type, then vanilla decides if that item forcibly wake up any players who use it.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
++		/// <remarks>
++		/// Checked in <see cref="GameContent.PlayerSleepingHelper.UpdateState(Player)"/>.
++		/// <br/> By default, fishing rods (<c><see cref="Item.fishingPole"/> &gt; 0</c>) and true melee weapons (<c><see cref="Item.damage"/> &gt; 0 &amp;&amp; !<see cref="Item.noMelee"/></c>) will wake up sleeping players.
++		/// <br/> The value of this set overrides the default value.
++		/// </remarks>
+ 		public static bool?[] ForcesBreaksSleeping = Factory.CreateCustomSet<bool?>(null, new object[6] {
+ 			(short)1991,
+ 			true,
+@@ -149,9 +_,37 @@
+ 			(short)3183,
+ 			true
+ 		});
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will not play <see cref="Item.UseSound"/> when first used.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] SkipsInitialUseSound = Factory.CreateBoolSet(false, 2350, 4870);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will display <see cref="Lang.tip"/>[59] as the first line of its tooltips as long as Plantera has not been defeated (<see cref="NPC.downedPlantBoss"/>).
++		/// <br/> This set does <strong>not</strong> prevent usage pre-Plantera.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] UsesCursedByPlanteraTooltip = Factory.CreateBoolSet(false, 1533, 1534, 1535, 1536, 1537, 4714);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a kite.
++		/// <br/> Kites cannot be used if a player is on a rope (<see cref="Player.pulley"/>).
++		/// <br/> Kites are held out using <see cref="ItemHoldStyleID.HoldFront"/> if their projectile is active and not held out at all if it is not.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsAKite = Factory.CreateBoolSet(false, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4674, 4675, 4676, 4677, 4681, 4683, 4684);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will always be consumed on use if <see cref="Item.consumable"/> is <see langword="true"/>.
++		/// <br/> If <see langword="false"/> for a given item type, then that item will never be consumed on use if <see cref="Item.consumable"/> is <see langword="true"/>.
++		/// <br/> If <see langword="null"/> for a given item type, then vanilla decides if that item will be consumed on use if <see cref="Item.consumable"/> is <see langword="true"/>.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
++		/// <remarks>
++		/// You may also use <see cref="GlobalItem.ConsumeItem(Item, Player)"/> or <see cref="ModItem.ConsumeItem(Player)"/> to prevent consumption. However, these methods cannot force consumption.
++		/// </remarks>
+ 		public static bool?[] ForceConsumption = Factory.CreateCustomSet<bool?>(null, new object[12] {
+ 			(short)2350,
+ 			false,
+@@ -166,14 +_,43 @@
+ 			(short)4344,
+ 			true
+ 		});
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will run <see cref="Projectile.CheckUsability(Player, ref bool)"/> on every <see cref="Projectile"/> the using <see cref="Player"/> owns before usage is attempted.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] HasAProjectileThatHasAUsabilityCheck = Factory.CreateBoolSet(false, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4674, 4675, 4676, 4677, 4681, 4683, 4684);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is allowed to receive prefixes.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// </summary>
++		/// <remarks>
++		/// Checked in <see cref="Item.CanHavePrefixes"/>, which contains other prefix restrictions.
++		/// <br/> If you would like to prevent an item from receiving specific prefixes, use <see cref="ModItem.AllowPrefix(int)"/>, <see cref="GlobalItem.AllowPrefix(Item, int)"/>, or <see cref="ModPrefix.CanRoll(Item)"/>.
++		/// </remarks>
+ 		public static bool[] CanGetPrefixes = Factory.CreateBoolSet(true, 267, 1307, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 576, 1596, 1597, 1598, 1599, 1600, 1601, 1602, 1603, 1604, 1605, 1606, 1607, 1608, 1609, 1610, 1963, 1964, 1965, 2742, 3044, 3235, 3236, 3237, 3370, 3371, 3796, 3869, 4077, 4078, 4079, 4080, 4081, 4082, 4237, 4356, 4357, 4358, 4421, 4606, 4979, 4985, 4990, 4991, 4992, 5006, 5014, 5015, 5016, 5017, 5018, 5019, 5020, 5021, 5022, 5023, 5024, 5025, 5026, 5027, 5028, 5029, 5030, 5031, 5032, 5033, 5034, 5035, 5036, 5037, 5038, 5039, 5040, 5044, 5112, 5362);
++
++		/// <summary>
++		/// The list of item types (<see cref="Item.type"/>) for non-colorful dye effects.
++		/// <br/> Non-colorful dyes do not change the color of the texture they are applied to, but rather add effects.
++		/// </summary>
+ 		public static List<int> NonColorfulDyeItems = new List<int> {
+ 			3599,
+ 			3530,
+ 			3534
+ 		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <strong>shader id</strong>, then that shader does not change the color of whatever it is applied to.
++		/// <br/> <strong>Do not manually add values to this set.</strong> Values in this set are generated using the item types (<see cref="Item.type"/>) in <see cref="NonColorfulDyeItems"/>.
++		/// </summary>
+ 		public static bool[] ColorfulDyeValues = new bool[0];
++
++		/// <summary>
++		/// If not <see langword="null"/> for a given item type (<see cref="Item.type"/>), then that item will place special tile styles on grass when used. See <see cref="FlowerPacketInfo"/> for more info.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
+ 		public static FlowerPacketInfo[] flowerPacketInfo = Factory.CreateCustomSet<FlowerPacketInfo>(null, new object[18] {
+ 			(short)4041,
+ 			new FlowerPacketInfo {
+@@ -303,18 +_,91 @@
  				}
  			}
  		});
@@ -33,6 +304,7 @@
 +		/// <summary> Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe, but some items such as coins and void bag hide the tooltip for aesthetic reasons. </summary>
  		public static bool[] IsAMaterial = Factory.CreateBoolSet();
 -		public static int[] IsCrafted = Factory.CreateIntSet();
++
 +		/// <summary> Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the Recipe that results in this item in <see cref="Main.recipe"/> array. Inner array contains multiple results for multiple recipes in order of creation</summary>
 +		public static int[][] CraftingRecipeIndices;
 +
@@ -41,22 +313,139 @@
  		public static int[] IsCraftedCorruption = Factory.CreateIntSet();
 +		*/
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will always be allowed to be picked up, even if <see cref="Player.preventAllItemPickups"/> is <see langword="true"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IgnoresEncumberingStone = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
++
++		/// <summary>
++		/// If <c>!= 1f</c> for a given item type (<see cref="Item.type"/>), then that item will have the damage in its tooltip multiplied by the retrieved value. Useful for items with damage values that don't accurately convey the typical damage. Mainly used by flails to show the boosted damage in the launching forward state.
++		/// <br/> Defaults to <c>1f</c>.
++		/// </summary>
  		public static float[] ToolTipDamageMultiplier = Factory.CreateFloatSet(1f, 162f, 2f, 801f, 2f, 163f, 2f, 220f, 2f, 389f, 2f, 1259f, 2f, 4272f, 2f, 5011f, 2f, 5012f, 2f);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item cannot show up as Bestiary loot and can always be picked up by the player.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// This set does <strong>not</strong> make items disappear from the inventory when picked up. Use <see cref="ModItem.OnPickup(Player)"/> or <see cref="GlobalItem.OnPickup(Item, Player)"/> for that.
++		/// </remarks>
  		public static bool[] IsAPickup = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a drill.
++		/// <br/> Drills have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// This set does <strong>not</strong> allow an <see cref="Item"/> to damage tiles -- use <see cref="Item.pick"/> for that.
++		/// </remarks>
  		public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a chainsaw.
++		/// <br/> Chainsaws have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// This set does <strong>not</strong> allow an <see cref="Item"/> to damage trees -- use <see cref="Item.axe"/> for that.
++		/// </remarks>
  		public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a paint scraper.
++		/// <br/> Paint scrapers can scrape paint off of tiles and collect moss from <see cref="TileID.LongMoss"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IsPaintScraper = Factory.CreateBoolSet(1100, 1545);
 +
-+		//TML: Made private. Add a reason?
++		//TML: Made private, use DamageClass.SummonMeleeSpeed instead (https://github.com/tModLoader/tModLoader/pull/2196).
 -		public static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
 +		private static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is food.
++		/// <br/> Food items can be placed onto <see cref="TileID.FoodPlatter"/>s, have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>, hide shields (<see cref="Item.shieldSlot"/>) when held,
++		/// <br/> Food item sprites must have 3 frames. The required framing code is automatically initialized.
++		/// </summary>
++		/// <remarks>
++		/// The auto-initialized animation for  foods have 3 vertical frames.
++		/// <br/> 1. Inventory sprite
++		/// <br/> 2. Held sprite
++		/// <br/> 3. <see cref="TileID.FoodPlatter"/> sprite
++		/// <br/> <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.
++		/// </remarks>
  		public static bool[] IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278);
++
++		/// <summary>
++		/// If non-empty for a given item type (<see cref="Item.type"/>), then that item will create solid particles of the retrieved colors when used.
++		/// <br/> Particles created by this set will fly outwards.
++		/// <br/> Defaults to <c>Array.Empty&lt;Color&gt;</c>.
++		/// </summary>
++		/// <remarks>
++		/// <see cref="IsFood"/> does not need to be set for dust to be created.
++		/// </remarks>
  		public static Color[][] FoodParticleColors = Factory.CreateCustomSet(new Color[0], (short)357, new Color[2] {
  			new Color(253, 209, 77),
-@@ -946,7 +_,13 @@
+ 			new Color(253, 178, 78)
+@@ -560,6 +_,15 @@
+ 			new Color(215, 67, 51),
+ 			new Color(150, 30, 84)
+ 		});
++
++		/// <summary>
++		/// If non-empty for a given item type (<see cref="Item.type"/>), then that item will create translucent particles of the retrieved colors when used.
++		/// <br/> Particles created by this set will drop downwards.
++		/// <br/> Defaults to <c>Array.Empty&lt;Color&gt;</c>.
++		/// </summary>
++		/// <remarks>
++		/// <see cref="IsFood"/> does not need to be set for dust to be created.
++		/// </remarks>
+ 		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
+ 			new Color(164, 16, 47),
+ 			new Color(246, 34, 79),
+@@ -939,44 +_,271 @@
+ 			new Color(142, 96, 60)
+ 		});
+ 		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
++
++		/// <summary>
++		/// Determines the <see cref="BannerEffect"/> of the banner id associated with the given item type (<see cref="Item.type"/>).
++		/// <br/> Defaults to a full-strength <see cref="BannerEffect"/> (<c><see langword="new"/> <see cref="BannerEffect"/>(1f)</c>).
++		/// </summary>
+ 		public static BannerEffect[] BannerStrength = Factory.CreateCustomSet(new BannerEffect(1f), (short)3838, DD2BannerEffect, (short)3845, DD2BannerEffect, (short)3837, DD2BannerEffect, (short)3844, DD2BannerEffect, (short)3843, DD2BannerEffect, (short)3839, DD2BannerEffect, (short)3840, DD2BannerEffect, (short)3842, DD2BannerEffect, (short)3841, DD2BannerEffect, (short)3846, DD2BannerEffect);
++
++		/// <summary>
++		/// The default number of NPC kills required to obtain the NPC's respective banner.
++		/// </summary>
+ 		public static int DefaultKillsForBannerNeeded = 50;
++
++		/// <summary>
++		/// Determines the number of NPC kills required to obtain the given item type (<see cref="Item.type"/>).
++		/// <br/> Defaults to <c><see cref="DefaultKillsForBannerNeeded"/></c>.
++		/// </summary>
+ 		public static int[] KillsToBanner = Factory.CreateIntSet(DefaultKillsForBannerNeeded, 3838, 1000, 3845, 200, 3837, 500, 3844, 200, 3843, 50, 3839, 150, 3840, 100, 3842, 200, 3841, 100, 3846, 50, 2971, 150, 2982, 150, 2931, 100, 2961, 100, 2994, 100, 2985, 10, 4541, 10, 2969, 10, 2986, 10, 2915, 10, 4602, 10, 4542, 25, 4543, 25, 4546, 25, 4545, 25, 2901, 25, 2902, 25, 1631, 25, 2913, 25, 4688, 25, 3390, 25, 4973, 25, 4974, 25, 4975, 25, 2934, 25, 1670, 25, 1694, 25, 2958, 25, 2960, 25, 3441, 25, 3780, 25, 3397, 25, 3403, 25);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then fishing rods (<c><see cref="Item.fishingPole"/> &gt; 0</c>) of that type will be able to catch items in lava.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CanFishInLava = Factory.CreateBoolSet(2422);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then bait (<c><see cref="Item.bait"/> &gt; 0</c>) of that type can be used to catch items in lava.
++		/// <br/> Additionally, any catchable NPCs that drop the given item type (<see cref="NPC.catchItem"/>) will inflict <see cref="BuffID.OnFire"/> on the catching player if not using a lava-proof tool (<see cref="LavaproofCatchingTool"/>).
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IsLavaBait = Factory.CreateBoolSet(4849, 4845, 4847);
  		private const int healingItemsDecayRate = 4;
++
++		/// <summary>
++		/// Determines the decay speed of the given item type (<see cref="Item.type"/>). See <see cref="Item.timeSinceItemSpawned"/> for more info.
++		/// <br/> Defaults to <c>1</c>.
++		/// </summary>
  		public static int[] ItemSpawnDecaySpeed = Factory.CreateIntSet(1, 58, 4, 184, 4, 1867, 4, 1868, 4, 1734, 4, 1735, 4);
 +
 +		/// <summary>
@@ -66,11 +455,61 @@
 +
 +		/// <inheritdoc cref="IsFishingCrate"/>
  		public static bool[] IsFishingCrateHardmode = Factory.CreateBoolSet(3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be placed into <see cref="TileID.WeaponsRack2"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// See <see cref="GameContent.Tile_Entities.TEWeaponsRack.FitsWeaponFrame(Item)"/> for the full conditions regarding weapon rack placement.
++		/// </remarks>
  		public static bool[] CanBePlacedOnWeaponRacks = Factory.CreateBoolSet(3196, 166, 235, 3115, 167, 2896, 3547, 580, 937, 4423, 4824, 4825, 4826, 4827, 4908, 4909, 4094, 4039, 4092, 4093, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598, 905, 1326, 5335, 3225, 2303, 2299, 2290, 2317, 2305, 2304, 2313, 2318, 2312, 2306, 2308, 2319, 2314, 2302, 2315, 2307, 2310, 2301, 2298, 2316, 2309, 2321, 2297, 2300, 2311, 2420, 2438, 2437, 2436, 4401, 4402, 2475, 2476, 2450, 2477, 2478, 2451, 2479, 2480, 2452, 2453, 2481, 2454, 2482, 2483, 2455, 2456, 2457, 2458, 2459, 2460, 2484, 2472, 2461, 2462, 2463, 2485, 2464, 2465, 2486, 2466, 2467, 2468, 2487, 2469, 2488, 2470, 2471, 2473, 2474, 4393, 4394);
++
++		/// <summary>
++		/// <strong>Only checked for vanilla IDs.</strong>
++		/// <br/> If <c>!= -1</c> for the given item type (<see cref="Item.type"/>), then that item will use the texture of the retrieved item type.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
  		public static int[] TextureCopyLoad = Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 3665, 3706, 3665, 4713, 4712, 5167, 5156, 5188, 5177, 5209, 5198);
-@@ -956,10 +_,23 @@
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will have a small wire icon (<see cref="GameContent.TextureAssets.Wire"/>) drawn over its sprite.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] TrapSigned = Factory.CreateBoolSet(false, 3665, 3666, 3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 3676, 3677, 3678, 3679, 3680, 3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697, 3698, 3699, 3700, 3701, 3703, 3702, 3704, 3705, 3706, 3886, 3887, 3950, 3976, 4164, 4185, 4206, 4227, 4266, 4268, 4585, 4713, 5167, 5188, 5209);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item cannot exist normally: It will be destroyed at the end of <see cref="Item.SetDefaults(int)"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] Deprecated = Factory.CreateBoolSet(2783, 2785, 2782, 2773, 2775, 2772, 2778, 2780, 2777, 3463, 3465, 3462, 2881, 3847, 3848, 3849, 3850, 3851, 3850, 3861, 3862, 4010, 4058, 5013, 4722, 3978);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will never be highlighted (<see cref="Item.newAndShiny"/>) when picked up, even if the associated setting (<see cref="UI.ItemSlot.Options.HighlightNewItems"/>) is enabled.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] NeverAppearsAsNewInInventory = Factory.CreateBoolSet(71, 72, 73, 74);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will sometimes be treated as a coin. It will not show up as loot in the Bestiary.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// This set does <strong>not</strong> make an item type act like a coin for most purposes. Items in this set cannot be used to buy items, will not go into the player's coin slots, etc.
++		/// </remarks>
  		public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will visually pulse when drawn.
++		/// <br/> Additionally, any light this item produces when in the world will also pulse.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will float in place instead of falling when dropped into the world.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581, 4143);
 +
 +		// Paired with a change in Player.ExtractinatorUse, non default extractType goes by iconic ItemID:
@@ -80,36 +519,225 @@
 +		/// </summary>
 +		/*
  		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
+-		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
 +		*/
 +		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss);
- 		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
++
++		/// <summary>
++		/// How many minion slots one usage of this item will spawn.
++		/// <br/> This is only used when <see cref="ProjectileID.Sets.MinionSacrificable"/>[<see cref="Item.shoot"/>] and <see cref="Main.projPet"/> are <see langword="true"/> and when the player tries to summon a new minion.
++		/// <br/> The retrieved value's worth of minion slots (<see cref="Projectile.minionSlots"/>) will be killed, if necessary, to make room for the minion projectiles prior to spawning them.
++		/// <br/> Defaults to <c>1f</c>. If the value is greater than 1f, make sure to check <see cref="Player.maxMinions"/> in <see cref="ModItem.CanUseItem(Player)"/> as well.
++		/// </summary>
++		/// <remarks>
++		/// The full process for sacrificing minions can be found at <see cref="Player.FreeUpPetsAndMinions(Item)"/>.
++		/// </remarks>
++		public static float[] StaffMinionSlotsRequired = Factory.CreateFloatSet(1f); // TML: changed from int to float.
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be traded with the <see cref="NPCID.DyeTrader"/> in exchange for strange dyes.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
++
++		/// <summary>
++		/// <strong>Do not add items to this set.</strong>
++		/// <br/> If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a Nebula pickup.
++		/// <br/> Nebula pickups cannot combine with nearby items, spawn with a random velocity, can be picked up from far away, and call <see cref="Player.NebulaLevelup(int)"/> on pickup.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// If you want an item to act like a Nebula pickup without the side effects, see <see cref="IsAPickup"/> and <see cref="ModItem.OnPickup(Player)"/> / <see cref="GlobalItem.OnPickup(Item, Player)"/>.
++		/// </remarks>
  		public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
 +
 +		/// <summary>
-+		/// Use in conjunction with Main.RegisterItemAnimation to enable its animation in the world
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will animate in the inventory and world.
++		/// <br/> Items in this set <strong>must</strong> register an animation using <see cref="Main.RegisterItemAnimation(int, DrawAnimation)"/>.
++		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] AnimatesAsSoul = Factory.CreateBoolSet(575, 547, 520, 548, 521, 549, 3580, 3581);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item shoot projectiles that manually handle shooting.
++		/// <br/> This is usually used to create animated weapons like the <see cref="VortexBeater"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
++
++		/// <summary>
++		/// Determines the sorting order of miscellaneous important items, such as boss/event spawners, permanent stat upgrades, and <see cref="MagicMirror"/>-like items.
++		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will fall into the "gameplay" tab of the Journey Mode menu
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
  		public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, 2495, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32);
-@@ -971,7 +_,7 @@
++
++		/// <summary>
++		/// Determines the sorting order of wiring items.
++		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will fall into the <see cref="ContentSamples.CreativeHelper.ItemGroup.Wiring"/> item group.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
+ 		public static int[] SortingPriorityWiring = Factory.CreateIntSet(-1, 510, 103, 3625, 102, 509, 101, 851, 100, 850, 99, 3612, 98, 849, 97, 4485, 96, 4484, 95, 583, 94, 584, 93, 585, 92, 538, 91, 513, 90, 3545, 90, 853, 89, 541, 88, 529, 88, 1151, 87, 852, 87, 543, 87, 542, 87, 3707, 87, 2492, 86, 530, 85, 581, 84, 582, 84, 1263, 83);
++
++		/// <summary>
++		/// Determines the sorting order of common materials, such as ores, bars and boss materials.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
+ 		public static int[] SortingPriorityMaterials = Factory.CreateIntSet(-1, 3467, 100, 3460, 99, 3458, 98, 3456, 97, 3457, 96, 3459, 95, 3261, 94, 1508, 93, 1552, 92, 1006, 91, 947, 90, 1225, 89, 1198, 88, 1106, 87, 391, 86, 366, 85, 1191, 84, 1105, 83, 382, 82, 365, 81, 1184, 80, 1104, 79, 381, 78, 364, 77, 548, 76, 547, 75, 549, 74, 575, 73, 521, 72, 520, 71, 175, 70, 174, 69, 3380, 68, 1329, 67, 1257, 66, 880, 65, 86, 64, 57, 63, 56, 62, 117, 61, 116, 60, 706, 59, 702, 58, 19, 57, 13, 56, 705, 55, 701, 54, 21, 53, 14, 52, 704, 51, 700, 50, 22, 49, 11, 48, 703, 47, 699, 46, 20, 45, 12, 44, 999, 43, 182, 42, 178, 41, 179, 40, 177, 39, 180, 38, 181, 37);
++
++		/// <summary>
++		/// Determines the sorting order of extractible items, such as <see cref="SiltBlock"/>.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
+ 		public static int[] SortingPriorityExtractibles = Factory.CreateIntSet(-1, 997, 4, 3347, 3, 1103, 2, 424, 1);
++
++		/// <summary>
++		/// Determines the sorting order of <see cref="Rope"/> and similar items.
++		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item cannot be used to block swap.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
+ 		public static int[] SortingPriorityRopes = Factory.CreateIntSet(-1, 965, 1, 85, 1, 210, 1, 3077, 1, 3078, 1);
++
++		/// <summary>
++		/// Determines the sorting order of painting tools.
++		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will fall into the <see cref="ContentSamples.CreativeHelper.ItemGroup.Paint"/> item group.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
+ 		public static int[] SortingPriorityPainting = Factory.CreateIntSet(-1, 1543, 100, 1544, 99, 1545, 98, 1071, 97, 1072, 96, 1100, 95);
++
++		/// <summary>
++		/// Determines the sorting order of terraforming tools.
++		/// <br/> Defaults to <c>-1</c>.
++		/// </summary>
  		public static int[] SortingPriorityTerraforming = Factory.CreateIntSet(-1, 5134, 100, 779, 99, 780, 98, 783, 97, 781, 96, 782, 95, 784, 94, 5392, 93, 5393, 92, 5394, 91, 422, 90, 423, 89, 3477, 88, 66, 67, 67, 86, 2886, 85);
++
++		/// <summary>
++		/// Determines the extra range (in tile coordinates) that an item of the given item type (<see cref="Item.type"/>) can be used in when using a controller.
++		/// <br/> Defaults to <c>0</c>.
++		/// </summary>
++		/// <remarks>
++		/// Use <seealso cref="GamepadWholeScreenUseRange"/> for items with full-screen range.
++		/// </remarks>
  		public static int[] GamepadExtraRange = Factory.CreateIntSet(0, 2797, 20, 3278, 4, 3285, 6, 3279, 8, 3280, 8, 3281, 9, 3262, 10, 3317, 10, 5294, 10, 3282, 10, 3315, 10, 3316, 11, 3283, 12, 3290, 13, 3289, 11, 3284, 13, 3286, 13, 3287, 18, 3288, 18, 3291, 17, 3292, 18, 3389, 21);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then holding that item will allow the player to move the gamepad cursor anywhere on screen.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254);
++
++		/// <summary>
++		/// Determines the multiplier that applies to the given item type's (<see cref="Item.type"/>) attack speed.
++		/// <br/> A value of <c>0f</c> doesn't scale attack speed at all. Values <c>&gt; 1f</c> increase the effects of attack speed multipliers, values <c>&lt; 1f</c> decrease the effects.
++		/// <br/> Defaults to <c>1f</c>.
++		/// </summary>
++		/// <remarks>
++		/// See <see cref="Player.GetWeaponAttackSpeed(Item)"/> for the full calculation.
++		/// </remarks>
 -		public static float[] BonusMeleeSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f, 757f, 0.75f);
 +		public static float[] BonusAttackSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f, 757f, 0.75f);
++
++		/// <summary>
++		/// <strong>Unused.</strong>
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] GamepadSmartQuickReach = Factory.CreateBoolSet(2798, 2797, 3030, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 5294, 3389, 2798, 65, 1931, 3570, 2750, 3065, 3029, 4956, 5065, 1256, 1244, 3014, 113, 218, 495);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then holding that item while using a yoyo string (<see cref="Player.yoyoString"/>) will allow the player to move the gamepad cursor an extra 5 tiles.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// Items in this set are <strong>not</strong> guaranteed to benefit from yoyo-exclusive effects. Yoyo effects are applied to projectiles where <c><see cref="Projectile.aiStyle"/> == <see cref="ProjAIStyleID.Yoyo"/></c>.
++		/// </remarks>
  		public static bool[] Yoyo = Factory.CreateBoolSet(3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 3389, 5294);
++
++		/// <summary>
++		/// <strong>Unused.</strong>
++		/// <br/> If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can manipulate tiles in some way.
++		/// <br/> Includes buckets, wrenches, etc.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] AlsoABuildingItem = Factory.CreateBoolSet(3031, 205, 1128, 207, 206, 3032, 849, 3620, 509, 851, 850, 3625, 510, 1071, 1543, 1072, 1544, 1100, 1545, 4820, 4872, 5303, 5304, 5302, 5364);
-@@ -1038,6 +_,11 @@
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can lock-on through solid tiles.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] LockOnIgnoresCollision = Factory.CreateBoolSet(64, 3570, 1327, 3006, 1227, 788, 756, 1228, 65, 3065, 3473, 3051, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 4269, 4273, 4281, 4607, 5069, 5114, 5119, 3014, 3569, 3571);
++
++		/// <summary>
++		/// If <c>!= 0</c> for a given item type (<see cref="Item.type"/>), then that item will lock-on several tiles above the selected target, up to a maximum of the retrieved value.
++		/// <br/> Defaults to <c>0</c>.
++		/// </summary>
+ 		public static int[] LockOnAimAbove = Factory.CreateIntSet(0, 1256, 15, 1244, 15, 3014, 15, 3569, 15, 3571, 15);
++
++		/// <summary>
++		/// If not <see langword="null"/> for the given item type (<see cref="Item.type"/>), then that item will lock-on slightly offset from the target's position to compensate for its projectile's arc.
++		/// <br/> The higher the value in this set, the more drastic the compensation. The offset position is slightly above the target and closer to the player.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
+ 		public static float?[] LockOnAimCompensation = Factory.CreateCustomSet<float?>(null, new object[10] {
+ 			(short)1336,
+ 			0.2f,
+@@ -989,9 +_,38 @@
+ 			(short)160,
+ 			0.4f
+ 		});
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will be used one per button press when using a gamepad.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// In vanilla, all items in this set are types of torches.
++		/// </remarks>
+ 		public static bool[] SingleUseInGamepad = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388, 5293, 5353);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a torch.
++		/// <br/> Torches can be auto-selected by Smart Cursor.
++		/// <br/> <strong>Vanilla</strong> torches have an associated <see cref="TorchID"/>, which determines what color light they produce when held.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// To make a torch placeable underwater, use <see cref="WaterTorches"/> as well.
++		/// </remarks>
+ 		public static bool[] Torches = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388, 5293, 5353);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a water torch.
++		/// <br/> Functionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] WaterTorches = Factory.CreateBoolSet(523, 1333, 4384);
++
++		/// <summary>
++		/// The list of item types (<see cref="Item.type"/>) that correspond to work benches.
++		/// <br/> Used for the "Benched" achievement.
++		/// </summary>
+ 		public static short[] Workbenches = new short[44] {
+ 			36,
+ 			635,
+@@ -1038,7 +_,21 @@
  			5187,
  			5208
  		};
 +
 +		/// <summary>
-+		/// Set for all boss bags. Causes bags to drop dev armor.
-+		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjuction with this one.
++		/// Set for all boss bags. Causes bags to drop dev armor and creates a glow around the item when dropped in the world.
++		/// <br/> If your bag is pre-hardmode, don't forget to use the <see cref="PreHardmodeLikeBossBag"/> set in conjunction with this one.
 +		/// </summary>
  		public static bool[] BossBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be right-clicked in the inventory.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// For <see cref="ModItem"/>s, you can simply use <see cref="ModItem.CanRightClick"/> or <see cref="GlobalItem.CanRightClick(Item)"/> instead of this set.
++		/// <br/> If you need to check if any item is right-clickable, use <see cref="ItemLoader.CanRightClick(Item)"/>.
++		/// </remarks>
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
  	}
+ 

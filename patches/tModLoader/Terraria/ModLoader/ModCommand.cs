@@ -15,7 +15,7 @@ public enum CommandType
 	Server = 2,
 	/// <summary>Command can be used in server console during MP.</summary>
 	Console = 4,
-	/// <summary>Command can be used in Chat in SP and MP, but executes on the Server in MP. (singleplayer ? Chat : Server)</summary>
+	/// <summary>Command can be used in Chat in SP and MP, but executes on the Server in MP. (SinglePlayer ? Chat : Server)</summary>
 	World = 8
 }
 
@@ -29,7 +29,7 @@ public interface CommandCaller
 	Player Player { get; }
 
 	/// <summary>
-	/// Use this to repond to the Player that invoked this command. This method handles writing to the console, writing to chat, or sending messages over the network for you depending on the CommandType used. Avoid using Main.NewText, Console.WriteLine, or NetMessage.SendChatMessageToClient directly because the logic would change depending on CommandType.
+	/// Use this to respond to the Player that invoked this command. This method handles writing to the console, writing to chat, or sending messages over the network for you depending on the CommandType used. Avoid using Main.NewText, Console.WriteLine, or NetMessage.SendChatMessageToClient directly because the logic would change depending on CommandType.
 	/// </summary>
 	/// <param name="text"></param>
 	/// <param name="color"></param>

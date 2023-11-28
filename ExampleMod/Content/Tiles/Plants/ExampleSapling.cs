@@ -1,5 +1,4 @@
 using ExampleMod.Content.Dusts;
-using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -28,7 +27,7 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = new[] { ModContent.TileType<ExampleBlock>() , TileID.Gold };
+			TileObjectData.newTile.AnchorValidTiles = new[] { ModContent.TileType<ExampleBlock>(), TileID.Gold };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
@@ -42,8 +41,7 @@ namespace ExampleMod.Content.Tiles.Plants
 
 			TileObjectData.addTile(Type);
 
-			LocalizedText name = CreateMapEntryName();
-			AddMapEntry(new Color(200, 200, 200), name);
+			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Sapling"));
 
 			TileID.Sets.TreeSapling[Type] = true;
 			TileID.Sets.CommonSapling[Type] = true;
@@ -66,22 +64,22 @@ namespace ExampleMod.Content.Tiles.Plants
 			}
 
 			Tile tile = Framing.GetTileSafely(i, j); // Safely get the tile at the given coordinates
-			bool growSucess; // A bool to see if the tree growing was sucessful.
+			bool growSuccess; // A bool to see if the tree growing was successful.
 
 			// Style 0 is for the ExampleTree sapling, and style 1 is for ExamplePalmTree, so here we check frameX to call the correct method.
 			// Any pixels before 54 on the tilesheet are for ExampleTree while any pixels above it are for ExamplePalmTree
 			if (tile.TileFrameX < 54) {
-				growSucess = WorldGen.GrowTree(i, j);
+				growSuccess = WorldGen.GrowTree(i, j);
 			}
 			else {
-				growSucess = WorldGen.GrowPalmTree(i, j);
+				growSuccess = WorldGen.GrowPalmTree(i, j);
 			}
 
 			// A flag to check if a player is near the sapling
 			bool isPlayerNear = WorldGen.PlayerLOS(i, j);
 
-			//If growing the tree was a sucess and the player is near, show growing effects
-			if (growSucess && isPlayerNear) {
+			//If growing the tree was a success and the player is near, show growing effects
+			if (growSuccess && isPlayerNear) {
 				WorldGen.TreeGrowFXCheck(i, j);
 			}
 		}

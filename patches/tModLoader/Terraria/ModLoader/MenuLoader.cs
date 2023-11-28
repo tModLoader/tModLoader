@@ -8,6 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Default;
+using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader;
@@ -41,7 +42,7 @@ public static class MenuLoader
 
 	private static void AddKnownMenu(string name)
 	{
-		var newSaveString = string.Join(",", KnownMenus.Concat(new [] { name }).Distinct());
+		var newSaveString = string.Join(",", KnownMenus.Concat(new[] { name }).Distinct());
 		if (newSaveString != KnownMenuSaveString) {
 			KnownMenuSaveString = newSaveString;
 			Main.SaveSettings();
@@ -85,6 +86,22 @@ public static class MenuLoader
 	}
 
 	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)
+	{
+		var activeInterface = UserInterface.ActiveInstance;
+
+		// Rendering an interface makes it override ActiveInstance, so this block restores the previous value to prevent issues from that.
+		try {
+			UpdateAndDrawModMenuInner(spriteBatch, gameTime, color, logoRotation, logoScale);
+		}
+		catch {
+			throw;
+		}
+		finally {
+			UserInterface.ActiveInstance = activeInterface;
+		}
+	}
+
+	private static void UpdateAndDrawModMenuInner(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)
 	{
 		if (switchToMenu != null && switchToMenu != currentMenu) {
 			currentMenu.OnDeselected();

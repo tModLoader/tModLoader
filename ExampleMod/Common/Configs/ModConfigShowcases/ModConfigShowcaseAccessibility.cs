@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
 
 // This file contains fake ModConfig class that showcase using
 // access modifiers (to control which fields should be visible and have their value saved to file)
@@ -12,7 +12,6 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(164, 153, 190)]
-	[Label("ModConfig Showcase F: Accessibility")]
 	public class ModConfigShowcaseAccessibility : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
@@ -34,7 +33,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		// Get only properties will show up, but will be grayed out to show that they can't be changed.
 		public float Getter => Main.rand?.NextFloat(1f) ?? 0; // This is just an example, please don't do this.
 
-		// AutoProperies work the same as fields.
+		// AutoProperties work the same as fields.
 		public float AutoProperty { get; set; }
 
 		// Properties work as well. The backing field will be ignored when writing the json out.
@@ -48,15 +47,14 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[JsonIgnore]
 		public float Ignore;
 
-		// Using Label overrides JsonIgnore for the UI. Use this to display info to the user if needed. The value won't be saved since it is derived from other fields.
+		// Using ShowDespiteJsonIgnore overrides JsonIgnore for the UI. Use this to display info to the user if needed. The value won't be saved since it is derived from other fields.
 		// Useful for things like displaying sums or calculated relationships.
 		[JsonIgnore]
-		[Label("Ignore With Label")]
+		[ShowDespiteJsonIgnore]
 		public float IgnoreWithLabelGetter => AutoProperty + Public;
 
 		// Reference type getters kind of work with the UI. You can experiment with this if you want.
 		[JsonIgnore]
-		[Label("Pair Getter")]
 		public Pair pair2 => pair;
 		public Pair pair;
 

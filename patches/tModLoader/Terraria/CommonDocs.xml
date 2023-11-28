@@ -1,0 +1,8 @@
+<Common>
+    <VariousTextOptionsSummary>
+        <br/>Summary of options to display text to the user:<br/>
+        • <see cref="Terraria.Main.NewText(string, byte, byte, byte)"/> to display a message in chat. <br/>
+        • <see cref="Terraria.CombatText"/> to display floating damage numbers in-game. Used for damage and healing numbers. <br/>
+        • <see cref="Terraria.PopupText"/> to display non-overlapping floating in-game text. Used for reforge and item pickup messages. <br/>
+    </VariousTextOptionsSummary>
+</Common>

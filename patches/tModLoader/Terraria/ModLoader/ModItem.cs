@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -28,24 +29,26 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public Item Item => Entity;
 
 	/// <summary>
-	/// Shorthand for Item.type;
+	/// Shorthand for <c>Item.type</c>.
 	/// </summary>
 	public int Type => Item.type;
 
-	public string LocalizationCategory => "Items";
+	public virtual string LocalizationCategory => "Items";
 
 	/// <summary>
 	/// The translations for the display name of this item.
 	/// </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
-	/// <summary>r
+	/// <summary>
 	/// The translations for the tooltip of this item.
 	/// </summary>
 	public virtual LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
 	/// <summary>
-	/// The file name of this type's texture file in the mod loader's file space.
+	/// The file name of this type's texture file in the mod loader's file space. <br/>
+	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Item"/> indexed by <see cref="Type"/> if needed. <br/>
+	/// You can use a vanilla texture by returning <c>$"Terraria/Images/Item_{ItemID.ItemNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
@@ -63,10 +66,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 		ModTypeLookup<ModItem>.Register(this);
 
-		Item.ResetStats(ItemLoader.ReserveItemID());
+		Item.ResetStats(ItemLoader.Register(this));
 		Item.ModItem = this;
-
-		ItemLoader.items.Add(this);
 
 		var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 		if (autoloadEquip != null) {
@@ -80,7 +81,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
-		ItemLoader.SetDefaults(Item, false);
+		ItemLoader.SetDefaults(Item, createModItem: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
 		ItemID.Search.Add(FullName, Type);
@@ -264,6 +265,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
@@ -295,6 +297,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
@@ -311,7 +314,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
+	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behavior.
 	/// </summary>
 	/// <param name="player">The Player that owns the bait</param>
 	public virtual bool? CanConsumeBait(Player player)
@@ -320,7 +323,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
 	/// </summary>
 	public virtual bool CanResearch()
 	{
@@ -328,7 +331,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create custom behaviour when an item is accepted by the Research function
+	/// Allows you to create custom behavior when an item is accepted by the Research function
 	/// </summary>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
 	public virtual void OnResearched(bool fullyResearched)
@@ -338,6 +341,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
@@ -348,6 +352,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
@@ -542,6 +547,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
 	/// </summary>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="scale">
@@ -564,26 +570,40 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC.
+	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
+	/// Use <see cref="CanHitNPC(Player, NPC)"/> instead for Flymeal-type effects.
+	/// </summary>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="target">The target npc.</param>
+	/// <returns>
+	/// Return true to allow colliding with target, return false to block the weapon from colliding with target, and return null to use the vanilla code for whether the target can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanMeleeAttackCollideWithNPC(Rectangle meleeAttackHitbox, Player player, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockBack">The knock back.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+	/// <param name="modifiers">The strike.</param>
+	public virtual void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
+	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads). <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockBack">The knock back.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+	/// <param name="hit">The strike.</param>
+	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
+	public virtual void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -601,24 +621,24 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
+	/// Allows you to modify the damage, etc., that this melee weapon does to a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPvp(Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits a player.
+	/// Allows you to create special effects when this melee weapon hits a player. <br/>
+	/// Called on local, server and remote clients. <br/>
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">if set to <c>true</c> [crit].</param>
-	public virtual void OnHitPvp(Player player, Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPvp(Player player, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -683,12 +703,20 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this item is in the player's inventory (for example, how the cell phone makes information display).
+	/// Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories;
+	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateInventory(Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
+	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// </summary>
+	/// <param name="player"> The player to be affected the information accessory. </param>
+	public virtual void UpdateInfoAccessory(Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to this armor or accessory, such as increased damage.
@@ -827,7 +855,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to add and modify the loot items that spawn from bag items when opened.
-	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
 	/// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
 	/// </summary>
 	/// <param name="itemLoot">A reference to the item drop database for this item type</param>
@@ -864,7 +892,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
 	public virtual void OnStack(Item source, int numToTransfer)
 	{
 	}
@@ -874,7 +902,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
 	/// </summary>
 	/// <param name="source">The original item that will have it's stack reduced.</param>
-	/// <param name="numToTransfer">The quanity of <paramref name="source"/> that will be transferred to this item</param>
+	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
 	public virtual void SplitStack(Item source, int numToTransfer)
 	{
 	}
@@ -891,12 +919,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
+	/// Returns whether the reforge will take place. If false is returned by this or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
 	/// </summary>
-	public virtual bool PreReforge()
+	public virtual bool CanReforge()
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// </summary>
+	public virtual void PreReforge()
+	{
 	}
 
 	/// <summary>
@@ -1154,16 +1189,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to tell the game whether this item is a torch that cannot be placed in liquid, a torch that can be placed in liquid, or a glowstick. This information is used for when the player is holding down the auto-select keybind.
-	/// </summary>
-	/// <param name="dryTorch">if set to <c>true</c> [dry torch].</param>
-	/// <param name="wetTorch">if set to <c>true</c> [wet torch].</param>
-	/// <param name="glowstick">if set to <c>true</c> [glowstick].</param>
-	public virtual void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine how many of this item a player obtains when the player fishes this item.
 	/// </summary>
 	/// <param name="stack">The stack.</param>
@@ -1235,7 +1260,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// This is essentially the same as Mod.AddRecipes. Do note that this will be called for every instance of the overriding ModItem class that is added to the game. This allows you to avoid clutter in your overriding Mod class by adding recipes for which this item is the result.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// Do note that this will be called for every instance of the overriding ModItem class that is added to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
+	/// To create a recipe resulting in this item, use <see cref="CreateRecipe(int)"/>.<br/>
+	/// To create a recipe using this item as an ingredient, use <see cref="Recipe.Create(int, int)"/> and then pass in <c>this</c> or <c>Type</c> into <see cref="Recipe.AddIngredient(ModItem, int)"/> or <see cref="Recipe.AddIngredient(int, int)"/>
 	/// </summary>
 	public virtual void AddRecipes()
 	{
@@ -1290,12 +1319,17 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to modify all the tooltips that display for this item. See here for information about TooltipLine.
+	/// Allows you to modify all the tooltips that display for this item. See here for information about TooltipLine. To hide tooltips, please use <see cref="TooltipLine.Hide"/> and defensive coding.
 	/// </summary>
 	/// <param name="tooltips">The tooltips.</param>
 	public virtual void ModifyTooltips(List<TooltipLine> tooltips)
 	{
 	}
 
+	/// <summary>
+	/// Creates a recipe resulting this ModItem. The <paramref name="amount"/> dictates the resulting stack. This method only creates the recipe, it does not register it into the game. Call this at the very beginning when creating a new recipe.
+	/// </summary>
+	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
+	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 }

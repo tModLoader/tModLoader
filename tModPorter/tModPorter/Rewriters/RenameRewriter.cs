@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
@@ -61,7 +61,7 @@ public class RenameRewriter : BaseRewriter {
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
 		node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
-		if (sym.IsOverride && sym.OverriddenMethod == null) {
+		if (sym.IsOverride && (sym.OverriddenMethod == null || sym.OverriddenMethod.IsObsolete())) {
 			node = node.WithIdentifier(Refactor(node.Identifier, sym.ContainingType, refactoringMethod: true));
 		}
 
@@ -107,7 +107,22 @@ public class RenameRewriter : BaseRewriter {
 			return nameToken.WithText(entry.to);
 		}
 
+		if (!refactoringMethod)
+			RefactorInnerType(nameToken, instType);
+
 		return nameToken;
+	}
+
+	private void RefactorInnerType(SyntaxToken nameToken, ITypeSymbol instType)
+	{
+		if (nameToken.Parent.Parent is not MemberAccessExpressionSyntax memberAccess)
+			return;
+
+		var fullname = $"{instType}.{nameToken.Text}";
+		if (typeRenames.SingleOrDefault(e => e.from == fullname) is not (_, string to))
+			return;
+
+		RegisterAction(memberAccess, node => UseType(to));
 	}
 
 	private IdentifierNameSyntax RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
@@ -179,8 +194,18 @@ public class RenameRewriter : BaseRewriter {
 			MemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
 		);
 	};
+
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {
 		if (node.Parent is MethodDeclarationSyntax decl)
 			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));
+	};
+
+	public static AdditionalRenameAction AccessShimmerBuffIDElem() => (rw, node) => {
+		if (node is not { Parent: IdentifierNameSyntax { Parent: ExpressionSyntax { Parent: ElementAccessExpressionSyntax elemAccess} } })
+			return;
+
+		var buffIdShimmer = MemberAccessExpression(rw.UseType("Terraria.ID.BuffID"), "Shimmer");
+		rw.RegisterAction<ExpressionSyntax>(elemAccess,
+			n => ElementAccessExpression(n.WithoutTrivia(), buffIdShimmer).WithTriviaFrom(n));
 	};
 }

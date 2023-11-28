@@ -15,6 +15,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
+using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -42,9 +43,9 @@ internal class UIModConfig : UIState
 	private readonly Stack<string> subPageStack = new();
 	//private UIList currentConfigList;
 	private Mod mod;
-	private List<ModConfig> modConfigs;
+	private List<ModConfig> sortedModConfigs; // NOT in load order. Don't use for anything other than navigation
 	private ModConfig modConfig; // This is from ConfigManager.Configs
-	private ModConfig pendingConfig; // the clone we modify.
+	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
 
@@ -183,20 +184,13 @@ internal class UIModConfig : UIState
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.menuMode = Interface.modsMenuID;
 
-		//Main.menuMode = 1127;
 		if (!Main.gameMenu) {
 			Main.InGameUI.SetState(Interface.modConfigList);
 		}
-
-		/*
-		IngameFancyUI.Close();
-
-		if (ConfigManager.ModNeedsReload(mod)) {
-			Main.menuMode = Interface.reloadModsID;
+		else {
+			Main.menuMode = Interface.modConfigListID;
 		}
-		*/
 	}
 
 	internal void Unload()
@@ -204,7 +198,7 @@ internal class UIModConfig : UIState
 		mainConfigList?.Clear();
 		mainConfigItems?.Clear();
 		mod = null;
-		modConfigs = null;
+		sortedModConfigs = null;
 		modConfig = null;
 		pendingConfig = null;
 
@@ -218,8 +212,8 @@ internal class UIModConfig : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		//DiscardChanges();
 
-		int index = modConfigs.IndexOf(modConfig);
-		modConfig = modConfigs[index - 1 < 0 ? modConfigs.Count - 1 : index - 1];
+		int index = sortedModConfigs.IndexOf(modConfig);
+		modConfig = sortedModConfigs[index - 1 < 0 ? sortedModConfigs.Count - 1 : index - 1];
 
 		//modConfigClone = modConfig.Clone();
 
@@ -231,8 +225,8 @@ internal class UIModConfig : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		//DiscardChanges();
 
-		int index = modConfigs.IndexOf(modConfig);
-		modConfig = modConfigs[index + 1 > modConfigs.Count ? 0 : index + 1];
+		int index = sortedModConfigs.IndexOf(modConfig);
+		modConfig = sortedModConfigs[index + 1 > sortedModConfigs.Count ? 0 : index + 1];
 
 		//modConfigClone = modConfig.Clone();
 
@@ -395,11 +389,11 @@ internal class UIModConfig : UIState
 		base.Draw(spriteBatch);
 
 		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, Tooltip, GetDimensions().ToRectangle());
+			UICommon.TooltipMouseText(Tooltip);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
@@ -411,8 +405,8 @@ internal class UIModConfig : UIState
 	{
 		this.mod = mod;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
-			modConfigs = ConfigManager.Configs[mod];
-			modConfig = modConfigs[0];
+			sortedModConfigs = ConfigManager.Configs[mod].OrderBy(x => x.DisplayName.Value).ToList();
+			modConfig = sortedModConfigs[0];
 			if (config != null) {
 				modConfig = ConfigManager.Configs[mod].First(x => x == config);
 				// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == ConfigScope.ClientSide).ToList();
@@ -437,7 +431,7 @@ internal class UIModConfig : UIState
 
 		SetMessage("", Color.White);
 
-		string configDisplayName = ((LabelAttribute)Attribute.GetCustomAttribute(modConfig.GetType(), typeof(LabelAttribute)))?.Label ?? modConfig.Name;
+		string configDisplayName = modConfig.DisplayName.Value;
 
 		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + ": " + configDisplayName);
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
@@ -449,8 +443,8 @@ internal class UIModConfig : UIState
 			pendingChangesUIUpdate = true;
 		}
 
-		int index = modConfigs.IndexOf(modConfig);
-		int count = modConfigs.Count;
+		int index = sortedModConfigs.IndexOf(modConfig);
+		int count = sortedModConfigs.Count;
 		//pendingChanges = false;
 
 		backButton.BackgroundColor = UICommon.DefaultUIBlueMouseOver;
@@ -492,15 +486,10 @@ internal class UIModConfig : UIState
 			if (variable.IsProperty && variable.Name == "Mode")
 				continue;
 
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
-			HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
-
-			if (header != null) {
-				var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-				WrapIt(mainConfigList, ref top, wrapper, header, order++);
-			}
+			HandleHeader(mainConfigList, ref top, ref order, variable);
 
 			WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
 		}
@@ -518,7 +507,7 @@ internal class UIModConfig : UIState
 		UIElement e;
 
 		// TODO: Other common structs? -- Rectangle, Point
-		var customUI = ConfigManager.GetCustomAttribute<CustomModConfigItemAttribute>(memberInfo, null, null);
+		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
 
 		if (customUI != null) {
 			Type customUIType = customUI.Type;
@@ -553,6 +542,9 @@ internal class UIModConfig : UIState
 		else if (type == typeof(PrefixDefinition)) {
 			e = new PrefixDefinitionElement();
 		}
+		else if (type == typeof(BuffDefinition)) {
+			e = new BuffDefinitionElement();
+		}
 		else if (type == typeof(Color)) {
 			e = new ColorElement();
 		}
@@ -573,7 +565,7 @@ internal class UIModConfig : UIState
 			e = new UIntElement();
 		}
 		else if (type == typeof(int)) {
-			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttribute<SliderAttribute>(memberInfo, item, list);
+			SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
 
 			if (sliderAttribute != null)
 				e = new IntRangeElement();
@@ -581,7 +573,7 @@ internal class UIModConfig : UIState
 				e = new IntInputElement();
 		}
 		else if (type == typeof(string)) {
-			OptionStringsAttribute ost = ConfigManager.GetCustomAttribute<OptionStringsAttribute>(memberInfo, item, list);
+			OptionStringsAttribute ost = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(memberInfo, item, list);
 			if (ost != null)
 				e = new StringOptionElement();
 			else
@@ -676,7 +668,7 @@ internal class UIModConfig : UIState
 		uIPanel.CopyStyle(Interface.modConfig.uIPanel);
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
-		BackgroundColorAttribute bca = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(memberInfo, subitem, null);
+		BackgroundColorAttribute bca = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, subitem, null);
 
 		if (bca != null) {
 			uIPanel.BackgroundColor = bca.Color;
@@ -700,7 +692,7 @@ internal class UIModConfig : UIState
 		uIPanel.Append(uIScrollbar);
 		separateList.SetScrollbar(uIScrollbar);
 
-		string name = ConfigManager.GetCustomAttribute<LabelAttribute>(memberInfo, subitem, null)?.Label ?? memberInfo.Name;
+		string name = ConfigManager.GetLocalizedLabel(memberInfo);
 		if (index != -1)
 			name = name + " #" + (index + 1);
 		Interface.modConfig.subPageStack.Push(name);
@@ -777,15 +769,10 @@ internal class UIModConfig : UIState
 			//	_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
 
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(LabelAttribute))) // TODO, appropriately named attribute
+				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 					continue;
 
-				HeaderAttribute header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
-
-				if (header != null) {
-					var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-					WrapIt(separateList, ref top, wrapper, header, order++);
-				}
+				HandleHeader(separateList, ref top, ref order, variable);
 
 				WrapIt(separateList, ref top, variable, subitem, order++);
 			}
@@ -797,6 +784,16 @@ internal class UIModConfig : UIState
 
 		Interface.modConfig.subPageStack.Pop();
 		return uIPanel;
+	}
+
+	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	{
+		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
+
+		if (header != null) {
+			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
+			WrapIt(parent, ref top, wrapper, header, order++);
+		}
 	}
 
 	internal static void SwitchToSubConfig(UIPanel separateListPanel)

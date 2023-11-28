@@ -39,6 +39,9 @@ public static class SimpleSyntaxFactory
 	public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, params ExpressionSyntax[] args) =>
 		SyntaxFactory.ObjectCreationExpression(TokenSpace(SyntaxKind.NewKeyword), type, ArgumentList(args), null);
 
+	public static ElementAccessExpressionSyntax ElementAccessExpression(ExpressionSyntax target, params ExpressionSyntax[] args) =>
+		SyntaxFactory.ElementAccessExpression(target, BracketedArgumentList(args));
+
 	public static NameSyntax Name(string s) {
 		int l = s.LastIndexOf('.');
 		if (l == -1)
@@ -69,7 +72,11 @@ public static class SimpleSyntaxFactory
 	public static TypeArgumentListSyntax TypeArgumentList(IEnumerable<TypeSyntax> items) => SyntaxFactory.TypeArgumentList(SeparatedList(items));
 	public static ArgumentListSyntax ArgumentList(IEnumerable<ArgumentSyntax> items) => SyntaxFactory.ArgumentList(SeparatedList(items));
 	public static ArgumentListSyntax ArgumentList(IEnumerable<ExpressionSyntax> items) => ArgumentList(items.Select(Argument));
+	public static BracketedArgumentListSyntax BracketedArgumentList(IEnumerable<ArgumentSyntax> items) => SyntaxFactory.BracketedArgumentList(SeparatedList(items));
+	public static BracketedArgumentListSyntax BracketedArgumentList(IEnumerable<ExpressionSyntax> items) => BracketedArgumentList(items.Select(Argument));
 	public static GenericNameSyntax GenericName(string name, params TypeSyntax[] args) => SyntaxFactory.GenericName(Identifier(name), TypeArgumentList(args));
+
+	public static ArrayTypeSyntax ArrayTypeRank1(TypeSyntax elementType) => ArrayType(elementType, new(ArrayRankSpecifier(SingletonSeparatedList<ExpressionSyntax>(OmittedArraySizeExpression()))));
 
 	public static SyntaxToken ModifierToken(RefKind refKind) => refKind switch {
 		RefKind.None => default,

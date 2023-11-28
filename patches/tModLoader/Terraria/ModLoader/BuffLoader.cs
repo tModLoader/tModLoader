@@ -27,8 +27,8 @@ public static class BuffLoader
 	private static DelegateUpdateNPC[] HookUpdateNPC;
 	private static Func<int, Player, int, int, bool>[] HookReApplyPlayer;
 	private static Func<int, NPC, int, int, bool>[] HookReApplyNPC;
-	private delegate void DelegateModifyBuffTip(int type, ref string tip, ref int rare);
-	private static DelegateModifyBuffTip[] HookModifyBuffTip;
+	private delegate void DelegateModifyBuffText(int type, ref string buffName, ref string tip, ref int rare);
+	private static DelegateModifyBuffText[] HookModifyBuffText;
 	private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 	private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
 	private delegate bool DelegatePreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams);
@@ -60,7 +60,7 @@ public static class BuffLoader
 		Array.Resize(ref TextureAssets.Buff, nextBuff);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(BuffID), true);
+		LoaderUtils.ResetStaticMembers(typeof(BuffID));
 
 		//Etc
 		Array.Resize(ref Main.pvpBuff, nextBuff);
@@ -91,12 +91,17 @@ public static class BuffLoader
 		ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 		ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
 		ModLoader.BuildGlobalHook(ref HookReApplyNPC, globalBuffs, g => g.ReApply);
-		ModLoader.BuildGlobalHook<GlobalBuff, DelegateModifyBuffTip>(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
+		ModLoader.BuildGlobalHook<GlobalBuff, DelegateModifyBuffText>(ref HookModifyBuffText, globalBuffs, g => g.ModifyBuffText);
 		ModLoader.BuildGlobalHook(ref HookCustomBuffTipSize, globalBuffs, g => g.CustomBuffTipSize);
 		ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegatePreDraw>(ref HookPreDraw, globalBuffs, g => g.PreDraw);
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegatePostDraw>(ref HookPostDraw, globalBuffs, g => g.PostDraw);
 		ModLoader.BuildGlobalHook<GlobalBuff, DelegateRightClick>(ref HookRightClick, globalBuffs, g => g.RightClick);
+	}
+
+	internal static void PostSetupContent()
+	{
+		Main.Initialize_BuffDataFromMountData();
 	}
 
 	internal static void FinishSetup()
@@ -166,13 +171,13 @@ public static class BuffLoader
 		return false;
 	}
 
-	public static void ModifyBuffTip(int buff, ref string tip, ref int rare)
+	public static void ModifyBuffText(int buff, ref string buffName, ref string tip, ref int rare)
 	{
 		if (IsModBuff(buff)) {
-			GetBuff(buff).ModifyBuffTip(ref tip, ref rare);
+			GetBuff(buff).ModifyBuffText(ref buffName, ref tip, ref rare);
 		}
-		foreach (var hook in HookModifyBuffTip) {
-			hook(buff, ref tip, ref rare);
+		foreach (var hook in HookModifyBuffText) {
+			hook(buff, ref buffName, ref tip, ref rare);
 		}
 	}
 

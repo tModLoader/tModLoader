@@ -2,10 +2,13 @@ using System;
 
 namespace Terraria.Localization;
 
+/// <summary>
+/// Contains methods to access or retrieve localization values. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization">Localization Guide</see> teaches more about localization.
+/// </summary>
 public static partial class Language
 {
 	/// <summary>
-	/// Returns a LocalizedText for a given key.
+	/// Returns a <see cref="LocalizedText"/> for a given key.
 	/// <br/>If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file.
 	/// </summary>
 	/// <param name="key">The localization key</param>

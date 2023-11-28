@@ -41,6 +41,8 @@ public static class TileLoader
 	private static int nextTile = TileID.Count;
 	internal static readonly IList<ModTile> tiles = new List<ModTile>();
 	internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
+	/// <summary> Maps Tile type and Tile style to the Item type that places the tile with the style. </summary>
+	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -54,7 +56,8 @@ public static class TileLoader
 	private static DelegateCreateDust[] HookCreateDust;
 	private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance);
 	private static DelegateDropCritterChance[] HookDropCritterChance;
-	private static Func<int, int, int, bool>[] HookDrop;
+	private static Func<int, int, int, bool>[] HookCanDrop;
+	private static Action<int, int, int>[] HookDrop;
 	private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 	private static DelegateCanKillTile[] HookCanKillTile;
 	private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
@@ -64,6 +67,8 @@ public static class TileLoader
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, ref Color sightColor);
+	private static DelegateIsTileBiomeSightable[] HookIsTileBiomeSightable;
 	private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
@@ -77,6 +82,7 @@ public static class TileLoader
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
+	private static Func<int, int, int, int, bool>[] HookCanReplace;
 	private static Func<int, int[]>[] HookAdjTiles;
 	private static Action<int, int, int>[] HookRightClick;
 	private static Action<int, int, int>[] HookMouseOver;
@@ -133,7 +139,7 @@ public static class TileLoader
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(TileID), true);
+		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
 		Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
@@ -207,6 +213,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateNumDust>(ref HookNumDust, globalTiles, g => g.NumDust);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCreateDust>(ref HookCreateDust, globalTiles, g => g.CreateDust);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDropCritterChance>(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
+		ModLoader.BuildGlobalHook(ref HookCanDrop, globalTiles, g => g.CanDrop);
 		ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCanKillTile>(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateKillTile>(ref HookKillTile, globalTiles, g => g.KillTile);
@@ -214,6 +221,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
+		ModLoader.BuildGlobalHook<GlobalTile, DelegateIsTileBiomeSightable>(ref HookIsTileBiomeSightable, globalTiles, g => g.IsTileBiomeSightable);
 		ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
@@ -224,6 +232,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateTileFrame>(ref HookTileFrame, globalTiles, g => g.TileFrame);
 		ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
+		ModLoader.BuildGlobalHook(ref HookCanReplace, globalTiles, g => g.CanReplace);
 		ModLoader.BuildGlobalHook(ref HookAdjTiles, globalTiles, g => g.AdjTiles);
 		ModLoader.BuildGlobalHook(ref HookRightClick, globalTiles, g => g.RightClick);
 		ModLoader.BuildGlobalHook(ref HookMouseOver, globalTiles, g => g.MouseOver);
@@ -255,6 +264,7 @@ public static class TileLoader
 
 		tiles.Clear();
 		globalTiles.Clear();
+		tileTypeAndTileStyleToItemType.Clear();
 
 		// Has to be ran on the main thread, since this may dispose textures.
 		Main.QueueMainThreadAction(() => {
@@ -276,6 +286,9 @@ public static class TileLoader
 	//  and add && !checkStay to if statement that sets flag4
 	public static void CheckModTile(int i, int j, int type)
 	{
+		if(type <= TileID.Count) {
+			return;
+		}
 		if (WorldGen.destroyObject) {
 			return;
 		}
@@ -308,6 +321,9 @@ public static class TileLoader
 		for (int remainingFrameY = partFrameY; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
 			remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 		}
+		// We need to use the tile that trigger this, since it still has the tile type instead of air
+		int originalI = i;
+		int originalJ = j;
 		i -= partX;
 		j -= partY;
 		int originX = i + tileData.Origin.X;
@@ -326,6 +342,10 @@ public static class TileLoader
 		}
 		if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, onlyCheck: true, checkStay: true)) {
 			WorldGen.destroyObject = true;
+			// First the Items to drop are tallied and spawned, then Kill each tile, then KillMultiTile can clean up TileEntities or Chests
+			// KillTile will handle calling DropItems for 1x1 tiles.
+			if (tileData.Width != 1 || tileData.Height != 1)
+				WorldGen.KillTile_DropItems(originalI, originalJ, Main.tile[originalI, originalJ], includeLargeObjectDrops: true, includeAllModdedLargeObjectDrops: true); // include all drops.
 			for (int x = i; x < i + tileData.Width; x++) {
 				for (int y = j; y < j + tileData.Height; y++) {
 					if (Main.tile[x, y].type == type && Main.tile[x, y].active()) {
@@ -351,7 +371,7 @@ public static class TileLoader
 	{
 		ModTile modTile = GetTile(tile.type);
 		if (modTile != null) {
-			return modTile.OpenDoorID;
+			return TileID.Sets.OpenDoorID[modTile.Type];
 		}
 		if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
 			return TileID.OpenDoor;
@@ -367,7 +387,7 @@ public static class TileLoader
 		ModTile modTile = GetTile(tile.type);
 
 		if (modTile != null) {
-			return modTile.CloseDoorID;
+			return TileID.Sets.CloseDoorID[modTile.Type];
 		}
 
 		if (tile.type == TileID.OpenDoor) {
@@ -388,13 +408,14 @@ public static class TileLoader
 		ModTile modTile = GetTile(type);
 
 		if (modTile != null) {
-			return modTile.OpenDoorID > -1;
+			return TileID.Sets.OpenDoorID[type] > -1;
 		}
 
 		return type == TileID.ClosedDoor;
 	}
 
-	public static string ContainerName(int type, int frameX, int frameY) => GetTile(type)?.ContainerName(frameY, frameY)?.Value ?? string.Empty;
+	/// <summary> Returns the default name for a modded chest or dresser with the provided FrameX and FrameY values. </summary>
+	public static string DefaultContainerName(int type, int frameX, int frameY) => GetTile(type)?.DefaultContainerName(frameX, frameY)?.Value ?? string.Empty;
 
 	public static bool IsModMusicBox(Tile tile)
 	{
@@ -496,29 +517,97 @@ public static class TileLoader
 		}
 	}
 
-	public static bool Drop(int i, int j, int type)
+	// Reminders:
+	// i and j are the coordinates being checked, not the top left.
+	// Drop must be called before KillTile. Item.DisableNewItemMethod must be used after KillTile to prevent accidentally preventing drops from other tiles broken by KillTile->TileFrame chains. If NewItem code is above KillTile code in vanilla code, just use goto skipDrops.
+	public static bool Drop(int i, int j, int type, bool includeLargeObjectDrops = true)
 	{
-		foreach (var hook in HookDrop) {
-			if (!hook(i, j, type)) {
-				return false;
+		// Drop is called in TileFrame->CheckX methods with includeLargeObjectDrops true. Each individual tile is then killed in those methods where includeLargeObjectDrops will be false. Ignore those situations.
+		bool isLarge = false;
+		if (Main.tileFrameImportant[type]) {
+			var tileData = TileObjectData.GetTileData(type, 0);
+			if (tileData != null) {
+				if (tileData.Width != 1 || tileData.Height != 1)
+					isLarge = true;
 			}
+			else if (TileID.Sets.IsMultitile[type])
+				isLarge = true;
 		}
+		if (!includeLargeObjectDrops && isLarge)
+			return true;
 
+		Tile t = Main.tile[i, j];
+		// Comment out to debug: Main.NewText($"Drop: {i}, {j}, {type}, L: {includeLargeObjectDrops}, HasTile: {t.HasTile}, type: {t.TileType}, fX: {t.TileFrameX}, name: {TileID.Search.GetName(t.TileType)}");
 		ModTile modTile = GetTile(type);
-
-		if (modTile != null) {
-			if (!modTile.Drop(i, j)) {
-				return false;
-			}
-
-			if (modTile.ItemDrop > 0) {
-				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, modTile.ItemDrop, 1, false, -1);
-			}
-
+		bool dropItem = modTile?.CanDrop(i, j) ?? true;
+		foreach (var hook in HookCanDrop) {
+			dropItem &= hook(i, j, type);
+		}
+		if (!dropItem)
 			return false;
+
+		foreach (var hook in HookDrop) {
+			hook(i, j, type);
 		}
 
 		return true;
+	}
+
+	public static void GetItemDrops(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
+	{
+		ModTile modTile = GetTile(tileCache.TileType);
+		if (modTile == null)
+			return;
+
+		// Various call sites to WorldGen.KillTile_DropItems expect different sets of tile drops to be retrieved:
+		// KillTile: All 1x1 tiles
+		// ReplaceTile: All 1x1 tiles, all supported multi-tiles
+		// CheckModTile: All modded tiles (except 1x1 tiles will drop from KillTile)
+		bool needDrops = false;
+		TileObjectData tileData = TileObjectData.GetTileData(tileCache.TileType, 0, 0);
+		if (tileData == null) {
+			// Terrain tile
+			needDrops = true;
+		}
+		else if (tileData.Width == 1 && tileData.Height == 1) {
+			// 1x1 tile, includeAllModdedLargeObjectDrops prevents double spawns from framing code calling CheckModTile, which calls KillTile_DropItems and KillTile. (Bars)
+			needDrops = !includeAllModdedLargeObjectDrops;
+		}
+		else if (includeAllModdedLargeObjectDrops)
+			needDrops = true;
+		else if (includeLargeObjectDrops) {
+			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfire[tileCache.type]) {
+				needDrops = true;
+			}
+		}
+		if (!needDrops) {
+			return;
+		}
+
+		var itemDrops = modTile.GetItemDrops(x, y);
+		if (itemDrops != null) {
+			foreach (var item in itemDrops) {
+				item.Prefix(-1); // Assign a random prefix, as expected
+				int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
+				Main.item[num].TryCombiningIntoNearbyItems(num);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Retrieves the item type that would drop from a tile of the specified type and style. This method is only reliable for modded tile types. This method can be used in <see cref="ModTile.GetItemDrops(int, int)"/> for tiles that have custom tile style logic. If the specified style is not found, a fallback item will be returned if one has been registered through <see cref="ModTile.RegisterItemDrop(int, int[])"/> usage.<br/>
+	/// Modders querying modded tile drops should use <see cref="ModTile.GetItemDrops(int, int)"/> directly rather that use this method so that custom drop logic is accounted for.
+	/// <br/> A return of 0 indicates that no item would drop from the tile.
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="style"></param>
+	/// <returns></returns>
+	public static int GetItemDropFromTypeAndStyle(int type, int style = 0)
+	{
+		if (tileTypeAndTileStyleToItemType.TryGetValue((type, style), out int value) || tileTypeAndTileStyleToItemType.TryGetValue((type, -1), out value))
+			return value;
+
+		return 0;
 	}
 
 	public static bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
@@ -604,6 +693,31 @@ public static class TileLoader
 
 		foreach (var hook in HookIsTileDangerous) {
 			bool? globalRetVal = hook(i, j, type, player);
+			if (globalRetVal.HasValue) {
+				if (globalRetVal.Value) {
+					retVal = true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+
+		return retVal;
+	}
+
+	public static bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
+	{
+		bool? retVal = null;
+
+		ModTile modTile = GetTile(type);
+
+		if (modTile != null && modTile.IsTileBiomeSightable(i, j, ref sightColor)) {
+			retVal = true;
+		}
+
+		foreach (var hook in HookIsTileBiomeSightable) {
+			bool? globalRetVal = hook(i, j, type, ref sightColor);
 			if (globalRetVal.HasValue) {
 				if (globalRetVal.Value) {
 					retVal = true;
@@ -719,6 +833,7 @@ public static class TileLoader
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
+		// TODO: Pass in TileDrawInfo so mods don't need to replicate existing SetDrawPositions logic. For example, ExampleTorch repeated logic (SetDrawPositions/PostDraw)
 		GetTile(type)?.PostDraw(i, j, spriteBatch);
 
 		foreach (var hook in HookPostDraw) {
@@ -782,6 +897,16 @@ public static class TileLoader
 			}
 		}
 		return GetTile(type)?.CanPlace(i, j) ?? true;
+	}
+
+	public static bool CanReplace(int i, int j, int type, int tileTypeBeingPlaced)
+	{
+		foreach (var hook in HookCanReplace) {
+			if (!hook(i, j, type, tileTypeBeingPlaced)) {
+				return false;
+			}
+		}
+		return GetTile(type)?.CanReplace(i, j, tileTypeBeingPlaced) ?? true;
 	}
 
 	public static void AdjTiles(Player player, int type)
@@ -1040,7 +1165,7 @@ public static class TileLoader
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
 	}
-  
+
 	public static bool LockChest(int i, int j, int type, ref short frameXAdjustment, ref bool manual)
 	{
 		return GetTile(type)?.LockChest(i, j, ref frameXAdjustment, ref manual) ?? false;
@@ -1083,6 +1208,19 @@ public static class TileLoader
 			metrics.EvilTileCount += tileCount * corrupt;
 			metrics.BloodTileCount += tileCount * crimson;
 			metrics.JungleTileCount += tileCount * jungle;
+		}
+	}
+
+	internal static void FinishSetup()
+	{
+		for (int k = 0; k < ItemLoader.ItemCount; k++) {
+			Item item = ContentSamples.ItemsByType[k];
+			if (!ItemID.Sets.DisableAutomaticPlaceableDrop[k]) {
+				if (item.createTile > -1) {
+					// TryAdd won't override existing value if present. Existing ModTile.RegisterItemDrop entries take precedence
+					tileTypeAndTileStyleToItemType.TryAdd((item.createTile, item.placeStyle), item.type);
+				}
+			}
 		}
 	}
 }

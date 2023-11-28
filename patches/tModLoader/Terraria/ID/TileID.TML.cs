@@ -7,6 +7,8 @@ partial class TileID
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
 		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
+		/// <summary> Tiles within this set are multi-tiles that don't have a TileObjectData. This is only used to prevent TileLoader.Drop from being called multiple times when breaking these tiles, as might be expected. Trees and Cactus are not included in this, since each of those tiles drop items. </summary>
+		public static bool[] IsMultitile = Factory.CreateBoolSet(Pots, ShadowOrbs, PlantDetritus, LifeFruit, PlanteraBulb, OasisPlants); // 165, 185, 201: Have 1x1 and multitiles in same tile, ignore.
 
 		/// <summary> Tiles within this set are allowed to be replaced by generating ore. </summary>
 		public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234, 396, 397, 401, 403, 400, 398, 399, 402);
@@ -30,8 +32,12 @@ partial class TileID
 		/// <summary> Whether or not this tile is a valid spawn point. </summary>
 		public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
 
-		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. </summary>
+		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <see cref="ItemID.Sets.Torches"/>.</summary>
 		public static bool[] Torch = Factory.CreateBoolSet(TileID.Torches);
+
+		/// <summary> Whether or not this tile behaves like a campfire. Campfires must be 3x2 and need to follow the vanilla layout with the on state being at the top of the texture. Padding must also be present in the same manner, resulting in a 54x36 section for each style. The animation, however, can be done with a separate flame texture if desired. <br/>
+		/// Necessary for block swap and Marshmallow on a Stick features.</summary>
+		public static bool[] Campfire = Factory.CreateBoolSet(TileID.Campfire);
 
 		/// <summary> Whether or not this tile is a clock. </summary>
 		public static bool[] Clock = Factory.CreateBoolSet(GrandfatherClocks);
@@ -75,7 +81,7 @@ partial class TileID
 		};
 
 		/// <summary>
-		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
+		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
 		/// </summary>
 		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
 
@@ -84,6 +90,13 @@ partial class TileID
 		/// The value a tile forces to be set for <see cref="BlockMergesWithMergeAllBlock"/> regardless of default conditions (see its documentation). null by default.
 		/// </summary>
 		public static bool?[] BlockMergesWithMergeAllBlockOverride = Factory.CreateCustomSet<bool?>(null, 10, false, 387, false, 541, false);
+
+		// Values taken from Player.PlaceThing_Tiles_BlockPlacementForAssortedThings()
+		/// <summary>
+		/// Allows tiles to be placed next to any tile or wall. (Tiles normally need a <see cref="Main.tileSolid"/> tile, <see cref="Rope"/> tile, <see cref="IsBeam"/> tile, or a wall adjacent to the target position to be placeable.)
+		/// <br>Used by: Cobweb, Coin Piles, Living Fire Blocks, Smoke Blocks, Bubble Blocks</br>
+		/// </summary>
+		public static bool[] CanPlaceNextToNonSolidTile = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble);
 
 		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
 		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
@@ -98,6 +111,16 @@ partial class TileID
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
 		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+
+		/// <summary>
+		/// The ID of the tile that a given closed door transforms into when it becomes OPENED. Defaults to -1, which means said tile isn't a closed door.
+		/// </summary>
+		public static int[] OpenDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// The ID of the tile that a given open door transforms into when it becomes CLOSED. Defaults to -1, which means said tile isn't an open door.
+		/// </summary>
+		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)

@@ -1,21 +1,24 @@
-﻿using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Armor;
+using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.Items.Placeable.Furniture;
 using ExampleMod.Content.Items.Tools;
-using ExampleMod.Content.Projectiles;
+using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Chat;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
@@ -23,15 +26,20 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	class ExampleTravelingMerchant : ModNPC
 	{
-		// Time of day for traveller to leave (6PM)
+		// Time of day for traveler to leave (6PM)
 		public const double despawnTime = 48600.0;
 
-		// the time of day the traveler will spawn (double.MaxValue for no spawn)
-		// saved and loaded with the world in TravelingMerchantSystem
+		// the time of day the traveler will spawn (double.MaxValue for no spawn). Saved and loaded with the world in TravelingMerchantSystem
 		public static double spawnTime = double.MaxValue;
 
-		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
-		public List<Item> shopItems = new List<Item>();
+		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns. Synced by the server to clients in multi player
+		public readonly static List<Item> shopItems = new();
+
+		// A static instance of the declarative shop, defining all the items which can be brought. Used to create a new inventory when the NPC spawns
+		public static ExampleTravelingMerchantShop Shop;
+
+		private static int ShimmerHeadIndex;
+		private static Profiles.StackedNPCProfile NPCProfile;
 
 		public override bool PreAI() {
 			if ((!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(NPC.Center)) // If it's past the despawn time and the NPC isn't onscreen
@@ -49,17 +57,65 @@ namespace ExampleMod.Content.NPCs
 			return true;
 		}
 
+		public override void AddShops() {
+			Shop = new ExampleTravelingMerchantShop(NPC.type);
+
+			// Always bring an ExampleItem
+			Shop.Add<ExampleItem>();
+
+			// Bring 2 Tools
+			Shop.AddPool("Tools", slots: 2)
+				.Add<ExampleDrill>()
+				.Add<ExampleHamaxe>()
+				.Add<ExampleFishingRod>()
+				.Add<ExampleHookItem>()
+				.Add<ExampleBugNet>()
+				.Add<ExamplePickaxe>();
+
+			// Bring 4 Weapons
+			Shop.AddPool("Weapons", slots: 4)
+				.Add<ExampleSword>()
+				.Add<ExampleShortsword>()
+				.Add<ExampleShootingSword>()
+				.Add<ExampleJavelin>()
+				.Add<ExampleSpear>()
+				.Add<ExampleMagicWeapon>()
+				.Add<ExampleGun>()
+				.Add<ExampleShotgun>()
+				.Add<ExampleMinigun>()
+				.Add<ExampleFlail>()
+				.Add<ExampleAdvancedFlail>(Condition.Hardmode) // Only bring advanced examples in hardmode!
+				.Add<ExampleWhip>()
+				.Add<ExampleWhipAdvanced>(Condition.Hardmode)
+				.Add<ExampleYoyo>();
+
+			// Bring 3 Furniture
+			Shop.AddPool("Furniture", slots: 3)
+				.Add<ExampleLamp>()
+				.Add<ExampleBed>()
+				.Add<ExampleChair>()
+				.Add<ExampleChest>()
+				.Add<ExampleClock>()
+				.Add<ExampleDoor>()
+				.Add<ExampleSink>()
+				.Add<ExampleTable>()
+				.Add<ExampleToilet>()
+				.Add<ExampleWorkbench>();
+
+			Shop.Register();
+		}
+
 		public static void UpdateTravelingMerchant() {
 			bool travelerIsThere = (NPC.FindFirstNPC(ModContent.NPCType<ExampleTravelingMerchant>()) != -1); // Find a Merchant if there's one spawned in the world
 
 			// Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
 			if (Main.dayTime && Main.time == 0) {
-				// insert code here to change the spawn chance based on other conditions (say, npcs which have arrived, or milestones the player has passed)
+				// insert code here to change the spawn chance based on other conditions (say, NPCs which have arrived, or milestones the player has passed)
 				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
 				// NPC won't spawn today if it stayed all night
 				if (!travelerIsThere && Main.rand.NextBool(4)) { // 4 = 25% Chance
-																// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
+					// Here we can make it so the NPC doesn't spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 				}
 				else {
@@ -78,7 +134,7 @@ namespace ExampleMod.Content.NPCs
 				// Prevents the traveler from spawning again the same day
 				spawnTime = double.MaxValue;
 
-				// Annouce that the traveler has spawned in!
+				// Announce that the traveler has spawned in!
 				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
 				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
 			}
@@ -103,7 +159,9 @@ namespace ExampleMod.Content.NPCs
 			Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
 			foreach (Player player in Main.player) {
 				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
-				if (player.active && player.getRect().Intersects(npcScreenRect)) return true;
+				if (player.active && player.getRect().Intersects(npcScreenRect)) {
+					return true;
+				}
 			}
 			return false;
 		}
@@ -113,62 +171,36 @@ namespace ExampleMod.Content.NPCs
 			return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
 		}
 
-		public void CreateNewShop() {
-			// create a list of item ids
-			var itemIds = new List<int>();
-
-			// For each slot we add a switch case to determine what should go in that slot
-			switch (Main.rand.Next(2)) {
-				case 0:
-					itemIds.Add(ModContent.ItemType<ExampleItem>());
-					break;
-				default:
-					itemIds.Add(ModContent.ItemType<ExampleSoul>());
-					break;
-			}
-
-			switch (Main.rand.Next(2)) {
-				case 0:
-					itemIds.Add(ModContent.ItemType<ExampleDye>());
-					break;
-				default:
-					itemIds.Add(ModContent.ItemType<ExampleHairDye>());
-					break;
-			}
-
-			switch (Main.rand.Next(4)) {
-				case 0:
-					itemIds.Add(ModContent.ItemType<ExampleDoor>());
-					break;
-				case 1:
-					itemIds.Add(ModContent.ItemType<ExampleBed>());
-					break;
-				case 2:
-					itemIds.Add(ModContent.ItemType<ExampleChest>());
-					break;
-				default:
-					itemIds.Add(ModContent.ItemType<ExamplePickaxe>());
-					break;
-			}
-
-			// convert to a list of items
-			shopItems = new List<Item>();
-			foreach (int itemId in itemIds) {
-				Item item = new Item();
-				item.SetDefaults(itemId);
-				shopItems.Add(item);
-			}
+		public override void Load() {
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
 		}
 
 		public override void SetStaticDefaults() {
-			Main.npcFrameCount[NPC.type] = 25;
-			NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
-			NPCID.Sets.AttackFrameCount[NPC.type] = 4;
-			NPCID.Sets.DangerDetectRange[NPC.type] = 700;
-			NPCID.Sets.AttackType[NPC.type] = 0;
-			NPCID.Sets.AttackTime[NPC.type] = 90;
-			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
-			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			Main.npcFrameCount[Type] = 25;
+			NPCID.Sets.ExtraFramesCount[Type] = 9;
+			NPCID.Sets.AttackFrameCount[Type] = 4;
+			NPCID.Sets.DangerDetectRange[Type] = 60;
+			NPCID.Sets.AttackType[Type] = 3; // Swings a weapon. This NPC attacks in roughly the same manner as Stylist
+			NPCID.Sets.AttackTime[Type] = 12;
+			NPCID.Sets.AttackAverageChance[Type] = 1;
+			NPCID.Sets.HatOffsetY[Type] = 4;
+			NPCID.Sets.ShimmerTownTransform[Type] = true;
+			NPCID.Sets.NoTownNPCHappiness[Type] = true; // Prevents the happiness button
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExampleTravellingMerchantEmote>();
+
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
+				Velocity = 2f, // Draws the NPC in the bestiary as if its walking +2 tiles in the x direction
+				Direction = -1 // -1 is left and 1 is right.
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex)
+			);
 		}
 
 		public override void SetDefaults() {
@@ -183,24 +215,67 @@ namespace ExampleMod.Content.NPCs
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
-			AnimationType = NPCID.Guide;
+			AnimationType = NPCID.Stylist;
 			TownNPCStayingHomeless = true;
-			CreateNewShop();
 		}
 
-		public override void SaveData(TagCompound tag) {
-			tag["itemIds"] = shopItems;
+		public override void OnSpawn(IEntitySource source) {
+			shopItems.Clear();
+   			shopItems.AddRange(Shop.GenerateNewInventoryList());
+
+			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
+			if (Main.netMode == NetmodeID.Server) {
+				// We recommend modders avoid sending WorldData too often, or filling it with too much data, lest too much bandwidth be consumed sending redundant data repeatedly
+				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronise
+				NetMessage.SendData(MessageID.WorldData);
+   			}
 		}
 
-		public override void LoadData(TagCompound tag) {
-			shopItems = tag.Get<List<Item>>("shopItems");
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			int num = NPC.life > 0 ? 1 : 5;
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				// Retrieve the gore types. This NPC has shimmer variants for head, arm, and leg gore. It also has a custom hat gore. (7 gores)
+				// This NPC will spawn either the assigned party hat or a custom hat gore when not shimmered. When shimmered the top hat is part of the head and no hat gore is spawned.
+				int hatGore = NPC.GetPartyHatGore();
+				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore 
+				if (hatGore == 0 && !NPC.IsShimmerVariant) {
+					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
+				}
+				string variant = "";
+				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				if (hatGore > 0) {
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, hatGore);
+				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+			}
+		}
+
+		public override bool UsesPartyHat() {
+			// ExampleTravelingMerchant likes to keep his hat on while shimmered.
+			if (NPC.IsShimmerVariant) {
+				return false;
+			}
+			return true;
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) {
@@ -208,7 +283,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
-			return new ExampleTravelingMerchantProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -248,24 +323,13 @@ namespace ExampleMod.Content.NPCs
 			button = Language.GetTextValue("LegacyInterface.28");
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
-				shop = true;
+				shop = Shop.Name; // Opens the shop
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot) {
-			foreach (Item item in shopItems) {
-				// We don't want "empty" items and unloaded items to appear
-				if (item == null || item.type == ItemID.None)
-					continue;
-
-				shop.item[nextSlot].SetDefaults(item.type);
-				nextSlot++;
-			}
-		}
-
-		public override void AI() {
+		public override void AI() { 
 			NPC.homeless = true; // Make sure it stays homeless
 		}
 
@@ -279,36 +343,121 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown) {
-			cooldown = 30;
-			randExtraCooldown = 30;
+			cooldown = 15;
+			randExtraCooldown = 8;
 		}
 
-		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-			projType = ModContent.ProjectileType<SparklingBall>();
-			attackDelay = 1;
+		public override void TownNPCAttackSwing(ref int itemWidth, ref int itemHeight) {
+			itemWidth = itemHeight = 40;
 		}
 
-		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
-			multiplier = 12f;
-			randomOffset = 2f;
+		public override void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset) {
+			Main.GetItemDrawFrame(ModContent.ItemType<ExampleSword>(), out item, out itemFrame);
+			itemSize = 40;
+			// This adjustment draws the swing the way town npcs usually do.
+			if (NPC.ai[1] > NPCID.Sets.AttackTime[NPC.type] * 0.66f) {
+				offset.Y = 12f;
+			}
 		}
 	}
 
-	public class ExampleTravelingMerchantProfile : ITownNPCProfile
+	// You have the freedom to implement custom shops however you want
+	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
+	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
+	// 
+	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
+	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{
-		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+		public new record Entry(Item Item, List<Condition> Conditions) : AbstractNPCShop.Entry
+		{
+			IEnumerable<Condition> AbstractNPCShop.Entry.Conditions => Conditions;
 
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
+			public bool Disabled { get; private set; }
 
-			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+			public Entry Disable() {
+				Disabled = true;
+				return this;
+			}
 
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
+			public bool ConditionsMet() => Conditions.All(c => c.IsMet());
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Head");
+		public record Pool(string Name, int Slots, List<Entry> Entries)
+		{
+			public Pool Add(Item item, params Condition[] conditions) {
+				Entries.Add(new Entry(item, conditions.ToList()));
+				return this;
+			}
+
+			public Pool Add<T>(params Condition[] conditions) where T : ModItem => Add(ModContent.ItemType<T>(), conditions);
+			public Pool Add(int item, params Condition[] conditions) => Add(ContentSamples.ItemsByType[item], conditions);
+
+			// Picks a number of items (up to Slots) from the entries list, provided conditions are met.
+			public IEnumerable<Item> PickItems() {
+				// This is not a fast way to pick items without replacement, but it's certainly easy. Be careful not to do this many many times per frame, or on huge lists of items.
+				var list = Entries.Where(e => !e.Disabled && e.ConditionsMet()).ToList();
+				for (int i = 0; i < Slots; i++) {
+					if (list.Count == 0)
+						break;
+
+					int k = Main.rand.Next(list.Count);
+					yield return list[k].Item;
+
+					// remove the entry from the list so it can't be selected again this pick
+					list.RemoveAt(k);
+				}
+			}
+		}
+
+		public List<Pool> Pools { get; } = new();
+
+		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
+
+		public override IEnumerable<Entry> ActiveEntries => Pools.SelectMany(p => p.Entries).Where(e => !e.Disabled);
+
+		public Pool AddPool(string name, int slots) {
+			var pool = new Pool(name, slots, new List<Entry>());
+			Pools.Add(pool);
+			return pool;
+		}
+
+		// Some methods to add a pool with a single item
+		public void Add(Item item, params Condition[] conditions) => AddPool(item.ModItem?.FullName ?? $"Terraria/{item.type}", slots: 1).Add(item, conditions);
+		public void Add<T>(params Condition[] conditions) where T : ModItem => Add(ModContent.ItemType<T>(), conditions);
+		public void Add(int item, params Condition[] conditions) => Add(ContentSamples.ItemsByType[item], conditions);
+
+		// Here is where we actually 'roll' the contents of the shop
+		public List<Item> GenerateNewInventoryList() {
+			var items = new List<Item>();
+			foreach (var pool in Pools) {
+				items.AddRange(pool.PickItems());
+			}
+			return items;
+		}
+
+		public override void FillShop(ICollection<Item> items, NPC npc) {
+			// use the items which were selected when the NPC spawned.
+			foreach (var item in ExampleTravelingMerchant.shopItems) {
+				// make sure to add a clone of the item, in case any ModifyActiveShop hooks adjust the item when the shop is opened
+				items.Add(item.Clone());
+			}
+		}
+
+		public override void FillShop(Item[] items, NPC npc, out bool overflow) {
+			overflow = false;
+			int i = 0;
+			// use the items which were selected when the NPC spawned.
+			foreach (var item in ExampleTravelingMerchant.shopItems) {
+
+				if (i == items.Length - 1) {
+					// leave the last slot empty for selling
+					overflow = true;
+					return;
+				}
+
+				// make sure to add a clone of the item, in case any ModifyActiveShop hooks adjust the item when the shop is opened
+				items[i++] = item.Clone();
+			}
+		}
 	}
 }

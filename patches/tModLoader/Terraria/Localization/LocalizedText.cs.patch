@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,26 @@
+@@ -1,15 +_,30 @@
 +using System;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
@@ -19,16 +19,61 @@
  	public string Value { get; private set; }
 +	*/
 +	private string _value;
++	/// <summary>
++	/// Retrieves the text value. This is the actual text the user should see.
++	/// </summary>
 +	public string Value {
 +		get => _value;
 +		private set {
 +			_value = value;
 +			_hasPlurals = null;
++			BoundArgs = null;
 +		}
 +	}
  
  	internal LocalizedText(string key, string text)
  	{
+@@ -22,6 +_,13 @@
+ 		Value = text;
+ 	}
+ 
++	/// <summary>
++	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="obj"/> parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/>, the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br/><br/>
++	/// When used in conjunction with <see cref="Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom)"/> and <see cref="Lang.CreateDialogFilter(string, object)"/>, simple boolean conditions expressed in each LocalizedText can be used to filter a collection of LocalizedText.  <br/><br/>
++	/// <see cref="Format(object[])"/> is more commonly used to format LocalizedText placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided.
++	/// </summary>
++	/// <param name="obj"></param>
++	/// <returns></returns>
+ 	public string FormatWith(object obj)
+ 	{
+ 		string value = Value;
+@@ -36,6 +_,13 @@
+ 		});
+ 	}
+ 
++	/// <summary>
++	/// Checks if the conditions embedded in this LocalizedText are satisfied by the <paramref name="obj"/> argument.
++	/// For example when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/> as the <paramref name="obj"/> argument, "{?Rain}" at the start of a LocalizedText value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br/>
++	/// The method is typically used indirectly by using <see cref="Lang.CreateDialogFilter(string, object)"/>.
++	/// </summary>
++	/// <param name="obj"></param>
++	/// <returns></returns>
+ 	public bool CanFormatWith(object obj)
+ 	{
+ 		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+@@ -56,7 +_,12 @@
+ 		return true;
+ 	}
+ 
++	/*
+ 	public NetworkText ToNetworkText() => NetworkText.FromKey(Key);
++	*/
++	/// <summary> Convert this <see cref="LocalizedText"/> to a <see cref="NetworkText"/> for use in various network code applications. Non-chat messages sent to other players should be sent as <see cref="NetworkText"/> to facilitate localization. </summary>
++	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? Array.Empty<object>());
++	/// <inheritdoc cref="ToNetworkText()"/>
+ 	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
+ 
+ 	public static explicit operator string(LocalizedText text)
 @@ -64,9 +_,12 @@
  		return text.Value;
  	}

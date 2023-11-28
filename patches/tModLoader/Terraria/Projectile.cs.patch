@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,70 +_,272 @@
+@@ -66,76 +_,321 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -31,7 +31,7 @@
 +
 +	/// <summary>
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
-+	/// <br/> In <see cref="ModProjectile.Kill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> for an example of this logic.
++	/// <br/> In <see cref="ModProjectile.OnKill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
 +	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <br/> Defaults to <see langword="false"/>.
@@ -41,7 +41,8 @@
  	public bool counterweight;
 +
 +	/// <summary>
-+	/// Scales the projectile drawing, but not the hitbox, making this not suitable for affecting hitbox. Avoid large values.
++	/// Scales how large the projectile will be drawn. Will also affect the hitbox (<see cref="Entity.width"/>, <see cref="Entity.height"/>) if assigned in SetDefaults. If changed elsewhere it will not affect the hitbox, so that will have to be adjusted manually via code in that situation if needed. <para/>
++	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(ref Color)"/>.<para/>
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -54,31 +55,38 @@
  	public float rotation;
 +
 +	/// <summary>
-+	/// The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectile loaded into the game. This will be equal to either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.WoodenArrowFriendly"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;(). To check if a Projectile instance is a specific Projectile, check <c>Projectile.type == ProjectileID.VanillaProjectileHere</c> or <c>Projectile.type == ModContent.ProjectileType&lt;ModdedProjectileHere&gt;()</c> in an <see langword="if"/> statement. 
++	/// The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectile loaded into the game. This will be equal to either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.WoodenArrowFriendly"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;(). To check if a Projectile instance is a specific Projectile, check <c>Projectile.type == ProjectileID.VanillaProjectileHere</c> or <c>Projectile.type == ModContent.ProjectileType&lt;ModdedProjectileHere&gt;()</c> in an <see langword="if"/> statement.
 +	/// </summary>
  	public int type;
 +
 +	/// <summary>
 +	/// How transparent to draw this projectile. 0 to 255. 255 is completely transparent.
-+	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
++	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
++	/// <summary>
++	/// Indicates that this projectile is a sentry
++	/// <br/> Defaults to <see langword="false"/>.
++	/// <br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
++	/// <br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
++	/// </summary>
  	public bool sentry;
  	public short glowMask;
 +
 +	/// <summary>
 +	/// The index of the player who owns this projectile. In Multiplayer, Clients "own" projectiles that they shoot, while the Server "owns" projectiles spawned by NPCs and the World.
-+	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L146">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
++	/// <br/> NPC <b>never</b> own projectiles, do not use owner to index into <see cref="Main.npc"/>. 
++	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
 +	/// <br/> Defaults to the owner parameter of Projectile.NewProjectile, which should always be set to <see cref="Main.myPlayer"/> to correspond to the client that owns the projectile..
 +	/// </summary>
  	public int owner = 255;
 +
 +	/// <summary>
-+	/// An array with 3 slots used for any sort of data storage, which is occasionally synced to the server. Each vanilla <see cref="ProjAIStyleID"/> uses these slots for different purposes. Call <see cref="netUpdate"/> to manually sync. The advantage of using these 3 floats is that they are synced automatically. Using fields in your <see cref="ModProjectile"/> class will work just the same, but they might need to by synced via <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModProjectile.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
-+	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
-+	/// <br/> Defaults to [0, 0, 0]
++	/// An array with 3 slots used for any sort of data storage, which is occasionally synced to the server. Each vanilla <see cref="ProjAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true during AI methods to manually sync. The advantage of using these 3 floats is that they are synced automatically. Using fields in your <see cref="ModProjectile"/> class will work just the same, but they might need to be synced via <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModProjectile.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
++	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
++	/// <br/> Defaults to the values passed into <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, usually [0, 0, 0].
 +	/// </summary>
  	public float[] ai = new float[maxAI];
 +
@@ -87,11 +95,17 @@
 +	/// <br/> Defaults to [0, 0, 0]
 +	/// </summary>
  	public float[] localAI = new float[maxAI];
++	/// <summary>
++	/// An offset from the actual position of the projectile that will be added to the draw position. Used to offset some held projectiles to match the players <see cref="Player.gfxOffY"/>, thereby keeping the projectile visually in sync with the player. <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> can be used to ignore that usage.
++	/// </summary>
  	public float gfxOffY;
++	/// <summary>
++	/// Has nothing to do with the speed that this projectile travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// </summary>
  	public float stepSpeed = 1f;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai">Basic Projectile Guide</see> teaches how to use an existing aiStyle.
 +	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <br/> Defaults to 0.
@@ -114,7 +128,7 @@
  	public int spriteDirection = 1;
 +
 +	/// <summary>
-+	/// If True, this projectile will hurt players and friendly npcs (<see cref="NPC.friendly"/>)
++	/// If True, this projectile will hurt players and friendly NPCs (<see cref="NPC.friendly"/>)
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hostile;
@@ -132,14 +146,27 @@
  	public bool friendly;
 +
 +	/// <summary>
-+	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
++	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
 +	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
 -	private int[] localNPCImmunity = new int[200];
 +	public int[] localNPCImmunity = new int[200];
++	/// <summary>
++	/// If true, this projectile manages it's own immunity timers for each npc.<br/>
++	/// Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.<br/>
++	/// <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// </summary>
  	public bool usesLocalNPCImmunity;
++	/// <summary>
++	/// If true, all projectiles of this type share an immunity cooldown for each npc.<br/>
++	/// Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.<br/>
++	/// <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// </summary>
  	public bool usesIDStaticNPCImmunity;
++	/// <summary>
++	/// If true, this projectile will apply immunity to an npc despite having a <see cref="penetrate"/> value of 1. Used only for firework rockets in Terraria content.
++	/// </summary>
  	public bool appliesImmunityTimeOnSingleHits;
 +
 +	/// <summary>
@@ -195,14 +222,18 @@
 +
 +	/// <summary>
 +	/// Set to 1f on a minion to count it towards the minion limit of the summoning player (Optic Staff summons two minions at once with 0.5f each)
++	/// <br/> Make sure to set <see cref="ItemID.Sets.StaffMinionSlotsRequired"/> for the minion summoning item to the sum of the minionSlots values of the minions that will be spawned.
 +	/// <br/> Defaults to 0f.
 +	/// </summary>
  	public float minionSlots;
++	/// <summary>
++	/// A number indicating the order of minions. Minion AI code typically uses this value to determine a suitable idle position that results in minions lining up neatly in relation to the player without bunching up.
++	/// </summary>
  	public int minionPos;
  	public int restrikeDelay;
 +
 +	/// <summary>
-+	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L38">ExampleBullet</see> shows how to implemtent bounce.
++	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implement bounce.
 +	/// <br/> Defaults to <see langword="true"/>.
 +	/// </summary>
  	public bool tileCollide;
@@ -226,6 +257,12 @@
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
 +	/// </summary>
  	public bool hide;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this projectile will only deal damage if its owner has line of sight to the hit.
++	/// <br/> Useful for melee projectiles, such as spears and shortswords.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool ownerHitCheck;
  	public bool usesOwnerMeleeHitCD;
  	public int[] playerImmune = new int[255];
@@ -295,6 +332,18 @@
  	public int frame;
  	public bool manualDirectionChange;
  	public int projUUID = -1;
+ 	public bool decidesManualFallThrough;
+ 	public bool shouldFallThrough;
++	/// <summary>
++	/// When used in conjunction with <see cref="usesLocalNPCImmunity"/>, determines how many ticks must pass before this projectile can deal damage again to the same npc. A value of -1 indicates that it can only hit a specific npc once. The default value of -2 has no effect, so this must be assigned if usesLocalNPCImmunity is true.
++	/// </summary>
+ 	public int localNPCHitCooldown = -2;
++	/// <summary>
++	/// When used in conjunction with <see cref="usesIDStaticNPCImmunity"/>, determines how many ticks must pass before any projectile of the same type can deal damage again to the same npc. This must be assigned a suitable value if usesIDStaticNPCImmunity is true.
++	/// </summary>
+ 	public int idStaticNPCHitCooldown = -1;
+ 	public int bannerIdToRespondTo;
+ 	private static Conditions.IsSolid _cachedConditions_solid = new Conditions.IsSolid();
 @@ -152,7 +_,14 @@
  	private static List<int> _ai156_blacklistedTargets = new List<int>();
  	private static float[] _CompanionCubeScreamCooldown = new float[255];
@@ -328,13 +377,13 @@
 +	{
 +		int originalType = type;
 +		var originalModProjectile = ModProjectile;
-+		var originalGlobals = globalProjectiles;
++		var originalGlobals = _globals;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		ModProjectile = originalModProjectile;
-+		globalProjectiles = originalGlobals;
++		_globals = originalGlobals;
 +
 +		int num = ProjectileID.Sets.TrailCacheLength[type];
 +		if (num != oldPos.Length) {
@@ -355,12 +404,12 @@
  	{
 +		// TML fields:
 +		ModProjectile = null;
-+		globalProjectiles = new Instanced<GlobalProjectile>[0];
++		_globals = null;
 +		DamageType = DamageClass.Default;
 +		ArmorPenetration = 0;
 +		CritChance = 0;
 +		WhipSettings = default;
-+		ContinuouslyUpdateDamage = false;
++		ContinuouslyUpdateDamageStats = false;
 +		nameOverride = null;
 +
  		ownerHitCheckDistance = 1000f;
@@ -378,6 +427,15 @@
  		ownerHitCheck = false;
  		hide = false;
  		lavaWet = false;
+@@ -1167,6 +_,8 @@
+ 			magic = true;
+ 		}
+ 		else if (type == 85) {
++			ArmorPenetration = 15; // Added by TML
++
+ 			width = 6;
+ 			height = 6;
+ 			aiStyle = 193;
 @@ -1859,6 +_,8 @@
  			ignoreWater = true;
  		}
@@ -387,15 +445,27 @@
  			width = 28;
  			height = 28;
  			aiStyle = 4;
-@@ -2200,6 +_,8 @@
+@@ -2200,6 +_,9 @@
  			trap = true;
  		}
  		else if (type == 189) {
++			// There's some custom code in Damage that adds an extra 5 armor pen on-hit if the owner has strongBees at time of hit
 +			ArmorPenetration = 10; // Added by TML.
 +
  			width = 8;
  			height = 8;
  			aiStyle = 36;
+@@ -4245,6 +_,10 @@
+ 			ignoreWater = true;
+ 		}
+ 		else if (type == 410) {
++			// Added by TML.
++			if (Main.remixWorld)
++				ArmorPenetration = 20;
++
+ 			width = 14;
+ 			height = 14;
+ 			aiStyle = 72;
 @@ -4960,6 +_,8 @@
  			netImportant = true;
  		}
@@ -445,7 +515,7 @@
  				coldDamage = true;
  		}
  		else if (type == 916) {
-+			ArmorPenetration = 25; // Added by TML.
++			ArmorPenetration = 50; // Added by TML.
 +
  			width = 18;
  			height = 18;
@@ -477,6 +547,33 @@
  			width = 56;
  			height = 64;
  			aiStyle = 177;
+@@ -8224,6 +_,8 @@
+ 			hide = true;
+ 		}
+ 		else if (type == 977) {
++			ArmorPenetration = 5; // Added by TML
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
+@@ -8250,6 +_,8 @@
+ 			coldDamage = true;
+ 		}
+ 		else if (type == 974) {
++			ArmorPenetration = 5; // Added by TML
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 188;
+@@ -8279,6 +_,8 @@
+ 			timeLeft = 30;
+ 		}
+ 		else if (type == 976) {
++			ArmorPenetration = 20; // Added by TML
++
+ 			width = 20;
+ 			height = 20;
+ 			aiStyle = 152;
 @@ -8643,9 +_,17 @@
  			friendly = true;
  			penetrate = -1;
@@ -521,7 +618,7 @@
  	}
  
 +	/// <summary>
-+	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self-explanatory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 +	/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
 +	/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
 +	/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
@@ -542,13 +639,11 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
  	{
  		if (Owner == -1)
-@@ -8745,6 +_,10 @@
+@@ -8745,6 +_,8 @@
  		projectile.shimmerWet = Collision.shimmer;
  		Main.projectileIdentity[Owner, num] = num;
  		FindBannerToAssociateTo(spawnSource, projectile);
 +
-+		// Added by TML.
-+		HandlePlayerStatModifiers(spawnSource, projectile);
 +
  		if (projectile.aiStyle == 1) {
  			while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
@@ -588,10 +683,11 @@
  		}
  
  		if (Type == 249)
-@@ -8910,6 +_,11 @@
+@@ -8910,6 +_,12 @@
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
  
++		projectile.ApplyStatsFromSource(spawnSource);
 +		ProjectileLoader.OnSpawn(projectile, spawnSource);
 +
 +		if (Main.netMode != 0 && Owner == Main.myPlayer)
@@ -607,23 +703,14 @@
 +		bool vanillaCanDamage = true;
  		if (type == 18 || type == 72 || type == 86 || type == 87 || aiStyle == 31 || aiStyle == 32 || type == 226 || type == 378 || type == 613 || type == 650 || type == 882 || type == 888 || type == 895 || type == 896 || (type == 434 && localAI[0] != 0f) || type == 439 || type == 444 || (type == 451 && ((int)(ai[0] - 1f) / penetrate == 0 || ai[1] < 5f) && ai[0] != 0f) || type == 500 || type == 653 || type == 1018 || type == 460 || type == 633 || type == 600 || type == 601 || type == 602 || type == 535 || (type == 631 && localAI[1] == 0f) || (type == 537 && localAI[0] <= 30f) || type == 651 || (type == 188 && localAI[0] < 5f) || (aiStyle == 137 && ai[0] != 0f) || aiStyle == 138 || (type == 261 && velocity.Length() < 1.5f) || (type == 818 && ai[0] < 1f) || type == 831 || type == 970 || (type == 833 && ai[0] == 4f) || (type == 834 && ai[0] == 4f) || (type == 835 && ai[0] == 4f) || (type == 281 && ai[0] == -3f) || ((type == 598 || type == 636 || type == 614 || type == 971 || type == 975) && ai[0] == 1f) || (type == 923 && localAI[0] <= 60f) || (type == 919 && localAI[0] <= 60f) || (aiStyle == 15 && ai[0] == 0f && localAI[1] <= 12f) || type == 861 || (type >= 511 && type <= 513 && ai[1] >= 1f) || type == 1007 || (aiStyle == 93 && ai[0] != 0f && ai[0] != 2f) || (aiStyle == 10 && localAI[1] == -1f) || (type == 85 && localAI[0] >= 54f) || (Main.projPet[type] && type != 266 && type != 407 && type != 317 && (type != 388 || ai[0] != 2f) && (type < 390 || type > 392) && (type < 393 || type > 395) && (type != 533 || !(ai[0] >= 6f) || !(ai[0] <= 8f)) && (type < 625 || type > 628) && (type != 755 || ai[0] == 0f) && (type != 946 || ai[0] == 0f) && type != 758 && type != 951 && type != 963 && (type != 759 || frame == Main.projFrames[type] - 1) && type != 833 && type != 834 && type != 835 && type != 864 && (type != 623 || ai[0] != 2f)))
 +			vanillaCanDamage = false;
-+			
++
 +		if (Main.projPet[type] && ProjectileLoader.MinionContactDamage(this))
 +			vanillaCanDamage = true;
-+		
++
 +		if (!(ProjectileLoader.CanDamage(this) ?? vanillaCanDamage))
  			return;
  
  		Rectangle rectangle = Damage_GetHitbox();
-@@ -9835,6 +_,8 @@
- 			if (type == 533 && localAI[2] >= 40f)
- 				num *= 0.5f;
- 
-+			ProjectileLoader.ModifyDamageScaling(this, ref num);
-+
- 			bool flag = !npcProj && !trap;
- 			bool flag2 = usesOwnerMeleeHitCD && flag && owner < 255;
- 			bool flag3 = damage > 0;
 @@ -9858,6 +_,14 @@
  					if (!((!Main.npc[i].dontTakeDamage || NPCID.Sets.ZappingJellyfish[Main.npc[i].type]) && flag5) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
  						continue;
@@ -663,8 +750,14 @@
  							if (!flag9 && (Main.npc[i].noTileCollide || !ownerHitCheck || CanHitWithMeleeWeapon(Main.npc[i]))) {
  								bool flag10 = false;
  								if (Main.npc[i].type == 414) {
-@@ -9992,7 +_,12 @@
+@@ -9990,9 +_,18 @@
+ 									if (type == 604)
+ 										Main.player[owner].Counterweight(nPC.Center, damage, knockBack);
  
++									var modifiers = nPC.GetIncomingStrikeModifiers(DamageType, direction);
++									modifiers.ArmorPenetration += ArmorPenetration;
++									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref modifiers);
++
  									float num3 = knockBack;
  									bool flag12 = false;
 +
@@ -677,6 +770,15 @@
  									float armorPenetrationPercent = 0f;
  									bool flag13 = false;
  									switch (type) {
+@@ -10027,7 +_,7 @@
+ 										case 189:
+ 											num4 += 10;
+ 											if (flag && Main.player[owner].strongBees)
+-												num4 += 5;
++												modifiers.ArmorPenetration += 5; //num4 += 5
+ 											break;
+ 										case 723:
+ 										case 724:
 @@ -10058,12 +_,14 @@
  										case 976:
  											num4 += 20;
@@ -692,17 +794,27 @@
  									}
  
  									if (flag13) {
-@@ -10073,7 +_,7 @@
+@@ -10071,9 +_,13 @@
+ 										return;
+ 									}
  
++									/*
  									int num5 = (int)((float)damage * num);
++									*/
++									modifiers.SourceDamage *= num;
++									float num5 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
  									int num6 = 0;
 -									if (type > 0 && type < ProjectileID.Count && ProjectileID.Sets.StardustDragon[type]) {
 +									if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
  										float value = (scale - 1f) * 100f;
  										value = Utils.Clamp(value, 0f, 50f);
  										num5 = (int)((float)num5 * (1f + value * 0.23f));
-@@ -10106,14 +_,25 @@
- 										num5 += 5;
+@@ -10103,17 +_,28 @@
+ 									}
+ 
+ 									if (flag && type == 189 && Main.player[owner].strongBees)
+-										num5 += 5;
++										modifiers.SourceDamage.Base += 5; //num5 += 5;
  
  									if (flag) {
 +										/*
@@ -727,6 +839,60 @@
  
  										int num12 = type;
  										if ((uint)(num12 - 688) <= 2u) {
+@@ -10127,12 +_,19 @@
+ 										}
+ 									}
+ 
++									modifiers.SourceDamage *= num5 / 1000;
++									// set this just so that summon procs which scale with this value can spawn correctly
++									num5 = modifiers.SourceDamage.ApplyTo(damage);
++
++									/*
+ 									float num13 = 1f;
+ 									if (type == 864)
+ 										num13 = 0.75f;
+ 
+ 									if (type == 688 || type == 689 || type == 690)
+ 										num13 /= 2f;
++									*/
++									float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];
+ 
+ 									if (flag && (minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type])) {
+ 										bool flag14 = false;
+@@ -10223,13 +_,19 @@
+ 											int num17 = (int)((float)num5 * 1.75f);
+ 											int num18 = NewProjectile(GetProjectileSource_FromThis(), nPC.Center, Vector2.Zero, 918, num17, 0f, owner);
+ 											Main.projectile[num18].localNPCImmunity[i] = -1;
+-											num6 += num17;
++											modifiers.ScalingBonusDamage += 1.75f * num13; //num6 += num17;
+ 										}
+ 									}
+ 
+ 									num6 = (int)((float)num6 * num13);
++									/*
+ 									num5 += num6;
+ 									int num19 = ((!flag) ? Main.DamageVar(num5) : Main.DamageVar(num5, Main.player[owner].luck));
++									*/
++									modifiers.FlatBonusDamage += num6;
++									float luck = flag ? Main.player[owner].luck : 0f;
++									float num19 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
++
+ 									if (type == 1002)
+ 										num19 /= 2;
+ 
+@@ -10455,9 +_,12 @@
+ 									}
+ 
+ 									if (Main.netMode != 2 && flag) {
++										/*
+ 										int num27 = Item.NPCtoBanner(nPC.BannerID());
+ 										if (num27 > 0 && Main.player[owner].HasNPCBannerBuff(num27))
+ 											num19 = ((!Main.expertMode) ? ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].NormalDamageDealt)) : ((int)((float)num19 * ItemID.Sets.BannerStrength[Item.BannerToItem(num27)].ExpertDamageDealt)));
++										*/
++										Main.player[owner].ApplyBannerOffenseBuff(nPC, ref modifiers);
+ 									}
+ 
+ 									if (Main.expertMode) {
 @@ -10468,7 +_,7 @@
  											num19 = (int)((double)num19 * 0.75);
  									}
@@ -736,7 +902,33 @@
  										num19 = (int)((float)num19 * 0.75f);
  
  									if (type == 497 && penetrate != 1) {
-@@ -10604,6 +_,10 @@
+@@ -10487,6 +_,9 @@
+ 									if (type == 981 && nPC.type == 104)
+ 										num19 *= 3;
+ 
++									// Essentially, the following block is moved to execute later on.
++									goto VanillaOnHitEffectsWhipsEnd;
++									VanillaOnHitEffectsWhipsStart: // Whip Multihit penalty and Crystal dart retargeting are OnHit effects
+ 									if (type == 294)
+ 										damage = (int)((double)damage * 0.9);
+ 
+@@ -10592,18 +_,26 @@
+ 											netUpdate = true;
+ 										}
+ 									}
++									goto VanillaOnHitEffectsResume;
++									VanillaOnHitEffectsWhipsEnd:
+ 
+ 									if (type == 261 && velocity.Length() < 3.5f) {
+-										num19 /= 2;
++										modifiers.SourceDamage /= 2; //num19 /= 2;
+ 										num3 /= 2f;
+ 									}
+ 
+ 									if (flag && melee && Main.player[owner].parryDamageBuff && !ProjectileID.Sets.DontApplyParryDamageBuff[type]) {
+-										num19 *= 5;
++										modifiers.ScalingBonusDamage += 4f; //num19 *= 5;
+ 										Main.player[owner].parryDamageBuff = false;
  										Main.player[owner].ClearBuff(198);
  									}
  
@@ -744,10 +936,12 @@
 +									goto VanillaOnHitEffectsEnd;
 +
 +									VanillaOnHitEffectsStart:
++									goto VanillaOnHitEffectsWhipsStart;
++									VanillaOnHitEffectsResume:
  									StatusNPC(i);
  									if (flag && nPC.life > 5)
  										TryDoingOnHitEffects(nPC);
-@@ -10611,11 +_,14 @@
+@@ -10611,12 +_,15 @@
  									if (ProjectileID.Sets.ImmediatelyUpdatesNPCBuffFlags[type])
  										nPC.UpdateNPC_BuffSetFlags(lowerBuffTime: false);
  
@@ -758,46 +952,70 @@
  									}
 +									goto PostModifyHit;
  
+-									int num34 = direction;
 +									VanillaOnHitEffectsEnd:
- 									int num34 = direction;
++									int? num34 = null;//direction;
  									switch (type) {
  										case 697:
-@@ -10639,10 +_,24 @@
+ 										case 699:
+@@ -10639,15 +_,33 @@
  											num3 *= 0.5f;
  									}
  
-+									// Patching, locals which change here also change in the next patch
-+									CombinedHooks.ModifyHitNPCWithProj(this, nPC, ref num19, ref num3, ref flag12, ref num34);
++									modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++									modifiers.Knockback *= num3 / knockBack;
++									modifiers.TargetDamageMultiplier *= num19 / 1000;
++									if (num34 != null)
++										modifiers.HitDirectionOverride = num34;
++
++									var strike = modifiers.ToHitInfo(damage, flag12, num3, damageVariation: true, luck: flag ? Main.player[owner].luck : 0);
++									num34 = strike.HitDirection;
++
 +									goto VanillaOnHitEffectsStart;
 +
 +									PostModifyHit:
-+									
-+									// TML-introduced armor penetration field overrides vanilla's calculations.
-+									// Vanilla values are instead moved into the projectile SetDefaults method(s).
-+									num6 = ArmorPenetration;
 +
 +									/*
  									if (flag && !hostile)
-+									*/
-+									if (flag && !hostile && num6 > 0)
  										num19 += nPC.checkArmorPenetration(num4, armorPenetrationPercent);
++									*/
  
  									NPCKillAttempt attempt = new NPCKillAttempt(nPC);
-+									// Patch note: num19, num3, num34 used above and below
++									/*
  									int num35 = ((!flag) ? ((int)nPC.StrikeNPCNoInteraction(num19, num3, num34, flag12)) : ((int)nPC.StrikeNPC(num19, num3, num34, flag12)));
++									*/
++									int num35 = nPC.StrikeNPC(strike, noPlayerInteraction: !flag);
  									if (flag && attempt.DidNPCDie())
  										Main.player[owner].OnKillNPC(ref attempt, this);
-@@ -10913,9 +_,14 @@
+ 
+-									if (flag && Main.player[owner].accDreamCatcher)
++									if (flag && Main.player[owner].accDreamCatcher && !nPC.HideStrikeDamage)
+ 										Main.player[owner].addDPS(num35);
+ 
+ 									bool flag23 = !nPC.immortal;
+@@ -10768,10 +_,13 @@
+ 										localAI[0] = 1f;
+ 
+ 									if (Main.netMode != 0) {
++										/*
+ 										if (flag12)
+ 											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34, 1);
+ 										else
+ 											NetMessage.SendData(28, -1, -1, null, i, num19, num3, num34);
++										*/
++										NetMessage.SendStrikeNPC(nPC, strike);
+ 									}
+ 
+ 									if (type == 916)
+@@ -10913,9 +_,12 @@
  										}
  									}
  
 +									// Extra patch context.
-+
  									if (type == 710)
  										BetsySharpnel(i);
  
-+									// Patching: See ModifyHitX above for locals
-+									CombinedHooks.OnHitNPCWithProj(this, nPC, num19, num3, flag12);
++									CombinedHooks.OnHitNPCWithProj(this, nPC, strike, num35);
 +
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
@@ -812,37 +1030,21 @@
  					if (aiStyle == 3) {
  						if (ai[0] == 0f) {
  							velocity.X = 0f - velocity.X;
-@@ -11103,15 +_,21 @@
+@@ -11103,11 +_,14 @@
  						timeLeft = 1;
  
  					bool flag27 = false;
++					/*
 -					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
 +					if (melee && Main.rand.Next(1, 101) <= Main.player[owner].GetTotalCritChance(DamageClass.Melee))
  						flag27 = true;
++					*/
  
-+					// Patch note: ^ flag27 and num46, to be used below multiple times.
  					int num46 = Main.DamageVar((int)((float)damage * num), Main.player[owner].luck);
  					bool dodgeable = IsDamageDodgable();
 +
-+					CombinedHooks.ModifyHitPvpWithProj(this, player3, ref num46, ref flag27);
-+
  					if (!player3.immune)
  						StatusPvP(m);
- 
- 					TryDoingOnHitEffects(player3);
-+
-+					// Patch note: num47, to be used below.
- 					int num47 = (int)player3.Hurt(playerDeathReason, num46, direction, pvp: true, quiet: false, flag27, -1, dodgeable);
- 					if (num47 > 0 && Main.player[owner].ghostHeal && friendly && !hostile)
- 						ghostHeal(num47, new Vector2(player3.Center.X, player3.Center.Y), player3);
-@@ -11122,6 +_,8 @@
- 					if ((melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 7)
- 						NewProjectile(GetProjectileSource_FromThis(), player3.Center.X, player3.Center.Y, player3.velocity.X, player3.velocity.Y, 289, 0, 0f, owner);
- 
-+					CombinedHooks.OnHitPvpWithProj(this, player3, num47, flag27);
-+
- 					if (Main.netMode != 0)
- 						NetMessage.SendPlayerHurt(m, playerDeathReason, num46, direction, flag27, pvp: true, -1);
  
 @@ -11207,10 +_,12 @@
  			case 919:
@@ -857,7 +1059,7 @@
  		int myPlayer = Main.myPlayer;
  		bool flag28 = Main.player[myPlayer].active && !Main.player[myPlayer].dead && (!Main.player[myPlayer].immune || num49 != -1);
  		if (flag28 && type == 281)
-@@ -11219,9 +_,15 @@
+@@ -11219,13 +_,21 @@
  		if (Main.getGoodWorld && type == 281)
  			flag28 = true;
  
@@ -873,30 +1075,32 @@
  		int num50 = direction;
  		num50 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		if (!Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity)) {
-@@ -11262,7 +_,14 @@
+ 			int num51 = Main.DamageVar(damage, 0f - Main.player[owner].luck);
++			// Moved to CombinedHooks.ModifyHitByProjectile
++			/*
+ 			int num52 = bannerIdToRespondTo;
+ 			if (num52 > 0 && Main.player[myPlayer].HasNPCBannerBuff(num52)) {
+ 				ItemID.BannerEffect bannerEffect = ItemID.Sets.BannerStrength[Item.BannerToItem(num52)];
+@@ -11245,7 +_,9 @@
+ 
+ 				num51 = (int)((float)num51 * num53);
+ 			}
++			*/
+ 
++			// projectiles just do double damage to players :|
+ 			int num54 = num51 * 2;
+ 			if (type == 961) {
+ 				if (penetrate == 1) {
+@@ -11262,7 +_,8 @@
  			if (ProjectileID.Sets.IsAGravestone[type])
  				playerIndex2 = (int)ai[0];
  
-+			bool crit = false;
-+			CombinedHooks.ModifyHitByProjectile(Main.player[myPlayer], this, ref num54, ref crit);
-+
-+			/*
- 			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: false, num49, dodgeable2) > 0.0 && !Main.player[myPlayer].dead)
-+			*/
-+			int realDamage = (int)Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: crit, num49, dodgeable2);
-+			if (realDamage > 0 && !Main.player[myPlayer].dead)
++			// Added ArmorPenetration argument
+-			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: false, num49, dodgeable2) > 0.0 && !Main.player[myPlayer].dead)
++			if (Main.player[myPlayer].Hurt(PlayerDeathReason.ByProjectile(playerIndex2, whoAmI), num54, num50, pvp: false, quiet: false, Crit: false, num49, dodgeable2, armorPenetration: ArmorPenetration) > 0.0 && !Main.player[myPlayer].dead)
  				StatusPlayer(myPlayer);
  
  			if (trap) {
-@@ -11270,6 +_,8 @@
- 				if (Main.player[myPlayer].dead)
- 					AchievementsHelper.HandleSpecialEvent(Main.player[myPlayer], 4);
- 			}
-+
-+			CombinedHooks.OnHitByProjectile(Main.player[myPlayer], this, realDamage, crit);
- 		}
- 
- 		if (true) {
 @@ -11307,6 +_,7 @@
  		if (type == 967)
  			result.Inflate(10, 10);
@@ -905,6 +1109,16 @@
  		return result;
  	}
  
+@@ -11337,7 +_,8 @@
+ 
+ 		bool dodgeable = IsDamageDodgable();
+ 		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(playerIndex, whoAmI);
++		// Added ArmorPenetration argument
+-		if (Main.player[j].Hurt(damageSource, num, direction, pvp, quiet: false, Crit: false, -1, dodgeable) > 0.0 && !Main.player[j].dead)
++		if (Main.player[j].Hurt(damageSource, num, direction, pvp, quiet: false, Crit: false, -1, dodgeable, armorPenetration: ArmorPenetration) > 0.0 && !Main.player[j].dead)
+ 			StatusPlayer(j);
+ 
+ 		if (trap) {
 @@ -11393,7 +_,7 @@
  		return num;
  	}
@@ -953,20 +1167,22 @@
  				return;
  		}
  
-@@ -12412,9 +_,16 @@
+@@ -12412,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
  
 +			/*
  			if (numUpdates == -1 && (minion || sentry)) {
 +			*/
-+			if ((minion || sentry || ContinuouslyUpdateDamage)) {
++			if ((minion || sentry || ContinuouslyUpdateDamageStats)) {
  				Player player = Main.player[owner];
 +
 +				/*
  				damage = (int)((float)originalDamage * player.minionDamage + 5E-06f);
 +				*/
 +				damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
++				CritChance = (int)(OriginalCritChance + player.GetTotalCritChance(DamageType) + 5E-06f);
++				ArmorPenetration = (int)(OriginalArmorPenetration + player.GetTotalArmorPenetration(DamageType) + 5E-06f);
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
@@ -978,7 +1194,7 @@
 +			int num2 = (overrideWidth != -1) ? overrideWidth : width;
 +			int num3 = (overrideHeight != -1) ? overrideHeight : height;
 +
-+			if (!ProjectileLoader.TileCollideStyle(this, ref num2, ref num3, ref flag6, ref hitboxCenterFrac)) { } else 
++			if (!ProjectileLoader.TileCollideStyle(this, ref num2, ref num3, ref flag6, ref hitboxCenterFrac)) { } else
  			if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				//TML: base.Center isn't correct due to snapping, we have to calculate it without that.
 +				Vector2 center = base.position + new Vector2(base.width, base.height) * 0.5f;
@@ -990,7 +1206,7 @@
 +					if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
 +						velocity = Collision.AnyCollisionWithSpecificTiles(vector2, base.velocity, num2, num3, TileID.Sets.Falling, evenActuated: true);
 +
-+					//TML: This section was rewriten above so it is affected by ProjectileLoader.TileCollideStyle
++					//TML: This section was rewritten above so it is affected by ProjectileLoader.TileCollideStyle
 +					/*
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
@@ -1108,6 +1324,16 @@
  
  	private void AI_152_SuperStarSlash()
  	{
+@@ -15911,6 +_,9 @@
+ 		tileCollide = false;
+ 	}
+ 
++	/// <summary>
++	/// Changes the <see cref="Entity.width"/> and <see cref="Entity.height"/> of the projectile while preserving the <see cref="Entity.Center"/>. Useful for explosive projectiles that expand their hitbox while exploding.
++	/// </summary>
+ 	public void Resize(int newWidth, int newHeight)
+ 	{
+ 		position = base.Center;
 @@ -16028,6 +_,11 @@
  
  	public void AI()
@@ -1329,7 +1555,7 @@
 +		// Code taken 1:1 from the commented out method with the same name
 +		bool vanilla = Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
 +
-+		// TML: Vanilla check modified by moving Tile.nactive() from its callsites into here to allow actuated or air to be grappled by mods
++		// TML: Vanilla check modified by moving Tile.nactive() from its call sites into here to allow actuated or air to be grappled by mods
 +		vanilla &= theTile.nactive();
 +
 +		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
@@ -1358,7 +1584,7 @@
  					for (int l = 0; l < num4; l++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -37401,6 +_,9 @@
+@@ -37401,10 +_,13 @@
  			item.stack = stack2;
  		}
  
@@ -1368,6 +1594,11 @@
  		item.newAndShiny = true;
  		Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
  		if (item2.stack > 0) {
+-			int number = Item.NewItem(new EntitySource_FishedOut(this), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
++			int number = Item.NewItem(new EntitySource_OverfullInventory(thePlayer), (int)position.X, (int)position.Y, width, height, itemType, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 		}
 @@ -46721,7 +_,7 @@
  			}
  
@@ -1517,7 +1748,7 @@
  		}
 +
 +		// Patch note: End of Projectile.Kill().
-+		ProjectileLoader.Kill(this, num);
++		ProjectileLoader.OnKill(this, num);
  
  		active = false;
  	}
@@ -1531,6 +1762,16 @@
  		List<int> list = new List<int> {
  			181,
  			182,
+@@ -56667,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Determines if walls should be exploded by checking if there is an empty wall within the specified radius and bounds. Use in conjunction with <see cref="ExplodeTiles"/>.
++	/// </summary>
+ 	public bool ShouldWallExplode(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)
+ 	{
+ 		bool result = false;
 @@ -56692,9 +_,13 @@
  
  	public bool CanExplodeTile(int x, int y)
@@ -1545,6 +1786,16 @@
  		switch (Main.tile[x, y].type) {
  			case 26:
  			case 88:
+@@ -56736,6 +_,9 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Explodes tiles within a radius of the given position and within the bounds passed in. The <paramref name="wallSplode"/> parameter should be the result of <see cref="ShouldWallExplode(Vector2, int, int, int, int, int)"/> and dictates if walls will also be destroyed. This method honors the tile and wall explosion conditions.
++	/// </summary>
+ 	public void ExplodeTiles(Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ, bool wallSplode)
+ 	{
+ 		AchievementsHelper.CurrentlyMining = true;
 @@ -56762,6 +_,10 @@
  				for (int k = i - 1; k <= i + 1; k++) {
  					for (int l = j - 1; l <= j + 1; l++) {

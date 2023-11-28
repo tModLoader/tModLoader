@@ -8,22 +8,7 @@
 
 Mods: {
 	ExampleMod: {
-		Config: {
-			// ItemHeader: Items
-			// SampleEnumLabels.Peculiar: Very Peculiar
-
-			ExampleWingsToggle: {
-				// Label: ExampleWings Toggle
-				// Tooltip: Enables or disables the ExampleWings item
-			}
-		}
-
-		Common: {
-			// PaperAirplane: Paper Airplane
-			// LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
-			// LocalizedTooltip: This tooltip is from the localization files.
-			// LocalizedHeader: Headers can help organize
-		}
+		// Common.PaperAirplane: Paper Airplane
 
 		CommonItemTooltip: {
 			// IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}
@@ -43,47 +28,86 @@ Mods: {
 		NPCs: {
 			// ExampleCustomAISlimeNPC.DisplayName: Flutter Slime
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
-			// Example_Person.DisplayName: Example Person
 			// ExampleTravellingMerchant.DisplayName: Example Traveler
 			// ExampleBoneMerchant.DisplayName: Example Bone Merchant
-			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind N P C
-			// ExamplePerson.DisplayName: Example Person
+			// ExampleDrawBehindNPC.DisplayName: Example Draw Behind NPC
+
+			ExamplePerson: {
+				// DisplayName: Example Person
+
+				# This is what displays during all of an NPC's happiness levels.
+				TownNPCMood: {
+					// Content: I feel pretty fine right now.
+					// NoHome: I would very much like a house, all the colorful monsters scare me.
+					// FarFromHome: Could you please get me back to my house?
+					// LoveSpace: I love how there is so much space here to code tModLoader mods!
+					// DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
+					// HateCrowded: I can't test my mod with so many people around!
+					// LoveBiome: I love {BiomeName}.
+					// LikeBiome: "{BiomeName} is a very nice place to test mods in."
+					// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
+					// HateBiome: It's kind of hard to mod while being attacked by monsters in {BiomeName}.
+					// LoveNPC: Do you think {NPCName} notices me?
+					// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
+					// DislikeNPC: '''"{NPCName} keeps rambling on about "paid mods"... Wish I could convince him how terrible of an idea that is."'''
+					// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+					// LikeNPC_Princess: "{NPCName} is a princess? That is so cool!"
+					// Princess_LovesNPC: "{NPCName} is so square. I love that about them!"
+				}
+
+				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
+				// Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
+			}
+
 			// ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
 			// ExampleWormBody.DisplayName: Example Worm
 			// ExampleWormHead.DisplayName: Example Worm
 			// ExampleWormTail.DisplayName: Example Worm
 			// ExampleZombieThief.DisplayName: Example Zombie Thief
-			// MinionBossBody.DisplayName: Minion Boss
+
+			MinionBossBody: {
+				// DisplayName: Minion Boss
+				# This is part of ModIntegrationsSystem.cs: Information for the player so he knows how to encounter the boss
+				// BossChecklistIntegration.SpawnInfo: Use a [i:ExampleMod/MinionBossSummonItem]
+			}
+
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
+			// ExampleCritterNPC.DisplayName: Lava Frog
 		}
 
 		Tiles: {
-			// ExampleClock.MapEntry: Example Clock
-			// ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
-			// ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
+			// ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItem.DisplayName}"
+			// ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItemAdvanced.DisplayName}"
 			// ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			// ExampleFishingCrate.MapEntry: Crate
 			// ExampleHerb.MapEntry: Example Herb
 			// ExampleMusicBoxTile.MapEntry: Music Box
 			// ExampleOre.MapEntry: ExampleOre
-			// ExampleTorch.MapEntry: Torch
-			// ExampleBed.MapEntry: Example Bed
 
 			ExampleChest: {
-				// ContainerName: Example Chest
 				// MapEntry0: Example Chest
 				// MapEntry1: Locked Example Chest
 			}
 
-			// ExampleDoorClosed.MapEntry: Example Door
-			// ExampleDoorOpen.MapEntry: Example Door
-			// ExampleTable.MapEntry: Table
-			// ExampleWorkbench.MapEntry: Work Bench
-			// ExampleSapling.MapEntry: Example Sapling
+			// ExampleDresser.MapEntry: Example Dresser
 		}
 
 		Items: {
+			ExampleStaff: {
+				// DisplayName: Example Staff
+				// Tooltip: This is a modded magic staff weapon
+			}
+
+			ExampleLastPrism: {
+				// DisplayName: Example Last Prism
+				/* Tooltip:
+					'''
+					A slightly different laser-firing Prism
+					Ignores NPC immunity frames and fires 10 beams at once instead of 6
+					''' */
+			}
+
 			ExamplePetItem: {
 				# This example omits "Mods.ExampleMod." from the substitution key and still works. The game will test variations of the translation key to check for other keys in the scope.
 				// DisplayName: "{$Common.PaperAirplane}"
@@ -122,11 +146,6 @@ Mods: {
 				// Tooltip: Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!
 			}
 
-			ExamplePet: {
-				// DisplayName: Mods.ExampleMod.ItemName.ExamplePet
-				// Tooltip: Mods.ExampleMod.ItemTooltip.ExamplePet
-			}
-
 			ExampleBeard: {
 				// DisplayName: Example Beard
 				// Tooltip: This is a modded beard which matches your hair color.
@@ -147,6 +166,11 @@ Mods: {
 					''' */
 			}
 
+			ExampleInfoAccessory: {
+				// DisplayName: Example Info Accessory
+				// Tooltip: Displays how many minions you have summoned
+			}
+
 			ExampleShield: {
 				// DisplayName: Example Shield
 				// Tooltip: This is a modded shield.
@@ -161,9 +185,10 @@ Mods: {
 					Increases base damage for all weapons by {2}
 					Increases total damage for all weapons by {3}
 					{$CommonItemTooltip.PercentIncreasedMeleeCritChance@4}
-					{5}% increased example knockback
+					Increases ranged firing speed by {5}%
 					{6} magic armor penetration
-					Increases ranged firing speed by {7}%
+					{7}% increased example knockback
+					{8}% increased crit damage
 					''' */
 			}
 
@@ -220,11 +245,13 @@ Mods: {
 			ExampleHelmet: {
 				// DisplayName: Example Helmet
 				// Tooltip: This is a modded helmet.
+				// SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				// DisplayName: Example Hood
 				// Tooltip: This is a modded hood.
+				// SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
 			}
 
 			ExampleLeggings: {
@@ -239,6 +266,11 @@ Mods: {
 			ExampleRobe: {
 				// DisplayName: Example Robe
 				// Tooltip: ""
+			}
+
+			ExampleTallHelmet: {
+				// DisplayName: Example Tall Helmet
+				// Tooltip: This is a tall modded helmet.
 			}
 
 			MinionBossMask: {
@@ -315,7 +347,7 @@ Mods: {
 			}
 
 			MinionBossBag: {
-				// DisplayName: Treasure Bag
+				// DisplayName: Treasure Bag ({$Mods.ExampleMod.NPCs.MinionBossBody.DisplayName})
 				// Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -362,6 +394,12 @@ Mods: {
 			ExampleMountItem: {
 				// DisplayName: ExampleMount Car key
 				// Tooltip: This summons a modded mount.
+			}
+
+			ExampleOnBuyItem: {
+				// DisplayName: Volatile Explosive Device
+				// Tooltip: Has a 50% chance to kill the player whenever bought from a shop
+				// DeathMessage: "{0} tried and failed to handle a very volatile explosive device."
 			}
 
 			ExamplePaperAirplane: {
@@ -414,10 +452,7 @@ Mods: {
 				// Tooltip: ""
 			}
 
-			ExampleLamp: {
-				// DisplayName: Example Lamp
-				// Tooltip: ""
-			}
+			// ExampleLamp.DisplayName: Example Lamp
 
 			ExampleMusicBox: {
 				// DisplayName: Music Box (Marble Gallery)
@@ -575,7 +610,7 @@ Mods: {
 
 			ExampleCloneWeapon: {
 				// DisplayName: Meowmere V2
-				// Tooltip: ""
+				// Tooltip: Similar to {$ItemName.Meowmere} [i:Meowmere]
 			}
 
 			ExampleCustomAmmoGun: {
@@ -591,6 +626,7 @@ Mods: {
 			ExampleCustomResourceWeapon: {
 				// DisplayName: Example Custom Resource Weapon
 				// Tooltip: ""
+				// UsesXExampleResource: Uses {0} example resource
 			}
 
 			ExampleFlail: {
@@ -655,12 +691,22 @@ Mods: {
 
 			ExampleWhip: {
 				// DisplayName: Example Whip
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					''' */
 			}
 
 			ExampleWhipAdvanced: {
 				// DisplayName: Example Whip Advanced
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					{0}% summon tag damage to the next minion or sentry hit
+					{$CommonItemTooltip.Whips}
+					Hold for longer reach
+					''' */
 			}
 
 			ExampleYoyo: {
@@ -703,14 +749,13 @@ Mods: {
 				// Tooltip: ""
 			}
 
-			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus". 
-			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file. 
+			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus".
+			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file.
 			// OctopusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 			// SarcophagusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
 
 			HoldStyleShowcase: {
 				// DisplayName: Hold Style Showcase
-				# 
 				/* Tooltip:
 					'''
 					This item showcases each HoldStyle.
@@ -731,6 +776,120 @@ Mods: {
 			ShimmerShowcaseConditions: {
 				// Tooltip: ""
 				// DisplayName: Shimmer Showcase Conditions
+			}
+
+			ExampleCustomSwingSword: {
+				// DisplayName: Example Custom Swing Sword
+				/* Tooltip:
+					'''
+					This is a sword with a custom swinging animation made with projectiles
+					Use more than once to cycle through attacks
+					''' */
+			}
+
+			ExampleDresser: {
+				// DisplayName: Example Dresser
+				// Tooltip: This is a modded dresser.
+			}
+
+			ExampleTrapIchorBullet: {
+				// DisplayName: Example Trap - {$ItemName.IchorBullet}
+				// Tooltip: ""
+			}
+
+			ExampleTrapChlorophyteBullet: {
+				// DisplayName: Example Trap - {$ItemName.ChlorophyteBullet}
+				// Tooltip: ""
+			}
+
+			HitModifiersShowcase: {
+				// DisplayName: Hit Modifiers Showcase
+				// Tooltip: ""
+			}
+
+			AbsorbTeamDamageAccessory: {
+				// DisplayName: Absorb Team Damage Accessory
+				// Tooltip: Absorbs {0}% of damage done to players on your team when above {1}% life
+			}
+
+			ExampleDrill: {
+				// DisplayName: Example Drill
+				// Tooltip: ""
+			}
+
+			ExampleExplosive: {
+				// DisplayName: Example Explosive
+				// Tooltip: ""
+			}
+
+			ExampleJavelin: {
+				// DisplayName: Example Javelin
+				// Tooltip: ""
+			}
+
+			ActiveSoundShowcase: {
+				// DisplayName: Active Sound Showcase
+				// Tooltip: ""
+			}
+
+			ExampleMinecart: {
+				// DisplayName: Example Minecart
+				// Tooltip: ""
+			}
+
+			ExampleGravityDebuffBullet: {
+				// DisplayName: Example Gravity Debuff Bullet
+				// Tooltip: ""
+			}
+
+			ExampleWaterTorch: {
+				// DisplayName: Example Water Torch
+				# "Can be placed in water"
+				// Tooltip: "{$ItemTooltip.IchorTorch}"
+			}
+
+			ExampleCampfire: {
+				// DisplayName: Example Campfire
+				// Tooltip: "{$ItemTooltip.Campfire}"
+			}
+
+			ExampleExtraJumpAccessory: {
+				// DisplayName: Example Extra Jump Accessory
+				// Tooltip: Allows the user to perform an example mid-air extra jump
+			}
+
+			ExampleMultiExtraJumpAccessory: {
+				// DisplayName: Example Multiple-Use Extra Jump Accessory
+				/* Tooltip:
+					'''
+					Allows the user to perform an example mid-air extra jump
+					This accessory has <JUMPS> jumps remaining
+					''' */
+			}
+
+			ExampleSwingingEnergySword: {
+				// DisplayName: Example Swinging Energy Sword
+				// Tooltip: ""
+			}
+
+			ExampleLivingFire: {
+				// DisplayName: Example Living Fire Block
+				// Tooltip: ""
+			}
+
+			ExampleCritterItem: {
+				// DisplayName: Lava Frog
+				// Tooltip: A spicy boi
+			}
+
+			ExampleCritterCageItem: {
+				// DisplayName: Lava Frog Cage
+				// Tooltip: A sad spicy boi
+			}
+
+			ExampleStatue: {
+				// DisplayName: Example Statue
+				// Tooltip: The power of examplium flows in this inanimate fish
 			}
 		}
 
@@ -762,17 +921,21 @@ Mods: {
 			// MinionBossEye.DisplayName: Minion Boss Eye
 			// ExampleSimpleMinion.DisplayName: Example Minion
 			// SparklingBall.DisplayName: Sparkling Ball
+			// ExampleCustomSwingProjectile.DisplayName: Example Custom Swing Projectile
+			// ExampleDrillProjectile.DisplayName: Example Drill Projectile
+			// ExampleExplosive.DisplayName: Example Explosive
+			// ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
+			// ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
+			// ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
+			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
+			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
+			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
 		}
 
 		Buffs: {
 			ExamplePetBuff: {
 				// DisplayName: "{$Mods.ExampleMod.Common.PaperAirplane}"
 				// Description: '''"Let this pet be an example to you!"'''
-			}
-
-			ExamplePet: {
-				// DisplayName: Mods.ExampleMod.BuffName.ExamplePet
-				// Description: Mods.ExampleMod.BuffDescription.ExamplePet
 			}
 
 			AnimatedBuff: {
@@ -795,6 +958,11 @@ Mods: {
 				// Description: "{$CommonItemTooltip.IncreasesDefenseBy}"
 			}
 
+			ExampleDefenseDebuff: {
+				// DisplayName: Defensive Debuff
+				// Description: "{$BuffDescription.Ichor}"
+			}
+
 			ExampleLifeRegenDebuff: {
 				// DisplayName: Fire debuff
 				// Description: Losing life
@@ -806,8 +974,8 @@ Mods: {
 			}
 
 			ExampleWhipDebuff: {
-				// DisplayName: Mods.ExampleMod.BuffName.ExampleWhipDebuff
-				// Description: Mods.ExampleMod.BuffDescription.ExampleWhipDebuff
+				// DisplayName: Example Whip Debuff
+				// Description: ""
 			}
 
 			ExampleLightPetBuff: {
@@ -824,6 +992,31 @@ Mods: {
 				// DisplayName: Example Minion
 				// Description: The example minion will fight for you
 			}
+
+			ExampleDodgeBuff: {
+				// DisplayName: Example Dodge Buff
+				// Description: You will dodge the next attack
+			}
+
+			ExampleGravityDebuff: {
+				// DisplayName: Example Gravity Debuff
+				// Description: Gravity has gone wild.
+			}
+
+			AbsorbTeamDamageBuff: {
+				// DisplayName: Absorb Team Damage Buff
+				// Description: "{0}% of damage taken will be redirected to another player"
+			}
+
+			ExampleWhipAdvancedDebuff: {
+				// DisplayName: Example Whip Advanced Debuff
+				// Description: ""
+			}
+
+			ExampleJavelinDebuff: {
+				// DisplayName: Example Javelin Debuff
+				// Description: Losing life
+			}
 		}
 
 		// RecipeConditions.Night: At Low Health
@@ -835,33 +1028,30 @@ Mods: {
 		}
 
 		Biomes: {
-			// ExampleSurfaceBiome.DisplayName: Example Surface
-			// ExampleUndergroundBiome.DisplayName: Example Underground
+			ExampleSurfaceBiome: {
+				// DisplayName: Example Surface
+				// TownNPCDialogueName: the Example Surface Biome
+			}
+
+			ExampleUndergroundBiome: {
+				// DisplayName: Example Underground
+				// TownNPCDialogueName: the Example Underground Biome
+			}
 		}
 
 		Prefixes: {
-			// ExamplePrefix.DisplayName: Example Prefix
-			// ExampleDerivedPrefix.DisplayName: Example Derived Prefix
-		}
-
-		#This is what displays during all of an NPC's happiness levels. Note that the localization key for these should always be "TownNPCMood.*NPCName*.*Mood*" or else it won't display properly.
-		TownNPCMood: {
-			ExamplePerson: {
-				// Content: I feel pretty fine right now.
-				// NoHome: I would very much like a house, all the colorful monsters scare me.
-				// LoveSpace: I love how there is so much space here to code tModLoader mods!
-				// FarFromHome: Could you please get me back to my house?
-				// DislikeCrowded: There are too many people around, it makes it hard for me to focus on mod making.
-				// HateCrowded: I can't test my mod with so many people around!
-				// LikeBiome: "{BiomeName} is a very nice place to test mods in."
-				// LoveBiome: I love {BiomeName}.
-				// DislikeBiome: It's way too cold in {BiomeName}, I'm freezing!
-				// HateBiome: Its kind of hard to mod while being attacked by monsters in {BiomeName}.
-				// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
-				// LoveNPC: Do you think {NPCName} notices me?
-				// DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
-				// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+			ExamplePrefix: {
+				// DisplayName: Example Prefix
+				// AdditionalTooltip: More Power
 			}
+
+			ExampleDerivedPrefix: {
+				// DisplayName: Example Derived Prefix
+				// AdditionalTooltip: Even More Power
+			}
+
+			# This special format will force a + or - sign to display depending on the value: -3, +0, +3. (https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings?redirectedfrom=MSDN#SectionSeparator)
+			// PowerTooltip: "{0:+0;-#} Power"
 		}
 
 		MessageInfo: {
@@ -876,6 +1066,7 @@ Mods: {
 				// StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
 				// StandardDialogue2: What's your favorite color? My favorite colors are white and black.
 				// StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
+				// StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
 				// CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				// RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
 				// TalkALot: I'm getting tired of talking to you. I have to go.
@@ -904,7 +1095,51 @@ Mods: {
 		}
 
 		// InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
+		// ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
+
+		Conditions: {
+			// LowHealth: When the player is below half HP
+			// PlayerHasLifeforceBuff: When the player has the Lifeforce buff
+			// InExampleBiome: In the Example biome
+			// NotSellingExampleItem: When not selling Example Item
+		}
+
+		DropConditions: {
+			// ExampleSoul: Drops in the Example Underground biome in hardmode
+			// JourneyMode: Drops in Journey Mode
+			// Example: Drops during daytime
+		}
+
+		UI: {
+			// ExampleResource: Example Resource: {0} / {1}
+			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+		}
+
+		// WorldGen.ExampleOrePassMessage: Example Mod Ores
+
+		BuilderToggles: {
+			ExampleBuilderToggleDimmedLight: {
+				// OnText: Example On
+				// OffText: Example Off
+			}
+		}
+
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
+		Emotes: {
+			// ExampleBiomeEmote.Command: exbiome
+			// ExampleBoneMerchantEmote.Command: exbonemerchant
+			// ExampleItemEmote.Command: exitem
+			// ExamplePersonEmote.Command: experson
+			// ExamplePickaxeEmote.Command: expickaxe
+			// ExampleTravellingMerchantEmote.Command: extravelingmerchant
+			// MinionBossEmote.Command: exminionboss
+		}
+
+		// NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 	}
 }
+
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
 // UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Journey world, silly.

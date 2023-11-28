@@ -22,7 +22,7 @@
  	public const int HoldUp = 4;
 +	/// <summary>
 +	/// Item is held in front of player pointing towards mouse. Item sprite should be oriented horizontally with handle at left and muzzle end at right. Set <c><see cref="Item.staff"/>[Type] = true;</c> in SetStaticDefaults if the weapon sprite is oriented like a staff (handle at bottom left, end at top right).
-+	/// <br/> Used by items such as guns, spellbooks, flails, yoyos, and spears
++	/// <br/> Used by items such as guns, spell books, flails, yoyos, and spears
 +	/// </summary>
  	public const int Shoot = 5;
 +	/// <summary>
@@ -39,7 +39,7 @@
  	public const int GolfPlay = 8;
 +	/// <summary>
 +	/// Item is brought in front of player and rotated towards player.
-+	/// <br/> Used by potions, drings, flasks, and hair dyes.
++	/// <br/> Used by potions, drinks, flasks, and hair dyes.
 +	/// </summary>
  	public const int DrinkLiquid = 9;
  	public const int HiddenAnimation = 10;
@@ -52,8 +52,8 @@
 +	/// </summary>
  	public const int Guitar = 12;
 +	/// <summary>
-+	/// Item is thurst in any direction towards the mouse.
-+	/// Used by shortswords
++	/// Item is thrust in any direction towards the mouse.
++	/// Used by Shortswords
 +	/// </summary>
  	public const int Rapier = 13;
 +	/// <summary>

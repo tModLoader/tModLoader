@@ -1,4 +1,4 @@
-using ExampleMod.Content.Dusts;
+﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -44,14 +44,14 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			for (int k = 0; k < 5; k++) {
 				Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Projectile.oldVelocity.X * 0.5f, Projectile.oldVelocity.Y * 0.5f);
 			}
 			SoundEngine.PlaySound(SoundID.Item25, Projectile.position);
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Projectile.ai[0] += 0.1f;
 			Projectile.velocity *= 0.75f;
 		}

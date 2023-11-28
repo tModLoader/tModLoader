@@ -17,3 +17,21 @@
  		for (int i = position.X; i < position.X + 2; i++) {
  			for (int j = position.Y - 4; j <= position.Y; j++) {
  				Tile tile = Main.tile[i, j];
+@@ -267,7 +_,7 @@
+ 		int y = position.Y;
+ 		for (int i = 0; i < 20; i++) {
+ 			Tile tile = Main.tile[x + i * directionX, y];
+-			if ((!tile.active() || tile.type < 0 || tile.type >= TileID.Count || !TileID.Sets.IsAContainer[tile.type]) && tile.active() && Main.tileSolid[tile.type]) {
++			if ((!tile.active() || tile.type < 0 || !TileID.Sets.IsAContainer[tile.type]) && tile.active() && Main.tileSolid[tile.type]) {
+ 				if (i >= 5 && !tile.actuator() && !Main.tileFrameImportant[tile.type] && TileID.Sets.CanBeClearedDuringGeneration[tile.type]) {
+ 					_dartTrapPlacementSpots.Add(new DartTrapPlacementAttempt(position, directionX, x, y, i, tile));
+ 					return true;
+@@ -331,7 +_,7 @@
+ 	private bool IsGoodSpotsForExplosive(int x, int y)
+ 	{
+ 		Tile tile = Main.tile[x, y];
+-		if (tile.active() && tile.type >= 0 && tile.type < TileID.Count && TileID.Sets.IsAContainer[tile.type])
++		if (tile.active() && tile.type >= 0 && TileID.Sets.IsAContainer[tile.type])
+ 			return false;
+ 
+ 		if (tile.active() && Main.tileSolid[tile.type] && !Main.tileFrameImportant[tile.type] && !Main.tileSolidTop[tile.type])

@@ -1,13 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using ExampleMod.Content.Dusts;
-using Terraria.GameContent;
-using ReLogic.Content;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -15,6 +11,10 @@ namespace ExampleMod.Content.Projectiles
 	// ExampleFlailProjectile is a copy of the Sunfury flail projectile.
 	internal class ExampleFlailProjectile : ModProjectile
 	{
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+		}
+
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
 			Projectile.width = 22; // The width of your projectile
@@ -65,9 +65,9 @@ namespace ExampleMod.Content.Projectiles
 
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-				for (float transparancy = 1f; transparancy >= 0f; transparancy -= 0.125f) {
-					float opacity = 1f - transparancy;
-					Vector2 drawAdjustment = Projectile.velocity * -launchTimer * transparancy;
+				for (float transparency = 1f; transparency >= 0f; transparency -= 0.125f) {
+					float opacity = 1f - transparency;
+					Vector2 drawAdjustment = Projectile.velocity * -launchTimer * transparency;
 					Main.EntitySpriteDraw(projectileTexture, drawPosition + drawAdjustment, null, drawColor * opacity, Projectile.rotation, drawOrigin, Projectile.scale * 1.15f * MathHelper.Lerp(0.5f, 1f, opacity), spriteEffects, 0);
 				}
 			}
@@ -75,14 +75,14 @@ namespace ExampleMod.Content.Projectiles
 			return base.PreDraw(ref lightColor);
 		}
 
-		// Another thing that won't automatically be inherited by using Projectile.aiStyle and AIType are effects that happen when the projectile hits something. Here we see the code responcible for applying the OnFire debuff to players and enemies.
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		// Another thing that won't automatically be inherited by using Projectile.aiStyle and AIType are effects that happen when the projectile hits something. Here we see the code responsible for applying the OnFire debuff to players and enemies.
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (Main.rand.NextBool(2)) {
 				target.AddBuff(BuffID.OnFire, 300);
 			}
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit) {
+		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
 			if (Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.OnFire, 180, quiet: false);
 			}

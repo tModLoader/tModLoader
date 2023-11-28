@@ -49,6 +49,7 @@ internal class TMLContentManager : ContentManager
 		if (!assetName.StartsWith("tmod:")) {
 			if (overrideContentManager != null && File.Exists(Path.Combine(overrideContentManager.RootDirectory, assetName + ".xnb"))) {
 				try {
+					using var _ = new Logging.QuietExceptionHandle();
 					return overrideContentManager.OpenStream(assetName);
 				}
 				catch {}
@@ -112,7 +113,10 @@ internal class TMLContentManager : ContentManager
 			"Images/NPC_517.xnb",
 			"Images/Gore_240.xnb",
 			"Images/Projectile_179.xnb",
-			"Images/Projectile_618.xnb"
+			"Images/Projectile_189.xnb",
+			"Images/Projectile_618.xnb",
+			"Images/Tiles_650.xnb",
+			"Images/Item_2648"
 		};
 
 		foreach (string problematicAsset in problematicAssets) {

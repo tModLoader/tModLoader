@@ -28,6 +28,11 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 	public override void OnBind()
 	{
 		base.OnBind();
+		TextDisplayFunction = () => Label + ": " + OptionChoice.Tooltip;
+		if (List != null) {
+			TextDisplayFunction = () => Index + 1 + ": " + OptionChoice.Tooltip;
+		}
+
 		Height.Set(30f, 0f);
 
 		OptionChoice = CreateDefinitionOptionElement();
@@ -93,7 +98,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		ChooserPanel.Append(scrollbar);
 		//Append(chooserPanel);
 
-		UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, "Zoom in", "Zoom out");
+		UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, Language.GetTextValue("LegacyMenu.168"), Language.GetTextValue("LegacyMenu.169")); // "Zoom in", "Zoom out"
 		upDownButton.Recalculate();
 		upDownButton.Top.Set(-4f, 0f);
 		upDownButton.Left.Set(-18, 1f);
@@ -183,9 +188,12 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 		Unloaded = Definition?.IsUnloaded ?? false;
 
 		if (Definition == null || (Type == 0 && !Unloaded))
-			Tooltip = "Nothing";
+			Tooltip = Lang.inter[23].Value; // "None";
 		else {
-			Tooltip = $"{Definition.Name} [{Definition.Mod}]{(Unloaded ? $" ({Language.GetTextValue("tModLoader.UnloadedItemItemName")})" : "")}";
+			if (Unloaded)
+				Tooltip = $"{Definition.Name} [{Definition.Mod}] ({Language.GetTextValue("Mods.ModLoader.Unloaded")})";
+			else
+				Tooltip = $"{Definition.DisplayName} [{Definition.Mod}]";
 		}
 	}
 
@@ -202,4 +210,6 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 
 		return Type.CompareTo(other.Type);
 	}
+
+	public override string ToString() => Definition.ToString();
 }

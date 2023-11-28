@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
@@ -12,28 +14,19 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, g => g.SendExtraAI, g => g.ReceiveExtraAI);
+	}
+
 	protected sealed override void Register()
 	{
-		ProjectileLoader.VerifyGlobalProjectile(this);
-
-		ModTypeLookup<GlobalProjectile>.Register(this);
-
-		Index = (ushort)ProjectileLoader.globalProjectiles.Count;
-
-		ProjectileLoader.globalProjectiles.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
-
-	public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, Index);
-
-	/// <summary>
-	/// Allows you to set the properties of any and every projectile that gets created.
-	/// </summary>
-	/// <param name="projectile"></param>
-	public virtual void SetDefaults(Projectile projectile)
-	{
-	}
 
 	/// <summary>
 	/// Gets called when any projectiles spawns in world
@@ -41,7 +34,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void OnSpawn(Projectile projectile, IEntitySource source)
 	{
 	}
-	
+
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 	/// </summary>
@@ -144,6 +137,11 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="timeLeft"></param>
+	public virtual void OnKill(Projectile projectile, int timeLeft)
+	{
+	}
+
+	[Obsolete("Renamed to OnKill", error: true)] // Remove in 2023_10
 	public virtual void Kill(Projectile projectile, int timeLeft)
 	{
 	}
@@ -199,15 +197,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="damageScale">The damage scaling</param>
-	public virtual void ModifyDamageScaling(Projectile projectile, ref float damageScale)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether a projectile can hit the given NPC. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="projectile"></param>
@@ -223,11 +212,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -236,10 +222,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -252,28 +237,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual bool CanHitPvp(Projectile projectile, Player target)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, etc., that a projectile does to an opponent player.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when a projectile hits an opponent player.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)
-	{
 	}
 
 	/// <summary>
@@ -292,20 +255,19 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits a player.
+	/// Allows you to create special effects when a hostile projectile hits a player. <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+	/// <param name="info"></param>
+	public virtual void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo info)
 	{
 	}
 
@@ -378,14 +340,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default.
 	/// </summary>
 	public virtual bool? CanUseGrapple(int type, Player player)
-	{
-		return null;
-	}
-
-	/// <summary>
-	/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
-	/// </summary>
-	public virtual bool? SingleGrappleHook(int type, Player player)
 	{
 		return null;
 	}

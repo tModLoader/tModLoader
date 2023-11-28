@@ -1,16 +1,24 @@
 name: Monthly Update tModLoader
 
+# Branch Names
+env:
+    DevBranch: 1.4.4
+    StableBranch: stable
+    PreviewBranch: preview
+    SkipOddMonths: false
+
 # Controls when the action will run. 
 on:
-  # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
-  #schedule:
-  #  - cron: '0 0 1 * *'
+  # This workflow runs on the first of every month at midnight UTC
+  schedule:
+    - cron: '0 0 1 * *'
+  
   # Allows you to manually run the workflow
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow replaces $StableBranch with a copy of $PreviewBranch, destroying anything on it prior
   MergeToStable:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -20,22 +28,27 @@ jobs:
         - name: Check out repo
           uses: actions/checkout@v3
           with:
-            ref: 'refs/heads/stable'
+            ref: 'refs/heads/${{env.StableBranch}}'
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
             persist-credentials: false
             fetch-depth: 0        
             
         - name: Merge
           run: |
-            token=${{ secrets.TMODLOADERBOT_TOKEN }}
-            repo=$GITHUB_REPOSITORY
-            git config user.name github-actions
-            git config user.email github-actions@github.com
-            git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-            git reset --hard origin/preview
-            git push --force origin stable
+            month=$(date +%m)
+            if [[ $((month%2)) -eq 0 || "${{env.SkipOddMonths}}"=="false" ]]; then
+                token=${{ secrets.TMODLOADERBOT_TOKEN }}
+                repo=$GITHUB_REPOSITORY
+                git config user.name github-actions
+                git config user.email github-actions@github.com
+                git remote set-url origin https://x-access-token:$token@github.com/$repo.git
+                git reset --hard origin/${{env.PreviewBranch}}
+                git push --force origin ${{env.StableBranch}}
+            else
+                echo "Skipping merge to stable as this is an odd month (Jan, Mar, May, Jul, Sept, Nov)"
+            fi
             
-  # This workflow contains a single job called "build"
+  # This workflow replaces $PreviewBranch with a copy of $DevBranch, destroying anything on it prior
   MergeToPreview:
     # Needs should be ensuring this doesn't run if the last job failed.
     needs: MergeToStable
@@ -47,7 +60,7 @@ jobs:
         - name: Check out repo
           uses: actions/checkout@v3
           with:
-            ref: 'refs/heads/preview'
+            ref: 'refs/heads/${{env.PreviewBranch}}'
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
             persist-credentials: false
             fetch-depth: 0        
@@ -59,5 +72,5 @@ jobs:
             git config user.name github-actions
             git config user.email github-actions@github.com
             git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-            git reset --hard origin/1.4.4
-            git push --force origin preview
+            git reset --hard origin/${{env.DevBranch}}
+            git push --force origin ${{env.PreviewBranch}}

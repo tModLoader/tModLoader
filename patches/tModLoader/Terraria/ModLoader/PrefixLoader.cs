@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.Utilities;
@@ -54,7 +55,7 @@ public static class PrefixLoader
 	internal static void ResizeArrays()
 	{
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(PrefixID), true);
+		LoaderUtils.ResetStaticMembers(typeof(PrefixID));
 
 		//Etc
 		Array.Resize(ref Lang.prefix, PrefixCount);
@@ -90,13 +91,15 @@ public static class PrefixLoader
 			if (modPrefix.Category is PrefixCategory.Custom)
 				return true;
 
-			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || itemCategory == PrefixCategory.AnyWeapon && IsWeaponSubCategory(modPrefix.Category));
+			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || modPrefix.Category == PrefixCategory.AnyWeapon && IsWeaponSubCategory(itemCategory));
 		}
 
 		if (item.GetPrefixCategory() is PrefixCategory category) {
 			if (Item.GetVanillaPrefixes(category).Contains(prefix))
 				return true;
 		}
+		if (PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type] && prefix == PrefixID.Legendary2) // Fix #3688
+			return true;
 
 		return false;
 	}
@@ -111,7 +114,8 @@ public static class PrefixLoader
 		prefix = 0;
 		var wr = new WeightedRandom<int>(unifiedRandom);
 
-		void AddCategory(PrefixCategory category) {
+		void AddCategory(PrefixCategory category)
+		{
 			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
 				wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 			}
@@ -126,12 +130,15 @@ public static class PrefixLoader
 		foreach (int pre in Item.GetVanillaPrefixes(category))
 			wr.Add(pre, 1);
 
+		if(PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type]) // Fix #3688, Rather than mess with the PrefixCategory enum and Item.GetPrefixCategory at this time and risk compatibility issues, manually support this until a redesign.
+			wr.Add(PrefixID.Legendary2, 1);
+
 		AddCategory(category);
 		if (IsWeaponSubCategory(category))
 			AddCategory(PrefixCategory.AnyWeapon);
 
 		// try 50 times
-		for (int i = 0; i < 50; i ++) {
+		for (int i = 0; i < 50; i++) {
 			prefix = wr.Get();
 			if (ItemLoader.AllowPrefix(item, prefix))
 				return true;
@@ -141,4 +148,13 @@ public static class PrefixLoader
 	}
 
 	public static bool IsWeaponSubCategory(PrefixCategory category) => category is PrefixCategory.Melee || category is PrefixCategory.Ranged || category is PrefixCategory.Magic;
+
+	public static void ApplyAccessoryEffects(Player player, Item item)
+	{
+		if (GetPrefix(item.prefix) is ModPrefix prefix) {
+			prefix.ApplyAccessoryEffects(player);
+		}
+
+		// Should there be more here for tooltips? Not entirely sure how that's handled in tML. - Mutant
+	}
 }

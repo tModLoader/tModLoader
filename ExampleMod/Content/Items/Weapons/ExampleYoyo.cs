@@ -1,7 +1,7 @@
-﻿using System;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Rarities;
 using ExampleMod.Content.Tiles.Furniture;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,9 +12,9 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			// These are all related to gamepad controls and don't seem to affect anything else
-			ItemID.Sets.Yoyo[Item.type] = true;
-			ItemID.Sets.GamepadExtraRange[Item.type] = 15;
-			ItemID.Sets.GamepadSmartQuickReach[Item.type] = true;
+			ItemID.Sets.Yoyo[Item.type] = true; // Used to increase the gamepad range when using Strings.
+			ItemID.Sets.GamepadExtraRange[Item.type] = 15; // Increases the gamepad range. Some vanilla values: 4 (Wood), 10 (Valor), 13 (Yelets), 18 (The Eye of Cthulhu), 21 (Terrarian).
+			ItemID.Sets.GamepadSmartQuickReach[Item.type] = true; // Unused, but weapons that require aiming on the screen are in this set.
 		}
 
 		public override void SetDefaults() {

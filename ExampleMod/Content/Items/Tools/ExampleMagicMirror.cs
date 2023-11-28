@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -44,14 +44,7 @@ namespace ExampleMod.Content.Items.Tools
 				}
 
 				// This code releases all grappling hooks and kills/despawns them.
-				player.grappling[0] = -1;
-				player.grapCount = 0;
-
-				for (int p = 0; p < 1000; p++) {
-					if (Main.projectile[p].active && Main.projectile[p].owner == player.whoAmI && Main.projectile[p].aiStyle == 7) {
-						Main.projectile[p].Kill();
-					}
-				}
+				player.RemoveAllGrapplingHooks();
 
 				// The actual method that moves the player back to bed/spawn.
 				player.Spawn(PlayerSpawnContext.RecallFromItem);
@@ -66,7 +59,7 @@ namespace ExampleMod.Content.Items.Tools
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// This code shows using Color.Lerp,  Main.GameUpdateCount, and the modulo operator (%) to do a neat effect cycling between 4 custom colors.
 			int numColors = itemNameCycleColors.Length;
-			
+
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
 					float fade = (Main.GameUpdateCount % 60) / 60f;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
@@ -27,7 +28,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public override ModPlayer NewInstance(Player entity)
 	{
 		var inst = base.NewInstance(entity);
-		
+
 		inst.Index = Index;
 
 		return inst;
@@ -41,7 +42,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	protected override void ValidateType()
 	{
 		base.ValidateType();
-		
+
 		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
@@ -69,6 +70,23 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// This is where you reset any fields related to INFORMATION accessories to their "default" states. This is identical to ResetEffects(); but should ONLY be used to
+	/// reset info accessories. It will cause unintended side-effects if used with other fields.
+	/// </summary>
+	/// <remarks>
+	/// This method is called in tandem with <seealso cref="ResetEffects"/>, but it also called in <seealso cref="Player.RefreshInfoAccs"/> even when the game is paused;
+	/// this allows for info accessories to keep properly updating while the game is paused, a feature/fix added in 1.4.4.
+	/// </remarks>
+	public virtual void ResetInfoAccessories() { }
+
+	/// <summary>
+	/// This is where you set any fields related to INFORMATION accessories based on the passed in player argument. Note that this hook is only called if all of the requirements
+	/// for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code:
+	/// <code>(Main.player[i].Center - base.Center).Length() &lt; 800f</code>
+	/// </summary>
+	public virtual void RefreshInfoAccessoriesFromTeamPlayers(Player otherPlayer) { }
+
+	/// <summary>
 	/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied<br/>
 	/// <b>NOTE:</b> You should NOT modify <see cref="Player.statLifeMax"/> nor <see cref="Player.statManaMax"/> here.  Use the <paramref name="health"/> and <paramref name="mana"/> parameters.
 	/// </summary>
@@ -81,7 +99,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Similar to UpdateDead, except this is only called when the player is dead. If this is called, then ResetEffects will not be called.
+	/// Similar to <see cref="ResetEffects"/>, except this is only called when the player is dead. If this is called, then <see cref="ResetEffects"/> will not be called.
 	/// </summary>
 	public virtual void UpdateDead()
 	{
@@ -186,7 +204,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This is called at the beginning of every tick update for this player, after checking whether the player exists.
+	/// This is called at the beginning of every tick update for this player, after checking whether the player exists. <br/>
+	/// This can be used to adjust timers and cooldowns.
 	/// </summary>
 	public virtual void PreUpdate()
 	{
@@ -285,6 +304,91 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Use this hook to modify the jump duration from an extra jump.<br/>
+	/// Vanilla's extra jumps use the following values:
+	/// <para>
+	/// Basilisk mount: 0.75<br/>
+	/// Blizzard in a Bottle: 1.5<br/>
+	/// Cloud in a Bottle: 0.75<br/>
+	/// Fart in a Jar: 2<br/>
+	/// Goat mount: 2<br/>
+	/// Sandstorm in a Bottle: 3<br/>
+	/// Santank mount: 2<br/>
+	/// Tsunami in a Bottle: 1.25<br/>
+	/// Unicorn mount: 2
+	/// </para>
+	/// </summary>
+	/// <param name="jump">The jump being performed</param>
+	/// <param name="duration">A modifier to the player's jump height, which when combined effectively acts as the duration for the extra jump</param>
+	public virtual void ModifyExtraJumpDurationMultiplier(ExtraJump jump, ref float duration)
+	{
+	}
+
+	/// <summary>
+	/// An extra condition for whether an extra jump can be started.  Returns <see langword="true"/> by default.
+	/// </summary>
+	/// <param name="jump">The jump that would be performed</param>
+	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
+	public virtual bool CanStartExtraJump(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Effects that should appear when the extra jump starts should happen here.<br/>
+	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
+	/// </summary>
+	/// <param name="jump">The jump being performed</param>
+	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
+	public virtual void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for an extra jump is set from <see langword="true"/> to <see langword="false"/> when the extra jump's duration has expired<br/>
+	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// </summary>
+	/// <param name="jump">The jump that was performed</param>
+	public virtual void OnExtraJumpEnded(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
+	/// This occurs at the start of the grounded jump and while the player is grounded.
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual void OnExtraJumpRefreshed(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// Effects that should appear while the player is performing an extra jump should happen here.<br/>
+	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
+	/// </summary>
+	public virtual void ExtraJumpVisuals(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
+	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.ShowVisuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
+	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual bool CanShowExtraJumpVisuals(ExtraJump jump)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="false"/>  in <see cref="Player.Update(int)"/> due to the jump being unavailable or when calling <see cref="Player.ConsumeAllExtraJumps"/> (vanilla calls it when a mount that blocks jumps is active)
+	/// </summary>
+	/// <param name="jump">The jump instance</param>
+	public virtual void OnExtraJumpCleared(ExtraJump jump)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
 	/// </summary>
 	public virtual void FrameEffects()
@@ -292,71 +396,96 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called before every time the player takes damage. The pvp parameter is whether the damage was from another player. The quiet parameter determines whether the damage will be communicated to the server. The damage, hitDirection, and crit parameters can be modified. Set the customDamage parameter to true if you want to use your own damage formula (this parameter will disable automatically subtracting the player's defense from the damage). Set the playSound parameter to false to disable the player's hurt sound, and the genGore parameter to false to disable the dust particles that spawn. (These are useful for creating your own sound or gore.) The deathText parameter can be modified to change the player's death message if the player dies. Return false to stop the player from taking damage. Returns true by default.
+	/// Allows you to make a player immune to damage from a certain source, or at a certain time. <br/>
+	/// Vanilla examples include shimmer and journey god mode.<br/>
+	/// <br/>
+	/// Runs before dodges are used, or any damage calculations are performed. <br/>
+	/// Runs on all players, on all clients, so checking Player == Main.LocalPlayer is advisable. <br/>
+	/// If immunity is determined on the local player, the hit will not be sent across the network. <br/>
+	/// <br/>
+	/// In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.
 	/// </summary>
-	/// <param name="pvp"></param>
-	/// <param name="quiet"></param>
+	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
+	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
+	/// <param name="dodgeable">Whether the hit is dodgeable</param>
+	/// <returns>True to completely ignore the hit</returns>
+	public virtual bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
+	{
+		return false;
+	}
+
+	/// <summary>
+	/// Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br/>
+	/// Vanilla example is black belt.<br/>
+	/// For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.<br/>
+	/// <br/>
+	/// Only runs on the local client of the player receiving the damage. <br/>
+	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
+	/// If visual indication of the dodge is required on remote clients, you will need to send your own packet.
+	/// </summary>
+	/// <returns>True to completely ignore the hit</returns>
+	public virtual bool FreeDodge(Player.HurtInfo info)
+	{
+		return false;
+	}
+
+	/// <summary>
+	/// Allows you to dodge damage for a player.<br/>
+	/// Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br/>
+	/// For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.<br/>
+	/// <br/>
+	/// Only runs on the local client of the player receiving the damage. <br/>
+	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
+	/// You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
+	/// </summary>
+	/// <returns>True to completely ignore the hit</returns>
+	public virtual bool ConsumableDodge(Player.HurtInfo info)
+	{
+		return false;
+	}
+
+	/// <summary>
+	/// Allows you to adjust an instance of player taking damage. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
+	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
+	/// The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// </summary>
+	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to make anything happen when the player takes damage. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Called right before health is reduced.
+	/// </summary>
+	public virtual void OnHurt(Player.HurtInfo info)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to make anything happen when the player takes damage. <br/>
+	/// Called on local, server and remote clients. <br/>
+	/// Only called if the player survives the hit.
+	/// </summary>
+	public virtual void PostHurt(Player.HurtInfo info)
+	{
+	}
+
+	/// <summary>
+	/// This hook is called whenever the player is about to be killed after reaching 0 health.<br/><br/>
+	/// Set the <paramref name="playSound"/> parameter to false to stop the death sound from playing. Set the <paramref name="genDust"/> parameter to false to stop the dust from being created. These are useful for creating your own sound or dust to replace the normal death effects, such as how the Frost armor set spawns <see cref="DustID.IceTorch"/> instead of <see cref="DustID.Blood"/>. For mod compatibility, it is recommended to check if these values are true before setting them to true and spawning dust or playing sounds to avoid overlapping sounds and dust effects.<br/><br/>
+	/// Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
+	/// </summary>
 	/// <param name="damage"></param>
 	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <param name="customDamage"></param>
+	/// <param name="pvp"></param>
 	/// <param name="playSound"></param>
-	/// <param name="genGore"></param>
-	/// <param name="damageSource"></param>
-	/// <param name="cooldownCounter"></param>
-	/// <returns></returns>
-	public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-		ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
-	{
-		return true;
-	}
-
-	[Obsolete("Parameters changed, run tModPorter", true)]
-	public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
-
-	/// <summary>
-	/// Allows you to make anything happen right before damage is subtracted from the player's health.
-	/// </summary>
-	/// <param name="pvp"></param>
-	/// <param name="quiet"></param>
-	/// <param name="damage"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <param name="cooldownCounter"></param>
-	public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
-	{
-	}
-
-	[Obsolete("Parameters changed, run tModPorter", true)]
-	public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
-
-	/// <summary>
-	/// Allows you to make anything happen when the player takes damage.
-	/// </summary>
-	/// <param name="pvp"></param>
-	/// <param name="quiet"></param>
-	/// <param name="damage"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <param name="cooldownCounter"></param>
-	public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
-	{
-	}
-
-	[Obsolete("Parameters changed, run tModPorter", true)]
-	public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
-
-	/// <summary>
-	/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
-	/// </summary>
-	/// <param name="damage"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="pvp"></param>
-	/// <param name="playSound"></param>
-	/// <param name="genGore"></param>
+	/// <param name="genDust"></param>
 	/// <param name="damageSource"></param>
 	/// <returns></returns>
-	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore,
+	public virtual bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust,
 		ref PlayerDeathReason damageSource)
 	{
 		return true;
@@ -513,7 +642,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
-	/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
+	/// <param name="ammo">The ammo that the given weapon is attempting to consume.</param>
 	/// <returns></returns>
 	public virtual bool CanConsumeAmmo(Item weapon, Item ammo)
 	{
@@ -615,7 +744,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.
+	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center. <br/>
+	/// Called on the local client. <br/>
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
@@ -625,25 +755,69 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// Allows you to determine whether a player can hit the given NPC. Returns true by default.
 	/// </summary>
-	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <returns></returns>
-	public virtual bool? CanHitNPC(Item item, NPC target)
+	/// <returns>True by default</returns>
+	public virtual bool CanHitNPC(NPC target)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a player melee attack can collide the given NPC by swinging a melee weapon. <br/>
+	/// Use <see cref="CanHitNPCWithItem(Item, NPC)"/> instead for Guide Voodoo Doll-type effects.
+	/// </summary>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>>
+	/// <param name="target">The target npc.</param>
+	/// <returns>
+	/// Return true to allow colliding the target, return false to block the player weapon from colliding the target, and return null to use the vanilla code for whether the target can be colliding by melee weapon. Returns null by default.
+	/// </returns>
+	public virtual bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
 	{
 		return null;
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
+	/// Allows you to modify the damage, knockback, etc that this player does to an NPC. <br/>
+	/// This method is only called on the on the local client. <br/>
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to create special effects when this player hits an NPC.
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <returns></returns>
+	public virtual bool? CanHitNPCWithItem(Item item, NPC target)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon. <br/>
+	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="target"></param>
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -652,10 +826,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -675,11 +848,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -688,10 +858,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -707,28 +876,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a melee weapon swung by this player does to an opponent player.
-	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvp(Item item, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when this player's melee weapon hits an opponent player.
-	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvp(Item item, Player target, int damage, bool crit)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.
 	/// </summary>
 	/// <param name="proj"></param>
@@ -737,28 +884,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual bool CanHitPvpWithProj(Projectile proj, Player target)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, etc., that a projectile created by this player does to an opponent player.
-	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when a projectile created by this player hits an opponent player.
-	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
-	{
 	}
 
 	/// <summary>
@@ -773,22 +898,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that an NPC does to this player.
+	/// Allows you to modify the damage, etc., that an NPC does to this player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+	public virtual void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs).
+	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs). <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByNPC(NPC npc, int damage, bool crit)
+	public virtual void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 	{
 	}
 
@@ -803,27 +924,23 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
+	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player.
+	/// Allows you to create special effects when a hostile projectile hits this player. <br/>
+	/// Runs on the local client. <br/>
 	/// </summary>
-	/// <param name="proj"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(Projectile proj, int damage, bool crit)
+	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+	/// Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered.
 	/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
 	/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
 	/// </summary>
@@ -833,7 +950,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+	/// Allows you to change the item or enemy the player gets when successfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 	/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
@@ -854,7 +971,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior.
 	/// Not consuming will always take priority over forced consumption
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>
@@ -931,7 +1048,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
+	/// Use this hook to modify <see cref="Main.screenPosition"/> after weapon zoom and camera lerp have taken place.
 	/// <br/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
 	/// </summary>
 	public virtual void ModifyScreenPosition()
@@ -1133,5 +1250,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
 		itemConsumedCallback = null;
 		return null;
+	}
+
+	/// <summary>
+	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// </summary>
+	/// <param name="item">The item being picked up</param>
+	/// <returns></returns>
+	public virtual bool OnPickup(Item item)
+	{
+		return true;
 	}
 }

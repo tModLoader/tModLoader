@@ -82,6 +82,7 @@ public abstract class ModAccessorySlot : ModType
 		if (FunctionalItem.accessory)
 			Player.GrantPrefixBenefits(FunctionalItem);
 
+		Player.GrantArmorBenefits(FunctionalItem);
 		Player.ApplyEquipFunctional(FunctionalItem, HideVisuals);
 		Player.ApplyEquipVanity(VanityItem);
 	}
@@ -103,8 +104,8 @@ public abstract class ModAccessorySlot : ModType
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the default target slot (accSlotToSwapTo) will be.
-	/// DOES NOT affect vanilla behaviour of swapping items like for like where existing in a slot
-	/// Return true to set this slot as the default targetted slot.
+	/// DOES NOT affect vanilla behavior of swapping items like for like where existing in a slot
+	/// Return true to set this slot as the default targeted slot.
 	/// </summary>
 	public virtual bool ModifyDefaultSwapSlot(Item item, int accSlotToSwapTo) => false;
 

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Core;
 
@@ -66,6 +68,11 @@ internal static class MemoryTracking
 				.Where(val => val != null)
 				.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
 		}
-		Logging.tML.Info($"RAM usage: {UI.UIMemoryBar.SizeSuffix(System.Diagnostics.Process.GetCurrentProcess().WorkingSet64)}");
+		long totalRamUsage = -1;
+		try {
+			totalRamUsage = Process.GetProcesses().Sum(x => x.WorkingSet64); // Might throw UnauthorizedAccessException on locked down Linux systems. See https://github.com/tModLoader/tModLoader/issues/3689
+		}
+		catch {	}
+		Logging.tML.Info($"RAM: tModLoader usage: {UIMemoryBar.SizeSuffix(Process.GetCurrentProcess().WorkingSet64)}, All processes usage: {(totalRamUsage == -1 ? "Unknown" : UIMemoryBar.SizeSuffix(totalRamUsage))}, Available: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory() - totalRamUsage)}, Total Installed: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
 	}
 }

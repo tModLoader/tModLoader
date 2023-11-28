@@ -4,6 +4,13 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// <see cref="DamageClass"/> is used to determine the application of item effects, damage/stat scaling, and class bonuses.
+/// </summary>
+/// <remarks>
+/// New classes can be created and can be set to inherit these applications from other classes. 
+/// <para>For a more in-depth explanation and demonstration refer to <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>.</para>
+/// </remarks>
 public abstract class DamageClass : ModType, ILocalizedModType
 {
 	/// <summary>
@@ -43,45 +50,47 @@ public abstract class DamageClass : ModType, ILocalizedModType
 
 
 	/// <summary>
-	/// This is the internal ID of this DamageClass.
+	/// The internal ID of this <see cref="DamageClass"/>.
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public string LocalizationCategory => "DamageClasses";
+	public virtual string LocalizationCategory => "DamageClasses";
 
 	/// <summary>
 	/// This is the name that will show up when an item tooltip displays 'X [ClassName]'.
-	/// This should include the 'damage' part.
 	/// </summary>
+	/// <remarks>
+	/// This should include the 'damage' part.
+	/// Note that vanilla entries all start with a space that will need to be trimmed if used in other contexts.
+	/// </remarks>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
-	/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-	/// This returns a struct called StatInheritanceData.
+	/// This lets you define the classes that this <see cref="DamageClass"/> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
 	/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses.
-	/// By default, this will return StatInheritanceData.Full for DamageClass.Generic, and StatInheritanceData.None for any other.
-	/// Any given DamageClass will also never call this method for itself.
-	/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
 	/// </summary>
-	/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
+	/// <param name="damageClass">The <see cref="DamageClass"/> which you want this <see cref="DamageClass"/> to benefit from statistically.</param>
+	/// <returns>By default this will return <see cref="StatInheritanceData.Full"/> for <see cref="DamageClass.Generic"/> and <see cref="StatInheritanceData.None"/> for any other.</returns>
 	public virtual StatInheritanceData GetModifierInheritance(DamageClass damageClass) => damageClass == Generic ? StatInheritanceData.Full : StatInheritanceData.None;
 
 	/// <summary> 
-	/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
-	/// Returns false in all cases by default, which does not let any other classes' effects trigger on this DamageClass.
-	/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
+	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br/>
+	/// For a more in-depth explanation and demonstration, see <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>
 	/// </summary>
-	/// <param name="damageClass">The DamageClass which you want this DamageClass to gain effects from.</param>
+	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
+	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit effects from.</param>
+	/// <returns><see langword="false"/> by default - which does not let any other classes' effects trigger on this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetEffectInheritance(DamageClass damageClass) => false;
 
 	/// <summary> 
 	/// This lets you define default stat modifiers for all items of this class (e.g. base crit chance).
 	/// </summary>
+	/// <param name="player">The player to apply stat modifications to</param>
 	public virtual void SetDefaultStats(Player player) { }
 
 	/// <summary>
 	/// This lets you decide whether or not your damage class will use standard crit chance calculations.
-	/// Setting this to false will also hide the critical strike chance line in the tooltip of any item that uses this DamageClass.
+	/// Setting this to <see langword="false"/> will also hide the critical strike chance line in the tooltip of any item that uses this <see cref="DamageClass"/>.
 	/// </summary>
 	public virtual bool UseStandardCritCalcs => true;
 
@@ -93,9 +102,11 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	// that way, we can strike this in favor of actually havin' good learnin' resources
 	// - thomas
 	/// <summary>
-	/// This lets you enable or disable standard statistical tooltip lines displaying on items associated with this DamageClass.
-	/// The lines usable are "Damage", "CritChance", "Speed", and "Knockback".
+	/// Overriding this lets you disable standard statistical tooltip lines displayed on items associated with this <see cref="DamageClass"/>. All tooltip lines are enabled by default.
 	/// </summary>
+	/// <remarks>To disable tooltip lines you should return <see langword="false"/> for each of those cases.</remarks>
+	/// <param name="player">The player to apply tooltip changes to</param>
+	/// <param name="lineName">The tooltip line to change visibility for. Usable values are: "Damage", "CritChance", "Speed", and "Knockback"</param>
 	public virtual bool ShowStatTooltipLine(Player player, string lineName) => true;
 
 	protected sealed override void Register()
@@ -107,9 +118,15 @@ public abstract class DamageClass : ModType, ILocalizedModType
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
+	/// <inheritdoc cref="CountsAsClass"/>
 	public bool CountsAsClass<T>() where T : DamageClass
 		=> CountsAsClass(ModContent.GetInstance<T>());
 
+	/// <summary>
+	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit effects from the provided <see cref="DamageClass"/>, as dictated by <see cref="GetEffectInheritance"/>
+	/// </summary>
+	/// <param name="damageClass">The DamageClass you want to check if effects are inherited by this DamageClass.</param>
+	/// <returns><see langword="true"/> if this damage class is inheriting effects from <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[Type, damageClass.Type];
 }

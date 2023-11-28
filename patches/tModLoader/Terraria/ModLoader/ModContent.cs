@@ -1,12 +1,9 @@
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.States;
@@ -22,7 +19,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Initializers;
 using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
@@ -34,7 +30,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Manages content added by mods.
-/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
+/// Liaisons between mod content and Terraria's arrays and oversees the Loader classes.
 /// </summary>
 public static class ModContent
 {
@@ -66,9 +62,9 @@ public static class ModContent
 	private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 	public static void SplitName(string name, out string domain, out string subName)
 	{
-		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
+		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatibility, just in case
 		if (slash < 0)
-			throw new MissingResourceException("Missing mod qualifier: " + name);
+			throw new MissingResourceException(Language.GetTextValue("tModLoader.LoadErrorMissingModQualifier", name));
 
 		domain = name.Substring(0, slash);
 		subName = name.Substring(slash + 1);
@@ -77,13 +73,13 @@ public static class ModContent
 	/// <summary>
 	/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
 	/// </summary>
-	/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+	/// <exception cref="MissingResourceException"></exception>
 	public static byte[] GetFileBytes(string name)
 	{
 		SplitName(name, out string modName, out string subName);
 
 		if (!ModLoader.TryGetMod(modName, out var mod))
-			throw new MissingResourceException("Missing mod: " + name);
+			throw new MissingResourceException(Language.GetTextValue("tModLoader.LoadErrorModNotFoundDuringAsset", modName, name));
 
 		return mod.GetFileBytes(subName);
 	}
@@ -118,7 +114,7 @@ public static class ModContent
 			return Main.Assets.Request<T>(subName, mode);
 
 		if (!ModLoader.TryGetMod(modName, out var mod))
-			throw new MissingResourceException($"Missing mod: {name}");
+			throw new MissingResourceException(Language.GetTextValue("tModLoader.LoadErrorModNotFoundDuringAsset", modName, name));
 
 		return mod.Assets.Request<T>(subName, mode);
 	}
@@ -273,6 +269,11 @@ public static class ModContent
 	/// </summary>
 	public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
+	/// <summary>
+	/// Get the id (type) of a ModEmoteBubble by class. Assumes one instance per class.
+	/// </summary>
+	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
+
 	internal static void Load(CancellationToken token)
 	{
 		CacheVanillaState();
@@ -299,13 +300,14 @@ public static class ModContent
 
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
-		LanguageManager.Instance.ReloadLanguage();
+		LanguageManager.Instance.ReloadLanguage(resetValuesToKeysFirst: false); // Don't reset values to keys in case any new translations were registered during Load. All mod translations were wiped in Unload anyway
 		LoadModContent(token, mod => {
 			mod.SetupContent();
 		});
 
 		ContentSamples.Initialize();
 		TileLoader.PostSetupContent();
+		BuffLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -329,16 +331,22 @@ public static class ModContent
 		PrefixLoader.FinishSetup();
 		ProjectileLoader.FinishSetup();
 		PylonLoader.FinishSetup();
+		TileLoader.FinishSetup();
+		WallLoader.FinishSetup();
+		EmoteBubbleLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
 		RarityLoader.FinishSetup();
+		Config.ConfigManager.FinishSetup();
 
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
+		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
+		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
@@ -353,7 +361,9 @@ public static class ModContent
 	{
 		EffectsTracker.CacheVanillaState();
 		DamageClassLoader.RegisterDefaultClasses();
+		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
+		BuilderToggleLoader.RegisterDefaultToggles();
 	}
 
 	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction)
@@ -378,7 +388,7 @@ public static class ModContent
 
 	private static void SetupBestiary()
 	{
-		//Beastiary DB
+		//Bestiary DB
 		var bestiaryDatabase = new BestiaryDatabase();
 		new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 		Main.BestiaryDB = bestiaryDatabase;
@@ -441,6 +451,7 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	internal static void Unload()
 	{
+		MonoModHooks.Clear();
 		TypeCaching.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
@@ -453,8 +464,6 @@ public static class ModContent
 
 		NPCLoader.Unload();
 		NPCHeadLoader.Unload();
-		if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
-			TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
 
 		BossBarLoader.Unload();
 		PlayerLoader.Unload();
@@ -463,8 +472,12 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		BuilderToggleLoader.Unload();
+		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
+		HairLoader.Unload();
+		EmoteBubbleLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -515,20 +528,22 @@ public static class ModContent
 	private static void ResizeArrays(bool unloading = false)
 	{
 		DamageClassLoader.ResizeArrays();
+		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
 		EquipLoader.ResizeAndFillArrays();
 		PrefixLoader.ResizeArrays();
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
-		TileIO.ResizeArrays();
-		ProjectileLoader.ResizeArrays();
+		ProjectileLoader.ResizeArrays(unloading);
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();
 		MountLoader.ResizeArrays();
 		BuffLoader.ResizeArrays();
-		PlayerLoader.RebuildHooks();
+		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
+		HairLoader.ResizeArrays();
+		EmoteBubbleLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {
@@ -549,8 +564,6 @@ public static class ModContent
 	/// </summary>
 	internal static void CleanupModReferences()
 	{
-		WorldGen.clearWorld();
-
 		// Clear references to ModPlayer instances
 		for (int i = 0; i < Main.player.Length; i++) {
 			Main.player[i] = new Player();

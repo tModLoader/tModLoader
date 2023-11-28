@@ -8,6 +8,8 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam;
 
@@ -49,11 +51,27 @@ public static class SteamedWraps
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 	}
 
+	public static void QueueForceValidateSteamInstall()
+	{
+		// There is no GoG version for this, unfortunately.
+		if (!SteamClient)
+			return;
+
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+			Logging.tML.Info("Launched Outside of Steam. Skipping attempt to trigger 'verify local files' in Steam. If error persists, please attempt this manually");
+			return;
+		}
+
+		SteamApps.MarkContentCorrupt(false);
+		Logging.tML.Info("Marked tModLoader installation files as corrupt in Steam. On Next Launch, User will have 'Verify Local Files' ran");
+	}
+
 	internal static void Initialize()
 	{
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
+			Logging.tML.Info("SteamBackend: Running standard Steam Desktop Client API");
 			return;
 		}
 
@@ -62,25 +80,26 @@ public static class SteamedWraps
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 		if (!Main.dedServ && !TryInitViaGameServer())
-			Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
 	}
 
 	public static bool TryInitViaGameServer()
 	{
 		ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
 		try {
-			if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+			if (!GameServer.Init(0, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
 				return false;
 
 			SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 			SteamGameServer.SetProduct(thisApp.ToString());
 			SteamGameServer.LogOnAnonymous();
 		}
-		catch (DllNotFoundException e) {
+		catch (Exception e) {
 			Logging.tML.Error(e);
 			return false;
 		}
 
+		Logging.tML.Info("SteamBackend: Running non-standard Steam GameServer API");
 		SteamAvailable = true;
 		return true;
 	}
@@ -113,31 +132,39 @@ public static class SteamedWraps
 		return deps;
 	}
 
-	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, bool returnChildInfo = false, bool returnLongDesc = false, bool returnKeyValueTags = false, bool returnPlaytimeStats = false)
+	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
+		FilterByText(ref qHandle, qP.searchGeneric);
+		FilterByTags(ref qHandle, qP.searchTags);
+		FilterModSide(ref qHandle, qP.modSideFilter);
+
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-			SteamUGC.SetReturnLongDescription(qHandle, returnLongDesc);
-			SteamUGC.SetReturnChildren(qHandle, returnChildInfo);
-			SteamUGC.SetReturnKeyValueTags(qHandle, returnKeyValueTags);
-			if (returnPlaytimeStats)
-				SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+			SteamUGC.SetReturnChildren(qHandle, true);
+			SteamUGC.SetReturnKeyValueTags(qHandle, true);
+			SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 		}
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-			SteamGameServerUGC.SetReturnLongDescription(qHandle, returnLongDesc);
-			SteamGameServerUGC.SetReturnChildren(qHandle, returnChildInfo);
-			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, returnKeyValueTags);
-			if (returnPlaytimeStats)
-				SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
+			SteamGameServerUGC.SetReturnChildren(qHandle, true);
+			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
+			SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
 		}
 	}
 
-	private static void FilterByTags(ref UGCQueryHandle_t qHandle, List<string> tags)
+	private static void FilterModSide(ref UGCQueryHandle_t qHandle, ModSideFilter side)
+	{
+		if (side == ModSideFilter.All)
+			return;
+
+		FilterByTags(ref qHandle, new string[] { side.ToString() });
+	}
+
+	private static void FilterByTags(ref UGCQueryHandle_t qHandle, string[] tags)
 	{
 		if (tags == null)
 			return;
@@ -162,35 +189,65 @@ public static class SteamedWraps
 			SteamGameServerUGC.AddRequiredKeyValueTag(qHandle, "name", internalName);
 	}
 
-	public static SteamAPICall_t GenerateSingleItemQuery(ulong publishId)
+	private static void FilterByText(ref UGCQueryHandle_t qHandle, string text)
 	{
+		if (string.IsNullOrEmpty(text))
+			return;
+
+		if (SteamClient)
+			SteamUGC.SetSearchText(qHandle, text);
+
+		else if (SteamAvailable)
+			SteamGameServerUGC.SetSearchText(qHandle, text);
+	}
+
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	{
+		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
+
 		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
-			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle, new QueryParameters());
 			return SteamUGC.SendQueryUGCRequest(qHandle);
-		} else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishId) }, 1);
-			ModifyQueryHandle(ref qHandle, returnChildInfo: true, returnLongDesc: true);
+		}
+		else if (SteamAvailable) {
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
+			ModifyQueryHandle(ref qHandle, new QueryParameters());
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
 		return new();
 	}
 
-	public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor, List<string> tags = null, string internalName = null)
+	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
+	{
+		if (!string.IsNullOrEmpty(qParams.searchGeneric))
+			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
+
+		return (qParams.sortingParamater) switch {
+			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
+			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
+			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
+			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch
+		};
+	}
+
+	public static SteamAPICall_t GenerateAndSubmitModBrowserQuery(uint page, QueryParameters qP, string internalName = null)
 	{
 		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
-			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
-			FilterByTags(ref qHandle, tags);
+			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
+
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
-			ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
-			FilterByTags(ref qHandle, tags);
+			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
+			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
@@ -247,10 +304,8 @@ public static class SteamedWraps
 		}
 	}
 
-	public static void ForceCallbacks()
+	public static void RunCallbacks()
 	{
-		Thread.Sleep(5);
-
 		if (SteamClient)
 			SteamAPI.RunCallbacks();
 		else if (SteamAvailable)
@@ -308,7 +363,9 @@ public static class SteamedWraps
 			SteamAPI.Shutdown();
 			return;
 		}
-		
+
+		SteamGameServer.LogOff();
+		Thread.Sleep(1000); // Solxan: It takes a second or two for steam to shutdown all the api. Avoids native exceptions.
 		GameServer.Shutdown();
 		CleanupACF();
 	}
@@ -412,90 +469,198 @@ public static class SteamedWraps
 			(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
 	}
 
-	/// <summary>
-	/// Updates and/or Downloads the Item specified by publishId
-	/// </summary>
-	internal static void Download(PublishedFileId_t publishId, UIWorkshopDownload uiProgress = null, bool forceUpdate = false)
+	internal class ModDownloadInstance
 	{
-		if (!SteamAvailable)
-			return;
+		// All of the below are for actually verifying a download has completed in the 'proper' steam method, but hasn't worked for gameserver?
+		private EResult _downloadCallback;
+		protected Callback<DownloadItemResult_t> _downloadHook;
 
-		if (SteamClient)
-			SteamUGC.SubscribeItem(publishId);
-
-		if (DoesWorkshopItemNeedUpdate(publishId) || forceUpdate) {
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
-
-			bool downloadStarted;
+		public ModDownloadInstance()
+		{
+			// For Steam Users
 			if (SteamClient)
-				downloadStarted = SteamUGC.DownloadItem(publishId, true);
-			else 
-				downloadStarted = SteamGameServerUGC.DownloadItem(publishId, true);
+				_downloadHook = Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
+			else // For Non-Steam Users
+				_downloadHook = Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
+		}
 
-			if (!downloadStarted) {
-				ReportCheckSteamLogs();
-				throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
+		internal void MarkDownloadComplete(DownloadItemResult_t result)
+		{
+			_downloadCallback = result.m_eResult;
+			Logging.tML.Debug($"Download Callback Received From Steam: {_downloadCallback}");
+		}
+
+		/// <summary>
+		/// Updates and/or Downloads the Item specified by publishId
+		/// </summary>
+		internal void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
+		{
+			if (!SteamAvailable)
+				return;
+
+			if (SteamClient)
+				SteamUGC.SubscribeItem(publishId);
+
+			if (DoesWorkshopItemNeedUpdate(publishId) || forceUpdate) {
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
+
+				bool downloadStarted;
+				if (SteamClient)
+					downloadStarted = SteamUGC.DownloadItem(publishId, true);
+				else
+					downloadStarted = SteamGameServerUGC.DownloadItem(publishId, true);
+
+				if (!downloadStarted) {
+					ReportCheckSteamLogs();
+					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
+				}
+
+				InnerDownloadHandler(uiProgress, publishId);
+
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
+			}
+			else {
+				// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
+				Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
+			}
+		}
+
+		private void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
+		{
+			ulong dlBytes, totalBytes;
+
+			const int LogEveryXPercent = 10;
+			const int MaxFailures = 10;
+
+			int nextPercentageToLog = LogEveryXPercent;
+			int numFailures = 0;
+
+			while (!IsWorkshopItemInstalled(publishId)) {
+				if (SteamClient)
+					SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+				else
+					SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+
+				if (totalBytes == 0) {
+					// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
+					if (numFailures++ >= MaxFailures) {
+						break;
+					}
+					else {
+						Thread.Sleep(100);
+						continue;
+					}
+				}
+
+				uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+
+				int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
+
+				if (percentage >= nextPercentageToLog) {
+					string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
+
+					Utils.LogAndConsoleInfoMessage(str);
+
+					nextPercentageToLog = percentage + LogEveryXPercent;
+
+					if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
+						nextPercentageToLog = 100;
+					}
+				}
+
+				// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
+				float progressRaw = dlBytes / totalBytes;
+				if (progressRaw == 1) {
+					break;
+				}
 			}
 
-			InnerDownloadHandler(uiProgress, publishId);
+			// Due to issues with Steam moving files from downloading folder to installed folder,
+			// there can be some latency in detecting it's installed. - Solxan
+			while (_downloadCallback == EResult.k_EResultNone) {
+				Thread.Sleep(100);
+				RunCallbacks();
+			}
 
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
-		}
-		else {
-			// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-			Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
+			if (_downloadCallback != EResult.k_EResultOK) {
+				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
+				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
+			}
 		}
 	}
 
-	private static void InnerDownloadHandler(UIWorkshopDownload uiProgress, PublishedFileId_t publishId)
+	internal static void ModifyUgcUpdateHandleCommon(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData)
 	{
-		ulong dlBytes, totalBytes;
+		if (!SteamClient)
+			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
 
-		const int LogEveryXPercent = 10;
-		const int MaxFailures = 10;
+		if (_entryData.Title != null)
+			SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
 
-		int nextPercentageToLog = LogEveryXPercent;
-		int numFailures = 0;
+		if (!string.IsNullOrEmpty(_entryData.Description))
+			SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
 
-		while (!IsWorkshopItemInstalled(publishId)) {
-			if (SteamClient)
-				SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
-			else
-				SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+		Logging.tML.Info("Adding tags and visibility");
 
-			if (totalBytes == 0) {
-				// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
-				if (numFailures++ >= MaxFailures) {
-					break;
+		SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+		SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+		if (_entryData.PreviewImagePath != null)
+			SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+
+		if (_entryData.Visibility.HasValue)
+			SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+
+		Logging.tML.Info("Setting the language for default description");
+		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
+	}
+
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
+
+		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
+		foreach (var key in WorkshopHelper.MetadataKeys) {
+			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
+			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
+		}
+
+		patchNotes = _entryData.ChangeNotes;
+		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
+		if (string.IsNullOrWhiteSpace(patchNotes)) {
+			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
+				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		UpdatePatchNotesWithModData(ref patchNotes, _entryData.BuildData);	
+		string refs = _entryData.BuildData["workshopdeps"];
+
+		if (!string.IsNullOrWhiteSpace(refs)) {
+			Logging.tML.Info("Adding dependencies to Workshop Upload");
+			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+
+			foreach (string dependency in dependencies) {
+				try {
+					var child = new PublishedFileId_t(uint.Parse(dependency));
+					SteamUGC.AddDependency(_publishedFileID, child);
 				}
-				else {
-					Thread.Sleep(100);
-					continue;
+				catch (Exception) {
+					Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
 				}
-			}
-
-			if (uiProgress != null)
-				uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-			int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
-
-			if (percentage >= nextPercentageToLog) {
-				string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
-
-				Utils.LogAndConsoleInfoMessage(str);
-
-				nextPercentageToLog = percentage + LogEveryXPercent;
-
-				if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
-					nextPercentageToLog = 100;
-				}
-			}
-
-			// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
-			float progressRaw = dlBytes / totalBytes;
-			if (progressRaw == 1) {
-				break;
 			}
 		}
+	}
+
+	internal static void UpdatePatchNotesWithModData(ref string patchNotes, NameValueCollection buildData)
+	{
+		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
+		// This allows us to use substitution keys such as {ModVersion}
+		patchNotes = Language.GetText(patchNotes).FormatWith(new {
+			ModVersion = buildData["trueversion"],
+			ModHomepage = buildData["homepage"],
+			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
+			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
+		});
 	}
 }

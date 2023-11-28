@@ -1,0 +1,17 @@
+version: "3.0"
+
+services:
+  tml:
+    container_name: tml
+    #restart: unless-stopped
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+    tty: true
+    stdin_open: true
+    ports:
+      - 7777:7777
+    volumes:
+      - ./tModLoader:/home/tml/.local/share/Terraria/tModLoader

@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
 
 // This file contains fake ModConfig class that showcase defining default values for config fields.
 
@@ -13,7 +13,6 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(164, 153, 190)]
-	[Label("ModConfig Showcase D: Default Values")]
 	public class ModConfigShowcaseDefaultValues : ModConfig
 	{
 		// There are 2 approaches to default values. One is applicable only to value types (int, bool, float, string, structs, etc) and the other to reference types (classes).

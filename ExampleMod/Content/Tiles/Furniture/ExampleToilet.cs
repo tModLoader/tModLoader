@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.Toilets }; // Condider adding TileID.Chairs to AdjTiles to mirror "(regular) Toilet" and "Golden Toilet" behavior for crafting stations
+			AdjTiles = new int[] { TileID.Toilets }; // Consider adding TileID.Chairs to AdjTiles to mirror "(regular) Toilet" and "Golden Toilet" behavior for crafting stations
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Toilet"));
@@ -53,10 +53,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleToilet>());
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
@@ -84,6 +80,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			if (tile.TileFrameY % NextStyleHeight == 0) {
 				info.AnchorTilePosition.Y++; // Here, since our chair is only 2 tiles high, we can just check if the tile is the top-most one, then move it 1 down
 			}
+
+			// Finally, since this is a toilet, it should generate Poo while any tier of Well Fed is active
+			info.ExtraInfo.IsAToilet = true;
 
 			// Here we add a custom fun effect to this tile that vanilla toilets do not have. This shows how you can type cast the restingEntity to Player and use visualOffset as well.
 			if (info.RestingEntity is Player player && player.HasBuff(BuffID.Stinky)) {

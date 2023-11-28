@@ -83,3 +83,11 @@
  		}
  
  		noStatusText = false;
+@@ -2768,6 +_,7 @@
+ 
+ 	public static void LoadMapVersion1(BinaryReader fileIO, int release)
+ 	{
++		Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map); // TML fix. Fix map saving if loading old map file.
+ 		string text = fileIO.ReadString();
+ 		int num = fileIO.ReadInt32();
+ 		int num2 = fileIO.ReadInt32();

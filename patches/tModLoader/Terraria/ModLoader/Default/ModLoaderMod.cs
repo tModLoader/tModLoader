@@ -17,8 +17,8 @@ internal class ModLoaderMod : Mod
 {
 	private static PatreonItem[][] PatronSets;
 	private static DeveloperItem[][] DeveloperSets;
-	private const int ChanceToGetPatreonArmor = 20;
-	private const int ChanceToGetDevArmor = 30;
+	private const int ChanceToGetPatreonArmor = 14;
+	private const int ChanceToGetDevArmor = 50;
 
 	internal const byte AccessorySlotPacket = 0;
 	internal const byte StatResourcesPacket = 1;

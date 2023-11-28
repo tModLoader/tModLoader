@@ -12,7 +12,8 @@ namespace ExampleMod
 		internal enum MessageType : byte
 		{
 			ExampleStatIncreasePlayerSync,
-			ExampleTeleportToStatue
+			ExampleTeleportToStatue,
+			ExampleDodge
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -23,8 +24,8 @@ namespace ExampleMod
 			switch (msgType) {
 				// This message syncs ExampleStatIncreasePlayer.exampleLifeFruits and ExampleStatIncreasePlayer.exampleManaCrystals
 				case MessageType.ExampleStatIncreasePlayerSync:
-					byte playernumber = reader.ReadByte();
-					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
+					byte playerNumber = reader.ReadByte();
+					ExampleStatIncreasePlayer examplePlayer = Main.player[playerNumber].GetModPlayer<ExampleStatIncreasePlayer>();
 					examplePlayer.ReceivePlayerSync(reader);
 
 					if (Main.netMode == NetmodeID.Server) {
@@ -37,6 +38,9 @@ namespace ExampleMod
 						person.StatueTeleport();
 					}
 
+					break;
+				case MessageType.ExampleDodge:
+					ExampleDamageModificationPlayer.HandleExampleDodgeMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

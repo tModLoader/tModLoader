@@ -8,14 +8,14 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Default;
 
 // Test in Multiplayer, suspect there is some issue with synchronization of unloaded slots
-public class ModAccessorySlotPlayer : ModPlayer
+public sealed class ModAccessorySlotPlayer : ModPlayer
 {
 	internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
 	// Arrays for modded accessory slot save/load/usage. Used in DefaultPlayer.
-	internal Item[] exAccessorySlot = new Item[2];
-	internal Item[] exDyesAccessory = new Item[1];
-	internal bool[] exHideAccessory = new bool[1];
+	internal Item[] exAccessorySlot;
+	internal Item[] exDyesAccessory;
+	internal bool[] exHideAccessory;
 	internal Dictionary<string, int> slots = new Dictionary<string, int>();
 
 	// Setting toggle for stack or scroll accessories/npcHousing
@@ -23,35 +23,25 @@ public class ModAccessorySlotPlayer : ModPlayer
 	internal int scrollbarSlotPosition;
 
 	public int SlotCount => slots.Count;
-	public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
-	public int UnloadedSlotCount { get; private set; } = 0;
+	public int LoadedSlotCount => Loader.TotalCount;
 
 	public ModAccessorySlotPlayer()
 	{
 		foreach (var slot in Loader.list) {
-			if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase)) {
-				slots.Add(slot.FullName, slot.Type);
-			}
-			else {
-				UnloadedSlotCount++;
-				slots.Add(slot.Name, slot.Type);
-			}
+			slots.Add(slot.FullName, slot.Type);
 		}
 
-		ResizeAccesoryArrays(slots.Count);
+		ResetAndSizeAccessoryArrays();
 	}
 
-	internal void ResizeAccesoryArrays(int newSize)
+	internal void ResetAndSizeAccessoryArrays()
 	{
-		if (newSize < slots.Count) {
-			return;
-		}
+		int size = slots.Count;
+		exAccessorySlot = new Item[2 * size];
+		exDyesAccessory = new Item[size];
+		exHideAccessory = new bool[size];
 
-		Array.Resize<Item>(ref exAccessorySlot, 2 * newSize);
-		Array.Resize<Item>(ref exDyesAccessory, newSize);
-		Array.Resize<bool>(ref exHideAccessory, newSize);
-
-		for (int i = 0; i < newSize; i++) {
+		for (int i = 0; i < size; i++) {
 			exDyesAccessory[i] = new Item();
 			exHideAccessory[i] = false;
 
@@ -62,6 +52,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 	public override void SaveData(TagCompound tag)
 	{
+		// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded. Otherwise old unloaded slots just bloat the array with empty entries forever
 		tag["order"] = slots.Keys.ToList();
 		tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
 		tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
@@ -70,29 +61,28 @@ public class ModAccessorySlotPlayer : ModPlayer
 
 	public override void LoadData(TagCompound tag)
 	{
+		// Scan the saved slot names and add ids for any unloaded slots
 		var order = tag.GetList<string>("order").ToList();
+		foreach (var name in order) {
+			if (!slots.ContainsKey(name))
+				slots.Add(name, slots.Count);
+		}
+
+		ResetAndSizeAccessoryArrays();
+
+
 		var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
 		var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
 		var visible = tag.GetList<bool>("visible").ToList();
 
-		ResizeAccesoryArrays(order.Count);
-
 		for (int i = 0; i < order.Count; i++) {
-			// Try finding the slot item goes in to
-			if (!slots.TryGetValue(order[i], out int type)) {
-				var unloaded = new UnloadedAccessorySlot(Loader.list.Count, order[i]);
-
-				slots.Add(unloaded.Name, unloaded.Type);
-				Loader.list.Add(unloaded);
-				type = unloaded.Type;
-				UnloadedSlotCount++;
-			}
+			int type = slots[order[i]];
 
 			// Place loaded items in to the correct slot
 			exDyesAccessory[type] = dyes[i];
 			exHideAccessory[type] = visible[i];
 			exAccessorySlot[type] = items[i];
-			exAccessorySlot[type + order.Count] = items[i + order.Count];
+			exAccessorySlot[type + SlotCount] = items[i + order.Count];
 		}
 	}
 
@@ -131,11 +121,15 @@ public class ModAccessorySlotPlayer : ModPlayer
 	/// Mirrors Player.UpdateDyes() for modded slots
 	/// Runs On Player Select, so is Player instance sensitive!!!
 	/// </summary>
-	public override void UpdateDyes()
+	public void UpdateDyes(bool socialSlots)
 	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
-		for (int i = 0; i < SlotCount * 2; i++) {
+		// Called manually, this method does not override ModPlayer.UpdateDyes.
+		int start = socialSlots ? SlotCount : 0;
+		int end  = socialSlots ? SlotCount * 2 : SlotCount;
+
+		for (int i = start; i < end; i++) {
 			if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
 				int num = i % exDyesAccessory.Length;
 				Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
@@ -171,7 +165,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	// The following netcode is adapted from ChickenBone's UtilitySlots:
+	// The following netcode is adapted from ChickenBones' UtilitySlots:
 	public override void CopyClientState(ModPlayer targetCopy)
 	{
 		var defaultInv = (ModAccessorySlotPlayer)targetCopy;
@@ -227,7 +221,7 @@ public class ModAccessorySlotPlayer : ModPlayer
 			p.Write(InventorySlot);
 
 			if (Main.netMode == Server)
-				p.Write((sbyte)plr);
+				p.Write((byte)plr);
 
 			p.Write((sbyte)slot);
 

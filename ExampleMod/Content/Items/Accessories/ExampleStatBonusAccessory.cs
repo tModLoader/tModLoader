@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.DamageClasses;
+﻿using ExampleMod.Common.Players;
+using ExampleMod.Content.DamageClasses;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -16,9 +17,10 @@ namespace ExampleMod.Content.Items.Accessories
 		public static readonly int RangedAttackSpeedBonus = 15;
 		public static readonly int MagicArmorPenetration = 5;
 		public static readonly int ExampleKnockback = 100;
+		public static readonly int AdditiveCritDamageBonus = 20;
 
-		// Insert the modifier values into the tooltip localization
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback);
+		// Insert the modifier values into the tooltip localization. More info on this approach can be found on the wiki: https://github.com/tModLoader/tModLoader/wiki/Localization#binding-values-to-localizations
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback, AdditiveCritDamageBonus);
 
 		public override void SetDefaults() {
 			Item.width = 40;
@@ -34,7 +36,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// Base damage is added directly to the weapon's base damage and is affected by damage bonuses, while flat damage is applied after all other calculations.
 			// In this case, we're doing a number of things:
 			// - Adding 25% damage, additively. This is the typical "X% damage increase" that accessories use, use this one.
-			// - Adding 12% damage, multiplicatively. This effect is almost never useds in Terraria, typically you want to use the additive multiplier above. It is extremely hard to correctly balance the game with multiplicative bonuses.
+			// - Adding 12% damage, multiplicatively. This effect is almost never used in Terraria, typically you want to use the additive multiplier above. It is extremely hard to correctly balance the game with multiplicative bonuses.
 			// - Adding 4 base damage.
 			// - Adding 5 flat damage.
 			// Since we're using DamageClass.Generic, these bonuses apply to ALL damage the player deals.
@@ -61,6 +63,8 @@ namespace ExampleMod.Content.Items.Accessories
 			// GetKnockback is functionally identical to GetDamage, but for the knockback stat instead.
 			// In this case, we're adding 100% knockback additively, but only for our custom example DamageClass (as such, only our example class weapons will receive this bonus).
 			player.GetKnockback<ExampleDamageClass>() += ExampleKnockback / 100f;
+
+			player.GetModPlayer<ExampleDamageModificationPlayer>().AdditiveCritDamageBonus += AdditiveCritDamageBonus / 100f;
 		}
 	}
 }

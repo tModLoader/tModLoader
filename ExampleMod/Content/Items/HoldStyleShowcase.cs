@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.IO;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,17 +25,31 @@ namespace ExampleMod.Content.Items
 			Item.holdStyle = ItemHoldStyleID.None;
 		}
 
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write((byte)Item.holdStyle);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			Item.holdStyle = reader.ReadByte();
+		}
+
 		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
 
 		public override bool? UseItem(Player player) {
+			if (player.whoAmI != Main.myPlayer) {
+				return true;
+			}
+
 			if (player.altFunctionUse == 2) {
 				Item.holdStyle++;
 				if (Item.holdStyle > ItemHoldStyleID.HoldRadio) {
 					Item.holdStyle = ItemHoldStyleID.None;
 				}
 				Main.NewText($"Switching to ItemHoldStyleID #{Item.holdStyle}");
+				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to holdStyle to be in sync. 
+				Item.NetStateChanged();
 			}
 			else {
 				Main.NewText($"This is ItemHoldStyleID #{Item.holdStyle}");

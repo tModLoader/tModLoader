@@ -22,9 +22,6 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
 	public int DustType { get; set; }
 
-	/// <summary> The default type of item dropped when this tile/wall is killed. Defaults to 0, which means no item. </summary>
-	public int ItemDrop { get; set; }
-
 	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
@@ -124,7 +121,8 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.
+	/// Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.<para/>
+	/// Note that this method will be called for tiles even when the tile is <see cref="Tile.IsTileInvisible"/> due to Echo Coating. Use the <see cref="GameContent.Drawing.TileDrawing.IsVisible(Tile)"/> method to skip effects that shouldn't show when the tile is invisible. This method won't be called for invisible walls.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

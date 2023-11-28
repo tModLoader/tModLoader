@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Events/Sandstorm.cs
 +++ src/tModLoader/Terraria/GameContent/Events/Sandstorm.cs
-@@ -10,16 +_,18 @@
+@@ -10,7 +_,7 @@
  	private const int SANDSTORM_DURATION_MINIMUM = 28800;
  	private const int SANDSTORM_DURATION_MAXIMUM = 86400;
  	public static bool Happening;
@@ -9,17 +9,6 @@
  	public static float Severity;
  	public static float IntendedSeverity;
  	private static bool _effectsUp;
-+	private static double _timePass; // Added by TML; used to account for more precise time rates.
- 
- 	private static bool HasSufficientWind() => Math.Abs(Main.windSpeedCurrent) >= 0.6f;
- 
- 	public static void WorldClear()
- 	{
- 		Happening = false;
-+		_timePass = 0;
- 	}
- 
- 	public static void UpdateTime()
 @@ -29,9 +_,10 @@
  				if (TimeLeft > 86400)
  					TimeLeft = 0;
@@ -33,22 +22,15 @@
  
  				if (Main.windSpeedCurrent == 0f)
  					TimeLeft = 0;
-@@ -43,10 +_,14 @@
+@@ -43,7 +_,7 @@
  				int num = 21600;
  				num = ((!Main.hardMode) ? (num * 3) : (num * 2));
  				if (HasSufficientWind()) {
-+					_timePass += Main.desiredWorldEventsUpdateRate;
-+
 -					for (int i = 0; i < Main.dayRate; i++) {
-+					for (int i = 1; i <= (int)_timePass; i++) {
++					for (int i = 0; i < Main.worldEventUpdates; i++) {
  						if (Main.rand.Next(num) == 0)
  							StartSandstorm();
  					}
-+
-+					_timePass %= 1.0;
- 				}
- 			}
- 
 @@ -85,14 +_,20 @@
  			Severity = IntendedSeverity;
  	}

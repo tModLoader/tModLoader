@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -19,6 +20,14 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract partial class ModSystem : ModType
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, s => s.SaveWorldData, s => s.LoadWorldData);
+		LoaderUtils.MustOverrideTogether(this, s => s.NetSend, s => s.NetReceive);
+	}
+
 	protected override void Register()
 	{
 		SystemLoader.Add(this);
@@ -55,8 +64,8 @@ public abstract partial class ModSystem : ModType
 	public virtual void OnLocalizationsLoaded() { }
 
 	/// <summary>
-	/// Override this method to add recipes to the game.
-	/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+	/// Override this method to add <see cref="Recipe"/>s to the game.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">Basic Recipes Guide</see> teaches how to add new recipes to the game and how to manipulate existing recipes.<br/>
 	/// </summary>
 	public virtual void AddRecipes() { }
 
@@ -69,9 +78,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
 	/// </summary>
-	public virtual void PostSetupRecipes()
-	{
-	}
+	public virtual void PostSetupRecipes() { }
 
 	/// <summary>
 	/// Override this method to add recipe groups to the game.
@@ -81,18 +88,25 @@ public abstract partial class ModSystem : ModType
 	public virtual void AddRecipeGroups() { }
 
 	/// <summary>
-	/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
-	/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
+	/// Called whenever a world is loaded, before <see cref="LoadWorldData"/> <br/>
+	/// If you need to initialize tile or other world related data-structures, use <see cref="ClearWorld"/> instead
 	/// </summary>
 	public virtual void OnWorldLoad() { }
 
 	/// <summary>
-	/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
+	/// Called whenever a world is unloaded.
 	/// </summary>
 	public virtual void OnWorldUnload() { }
 
 	/// <summary>
-	/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
+	/// Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br/>
+	/// Also called just before mods are unloaded.
+	/// </summary>
+	public virtual void ClearWorld() { }
+
+	/// <summary>
+	/// Use this hook to modify <see cref="Main.screenPosition"/> after weapon zoom and camera lerp have taken place.
+	/// <br/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
 	/// </summary>
 	public virtual void ModifyScreenPosition() { }
 
@@ -265,7 +279,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
 	/// All fields are measured in in-game minutes per real-life second (min/sec).
-	/// You may want to consider <see cref="Main.fastForwardTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
+	/// You may want to consider <see cref="Main.IsFastForwardingTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
 	/// </summary>
 	/// <param name="timeRate">The speed at which time flows in min/sec.</param>
 	/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
@@ -288,6 +302,17 @@ public abstract partial class ModSystem : ModType
 	/// </summary>
 	/// <param name="tag"> The TagCompound to load data from. </param>
 	public virtual void LoadWorldData(TagCompound tag) { }
+
+	/// <summary>
+	/// <br/>Allows you to save custom data for this system in the current world, and have that data accessible in the world select UI and during vanilla world loading.
+	/// <br/><b>WARNING:</b> Saving too much data here will cause lag when opening the world select menu for users with many worlds.
+	/// <br/>Can be retrieved via <see cref="WorldFileData.TryGetHeaderData(ModSystem, out TagCompound)"/> and <see cref="Main.ActiveWorldFileData"/>
+	/// <br/>
+	/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+	/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+	/// </summary>
+	/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+	public virtual void SaveWorldHeader(TagCompound tag) { }
 
 	/// <summary>
 	/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
@@ -342,7 +367,8 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. <para/>
-	/// For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.
+	/// For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. <para/>
+	/// To disable or hide generation passes, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) { }
 
@@ -357,7 +383,9 @@ public abstract partial class ModSystem : ModType
 	public virtual void ResetNearbyTileEffects() { }
 
 	/// <summary>
-	/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement"
+	/// Similar to <see cref="ModifyWorldGenTasks(List{GenPass}, ref double)"/>, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. <para/>
+	/// By default the list will only contain 5 items, the vanilla hardmode tasks called "Hardmode Good Remix", "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement". "Hardmode Good Remix" will only be enabled on <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up</see> worlds (<see cref="Main.remixWorld"/>) while "Hardmode Good" and "Hardmode Evil" will be enabled otherwise.<para/>
+	/// To disable or hide tasks, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>
 	public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
 
@@ -369,7 +397,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
 
 	/// <summary>
-	/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+	/// Allows you to modify overall brightness of lights. Can be used to create effects similar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
 	/// </summary>
 	/// <param name="scale">Brightness scale</param>
 	public virtual void ModifyLightingBrightness(ref float scale) { }

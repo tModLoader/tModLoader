@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -22,7 +23,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>  Shorthand for Projectile.type; </summary>
 	public int Type => Projectile.type;
 
-	public string LocalizationCategory => "Projectiles";
+	public virtual string LocalizationCategory => "Projectiles";
 
 	/// <summary> The translations for the display name of this projectile. </summary>
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
@@ -58,16 +59,14 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModProjectile>.Register(this);
-		Projectile.type = ProjectileLoader.ReserveProjectileID();
-		ProjectileLoader.projectiles.Add(this);
+		Projectile.type = ProjectileLoader.Register(this);
 	}
 
 	public sealed override void SetupContent()
 	{
-		ProjectileLoader.SetDefaults(Projectile, false);
+		ProjectileLoader.SetDefaults(Projectile, createModProjectile: false);
 		AutoStaticDefaults();
 		SetStaticDefaults();
-
 		ProjectileID.Search.Add(FullName, Type);
 	}
 
@@ -79,7 +78,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Gets called when your projectiles spawns in world
+	/// Gets called when your projectiles spawns in world.<br/>
+	/// Called on the client or server spawning the projectile via Projectile.NewProjectile.<br/>
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source)
 	{
@@ -200,6 +200,11 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (Projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
 	/// </summary>
+	public virtual void OnKill(int timeLeft)
+	{
+	}
+
+	[Obsolete("Renamed to OnKill", error: true)] // Remove in 2023_10
 	public virtual void Kill(int timeLeft)
 	{
 	}
@@ -232,14 +237,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
-	/// </summary>
-	/// <param name="damageScale">The damage scaling</param>
-	public virtual void ModifyDamageScaling(ref float damageScale)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine whether this projectile can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 	/// </summary>
 	/// <param name="target">The target.</param>
@@ -252,11 +249,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="knockback">The modifiable knockback.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	/// <param name="hitDirection">The modifiable hit direction.</param>
-	public virtual void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers">The modifiers for this strike.</param>
+	public virtual void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
@@ -264,10 +258,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="knockback">The knockback.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit">The damage.</param>
+	/// <param name="damageDone">The actual damage dealt to/taken by the NPC.</param>
+	public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
@@ -278,26 +271,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual bool CanHitPvp(Player target)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to modify the damage, etc., that this projectile does to an opponent player.
-	/// </summary>
-	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	public virtual void ModifyHitPvp(Player target, ref int damage, ref bool crit)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to create special effects when this projectile hits an opponent player.
-	/// </summary>
-	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitPvp(Player target, int damage, bool crit)
-	{
 	}
 
 	/// <summary>
@@ -313,19 +286,18 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The modifiable damage.</param>
-	/// <param name="crit">The modifiable crit.</param>
-	public virtual void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this hostile projectile hits a player.
+	/// Allows you to create special effects when this hostile projectile hits a player. <br/>
+	/// Only runs on the local client in multiplayer.
 	/// </summary>
 	/// <param name="target">The target.</param>
-	/// <param name="damage">The damage.</param>
-	/// <param name="crit">The critical hit.</param>
-	public virtual void OnHitPlayer(Player target, int damage, bool crit)
+	/// <param name="info"></param>
+	public virtual void OnHitPlayer(Player target, Player.HurtInfo info)
 	{
 	}
 
@@ -341,7 +313,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// If this projectile is a bobber, allows you to modify the origin of the fisihing line that's connecting to the fishing pole, as well as the fishing line's color.
+	/// If this projectile is a bobber, allows you to modify the origin of the fishing line that's connecting to the fishing pole, as well as the fishing line's color.
 	/// </summary>
 	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
 	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
@@ -386,14 +358,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
 	/// </summary>
 	public virtual bool? CanUseGrapple(Player player)
-	{
-		return null;
-	}
-
-	/// <summary>
-	/// Whether or not a grappling hook can only have one hook per player in the world at a time. Return null to use the vanilla code. Returns null by default.
-	/// </summary>
-	public virtual bool? SingleGrappleHook(Player player)
 	{
 		return null;
 	}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -40,4 +41,22 @@ public class ModProjectileTest : ModProjectile
 		drawCacheProjsOverWiresUI.Add(index);
 #endif
 	}
+
+#if COMPILE_ERROR
+	public override bool? SingleGrappleHook(Player player)/* tModPorter Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true */ { return null; }
+#endif
+
+#if COMPILE_ERROR // duplicate method
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) { }
+#endif
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPlayer(Player target, Player.HurtInfo info) { }
+
+#if COMPILE_ERROR
+	public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)/* tModPorter Note: Removed. Use ModifyHitPlayer and check modifiers.PvP */ { }
+	public override void OnHitPvp(Player target, int damage, bool crit)/* tModPorter Note: Removed. Use OnHitPlayer and check info.PvP */ { }
+#endif
+	public override void OnKill(int timeLeft) { }
 }

@@ -8,7 +8,7 @@ namespace Terraria.ModLoader;
 public static partial class Logging
 {
 	private const BindingFlags InstanceNonPublic = BindingFlags.Instance | BindingFlags.NonPublic;
-	
+
 	internal static readonly FieldInfo f_fileName = typeof(StackFrame).GetField("_fileName", InstanceNonPublic) ?? typeof(StackFrame).GetField("strFileName", InstanceNonPublic);
 
 	private static readonly Assembly terrariaAssembly = Assembly.GetExecutingAssembly();

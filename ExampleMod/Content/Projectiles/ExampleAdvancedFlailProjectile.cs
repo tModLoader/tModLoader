@@ -1,13 +1,13 @@
-using System;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using ExampleMod.Content.Dusts;
-using Terraria.GameContent;
-using ReLogic.Content;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -43,6 +43,8 @@ namespace ExampleMod.Content.Projectiles
 			// These lines facilitate the trail drawing
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -128,7 +130,7 @@ namespace ExampleMod.Content.Projectiles
 						if (offsetFromPlayer.Y * player.gravDir > 0f) {
 							offsetFromPlayer.Y *= 0.5f;
 						}
-						Projectile.Center = mountedCenter + offsetFromPlayer * 30f;
+						Projectile.Center = mountedCenter + offsetFromPlayer * 30f + new Vector2(0, player.gfxOffY);
 						Projectile.velocity = Vector2.Zero;
 						Projectile.localNPCHitCooldown = spinHitCooldown; // set the hit speed to the spinning hit speed
 						break;
@@ -150,8 +152,7 @@ namespace ExampleMod.Content.Projectiles
 							*/
 							break;
 						}
-						if (shouldSwitchToRetracting)
-						{
+						if (shouldSwitchToRetracting) {
 							CurrentAIState = AIState.Retracting;
 							StateTimer = 0f;
 							Projectile.netUpdate = true;
@@ -386,7 +387,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			// Flails do special collision logic that serves to hit anything within an ellipse centered on the player when the flail is spinning around the player. For example, the projectile rotating around the player won't actually hit a bee if it is directly on the player usually, but this code ensures that the bee is hit. This code makes hitting enemies while spinning more consistant and not reliant of the actual position of the flail projectile.
+			// Flails do special collision logic that serves to hit anything within an ellipse centered on the player when the flail is spinning around the player. For example, the projectile rotating around the player won't actually hit a bee if it is directly on the player usually, but this code ensures that the bee is hit. This code makes hitting enemies while spinning more consistent and not reliant of the actual position of the flail projectile.
 			if (CurrentAIState == AIState.Spinning) {
 				Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
 				Vector2 shortestVectorFromPlayerToTarget = targetHitbox.ClosestPointInRect(mountedCenter) - mountedCenter;
@@ -398,33 +399,29 @@ namespace ExampleMod.Content.Projectiles
 			return base.Colliding(projHitbox, targetHitbox);
 		}
 
-		public override void ModifyDamageScaling(ref float damageScale) {
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
+
 			// Flails do 20% more damage while spinning
 			if (CurrentAIState == AIState.Spinning) {
-				damageScale *= 1.2f;
+				modifiers.SourceDamage *= 1.2f;
 			}
 			// Flails do 100% more damage while launched or retracting. This is the damage the item tooltip for flails aim to match, as this is the most common mode of attack. This is why the item has ItemID.Sets.ToolTipDamageMultiplier[Type] = 2f;
 			else if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Retracting) {
-				damageScale *= 2f;
+				modifiers.SourceDamage *= 2f;
 			}
-		}
-
-		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
-			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
 
 			// The hitDirection is always set to hit away from the player, even if the flail damages the npc while returning
-			hitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
+			modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
 
 			// Knockback is only 25% as powerful when in spin mode
 			if (CurrentAIState == AIState.Spinning) {
-				knockback *= 0.25f;
+				modifiers.Knockback *= 0.25f;
 			}
 			// Knockback is only 50% as powerful when in drop down mode
 			else if (CurrentAIState == AIState.Dropping) {
-				knockback *= 0.5f;
+				modifiers.Knockback *= 0.5f;
 			}
-
-			base.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
 		}
 
 		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
@@ -495,8 +492,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			// Add a motion trail when moving forward, like most flails do (don't add trail if already hit a tile)
-			if (CurrentAIState == AIState.LaunchingForward)
-			{
+			if (CurrentAIState == AIState.LaunchingForward) {
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;

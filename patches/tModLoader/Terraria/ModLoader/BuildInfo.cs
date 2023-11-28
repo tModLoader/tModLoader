@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Terraria.ModLoader;
@@ -37,7 +38,7 @@ public static class BuildInfo
 
 	static BuildInfo()
 	{
-		var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('|');
+		var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+') + 1).Split('|');
 		int i = 0;
 
 		tMLVersion = new Version(parts[i++]);
@@ -50,8 +51,8 @@ public static class BuildInfo
 		// Version name for players
 		versionedName = $"tModLoader v{tMLVersion}";
 
-		if (!string.IsNullOrEmpty(BranchName) && BranchName != "unknown"
-			&& BranchName != "stable" && BranchName != "preview" && BranchName != "1.4")
+		string[] branchNameBlacklist = { "unknown", "stable", "preview", "1.4.3-Legacy" };
+		if (!string.IsNullOrEmpty(BranchName) && !branchNameBlacklist.Contains(BranchName))
 			versionedName += $" {BranchName}";
 
 		if (Purpose != BuildPurpose.Stable)

@@ -1,7 +1,7 @@
-using System;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 	// - ModBuff - the icon you can click on to despawn the minion
 	// - ModProjectile - the minion itself
 
-	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
+	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overview.
 	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
 	// This is NOT an in-depth guide to advanced minion AI
 
@@ -42,6 +42,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 		public override void SetStaticDefaults() {
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
 		}
 
 		public override void SetDefaults() {

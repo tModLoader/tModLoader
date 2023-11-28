@@ -1,6 +1,6 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor.Vanity
 {
@@ -16,6 +16,11 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 
 			// By passing this (the ModItem) into the item parameter we can reference it later in GetEquipSlot with just the item's name
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
+		}
+
+		public override void SetStaticDefaults() {
+			// HidesHands defaults to true which we don't want.
+			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
 
 		public override void SetDefaults() {

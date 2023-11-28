@@ -43,7 +43,7 @@ public sealed class ModPacket : BinaryWriter
 			Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);
 		}
 		else {
-			for (int i = 0;i < 256;i++)
+			for (int i = 0; i < 256; i++)
 				if (i != ignoreClient && Netplay.Clients[i].IsConnected() && NetMessage.buffer[i].broadcast)
 					Netplay.Clients[i].Socket.AsyncSend(buf, 0, len, SendCallback);
 		}

@@ -7,7 +7,6 @@ using Terraria.ID;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
-using Terraria.Social;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -19,6 +18,11 @@ internal static class PlayerIO
 		writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
 	}
 
+	internal static void WriteVanillaHair(int hair, BinaryWriter writer)
+	{
+		writer.Write(hair >= HairID.Count ? 0 : hair);
+	}
+
 	//make Terraria.Player.ENCRYPTION_KEY internal
 	//add to end of Terraria.Player.SavePlayer
 	internal static void Save(TagCompound tag, string path, bool isCloudSave)
@@ -27,23 +31,17 @@ internal static class PlayerIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-			TagIO.ToStream(tag, stream);
-			if (isCloudSave && SocialAPI.Cloud != null)
-				SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-		}
+		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
 
 	internal static TagCompound SaveData(Player player)
 	{
-		player._temporaryItemSlots[0] = Main.mouseItem;
-		player._temporaryItemSlots[1] = Main.CreativeMenu.GetItemByIndex(0);
-		player._temporaryItemSlots[2] = Main.guideItem;
-		player._temporaryItemSlots[3] = Main.reforgeItem;
+		var _temporaryItemSlots = new[] { Main.mouseItem, Main.CreativeMenu.GetItemByIndex(0), Main.guideItem, Main.reforgeItem }; // Don't use player._temporaryItemSlots directly, it expects nulls. It also isn't what is saved in vanilla, which is relevant with Player.SerializedClone. It is only what is used to load in data.
 
 		return new TagCompound {
 			["armor"] = SaveInventory(player.armor),
 			["dye"] = SaveInventory(player.dye),
+			["loadouts"] = SaveLoadouts(player.Loadouts),
 			["inventory"] = SaveInventory(player.inventory),
 			["miscEquips"] = SaveInventory(player.miscEquips),
 			["miscDyes"] = SaveInventory(player.miscDyes),
@@ -51,14 +49,16 @@ internal static class PlayerIO
 			["bank2"] = SaveInventory(player.bank2.item),
 			["bank3"] = SaveInventory(player.bank3.item),
 			["bank4"] = SaveInventory(player.bank4.item),
-			["temporaryItemSlots"] = SaveInventory(player._temporaryItemSlots),
+			["temporaryItemSlots"] = SaveInventory(_temporaryItemSlots),
 			["hairDye"] = SaveHairDye(player.hairDye),
 			["research"] = SaveResearch(player),
 			["modData"] = SaveModData(player),
 			["modBuffs"] = SaveModBuffs(player),
 			["infoDisplays"] = SaveInfoDisplays(player),
+			["builderToggles"] = SaveBuilderToggles(player),
 			["usedMods"] = SaveUsedMods(player),
-			["usedModPack"] = SaveUsedModPack(player)
+			["usedModPack"] = SaveUsedModPack(player),
+			["hair"] = SaveHair(player.hair)
 		};
 	}
 
@@ -67,6 +67,7 @@ internal static class PlayerIO
 	{
 		LoadInventory(player.armor, tag.GetList<TagCompound>("armor"));
 		LoadInventory(player.dye, tag.GetList<TagCompound>("dye"));
+		LoadLoadouts(player.Loadouts, tag.GetCompound("loadouts"));
 		LoadInventory(player.inventory, tag.GetList<TagCompound>("inventory"));
 		LoadInventory(player.miscEquips, tag.GetList<TagCompound>("miscEquips"));
 		LoadInventory(player.miscDyes, tag.GetList<TagCompound>("miscDyes"));
@@ -80,8 +81,10 @@ internal static class PlayerIO
 		LoadModData(player, tag.GetList<TagCompound>("modData"));
 		LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 		LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
+		LoadBuilderToggles(player, tag.GetList<TagCompound>("builderToggles"));
 		LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
+		LoadHair(player, tag.GetString("hair"));
 	}
 
 	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
@@ -95,11 +98,10 @@ internal static class PlayerIO
 		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			//LoadLegacy(player, buf);
-			return false;
+			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 		}
 
-		tag = TagIO.FromStream(new MemoryStream(buf));
+		tag = TagIO.FromStream(buf.ToMemoryStream());
 		return true;
 	}
 
@@ -190,6 +192,23 @@ internal static class PlayerIO
 		// no mystery hair dye at this stage
 		if (ModContent.TryFind<ModItem>(hairDyeItemName, out var modItem))
 			player.hairDye = (byte)GameShaders.Hair.GetShaderIdFromItemId(modItem.Type);
+	}
+
+	public static string SaveHair(int hair)
+	{
+		if (hair < HairID.Count)
+			return "";
+		
+		return HairLoader.GetHair(hair).FullName;
+	}
+
+	public static void LoadHair(Player player, string hairName)
+	{
+		if (hairName == "")
+			return;
+		
+		if (ModContent.TryFind<ModHair>(hairName, out var modHair))
+			player.hair = modHair.Type;
 	}
 
 	internal static List<TagCompound> SaveModData(Player player)
@@ -327,6 +346,36 @@ internal static class PlayerIO
 		}
 	}
 
+	internal static List<TagCompound> SaveBuilderToggles(Player player)
+	{
+		return BuilderToggleLoader.BuilderToggles
+			.Where(x=> x is not VanillaBuilderToggle)
+			.Select(x=> new TagCompound {
+				["fullName"] = x.FullName,
+				["currentState"] = player.builderAccStatus[x.Type] // Can't use x.CurrentState, that is LocalPlayer.
+			}).ToList();
+	}
+
+	internal static void LoadBuilderToggles(Player player, IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			var fullname = tag.GetString("fullName");
+			var entryIndex = BuilderToggleLoader.BuilderToggles.FindIndex(x => x.FullName == fullname);
+			if (entryIndex != -1) {
+				player.builderAccStatus[entryIndex] = tag.GetInt("currentState");
+			}
+		}
+
+		// Could revert state to 0 if state is now invalid. This approach probably won't work since ModifyNumberOfStates probably relies on player inventory update.
+		/*for (int i = 0; i < BuilderToggleLoader.BuilderToggles.Count; i++) {
+			BuilderToggle builderToggle = BuilderToggleLoader.BuilderToggles[i];
+			int numberOfStates = builderToggle.NumberOfStates;
+			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
+			if (player.builderAccStatus[i] >= numberOfStates)
+				player.builderAccStatus[i] = 0;
+		}*/
+	}
+
 	internal static void LoadUsedMods(Player player, IList<string> usedMods)
 	{
 		player.usedMods = usedMods;
@@ -339,12 +388,32 @@ internal static class PlayerIO
 
 	internal static void LoadUsedModPack(Player player, string modpack)
 	{
-		player.modPack = modpack;
+		player.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null 
 	}
 
 	internal static string SaveUsedModPack(Player player)
 	{
 		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+	}
+
+	internal static TagCompound SaveLoadouts(EquipmentLoadout[] equipLoadouts)
+	{
+		TagCompound loadouts = new();
+
+		for (int i = 0; i < equipLoadouts.Length; i++) {
+			loadouts[$"loadout{i}Armor"] = SaveInventory(equipLoadouts[i].Armor);
+			loadouts[$"loadout{i}Dye"] = SaveInventory(equipLoadouts[i].Dye);
+		}
+
+		return loadouts;
+	}
+
+	internal static void LoadLoadouts(EquipmentLoadout[] loadouts, TagCompound loadoutTag)
+	{
+		for (int i = 0; i < loadouts.Length; i++) {
+			LoadInventory(loadouts[i].Armor, loadoutTag.GetList<TagCompound>($"loadout{i}Armor"));
+			LoadInventory(loadouts[i].Dye, loadoutTag.GetList<TagCompound>($"loadout{i}Dye"));
+		}
 	}
 
 	//add to end of Terraria.IO.PlayerFileData.MoveToCloud

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalBuffs
@@ -11,6 +12,12 @@ namespace ExampleMod.Common.GlobalBuffs
 	// Showcases how to work with all buffs
 	public class ExampleGlobalBuff : GlobalBuff
 	{
+		public static LocalizedText RemainingTimeText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			RemainingTimeText = Mod.GetLocalization($"{nameof(ExampleGlobalBuff)}.RemainingTime");
+		}
+
 		public override void Update(int type, Player player, ref int buffIndex) {
 			// If the player gets the Chilled debuff while he already has more than 5 other buffs/debuffs, limit the max duration to 3 seconds
 			if (type == BuffID.Chilled && buffIndex >= 5) {
@@ -48,7 +55,10 @@ namespace ExampleMod.Common.GlobalBuffs
 			return true;
 		}
 
-		public override void ModifyBuffTip(int type, ref string tip, ref int rare) {
+		private static string randomBuffTextCache;
+		private static int randomBuffTypeCache;
+
+		public override void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare) {
 			// This code adds a more extensible remaining time tooltip for suitable buffs
 			Player player = Main.LocalPlayer;
 
@@ -59,7 +69,28 @@ namespace ExampleMod.Common.GlobalBuffs
 
 			if (Main.TryGetBuffTime(buffIndex, out int buffTimeValue) && buffTimeValue > 2) {
 				string text = Lang.LocalizedDuration(new System.TimeSpan(0, 0, buffTimeValue / 60), abbreviated: false, showAllAvailableUnits: true);
-				tip += $"\n[{nameof(ExampleGlobalBuff)}] Remaining time: " + text;
+				tip += "\n" + RemainingTimeText.Format(text);
+			}
+
+			// This code showcases adjusting buffName. Try it out by activating a Slice of Cake block
+			if (player.HasBuff(BuffID.SugarRush) && buffName.Length > 2) {
+				if (Main.GameUpdateCount % 10 == 0 || randomBuffTypeCache != type) {
+					if (randomBuffTypeCache != type) {
+						randomBuffTextCache = buffName;
+						randomBuffTypeCache = type;
+					}
+					char[] characters = randomBuffTextCache.ToCharArray();
+					int n = characters.Length;
+					int swaps = Main.rand.Next(1, randomBuffTextCache.Length / 2);
+					for (int swap = 0; swap < swaps; swap++) {
+
+						int a = Main.rand.Next(n - 1);
+						int b = Main.rand.Next(a + 1, n);
+						Utils.Swap(ref characters[a], ref characters[b]);
+					}
+					randomBuffTextCache = new string(characters);
+				}
+				buffName = randomBuffTextCache;
 			}
 		}
 

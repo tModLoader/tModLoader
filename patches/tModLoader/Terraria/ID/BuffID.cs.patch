@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -1,10 +_,11 @@
+@@ -1,25 +_,86 @@
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
@@ -12,14 +12,82 @@
 -	public class Sets
 +	public partial class Sets
  	{
++		/// <summary>
++		/// Stores data for mount buffs.
++		/// </summary>
  		public class BuffMountData
  		{
-@@ -12,7 +_,7 @@
++			/// <summary>
++			/// The mount type (<see cref="Mount.Type"/>) associated with this <see cref="BuffID"/>.
++			/// </summary>
+ 			public int mountID;
++
++			/// <summary>
++			/// If <see langword="true"/>, then this <see cref="BuffID"/> is for the left-facing mount.
++			/// </summary>
  			public bool faceLeft;
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is some variation of <see cref="WellFed"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IsWellFed = Factory.CreateBoolSet(26, 206, 207);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is related to player hunger.
++		/// <br/> Buffs in this set cannot be active at the same time.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] IsFedState = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334);
- 		public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is not considered a typical debuff, but is a buff used to "tag" entities for other purposes.<br/><br/> 
++		/// Whip debuffs are the primary example of tag buffs, they facilitate a combat mechanic rather than affect the NPC directly.<br/><br/>  
++		/// Buffs in this set can be applied to all NPCs unless that NPC sets <see cref="NPCID.Sets.ImmuneToAllBuffs"/> to prevent it.<br/><br/> 
++		/// Defaults to <see langword="false"/>.
++		/// </summary>
+-		public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340);
++		public static bool[] IsATagBuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will never run out.
++		/// <br/> Useful for buffs that are conditionally removed.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28, 334, 29, 159, 150, 93, 348);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff can be removed from an NPC using <see cref="NPC.RequestBuffRemoval(int)"/>.
++		/// <br/> Useful for "flag" buffs that should go away on hit, like the <see href="https://terraria.wiki.gg/wiki/Firecracker">Firecracker's</see> <see cref="FlameWhipEnemyDebuff"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] CanBeRemovedByNetMessage = Factory.CreateBoolSet(313);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff corresponds to a flask item.
++		/// <br/> Flask items are categorized into the <see cref="ContentSamples.CreativeHelper.ItemGroup.Flask"/> group in Journey Mode.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// This set does <strong>not</strong> handle any logic for flasks.
++		/// </remarks>
+ 		public static bool[] IsAFlaskBuff = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that debuff cannot be removed by the Nurse.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147);
++
++		/// <summary>
++		/// If not <see langword="null"/> for a given <see cref="BuffID"/>, then that buff is linked to a <see cref="Mount"/> and will forcibly mount the player if active.
++		/// <br/> All entries in this set should have <see cref="Main.buffNoTimeDisplay"/> and <see cref="Main.buffNoSave"/> set to <see langword="true"/>.
++		/// <br/> Defaults to <see langword="null"/>.
++		/// </summary>
+ 		public static BuffMountData[] BasicMountData = Factory.CreateCustomSet<BuffMountData>(null, new object[108] {
+ 			118,
+ 			new BuffMountData {

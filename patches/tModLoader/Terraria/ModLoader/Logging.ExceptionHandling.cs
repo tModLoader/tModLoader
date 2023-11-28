@@ -8,14 +8,24 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
-using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
 public static partial class Logging
 {
-	private static readonly ThreadLocal<bool> handlerActive = new(() => false);
+	public readonly ref struct QuietExceptionHandle
+	{
+		public QuietExceptionHandle() { quietExceptionCount++; }
+		public readonly void Dispose() => quietExceptionCount--;
+	}
+
+	[ThreadStatic]
+	private static int quietExceptionCount;
 	private static readonly HashSet<string> pastExceptions = new();
+	private static readonly HashSet<string> ignoreTypes = new() {
+		"ReLogic.Peripherals.RGB.DeviceInitializationException",
+		"System.Threading.Tasks.TaskCanceledException",
+	};
 	private static readonly HashSet<string> ignoreSources = new() {
 		"MP3Sharp",
 	};
@@ -28,9 +38,10 @@ public static partial class Logging
 		"Convert.ToInt32..Terraria.Main.DedServ_PostModLoad", // bad user input in ded-serv console
 		"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 		"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
-		"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
-		"Terraria.ModLoader.Engine.TMLContentManager.OpenStream", // TML content manager delegating to vanilla dir
 		"UwUPnP", // UPnP does a lot of trial and error
+		"System.Threading.CancellationTokenSource.Cancel", // an operation (task) was deliberately cancelled
+		"System.Net.Http.HttpConnectionPool.AddHttp11ConnectionAsync", // Async connection errors thrown on the thread pool. These get bounced back to the caller continuation and can be logged there
+		"ReLogic.Peripherals.RGB.SteelSeries.GameSenseConnection._sendMsg",
 	};
 	// There are a couple of annoying messages that happen during cancellation of asynchronous downloads, and they have no other useful info to suppress by
 	private static readonly List<string> ignoreMessages = new() {
@@ -43,11 +54,12 @@ public static partial class Logging
 		"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'", // Roslyn
 	};
 	private static readonly List<string> ignoreThrowingMethods = new() {
+		"MonoMod.Utils.Interop.Unix.DlError", // MonoMod trying to find the right version of libdl and falling back on DLLNotFoundException
 		"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
 		"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 		"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 	};
-	
+
 	private static Exception previousException;
 
 	public static void IgnoreExceptionSource(string source)
@@ -73,21 +85,21 @@ public static partial class Logging
 
 	private static void FirstChanceExceptionHandler(object sender, FirstChanceExceptionEventArgs args)
 	{
-		if (handlerActive.Value)
+		if (quietExceptionCount > 0)
 			return;
 
-		bool oom = args.Exception is OutOfMemoryException;
+		using var _ = new QuietExceptionHandle();
 
+		bool oom = args.Exception is OutOfMemoryException;
 		if (oom) {
 			TryFreeingMemory();
 		}
 
 		try {
-			handlerActive.Value = true;
-
 			if (!oom) {
 				if (args.Exception == previousException
 				|| args.Exception is ThreadAbortException
+				|| ignoreTypes.Contains(args.Exception.GetType().FullName)
 				|| ignoreSources.Contains(args.Exception.Source)
 				|| ignoreMessages.Any(str => args.Exception.Message?.Contains(str) ?? false)
 				|| ignoreThrowingMethods.Any(str => args.Exception.StackTrace?.Contains(str) ?? false)) {
@@ -95,13 +107,12 @@ public static partial class Logging
 				}
 			}
 
-			var stackTrace = new StackTrace(true);
+			var stackTrace = new StackTrace(skipFrames: 1, fNeedFileInfo: true);
 			var traceString = stackTrace.ToString();
 
 			if (!oom && ignoreContents.Any(s => MatchContents(traceString, s)))
 				return;
 
-			PrettifyStackTraceSources(stackTrace.GetFrames());
 			traceString = stackTrace.ToString();
 			traceString = traceString[traceString.IndexOf('\n')..];
 
@@ -117,12 +128,14 @@ public static partial class Logging
 			previousException = args.Exception;
 
 			string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
-			if (Main.dedServ) { // TODO, sometimes console write fails on unix clients. Hopefully it doesn't happen on servers? System.IO.IOException: Input/output error at System.ConsolePal.Write
+			// Solxan: We are using Program.SavePathShared == null as a flag to indicate Main CCtor can't run. 
+			if (Program.SavePathShared == null || Main.dedServ) { // TODO, sometimes console write fails on unix clients. Hopefully it doesn't happen on servers? System.IO.IOException: Input/output error at System.ConsolePal.Write
 				Console.ForegroundColor = ConsoleColor.DarkMagenta;
 				Console.WriteLine(msg);
 				Console.ResetColor();
 			}
-			else if (ModCompile.activelyModding && !Main.gameMenu) {
+			// Solxan: We are using Program.SavePathShared == null as a flag to indicate ModCompile CCtor can't run. 
+			else if (Program.SavePathShared != null && ModCompile.activelyModding && !Main.gameMenu) {
 				AddChatMessage(msg);
 			}
 
@@ -132,9 +145,6 @@ public static partial class Logging
 		}
 		catch (Exception e) {
 			tML.Warn("FirstChanceExceptionHandler exception", e);
-		}
-		finally {
-			handlerActive.Value = false;
 		}
 	}
 
@@ -150,8 +160,8 @@ public static partial class Logging
 			if (sep < 0)
 				return true;
 
-			traceString = traceString[(f+m.Length)..];
-			contentPattern = contentPattern[(sep+2)..];
+			traceString = traceString[(f + m.Length)..];
+			contentPattern = contentPattern[(sep + 2)..];
 		}
 	}
 }

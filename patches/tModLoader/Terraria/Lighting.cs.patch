@@ -11,3 +11,47 @@
  	private static ILightingEngine _activeEngine;
  
  	public static float GlobalBrightness { get; set; }
+@@ -115,11 +_,27 @@
+ 		return Vector3.Lerp(value, value2, vector2.Y);
+ 	}
+ 
++	/// <summary>
++	/// Adds light to the world at the specified coordinates.<para/>
++	/// This overload takes in world coordinates and a Vector3 containing float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther. A <see cref="Vector3"/> is used for this method instead of <see cref="Color"/> to allow these overflow values.
++	/// </summary>
++	/// <param name="position"></param>
++	/// <param name="rgb"></param>
+ 	public static void AddLight(Vector2 position, Vector3 rgb)
+ 	{
+ 		AddLight((int)(position.X / 16f), (int)(position.Y / 16f), rgb.X, rgb.Y, rgb.Z);
+ 	}
+ 
++	/// <summary>
++	/// <summary>
++	/// Adds light to the world at the specified coordinates.<para/>
++	/// This overload takes in world coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther.
++	/// </summary>
++	/// </summary>
++	/// <param name="position"></param>
++	/// <param name="r"></param>
++	/// <param name="g"></param>
++	/// <param name="b"></param>
+ 	public static void AddLight(Vector2 position, float r, float g, float b)
+ 	{
+ 		AddLight((int)(position.X / 16f), (int)(position.Y / 16f), r, g, b);
+@@ -137,6 +_,15 @@
+ 		AddLight((int)position.X / 16, (int)position.Y / 16, R, G, B);
+ 	}
+ 
++	/// <summary>
++	/// Adds light to the world at the specified coordinates.<para/>
++	/// This overload takes in tile coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther.
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="r"></param>
++	/// <param name="g"></param>
++	/// <param name="b"></param>
+ 	public static void AddLight(int i, int j, float r, float g, float b)
+ 	{
+ 		if (!Main.gamePaused && Main.netMode != 2)

@@ -1,9 +1,7 @@
-using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace ExampleMod.Content.Walls
 {
@@ -14,7 +12,6 @@ namespace ExampleMod.Content.Walls
 			Main.wallHouse[Type] = true;
 
 			DustType = DustID.Stone;
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleWallAdvanced>();
 
 			AddMapEntry(new Color(68, 68, 68));
 		}

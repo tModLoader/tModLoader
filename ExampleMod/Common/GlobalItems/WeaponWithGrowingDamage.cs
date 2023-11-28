@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using ExampleMod.Common.Configs;
+using ExampleMod.Content.NPCs;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using System.IO;
-using ExampleMod.Content.NPCs;
 
 //Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
@@ -20,9 +21,14 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override bool InstancePerEntity => true;
 
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
+		}
+
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 			//Apply to weapons
-			return entity.damage > 0;
+			return lateInstantiation && entity.damage > 0;
 		}
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
@@ -41,14 +47,14 @@ namespace ExampleMod.Common.GlobalItems
 			experience = 0;
 			GainExperience(item, reader.ReadInt32());
 		}
-		
-		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
-			OnHitNPCGeneral(player, target, damage, knockBack, crit, item);
+
+		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+			OnHitNPCGeneral(player, target, hit, item);
 		}
 
-		public void OnHitNPCGeneral(Player player, NPC target, int damage, float knockBack, bool crit, Item item = null, Projectile projectile = null) {
+		public void OnHitNPCGeneral(Player player, NPC target, NPC.HitInfo hit, Item item = null, Projectile projectile = null) {
 			//The weapon gains experience when hitting an npc.
-			int xp = damage;
+			int xp = hit.Damage;
 			if (projectile != null) {
 				xp /= 2;
 			}
@@ -142,18 +148,24 @@ namespace ExampleMod.Common.GlobalItems
 			}
 		}
 	}
-	public class SnowBallShop : GlobalNPC
+
+	public class DoubleXPSnowBallInExamplePersonShop : GlobalNPC
 	{
-		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type != ModContent.NPCType<ExamplePerson>()) {
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
+		}
+
+		public override void ModifyShop(NPCShop shop) {
+			if (shop.NpcType != ModContent.NPCType<ExamplePerson>()) {
 				return;
 			}
 
-			Item item = shop.item[nextSlot++];
-			item.SetDefaults(ItemID.Snowball);
-			if (item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
-				weapon.GainExperience(item, 2); // can buy snowballs with 2xp!
+			var snowball = new Item(ItemID.Snowball);
+			if (snowball.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
+				weapon.GainExperience(snowball, 2);
 			}
+			shop.Add(snowball);
 		}
 	}
 }

@@ -8,9 +8,11 @@ public abstract class VanillaInfoDisplay : InfoDisplay
 {
 	public override LocalizedText DisplayName => Language.GetText(LangKey);
 
+	public override string HoverTexture => VanillaHoverTexture;
+
 	protected abstract string LangKey { get; }
 
-	public override string DisplayValue(ref Color displayColor) => "";
+	public override string DisplayValue(ref Color displayColor, ref Color displayShadowColor) => "";
 }
 
 public class WatchesInfoDisplay : VanillaInfoDisplay

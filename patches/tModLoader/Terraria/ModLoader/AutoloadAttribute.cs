@@ -13,7 +13,7 @@ public sealed class AutoloadAttribute : Attribute
 	private static readonly AutoloadAttribute Default = new AutoloadAttribute();
 
 	public readonly bool Value;
-	public ModSide Side{get;set;} = ModSide.Both;
+	public ModSide Side { get; set; } = ModSide.Both;
 
 	public bool NeedsAutoloading => Value && Core.ModOrganizer.LoadSide(Side);
 

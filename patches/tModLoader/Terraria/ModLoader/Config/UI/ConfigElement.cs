@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System;
 using System.Collections;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -40,8 +41,9 @@ public abstract class ConfigElement : UIElement
 	// If non-null, the memberInfo actually referes to the collection containing this item and array and index need to be used to assign this data
 	protected IList List { get; set; }
 	// Attributes
-	protected LabelAttribute LabelAttribute;
-	protected TooltipAttribute TooltipAttribute;
+	protected LabelKeyAttribute LabelAttribute;
+	protected string Label;
+	protected TooltipKeyAttribute TooltipAttribute;
 	protected BackgroundColorAttribute BackgroundColorAttribute;
 	protected RangeAttribute RangeAttribute;
 	protected IncrementAttribute IncrementAttribute;
@@ -51,6 +53,10 @@ public abstract class ConfigElement : UIElement
 	protected internal Func<string> TextDisplayFunction { get; set; }
 	protected Func<string> TooltipFunction { get; set; }
 	protected bool DrawLabel { get; set; } = true;
+	protected bool ReloadRequired { get; set; }
+	protected bool ShowReloadRequiredTooltip { get; set; }
+	protected object OldValue { get; set; }
+	protected bool ValueChanged => !ConfigManager.ObjectEquals(OldValue, GetObject());
 
 	public ConfigElement()
 	{
@@ -72,29 +78,36 @@ public abstract class ConfigElement : UIElement
 
 	public virtual void OnBind()
 	{
-		TextDisplayFunction = () => MemberInfo.Name;
-		LabelAttribute = ConfigManager.GetCustomAttribute<LabelAttribute>(MemberInfo, Item, List);
+		LabelAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<LabelKeyAttribute>(MemberInfo, Item, List);
+		Label = ConfigManager.GetLocalizedLabel(MemberInfo);
+		// Potential TODO if highly requested: Support interpolating value itself into label.
+		TextDisplayFunction = () => Label;
 
-		if (LabelAttribute != null) {
-			TextDisplayFunction = () => LabelAttribute.Label;
+		TooltipAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<TooltipKeyAttribute>(MemberInfo, Item, List);
+		string tooltip = ConfigManager.GetLocalizedTooltip(MemberInfo);
+		if (tooltip != null) {
+			TooltipFunction = () => tooltip;
 		}
 
-		TooltipAttribute = ConfigManager.GetCustomAttribute<TooltipAttribute>(MemberInfo, Item, List);
-
-		if (TooltipAttribute != null) {
-			TooltipFunction = () => TooltipAttribute.Tooltip;
-		}
-
-		BackgroundColorAttribute = ConfigManager.GetCustomAttribute<BackgroundColorAttribute>(MemberInfo, Item, List);
+		BackgroundColorAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(MemberInfo, Item, List);
 
 		if (BackgroundColorAttribute != null) {
 			backgroundColor = BackgroundColorAttribute.Color;
 		}
 
-		RangeAttribute = ConfigManager.GetCustomAttribute<RangeAttribute>(MemberInfo, Item, List);
-		IncrementAttribute = ConfigManager.GetCustomAttribute<IncrementAttribute>(MemberInfo, Item, List);
-		NullAllowed = ConfigManager.GetCustomAttribute<NullAllowedAttribute>(MemberInfo, Item, List) != null;
-		JsonDefaultValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultValueAttribute>(MemberInfo, Item, List);
+		RangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(MemberInfo, Item, List);
+		IncrementAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<IncrementAttribute>(MemberInfo, Item, List);
+		NullAllowed = ConfigManager.GetCustomAttributeFromMemberThenMemberType<NullAllowedAttribute>(MemberInfo, Item, List) != null;
+		JsonDefaultValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultValueAttribute>(MemberInfo, Item, List);
+		ShowReloadRequiredTooltip = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ReloadRequiredAttribute>(MemberInfo, Item, List) != null;
+
+		if (ShowReloadRequiredTooltip && List == null && Item is ModConfig modConfig) {
+			// Default ModConfig.NeedsReload logic currently only checks members of the ModConfig class, this mirrors that logic.
+			ReloadRequired = true;
+			// We need to check against the value in the load time config, not the value at the time of binding.
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
+			OldValue = MemberInfo.GetValue(loadTimeConfig);
+		 }
 	}
 
 	protected virtual void SetObject(object value)
@@ -141,31 +154,28 @@ public abstract class ConfigElement : UIElement
 		if (DrawLabel) {
 			position.X += 8f;
 			position.Y += 8f;
-			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, TextDisplayFunction(), position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
+
+			string label = TextDisplayFunction();
+			if (ReloadRequired && ValueChanged) {
+				label += " - [c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
+			}
+
+			// TODO: Support chat tag hover?
+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, label, position, color, 0f, Vector2.Zero, baseScale, settingsWidth, 2f);
 		}
 
 		if (IsMouseHovering && TooltipFunction != null) {
-			UIModConfig.Tooltip = TooltipFunction();
-			/*
-			string hoverText = _TooltipFunction(); // TODO: Fix, draw order prevents this from working correctly
-			float x = FontAssets.MouseText.Value.MeasureString(hoverText).X;
-			vector = new Vector2((float)Main.mouseX, (float)Main.mouseY) + new Vector2(16f);
-			if (vector.Y > (float)(Main.screenHeight - 30)) {
-				vector.Y = (float)(Main.screenHeight - 30);
-			}
-			if (vector.X > (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16)) {
-				vector.X = (float)(Parent.GetDimensions().Width + Parent.GetDimensions().X - x - 16);
-			}
-			Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, hoverText, vector.X, vector.Y, new Color((int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor, (int)Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
-			*/
-		}
+			string tooltip = TooltipFunction();
 
-		/*
-		if (IsMouseHovering) {
-			Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			Main.spriteBatch.Draw(TextureAssets.MagicPixel, hitbox, Color.Green * 0.6f);
+			// TODO - Add line for default value?
+
+			if (ShowReloadRequiredTooltip) {
+				tooltip += string.IsNullOrEmpty(tooltip) ? "" : "\n";
+				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
+			}
+
+			UIModConfig.Tooltip = tooltip;
 		}
-		*/
 	}
 
 	public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color)

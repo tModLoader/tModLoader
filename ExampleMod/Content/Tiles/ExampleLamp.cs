@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -24,10 +25,12 @@ namespace ExampleMod.Content.Tiles
 			Main.tileNoAttach[Type] = true;
 			Main.tileWaterDeath[Type] = true;
 			Main.tileLavaDeath[Type] = true;
-			// Main.tileFlame[Type] = true; // This breaks it.
+			// Main.tileFlame[Type] = true; // Main.tileFlame is only useful for vanilla tiles. Modded tiles can manually draw flames in PostDraw.
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);
+			TileObjectData.newTile.StyleLineSkip = 2;
+			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.WaterDeath = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
 			TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;
@@ -40,10 +43,6 @@ namespace ExampleMod.Content.Tiles
 			if (!Main.dedServ) {
 				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 			}
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<Items.Placeable.ExampleLamp>());
 		}
 
 		public override void HitWire(int i, int j) {
@@ -88,6 +87,10 @@ namespace ExampleMod.Content.Tiles
 
 			Tile tile = Main.tile[i, j];
 
+			if (!TileDrawing.IsVisible(tile)) {
+				return;
+			}
+
 			short frameX = tile.TileFrameX;
 			short frameY = tile.TileFrameY;
 
@@ -120,6 +123,12 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
+			Tile tile = Main.tile[i, j];
+
+			if (!TileDrawing.IsVisible(tile)) {
+				return;
+			}
+
 			SpriteEffects effects = SpriteEffects.None;
 
 			if (i % 2 == 1) {
@@ -132,7 +141,6 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			Tile tile = Main.tile[i, j];
 			int width = 16;
 			int offsetY = 0;
 			int height = 16;

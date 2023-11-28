@@ -25,7 +25,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200));
 
 			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.Furniture.ExamplePlatform>();
 			AdjTiles = new int[] { TileID.Platforms };
 
 			// Placement

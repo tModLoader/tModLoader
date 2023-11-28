@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,84 +_,426 @@
+@@ -1,84 +_,369 @@
  using Terraria.Utilities;
 +using System;
 +using System.Collections.Generic;
@@ -26,9 +26,6 @@
 +	// Otherwise sends SyncMods instead of LoadPlayer
  	public const byte Hello = 1;
 +
-+	[Obsolete("Use MessageID.Hello")]
-+	public const byte ClientHello = Hello;
-+
 +	// Kick with reason, displays the text "{ip} was booted: {reason}" in the server console
  	public const byte Kick = 2;
 +
@@ -39,9 +36,6 @@
 +	// Client sends RequestWorldInfo
 +	// Client connection state 2->3
  	public const byte PlayerInfo = 3;
-+
-+	[Obsolete("Use MessageID.PlayerInfo")]
-+	public const byte LoadPlayer = PlayerInfo;
 +
 +	// Sends a player's name, visual configuration, accessory visibility, difficulty and extra accessory flag
 +	// Kicks if the playername is empty, too long, or the same as another player on the server
@@ -59,9 +53,6 @@
 +	// Server responds with WorldInfo and InvasionProgressReport
  	public const byte RequestWorldData = 6;
 +
-+	[Obsolete("Use MessageID.RequestWorldData")]
-+	public const byte RequestWorldInfo = RequestWorldData;
-+
 +	// Time of day, weather, events, world size and name, biome info, killed bosses, etc
 +	// Sent whenever any of the properties in the packet change (except time of day, which gets synced whenever other properties change anyway)
 +	// Client connection state 3->4
@@ -78,15 +69,9 @@
 +	// StartPlaying, TileCounts, WorldInfo, MoonlordCountdown, UpdateTowerShieldStrengths
  	public const byte SpawnTileData = 8;
 +
-+	[Obsolete("Use MessageID.SpawnTileData")]
-+	public const byte RequestTileData = SpawnTileData;
-+
 +	// Sets the client status text
 +	// Only use is before NetMessage.SendSection with message "Receiving tile data"
  	public const byte StatusTextSize = 9;
-+
-+	[Obsolete("Use MessageID.StatusTextSize")]
-+	public const byte StatusText = StatusTextSize;
 +
 +	// Sends a compressed 200x150 block section of the map
 +	// Sent from NetMessage.SendSection which also sends NPCInfo for all npcs in the section
@@ -98,9 +83,6 @@
  	[Old("Deprecated. Framing happens as needed after TileSection is sent.")]
  	public const byte TileFrameSection = 11;
 +
-+	[Obsolete("Use MessageID.TileFrameSection")]
-+	public const byte FrameSection = TileFrameSection;
-+
 +	// Sent from Player.Spawn
 +	// If this is the first spawn for a connected client
 +	//    RemoteClient state 3->10
@@ -108,9 +90,6 @@
 +	//    responds with AnglerQuest
 +	// Forwarded to other clients
  	public const byte PlayerSpawn = 12;
-+
-+	[Obsolete("Use MessageID.PlayerSpawn")]
-+	public const byte SpawnPlayer = PlayerSpawn;
 +
 +	// Player movement keystates, item actions, grapple, gravity, stealth and velocity
 +	// Primarily sent from sync with clientClone
@@ -131,9 +110,6 @@
 +	// Forwarded to other clients
  	public const byte PlayerLifeMana = 16;
 +
-+	[Obsolete("Use MessageID.PlayerLifeMana")]
-+	public const byte PlayerHealth = PlayerLifeMana;
-+
 +	// ChangeType, x, y, tileType, style,
 +	// ChangeType WorldGen.{
 +	//    KillTile = 0, PlaceTile = 1, KillWall = 2, PlaceWall = 3, KillTileNoItem = 4,
@@ -143,14 +119,8 @@
 +	// If changeType == PlaceTile and tileType == TileID.Sand sends a 1 block TileSquare
  	public const byte TileManipulation = 17;
 +
-+	[Obsolete("Use MessageID.TileManipulation")]
-+	public const byte TileChange = TileManipulation;
-+
 +	// Doesn't seem like this is actually sent anywhere
  	public const byte SetTime = 18;
-+
-+	[Obsolete("Use MessageID.SetTime")]
-+	public const byte MenuSunMoon = SetTime;
 +
 +	// ChangeType, x, y, direction
 +	// ChangeType WorldGen.{
@@ -159,9 +129,6 @@
 +	//    ShiftTallGate(closing = false) = 4, ShiftTallGate(closing = true) = 5 }
 +	// Forwarded to other clients
  	public const byte ToggleDoorState = 19;
-+
-+	[Obsolete("Use MessageID.ToggleDoorState")]
-+	public const byte ChangeDoor = ToggleDoorState;
 +
 +	// Sends a square area of tile data (with upper left x, y) and given size (minimum 1)
 +	// TModLoader changes walls from byte to short
@@ -189,9 +156,6 @@
 +	// Hit an NPC, presumably unused because it uses the item damage/knockback directly without the random variance
  	public const byte UnusedMeleeStrike = 24;
 +
-+	[Obsolete("Use MessageID.UnusedMeleeStrike")]
-+	public const byte UnusedStrikeNPC = UnusedMeleeStrike;
-+
 +	// A line of chat text, with sender and colour information
  	[Old("Deprecated. Use NetTextModule instead.")]
 -	public const byte Unused25 = 25;
@@ -212,9 +176,6 @@
 +	// Forwarded to other clients
  	public const byte DamageNPC = 28;
 +
-+	[Obsolete("Use MessageID.DamageNPC")]
-+	public const byte StrikeNPC = 28;
-+
 +	// Sent from Projectile.Kill
 +	// Forwarded to other clients
  	public const byte KillProjectile = 29;
@@ -222,9 +183,6 @@
 +	// Forwarded to other clients
 +	// Forwarding includes the chat message "{player} has {en/dis}abled PvP"
  	public const byte TogglePVP = 30;
-+
-+	[Obsolete("Use MessageID.TogglePVP")]
-+	public const byte PlayerPvP = 30;
 +
 +	// If the server finds a chest not in use, it responds with
 +	// SyncChestItem for every item in the chest
@@ -260,16 +218,10 @@
 +	// Forwarded to other clients
  	public const byte PlayerHeal = 35;
 +
-+	[Obsolete("Use MessageID.PlayerHeal")]
-+	public const byte HealEffect = 35;
-+
 +	// Player.zone1 and zone2, containing the biome information
 +	// Forwarded to other clients
 +	// Sent on change
  	public const byte SyncPlayerZone = 36;
-+
-+	[Obsolete("Use MessageID.SyncPlayerZone")]
-+	public const byte PlayerZone = 36;
 +
 +	// Sent by the server to display the password input menu.
 +	// Sets RemoteClient.State = -1
@@ -283,24 +235,15 @@
 +	// Client responds with ItemOwner
  	public const byte ReleaseItemOwnership = 39;
 +
-+	[Obsolete("Use MessageID.ReleaseItemOwnership")]
-+	public const byte ResetItemOwner = 39;
-+
 +	// Player.talkNPC, sent on change
 +	// Forwarded to other clients
  	public const byte SyncTalkNPC = 40;
-+
-+	[Obsolete($"Use MessageID.{nameof(SyncTalkNPC)}")]
-+	public const byte PlayerTalkingNPC = 40;
 +
 +	// Player.itemRotation, itemAnimation and channel
 +	// Forwarded to other clients
  	public const byte ShotAnimationAndSound = 41;
 -	public const byte Unknown42 = 42;
 -	public const byte Unknown43 = 43;
-+	
-+	[Obsolete($"Use {nameof(ShotAnimationAndSound)} instead")]
-+	public const byte ItemAnimation = ShotAnimationAndSound;
 +
 +	// Player's current and maximum mana
 +	// Sent on change, and the major client and server sync
@@ -445,7 +388,7 @@
  	public const byte ChestName = 69;
  	public const byte BugCatching = 70;
  	public const byte BugReleasing = 71;
-@@ -92,20 +_,39 @@
+@@ -92,14 +_,30 @@
  	public const byte PlaceObject = 79;
  	public const byte SyncPlayerChestIndex = 80;
  	public const byte CombatTextInt = 81;
@@ -476,12 +419,3 @@
  	public const byte InstancedItem = 90;
  	public const byte SyncEmoteBubble = 91;
  	public const byte SyncExtraValue = 92;
- 	public const byte SocialHandshake = 93;
- 	public const byte Deprecated1 = 94;
- 	public const byte MurderSomeoneElsesPortal = 95;
-+
-+	[Obsolete("Use MessageID.MurderSomeoneElsesPortal")]
-+	public const byte MurderSomeoneElsesProjectile = MurderSomeoneElsesPortal;
- 	public const byte TeleportPlayerThroughPortal = 96;
- 	public const byte AchievementMessageNPCKilled = 97;
- 	public const byte AchievementMessageEventHappened = 98;

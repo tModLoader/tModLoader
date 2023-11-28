@@ -10,7 +10,7 @@ namespace ExampleMod.Common.GlobalItems
 	{
 		public override void ExtractinatorUse(int extractType, int extractinatorBlockType, ref int resultType, ref int resultStack) {
 			// If the extractinator type isn't torch, we won't change anything
-			if(extractType != ItemID.Torch)
+			if (extractType != ItemID.Torch)
 				return;
 
 			// If it is, we set stack to 1 and return a random torch. If the user is using the Chlorophyte Extractinator, we return Ultrabright Torch 10% of the time.

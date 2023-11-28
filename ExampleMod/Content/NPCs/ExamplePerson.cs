@@ -1,29 +1,32 @@
+using ExampleMod.Common;
+using ExampleMod.Common.Configs;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Armor;
+using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
-using Terraria.DataStructures;
-using System.Collections.Generic;
-using ReLogic.Content;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -31,21 +34,38 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
+		public const string ShopName = "Shop";
 		public int NumberOfTimesTalkedTo = 0;
 
-		public override void SetStaticDefaults() {
-			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
+		private static int ShimmerHeadIndex;
+		private static Profiles.StackedNPCProfile NPCProfile;
 
-			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs.
-			NPCID.Sets.AttackFrameCount[Type] = 4;
-			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
-			NPCID.Sets.AttackType[Type] = 0;
+		public override void Load() {
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
+		}
+
+		public override void SetStaticDefaults() {
+			Main.npcFrameCount[Type] = 25; // The total amount of frames the NPC has
+
+			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs. This is the remaining frames after the walking frames.
+			NPCID.Sets.AttackFrameCount[Type] = 4; // The amount of frames in the attacking animation.
+			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the NPC that it tries to attack enemies.
+			NPCID.Sets.AttackType[Type] = 0; // The type of attack the Town NPC performs. 0 = throwing, 1 = shooting, 2 = magic, 3 = melee
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
-			NPCID.Sets.AttackAverageChance[Type] = 30;
+			NPCID.Sets.AttackAverageChance[Type] = 30; // The denominator for the chance for a Town NPC to attack. Lower numbers make the Town NPC appear more aggressive.
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
+
+			NPCID.Sets.ShimmerTownTransform[Type] = true; // Allows for this NPC to have a different texture after touching the Shimmer liquid.
+
+			// Connects this NPC with a custom emote.
+			// This makes it when the NPC is in the world, other NPCs will "talk about him".
+			// By setting this you don't have to override the PickEmote method for the emote to appear.
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
 				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
@@ -65,6 +85,12 @@ namespace ExampleMod.Content.NPCs
 				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
 				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
 			; // < Mind the semicolon!
+
+			// This creates a "profile" for ExamplePerson, which allows for different textures during a party and/or while the NPC is shimmered.
+			NPCProfile = new Profiles.StackedNPCProfile(
+				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
+			);
 		}
 
 		public override void SetDefaults() {
@@ -115,16 +141,38 @@ namespace ExampleMod.Content.NPCs
 			return true;
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
+
+			// Create gore when the NPC is killed.
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
+				// Retrieve the gore types. This NPC has shimmer and party variants for head, arm, and leg gore. (12 total gores)
+				string variant = "";
+				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				if (NPC.altTexture == 1) variant += "_Party";
+				int hatGore = NPC.GetPartyHatGore();
+				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
+				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
+				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
+
+				// Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+				if (hatGore > 0) {
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, hatGore);
+				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 20), NPC.velocity, armGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+			}
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) { // Requirements for the town NPC to spawn.
-			for (int k = 0; k < 255; k++) {
+			for (int k = 0; k < Main.maxPlayers; k++) {
 				Player player = Main.player[k];
 				if (!player.active) {
 					continue;
@@ -159,7 +207,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
-			return new ExamplePersonProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -194,6 +242,7 @@ namespace ExampleMod.Content.NPCs
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
 
@@ -203,7 +252,15 @@ namespace ExampleMod.Content.NPCs
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
-			return chat; // chat is implicitly cast to a string.
+			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
+
+			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
+			if (chosenChat == Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4")) {
+				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
+				Main.npcChatCornerItem = ItemID.HiveBackpack;
+			}
+
+			return chosenChat;
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
@@ -214,7 +271,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop) {
+		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
 			if (firstButton) {
 				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
 
@@ -232,70 +289,61 @@ namespace ExampleMod.Content.NPCs
 					return;
 				}
 
-				shop = true;
+				shop = ShopName; // Name of the shop tab we want to open.
 			}
 		}
 
 		// Not completely finished, but below is what the NPC will sell
+		public override void AddShops() {
+			var npcShop = new NPCShop(Type, ShopName)
+				.Add<ExampleItem>()
+				//.Add<EquipMaterial>()
+				//.Add<BossItem>()
+				.Add(new Item(ModContent.ItemType<Items.Placeable.Furniture.ExampleWorkbench>()) { shopCustomPrice = Item.buyPrice(copper: 15) }) // This example sets a custom price, ExampleNPCShop.cs has more info on custom prices and currency. 
+				.Add<Items.Placeable.Furniture.ExampleChair>()
+				.Add<Items.Placeable.Furniture.ExampleDoor>()
+				.Add<Items.Placeable.Furniture.ExampleBed>()
+				.Add<Items.Placeable.Furniture.ExampleChest>()
+				.Add<Items.Tools.ExamplePickaxe>()
+				.Add<Items.Tools.ExampleHamaxe>()
+				.Add<Items.Consumables.ExampleHealingPotion>(new Condition("Mods.ExampleMod.Conditions.PlayerHasLifeforceBuff", () => Main.LocalPlayer.HasBuff(BuffID.Lifeforce)))
+				.Add<Items.Weapons.ExampleSword>(Condition.MoonPhasesQuarter0)
+				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
+				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
+				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<ExampleOnBuyItem>()
+				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
-		// public override void SetupShop(Chest shop, ref int nextSlot) {
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());
-		// 	// shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
-		// 	// nextSlot++;
-		// 	// shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
-		// 	// nextSlot++;
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChair>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleDoor>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleBed>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChest>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
-		// 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
-		//
-		// 	if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
-		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
-		// 	}
-		//
-		// 	// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
-		// 	// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	if (Main.moonPhase < 2) {
-		// 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
-		// 	}
-		// 	else if (Main.moonPhase < 4) {
-		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		// 		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		// 	}
-		// 	else if (Main.moonPhase < 6) {
-		// 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
+			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
+				npcShop.Add<ExampleWings>(ExampleConditions.InExampleBiome);
+			}
+
+			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
+				npcShop.Add(bloodTalisman.Type);
+			}
+			npcShop.Register(); // Name of this shop tab
+		}
+
+		public override void ModifyActiveShop(string shopName, Item[] items) {
+			foreach (Item item in items) {
+				// Skip 'air' items and null items.
+				if (item == null || item.type == ItemID.None) {
+					continue;
+				}
+
+				// If NPC is shimmered then reduce all prices by 50%.
+				if (NPC.IsShimmerVariant) {
+					int value = item.shopCustomPrice ?? item.value;
+					item.shopCustomPrice = value / 2;
+				}
+			}
+		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
 		}
 
-		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
+		// Make this Town NPC teleport to the King and/or Queen statue when triggered. Return toKingStatue for only King Statues. Return !toKingStatue for only Queen Statues. Return true for both.
 		public override bool CanGoToStatue(bool toKingStatue) => true;
 
 		// Make something happen when the npc teleports to a statue. Since this method only runs server side, any visual effects like dusts or gores have to be synced across all clients manually.
@@ -336,15 +384,15 @@ namespace ExampleMod.Content.NPCs
 			randExtraCooldown = 30;
 		}
 
-		// todo: implement
-		// public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-		// 	projType = ProjectileType<SparklingBall>();
-		// 	attackDelay = 1;
-		// }
+		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
+			projType = ModContent.ProjectileType<SparklingBall>();
+			attackDelay = 1;
+		}
 
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
 			multiplier = 12f;
 			randomOffset = 2f;
+			// SparklingBall is not affected by gravity, so gravityCorrection is left alone.
 		}
 
 		public override void LoadData(TagCompound tag) {
@@ -354,23 +402,23 @@ namespace ExampleMod.Content.NPCs
 		public override void SaveData(TagCompound tag) {
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
 		}
-	}
 
-	public class ExamplePersonProfile : ITownNPCProfile
-	{
-		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+		// Let the NPC "talk about" minion boss
+		public override int? PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+			// By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
+			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
+			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
+			if (otherAnchor.entity is NPC { type: NPCID.Demolitionist }) {
+				type = EmoteID.EmotionAnger;
+			}
 
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
-			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+			// Make the selection more likely by adding it to the list multiple times
+			for (int i = 0; i < 4; i++) {
+				emoteList.Add(type);
+			}
 
-			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
-
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+			// Use this or return null if you don't want to override the emote selection totally
+			return base.PickEmote(closestPlayer, emoteList, otherAnchor);
 		}
-
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
 	}
 }

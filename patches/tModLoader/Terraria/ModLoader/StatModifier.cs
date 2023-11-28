@@ -2,27 +2,29 @@ namespace Terraria.ModLoader;
 
 public struct StatModifier
 {
-	public static readonly StatModifier Default = new StatModifier(1f, 1f, 0f, 0f);
+	public static readonly StatModifier Default = new();
 
 	/// <summary>
-	/// Increase to the base value of the stat. Directly added to the stat before multipliers are applied.
+	/// An offset to the base value of the stat. Directly applied to the base stat before multipliers are applied.
 	/// </summary>
-	public float Base;
+	public float Base = 0f;
 
 	/// <summary>
 	/// The combination of all additive multipliers. Starts at 1
 	/// </summary>
-	public float Additive { get; private set; }
+	public float Additive { get; private set; } = 1f;
 
 	/// <summary>
 	/// The combination of all multiplicative multipliers. Starts at 1. Applies 'after' all additive bonuses have been accumulated.
 	/// </summary>
-	public float Multiplicative { get; private set; }
+	public float Multiplicative { get; private set; } = 1f;
 
 	/// <summary>
 	/// Increase to the final value of the stat. Directly added to the stat after multipliers are applied.
 	/// </summary>
-	public float Flat;
+	public float Flat = 0f;
+
+	public StatModifier() { }
 
 	public StatModifier(float additive, float multiplicative, float flat = 0f, float @base = 0f)
 	{
@@ -92,6 +94,29 @@ public struct StatModifier
 	public static bool operator !=(StatModifier m1, StatModifier m2)
 		=> m1.Additive != m2.Additive || m1.Multiplicative != m2.Multiplicative || m1.Flat != m2.Flat || m1.Base != m2.Base;
 
+	/// <summary>
+	/// Use this to apply the modifiers of this <see cref="StatModifier"/> to the <paramref name="baseValue"/>. You should assign
+	/// the value passed in to the return result. For example:
+	/// <para><br><c>damage = CritDamage.ApplyTo(damage)</c></br></para>
+	/// <br></br>could be used to apply a crit damage modifier to a base damage value 
+	/// </summary>
+	/// <remarks>For help understanding the meanings of the applied values please make note of documentation for:
+	/// <list type="bullet">
+	/// <item><description><see cref="Base"/></description></item>
+	/// <item><description><see cref="Additive"/></description></item>
+	/// <item><description><see cref="Multiplicative"/></description></item>
+	/// <item><description><see cref="Flat"/></description></item>
+	/// </list>
+	/// The order of operations of the modifiers are as follows:
+	/// <list type="number">
+	/// <item><description>The <paramref name="baseValue"/> is added to <see cref="Base"/></description></item>
+	/// <item><description>That result is multiplied by <see cref="Additive"/></description></item>
+	/// <item><description>The previous result is then multiplied by <see cref="Multiplicative"/></description></item>
+	/// <item><description>Finally, <see cref="Flat"/> as added to the result of all previous calculations</description></item>
+	/// </list>
+	/// </remarks>
+	/// <param name="baseValue">The starting value to apply modifiers to</param>
+	/// <returns>The result of <paramref name="baseValue"/> after all modifiers are applied</returns>
 	public float ApplyTo(float baseValue) =>
 		(baseValue + Base) * Additive * Multiplicative + Flat;
 

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,9 +_,20 @@
+@@ -3,19 +_,54 @@
  
  namespace Terraria;
  
@@ -21,10 +21,32 @@
 +	/// </summary>
  	public bool active;
  	internal long entityId;
++
++	/// <summary>
++	/// The position of this Entity in world coordinates. Note that this corresponds to the top left corner of the entity. Use <see cref="Center"/> instead for logic that needs the position at the center of the entity.
++	/// </summary>
  	public Vector2 position;
-@@ -16,6 +_,11 @@
++
++	/// <summary>
++	/// The velocity of this Entity in world coordinates per tick.
++	/// </summary>
+ 	public Vector2 velocity;
+ 	public Vector2 oldPosition;
+ 	public Vector2 oldVelocity;
+ 	public int oldDirection;
++	/// <summary>
++	/// The direction this entity is facing. A value of 1 means the entity is facing to the right. -1 means facing to the left.
++	/// </summary>
  	public int direction = 1;
++
++	/// <summary>
++	/// The width of this Entity's hitbox, in pixels.
++	/// </summary>
  	public int width;
++
++	/// <summary>
++	/// The height of this Entity's hitbox, in pixels.
++	/// </summary>
  	public int height;
 +
 +	/// <summary>
@@ -34,3 +56,13 @@
  	public bool wet;
  	public bool shimmerWet;
  	public bool honeyWet;
+@@ -24,6 +_,9 @@
+ 
+ 	public virtual Vector2 VisualPosition => position;
+ 
++	/// <summary>
++	/// The center position of this entity in world coordinates. Calculated from <see cref="position"/>, <see cref="width"/>, and <see cref="height"/>.
++	/// </summary>
+ 	public Vector2 Center {
+ 		get {
+ 			return new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2));

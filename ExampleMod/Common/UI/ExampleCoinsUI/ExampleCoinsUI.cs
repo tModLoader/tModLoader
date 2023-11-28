@@ -1,5 +1,4 @@
-﻿using ExampleMod.Common.Systems;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -18,15 +17,15 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI 
 	internal class ExampleCoinsUIState : UIState
 	{
-		public ExampleDragableUIPanel CoinCounterPanel;
+		public ExampleDraggableUIPanel CoinCounterPanel;
 		public UIMoneyDisplay MoneyDisplay;
 
 		// In OnInitialize, we place various UIElements onto our UIState (this class).
 		// UIState classes have width and height equal to the full screen, because of this, usually we first define a UIElement that will act as the container for our UI.
 		// We then place various other UIElement onto that container UIElement positioned relative to the container UIElement.
 		public override void OnInitialize() {
-			// Here we define our container UIElement. In DragableUIPanel.cs, you can see that DragableUIPanel is a UIPanel with a couple added features.
-			CoinCounterPanel = new ExampleDragableUIPanel();
+			// Here we define our container UIElement. In DraggableUIPanel.cs, you can see that DraggableUIPanel is a UIPanel with a couple added features.
+			CoinCounterPanel = new ExampleDraggableUIPanel();
 			CoinCounterPanel.SetPadding(0);
 			// We need to place this UIElement in relation to its Parent. Later we will be calling `base.Append(coinCounterPanel);`. 
 			// This means that this class, ExampleCoinsUI, will be our Parent. Since ExampleCoinsUI is a UIState, the Left and Top are relative to the top left of the screen.
@@ -56,9 +55,9 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			CoinCounterPanel.Append(MoneyDisplay);
 
 			Append(CoinCounterPanel);
-			// As a recap, ExampleCoinsUI is a UIState, meaning it covers the whole screen. We attach coinCounterPanel to ExampleCoinsUI some distance from the top left corner.
-			// We then place playButton, closeButton, and moneyDiplay onto coinCounterPanel so we can easily place these UIElements relative to coinCounterPanel.
-			// Since coinCounterPanel will move, this proper organization will move playButton, closeButton, and moneyDiplay properly when coinCounterPanel moves.
+			// As a recap, ExampleCoinsUI is a UIState, meaning it covers the whole screen. We attach CoinCounterPanel to ExampleCoinsUI some distance from the top left corner.
+			// We then place playButton, closeButton, and MoneyDisplay onto CoinCounterPanel so we can easily place these UIElements relative to CoinCounterPanel.
+			// Since CoinCounterPanel will move, this proper organization will move playButton, closeButton, and MoneyDisplay properly when CoinCounterPanel moves.
 		}
 
 		private void SetRectangle(UIElement uiElement, float left, float top, float width, float height) {
@@ -94,7 +93,7 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 
 		public UIMoneyDisplay() {
 			startTime = null;
-			
+
 			for (int j = 0; j < 4; j++) {
 				// Textures may not be loaded without it
 				Main.instance.LoadItem(74 - j);
@@ -147,11 +146,13 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 
 	public class MoneyCounterGlobalItem : GlobalItem
 	{
+		public override bool AppliesToEntity(Item item, bool lateInstantiation) {
+			return item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin;
+		}
+
 		public override bool OnPickup(Item item, Player player) {
 			// If we have picked up coins of any type, then we will update the values in exampleCoinsUI
-			if (item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin)
-				ModContent.GetInstance<ExampleCoinsUISystem>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
-
+			ModContent.GetInstance<ExampleCoinsUISystem>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
 			return base.OnPickup(item, player);
 		}
 	}

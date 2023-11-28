@@ -14,7 +14,7 @@ internal class UIProgress : UIState
 	public int gotoMenu = 0;
 
 	protected UIProgressBar _progressBar;
-	protected UITextPanel<string> _cancelButton;
+	protected UITextPanel<LocalizedText> _cancelButton;
 
 	// separate variable copied to progress bar in Update, allows for thread safety and setting display text before UI initialization
 	public string DisplayText;
@@ -42,7 +42,7 @@ internal class UIProgress : UIState
 			Top = { Pixels = 10 }
 		};
 		Append(_progressBar);
-		_cancelButton = new UITextPanel<string>(Language.GetTextValue("UI.Cancel"), 0.75f, true) {
+		_cancelButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Cancel"), 0.75f, true) {
 			VAlign = 0.5f,
 			HAlign = 0.5f,
 			Top = { Pixels = 170 }

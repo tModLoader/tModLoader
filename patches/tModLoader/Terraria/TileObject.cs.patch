@@ -28,3 +28,13 @@
  						flag4 = true;
  
  					if (flag4 || flag2 || flag3) {
+@@ -565,6 +_,9 @@
+ 			}
+ 
+ 			float num33 = num24 / num25;
++			// Backport a fix for tiles with no anchors: if (totalAnchorCount == 0) anchorPercent = 1;
++			if (num25 == 0)
++				num33 = 1;
+ 			float num34 = num22 / num23;
+ 			if (num34 == 1f && num25 == 0f) {
+ 				num23 = 1f;

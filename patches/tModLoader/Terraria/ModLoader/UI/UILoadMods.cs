@@ -1,8 +1,6 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Threading;
 using Terraria.Localization;
-using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader.UI;
 
@@ -17,9 +15,10 @@ internal class UILoadMods : UIProgress
 	public override void OnActivate()
 	{
 		base.OnActivate();
+
 		_cts = new CancellationTokenSource();
 		OnCancel += () => {
-			SetLoadStage("Loading Cancelled");
+			SetLoadStage("tModLoader.LoadingCancelled");
 			_cts.Cancel();
 		};
 		gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel

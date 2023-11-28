@@ -1,3 +1,9 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria.ID;
+using Terraria.Localization;
+
 namespace Terraria.ModLoader.Default;
 
 /// <summary>
@@ -5,16 +11,54 @@ namespace Terraria.ModLoader.Default;
 /// </summary>
 public sealed class PylonShopNPC : GlobalNPC
 {
-	public override void SetupShop(int type, Chest shop, ref int nextSlot)
+	private static List<NPCShop.Entry> _pylonEntries;
+
+	public override void ModifyShop(NPCShop shop)
 	{
-		foreach (ModPylon pylon in PylonLoader.modPylons) {
-			int? pylonReturn = pylon.IsPylonForSale(type, Main.LocalPlayer, Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421);
-			if (pylonReturn.HasValue && nextSlot < shop.item.Length) {
-				shop.item[nextSlot++].SetDefaults(pylonReturn.Value);
+		_pylonEntries ??= NPCShopDatabase.GetPylonEntries().ToList();
+
+		if (NPCShopDatabase.NoPylons.Contains(shop.FullName))
+			return;
+		
+		foreach (var entry in _pylonEntries) {
+			shop.Add(entry);
+		}
+	}
+
+	public override void Unload()
+	{
+		_pylonEntries = null;
+	}
+
+	public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
+	{
+		if (shopName == NPCShopDatabase.GetShopName(NPCID.DD2Bartender))
+			AddPylonsToBartenderShop(npc, items);
+	}
+
+	private void AddPylonsToBartenderShop(NPC npc, Item[] items)
+	{
+		// pylons can spawn in slots 4 and 30
+		int slot;
+		if (items[4].IsAir)
+			slot = 4;
+		else if (items[30].IsAir)
+			slot = 30;
+		else
+			return;
+
+		foreach (var entry in _pylonEntries) {
+			if (entry.Disabled || !entry.ConditionsMet())
+				continue;
+			
+			items[slot] = entry.Item.Clone();
+			entry.OnShopOpen(items[slot], npc);
+
+			do {
+				if (++slot >= items.Length)
+					return;
 			}
-			else if (pylonReturn.HasValue && nextSlot >= shop.item.Length) {
-				Logging.tML.Warn($"Ran out of NPC shop space for {pylon.Mod.Name}'s pylon item {pylon.Name}");
-			}
+			while (!items[slot].IsAir);
 		}
 	}
 }

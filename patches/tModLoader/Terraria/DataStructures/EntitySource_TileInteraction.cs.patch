@@ -1,18 +1,26 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_TileInteraction.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_TileInteraction.cs
-@@ -1,11 +_,13 @@
+@@ -1,11 +_,20 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
  
++/// <summary>
++/// Used when an entity interacts with a tile. <br/>
++/// Used by vanilla when players activate mechanisms like cannons and fireworks
++/// </summary>
  public class EntitySource_TileInteraction : AEntitySource_Tile
  {
- 	public readonly Entity Entity;
+-	public readonly Entity Entity;
++	/// <summary>
++	/// The entity interacting with the tile. <br/>
++	/// Normally a <see cref="Player"/>
++	/// </summary>
++	public Entity Entity { get; }
  
 -	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY)
 -		: base(tileCoordsX, tileCoordsY)
-+	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null)
-+		: base(tileCoordsX, tileCoordsY, context)
++	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null) : base(tileCoordsX, tileCoordsY, context)
  	{
  		Entity = entity;
  	}

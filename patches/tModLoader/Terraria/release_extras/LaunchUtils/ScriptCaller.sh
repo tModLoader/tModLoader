@@ -19,6 +19,7 @@ if [ -f "$LogFile" ]; then
 	rm "$LogFile"
 fi
 touch "$LogFile"
+echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
 
 NativeLog="$LaunchLogs/Natives.log"
 if [ -f "$NativeLog" ]; then
@@ -33,9 +34,12 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	fi
 fi
 
+if [[ "$WINDOWS_MAJOR" == "0" || ! -z "$WINEHOMEDIR" ]]; then
+	echo "Proton has been detected. It is highly recommended to not use it as it causes all manner of issues. Please disable Proton and launch again. See https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#disable-proton for information on moving save data to the correct location." 2>&1 | tee -a "$LogFile"
+fi
+
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
-echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
 
 if [[ "$_uname" == *"_NT"* ]]; then
 	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"
@@ -43,28 +47,32 @@ fi
 
 . ./UnixLinkerFix.sh
 
-#Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
-echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
-dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
-export dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
-#echo $version
-# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
-# echo $(hexdump -C <<< "$version")
-export dotnet_dir="$root_dir/dotnet"
-if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
-	echo "wsl detected. Setting dotnet_dir=dotnet_wsl"
-	export dotnet_dir="$root_dir/dotnet_wsl"
+source ./DotNetVersion.sh
+
+if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
+	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+	rm -rf "$dotnet_dir"
+	mkdir "$dotnet_dir"
 fi
-export install_dir="$dotnet_dir/$dotnet_version"
-echo "Success!"  2>&1 | tee -a "$LogFile"
 
-run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
+if [[ "$_uname" == *"_NT"* ]]; then
+	if [[ -f "$install_dir/dotnet" ]]; then
+		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	fi
+else
+	if [[ -f "$install_dir/dotnet.exe" ]]; then
+		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	fi
+fi
 
-# Gather CommandLine arguments from config
-customargs=$(cat "$root_dir/cli-argsConfig.txt")
-echo "Loaded Custom Arguments: $customargs"  2>&1 | tee -a "$LogFile"
+run_script ./InstallDotNet.sh  2>&1 | tee -a "$LogFile"
 
-echo "Attempting Launch..."
+
+echo "Attempting Launch..."  2>&1 | tee -a "$LogFile"
 
 # Actually run tML with the passed arguments
 # Move to the root folder
@@ -87,10 +95,11 @@ else
 fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
-	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
+	export DOTNET_ROLL_FORWARD=Disable
+	echo "Launched Using Local Dotnet. Launch command: \"$install_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
 	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
-	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
-	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	echo "Launched Using System Dotnet. Launch command: dotnet tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
+	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"
 fi
