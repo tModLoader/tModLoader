@@ -251,7 +251,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private bool ShowInfoMessages()
 	{
 		if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
-			ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+			ShowWelcomeMessage("tModLoader.MSFirstLaunchModderWelcomeMessage", "tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers");
 			ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
 			Main.SaveSettings();
 			return true;
@@ -262,7 +262,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
 			}
 			else {
-				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+				ShowWelcomeMessage("tModLoader.MSNetSDKNotFound", "tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-6-sdk", 888, PreviousUIState);
 			}
 
 			return true;
@@ -271,9 +271,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return false;
 	}
 
-	private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
+	private void ShowWelcomeMessage(string messageKey, string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
+		Interface.infoMessage.Show(Language.GetTextValue(messageKey), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
 	}
 
 	private static string GetCommandToFindPathOfExecutable()
