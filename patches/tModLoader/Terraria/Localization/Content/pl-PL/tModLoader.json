@@ -94,10 +94,26 @@
 		"ModsXWalls": "{0} {^0:Ściana;Ściany;Ścian}",
 		"ModsXBuffs": "{0} {^0:Wzmocnienie;Wzmocnienia;Wzmocnień}",
 		"ModsXMounts": "{0} {^0:Wierzchowiec;Wierzchowce;Wierzchowców}",
+
+		//Dedicated server
 		"ModsReloadAndReturn": "Przeładuj i wróć do menu światów",
 		"ModsNotFoundServer": "Nie znaleziono modów w: \"{0}\"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub z konfiguracji serwera w celu określenia niestandardowego katalogu modów.\n",
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komendę: ",
+		// "DedErrorNoConfig": "This mod does not have any config",
+		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload",
+		// "DedErrorModOOB": "Mod index out of bounds",
+		//Dedicated server mod config
+		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
+		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
+		// "DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
+		// "DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
+		// "DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
+		// "DedConfigEditConfig": "Modify configuration value",
+		// "DedConfigRestoreConfig": "Restore configurations to default",
+		// "DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
+		// "DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
+		// "DedConfigErrorNotParsable": "Invalid input",
 
 		//Mod Config
 		// "ModConfigs": "Configs",

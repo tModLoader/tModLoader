@@ -94,10 +94,26 @@
 		"ModsXWalls": "{0} {^0:стена;стены;стен}",
 		"ModsXBuffs": "{0} {^0:бафф;баффа;баффов}",
 		"ModsXMounts": "{0} {^0:ездовой питомец;ездовых питомца;ездовых питомцев}",
+
+		//Dedicated server
 		"ModsReloadAndReturn": "Перезагрузить и вернуться к меню выбора мира",
 		"ModsNotFoundServer": "Не удалось найти моды в папке '{0}'\nЕсли вы используете удалённый сервер, вы можете использовать параметр запуска 'modpath' или настройки конфигурации сервера, чтобы указать собственную папку с модами.\n",
 		"AskForModIndex": "Введите число для переключения между ВКЛ/ВЫКЛ",
 		"AskForCommand": "Введите команду: ",
+		// "DedErrorNoConfig": "This mod does not have any config",
+		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload",
+		// "DedErrorModOOB": "Mod index out of bounds",
+		//Dedicated server mod config
+		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
+		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
+		// "DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
+		// "DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
+		// "DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
+		// "DedConfigEditConfig": "Modify configuration value",
+		// "DedConfigRestoreConfig": "Restore configurations to default",
+		// "DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
+		// "DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
+		// "DedConfigErrorNotParsable": "Invalid input",
 
 		//Mod Config
 		"ModConfigs": "Конфигурации",
