@@ -6125,7 +6125,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].scope && mouseRight) {
-@@ -51766,10 +_,29 @@
+@@ -51766,9 +_,29 @@
  					if (num13 < 0)
  						num13 = 0;
  
@@ -6133,13 +6133,14 @@
 +					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
 +
 +					/*
-+					vector3.X = (num12 - screenWidth / 2) * zoom;
-+					vector3.Y = (num13 - screenHeight / 2) * zoom;
-+					*/
  					vector3.X = (float)(num12 - screenWidth / 2) / 2f;
  					vector3.Y = (float)(num13 - screenHeight / 2) / 2f;
++					*/
++					vector3.X = (num12 - screenWidth / 2) * zoom;
++					vector3.Y = (num13 - screenHeight / 2) * zoom;
++
  					flag = true;
- 				}
++				}
 +				else { // Added by TML
 +					float zoom = -1f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
@@ -6151,10 +6152,9 @@
 +						vector3.Y = (mouseYClamped - screenHeight / 2) * zoom;
 +						flag = true;
 +					}
-+				}
+ 				}
  			}
  		}
- 
 @@ -51850,6 +_,8 @@
  		}
  
