@@ -428,25 +428,22 @@ internal static class Interface
 			}
 			else if (command.StartsWith("c")) {
 				Match match = new Regex("c (\\d+)").Match(command);
-				if (match.Success) {
-					int modIndex = Convert.ToInt32(match.Groups[1].Value) - 1;
-					if (modIndex >= 0 && modIndex < mods.Length) {
-						if (ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod)) {
-							if (ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs) && configs.Any(config => config.Mode == ConfigScope.ServerSide)) {
-								// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.  
-								ConfigureMod(mod, configs);
-							}
-							else {
-								WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNoConfig"));
-							}
-						}
-						else {
-							WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNotEnabled"));
-						}
-					}
-					else {
-						WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorModOOB"));
-					}
+				if (!match.Success) {
+					continue;
+				}
+				int modIndex = Convert.ToInt32(match.Groups[1].Value) - 1;
+				if (modIndex < 0 || modIndex >= mods.Length) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorModOOB"));
+				}
+				else if (!ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod)) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNotEnabled"));
+				}
+				else if (!ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs) || !configs.Any(config => config.Mode == ConfigScope.ServerSide)) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNoConfig"));
+				}
+				else {
+					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.  
+					ConfigureMod(mod, configs);
 				}
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
@@ -487,33 +484,7 @@ internal static class Interface
 		}
 
 		while (true) {
-			WriteColoredLine(ConsoleColor.White, mod.DisplayName);
-			ModConfig currentConfig = null;
-			foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties) {
-				if (currentConfig != config) {
-					currentConfig = config;
-					WriteColoredLine(ConsoleColor.Green, $"{config.DisplayName}:");
-				}
-
-				string text = ConfigManager.GetLocalizedLabel(variable) + ":";
-				int size = text.Length;
-				text = (variable.CanWrite ? key : "-") + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
-				if (!variable.CanWrite)
-					Console.ForegroundColor = ConsoleColor.DarkGray;
-				text += JsonConvert.SerializeObject(variable.GetValue(config));
-				MethodInfo methodInfo = variable.Type.GetMethod("ToString", Array.Empty<Type>());
-				bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);
-				if (!variable.Type.IsPrimitive && hasToString && variable.Type != typeof(string))
-					text += "\t\t--> " + variable.GetValue(config);
-				Console.WriteLine(text);
-				if (!variable.CanWrite)
-					Console.ResetColor();
-
-				string tooltip = ConfigManager.GetLocalizedTooltip(variable);
-				if (!string.IsNullOrWhiteSpace(tooltip)) {
-					WriteColoredLine(ConsoleColor.Cyan, "\t" + tooltip.Replace("\n", "\n\t"));
-				}
-			}
+			PrintConfigValues(mod, properties);
 
 			Console.WriteLine();
 			Console.WriteLine("m <number> <new config> :\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigEditConfig"));
@@ -527,72 +498,7 @@ internal static class Interface
 
 			Match match = new Regex("m (\\d+) (.*)").Match(command);
 			if (match.Success) { // Edit command
-				int configIndex = Convert.ToInt32(match.Groups[1].Value);
-				if (properties.TryGetValue(configIndex, out (PropertyFieldWrapper, ModConfig) value)) {
-					(PropertyFieldWrapper variable, ModConfig config) = value;
-					if (variable.CanWrite) {
-						try {
-							string inputString = match.Groups[2].Value;
-							Type type = variable.Type;
-							if (type == typeof(bool))
-								inputString = inputString.ToLower();
-
-							// Attempts to simplify the user experience by allowing user to omit "", [], and {}:
-							// Some objects are represented as a string in json.
-							object originalObject = variable.GetValue(config);
-							string originalRepresentation = JsonConvert.SerializeObject(originalObject);
-							if ((originalRepresentation.StartsWith('"') || type == typeof(string)) && !inputString.StartsWith('"'))
-								inputString = $"\"{inputString}\"";
-							else if (type.IsArray || type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>) || type.GetGenericTypeDefinition() == typeof(HashSet<>))) {
-								if (!inputString.StartsWith("["))
-									inputString = $"[{inputString}]";
-							}
-							else if (type.IsClass && originalRepresentation.StartsWith('{') && !inputString.StartsWith('{')) {
-								inputString = $"{{{inputString}}}";
-							}
-							else if (type.IsEnum && !int.TryParse(inputString, out _)) {
-								inputString = $"\"{inputString}\"";
-							}
-
-							object newValue = JsonConvert.DeserializeObject(inputString, type);
-
-							// Validate value
-							OptionStringsAttribute optionStringsAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(variable, null, null);
-							RangeAttribute rangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(variable, null, null);
-							if (optionStringsAttribute != null &&
-								!optionStringsAttribute.OptionLabels.Any(s => s.Equals(newValue))) {
-								string text = Language.GetTextValue("tModLoader.DedConfigErrorOutOfOptionStrings", string.Join(", ", optionStringsAttribute.OptionLabels));
-								WriteColoredLine(ConsoleColor.Yellow, text);
-							}
-							else if (rangeAttribute != null && newValue is IComparable comparable &&
-									 (comparable.CompareTo(rangeAttribute.Min) < 0 ||
-									  comparable.CompareTo(rangeAttribute.Max) > 0)) {
-								WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigErrorOutOfRange", rangeAttribute.Min, rangeAttribute.Max));
-							}
-							else if (type.IsArray && originalObject is Array originalArray && newValue is Array newArray && originalArray.Length != newArray.Length) {
-								WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigArrayLengthCantChange", ConfigManager.GetLocalizedLabel(variable)));
-							}
-							else {
-								if (rangeAttribute != null && newValue is not IComparable) {
-									WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigRangeCantBeValidated", ConfigManager.GetLocalizedLabel(variable)));
-								}
-
-								variable.SetValue(config, newValue);
-								ConfigManager.Save(config);
-								config.OnChanged();
-							}
-						}
-						catch {
-							WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigErrorNotParsable"));
-						}
-					}
-					else {
-						WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigReadOnly", ConfigManager.GetLocalizedLabel(variable)));
-					}
-				}
-				else {
-					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigConfigIndexOOB", configIndex));
-				}
+				HandleEditConfigValueCommand(properties, match);
 			}
 			else if (command == "d") {
 				foreach (ModConfig config in configs) {
@@ -607,6 +513,105 @@ internal static class Interface
 				// Note: No need to check for reload required, this returns to mods menu and the only exit from mods menu is "Reload and return to world menu"
 				break;
 			}
+		}
+	}
+
+	private static void PrintConfigValues(Mod mod, Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties)
+	{
+		WriteColoredLine(ConsoleColor.White, mod.DisplayName);
+		ModConfig currentConfig = null;
+		foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties) {
+			if (currentConfig != config) {
+				currentConfig = config;
+				WriteColoredLine(ConsoleColor.Green, $"{config.DisplayName}:");
+			}
+
+			string text = ConfigManager.GetLocalizedLabel(variable) + ":";
+			int size = text.Length;
+			text = (variable.CanWrite ? key : "-") + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
+			if (!variable.CanWrite)
+				Console.ForegroundColor = ConsoleColor.DarkGray;
+			text += JsonConvert.SerializeObject(variable.GetValue(config));
+			MethodInfo methodInfo = variable.Type.GetMethod("ToString", Array.Empty<Type>());
+			bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);
+			if (!variable.Type.IsPrimitive && hasToString && variable.Type != typeof(string))
+				text += "\t\t--> " + variable.GetValue(config);
+			Console.WriteLine(text);
+			if (!variable.CanWrite)
+				Console.ResetColor();
+
+			string tooltip = ConfigManager.GetLocalizedTooltip(variable);
+			if (!string.IsNullOrWhiteSpace(tooltip)) {
+				WriteColoredLine(ConsoleColor.Cyan, "\t" + tooltip.Replace("\n", "\n\t"));
+			}
+		}
+	}
+
+	private static void HandleEditConfigValueCommand(Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties, Match match)
+	{
+		int configIndex = Convert.ToInt32(match.Groups[1].Value);
+		if (!properties.TryGetValue(configIndex, out (PropertyFieldWrapper, ModConfig) value)) {
+			WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigConfigIndexOOB", configIndex));
+			return;
+		}
+		(PropertyFieldWrapper variable, ModConfig config) = value;
+		if (!variable.CanWrite) {
+			WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigReadOnly", ConfigManager.GetLocalizedLabel(variable)));
+			return;
+		}
+		try {
+			string inputString = match.Groups[2].Value;
+			Type type = variable.Type;
+			if (type == typeof(bool))
+				inputString = inputString.ToLower();
+
+			// Attempts to simplify the user experience by allowing user to omit "", [], and {}:
+			// Some objects are represented as a string in json.
+			object originalObject = variable.GetValue(config);
+			string originalRepresentation = JsonConvert.SerializeObject(originalObject);
+			if ((originalRepresentation.StartsWith('"') || type == typeof(string)) && !inputString.StartsWith('"'))
+				inputString = $"\"{inputString}\"";
+			else if (type.IsArray || type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>) || type.GetGenericTypeDefinition() == typeof(HashSet<>))) {
+				if (!inputString.StartsWith("["))
+					inputString = $"[{inputString}]";
+			}
+			else if (type.IsClass && originalRepresentation.StartsWith('{') && !inputString.StartsWith('{')) {
+				inputString = $"{{{inputString}}}";
+			}
+			else if (type.IsEnum && !int.TryParse(inputString, out _)) {
+				inputString = $"\"{inputString}\"";
+			}
+
+			object newValue = JsonConvert.DeserializeObject(inputString, type);
+
+			// Validate value
+			OptionStringsAttribute optionStringsAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(variable, null, null);
+			RangeAttribute rangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(variable, null, null);
+			if (optionStringsAttribute != null &&
+				!optionStringsAttribute.OptionLabels.Any(s => s.Equals(newValue))) {
+				string text = Language.GetTextValue("tModLoader.DedConfigErrorOutOfOptionStrings", string.Join(", ", optionStringsAttribute.OptionLabels));
+				WriteColoredLine(ConsoleColor.Yellow, text);
+			}
+			else if (rangeAttribute != null && newValue is IComparable comparable &&
+						(comparable.CompareTo(rangeAttribute.Min) < 0 ||
+						comparable.CompareTo(rangeAttribute.Max) > 0)) {
+				WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigErrorOutOfRange", rangeAttribute.Min, rangeAttribute.Max));
+			}
+			else if (type.IsArray && originalObject is Array originalArray && newValue is Array newArray && originalArray.Length != newArray.Length) {
+				WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigArrayLengthCantChange", ConfigManager.GetLocalizedLabel(variable)));
+			}
+			else {
+				if (rangeAttribute != null && newValue is not IComparable) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigRangeCantBeValidated", ConfigManager.GetLocalizedLabel(variable)));
+				}
+
+				variable.SetValue(config, newValue);
+				ConfigManager.Save(config);
+				config.OnChanged();
+			}
+		}
+		catch {
+			WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigErrorNotParsable"));
 		}
 	}
 

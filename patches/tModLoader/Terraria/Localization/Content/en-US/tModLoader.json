@@ -94,14 +94,14 @@
 		"ModsXWalls": "{0} {^0:wall;walls}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:mount;mounts}",
-		
+
 		//Dedicated server
 		"ModsReloadAndReturn": "Reload and return to world menu",
 		"ModsNotFoundServer": "No mods were found in: \"{0}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n",
 		"AskForModIndex": "Type a number to switch between enabled/disabled",
 		"AskForCommand": "Type a command: ",
 		"DedErrorNoConfig": "This mod does not have any config",
-		"DedErrorNotEnabled": "Mod not enabled, please enable it and reload",
+		"DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
 		"DedErrorModOOB": "Mod index out of bounds",
 
 		//Dedicated server mod config

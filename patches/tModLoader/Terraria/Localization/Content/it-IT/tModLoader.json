@@ -103,8 +103,9 @@
 		// "AskForModIndex": "Type a number to switch between enabled/disabled",
 		// "AskForCommand": "Type a command: ",
 		// "DedErrorNoConfig": "This mod does not have any config",
-		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload",
+		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
 		// "DedErrorModOOB": "Mod index out of bounds",
+
 		//Dedicated server mod config
 		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
 		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
