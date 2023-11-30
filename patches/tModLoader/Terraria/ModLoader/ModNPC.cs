@@ -76,7 +76,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public int BannerItem { get; set; }
 
 	//TODO: Find a better solution in the future.
-	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
+	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary.<para/>Vanilla biomes are added to the bestiary via <see cref="SetBestiary(BestiaryDatabase, BestiaryEntry)"/> directly.</summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
 
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
