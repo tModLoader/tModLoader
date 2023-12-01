@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -545,17 +545,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetAnglerReward</b> (
 <tr class="separator:a48448e2c80f7964ae38eb5010c496549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39278b6c7ec05fbee2a78736772e02c7"><td class="memItemLeft" align="right" valign="top"><a id="a39278b6c7ec05fbee2a78736772e02c7" name="a39278b6c7ec05fbee2a78736772e02c7"></a>
 ref float&#160;</td><td class="memItemRight" valign="bottom"><b>GetArmorPenetration</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:a39278b6c7ec05fbee2a78736772e02c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the armor penetration modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. <br /></td></tr>
+<tr class="memdesc:a39278b6c7ec05fbee2a78736772e02c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the armor penetration modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory. <br /></td></tr>
 <tr class="separator:a39278b6c7ec05fbee2a78736772e02c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebadc087355e7bdb03001e1268c5b1e0"><td class="memItemLeft" align="right" valign="top">ref float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#aebadc087355e7bdb03001e1268c5b1e0">GetArmorPenetration&lt; T &gt;</a> ()</td></tr>
-<tr class="memdesc:aebadc087355e7bdb03001e1268c5b1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the armor penetration modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators.  <a href="class_player.html#aebadc087355e7bdb03001e1268c5b1e0">More...</a><br /></td></tr>
+<tr class="memdesc:aebadc087355e7bdb03001e1268c5b1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the armor penetration modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.  <a href="class_player.html#aebadc087355e7bdb03001e1268c5b1e0">More...</a><br /></td></tr>
 <tr class="separator:aebadc087355e7bdb03001e1268c5b1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d76a8797adcba9ebee846a691489078"><td class="memItemLeft" align="right" valign="top"><a id="a0d76a8797adcba9ebee846a691489078" name="a0d76a8797adcba9ebee846a691489078"></a>
 ref float&#160;</td><td class="memItemRight" valign="bottom"><b>GetAttackSpeed</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:a0d76a8797adcba9ebee846a691489078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the attack speed modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return values with operators. <br /></td></tr>
+<tr class="memdesc:a0d76a8797adcba9ebee846a691489078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the attack speed modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return values with operators. Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat. <br /></td></tr>
 <tr class="separator:a0d76a8797adcba9ebee846a691489078"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ee403dacd9546a9ac3a88f52e794073"><td class="memItemLeft" align="right" valign="top">ref float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a7ee403dacd9546a9ac3a88f52e794073">GetAttackSpeed&lt; T &gt;</a> ()</td></tr>
-<tr class="memdesc:a7ee403dacd9546a9ac3a88f52e794073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the attack speed modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return values with operators. Setting this such that it results in zero or a negative value will throw an exception. NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.  <a href="class_player.html#a7ee403dacd9546a9ac3a88f52e794073">More...</a><br /></td></tr>
+<tr class="memdesc:a7ee403dacd9546a9ac3a88f52e794073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the attack speed modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return values with operators. Setting this such that it results in zero or a negative value will throw an exception. NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier. Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.  <a href="class_player.html#a7ee403dacd9546a9ac3a88f52e794073">More...</a><br /></td></tr>
 <tr class="separator:a7ee403dacd9546a9ac3a88f52e794073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acca944932e77f51b46a6c2f22f32b4ff"><td class="memItemLeft" align="right" valign="top"><a id="acca944932e77f51b46a6c2f22f32b4ff" name="acca944932e77f51b46a6c2f22f32b4ff"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>GetBackHandPosition</b> (CompositeArmStretchAmount stretch, float rotation)</td></tr>
@@ -568,10 +568,10 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>GetBeardDrawOffset
 <tr class="separator:a454c021a3b4e3c0b2cc57b4bb09f31d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52a0e6070639ae559fedb4fbea949905"><td class="memItemLeft" align="right" valign="top"><a id="a52a0e6070639ae559fedb4fbea949905" name="a52a0e6070639ae559fedb4fbea949905"></a>
 ref float&#160;</td><td class="memItemRight" valign="bottom"><b>GetCritChance</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:a52a0e6070639ae559fedb4fbea949905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the crit chance modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. <br /></td></tr>
+<tr class="memdesc:a52a0e6070639ae559fedb4fbea949905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the crit chance modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance. <br /></td></tr>
 <tr class="separator:a52a0e6070639ae559fedb4fbea949905"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfd68467028ebdd62b53431f1ec3f40b"><td class="memItemLeft" align="right" valign="top">ref float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#abfd68467028ebdd62b53431f1ec3f40b">GetCritChance&lt; T &gt;</a> ()</td></tr>
-<tr class="memdesc:abfd68467028ebdd62b53431f1ec3f40b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the crit chance modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators.  <a href="class_player.html#abfd68467028ebdd62b53431f1ec3f40b">More...</a><br /></td></tr>
+<tr class="memdesc:abfd68467028ebdd62b53431f1ec3f40b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the crit chance modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.  <a href="class_player.html#abfd68467028ebdd62b53431f1ec3f40b">More...</a><br /></td></tr>
 <tr class="separator:abfd68467028ebdd62b53431f1ec3f40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb5ba132b05a7e2abf19f970eefd4634"><td class="memItemLeft" align="right" valign="top"><a id="afb5ba132b05a7e2abf19f970eefd4634" name="afb5ba132b05a7e2abf19f970eefd4634"></a>
 ref <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetDamage</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
@@ -647,10 +647,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemExpectedPrice<
 <tr class="separator:a2e692bb8c0ca37f228d4847fe74ca555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9914fa71ab8a375d6474cca582f49f8a"><td class="memItemLeft" align="right" valign="top"><a id="a9914fa71ab8a375d6474cca582f49f8a" name="a9914fa71ab8a375d6474cca582f49f8a"></a>
 ref <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetKnockback</b> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:a9914fa71ab8a375d6474cca582f49f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. <br /></td></tr>
+<tr class="memdesc:a9914fa71ab8a375d6474cca582f49f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat. <br /></td></tr>
 <tr class="separator:a9914fa71ab8a375d6474cca582f49f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2909430ec761087579f4cdafc89a1dff"><td class="memItemLeft" align="right" valign="top">ref <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a2909430ec761087579f4cdafc89a1dff">GetKnockback&lt; T &gt;</a> ()</td></tr>
-<tr class="memdesc:a2909430ec761087579f4cdafc89a1dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators.  <a href="class_player.html#a2909430ec761087579f4cdafc89a1dff">More...</a><br /></td></tr>
+<tr class="memdesc:a2909430ec761087579f4cdafc89a1dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.  <a href="class_player.html#a2909430ec761087579f4cdafc89a1dff">More...</a><br /></td></tr>
 <tr class="separator:a2909430ec761087579f4cdafc89a1dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91457e3d77559c123564413052516137"><td class="memItemLeft" align="right" valign="top"><a id="a91457e3d77559c123564413052516137" name="a91457e3d77559c123564413052516137"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>GetLegsDrawOffset</b> ()</td></tr>
@@ -1590,9 +1590,15 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsHoveringOver
 <tr class="memitem:ae2fa1433b570282a86cf25b3cbe4c6a6"><td class="memItemLeft" align="right" valign="top"><a id="ae2fa1433b570282a86cf25b3cbe4c6a6" name="ae2fa1433b570282a86cf25b3cbe4c6a6"></a>
 static <a class="el" href="class_player_file_data.html">PlayerFileData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPlayer</b> (string playerPath, bool cloudSave)</td></tr>
 <tr class="separator:ae2fa1433b570282a86cf25b3cbe4c6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adca5f103f71f378fe00cb80d5172cf46"><td class="memItemLeft" align="right" valign="top"><a id="adca5f103f71f378fe00cb80d5172cf46" name="adca5f103f71f378fe00cb80d5172cf46"></a>
+static <a class="el" href="class_player_file_data.html">PlayerFileData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPlayerFromStream</b> (<a class="el" href="class_player_file_data.html">PlayerFileData</a> playerFileData, byte[] plrData, byte[] tplrData)</td></tr>
+<tr class="separator:adca5f103f71f378fe00cb80d5172cf46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae99cd3bd2fa7835c935c513d4da2aa2c"><td class="memItemLeft" align="right" valign="top"><a id="ae99cd3bd2fa7835c935c513d4da2aa2c" name="ae99cd3bd2fa7835c935c513d4da2aa2c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SavePlayer</b> (<a class="el" href="class_player_file_data.html">PlayerFileData</a> playerFile, bool skipMapSave=false)</td></tr>
 <tr class="separator:ae99cd3bd2fa7835c935c513d4da2aa2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7804410e6294e0020ea77debf9dca885"><td class="memItemLeft" align="right" valign="top"><a id="a7804410e6294e0020ea77debf9dca885" name="a7804410e6294e0020ea77debf9dca885"></a>
+static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>SavePlayerFile_Vanilla</b> (<a class="el" href="class_player_file_data.html">PlayerFileData</a> playerFile)</td></tr>
+<tr class="separator:a7804410e6294e0020ea77debf9dca885"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6a26f85745203cacb70343a02a90e52"><td class="memItemLeft" align="right" valign="top"><a id="af6a26f85745203cacb70343a02a90e52" name="af6a26f85745203cacb70343a02a90e52"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>SetMatch</b> (<a class="el" href="struct_player_1_1_set_match_request.html">SetMatchRequest</a> request, ref bool somethingSpecial)</td></tr>
 <tr class="separator:af6a26f85745203cacb70343a02a90e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5688,7 +5694,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Gets the armor penetration modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. </p>
+<p>Gets the armor penetration modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory. </p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -5718,7 +5724,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Gets the attack speed modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return values with operators. Setting this such that it results in zero or a negative value will throw an exception. NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier. </p>
+<p>Gets the attack speed modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return values with operators. Setting this such that it results in zero or a negative value will throw an exception. NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier. Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat. </p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -5748,7 +5754,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Gets the crit chance modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. </p>
+<p>Gets the crit chance modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance. </p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -5893,7 +5899,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
       </table>
 </div><div class="memdoc">
 
-<p>Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. </p>
+<p>Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators. Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat. </p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

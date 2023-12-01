@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -887,10 +887,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>aiAction</b></td></tr>
 <tr class="separator:ac013c6674f75c647b7580c080d6332db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf900063a620a46f2408436b8ab1bbdb"><td class="memItemLeft" align="right" valign="top"><a id="aaf900063a620a46f2408436b8ab1bbdb" name="aaf900063a620a46f2408436b8ab1bbdb"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>aiStyle</b></td></tr>
-<tr class="memdesc:aaf900063a620a46f2408436b8ab1bbdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects which vanilla code to use for the AI method. Vanilla <a class="el" href="class_n_p_c.html">NPC</a> AI styles are enumerated in the <a class="el" href="class_n_p_c_a_i_style_i_d.html">NPCAIStyleID</a> class. Modders can use vanilla aiStyle and optionally <a class="el" href="class_mod_n_p_c.html#adac2731be0a9fa0998b983beeb8f8100" title="Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not co...">ModNPC.AIType</a> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <a class="el" href="class_mod_n_p_c.html#adac2731be0a9fa0998b983beeb8f8100" title="Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not co...">ModNPC.AIType</a> and PartyZombieto see how to use vanilla ai. If you are using custom AI code, there is no need to set this field. <br  />
- Customizing an existing aiStyle usually requires following the Vanilla Code Adaption Guide. <br  />
- If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic. <br  />
- Defaults to 0. <br /></td></tr>
+<tr class="memdesc:aaf900063a620a46f2408436b8ab1bbdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects which vanilla code to use for the AI method. Vanilla <a class="el" href="class_n_p_c.html">NPC</a> AI styles are enumerated in the <a class="el" href="class_n_p_c_a_i_style_i_d.html">NPCAIStyleID</a> class. Modders can use vanilla aiStyle and optionally <a class="el" href="class_mod_n_p_c.html#adac2731be0a9fa0998b983beeb8f8100" title="Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not co...">ModNPC.AIType</a> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <a class="el" href="class_mod_n_p_c.html#adac2731be0a9fa0998b983beeb8f8100" title="Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not co...">ModNPC.AIType</a> and PartyZombieto see how to use vanilla ai. If you are using custom AI code, there is no need to set this field. Customizing an existing aiStyle usually requires following the Vanilla Code Adaption Guide. An aiStyle of 0 will face the player automatically, while an aiStyle of -1 is used for completely custom ai. Defaults to 0 for vanilla <a class="el" href="class_n_p_c.html">NPC</a> and -1 for modded <a class="el" href="class_n_p_c.html">NPC</a>. <br /></td></tr>
 <tr class="separator:aaf900063a620a46f2408436b8ab1bbdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62b76723c81ba46dd6210c219769eaf6"><td class="memItemLeft" align="right" valign="top"><a id="a62b76723c81ba46dd6210c219769eaf6" name="a62b76723c81ba46dd6210c219769eaf6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
