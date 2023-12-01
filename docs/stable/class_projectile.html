@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -268,7 +268,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetLocalNPCHitImmun
 <tr class="separator:adc313fb3a5b2ccdf4e8140d9de4724af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8072b57da2e5bf37a03de842c2d60058"><td class="memItemLeft" align="right" valign="top"><a id="a8072b57da2e5bf37a03de842c2d60058" name="a8072b57da2e5bf37a03de842c2d60058"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Resize</b> (int newWidth, int newHeight)</td></tr>
-<tr class="memdesc:a8072b57da2e5bf37a03de842c2d60058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the <a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">Entity.width</a> and <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">Entity.height</a> of the projectile while preserving the Entity.Center. Useful for explosive projectiles that expand their hitbox while exploding. <br /></td></tr>
+<tr class="memdesc:a8072b57da2e5bf37a03de842c2d60058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the <a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">Entity.width</a> and <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">Entity.height</a> of the projectile while preserving the <a class="el" href="class_entity.html#a15845e02eda396ef77c53297c53cae9e" title="The center position of this entity in world coordinates. Calculated from position,...">Entity.Center</a>. Useful for explosive projectiles that expand their hitbox while exploding. <br /></td></tr>
 <tr class="separator:a8072b57da2e5bf37a03de842c2d60058"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a496f50c24246d9cae663f49e84bbff57"><td class="memItemLeft" align="right" valign="top"><a id="a496f50c24246d9cae663f49e84bbff57" name="a496f50c24246d9cae663f49e84bbff57"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</b> (int Type)</td></tr>
@@ -660,7 +660,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numUpdates</b></td></t
 <tr class="separator:aea024bbabe0c6ee1b54ba2733b9e934e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a213f7bd6149faa2f193f1b7d890d9889"><td class="memItemLeft" align="right" valign="top"><a id="a213f7bd6149faa2f193f1b7d890d9889" name="a213f7bd6149faa2f193f1b7d890d9889"></a>
 Vector2[]&#160;</td><td class="memItemRight" valign="bottom"><b>oldPos</b> = new Vector2[10]</td></tr>
-<tr class="memdesc:a213f7bd6149faa2f193f1b7d890d9889"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the value of <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075" title="The position of this Entity in world coordinates.">Entity.position</a> from previous updates from newest to oldest. Use for drawing trails. Must be used with <a class="el" href="class_projectile_i_d_1_1_sets.html#a2fb1255b117b4126d431066578112795" title="The length of the trail to store. Each projectile type defaults to 10. Use for drawing trails....">ProjectileID.Sets.TrailCacheLength</a> and <a class="el" href="class_projectile_i_d_1_1_sets.html#a89d12d510e9b6479e20ec4a40680675f" title="Determines what data will be remembered for projectile trails. Each projectile type defaults to -1,...">ProjectileID.Sets.TrailingMode</a> to be used properly. <br /></td></tr>
+<tr class="memdesc:a213f7bd6149faa2f193f1b7d890d9889"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the value of <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075" title="The position of this Entity in world coordinates. Note that this corresponds to the top left corner o...">Entity.position</a> from previous updates from newest to oldest. Use for drawing trails. Must be used with <a class="el" href="class_projectile_i_d_1_1_sets.html#a2fb1255b117b4126d431066578112795" title="The length of the trail to store. Each projectile type defaults to 10. Use for drawing trails....">ProjectileID.Sets.TrailCacheLength</a> and <a class="el" href="class_projectile_i_d_1_1_sets.html#a89d12d510e9b6479e20ec4a40680675f" title="Determines what data will be remembered for projectile trails. Each projectile type defaults to -1,...">ProjectileID.Sets.TrailingMode</a> to be used properly. <br /></td></tr>
 <tr class="separator:a213f7bd6149faa2f193f1b7d890d9889"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af13b8c2eca21e7745473cff173eeddd6"><td class="memItemLeft" align="right" valign="top"><a id="af13b8c2eca21e7745473cff173eeddd6" name="af13b8c2eca21e7745473cff173eeddd6"></a>
 float[]&#160;</td><td class="memItemRight" valign="bottom"><b>oldRot</b> = new float[10]</td></tr>
@@ -792,6 +792,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
 <tr class="separator:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6bcffb2620b7dbf790114c5fea1bc50b" name="a6bcffb2620b7dbf790114c5fea1bc50b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>direction</b> = 1</td></tr>
+<tr class="memdesc:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The direction this entity is facing. A value of 1 means the entity is facing to the right. -1 means facing to the left. <br /></td></tr>
 <tr class="separator:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb2eecb2f55bd15f630e2d8e1bb6cad1 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aeb2eecb2f55bd15f630e2d8e1bb6cad1" name="aeb2eecb2f55bd15f630e2d8e1bb6cad1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
@@ -814,7 +815,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>oldVelocity</b></t
 <tr class="separator:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aea6af1b1841c5129ac2ddce832b53075" name="aea6af1b1841c5129ac2ddce832b53075"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
-<tr class="memdesc:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of this <a class="el" href="class_entity.html">Entity</a> in world coordinates. <br /></td></tr>
+<tr class="memdesc:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of this <a class="el" href="class_entity.html">Entity</a> in world coordinates. Note that this corresponds to the top left corner of the entity. Use <a class="el" href="class_entity.html#a15845e02eda396ef77c53297c53cae9e" title="The center position of this entity in world coordinates. Calculated from position,...">Center</a> instead for logic that needs the position at the center of the entity. <br /></td></tr>
 <tr class="separator:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bcf83f80dd7e4b185ab6e997a0de5f inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a03bcf83f80dd7e4b185ab6e997a0de5f" name="a03bcf83f80dd7e4b185ab6e997a0de5f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>shimmerWet</b></td></tr>
@@ -932,6 +933,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>BottomRight</b><co
 <tr class="separator:ae39981197972e1fd55a5534f99d8db48 inherit properties_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15845e02eda396ef77c53297c53cae9e inherit properties_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a15845e02eda396ef77c53297c53cae9e" name="a15845e02eda396ef77c53297c53cae9e"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Center</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a15845e02eda396ef77c53297c53cae9e inherit properties_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The center position of this entity in world coordinates. Calculated from <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075" title="The position of this Entity in world coordinates. Note that this corresponds to the top left corner o...">position</a>, <a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">width</a>, and <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">height</a>. <br /></td></tr>
 <tr class="separator:a15845e02eda396ef77c53297c53cae9e inherit properties_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee38522d5319999a7de02e1ac9eed23f inherit properties_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aee38522d5319999a7de02e1ac9eed23f" name="aee38522d5319999a7de02e1ac9eed23f"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>Hitbox</b><code> [get, set]</code></td></tr>

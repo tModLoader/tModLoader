@@ -65,5 +65,6 @@ var searchData=
   ['frostmoondropgatefortrophies_62',['FrostMoonDropGateForTrophies',['../class_conditions_1_1_frost_moon_drop_gate_for_trophies.html',1,'Conditions']]],
   ['frostmoondropgatingchance_63',['FrostMoonDropGatingChance',['../class_conditions_1_1_frost_moon_drop_gating_chance.html',1,'Conditions']]],
   ['frozenkeycondition_64',['FrozenKeyCondition',['../class_conditions_1_1_frozen_key_condition.html',1,'Conditions']]],
-  ['furniture_65',['Furniture',['../class_item_filters_1_1_furniture.html',1,'ItemFilters']]]
+  ['furniture_65',['Furniture',['../class_item_filters_1_1_furniture.html',1,'ItemFilters']]],
+  ['fxcreader_66',['FxcReader',['../class_fxc_reader.html',1,'']]]
 ];

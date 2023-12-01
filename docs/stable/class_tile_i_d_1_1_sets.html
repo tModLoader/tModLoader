@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -433,6 +433,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsAContainer
 <tr class="separator:aff8ff43ce2fe95a587735a42c9a9326d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af452616a3fccf34a1dbda65c19571175"><td class="memItemLeft" align="right" valign="top"><a id="af452616a3fccf34a1dbda65c19571175" name="af452616a3fccf34a1dbda65c19571175"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsAMechanism</b> = Factory.CreateBoolSet(137, 443, 105, 349, 141, 142, 143, 42, 34, 130, 131, 506, 546, 557, 593, 594)</td></tr>
+<tr class="memdesc:af452616a3fccf34a1dbda65c19571175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that the tile is an appropriate tile to be connected to a trigger tile (<a class="el" href="class_tile_i_d_1_1_sets.html#ad89accedda94c95321ff3fa1867876e1" title="Indicates that the tile is an appropriate tile to be connected to a mechanism tile (IsAMechanism)....">IsATrigger</a>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore). <br /></td></tr>
 <tr class="separator:af452616a3fccf34a1dbda65c19571175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6d219061ccc5d59b713d81ef0767c67"><td class="memItemLeft" align="right" valign="top"><a id="af6d219061ccc5d59b713d81ef0767c67" name="af6d219061ccc5d59b713d81ef0767c67"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsATreeTrunk</b> = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634)</td></tr>
@@ -442,6 +443,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsATreeTrunk
 <tr class="separator:af6d219061ccc5d59b713d81ef0767c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad89accedda94c95321ff3fa1867876e1"><td class="memItemLeft" align="right" valign="top"><a id="ad89accedda94c95321ff3fa1867876e1" name="ad89accedda94c95321ff3fa1867876e1"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsATrigger</b> = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468)</td></tr>
+<tr class="memdesc:ad89accedda94c95321ff3fa1867876e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<a class="el" href="class_tile_i_d_1_1_sets.html#af452616a3fccf34a1dbda65c19571175" title="Indicates that the tile is an appropriate tile to be connected to a trigger tile (IsATrigger)....">IsAMechanism</a>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore). <br /></td></tr>
 <tr class="separator:ad89accedda94c95321ff3fa1867876e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1c81f31bf590e292d29b117fb3e11ce"><td class="memItemLeft" align="right" valign="top"><a id="ad1c81f31bf590e292d29b117fb3e11ce" name="ad1c81f31bf590e292d29b117fb3e11ce"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsBeam</b> = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578)</td></tr>
@@ -553,6 +555,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ResetsHalfBr
 <tr class="separator:a75d8d7ee32ab4d3b30bc5508ad43ee7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a339c48cfddc2ff80413d1d7868a0029d"><td class="memItemLeft" align="right" valign="top"><a id="a339c48cfddc2ff80413d1d7868a0029d" name="a339c48cfddc2ff80413d1d7868a0029d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ReverseVineThreads</b> = Factory.CreateBoolSet(549)</td></tr>
+<tr class="memdesc:a339c48cfddc2ff80413d1d7868a0029d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_tile_i_d_1_1_sets.html">Sets</a> the tile to use the wind physics drawing for reverse vines, vines that go up instead of hanging down. This is required for adding wind to any type of reverse vine to properly draw the reverse vines when blowing in the wind.This is only used for TileID.Seaweed (549).NOTE: This does NOT add wind to reverse vines, this just allows them to be drawn using wind physics. <br /></td></tr>
 <tr class="separator:a339c48cfddc2ff80413d1d7868a0029d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a422248751a789d3793b2e89f2153e45c"><td class="memItemLeft" align="right" valign="top"><a id="a422248751a789d3793b2e89f2153e45c" name="a422248751a789d3793b2e89f2153e45c"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>SandBiome</b> = Factory.CreateIntSet(0, 53, 1, 112, 1, 116, 1, 234, 1, 397, 1, 398, 1, 402, 1, 399, 1, 396, 1, 400, 1, 403, 1, 401, 1)</td></tr>
@@ -619,6 +622,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSapling<
 <tr class="separator:a6464e0fabefdd9369974628b6d3ad6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff1403f322dfd6e9126e89ef2d1de620"><td class="memItemLeft" align="right" valign="top"><a id="aff1403f322dfd6e9126e89ef2d1de620" name="aff1403f322dfd6e9126e89ef2d1de620"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>VineThreads</b> = Factory.CreateBoolSet(382, 62, 115, 205, 52, 528, 636, 638)</td></tr>
+<tr class="memdesc:aff1403f322dfd6e9126e89ef2d1de620"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_tile_i_d_1_1_sets.html">Sets</a> the tile to use the wind physics drawing for vines. This is required for adding wind to any type of vine to properly draw the vines when blowing in the wind.NOTE: This does NOT add wind to vines, this just allows them to be drawn using wind physics. <br /></td></tr>
 <tr class="separator:aff1403f322dfd6e9126e89ef2d1de620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21ba678d04aba86dbfbfe4867aefec77"><td class="memItemLeft" align="right" valign="top"><a id="a21ba678d04aba86dbfbfe4867aefec77" name="a21ba678d04aba86dbfbfe4867aefec77"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WallsMergeWith</b> = Factory.CreateBoolSet(Glass)</td></tr>

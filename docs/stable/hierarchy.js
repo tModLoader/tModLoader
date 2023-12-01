@@ -781,6 +781,7 @@ var hierarchy =
       [ "Actions.Sprites.Wait", "class_actions_1_1_sprites_1_1_wait.html", null ]
     ] ],
     [ "IAssetReader", "class_i_asset_reader.html", [
+      [ "FxcReader", "class_fxc_reader.html", null ],
       [ "MP3Reader", "class_m_p3_reader.html", null ],
       [ "OggReader", "class_ogg_reader.html", null ],
       [ "RawImgReader", "class_raw_img_reader.html", null ],
@@ -1360,6 +1361,9 @@ var hierarchy =
           ] ],
           [ "TagSerializer< Point16, TagCompound >", "class_tag_serializer.html", [
             [ "Point16Serializer", "class_point16_serializer.html", null ]
+          ] ],
+          [ "TagSerializer< Point, TagCompound >", "class_tag_serializer.html", [
+            [ "PointSerializer", "class_point_serializer.html", null ]
           ] ],
           [ "TagSerializer< Rectangle, TagCompound >", "class_tag_serializer.html", [
             [ "RectangleSerializer", "class_rectangle_serializer.html", null ]

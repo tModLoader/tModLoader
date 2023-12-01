@@ -8,5 +8,6 @@ var class_world_gen =
     [ "TenthAnniversaryWorldInfo", "class_world_gen_1_1_tenth_anniversary_world_info.html", null ],
     [ "TileMergeCullCache", "struct_world_gen_1_1_tile_merge_cull_cache.html", null ],
     [ "WorldSize", "class_world_gen_1_1_world_size.html", null ],
-    [ "Convert", "class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494", null ]
+    [ "Convert", "class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494", null ],
+    [ "KillTile", "class_world_gen.html#aab8789310665bd013cbc7cbc955137ed", null ]
 ];

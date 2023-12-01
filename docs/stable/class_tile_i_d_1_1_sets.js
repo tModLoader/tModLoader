@@ -35,7 +35,9 @@ var class_tile_i_d_1_1_sets =
     [ "IgnoredByGrowingSaplings", "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add", null ],
     [ "IgnoredByNpcStepUp", "class_tile_i_d_1_1_sets.html#a627678a41ae21731ed608c9569e34b3b", null ],
     [ "IgnoresNearbyHalfbricksWhenDrawn", "class_tile_i_d_1_1_sets.html#a685eed3c2a831a7c96e839ae383a68c2", null ],
+    [ "IsAMechanism", "class_tile_i_d_1_1_sets.html#af452616a3fccf34a1dbda65c19571175", null ],
     [ "IsATreeTrunk", "class_tile_i_d_1_1_sets.html#af6d219061ccc5d59b713d81ef0767c67", null ],
+    [ "IsATrigger", "class_tile_i_d_1_1_sets.html#ad89accedda94c95321ff3fa1867876e1", null ],
     [ "IsMultitile", "class_tile_i_d_1_1_sets.html#a2220df7c38d9c0e1c9d5eb37fb8130e6", null ],
     [ "IsShakeable", "class_tile_i_d_1_1_sets.html#aaac5a9a525fa956faaac081834865189", null ],
     [ "IsValidSpawnPoint", "class_tile_i_d_1_1_sets.html#ad6912ddfda80b5c2bcf9e2c0d92a50f7", null ],
@@ -44,11 +46,13 @@ var class_tile_i_d_1_1_sets =
     [ "PreventsSandfall", "class_tile_i_d_1_1_sets.html#ad8a3338d13c14792154c3793dc960375", null ],
     [ "PreventsTileRemovalIfOnTopOfIt", "class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4", null ],
     [ "PreventsTileReplaceIfOnTopOfIt", "class_tile_i_d_1_1_sets.html#a0ffb8223f3a721bbeaeee866d909e781", null ],
+    [ "ReverseVineThreads", "class_tile_i_d_1_1_sets.html#a339c48cfddc2ff80413d1d7868a0029d", null ],
     [ "Suffocate", "class_tile_i_d_1_1_sets.html#a0347fa6ea917b42871e43464d607b5cd", null ],
     [ "Torch", "class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b", null ],
     [ "TouchDamageBleeding", "class_tile_i_d_1_1_sets.html#af0888b613264a345fd387a7f5457b802", null ],
     [ "TouchDamageHot", "class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638", null ],
     [ "TouchDamageImmediate", "class_tile_i_d_1_1_sets.html#ae7f7367d1a857087d390d3c4f2d6d561", null ],
     [ "TreeSapling", "class_tile_i_d_1_1_sets.html#a6464e0fabefdd9369974628b6d3ad6b6", null ],
+    [ "VineThreads", "class_tile_i_d_1_1_sets.html#aff1403f322dfd6e9126e89ef2d1de620", null ],
     [ "WallsMergeWith", "class_tile_i_d_1_1_sets.html#a21ba678d04aba86dbfbfe4867aefec77", null ]
 ];
