@@ -34,6 +34,15 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
+	/// Vanilla "variant" NPCs which have <see cref="NPC.netID"/> set to a negative value cannot be properly modified through SetDefaults.<br/>
+	/// This method allows you to properly run code you would run in SetDefaults for these NPCs.<br/>
+	/// When running this method, always be sure to check against <see cref="NPC.netID"/> to ensure you're modifying the correct variant.
+	/// </summary>
+	public virtual void SetVariantDefaults(NPC npc)
+	{
+	}
+
+	/// <summary>
 	/// Gets called when any NPC spawns in world
 	/// </summary>
 	public virtual void OnSpawn(NPC npc, IEntitySource source)

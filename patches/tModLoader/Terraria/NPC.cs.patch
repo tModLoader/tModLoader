@@ -706,7 +706,7 @@
  		return result;
  	}
  
-@@ -2105,9 +_,25 @@
+@@ -2105,9 +_,27 @@
  		defDamage = damage;
  		defDefense = defense;
  		if (flag) {
@@ -714,6 +714,8 @@
 +			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
  			life = lifeMax;
  		}
++
++		NPCLoader.SetVariantDefaults(this);
 +	}
 +
 +	// Added by TML.

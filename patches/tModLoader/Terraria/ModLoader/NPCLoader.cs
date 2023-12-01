@@ -203,6 +203,14 @@ public static class NPCLoader
 		GlobalLoaderUtils<GlobalNPC, NPC>.SetDefaults(npc, ref npc._globals, static n => n.ModNPC?.SetDefaults());
 	}
 
+	private static HookList HookSetVariantDefaults = AddHook<Action<NPC>>(g => g.SetVariantDefaults);
+	internal static void SetVariantDefaults(NPC npc)
+	{
+		foreach (var g in HookSetVariantDefaults.Enumerate(npc)) {
+			g.SetVariantDefaults(npc);
+		}
+	}
+
 	private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
 
 	internal static void OnSpawn(NPC npc, IEntitySource source)
