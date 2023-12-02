@@ -20,10 +20,10 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 	public int AnimationFrameHeight { get; set; }
 
-	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. Defaults to 1f. </summary>
+	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. <br/> Defaults to 1f. <br/> To find an appropriate value, see the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#mineresist">wiki</see>. </summary>
 	public float MineResist { get; set; } = 1f;
 
-	/// <summary> The minimum pickaxe power required for pickaxes to mine this block. Defaults to 0. </summary>
+	/// <summary> The minimum pickaxe power required for pickaxes to mine this block. <br/> Defaults to 0. <br/> To find an appropriate value, see the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#minpick">wiki</see>. </summary>
 	public int MinPick { get; set; }
 
 	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
