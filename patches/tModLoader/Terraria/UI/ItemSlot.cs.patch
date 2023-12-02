@@ -465,7 +465,7 @@
  
  		if (inv[slot].stack <= 0)
  			inv[slot] = new Item();
-@@ -1207,14 +_,22 @@
+@@ -1207,14 +_,26 @@
  		else if (item.type == 1869) {
  			player.OpenPresent(1869);
  		}
@@ -482,6 +482,10 @@
 -		item.stack--;
 +		else { // Added by TML.
 +			player.DropFromItem(item.type);
++		}
++
++		if (!item.ModItem.CanOpen()) {
++			return;
 +		}
 +
 +		ItemLoader.RightClickCallHooks(item, player);
