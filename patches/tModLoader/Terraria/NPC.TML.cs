@@ -283,23 +283,23 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToNPC"/>
 	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToItem"/>
 	/// <item/> not <see cref="NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue"/> while <see cref="SpawnedFromStatue"/>
-	/// <item/> <see cref="ShimmerManager{T}.AnyValidModShimmer"/>
+	/// <item/> <see cref="ShimmerLoader{T}.AnyValidModShimmer"/>
 	/// </list>
 	/// </summary>
 	/// <inheritdoc/>
 	public bool CanShimmer()
 	{
-		int redirectedType = ShimmerManager<NPC>.GetRedirectedType(type);
+		//int redirectedType = ShimmerManager<NPC>.GetRedirectedType(type);
 
-		return NPCLoader.CanShimmer(this) // ModNPC and GlobalNPC
-		&& (NPCID.Sets.ShimmerTownTransform[redirectedType] // valid shimmer types
-		|| NPCID.Sets.ShimmerTransformToNPC[redirectedType] >= 0
-		|| NPCID.Sets.ShimmerTransformToItem[redirectedType] >= 0
-		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[redirectedType] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
-		|| ShimmerManager<NPC>.AnyValidModShimmer(this));
+		return NPCLoader.CanShimmer(this); // ModNPC and GlobalNPC
+		//&& (NPCID.Sets.ShimmerTownTransform[redirectedType] // valid shimmer types
+		//|| NPCID.Sets.ShimmerTransformToNPC[redirectedType] >= 0
+		//|| NPCID.Sets.ShimmerTransformToItem[redirectedType] >= 0
+		//|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[redirectedType] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
+		//|| ShimmerManager<NPC>.AnyValidModShimmer(this));
 	}
 	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
-	int IModShimmerable.ShimmerRedirectedType => ShimmerManager<NPC>.GetRedirectedType(type);
+	int IModShimmerable.ShimmerRedirectedType => ShimmerLoader<NPC>.GetRedirectedType(type);
 	int IModShimmerable.Type => type;
 	public bool PreventingChainedShimmers { get; set; }
 	void IModShimmerable.ShimmerRemoveStacked(int amount)

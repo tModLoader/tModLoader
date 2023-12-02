@@ -5,19 +5,20 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 public record class ShimmerInfo(int AllowedSpawnStack);
+
 public interface IShimmerResult<in TShimmerable> where TShimmerable : IModShimmerable
 {
-	public abstract bool HandlesCleanup { get; }
+	public abstract bool HandlesCleanUp { get; }
 	public abstract int Count { get; }
 
 	/// <summary> Used to check if this is an <see cref="Item"/> of <paramref name="type"/> </summary>
-	public bool IsItemResult(int type);
+	public bool IsItemResult(int type) => false;
 
 	/// <summary> Used to check if this is an <see cref="NPC"/> of <paramref name="type"/> </summary>
-	public bool IsNPCResult(int type);
+	public bool IsNPCResult(int type) => false;
 
 	/// <summary> Used to check if this is an <see cref="Projectile"/> of <paramref name="type"/> </summary>
-	public bool IsProjectileResult(int type);
+	public bool IsProjectileResult(int type) => false;
 
 	/// <summary>
 	/// Spawns <see cref="IShimmerResult{T}.Count"/> * <paramref name="shimmerInfo"/> amount of the intended type <br/> Does not despawn <paramref name="shimmerable"/> or decrement
@@ -28,11 +29,12 @@ public interface IShimmerResult<in TShimmerable> where TShimmerable : IModShimme
 	/// <returns> yield returns an <see cref="IModShimmerable"/> or in the case of <see cref="CoinLuckShimmerResult"/> yield returns null. Will not return a null instance itself </returns>
 	public abstract IEnumerable<IModShimmerable> SpawnFrom(TShimmerable shimmerable, ShimmerInfo shimmerInfo);
 }
+
 /// <summary> A record representing the information to spawn an <see cref="IModShimmerable"/> during a shimmer transformation </summary>
 /// <param name="Count"> The number of this result to spawn, true count will be multiplied by the stack size of the <see cref="IModShimmerable"/> source </param>
 public abstract record class GeneralShimmerResult(int Count = 1) : IShimmerResult<IModShimmerable>
 {
-	public virtual bool HandlesCleanup
+	public virtual bool HandlesCleanUp
 		=> false;
 
 	public virtual bool IsItemResult(int type)
@@ -77,7 +79,7 @@ public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerRes
 			item.stack = Math.Min(item.maxStack, spawnTotal);
 			item.shimmerTime = 1f;
 			item.shimmered = true;
-			item.velocity = shimmerable.Velocity + ShimmerManager.GetShimmerSpawnVelocityModifier();
+			item.velocity = shimmerable.Velocity + ShimmerLoader.GetShimmerSpawnVelocityModifier();
 			item.playerIndexTheItemIsReservedFor = Main.myPlayer;
 			NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, item.whoAmI, 1f); // net sync spawning the item
 
@@ -86,9 +88,9 @@ public record class ItemShimmerResult(int Type, int Count = 1) : TypedShimmerRes
 		}
 	}
 }
-
+/// <param name="Scale"> Assigned to <see cref="NPC.scale"/> </param>
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
-public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResult(Type, Count)
+public record class NPCShimmerResult(int Type, int Count = 1, float? Scale = null) : TypedShimmerResult(Type, Count)
 {
 	/// <summary>
 	/// Keeps <see cref="ShimmerTransformation"/> roughly in line with vanilla as far as base functionality goes when shimmering NPCs. Defaults to true. If you have no reason to disable,
@@ -119,8 +121,6 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 
 	/// <summary> Wraps <see cref="AI0"/>, <see cref="AI1"/>, <see cref="AI2"/>, and <see cref="AI3"/> </summary>
 	public float[] AI { get => new float[4] { AI0, AI1, AI2, AI3 }; init { AI0 = value[0]; AI1 = value[1]; AI2 = value[2]; AI3 = value[3]; } }
-	/// <summary> Assigned to <see cref="NPC.scale"/> </summary>
-	public float? Scale { get; init; }
 	public override bool IsNPCResult(int type)
 		=> Type == type;
 
@@ -150,7 +150,7 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 			else {
 				newNPC.shimmerTransparency = 1f;
 			}
-			newNPC.velocity = shimmerable.Velocity + ShimmerManager.GetShimmerSpawnVelocityModifier();
+			newNPC.velocity = shimmerable.Velocity + ShimmerLoader.GetShimmerSpawnVelocityModifier();
 			if (Scale != null)
 				newNPC.scale = Scale.Value;
 			newNPC.TargetClosest();
@@ -168,8 +168,8 @@ public record class NPCShimmerResult(int Type, int Count = 1) : TypedShimmerResu
 }
 
 /// <summary>
-/// <inheritdoc/><br/> Projectiles are rarely both autonomous and do not require an owner, due to this there is no <see cref="ShimmerManager.AddItemResult{TSelf}(TSelf, int, int)"/> for projectiles.
-/// <see cref="ShimmerManager.AddResult{TSelf}(TSelf, GeneralShimmerResult)"/> must be used instead. This class is more as a framework to derive from rather than a working class since for the large
+/// <inheritdoc/><br/> Projectiles are rarely both autonomous and do not require an owner, due to this there is no <see cref="ShimmerLoader.AddItemResult{TSelf}(TSelf, int, int)"/> for projectiles.
+/// <see cref="ShimmerLoader.AddResult{TSelf}(TSelf, GeneralShimmerResult)"/> must be used instead. This class is more as a framework to derive from rather than a working class since for the large
 /// majority of projectiles spawn behaviour or a target will need to be defined.
 /// </summary>
 /// <inheritdoc cref="TypedShimmerResult(int, int)"/>
@@ -204,7 +204,7 @@ public record class ProjectileShimmerResult(int Type, int Damage, int Knockback,
 	{
 		int spawnTotal = Count * shimmerInfo.AllowedSpawnStack;
 		while (spawnTotal > 0) {
-			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + ShimmerManager.GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback, ai0: AI0, ai1: AI1, ai2: AI2);
+			Projectile projectile = Projectile.NewProjectileDirect(shimmerable.GetSource_Misc("Shimmer"), shimmerable.Center, shimmerable.Velocity + ShimmerLoader.GetShimmerSpawnVelocityModifier(), Type, Damage, Knockback, ai0: AI0, ai1: AI1, ai2: AI2);
 			projectile.position -= projectile.Size / 2;
 			if (Scale != null)
 				projectile.scale = Scale.Value;

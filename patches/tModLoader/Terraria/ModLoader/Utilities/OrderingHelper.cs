@@ -4,23 +4,24 @@ using System.Linq;
 
 namespace Terraria.ModLoader.Utilities;
 
-public interface IOrderable<out T> where T : class, IOrderable<T>
+public interface IOrderable //TODO: Figure out if the sorting algorithm works with value types, ref only for now
 {
-	public T Target { get; }
-
-	public bool After { get; }
+	public (object target, bool after) Ordering { get; }
 }
 
 public static class OrderableExtensions
 {
-	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable{T}"/>. </summary>
-	public static IEnumerable<TOrderable> GetOrdered<TOrderable>(this IList<TOrderable> orderableIList) where TOrderable : class, IOrderable<TOrderable>
+	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable"/>. </summary>
+	public static IList<TOrderable> GetOrdered<TOrderable>(this IList<TOrderable> orderableIList) where TOrderable : IOrderable
+		=> orderableIList.GetOrdered<IList<TOrderable>, TOrderable>();
+	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable"/>. </summary>
+	public static TList GetOrdered<TList, TOrderable>(this TList orderableIList) where TOrderable : IOrderable where TList : IList<TOrderable>
 	{
 		Dictionary<object, List<TOrderable>> sortBefore = new();
 		Dictionary<object, List<TOrderable>> sortAfter = new();
 		List<TOrderable> baseOrder = new List<TOrderable>(orderableIList.Count);
 		foreach (TOrderable orderable in orderableIList) {
-			switch ((orderable.Target, orderable.After)) {
+			switch (orderable.Ordering) {
 				case (null, _):
 					baseOrder.Add(orderable);
 					break;

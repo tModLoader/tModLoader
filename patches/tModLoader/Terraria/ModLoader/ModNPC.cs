@@ -897,9 +897,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Creates a <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.NPC"/>&gt; resulting this ModItem. This method only creates the
-	/// <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.NPC"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game.
-	/// <br/> Call this at the very beginning when creating a new <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.NPC"/>&gt;.
+	/// Creates a <see cref="ShimmerTransformation{NPC}"/> resulting this ModItem. This method only creates the
+	/// <see cref="ShimmerTransformation{NPC}"/>, use <see cref="ShimmerTransformation{NPC}.Register()"/> to register it into the game.
+	/// <br/> Call this at the very beginning when creating a new <see cref="ShimmerTransformation{NPC}"/>.
 	/// </summary>
 	public ShimmerTransformation<NPC> CreateShimmerTransformation() => new(NPC);
 

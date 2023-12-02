@@ -306,6 +306,7 @@ public static class ModContent
 		});
 
 		ContentSamples.Initialize();
+		ShimmerLoader.PostSetupContent();
 		TileLoader.PostSetupContent();
 		BuffLoader.PostSetupContent();
 
@@ -346,7 +347,8 @@ public static class ModContent
 		SetupBestiary();
 		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
-		ShimmerManager.OrderKnown();
+
+		ShimmerLoader.FinishSetup();
 		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
@@ -495,7 +497,7 @@ public static class ModContent
 		Recipe.numRecipes = 0;
 		RecipeGroupHelper.ResetRecipeGroups();
 		Recipe.SetupRecipes();
-		ShimmerManager.ResetKnown();
+		ShimmerLoader.Unload();
 		TileEntity.manager.Reset();
 		MapLoader.UnloadModMap();
 		ItemSorting.SetupWhiteLists();

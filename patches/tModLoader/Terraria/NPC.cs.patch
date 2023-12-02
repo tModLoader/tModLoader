@@ -101,7 +101,8 @@
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float npcSlots = 1f;
- 	private static bool noSpawnCycle = false;
+-	private static bool noSpawnCycle = false;
++	public static bool noSpawnCycle = false;
 -	private static int activeTime = 750;
 +	public static int activeTime = 750;
  	private static int defaultSpawnRate = 600;
@@ -2649,27 +2650,27 @@
 +			return;
 +		int type = (this as IModShimmerable).ShimmerRedirectedType; // TML
 +
-+		if (SpawnedFromStatue && NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
++		if (SpawnedFromStatue && !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[type]) {
  			if (Main.netMode == 0)
  				Item.ShimmerEffect(base.Center);
  			else
-@@ -73362,6 +_,7 @@
+@@ -73362,6 +_,8 @@
  				NetMessage.SendData(23, -1, -1, null, whoAmI);
  			}
  		}
-+		else if (ShimmerManager<NPC>.TryModShimmer(this)) { } // TML: #AdvancedShimmerTransformations
++		else if (ShimmerLoader<NPC>.TryModShimmer(this)) { } // TML: #AdvancedShimmerTransformations
++		/*
  		else if (NPCID.Sets.ShimmerTransformToNPC[type] >= 0) {
  			Transform(NPCID.Sets.ShimmerTransformToNPC[type]);
  			if (Main.netMode == 0)
-@@ -73403,6 +_,8 @@
- 			if (num2 != -1)
- 				DelBuff(num2);
+@@ -73392,6 +_,7 @@
+ 				NetMessage.SendData(23, -1, -1, null, whoAmI);
+ 			}
  		}
-+
-+		OnShimmer(); // TML: #AdvancedShimmerTransformations ModNPC and GlobalNPC, always called as this should always shimmer once CanShimmer returns true
- 	}
- 
- 	private void UpdateNPC_BuffApplyDOTs()
++		*/
+ 		else if (NPCID.Sets.ShimmerTownTransform[type]) {
+ 			ai[0] = 25f;
+ 			ai[1] = 0f;
 @@ -73627,9 +_,12 @@
  				num = 5;
  		}

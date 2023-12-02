@@ -48,7 +48,7 @@ public class ExampleComplexCustomShimmerable : ModProjectile
 		public override IEnumerable<Projectile> SpawnFrom(IModShimmerable shimmerable, ShimmerInfo shimmerInfo) {
 			Player closestPlayer = Main.player[Player.FindClosest(shimmerable.Center, 1, 1)];
 			foreach (Projectile projectile in base.SpawnFrom(shimmerable, shimmerInfo)) {
-				Vector2 velocityMod = ShimmerManager.GetShimmerSpawnVelocityModifier();
+				Vector2 velocityMod = ShimmerLoader.GetShimmerSpawnVelocityModifier();
 				projectile.velocity = (shimmerable.Velocity / 2) + velocityMod + 5 * Vector2.Normalize(closestPlayer.Center - shimmerable.Center);
 				yield return projectile;
 			}
