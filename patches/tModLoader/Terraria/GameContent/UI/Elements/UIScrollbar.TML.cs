@@ -6,6 +6,9 @@ namespace Terraria.GameContent.UI.Elements;
 
 public partial class UIScrollbar : UIElement
 {
+	public float ViewSize => _viewSize;
+	public float MaxViewSize => _maxViewSize;
+
 	public override void MouseOver(UIMouseEvent evt)
 	{
 		base.MouseOver(evt);

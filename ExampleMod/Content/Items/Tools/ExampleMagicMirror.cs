@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -59,7 +59,7 @@ namespace ExampleMod.Content.Items.Tools
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// This code shows using Color.Lerp,  Main.GameUpdateCount, and the modulo operator (%) to do a neat effect cycling between 4 custom colors.
 			int numColors = itemNameCycleColors.Length;
-			
+
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
 					float fade = (Main.GameUpdateCount % 60) / 60f;

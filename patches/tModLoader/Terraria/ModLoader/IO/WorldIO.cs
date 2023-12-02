@@ -750,7 +750,8 @@ internal static class WorldIO
 	{
 		data.modVersionsDuringWorldGen = new Dictionary<string, Version>();
 		foreach (var item in tag) {
-			data.modVersionsDuringWorldGen[item.Key] = tag.Get<Version>(item.Key);
+			// We can't use tag.Get<Version>(item.Key); because sometimes world headers are loaded before mods and custom serializers are loaded, such as with the -world server command line parameter.
+			data.modVersionsDuringWorldGen[item.Key] = new Version((string)item.Value);
 		}
 	}
 

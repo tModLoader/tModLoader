@@ -37,6 +37,9 @@
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
@@ -73,7 +76,7 @@
 		// "ModReloadForced": "Reload Forced",
 		// "ModIsServerSide": "This is a server side mod",
 		// "ModsByline": "By: {0}",
-		// "ModsMoreInfo": "More info",
+		// "ModsMoreInfo": "More Info",
 		// "ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
 		// "ModsTypeToSearch": "Type to search",
 		// "ModsSearchByModName": "Search by Mod name",
@@ -99,6 +102,7 @@
 		// "AskForCommand": "Type a command: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		// "ModConfigFilterOptions": "Filter Options",
 		// "ModConfigNotification": "Notification: ",
 		// "ModConfigModConfig": "Mod Config",
@@ -108,6 +112,8 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -116,6 +122,11 @@
 		// "ModConfigCollapse": "Collapse",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		// "BossBarStyle": "Boss Bar Style: {0}",
@@ -397,7 +408,8 @@
 		// "MSOpenSources": "Open Sources",
 		// "MSManagePublished": "Manage Published",
 		// "MSPublish": "Publish",
-		// "MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
+		// "MSModSourcesCantHaveSpaces": "(ModSources folders can't have spaces)",
+		// "MSLastBuilt": "Last built: {0}",
 		// "MSCreateMod": "Create Mod",
 		// "VersionUpgrade": "Learn about Mod Migration",
 		// "WikiLink": "Explore the Wiki",
@@ -405,8 +417,9 @@
 		// "DocumentationLink": "Read the Documentation",
 		// "DiscordLink": "Find Help on the Discord Server",
 		// "MSPortToLatest": "Run tModPorter",
-		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. After installing, you may need to restart tModLoader. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
-		// "DownloadNetSDK": "Download .NET SDK",
+		// "MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
+		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET 6 SDK to be installed, but it has not been detected. Click the \"Download .NET 6.0 SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
+		// "DownloadNetSDK": "Download .NET 6.0 SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
@@ -462,6 +475,8 @@
 		// "MSUnloading": "Unloading: {0}",
 		// "MSFinishingResourceLoading": "Finishing Resource Loading",
 		// "MSAddingRecipes": "Adding Recipes...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		// "DefaultTownNPCName": "No-Name",
@@ -492,6 +507,7 @@
 		// In Game UI additions
 		// "slotStack": "Stack",
 		// "slotScroll": "Scroll",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		// "OK": "OK",
@@ -961,6 +977,10 @@
 		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
 		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
 		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
 		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
 		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",

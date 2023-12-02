@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
@@ -75,7 +74,7 @@ namespace ExampleMod.Content.Prefixes
 
 		public override void SetStaticDefaults() {
 			// this.GetLocalization is not used here because we want to use a shared key
-			PowerTooltip = Language.GetOrRegister(Mod.GetLocalizationKey($"{LocalizationCategory}.{nameof(PowerTooltip)}"));
+			PowerTooltip = Mod.GetLocalization($"{LocalizationCategory}.{nameof(PowerTooltip)}");
 			// This seemingly useless code is required to properly register the key for AdditionalTooltip
 			_ = AdditionalTooltip;
 		}

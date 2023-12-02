@@ -24,8 +24,8 @@ namespace ExampleMod
 			switch (msgType) {
 				// This message syncs ExampleStatIncreasePlayer.exampleLifeFruits and ExampleStatIncreasePlayer.exampleManaCrystals
 				case MessageType.ExampleStatIncreasePlayerSync:
-					byte playernumber = reader.ReadByte();
-					ExampleStatIncreasePlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleStatIncreasePlayer>();
+					byte playerNumber = reader.ReadByte();
+					ExampleStatIncreasePlayer examplePlayer = Main.player[playerNumber].GetModPlayer<ExampleStatIncreasePlayer>();
 					examplePlayer.ReceivePlayerSync(reader);
 
 					if (Main.netMode == NetmodeID.Server) {

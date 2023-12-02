@@ -73,6 +73,7 @@ Mods: {
 
 			MinionBossMinion.DisplayName: Minion Boss Minion
 			PartyZombie.DisplayName: Party Zombie
+			ExampleCritterNPC.DisplayName: Lava Frog
 		}
 
 		Tiles: {
@@ -93,6 +94,11 @@ Mods: {
 		}
 
 		Items: {
+			ExampleStaff: {
+				DisplayName: Example Staff
+				Tooltip: This is a modded magic staff weapon
+			}
+
 			ExampleLastPrism: {
 				DisplayName: Example Last Prism
 				Tooltip:
@@ -865,6 +871,26 @@ Mods: {
 				DisplayName: Example Swinging Energy Sword
 				Tooltip: ""
 			}
+
+			ExampleLivingFire: {
+				DisplayName: Example Living Fire Block
+				Tooltip: ""
+			}
+
+			ExampleCritterItem: {
+				DisplayName: Lava Frog
+				Tooltip: A spicy boi
+			}
+
+			ExampleCritterCageItem: {
+				DisplayName: Lava Frog Cage
+				Tooltip: A sad spicy boi
+			}
+
+			ExampleStatue: {
+				DisplayName: Example Statue
+				Tooltip: The power of examplium flows in this inanimate fish
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1040,6 +1066,7 @@ Mods: {
 				StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
 				StandardDialogue2: What's your favorite color? My favorite colors are white and black.
 				StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
+				StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
 				CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
 				TalkALot: I'm getting tired of talking to you. I have to go.
@@ -1083,7 +1110,11 @@ Mods: {
 			Example: Drops during daytime
 		}
 
-		UI.ExampleResource: Example Resource: {0} / {1}
+		UI: {
+			ExampleResource: Example Resource: {0} / {1}
+			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+		}
+
 		WorldGen.ExampleOrePassMessage: Example Mod Ores
 
 		BuilderToggles: {

@@ -1,8 +1,8 @@
 ﻿using ExampleMod.Common.Players;
 using ExampleMod.Content.Items.Accessories;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content
 {

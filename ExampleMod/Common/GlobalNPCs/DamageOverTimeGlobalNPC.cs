@@ -1,7 +1,5 @@
-﻿using ExampleMod.Content.Buffs;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs

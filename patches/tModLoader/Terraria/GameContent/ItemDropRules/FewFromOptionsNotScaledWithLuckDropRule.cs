@@ -62,7 +62,7 @@ public class FewFromOptionsNotScaledWithLuckDropRule : IItemDropRule
 	{
 		float pesonalDroprate = (float)chanceNumerator / (float)chanceDenominator;
 		float num2 = pesonalDroprate * ratesInfo.parentDroprateChance;
-		float dropRate = 1f / (float)(dropIds.Length - amount) * num2;
+		float dropRate = amount / (float)dropIds.Length * num2;
 		for (int i = 0; i < dropIds.Length; i++) {
 			drops.Add(new DropRateInfo(dropIds[i], 1, 1, dropRate, ratesInfo.conditions));
 		}

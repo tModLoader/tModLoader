@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.DownloadManager;
@@ -50,6 +49,21 @@ public static class SteamedWraps
 			workshopLogLoc = "/home/user/.local/share/Steam/logs/workshop_log.txt";
 
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
+	}
+
+	public static void QueueForceValidateSteamInstall()
+	{
+		// There is no GoG version for this, unfortunately.
+		if (!SteamClient)
+			return;
+
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+			Logging.tML.Info("Launched Outside of Steam. Skipping attempt to trigger 'verify local files' in Steam. If error persists, please attempt this manually");
+			return;
+		}
+
+		SteamApps.MarkContentCorrupt(false);
+		Logging.tML.Info("Marked tModLoader installation files as corrupt in Steam. On Next Launch, User will have 'Verify Local Files' ran");
 	}
 
 	internal static void Initialize()
@@ -340,22 +354,20 @@ public static class SteamedWraps
 
 	internal static void OnGameExitCleanup()
 	{
-		// PATH/Steamapps/workshop
-		string workshopFolder = WorkshopHelper.GetWorkshopFolder(ModLoader.Engine.Steam.TMLAppID_t);
-		// Steamapps/workshop/appworkshop_1281930.acf
-		string targetACF = Path.Combine(workshopFolder, $"appworkshop_{ModLoader.Engine.Steam.TMLAppID}.acf");
-
-		if (SteamClient)
-			SteamAPI.Shutdown();
-		else if (SteamAvailable)
-			GameServer.Shutdown();
-
-		if (!File.Exists(targetACF)) {
-			Logging.tML.Error($"Unable to locate tmodloader steam acf. Expected path: {targetACF}");
+		if (!SteamAvailable) {
+			CleanupACF();
 			return;
 		}
-		
-		File.Delete(targetACF);
+
+		if (SteamClient) {
+			SteamAPI.Shutdown();
+			return;
+		}
+
+		SteamGameServer.LogOff();
+		Thread.Sleep(1000); // Solxan: It takes a second or two for steam to shutdown all the api. Avoids native exceptions.
+		GameServer.Shutdown();
+		CleanupACF();
 	}
 
 	public static uint GetWorkshopItemState(PublishedFileId_t publishId)
@@ -400,6 +412,18 @@ public static class SteamedWraps
 
 		// Remove the files
 		Directory.Delete(installPath, true);
+
+		if (!SteamClient)
+			// Steam Game Server has to be terminated before the ACF file is modified, so we defer cleanup to end of game likse steam client.
+			deletedItems.Add(publishId);
+	}
+
+	private static List<PublishedFileId_t> deletedItems = new List<PublishedFileId_t>();
+
+	private static void CleanupACF()
+	{
+		foreach (var item in deletedItems)
+			UninstallACF(item);
 	}
 
 	private static void UninstallACF(PublishedFileId_t publishId)
@@ -445,89 +469,198 @@ public static class SteamedWraps
 			(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
 	}
 
-	/// <summary>
-	/// Updates and/or Downloads the Item specified by publishId
-	/// </summary>
-	internal static void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
+	internal class ModDownloadInstance
 	{
-		if (!SteamAvailable)
-			return;
+		// All of the below are for actually verifying a download has completed in the 'proper' steam method, but hasn't worked for gameserver?
+		private EResult _downloadCallback;
+		protected Callback<DownloadItemResult_t> _downloadHook;
 
-		if (SteamClient)
-			SteamUGC.SubscribeItem(publishId);
-
-		if (DoesWorkshopItemNeedUpdate(publishId) || forceUpdate) {
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
-
-			bool downloadStarted;
+		public ModDownloadInstance()
+		{
+			// For Steam Users
 			if (SteamClient)
-				downloadStarted = SteamUGC.DownloadItem(publishId, true);
-			else 
-				downloadStarted = SteamGameServerUGC.DownloadItem(publishId, true);
+				_downloadHook = Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
+			else // For Non-Steam Users
+				_downloadHook = Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
+		}
 
-			if (!downloadStarted) {
-				ReportCheckSteamLogs();
-				throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
+		internal void MarkDownloadComplete(DownloadItemResult_t result)
+		{
+			_downloadCallback = result.m_eResult;
+			Logging.tML.Debug($"Download Callback Received From Steam: {_downloadCallback}");
+		}
+
+		/// <summary>
+		/// Updates and/or Downloads the Item specified by publishId
+		/// </summary>
+		internal void Download(PublishedFileId_t publishId, IDownloadProgress uiProgress = null, bool forceUpdate = false)
+		{
+			if (!SteamAvailable)
+				return;
+
+			if (SteamClient)
+				SteamUGC.SubscribeItem(publishId);
+
+			if (DoesWorkshopItemNeedUpdate(publishId) || forceUpdate) {
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
+
+				bool downloadStarted;
+				if (SteamClient)
+					downloadStarted = SteamUGC.DownloadItem(publishId, true);
+				else
+					downloadStarted = SteamGameServerUGC.DownloadItem(publishId, true);
+
+				if (!downloadStarted) {
+					ReportCheckSteamLogs();
+					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
+				}
+
+				InnerDownloadHandler(uiProgress, publishId);
+
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
+			}
+			else {
+				// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
+				Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
+			}
+		}
+
+		private void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
+		{
+			ulong dlBytes, totalBytes;
+
+			const int LogEveryXPercent = 10;
+			const int MaxFailures = 10;
+
+			int nextPercentageToLog = LogEveryXPercent;
+			int numFailures = 0;
+
+			while (!IsWorkshopItemInstalled(publishId)) {
+				if (SteamClient)
+					SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+				else
+					SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+
+				if (totalBytes == 0) {
+					// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
+					if (numFailures++ >= MaxFailures) {
+						break;
+					}
+					else {
+						Thread.Sleep(100);
+						continue;
+					}
+				}
+
+				uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
+
+				int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
+
+				if (percentage >= nextPercentageToLog) {
+					string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
+
+					Utils.LogAndConsoleInfoMessage(str);
+
+					nextPercentageToLog = percentage + LogEveryXPercent;
+
+					if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
+						nextPercentageToLog = 100;
+					}
+				}
+
+				// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
+				float progressRaw = dlBytes / totalBytes;
+				if (progressRaw == 1) {
+					break;
+				}
 			}
 
-			InnerDownloadHandler(uiProgress, publishId);
+			// Due to issues with Steam moving files from downloading folder to installed folder,
+			// there can be some latency in detecting it's installed. - Solxan
+			while (_downloadCallback == EResult.k_EResultNone) {
+				Thread.Sleep(100);
+				RunCallbacks();
+			}
 
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
-		}
-		else {
-			// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-			Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", publishId));
+			if (_downloadCallback != EResult.k_EResultOK) {
+				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
+				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
+			}
 		}
 	}
 
-	private static void InnerDownloadHandler(IDownloadProgress uiProgress, PublishedFileId_t publishId)
+	internal static void ModifyUgcUpdateHandleCommon(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData)
 	{
-		ulong dlBytes, totalBytes;
+		if (!SteamClient)
+			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
 
-		const int LogEveryXPercent = 10;
-		const int MaxFailures = 10;
+		if (_entryData.Title != null)
+			SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
 
-		int nextPercentageToLog = LogEveryXPercent;
-		int numFailures = 0;
+		if (!string.IsNullOrEmpty(_entryData.Description))
+			SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
 
-		while (!IsWorkshopItemInstalled(publishId)) {
-			if (SteamClient)
-				SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
-			else
-				SteamGameServerUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
+		Logging.tML.Info("Adding tags and visibility");
 
-			if (totalBytes == 0) {
-				// A 'hack' similar to below, to prevent divisions by zero. Might be temporary.
-				if (numFailures++ >= MaxFailures) {
-					break;
+		SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+		SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
+		if (_entryData.PreviewImagePath != null)
+			SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
+
+		if (_entryData.Visibility.HasValue)
+			SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
+
+		Logging.tML.Info("Setting the language for default description");
+		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
+	}
+
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
+
+		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
+		foreach (var key in WorkshopHelper.MetadataKeys) {
+			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
+			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
+		}
+
+		patchNotes = _entryData.ChangeNotes;
+		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
+		if (string.IsNullOrWhiteSpace(patchNotes)) {
+			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
+				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		UpdatePatchNotesWithModData(ref patchNotes, _entryData.BuildData);	
+		string refs = _entryData.BuildData["workshopdeps"];
+
+		if (!string.IsNullOrWhiteSpace(refs)) {
+			Logging.tML.Info("Adding dependencies to Workshop Upload");
+			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+
+			foreach (string dependency in dependencies) {
+				try {
+					var child = new PublishedFileId_t(uint.Parse(dependency));
+					SteamUGC.AddDependency(_publishedFileID, child);
 				}
-				else {
-					Thread.Sleep(100);
-					continue;
+				catch (Exception) {
+					Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
 				}
-			}
-
-			uiProgress?.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-			int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
-
-			if (percentage >= nextPercentageToLog) {
-				string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
-
-				Utils.LogAndConsoleInfoMessage(str);
-
-				nextPercentageToLog = percentage + LogEveryXPercent;
-
-				if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
-					nextPercentageToLog = 100;
-				}
-			}
-
-			// This is a hack for #2887 in case IsWorkshopItemInstalled() fails for some odd reason?
-			float progressRaw = dlBytes / totalBytes;
-			if (progressRaw == 1) {
-				break;
 			}
 		}
+	}
+
+	internal static void UpdatePatchNotesWithModData(ref string patchNotes, NameValueCollection buildData)
+	{
+		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
+		// This allows us to use substitution keys such as {ModVersion}
+		patchNotes = Language.GetText(patchNotes).FormatWith(new {
+			ModVersion = buildData["trueversion"],
+			ModHomepage = buildData["homepage"],
+			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
+			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
+		});
 	}
 }

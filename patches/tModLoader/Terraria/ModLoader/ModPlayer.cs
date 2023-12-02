@@ -99,7 +99,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Similar to UpdateDead, except this is only called when the player is dead. If this is called, then ResetEffects will not be called.
+	/// Similar to <see cref="ResetEffects"/>, except this is only called when the player is dead. If this is called, then <see cref="ResetEffects"/> will not be called.
 	/// </summary>
 	public virtual void UpdateDead()
 	{
@@ -790,7 +790,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this player hits an NPC by swinging a melee weapon (for example how the Pumpkin Sword creates pumpkin heads).
+	/// Allows you to create special effects when this player hits an NPC.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>

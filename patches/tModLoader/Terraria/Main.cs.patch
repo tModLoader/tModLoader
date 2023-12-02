@@ -470,7 +470,7 @@
  		0.75f
  	};
 +	/// <summary>
-+	/// A value that ossilates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create <see cref="Color"/>s by passing in this value as either all 4 parameters or just the alpha parameter.<br/><br/>
++	/// A value that oscillates between 190 and 255. It is used to drive the slight pulsing color effect seen in much of the text shown in-game. The value is used to create <see cref="Color"/>s by passing in this value as either all 4 parameters or just the alpha parameter.<br/><br/>
 +	/// <see cref="Main.MouseTextColorReal"/> can be used to access the typical pulsing white <see cref="Color"/> value.
 +	/// </summary>
  	public static byte mouseTextColor;
@@ -488,9 +488,13 @@
  	public static int myPlayer;
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
-@@ -1045,7 +_,7 @@
+@@ -1044,8 +_,11 @@
+ 	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
  	public static int oldNPCShop;
++	/// <summary>
++	/// The item type of the item icon to display at the bottom right corner of the NPC chat window. The Angler uses this functionality to display the fishing quest fish item, but it can be used to show any item. Assign during <see cref="ModNPC.GetChat"/>. Defaults to 0.
++	/// </summary>
  	public static int npcChatCornerItem;
 -	public Chest[] shop = new Chest[100];
 +	public Chest[] shop = new Chest[2]; // technically only need a single Chest for the shop, but npcShop 0 is used for 'no shop' and we don't want to patch 20 places
@@ -1164,15 +1168,6 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4541,6 +_,8 @@
- 		catch {
- 		}
- 
-+		myPlayer = 255; // Added by TML
-+
- 		Task task2 = WorldGen.serverLoadWorld();
- 		Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
- 		Console.WriteLine("");
 @@ -4563,6 +_,11 @@
  		catch {
  		}
@@ -2070,7 +2065,7 @@
 +				DoUpdate(ref gameTime);
 +			}
 +			catch (Exception e) {
-+				Logging.Terraria.Error(e);
++				// Logging.Terraria.Error(e); Removed, duplicate log messages.
 +			}
 +
  			CinematicManager.Instance.Update(gameTime);
@@ -2686,16 +2681,18 @@
  				if (item.melee) {
  					int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
  					toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-@@ -16406,8 +_,18 @@
+@@ -16406,8 +_,20 @@
  					toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  					numLines++;
  				}
 +				*/
 +				if (item.DamageType.UseStandardCritCalcs && item.DamageType.ShowStatTooltipLine(player[myPlayer], "CritChance")) {
 +					int crit = player[myPlayer].GetWeaponCrit(item);
-+					toolTipLine[numLines] = crit + Lang.tip[5].Value;
-+					toolTipNames[numLines] = "CritChance";
-+					numLines++;
++					if (crit > 0) { // Fix #3895, see comments for justification.
++						toolTipLine[numLines] = crit + Lang.tip[5].Value;
++						toolTipNames[numLines] = "CritChance";
++						numLines++;
++					}
 +				}
  
 +				/*
@@ -2834,7 +2831,7 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,43 @@
+@@ -16536,36 +_,51 @@
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
  				}
  
@@ -2848,8 +2845,16 @@
  				numLines++;
  			}
  
++			/* TML: Show mana cost based on Player.GetManaCost method and show UseMana tooltip on Space Gun with Meteor Armor. There has been suggestions to show "Uses X mana (Y% reduction)", but that seems more suited for a mod. This change brings ModifyManaCost behavior in line with Player.manaCost behavior.
  			if (item.mana > 0 && (item.type != 127 || !player[myPlayer].spaceGun)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)((float)item.mana * player[myPlayer].manaCost));
++				toolTipNames[numLines] = "UseMana";
++				numLines++;
++			}
++			*/
++
++			if (item.mana > 0) {
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.UsesMana", player[myPlayer].GetManaCost(item));
 +				toolTipNames[numLines] = "UseMana";
  				numLines++;
  			}
@@ -4764,7 +4769,13 @@
  	}
  
  	private static void DrawInterface_20_MultiplayerPlayerNames()
-@@ -37182,6 +_,11 @@
+@@ -37178,10 +_,17 @@
+ 		num22 = 240;
+ 		text9 = $"{upTimerMax:F2}ms";
+ 		spriteBatch.DrawString(FontAssets.MouseText.Value, text9, new Vector2(num22, num23), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 	}
  
  	private static void DrawInterface_17_DiagnoseNet()
  	{
@@ -5111,7 +5122,7 @@
  		screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);
  		MenuXMovement = 4f;
 -		if (alreadyGrabbingSunOrMoon) {
-+		if (alreadyGrabbingSunOrMoon && !playOldTile) { // Added && !playOldTile
++		if (alreadyGrabbingSunOrMoon && !playOldTile && MenuLoader.CurrentMenu == MenuLoader.MenuJourneysEnd) { // Added && !playOldTile. Added check for MenuJourneysEnd to limit easter egg to only the vanilla logo/menu
  			playOldTile = true;
 +
 +			MenuLoader.ActivateOldVanillaMenu();
@@ -5523,7 +5534,7 @@
  		Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  		origin.X *= 0.5f;
  		origin.Y *= 0.5f;
-@@ -42732,7 +_,58 @@
+@@ -42732,7 +_,59 @@
  				num2 = 2;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
@@ -5579,6 +5590,7 @@
  		}
 +
 +		// End of DrawVersionNumber
++		HandleNews(menuColor);
  	}
  
  	private static void ClearVisualPostProcessEffects()
@@ -6113,7 +6125,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].scope && mouseRight) {
-@@ -51766,10 +_,29 @@
+@@ -51766,9 +_,29 @@
  					if (num13 < 0)
  						num13 = 0;
  
@@ -6121,13 +6133,14 @@
 +					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
 +
 +					/*
-+					vector3.X = (num12 - screenWidth / 2) * zoom;
-+					vector3.Y = (num13 - screenHeight / 2) * zoom;
-+					*/
  					vector3.X = (float)(num12 - screenWidth / 2) / 2f;
  					vector3.Y = (float)(num13 - screenHeight / 2) / 2f;
++					*/
++					vector3.X = (num12 - screenWidth / 2) * zoom;
++					vector3.Y = (num13 - screenHeight / 2) * zoom;
++
  					flag = true;
- 				}
++				}
 +				else { // Added by TML
 +					float zoom = -1f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
@@ -6139,10 +6152,9 @@
 +						vector3.Y = (mouseYClamped - screenHeight / 2) * zoom;
 +						flag = true;
 +					}
-+				}
+ 				}
  			}
  		}
- 
 @@ -51850,6 +_,8 @@
  		}
  

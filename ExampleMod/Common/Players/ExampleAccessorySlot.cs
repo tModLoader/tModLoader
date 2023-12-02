@@ -19,7 +19,7 @@ namespace ExampleMod.Common.Players
 		public override bool DrawVanitySlot => !DyeItem.IsAir;
 
 		//     We will use our 'custom' textures
-		// Background Textures -> In general, you can use most of the existing vanilla ones to get different colours
+		// Background Textures -> In general, you can use most of the existing vanilla ones to get different colors
 		public override string VanityBackgroundTexture => "Terraria/Images/Inventory_Back14"; // yellow
 		public override string FunctionalBackgroundTexture => "Terraria/Images/Inventory_Back7"; // pale blue
 
@@ -56,9 +56,9 @@ namespace ExampleMod.Common.Players
 			return false; // Can't use slot
 		}
 
-		// Overrides the default behaviour where a disabled accessory slot will allow retrieve items if it contains items
+		// Overrides the default behavior where a disabled accessory slot will allow retrieve items if it contains items
 		public override bool IsVisibleWhenNotEnabled() {
-			return false; // We set to false to just not display if not Enabled. NOTE: this does not affect behavour when mod is unloaded!
+			return false; // We set to false to just not display if not Enabled. NOTE: this does not affect behavior when mod is unloaded!
 		}
 
 		// Icon textures. Nominal image size is 32x32. Will be centered on the slot.

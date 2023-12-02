@@ -41,7 +41,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {
 				// If the player using the item is the client
-				// (explicitely excluded serverside here)
+				// (explicitly excluded serverside here)
 				SoundEngine.PlaySound(SoundID.Roar, player.position);
 
 				int type = ModContent.NPCType<MinionBossBody>();

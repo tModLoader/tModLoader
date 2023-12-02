@@ -2,8 +2,8 @@ using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.UI;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
@@ -25,6 +25,7 @@ namespace ExampleMod.Content.Items.Tools
 			Item.autoReuse = true;
 
 			Item.pick = 220; // How strong the pickaxe is, see https://terraria.wiki.gg/wiki/Pickaxe_power for a list of common values
+			Item.attackSpeedOnlyAffectsWeaponAnimation = true; // Melee speed affects how fast the tool swings for damage purposes, but not how fast it can dig
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {

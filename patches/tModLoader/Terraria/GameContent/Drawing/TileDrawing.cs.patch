@@ -138,7 +138,28 @@
  		if (!flag)
  			return;
  
-@@ -994,7 +_,7 @@
+@@ -974,7 +_,13 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the tile is visible.
++	/// <para/>Tiles painted with Echo Coating as well as the Echo Platform, Echo Block, and Ghostly Stinkbug Blocker tiles will all be invisible unless the player has Echo Sight (Nearby active Echo Chamber tile or wearing Spectre Goggles)
++	/// </summary>
++	/// <param name="tile"></param>
++	/// <returns></returns>
+-	private bool IsVisible(Tile tile)
++	public static bool IsVisible(Tile tile)
+ 	{
+ 		bool flag = tile.invisibleBlock();
+ 		switch (tile.type) {
+@@ -989,12 +_,12 @@
+ 		}
+ 
+ 		if (flag)
+-			return _shouldShowInvisibleBlocks;
++			return Main.instance.TilesRenderer._shouldShowInvisibleBlocks;
+ 
  		return true;
  	}
  
@@ -322,6 +343,31 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
+@@ -4868,21 +_,21 @@
+ 		return false;
+ 	}
+ 
+-	private int GetWaterAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetWaterAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
+ 		return num / 2 * (num2 / 3) % Main.cageFrames;
+ 	}
+ 
+-	private int GetSmallAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetSmallAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
+ 		return num / 3 * (num2 / 3) % Main.cageFrames;
+ 	}
+ 
+-	private int GetBigAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetBigAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
 @@ -4922,18 +_,29 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();

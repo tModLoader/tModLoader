@@ -1,14 +1,14 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Enums;
-using System;
-using ReLogic.Content;
-using Terraria.Localization;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
