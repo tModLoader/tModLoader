@@ -77,7 +77,7 @@ public interface SocialBrowserModule
 
 	internal LocalMod IsItemInstalled(string slug)
 	{
-		return GetInstalledMods().Where(t => t.Name == slug).FirstOrDefault();
+		return GetInstalledMods().Where(t => string.Equals(t.Name, slug, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 	}
 
 	/////// Management of Downloads ///////////////////////////////////////////

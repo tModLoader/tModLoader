@@ -2065,7 +2065,7 @@
 +				DoUpdate(ref gameTime);
 +			}
 +			catch (Exception e) {
-+				Logging.Terraria.Error(e);
++				// Logging.Terraria.Error(e); Removed, duplicate log messages.
 +			}
 +
  			CinematicManager.Instance.Update(gameTime);
@@ -5122,7 +5122,7 @@
  		screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);
  		MenuXMovement = 4f;
 -		if (alreadyGrabbingSunOrMoon) {
-+		if (alreadyGrabbingSunOrMoon && !playOldTile) { // Added && !playOldTile
++		if (alreadyGrabbingSunOrMoon && !playOldTile && MenuLoader.CurrentMenu == MenuLoader.MenuJourneysEnd) { // Added && !playOldTile. Added check for MenuJourneysEnd to limit easter egg to only the vanilla logo/menu
  			playOldTile = true;
 +
 +			MenuLoader.ActivateOldVanillaMenu();
@@ -5534,7 +5534,7 @@
  		Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  		origin.X *= 0.5f;
  		origin.Y *= 0.5f;
-@@ -42732,7 +_,58 @@
+@@ -42732,7 +_,59 @@
  				num2 = 2;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
@@ -5590,6 +5590,7 @@
  		}
 +
 +		// End of DrawVersionNumber
++		HandleNews(menuColor);
  	}
  
  	private static void ClearVisualPostProcessEffects()
@@ -6124,7 +6125,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].scope && mouseRight) {
-@@ -51766,10 +_,29 @@
+@@ -51766,9 +_,29 @@
  					if (num13 < 0)
  						num13 = 0;
  
@@ -6132,13 +6133,14 @@
 +					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
 +
 +					/*
-+					vector3.X = (num12 - screenWidth / 2) * zoom;
-+					vector3.Y = (num13 - screenHeight / 2) * zoom;
-+					*/
  					vector3.X = (float)(num12 - screenWidth / 2) / 2f;
  					vector3.Y = (float)(num13 - screenHeight / 2) / 2f;
++					*/
++					vector3.X = (num12 - screenWidth / 2) * zoom;
++					vector3.Y = (num13 - screenHeight / 2) * zoom;
++
  					flag = true;
- 				}
++				}
 +				else { // Added by TML
 +					float zoom = -1f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
@@ -6150,10 +6152,9 @@
 +						vector3.Y = (mouseYClamped - screenHeight / 2) * zoom;
 +						flag = true;
 +					}
-+				}
+ 				}
  			}
  		}
- 
 @@ -51850,6 +_,8 @@
  		}
  

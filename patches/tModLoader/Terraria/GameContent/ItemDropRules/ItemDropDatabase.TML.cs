@@ -778,8 +778,8 @@ partial class ItemDropDatabase
 			bc_book,
 
 			bc_goldCoin,
-			hardmodeBiomeCrateOres,
-			hardmodeBiomeCrateBars,
+			new OneFromRulesRule(7, ores),
+			new OneFromRulesRule(4, bars),
 			new OneFromRulesRule(3, potions),
 		};
 		IItemDropRule[] stockade = new IItemDropRule[] {
@@ -1069,6 +1069,7 @@ partial class ItemDropDatabase
 			ItemDropRule.NotScalingWithLuck(ItemID.CatEars),
 			spaceCreatureSet,
 			wolfSet,
+			treasureHunterSet
 		};
 
 		IItemDropRule[] rules = new IItemDropRule[]

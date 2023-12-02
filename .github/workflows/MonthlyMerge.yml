@@ -5,6 +5,7 @@ env:
     DevBranch: 1.4.4
     StableBranch: stable
     PreviewBranch: preview
+    SkipOddMonths: false
 
 # Controls when the action will run. 
 on:
@@ -35,7 +36,7 @@ jobs:
         - name: Merge
           run: |
             month=$(date +%m)
-            if [ $((month%2)) -eq 0 ]; then
+            if [[ $((month%2)) -eq 0 || "${{env.SkipOddMonths}}"=="false" ]]; then
                 token=${{ secrets.TMODLOADERBOT_TOKEN }}
                 repo=$GITHUB_REPOSITORY
                 git config user.name github-actions
