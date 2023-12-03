@@ -1,8 +1,11 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -2,89 +_,134 @@
+@@ -1,90 +_,137 @@
+ <Project Sdk="Microsoft.NET.Sdk">
  	<Import Project="../Configuration.targets" />
  	<Import Project="../../WorkspaceInfo.targets" />
++	<Import Project="../../../tModBuildTasks/BuildTasks.targets" />
++
  	<PropertyGroup>
 -		<OutputType>WinExe</OutputType>
 +		<OutputType>Exe</OutputType>
