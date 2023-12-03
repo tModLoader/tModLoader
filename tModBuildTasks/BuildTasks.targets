@@ -14,6 +14,7 @@
 		at the end of the build. If it's omitted, that can cause build failures
 		in subsequent builds because the task assembly can't be written by the next build.
 	-->
+	<UsingTask TaskName="SynchronizeDirectories" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="TaskHostFactory" />
 
 	<ItemGroup>
 		<!-- Add a ProjectReference to ensure that the task gets built before it needs to be called. -->
