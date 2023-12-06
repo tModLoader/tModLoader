@@ -1,14 +1,17 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -9,24 +_,27 @@
+@@ -9,27 +_,30 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
 -		<AssemblyName>Terraria</AssemblyName>
 +		<AssemblyName>tModLoader</AssemblyName>
+ 
 +		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 +		<UseAppHost>false</UseAppHost>
  		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+ 		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+ 		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
  	</PropertyGroup>
 -	<PropertyGroup Condition="$(Configuration.Contains('Server'))">
 -		<AssemblyName>$(AssemblyName)Server</AssemblyName>
@@ -39,7 +42,7 @@
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
  		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
  		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
-@@ -40,8 +_,12 @@
+@@ -43,8 +_,12 @@
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
@@ -52,7 +55,7 @@
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -50,20 +_,32 @@
+@@ -53,20 +_,32 @@
  		<EmbeddedResource Include="Microsoft/**" />
  	</ItemGroup>
  	<ItemGroup>
@@ -87,7 +90,7 @@
  		<!-- Copy files systematically to output folder -->
  		<ItemGroup>
  			<BinFiles Include="$(TargetDir)**" />
-@@ -71,6 +_,7 @@
+@@ -74,6 +_,7 @@
  
  		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
  		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
