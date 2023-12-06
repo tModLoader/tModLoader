@@ -34,9 +34,10 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
+	/// Similar to SetDefaults, but only called on NPCs with a negative <see cref="NPC.netID"/>.<br/>
 	/// Vanilla "variant" NPCs which have <see cref="NPC.netID"/> set to a negative value cannot be properly modified through SetDefaults.<br/>
 	/// This method allows you to properly run code you would run in SetDefaults for these NPCs.<br/>
-	/// When running this method, always be sure to check against <see cref="NPC.netID"/> to ensure you're modifying the correct variant.<br/>
+	/// <b><see cref="NPC.type"/> does not support negative numbers! Always be sure to check against <see cref="NPC.netID"/> instead.</b><br/>
 	/// </summary>
 	public virtual void SetDefaultsFromNetId(NPC npc)
 	{
