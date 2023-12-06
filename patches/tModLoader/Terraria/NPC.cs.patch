@@ -715,7 +715,7 @@
  			life = lifeMax;
  		}
 +
-+		NPCLoader.SetVariantDefaults(this);
++		NPCLoader.SetDefaultsFromNetId(this);
 +	}
 +
 +	// Added by TML.
