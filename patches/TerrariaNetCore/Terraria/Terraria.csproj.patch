@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -1,90 +_,118 @@
+@@ -1,90 +_,122 @@
  <Project Sdk="Microsoft.NET.Sdk">
 +
  	<Import Project="../Configuration.targets" />
@@ -125,6 +125,10 @@
 -		<Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
 -		<Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
 -	</Target>
++
++	<!-- Import tasks -->
++	<UsingTask TaskName="SynchronizeDirectories" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
++	<UsingTask TaskName="OrganizeReferenceDestinations" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
 +
 +	<!-- Installs the build's output into the relevant game folder. -->
 +	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
