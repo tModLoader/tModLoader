@@ -5877,7 +5877,14 @@
  		if (result.BaitItemType == 2673)
  			return result;
  
-@@ -32894,12 +_,15 @@
+@@ -32890,16 +_,22 @@
+ 		if (canFloatInWater && wet)
+ 			num += 5;
+ 
++		/*
+ 		if (sitting.TryGetSittingBlock(this, out var tile) && ((tile.type == 15 && tile.frameY / 40 == 1) || tile.type == 497))
++		*/
++		if (sitting.TryGetSittingBlock(this, out var _) && sitting.details.IsAToilet) // Make modded toilets give the fishing boost as well
  			num += 5;
  
  		int num2 = result.BaitPower + result.PolePower + fishingSkill + num;
