@@ -1140,11 +1140,4 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void NetReceive(Item item, BinaryReader reader)
 	{
 	}
-
-	/// <summary>
-	/// Determines if its allowed to open this item (right-click).
-	/// </summary>
-	/// <param name="item">The item.</param>
-	/// <param name="player">The player.</param>
-	public virtual bool CanOpen(Item item, Player player) { }
 }

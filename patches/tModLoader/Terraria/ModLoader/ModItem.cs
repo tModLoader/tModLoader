@@ -1336,7 +1336,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Determines if its allowed to open this item (right-click).
 	/// </summary>
-	/// <param name="item">The item.</param>
 	/// <param name="player">The player.</param>
-	public virtual bool CanOpen() { }
+	public virtual bool CanOpen(Player player)
+	{
+		return false;
+	}
+	/// <summary>
+	/// Executes when this item was opened, like a bag.
+	/// </summary>
+	/// <param name="player">The player.</param>
+	public virtual void OnOpen(Player player)
+	{
+	}
 }
