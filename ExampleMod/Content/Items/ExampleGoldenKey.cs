@@ -15,7 +15,6 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 100;
-			Item.ToolTip = "Open";
 		}
 
 		public override void SetDefaults() {
