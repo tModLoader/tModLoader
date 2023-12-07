@@ -1334,18 +1334,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
 	/// <summary>
-	/// Determines if its allowed to open this item (right-click).
+	/// Determines if its allowed to open this item (right-click). Returns true by default.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual bool CanOpen(Player player)
 	{
-		return false;
-	}
-	/// <summary>
-	/// Executes when this item was opened, like a bag.
-	/// </summary>
-	/// <param name="player">The player.</param>
-	public virtual void OnOpen(Player player)
-	{
+		return true;
 	}
 }

@@ -736,7 +736,7 @@
 +		/// </summary>
 +		/// <remarks>
 +		/// For <see cref="ModItem"/>s, you can simply use <see cref="ModItem.CanRightClick"/> or <see cref="GlobalItem.CanRightClick(Item)"/> instead of this set.
-+		/// <br/> If you need to check if any item is right-clickable, use <see cref="ItemLoader.CanRightClick(Item)"/>.
++		/// <br/> If you need to check if any item is right-clickable, use <see cref="ItemLoader.CanRightClick(Item, Player)"/>.
 +		/// </remarks>
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
  	}

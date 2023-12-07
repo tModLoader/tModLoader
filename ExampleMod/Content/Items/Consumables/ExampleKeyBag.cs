@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.Items.Armor.Vanity;
 using ExampleMod.Content.NPCs.MinionBoss;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,21 +29,23 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override bool CanRightClick() {
+			// We can right click this, but TML will also check if we can open it (with the CanOpen function).
 			return true;
 		}
 
 		public override bool CanOpen(Player player) {
-			// Finds if this player has the example golden key in its inventory.
-			return player.HasItemInAnyInventory(ModContent.ItemType<ExampleGoldenKey>());
+			// Opens the bag if the game is in hard mode, and a golden key is in any of their inventories.
+			return Main.hardMode && player.HasItemInAnyInventory(ModContent.ItemType<ExampleGoldenKey>());
 		}
 
-		public override void OnOpen(Player player) {
+		public override void RightClick(Player player) {
+			// When we open the bag we want (or don't want to) consume the example golden key.
+			// This is called when we are allowed to open the bag and once its opened/right-clicked.
 			player.ConsumeItem(ModContent.ItemType<ExampleGoldenKey>(), true, true);
 		}
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
-			// We have to replicate the expert drops from MinionBossBody here
-
+			// Drop whatever you want.
 			itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.GoldBar, 4));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1, 12, 16));
 			itemLoot.Add(ItemDropRule.Coins(5000, true));

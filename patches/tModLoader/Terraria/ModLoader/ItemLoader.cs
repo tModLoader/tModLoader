@@ -1362,7 +1362,7 @@ public static class ItemLoader
 	/// Calls ModItem.CanRightClick, then all GlobalItem.CanRightClick hooks, until one of the returns true.
 	/// Also returns true if ItemID.Sets.OpenableBag
 	/// </summary>
-	public static bool CanRightClick(Item item)
+	public static bool CanRightClick(Item item, Player player)
 	{
 		if (item.IsAir)
 			return false;
@@ -1370,7 +1370,7 @@ public static class ItemLoader
 		if (ItemID.Sets.OpenableBag[item.type])
 			return true;
 
-		if (item.ModItem != null && item.ModItem.CanRightClick())
+		if (item.ModItem != null && item.ModItem.CanRightClick() && item.ModItem.CanOpen(player))
 			return true;
 
 		foreach (var g in HookCanRightClick.Enumerate(item)) {
