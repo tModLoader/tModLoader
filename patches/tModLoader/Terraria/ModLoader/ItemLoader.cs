@@ -16,7 +16,6 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
-
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalItem>;
 
 namespace Terraria.ModLoader;
