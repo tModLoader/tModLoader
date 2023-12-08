@@ -16,6 +16,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
+
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalItem>;
 
 namespace Terraria.ModLoader;
@@ -1362,7 +1363,7 @@ public static class ItemLoader
 	/// Calls ModItem.CanRightClick, then all GlobalItem.CanRightClick hooks, until one of the returns true.
 	/// Also returns true if ItemID.Sets.OpenableBag
 	/// </summary>
-	public static bool CanRightClick(Item item, Player player)
+	public static bool CanRightClick(Item item)
 	{
 		if (item.IsAir)
 			return false;
@@ -1370,7 +1371,7 @@ public static class ItemLoader
 		if (ItemID.Sets.OpenableBag[item.type])
 			return true;
 
-		if (item.ModItem != null && item.ModItem.CanRightClick() && item.ModItem.CanOpen(player))
+		if (item.ModItem != null && item.ModItem.CanRightClick())
 			return true;
 
 		foreach (var g in HookCanRightClick.Enumerate(item)) {

@@ -397,7 +397,7 @@
  				if (Main.mouseRightRelease)
  					TryOpenContainer(inv[slot], player);
 +			*/
-+			if (context == 0 && ItemLoader.CanRightClick(inv[slot], player)) {
++			if (context == 0 && ItemLoader.CanRightClick(inv[slot])) {
 +				if (Main.mouseRightRelease) {
 +					if (Main.ItemDropsDB.GetRulesForItemID(inv[slot].type).Any())
 +						TryOpenContainer(inv[slot], player);
@@ -465,7 +465,7 @@
  
  		if (inv[slot].stack <= 0)
  			inv[slot] = new Item();
-@@ -1207,14 +_,22 @@
+@@ -1207,14 +_,25 @@
  		else if (item.type == 1869) {
  			player.OpenPresent(1869);
  		}
@@ -480,6 +480,9 @@
  		}
 -
 -		item.stack--;
++		else if (item.ModItem != null && !item.ModItem.CanOpen(player)) {
++			return;
++		}
 +		else { // Added by TML.
 +			player.DropFromItem(item.type);
 +		}
