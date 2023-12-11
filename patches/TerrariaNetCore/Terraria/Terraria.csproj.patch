@@ -130,24 +130,6 @@
 +	<UsingTask TaskName="SynchronizeDirectories" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
 +	<UsingTask TaskName="OrganizeReferenceDestinations" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
 +
-+	<!-- Installs the build's output into the relevant game folder. -->
-+	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
-+		<PropertyGroup>
-+			<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
-+		</PropertyGroup>
-+
-+		<!-- Copy files systematically to output folder -->
-+		<ItemGroup>
-+			<BinFiles Include="$(TargetDir)**" />
-+		</ItemGroup>
-+
-+		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
-+		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
-+
-+		<!-- Copy the Libraries folder, purging excessive files -->
-+		<SynchronizeDirectories Source="$(TargetDir)Libraries" Destination="$(_ActualOutputDirectory)/Libraries" />
-+	</Target>
-+
 +	<!-- Organize output copies of Project, NuGet, and directly referenced libraries under a single tidy folder. -->
 +	<Target Name="OrganizeAllReferences" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBuildDependencyFile;CopyFilesToOutputDirectory">
 +		<!-- Run the task. -->
@@ -177,6 +159,24 @@
 +		</PropertyGroup>
 +
 +		<WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
++	</Target>
++
++	<!-- Installs the build's output into the relevant game folder. -->
++	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
++		<PropertyGroup>
++			<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
++		</PropertyGroup>
++
++		<!-- Copy files systematically to output folder -->
++		<ItemGroup>
++			<BinFiles Include="$(TargetDir)**" />
++		</ItemGroup>
++
++		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
++		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
++
++		<!-- Copy the Libraries folder, purging excessive files -->
++		<SynchronizeDirectories Source="$(TargetDir)Libraries" Destination="$(_ActualOutputDirectory)/Libraries" />
 +	</Target>
 +
  </Project>

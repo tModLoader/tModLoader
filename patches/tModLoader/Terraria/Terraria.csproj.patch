@@ -89,7 +89,7 @@
  	</ItemGroup>
  
  	<!-- Import tasks -->
-@@ -73,9 +_,13 @@
+@@ -104,9 +_,13 @@
  	<!-- Installs the build's output into the relevant game folder. -->
  	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
  		<PropertyGroup>
@@ -104,7 +104,7 @@
  		<!-- Copy files systematically to output folder -->
  		<ItemGroup>
  			<BinFiles Include="$(TargetDir)**" />
-@@ -83,6 +_,7 @@
+@@ -114,6 +_,7 @@
  
  		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
  		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
