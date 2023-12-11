@@ -27,14 +27,14 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 		for (int i = 0; i < items.Length; i++) {
 			var item = items[i];
 
-			string fileName = item.GetMetadata("Filename");
 			string fileExtension = item.GetMetadata("Extension");
 			string nugetPackageId = item.GetMetadata("NuGetPackageId");
 			string nugetPackageVersion = item.GetMetadata("NuGetPackageVersion");
 			string referenceSourceTarget = item.GetMetadata("ReferenceSourceTarget");
-			string runtimeIdentifier = item.GetMetadata("RuntimeIdentifier");
 			string fusionName = item.GetMetadata("FusionName");
 			string pathInPackage = item.GetMetadata("PathInPackage");
+			//string fileName = item.GetMetadata("Filename");
+			//string runtimeIdentifier = item.GetMetadata("RuntimeIdentifier");
 
 			// PDBs & XMLs lack some metadata, attempt to get it from the paired .dll.
 			if (string.IsNullOrEmpty(fusionName) && !".dll".Equals(fileExtension, StringComparison.OrdinalIgnoreCase)) {
@@ -54,21 +54,16 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 				// Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0.
 				const string VersionHack = "1.0.0";
 
-				destinationSubDirectory = $"{BaseDirectory}/{assemblyName.Name}/{VersionHack}/";
+				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, VersionHack) + Path.DirectorySeparatorChar;
 			}
 			// Direct Managed References
 			else if (referenceSourceTarget == "ResolveAssemblyReference" && assemblyName != null) {
-				destinationSubDirectory = $"{BaseDirectory}/{assemblyName.Name}/{assemblyName.Version}/";
+				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, assemblyName.Version.ToString()) + Path.DirectorySeparatorChar;
 			}
 			// NuGet Packages
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
 				// This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
-				if (!string.IsNullOrEmpty(pathInPackage)) {
-					destinationSubDirectory = $"{Path.GetDirectoryName($"{BaseDirectory}/{nugetPackageId}/{nugetPackageVersion}/{pathInPackage}").Replace('\\', '/')}/";
-				}
-				else {
-					destinationSubDirectory = $"{BaseDirectory}/{nugetPackageId}/{nugetPackageVersion}/";
-				}
+				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageId, nugetPackageVersion, Path.GetDirectoryName(pathInPackage)) + Path.DirectorySeparatorChar;
 			}
 			// Fallback
 			else {
