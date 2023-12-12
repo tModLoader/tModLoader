@@ -81,13 +81,13 @@ public class SynchronizeDirectories : TaskBase
 				action();
 				break;
 			}
-			catch (IOException e) {
+			catch (IOException e) when (e is not DirectoryNotFoundException or FileNotFoundException) {
 				if (attempt <= MaxAttempts) {
 					Thread.Sleep(DelayMs);
 					continue;
 				}
 
-				throw new IOException($"Failed to synchronize '{Destination}': {e.Message}", e);
+				throw new IOException($"Failed to synchronize '{Destination}' due to {e.GetType().Name}: {e.Message}", e);
 			}
 		}
 	}
