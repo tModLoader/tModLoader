@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 
 namespace tModLoader.BuildTasks;
@@ -32,64 +33,60 @@ public class SynchronizeDirectories : TaskBase
 
 		destination.Create();
 
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-			WindowsImplementation();
-		}
-		else {
-			UnixImplementation();
-		}
-	}
+		// Delete files that shouldn't be there.
+		Parallel.ForEach(destination.EnumerateFiles("*", SearchOption.AllDirectories), file => {
+			string relativePath = IOUtils.SubstringToRelativePath(file.FullName, Destination);
+			string sourcePath = Path.Combine(Source, relativePath);
 
-	private void WindowsImplementation()
-	{
-		// Robocopy is always present.
-		ExecuteAndWait(
-			"robocopy", @$"""{Source}"" ""{Destination}"" /MIR",
-			useShellExecute: true,
-			isErrorPredicate: static i => i >= 8
-		);
-	}
-
-	private static string? rsyncPath;
-
-	private void UnixImplementation()
-	{
-		// Rsync is not always present, and may need to be installed by the user.
-		rsyncPath ??= ExecuteAndWait("command", $"-v rsync", useShellExecute: false, redirectStdOutput: true)
-			.StandardOutput
-			.ReadToEnd()
-			.Trim();
-
-		if (!string.IsNullOrEmpty(rsyncPath)) {
-			ExecuteAndWait(rsyncPath, @$"-a --delete ""{Source}"" ""{Destination}""", useShellExecute: false);
-		}
-		else {
-			Log.LogMessage(MessageImportance.High, "\trsync was not found, using a slow fallback...");
-
-			// Is there a better fallback, aside for manually writing enumerations & hashchecks in C#?
-			ExecuteAndWait("rm", @$"-rf ""{Destination}""");
-			ExecuteAndWait("cp", @$"-R ""{Source}"" ""{Destination}""");
-		}
-	}
-
-	private Process ExecuteAndWait(string command, string args, bool useShellExecute = true, bool redirectStdOutput = false, Predicate<int>? isErrorPredicate = null)
-	{
-		var process = Process.Start(new ProcessStartInfo(command, args) {
-			UseShellExecute = useShellExecute,
-			RedirectStandardOutput = redirectStdOutput,
-			WindowStyle = ProcessWindowStyle.Hidden,
+			if (!File.Exists(sourcePath)) {
+				IOActionWrapper(file.Delete);
+			}
 		});
 
-		process.WaitForExit();
+		// Delete directories that shouldn't be there.
+		// Ordered by length to delete children first, synchronous to avoid races from recursion.
+		foreach (var directory in destination.EnumerateDirectories("*", SearchOption.AllDirectories).OrderBy(d => d.FullName.Length)) {
+			string relativePath = IOUtils.SubstringToRelativePath(directory.FullName, Destination);
+			string sourcePath = Path.Combine(Source, relativePath);
 
-		bool processErrored = (isErrorPredicate != null)
-			? isErrorPredicate.Invoke(process.ExitCode)
-			: (process.ExitCode != 0);
+			if (!Directory.Exists(sourcePath)) {
+				IOActionWrapper(() => directory.Delete(recursive: true));
+			}
+		};
 
-		if (processErrored) {
-			Log.LogError($"Command '{command}{(!string.IsNullOrEmpty(args) ? $" {args}" : null)}' exited with code {process.ExitCode}.");
+		// Copy files that should be there.
+		Parallel.ForEach(source.EnumerateFiles("*", SearchOption.AllDirectories), sourceFile => {
+			string relativePath = IOUtils.SubstringToRelativePath(sourceFile.FullName, Source);
+			var destinationFile = new FileInfo(Path.Combine(Destination, relativePath));
+
+			if (!IOUtils.AreFilesSeeminglyTheSame(sourceFile, destinationFile)) {
+				IOActionWrapper(() => {
+					Directory.CreateDirectory(destinationFile.DirectoryName);
+					sourceFile.CopyTo(destinationFile.FullName, overwrite: true);
+				});
+			}
+		});
+	}
+
+	// Runs an action with a fixed amount of retries for the case of IOExceptions occuring from third-party short-lived file locks.
+	private void IOActionWrapper(Action action)
+	{
+		const int MaxAttempts = 5;
+		const int DelayMs = 1000;
+
+		for (int attempt = 1; ; attempt++) {
+			try {
+				action();
+				break;
+			}
+			catch (IOException e) {
+				if (attempt <= MaxAttempts) {
+					Thread.Sleep(DelayMs);
+					continue;
+				}
+
+				throw new IOException($"Failed to synchronize '{Destination}': {e.Message}", e);
+			}
 		}
-
-		return process;
 	}
 }
