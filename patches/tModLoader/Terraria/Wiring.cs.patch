@@ -116,12 +116,13 @@
  		switch (type) {
  			case 144:
  				HitSwitch(i, j);
-@@ -1157,8 +_,9 @@
+@@ -1157,8 +_,11 @@
  		}
  
  		if (type == 130) {
-+			/* if (Main.tile[i, j - 1] == null || !Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChestFake[Main.tile[i, j - 1].type] && Main.tile[i, j - 1].type != 88)) { */
--			if (Main.tile[i, j - 1] == null || !Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChestFake[Main.tile[i, j - 1].type] && Main.tile[i, j - 1].type != 88)) {
++			/*
+ 			if (Main.tile[i, j - 1] == null || !Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChestFake[Main.tile[i, j - 1].type] && Main.tile[i, j - 1].type != 88)) {
++			*/
 +			if (Main.tile[i, j - 1] == null || !Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChestFake[Main.tile[i, j - 1].type] && !TileID.Sets.BasicDresser[Main.tile[i, j - 1].type])) {
 -				tile.type = 131;
 +					tile.type = 131;
