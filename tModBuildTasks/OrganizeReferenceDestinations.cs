@@ -54,21 +54,24 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 				// Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0.
 				const string VersionHack = "1.0.0";
 
-				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, VersionHack) + Path.DirectorySeparatorChar;
+				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, VersionHack);
 			}
 			// Direct Managed References
 			else if (referenceSourceTarget == "ResolveAssemblyReference" && assemblyName != null) {
-				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, assemblyName.Version.ToString()) + Path.DirectorySeparatorChar;
+				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, assemblyName.Version.ToString());
 			}
 			// NuGet Packages
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
 				// This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
-				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageId, nugetPackageVersion, Path.GetDirectoryName(pathInPackage)) + Path.DirectorySeparatorChar;
+				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageId, nugetPackageVersion, Path.GetDirectoryName(pathInPackage));
 			}
 			// Fallback
 			else {
 				continue;
 			}
+
+			// This MUST have a trailing slash!
+			destinationSubDirectory += Path.DirectorySeparatorChar;
 
 			// Set copying destination
 			item.SetMetadata("DestinationSubDirectory", destinationSubDirectory);
