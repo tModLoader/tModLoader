@@ -20,18 +20,27 @@ public static class LoaderUtils
 		var typeInitializer = type.TypeInitializer;
 
 		if (typeInitializer != null) {
-			var field = typeInitializer
+			// .NET Core uses invocation flags on static constructor to ensure that they're never called twice.
+			// We'll have to ignore the law, and remove these flags temporarily.
+
+			var typeInitializerType = typeInitializer.GetType(); // RuntimeConstructorInfo
+			object constructorInvoker = typeInitializerType
+				.GetProperty("Invoker", BindingFlags.NonPublic | BindingFlags.Instance)!
+				.GetValue(typeInitializer)!;
+			var constructorInvokerFlagsField = constructorInvoker
 				.GetType()
-				.GetField("m_invocationFlags", BindingFlags.NonPublic | BindingFlags.Instance)!;
+				.GetField("_invocationFlags", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-			object? previousValue = field.GetValue(typeInitializer);
+			var field = constructorInvokerFlagsField;
+			object? fieldObj = constructorInvoker;
 
-			//.NET Core uses invocation flags on static constructor to ensure that they're never called twice. We'll have to ignore the law, and remove these flags temporarily.
-			field.SetValue(typeInitializer, (uint)0x00000001); //INVOCATION_FLAGS_INITIALIZED
+			// https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Reflection/InvocationFlags.cs#L11
+			uint newFlagValue = 0x0; // Unknown/None
+			uint oldFlagValue = (uint)field.GetValue(fieldObj)!;
 
+			field.SetValue(fieldObj, newFlagValue);
 			typeInitializer.Invoke(null, null);
-
-			field.SetValue(typeInitializer, previousValue);
+			field.SetValue(fieldObj, oldFlagValue);
 		}
 #else
 		type.TypeInitializer?.Invoke(null, null);
