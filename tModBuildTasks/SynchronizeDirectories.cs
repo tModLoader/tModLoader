@@ -44,15 +44,17 @@ public class SynchronizeDirectories : TaskBase
 		});
 
 		// Delete directories that shouldn't be there.
-		// Ordered by length to delete children first, synchronous to avoid races from recursion.
-		foreach (var directory in destination.EnumerateDirectories("*", SearchOption.AllDirectories).OrderBy(d => d.FullName.Length)) {
+		Parallel.ForEach(destination.EnumerateDirectories("*", SearchOption.AllDirectories), directory => {
 			string relativePath = IOUtils.SubstringToRelativePath(directory.FullName, Destination);
 			string sourcePath = Path.Combine(Source, relativePath);
 
 			if (!Directory.Exists(sourcePath)) {
-				IOActionWrapper(() => directory.Delete(recursive: true));
+				try {
+					IOActionWrapper(() => directory.Delete(recursive: true));
+				}
+				catch (DirectoryNotFoundException) { }
 			}
-		};
+		});
 
 		// Copy files that should be there.
 		Parallel.ForEach(source.EnumerateFiles("*", SearchOption.AllDirectories), sourceFile => {
