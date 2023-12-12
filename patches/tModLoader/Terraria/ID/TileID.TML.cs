@@ -73,6 +73,16 @@ partial class TileID
 		/// </remarks>
 		public static bool[] PreventsSandfall = Factory.CreateBoolSet(26, 77, 80, 323, 470, 475, 597);
 
+		// Values taken from the end of Terraria.Wiring::DeActive(int, int)
+		/// <summary>
+		/// Whether or not this tile will prevent tiles beneath it from being actuated, including activating <see cref="ActiveStoneBlock"/>s.
+		/// </summary>
+		/// <remarks>
+		///	Note: This Set does not include the values within the Sets <seealso cref="BasicChest"/> and <seealso cref="BasicDresser"/>,
+		/// but Tile IDs within those sets will also prevent actuation.
+		/// </remarks>
+		public static bool[] PreventsActuationUnder = Factory.CreateBoolSet(26, 77, 237, 470, 475, 597);
+
 		/// <summary>
 		/// What tiles count as Pylons, which allow the player to teleport to any other valid Pylons on the map.
 		/// </summary>
