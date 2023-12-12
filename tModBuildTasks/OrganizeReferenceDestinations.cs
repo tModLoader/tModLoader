@@ -60,10 +60,11 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			else if (referenceSourceTarget == "ResolveAssemblyReference" && assemblyName != null) {
 				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, assemblyName.Version.ToString());
 			}
-			// NuGet Packages
+			// NuGet Packages - This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
-				// This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
-				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageId, nugetPackageVersion, Path.GetDirectoryName(pathInPackage));
+				string? directoryInPackage = !string.IsNullOrEmpty(pathInPackage) ? Path.GetDirectoryName(pathInPackage) : string.Empty;
+
+				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageId, nugetPackageVersion, directoryInPackage);
 			}
 			// Fallback
 			else {
