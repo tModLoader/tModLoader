@@ -23,11 +23,12 @@ internal static class IOUtils
 	}
 
 	/// <summary>
-	/// Returns true if both files exist and have the same length. Does not check file contents.
+	/// Returns true if both files exist and have the same length and write time. Does not check file contents.
 	/// </summary>
 	public static bool AreFilesSeeminglyTheSame(FileInfo fileA, FileInfo fileB)
 	{
 		return fileA.Exists && fileB.Exists
-			&& fileA.Length == fileB.Length;
+			&& fileA.Length == fileB.Length
+			&& fileA.LastWriteTimeUtc == fileB.LastWriteTimeUtc;
 	}
 }
