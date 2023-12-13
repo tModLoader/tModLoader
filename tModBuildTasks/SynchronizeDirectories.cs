@@ -39,7 +39,7 @@ public class SynchronizeDirectories : TaskBase
 			string sourcePath = Path.Combine(Source, relativePath);
 
 			if (!File.Exists(sourcePath)) {
-				IOActionWrapper(file.Delete);
+				RunIOActionWIthRetries(file.Delete);
 			}
 		});
 
@@ -50,7 +50,7 @@ public class SynchronizeDirectories : TaskBase
 
 			if (!Directory.Exists(sourcePath)) {
 				try {
-					IOActionWrapper(() => directory.Delete(recursive: true));
+					RunIOActionWIthRetries(() => directory.Delete(recursive: true));
 				}
 				catch (DirectoryNotFoundException) { }
 			}
@@ -62,7 +62,7 @@ public class SynchronizeDirectories : TaskBase
 			var destinationFile = new FileInfo(Path.Combine(Destination, relativePath));
 
 			if (!IOUtils.AreFilesSeeminglyTheSame(sourceFile, destinationFile)) {
-				IOActionWrapper(() => {
+				RunIOActionWIthRetries(() => {
 					Directory.CreateDirectory(destinationFile.DirectoryName);
 					sourceFile.CopyTo(destinationFile.FullName, overwrite: true);
 				});
@@ -71,10 +71,13 @@ public class SynchronizeDirectories : TaskBase
 	}
 
 	// Runs an action with a fixed amount of retries for the case of IOExceptions occuring from third-party short-lived file locks.
-	private void IOActionWrapper(Action action)
+	private void RunIOActionWIthRetries(Action action)
 	{
 		const int MaxAttempts = 5;
-		const int DelayMs = 1000;
+		const int InitialDelayMs = 100;
+		const int PerStepDelayMultiplier = 2;
+
+		int delay = InitialDelayMs;
 
 		for (int attempt = 1; ; attempt++) {
 			try {
@@ -83,7 +86,8 @@ public class SynchronizeDirectories : TaskBase
 			}
 			catch (IOException e) when (e is not DirectoryNotFoundException or FileNotFoundException) {
 				if (attempt <= MaxAttempts) {
-					Thread.Sleep(DelayMs);
+					Thread.Sleep(delay);
+					delay *= PerStepDelayMultiplier;
 					continue;
 				}
 
