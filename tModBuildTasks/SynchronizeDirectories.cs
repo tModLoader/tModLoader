@@ -39,7 +39,10 @@ public class SynchronizeDirectories : TaskBase
 			string sourcePath = Path.Combine(Source, relativePath);
 
 			if (!File.Exists(sourcePath)) {
-				RunIOActionWIthRetries(file.Delete);
+				try {
+					RunIOActionWIthRetries(file.Delete);
+				}
+				catch (FileNotFoundException) { }
 			}
 		});
 
