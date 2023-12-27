@@ -60,7 +60,7 @@
 -	public bool anyFragment;
 +	internal bool anyFragment;
 -	public bool alchemy;
-+	internal bool alchemy;
++	//internal bool alchemy; TML: Recipe.alchemy is unused due to being replaced by consume item hooks
 -	public bool needSnowBiome;
 +	internal bool needSnowBiome;
 -	public bool needGraveyardBiome;
@@ -70,7 +70,7 @@
 -	public bool notDecraftable;
 +
 -	public bool crimson;
-+	// Following fields made internal, use DisableDecraft()
++	// Following fields made internal, use DisableDecraft() and DecraftDisabled
 -	public bool corruption;
 +	internal bool notDecraftable;
 +
@@ -166,7 +166,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -131,17 +_,23 @@
+@@ -131,18 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -194,14 +194,18 @@
 -
 +		foreach (Item item2 in requiredItem) {
  			int num = item2.stack;
++			/* TML: Recipe.alchemy is unused due to being replaced by consume item hooks
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
-@@ -158,25 +_,36 @@
+ 					int num2 = 0;
+@@ -157,26 +_,38 @@
+ 					num = 0;
  				}
  			}
- 
-+			RecipeLoader.ConsumeItem(this, item2.type, ref num);
++			*/
 +
++			RecipeLoader.ConsumeItem(this, item2.type, ref num, false);
+ 
  			if (num <= 0)
  				continue;
  

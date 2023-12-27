@@ -196,13 +196,13 @@ public static class RecipeLoader
 	}
 
 	/// <summary>
-	/// Allows to edit the amount of item the player uses in a recipe.
+	/// Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns
 	/// </summary>
 	/// <param name="recipe">The recipe used for the craft.</param>
 	/// <param name="type">Type of the ingredient.</param>
 	/// <param name="amount">Modifiable amount of the item consumed.</param>
-	public static void ConsumeItem(Recipe recipe, int type, ref int amount)
+	public static void ConsumeItem(Recipe recipe, int type, ref int amount, bool isDecrafting)
 	{
-		recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
+		recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount, isDecrafting);
 	}
 }

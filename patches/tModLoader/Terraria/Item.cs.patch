@@ -1978,6 +1978,24 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47869,12 +_,17 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeItem(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
