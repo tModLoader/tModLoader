@@ -151,18 +151,41 @@ public sealed class DualConditionedSpawnTreeParent : ConditionedSpawnTreeParent
 	public override float GetWeight(NPCSpawnInfo info) => WeightFunc.Invoke(info);
 }
 
-public class MultiEntrySum : List<ISpawnTreeItem>
+public class MultiEntrySum
 {
+	private IEnumerable<ISpawnTreeItem> items;
+
+	/// <param name="items"> The array of items summed here </param>
+	/// <exception cref="ArgumentException"> Thrown when <paramref name="items"/> is empty. </exception>
+	/// <exception cref="ArgumentNullException"> Thrown when <paramref name="items"/> is null. </exception>
 	public MultiEntrySum(params ISpawnTreeItem[] items)
 	{
-		AddRange(items);
+		if (items == null)
+			throw new ArgumentNullException(nameof(items));
+		if (items.Length == 0)
+			throw new ArgumentException("Array was empty, either this is a mistake or you should just always return a 0 chance.", nameof(items));
+		this.items = items;
 	}
 
-	public float Chance => this.Sum((item) => item.Chance);
+	/// <summary>
+	/// For internal use with <see cref="AddAndReturn(ISpawnTreeItem)"/> only
+	/// </summary>
+	internal MultiEntrySum()
+	{
+		items = Array.Empty<ISpawnTreeItem>();
+	}
 
+	/// <summary>
+	/// The sum of each elements <see cref="ISpawnTreeItem.Chance"/>
+	/// </summary>
+	public float Chance => items.Sum((item) => item.Chance);
+
+	/// <summary>
+	/// Appends <paramref name="item"/> to the internal array and returns <paramref name="item"/>, internal since externally this should look immutable, these are just for convenience here.
+	/// </summary>
 	internal ISpawnTreeItem AddAndReturn(ISpawnTreeItem item)
 	{
-		Add(item);
+		items = items.Append(item);
 		return item;
 	}
 }
@@ -269,7 +292,7 @@ public static class SpawnCondition
 
 	/// <summary> In vanilla: <see cref="NPCID.DevourerHead"/>, <see cref="NPCID.SeekerHead"/> (World Feeder) </summary>
 	public static readonly CalculatedSpawnCondition CorruptWorm;
-	public static readonly MultiEntrySum UndergroundMimic;
+	public static readonly MultiEntrySum UndergroundMimic = new();
 	public static readonly WeightedSpawnCondition OverworldMimic;
 	public static readonly CalculatedSpawnCondition Wraith;
 	public static readonly WeightedSpawnCondition HoppinJack;
@@ -348,6 +371,9 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition ExpertSkeletons;
 	public static readonly WeightedSpawnCondition NormalSkeletons;
 	public static readonly MultiEntrySum AllSkeletons = new(NormalSkeletons, ExpertSkeletons, HalloweenSkeletons, SporeSkeletons);
+	/// <summary>
+	/// The current spawn probability for the Flinx. The flinx has four spawn seperate spawning chances; <see cref="Flinx1"/>, <see cref="Flinx2"/>, <see cref="Flinx3"/>, <see cref="Flinx4"/>
+	/// </summary>
 	public static readonly MultiEntrySum Flinx = new(Flinx1, Flinx2, Flinx3, Flinx4);
 
 	public static readonly MultiEntrySum Gnome;
@@ -521,7 +547,7 @@ public static class SpawnCondition
 
 		baseCondition += Wraith = new(HardMode & AboveOrWorldSurface & TimeDay, //39
 			(info) => (1 / 20f) + (Main.moonPhase == 4 ? 1f / 5f : 0f));
-		// Remember kids: P(A or B) = P(A) + P(B) for independent events
+		// P(A U B) = P(A) + P(B) - P(A n B) for independent event, so for independant events (where P(A n B) = 0), P(A U B) = P(A) + P(B)
 		baseCondition += HoppinJack = new(HardMode & Halloween & AboveOrWorldSurface & !TimeDay, 0.1f); //40
 		baseCondition += DoctorBones = new(ProperGroundSpawnTile(TileID.JungleGrass) & TimeDay, GetPlayerRollWeightFunc(500)); // 41
 		baseCondition += LacBeetle = new(SpawnTile(TileID.JungleGrass) & !AboveOrWorldSurface, 1f / 60f); // 42
@@ -730,21 +756,20 @@ public static class SpawnCondition
 		=> (info) => GetPlayerRollWeight(info, range);
 
 	public static float GetPlayerRollWeight(NPCSpawnInfo info, int range)
-	{
-		int denominator = Main.rand.Next(range);
-		if (info.Player.luck > 0f && Main.rand.NextFloat() < info.Player.luck)
-			denominator = Main.rand.Next(Main.rand.Next(range / 2, range));
-		if (info.Player.luck < 0f && Main.rand.NextFloat() < 0f - info.Player.luck)
-			denominator = Main.rand.Next(Main.rand.Next(range, range * 2));
+		=> 1f / (info.Player.luck > 0f && Main.rand.NextFloat() < info.Player.luck
+			? Main.rand.Next(Main.rand.Next(range / 2, range))
+			: info.Player.luck < 0f && Main.rand.NextFloat() < 0f - info.Player.luck
+			? Main.rand.Next(Main.rand.Next(range, range * 2))
+			: Main.rand.Next(range));
 
-		return 1f / denominator;
-	}
-
-	//public static bool HasCondition(this IConditionedTreeItem conditionedTreeItem, SubSpawnCondition condition)
-	//	=> conditionedTreeItem.Conditions.SpecificConditions.Contains(condition);
+	public static bool ContainsOrIsCondition(this ISubSpawnCondition thisCondition, ISubSpawnCondition condition)
+		=> thisCondition == condition || (thisCondition is ConditionWrapper conditionWrapper && conditionWrapper.SpecificConditions.Any(innerCondition => innerCondition.ContainsOrIsCondition(condition)));
+	public static bool ContainsCondition(this IConditionedTreeItem thisConditionItem, ISubSpawnCondition condition)
+		=> thisConditionItem.Conditions.ContainsOrIsCondition(condition);
 }
 
 // TODO: Add names for windy day spawns,
 // TODO: Finish gem critter calculator,
 // TODO: obsolete inaccurate names, return correct
 // TODO: explore viability of larger category based abstraction layer to wrap vanilla a little better (Something like ~Biome => Liquid? => Other Conditions => Gold Critter? => Spawn)
+// TODO: Poke at ModBiome for spawn blocking stuff?

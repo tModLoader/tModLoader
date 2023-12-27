@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoMod.Utils;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using static Terraria.ModLoader.Utilities.SubSpawnCondition.Common;
@@ -33,25 +32,27 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 	public SubSpawnCondition EqualsWhenNot { get; init; } = null;
 	public SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate) : this(Predicate, false, null)
 	{ }
+	public static int PlayerHackStoredPlayer { get; private set; } = -1;
 
-	private static readonly Action<NPCSpawnInfo> setPlayer = (NPCSpawnInfo info) => {
-		StorePlayer = Main.myPlayer;
+	private static void PlayerHackSet(NPCSpawnInfo info)
+	{
+		PlayerHackStoredPlayer = Main.myPlayer;
 		Main.myPlayer = info.Player.whoAmI;
-	};
-	public static int StorePlayer { get; private set; } = -1;
-	private static readonly Action<NPCSpawnInfo> resetPlayer = (NPCSpawnInfo info) => {
-		Main.myPlayer = StorePlayer;
-		StorePlayer = -1;
-	};
+	}
+	private static void PlayerHackReset()
+	{
+		Main.myPlayer = PlayerHackStoredPlayer;
+		PlayerHackStoredPlayer = -1;
+	}
 	public static SubSpawnCondition FromCondition(Condition condition, bool fixPlayer = false)
 	{
 		Func<NPCSpawnInfo, bool> func = fixPlayer ? info => {
-			setPlayer.Invoke(info);
+			PlayerHackSet(info);
 			bool returnVal = condition.IsMet();
-			resetPlayer.Invoke(info);
+			PlayerHackReset();
 			return returnVal;
 		}
-		: condition.Predicate.CastDelegate<Func<NPCSpawnInfo, bool>>();
+		: (info) => condition.Predicate.Invoke();
 		return new SubSpawnCondition(func, false, condition.Description.Key);
 	}
 	public bool Equals(Condition other)
