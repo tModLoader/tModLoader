@@ -29,12 +29,15 @@ public struct WeightedSpawnCondition : IConditionedTreeItem
 	public ConditionWrapper Conditions { get; init; }
 	private float Weight { get; init; }
 	public float Chance { get; set; } = 0f;
-
-	public WeightedSpawnCondition(float weight = 1f)
+	public WeightedSpawnCondition() : this(1f) { }
+	public WeightedSpawnCondition(float weight)
 	{ Weight = weight; Conditions = new(CompareType.And, Array.Empty<ISubSpawnCondition>()); }
 
 	public WeightedSpawnCondition(ConditionWrapper conditions, float weight = 1f) : this(weight)
-	{ Conditions = conditions; }
+	{
+		ArgumentNullException.ThrowIfNull(conditions);
+		Conditions = conditions;
+	}
 
 	public void Check(NPCSpawnInfo info, ref float remainingWeight)
 	{
@@ -53,10 +56,17 @@ public struct CalculatedSpawnCondition : IConditionedTreeItem
 	public float Chance { get; set; } = 0f;
 
 	public CalculatedSpawnCondition(Func<NPCSpawnInfo, float> weightFunc)
-	{ WeightFunc = weightFunc; Conditions = new(CompareType.And, Array.Empty<ISubSpawnCondition>()); }
+	{
+		ArgumentNullException.ThrowIfNull(weightFunc);
+		WeightFunc = weightFunc;
+		Conditions = new(CompareType.And, Array.Empty<ISubSpawnCondition>());
+	}
 
 	public CalculatedSpawnCondition(ConditionWrapper condition, Func<NPCSpawnInfo, float> weightFunc) : this(weightFunc)
-	{ Conditions = condition; }
+	{
+		ArgumentNullException.ThrowIfNull(condition);
+		Conditions = condition;
+	}
 
 	public void Check(NPCSpawnInfo info, ref float remainingWeight)
 	{
@@ -85,6 +95,16 @@ public class SpawnTreeParent : ISpawnTreeItem
 		}
 	}
 
+	/// <summary>
+	/// Adds the 
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="after"></param>
+	public void InjectAfter(ISpawnTreeItem item, ISpawnTreeItem after)
+	{
+
+	}
+
 	public virtual void Check(NPCSpawnInfo info, ref float remainingWeight)
 	{
 		float childWeight = remainingWeight * GetWeight(info);
@@ -101,6 +121,7 @@ public class SpawnTreeParent : ISpawnTreeItem
 
 	public SpawnTreeParent(float weight, ISpawnTreeItem[] children)
 	{
+		ArgumentNullException.ThrowIfNull(children);
 		Children = children;
 		BlockWeight = weight;
 	}
@@ -125,6 +146,7 @@ public class ConditionedSpawnTreeParent : SpawnTreeParent, IConditionedTreeItem
 
 	public ConditionedSpawnTreeParent(ConditionWrapper conditions, float blockWeight, ISpawnTreeItem[] children) : base(blockWeight, children)
 	{
+		ArgumentNullException.ThrowIfNull(conditions);
 		Conditions = conditions;
 	}
 
@@ -145,6 +167,7 @@ public sealed class DualConditionedSpawnTreeParent : ConditionedSpawnTreeParent
 
 	public DualConditionedSpawnTreeParent(ConditionWrapper conditions, Func<NPCSpawnInfo, float> weightFunc, ISpawnTreeItem[] children) : base(conditions, -1f, children)
 	{
+		ArgumentNullException.ThrowIfNull(weightFunc);
 		WeightFunc = weightFunc;
 	}
 
@@ -160,10 +183,9 @@ public class MultiEntrySum
 	/// <exception cref="ArgumentNullException"> Thrown when <paramref name="items"/> is null. </exception>
 	public MultiEntrySum(params ISpawnTreeItem[] items)
 	{
-		if (items == null)
-			throw new ArgumentNullException(nameof(items));
+		ArgumentNullException.ThrowIfNull(items);
 		if (items.Length == 0)
-			throw new ArgumentException("Array was empty, either this is a mistake or you should just always return a 0 chance.", nameof(items));
+			throw new ArgumentException("Array was empty.", nameof(items));
 		this.items = items;
 	}
 
@@ -228,6 +250,7 @@ public static class SpawnCondition
 
 	/// <summary> In vanilla: <see cref="NPCID.AnglerFish"/>, <see cref="NPCID.Piranha"/> </summary>
 	public static readonly WeightedSpawnCondition JunglePiranha;
+
 	public static readonly WeightedSpawnCondition CaveWater;
 	public static WeightedSpawnCondition CavePiranha => CaveWater;
 	public static readonly MultiEntrySum Piranha = new(CavePiranha, JunglePiranha);
@@ -239,12 +262,14 @@ public static class SpawnCondition
 
 	/// <summary> In vanilla: <see cref="NPCID.Goldfish"/> </summary>
 	public static readonly WeightedSpawnCondition CrimsonWaterCritter;
+
 	public static readonly ConditionedSpawnTreeParent OverworldWaterCritter;
 	public static readonly WeightedSpawnCondition OverworldWaterSurfaceCritter;
 	public static readonly WeightedSpawnCondition OverworldUnderwaterCritter;
 
 	/// <summary> In vanilla: <see cref="NPCID.Pupfish"/>, <see cref="NPCID.GoldGoldfish"/>, <see cref="NPCID.Goldfish"/> </summary>
 	public static readonly WeightedSpawnCondition DefaultWaterCritter;
+
 	public static readonly CalculatedSpawnCondition BoundGoblin;
 	public static readonly CalculatedSpawnCondition BoundWizard;
 	public static readonly CalculatedSpawnCondition BoundOldShakingChest;
@@ -292,6 +317,7 @@ public static class SpawnCondition
 
 	/// <summary> In vanilla: <see cref="NPCID.DevourerHead"/>, <see cref="NPCID.SeekerHead"/> (World Feeder) </summary>
 	public static readonly CalculatedSpawnCondition CorruptWorm;
+
 	public static readonly MultiEntrySum UndergroundMimic = new();
 	public static readonly WeightedSpawnCondition OverworldMimic;
 	public static readonly CalculatedSpawnCondition Wraith;
@@ -371,6 +397,7 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition ExpertSkeletons;
 	public static readonly WeightedSpawnCondition NormalSkeletons;
 	public static readonly MultiEntrySum AllSkeletons = new(NormalSkeletons, ExpertSkeletons, HalloweenSkeletons, SporeSkeletons);
+
 	/// <summary>
 	/// The current spawn probability for the Flinx. The flinx has four spawn seperate spawning chances; <see cref="Flinx1"/>, <see cref="Flinx2"/>, <see cref="Flinx3"/>, <see cref="Flinx4"/>
 	/// </summary>
@@ -506,7 +533,7 @@ public static class SpawnCondition
 		// Dungeon
 		baseCondition += Dungeon = new(InDungeon, new ISpawnTreeItem[] { // 23
 			DungeonGuardian = new(DownedSkeletron & DungeonGuardianHeightOrDrunk),
-		DungeonNormal = new()
+			DungeonNormal = new()
 		});
 
 		// Meteor
@@ -547,7 +574,7 @@ public static class SpawnCondition
 
 		baseCondition += Wraith = new(HardMode & AboveOrWorldSurface & TimeDay, //39
 			(info) => (1 / 20f) + (Main.moonPhase == 4 ? 1f / 5f : 0f));
-		// P(A U B) = P(A) + P(B) - P(A n B) for independent event, so for independant events (where P(A n B) = 0), P(A U B) = P(A) + P(B)
+		// P(A U B) = P(A) + P(B) - P(A n B) for independent event, so for independent events (where P(A n B) = 0), P(A U B) = P(A) + P(B)
 		baseCondition += HoppinJack = new(HardMode & Halloween & AboveOrWorldSurface & !TimeDay, 0.1f); //40
 		baseCondition += DoctorBones = new(ProperGroundSpawnTile(TileID.JungleGrass) & TimeDay, GetPlayerRollWeightFunc(500)); // 41
 		baseCondition += LacBeetle = new(SpawnTile(TileID.JungleGrass) & !AboveOrWorldSurface, 1f / 60f); // 42
@@ -764,6 +791,7 @@ public static class SpawnCondition
 
 	public static bool ContainsOrIsCondition(this ISubSpawnCondition thisCondition, ISubSpawnCondition condition)
 		=> thisCondition == condition || (thisCondition is ConditionWrapper conditionWrapper && conditionWrapper.SpecificConditions.Any(innerCondition => innerCondition.ContainsOrIsCondition(condition)));
+
 	public static bool ContainsCondition(this IConditionedTreeItem thisConditionItem, ISubSpawnCondition condition)
 		=> thisConditionItem.Conditions.ContainsOrIsCondition(condition);
 }

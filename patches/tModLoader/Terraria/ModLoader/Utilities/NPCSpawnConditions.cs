@@ -179,8 +179,16 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 		public static readonly SubSpawnCondition FrostLegionCondition = InvasionIDHappening(InvasionID.SnowLegion);
 		public static readonly SubSpawnCondition PiratesCondition = InvasionIDHappening(InvasionID.PirateInvasion);
 		public static readonly SubSpawnCondition MartianMadnessCondition = InvasionIDHappening(InvasionID.MartianMadness);
+		/// <summary>
+		/// Allows spawning only if the current number of <see cref="NPC"/> with type <paramref name="npcID"/> is less than <paramref name="count"/>
+		/// </summary>
 		public static SubSpawnCondition SpawnCap(int npcID, int count = 1)
 			=> new((info) => IsNPCCountUnder(npcID, count)) { MetaData = nameof(SpawnCap) + ":" + npcID + ":" + count };
+
+		/// <summary>
+		/// Faster variant checking <see cref="NPC.CountNPCS(int)"/>, exits early on false.
+		/// </summary>
+		/// <returns> True if the current number of active <see cref="NPC"/> with type <paramref name="npcID"/> is less than <paramref name="count"/> </returns>
 		private static bool IsNPCCountUnder(int npcID, int count)
 		{
 			for (int i = 0; i < 200; i++) {
@@ -193,10 +201,18 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 	}
 	public static class Common
 	{
+		static Common()
+		{
+			TimeDay = TimeDay with { EqualsWhenNot = TimeNight };
+			TimeNight = TimeNight with { EqualsWhenNot = TimeDay };
+		}
 		public static readonly SubSpawnCondition PlayerFloorInUnderworld = new((info) => info.PlayerFloorY <= Main.UnderworldLayer);
 
-		public static readonly SubSpawnCondition TimeDay = FromCondition(Condition.TimeDay) with { EqualsWhenNot = TimeNight };
-		public static readonly SubSpawnCondition TimeNight = FromCondition(Condition.TimeNight) with { EqualsWhenNot = TimeDay };
+		public static readonly SubSpawnCondition TimeDay = FromCondition(Condition.TimeDay);
+		public static readonly SubSpawnCondition TimeNight = FromCondition(Condition.TimeNight);
+		/// <summary>
+		/// Checks <see cref="Main.time"/>, note that <see cref="Main.time"/> is the time since the last day/night change.
+		/// </summary>
 		public static SubSpawnCondition TimeLessThan(double time)
 			=> new((info) => Main.time < time) { MetaData = nameof(TimeLessThan) + ":" + time };
 
