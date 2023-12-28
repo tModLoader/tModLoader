@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI;
 
 internal class UIModPacks : UIState, IHaveBackButtonCommand
 {
-	internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
+	internal const string MODPACK_REGEX = @"(?:[^a-zA-Z0-9_.-]+)|(?:^(con|prn|aux|nul|com[1-9]|lpt[1-9])$)";
 	internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
 
 	private UIList _modPacks;
