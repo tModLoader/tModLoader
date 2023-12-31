@@ -327,9 +327,9 @@
 +
 +	/// <summary>
 +	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
-+	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
-+	/// <br/> If you are using completely custom AI, set this to -1 since an aiStyle of 0 will face the player automatically, which may interfere with your logic.
-+	/// <br/> Defaults to 0.
++	/// <para/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
++	/// <para/> An aiStyle of 0 will face the player automatically, while an aiStyle of -1 is used for completely custom ai.
++	/// <para/> Defaults to 0 for vanilla NPC and -1 for modded NPC.
 +	/// </summary>
  	public int aiStyle;
  	public bool justHit;
@@ -706,7 +706,7 @@
  		return result;
  	}
  
-@@ -2105,9 +_,25 @@
+@@ -2105,9 +_,27 @@
  		defDamage = damage;
  		defDefense = defense;
  		if (flag) {
@@ -714,6 +714,8 @@
 +			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
  			life = lifeMax;
  		}
++
++		NPCLoader.SetDefaultsFromNetId(this);
 +	}
 +
 +	// Added by TML.
@@ -763,7 +765,7 @@
  
 +		// Added by TML:
 +		// Use aiStyle -1 for modded NPCs by default so they don't always face the nearest player and/or trigger net updates.
-+		aiStyle = type < NPCID.Count ? 0 : -1;
++		aiStyle = Type < NPCID.Count ? 0 : -1;
 +
  		setFrameSize = false;
  		netSkip = -2;

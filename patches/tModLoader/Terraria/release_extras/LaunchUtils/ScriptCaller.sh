@@ -34,6 +34,10 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	fi
 fi
 
+if [[ "$WINDOWS_MAJOR" == "0" || ! -z "$WINEHOMEDIR" ]]; then
+	echo "Proton has been detected. It is highly recommended to not use it as it causes all manner of issues. Please disable Proton and launch again. See https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#disable-proton for information on moving save data to the correct location." 2>&1 | tee -a "$LogFile"
+fi
+
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
 
@@ -49,6 +53,20 @@ if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
 	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 	rm -rf "$dotnet_dir"
 	mkdir "$dotnet_dir"
+fi
+
+if [[ "$_uname" == *"_NT"* ]]; then
+	if [[ -f "$install_dir/dotnet" ]]; then
+		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	fi
+else
+	if [[ -f "$install_dir/dotnet.exe" ]]; then
+		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	fi
 fi
 
 run_script ./InstallDotNet.sh  2>&1 | tee -a "$LogFile"
@@ -78,10 +96,10 @@ fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	export DOTNET_ROLL_FORWARD=Disable
-	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
+	echo "Launched Using Local Dotnet. Launch command: \"$install_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
 	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
-	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
-	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	echo "Launched Using System Dotnet. Launch command: dotnet tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
+	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"
 fi

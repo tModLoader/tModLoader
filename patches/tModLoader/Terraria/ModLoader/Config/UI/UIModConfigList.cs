@@ -183,10 +183,10 @@ internal class UIModConfigList : UIState
 			return;
 
 		// Have to sort by display name because normally configs are sorted by internal names
-		// TODO: Support sort by attribute or some other custom ordering.
-		configs.Sort((x, y) => x.DisplayName.Value.CompareTo(y.DisplayName.Value));
+		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
+		var sortedConfigs = configs.OrderBy(x => x.DisplayName.Value).ToList();
 
-		foreach (var config in configs) {
+		foreach (var config in sortedConfigs) {
 			float indicatorOffset = 20;
 
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
