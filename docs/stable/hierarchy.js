@@ -351,6 +351,7 @@ var hierarchy =
     ] ],
     [ "DamageClassData", "class_damage_class_data.html", null ],
     [ "DamageClassLoader", "class_damage_class_loader.html", null ],
+    [ "DashID", "class_dash_i_d.html", null ],
     [ "DD2Event", "class_d_d2_event.html", null ],
     [ "DefaultContractResolver", "class_default_contract_resolver.html", null ],
     [ "Player.DefenseStat", "struct_player_1_1_defense_stat.html", null ],

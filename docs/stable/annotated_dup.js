@@ -239,6 +239,7 @@ var annotated_dup =
     [ "DamageClass", "class_damage_class.html", "class_damage_class" ],
     [ "DamageClassData", "class_damage_class_data.html", null ],
     [ "DamageClassLoader", "class_damage_class_loader.html", "class_damage_class_loader" ],
+    [ "DashID", "class_dash_i_d.html", null ],
     [ "DD2Event", "class_d_d2_event.html", null ],
     [ "DD2Film", "class_d_d2_film.html", null ],
     [ "DD2Shader", "class_d_d2_shader.html", null ],
