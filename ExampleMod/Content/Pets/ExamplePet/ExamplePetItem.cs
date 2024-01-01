@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 
         public override bool? UseItem(Player player)
         {
-			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
+			if (player.whoAmI == Main.myPlayer) {
 				player.AddBuff(Item.buffType, 3600);
 			}
    			return true;
