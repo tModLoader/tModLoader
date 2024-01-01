@@ -6164,6 +6164,20 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+@@ -51883,6 +_,13 @@
+ 			num = Utils.Clamp(num, 0, 8);
+ 
+ 		Texture2D value2 = TextureAssets.Moon[num].Value;
++
++		if (gameMenu) {
++			ModMenu menu = MenuLoader.CurrentMenu;
++			value = menu.SunTexture?.Value ?? value;
++			value2 = menu.MoonTexture?.Value ?? value2;
++		}
++
+ 		int num2 = sceneArea.bgTopY;
+ 		int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
+ 		int num4 = 0;
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
