@@ -6164,27 +6164,17 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
-@@ -51877,12 +_,21 @@
- 
- 	private void DrawSunAndMoon(SceneArea sceneArea, Microsoft.Xna.Framework.Color moonColor, Microsoft.Xna.Framework.Color sunColor, float tempMushroomInfluence)
- 	{
-+		Texture2D value;
-+		Texture2D value2;
-+		ModMenu menu = MenuLoader.CurrentMenu;
--		Texture2D value = TextureAssets.Sun.Value;
-+		value = TextureAssets.Sun.Value;
- 		int num = moonType;
-+		if (gameMenu) {
-+			value = menu.SunTexture?.Value ?? TextureAssets.Sun.Value;
-+			value2 = menu.MoonTexture?.Value ?? TextureAssets.Moon[Utils.Clamp(num, 0, 8)].Value;
-+			goto SkipVanillaTextures;
-+		}
- 		if (!TextureAssets.Moon.IndexInRange(num))
+@@ -51883,6 +_,13 @@
  			num = Utils.Clamp(num, 0, 8);
  
--		Texture2D value2 = TextureAssets.Moon[num].Value;
-+		value2 = TextureAssets.Moon[num].Value;
-+		SkipVanillaTextures:
+ 		Texture2D value2 = TextureAssets.Moon[num].Value;
++
++		if (gameMenu) {
++			ModMenu menu = MenuLoader.CurrentMenu;
++			value = menu.SunTexture?.Value ?? value;
++			value2 = menu.MoonTexture?.Value ?? value2;
++		}
++
  		int num2 = sceneArea.bgTopY;
  		int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
  		int num4 = 0;
