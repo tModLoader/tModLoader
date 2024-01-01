@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"functions_prop_j.html":[3,3,3,9],
 "functions_prop_l.html":[3,3,3,10],
 "functions_prop_m.html":[3,3,3,11],
 "functions_prop_n.html":[3,3,3,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX21 =
 "struct_filtered_array_enumerator.html":[3,0,385],
 "struct_filtered_span_enumerator.html":[3,0,386],
 "struct_final_fractal_helper.html":[3,0,390],
-"struct_final_fractal_helper_1_1_final_fractal_profile.html":[3,0,390,0],
-"struct_fishing_attempt.html":[3,0,392]
+"struct_final_fractal_helper_1_1_final_fractal_profile.html":[3,0,390,0]
 };

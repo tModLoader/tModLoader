@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.11</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -342,6 +342,13 @@ Can be called on the server.  <a href="class_global_n_p_c.html#a69f3f922db2eee1a
 <tr class="memitem:aa4320fe846bd9bf341ee89f0a42f5bc4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#aa4320fe846bd9bf341ee89f0a42f5bc4">SetBestiary</a> (<a class="el" href="class_n_p_c.html">NPC</a> npc, <a class="el" href="class_bestiary_database.html">BestiaryDatabase</a> database, <a class="el" href="class_bestiary_entry.html">BestiaryEntry</a> bestiaryEntry)</td></tr>
 <tr class="memdesc:aa4320fe846bd9bf341ee89f0a42f5bc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set an <a class="el" href="class_n_p_c.html">NPC</a>'s information in the Bestiary.  <a href="class_global_n_p_c.html#aa4320fe846bd9bf341ee89f0a42f5bc4">More...</a><br /></td></tr>
 <tr class="separator:aa4320fe846bd9bf341ee89f0a42f5bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a296ba853bd2708452d05825f3cd2e91f"><td class="memItemLeft" align="right" valign="top"><a id="a296ba853bd2708452d05825f3cd2e91f" name="a296ba853bd2708452d05825f3cd2e91f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaultsFromNetId</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
+<tr class="memdesc:a296ba853bd2708452d05825f3cd2e91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after SetDefaults for NPCs with a negative <a class="el" href="class_n_p_c.html#a7ee822e8438c4882685b54b4781bbebf" title="Similar to type, but accounts for negative NPCID values.">NPC.netID</a><br  />
+ This hook is required because NPC.SetDefaultsFromNetId only sets <a class="el" href="class_n_p_c.html#a7ee822e8438c4882685b54b4781bbebf" title="Similar to type, but accounts for negative NPCID values.">NPC.netID</a> after SetDefaults<br  />
+ Remember that <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but differet netID<br  />
+ <br /></td></tr>
+<tr class="separator:a296ba853bd2708452d05825f3cd2e91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b308ea4688457257e72f39dd5d6de5"><td class="memItemLeft" align="right" valign="top"><a id="a53b308ea4688457257e72f39dd5d6de5" name="a53b308ea4688457257e72f39dd5d6de5"></a>
 sealed override void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupContent</b> ()</td></tr>
 <tr class="separator:a53b308ea4688457257e72f39dd5d6de5"><td class="memSeparator" colspan="2">&#160;</td></tr>

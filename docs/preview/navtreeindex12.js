@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_mod_projectile.html#affad3a0951d8c55b4cd2541378b8dc99":[3,0,808,31],
 "class_mod_pylon.html":[3,0,810],
 "class_mod_pylon.html#a1adb08e060c494706221b20f3d6e3108":[3,0,810,2],
 "class_mod_pylon.html#a20282cb665f2cea48d22361c291878c0":[3,0,810,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_mod_underground_background_style.html#a5213f27cabb9f2cb7c8a414ffea21dad":[3,0,828,0],
 "class_mod_underground_background_style.html#aa6e0edb2b8e4208b1c323baffee07b87":[3,0,828,1],
 "class_mod_underground_background_style.html#ae71a152a13e75065aea10578e859c73e":[3,0,828,2],
-"class_mod_wall.html":[3,0,829],
-"class_mod_wall.html#a04b71c4df64f7bc07391ebd3ea110e36":[3,0,829,9]
+"class_mod_wall.html":[3,0,829]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_item_loader.html#af4ecd05a58507f5a21cd36e8046786eb":[3,0,638,20],
 "class_item_loader.html#af6eb664b317e04679d5120fe9e8d239d":[3,0,638,64],
 "class_item_loader.html#af9539871994cbfd1231dcc64e9111be8":[3,0,638,23],
 "class_item_pickup_condition.html":[3,0,640],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_martian_sky.html":[3,0,747],
 "class_mech_boss_spawners_drop_rule.html":[3,0,748],
 "class_melee_damage_class.html":[3,0,749],
-"class_melee_no_speed_damage_class.html":[3,0,750],
-"class_melee_no_speed_damage_class.html#a46afc156bc357723bf64d95e465b7255":[3,0,750,1]
+"class_melee_no_speed_damage_class.html":[3,0,750]
 };

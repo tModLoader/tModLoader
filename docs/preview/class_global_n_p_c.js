@@ -67,6 +67,7 @@ var class_global_n_p_c =
     [ "SaveData", "class_global_n_p_c.html#afa2ab82d9e0aad5f3aa29b868a355429", null ],
     [ "SendExtraAI", "class_global_n_p_c.html#a69f3f922db2eee1a553abbb9f9b7b7af", null ],
     [ "SetBestiary", "class_global_n_p_c.html#aa4320fe846bd9bf341ee89f0a42f5bc4", null ],
+    [ "SetDefaultsFromNetId", "class_global_n_p_c.html#a296ba853bd2708452d05825f3cd2e91f", null ],
     [ "SetupTravelShop", "class_global_n_p_c.html#ae5290c411f7d7a5fbeb39dcf7a4992f0", null ],
     [ "SpawnNPC", "class_global_n_p_c.html#a623eb9273b9f0c9f7e62cfdae8cc12b3", null ],
     [ "SpecialOnKill", "class_global_n_p_c.html#a81f052ab1db8ed3677cf6b99c0c9e825", null ],
