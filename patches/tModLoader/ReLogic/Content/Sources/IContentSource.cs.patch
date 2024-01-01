@@ -1,13 +1,15 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/IContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/IContentSource.cs
-@@ -1,5 +_,6 @@
+@@ -1,5 +_,8 @@
++using System;
  using System.Collections.Generic;
++using System.Diagnostics.CodeAnalysis;
  using System.IO;
 +using System.Linq;
  
  namespace ReLogic.Content.Sources;
  
-@@ -7,17 +_,53 @@
+@@ -7,17 +_,57 @@
  {
  	IContentValidator ContentValidator { get; set; }
  
@@ -54,11 +56,15 @@
 +		!Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
 +
 +	// Added by TML.
-+	IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart, bool lower = false)
-+	{
-+		if (lower)
-+			return EnumerateAssets().Where(s => s.ToLower().StartsWith(assetNameStart));
++	[Obsolete, SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
++	private IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart)
++		=> GetAllAssetsStartingWith(assetNameStart, ignoreCase: false);
 +
-+		return EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
++	// Added by TML.
++	IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart, bool ignoreCase = false)
++	{
++		var comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
++
++		return EnumerateAssets().Where(s => s.StartsWith(assetNameStart, comparison));
 +	}
  }

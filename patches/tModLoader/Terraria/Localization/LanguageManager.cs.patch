@@ -114,8 +114,8 @@
 +		*/
  		foreach (IContentSource item in sourcesFromLowestToHighest) {
 -			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
-+			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart, true)) {
 -				string extension = item.GetExtension(item2);
++			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart, ignoreCase: true)) {
 +				string extension = item.GetExtension(item2) ?? "";
  				if (!(extension == ".json") && !(extension == ".csv"))
  					continue;
