@@ -64,7 +64,10 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
 				string? directoryInPackage = !string.IsNullOrEmpty(pathInPackage) ? Path.GetDirectoryName(pathInPackage) : string.Empty;
 
-				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageId, nugetPackageVersion, directoryInPackage);
+				// NuGet package IDs are lowercased in folder repositories.
+				string? nugetPackageIdLower = nugetPackageId.ToLower();
+
+				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageIdLower, nugetPackageVersion, directoryInPackage);
 			}
 			// Fallback
 			else {
