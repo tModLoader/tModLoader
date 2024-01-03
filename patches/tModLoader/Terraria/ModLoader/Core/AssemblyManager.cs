@@ -202,7 +202,8 @@ public static class AssemblyManager
 			m.Side = mod.properties.side;
 			m.DisplayName = mod.properties.displayName;
 			m.TModLoaderVersion = mod.properties.buildVersion;
-			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null; 
+			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
+			m.content = new ContentCache(m);
 			return m;
 		}
 		catch (Exception e) {

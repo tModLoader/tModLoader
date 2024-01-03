@@ -20,7 +20,7 @@ partial class Mod
 
 	//Entities
 	internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-	internal readonly IList<ILoadable> content = new List<ILoadable>();
+	internal ContentCache content { get; set; }
 
 	internal void SetupContent()
 	{
