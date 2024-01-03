@@ -135,6 +135,7 @@ public static class SteamedWraps
 	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
 		FilterByText(ref qHandle, qP.searchGeneric);
+		FilterByText(ref qHandle, $"{qP.searchAuthor}");
 		FilterByTags(ref qHandle, qP.searchTags);
 		FilterModSide(ref qHandle, qP.modSideFilter);
 
@@ -221,7 +222,7 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		if (!string.IsNullOrEmpty(qParams.searchGeneric))
+		if (!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor))
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
 		return (qParams.sortingParamater) switch {
