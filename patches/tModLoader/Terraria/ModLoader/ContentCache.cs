@@ -67,8 +67,8 @@ internal class ContentCache
 
 	private static event Action OnUnload;
 
-	internal ContentCache(Mod source) {
-		_mod = source;
+	internal ContentCache(Mod mod) {
+		_mod = mod;
 	}
 
 	internal void Add(ILoadable loadable) {
