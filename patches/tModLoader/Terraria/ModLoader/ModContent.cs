@@ -453,6 +453,7 @@ public static class ModContent
 	{
 		MonoModHooks.Clear();
 		TypeCaching.Clear();
+		ContentCache.Unload();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();

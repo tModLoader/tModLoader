@@ -14,7 +14,10 @@ internal class ContentCache
 		private static Dictionary<string, Cache<T>> _instancesPerMod;
 
 		public static Cache<T> FindOrCreate(ContentCache cache) {
-			_instancesPerMod ??= new();
+			if (_instancesPerMod is null) {
+				_instancesPerMod = new();
+				OnUnload += Unload;
+			}
 
 			string key = cache._mod.Name;
 
@@ -22,6 +25,10 @@ internal class ContentCache
 				_instancesPerMod[key] = instance = new Cache<T>(cache);
 
 			return instance;
+		}
+
+		private static void Unload() {
+			_instancesPerMod = null;
 		}
 
 		private readonly ContentCache _source;
@@ -58,6 +65,8 @@ internal class ContentCache
 	private readonly IList<ILoadable> _content = new List<ILoadable>();
 	private event Action OnClear;
 
+	private static event Action OnUnload;
+
 	internal ContentCache(Mod source) {
 		_mod = source;
 	}
@@ -69,6 +78,10 @@ internal class ContentCache
 	internal void Clear() {
 		_content.Clear();
 		Interlocked.Exchange(ref OnClear, null)?.Invoke();
+	}
+
+	internal static void Unload() {
+		Interlocked.Exchange(ref OnUnload, null)?.Invoke();
 	}
 
 	public IEnumerable<ILoadable> GetContent() => _content;
