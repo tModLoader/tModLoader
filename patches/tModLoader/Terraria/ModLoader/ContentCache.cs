@@ -13,7 +13,7 @@ internal class ContentCache
 	private class Cache<T> where T : ILoadable {
 		private static Dictionary<string, Cache<T>> _instancesPerMod;
 
-		public static Cache<T> FindOrCreate(ContentCache cache) {
+		public static Cache<T> GetOrCreate(ContentCache cache) {
 			if (_instancesPerMod is null) {
 				_instancesPerMod = new();
 				OnUnload += Unload;
@@ -98,7 +98,7 @@ internal class ContentCache
 
 	public IEnumerable<ILoadable> GetContent() => _content;
 
-	public IEnumerable<T> GetContent<T>() where T : ILoadable => Cache<T>.FindOrCreate(this).GetOrCacheContent();
+	public IEnumerable<T> GetContent<T>() where T : ILoadable => Cache<T>.GetOrCreate(this).GetOrCacheContent();
 
 	public IEnumerable<ILoadable> Reverse() => _content.Reverse();
 }
