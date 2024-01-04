@@ -61,13 +61,29 @@ internal class ContentCache
 		}
 	}
 
+	private static event Action OnUnload;
+
+	private static readonly Dictionary<string, ContentCache> _sourcesByMod = new();
+
+	internal static ContentCache GetOrCreate(Mod mod) {
+		string key = mod.Name;
+
+		if (!_sourcesByMod.TryGetValue(key, out ContentCache source))
+			_sourcesByMod[key] = source = new ContentCache(mod);
+
+		return source;
+	}
+
+	internal static void Unload() {
+		_sourcesByMod.Clear();
+		Interlocked.Exchange(ref OnUnload, null)?.Invoke();
+	}
+
 	private readonly Mod _mod;
 	private readonly IList<ILoadable> _content = new List<ILoadable>();
 	private event Action OnClear;
 
-	private static event Action OnUnload;
-
-	internal ContentCache(Mod mod) {
+	private ContentCache(Mod mod) {
 		_mod = mod;
 	}
 
@@ -78,10 +94,6 @@ internal class ContentCache
 	internal void Clear() {
 		_content.Clear();
 		Interlocked.Exchange(ref OnClear, null)?.Invoke();
-	}
-
-	internal static void Unload() {
-		Interlocked.Exchange(ref OnUnload, null)?.Invoke();
 	}
 
 	public IEnumerable<ILoadable> GetContent() => _content;
