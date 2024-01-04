@@ -80,7 +80,7 @@ internal class ContentCache
 	}
 
 	private readonly Mod _mod;
-	private readonly IList<ILoadable> _content = new List<ILoadable>();
+	private readonly List<ILoadable> _content = new List<ILoadable>();
 	private event Action OnClear;
 
 	private ContentCache(Mod mod) {
@@ -96,9 +96,9 @@ internal class ContentCache
 		Interlocked.Exchange(ref OnClear, null)?.Invoke();
 	}
 
-	public IEnumerable<ILoadable> GetContent() => _content;
+	public IEnumerable<ILoadable> GetContent() => _content.AsReadOnly();  // Prevent exposing the list via hard cast
 
 	public IEnumerable<T> GetContent<T>() where T : ILoadable => Cache<T>.GetOrCreate(this).GetOrCacheContent();
 
-	public IEnumerable<ILoadable> Reverse() => _content.Reverse();
+	public IEnumerable<ILoadable> Reverse() => Enumerable.Reverse(_content);
 }
