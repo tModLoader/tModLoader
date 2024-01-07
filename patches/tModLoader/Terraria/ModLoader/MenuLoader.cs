@@ -118,7 +118,10 @@ public static class MenuLoader
 		}
 
 		currentMenu.UserInterface.Update(gameTime);
+		// Prevent Recalculate() spam due to Use() in UserInterface.Draw().
+		UserInterface.ActiveInstance = currentMenu.UserInterface;
 		currentMenu.UserInterface.Draw(spriteBatch, gameTime);
+
 		currentMenu.Update(Main.menuMode == 0);
 
 		Texture2D logo = currentMenu.Logo.Value;
