@@ -7,6 +7,7 @@ using ReLogic.Content;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
@@ -24,7 +25,11 @@ AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
 {
 	var asmName = new AssemblyName(args.Name);
 	var dir = Path.Combine("Libraries", asmName.Name);
-	var path = Directory.GetFiles(dir, asmName.Name + ".dll", SearchOption.AllDirectories).Single();
+
+	var files = Directory.GetFiles(dir, asmName.Name + ".dll", SearchOption.AllDirectories);
+	var path = files.Count() == 1
+		? files.First() : files.Where(f => f.Contains(RuntimeInformation.RuntimeIdentifier)).Single();
+
 	return AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(path));
 };
 
@@ -37,10 +42,11 @@ void Launch() {
 	new ILHook(hookMethod, il =>
 	{
 		new ILCursor(il).EmitDelegate<Action>(ServerLoaded);
+		Console.WriteLine("Applied hook!");
 	});
 
 	ApplyHooks();
-	asm.GetType("MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { new[] { "-server" } });
+	asm.GetType("Terraria.MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { new[] { "-server" } });
 }
 
 void ApplyHooks()
@@ -68,6 +74,8 @@ void ApplyHooks()
 }
 
 void ServerLoaded() {
+	Console.WriteLine("ServerLoaded()");
+
 	Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
 
 	List<(List<TimeSpan> results, string name, Func<TimeSpan> run)> tests = new();
@@ -119,13 +127,17 @@ TimeSpan ExportLightmap()
 	var lightMap = new LightMap();
 	lightMap.SetSize(w, h);
 
+	var lightMapOptions = new TileLightScannerOptions() {
+		DrawInvisibleWalls = true,
+	};
+
 	var sw = new Stopwatch();
 	sw.Start();
 	for (int x = 5; x + w < Main.maxTilesX - 5; x += w)
 	{
 		for (int y = 5; y < Main.maxTilesY - 5; y += h)
 		{
-			new TileLightScanner().ExportTo(new Rectangle(x, y, w, h), lightMap);
+			new TileLightScanner().ExportTo(new Rectangle(x, y, w, h), lightMap, lightMapOptions);
 		}
 	}
 	return sw.Elapsed;
