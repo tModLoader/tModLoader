@@ -93,10 +93,8 @@ public static class MenuLoader
 		try {
 			UpdateAndDrawModMenuInner(spriteBatch, gameTime, color, logoRotation, logoScale);
 		}
-		catch {
-			throw;
-		}
 		finally {
+			// We don't call Use() to avoid triggering recalculations.
 			UserInterface.ActiveInstance = activeInterface;
 		}
 	}
