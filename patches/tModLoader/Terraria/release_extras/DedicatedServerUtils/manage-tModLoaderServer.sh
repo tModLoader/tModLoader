@@ -17,7 +17,7 @@ function popd {
 
 # NOTE: There is seemingly no official documentation on this file but other more "official" software does this same check.
 # See: https://github.com/moby/moby/blob/v24.0.5/libnetwork/drivers/bridge/setup_bridgenetfiltering.go#L162-L165
-function is_in_docker {
+function is_in_docker() {
 	if [[ -f /.dockerenv ]]; then
 		return 0
 	fi
