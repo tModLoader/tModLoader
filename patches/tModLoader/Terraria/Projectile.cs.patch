@@ -1046,7 +1046,7 @@
  					if (!player3.immune)
  						StatusPvP(m);
  
-@@ -11207,10 +_,12 @@
+@@ -11207,10 +_,14 @@
  			case 919:
  			case 923:
  			case 924:
@@ -1054,18 +1054,14 @@
  				num49 = 1;
  				break;
  		}
++		if (ModProjectile != null)
++			num49 = ModProjectile.CooldownSlot;
  
 +		// Extra patch context.
  		int myPlayer = Main.myPlayer;
  		bool flag28 = Main.player[myPlayer].active && !Main.player[myPlayer].dead && (!Main.player[myPlayer].immune || num49 != -1);
  		if (flag28 && type == 281)
-@@ -11219,13 +_,21 @@
- 		if (Main.getGoodWorld && type == 281)
- 			flag28 = true;
- 
-+		if (ModProjectile != null)
-+			num49 = ModProjectile.CooldownSlot;
-+
+@@ -11222,10 +_,15 @@
  		if (!flag28 || !Colliding(rectangle, Main.player[myPlayer].getRect()))
  			return;
  
