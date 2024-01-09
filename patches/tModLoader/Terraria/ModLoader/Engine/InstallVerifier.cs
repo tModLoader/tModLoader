@@ -19,7 +19,7 @@ internal static class InstallVerifier
 	private static string VanillaExe = "Terraria.exe";
 	private const string TerrariaVersion = "1.4.4.9";
 	private static string CheckExe = $"Terraria_v{TerrariaVersion}.exe"; // This should match the hashes. {Main.versionNumber}
-	private static string vanillaExePath;
+	internal static string vanillaExePath; // Only reliable for GOG installs
 
 	public static DistributionPlatform DistributionPlatform;
 

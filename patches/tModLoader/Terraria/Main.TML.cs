@@ -376,27 +376,7 @@ public partial class Main
 			vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 		}
 		else {
-			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
-
-			if (!Directory.Exists(vanillaContentFolder)) {
-				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
-			}
-
-			// Fallback to default GOG install locations
-			if (!Directory.Exists(vanillaContentFolder)) {
-				if (Platform.IsWindows) {
-					vanillaContentFolder = Path.Combine(@"c:\", "Program Files (x86)", "GOG Galaxy", "Games", "Terraria", "Content");
-					if (!Directory.Exists(vanillaContentFolder))
-						vanillaContentFolder = Path.Combine(@"c:\", "GOG Games", "Terraria", "Content");
-				}
-				else if (Platform.IsLinux) {
-					vanillaContentFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "GOG Games", "Terraria", "Content");
-				}
-				else {
-					vanillaContentFolder = Path.Combine("/Applications", "Terraria.app", "Contents", "Resources", "Content");
-				}
-			}
-
+			vanillaContentFolder = Path.Combine(Path.GetDirectoryName(InstallVerifier.vanillaExePath), "Content");
 			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 		}
 
