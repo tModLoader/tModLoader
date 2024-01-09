@@ -145,7 +145,7 @@ internal static class InstallVerifier
 		// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 		vanillaPath = Path.Combine(vanillaPath, "Terraria");
 		if (Platform.IsOSX) {
-			// GOG installs to /Applications/Terraria.app, Steam installs to /Applications/Terraria/Terraria.app
+			// GOG installs to /Applications/Terraria.app, Steam installs to /Library/Application Support/Steam/steamapps/common/Terraria/Terraria.app
 			// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
 			if (Directory.Exists("../Terraria/Terraria.app/")) {
 				vanillaPath = "../Terraria/Terraria.app/Contents/Resources/";
@@ -153,6 +153,23 @@ internal static class InstallVerifier
 			else if (Directory.Exists("../Terraria.app/")) {
 				vanillaPath = "../Terraria.app/Contents/Resources/";
 			}
+		}
+
+		if (CheckForExe(vanillaPath, out exePath))
+			return true;
+
+		// Fallback to default GOG install locations
+		if (Platform.IsWindows) {
+			vanillaPath = Path.Combine(@"c:\", "Program Files (x86)", "GOG Galaxy", "Games", "Terraria");
+			if (CheckForExe(vanillaPath, out exePath))
+				return true;
+			vanillaPath = Path.Combine(@"c:\", "GOG Games", "Terraria");
+		}
+		else if (Platform.IsLinux) {
+			vanillaPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "GOG Games", "Terraria");
+		}
+		else {
+			vanillaPath = Path.Combine("/Applications", "Terraria.app", "Contents", "Resources");
 		}
 
 		return CheckForExe(vanillaPath, out exePath);
