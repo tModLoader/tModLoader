@@ -6,7 +6,13 @@
 cd "$(dirname "$0")"
 . ./BashUtils.sh
 
-echo "You are on platform: \"$_uname\""
+echo "You are on platform: \"$_uname\" arch: \"$_arch\""
+
+# Detect arm64 launches and the presence of rosetta (stolen from the dotnet official install script)
+if [ "$_arch" = "arm64" ] && [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
+	echo "arm64 detected, restarting under arch -x86_64"
+	exec arch -x86_64 ./ScriptCaller.sh "$@"
+fi
 
 LaunchLogs="$root_dir/tModLoader-Logs"
 
@@ -64,6 +70,10 @@ if [[ "$_uname" == *"_NT"* ]]; then
 else
 	if [[ -f "$install_dir/dotnet.exe" ]]; then
 		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	elif [[ "$(file "$install_dir/dotnet")" == *"arm64"* ]]; then
+		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
 	fi
