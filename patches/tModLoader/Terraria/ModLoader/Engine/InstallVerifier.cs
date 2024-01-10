@@ -1,5 +1,6 @@
 using ReLogic.OS;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -132,16 +133,26 @@ internal static class InstallVerifier
 
 	private static bool ObtainVanillaExePath(out string vanillaPath, out string exePath)
 	{
+		foreach (var possibleVanillaInstallFolder in GetPossibleVanillaInstallFolders()) {
+			if (CheckForExe(possibleVanillaInstallFolder, out exePath)) {
+				vanillaPath = possibleVanillaInstallFolder;
+				return true;
+			}
+		}
+		vanillaPath = exePath = null;
+		return false;
+	}
+
+	private static IEnumerable<string> GetPossibleVanillaInstallFolders()
+	{
 		// Check if in the same folder somehow.
-		vanillaPath = Directory.GetCurrentDirectory();
-		if (CheckForExe(vanillaPath, out exePath))
-			return true;
+		string vanillaPath = Directory.GetCurrentDirectory();
+		yield return vanillaPath;
 
 		// If .exe not present check parent directory (Nested Manual Install)
 		vanillaPath = Directory.GetParent(vanillaPath).FullName;
-		if (CheckForExe(vanillaPath, out exePath))
-			return true;
-
+		yield return vanillaPath;
+		
 		// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 		vanillaPath = Path.Combine(vanillaPath, "Terraria");
 		if (Platform.IsOSX) {
@@ -154,25 +165,19 @@ internal static class InstallVerifier
 				vanillaPath = "../Terraria.app/Contents/Resources/";
 			}
 		}
-
-		if (CheckForExe(vanillaPath, out exePath))
-			return true;
+		yield return vanillaPath;
 
 		// Fallback to default GOG install locations
 		if (Platform.IsWindows) {
-			vanillaPath = Path.Combine(@"c:\", "Program Files (x86)", "GOG Galaxy", "Games", "Terraria");
-			if (CheckForExe(vanillaPath, out exePath))
-				return true;
-			vanillaPath = Path.Combine(@"c:\", "GOG Games", "Terraria");
+			yield return Path.Combine(@"c:\", "Program Files (x86)", "GOG Galaxy", "Games", "Terraria");
+			yield return Path.Combine(@"c:\", "GOG Games", "Terraria");
 		}
 		else if (Platform.IsLinux) {
-			vanillaPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "GOG Games", "Terraria");
+			yield return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "GOG Games", "Terraria");
 		}
 		else {
-			vanillaPath = Path.Combine("/Applications", "Terraria.app", "Contents", "Resources");
+			yield return Path.Combine("/Applications", "Terraria.app", "Contents", "Resources");
 		}
-
-		return CheckForExe(vanillaPath, out exePath);
 	}
 
 	private static bool CheckForExe(string vanillaPath, out string exePath)
