@@ -8,9 +8,10 @@ cd "$(dirname "$0")"
 
 echo "You are on platform: \"$_uname\" arch: \"$_arch\""
 
-# Detect arm64 launches and the presence of rosetta (stolen from the dotnet official install script)
+# Detect arm64 launches and the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
 if [ "$_arch" = "arm64" ] && [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
-	echo "arm64 detected, restarting under arch -x86_64"
+	echo "arm64 environment with Rosetta detected, restarting under arch -x86_64"
+	# Note this only changes the environment, so that dotnet install scripts download an x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
 	exec arch -x86_64 ./ScriptCaller.sh "$@"
 fi
 
@@ -72,7 +73,7 @@ else
 		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
-	elif [[ "$(file "$install_dir/dotnet")" == *"arm64"* ]]; then
+	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$install_dir/dotnet")" == *"arm64"* ]]; then
 		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
