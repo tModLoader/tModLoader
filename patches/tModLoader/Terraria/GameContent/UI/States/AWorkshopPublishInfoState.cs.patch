@@ -72,14 +72,16 @@
  		UpdateImagePreview();
  	}
  
-@@ -100,6 +_,11 @@
+@@ -100,6 +_,13 @@
  		uIElement.SetPadding(0f);
  		uiList.Add(uIElement);
  		uiList.Add(CreateSteamDisclaimer("disclaimer"));
 +
 +		// Added by tML
-+		if (_isMod)
++		if (_isMod) {
 +			uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
++			(this as WorkshopPublishInfoStateForMods).AddNonOwnerWarning(uiList);
++		}
 +
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));
  		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
