@@ -3,7 +3,7 @@
 #shellcheck disable=2164
 
 # Only update the major version when a breaking change is introduced
-script_version="3.0.0.0"
+script_version="3.0.0.1"
 script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
 # Shut up both commands
