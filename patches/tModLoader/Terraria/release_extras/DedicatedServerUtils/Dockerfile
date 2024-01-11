@@ -28,10 +28,14 @@ WORKDIR $HOME
 # Update SteamCMD and verify latest version
 RUN steamcmd +quit
 
-RUN curl -O https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh \
-  && chmod u+x manage-tModLoaderServer.sh \
-  && /bin/bash ./manage-tModLoaderServer.sh install-tml --github --tml-version $TML_VERSION
+ADD --chown=tml:tml https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh .
+
+# If you need to make local edits to the management script copy it to the same
+# directory as this file, comment out the above line and uncomment this line:
+# COPY --chown=tml:tml manage-tModLoaderServer.sh .
+
+RUN ./manage-tModLoaderServer.sh install-tml --github --tml-version $TML_VERSION
 
 EXPOSE 7777
 
-ENTRYPOINT [ "/bin/bash", "-c", "./manage-tModLoaderServer.sh docker --folder ~/.local/share/Terraria/tModLoader" ]
+ENTRYPOINT [ "./manage-tModLoaderServer.sh", "docker", "--folder", "/home/tml/.local/share/Terraria/tModLoader" ]
