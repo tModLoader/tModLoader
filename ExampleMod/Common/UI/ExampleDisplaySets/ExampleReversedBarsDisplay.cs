@@ -53,7 +53,7 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 			int num = 16;
 			int num2 = 18;
 			int num3 = Main.screenWidth - 300 - 22 + num;
-			
+
 			Vector2 vector = new Vector2(num3 - 10, num2 + 24);
 			vector.X += (_maxSegmentCount - _hpSegmentsCount) * _panelMiddleHP.Width();
 

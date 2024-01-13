@@ -7,7 +7,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class MinionBossRelic : ModItem
 	{
 		public override void SetDefaults() {
-			// Vanilla has many useful methods like these, use them! This substitutes setting Item.createTile and Item.placeStyle aswell as setting a few values that are common across all placeable items
+			// Vanilla has many useful methods like these, use them! This substitutes setting Item.createTile and Item.placeStyle as well as setting a few values that are common across all placeable items
 			// The place style (here by default 0) is important if you decide to have more than one relic share the same tile type (more on that in the tiles' code)
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.MinionBossRelic>(), 0);
 

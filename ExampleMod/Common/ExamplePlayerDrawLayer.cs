@@ -20,7 +20,7 @@ namespace ExampleMod.Common
 			return drawInfo.drawPlayer.HeldItem?.type == ModContent.ItemType<ExampleItem>();
 
 			// If you'd like to reference another PlayerDrawLayer's visibility,
-			// you can do so by getting its instance via ModContent.GetInstance<OtherDrawLayer>(), and calling GetDefaultVisiblity on it
+			// you can do so by getting its instance via ModContent.GetInstance<OtherDrawLayer>(), and calling GetDefaultVisibility on it
 		}
 
 		// This layer will be a 'child' of the head layer, and draw before (beneath) it.

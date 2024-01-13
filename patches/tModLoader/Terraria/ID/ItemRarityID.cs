@@ -1,7 +1,12 @@
+using ReLogic.Reflection;
+
 namespace Terraria.ID;
 
 /// <summary>Enumerates the values used with Item.rare</summary>
-public static partial class ItemRarityID
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.ItemRarity)]
+#endif
+public static class ItemRarityID
 {
 	/// <summary>Minus thirteen (-13)<br/>Master: Fiery Red<br/>Flag: item.master</summary>
 	public const int Master = -13;
@@ -36,4 +41,5 @@ public static partial class ItemRarityID
 	/// <summary>Eleven (11)</summary>
 	public const int Purple = 11;
 	public const int Count = 12;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(ItemRarityID), typeof(int));
 }

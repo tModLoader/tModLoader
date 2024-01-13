@@ -98,5 +98,5 @@ public static class MusicID
 	public const short Deerclops = 90;
 	public const short Shimmer = 91;
 	public const short Count = 92;
-	public static readonly IdDictionary Search = IdDictionary.Create(typeof(MusicID), typeof(short));
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(MusicID), typeof(short)); // TML
 }

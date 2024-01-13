@@ -175,7 +175,7 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short GiantTortoise = 39;
 	/// <summary>
-	/// Behavior: Used for the wall climbing varieants of spiders, the ground variant is<br/>
+	/// Behavior: Used for the wall climbing variants of spiders, the ground variant is<br/>
 	/// Used by: <see cref="NPCID.WallCreeperWall"/>, <see cref="NPCID.JungleCreeperWall"/>, <see cref="NPCID.BlackRecluseWall"/>, <see cref="NPCID.BloodCrawlerWall"/>, <see cref="NPCID.DesertScorpionWall"/>
 	/// </summary>
 	public const short Spider = 40;

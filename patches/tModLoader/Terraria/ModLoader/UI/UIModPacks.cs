@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI;
 
 internal class UIModPacks : UIState, IHaveBackButtonCommand
 {
-	internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
+	internal static readonly Regex ModPackRegex = new(@"(?:[^a-zA-Z0-9_.-]+)|(?:^(con|prn|aux|nul|com[1-9]|lpt[1-9])$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 	internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
 
 	private UIList _modPacks;
@@ -155,10 +155,10 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	}
 
 	internal static string SanitizeModpackName(string name)
-		=> Regex.Replace(name, MODPACK_REGEX, string.Empty, RegexOptions.Compiled);
+		=> ModPackRegex.Replace(name, string.Empty);
 
 	internal static bool IsValidModpackName(string name)
-		=> !Regex.Match(name, MODPACK_REGEX, RegexOptions.Compiled).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+		=> !ModPackRegex.Match(name).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
 
 	public override void OnDeactivate()
 	{

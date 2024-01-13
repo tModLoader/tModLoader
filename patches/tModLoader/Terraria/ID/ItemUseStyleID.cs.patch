@@ -1,14 +1,18 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
-@@ -1,20 +_,61 @@
+@@ -1,20 +_,67 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
--public class ItemUseStyleID
 +/// <summary>
 +/// Assign <see cref="Item.useStyle"/> to one of these to give your item an animation while in use. The <see href="https://terraria.wiki.gg/wiki/Use_Style_IDs">Use Style IDs wiki page</see> has examples and animations of each of these use styles.
 +/// <br/> If none of these animations match what you want, consider making the animation a behavior of a held projectile or use the <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
 +/// </summary>
-+public partial class ItemUseStyleID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.ItemUseStyle)]
++#endif
+ public class ItemUseStyleID
  {
  	public const int None = 0;
 +	/// <summary>Item is swung in an overhead arch.<br/>Used for many sword weapons, block placement, etc.</summary>
@@ -23,7 +27,7 @@
  	public const int HoldUp = 4;
 +	/// <summary>
 +	/// Item is held in front of player pointing towards mouse. Item sprite should be oriented horizontally with handle at left and muzzle end at right. Set <c><see cref="Item.staff"/>[Type] = true;</c> in SetStaticDefaults if the weapon sprite is oriented like a staff (handle at bottom left, end at top right).
-+	/// <br/> Used by items such as guns, spellbooks, flails, yoyos, and spears
++	/// <br/> Used by items such as guns, spell books, flails, yoyos, and spears
 +	/// </summary>
  	public const int Shoot = 5;
 +	/// <summary>
@@ -40,7 +44,7 @@
  	public const int GolfPlay = 8;
 +	/// <summary>
 +	/// Item is brought in front of player and rotated towards player.
-+	/// <br/> Used by potions, drings, flasks, and hair dyes.
++	/// <br/> Used by potions, drinks, flasks, and hair dyes.
 +	/// </summary>
  	public const int DrinkLiquid = 9;
  	public const int HiddenAnimation = 10;
@@ -53,8 +57,8 @@
 +	/// </summary>
  	public const int Guitar = 12;
 +	/// <summary>
-+	/// Item is thurst in any direction towards the mouse.
-+	/// Used by shortswords
++	/// Item is thrust in any direction towards the mouse.
++	/// Used by Shortswords
 +	/// </summary>
  	public const int Rapier = 13;
 +	/// <summary>
@@ -62,4 +66,5 @@
 +	/// <br/> Used by Nightglow.
 +	/// </summary>
  	public const int RaiseLamp = 14;
++	public static readonly IdDictionary Search = IdDictionary.Create<ItemUseStyleID, int>(); // TML
  }

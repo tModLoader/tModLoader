@@ -1,16 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/TorchID.cs
 +++ src/tModLoader/Terraria/ID/TorchID.cs
-@@ -1,10 +_,14 @@
+@@ -1,10 +_,18 @@
 +#if !TMLCODEASSIST
  using System.Runtime.InteropServices;
  using Microsoft.Xna.Framework;
 +#endif
 +
++using ReLogic.Reflection;
  
  namespace Terraria.ID;
  
--public static class TorchID
-+public static partial class TorchID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Torch)]
++#endif
+ public static class TorchID
  {
 +#if !TMLCODEASSIST
  	private interface ITorchLightProvider
@@ -24,9 +27,11 @@
  	public const short Torch = 0;
  	public const short Blue = 1;
  	public const short Red = 2;
-@@ -123,6 +_,7 @@
+@@ -122,7 +_,9 @@
+ 	public const short Mushroom = 22;
  	public const short Shimmer = 23;
  	public static readonly short Count = 24;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(TorchID), typeof(short)); // TML
  
 +#if !TMLCODEASSIST
  	public static void Initialize()

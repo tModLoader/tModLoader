@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using ReLogic.Reflection;
@@ -14,19 +15,17 @@ partial class IDTypeDiagnosticAnalyzer
 		in IdDictionary Constants
 	);
 
-	private static ImmutableDictionary<string, IDSet> idSets;
-	private static ImmutableDictionary<string, string> idSetNameByFullName;
+	private static readonly ImmutableDictionary<string, IDSet> idSets;
 
-	private static void PopulateIDSets()
+	static IDTypeDiagnosticAnalyzer()
 	{
-		var idSets = ImmutableDictionary.CreateBuilder<string, IDSet>();
-		var idSetNameByFullName = ImmutableDictionary.CreateBuilder<string, string>();
+		var builder = ImmutableDictionary.CreateBuilder<string, IDSet>();
 
 		foreach (var idType in typeof(ItemID).Assembly.GetExportedTypes().Where(static x => x.Namespace.StartsWith("Terraria.ID"))) {
-			var associatedNameAttribute = idType.GetCustomAttribute(typeof(AssociatedNameAttribute), false);
+			var associatedName = idType.GetCustomAttribute(typeof(AssociatedNameAttribute), false);
 			var searchDictionary = idType.GetField("Search");
 
-			if (associatedNameAttribute == null) {
+			if (associatedName == null) {
 				continue;
 			}
 
@@ -34,13 +33,14 @@ partial class IDTypeDiagnosticAnalyzer
 				continue;
 			}
 
-			string associatedName = ((AssociatedNameAttribute)associatedNameAttribute).Name;
-
-			idSets.Add(associatedName, new(idType.FullName, idSet));
-			idSetNameByFullName.Add(idType.FullName.Replace('+', '.'), associatedName);
+			builder.Add(((AssociatedNameAttribute)associatedName).Name, new(GetQualifiedName(idType), idSet));
 		}
 
-		IDTypeDiagnosticAnalyzer.idSets = idSets.ToImmutable();
-		IDTypeDiagnosticAnalyzer.idSetNameByFullName = idSetNameByFullName.ToImmutable();
+		idSets = builder.ToImmutable();
+
+		static string GetQualifiedName(Type type)
+		{
+			return type.FullName.Replace('+', '.');
+		}
 	}
 }

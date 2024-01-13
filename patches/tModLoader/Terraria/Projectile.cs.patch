@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,320 @@
+@@ -66,76 +_,321 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -30,18 +30,19 @@
  	public bool netImportant;
 +
 +	/// <summary>
-+	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the <see cref="ProjectileID.WoodenArrowFriendly"/> projectile, it will sometimes drop the <see cref="ItemID.WoodenArrow"/>  item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches.
-+	/// <br/> In <see cref="ModProjectile.OnKill(int)"/>, check this and <see cref="owner"/> to decide if the item should drop: <code>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</code> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
-+	/// <br/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible.
-+	/// <br/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
-+	/// <br/> Defaults to <see langword="false"/>.
++	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this, provided that the projectile is programmed to drop the item. For example, if you shoot the <see cref="ProjectileID.PaperAirplaneA"/> projectile, it will always drop the <see cref="ItemID.PaperAirplaneA"/> item. If your weapon shoots multiple recoverable projectiles for 1 ammo, you might want to consider setting this field to prevent infinite ammo exploits. Make sure to set this for any situation where a potentially recoverable ammo is spawned by something other than the player, such as traps and Town NPC.
++	/// <para/> To implement recoverable ammo item drops, in <see cref="ModProjectile.OnKill(int)"/> check this, <see cref="owner"/>, and optionally a random chance to decide if the item should drop: <c>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</c> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
++	/// <para/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon or source spawning the projectile decides if the ammo item will spawn, which is more compatible.
++	/// <para/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noDropItem;
  	public static int maxAI = 3;
  	public bool counterweight;
 +
 +	/// <summary>
-+	/// Scales the projectile drawing, but not the hitbox, making this not suitable for affecting hitbox. Avoid large values.
++	/// Scales how large the projectile will be drawn. Will also affect the hitbox (<see cref="Entity.width"/>, <see cref="Entity.height"/>) if assigned in SetDefaults. If changed elsewhere it will not affect the hitbox, so that will have to be adjusted manually via code in that situation if needed. <para/>
++	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(ref Color)"/>.<para/>
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -1045,7 +1046,7 @@
  					if (!player3.immune)
  						StatusPvP(m);
  
-@@ -11207,10 +_,12 @@
+@@ -11207,10 +_,14 @@
  			case 919:
  			case 923:
  			case 924:
@@ -1053,18 +1054,14 @@
  				num49 = 1;
  				break;
  		}
++		if (ModProjectile != null)
++			num49 = ModProjectile.CooldownSlot;
  
 +		// Extra patch context.
  		int myPlayer = Main.myPlayer;
  		bool flag28 = Main.player[myPlayer].active && !Main.player[myPlayer].dead && (!Main.player[myPlayer].immune || num49 != -1);
  		if (flag28 && type == 281)
-@@ -11219,13 +_,21 @@
- 		if (Main.getGoodWorld && type == 281)
- 			flag28 = true;
- 
-+		if (ModProjectile != null)
-+			num49 = ModProjectile.CooldownSlot;
-+
+@@ -11222,10 +_,15 @@
  		if (!flag28 || !Colliding(rectangle, Main.player[myPlayer].getRect()))
  			return;
  
@@ -1205,7 +1202,7 @@
 +					if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
 +						velocity = Collision.AnyCollisionWithSpecificTiles(vector2, base.velocity, num2, num3, TileID.Sets.Falling, evenActuated: true);
 +
-+					//TML: This section was rewriten above so it is affected by ProjectileLoader.TileCollideStyle
++					//TML: This section was rewritten above so it is affected by ProjectileLoader.TileCollideStyle
 +					/*
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);

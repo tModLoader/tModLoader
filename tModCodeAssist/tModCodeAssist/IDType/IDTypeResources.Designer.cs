@@ -61,33 +61,6 @@ namespace tModCodeAssist.IDType {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D.
-        /// </summary>
-        internal static string BadDescription {
-            get {
-                return ResourceManager.GetString("BadDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to E.
-        /// </summary>
-        internal static string BadMessageFormat {
-            get {
-                return ResourceManager.GetString("BadMessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to F.
-        /// </summary>
-        internal static string BadTitle {
-            get {
-                return ResourceManager.GetString("BadTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to C.
         /// </summary>
         internal static string Description {

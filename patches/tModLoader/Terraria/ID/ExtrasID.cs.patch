@@ -1,10 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/ExtrasID.cs
 +++ src/tModLoader/Terraria/ID/ExtrasID.cs
-@@ -1,6 +_,6 @@
+@@ -1,5 +_,10 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
--public class ExtrasID
-+public partial class ExtrasID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Extras)]
++#endif
+ public class ExtrasID
  {
  	public const short BrainScrambler = 0;
- 	public const short Raygun = 1;
+@@ -269,4 +_,5 @@
+ 	public const short GuideShimmerFrontal = 264;
+ 	public const short TravellingMerchantShimmerFrontal = 265;
+ 	public static readonly short Count = 266;
++	public static readonly IdDictionary Search = IdDictionary.Create<ExtrasID, short>(); // TML
+ }

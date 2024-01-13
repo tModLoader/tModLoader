@@ -8,12 +8,11 @@
  using System.Security.Cryptography;
  using System.Text;
  using Microsoft.Xna.Framework;
-@@ -28,6 +_,11 @@
+@@ -28,6 +_,10 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Annotations;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
@@ -150,7 +149,7 @@
  	public int dashDelay;
  	public int eocDash;
  	public int eocHit;
-@@ -601,6 +_,24 @@
+@@ -601,8 +_,32 @@
  	public int gem = -1;
  	public int gemCount;
  	public BitsByte ownedLargeGems;
@@ -173,8 +172,16 @@
 +	// Concrete use cases exist. Just gotta find a way to make a system for them intuitive.
 +	// - Thomas
  	public byte meleeEnchant;
++	/// <summary>
++	/// While attached to a rope or similar tile (<see cref="pulley"/>), this value represents the how close to the rope the player is. A value of 1 means the player is centered on the rope, while a value of 2 represents that the player has nudged away from the rope but is still attached. <see cref="Entity.direction"/> is used still for the players direction.
++	/// </summary>
  	public byte pulleyDir;
++	/// <summary>
++	/// If true, the player is attached to a rope or similar tile.
++	/// </summary>
  	public bool pulley;
+ 	public int pulleyFrame;
+ 	public float pulleyFrameCounter;
 @@ -612,6 +_,13 @@
  	public int snowBallLauncherInteractionCooldown;
  	public bool iceSkate;
@@ -194,7 +201,7 @@
  	public int insanityShadowCooldown;
  	public int starCloakCooldown;
 -	public bool sandStorm;
-+	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behaviour
++	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behavior
 +	private bool _sandStormLogicEnabled;
 +	public bool sandStorm {
 +		get => _sandStormLogicEnabled && GetJumpState<SandstormInABottleJump>().Active;
@@ -346,63 +353,38 @@
  	public float gfxOffY;
  	public float stepSpeed = 1f;
  	public static bool deadForGood = false;
-@@ -850,9 +_,13 @@
- 	public HitTile hitTile;
- 	public HitTile hitReplace;
- 	public int jump;
-+	[IDType(IDTypeAttribute.Armor_Head)]
+@@ -853,6 +_,7 @@
  	public int head = -1;
-+	[IDType(IDTypeAttribute.Armor_Body)]
  	public int body = -1;
-+	[IDType(IDTypeAttribute.Armor_Legs)]
  	public int legs = -1;
 +	/* sbyte -> int
  	public sbyte handon = -1;
  	public sbyte handoff = -1;
  	public sbyte back = -1;
-@@ -869,6 +_,34 @@
+@@ -869,6 +_,23 @@
  	public sbyte faceFlower = -1;
  	public sbyte balloonFront = -1;
  	public sbyte beard = -1;
 +	*/
-+	[IDType(IDTypeAttribute.Armor_HandOn)]
 +	public int handon = -1;
-+	[IDType(IDTypeAttribute.Armor_HandOff)]
 +	public int handoff = -1;
-+	[IDType(IDTypeAttribute.Armor_Back)]
 +	public int back = -1;
-+	[IDType(IDTypeAttribute.Armor_Front)]
 +	public int front = -1;
-+	[IDType(IDTypeAttribute.Armor_Shoe)]
 +	public int shoe = -1;
-+	[IDType(IDTypeAttribute.Armor_Waist)]
 +	public int waist = -1;
-+	[IDType(IDTypeAttribute.Armor_Shield)]
 +	public int shield = -1;
-+	[IDType(IDTypeAttribute.Armor_Neck)]
 +	public int neck = -1;
-+	[IDType(IDTypeAttribute.Armor_Face)]
 +	public int face = -1;
-+	[IDType(IDTypeAttribute.Armor_Balloon)]
 +	public int balloon = -1;
 +	public int backpack = -1;
 +	public int tail = -1;
 +	public int faceHead = -1;
 +	public int faceFlower = -1;
 +	public int balloonFront = -1;
-+	[IDType(IDTypeAttribute.Armor_Beard)]
 +	public int beard = -1;
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
-@@ -932,6 +_,7 @@
- 	public const int defaultHeight = 42;
- 	public bool cursorItemIconEnabled;
- 	public bool cursorItemIconReversed;
-+	[IDType(IDTypeAttribute.Item)]
- 	public int cursorItemIconID;
- 	public int cursorItemIconPush;
- 	public string cursorItemIconText = "";
 @@ -943,6 +_,11 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
@@ -682,13 +664,16 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
-@@ -1297,9 +_,21 @@
+@@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
  	public bool accDivingHelm;
 -	public bool accFlipper;
 +	//public bool accFlipper;
 +	public bool accFlipper {
++		get {
++			return GetJumpState<FlipperJump>().Enabled;
++		}
 +		set {
 +			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
 +			if (value) {
@@ -1096,16 +1081,7 @@
  			theItemWeDrop.position = Main.item[num].position;
  			Main.item[num] = theItemWeDrop;
  			theItemWeDrop = new Item();
-@@ -2910,7 +_,7 @@
- 		}
- 	}
- 
--	public int FindBuffIndex(int type)
-+	public int FindBuffIndex([IDType(IDTypeAttribute.Buff)] int type)
- 	{
- 		if (buffImmune[type])
- 			return -1;
-@@ -2923,7 +_,15 @@
+@@ -2923,6 +_,14 @@
  		return -1;
  	}
  
@@ -1117,11 +1093,9 @@
 +	/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>
 +	/// <param name="quiet">If true, the network sync message is skipped.</param>
 +	/// <param name="foodHack">unused</param>
--	public void AddBuff(int type, int timeToAdd, bool quiet = true, bool foodHack = false)
-+	public void AddBuff([IDType(IDTypeAttribute.Buff)] int type, int timeToAdd, bool quiet = true, bool foodHack = false)
+ 	public void AddBuff(int type, int timeToAdd, bool quiet = true, bool foodHack = false)
  	{
  		if (buffImmune[type])
- 			return;
 @@ -3020,6 +_,7 @@
  			if (buffType[i] != type)
  				continue;
@@ -1156,12 +1130,11 @@
  		}
  	}
  
--	public void ClearBuff(int type)
 +	/// <summary>
 +	/// Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.DelBuff(int)"/> if you only know the buff index
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
-+	public void ClearBuff([IDType(IDTypeAttribute.Buff)] int type)
+ 	public void ClearBuff(int type)
  	{
 +		//TML: Small optimization.
 +		if (type == 0)
@@ -1362,12 +1335,9 @@
  		bool flag = victim is NPC && (((NPC)victim).type == 488 || ((NPC)victim).SpawnedFromStatue);
  		if (titaniumStormCooldown > 0)
  			flag = true;
-@@ -4146,8 +_,11 @@
- 		}
- 	}
+@@ -4148,6 +_,9 @@
  
--	public void OpenPresent(int itemType)
-+	public void OpenPresent([IDType(IDTypeAttribute.Item)] int itemType)
+ 	public void OpenPresent(int itemType)
  	{
 +		DropFromItem(itemType);
 +
@@ -1382,8 +1352,7 @@
 +		*/
  	}
  
--	public void OpenLegacyPresent(int itemType)
-+	public void OpenLegacyPresent([IDType(IDTypeAttribute.Item)] int itemType)
+ 	public void OpenLegacyPresent(int itemType)
  	{
 +		DropFromItem(itemType);
 +		/*
@@ -1401,7 +1370,6 @@
 +		*/
  	}
  
--	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
 +	// Return value added by TML.
 +	/// <summary>
 +	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
@@ -1411,7 +1379,8 @@
 +	/// <param name="item"></param>
 +	/// <param name="stack"></param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
-+	public int QuickSpawnItem(IEntitySource source, [IDType(IDTypeAttribute.Item)] int item, int stack = 1)
+-	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
++	public int QuickSpawnItem(IEntitySource source, int item, int stack = 1)
  	{
  		int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
 +
@@ -1421,8 +1390,7 @@
 +		return number;
  	}
  
--	public void OpenBossBag(int type)
-+	public void OpenBossBag([IDType(IDTypeAttribute.Item)] int type)
+ 	public void OpenBossBag(int type)
  	{
 +		DropFromItem(type);
 +
@@ -1456,12 +1424,9 @@
  		if (Main.rand.Next(Main.tenthAnniversaryWorld ? 8 : 16) == 0) {
  			switch (Main.rand.Next(18)) {
  				case 0:
-@@ -5104,8 +_,11 @@
- 		}
- 	}
+@@ -5106,6 +_,9 @@
  
--	public void OpenFishingCrate(int crateItemID)
-+	public void OpenFishingCrate([IDType(IDTypeAttribute.Item)] int crateItemID)
+ 	public void OpenFishingCrate(int crateItemID)
  	{
 +		DropFromItem(crateItemID);
 +
@@ -1469,7 +1434,7 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
  		bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  		switch (crateItemID) {
-@@ -6465,13 +_,23 @@
+@@ -6465,12 +_,22 @@
  					break;
  			}
  
@@ -1481,7 +1446,6 @@
 +		*/
  	}
  
--	public int CountItem(int type, int stopCountingAt = 0)
 +	/// <summary>
 +	/// Counts the total stack of the specified item type in this players <see cref="inventory"/>. <br/>
 +	/// Does not check Void Bag. <br/>
@@ -1490,11 +1454,10 @@
 +	/// <param name="type">The item type to count</param>
 +	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
 +	/// <returns>The total amount counted</returns>
-+	public int CountItem([IDType(IDTypeAttribute.Item)] int type, int stopCountingAt = 0)
+ 	public int CountItem(int type, int stopCountingAt = 0)
  	{
  		int num = 0;
- 		for (int i = 0; i != 58; i++) {
-@@ -6485,7 +_,17 @@
+@@ -6485,6 +_,16 @@
  		return num;
  	}
  
@@ -1508,11 +1471,9 @@
 +	/// <param name="reverseOrder">If true, the search for the item will start at the end of the player inventory</param>
 +	/// <param name="includeVoidBag">If true, the void bag, if open, will also be considered for finding an item to consume</param>
 +	/// <returns>True if the item was found and attempted to be consumed</returns>
--	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
-+	public bool ConsumeItem([IDType(IDTypeAttribute.Item)] int type, bool reverseOrder = false, bool includeVoidBag = false)
+ 	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
  	{
  		int num = 0;
- 		int num2 = 58;
 @@ -6498,7 +_,9 @@
  
  		for (int i = num; i != num2; i += num3) {
@@ -1524,12 +1485,9 @@
  				if (inventory[i].stack <= 0)
  					inventory[i].SetDefaults();
  
-@@ -6522,8 +_,11 @@
- 		return false;
- 	}
+@@ -6524,6 +_,9 @@
  
--	public void OpenShadowLockbox(int boxType)
-+	public void OpenShadowLockbox([IDType(IDTypeAttribute.Item)] int boxType)
+ 	public void OpenShadowLockbox(int boxType)
  	{
 +		DropFromItem(boxType);
 +
@@ -1550,8 +1508,7 @@
 +		*/
  	}
  
--	public void OpenLockBox(int lockboxItemType)
-+	public void OpenLockBox([IDType(IDTypeAttribute.Item)] int lockboxItemType)
+ 	public void OpenLockBox(int lockboxItemType)
  	{
 +		DropFromItem(lockboxItemType);
 +
@@ -1573,8 +1530,7 @@
 +		*/
  	}
  
--	public void OpenHerbBag(int bagType)
-+	public void OpenHerbBag([IDType(IDTypeAttribute.Item)] int bagType)
+ 	public void OpenHerbBag(int bagType)
  	{
 +		DropFromItem(bagType);
 +
@@ -1594,8 +1550,7 @@
 +		*/
  	}
  
--	public void OpenCanofWorms(int sourceItemType)
-+	public void OpenCanofWorms([IDType(IDTypeAttribute.Item)] int sourceItemType)
+ 	public void OpenCanofWorms(int sourceItemType)
  	{
 +		DropFromItem(sourceItemType);
 +
@@ -1611,8 +1566,7 @@
 +		*/
  	}
  
--	public void OpenOyster(int sourceItemType)
-+	public void OpenOyster([IDType(IDTypeAttribute.Item)] int sourceItemType)
+ 	public void OpenOyster(int sourceItemType)
  	{
 +		DropFromItem(sourceItemType);
 +
@@ -1631,8 +1585,7 @@
 +		*/
  	}
  
--	public void OpenGoodieBag(int itemType)
-+	public void OpenGoodieBag([IDType(IDTypeAttribute.Item)] int itemType)
+ 	public void OpenGoodieBag(int itemType)
  	{
 +		DropFromItem(itemType);
 +
@@ -2094,26 +2047,17 @@
  	}
  
 +	// Added by tML.
--	public void RefreshInfoAccsFromItemType(int accType)
 +	public void RefreshInfoAccsFromItemType(Item item)
 +	{
 +		RefreshInfoAccsFromItemType(item.type);
 +		ItemLoader.UpdateInfoAccessory(item, this);
 +	}
 +
-+	private void RefreshInfoAccsFromItemType([IDType(IDTypeAttribute.Item)] int accType)
+-	public void RefreshInfoAccsFromItemType(int accType)
++	private void RefreshInfoAccsFromItemType(int accType)
  	{
  		if ((accType == 15 || accType == 707) && accWatch < 1)
  			accWatch = 1;
-@@ -9356,7 +_,7 @@
- 			accDreamCatcher = true;
- 	}
- 
--	public void RefreshMechanicalAccsFromItemType(int accType)
-+	public void RefreshMechanicalAccsFromItemType([IDType(IDTypeAttribute.Item)] int accType)
- 	{
- 		if (accType == 3619 || accType == 3611)
- 			InfoAccMechShowWires = true;
 @@ -9431,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
@@ -2618,15 +2562,6 @@
  	}
  
  	private void DoEyebrellaRainEffect()
-@@ -10662,7 +_,7 @@
- 		}
- 	}
- 
--	public WingStats GetWingStats(int wingID)
-+	public WingStats GetWingStats([IDType(IDTypeAttribute.Armor_Wing)] int wingID)
- 	{
- 		if (wingID <= 0 || wingID >= ArmorIDs.Wing.Sets.Stats.Length)
- 			return default(WingStats);
 @@ -10670,9 +_,13 @@
  		return ArmorIDs.Wing.Sets.Stats[wingID];
  	}
@@ -2867,11 +2802,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13287,6 +_,7 @@
+@@ -13287,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		selectItemOnNextUse = false; // Added by TML
  		ResetVisibleAccessories();
  		poisoned = false;
  		venom = false;
@@ -2885,17 +2821,24 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13538,6 +_,16 @@
+@@ -13522,6 +_,10 @@
+ 
+ 	public void SmartSelectLookup()
+ 	{
++		// Added by TML to preserve mouse item with moved call location
++		if (selectedItem == 58)
++			return;
++
+ 		if (mouseInterface)
+ 			controlTorch = false;
+ 
+@@ -13538,6 +_,12 @@
  					toolStrategy = 5;
  			}
  
 +			int modSelect = TileLoader.AutoSelect(tX, tY, this);
-+
 +			if (modSelect >= 0) {
-+				if (nonTorch == -1)
-+					nonTorch = selectedItem;
-+
-+				selectedItem = modSelect;
++				SmartSelect_SelectItem(modSelect);
 +				return;
 +			}
 +
@@ -3815,6 +3758,20 @@
  				if (controlInv) {
  					if (releaseInventory)
  						ToggleInv();
+@@ -19323,8 +_,12 @@
+ 							DpadRadial.ChangeSelection(-1);
+ 							CircularRadial.ChangeSelection(-1);
+ 						}
+-
++						/*
+ 						if (controlTorch && flag7) {
++						*/
++						// TML: minor tweak, smart select item is held with controlUse even when item cannot be used right now.
++						// In any case where nonTorch has a value, we should be setting nonTorch instead of selectedItem
++						if (nonTorch != -1 && flag7) {
+ 							if (selectedItem != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
 @@ -19357,6 +_,7 @@
  						CaptureManager.Instance.Scrolling();
  					}
@@ -3823,7 +3780,7 @@
  						if (!Main.playerInventory) {
  							HandleHotbar();
  						}
-@@ -19397,10 +_,13 @@
+@@ -19397,62 +_,66 @@
  								if (Main.focusRecipe > Main.numAvailableRecipes - 1)
  									Main.focusRecipe = Main.numAvailableRecipes - 1;
  
@@ -3837,7 +3794,77 @@
  					}
  				}
  				else {
-@@ -19467,8 +_,10 @@
+ 					bool flag10 = false;
+ 					if (!Main.drawingPlayerChat && selectedItem != 58 && !Main.editSign && !Main.editChest) {
+ 						int num15 = -1;
+-						if (Main.keyState.IsKeyDown(Keys.D1)) {
++						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
++						if (PlayerInput.Triggers.Current.Hotbar1) { 
+ 							num15 = 0;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D2)) {
++						if (PlayerInput.Triggers.Current.Hotbar2) {
+ 							num15 = 1;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D3)) {
++						if (PlayerInput.Triggers.Current.Hotbar3) {
+ 							num15 = 2;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D4)) {
++						if (PlayerInput.Triggers.Current.Hotbar4) {
+ 							num15 = 3;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D5)) {
++						if (PlayerInput.Triggers.Current.Hotbar5) {
+ 							num15 = 4;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D6)) {
++						if (PlayerInput.Triggers.Current.Hotbar6) {
+ 							num15 = 5;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D7)) {
++						if (PlayerInput.Triggers.Current.Hotbar7) {
+ 							num15 = 6;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D8)) {
++						if (PlayerInput.Triggers.Current.Hotbar8) {
+ 							num15 = 7;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D9)) {
++						if (PlayerInput.Triggers.Current.Hotbar9) {
+ 							num15 = 8;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D0)) {
++						if (PlayerInput.Triggers.Current.Hotbar10) {
+ 							num15 = 9;
+ 							flag10 = true;
+ 						}
+@@ -19461,14 +_,17 @@
+ 							if (num15 != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
++							selectItemOnNextUse = true; // Added by TML
+ 							nonTorch = num15;
+ 						}
+ 					}
  				}
  			}
  
@@ -4646,7 +4673,7 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
-@@ -27643,11 +_,14 @@
+@@ -27643,6 +_,9 @@
  		if (adjLava != oldAdjLava)
  			flag = true;
  
@@ -4656,21 +4683,6 @@
  		if (flag)
  			Recipe.FindRecipes();
  	}
- 
--	public bool IsTileTypeInInteractionRange(int targetTileType, TileReachCheckSettings settings)
-+	public bool IsTileTypeInInteractionRange([IDType(IDTypeAttribute.Tile)] int targetTileType, TileReachCheckSettings settings)
- 	{
- 		Point point = position.ToTileCoordinates();
- 		Point point2 = base.BottomRight.ToTileCoordinates();
-@@ -27673,7 +_,7 @@
- 			UpdateMiscCounter();
- 	}
- 
--	public bool IsColorfulDye(int dye)
-+	public bool IsColorfulDye([IDType(IDTypeAttribute.Item)] int dye)
- 	{
- 		if (dye > 0)
- 			return ItemID.Sets.ColorfulDyeValues[dye];
 @@ -27759,7 +_,7 @@
  			waist = 0;
  
@@ -5668,7 +5680,7 @@
  	{
  		if (!UsingBiomeTorches || style != 0)
  			return style;
-@@ -31011,10 +_,16 @@
+@@ -31011,6 +_,12 @@
  		else if (ZoneDesert && Main.remixWorld)
  			style = 16;
  
@@ -5681,11 +5693,6 @@
  		return style;
  	}
  
--	public int BiomeTorchHoldStyle(int style)
-+	public int BiomeTorchHoldStyle([IDType(IDTypeAttribute.Torch)] int style)
- 	{
- 		if (!UsingBiomeTorches || style != 8)
- 			return style;
 @@ -31044,10 +_,17 @@
  		else if (ZoneDesert && Main.remixWorld)
  			style = 4383;
@@ -5704,7 +5711,7 @@
  	{
  		if (!UsingBiomeTorches || style != 0)
  			return style;
-@@ -31077,10 +_,16 @@
+@@ -31077,6 +_,12 @@
  		else if (ZoneDesert && Main.remixWorld)
  			style = 8;
  
@@ -5717,11 +5724,6 @@
  		return style;
  	}
  
--	public int BiomeCampfireHoldStyle(int itemType)
-+	public int BiomeCampfireHoldStyle([IDType(IDTypeAttribute.Item)] int itemType)
- 	{
- 		if (!UsingBiomeTorches || itemType != 966)
- 			return itemType;
 @@ -31110,6 +_,10 @@
  		else if (ZoneDesert && Main.remixWorld)
  			itemType = 4689;
@@ -5753,6 +5755,17 @@
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
  			}
+@@ -31729,7 +_,10 @@
+ 		else if (inventory[selectedItem].createTile == 275 || inventory[selectedItem].createTile == 276 || inventory[selectedItem].createTile == 277) {
+ 			canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 51 || inventory[selectedItem].createTile == 330 || inventory[selectedItem].createTile == 331 || inventory[selectedItem].createTile == 332 || inventory[selectedItem].createTile == 333 || inventory[selectedItem].createTile == 336 || inventory[selectedItem].createTile == 340 || inventory[selectedItem].createTile == 342 || inventory[selectedItem].createTile == 341 || inventory[selectedItem].createTile == 343 || inventory[selectedItem].createTile == 344 || inventory[selectedItem].createTile == 379 || inventory[selectedItem].createTile == 351) {
++		*/
++		else if (TileID.Sets.CanPlaceNextToNonSolidTile[inventory[selectedItem].createTile]) {
+ 			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
+ 				canPlace = true;
+ 		}
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
@@ -5815,15 +5828,41 @@
  		if (num8 > 0)
  			DropItemFromExtractinator(num8, num9);
  	}
-@@ -32826,7 +_,7 @@
- 		Projectile.NewProjectile(GetProjectileSource_Item(HeldItem), num, num2, num3, num4, 321, dmg, kb, whoAmI, npcIndex);
+@@ -32782,8 +_,16 @@
+ 			NetMessage.SendData(21, -1, -1, null, number, 1f);
  	}
  
--	public void PutItemInInventoryFromItemUsage(int type, int theSelectedItem = -1)
-+	public void PutItemInInventoryFromItemUsage([IDType(IDTypeAttribute.Item)] int type, int theSelectedItem = -1)
++	/// <summary>
++	/// Changes the player's direction (<see cref="Entity.direction"/>) while adjusting arm and item rotations to be consistent. Will also account for <see cref="pulley"/> and <see cref="pulleyDir"/>. The player direction change will be prevented if the player is on a rope but there isn't space for the player to face the new direction.
++	/// </summary>
++	/// <param name="dir"></param>
+ 	public void ChangeDir(int dir)
  	{
- 		for (int i = 0; i < 58; i++) {
- 			Item item = inventory[i];
++		// added by TML, forward port from 1.4.5
++		if (dir == direction)
++			return;
++
+ 		if (!pulley || pulleyDir != 2) {
+ 			direction = dir;
+ 		}
+@@ -32800,7 +_,17 @@
+ 				position.X = num;
+ 				direction = dir;
+ 			}
++			// added by TML, forward port from 1.4.5
++			else {
++				return;
++			}
+ 		}
++
++		// Added by TML, forward port from 1.4.5
++		compositeBackArm.rotation *= -1;
++		compositeFrontArm.rotation *= -1;
++		itemRotation *= -1;
++		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
+ 	}
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
@@ -5937,15 +5976,6 @@
  				if (bank4.item[j].stack <= 0)
  					bank4.item[j].SetDefaults();
  
-@@ -33176,7 +_,7 @@
- 		return true;
- 	}
- 
--	public Rectangle GetItemDrawFrame(int type)
-+	public Rectangle GetItemDrawFrame([IDType(IDTypeAttribute.Item)] int type)
- 	{
- 		if (Main.dedServ)
- 			return Rectangle.Empty;
 @@ -33191,12 +_,21 @@
  		return TextureAssets.Item[type].Frame();
  	}
@@ -5997,7 +6027,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,59 @@
+@@ -33268,6 +_,70 @@
  			}
  		}
  
@@ -6051,8 +6081,19 @@
 +		ReuseDelayAndAnimationStart:
 +
 +		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (selectedItem != 58)
++		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
++			selectItemOnNextUse = false;
++
++			int oldSelect = selectedItem;
 +			SmartSelectLookup();
++			if (selectedItem != oldSelect) {
++				item = inventory[selectedItem];
++				// TML feature, allow the item to be instantly used
++				releaseUseItem = true;
++				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
++				itemTime = itemTimeMax = 0;
++			}
++		}
 +
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
@@ -7436,7 +7477,7 @@
 +	/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
 +	/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
 +	/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
-+	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, [IDType(IDTypeAttribute.Projectile)] int projToShoot)
++	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot)
 +	{
 +		Item sItem = weapon;
 +		Item item = ammo;
@@ -7555,15 +7596,6 @@
  			}
  			else {
  				bool flag = Main.tile[x, y].active();
-@@ -41224,7 +_,7 @@
- 		return false;
- 	}
- 
--	public bool isNearNPC(int type, float range = -1f)
-+	public bool isNearNPC([IDType(IDTypeAttribute.NPC)] int type, float range = -1f)
- 	{
- 		if (range == -1f)
- 			range = NPC.sWidth;
 @@ -41260,7 +_,14 @@
  		if (Main.tileNoFail[tileTarget.type])
  			num = 100;
@@ -7818,56 +7850,67 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,52 @@
+@@ -41979,11 +_,32 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
++		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Moved to the bottom
++		// Moved to SavePlayerFile_Write
 +		/*
  		if (FileUtilities.Exists(path, isCloudSave))
  			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +		*/
++
++		PlayerLoader.PreSavePlayer(player);
++		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
++		PlayerLoader.PostSavePlayer(player);
++
++		TagCompound tplrData = PlayerIO.SaveData(player);
++
++		SavePlayerFile_Write(playerFile, plrData, tplrData);
++	}
++
++	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
++	{
++		var player = playerFile.Player;
  
  		RijndaelManaged rijndaelManaged = new RijndaelManaged();
-+
 +		/*
  		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
 +		*/
 +		using Stream stream = new MemoryStream(2000);
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
-+
-+		PlayerLoader.PreSavePlayer(player);
-+
  		binaryWriter.Write(279);
- 		playerFile.Metadata.Write(binaryWriter);
- 		Serialize(playerFile, player, binaryWriter);
+@@ -41992,8 +_,30 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
 +
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Replaced with FileUtilities.WriteAllBytes at the bottom
++		// Replaced with FileUtilities.WriteAllBytes in SavePlayerFile_Write
 +		/*
  		if (isCloudSave && SocialAPI.Cloud != null)
  			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +		*/
 +
-+		byte[] bytes = ((MemoryStream)stream).ToArray();
++		return ((MemoryStream)stream).ToArray();
++	}
 +
-+		PlayerLoader.PostSavePlayer(player); // For native data only
-+
-+		//TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		var tag = PlayerIO.SaveData(player);
++	private static void SavePlayerFile_Write(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
++	{
++		string path = playerFile.Path;
++		bool isCloudSave = playerFile.IsCloudSave;
++		if (string.IsNullOrEmpty(path))
++			return;
 +
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+		FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
-+
-+		PlayerIO.Save(tag, path, isCloudSave);
++		FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
++		PlayerIO.Save(tplrData, path, isCloudSave);
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
@@ -7995,8 +8038,19 @@
  			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
-@@ -42272,6 +_,10 @@
+@@ -42270,12 +_,28 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
++		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
++		var tplrData = PlayerIO.ReadDataBytes(playerPath, cloudSave);
++		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
++	}
++
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
++	{
++		string playerPath = playerFileData.Path;
++
  		Player player = new Player();
  		bool gotToReadName = false;
 +
@@ -8006,6 +8060,22 @@
  		try {
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
  			rijndaelManaged.Padding = PaddingMode.None;
++			/*
+ 			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			*/
++			using (MemoryStream stream = new MemoryStream(plrData)) {
+ 				using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
+ 				using BinaryReader binaryReader = new BinaryReader(input);
+ 				int num = binaryReader.ReadInt32();
+@@ -42291,7 +_,7 @@
+ 					return playerFileData;
+ 				}
+ 
+-				Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
++				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName); // Added tplrData argument
+ 			}
+ 
+ 			player.PlayerFrame();
 @@ -42299,6 +_,9 @@
  			playerFileData.Player = player;
  			return playerFileData;
@@ -8016,28 +8086,36 @@
  		catch {
  		}
  
-@@ -42322,12 +_,20 @@
+@@ -42322,8 +_,28 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
 +		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
  		return player;
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, tplrData);
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, byte[] tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, TagIO.FromStream(tplrData.ToMemoryStream()));
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
  	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
- 	{
-+		if (!PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
-+			tag = null;
-+
-+		Deserialize(data, newPlayer, fileIO, tag, release, out gotToReadName);
-+	}
-+
-+	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
-+	{
- 		gotToReadName = false;
- 		newPlayer.name = fileIO.ReadString();
- 		gotToReadName = true;
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
@@ -8055,16 +8133,17 @@
  
  		if (release >= 125)
  			newPlayer.extraAccessory = fileIO.ReadBoolean();
-@@ -42795,6 +_,9 @@
+@@ -42795,7 +_,10 @@
  			}
  		}
  
-+		if (modData != null)
-+			PlayerIO.Load(newPlayer, modData);
-+
++		// Moved to the tplr variants of Deserialize, after modded data is read
++		/*
  		LoadPlayer_LastMinuteFixes(newPlayer);
++		*/
  	}
  
+ 	private static void AdjustRespawnTimerForWorldJoining(Player newPlayer)
 @@ -42834,7 +_,7 @@
  	{
  		for (int i = 3; i < 10; i++) {
@@ -8152,11 +8231,10 @@
  			}
  
  			return playerFileData;
-@@ -42907,7 +_,14 @@
+@@ -42907,6 +_,13 @@
  		return GameShaders.Hair.GetColor(hairDye, this, useLighting ? color : Color.White);
  	}
  
--	public bool HasItem(int type)
 +	/// <summary>
 +	/// Checks if the player has the specified item in their <see cref="inventory"/>. <br/>
 +	/// Does not check Void Bag. <br/>
@@ -8164,70 +8242,29 @@
 +	/// </summary>
 +	/// <param name="type">The item type to count</param>
 +	/// <returns>True if the player has the item</returns>
-+	public bool HasItem([IDType(IDTypeAttribute.Item)] int type)
+ 	public bool HasItem(int type)
  	{
  		for (int i = 0; i < 58; i++) {
- 			if (type == inventory[i].type && inventory[i].stack > 0)
-@@ -42917,7 +_,10 @@
+@@ -42917,6 +_,9 @@
  		return false;
  	}
  
--	public bool HasItem(int type, Item[] collection)
 +	/// <summary>
 +	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instead. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
 +	/// </summary>
-+	public bool HasItem([IDType(IDTypeAttribute.Item)] int type, Item[] collection)
+ 	public bool HasItem(int type, Item[] collection)
  	{
  		for (int i = 0; i < collection.Length; i++) {
- 			if (type == collection[i].type && collection[i].stack > 0)
-@@ -42927,7 +_,10 @@
+@@ -42927,6 +_,9 @@
  		return false;
  	}
  
--	public bool HasItemInInventoryOrOpenVoidBag(int type)
 +	/// <summary>
 +	/// Similar to <see cref="HasItem(int)"/>, but also checks the Void Bag.
 +	/// </summary>
-+	public bool HasItemInInventoryOrOpenVoidBag([IDType(IDTypeAttribute.Item)] int type)
+ 	public bool HasItemInInventoryOrOpenVoidBag(int type)
  	{
  		if (!HasItem(type)) {
- 			if (useVoidBag())
-@@ -42939,7 +_,7 @@
- 		return true;
- 	}
- 
--	public bool HasItemInAnyInventory(int type)
-+	public bool HasItemInAnyInventory([IDType(IDTypeAttribute.Item)] int type)
- 	{
- 		if (HasItem(type, inventory))
- 			return true;
-@@ -42971,7 +_,7 @@
- 		return false;
- 	}
- 
--	public int FindItem(int netid)
-+	public int FindItem([IDType(IDTypeAttribute.Item)] int netid)
- 	{
- 		for (int i = 0; i < 58; i++) {
- 			if (netid == inventory[i].netID && inventory[i].stack > 0)
-@@ -43001,7 +_,7 @@
- 		return -1;
- 	}
- 
--	public int FindItem(int type, Item[] collection)
-+	public int FindItem([IDType(IDTypeAttribute.Item)] int type, Item[] collection)
- 	{
- 		for (int i = 0; i < collection.Length; i++) {
- 			if (inventory[i].stack > 0 && type == collection[i].type)
-@@ -43011,7 +_,7 @@
- 		return -1;
- 	}
- 
--	public int FindItemInInventoryOrOpenVoidBag(int type, out bool inVoidBag)
-+	public int FindItemInInventoryOrOpenVoidBag([IDType(IDTypeAttribute.Item)] int type, out bool inVoidBag)
- 	{
- 		inVoidBag = false;
- 		int num = FindItem(type);
 @@ -43028,6 +_,17 @@
  
  	public Player()
@@ -8474,12 +8511,3 @@
  		IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  		_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  	}
-@@ -44138,7 +_,7 @@
- 		}
- 	}
- 
--	public void NebulaLevelup(int type)
-+	public void NebulaLevelup([IDType(IDTypeAttribute.Buff)] int type)
- 	{
- 		if (whoAmI != Main.myPlayer)
- 			return;

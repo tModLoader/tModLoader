@@ -31,7 +31,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 	public int AIType { get; set; }
 
-	/// <summary> Determines which (<see cref="ImmunityCooldownID"/>) to use when this projectile damages a player. Defaults to -1. </summary>
+	/// <summary> Determines which <see cref="ImmunityCooldownID"/> to use when this projectile damages a player. Defaults to -1 (<see cref="ImmunityCooldownID.General"/>). </summary>
 	public int CooldownSlot { get; set; } = -1;
 
 	/// <summary> How far to the right of its position this projectile should be drawn. Defaults to 0. </summary>

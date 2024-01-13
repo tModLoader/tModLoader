@@ -1,10 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/TeleportationStyleID.cs
 +++ src/tModLoader/Terraria/ID/TeleportationStyleID.cs
-@@ -1,6 +_,6 @@
+@@ -1,5 +_,10 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
--public static class TeleportationStyleID
-+public static partial class TeleportationStyleID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.TeleportationStyle)]
++#endif
+ public static class TeleportationStyleID
  {
  	public const int TeleporterTile = 0;
- 	public const int RodOfDiscord = 1;
+@@ -16,4 +_,5 @@
+ 	public const int ShellphoneSpawn = 11;
+ 	public const int ShimmerTownNPCTransform = 12;
+ 	public const int MysticFrog = 13;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(TeleportationStyleID), typeof(int)); // TML
+ }

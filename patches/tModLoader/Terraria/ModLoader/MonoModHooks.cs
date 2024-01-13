@@ -118,7 +118,10 @@ public static class MonoModHooks
 						ilHook.Undo();
 			}
 		}
+	}
 
+	internal static void Clear()
+	{
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
 		_hookCache.Clear();

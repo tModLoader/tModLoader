@@ -244,7 +244,7 @@ public static partial class Program
 			SavePath = customSavePath;
 		}
 		else if (File.Exists("savehere.txt")) {
-			// Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
+			// Fallback for unresolvable antivirus/onedrive issues. Also makes the game portable I guess.
 			SavePathShared = ReleaseFolder;
 			SavePath = SaveFolderName;
 		}
@@ -296,7 +296,7 @@ public static partial class Program
 		    }
 		}
 		catch (Exception ex) {
-			ErrorReporting.FatalExit("An unexpected error occured during tML startup", ex);
+			ErrorReporting.FatalExit("An unexpected error occurred during tML startup", ex);
 		}
 	}
 

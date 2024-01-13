@@ -1,14 +1,18 @@
 --- src/TerrariaNetCore/Terraria/ID/PrefixID.cs
 +++ src/tModLoader/Terraria/ID/PrefixID.cs
-@@ -1,12 +_,23 @@
+@@ -1,12 +_,28 @@
++using ReLogic.Reflection;
++
 +#if !TMLCODEASSIST
 +using Terraria.ModLoader;
 +#endif
 +
  namespace Terraria.ID;
  
--public class PrefixID
-+public partial class PrefixID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Prefix)]
++#endif
+ public class PrefixID
  {
 +#if !TMLCODEASSIST
  	public static class Sets
@@ -26,3 +30,11 @@
  
  	public const int Large = 1;
  	public const int Massive = 2;
+@@ -93,4 +_,7 @@
+ 	public const int Mythical = 83;
+ 	public const int Legendary2 = 84;
+ 	public static readonly int Count = 85;
++
++	// Added by TML.
++	public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();
+ }

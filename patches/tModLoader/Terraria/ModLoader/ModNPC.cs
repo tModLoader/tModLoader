@@ -76,7 +76,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public int BannerItem { get; set; }
 
 	//TODO: Find a better solution in the future.
-	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
+	/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary.<para/>Vanilla biomes are added to the bestiary via <see cref="SetBestiary(BestiaryDatabase, BestiaryEntry)"/> directly.</summary>
 	public int[] SpawnModBiomes { get; set; } = new int[0];
 
 	/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
@@ -383,7 +383,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this NPC can hit the given player. Return false to block this NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.
+	/// Allows you to determine whether this NPC can hit the given player. Return false to block this NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters (<see cref="ImmunityCooldownID"/>) to use, and defaults to -1 (<see cref="ImmunityCooldownID.General"/>).
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="cooldownSlot"></param>

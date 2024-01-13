@@ -1,17 +1,20 @@
 --- src/TerrariaNetCore/Terraria/ID/RecipeGroupID.cs
 +++ src/tModLoader/Terraria/ID/RecipeGroupID.cs
-@@ -1,6 +_,10 @@
+@@ -1,5 +_,14 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
--public class RecipeGroupID
 +/// <summary>
 +/// Contains recipe group ids suitable for use in <see cref="Recipe.AddRecipeGroup(int, int)"/>.
 +/// <br/> Note that FishForDinner and GoldenCritter are actually unused and won't work. Also note that the ID values shown are incorrect.
 +/// </summary>
-+public partial class RecipeGroupID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.RecipeGroup)]
++#endif
+ public class RecipeGroupID
  {
  	public static int Birds = 0;
- 	public static int Scorpions = 1;
 @@ -10,7 +_,9 @@
  	public static int Butterflies = 5;
  	public static int Fireflies = 6;
@@ -22,3 +25,9 @@
  	public static int GoldenCritter = 9;
  	public static int Dragonflies = 10;
  	public static int Turtles = 11;
+@@ -28,4 +_,5 @@
+ 	public static int SandstormBalloons = 23;
+ 	public static int CritterGuides = 24;
+ 	public static int NatureGuides = 25;
++	public static readonly IdDictionary Search = IdDictionary.Create<RecipeGroupID, int>(); // TML
+ }

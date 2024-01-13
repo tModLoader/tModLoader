@@ -10,9 +10,9 @@ public abstract class AbstractDiagnosticAnalyzer : DiagnosticAnalyzer
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
 
-	protected AbstractDiagnosticAnalyzer(params DiagnosticDescriptor[] diagnosticDescriptors)
+	protected AbstractDiagnosticAnalyzer(DiagnosticDescriptor diagnosticDescriptor)
 	{
-		SupportedDiagnostics = ImmutableArray.Create(diagnosticDescriptors);
+		SupportedDiagnostics = ImmutableArray.Create(diagnosticDescriptor);
 	}
 
 	public sealed override void Initialize(AnalysisContext context)

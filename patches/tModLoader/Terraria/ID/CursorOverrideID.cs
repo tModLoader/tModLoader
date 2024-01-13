@@ -1,10 +1,15 @@
+using ReLogic.Reflection;
+
 #if !TMLCODEASSIST
 using Terraria.GameInput;
 #endif
 
 namespace Terraria.ID;
 
-public partial class CursorOverrideID
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.CursorOverride)]
+#endif
+public class CursorOverrideID
 {
 	/// <summary>
 	/// Default cursor
@@ -82,4 +87,5 @@ public partial class CursorOverrideID
 	/// <br>When using the gamepad in smart cursor mode, the cursor that is relatively far away from the player</br>
 	/// </summary>
 	public const short GamepadSmartCursorAlt = 17;
+	public static readonly IdDictionary Search = IdDictionary.Create<CursorOverrideID, short>(); // TML
 }

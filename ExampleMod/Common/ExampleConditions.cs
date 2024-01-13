@@ -1,7 +1,5 @@
 ﻿using ExampleMod.Content.Biomes;
-using Terraria.Localization;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace ExampleMod.Common
 {

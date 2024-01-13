@@ -31,7 +31,7 @@
  						break;
  				}
  
-@@ -100,10 +_,12 @@
+@@ -100,10 +_,13 @@
  
  	public LegacyAudioSystem()
  	{
@@ -40,6 +40,7 @@
 +		var contentManager = (TMLContentManager)Main.instance.Content;
 +
 +		Engine = new AudioEngine(contentManager.GetPath("TerrariaMusic.xgs"));
++		FNALogging.PostAudioInit();
 +		SoundBank = new SoundBank(Engine, contentManager.GetPath("Sound Bank.xsb"));
  		Engine.Update();
 -		WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512); //TODO, investigate history of windows looping errors with streaming wavebank from disk in FNA in Windows.

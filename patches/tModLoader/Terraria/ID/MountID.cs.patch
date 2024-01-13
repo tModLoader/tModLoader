@@ -1,14 +1,18 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,13 +_,31 @@
+@@ -1,13 +_,36 @@
++using ReLogic.Reflection;
++
 +#if !TMLCODEASSIST
 +using Terraria.ModLoader;
 +#endif
 +
  namespace Terraria.ID;
  
--public static class MountID
-+public static partial class MountID
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Mount)]
++#endif
+ public static class MountID
  {
 +#if !TMLCODEASSIST
  	public static class Sets
@@ -34,3 +38,9 @@
  
  	public const int None = -1;
  	public const int Rudolph = 0;
+@@ -65,4 +_,5 @@
+ 	public const int Wolf = 52;
+ 	public const int TerraFartMinecart = 53;
+ 	public static int Count = 54;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(MountID), typeof(int)); // TML
+ }
