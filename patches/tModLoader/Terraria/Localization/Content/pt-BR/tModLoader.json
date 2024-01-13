@@ -35,6 +35,9 @@
 		"MenuModUpdatesAvailable": "({0} {^0:atualização;atualizações} {^0:disponível;disponíveis}!)",
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		"SteamFamilyShareWarning": "Foi detectado que você está usando uma cópia do Terraria de uma biblioteca compartilhada.\nO Steam não oferece suporte ao tModLoader em uma biblioteca compartilhada.\nA solução experimental para o tModLoader de bibliotecas compartilhadas foi carregada.\nOs seguintes recursos não estão disponíveis:\n - Overlay do Steam\n - Multijogador do Steam",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
@@ -97,6 +100,7 @@
 		"AskForCommand": "Digite um comando: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Opções de Filtro",
 		"ModConfigNotification": "Notificação: ",
 		"ModConfigModConfig": "Config. do Mod",
@@ -106,6 +110,8 @@
 		"ModConfigRestoreDefaults": "Restaurar Padrões",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando ao servidor para aceitar as mudanças...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Não foi possível salvar pois as mudanças exigiriam um recarregamento",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -401,6 +407,7 @@
 		"MSManagePublished": "Gerenciar Publicados",
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Pastas de Fontes de Mod não podem ter espaços)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Criar Mod",
 		"VersionUpgrade": "LINK: Aprenda sobre a Migração de Mods para a atualização mais recente",
 		"WikiLink": "Explore o wiki",
@@ -409,6 +416,7 @@
 		"DiscordLink": "Encontre ajuda no servidor do Discord",
 		"MSPortToLatest": "Executar tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET 6. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
+		"MSNetSDKNotFound": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET 6. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
 		"DownloadNetSDK": "Baixar SDK do .NET",
 		"DevModsInSandbox": "tModLoader não consegue desenvolver mods quando executado em um sandbox (como Flatpak). Certifique-se de instalar o Steam diretamente no seu sistema.",
 
@@ -465,6 +473,8 @@
 		"MSUnloading": "Descarregando: {0}",
 		"MSFinishingResourceLoading": "Terminando o Carregamento de Recursos",
 		"MSAddingRecipes": "Adicionando Receitas...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Sem Nome",
@@ -495,6 +505,7 @@
 		// In Game UI additions
 		"slotStack": "Empilhar",
 		"slotScroll": "Rolar",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",

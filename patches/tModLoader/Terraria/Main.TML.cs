@@ -19,6 +19,8 @@ using Terraria.ModLoader.UI;
 using Terraria.Social;
 using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria;
 
@@ -45,6 +47,8 @@ public partial class Main
 	private double _partialWorldEventUpdates = 0f;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
+
+	private static readonly HttpClient client = new HttpClient();
 
 	/// <summary>
 	/// A color that cycles through the colors like Rainbow Brick does.
@@ -434,6 +438,8 @@ public partial class Main
 		return tcs.Task;
 	}
 
+	private static PosixSignalRegistration SIGINTHandler;
+	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
 		static void Handle(PosixSignalContext ctx)
@@ -443,7 +449,59 @@ public partial class Main
 			Netplay.Disconnect = true;
 		}
 
-		PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
-		PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+		SIGINTHandler = PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
+		SIGTERMHandler = PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+	}
+
+	private static string newsText = "???";
+	private static string newsURL = null;
+	private static bool newsChecked = false;
+	private static bool newsIsNew = false;
+	private static void HandleNews(Color menuColor)
+	{
+		if (menuMode == 0) {
+			if (!newsChecked) {
+				newsText = Language.GetTextValue("tModLoader.LatestNewsChecking");
+				newsChecked = true;
+				// Download latest news, save to config.json.
+				// https://partner.steamgames.com/doc/webapi/ISteamNews
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+					if (!response.IsCompletedSuccessfully || response.Exception != null) {
+						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
+						return;
+					}
+					JObject o = JObject.Parse(response.Result);
+					newsText = (string)o["appnews"]["newsitems"][0]["title"]; // No way to access specific language results in API.
+					newsURL = (string)o["appnews"]["newsitems"][0]["url"];
+					int newsTimestamp = (int)o["appnews"]["newsitems"][0]["date"];
+					if (newsTimestamp != ModLoader.ModLoader.LatestNewsTimestamp) {
+						// Latest timestamp should usually be newer, unless a news entry is deleted for some reason?
+						newsIsNew = true;
+						ModLoader.ModLoader.LatestNewsTimestamp = newsTimestamp;
+						Main.SaveSettings();
+					}
+				});
+			}
+			else {
+				string latestNewsText = Language.GetTextValue("tModLoader.LatestNews", newsText);
+				var newsScale = 1.2f;
+				if (newsIsNew) {
+					menuColor = Main.DiscoColor;
+				}
+				var newsScales = new Vector2(newsScale);
+				var newsPosition = new Vector2(screenWidth - 10f, screenHeight - 38f);
+				var newsSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, latestNewsText, newsScales);
+				var newsRect = new Rectangle((int)(newsPosition.X - newsSize.X), (int)(newsPosition.Y - newsSize.Y), (int)newsSize.X, (int)newsSize.Y);
+				bool newsMouseOver = newsRect.Contains(mouseX, mouseY);
+				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
+
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && hasFocus && newsURL != null) {
+					SoundEngine.PlaySound(SoundID.MenuOpen);
+					Utils.OpenToURL(newsURL);
+					newsIsNew = false;
+				}
+			}
+		}
 	}
 }

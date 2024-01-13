@@ -1,6 +1,9 @@
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Terraria.ModLoader.Core;
+using System.Reflection;
 
 namespace Terraria.ModLoader;
 
@@ -70,18 +73,43 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 	/// </summary>
 	public virtual bool Active() => false;
 
+	[Obsolete]
+	private string DisplayValue_Obsolete(ref Color displayColor)
+		=> DisplayValue(ref displayColor);
+
+	// Obsoleted on 2023-09-18
+	// TODO: Remove a few months after obsoletion, convert the modern DisplayValue overload back to 'abstract', and remove validation in ValidateType().
+	[Obsolete("Use the (ref Color displayColor, ref Color displayShadowColor) overload", error: true)]
+	public virtual string DisplayValue(ref Color displayColor)
+		=> throw new NotImplementedException();
+
 	/// <summary>
 	/// This is the value that will show up when viewing this display in normal play, right next to the icon.
 	/// <br/>Set <paramref name="displayColor"/> to <see cref="InactiveInfoTextColor"/> if your display value is "zero"/shows no valuable information.
 	/// </summary>
 	/// <param name="displayColor">The color the text is displayed as.</param>
 	/// <param name="displayShadowColor">The outline color text is displayed as.</param>
-	public abstract string DisplayValue(ref Color displayColor, ref Color displayShadowColor);
+	public virtual string DisplayValue(ref Color displayColor, ref Color displayShadowColor)
+		=> DisplayValue_Obsolete(ref displayColor);
 
 	public sealed override void SetupContent()
 	{
 		ModContent.Request<Texture2D>(Texture);
 		SetStaticDefaults();
+	}
+
+	private static readonly MethodInfo displayValueMethodOld = typeof(InfoDisplay).GetMethod(nameof(DisplayValue), new[] { typeof(Color).MakeByRefType() });
+	private static readonly MethodInfo displayValueMethodNew = typeof(InfoDisplay).GetMethod(nameof(DisplayValue), new[] { typeof(Color).MakeByRefType(), typeof(Color).MakeByRefType() });
+
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		var t = GetType();
+
+		if (!LoaderUtils.HasOverride(t, displayValueMethodNew) && !LoaderUtils.HasOverride(t, displayValueMethodOld)) {
+			throw new Exception($"{t} must override {nameof(DisplayValue)}.");
+		}
 	}
 
 	protected sealed override void Register()

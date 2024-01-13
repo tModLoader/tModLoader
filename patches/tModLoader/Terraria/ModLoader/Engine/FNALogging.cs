@@ -67,8 +67,11 @@ internal static class FNALogging
 	internal static void RedirectLogs()
 	{
 		FNALoggerEXT.LogInfo = (s) => {
-			if (DriverIdentifier == null && s.StartsWith("FNA3D Driver: "))
+			if (DriverIdentifier == null && s.StartsWith("FNA3D Driver: ")) {
 				DriverIdentifier = s.Substring("FNA3D Driver: ".Length);
+
+				Logging.FNA.Info($"SDL Video Diver: {SDL2.SDL.SDL_GetCurrentVideoDriver()}");
+			}
 
 			Logging.FNA.Info(s);
 		};
@@ -115,4 +118,9 @@ internal static class FNALogging
 		Logging.Terraria.Debug(sb);
 		creating = false;
 	}
-    }
+
+	internal static void PostAudioInit()
+	{
+		Logging.FNA.Info($"SDL Audio Diver: {SDL2.SDL.SDL_GetCurrentAudioDriver()}");
+	}
+}

@@ -25,6 +25,14 @@
  {
  	public static class WorldSize
  	{
+@@ -989,6 +_,7 @@
+ 		list.Add(new Point16(105, 37));
+ 		list.Add(new Point16(105, 2));
+ 		GenVars.statueList = list.ToArray();
++		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience. 
+ 	}
+ 
+ 	public static void PlaceStatueTrap(int x, int y)
 @@ -1284,7 +_,7 @@
  			}
  		}
@@ -1375,6 +1383,17 @@
  		if (type == 235)
  			Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1263);
  
+@@ -33909,7 +_,10 @@
+ 						if (Main.tile[k, num8] != null && Main.tile[k, num8].active())
+ 							num9 = Main.tile[k, num8].type;
+ 
++						/*
+ 						if (num9 != 2 && num9 != 477 && num9 != 109 && num9 != 492)
++						*/
++						if (!TileObjectData.GetTileData(488, 0).AnchorValidTiles.Contains(num9))
+ 							flag = true;
+ 
+ 						break;
 @@ -34038,6 +_,7 @@
  		if (flag2)
  			num8--;
@@ -1539,6 +1558,28 @@
  
  		switch (type) {
  			case 254:
+@@ -37029,7 +_,10 @@
+ 					flag = false;
+ 			}
+ 
++			/*
+ 			if (!SolidTile(i, superY + 1) || (Main.tile[i, superY + 1].type != 2 && Main.tile[i, superY + 1].type != 109))
++			*/
++			if (!SolidTile(i, superY + 1) || !TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[i, superY + 1].type) || TileID.Sets.Conversion.GolfGrass[Main.tile[i, superY + 1].type])
+ 				flag = false;
+ 		}
+ 
+@@ -37086,7 +_,10 @@
+ 					flag = true;
+ 			}
+ 
++			/*
+ 			if (!SolidTile(k, num + 2) || (Main.tile[k, num + 2].type != 2 && Main.tile[k, num + 2].type != 477 && Main.tile[k, num + 2].type != 492 && Main.tile[k, num + 2].type != 109))
++			*/
++			if (!SolidTile(k, num + 2) || !TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[k, num + 2].type))
+ 				flag = true;
+ 		}
+ 
 @@ -37366,12 +_,14 @@
  			return;
  
@@ -1614,6 +1655,17 @@
  
  		if (type == 548) {
  			if (num3 >= 7)
+@@ -38164,7 +_,10 @@
+ 			if (Main.tile[k, num2 + 4] == null)
+ 				Main.tile[k, num2 + 4] = new Tile();
+ 
++			/*
+ 			if (!Main.tile[k, num2 + 4].nactive() || (Main.tile[k, num2 + 4].type != 2 && Main.tile[k, num2 + 4].type != 477 && Main.tile[k, num2 + 4].type != 492 && Main.tile[k, num2 + 4].type != 109 && Main.tile[k, num2 + 4].type != 60 && Main.tile[k, num2 + 4].type != 633))
++			*/
++			if (!Main.tile[k, num2 + 4].nactive() || !TileObjectData.GetTileData(type, 0).AnchorValidTiles.Contains(Main.tile[k, num2 + 4].type))
+ 				flag = true;
+ 
+ 			if (!SolidTile(k, num2 + 4))
 @@ -38175,12 +_,14 @@
  			return;
  
@@ -2202,6 +2254,24 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(112, -1, -1, null, 1, x, y, 1f, passStyle);
  
+@@ -45397,6 +_,17 @@
+ 		fossilBreak = false;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to destroy the tile at the provided tile coordinates.<para/>
++	/// Callers can use <paramref name="fail"/>, <paramref name="effectOnly"/>, and <paramref name="noItem"/> to dictate if the intention is to not actually kill the tile, only spawn kill tile effects, and not drop items respectively. For example, worms typically use <c>fail: true, effectOnly: true</c> to spawn dust indicating the worm burrowing through the ground. <para/>
++	/// <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/> and <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> will be called to modify those values.<para/>
++	/// Note that this method will destroy a single tile and then call the tile framing code. The <paramref name="noItem"/> parameter is only relevant for 1x1 tiles, not multi-tiles. The tile framing code is what triggers multi-tiles to destroy all of their remaining tiles and drop their placement item. <see cref="GlobalTile.Drop(int, int, int)"/> must be used by the caller if the intention is to prevent item drops from a multi-tile.<para/>
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="fail">Prevents the tile from being destroyed, but still plays a hit sound</param>
++	/// <param name="effectOnly">Prevents the tile from being destroyed but still spawns hit dust and prevents the hit sound.</param>
++	/// <param name="noItem">Prevents the item from dropping. Only relevant for 1x1 tiles.</param>
+ 	public static void KillTile(int i, int j, bool fail = false, bool effectOnly = false, bool noItem = false)
+ 	{
+ 		if (i < 0 || j < 0 || i >= Main.maxTilesX || j >= Main.maxTilesY)
 @@ -45415,11 +_,15 @@
  			Main.tile[i, j - 1] = new Tile();
  

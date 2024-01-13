@@ -35,6 +35,9 @@
 		"MenuModUpdatesAvailable": "({0} {^0:Aktualizacja Moda dostępna;Aktualizacje Modów dostępne;Aktualizacji Modów dostępnych}!)",
 		"AudioNotSupported": "Nie znaleziono sprzętu audio. Wyłączenie wszystkich urządzeń audio.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
@@ -97,6 +100,7 @@
 		"AskForCommand": "Wpisz komendę: ",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		// "ModConfigFilterOptions": "Filter Options",
 		// "ModConfigNotification": "Notification: ",
 		// "ModConfigModConfig": "Mod Config",
@@ -106,6 +110,8 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -401,6 +407,7 @@
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Stwórz Moda",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		// "WikiLink": "Explore the Wiki",
@@ -409,7 +416,8 @@
 		// "DiscordLink": "Find Help on the Discord Server",
 		"MSPortToLatest": "Uruchom program tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Od wersji 1.4 tModLoadera, do tworzenia modów w Visual Studio potrzebny jest zainstalowany .NET 6 SDK. Najłatwiej można go zainstalować wraz z instalacją Visual Studio 2022.\n\nStrona wiki na GitHub projektu odnośnie migracji modów do nowej wersji tModLoadera (\"Update Migration Guide\") zawiera informacje niezbędne do przystosowania modów z wersji 1.3 do poprawnego działania na wersji 1.4.\n\nStrona zawiera również informacje o tym, jak używać programu tModPorter, który jest w stanie automatycznie przystosować większość kodu modyfikacji do wersji 1.4 tModLoadera.",
-		// "DownloadNetSDK": "Download .NET SDK",
+		"MSNetSDKNotFound": "Od wersji 1.4 tModLoadera, do tworzenia modów w Visual Studio potrzebny jest zainstalowany .NET 6 SDK. Najłatwiej można go zainstalować wraz z instalacją Visual Studio 2022.\n\nStrona wiki na GitHub projektu odnośnie migracji modów do nowej wersji tModLoadera (\"Update Migration Guide\") zawiera informacje niezbędne do przystosowania modów z wersji 1.3 do poprawnego działania na wersji 1.4.\n\nStrona zawiera również informacje o tym, jak używać programu tModPorter, który jest w stanie automatycznie przystosować większość kodu modyfikacji do wersji 1.4 tModLoadera.",
+		// "DownloadNetSDK": "Download .NET 6.0 SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
@@ -465,6 +473,8 @@
 		"MSUnloading": "Rozładowywanie: {0}",
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
 		"MSAddingRecipes": "Dodawanie przepisów...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Bez nazwy",
@@ -495,6 +505,7 @@
 		// In Game UI additions
 		"slotStack": "Tabela slotów",
 		"slotScroll": "Przewijalna lista slotów",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",
@@ -670,7 +681,7 @@
 		"InMarble": "Musi być w marmurowym biomie",
 		"InHive": "Musi być w ulu",
 		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
-		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
+		"InLihzardTemple": "Musi być w Świątyni Jaszczura"
 		// "InGraveyard": "In a Graveyard biome",
 		// "InAether": "In an Aether biome",
 		// "InShoppingForest": "When above the surface and not in another major biome",

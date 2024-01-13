@@ -45,7 +45,7 @@ namespace ExampleMod.Common.Commands
 					}
 				}
 			}
- 
+
 			if (type <= 0 || type >= ItemLoader.ItemCount)
 				throw new UsageException(string.Format("Unknown item — Must be valid name or 0 < type < {0}", ItemLoader.ItemCount));
 

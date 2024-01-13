@@ -1642,7 +1642,7 @@
  	}
  
 +	/// <summary>
-+	/// This method conviniently sets <see cref="Item.damage"/>, <see cref="Item.knockBack"/>, and <see cref="Item.crit"/>.
++	/// This method conveniently sets <see cref="Item.damage"/>, <see cref="Item.knockBack"/>, and <see cref="Item.crit"/>.
 +	/// </summary>
 +	/// <param name="dmg"></param>
 +	/// <param name="knockback"></param>

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
-	public class ExampleNPCHappiness : GlobalNPC 
+	public class ExampleNPCHappiness : GlobalNPC
 	{
 		public override void SetStaticDefaults() {
 			int examplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); // Get ExamplePerson's type

@@ -49,6 +49,7 @@ internal static class Interface
 	internal const int modConfigID = 10024;
 	internal const int createModID = 10025;
 	internal const int exitID = 10026;
+	internal const int modConfigListID = 10027;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -364,6 +365,11 @@ internal static class Interface
 		else if (Main.menuMode == modConfigID)
 		{
 			Main.MenuUI.SetState(modConfig);
+			Main.menuMode = 888;
+		}
+		else if (Main.menuMode == modConfigListID)
+		{
+			Main.MenuUI.SetState(modConfigList);
 			Main.menuMode = 888;
 		}
 		else if (Main.menuMode == exitID) {

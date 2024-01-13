@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Items.Accessories
 			// Base damage is added directly to the weapon's base damage and is affected by damage bonuses, while flat damage is applied after all other calculations.
 			// In this case, we're doing a number of things:
 			// - Adding 25% damage, additively. This is the typical "X% damage increase" that accessories use, use this one.
-			// - Adding 12% damage, multiplicatively. This effect is almost never useds in Terraria, typically you want to use the additive multiplier above. It is extremely hard to correctly balance the game with multiplicative bonuses.
+			// - Adding 12% damage, multiplicatively. This effect is almost never used in Terraria, typically you want to use the additive multiplier above. It is extremely hard to correctly balance the game with multiplicative bonuses.
 			// - Adding 4 base damage.
 			// - Adding 5 flat damage.
 			// Since we're using DamageClass.Generic, these bonuses apply to ALL damage the player deals.
