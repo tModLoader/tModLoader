@@ -567,6 +567,8 @@ internal class UIModItem : UIPanel
 				IsWrapped = true
 			};
 			_deleteModDialog.Append(_dialogText);
+
+			Interface.modsMenu.Recalculate();
 		}
 		else {
 			DeleteMod(evt, listeningElement);

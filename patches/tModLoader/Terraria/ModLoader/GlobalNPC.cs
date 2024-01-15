@@ -34,6 +34,15 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
+	/// Called after SetDefaults for NPCs with a negative <see cref="NPC.netID"/><br/>
+	/// This hook is required because <see cref="NPC.SetDefaultsFromNetId"/> only sets <see cref="NPC.netID"/> after SetDefaults<br/>
+	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but differet netID<br/>
+	/// </summary>
+	public virtual void SetDefaultsFromNetId(NPC npc)
+	{
+	}
+
+	/// <summary>
 	/// Gets called when any NPC spawns in world
 	/// </summary>
 	public virtual void OnSpawn(NPC npc, IEntitySource source)
@@ -292,7 +301,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.
+	/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters (<see cref="ImmunityCooldownID"/>) to use, and defaults to -1 (<see cref="ImmunityCooldownID.General"/>).
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
