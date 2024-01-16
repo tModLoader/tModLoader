@@ -397,7 +397,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,23 +_,96 @@
+@@ -961,23 +_,97 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -464,7 +464,7 @@
  	public int statManaMax2;
 +
 +	/// <summary>
-+	/// The rate of this player's life regeneration in health/ticks, divided by <c>120</c>.
++	/// The rate of this player's life regeneration in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs and life regeneration accessories such as <see cref="ItemID.BandofRegeneration"/>.
 +	/// <br/> For example, adding <c>10</c> to this value regenerates <c>10 / 120</c> = <c>1/6</c> health per tick, or 5 health per second.
 +	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
 +	/// <br/> This value should be subtracted from in <see cref="ModPlayer.UpdateBadLifeRegen"/> and added to in <see cref="ModPlayer.UpdateLifeRegen"/>.
@@ -475,6 +475,7 @@
 +	/// This player's accumulated life regeneration.
 +	/// <br/> If this value reaches or exceeds <c>120</c>, the player gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
 +	/// <br/> If this value reaches or exceeds <c>-120</c>, the player loses health in the same way.
++	/// <br/> In either case, text will appear above the player indicating the life regeneration or life loss.
 +	/// </summary>
  	public int lifeRegenCount;
 +
