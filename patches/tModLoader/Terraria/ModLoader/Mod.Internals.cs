@@ -37,6 +37,8 @@ partial class Mod
 			loadable.Unload();
 		}
 
+		Content.Clear();
+
 		equipTextures.Clear();
 
 		Assets?.Dispose();

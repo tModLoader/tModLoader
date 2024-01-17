@@ -278,15 +278,11 @@ public static class ModContent
 	{
 		CacheVanillaState();
 
-		ContentCache.hasLoadingStarted = true;
-		ContentCache.loadingContent = true;
-
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
 			if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 			ContentInstance.Register(mod);
 			mod.loading = true;
-			mod.Content.hasModLoadedYet = true;
 			mod.AutoloadConfig();
 			mod.PrepareAssets();
 			mod.Autoload();
@@ -295,7 +291,7 @@ public static class ModContent
 			mod.loading = false;
 		});
 
-		ContentCache.loadingContent = false;
+		ContentCache.contentLoadingFinished = true;
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -437,10 +433,6 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
-
-		// Copied here in case mod loading is cancelled early
-		ContentCache.hasLoadingStarted = false;
-		ContentCache.loadingContent = false;
 
 		int i = 0;
 		foreach (var mod in ModLoader.Mods.Reverse()) {
