@@ -234,7 +234,7 @@ public static class ModNet
 
 			// overwrite an existing version of the mod if there is one
 			if (localVersions.Length > 0)
-				header.path = localVersions[0].modFile.path;
+				header.path = localVersions[0].modFile.path; // TODO: This can potentially overwrite the workshop folder's .tmod file, is that intended?
 
 			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
 				downloadQueue.Enqueue(header);
@@ -273,10 +273,14 @@ public static class ModNet
 			foreach (NetConfig pendingConfig in pendingConfigs)
 				JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
 
-			if (ConfigManager.AnyModNeedsReload()) {
-				needsReload = true;
+			foreach (var mod in ModLoader.Mods) {
+				if (ConfigManager.ModNeedsReload(mod)) {
+					needsReload = true;
+					Logging.tML.Debug($"Config Requires Reload: {mod.Name} has a config change that requires a mod reload");
+					break;
+				}
 			}
-			else {
+			if (!needsReload) {
 				foreach (NetConfig pendingConfig in pendingConfigs)
 					ConfigManager.GetConfig(pendingConfig).OnChanged();
 			}
@@ -340,7 +344,7 @@ public static class ModNet
 					mod.Close();
 
 				downloadingLength = reader.ReadInt64();
-				Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength}bytes");
+				Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength} bytes");
 				downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 				return;
 			}
