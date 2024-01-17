@@ -39,7 +39,6 @@ internal class ContentCache
 
 	private readonly Mod _mod;
 	private readonly List<ILoadable> _content = new List<ILoadable>();
-	// nint is used instead of Type because it will have no collisions, and is faster to compare
 	private readonly Dictionary<Type, IList> _cachedContent = new();
 
 	internal ContentCache(Mod mod) {
