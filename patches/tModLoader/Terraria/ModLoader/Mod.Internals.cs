@@ -36,7 +36,6 @@ partial class Mod
 		foreach (var loadable in Content.GetContent().Reverse()) {
 			loadable.Unload();
 		}
-
 		Content.Clear();
 
 		equipTextures.Clear();
