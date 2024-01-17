@@ -10,7 +10,7 @@ namespace Terraria.ModLoader;
 /// </summary>
 internal class ContentCache
 {
-	private static Dictionary<Type, IList> _cachedContentForAllMods = new();
+	private static readonly Dictionary<Type, IList> _cachedContentForAllMods = new();
 
 	internal static bool contentLoadingFinished;
 
