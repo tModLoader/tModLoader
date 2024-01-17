@@ -20,7 +20,7 @@ partial class Mod
 
 	//Entities
 	internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-	internal ContentCache Content { get; set; }
+	internal ContentCache Content { get; private set; }
 
 	internal void SetupContent()
 	{
@@ -37,6 +37,7 @@ partial class Mod
 			loadable.Unload();
 		}
 		Content.Clear();
+		Content = null;
 
 		equipTextures.Clear();
 

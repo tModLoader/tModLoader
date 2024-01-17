@@ -20,16 +20,16 @@ internal class ContentCache
 	}
 
 	public static IEnumerable<T> GetContentForAllMods<T>() where T : ILoadable {
+		// Check of the cache already exists
+		// It will already be a ReadOnlyList<T>, so it just needs to be cast back to it
+		if (_cachedContentForAllMods.TryGetValue(typeof(T), out IList cachedContent))
+			return (IReadOnlyList<T>)cachedContent;
+
 		if (!contentLoadingFinished) {
 			// Content has not fully loaded yet, so we can't rely on the cache.
 			// Return a lazy enumerable instead.
 			return ModLoader.Mods.SelectMany(static m => m.GetContent<T>());
 		}
-
-		// Check of the cache already exists
-		// It will already be a ReadOnlyList<T>, so it just needs to be cast back to it
-		if (_cachedContentForAllMods.TryGetValue(typeof(T), out IList cachedContent))
-			return (IReadOnlyList<T>)cachedContent;
 
 		// Construct the cache
 		IReadOnlyList<T> content = ModLoader.Mods.SelectMany(static m => m.GetContent<T>()).ToList().AsReadOnly();
@@ -52,6 +52,11 @@ internal class ContentCache
 	public IEnumerable<ILoadable> GetContent() => _content.AsReadOnly();  // Prevent exposing the list via hard cast
 
 	public IEnumerable<T> GetContent<T>() where T : ILoadable {
+		// Check of the cache already exists
+		// It will already be a ReadOnlyList<T>, so it just needs to be cast back to it
+		if (_cachedContent.TryGetValue(typeof(T), out IList cachedContent))
+			return (IReadOnlyList<T>)cachedContent;
+
 		if (_content.Count == 0) {
 			// Mod has not loaded yet
 			return Enumerable.Empty<T>();
@@ -62,11 +67,6 @@ internal class ContentCache
 			// Return a lazy enumerable instead.
 			return _content.OfType<T>();
 		}
-
-		// Check of the cache already exists
-		// It will already be a ReadOnlyList<T>, so it just needs to be cast back to it
-		if (_cachedContent.TryGetValue(typeof(T), out IList cachedContent))
-			return (IReadOnlyList<T>)cachedContent;
 
 		// Construct the cache
 		IReadOnlyList<T> content = _content.OfType<T>().ToList().AsReadOnly();
