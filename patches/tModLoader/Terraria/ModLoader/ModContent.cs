@@ -43,7 +43,7 @@ public static class ModContent
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
 	public static IEnumerable<T> GetContent<T>() where T : ILoadable
-		=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
+		=> ContentCache.GetContentForAllMods<T>();
 
 	/// <summary> Attempts to find the template instance with the specified full name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
@@ -278,11 +278,15 @@ public static class ModContent
 	{
 		CacheVanillaState();
 
+		ContentCache.hasLoadingStarted = true;
+		ContentCache.loadingContent = true;
+
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
 			if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 			ContentInstance.Register(mod);
 			mod.loading = true;
+			mod.Content.hasModLoadedYet = true;
 			mod.AutoloadConfig();
 			mod.PrepareAssets();
 			mod.Autoload();
@@ -290,6 +294,8 @@ public static class ModContent
 			SystemLoader.OnModLoad(mod);
 			mod.loading = false;
 		});
+
+		ContentCache.loadingContent = false;
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -431,6 +437,10 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+
+		// Copied here in case mod loading is cancelled early
+		ContentCache.hasLoadingStarted = false;
+		ContentCache.loadingContent = false;
 
 		int i = 0;
 		foreach (var mod in ModLoader.Mods.Reverse()) {
