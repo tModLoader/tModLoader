@@ -90,6 +90,10 @@ public partial class Mod
 
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
 
+	public Mod() {
+		Content = new ContentCache(this);
+	}
+
 	internal void AutoloadConfig()
 	{
 		if (Code == null)
@@ -142,7 +146,7 @@ public partial class Mod
 			return false;
 
 		instance.Load(this);
-		content.Add(instance);
+		Content.Add(instance);
 		ContentInstance.Register(instance);
 		return true;
 	}
@@ -151,13 +155,13 @@ public partial class Mod
 	/// Returns all registered content instances that are added by this mod.
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
-	public IEnumerable<ILoadable> GetContent() => content;
+	public IEnumerable<ILoadable> GetContent() => Content.GetContent();
 
 	/// <summary>
 	/// Returns all registered content instances that derive from the provided type that are added by this mod.
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
-	public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
+	public IEnumerable<T> GetContent<T>() where T : ILoadable => Content.GetContent<T>();
 
 	/// <summary> Attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
