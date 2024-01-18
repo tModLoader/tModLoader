@@ -33,7 +33,7 @@ partial class Mod
 
 		Unload();
 
-		foreach (var loadable in Content.GetContent().Reverse()) {
+		foreach (var loadable in GetContent().Reverse()) {
 			loadable.Unload();
 		}
 		Content.Clear();
