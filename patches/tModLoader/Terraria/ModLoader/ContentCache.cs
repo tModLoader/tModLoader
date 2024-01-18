@@ -25,14 +25,16 @@ internal class ContentCache
 		if (_cachedContentForAllMods.TryGetValue(typeof(T), out IList cachedContent))
 			return (IReadOnlyList<T>)cachedContent;
 
+		var query = ModLoader.Mods.SelectMany(static m => m.GetContent<T>());
+
 		if (!contentLoadingFinished) {
 			// Content has not fully loaded yet, so we can't rely on the cache.
 			// Return a lazy enumerable instead.
-			return ModLoader.Mods.SelectMany(static m => m.GetContent<T>());
+			return query;
 		}
 
 		// Construct the cache
-		IReadOnlyList<T> content = ModLoader.Mods.SelectMany(static m => m.GetContent<T>()).ToList().AsReadOnly();
+		IReadOnlyList<T> content = query.ToList().AsReadOnly();
 		_cachedContentForAllMods[typeof(T)] = (IList)content;
 		return content;
 	}
@@ -62,14 +64,16 @@ internal class ContentCache
 			return Enumerable.Empty<T>();
 		}
 
+		var query = _content.OfType<T>();
+
 		if (_mod.loading) {
 			// Content may not have fully loaded yet, so we can't rely on the cache.
 			// Return a lazy enumerable instead.
-			return _content.OfType<T>();
+			return query;
 		}
 
 		// Construct the cache
-		IReadOnlyList<T> content = _content.OfType<T>().ToList().AsReadOnly();
+		IReadOnlyList<T> content = query.ToList().AsReadOnly();
 		_cachedContent[typeof(T)] = (IList)content;
 		return content;
 	}
