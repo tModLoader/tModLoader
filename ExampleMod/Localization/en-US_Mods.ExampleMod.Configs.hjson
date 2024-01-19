@@ -188,6 +188,11 @@ ModConfigShowcaseDataTypes: {
 		Label: BuffDefinition Example
 		Tooltip: ""
 	}
+
+	tileDefinitionExample: {
+		Label: TileDefinition Example
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDefaultValues: {
