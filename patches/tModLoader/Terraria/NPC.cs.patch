@@ -770,6 +770,15 @@
  		setFrameSize = false;
  		netSkip = -2;
  		realLife = -1;
+@@ -2254,7 +_,7 @@
+ 		boss = false;
+ 		noTileCollide = false;
+ 		rotation = 0f;
+-		active = true;
++		active = Type != 0;
+ 		alpha = 0;
+ 		color = default(Color);
+ 		collideX = false;
 @@ -6970,7 +_,9 @@
  			DeathSound = SoundID.NPCDeath1;
  			npcSlots = 0.1f;
