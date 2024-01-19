@@ -427,6 +427,15 @@
  		ownerHitCheck = false;
  		hide = false;
  		lavaWet = false;
+@@ -312,7 +_,7 @@
+ 		alpha = 0;
+ 		glowMask = -1;
+ 		type = Type;
+-		active = true;
++		active = Type != 0;
+ 		rotation = 0f;
+ 		scale = 1f;
+ 		owner = 255;
 @@ -1167,6 +_,8 @@
  			magic = true;
  		}
