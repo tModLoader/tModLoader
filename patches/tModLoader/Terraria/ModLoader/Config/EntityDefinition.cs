@@ -244,7 +244,7 @@ public class TileDefinition : EntityDefinition
 		? Language.GetTextValue("Mods.ModLoader.Unloaded")
 		: (string.IsNullOrEmpty(Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0)))
 		? Name
-		: Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0)));
+		: $"{Name} \"{Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0))}\"");
 }
 
 /// <summary>
