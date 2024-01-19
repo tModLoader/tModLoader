@@ -79,6 +79,7 @@ internal class UIModConfigList : UIState
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 1f,
+			ManualSortMethod = (list) => { }, // Elements added in order, no need to sort.
 		};
 		modListPanel.Append(modList);
 
@@ -88,6 +89,7 @@ internal class UIModConfigList : UIState
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 0f,
+			ManualSortMethod = (list) => { }, // Elements added in order, no need to sort.
 		};
 		configListPanel.Append(configList);
 
