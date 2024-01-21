@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,14 +_,20 @@
+@@ -1,14 +_,19 @@
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
@@ -11,7 +11,6 @@
  using Terraria.IO;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Core;
  using Terraria.Social.Base;
  using Terraria.Utilities;
  
