@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -6,6 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -162,7 +164,7 @@ internal class UIModConfigList : UIState
 
 		// Have to sort by display name because normally mods are sorted by internal names
 		var mods = ModLoader.Mods.ToList();
-		mods.Sort((x, y) => x.DisplayName.CompareTo(y.DisplayName));
+		mods.Sort((x, y) => CleanChatTags(x.DisplayName).CompareTo(CleanChatTags(y.DisplayName)));
 
 		foreach (var mod in mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
@@ -195,7 +197,7 @@ internal class UIModConfigList : UIState
 
 		// Have to sort by display name because normally configs are sorted by internal names
 		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
-		var sortedConfigs = configs.OrderBy(x => x.DisplayName.Value).ToList();
+		var sortedConfigs = configs.OrderBy(x => CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
 			float indicatorOffset = 20;
@@ -250,5 +252,13 @@ internal class UIModConfigList : UIState
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+	}
+
+	// TODO: this should be in utils, also add color parameter
+	private static string CleanChatTags(string text)
+	{
+		return string.Join("", ChatManager.ParseMessage(text, Color.White)
+				.Where(x => x.GetType() == typeof(TextSnippet))
+				.Select(x => x.Text));
 	}
 }
