@@ -283,7 +283,7 @@ public partial class WorkshopSocialModule
 		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
 			$"{workshopDesc}";
 
-		SteamedWraps.UpdatePatchNotesWithModData(ref changeNotes, buildData);
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
 
 		// Make the publish.vdf file
 		string manifest = Path.Combine(publishedModFiles, "workshop.json");

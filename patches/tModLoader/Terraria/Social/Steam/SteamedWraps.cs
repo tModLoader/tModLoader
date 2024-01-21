@@ -635,8 +635,6 @@ public static class SteamedWraps
 				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
 		}
 
-		// Interpolate workshop description and changenotes values
-		ModCompile.UpdateSubstitutedDescriptionValues(ref _entryData.Description, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"]);
 		ModCompile.UpdateSubstitutedDescriptionValues(ref patchNotes, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"]);
 
 		string refs = _entryData.BuildData["workshopdeps"];
