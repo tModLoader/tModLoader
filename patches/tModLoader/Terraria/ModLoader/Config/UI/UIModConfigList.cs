@@ -12,8 +12,9 @@ namespace Terraria.ModLoader.Config.UI;
 
 internal class UIModConfigList : UIState
 {
-	public Mod SelectedMod;
+	public Mod ModToSelectOnOpen;
 
+	private Mod selectedMod;
 	private UIElement uIElement;
 	private UIPanel uIPanel;
 	private UITextPanel<LocalizedText> backButton;
@@ -119,7 +120,6 @@ internal class UIModConfigList : UIState
 		}.WithFadedMouseOver();
 		backButton.OnLeftClick += (_, _) => {
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			SelectedMod = null;
 
 			if (Main.gameMenu)
 				Main.menuMode = Interface.modsMenuID;
@@ -134,16 +134,25 @@ internal class UIModConfigList : UIState
 	{
 		modList?.Clear();
 		configList?.Clear();
-		SelectedMod = null;
+		selectedMod = null;
+		ModToSelectOnOpen = null;
 	}
 
 	public override void OnActivate()
 	{
 		modList?.Clear();
 		configList?.Clear();
-		PopulateMods();
 
-		if (SelectedMod != null)
+		// Select the mod that we clicked on, otherwise don't select anything
+		selectedMod = null;
+		if (ModToSelectOnOpen != null) {
+			selectedMod = ModToSelectOnOpen;
+			ModToSelectOnOpen = null;
+		}
+
+		// Populate UI
+		PopulateMods();
+		if (selectedMod != null)
 			PopulateConfigs();
 	}
 
@@ -163,12 +172,12 @@ internal class UIModConfigList : UIState
 					ScalePanel = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
-					UseAltColors = () => SelectedMod != mod,
+					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-					SelectedMod = mod;
+					selectedMod = mod;
 					PopulateConfigs();
 				};
 
@@ -181,7 +190,7 @@ internal class UIModConfigList : UIState
 	{
 		configList?.Clear();
 
-		if (SelectedMod == null || !ConfigManager.Configs.TryGetValue(SelectedMod, out var configs))
+		if (selectedMod == null || !ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
 
 		// Have to sort by display name because normally configs are sorted by internal names
@@ -201,7 +210,7 @@ internal class UIModConfigList : UIState
 			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-				Interface.modConfig.SetMod(SelectedMod, config);
+				Interface.modConfig.SetMod(selectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
 				else
