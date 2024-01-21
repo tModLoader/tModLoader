@@ -106,6 +106,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
+		ModCompile.UpdateSubstitutedDescriptionValues(ref description, buildData["trueversion"],buildData["homepage"]);
 		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
 			return false;

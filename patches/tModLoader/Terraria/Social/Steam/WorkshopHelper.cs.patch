@@ -263,14 +263,11 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -261,23 +_,66 @@
+@@ -261,23 +_,63 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
 +				*/
-+
-+				// Can't interpolate the parameters at the same time as the change notes, since the change notes are handled after the description is already published
-+				ModCompile.UpdateSubstitutedDescriptionValues(ref _entryData.Description, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"]);
 +
 +				var uGCUpdateHandle_t = GenerateUgcUpdateHandle(out var patchNotes);
 +				_updateCallback = EResult.k_EResultNone;
