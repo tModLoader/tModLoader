@@ -550,6 +550,8 @@
 		"TagsUtilityDescription": "Adds utility-oriented content or features",
 		"TagsLibrary": "Library",
 		"TagsLibraryDescription": "Provides additional API & features useful to modders",
+		"TagsTranslation": "Translation",
+		"TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Quality Of Life",
 		"TagsQoLDescription": "Features or changes that reduce time spent on typically less fun tasks.",
 		"TagsGameplay": "Gameplay Tweaks",
