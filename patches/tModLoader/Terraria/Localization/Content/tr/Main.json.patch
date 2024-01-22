@@ -5,7 +5,7 @@
  	"Error": {
  		"Error": "Hata",
 -		"LaunchFromSteam": "Lütfen oyunu Steam istemcinizden başlatın.",
-+		"LaunchFromSteam": "Steam'e bağlı ve çalışyor olduğunuzdan emin olun.",
++		"LaunchFromSteam": "Steam'e bağlı ve çalışıyor olduğunuzdan emin olun.",
  		"ServerCrash": "Sunucu çökmesi: {0}\n{1}\n\nLütfen crashlog.txt dosyasını support@terraria.org posta adresine gönderin",
  		"LoadFailed": "Yükleme başarısız!",
  		"LoadFailedNoBackup": "Yükleme başarısız! Yedek bulunamadı.",
