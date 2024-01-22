@@ -12,6 +12,7 @@ using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
 
 namespace Terraria.ModLoader.Core;
 
@@ -360,8 +361,10 @@ public static class AssemblyManager
 		foreach (var assembly in assemblies) {
 			const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
 
+			bool ShouldJITRecursive(Type type) => filter.ShouldJIT(type) && (type.DeclaringType is null || ShouldJITRecursive(type.DeclaringType));
+
 			var methodsToJIT = GetLoadableTypes(assembly)
-				.Where(filter.ShouldJIT)
+				.Where(ShouldJITRecursive)
 				.SelectMany(type =>
 					type.GetMethods(ALL)
 						.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
@@ -393,10 +396,23 @@ public static class AssemblyManager
 				}
 			}
 		}
-		if (exceptions.Count > 0) {
-			var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
-			throw new Exceptions.JITException(message);
+
+		if (exceptions.IsEmpty)
+			return;
+
+		var message = "\n";
+		if (exceptions.Select(x => x.exception).OfType<FileNotFoundException>().FirstOrDefault() is Exception ex && Regex.Match(ex.Message, "'(\\w+), Version=") is { Success: true } m) {
+			var modName = m.Groups[1].Value;
+			message += $"If {modName} is an assembly from a weak-referenced mod consider adding a [JitWhenModsEnabled(\"ModName\")] attribute to the method, property, lambda or containing class.\n";
+
+			if (exceptions.Any(x => x.exception is FileNotFoundException && x.method.Name.Contains("<lambda>")))
+				message += "Make sure to apply the [JitWhenModsEnabled] attribute directly to the lambda or a containing class. Attributes on methods do not apply to lambdas inside them.\n";
+
+			message += "\n";
 		}
+
+		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
+		throw new Exceptions.JITException(message);
 	}
 
 	private static void ForceJITOnMethod(MethodBase method)
