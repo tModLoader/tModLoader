@@ -2029,6 +2029,16 @@
  							num110 = 5;
  							num110 -= Main.CurrentFrameFlags.ActivePlayersCount / 2;
  							if (num110 < 2)
+@@ -63451,7 +_,8 @@
+ 			else if (Main.hardMode && (Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && Main.rand.Next(200) == 0) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 172);
+ 			}
+-			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && (Main.player[k].armor[1].type == 4256 || (Main.player[k].armor[1].type >= 1282 && Main.player[k].armor[1].type <= 1287)) && Main.player[k].armor[0].type != 238))) {
++			// Uses flag added by TML to support modded gem robes for Tim spawn rate increase.
++			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && Main.player[k].hasGemRobe && Main.player[k].armor[0].type != 238))) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 45);
+ 			}
+ 			else if (flag10 && Main.rand.Next(4) != 0) {
 @@ -63539,6 +_,11 @@
  				}
  			}
