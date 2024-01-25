@@ -329,9 +329,9 @@ public static class AssemblyManager
 					.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
 					.ToArray());
 		}
-		catch (Exception e) when (e is not Exceptions.GetLoadableTypesException) {
+		catch (Exception e) {
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n" + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] is Type type ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -357,10 +357,8 @@ public static class AssemblyManager
 			return type.GetInterfaces().All(i => IsLoadable(mod, i));
 		}
 		catch (FileNotFoundException e) {
-			throw new Exceptions.GetLoadableTypesException(
-				$"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled.\n\nThe \"{type.FullName}\" class caused this error." + "\n\n" + e.Message,
-				e
-			);
+			e.Data["type"] = type;
+			throw;
 		}
 	}
 
