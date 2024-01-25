@@ -3,7 +3,7 @@
 #shellcheck disable=2164
 
 # Only update the major version when a breaking change is introduced
-script_version="3.0.0.0"
+script_version="3.0.0.1"
 script_url="https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh"
 
 # Shut up both commands
@@ -13,6 +13,12 @@ function pushd {
 
 function popd {
 	command popd > /dev/null || return
+}
+
+function try_make_link {
+	if ! [[ -L "$2" ]]; then
+		ln -s "$1" "$2"
+	fi
 }
 
 # NOTE: There is seemingly no official documentation on this file but other more "official" software does this same check.
@@ -25,6 +31,10 @@ function is_in_docker {
 }
 
 function update_script {
+	if is_in_docker; then
+		return
+	fi
+
 	echo "Checking for script updates"
 
 	# Go to where the script currently is
@@ -44,7 +54,7 @@ function update_script {
 		echo "There is a script update from v$script_version to v$new_version, consider rebuilding your Docker container for the updated script"
 		return
 	fi
-	
+
 	if [[ "${script_version:0:1}" != "${new_version:0:1}" ]]; then
 		read -t 15 -p "A major version change has been detected (v$script_version -> v$new_version) Major versions mean incompatibilities with previous versions, so you should check the wiki for any updates to how the script works. Update anyways? (y/n): " update_major
 		if [[ "$update_major" != [Yy]* ]]; then
@@ -104,7 +114,7 @@ function move_serverconfig {
 			echo "Removing duplicate server/serverconfig.txt"
 			rm serverconfig.txt
 		fi
-	else
+	elif ! is_in_docker; then # Only move the server config if it's not in Docker
 		echo "Moving default serverconfig.txt"
 		mv serverconfig.txt "$folder"
 	fi
@@ -119,7 +129,7 @@ function get_version {
 		echo "v$(cat $folder/Mods/tmlversion.txt | sed -E "s/\.([0-9])\./\.0\1\./g")"
 	else
 		# Get the latest release if no other options are provided
-		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases"
+		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
 		local latest_release
 		latest_release=$({
 			curl -s "$release_url" 2>/dev/null || wget -q -O- "$release_url";
@@ -199,21 +209,21 @@ function install_tml_steam {
 }
 
 function install_tml {
-	mkdir server 2>/dev/null
+	mkdir -p server
 	pushd server
 	if $steamcmd; then
 		install_tml_steam
 	else
 		install_tml_github
 	fi
-	
+
 	move_serverconfig
 	popd
 
 	# Make folder structure
-	if !is_in_docker; then
+	if ! is_in_docker; then
 		echo "Creating folder structure"
-		mkdir Mods Worlds server logs 2>/dev/null
+		mkdir -p Mods Worlds logs
 	fi
 
 	# Install .NET
@@ -259,7 +269,7 @@ function install_workshop_mods {
 	eval "$steam_cmd +force_install_dir $folder +login anonymous $steamcmd_command +quit"
 
 	popd
-	
+
 	echo "Done"
 }
 
@@ -377,20 +387,17 @@ case $cmd in
 		fi
 
 		# Make proper directories to bypass install_workshop_mods warnings
-		mkdir Mods Worlds 2>/dev/null
+		mkdir -p Mods Worlds
 
 		install_workshop_mods
 
 		# Link the server folder to the Docker installation and cli args for debugging (if it exists)
-		if ! [[ -L "$folder/server" ]]; then
-			ln -s "$HOME/server" "$folder/server"
-		fi
+		try_make_link "$HOME/server" "$folder/server"
 
 		# Also symlink banlist
-		if ! [[ -L "$folder/banlist.txt" ]]; then
-			ln -s "$folder/banlist.txt" "$folder/server/banlist.txt"
-		fi
+		try_make_link "$folder/banlist.txt" "$folder/server/banlist.txt"
 
+		# Provide option to use custom argsConfig file
 		if [[ -f "$folder/cli-argsConfig.txt" ]]; then
 			ln -s "$folder/cli-argsConfig.txt" "$folder/server/cli-argsConfig.txt"
 		fi
@@ -403,13 +410,11 @@ case $cmd in
 		fi
 
 		# Link logs to a more convenient place
-		mkdir "$folder/logs" 2>/dev/null
-		ln -s "$folder/logs" "$folder/server/tModLoader-Logs"
+		mkdir -p "$folder/logs"
+		try_make_link "$folder/logs" "$folder/server/tModLoader-Logs"
 
 		# Link workshop to tMod dir so we don't need to pass -steamworkshopfolder
-		if ! [[ -L "$folder/server/steamapps" ]]; then
-			ln -s "$folder/steamapps" "$folder/server/steamapps"
-		fi
+		try_make_link "$folder/steamapps" "$folder/server/steamapps"
 
 		cd "$folder/server" || exit
 		chmod u+x start-tModLoaderServer.sh

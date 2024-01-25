@@ -106,6 +106,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
+		ModCompile.UpdateSubstitutedDescriptionValues(ref description, buildData["trueversion"], buildData["homepage"]);
 		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
 			return false;
@@ -283,7 +284,7 @@ public partial class WorkshopSocialModule
 		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
 			$"{workshopDesc}";
 
-		SteamedWraps.UpdatePatchNotesWithModData(ref changeNotes, buildData);
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
 
 		// Make the publish.vdf file
 		string manifest = Path.Combine(publishedModFiles, "workshop.json");
