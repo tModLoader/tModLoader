@@ -358,7 +358,7 @@ public static class AssemblyManager
 		}
 		catch (FileNotFoundException e) {
 			throw new Exceptions.GetLoadableTypesException(
-				$"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled.\nThe \"{type.FullName}\" class caused this error." + "\n" + e.Message,
+				$"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled.\n\nThe \"{type.FullName}\" class caused this error." + "\n\n" + e.Message,
 				e
 			);
 		}
