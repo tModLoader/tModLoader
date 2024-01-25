@@ -331,7 +331,7 @@ public static class AssemblyManager
 		}
 		catch (Exception e) {
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n" + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] is Type type ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -339,18 +339,27 @@ public static class AssemblyManager
 
 	private static bool IsLoadable(ModLoadContext mod, Type type)
 	{
-		foreach (var attr in type.GetCustomAttributesData()) {
-			if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
-				var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
-				if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
-					return false;
+		try {
+			foreach (var attr in type.GetCustomAttributesData()) {
+				if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
+					var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
+					if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
+						return false;
+				}
 			}
+
+			if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
+				return false;
+
+			if (type.DeclaringType != null && !IsLoadable(mod, type.DeclaringType))
+				return false;
+
+			return type.GetInterfaces().All(i => IsLoadable(mod, i));
 		}
-
-		if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
-			return false;
-
-		return type.GetInterfaces().All(i => IsLoadable(mod, i));
+		catch (FileNotFoundException e) {
+			e.Data["type"] = type;
+			throw;
+		}
 	}
 
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
