@@ -351,6 +351,9 @@ public static class AssemblyManager
 			if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
 				return false;
 
+			if (type.DeclaringType != null && !IsLoadable(mod, type.DeclaringType))
+				return false;
+
 			return type.GetInterfaces().All(i => IsLoadable(mod, i));
 		}
 		catch (FileNotFoundException e) {
