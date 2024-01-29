@@ -201,7 +201,7 @@ public partial class WorkshopSocialModule
 
 	public static void FixErrorsInWorkshopFolder(string workshopFolderPath)
 	{
-		// This eliminates uploaded mod source files that occured prior to the fix of #2263
+		// This eliminates uploaded mod source files that occurred prior to the fix of #2263
 		if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
 			foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
 				File.Delete(sourceFile);
