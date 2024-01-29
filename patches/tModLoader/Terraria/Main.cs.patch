@@ -346,7 +346,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,39 +_,96 @@
+@@ -829,39 +_,99 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -402,6 +402,9 @@
 +	/// <para/> Note that a separate system is used for counting a tile as a table for housing purposes. Use <c>AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);</c> in a ModTile class to designate the tile as a table.
 +	/// </summary>
  	public static bool[] tileTable = new bool[TileID.Count];
++	/// <summary>
++	/// If true, light is blocked by this tile and the light values will decrease as it passes through. Most <see cref="Main.tileSolid"/> tiles will set this to true. <see cref="TileID.Glass"/> is an example of a tile that is solid but doesn't block light.
++	/// </summary>
  	public static bool[] tileBlockLight = new bool[TileID.Count];
  	public static bool[] tileNoSunLight = new bool[TileID.Count];
  	public static bool[] tileDungeon = new bool[TileID.Count];
