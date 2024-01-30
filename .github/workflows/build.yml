@@ -182,9 +182,9 @@ jobs:
 
       # GitHub runners may have outdated .NET versions.
       - name: Install .NET SDKs
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.406'
+          dotnet-version: '8.0.x'
 
       # Runs a set of commands using the runners shell
       - name: Build script
