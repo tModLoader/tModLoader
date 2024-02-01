@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -638,9 +638,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>netUpdate</b></td></t
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>netUpdate2</b></td></tr>
 <tr class="memdesc:a76496c491c0b11fff48d35497239037c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally to check for projectiles that spam <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set manually to true in ModProjectile.AI once to make it sync its current ai[] array to the server an...">netUpdate</a>. Don't use it yourself manually <br /></td></tr>
 <tr class="separator:a76496c491c0b11fff48d35497239037c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95a0fb8d78cb68614912e58eb4442d0d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#a95a0fb8d78cb68614912e58eb4442d0d">noDropItem</a></td></tr>
-<tr class="memdesc:a95a0fb8d78cb68614912e58eb4442d0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the ProjectileID.WoodenArrowFriendly projectile, it will sometimes drop the ItemID.WoodenArrow item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches. <br  />
- In <a class="el" href="class_mod_projectile.html#a1154c0c4a7cf829584f1fa97608ab470" title="Allows you to control what happens when this projectile is killed (for example, creating dust or maki...">ModProjectile.OnKill(int)</a>, check this and <a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">owner</a> to decide if the item should drop:  <a href="class_projectile.html#a95a0fb8d78cb68614912e58eb4442d0d">More...</a><br /></td></tr>
+<tr class="memitem:a95a0fb8d78cb68614912e58eb4442d0d"><td class="memItemLeft" align="right" valign="top"><a id="a95a0fb8d78cb68614912e58eb4442d0d" name="a95a0fb8d78cb68614912e58eb4442d0d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>noDropItem</b></td></tr>
+<tr class="memdesc:a95a0fb8d78cb68614912e58eb4442d0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this, provided that the projectile is programmed to drop the item. For example, if you shoot the ProjectileID.PaperAirplaneA projectile, it will always drop the ItemID.PaperAirplaneA item. If your weapon shoots multiple recoverable projectiles for 1 ammo, you might want to consider setting this field to prevent infinite ammo exploits. Make sure to set this for any situation where a potentially recoverable ammo is spawned by something other than the player, such as traps and Town <a class="el" href="class_n_p_c.html">NPC</a>. To implement recoverable ammo item drops, in <a class="el" href="class_mod_projectile.html#a1154c0c4a7cf829584f1fa97608ab470" title="Allows you to control what happens when this projectile is killed (for example, creating dust or maki...">ModProjectile.OnKill(int)</a> check this, <a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">owner</a>, and optionally a random chance to decide if the item should drop: <code>if (<a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">Projectile.owner</a> == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a> &amp;&amp; !Projectile.noDropItem)</code> See ExamplePaperAirplaneProjectilefor an example of this logic. Set directly on the projectile instance returned from <a class="el" href="class_projectile.html#a76031be1e4228ce7e8a3ec67e2c293ad" title="Spawns a projectile into the game world with the given type. The spawn position is given in world coo...">Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)</a>, not in <a class="el" href="class_mod_projectile.html#a1022001acebe0c11fc6941e35ba704ad" title="Allows you to set all your projectile&#39;s properties, such as width, damage, aiStyle,...">ModProjectile.SetDefaults</a>. This ensures that the weapon or source spawning the projectile decides if the ammo item will spawn, which is more compatible. Set automatically when shot from a weapon that counts as <a class="el" href="class_damage_class.html#a911b671d0e9de1f35e70d22ef9bbe756" title="Class provided for modders who want to coordinate throwing accessories and items. Not used by any van...">DamageClass.Throwing</a> and <a class="el" href="class_player.html#a55103513d96bc820345e45f34cad7c7a" title="Returns true if either ThrownCost33 or ThrownCost50 are true">Player.AnyThrownCostReduction</a> is <code>true</code>. Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a95a0fb8d78cb68614912e58eb4442d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23046e06b5013cd46e42576bb467cfba"><td class="memItemLeft" align="right" valign="top"><a id="a23046e06b5013cd46e42576bb467cfba" name="a23046e06b5013cd46e42576bb467cfba"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noEnchantments</b></td></tr>
@@ -1489,29 +1489,6 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 </dd>
 </dl>
 </div>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a95a0fb8d78cb68614912e58eb4442d0d" name="a95a0fb8d78cb68614912e58eb4442d0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95a0fb8d78cb68614912e58eb4442d0d">&#9670;&nbsp;</a></span>noDropItem</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Projectile.noDropItem</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this. For example, if you shoot the ProjectileID.WoodenArrowFriendly projectile, it will sometimes drop the ItemID.WoodenArrow item. If your weapon shoots multiple arrows for 1 ammo, you might want to consider setting this field to prevent infinite ammo glitches. <br  />
- In <a class="el" href="class_mod_projectile.html#a1154c0c4a7cf829584f1fa97608ab470" title="Allows you to control what happens when this projectile is killed (for example, creating dust or maki...">ModProjectile.OnKill(int)</a>, check this and <a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">owner</a> to decide if the item should drop: </p>
-<p ><code>if (<a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">Projectile.owner</a> == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a> &amp;&amp; !Projectile.noDropItem)</code> See ExamplePaperAirplaneProjectile</p>
-<p >for an example of this logic. <br  />
- Set directly on the projectile instance returned from <a class="el" href="class_projectile.html#a76031be1e4228ce7e8a3ec67e2c293ad" title="Spawns a projectile into the game world with the given type. The spawn position is given in world coo...">Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)</a>, not in <a class="el" href="class_mod_projectile.html#a1022001acebe0c11fc6941e35ba704ad" title="Allows you to set all your projectile&#39;s properties, such as width, damage, aiStyle,...">ModProjectile.SetDefaults</a>. This ensures that the weapon spawning the projectile decides if the ammo item will spawn, which is more compatible. <br  />
- Set automatically when shot from a weapon that counts as <a class="el" href="class_damage_class.html#a911b671d0e9de1f35e70d22ef9bbe756" title="Class provided for modders who want to coordinate throwing accessories and items. Not used by any van...">DamageClass.Throwing</a> and <a class="el" href="class_player.html#a55103513d96bc820345e45f34cad7c7a" title="Returns true if either ThrownCost33 or ThrownCost50 are true">Player.AnyThrownCostReduction</a> is <code>true</code>. <br  />
- Defaults to <code>false</code>. </p>
 
 </div>
 </div>

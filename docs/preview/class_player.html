@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -2740,6 +2740,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasFootball</b></td><
 <tr class="memitem:a532b8c8af55fdc8bcd27d59a86d9fb5a"><td class="memItemLeft" align="right" valign="top"><a id="a532b8c8af55fdc8bcd27d59a86d9fb5a" name="a532b8c8af55fdc8bcd27d59a86d9fb5a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasGardenGnomeNearby</b></td></tr>
 <tr class="separator:a532b8c8af55fdc8bcd27d59a86d9fb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac70d43e2ec00efed1eb1d04f3c95ba54"><td class="memItemLeft" align="right" valign="top"><a id="ac70d43e2ec00efed1eb1d04f3c95ba54" name="ac70d43e2ec00efed1eb1d04f3c95ba54"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasGemRobe</b> = false</td></tr>
+<tr class="memdesc:ac70d43e2ec00efed1eb1d04f3c95ba54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set by any gem robe when worn by the player in the functional armor slot. Increases the spawn rate of NPCID.Tim. <br /></td></tr>
+<tr class="separator:ac70d43e2ec00efed1eb1d04f3c95ba54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee700ce062cb24d42c1ba7a2952b7450"><td class="memItemLeft" align="right" valign="top"><a id="aee700ce062cb24d42c1ba7a2952b7450" name="aee700ce062cb24d42c1ba7a2952b7450"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasLuck_LuckyCoin</b></td></tr>
 <tr class="separator:aee700ce062cb24d42c1ba7a2952b7450"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3107,7 +3111,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>lifeMagnet</b></td></
 <tr class="separator:a6923271bc6611398eea51a10480e5f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efd28012bb61ef7a84926505dd60105"><td class="memItemLeft" align="right" valign="top"><a id="a4efd28012bb61ef7a84926505dd60105" name="a4efd28012bb61ef7a84926505dd60105"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeRegen</b></td></tr>
-<tr class="memdesc:a4efd28012bb61ef7a84926505dd60105"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rate of this player's life regeneration in health/ticks, divided by <code>120</code>. <br  />
+<tr class="memdesc:a4efd28012bb61ef7a84926505dd60105"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rate of this player's life regeneration in health per tick, divided by <code>120</code>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs and life regeneration accessories such as ItemID.BandofRegeneration. <br  />
  For example, adding <code>10</code> to this value regenerates <code>10 / 120</code> = <code>1/6</code> health per tick, or 5 health per second. <br  />
  Life regeneration is accumulated every tick in <a class="el" href="class_player.html#acfe0a3f03c77b8bb752bff9f97d1d6fd" title="This player&#39;s accumulated life regeneration.   If this value reaches or exceeds 120,...">lifeRegenCount</a>. <br  />
  This value should be subtracted from in <a class="el" href="class_mod_player.html#a3677653797230c347c635eff2ee5fdb5" title="Allows you to give the player a negative life regeneration based on its state (for example,...">ModPlayer.UpdateBadLifeRegen</a> and added to in <a class="el" href="class_mod_player.html#abec7a98339f8a6db3b98b2bf20f02c35" title="Allows you to increase the player&#39;s life regeneration based on its state. This can be done by increme...">ModPlayer.UpdateLifeRegen</a>. <br /></td></tr>
@@ -3116,7 +3120,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeRegen</b></td></tr
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeRegenCount</b></td></tr>
 <tr class="memdesc:acfe0a3f03c77b8bb752bff9f97d1d6fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This player's accumulated life regeneration. <br  />
  If this value reaches or exceeds <code>120</code>, the player gains <code><a class="el" href="class_player.html#acfe0a3f03c77b8bb752bff9f97d1d6fd" title="This player&#39;s accumulated life regeneration.   If this value reaches or exceeds 120,...">lifeRegenCount</a> / 120</code> health and this value decreases until it no longer exceeds <code>120</code>. <br  />
- If this value reaches or exceeds <code>-120</code>, the player loses health in the same way. <br /></td></tr>
+ If this value reaches or exceeds <code>-120</code>, the player loses health in the same way. <br  />
+ In either case, text will appear above the player indicating the life regeneration or life loss. <br /></td></tr>
 <tr class="separator:acfe0a3f03c77b8bb752bff9f97d1d6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1be5880dac0a14a8ac2987b19dcd3517"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a1be5880dac0a14a8ac2987b19dcd3517">lifeRegenTime</a></td></tr>
 <tr class="memdesc:a1be5880dac0a14a8ac2987b19dcd3517"><td class="mdescLeft">&#160;</td><td class="mdescRight">How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases over time. <br  />
@@ -5223,7 +5228,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <p>Adds to either Player.immuneTime or Player.hurtCooldowns based on the cooldownCounterId </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cooldownCounterId</td><td>See <a class="el" href="class_immunity_cooldown_i_d.html">ImmunityCooldownID</a> for valid ids.</td></tr>
+    <tr><td class="paramname">cooldownCounterId</td><td>See <a class="el" href="class_immunity_cooldown_i_d.html" title="Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses Ge...">ImmunityCooldownID</a> for valid ids.</td></tr>
     <tr><td class="paramname">immuneTime</td><td>Extra immunity time to add</td></tr>
   </table>
   </dd>

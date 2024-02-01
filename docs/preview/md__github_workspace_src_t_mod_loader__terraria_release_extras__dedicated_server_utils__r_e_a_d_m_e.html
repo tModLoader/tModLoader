@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('md__github_workspace_src_t_mod_loader_
 </ul>
 </li>
 <li>Download <a href="https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/docker-compose.yml">docker-compose.yml</a> and the <a href="https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Dockerfile">Dockerfile</a></li>
-<li>If you would like to install mods or use existing worlds, create a folder named <code>tModLoader</code>. In that directory setup a proper folder structure</li>
+<li>Create an empty folder named <code>tModLoader</code>. This is <b>required</b>. If you would like to install mods or use existing worlds then setup a proper folder structure in that directory</li>
 <li>Edit <code>docker-compose.yml</code> with your GID and UID. These can be found by running <code>id</code>, and generally default to 1000<ul>
 <li>You can also add the <code>TML_VERSION</code> arg to your compose file to set a specific tModLoader version. Read about how to set build arguments <a href="https://docs.docker.com/compose/compose-file/build/#args">here</a></li>
 <li>Uncomment the <code>restart</code> line to have the server automatically restart if it crashes</li>

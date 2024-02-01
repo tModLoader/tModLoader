@@ -1,6 +1,7 @@
 var struct_n_p_c_1_1_hit_modifiers =
 [
     [ "DisableCrit", "struct_n_p_c_1_1_hit_modifiers.html#a2a299a33d0fbe711818cf22c6d561fec", null ],
+    [ "DisableKnockback", "struct_n_p_c_1_1_hit_modifiers.html#a858f2d93f04a3283398db056231416ca", null ],
     [ "HideCombatText", "struct_n_p_c_1_1_hit_modifiers.html#a3559cbc95072314a723c58c10e014a0f", null ],
     [ "SetCrit", "struct_n_p_c_1_1_hit_modifiers.html#a1877b3584118b32c9ad35e504bf67161", null ],
     [ "SetInstantKill", "struct_n_p_c_1_1_hit_modifiers.html#a05bb280b449f6b6caced58296875901b", null ],

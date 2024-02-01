@@ -101,6 +101,7 @@ var class_player =
     [ "endurance", "class_player.html#aad894b33700110f81b725f018c821685", null ],
     [ "extraFall", "class_player.html#a23faed31e665fce3f3e2c418374b1eb5", null ],
     [ "gfxOffY", "class_player.html#a50056c148e9e99495fa90b3698bf0825", null ],
+    [ "hasGemRobe", "class_player.html#ac70d43e2ec00efed1eb1d04f3c95ba54", null ],
     [ "honeyCombItem", "class_player.html#a1b4a5e4d390abd02a6ef49e543afa46b", null ],
     [ "inventory", "class_player.html#a590dce4227b207c8976811be19f2cf64", null ],
     [ "jumpSpeed", "class_player.html#acdf8e12ddf06f366c080f718a62899d7", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,12 +90,15 @@ $(document).ready(function(){initNavTree('class_immunity_cooldown_i_d.html','');
   <div class="headertitle"><div class="title">ImmunityCooldownID Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses <a class="el" href="class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e" title="Default, no special slot, just Player.immuneTime">General</a> and applies immunity via Player.immune. Other damage immunity cooldowns are tracked in Player.hurtCooldowns indexed by these values.Correct usage of <a class="el" href="class_immunity_cooldown_i_d.html" title="Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses Ge...">ImmunityCooldownID</a> in ModLoader.ModProjectile.CooldownSlot, ModLoader.ModNPC.CanHitPlayer(Terraria.Player, ref int), and Player.Hurt(DataStructures.PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float) are essential for correctly applying damage to the player.  
+ <a href="class_immunity_cooldown_i_d.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae6266840e36309f12c339be7d62dd4a1"><td class="memItemLeft" align="right" valign="top"><a id="ae6266840e36309f12c339be7d62dd4a1" name="ae6266840e36309f12c339be7d62dd4a1"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>Bosses</b> = 1</td></tr>
-<tr class="memdesc:ae6266840e36309f12c339be7d62dd4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bosses like Moon Lord and Empress of Light (and their minions and projectiles) Prevents cheesing by taking repeated low damage from another source <br /></td></tr>
+<tr class="memdesc:ae6266840e36309f12c339be7d62dd4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bosses like Moon Lord and Empress of Light (and their minions and projectiles)Prevents cheesing by taking repeated low damage from another source <br /></td></tr>
 <tr class="separator:ae6266840e36309f12c339be7d62dd4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab04c90bffb04a170a094c8e6d8d46aaa"><td class="memItemLeft" align="right" valign="top"><a id="ab04c90bffb04a170a094c8e6d8d46aaa" name="ab04c90bffb04a170a094c8e6d8d46aaa"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>DD2OgreKnockback</b> = 2</td></tr>
@@ -117,7 +120,10 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>WrongBugNet</b> 
 <tr class="memdesc:af1340bc2669d75ec90978ac7a1f9074f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trying to catch lava critters with regular bug net <br /></td></tr>
 <tr class="separator:af1340bc2669d75ec90978ac7a1f9074f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses <a class="el" href="class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e" title="Default, no special slot, just Player.immuneTime">General</a> and applies immunity via Player.immune. Other damage immunity cooldowns are tracked in Player.hurtCooldowns indexed by these values.</p>
+<p >Correct usage of <a class="el" href="class_immunity_cooldown_i_d.html" title="Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses Ge...">ImmunityCooldownID</a> in ModLoader.ModProjectile.CooldownSlot, ModLoader.ModNPC.CanHitPlayer(Terraria.Player, ref int), and Player.Hurt(DataStructures.PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float) are essential for correctly applying damage to the player. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -131,7 +131,12 @@ override <a class="el" href="class_mod_mount.html">ModMount</a>&#160;</td><td cl
 <tr class="memdesc:a15763914665b07b40eaacc17ae915db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when mount is used (creating dust etc.) Can also be used for mount special abilities.  <a href="class_mod_mount.html#a15763914665b07b40eaacc17ae915db5">More...</a><br /></td></tr>
 <tr class="separator:a15763914665b07b40eaacc17ae915db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61bfc954159077440542412a00df231a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_mount.html#a61bfc954159077440542412a00df231a">UpdateFrame</a> (<a class="el" href="class_player.html">Player</a> mountedPlayer, int state, Vector2 velocity)</td></tr>
-<tr class="memdesc:a61bfc954159077440542412a00df231a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for manual updating of mount frame. Return false to stop the default frame behavior. Returns true by default.  <a href="class_mod_mount.html#a61bfc954159077440542412a00df231a">More...</a><br /></td></tr>
+<tr class="memdesc:a61bfc954159077440542412a00df231a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for manual updating of mount frame. Return false to stop the default frame behavior. Returns true by default. Possible values for <em>state</em>  include: <br  />
+ 0. Standing still on the ground or sliding <br  />
+ 1. Moving on the ground <br  />
+ 2. In the air, not flying. Hovering counts as this as well. <br  />
+ 3. In the air, flying <br  />
+ 4. Flying in water  <a href="class_mod_mount.html#a61bfc954159077440542412a00df231a">More...</a><br /></td></tr>
 <tr class="separator:a61bfc954159077440542412a00df231a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c2090b2cd3c0021bcf725598bf44e13"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_mount.html#a5c2090b2cd3c0021bcf725598bf44e13">UseAbility</a> (<a class="el" href="class_player.html">Player</a> player, Vector2 mousePosition, bool toggleOn)</td></tr>
 <tr class="memdesc:a5c2090b2cd3c0021bcf725598bf44e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed.  <a href="class_mod_mount.html#a5c2090b2cd3c0021bcf725598bf44e13">More...</a><br /></td></tr>
@@ -808,7 +813,12 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Allows for manual updating of mount frame. Return false to stop the default frame behavior. Returns true by default. </p>
+<p>Allows for manual updating of mount frame. Return false to stop the default frame behavior. Returns true by default. Possible values for <em>state</em>  include: <br  />
+ 0. Standing still on the ground or sliding <br  />
+ 1. Moving on the ground <br  />
+ 2. In the air, not flying. Hovering counts as this as well. <br  />
+ 3. In the air, flying <br  />
+ 4. Flying in water </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mountedPlayer</td><td></td></tr>
