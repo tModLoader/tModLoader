@@ -209,6 +209,8 @@ public static class ModNet
 		downloadQueue.Clear();
 		pendingConfigs.Clear();
 		var blockedList = new List<ModHeader>();
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		List<string> toEnable = new();
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
@@ -227,12 +229,56 @@ public static class ModNet
 
 			LocalMod matching = modFiles.FirstOrDefault(mod => header.Matches(mod.modFile));
 			if (matching != null) {
-				matching.Enabled = true;
+				if(clientMod != null) {
+					// Mod is enabled, but wrong version enabled
+					if(clientMod.Version > header.version) {
+						// TODO: Localize these messages once finalized
+						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, $"[c/FFFACD:Switch] to v{header.version}\n(Temporarily downgrade from v{clientMod.Version})"));
+					}
+					else {
+						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, $"[c/FFFACD:Switch] to v{header.version}\n(Temporarily upgrade from v{clientMod.Version})"));
+					}
+				}
+				else {
+					toEnable.Add(matching.Name);
+					reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(3, header.name, matching, $"[c/98FB98:Enable]")); 
+				}
+
 				continue;
 			}
 
-			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
+			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
 				downloadQueue.Enqueue(header);
+				if (modFiles.FirstOrDefault(mod => mod.Name == header.name && mod.Version == header.version) is LocalMod localMod) {
+					// We have the correct mod and version, but hash is different.
+					// We could differentiate between a workshop mod being different and a local mod, which is likely because user is mod dev or playtester.
+					//if(localMod.location == ModLocation.Workshop)
+					//	reloadRequiredExplanationEntries.Add(new Reason(1, header.name, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n[c/ff0000:(Mod differs from local copy, it may have been edited!)]", localMod));
+					//else
+					reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localMod, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n(Mod file differs from local copy)"));
+				}
+				else {
+					LocalMod localModMatchingNameOnly = modFiles.Where(mod => mod.Name == header.name).OrderByDescending(mod => mod.Version).FirstOrDefault(); // Technically might show mod icon from .tmod file that won't be selected to load, but this is fine.
+					if (localModMatchingNameOnly == null) {
+						// We don't have the mod.
+						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, null, $"[c/00BFFF:Download] v{header.version} from server"));
+					}
+					else {
+						if (clientMod != null ) {
+							// We have the mod enabled, but not the correct version.
+							if (clientMod.Version > header.version)
+								reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server\n(Temporarily downgrade from v{clientMod.Version})"));
+							else
+								reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server\n(Upgrade from v{clientMod.Version})"));
+						}
+						else {
+							// We have the mod, but not the correct version.
+							reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server"));
+						}
+					}
+
+				}
+			}
 			else
 				blockedList.Add(header);
 		}
@@ -244,8 +290,8 @@ public static class ModNet
 
 		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
 		foreach (var name in toDisable) {
-			ModLoader.DisableMod(name);
 			needsReload = true;
+			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(4, name, modFiles.Where(mod => mod.Name == name).OrderByDescending(mod => mod.Version).FirstOrDefault(), $"[c/FFA07A:Disable]"));
 		}
 
 		if (blockedList.Count > 0) {
@@ -262,18 +308,63 @@ public static class ModNet
 			return false;
 		}
 
-		// ready to connect, apply configs. Config manager will apply the configs on reload automatically
+		// Even if needsReload, check configs anyway so user is more informed.
+		HashSet<string> modsWithConfigReload = new HashSet<string>();
+		foreach (NetConfig pendingConfig in pendingConfigs) {
+			if (modsWithConfigReload.Contains(pendingConfig.modname) || !ModLoader.HasMod(pendingConfig.modname))
+				continue;
+
+			ModConfig currentConfigClone = ConfigManager.GeneratePopulatedClone(ConfigManager.GetConfig(pendingConfig));
+			JsonConvert.PopulateObject(pendingConfig.json, currentConfigClone, ConfigManager.serializerSettingsCompact);
+			Mod mod = ModLoader.GetMod(pendingConfig.modname);
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(mod, pendingConfig.configname);
+
+			if (loadTimeConfig.NeedsReload(currentConfigClone)) {
+				needsReload = true;
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, modFiles.FirstOrDefault(mod => mod.Name == pendingConfig.modname), $"[c/DDA0DD:Config change]"));
+				modsWithConfigReload.Add(pendingConfig.configname);
+				// We could mention the specific config if useful: \"{loadTimeConfig.DisplayName}\" Config change");
+				Logging.tML.Debug($"{pendingConfig.modname}:{pendingConfig.configname} ({loadTimeConfig.DisplayName}) would require a mod reload to join this server");
+			}
+		}
+
+		// If needsReload is still false, apply configs to real ModConfig instances and join server directly
 		if (!needsReload) {
 			foreach (NetConfig pendingConfig in pendingConfigs)
 				JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
 
-			if (ConfigManager.AnyModNeedsReload()) {
-				needsReload = true;
-			}
-			else {
-				foreach (NetConfig pendingConfig in pendingConfigs)
-					ConfigManager.GetConfig(pendingConfig).OnChanged();
-			}
+			foreach (NetConfig pendingConfig in pendingConfigs)
+				ConfigManager.GetConfig(pendingConfig).OnChanged();
+		}
+		else {
+			// Otherwise, show the ServerModsDifferMessage UI.
+			string continueButtonText = downloadQueue.Count > 0 ? "Download and Continue" : "Reload and Continue";
+			Interface.serverModsDifferMessage.Show($"Due to the following mod version or config differences, mods will reload if you join this server. Press \"{continueButtonText}\" to join this server.",
+				0, // back to main menu
+				null,
+				continueButtonText,
+				() => {
+					foreach (var name in toDisable) {
+						ModLoader.DisableMod(name);
+					}
+					foreach (var name in toEnable) {
+						ModLoader.EnableMod(name);
+					}
+
+					if (downloadQueue.Count > 0)
+						DownloadNextMod();
+					else
+						OnModsDownloaded(true);
+				},
+				"Back",
+				() => {
+					Netplay.Disconnect = true;
+				},
+				reloadRequiredExplanationEntries.OrderBy(x => x.typeOrder).ThenBy(x => x.mod).ToList()
+			);
+
+			// Do we need to worry about connection timeouts while the ServerModsDifferMessage window is open?
+			return false;
 		}
 
 		return true;
