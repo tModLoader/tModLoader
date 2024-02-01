@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"struct_fishing_attempt.html":[3,0,392],
 "struct_fishing_attempt.html#a0bf19447a860097836fd278923495634":[3,0,392,14],
 "struct_fishing_attempt.html#a1a0a82d339c8b6e80a97bf6524a96884":[3,0,392,11],
 "struct_fishing_attempt.html#a1e0c1a71099e8a46efe14fb99d493966":[3,0,392,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091":[3,0,1171,6],
 "struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5":[3,0,1171,4],
 "struct_stat_modifier.html#acc7b82c5191a1aeb5578bc0550f95602":[3,0,1171,7],
-"struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b":[3,0,1171,5],
-"struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f":[3,0,1171,3]
+"struct_stat_modifier.html#ad14552167c70f616d8656bd50b67354b":[3,0,1171,5]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f":[3,0,1171,3],
 "struct_steamed_wraps_1_1_item_install_info.html":[3,0,1174,0],
 "struct_style_dimension.html":[3,0,1180],
 "struct_teleport_pylon_info.html":[3,0,1205],
