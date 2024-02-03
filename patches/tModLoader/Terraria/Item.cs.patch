@@ -1901,6 +1901,15 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
+@@ -47366,7 +_,7 @@
+ 		noUseGraphic = false;
+ 		lifeRegen = 0;
+ 		shootSpeed = 0f;
+-		active = true;
++		active = Type != 0;
+ 		alpha = 0;
+ 		ammo = AmmoID.None;
+ 		useAmmo = AmmoID.None;
 @@ -47426,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
@@ -2240,10 +2249,11 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -49309,6 +_,9 @@
+@@ -49309,6 +_,10 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
++		active = false;
 +
 +		ModItem = null;
 +		_globals = null;

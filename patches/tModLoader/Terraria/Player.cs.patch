@@ -397,7 +397,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,23 +_,96 @@
+@@ -961,23 +_,97 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -464,7 +464,7 @@
  	public int statManaMax2;
 +
 +	/// <summary>
-+	/// The rate of this player's life regeneration in health/ticks, divided by <c>120</c>.
++	/// The rate of this player's life regeneration in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs and life regeneration accessories such as <see cref="ItemID.BandofRegeneration"/>.
 +	/// <br/> For example, adding <c>10</c> to this value regenerates <c>10 / 120</c> = <c>1/6</c> health per tick, or 5 health per second.
 +	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
 +	/// <br/> This value should be subtracted from in <see cref="ModPlayer.UpdateBadLifeRegen"/> and added to in <see cref="ModPlayer.UpdateLifeRegen"/>.
@@ -475,6 +475,7 @@
 +	/// This player's accumulated life regeneration.
 +	/// <br/> If this value reaches or exceeds <c>120</c>, the player gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
 +	/// <br/> If this value reaches or exceeds <c>-120</c>, the player loses health in the same way.
++	/// <br/> In either case, text will appear above the player indicating the life regeneration or life loss.
 +	/// </summary>
  	public int lifeRegenCount;
 +
@@ -2450,7 +2451,7 @@
  		}
  
  		if (armorPiece.type == 1549) {
-@@ -10365,14 +_,17 @@
+@@ -10365,14 +_,21 @@
  			minionDamage += 0.11f;
  		}
  
@@ -2460,6 +2461,10 @@
  			maxMinions++;
  			minionDamage += 0.11f;
  		}
++
++		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
++			hasGemRobe = true;
 +
 +		ItemLoader.UpdateEquip(armorPiece, this);
  	}
@@ -3054,8 +3059,11 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14540,6 +_,7 @@
+@@ -14538,8 +_,10 @@
+ 		witheredWeapon = false;
+ 		parryDamageBuff = false;
  		slowOgreSpit = false;
++		hasGemRobe = false; // Added by TML.
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML.
@@ -5877,7 +5885,14 @@
  		if (result.BaitItemType == 2673)
  			return result;
  
-@@ -32894,12 +_,15 @@
+@@ -32890,16 +_,22 @@
+ 		if (canFloatInWater && wet)
+ 			num += 5;
+ 
++		/*
+ 		if (sitting.TryGetSittingBlock(this, out var tile) && ((tile.type == 15 && tile.frameY / 40 == 1) || tile.type == 497))
++		*/
++		if (sitting.TryGetSittingBlock(this, out var _) && sitting.details.IsAToilet) // Make modded toilets give the fishing boost as well
  			num += 5;
  
  		int num2 = result.BaitPower + result.PolePower + fishingSkill + num;
@@ -7850,56 +7865,67 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,52 @@
+@@ -41979,11 +_,32 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
++		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Moved to the bottom
++		// Moved to SavePlayerFile_Write
 +		/*
  		if (FileUtilities.Exists(path, isCloudSave))
  			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +		*/
++
++		PlayerLoader.PreSavePlayer(player);
++		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
++		PlayerLoader.PostSavePlayer(player);
++
++		TagCompound tplrData = PlayerIO.SaveData(player);
++
++		SavePlayerFile_Write(playerFile, plrData, tplrData);
++	}
++
++	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
++	{
++		var player = playerFile.Player;
  
  		RijndaelManaged rijndaelManaged = new RijndaelManaged();
-+
 +		/*
  		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
 +		*/
 +		using Stream stream = new MemoryStream(2000);
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
-+
-+		PlayerLoader.PreSavePlayer(player);
-+
  		binaryWriter.Write(279);
- 		playerFile.Metadata.Write(binaryWriter);
- 		Serialize(playerFile, player, binaryWriter);
+@@ -41992,8 +_,30 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
 +
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Replaced with FileUtilities.WriteAllBytes at the bottom
++		// Replaced with FileUtilities.WriteAllBytes in SavePlayerFile_Write
 +		/*
  		if (isCloudSave && SocialAPI.Cloud != null)
  			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +		*/
 +
-+		byte[] bytes = ((MemoryStream)stream).ToArray();
++		return ((MemoryStream)stream).ToArray();
++	}
 +
-+		PlayerLoader.PostSavePlayer(player); // For native data only
-+
-+		//TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		var tag = PlayerIO.SaveData(player);
++	private static void SavePlayerFile_Write(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
++	{
++		string path = playerFile.Path;
++		bool isCloudSave = playerFile.IsCloudSave;
++		if (string.IsNullOrEmpty(path))
++			return;
 +
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+		FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
-+
-+		PlayerIO.Save(tag, path, isCloudSave);
++		FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
++		PlayerIO.Save(tplrData, path, isCloudSave);
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
@@ -8027,8 +8053,19 @@
  			fileIO.Write(newPlayer.builderAccStatus[num9]);
  		}
  
-@@ -42272,6 +_,10 @@
+@@ -42270,12 +_,28 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
++		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
++		var tplrData = PlayerIO.ReadDataBytes(playerPath, cloudSave);
++		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
++	}
++
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
++	{
++		string playerPath = playerFileData.Path;
++
  		Player player = new Player();
  		bool gotToReadName = false;
 +
@@ -8038,6 +8075,22 @@
  		try {
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
  			rijndaelManaged.Padding = PaddingMode.None;
++			/*
+ 			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			*/
++			using (MemoryStream stream = new MemoryStream(plrData)) {
+ 				using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
+ 				using BinaryReader binaryReader = new BinaryReader(input);
+ 				int num = binaryReader.ReadInt32();
+@@ -42291,7 +_,7 @@
+ 					return playerFileData;
+ 				}
+ 
+-				Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
++				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName); // Added tplrData argument
+ 			}
+ 
+ 			player.PlayerFrame();
 @@ -42299,6 +_,9 @@
  			playerFileData.Player = player;
  			return playerFileData;
@@ -8048,28 +8101,36 @@
  		catch {
  		}
  
-@@ -42322,12 +_,20 @@
+@@ -42322,8 +_,28 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
 +		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
  		return player;
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, tplrData);
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, byte[] tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, TagIO.FromStream(tplrData.ToMemoryStream()));
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
  	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
- 	{
-+		if (!PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
-+			tag = null;
-+
-+		Deserialize(data, newPlayer, fileIO, tag, release, out gotToReadName);
-+	}
-+
-+	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
-+	{
- 		gotToReadName = false;
- 		newPlayer.name = fileIO.ReadString();
- 		gotToReadName = true;
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
@@ -8087,16 +8148,17 @@
  
  		if (release >= 125)
  			newPlayer.extraAccessory = fileIO.ReadBoolean();
-@@ -42795,6 +_,9 @@
+@@ -42795,7 +_,10 @@
  			}
  		}
  
-+		if (modData != null)
-+			PlayerIO.Load(newPlayer, modData);
-+
++		// Moved to the tplr variants of Deserialize, after modded data is read
++		/*
  		LoadPlayer_LastMinuteFixes(newPlayer);
++		*/
  	}
  
+ 	private static void AdjustRespawnTimerForWorldJoining(Player newPlayer)
 @@ -42834,7 +_,7 @@
  	{
  		for (int i = 3; i < 10; i++) {

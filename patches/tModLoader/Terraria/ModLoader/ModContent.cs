@@ -43,7 +43,7 @@ public static class ModContent
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
 	public static IEnumerable<T> GetContent<T>() where T : ILoadable
-		=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
+		=> ContentCache.GetContentForAllMods<T>();
 
 	/// <summary> Attempts to find the template instance with the specified full name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
@@ -291,6 +291,8 @@ public static class ModContent
 			mod.loading = false;
 		});
 
+		ContentCache.contentLoadingFinished = true;
+
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
 		RecipeGroupHelper.CreateRecipeGroupLookups();
@@ -453,6 +455,7 @@ public static class ModContent
 	{
 		MonoModHooks.Clear();
 		TypeCaching.Clear();
+		ContentCache.Unload();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();

@@ -30,7 +30,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (!mods.Any())
+		if (!mods.Any() || mods[0] == null)
 			return false;
 
 		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
@@ -106,6 +106,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
+		ModCompile.UpdateSubstitutedDescriptionValues(ref description, buildData["trueversion"], buildData["homepage"]);
 		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
 			return false;
@@ -200,7 +201,7 @@ public partial class WorkshopSocialModule
 
 	public static void FixErrorsInWorkshopFolder(string workshopFolderPath)
 	{
-		// This eliminates uploaded mod source files that occured prior to the fix of #2263
+		// This eliminates uploaded mod source files that occurred prior to the fix of #2263
 		if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
 			foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
 				File.Delete(sourceFile);
@@ -283,7 +284,7 @@ public partial class WorkshopSocialModule
 		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
 			$"{workshopDesc}";
 
-		SteamedWraps.UpdatePatchNotesWithModData(ref changeNotes, buildData);
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
 
 		// Make the publish.vdf file
 		string manifest = Path.Combine(publishedModFiles, "workshop.json");

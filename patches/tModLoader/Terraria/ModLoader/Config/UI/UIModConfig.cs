@@ -425,6 +425,7 @@ internal class UIModConfig : UIState
 
 	public override void OnActivate()
 	{
+		Interface.modConfigList.ModToSelectOnOpen = mod;
 		filterTextField.SetText("");
 
 		updateNeeded = false;
@@ -544,6 +545,9 @@ internal class UIModConfig : UIState
 		}
 		else if (type == typeof(BuffDefinition)) {
 			e = new BuffDefinitionElement();
+		}
+		else if (type == typeof(TileDefinition)) {
+			e = new TileDefinitionElement();
 		}
 		else if (type == typeof(Color)) {
 			e = new ColorElement();

@@ -346,7 +346,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,29 +_,67 @@
+@@ -829,39 +_,99 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -364,7 +364,7 @@
 +	/// </summary>
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles.
++	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
 +	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
@@ -397,7 +397,14 @@
 +	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile type will be considered a table for the purposes of tile placement. Tiles such as <see cref="TileID.Tables"/> and <see cref="TileID.WorkBenches"/> set this. Some tiles such as <see cref="TileID.PiggyBank"/>, <see cref="TileID.Bowls"/>, and <see cref="TileID.Candles"/> can only be placed on tiles designated as a Table.
++	/// <para/> Note that a separate system is used for counting a tile as a table for housing purposes. Use <c>AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);</c> in a ModTile class to designate the tile as a table.
++	/// </summary>
  	public static bool[] tileTable = new bool[TileID.Count];
++	/// <summary>
++	/// If true, light is blocked by this tile and the light values will decrease as it passes through. Most <see cref="Main.tileSolid"/> tiles will set this to true. <see cref="TileID.Glass"/> is an example of a tile that is solid but doesn't block light.
++	/// </summary>
  	public static bool[] tileBlockLight = new bool[TileID.Count];
  	public static bool[] tileNoSunLight = new bool[TileID.Count];
  	public static bool[] tileDungeon = new bool[TileID.Count];
@@ -405,7 +412,14 @@
 +	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
 +	/// </summary>
  	public static bool[] tileSpelunker = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile can be stood on despite not being <see cref="tileSolid"/>. The player can pass down through the tile by pressing down. <see cref="TileID.Tables"/>, <see cref="TileID.Anvils"/>, and <see cref="TileID.Platforms"/> are some example.
++	/// </summary>
  	public static bool[] tileSolidTop = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
++	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
  	public static bool[] tileBouncy = new bool[TileID.Count];
 +	/// <summary>
@@ -414,7 +428,12 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
-@@ -861,7 +_,12 @@
+ 	public static bool[] tileRope = new bool[TileID.Count];
+ 	public static bool[] tileBrick = new bool[TileID.Count];
+ 	public static bool[] tileMoss = new bool[TileID.Count];
++	/// <summary>
++	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange. 
++	/// </summary>
  	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
@@ -427,7 +446,7 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -941,7 +_,15 @@
+@@ -941,9 +_,23 @@
  	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
@@ -441,8 +460,16 @@
 +	/// These NPC will be forced <see cref="NPC.friendly"/> for 1.5 seconds if naturally spawned.<br/>
 +	/// </summary>
  	public static bool[] npcCatchable = new bool[NPCID.Count];
++	/// <summary>
++	/// Tracks the current animation frame for a specific tile type. This value is shared for all tiles of the type. The frame parameter in <see cref="ModTile.AnimateTile(ref int, ref int)"/> is equivalent to this value. Animation variation for a specific tile can be done with <see cref="ModTile.AnimateIndividualTile(int, int, int, ref int, ref int)"/>.
++	/// </summary>
  	public static int[] tileFrame = new int[TileID.Count];
++	/// <summary>
++	/// Used to time how long the current animation frame for a specific tile type has been shown. This value is shared for all tiles of the type. The frameCounter parameter in <see cref="ModTile.AnimateTile(ref int, ref int)"/> is equivalent to this value.
++	/// </summary>
  	public static int[] tileFrameCounter = new int[TileID.Count];
+ 	public static byte[] wallFrame = new byte[WallID.Count];
+ 	public static byte[] wallFrameCounter = new byte[WallID.Count];
 @@ -952,7 +_,10 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
@@ -6125,7 +6152,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].scope && mouseRight) {
-@@ -51766,10 +_,29 @@
+@@ -51766,9 +_,29 @@
  					if (num13 < 0)
  						num13 = 0;
  
@@ -6133,13 +6160,14 @@
 +					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
 +
 +					/*
-+					vector3.X = (num12 - screenWidth / 2) * zoom;
-+					vector3.Y = (num13 - screenHeight / 2) * zoom;
-+					*/
  					vector3.X = (float)(num12 - screenWidth / 2) / 2f;
  					vector3.Y = (float)(num13 - screenHeight / 2) / 2f;
++					*/
++					vector3.X = (num12 - screenWidth / 2) * zoom;
++					vector3.Y = (num13 - screenHeight / 2) * zoom;
++
  					flag = true;
- 				}
++				}
 +				else { // Added by TML
 +					float zoom = -1f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
@@ -6151,10 +6179,9 @@
 +						vector3.Y = (mouseYClamped - screenHeight / 2) * zoom;
 +						flag = true;
 +					}
-+				}
+ 				}
  			}
  		}
- 
 @@ -51850,6 +_,8 @@
  		}
  
@@ -6164,6 +6191,20 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+@@ -51883,6 +_,13 @@
+ 			num = Utils.Clamp(num, 0, 8);
+ 
+ 		Texture2D value2 = TextureAssets.Moon[num].Value;
++
++		if (gameMenu) {
++			ModMenu menu = MenuLoader.CurrentMenu;
++			value = menu.SunTexture?.Value ?? value;
++			value2 = menu.MoonTexture?.Value ?? value2;
++		}
++
+ 		int num2 = sceneArea.bgTopY;
+ 		int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
+ 		int num4 = 0;
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
