@@ -92,29 +92,6 @@
  		if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
  			_data.SetAsActive();
  			SoundEngine.PlaySound(10);
-@@ -267,8 +_,21 @@
- 			else
- 				Main.menuMode = 10;
- 
--			if (!Main.menuMultiplayer)
-+			if (!Main.menuMultiplayer) {
-+				ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
-+
-+				// TODO: Reload mods if any mod differ from recent server connection. Also UIMods.BackClick maybe?
-+				// Maybe do that and this when Single Player is clicked instead of when world is selected?
-+
-+				if (ConfigManager.AnyModNeedsReload()) {
-+					ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
-+					ModLoader.ModLoader.Reload();
-+					return;
-+				}
-+
-+				ConfigManager.OnChangedAll();
- 				WorldGen.playWorld();
-+			}
- 		}
- 	}
- 
 @@ -281,6 +_,9 @@
  			return true;
  		}

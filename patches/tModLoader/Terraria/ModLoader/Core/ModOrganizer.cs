@@ -55,6 +55,8 @@ internal static class ModOrganizer
 	/// <summary>Mods from any location, using the default internal priority logic</summary>
 	internal static LocalMod[] FindMods(bool logDuplicates = false) => SelectVersionsToLoad(FindAllMods(), quiet: !logDuplicates).ToArray();
 
+	internal static IEnumerable<LocalMod> RecheckVersionsToLoad() => SelectVersionsToLoad(AllFoundMods, quiet: true);
+
 	internal static Dictionary<string, LocalMod> LoadableModVersions { get; private set; }
 	internal static LocalMod[] AllFoundMods { get; private set; }
 

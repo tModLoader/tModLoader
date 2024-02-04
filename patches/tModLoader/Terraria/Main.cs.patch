@@ -5311,6 +5311,14 @@
  				menuMode = 0;
  				netMode = 0;
  			}
+@@ -40011,6 +_,7 @@
+ 				SoundEngine.PlaySound(10);
+ 				ClearPendingPlayerSelectCallbacks();
+ 				menuMode = 1;
++				ShowModsNeedReloadMenuInsteadIfNeeded();
+ 			}
+ 
+ 			num11++;
 @@ -40029,7 +_,9 @@
  			}
  

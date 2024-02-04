@@ -19,6 +19,10 @@ using Terraria.Social;
 using Terraria.UI.Chat;
 using ReLogic.Content;
 using Terraria.UI.Gamepad;
+using System.Linq;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Config;
 
 namespace Terraria;
 
@@ -444,5 +448,51 @@ public partial class Main
 
 		PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
 		PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+	}
+
+	private static void ShowModsNeedReloadMenuInsteadIfNeeded()
+	{
+		// If any loaded mod or config differs from normal, intercept SinglePlayer menu with a prompt
+		// TODO: Should this remember the mod loadout before joining server? Right now it only cares about version downgrades. MP mods will still load.
+		bool needsReload = false;
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		var normalModsToLoad = ModOrganizer.RecheckVersionsToLoad();
+		foreach (var loadedMod in ModLoader.ModLoader.Mods) {
+			if (loadedMod is ModLoaderMod || loadedMod.File == null)
+				continue;
+			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
+			if (normalMod.modFile.path != loadedMod.File.path) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, $"[c/FFFACD:Switch] to v{normalMod.Version}\n(Currently loaded v{loadedMod.Version})"));
+				needsReload = true;
+			}
+		}
+
+		if(ConfigManager.AnyModNeedsReloadCheckOnly(normalModsToLoad, reloadRequiredExplanationEntries)) {
+			// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+			needsReload = true;
+		}
+		else if (!needsReload) {
+			// Otherwise, config changes take effect immediately and the player select menu will be shown
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
+			ConfigManager.OnChangedAll();
+		}
+
+		if (needsReload) {
+			string continueButtonText = "Reload and Continue";
+			Interface.serverModsDifferMessage.Show($"Due to the following mod version or config differences still present from multiplayer, mods will reload if you enter single player. Press \"{continueButtonText}\" to enter single player.",
+				0, // back to main menu
+				null,
+				continueButtonText,
+				() => {
+					ModLoader.ModLoader.OnSuccessfulLoad += () => { Main.menuMode = 1; };
+					ModLoader.ModLoader.Reload();
+				},
+				"Back",
+				() => {
+					// Do nothing, logic will to back to main menu
+				},
+				reloadRequiredExplanationEntries.OrderBy(x => x.typeOrder).ThenBy(x => x.mod).ToList()
+			);
+		}
 	}
 }

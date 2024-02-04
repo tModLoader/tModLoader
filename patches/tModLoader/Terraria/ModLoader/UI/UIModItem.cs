@@ -287,6 +287,19 @@ internal class UIModItem : UIPanel
 			Append(updatedModDot);
 		}
 
+		if (loadedMod != null && (_mod.modFile.path != loadedMod.File.path)) {
+			var serverDiffMessage = new UITextPanel<string>($"v{loadedMod.Version} currently loaded due to multiplayer game session") {
+				Left = new StyleDimension(0, 0f),
+				Width = new StyleDimension(0, 1f),
+				Height = new StyleDimension(30, 0f),
+				BackgroundColor = Color.Orange,
+				Top = { Pixels = 82 }
+			};
+			Append(serverDiffMessage);
+
+			Height.Pixels = 130;
+		}
+
 		SetHoverColors(hovered: false);
 	}
 
