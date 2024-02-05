@@ -454,7 +454,7 @@ internal class UIModItem : UIPanel
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfigList.SelectedMod = ModLoader.GetMod(ModName);
+		Interface.modConfigList.ModToSelectOnOpen = ModLoader.GetMod(ModName);
 		Main.menuMode = Interface.modConfigListID;
 	}
 
@@ -567,6 +567,8 @@ internal class UIModItem : UIPanel
 				IsWrapped = true
 			};
 			_deleteModDialog.Append(_dialogText);
+
+			Interface.modsMenu.Recalculate();
 		}
 		else {
 			DeleteMod(evt, listeningElement);

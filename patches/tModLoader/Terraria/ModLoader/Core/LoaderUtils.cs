@@ -48,12 +48,12 @@ public static class LoaderUtils
 	{
 		var exceptions = new List<Exception>();
 
-		foreach (var t in enumerable) {
+		foreach (var e in enumerable) {
 			try {
-				action(t);
+				action(e);
 			}
 			catch (Exception ex) {
-				ex.Data["contentType"] = t.GetType();
+				ex.Data["contentType"] = e is Type ? e : e.GetType();
 				exceptions.Add(ex);
 			}
 		}

@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
@@ -135,6 +136,7 @@ public static class SteamedWraps
 	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
 		FilterByText(ref qHandle, qP.searchGeneric);
+		FilterByText(ref qHandle, $"{qP.searchAuthor}");
 		FilterByTags(ref qHandle, qP.searchTags);
 		FilterModSide(ref qHandle, qP.modSideFilter);
 
@@ -221,7 +223,7 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		if (!string.IsNullOrEmpty(qParams.searchGeneric))
+		if (!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor))
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
 		return (qParams.sortingParamater) switch {
@@ -633,7 +635,8 @@ public static class SteamedWraps
 				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
 		}
 
-		UpdatePatchNotesWithModData(ref patchNotes, _entryData.BuildData);	
+		ModCompile.UpdateSubstitutedDescriptionValues(ref patchNotes, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"]);
+
 		string refs = _entryData.BuildData["workshopdeps"];
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
@@ -650,17 +653,5 @@ public static class SteamedWraps
 				}
 			}
 		}
-	}
-
-	internal static void UpdatePatchNotesWithModData(ref string patchNotes, NameValueCollection buildData)
-	{
-		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
-		// This allows us to use substitution keys such as {ModVersion}
-		patchNotes = Language.GetText(patchNotes).FormatWith(new {
-			ModVersion = buildData["trueversion"],
-			ModHomepage = buildData["homepage"],
-			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
-			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
-		});
 	}
 }
