@@ -64,7 +64,7 @@ internal class UIModItem : UIPanel
 		Height.Pixels = 90;
 		Width.Percent = 1f;
 		SetPadding(6f);
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(_mod.DisplayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
+		DisplayNameClean = _mod.DisplayNameClean;
 	}
 
 	public override void OnInitialize()

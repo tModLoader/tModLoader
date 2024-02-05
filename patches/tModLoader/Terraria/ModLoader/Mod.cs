@@ -75,6 +75,10 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
+	/// <summary>
+	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output.
+	/// </summary>
+	public string DisplayNameClean { get; internal set; }
 
 	public AssetRepository Assets { get; private set; }
 

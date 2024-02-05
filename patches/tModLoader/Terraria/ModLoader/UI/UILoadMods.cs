@@ -36,25 +36,27 @@ internal class UILoadMods : UIProgress
 	{
 		this.stageText = stageText;
 		this.modCount = modCount;
-		if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
+		if (modCount < 0) SetProgressText(Language.GetTextValue(stageText), Language.GetTextValue(stageText));
 		Progress = 0;
 		SubProgressText = "";
 	}
 
-	private void SetProgressText(string text, string logText = null)
+	// uitext might have chat tags, text is the same without chat tags, logText might be unique
+	private void SetProgressText(string uitext, string text, string logText = null)
 	{
 		Logging.tML.Info(logText ?? text);
 		if (Main.dedServ) Console.WriteLine(text);
-		else DisplayText = text;
+		else DisplayText = uitext;
 	}
 
-	public void SetCurrentMod(int i, string modName, string displayName, Version version)
+	public void SetCurrentMod(int i, string modName, string displayName, string displayNameClean, Version version)
 	{
-		var display = $"{displayName} v{version}";
-		var log = $"{modName} ({displayName}) v{version}";
-		SetProgressText(Language.GetTextValue(stageText, display), Language.GetTextValue(stageText, log));
+		var displayUI = $"{displayName} v{version}";
+		var display = $"{displayNameClean} v{version}";
+		var log = $"{modName} ({displayNameClean}) v{version}";
+		SetProgressText(Language.GetTextValue(stageText, displayUI), Language.GetTextValue(stageText, display), Language.GetTextValue(stageText, log));
 		Progress = i / (float)modCount;
 	}
 
-	public void SetCurrentMod(int i, Mod mod) => SetCurrentMod(i, mod.Name, mod.DisplayName, mod.Version);
+	public void SetCurrentMod(int i, Mod mod) => SetCurrentMod(i, mod.Name, mod.DisplayName, mod.DisplayNameClean, mod.Version);
 }
