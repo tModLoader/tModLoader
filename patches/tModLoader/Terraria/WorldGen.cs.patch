@@ -2928,6 +2928,15 @@
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
+@@ -63321,7 +_,7 @@
+ 			currentMerge = -1;
+ 	}
+ 
+-	private static bool SpawnFallingBlockProjectile(int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
++	public static bool SpawnFallingBlockProjectile(int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
+ 	{
+ 		if (Main.netMode == 1)
+ 			return false;
 @@ -63615,7 +_,8 @@
  		if (!SolidTile(tile) || !SolidTile(tile2)) {
  			flag = true;
@@ -2962,6 +2971,61 @@
  			}
  
  			destroyObject = false;
+@@ -63711,48 +_,12 @@
+ 
+ 	private static void GetSandfallProjData(int type, out int projType, out int dmg)
+ 	{
+-		dmg = 10;
+-		switch (type) {
+-			case 112:
+-				projType = 56;
+-				break;
+-			case 59:
+-				projType = 39;
+-				break;
+-			case 116:
+-				projType = 67;
+-				break;
+-			case 123:
+-				projType = 71;
+-				break;
+-			case 224:
+-				projType = 179;
+-				break;
+-			case 234:
+-				projType = 241;
+-				break;
+-			case 330:
+-				projType = 411;
+-				dmg = 0;
+-				break;
+-			case 331:
+-				projType = 412;
+-				dmg = 0;
+-				break;
+-			case 332:
+-				projType = 413;
+-				dmg = 0;
+-				break;
+-			case 333:
+-				projType = 414;
+-				dmg = 0;
+-				break;
+-			case 495:
+-				projType = 812;
+-				break;
+-			default:
+-				projType = 31;
+-				break;
++		projType = 0;
++		dmg = 0;
++		if (TileID.Sets.FallingBlockProjectileID[type] > -1)
++		{
++			projType = TileID.Sets.FallingBlockProjectileID[type];
++			dmg = TileID.Sets.FallingBlockProjectileDamage[type];
+ 		}
+ 	}
+ 
 @@ -63768,7 +_,7 @@
  
  		if (!tile.nactive())

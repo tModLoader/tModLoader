@@ -15,12 +15,22 @@
  	{
  		public static class Conversion
  		{
-@@ -106,19 +_,75 @@
+@@ -106,19 +_,85 @@
  			};
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
++
++		/// <summary>
++		/// The ID of the projectile for this falling block. Defaults to -1.
++		/// </summary>
++		public static int[] FallingBlockProjectileID = Factory.CreateIntSet(-1, 53, 31, 112, 56, 59, 39, 116, 67, 123, 71, 224, 179, 234, 241, 330, 411, 331, 412, 332, 413, 333, 414, 495, 812);
++
++		/// <summary>
++		/// The damage the falling block's projectile does. Defaults to 10.
++		/// </summary>
++		public static int[] FallingBlockProjectileDamage = Factory.CreateIntSet(10, 53, 10, 112, 10, 59, 10, 116, 10, 123, 10, 224, 10, 234, 10, 330, 0, 331, 0, 332, 0, 333, 0, 495, 10);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then players will slip on that tile.
