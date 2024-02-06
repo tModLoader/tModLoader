@@ -23,6 +23,8 @@ using Terraria.Social.Steam;
 using Terraria.UI;
 using System.Collections.Generic;
 using Microsoft.Build.Framework;
+using Terraria.UI.Chat;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.UI;
 
@@ -427,7 +429,7 @@ internal static class Interface
 				exit = true;
 			}
 			else if (command.StartsWith("c")) {
-				Match match = new Regex("c (\\d+)").Match(command);
+				Match match = new Regex("c\\s*(\\d+)").Match(command);
 				if (!match.Success) {
 					continue;
 				}
@@ -488,6 +490,7 @@ internal static class Interface
 
 			Console.WriteLine();
 			Console.WriteLine("m <number> <new config> :\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigEditConfig"));
+			WriteColoredLine(ConsoleColor.DarkYellow, Language.GetTextValue("tModLoader.DedConfigEditConfigNote"));
 			Console.WriteLine("d :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigRestoreConfig"));
 			Console.WriteLine("e :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.Exit"));
 			Console.WriteLine();
@@ -496,7 +499,7 @@ internal static class Interface
 			Console.Clear();
 			command ??= "";
 
-			Match match = new Regex("m (\\d+) (.*)").Match(command);
+			Match match = new Regex("m\\s*(\\d+) (.*)").Match(command);
 			if (match.Success) { // Edit command
 				HandleEditConfigValueCommand(properties, match);
 			}
@@ -526,7 +529,12 @@ internal static class Interface
 				WriteColoredLine(ConsoleColor.Green, $"{config.DisplayName}:");
 			}
 
-			string text = ConfigManager.GetLocalizedLabel(variable) + ":";
+			HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
+			if (header != null) {
+				WriteColoredLine(ConsoleColor.Yellow, "\t" + ConvertChatTagsToText(header.Header));
+			}
+
+			string text = ConvertChatTagsToText(ConfigManager.GetLocalizedLabel(variable)) + ":";
 			int size = text.Length;
 			text = (variable.CanWrite ? key : "-") + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
 			if (!variable.CanWrite)
@@ -540,7 +548,7 @@ internal static class Interface
 			if (!variable.CanWrite)
 				Console.ResetColor();
 
-			string tooltip = ConfigManager.GetLocalizedTooltip(variable);
+			string tooltip = ConvertChatTagsToText(ConfigManager.GetLocalizedTooltip(variable));
 			if (!string.IsNullOrWhiteSpace(tooltip)) {
 				WriteColoredLine(ConsoleColor.Cyan, "\t" + tooltip.Replace("\n", "\n\t"));
 			}
@@ -620,6 +628,12 @@ internal static class Interface
 		Console.ForegroundColor = color;
 		Console.WriteLine(text);
 		Console.ResetColor();
+	}
+
+	internal static string ConvertChatTagsToText(string text)
+	{
+		return string.Join("", ChatManager.ParseMessage(text, Color.White)
+				.Select(x => x.Text));
 	}
 
 	private static void EnableDepsRecursive(LocalMod mod, LocalMod[] mods, List<string> missingRefs)
