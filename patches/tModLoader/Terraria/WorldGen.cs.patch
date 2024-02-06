@@ -127,7 +127,7 @@
 +			do_worldGenCallBack(threadContext);
 +		}
 +		catch (Exception e) {
-+			Logging.Terraria.Error(Language.GetTextValue("tModLoader.WorldGenError"), e);
++			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorldGenError") + "\n" + e, 0);
 +		}
 +	}
 +
