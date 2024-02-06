@@ -2971,7 +2971,7 @@
  			}
  
  			destroyObject = false;
-@@ -63711,48 +_,12 @@
+@@ -63711,48 +_,11 @@
  
  	private static void GetSandfallProjData(int type, out int projType, out int dmg)
  	{
@@ -3019,8 +3019,7 @@
 -				break;
 +		projType = 0;
 +		dmg = 0;
-+		if (TileID.Sets.FallingBlockProjectileID[type] > -1)
-+		{
++		if (TileID.Sets.FallingBlockProjectileID[type] > -1) {
 +			projType = TileID.Sets.FallingBlockProjectileID[type];
 +			dmg = TileID.Sets.FallingBlockProjectileDamage[type];
  		}

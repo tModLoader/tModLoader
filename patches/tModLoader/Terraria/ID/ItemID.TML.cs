@@ -7,6 +7,17 @@ partial class ItemID
 	partial class Sets
 	{
 		/// <summary>
+		/// The projectile ID of a sandgun ammo item ID. Defaults to 42, as this is the normal sandgun sand projectile.
+		/// This shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun.
+		/// </summary>
+		public static int[] SandgunAmmoToProjectile = Factory.CreateIntSet(42, EbonsandBlock, ProjectileID.EbonsandBallGun, PearlsandBlock, ProjectileID.PearlSandBallGun, CrimsandBlock, ProjectileID.CrimsandBallGun);
+
+		/// <summary>
+		/// The damage a specific sandgun ammo should increase by. Defaults to 0.
+		/// </summary>
+		public static int[] SandgunAmmoDamage = Factory.CreateIntSet(0, EbonsandBlock, 5, PearlsandBlock, 5, CrimsandBlock, 5);
+
+		/// <summary>
 		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
 		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
 		/// <br/> Defaults to <see langword="false"/>.

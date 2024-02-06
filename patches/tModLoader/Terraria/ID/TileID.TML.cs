@@ -17,6 +17,28 @@ partial class TileID
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
 		/// <summary>
+		/// The ID of the projectile for this falling block. Defaults to -1.
+		/// </summary>
+		public static int[] FallingBlockProjectileID = Factory.CreateIntSet(-1,
+			Sand, ProjectileID.SandBallFalling,
+			Ebonsand, ProjectileID.EbonsandBallFalling,
+			TileID.Mud, ProjectileID.MudBall,
+			Pearlsand, ProjectileID.PearlSandBallFalling,
+			Silt, ProjectileID.SiltBall,
+			Slush, ProjectileID.SlushBall,
+			Crimsand, ProjectileID.CrimsandBallFalling,
+			CopperCoinPile, ProjectileID.CopperCoinsFalling,
+			SilverCoinPile, ProjectileID.SilverCoinsFalling,
+			GoldCoinPile, ProjectileID.GoldCoinsFalling,
+			PlatinumCoinPile, ProjectileID.PlatinumCoinsFalling,
+			ShellPile, ProjectileID.ShellPileFalling);
+
+		/// <summary>
+		/// The damage the falling block's projectile does. Defaults to 10.
+		/// </summary>
+		public static int[] FallingBlockProjectileDamage = Factory.CreateIntSet(10, Sand, 10, Ebonsand, 10, TileID.Mud, 10, Pearlsand, 10, Silt, 10, Slush, 10, Crimsand, 10, CopperCoinPile, 0, SilverCoinPile, 0, GoldCoinPile, 0, PlatinumCoinPile, 0, ShellPile, 10);
+
+		/// <summary>
 		/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
 		/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
 		/// </summary>
