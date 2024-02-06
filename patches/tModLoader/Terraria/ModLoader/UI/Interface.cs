@@ -531,7 +531,7 @@ internal static class Interface
 
 			HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 			if (header != null) {
-				WriteColoredLine(ConsoleColor.Yellow, "\t" + ConvertChatTagsToText(header.Header));
+				WriteColoredLine(ConsoleColor.Yellow, "    " + ConvertChatTagsToText(header.Header)); // are tabs always 8 spaces?
 			}
 
 			string text = ConvertChatTagsToText(ConfigManager.GetLocalizedLabel(variable)) + ":";
