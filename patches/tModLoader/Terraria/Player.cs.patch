@@ -7441,24 +7441,24 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
-@@ -41015,18 +_,8 @@
+@@ -41015,7 +_,8 @@
  			projToShoot = 117;
  
  		if (projToShoot == 42) {
++			/*
 -			if (item.type == 370) {
--				projToShoot = 65;
--				Damage += 5;
--			}
--			else if (item.type == 408) {
--				projToShoot = 68;
--				Damage += 5;
--			}
--			else if (item.type == 1246) {
--				projToShoot = 354;
--				Damage += 5;
--			}
++			 if (item.type == 370) {
+ 				projToShoot = 65;
+ 				Damage += 5;
+ 			}
+@@ -41027,6 +_,10 @@
+ 				projToShoot = 354;
+ 				Damage += 5;
+ 			}
++			*/
++
 +			projToShoot = ItemID.Sets.SandgunAmmoToProjectile[item.type];
-+			Damage += ItemID.Sets.SandgunAmmoDamage[item.type];
++			Damage += ItemID.Sets.SandgunAmmoBonusDamage[item.type];
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)

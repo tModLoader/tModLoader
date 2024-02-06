@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Items.Placeable
 			// Set the SandgunAmmoToProjectile to your sandgun projectile
 			ItemID.Sets.SandgunAmmoToProjectile[Type] = ModContent.ProjectileType<Projectiles.ExampleSandSandgunProjectile>();
 			// This value can be different than your falling block's damage
-			ItemID.Sets.SandgunAmmoDamage[Type] = 10;
+			ItemID.Sets.SandgunAmmoBonusDamage[Type] = 10;
 		}
 
 		public override void SetDefaults() {

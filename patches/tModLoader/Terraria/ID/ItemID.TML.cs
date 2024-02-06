@@ -15,7 +15,7 @@ partial class ItemID
 		/// <summary>
 		/// The damage a specific sandgun ammo should increase by. Defaults to 0.
 		/// </summary>
-		public static int[] SandgunAmmoDamage = Factory.CreateIntSet(0, EbonsandBlock, 5, PearlsandBlock, 5, CrimsandBlock, 5);
+		public static int[] SandgunAmmoBonusDamage = Factory.CreateIntSet(0, EbonsandBlock, 5, PearlsandBlock, 5, CrimsandBlock, 5);
 
 		/// <summary>
 		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
