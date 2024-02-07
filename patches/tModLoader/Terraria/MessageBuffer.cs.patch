@@ -780,7 +780,7 @@
  				}
  				break;
  			case 134: {
-@@ -3587,6 +_,27 @@
+@@ -3587,6 +_,31 @@
  
  				break;
  			}
@@ -804,6 +804,10 @@
 +					ModNet.ReceiveMod(reader);
 +				else
 +					ModNet.SendMod(reader.ReadString(), whoAmI);
++				return;
++			case MessageID.KeepAliveDuringModReload:
++				ModNet.Log(whoAmI, "Keep Alive During Mod Reload");
++				// Does nothing. "Netplay.Clients[whoAmI].TimeOutTimer = 0;" at top of method should keep the connection alive
 +				return;
  			default:
  				if (Netplay.Clients[whoAmI].State == 0)

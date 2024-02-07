@@ -2,6 +2,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
@@ -423,12 +424,14 @@ public static class ModNet
 	}
 
 	internal static bool NetReloadActive;
+	internal static Stopwatch NetReloadKeepAliveTimer = new Stopwatch();
 	internal static Action NetReload()
 	{
 		// Main.ActivePlayerFileData gets cleared during reload
 		string path = Main.ActivePlayerFileData.Path;
 		bool isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
 		NetReloadActive = true;
+		NetReloadKeepAliveTimer.Restart();
 		return () => {
 			NetReloadActive = false;
 			// re-select the current player

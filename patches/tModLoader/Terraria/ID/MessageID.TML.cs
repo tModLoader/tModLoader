@@ -35,6 +35,9 @@ partial class MessageID
 	// Once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods
 	public const byte ModFile = 252;
 
+	// Sent periodically while mods are reloading to keep connection alive. Default timeout is 2 minutes, which a large modpack might need to reload.
+	public const byte KeepAliveDuringModReload = 253;
+
 	public static readonly IdDictionary Search = IdDictionary.Create<MessageID, byte>();
 	public static string GetName(int id) => Search.TryGetName(id, out string name) ? name : "Unknown";
 }

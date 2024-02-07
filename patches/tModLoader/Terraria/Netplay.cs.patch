@@ -1,7 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -9,6 +_,7 @@
+@@ -7,8 +_,10 @@
+ using NATUPNPLib;
+ using ReLogic.OS;
  using Terraria.Audio;
++using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
@@ -53,6 +56,23 @@
  	}
  
  	private static void InnerClientLoop()
+@@ -453,6 +_,16 @@
+ 						NetMessage.SendData(1);
+ 					}
+ 
++					if(Connection.State == 1 && ModNet.NetReloadActive && Main.netMode == 0) {
++						Main.netMode = 1;
++						// Every 30 seconds. Need StopWatch as timer because this code called more frequently than game loop.
++						if(ModNet.NetReloadKeepAliveTimer.ElapsedMilliseconds > 30000) {
++							ModNet.NetReloadKeepAliveTimer.Restart();
++							new ModPacket(MessageID.KeepAliveDuringModReload).Send();
++						}
++						Main.netMode = 0;
++					}
++
+ 					if (Connection.State == 2 && num != Connection.State)
+ 						Main.statusText = Language.GetTextValue("Net.SendingPlayerData");
+ 
 @@ -472,6 +_,9 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
