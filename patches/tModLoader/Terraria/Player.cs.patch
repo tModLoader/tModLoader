@@ -7441,16 +7441,14 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
-@@ -41015,7 +_,8 @@
+@@ -41015,6 +_,7 @@
  			projToShoot = 117;
  
  		if (projToShoot == 42) {
 +			/*
--			if (item.type == 370) {
-+			 if (item.type == 370) {
+ 			if (item.type == 370) {
  				projToShoot = 65;
  				Damage += 5;
- 			}
 @@ -41027,6 +_,10 @@
  				projToShoot = 354;
  				Damage += 5;
