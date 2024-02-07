@@ -2451,7 +2451,7 @@
  		}
  
  		if (armorPiece.type == 1549) {
-@@ -10365,14 +_,17 @@
+@@ -10365,14 +_,21 @@
  			minionDamage += 0.11f;
  		}
  
@@ -2461,6 +2461,10 @@
  			maxMinions++;
  			minionDamage += 0.11f;
  		}
++
++		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
++			hasGemRobe = true;
 +
 +		ItemLoader.UpdateEquip(armorPiece, this);
  	}
@@ -3055,8 +3059,11 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14540,6 +_,7 @@
+@@ -14538,8 +_,10 @@
+ 		witheredWeapon = false;
+ 		parryDamageBuff = false;
  		slowOgreSpit = false;
++		hasGemRobe = false; // Added by TML.
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML.

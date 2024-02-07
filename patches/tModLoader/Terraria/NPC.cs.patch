@@ -316,7 +316,7 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,172 @@
+@@ -233,51 +_,177 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -459,6 +459,11 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noTileCollide;
++	/// <summary>
++	/// Set to true in <see cref="ModNPC.AI"/> or other suitable places to trigger the NPC syncing code (<see cref="MessageID.SyncNPC"/>). This will sync position, life, and other data about this NPC from the server to the clients. Modded data from <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/> will be included.
++	/// <para/> Use this to sync changes so that the client's NPC instances stay in sync with the server's. Only changes that are non-Deterministic on the client's side, such as random decisions or code only running on the server, need to be synced. The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
++	/// <para/> As the server is in charge of NPC, changes to NPC data should only happen on the server in multiplayer.
++	/// </summary>
  	public bool netUpdate;
  	public bool netUpdate2;
  	public bool collideX;
@@ -1554,6 +1559,27 @@
  					Asset<Texture2D> textureNPCShouldUse = profile.GetTextureNPCShouldUse(this);
  					if (textureNPCShouldUse.IsLoaded) {
  						num = textureNPCShouldUse.Height() / Main.npcFrameCount[type];
+@@ -57957,11 +_,20 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Spawns a <see cref="CombatText"/> indicating the NPC healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true.
++	/// <para/> Note that this doesn't actually heal the NPC, it only spawns the floating text. To heal an NPC, <see cref="NPC.life"/> must be increased without exceeding <see cref="NPC.lifeMax"/>, <see cref="HealEffect(int, bool)"/> should be called, and <see cref="NPC.netUpdate"/> should be set to true.
++	/// <para/> Since the server has ownership over NPC, this should only be called on the server in multiplayer situations.
++	/// </summary>
+ 	public void HealEffect(int healAmount, bool broadcast = true)
+ 	{
+ 		HealEffect(new Rectangle((int)position.X, (int)position.Y, width, height), healAmount, broadcast);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="HealEffect(int, bool)" />
++	/// <br/><br/>This particular overload allows customizing the spawn location of the text.
++	/// </summary>
+ 	public static void HealEffect(Rectangle r, int healAmount, bool broadcast = true)
+ 	{
+ 		if (broadcast && Main.netMode == 2)
 @@ -58083,7 +_,13 @@
  				if (Main.tile[x, y].type == 467)
  					number2 = 5;
@@ -2029,6 +2055,16 @@
  							num110 = 5;
  							num110 -= Main.CurrentFrameFlags.ActivePlayersCount / 2;
  							if (num110 < 2)
+@@ -63451,7 +_,8 @@
+ 			else if (Main.hardMode && (Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && Main.rand.Next(200) == 0) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 172);
+ 			}
+-			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && (Main.player[k].armor[1].type == 4256 || (Main.player[k].armor[1].type >= 1282 && Main.player[k].armor[1].type <= 1287)) && Main.player[k].armor[0].type != 238))) {
++			// Uses flag added by TML to support modded gem robes for Tim spawn rate increase.
++			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && Main.player[k].hasGemRobe && Main.player[k].armor[0].type != 238))) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 45);
+ 			}
+ 			else if (flag10 && Main.rand.Next(4) != 0) {
 @@ -63539,6 +_,11 @@
  				}
  			}
@@ -2115,7 +2151,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,163 @@
+@@ -64591,26 +_,165 @@
  
  		return armorPenetration / 2;
  	}
@@ -2193,6 +2229,8 @@
 +			modifiers.Knockback += 0.1f;
 +
 +		modifiers.Knockback *= knockBackResist;
++		if (knockBackResist == 0)
++			modifiers.DisableKnockback();
 +
 +		NPCLoader.ModifyIncomingHit(this, ref modifiers);
 +		return modifiers;

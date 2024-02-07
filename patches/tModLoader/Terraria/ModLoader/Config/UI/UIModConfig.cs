@@ -425,6 +425,7 @@ internal class UIModConfig : UIState
 
 	public override void OnActivate()
 	{
+		Interface.modConfigList.ModToSelectOnOpen = mod;
 		filterTextField.SetText("");
 
 		updateNeeded = false;

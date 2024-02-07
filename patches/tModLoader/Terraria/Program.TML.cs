@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
@@ -238,6 +239,11 @@ public static partial class Program
 
 	private static void SetSavePath()
 	{
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
+			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
+			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+
 		if (LaunchParameters.TryGetValue("-tmlsavedirectory", out var customSavePath)) {
 			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
 			SavePathShared = customSavePath;
@@ -260,16 +266,13 @@ public static partial class Program
 				PortFilesMaster(savePathCopy, isCloud: false);
 			}
 			catch (Exception e) {
-				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
+				bool controlledFolderAccessMightBeRelevant = (e is COMException || e is FileNotFoundException) && ControlledFolderAccessSupport.ControlledFolderAccessDetected;
+				
+				ErrorReporting.FatalExit("An error occurred migrating files and folders to the new structure" + (controlledFolderAccessMightBeRelevant ? $"\n\nControlled Folder Access feature detected, this might be the cause of this error.\n\nMake sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu." : ""), e);
 			}
 		}
-		
-		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
-			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
-			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 	}
 
 	private static void StartupSequenceTml(bool isServer)

@@ -1,7 +1,8 @@
-#this is an example config file for tModLoader
+#This is an example config file for tModLoader
 #tModLoader config files work exactly the same as Terraria, but instead of launching the .exe file, the .bat file is launched. 
 #In addition, tModLoader config files support tModLoader specific options.
-#use the command 'start-tModLoaderServer.bat -config serverconfig.txt' to use this configuration
+#By default, the config file named serverconfig.txt will automatically be used by the server.
+#The config file used can be customized. Use the command 'start-tModLoaderServer.bat -config configFileHere.txt' to use a specific config file instead.
 #More details can be found at https://github.com/tModLoader/tModLoader/wiki/Command-Line and https://github.com/tModLoader/tModLoader/wiki/Starting-a-modded-server
 
 #the following is a list of available command line parameters:

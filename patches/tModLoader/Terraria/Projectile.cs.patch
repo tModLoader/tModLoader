@@ -1252,7 +1252,7 @@
  		if (wet)
  			position += wetVelocity;
  		else
-@@ -14740,12 +_,24 @@
+@@ -14740,16 +_,35 @@
  		}
  
  		FishingCheck_RollDropLevels(fisher.fishingLevel, out fisher.common, out fisher.uncommon, out fisher.rare, out fisher.veryrare, out fisher.legendary, out fisher.crate);
@@ -1278,6 +1278,17 @@
  				Item item = new Item();
  				item.SetDefaults(fisher.rolledItemDrop);
  				item.position = position;
++				/* Fix #4042 by referencing corresponding sonar popupText directly
+ 				PopupText.AssignAsSonarText(PopupText.NewText(PopupTextContext.SonarAlert, item, 1, noStack: true));
++				*/
++				int sonarPopupText = PopupText.NewText(PopupTextContext.SonarAlert, item, 1, noStack: true);
++				if (sonarPopupText >= 0)
++					Main.popupText[sonarPopupText].NoStack = true;
++				PopupText.AssignAsSonarText(sonarPopupText);
++				localAI[2] = sonarPopupText + 1;
+ 			}
+ 
+ 			float num3 = fisher.fishingLevel;
 @@ -14760,7 +_,7 @@
  		}
  
@@ -1734,11 +1745,18 @@
  		if (Main.getGoodWorld && aiStyle == 16)
  			TryGettingHitByOtherPlayersExplosives();
  
-@@ -50912,7 +_,7 @@
+@@ -50912,7 +_,14 @@
  
  		if (Main.myPlayer == owner && bobber) {
  			PopupText.ClearSonarText();
 -			if (ai[1] > 0f && ai[1] < (float)ItemID.Count)
++			// Fix #4042 by referencing corresponding sonar popupText directly
++			if (localAI[2] >= 1) {
++				int customSonarText = (int)(localAI[2] - 1);
++				if (Main.popupText[customSonarText].sonar) {
++					Main.popupText[customSonarText].active = false;
++				}
++			}
 +			if (ai[1] > 0f)
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  

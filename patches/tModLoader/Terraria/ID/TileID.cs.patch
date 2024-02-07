@@ -144,7 +144,18 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -243,16 +_,42 @@
+@@ -238,21 +_,53 @@
+ 		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
+ 		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
+ 		public static bool[] FramesOnKillWall = Factory.CreateBoolSet(440, 240, 241, 242, 245, 246, 4, 136, 334, 132, 55, 395, 425, 440, 471, 510, 511, 573, 630, 631);
++		/// <summary>
++		/// If true, Town NPCs will try to avoid standing still in front of the tile, allowing the player to interact with the tile rather than accidentally interacting with the Town NPC. Some tiles that set this include <see cref="TileID.Containers"/>, <see cref="TileID.Signs"/>, and <see cref="TileID.Tombstones"/>.
++		/// </summary>
+ 		public static bool[] AvoidedByNPCs = Factory.CreateBoolSet(21, 467, 55, 85, 395, 88, 463, 334, 29, 97, 99, 356, 663, 425, 440, 209, 441, 468, 471, 491, 510, 511, 520, 573);
++		/// <summary>
++		/// If true, Town NPCs might occasionally palm their hand at this tile, suggesting that they are using the tile. Crafting stations typically set this. Some tiles that set this include <see cref="TileID.Furnaces"/>, <see cref="TileID.Sawmill"/>, and <see cref="TileID.AlchemyTable"/>.
++		/// </summary>
+ 		public static bool[] InteractibleByNPCs = Factory.CreateBoolSet(17, 77, 133, 12, 665, 639, 26, 35, 36, 55, 395, 471, 21, 467, 29, 97, 88, 99, 463, 491, 33, 372, 174, 49, 646, 100, 173, 78, 79, 94, 96, 101, 50, 103, 282, 106, 114, 125, 171, 172, 207, 215, 220, 219, 244, 228, 237, 247, 128, 269, 354, 355, 377, 287, 378, 390, 302, 405, 406, 411, 425, 209, 441, 468, 452, 454, 455, 457, 462, 470, 475, 494, 499, 505, 511, 510, 520, 543, 565, 573, 597, 598, 617, 621, 464, 642);
  		public static bool[] HousingWalls = Factory.CreateBoolSet(11, 389, 386);
  		public static bool[] BreakableWhenPlacing = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624);
  		public static bool[] TouchDamageDestroyTile = Factory.CreateBoolSet(32, 69, 352, 655);
