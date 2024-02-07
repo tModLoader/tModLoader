@@ -39,11 +39,10 @@ Launch();
 void Launch() {
 	var types = asm.GetTypes();
 	var hookMethod = asm.GetType("Terraria.Main").GetMethod("DedServ_PostModLoad", BindingFlags.Instance | BindingFlags.NonPublic);
-	new ILHook(hookMethod, il =>
-	{
+
+	HookStorage.Store(new ILHook(hookMethod, il => {
 		new ILCursor(il).EmitDelegate<Action>(ServerLoaded);
-		Console.WriteLine("Applied hook!");
-	});
+	}));
 
 	ApplyHooks();
 	asm.GetType("Terraria.MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { new[] { "-server" } });
@@ -51,26 +50,26 @@ void Launch() {
 
 void ApplyHooks()
 {
-	new ILHook(typeof(SpriteBatch).GetConstructors().Single(), il => new ILCursor(il).Emit(OpCodes.Ret));
-	new ILHook(typeof(SpriteBatch).GetMethod("PrepRenderState", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret));
-	new ILHook(typeof(SpriteBatch).GetMethod("PushSprite", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret));
+	HookStorage.Store(new ILHook(typeof(SpriteBatch).GetConstructors().Single(), il => new ILCursor(il).Emit(OpCodes.Ret)));
+	HookStorage.Store(new ILHook(typeof(SpriteBatch).GetMethod("PrepRenderState", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret)));
+	HookStorage.Store(new ILHook(typeof(SpriteBatch).GetMethod("PushSprite", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret)));
 
-	new ILHook(typeof(TileBatch).GetConstructors().Single(), il => new ILCursor(il).Emit(OpCodes.Ret));
-	new ILHook(typeof(TileBatch).GetMethod("InternalDraw", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret));
-	new ILHook(typeof(TileBatch).GetMethod("Finalize", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret));
+	HookStorage.Store(new ILHook(typeof(TileBatch).GetConstructors().Single(), il => new ILCursor(il).Emit(OpCodes.Ret)));
+	HookStorage.Store(new ILHook(typeof(TileBatch).GetMethod("InternalDraw", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret)));
+	HookStorage.Store(new ILHook(typeof(TileBatch).GetMethod("Finalize", BindingFlags.NonPublic | BindingFlags.Instance), il => new ILCursor(il).Emit(OpCodes.Ret)));
 
-	new Hook(typeof(Texture2D).GetConstructors().First(), new Action<Action<Texture2D, GraphicsDevice, int, int>, Texture2D, GraphicsDevice, int, int>((orig, self, gd, w, h) => {
+	HookStorage.Store(new Hook(typeof(Texture2D).GetConstructors().First(), new Action<Action<Texture2D, GraphicsDevice, int, int>, Texture2D, GraphicsDevice, int, int>((orig, self, gd, w, h) => {
 		typeof(Texture2D).GetProperty("Width").GetSetMethod(true).Invoke(self, new object[] { w });
 		typeof(Texture2D).GetProperty("Height").GetSetMethod(true).Invoke(self, new object[] { h });
-	}));
+	})));
 
-	new ILHook(typeof(TileDrawing).GetConstructors().Single(), il =>
+	HookStorage.Store(new ILHook(typeof(TileDrawing).GetConstructors().Single(), il =>
 	{
 		var c = new ILCursor(il);
 		c.GotoNext(insn => insn.MatchLdcI4(9000));
 		c.Remove();
 		c.Emit(OpCodes.Ldc_I4, 50000);
-	});
+	}));
 }
 
 void ServerLoaded() {
@@ -222,4 +221,11 @@ TimeSpan GenWorld()
 	task.Wait();
 
 	return sw.Elapsed;
+}
+
+class HookStorage
+{
+	public static List<object> storage = new List<object>();
+
+	public static void Store(object hook) => storage.Add(hook);
 }
