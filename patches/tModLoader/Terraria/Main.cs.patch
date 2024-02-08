@@ -481,6 +481,16 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -964,6 +_,9 @@
+ 	public static int[,] projectileIdentity = new int[256, 1001];
+ 	public static CombatText[] combatText = new CombatText[100];
+ 	public static PopupText[] popupText = new PopupText[20];
++	/// <summary>
++	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
++	/// </summary>
+ 	public static Chest[] chest = new Chest[8000];
+ 	public static Sign[] sign = new Sign[1000];
+ 	public static int[] itemFrame = new int[401];
 @@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
