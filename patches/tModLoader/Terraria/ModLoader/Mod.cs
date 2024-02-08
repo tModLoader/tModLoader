@@ -78,7 +78,7 @@ public partial class Mod
 	
 	private string displayNameClean;
 	/// <summary>
-	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. Also useful for searching by mod name
+	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.
 	/// </summary>
 	public string DisplayNameClean => displayNameClean ??= Utils.CleanChatTags(DisplayName);
 
