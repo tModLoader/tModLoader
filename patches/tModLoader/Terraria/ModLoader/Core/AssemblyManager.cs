@@ -202,7 +202,6 @@ public static class AssemblyManager
 			m.Logger = LogManager.GetLogger(m.Name);
 			m.Side = mod.properties.side;
 			m.DisplayName = mod.properties.displayName;
-			m.DisplayNameClean = Utils.CleanChatTags(m.DisplayName);
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null; 
 			return m;
@@ -260,7 +259,7 @@ public static class AssemblyManager
 			int i = 0;
 			foreach (var mod in modList) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadMods.SetCurrentMod(i++, mod.Name, mod.properties?.displayName ?? "", Utils.CleanChatTags(mod.properties?.displayName ?? ""), mod.modFile.Version);
+				Interface.loadMods.SetCurrentMod(i++, mod.Name, mod.properties?.displayName ?? "", mod.modFile.Version);
 				mod.LoadAssemblies();
 			}
 

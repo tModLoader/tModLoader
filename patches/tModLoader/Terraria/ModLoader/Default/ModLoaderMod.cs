@@ -30,7 +30,6 @@ internal class ModLoaderMod : Mod
 	{
 		Side = ModSide.NoSync;
 		DisplayName = "tModLoader";
-		DisplayNameClean = "tModLoader";
 		Code = Assembly.GetExecutingAssembly();
 	}
 

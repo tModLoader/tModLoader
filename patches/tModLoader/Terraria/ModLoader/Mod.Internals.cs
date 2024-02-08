@@ -55,7 +55,7 @@ partial class Mod
 		while (AsyncLoadQueue.Count > 0)
 			AsyncLoadQueue.Dequeue().Wait();
 
-		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
+		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName); // TODO: DisplayName is incorrect, but ModBestiaryInfoElement._displayName usage inconsistent.
 
 		if (ContentAutoloadingEnabled) {
 			var loadableTypes = AssemblyManager.GetLoadableTypes(Code)

@@ -453,7 +453,7 @@ internal static class Interface
 			EnableDepsRecursive(dep, mods, missingRefs);
 			if (!dep.Enabled) {
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.WriteLine($"Automatically enabling {dep.DisplayNameClean} required by {mod.DisplayNameClean}");
 				Console.ResetColor();
 			}
 			dep.Enabled ^= true;

@@ -12,7 +12,7 @@ internal class LocalMod
 
 	public string Name => modFile.Name;
 	public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
-	internal readonly string DisplayNameClean; // Suitable for console output, chat tags stripped away.
+	public readonly string DisplayNameClean; // Suitable for console output, chat tags stripped away.
 	public Version tModLoaderVersion => properties.buildVersion;
 
 	public bool Enabled {
