@@ -15,7 +15,7 @@ on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [gh_actions_test, stable, preview, 1.4.4]
+    branches: [gh_actions_test, stable, preview, 1.4.4, feature/dotnet8]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
