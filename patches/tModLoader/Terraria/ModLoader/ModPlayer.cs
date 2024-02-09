@@ -89,6 +89,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied<br/>
 	/// <b>NOTE:</b> You should NOT modify <see cref="Player.statLifeMax"/> nor <see cref="Player.statManaMax"/> here.  Use the <paramref name="health"/> and <paramref name="mana"/> parameters.
+	/// <para/> Also note that unlike many other tModLoader hooks, the default implementation of this hook has code that will assign <paramref name="health"/> and <paramref name="mana"/> to <see cref="StatModifier.Default"/>. Take care to place <c>base.ModifyMaxStats(out health, out mana);</c> before any other code you add to this hook to avoid issues, if you use it.
 	/// </summary>
 	/// <param name="health">The modifier to the player's maximum health</param>
 	/// <param name="mana">The modifier to the player's maximum mana</param>

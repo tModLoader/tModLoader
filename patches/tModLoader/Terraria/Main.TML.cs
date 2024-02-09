@@ -375,14 +375,21 @@ public partial class Main
 		if (SocialAPI.Mode == SocialMode.Steam) {
 			vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 		}
-		else {
+		else if (InstallVerifier.DistributionPlatform == DistributionPlatform.GoG) {
+			vanillaContentFolder = Path.Combine(Path.GetDirectoryName(InstallVerifier.vanillaExePath), "Content");
+			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
+		}
+		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
+		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
+		// Also left as a generic fallback 
+		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
 			if (!Directory.Exists(vanillaContentFolder)) {
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
-			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 		}
+		
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));

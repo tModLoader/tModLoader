@@ -178,6 +178,9 @@ internal class BuildProperties
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().ToArray();
 
+		// Interpolate description values
+		ModCompile.UpdateSubstitutedDescriptionValues(ref properties.description, properties.version.ToString(), properties.homepage);
+
 		return properties;
 	}
 

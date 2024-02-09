@@ -94,10 +94,28 @@
 		"ModsXWalls": "{0} {^0:wall;walls}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:mount;mounts}",
+
+		//Dedicated server
 		"ModsReloadAndReturn": "Reload and return to world menu",
 		"ModsNotFoundServer": "No mods were found in: \"{0}\"\nIf you are running a dedicated server, you may wish to use the 'modpath' command line switch or server config setting to specify a custom mods directory.\n",
 		"AskForModIndex": "Type a number to switch between enabled/disabled",
 		"AskForCommand": "Type a command: ",
+		"DedErrorNoConfig": "This mod does not have any config",
+		"DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
+		"DedErrorModOOB": "Mod index out of bounds",
+
+		//Dedicated server mod config
+		"DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
+		"DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
+		"DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
+		"DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
+		"DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
+		"DedConfigEditConfig": "Modify configuration value",
+		"DedConfigEditConfigNote": "Note that data validation, such as min and max values, is not enforced. Try to use values only allowed in the client.",
+		"DedConfigRestoreConfig": "Restore configurations to default",
+		"DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
+		"DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
+		"DedConfigErrorNotParsable": "Invalid input",
 
 		//Mod Config
 		"ModConfigs": "Configs",
