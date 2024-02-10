@@ -223,7 +223,7 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		if (!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor))
+		if ((!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor)) && qParams.sortingParamater == ModBrowserSortMode.Hot)
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
 		return (qParams.sortingParamater) switch {

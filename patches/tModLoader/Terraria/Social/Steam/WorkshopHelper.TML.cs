@@ -359,7 +359,7 @@ public partial class WorkshopHelper
 							continue;
 						}
 
-						foreach (var item in SortItemsResults(await Task.Run(ProcessPageResult), queryParameters))
+						foreach (var item in await Task.Run(ProcessPageResult))
 							yield return item;
 					}
 					finally {
@@ -370,18 +370,6 @@ public partial class WorkshopHelper
 				} while (++currentPage <= numberPages);
 			}
 
-
-			private IEnumerable<ModDownloadItem> SortItemsResults(IEnumerable<ModDownloadItem> items, QueryParameters queryParameters)
-			{
-				if (!string.IsNullOrEmpty(queryParameters.searchGeneric) || !string.IsNullOrEmpty(queryParameters.searchAuthor))
-					return queryParameters.sortingParamater switch {
-						ModBrowserSortMode.DownloadsDescending => items.OrderByDescending(i => i.Downloads),
-						ModBrowserSortMode.Hot => items.OrderBy(i => i.Hot),
-						ModBrowserSortMode.RecentlyUpdated => items.OrderByDescending(i => i.TimeStamp),
-						_ => items,
-					};
-				return items;
-			}
 
 			private IEnumerable<ModDownloadItem> ProcessPageResult()
 			{
