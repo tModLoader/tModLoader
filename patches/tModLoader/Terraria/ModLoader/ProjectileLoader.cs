@@ -572,15 +572,16 @@ public static class ProjectileLoader
 		}
 	}
 
-	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
+	public static void ModifyFishingLine(Player player, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
-		if (projectile.ModProjectile == null)
+		Item item = player.inventory[player.selectedItem];
+
+		if (item.ModItem == null)
 			return;
 
 		Vector2 lineOriginOffset = Vector2.Zero;
-		Player player = Main.player[projectile.owner];
 
-		projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
+		item.ModItem.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
 
 		polePosX += lineOriginOffset.X * player.direction;
 		if (player.direction < 0)

@@ -317,6 +317,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
 	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+	[Obsolete("Moved to ModItem. Fishing line position and color are now tied to the used pole.")]
 	public virtual void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor)
 	{
 	}
