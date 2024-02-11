@@ -370,7 +370,6 @@ public partial class WorkshopHelper
 				} while (++currentPage <= numberPages);
 			}
 
-
 			private IEnumerable<ModDownloadItem> ProcessPageResult()
 			{
 				// Appx. 10 ms per page of 50 items
