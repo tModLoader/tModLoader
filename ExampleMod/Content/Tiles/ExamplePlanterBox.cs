@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.IgnoresNearbyHalfbricksWhenDrawn[Type] = true; //All vanilla planter boxes have this
 			TileID.Sets.PlanterBoxes[Type] = true; //This does a majority of the work for us,
-												   //both allowing vanilla herbs to attach to our planterbox amongust a list of other things
+												   //both allowing vanilla herbs to attach to our planterbox amongst a list of other things
 			AdjTiles = new int[] { TileID.PlanterBox };
 		}
 

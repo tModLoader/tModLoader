@@ -40,7 +40,7 @@
  	private static void Step_PlanterBox(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{
 -		if (providedInfo.item.createTile != 380 || focusedX != -1 || focusedY != -1)
-+		if ((providedInfo.item.createTile > 0 && TileID.Sets.PlanterBoxes[providedInfo.item.createTile]) || focusedX != -1 || focusedY != -1)
++		if ((providedInfo.item.createTile > 0 && !TileID.Sets.PlanterBoxes[providedInfo.item.createTile]) || focusedX != -1 || focusedY != -1)
  			return;
  
  		_targets.Clear();
