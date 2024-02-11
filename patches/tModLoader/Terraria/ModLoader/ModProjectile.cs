@@ -312,12 +312,10 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 		return null;
 	}
 
-	/// <summary>
-	/// If this projectile is a bobber, allows you to modify the origin of the fishing line that's connecting to the fishing pole, as well as the fishing line's color.
-	/// </summary>
-	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
-	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
-	[Obsolete("Moved to ModItem. Fishing line position and color are now tied to the used pole.")]
+	[Obsolete]
+	internal void ModifyFishingLine_Obsolete(ref Vector2 lineOriginOffset, ref Color lineColor) => ModifyFishingLine(ref lineOriginOffset, ref lineColor);
+
+	[Obsolete($"Moved to ModItem. Fishing line position and color are now tied to the used pole.", error: true)]
 	public virtual void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor)
 	{
 	}
