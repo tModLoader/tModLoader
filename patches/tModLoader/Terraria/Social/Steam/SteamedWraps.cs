@@ -223,6 +223,7 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
+		// Only let steam rank by text when we want sorting for popularity, otherwise the results are not sorted when filtered by search term. 
 		if ((!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor)) && qParams.sortingParamater == ModBrowserSortMode.Hot)
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
