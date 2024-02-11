@@ -1324,7 +1324,7 @@
  					break;
  				case 5:
 -					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
-+					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
++					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
  						flag = true;
  					if (Main.tile[x, y].type == 82 || !Main.tile[x, y].lava() || Main.netMode == 1)
  						break;
