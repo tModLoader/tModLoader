@@ -1395,7 +1395,7 @@
  	{
 +		DropFromItem(type);
 +
-+		if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++		if (!ItemID.Sets.PreHardmodeLikeBossBag[type]) {
 +			TryGettingDevArmor(GetItemSource_OpenItem(type));
 +		}
 +
