@@ -13,7 +13,7 @@
  			return false;
  
 -		if (treatPlatformsAsNonSolid && tile.type > 0 && tile.type <= TileID.Count && (TileID.Sets.Platforms[tile.type] || tile.type == 380))
-+		if (treatPlatformsAsNonSolid && tile.type > 0 && (TileID.Sets.Platforms[tile.type] || tile.type == 380))
++		if (treatPlatformsAsNonSolid && tile.type > 0 && (TileID.Sets.Platforms[tile.type] || TileID.Sets.PlanterBoxes[tile.type]))
  			return false;
  
  		int num = tile.blockType();

@@ -5774,6 +5774,15 @@
  			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
  				canPlace = true;
  		}
+@@ -31793,7 +_,7 @@
+ 
+ 		if (Main.tile[tileTargetX, tileTargetY].active() && (Main.tileCut[Main.tile[tileTargetX, tileTargetY].type] || TileID.Sets.BreakableWhenPlacing[Main.tile[tileTargetX, tileTargetY].type] || (Main.tile[tileTargetX, tileTargetY].type >= 373 && Main.tile[tileTargetX, tileTargetY].type <= 375) || Main.tile[tileTargetX, tileTargetY].type == 461)) {
+ 			if (Main.tile[tileTargetX, tileTargetY].type != inventory[selectedItem].createTile) {
+-				bool num11 = Main.tile[tileTargetX, tileTargetY + 1].type != 78 && Main.tile[tileTargetX, tileTargetY + 1].type != 380 && Main.tile[tileTargetX, tileTargetY + 1].type != 579;
++				bool num11 = Main.tile[tileTargetX, tileTargetY + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[tileTargetX, tileTargetY + 1].type] && Main.tile[tileTargetX, tileTargetY + 1].type != 579;
+ 				bool flag3 = Main.tile[tileTargetX, tileTargetY].type == 3 || Main.tile[tileTargetX, tileTargetY].type == 73;
+ 				bool flag4 = Main.tileAlch[Main.tile[tileTargetX, tileTargetY].type] && WorldGen.IsHarvestableHerbWithSeed(Main.tile[tileTargetX, tileTargetY].type, Main.tile[tileTargetX, tileTargetY].frameX / 18);
+ 				bool flag5 = Main.tileAlch[inventory[selectedItem].createTile];
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {

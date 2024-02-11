@@ -1047,6 +1047,15 @@
  
  		if (type == 92)
  			Item.NewItem(GetItemSource_FromTileBreak(x, j), x * 16, j * 16, 32, 32, 341);
+@@ -27205,7 +_,7 @@
+ 			for (int l = 0; l < 2; l++) {
+ 				bool flag3 = false;
+ 				Tile tileSafely = Framing.GetTileSafely(num + l, num6 - 1);
+-				if (type != 531 && tileSafely.type == 380) {
++				if (type != 531 && TileID.Sets.PlanterBoxes[tileSafely.type]) {
+ 					flag3 = true;
+ 				}
+ 				else if (type != 531 && TileID.Sets.Platforms[tileSafely.type]) {
 @@ -27239,6 +_,7 @@
  			return;
  
@@ -1224,6 +1233,119 @@
  		if (Main.tile[x, y + 1] != null) {
  			if (!SolidTileAllowBottomSlope(x, y + 1))
  				KillTile(x, y);
+@@ -30419,43 +_,43 @@
+ 			bool flag = false;
+ 			switch (style) {
+ 				case 0:
+-					if (Main.tile[x, y + 1].type != 2 && Main.tile[x, y + 1].type != 477 && Main.tile[x, y + 1].type != 492 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 109)
++					if (Main.tile[x, y + 1].type != 2 && Main.tile[x, y + 1].type != 477 && Main.tile[x, y + 1].type != 492 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 109)
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0)
+ 						flag = true;
+ 					break;
+ 				case 1:
+-					if (Main.tile[x, y + 1].type != 60 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 60 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0)
+ 						flag = true;
+ 					break;
+ 				case 2:
+-					if (Main.tile[x, y + 1].type != 0 && Main.tile[x, y + 1].type != 59 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 0 && Main.tile[x, y + 1].type != 59 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0)
+ 						flag = true;
+ 					break;
+ 				case 3:
+-					if (Main.tile[x, y + 1].type != 661 && Main.tile[x, y + 1].type != 662 && Main.tile[x, y + 1].type != 203 && Main.tile[x, y + 1].type != 199 && Main.tile[x, y + 1].type != 23 && Main.tile[x, y + 1].type != 25 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 661 && Main.tile[x, y + 1].type != 662 && Main.tile[x, y + 1].type != 203 && Main.tile[x, y + 1].type != 199 && Main.tile[x, y + 1].type != 23 && Main.tile[x, y + 1].type != 25 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0)
+ 						flag = true;
+ 					break;
+ 				case 4:
+-					if (Main.tile[x, y + 1].type != 53 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 116)
++					if (Main.tile[x, y + 1].type != 53 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 116)
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 5:
+-					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && !Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 6:
+-					if (Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 147 && Main.tile[x, y + 1].type != 161 && Main.tile[x, y + 1].type != 163 && Main.tile[x, y + 1].type != 164 && Main.tile[x, y + 1].type != 200)
++					if (Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 147 && Main.tile[x, y + 1].type != 161 && Main.tile[x, y + 1].type != 163 && Main.tile[x, y + 1].type != 164 && Main.tile[x, y + 1].type != 200)
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+@@ -30814,37 +_,37 @@
+ 		if (!flag) {
+ 			switch (num) {
+ 				case 0:
+-					if (Main.tile[x, y + 1].type != 109 && Main.tile[x, y + 1].type != 2 && Main.tile[x, y + 1].type != 477 && Main.tile[x, y + 1].type != 492 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 109 && Main.tile[x, y + 1].type != 2 && Main.tile[x, y + 1].type != 477 && Main.tile[x, y + 1].type != 492 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 1:
+-					if (Main.tile[x, y + 1].type != 60 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 60 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 2:
+-					if (Main.tile[x, y + 1].type != 0 && Main.tile[x, y + 1].type != 59 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 0 && Main.tile[x, y + 1].type != 59 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 3:
+-					if (Main.tile[x, y + 1].type != 661 && Main.tile[x, y + 1].type != 662 && Main.tile[x, y + 1].type != 199 && Main.tile[x, y + 1].type != 203 && Main.tile[x, y + 1].type != 23 && Main.tile[x, y + 1].type != 25 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 661 && Main.tile[x, y + 1].type != 662 && Main.tile[x, y + 1].type != 199 && Main.tile[x, y + 1].type != 203 && Main.tile[x, y + 1].type != 23 && Main.tile[x, y + 1].type != 25 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 4:
+-					if (Main.tile[x, y + 1].type != 53 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 116)
++					if (Main.tile[x, y + 1].type != 53 && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 116)
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+ 					break;
+ 				case 5:
+-					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380)
++					if (Main.tile[x, y + 1].type != 57 && Main.tile[x, y + 1].type != 633 && Main.tile[x, y + 1].type != 78 && TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type])
+ 						flag = true;
+ 					if (Main.tile[x, y].type == 82 || !Main.tile[x, y].lava() || Main.netMode == 1)
+ 						break;
+@@ -30862,7 +_,7 @@
+ 					}
+ 					break;
+ 				case 6:
+-					if (Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 147 && Main.tile[x, y + 1].type != 161 && Main.tile[x, y + 1].type != 163 && Main.tile[x, y + 1].type != 164 && Main.tile[x, y + 1].type != 200)
++					if (Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 147 && Main.tile[x, y + 1].type != 161 && Main.tile[x, y + 1].type != 163 && Main.tile[x, y + 1].type != 164 && Main.tile[x, y + 1].type != 200)
+ 						flag = true;
+ 					if (Main.tile[x, y].liquid > 0 && Main.tile[x, y].lava())
+ 						flag = true;
+@@ -30913,7 +_,7 @@
+ 		bool num3 = tile.topSlope() || tile.halfBrick() || Main.tileSolid[tile.type];
+ 		bool flag2 = !Main.tileSolidTop[tile.type] || (TileID.Sets.Platforms[tile.type] && (tile.halfBrick() || tile.topSlope()));
+ 		bool flag3 = num3 && flag2 && !TileID.Sets.NotReallySolid[tile.type] && !tile.bottomSlope();
+-		if (TileID.Sets.Platforms[tile.type] || tile.type == 380)
++		if (TileID.Sets.Platforms[tile.type] || TileID.Sets.PlanterBoxes[tile.type])
+ 			flag3 = true;
+ 
+ 		if (!flag3)
 @@ -30923,10 +_,12 @@
  			return;
  
@@ -1270,6 +1392,15 @@
  			frameX = (short)(genRand.Next(3) * 18);
  
  		if (Main.tile[x, y - 1] == null)
+@@ -31403,7 +_,7 @@
+ 				break;
+ 		}
+ 
+-		bool flag3 = Main.tile[x, num - 1].active() && (TileID.Sets.Platforms[Main.tile[x, num - 1].type] || Main.tile[x, num - 1].type == 380);
++		bool flag3 = Main.tile[x, num - 1].active() && (TileID.Sets.Platforms[Main.tile[x, num - 1].type] || TileID.Sets.PlanterBoxes[Main.tile[x, num - 1].type]);
+ 		if ((!flag2 || !flag3) && (!Main.tile[x, num - 1].nactive() || !Main.tileSolid[Main.tile[x, num - 1].type] || Main.tileSolidTop[Main.tile[x, num - 1].type]))
+ 			flag = true;
+ 
 @@ -31411,11 +_,13 @@
  			return;
  
@@ -2020,6 +2151,24 @@
  
  		Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, chestItemDrop);
  		destroyObject = false;
+@@ -41240,7 +_,7 @@
+ 
+ 		Tile tile = Main.tile[x, y + 1];
+ 		if (tile.active() && tile.slope() == 0 && !tile.halfBrick()) {
+-			if (((tile.type != 2 && tile.type != 78 && tile.type != 380 && tile.type != 477 && tile.type != 579) || typeAttemptedToPlace != 3) && ((tile.type != 23 && tile.type != 661) || typeAttemptedToPlace != 24) && ((tile.type != 109 && tile.type != 492) || typeAttemptedToPlace != 110) && ((tile.type != 199 && tile.type != 662) || typeAttemptedToPlace != 201)) {
++			if (((tile.type != 2 && tile.type != 78 && !TileID.Sets.PlanterBoxes[tile.type] && tile.type != 477 && tile.type != 579) || typeAttemptedToPlace != 3) && ((tile.type != 23 && tile.type != 661) || typeAttemptedToPlace != 24) && ((tile.type != 109 && tile.type != 492) || typeAttemptedToPlace != 110) && ((tile.type != 199 && tile.type != 662) || typeAttemptedToPlace != 201)) {
+ 				if (tile.type == 633)
+ 					return typeAttemptedToPlace == 637;
+ 
+@@ -42110,7 +_,7 @@
+ 
+ 		if (Main.tile[x, y].active() && (Main.tileCut[Main.tile[x, y].type] || TileID.Sets.BreakableWhenPlacing[Main.tile[x, y].type] || (Main.tile[x, y].type >= 373 && Main.tile[x, y].type <= 375) || Main.tile[x, y].type == 461)) {
+ 			if (Main.tile[x, y].type != tileType) {
+-				bool num = Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 579;
++				bool num = Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 579;
+ 				bool flag = Main.tile[x, y].type == 3 || Main.tile[x, y].type == 73;
+ 				bool flag2 = Main.tileAlch[Main.tile[x, y].type] && IsHarvestableHerbWithSeed(Main.tile[x, y].type, Main.tile[x, y].frameX / 18);
+ 				bool flag3 = Main.tileAlch[tileType];
 @@ -42131,14 +_,30 @@
  		return false;
  	}
@@ -2065,6 +2214,15 @@
  						case 24:
  						case 27:
  						case 32:
+@@ -42294,7 +_,7 @@
+ 							tile.type = 352;
+ 							SquareTileFrame(i, j);
+ 						}
+-						else if (Main.tile[i, j + 1].type == 78 || Main.tile[i, j + 1].type == 380 || Main.tile[i, j + 1].type == 579) {
++						else if (Main.tile[i, j + 1].type == 78 || TileID.Sets.PlanterBoxes[Main.tile[i, j + 1].type] || Main.tile[i, j + 1].type == 579) {
+ 							tile.active(active: true);
+ 							tile.type = (ushort)num;
+ 							int num2 = genRand.NextFromList<int>(6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 27, 30, 33, 36, 39, 42);
 @@ -42313,7 +_,7 @@
  
  							tile.frameX = (short)(num2 * 18);
@@ -2083,6 +2241,15 @@
  					if (Main.tile[i - 1, j] == null)
  						Main.tile[i - 1, j] = new Tile();
  
+@@ -42518,7 +_,7 @@
+ 					Tile tile2 = Main.tile[i - 1, j];
+ 					Tile tile3 = Main.tile[i + 1, j];
+ 					Tile tile4 = Main.tile[i, j + 1];
+-					if (tile.wall > 0 || (tile2.active() && (tile2.slope() == 0 || (int)tile2.slope() % 2 != 1) && ((Main.tileSolid[tile2.type] && !Main.tileSolidTop[tile2.type] && !TileID.Sets.NotReallySolid[tile2.type]) || TileID.Sets.IsBeam[tile2.type] || (IsTreeType(tile2.type) && IsTreeType(Main.tile[i - 1, j - 1].type) && IsTreeType(Main.tile[i - 1, j + 1].type)))) || (tile3.active() && (tile3.slope() == 0 || (int)tile3.slope() % 2 != 0) && ((Main.tileSolid[tile3.type] && !Main.tileSolidTop[tile3.type] && !TileID.Sets.NotReallySolid[tile3.type]) || TileID.Sets.IsBeam[tile3.type] || (IsTreeType(tile3.type) && IsTreeType(Main.tile[i + 1, j - 1].type) && IsTreeType(Main.tile[i + 1, j + 1].type)))) || (tile4.active() && Main.tileSolid[tile4.type] && ((TileID.Sets.Platforms[tile4.type] && TopEdgeCanBeAttachedTo(i, j + 1)) || ((!Main.tileSolidTop[tile4.type] || (tile4.type == 380 && tile4.slope() == 0)) && !TileID.Sets.NotReallySolid[tile4.type] && !tile4.halfBrick() && tile4.slope() == 0)))) {
++					if (tile.wall > 0 || (tile2.active() && (tile2.slope() == 0 || (int)tile2.slope() % 2 != 1) && ((Main.tileSolid[tile2.type] && !Main.tileSolidTop[tile2.type] && !TileID.Sets.NotReallySolid[tile2.type]) || TileID.Sets.IsBeam[tile2.type] || (IsTreeType(tile2.type) && IsTreeType(Main.tile[i - 1, j - 1].type) && IsTreeType(Main.tile[i - 1, j + 1].type)))) || (tile3.active() && (tile3.slope() == 0 || (int)tile3.slope() % 2 != 0) && ((Main.tileSolid[tile3.type] && !Main.tileSolidTop[tile3.type] && !TileID.Sets.NotReallySolid[tile3.type]) || TileID.Sets.IsBeam[tile3.type] || (IsTreeType(tile3.type) && IsTreeType(Main.tile[i + 1, j - 1].type) && IsTreeType(Main.tile[i + 1, j + 1].type)))) || (tile4.active() && Main.tileSolid[tile4.type] && ((TileID.Sets.Platforms[tile4.type] && TopEdgeCanBeAttachedTo(i, j + 1)) || ((!Main.tileSolidTop[tile4.type] || (TileID.Sets.PlanterBoxes[tile4.type] && tile4.slope() == 0)) && !TileID.Sets.NotReallySolid[tile4.type] && !tile4.halfBrick() && tile4.slope() == 0)))) {
+ 						tile.active(active: true);
+ 						tile.type = (ushort)num;
+ 						tile.frameY = (short)(22 * style);
 @@ -42641,7 +_,7 @@
  						case 26:
  						case 86:
@@ -2625,6 +2792,15 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
+@@ -51080,7 +_,7 @@
+ 			if (tile == null)
+ 				return true;
+ 
+-			if (tile.active() && (Main.tileSolid[tile.type] || tile.type == 380) && (!tile.bottomSlope() || (TileID.Sets.Platforms[tile.type] && tile.halfBrick())) && !tile.inActive())
++			if (tile.active() && (Main.tileSolid[tile.type] || TileID.Sets.PlanterBoxes[tile.type]) && (!tile.bottomSlope() || (TileID.Sets.Platforms[tile.type] && tile.halfBrick())) && !tile.inActive())
+ 				return true;
+ 		}
+ 		catch {
 @@ -52049,9 +_,20 @@
  
  	public static void UpdateWorld()
@@ -2712,6 +2888,15 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -52394,7 +_,7 @@
+ 				if (Main.rand.Next((Main.tile[i, j].frameX + 10) / 10) == 0)
+ 					GrowPumpkin(i, j, 254);
+ 			}
+-			else if (Main.tile[i, j].type == 78 || Main.tile[i, j].type == 380 || Main.tile[i, j].type == 579) {
++			else if (Main.tile[i, j].type == 78 || TileID.Sets.PlanterBoxes[Main.tile[i, j].type] || Main.tile[i, j].type == 579) {
+ 				if (!Main.tile[i, num3].active() && genRand.Next(2) == 0) {
+ 					PlaceTile(i, num3, 3, mute: true);
+ 					if (Main.netMode == 2 && Main.tile[i, num3].active())
 @@ -53002,7 +_,7 @@
  			return false;
  
@@ -2751,6 +2936,15 @@
  	public static void TileRunner(int i, int j, double strength, int steps, int type, bool addTile = false, double speedX = 0.0, double speedY = 0.0, bool noYChange = false, bool overRide = true, int ignoreTileType = -1)
  	{
  		if (!GenVars.mudWall) {
+@@ -58667,7 +_,7 @@
+ 		if (x + 1 < Main.maxTilesX && y + 1 < Main.maxTilesY && Main.tile[x + 1, y + 1] != null && Main.tile[x + 1, y + 1].nactive())
+ 			_ = Main.tile[x + 1, y + 1].type;
+ 
+-		if ((num2 != 3 || num == 2 || num == 477 || num == 78 || num == 380 || num == 579) && (num2 != 73 || num == 2 || num == 477 || num == 78 || num == 380 || num == 579) && (num2 != 24 || num == 23 || num == 661) && (num2 != 61 || num == 60) && (num2 != 74 || num == 60) && (num2 != 71 || num == 70) && (num2 != 110 || num == 109 || num == 492) && (num2 != 113 || num == 109 || num == 492) && (num2 != 201 || num == 199 || num == 662) && (num2 != 637 || num == 633))
++		if ((num2 != 3 || num == 2 || num == 477 || num == 78 || TileID.Sets.PlanterBoxes[num] || num == 579) && (num2 != 73 || num == 2 || num == 477 || num == 78 || TileID.Sets.PlanterBoxes[num] || num == 579) && (num2 != 24 || num == 23 || num == 661) && (num2 != 61 || num == 60) && (num2 != 74 || num == 60) && (num2 != 71 || num == 70) && (num2 != 110 || num == 109 || num == 492) && (num2 != 113 || num == 109 || num == 492) && (num2 != 201 || num == 199 || num == 662) && (num2 != 637 || num == 633))
+ 			return;
+ 
+ 		bool flag = false;
 @@ -58741,7 +_,7 @@
  			Main.tile[x, y + 1] = new Tile();
  
@@ -2808,7 +3002,7 @@
  												KillTile(i, j);
  
  											break;
-@@ -59531,10 +_,10 @@
+@@ -59531,16 +_,16 @@
  													Minecart.FrameTrack(i, j, pound: false);
  													Tile tile2 = Main.tile[i, j - 1];
  													Tile tile3 = Main.tile[i, j + 1];
@@ -2821,6 +3015,26 @@
  														TileFrame(i, j + 1);
  
  													break;
+ 												}
+ 
+-												if (num == 380) {
++												if (num >= 0 && TileID.Sets.PlanterBoxes[num]) {
+ 													Tile tile4 = Main.tile[i - 1, j];
+ 													if (tile4 == null)
+ 														break;
+@@ -59566,10 +_,10 @@
+ 														int num2 = -1;
+ 														int num3 = -1;
+ 														if (tile4 != null && tile4.active())
+-															num3 = (Main.tileStone[tile4.type] ? 1 : tile4.type);
++															num3 = (Main.tileStone[tile4.type] ? 1 : ((!TileID.Sets.PlanterBoxes[tile4.type]) ? tile4.type : num));
+ 
+ 														if (tile5 != null && tile5.active())
+-															num2 = (Main.tileStone[tile5.type] ? 1 : tile5.type);
++															num2 = (Main.tileStone[tile5.type] ? 1 : ((!TileID.Sets.PlanterBoxes[tile5.type]) ? tile5.type : num));
+ 
+ 														if (num2 >= 0 && !Main.tileSolid[num2])
+ 															num2 = -1;
 @@ -59791,7 +_,10 @@
  														if (num != 354 && num != 406 && num != 412 && num != 355 && num != 452 && num != 455 && num != 491 && num != 499 && num != 642) {
  															switch (num) {
@@ -3131,3 +3345,12 @@
  			result = false;
  
  		return result;
+@@ -63988,7 +_,7 @@
+ 
+ 	public static bool CanCutTile(int x, int y, TileCuttingContext context)
+ 	{
+-		if (Main.tile[x, y + 1] != null && Main.tile[x, y + 1].type != 78 && Main.tile[x, y + 1].type != 380 && Main.tile[x, y + 1].type != 579) {
++		if (Main.tile[x, y + 1] != null && Main.tile[x, y + 1].type != 78 && !TileID.Sets.PlanterBoxes[Main.tile[x, y + 1].type] && Main.tile[x, y + 1].type != 579) {
+ 			if (Main.tile[x, y].type == 254)
+ 				return Main.tile[x, y].frameX >= 144;
+ 
