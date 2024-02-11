@@ -46,7 +46,7 @@
  		_targets.Clear();
  		bool flag = false;
 -		if (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].active() && Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type == 380)
-+		if (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].active() && Main.tile[providedInfo.screenTargetX, TileID.Sets.PlanterBoxes[providedInfo.screenTargetY].type])
++		if (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].active() && TileID.Sets.PlanterBoxes[Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type])
  			flag = true;
  
  		if (!flag) {
