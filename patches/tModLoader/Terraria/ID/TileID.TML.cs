@@ -35,7 +35,7 @@ partial class TileID
 		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <see cref="ItemID.Sets.Torches"/>.</summary>
 		public static bool[] Torch = Factory.CreateBoolSet(TileID.Torches);
 
-		/// <summary> Whther or not this tile is behaves like a planter box. Planter boxes allow for grass to grow similar to platforms, don't allow for skeletron prime bombs to fall through, have a unique smart cursor placement that no other tile has and don't allow tiles above them to be cut.
+		/// <summary> Whether or not this tile is behaves like a planter box. Planter boxes allow for grass to grow similar to platforms, don't allow for skeletron prime bombs to fall through, have a unique smart cursor placement that no other tile has and don't allow tiles above them to be cut.
 		/// Additionally allows herbs and grass to grow on planter boxes. </summary>
 		public static bool[] PlanterBoxes = Factory.CreateBoolSet(TileID.PlanterBox);
 
