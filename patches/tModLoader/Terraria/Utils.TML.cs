@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using Terraria.Utilities;
 
 namespace Terraria;
@@ -220,5 +222,12 @@ partial class Utils
 			Console.WriteLine("ERROR: " + message);
 			Console.ResetColor();
 		}
+	}
+
+	internal static string CleanChatTags(string text)
+	{
+		return string.Join("", ChatManager.ParseMessage(text, Color.White)
+				.Where(x => x.GetType() == typeof(TextSnippet))
+				.Select(x => x.Text));
 	}
 }

@@ -394,7 +394,7 @@ internal static class Interface
 			Console.WriteLine();
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			for (int k = 0; k < mods.Length; k++) {
-				Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
+				Console.Write((k + 1) + "\t\t" + mods[k].DisplayNameClean);
 				Console.WriteLine(" (" + (mods[k].Enabled ? "enabled" : "disabled") + ")");
 			}
 			if (mods.Length == 0) {
@@ -648,7 +648,7 @@ internal static class Interface
 			EnableDepsRecursive(dep, mods, missingRefs);
 			if (!dep.Enabled) {
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.WriteLine($"Automatically enabling {dep.DisplayNameClean} required by {mod.DisplayNameClean}");
 				Console.ResetColor();
 			}
 			dep.Enabled ^= true;

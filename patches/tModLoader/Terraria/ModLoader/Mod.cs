@@ -75,6 +75,12 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
+	
+	private string displayNameClean;
+	/// <summary>
+	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.
+	/// </summary>
+	public string DisplayNameClean => displayNameClean ??= Utils.CleanChatTags(DisplayName);
 
 	public AssetRepository Assets { get; private set; }
 

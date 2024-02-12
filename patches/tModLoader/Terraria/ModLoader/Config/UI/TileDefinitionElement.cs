@@ -45,7 +45,7 @@ internal class TileDefinitionElement : DefinitionElement<TileDefinition>
 			string modname = "Terraria";
 
 			if (option.Type >= TileID.Count) {
-				modname = TileLoader.GetTile(option.Type).Mod.DisplayName; // or internal name?
+				modname = TileLoader.GetTile(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
