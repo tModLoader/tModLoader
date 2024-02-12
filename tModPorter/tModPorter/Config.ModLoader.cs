@@ -320,8 +320,6 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModPrefix",		"AutoStaticDefaults", "Nothing to override anymore. Use hjson files to adjust localization");
 		HookRemoved("Terraria.ModLoader.ModSystem",		"SetLanguage", "Use OnLocalizationsLoaded. New hook is called at slightly different times, so read the documentation");
 
-		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
-
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",		to: "LoadData");
@@ -545,5 +543,6 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ProjectileLoader", from: "Kill", to: "OnKill");
 		RenameMethod("Terraria.ModLoader.ModProjectile", from: "Kill", to: "OnKill");
 		RenameMethod("Terraria.ModLoader.GlobalProjectile", from: "Kill", to: "OnKill");
+		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
 	}
 }

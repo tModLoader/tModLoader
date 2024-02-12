@@ -2224,11 +2224,9 @@ public static class ItemLoader
 		if (item.ModItem == null)
 			return;
 
-		ProjectileLoader.ModifyFishingLine(projectile, ref polePosX, ref polePosY, ref lineColor);
-
 		Vector2 lineOriginOffset = Vector2.Zero;
 
-		item.ModItem.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
+		item.ModItem.ModifyFishingLine(projectile, ref lineOriginOffset, ref lineColor);
 
 		polePosX += lineOriginOffset.X * player.direction;
 		if (player.direction < 0)

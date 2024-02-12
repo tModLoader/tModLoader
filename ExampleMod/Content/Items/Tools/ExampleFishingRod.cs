@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Projectiles;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -6,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
 {
+	// ExampleFishingRod is a fishing rod item.
+	// The code in SetDefaults and the code setting lineOriginOffset in ModifyFishingLine is all the would be needed for a typical working fishing rod item.
+	// All of the rest of the code showcases other additional capabilities, such as multiple bobbers, custom line colors, and fishing in lava.
 	public class ExampleFishingRod : ModItem
 	{
 		public override void SetStaticDefaults() {
@@ -24,7 +28,7 @@ namespace ExampleMod.Content.Items.Tools
 
 			Item.fishingPole = 30; // Sets the poles fishing power
 			Item.shootSpeed = 12f; // Sets the speed in which the bobbers are launched. Wooden Fishing Pole is 9f and Golden Fishing Rod is 17f.
-			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBobber>(); // The Bobber projectile.
+			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBobber>(); // The bobber projectile. Note that this will be overridden by Fishing Bobber accessories if present, so don't assume the bobber spawned is the specified projectile. https://terraria.wiki.gg/wiki/Fishing_Bobbers
 		}
 
 		// Grants the High Test Fishing Line bool if holding the item.
@@ -48,13 +52,20 @@ namespace ExampleMod.Content.Items.Tools
 			return false;
 		}
 
-		public override void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor) {
+		public override void ModifyFishingLine(Projectile bobber, ref Vector2 lineOriginOffset, ref Color lineColor) {
 			// Change these two values in order to change the origin of where the line is being drawn.
-			// This will make it draw 47 pixels right and 31 pixels up from the player's center, while they are looking right and in normal gravity.
-			lineOriginOffset = new Vector2(47, -31);
+			// This will make it draw 43 pixels right and 30 pixels up from the player's center, while they are looking right and in normal gravity.
+			lineOriginOffset = new Vector2(43, -30);
 
 			// Sets the fishing line's color. Note that this will be overridden by the colored string accessories.
-			lineColor = Main.DiscoColor;
+			if (bobber.ModProjectile is ExampleBobber exampleBobber) {
+				// ExampleBobber has custom code to decide on a line color.
+				lineColor = exampleBobber.FishingLineColor;
+			}
+			else {
+				// If the bobber isn't ExampleBobber, a Fishing Bobber accessory is in effect and we use DiscoColor instead.
+				lineColor = Main.DiscoColor;
+			}
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

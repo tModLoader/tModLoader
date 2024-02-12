@@ -312,10 +312,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 		return null;
 	}
 
-	[Obsolete]
-	internal void ModifyFishingLine_Obsolete(ref Vector2 lineOriginOffset, ref Color lineColor) => ModifyFishingLine(ref lineOriginOffset, ref lineColor);
-
-	[Obsolete($"Moved to ModItem. Fishing line position and color are now tied to the used pole.", error: true)]
+	[Obsolete($"Moved to ModItem. Fishing line position and color are now set by the pole used.", error: true)]
 	public virtual void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor)
 	{
 	}

@@ -572,7 +572,8 @@ public static class ProjectileLoader
 		}
 	}
 
-	public static void ModifyFishingLine(Projectile projectile , ref float polePosX, ref float polePosY, ref Color lineColor)
+	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
+	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
 		if (projectile.ModProjectile == null)
 			return;
@@ -580,7 +581,7 @@ public static class ProjectileLoader
 		Vector2 lineOriginOffset = Vector2.Zero;
 		Player player = Main.player[projectile.owner];
 
-		projectile.ModProjectile.ModifyFishingLine_Obsolete(ref lineOriginOffset, ref lineColor);
+		projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
 
 		polePosX += lineOriginOffset.X * player.direction;
 		polePosY += lineOriginOffset.Y * player.gravDir;

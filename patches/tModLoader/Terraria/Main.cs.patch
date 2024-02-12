@@ -3713,10 +3713,11 @@
  				if (proj.type == 312) {
  					ulong seed3 = TileFrameSeed;
  					for (int num439 = 0; num439 < 4; num439++) {
-@@ -28416,6 +_,8 @@
+@@ -28416,6 +_,9 @@
  		if (type == 4442)
  			stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
  
++		ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
 +		ItemLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
 +
  		stringColor = TryApplyingPlayerStringColor(Main.player[proj.owner].stringColor, stringColor);
