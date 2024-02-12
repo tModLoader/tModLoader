@@ -100,9 +100,9 @@
 		"ModsNotFoundServer": "In \"{0}\" wurden keine Mods gefunden\nWenn du einen eigenen Server betreibst, möchtest du vielleicht den Befehlszeilenschalter 'modpath' oder die Serverkonfigurationseinstellung benutzen, um ein benutzerdefiniertes Mod-Verzeichnis festzulegen.\n",
 		"AskForModIndex": "Gib eine Zahl ein, um zwischen aktiviert/deaktiviert zu wechseln",
 		"AskForCommand": "Gib einen Befehl ein: ",
-		// "DedErrorNoConfig": "This mod does not have any config",
-		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
-		// "DedErrorModOOB": "Mod index out of bounds",
+		"DedErrorNoConfig": "Dieser Mod hat keine Konfiguration",
+		"DedErrorNotEnabled": "Mod nicht aktiviert, bitte aktiviere ihn und lade neu um die Konfigurationen zu bearbeiten",
+		"DedErrorModOOB": "Mod-Index außerhalb des zulässigen Bereichs",
 
 		//Dedicated server mod config
 		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
@@ -132,16 +132,16 @@
 		// "ModConfigClientSide": "Client Side Config",
 		"ModConfigAdd": "Hinzufügen",
 		"ModConfigRemove": "Entfernen",
-		// "ModConfigInitialize": "Initialize",
-		// "ModConfigClear": "Clear",
-		// "ModConfigExpand": "Expand",
-		// "ModConfigCollapse": "Collapse",
+		"ModConfigInitialize": "Initialisieren",
+		"ModConfigClear": "Löschen",
+		"ModConfigExpand": "Erweitern",
+		"ModConfigCollapse": "Zusammenklappen",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
-		// "ModConfigServerResponse": "Server response: {0}",
-		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		"ModConfigServerResponse": "Server Antwort: {0}",
+		"ModConfigServerRejectedChanges": "Der Server hat folgende Änderungen abgelehnt: {0}",
 		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
-		// "ModConfigAccepted": "Accepted",
+		"ModConfigAccepted": "Akzeptiert",
 		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
@@ -169,7 +169,7 @@
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
 		"LoadErrorDisabled": "Der/Die Mod/s wurden automatisch deaktiviert.",
 		"LoadErrorCulpritUnknown": "Der verantwortliche Mod ist unbekannt. tModLoader muss neu gestartet werden.",
-		// "LoadErrorContentType": "This error was caused by the \"{0}\" class.",
+		"LoadErrorContentType": "Dieser Fehler wurde von der \"{0}\" Klasse verursacht.",
 		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
 		// "LoadErrorModNotFoundDuringAsset": "A mod named \"{0}\" was not found while attempting to load the asset with the path of \"{1}\". Check that this path starts with the correct mod name.",
 		"LoadErrorVersionMessage": "Dieser Mod wurde für tModLoader v{0} erstellt.\n Du benutzt jedoch {1}",
@@ -253,10 +253,10 @@
 		"ModPackLoadingSpecifiedModPack": "Lade Modpaket: {0}",
 		"ModPackDoesNotExist": "Modpaket {0} gibt es nicht.",
 		"ModPackMalformed": "Das {0} Modpaket konnte nicht geladen werden, es könnte beschädigt sein.",
-		// "CurrentModPack": "Current Mod Pack: {0}",
-		// "ExportPackInstance": "Export Pack Instance",
+		"CurrentModPack": "Aktuelles Mod Pack: {0}",
+		"ExportPackInstance": "Exportiere Mod-Pack Instanz",
 		// "ExportPackInstanceDesc": "Exports a copy of mods to InstallDirectory so\ncan setup second instance of tModLoader\nOR quickly setup a server with the pack",
-		// "DeletePackInstance": "Delete Instance",
+		"DeletePackInstance": "Lösche Instanz",
 		// "DeletePackInstanceDesc": "Deletes all files in InstallDirectory/<ModPackName>",
 		// "RemovePackLocal": "Remove Pack (Local)",
 		// "RemovePackLocalDesc": "Disables all mods & removes the frozen mods\nfrom tModLoader mod loading path",
@@ -302,7 +302,7 @@
 		"MBUpdateAll": "Alle aktualisieren",
 		"MBReloadBrowser": "Mod-Browser neu laden",
 		"MBGettingData": "Sammle Daten...",
-		// "MBCancelLoading": "Cancel loading",
+		"MBCancelLoading": "Laden abbrechen",
 		"MBPopulatingBrowser": "Browser aktivieren...",
 		"MBSortByRecentlyUpdated": "Nach kürzlich aktualisierten sortieren",
 		"MBSortByPopularity": "Nach Beliebtheit sortieren",
@@ -417,7 +417,7 @@
 		"MSBuildAll": "Alle Erstellen",
 		"MSBuildReloadAll": "Alle Erstellen + Neu laden",
 		"MSUpgradeCSProj": ".csproj-Datei aktualisieren",
-		// "MSOpenCSProj": "Open .csproj",
+		"MSOpenCSProj": "Öffne .csproj",
 		"MSUpgradeLangFiles": ".lang Dateien in .hjson Dateien umwandeln (zerstörungsfrei)",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
@@ -491,8 +491,8 @@
 		"MSUnloading": "Entlade Mod: {0}",
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
-		// "CancellingLoading": "Cancelling loading...",
-		// "LoadingCancelled": "Loading Cancelled",
+		"CancellingLoading": "Laden wird abgebrochenn...",
+		"LoadingCancelled": "Laden Abgebrochen",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Kein Name",
@@ -523,7 +523,7 @@
 		// In Game UI additions
 		"slotStack": "Stapel",
 		"slotScroll": "Scroll",
-		// "PressXToClose": "Press {0} to close",
+		"PressXToClose": "Drücke {0} zum schließen",
 
 		// Misc
 		"OK": "OK",
@@ -601,18 +601,18 @@
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
-		// "NextInfoAccPage": "Next Page",
-		// "PreviousInfoAccPage": "Previous Page",
-		// "FirstInfoAccPage": "Go To First Page",
-		// "LastInfoAccPage": "Go To Last Page"
+		"NextInfoAccPage": "Nächste Seite",
+		"PreviousInfoAccPage": "Vorherige Seite",
+		"FirstInfoAccPage": "Gehe zur ersten Seite",
+		"LastInfoAccPage": "Gehe zur letzten Seite"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Erhöht die Abwehr um {0}",
 		"IncreasesArmorPenBy": "Erhöht Durchdringen von Rüstung um {0}",
 
-		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
+		"IncreasesMaxLifeBy": "Erhöht maximales Leben um {0}",
 		"IncreasesMaxManaBy": "Erhöht maximales Mana um {0}",
-		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
+		"IncreasesMaxLifeByPercent": "Erhöht maximales Leben um {0}%",
 		"IncreasesMaxManaByPercent": "Erhöht maximales Mana um {0}%",
 
 		"IncreasesBowDamageByPercent": "Um {0}% erhöhter Bogenschaden",
@@ -636,7 +636,7 @@
 		"PercentIncreasedMiningSpeed": "Um {0} % erhöhtes Abbautempo",
 		"PercentIncreasedMovementSpeed": "Um {0}% erhöhtes Bewegungstempo",
 
-		// "ArmorPenetration": "{0} armor penetration",
+		"ArmorPenetration": "{0} Rüstungsdurchschlag",
 		"PercentIncreasedDamage": "Um {0}% erhöhter Schaden",
 		"PercentIncreasedCritChance": "Um {0} % erhöhte kritische Trefferchance",
 		"PercentIncreasedDamageCritChance": "Um {0}% erhöhter Schaden und Chance auf kritischen Treffer",
@@ -700,8 +700,8 @@
 		"InHive": "Muss in einem Bienennest sein",
 		"InGemCave": "Muss in einer Edelsteinhöhle sein",
 		"InLihzardTemple": "Muss im Lihzahrdtempel sein"
-		// "InGraveyard": "In a Graveyard biome",
-		// "InAether": "In an Aether biome",
+		"InGraveyard": "In einem Friedhofsbiome",
+		"InAether": "In einem Aetherbiome",
 		// "InShoppingForest": "When above the surface and not in another major biome",
 		// "InBelowSurface": "When in the Underground, Caverns, or Underworld",
 		// "InEvilBiome": "In a Corruption or Crimson biome",
@@ -715,8 +715,8 @@
 		// "InMasterMode": "In Master mode",
 		// "InJourneyMode": "In Journey mode",
 
-		// "InHardmode": "In hardmode",
-		// "PreHardmode": "Before hardmode",
+		"InHardmode": "Im Hardmode",
+		"PreHardmode": "Vor dem Hardmode",
 		// "SmashedShadowOrb": "After smashing a Shadow Orb or Crimson Heart",
 		// "WorldCrimson": "In a world with The Crimson",
 		// "WorldCorrupt": "In a world with The Corruption",
@@ -737,16 +737,16 @@
 		// "WorldNotNoTraps": "Not in a No Traps world",
 		// "WorldNotZenith": "Not in a Zenith world",
 
-		// "Christmas": "During Christmas",
-		// "Halloween": "During Halloween",
-		// "Thunderstorm": "During a thunderstorm",
-		// "BirthdayParty": "During an NPC birthday party",
-		// "NightLanterns": "During a Lantern Night",
+		"Christmas": "Während Weihnachten",
+		"Halloween": "Während Halloween",
+		"Thunderstorm": "Während eines Gewitters",
+		"BirthdayParty": "Während einer NPC Geburtstagsparty",
+		"NightLanterns": "During a Lantern Night",
 		// "HappyWindyDay": "During a happy windy day",
-		// "SolarEclipse": "During a Solar Eclipse",
-		// "BloodMoon": "During a Blood Moon",
-		// "NotSolarEclipse": "Not during a Solar Eclipse",
-		// "NotBloodMoon": "Not during a Blood Moon",
+		"SolarEclipse": "Während einer Sonnenfinsternis",
+		"BloodMoon": "Während eines Blutmond",
+		"NotSolarEclipse": "Nicht während einer Sonnenfinsternis",
+		"NotBloodMoon": "Nicht während eines Blutmond",
 		// "HappyEnough": "When the vendor is happy enough",
 
 		// "DownedKingSlime": "After defeating King Slime",
@@ -863,7 +863,7 @@
 		// "UndergroundPylon": "Below the surface and not in another pylon biome",
 		// "MoonPhasesHalf0OrPreHardmode": "Anytime before hardmode, or during a full, waning gibbous, third quarter or waning crescent moon",
 
-		// "FullMoon": "During a full moon",
+		"FullMoon": "Während eines Vollmond",
 		// "WaningGibbousMoon": "During a waning gibbous moon",
 		// "ThirdQuarterMoon": "During a third quarter moon",
 		// "WaningCrescentMoon": "During a waning crescent moon",
