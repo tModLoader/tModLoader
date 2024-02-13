@@ -17,7 +17,7 @@ public partial class LocalizedText
 
 	// https://www.unicode.org/cldr/charts/43/supplemental/language_plural_rules.html
 	// implementations extracted from build of https://github.com/xyzsd/cldr-plural-rules
-	// English, German, Italian, Spanish, Portugese, French
+	// English, German, Italian, Spanish, Portuguese, French
 	//   one, other
 	// Russian, Polish
 	//   one, few, many
@@ -97,7 +97,12 @@ public partial class LocalizedText
 		if (_hasPlurals ??= PluralizationPatternRegex.IsMatch(value))
 			value = ApplyPluralization(value, args);
 
-		return string.Format(value, args);
+		try {
+			return string.Format(value, args);
+		}
+		catch (FormatException e) {
+			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{value}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
+		}
 	}
 
 	/// <summary>

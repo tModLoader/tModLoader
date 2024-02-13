@@ -43,7 +43,12 @@
  		_cachedSandstormSeverity = Sandstorm.Severity;
  		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
  		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -387,7 +_,8 @@
+@@ -384,10 +_,13 @@
+ 				binaryReader.ReadBoolean();
+ 				binaryReader.ReadBoolean();
+ 				worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
++
++				WorldIO.ReadWorldHeader(worldFileData);
  				return worldFileData;
  			}
  		}

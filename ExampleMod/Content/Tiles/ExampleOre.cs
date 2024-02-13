@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Tiles
 		public static LocalizedText ExampleOrePassMessage { get; private set; }
 
 		public override void SetStaticDefaults() {
-			ExampleOrePassMessage = Language.GetOrRegister(Mod.GetLocalizationKey($"WorldGen.{nameof(ExampleOrePassMessage)}"));
+			ExampleOrePassMessage = Mod.GetLocalization($"WorldGen.{nameof(ExampleOrePassMessage)}");
 		}
 
 		// World generation is explained more in https://github.com/tModLoader/tModLoader/wiki/World-Generation

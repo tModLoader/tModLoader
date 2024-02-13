@@ -1,5 +1,4 @@
-﻿using ExampleMod.Common.Systems;
-using ExampleMod.Common.UI.ExampleCoinsUI;
+﻿using ExampleMod.Common.UI.ExampleCoinsUI;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Commands

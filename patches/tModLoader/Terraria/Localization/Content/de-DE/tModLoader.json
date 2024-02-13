@@ -35,6 +35,9 @@
 		"MenuModUpdatesAvailable": "({0} {^0:Aktualisierung;Aktualisierungen} verfügbar!)",
 		"AudioNotSupported": "Keine Audio-Hardware gefunden. Ton wird deaktiviert.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
 		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
 		// "ViewInstructions": "View Instructions",
@@ -59,13 +62,15 @@
 		"ModOldWarning": "Mod veraltet. Benutzung auf eigene Gefahr!",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
 		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Dieser Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
 		"ModDidNotFullyUnloadWarning": "Dieser Mod wurde beim letzten Entladen nicht vollständig entladen.\n(Dies ist eine Nachricht für den Modentwickler)",
-		"BetaModCantPublish": "Dieser Mod wurde in einer Beta-Version erstellt und kann nicht veröffentlicht werden.",
 		"BetaModCantPublishError": "Du kannst keinen Mod der in einer Beta-Version von tModLoader erstellt wurde veröffentlichen",
 		"OutdatedModCantPublishError": "Du kannst keinen Mod der in einer alten tModLoader Version erstellt wurde veröffentlichen",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Neu laden erforderlich",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Neu laden erzwingen",
 		"ModIsServerSide": "Dies ist ein serverseitiger Mod",
 		"ModsByline": "Mod von: {0}",
@@ -89,12 +94,31 @@
 		"ModsXWalls": "{0} {^0:Wand;Wände}",
 		"ModsXBuffs": "{0} {^0:buff;Buffs}",
 		"ModsXMounts": "{0} {^0:Reittier;Reittiere}",
+
+		//Dedicated server
 		"ModsReloadAndReturn": "Neu laden und zum Weltenmenü zurückkehren",
 		"ModsNotFoundServer": "In \"{0}\" wurden keine Mods gefunden\nWenn du einen eigenen Server betreibst, möchtest du vielleicht den Befehlszeilenschalter 'modpath' oder die Serverkonfigurationseinstellung benutzen, um ein benutzerdefiniertes Mod-Verzeichnis festzulegen.\n",
 		"AskForModIndex": "Gib eine Zahl ein, um zwischen aktiviert/deaktiviert zu wechseln",
 		"AskForCommand": "Gib einen Befehl ein: ",
+		// "DedErrorNoConfig": "This mod does not have any config",
+		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
+		// "DedErrorModOOB": "Mod index out of bounds",
+
+		//Dedicated server mod config
+		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
+		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
+		// "DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
+		// "DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
+		// "DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
+		// "DedConfigEditConfig": "Modify configuration value",
+		// "DedConfigEditConfigNote": "Note that data validation, such as min and max values, is not enforced. Try to use values only allowed in the client.",
+		// "DedConfigRestoreConfig": "Restore configurations to default",
+		// "DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
+		// "DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
+		// "DedConfigErrorNotParsable": "Invalid input",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Filtereinstellungen",
 		"ModConfigNotification": "Benachrichtigung: ",
 		"ModConfigModConfig": "Modkonfiguration",
@@ -104,6 +128,8 @@
 		"ModConfigRestoreDefaults": "Einstellungen zurücksetzen",
 		"ModConfigAskingServerToAcceptChanges": "Anfrage an Server, die Änderungen zu akzeptieren...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Kann nicht gespeichert werden, da Änderungen neu laden erfordern würden",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
 		// "ModConfigAdd": "Add",
 		// "ModConfigRemove": "Remove",
 		// "ModConfigInitialize": "Initialize",
@@ -112,6 +138,11 @@
 		// "ModConfigCollapse": "Collapse",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		"BossBarStyle": "Bossleisten-Stil: {0}",
@@ -246,6 +277,12 @@
 		"MPErrorModDownloadError": "Beim herunterladen ist ein Fehler aufgetreten {0}",
 		"MPPacketTooLarge": "Paket zu groß {0} > {1}",
 
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
+
 		// Mod Browser
 		"MBDownload": "Herunterladen",
 		"MBDownloadAll": "Alle herunterladen",
@@ -265,6 +302,7 @@
 		"MBUpdateAll": "Alle aktualisieren",
 		"MBReloadBrowser": "Mod-Browser neu laden",
 		"MBGettingData": "Sammle Daten...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Browser aktivieren...",
 		"MBSortByRecentlyUpdated": "Nach kürzlich aktualisierten sortieren",
 		"MBSortByPopularity": "Nach Beliebtheit sortieren",
@@ -343,8 +381,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Mods automatisch aktivieren und neu laden, wenn der Mod-Browser verlassen wird: Aus",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Erforderliche Mods automatisch neu laden, wenn der Modbildschirm verlassen wird: An",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Erforderliche Mods automatisch neu laden, wenn der Modbildschirm verlassen wird: Aus",
-		"ReloadModsReminder": "Du hast einen Mod aktualisiert. Vergiss nicht sie neu zu laden, damit die Änderungen wirksam werden!",
-		"EnableModsReminder": "Deine neu heruntergeladenen Mods sind im Moment deaktiviert, vergiss nicht sie zu aktivieren, wenn du sie benutzen willst!",
 		"DontShowAgain": "Nie wieder zeigen",
 		"ModControls": "Mod-Steuerung",
 
@@ -390,6 +426,7 @@
 		"MSManagePublished": "Veröffentlichte verwalten",
 		"MSPublish": "Veröffentlichen",
 		"MSModSourcesCantHaveSpaces": "(Modquellen-Ordner können keine Leerzeichen haben!)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Mod erstellen",
 		"VersionUpgrade": "LINK: Über die Mod-Migration der neuesten Aktualisierung erfahren",
 		// "WikiLink": "Explore the Wiki",
@@ -398,7 +435,8 @@
 		// "DiscordLink": "Find Help on the Discord Server",
 		"MSPortToLatest": "tModPorter ausführen",
 		"MSFirstLaunchModderWelcomeMessage": "Mods für tModLoader mit Visual Studio zu machen erfordert nun das .NET 6 SDK installiert ist. Dies wird am einfachsten durch das Installieren von Visual Studio 2022 gemacht. Die Migrationsanleitung, die auf Github zu finden ist, erklärt die erforderlichen Code-Änderungen um Mods auf 1.4 zu aktualisieren. Die Anleitung erklärt auch wie man tModPorter verwendet um einen Großteil deines Mods für dich zu migrieren.",
-		// "DownloadNetSDK": "Download .NET SDK",
+		"MSNetSDKNotFound": "Mods für tModLoader mit Visual Studio zu machen erfordert nun das .NET 6 SDK installiert ist. Dies wird am einfachsten durch das Installieren von Visual Studio 2022 gemacht. Die Migrationsanleitung, die auf Github zu finden ist, erklärt die erforderlichen Code-Änderungen um Mods auf 1.4 zu aktualisieren. Die Anleitung erklärt auch wie man tModPorter verwendet um einen Großteil deines Mods für dich zu migrieren.",
+		// "DownloadNetSDK": "Download .NET 6.0 SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
@@ -453,6 +491,8 @@
 		"MSUnloading": "Entlade Mod: {0}",
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Kein Name",
@@ -483,6 +523,7 @@
 		// In Game UI additions
 		"slotStack": "Stapel",
 		"slotScroll": "Scroll",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",
@@ -658,7 +699,7 @@
 		"InMarble": "Muss im Marmor-Biom sein",
 		"InHive": "Muss in einem Bienennest sein",
 		"InGemCave": "Muss in einer Edelsteinhöhle sein",
-		"InLihzardTemple": "Muss im Lihzahrdtempel sein",
+		"InLihzardTemple": "Muss im Lihzahrdtempel sein"
 		// "InGraveyard": "In a Graveyard biome",
 		// "InAether": "In an Aether biome",
 		// "InShoppingForest": "When above the surface and not in another major biome",
@@ -952,6 +993,10 @@
 		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
 		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
 		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
 		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
 		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",

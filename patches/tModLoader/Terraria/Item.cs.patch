@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,450 @@
+@@ -37,78 +_,455 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -161,7 +161,7 @@
 +	/// <summary>
 +	/// The numerical ID of the armor shader in <see cref="GameShaders.Armor"/> this item activates when worn in a dye slot.<br/>
 +	/// If greater than 0, then this item can be equipped into dye slots.<br/>
-+	/// Defaults to -1.<br/>
++	/// Defaults to 0.<br/>
 +	/// </summary>
 +	public int dye; //TML: Changed from byte to int.
 +
@@ -244,6 +244,11 @@
 +	/// </summary>
  	public bool isAShopItem;
 -	public short hairDye = -1;
++	/// <summary>
++	/// The numerical ID of the hair shader in <see cref="GameShaders.Hair"/> this item will apply to the player when used.<br/>
++	/// If greater than -1, then this item is a hair dye.<br/>
++	/// Defaults to -1.<br/>
++	/// </summary>
 +	public int hairDye = -1; //TML: Changed from short to int.
 +
 +	/// <summary>
@@ -530,7 +535,7 @@
  	public int ammo = AmmoID.None;
 +
 +	/// <summary>
-+	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Wire.
++	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Sand Blocks.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool notAmmo;
@@ -1245,6 +1250,14 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -11396,6 +_,7 @@
+ 				knockBack = 6.5f;
+ 				melee = true;
+ 				value = sellPrice(0, 3);
++				ChangePlayerDirectionOnShoot = false;// Added by tML
+ 				break;
+ 			case 724:
+ 				autoReuse = true;
 @@ -12077,6 +_,8 @@
  				scale = 1f;
  				break;
@@ -1281,6 +1294,14 @@
  	public void DefaultToQuestFish()
  	{
  		questItem = true;
+@@ -35265,6 +_,7 @@
+ 				rare = 2;
+ 				UseSound = SoundID.Item64;
+ 				mech = true;
++				ChangePlayerDirectionOnShoot = false;// Added by tML
+ 				return;
+ 			case 3612:
+ 				useStyle = 1;
 @@ -36886,6 +_,8 @@
  				shootSpeed = 17f;
  				return;
@@ -1349,7 +1370,7 @@
 +	///	height = 12;
 +	/// value = buyPrice(0, 0, 15);
 +	/// rare = 3;
-+	///	maxStack = CommonMaxStack;
++	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	/// </code>
 +	/// </summary>
@@ -1492,6 +1513,19 @@
  	{
  		useStyle = 1;
  		useTurn = true;
+@@ -46866,6 +_,12 @@
+ 		height = 12;
+ 	}
+ 
++	/// <summary>
++	/// This method conveniently sets <see cref="Item.damage"/>, <see cref="Item.knockBack"/>, and <see cref="Item.crit"/>.
++	/// </summary>
++	/// <param name="dmg"></param>
++	/// <param name="knockback"></param>
++	/// <param name="bonusCritChance"></param>
+ 	public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0)
+ 	{
+ 		damage = dmg;
 @@ -46873,6 +_,14 @@
  		crit = bonusCritChance;
  	}
@@ -1663,7 +1697,7 @@
 +	/// useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;
 +	/// useTurn = true;
 +	/// useAnimation = useTime = animationTime;
-+	/// maxStack = 30;
++	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// consumable = true;
 +	/// buffType = <paramref name="foodbuff"/>;
 +	/// buffTime = <paramref name="foodbuffduration"/>;
@@ -1685,7 +1719,7 @@
  	}
  
 +	/// <summary>
-+	/// A helper method that sets item rarity and item value. 
++	/// A helper method that sets item rarity (<see cref="Item.rare"/>) and item value (<see cref="Item.value"/>). 
 +	/// </summary>
 +	/// <param name="rarity"></param>
 +	/// <param name="coinValue"></param>
@@ -1819,7 +1853,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,30 @@
+@@ -47318,14 +_,32 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1829,6 +1863,7 @@
 +		_globals = null;
 +		StatsModifiedBy = new();
 +		AllowReforgeForStackableItem = false;
++		useTurnOnAnimationStart = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
 +		useLimitPerAnimation = null;
 +		consumeAmmoOnFirstShotOnly = false;
@@ -1836,6 +1871,7 @@
 +		InterruptChannelOnHurt = false;
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
++		ChangePlayerDirectionOnShoot = true;
 +
  		sentry = false;
  		hasVanityEffects = false;
@@ -1865,6 +1901,15 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
+@@ -47366,7 +_,7 @@
+ 		noUseGraphic = false;
+ 		lifeRegen = 0;
+ 		shootSpeed = 0f;
+-		active = true;
++		active = Type != 0;
+ 		alpha = 0;
+ 		ammo = AmmoID.None;
+ 		useAmmo = AmmoID.None;
 @@ -47426,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
@@ -2204,10 +2249,11 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -49309,6 +_,9 @@
+@@ -49309,6 +_,10 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
++		active = false;
 +
 +		ModItem = null;
 +		_globals = null;

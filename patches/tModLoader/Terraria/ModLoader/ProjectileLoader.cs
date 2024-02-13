@@ -364,14 +364,28 @@ public static class ProjectileLoader
 		return result;
 	}
 
+	[Obsolete]
 	private static HookList HookKill = AddHook<Action<Projectile, int>>(g => g.Kill);
 
-	public static void Kill(Projectile projectile, int timeLeft)
+	[Obsolete("Renamed to OnKill")]
+	public static void Kill_Obsolete(Projectile projectile, int timeLeft)
 	{
 		projectile.ModProjectile?.Kill(timeLeft);
 
 		foreach (var g in HookKill.Enumerate(projectile)) {
 			g.Kill(projectile, timeLeft);
+		}
+	}
+
+	private static HookList HookOnKill = AddHook<Action<Projectile, int>>(g => g.OnKill);
+
+	public static void OnKill(Projectile projectile, int timeLeft)
+	{
+		projectile.ModProjectile?.OnKill(timeLeft);
+		Kill_Obsolete(projectile, timeLeft); // Placed here so both ModProjectile methods are called and then the GlobalProjectile methods
+
+		foreach (var g in HookOnKill.Enumerate(projectile)) {
+			g.OnKill(projectile, timeLeft);
 		}
 	}
 
@@ -558,6 +572,7 @@ public static class ProjectileLoader
 		}
 	}
 
+	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
 		if (projectile.ModProjectile == null)
@@ -569,8 +584,6 @@ public static class ProjectileLoader
 		projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
 
 		polePosX += lineOriginOffset.X * player.direction;
-		if (player.direction < 0)
-			polePosX -= 13f;
 		polePosY += lineOriginOffset.Y * player.gravDir;
 	}
 

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
-@@ -1,9 +_,12 @@
+@@ -1,35 +_,100 @@
  using System;
  using Microsoft.Xna.Framework;
 +using Terraria.DataStructures;
@@ -13,16 +13,135 @@
  
  namespace Terraria;
  
-@@ -29,6 +_,9 @@
++/// <summary>
++/// Dust are particles effects used to add visual elements to weapons and other effects. Dust are completely visual and should never be used as a gameplay element. Dust count limits are imposed by the game to keep performance consistent, so Dust are not guaranteed to spawn when code attempts to spawn them.<para/>
++/// Vanilla Dust are enumerated in the <see cref="DustID"/> class.<para/>
++/// New Dust can be implemented using the <see cref="ModDust"/> class.<para/>
++/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Dust">Basic Dust Guide</see> teaches the basics on using Dust. In addition, the guide has resources teaching how to discover and use vanilla Dust.
++/// </summary>
+ public class Dust
+ {
+ 	public static float dCount;
+ 	public static int lavaBubbles;
+ 	public static int SandStormCount;
+ 	public int dustIndex;
++	/// <summary>
++	/// Current position of this dust.
++	/// </summary>
+ 	public Vector2 position;
++	/// <summary>
++	/// Current velocity of this dust.
++	/// </summary>
+ 	public Vector2 velocity;
++	/// <summary>
++	/// Used by some dust AI to control logic pertaining to the dust fading in. The specific behavior depends on the dust type. Defaults to 0f.
++	/// </summary>
+ 	public float fadeIn;
++	/// <summary>
++	/// Indicates if a dust should be affected by gravity or not. Not all vanilla dust have logic checking this value and modded dust with custom <see cref="ModDust.Update(Dust)"/> code would need to implement this into the logic for it to have effect. Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public bool noGravity;
++	/// <summary>
++	/// The draw scale of the dust. Many dust rely on scale to determine when it should despawn. The Scale parameter of <see cref="NewDust(Vector2, int, int, int, float, float, int, Color, float)"/> will be slightly randomized (multiplied by a number between 80% to 120%) and then assigned to <see cref="scale"/>.
++	/// </summary>
+ 	public float scale;
++	/// <summary>
++	/// Current rotation of this dust.
++	/// </summary>
+ 	public float rotation;
++	/// <summary>
++	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLight"/>. Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public bool noLight;
+ 	public bool noLightEmittence;
+ 	public bool active;
++	/// <summary>
++	/// The Dust ID of this dust. The Dust ID will be equal to either a <see cref="DustID"/> entry or <see cref="ModContent.DustType{T}"/>.
++	/// </summary>
+ 	public int type;
++	/// <summary>
++	/// A tinting to the color this dust is drawn. Works best with sprites with low saturation, such as greyscale sprites. Not as effective with colored sprites.
++	/// </summary>
+ 	public Color color;
++	/// <summary>
++	/// How transparent to draw this dust. 0 to 255. 255 is completely transparent. Used to fade dust out and sometimes to determine if a dust should despawn.
++	/// </summary>
+ 	public int alpha;
++	/// <summary>
++	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly chosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired. 
++	/// </summary>
+ 	public Rectangle frame;
++	/// <summary>
++	/// The shader that will be applied to this dust when drawing. Typically assigned based on the dye attached to the accessory or equipment spawning the dust. This is done using code similar to <c>dust.shader = GameShaders.Armor.GetSecondaryShader(player.cPet, player);</c>
++	/// </summary>
  	public ArmorShaderData shader;
++	/// <summary>
++	/// Can be used to store any custom data. Typically used to store a Player, NPC, or Projectile instance that the dust will attempt to follow.
++	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Dusts/ExampleAdvancedDust.cs">ExampleAdvancedDust.cs</see> showcases how customData can be used for advanced movement behavior.
++	/// </summary>
  	public object customData;
  	public bool firstFrame;
 +	
 +	// Added by TML.
++	/// <summary>
++	/// Used to temporarily store <see cref="type"/> when using <see cref="ModDust.UpdateType"/> to copy the behavior of an existing dust type.
++	/// </summary>
 +	internal int realType = -1;
  
++	/// <summary>
++	/// Attempts to spawn a single Dust into the game world. <paramref name="Position"/> indicates the spawn position and <paramref name="Velocity"/> indicates the initial velocity. Unlike <see cref="NewDust(Vector2, int, int, int, float, float, int, Color, float)"/>, position and velocity will not be slightly randomized, making this method suitable for visual effects that need exact positioning.
++	/// </summary>
++	/// <param name="Position"></param>
++	/// <param name="Type"></param>
++	/// <param name="Velocity"></param>
++	/// <param name="Alpha"></param>
++	/// <param name="newColor"></param>
++	/// <param name="Scale"></param>
++	/// <returns>The <see cref="Dust"/> instance spawned</returns>
  	public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
+ 		Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
+@@ -40,6 +_,20 @@
+ 		return dust;
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="Dust.NewDust(Vector2, int, int, int, float, float, int, Color, float)"/>
++	/// <para/> Unlike <see cref="Dust.NewDust(Vector2, int, int, int, float, float, int, Color, float)"/>, this method returns a <see cref="Dust"/> instance directly.
++	/// </summary>
++	/// <param name="Position"></param>
++	/// <param name="Width"></param>
++	/// <param name="Height"></param>
++	/// <param name="Type"></param>
++	/// <param name="SpeedX"></param>
++	/// <param name="SpeedY"></param>
++	/// <param name="Alpha"></param>
++	/// <param name="newColor"></param>
++	/// <param name="Scale"></param>
++	/// <returns>The <see cref="Dust"/> instance spawned</returns>
+ 	public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
+ 	{
+ 		Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
+@@ -49,6 +_,19 @@
+ 		return dust;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to spawn a single Dust into the game world. The Position, Width, and Height parameters dictate a rectangle, the dust will be spawned randomly within that rectangle. SpeedX and SpeedY dictate the initial velocity, they will be slightly randomized as well.
++	/// </summary>
++	/// <param name="Position"></param>
++	/// <param name="Width"></param>
++	/// <param name="Height"></param>
++	/// <param name="Type">Either an <see cref="DustID"/> entry or <see cref="ModContent.DustType{T}"/></param>
++	/// <param name="SpeedX"></param>
++	/// <param name="SpeedY"></param>
++	/// <param name="Alpha"></param>
++	/// <param name="newColor"></param>
++	/// <param name="Scale"></param>
++	/// <returns>The index of the dust within <see cref="Main.dust"/></returns>
+ 	public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
+ 	{
+ 		if (Main.gameMenu)
 @@ -168,6 +_,8 @@
  			if (dust.type == 80)
  				dust.alpha = 50;
@@ -32,6 +151,29 @@
  			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  				dust.velocity *= 0.1f;
  				dust.velocity.Y = -0.5f;
+@@ -207,7 +_,9 @@
+ 		return obj;
+ 	}
+ 
++	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
+ 	public static Dust QuickDust(int x, int y, Color color) => QuickDust(new Point(x, y), color);
++	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
+ 	public static Dust QuickDust(Point tileCoords, Color color) => QuickDust(tileCoords.ToWorldCoordinates(), color);
+ 
+ 	public static void QuickBox(Vector2 topLeft, Vector2 bottomRight, int divisions, Color color, Action<Dust> manipulator)
+@@ -237,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Spawns dust 267 tinted to the provided color at the specified position with no velocity or gravity. Used solely for debugging purposes.
++	/// </summary>
++	/// <param name="pos"></param>
++	/// <param name="color"></param>
++	/// <returns></returns>
+ 	public static Dust QuickDust(Vector2 pos, Color color)
+ 	{
+ 		Dust obj = Main.dust[NewDust(pos, 0, 0, 267)];
 @@ -272,6 +_,9 @@
  
  	public static int dustWater()

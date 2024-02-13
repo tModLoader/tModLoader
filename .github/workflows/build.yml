@@ -4,8 +4,11 @@ env:
     DevBranch: 1.4.4
     StableBranch: stable
     PreviewBranch: preview
-    IsRelease: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
-    IsVersioned: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable') || contains(github.ref, '1.4.4'))  }}
+    TERRARIA_VERSION: 1449
+    # Note that Is Release also has to be updated at the IF level for a Job. IE both documentation and steam push
+    IsRelease: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
+    IsVersioned: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable') || endsWith(github.ref, '1.4.4'))  }}
+    RunDiscordHook: true
 
 # Controls when the action will run. 
 on:
@@ -105,7 +108,7 @@ jobs:
         shell: bash
         run: |
           echo "Fetching the ${{env.StableBranch}} version of tmodloader"
-          version=$(git describe --tags --abbrev=0)
+          version=$(git describe --tags --abbrev=0) || version=v0.0.0.0
           
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
@@ -272,16 +275,15 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          TERRARIA_VERSION: 1449
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
                     
-      - name: Upload Debug Build Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: Debug Build
-          path: |
-            ./artifacts/Debug/
+      #- name: Upload Debug Build Artifact
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: Debug Build
+      #    path: |
+      #      ./artifacts/Debug/
             
       - name: Upload Release Build Artifact
         uses: actions/upload-artifact@v2
@@ -331,7 +333,7 @@ jobs:
           mkdir -p $ModloaderDir
           
           if [ ${{env.IsRelease}} = 'true' ] ; then
-            ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+            ciprep="-ciprep \"Automatic update from GitHub for tModLoader v{tMLVersion}: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           else
             ciprep=""
           fi
@@ -369,7 +371,7 @@ jobs:
         
       - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'push'
+        if: always() && github.event_name == 'push' && env.RunDiscordHook
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           description: |
@@ -377,7 +379,7 @@ jobs:
 
       - name: Post pull request report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
-        if: always() && github.event_name == 'pull_request_target'
+        if: always() && github.event_name == 'pull_request_target' && env.RunDiscordHook
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_BUILDBOT }}
           color: ${{ fromJSON('{"success":1600299, "failure":8394270, "cancelled":10254856}')[job.status] }}
@@ -389,7 +391,8 @@ jobs:
   documentation:
     # Documentation generated on successful builds of pushes to ${{env.StableBranch}} and ${{env.PreviewBranch}}
     needs: build
-    if: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
+    # Note this line doesn't have access to env variable yet since it is before the runner is established
+    if: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -463,7 +466,8 @@ jobs:
   deploy:
     needs: build
     # We push a release only on push events to the stable/preview branch that build correctly
-    if: ${{ github.event_name == 'push' && (contains(github.ref, 'preview') || contains(github.ref, 'stable')) }}
+    # Note this line doesn't have access to env variable yet since it is before the runner is established
+    if: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
     name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
@@ -476,7 +480,7 @@ jobs:
           
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
-        uses: tj-actions/changed-files@v18.4
+        uses: tj-actions/changed-files@v41
         with:
           files: |
             ExampleMod
@@ -489,7 +493,7 @@ jobs:
           
       - name: Detect patches Changed Files
         id: changed-files-patches
-        uses: tj-actions/changed-files@v18.4
+        uses: tj-actions/changed-files@v41
         with:
           files: |
             patches
@@ -573,6 +577,7 @@ jobs:
           fi
           if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
             manifesto=$manifesto/${{env.PreviewBranch}}.vdf
+            sed -i -e "s/1.4.4-preview/Preview-${version:0:8}/g" $manifesto
           fi
           
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto

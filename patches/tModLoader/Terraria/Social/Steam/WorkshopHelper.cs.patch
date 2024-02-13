@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,15 +_,22 @@
+@@ -1,14 +_,19 @@
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
 +using System.Linq;
++using System.Threading;
  using Steamworks;
  using Terraria.IO;
 +using Terraria.Localization;
@@ -18,12 +19,8 @@
 -public class WorkshopHelper
 +public partial class WorkshopHelper
  {
-+	private const string TmlModNamePrefix = "[1.4 Alpha] ";
-+	private const string TmlModDescriptionPrefix = "Built for 1.4 Alpha version of tModLoader. \n";
-+
  	public class UGCBased
  	{
- 		public struct SteamWorkshopItem
 @@ -20,6 +_,10 @@
  			public string[] Tags;
  			public string Title;
@@ -91,9 +88,11 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -156,18 +_,29 @@
+@@ -155,19 +_,31 @@
+ 
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
++			protected bool _isOwner;
  			protected PublishedFileId_t _publishedFileID;
 +
 +			// Fields added by TML:
@@ -168,7 +167,7 @@
  					UpdateItem();
  				}
  				else {
-@@ -212,14 +_,61 @@
+@@ -212,14 +_,41 @@
  
  			private void CreateItem()
  			{
@@ -186,7 +185,8 @@
 +					return;
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
 +
@@ -196,7 +196,8 @@
 +				UpdateItem(creatingItem:true);
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_createCallback == EResult.k_EResultNone);
  			}
@@ -204,6 +205,16 @@
 +			// Rewritten to reduce duplicate publishing in the event that user needs to accept workshop agreement.
  			private void CreateItemResult(CreateItemResult_t param, bool bIOFailure)
  			{
++				/*
+ 				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
+ 					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
+ 					_endAction(this);
+@@ -232,12 +_,36 @@
+ 					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
+ 					_endAction(this);
+ 				}
++				*/
++
 +				_createCallback = param.m_eResult;
 +				if (param.m_eResult != EResult.k_EResultOK) {
 +					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
@@ -225,16 +236,6 @@
 +				// On servers we want to control this more tightly due to threading constraints.
 +				if (!Main.dedServ)
 +					UpdateItem();
-+
-+				/*
- 				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
- 					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
- 					_endAction(this);
-@@ -232,12 +_,14 @@
- 					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
- 					_endAction(this);
- 				}
-+				*/
  			}
  
  			protected abstract string GetHeaderText();
@@ -245,7 +246,7 @@
  			private void UpdateItem()
  			{
  				string headerText = GetHeaderText();
-@@ -245,15 +_,23 @@
+@@ -245,8 +_,15 @@
  					_endAction(this);
  					return;
  				}
@@ -257,65 +258,20 @@
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.UpdateItem", _entryData.Title));
  
  				PrepareContentForUpdate();
++				/*
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+@@ -261,23 +_,63 @@
  
--				if (_entryData.Description != null)
-+				if (!string.IsNullOrEmpty(_entryData.Description))
- 					SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
- 
-+				Logging.tML.Info("Adding tags and visibility");
-+
- 				SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
- 				SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
- 				if (_entryData.PreviewImagePath != null)
-@@ -262,22 +_,79 @@
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
- 
-+				Logging.tML.Info("Setting the language for default description");
-+				SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
++				*/
 +
-+				string patchNotes = "";
-+
-+				// Needed for backwards compat on version metadata change
-+				_entryData.BuildData["version"] = "0.0.0";
-+
-+				if (_entryData.BuildData != null) {
-+					Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
-+					foreach (var key in MetadataKeys) {
-+						SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
-+						SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
-+					}
-+
-+					patchNotes = $"Version {_entryData.BuildData["trueversion"]} has been published to {BuildInfo.Purpose} (v{BuildInfo.tMLVersion.MajorMinor()})";
-+					if(!string.IsNullOrEmpty(_entryData.BuildData["homepage"]))
-+						patchNotes += $" learn more @ { _entryData.BuildData["homepage"]}";
-+					patchNotes += $"\n{_entryData.ChangeNotes}";
-+
-+					string refs = _entryData.BuildData["workshopdeps"];
-+
-+					if (!string.IsNullOrWhiteSpace(refs)) {
-+						Logging.tML.Info("Adding dependencies to Workshop Upload");
-+						string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
-+
-+						foreach (string dependency in dependencies) {
-+							try {
-+								var child = new PublishedFileId_t(uint.Parse(dependency));
-+
-+								SteamUGC.AddDependency(_publishedFileID, child);
-+							}
-+							catch (Exception) {
-+								Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
-+							}
-+						}
-+					}
-+				}
-+
++				var uGCUpdateHandle_t = GenerateUgcUpdateHandle(out var patchNotes);
 +				_updateCallback = EResult.k_EResultNone;
-+
 +				Logging.tML.Info("Submitting workshop update handle to Steam");
+ 
  				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
 -				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
 +				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
@@ -323,15 +279,35 @@
  				_updateItemHook.Set(hAPICall, UpdateItemResult);
  				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
++				// Below Added by tModLoader for command-line/server publishing
 +				Logging.tML.Info("Handle submitted. Waiting on Steam");
 +
 +				if (!Main.dedServ || creatingItem)
 +					return;
 +
 +				do {
-+					SteamedWraps.ForceCallbacks();
++					Thread.Sleep(1);
++					SteamedWraps.RunCallbacks();
 +				}
 +				while (_updateCallback == EResult.k_EResultNone);
++			}
++
++			internal UGCUpdateHandle_t GenerateUgcUpdateHandle(out string patchNotes)
++			{
++				var uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
++
++				SteamedWraps.ModifyUgcUpdateHandleCommon(ref uGCUpdateHandle_t, _entryData);
++
++				patchNotes = "";
++
++				if (_entryData.BuildData != null) {
++					// Needed for backwards compat on version metadata change
++					_entryData.BuildData["version"] = "0.0.0";
++
++					SteamedWraps.ModifyUgcUpdateHandleTModLoader(ref uGCUpdateHandle_t, ref patchNotes, _entryData, _publishedFileID);
++				}
++
++				return uGCUpdateHandle_t;
  			}
  
  			private void UpdateItemResult(SubmitItemUpdateResult_t param, bool bIOFailure)

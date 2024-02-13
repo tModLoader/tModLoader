@@ -20,10 +20,10 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 	public int AnimationFrameHeight { get; set; }
 
-	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. Defaults to 1f. </summary>
+	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. <br/> Defaults to 1f. <br/> For example a MineResist value of 2f, such as used by <see cref="TileID.Pearlstone"/>, would require roughly twice as many hits to mine. <br/> To find an appropriate value, see the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#mineresist">wiki</see>. <br/> Use <see cref="MinPick"/> to adjust the minimum pickaxe power required to mine this tile. </summary>
 	public float MineResist { get; set; } = 1f;
 
-	/// <summary> The minimum pickaxe power required for pickaxes to mine this block. Defaults to 0. </summary>
+	/// <summary> The minimum pickaxe power required for pickaxes to mine this block. <br/> Defaults to 0. <br/> For example a MinPick value of 50, such as what <see cref="TileID.Meteorite"/> uses, would require a pickaxe with at least 50% pickaxe power (<see cref="Item.pick"/>) to break. <br/> To find an appropriate value, see the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#minpick">wiki</see>. <br/> Use <see cref="MineResist"/> to adjust how long a tile takes to be mined.</summary>
 	public int MinPick { get; set; }
 
 	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
@@ -202,7 +202,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's default item. Returns true by default. See <see cref="GetItemDrops"/> to customize the item drop.
+	/// Allows prevention of item drops from the tile dropping at the given coordinates. Return false to stop the game from dropping the tile's item(s). Returns true by default. See <see cref="GetItemDrops"/> to customize the item drop.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -215,8 +215,8 @@ public abstract class ModTile : ModBlockType
 	/// Allows customization of the items the tile at the given coordinates drops.<br/><br/>
 	/// The default item drop is determined by finding an item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of this tile. 
 	/// <see cref="ModTile.RegisterItemDrop(int, int[])"/> can be used to manually register item drops for tile styles with no corresponding item. It can also be used to register a fallback item, which will be dropped if no suitable item is found.<br/><br/>
-	/// The default behavior should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/> 
-	/// When overriding, use <c>yield return new Item(ItemTypeHere);</c> for each spawned item.<br/>
+	/// The default behavior should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/><br/>
+	/// When overriding, use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. Note that a random prefix will be applied to these items, if applicable, so if specific prefixes or no prefix is needed for an item drop, it will have to be spawned in manually using <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/>.<br/><br/>
 	/// The style based drop logic is based on <see cref="TileObjectData"/>. If a tile has custom 'styles' but still wants to make use of <see cref="ModTile.RegisterItemDrop(int, int[])"/>, <c>TileLoader.GetItemDropFromTypeAndStyle(Type, style)</c> can be used to retrieve the associated item drop.<br/><br/>
 	/// Use <see cref="CanDrop"/> to conditionally prevent any item drops. Use <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/> for other logic such as cleaning up TileEntities or killing chests or signs.<br/>
 	/// </summary>
@@ -338,7 +338,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Allows you to customize the position in which this tile is drawn. Width refers to the width of one frame of the tile, offsetY refers to how many pixels below its actual position the tile should be drawn, height refers to the height of one frame of the tile.
 	/// <para> By default the values will be set to the values you give this tile's TileObjectData. If this tile has no TileObjectData then they will default to 16, 0, and 16, respectively.</para>
-	/// <para> tileFrameX and tileFrameY allow you to change which frames are drawn, keeping tile.frameX/Y intact for other purposes.</para>
+	/// <para> tileFrameX and tileFrameY allow you to change which frames are drawn, keeping tile.TileFrameX/Y intact for other purposes.</para>
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

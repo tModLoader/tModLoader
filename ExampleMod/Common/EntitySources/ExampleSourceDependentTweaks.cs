@@ -20,7 +20,7 @@ namespace ExampleMod.Common.EntitySources
 			}
 		}
 	}
-	
+
 	public sealed class ExampleSourceDependentItemTweaks : GlobalItem
 	{
 		public override void OnSpawn(Item item, IEntitySource source) {

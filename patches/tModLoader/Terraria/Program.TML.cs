@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
@@ -139,7 +140,13 @@ public static partial class Program
 		if (newFolderPath.Contains("OneDrive")) {
 			Logging.tML.Info("Ensuring OneDrive is running before starting to Migrate Files");
 			try {
-				System.Diagnostics.Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe"));
+				var oneDrivePath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\OneDrive\\OneDrive.exe");
+				var oneDrivePath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe");
+				if (File.Exists(oneDrivePath1))
+					System.Diagnostics.Process.Start(oneDrivePath1);
+				else if (File.Exists(oneDrivePath2))
+					System.Diagnostics.Process.Start(oneDrivePath2);
+
 				Thread.Sleep(3000);
 			}
 			catch { }
@@ -232,37 +239,40 @@ public static partial class Program
 
 	private static void SetSavePath()
 	{
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
+			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
+			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+
 		if (LaunchParameters.TryGetValue("-tmlsavedirectory", out var customSavePath)) {
 			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
 			SavePathShared = customSavePath;
 			SavePath = customSavePath;
 		}
 		else if (File.Exists("savehere.txt")) {
-			// Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
+			// Fallback for unresolvable antivirus/onedrive issues. Also makes the game portable I guess.
 			SavePathShared = ReleaseFolder;
 			SavePath = SaveFolderName;
 		}
 		else {
 			// Needs to run as early as possible, given exception handler depends on ModCompile, and Porting carries exception risk
 			SavePathShared = Path.Combine(SavePath, ReleaseFolder);
+			var savePathCopy = SavePath;
+
+			SavePath = Path.Combine(SavePath, SaveFolderName);
 
 			// File migration is only attempted for the default save folder
 			try {
-				PortFilesMaster(SavePath, isCloud: false);
+				PortFilesMaster(savePathCopy, isCloud: false);
 			}
 			catch (Exception e) {
-				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
+				bool controlledFolderAccessMightBeRelevant = (e is COMException || e is FileNotFoundException) && ControlledFolderAccessSupport.ControlledFolderAccessDetected;
+				
+				ErrorReporting.FatalExit("An error occurred migrating files and folders to the new structure" + (controlledFolderAccessMightBeRelevant ? $"\n\nControlled Folder Access feature detected, this might be the cause of this error.\n\nMake sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu." : ""), e);
 			}
-			
-			SavePath = Path.Combine(SavePath, SaveFolderName);
 		}
-		
-		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
-			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
-			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 	}
 
 	private static void StartupSequenceTml(bool isServer)
@@ -289,7 +299,33 @@ public static partial class Program
 		    }
 		}
 		catch (Exception ex) {
-			ErrorReporting.FatalExit("An unexpected error occured during tML startup", ex);
+			ErrorReporting.FatalExit("An unexpected error occurred during tML startup", ex);
+		}
+	}
+
+	private static void ProcessLaunchArgs(string[] args, bool monoArgs, out bool isServer)
+	{
+		isServer = false;
+
+		try {
+			if (monoArgs)
+				args = Utils.ConvertMonoArgsToDotNet(args);
+
+			LaunchParameters = Utils.ParseArguements(args);
+
+			if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
+				// Launch the Terraria playtime tracker and quit.
+				TerrariaSteamClient.Run();
+				Environment.Exit(1);
+			}
+
+			SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+
+			// Unify server and client dll via launch param
+			isServer = LaunchParameters.ContainsKey("-server");
+		}
+		catch (Exception e) {
+			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
 		}
 	}
 

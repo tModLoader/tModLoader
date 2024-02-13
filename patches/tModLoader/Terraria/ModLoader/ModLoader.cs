@@ -17,6 +17,7 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader;
 
@@ -36,6 +37,7 @@ public static class ModLoader
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
 	public static Version LastPreviewFreezeNotificationSeen;
+	public static int LatestNewsTimestamp; 
 
 	// Update this name if doing an upgrade 
 	public static bool BetaUpgradeWelcomed144;
@@ -57,8 +59,6 @@ public static class ModLoader
 
 	internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
-	internal static bool dontRemindModBrowserUpdateReload;
-	internal static bool dontRemindModBrowserDownloadEnable;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
 	internal static bool showMemoryEstimates = true;
@@ -159,6 +159,10 @@ public static class ModLoader
 					msg += $" v{mod.properties.version}";
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+				else if (mod != null)
+					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
+					SteamedWraps.QueueForceValidateSteamInstall();
+					
 				if (e is Exceptions.JITException)
 					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 			}
@@ -327,8 +331,6 @@ public static class ModLoader
 		Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
-		Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
-		Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 		Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 		Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
 		Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
@@ -347,6 +349,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
+		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 	}
 
 	internal static void LoadConfiguration()
@@ -356,8 +359,6 @@ public static class ModLoader
 		Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
-		Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
-		Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 		Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
 		Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
@@ -376,6 +377,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(BetaUpgradeWelcomed144), ref BetaUpgradeWelcomed144);
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
+		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
 	}
 
 	internal static void MigrateSettings()

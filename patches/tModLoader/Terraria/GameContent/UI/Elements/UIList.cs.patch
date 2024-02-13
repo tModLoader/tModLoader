@@ -23,3 +23,11 @@
  	private float _innerListHeight;
  	public float ListPadding = 5f;
  	public Action<List<UIElement>> ManualSortMethod;
+@@ -71,6 +_,7 @@
+ 	public virtual bool Remove(UIElement item)
+ 	{
+ 		_innerList.RemoveChild(item);
++		// If order is stable doesn't make sense to reorder, left because it's in vanilla
+ 		UpdateOrder();
+ 		return _items.Remove(item);
+ 	}

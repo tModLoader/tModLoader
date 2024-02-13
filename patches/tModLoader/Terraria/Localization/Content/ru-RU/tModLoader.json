@@ -35,6 +35,9 @@
 		"MenuModUpdatesAvailable": "(Доступно {0} {^0:обновление;обновления;обновлений}!)",
 		"AudioNotSupported": "Звуковое оборудование не найдено. Всё аудио будет отключено.",
 		"SwitchVersionInfoButton": "Переключиться на другую версию tModLoader",
+		"LatestNews": "Последние новости: {0}",
+		"LatestNewsOffline": "Оффлайн",
+		"LatestNewsChecking": "Проверка...",
 		"SteamFamilyShareWarning": "Было обнаружено, что вы используете копию Terraria через Steam Family Share.\nSteam не поддерживает tModLoader из семейной библиотеки.\nПоэтому, был загружён экспериментальный обход Steam Family Share.\nБудут недоступны следующие функции:\n - Оверлей Steam\n - Мультиплеер через Steam",
 		"WaitXSeconds": "Подождите {0} {^0:секунду;секунды;секунд}...",
 		"ViewInstructions": "Просмотреть инструкции",
@@ -59,13 +62,15 @@
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии.\nВключайте на свой страх и риск",
 		"ModDependencyTooltip": "Этот мод требует установки: {0}\n (Они будут автоматически включены)",
+		"TranslationModTooltip": "В этом моде доступны переводы для таких языков: {0}",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
 		"ModDidNotFullyUnloadWarning": "Мод не смог полностью выгрузиться\nво время последней выгрузки.\n(Это сообщение для разработчика мода)",
-		"BetaModCantPublish": "Этот мод собран на бета-версии и его публикация невозможна",
 		"BetaModCantPublishError": "Вы не можете опубликовать мод, собранный на бета-версии tModLoader",
 		"OutdatedModCantPublishError": "Вы не можете опубликовать мод, собранный на устаревшей версии tModLoader",
+		"WrongVersionCantPublishError": "Вы не можете опубликовать мод, собранный на версии tModLoader, отличной от той, на которой он был собран",
 		"ModReloadRequired": "Требуется перезагрузка",
+		"ModReloadRequiredMemberTooltip": "Изменение этой настройки требует перезагрузки мода.",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
 		"ModsByline": "Автор: {0}",
@@ -89,12 +94,31 @@
 		"ModsXWalls": "{0} {^0:стена;стены;стен}",
 		"ModsXBuffs": "{0} {^0:бафф;баффа;баффов}",
 		"ModsXMounts": "{0} {^0:ездовой питомец;ездовых питомца;ездовых питомцев}",
+
+		//Dedicated server
 		"ModsReloadAndReturn": "Перезагрузить и вернуться к меню выбора мира",
 		"ModsNotFoundServer": "Не удалось найти моды в папке '{0}'\nЕсли вы используете удалённый сервер, вы можете использовать параметр запуска 'modpath' или настройки конфигурации сервера, чтобы указать собственную папку с модами.\n",
 		"AskForModIndex": "Введите число для переключения между ВКЛ/ВЫКЛ",
 		"AskForCommand": "Введите команду: ",
+		// "DedErrorNoConfig": "This mod does not have any config",
+		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
+		// "DedErrorModOOB": "Mod index out of bounds",
+
+		//Dedicated server mod config
+		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
+		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
+		// "DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
+		// "DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
+		// "DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
+		// "DedConfigEditConfig": "Modify configuration value",
+		// "DedConfigEditConfigNote": "Note that data validation, such as min and max values, is not enforced. Try to use values only allowed in the client.",
+		// "DedConfigRestoreConfig": "Restore configurations to default",
+		// "DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
+		// "DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
+		// "DedConfigErrorNotParsable": "Invalid input",
 
 		//Mod Config
+		"ModConfigs": "Конфигурации",
 		"ModConfigFilterOptions": "Фильтр",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация мода",
@@ -104,6 +128,8 @@
 		"ModConfigRestoreDefaults": "Сбросить по умолчанию",
 		"ModConfigAskingServerToAcceptChanges": "Запрос сервера на принятие изменений...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Не удаётся сохранить, поскольку изменения требуют перезагрузки",
+		"ModConfigServerSide": "Серверная конфигурация",
+		"ModConfigClientSide": "Клиентская конфигурация",
 		"ModConfigAdd": "Добавить",
 		"ModConfigRemove": "Удалить",
 		"ModConfigInitialize": "Инициализировать",
@@ -112,6 +138,11 @@
 		"ModConfigCollapse": "Свернуть",
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
+		"ModConfigServerResponse": "Ответ сервера: {0}",
+		"ModConfigServerRejectedChanges": "Сервер отклонил изменения: {0}",
+		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",
+		"ModConfigAccepted": "Изменения приняты",
+		"ModConfigRejectChangesNotHost": "Изменение конфигурации доступно только для хоста",
 
 		// Interface
 		"BossBarStyle": "Стиль шкалы здоровья босса: {0}",
@@ -246,6 +277,12 @@
 		"MPErrorModDownloadError": "Произошла ошибка во время скачивания {0}",
 		"MPPacketTooLarge": "Сетевой пакет слишком большой - {0} > {1}",
 
+		// UIAsyncList
+		"ALLoading": "Загрузка...",
+		"ALNoEntries": "Нет подходящих записей",
+		"ALCancel": "Загрузка отменена. Чтобы увидеть все записи, обновите страницу",
+		"ALError": "Произошла ошибка. Попробуйте обновить страницу",
+
 		// Mod Browser
 		"MBDownload": "Скачать",
 		"MBDownloadAll": "Скачать всё",
@@ -265,6 +302,7 @@
 		"MBUpdateAll": "Обновить все моды",
 		"MBReloadBrowser": "Перезагрузить Браузер",
 		"MBGettingData": "Получение данных...",
+		"MBCancelLoading": "Отмена загрузки",
 		"MBPopulatingBrowser": "Наполнение Браузера...",
 		"MBSortByRecentlyUpdated": "Сортировка: Последние обновлённые моды",
 		"MBSortByPopularity": "Сортировка: Моды по популярности",
@@ -343,8 +381,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Автоматически включать и перезагружать моды при выходе из «Браузера модов»: Нет",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Автоматически перезагружать моды при выходе из списка модов: Да",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Автоматически перезагружать моды при выходе из списка модов: Нет",
-		"ReloadModsReminder": "Вы обновили выключенный мод. Не забудьте его включить и перезагрузить моды, чтобы изменения вступили в силу.",
-		"EnableModsReminder": "Последние загружённые вами моды в данный момент выключены. Если вы собираетесь их использовать, то следует включить их и перезагрузить.",
 		"DontShowAgain": "Не показывать снова",
 		"ModControls": "Управление модов",
 
@@ -373,7 +409,7 @@
 		"PlayerWithThisNameExistsWillBeOverwritten": "Персонаж с таким именем уже существует и будет перезаписан",
 		"WorldWithThisNameExistsWillBeOverwritten": "Мир с таким именем уже существует и будет перезаписан",
 		"ExistingPlayerPlayedMoreRecently": "Существующий персонаж в последний раз играл совсем недавно",
-		"ExistingWorldPlayedMoreRecently": "В существующий мир в последний раз играл совсем недавно",
+		"ExistingWorldPlayedMoreRecently": "В существующий мир в последний раз играли совсем недавно",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",
@@ -390,6 +426,7 @@
 		"MSManagePublished": "Управление опубликованными",
 		"MSPublish": "Опубликовать",
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
+		"MSLastBuilt": "Последняя сборка: {0}",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",
@@ -398,6 +435,7 @@
 		"DiscordLink": "Помощь на Discord сервере",
 		"MSPortToLatest": "Запустить tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Разработка модов для tModLoader в Visual Studio теперь требует установки .NET 6 SDK. После установки вам может потребоваться перезапустить tModLoader. Легче всего это сделать, установив Visual Studio 2022.\n\nРуководство по переносу модов на новую версию на Github, описывает необходимые изменения в коде для переноса на 1.4. Там же описано, как использовать tModPorter для автоматического переноса большей части кода мода.",
+		"MSNetSDKNotFound": "Разработка модов для tModLoader в Visual Studio теперь требует установки .NET 6 SDK. После установки вам может потребоваться перезапустить tModLoader. Легче всего это сделать, установив Visual Studio 2022.\n\nРуководство по переносу модов на новую версию на Github, описывает необходимые изменения в коде для переноса на 1.4. Там же описано, как использовать tModPorter для автоматического переноса большей части кода мода.",
 		"DownloadNetSDK": "Загрузить .NET SDK",
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
 
@@ -453,6 +491,8 @@
 		"MSUnloading": "Выгрузка: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
 		"MSAddingRecipes": "Добавление рецептов...",
+		"CancellingLoading": "Отмена загрузки...",
+		"LoadingCancelled": "Загрузка отменена",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Безымянный",
@@ -483,6 +523,7 @@
 		// In Game UI additions
 		"slotStack": "Стак",
 		"slotScroll": "Прокрутка",
+		"PressXToClose": "Нажмите {0}, чтобы закрыть",
 
 		// Misc
 		"OK": "ОК",
@@ -820,7 +861,7 @@
 		"AnotherTownNPCNearby": "Когда рядом с торговцем находится другой житель",
 		"ForestPylon": "Нужно находится на поверхности, не входящем в другой биом с пилоном",
 		"UndergroundPylon": "Нужно находится в подземелье, не входящем в другой биом с пилоном",
-		"MoonPhasesHalf0OrPreHardmode": "В любое время до начала хардмода или во время a полнолуния, старой полной луны, последней четверти или старой луны",
+		"MoonPhasesHalf0OrPreHardmode": "В любое время до начала хардмода или во время полнолуния, старой полной луны, последней четверти или старой луны",
 
 		"FullMoon": "Во время полнолуния",
 		"WaningGibbousMoon": "Во время старой полной луны",
@@ -952,6 +993,10 @@
 		"ModLoader.Items.Squid_Body.DisplayName": "Тело Squid",
 		"ModLoader.Items.Squid_Head.DisplayName": "Голова Squid",
 		"ModLoader.Items.Squid_Legs.DisplayName": "Ноги Squid",
+		"ModLoader.Items.Tantamount_Body.DisplayName": "Тело Tantamount",
+		"ModLoader.Items.Tantamount_Head.DisplayName": "Голова Tantamount",
+		"ModLoader.Items.Tantamount_Legs.DisplayName": "Ноги Tantamount",
+		"ModLoader.Items.Tantamount_Wings.DisplayName": "Крылья Tantamount",
 		"ModLoader.Items.toplayz_Body.DisplayName": "Тело toplayz",
 		"ModLoader.Items.toplayz_Head.DisplayName": "Голова toplayz",
 		"ModLoader.Items.toplayz_Legs.DisplayName": "Ноги toplayz",

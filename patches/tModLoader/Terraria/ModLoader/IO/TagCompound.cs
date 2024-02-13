@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.IO;
 
 
 /// <summary>
-/// Tag compounds contained named values, serialisable as per the NBT spec: <see href="https://minecraft.fandom.com/wiki/NBT_format">NBT spec wiki page</see> <br/>
+/// Tag compounds contained named values, serialisable as per the NBT spec: <see href="https://minecraft.wiki/w/NBT_format">NBT spec wiki page</see> <br/>
 /// All primitive data types are supported as well as byte[], int[] and Lists of other supported data types <br/>
 /// Lists of Lists are internally stored as IList&lt;IList&gt; <br/>
 /// Modification of lists stored in a TagCompound will only work if there were no type conversions involved and is not advised <br/>

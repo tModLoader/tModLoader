@@ -28,6 +28,7 @@ internal class UIModSourceItem : UIPanel
 	internal readonly string modName;
 	private readonly Asset<Texture2D> _dividerTexture;
 	private readonly UIText _modName;
+	private readonly UIText _lastBuildTime;
 	private readonly UIAutoScaleTextTextPanel<string> needRebuildButton;
 	private readonly LocalMod _builtMod;
 	private bool _upgradePotentialChecked;
@@ -50,7 +51,27 @@ internal class UIModSourceItem : UIPanel
 			Left = { Pixels = 10 },
 			Top = { Pixels = 5 }
 		};
+
 		Append(_modName);
+
+		if (builtMod != null) {
+			string lastBuildTimeMessage = TimeHelper.HumanTimeSpanString(builtMod.lastModified, localTime: true);
+			_lastBuildTime = new UIText(lastBuildTimeMessage) {
+				HAlign = 1f,
+				Left = { Pixels = -110 }, // There are potentially 4 buttons that might appear
+				Top = { Pixels = 5 }
+			};
+			var ts = new TimeSpan(DateTime.Now.Ticks - builtMod.lastModified.Ticks);
+			double delta = Math.Abs(ts.TotalSeconds);
+			_lastBuildTime.TextColor = delta switch {
+				< 5 * 60 => Color.Green, // 5 min
+				< 60 * 60 => Color.Yellow, // 1 hour
+				< 30 * 24 * 60 * 60 => Color.Orange, // 1 month
+				_ => Color.Red,
+			};
+
+			Append(_lastBuildTime);
+		}
 
 		var buildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuild")) {
 			Width = { Pixels = 100 },
@@ -107,11 +128,21 @@ internal class UIModSourceItem : UIPanel
 				Top = { Pixels = 4 }
 			};
 			openCSProjButton.OnLeftClick += (a, b) => {
-				Process.Start(
-					new ProcessStartInfo(csprojFile) {
-						UseShellExecute = true
-					}
-				);
+				// Due to "DOTNET_ROLL_FORWARD=Disable" environment variable being set for normal game launches, launching the .csproj directly results in a prompt to install .net 6.0.0 because of the inherited environment variables. This works around that for Windows users.
+				if (Platform.IsWindows) {
+					Process.Start(
+						new ProcessStartInfo("explorer", csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				}
+				else {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				}
 			};
 			Append(openCSProjButton);
 
@@ -124,6 +155,9 @@ internal class UIModSourceItem : UIPanel
 		base.DrawChildren(spriteBatch);
 		if (needRebuildButton?.IsMouseHovering == true) {
 			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MSLocalizationFilesChangedCantPublish"), GetOuterDimensions().ToRectangle());
+		}
+		if (_lastBuildTime?.IsMouseHovering == true) {
+			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MSLastBuilt", TimeHelper.HumanTimeSpanString(_builtMod.lastModified, localTime: true)), GetOuterDimensions().ToRectangle());
 		}
 	}
 
@@ -204,8 +238,8 @@ internal class UIModSourceItem : UIPanel
 			}
 
 
-			// Display Run tModPorter for Windows when .csproj is valid
-			if (Platform.IsWindows && !projNeedsUpdate) {
+			// Display Run tModPorter when .csproj is valid
+			if (!projNeedsUpdate) {
 				var pIcon = UICommon.ButtonExclamationTexture;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
@@ -218,7 +252,7 @@ internal class UIModSourceItem : UIPanel
 
 					string args = $"\"{csprojFile}\"";
 					var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", "tModPorter.bat");
+					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
 
 					var porterInfo = new ProcessStartInfo() {
 						FileName = porterPath,
@@ -372,6 +406,7 @@ internal class UIModSourceItem : UIPanel
 				Main.menuMode = Interface.reloadModsID;
 				ModLoader.OnSuccessfulLoad += () => {
 					Main.QueueMainThreadAction(() => {
+						// Delay publishing to when the mod is completely reloaded in main thread
 						PublishMod(null, null);
 					});
 				};
@@ -385,7 +420,7 @@ internal class UIModSourceItem : UIPanel
 			WorkshopHelper.PublishMod(_builtMod, icon);
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
@@ -407,7 +442,7 @@ internal class UIModSourceItem : UIPanel
 			pending.WaitForExit();
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 

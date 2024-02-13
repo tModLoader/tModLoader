@@ -7,12 +7,19 @@
 		<tMLName>tModLoader</tMLName>
 		<tMLPath>$(tMLName).dll</tMLPath>
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
+    	<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
+    	<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
+    	<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 		<!-- TML stable version define placeholder -->
 	</PropertyGroup>
 	<ItemGroup>
 		<AdditionalFiles Include="**/*.hjson" />
 		<AdditionalFiles Include="**/*.txt" />
 		<AdditionalFiles Include="**/*.png" />
+		<AdditionalFiles Include="**/*.fx" />
+		<!-- Remove the txt files that can be found in build folders, causing them to appear in the editor -->
+		<AdditionalFiles Remove="bin/**" />
+		<AdditionalFiles Remove="obj/**" />
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
 		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />

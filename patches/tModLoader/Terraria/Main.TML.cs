@@ -9,12 +9,18 @@ using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
+using Terraria.UI.Chat;
+using ReLogic.Content;
+using Terraria.UI.Gamepad;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria;
 
@@ -41,6 +47,8 @@ public partial class Main
 	private double _partialWorldEventUpdates = 0f;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
+
+	private static readonly HttpClient client = new HttpClient();
 
 	/// <summary>
 	/// A color that cycles through the colors like Rainbow Brick does.
@@ -165,6 +173,166 @@ public partial class Main
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 		}
 	}
+	
+	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
+		startIndex = 0;
+		endIndex = activeToggles;
+		moveDownForButton = false;
+		string text = "";
+
+		if (activeToggles > 12) {
+			startIndex = 12 * BuilderToggleLoader.BuilderTogglePage;
+
+			if (activeToggles - startIndex < 12)
+				endIndex = activeToggles;
+			else if (startIndex == 0)
+				endIndex = startIndex + 12;
+			else
+				endIndex = startIndex + 11;
+
+			Texture2D buttonTexture = UICommon.InfoDisplayPageArrowTexture.Value;
+			bool hover = false;
+			Vector2 buttonPosition = new Vector2(3, startY - 6f);
+
+			if (BuilderToggleLoader.BuilderTogglePage != 0) {
+				moveDownForButton = true;
+
+				spriteBatch.Draw(buttonTexture, buttonPosition + new Vector2(0, 13f), new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, -(float)Math.PI / 2, default, 1f, SpriteEffects.None, 0f);
+				if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
+					hover = true;
+
+					player[myPlayer].mouseInterface = true;
+					text = "Previous Page";
+					mouseText = true;
+
+					if (mouseLeft && mouseLeftRelease) {
+						SoundEngine.PlaySound(SoundID.MenuTick);
+						mouseLeftRelease = false;
+
+						if (BuilderToggleLoader.BuilderTogglePage > 0)
+							BuilderToggleLoader.BuilderTogglePage--;
+					}
+
+					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition + new Vector2(0, 17) - Vector2.One * 2f, null, OurFavoriteColor, -(float)Math.PI / 2, default, 1f, SpriteEffects.None, 0f);
+				}
+			}
+
+			buttonPosition = new Vector2(3, startY + ((endIndex - startIndex) + (BuilderToggleLoader.BuilderTogglePage != 0).ToInt()) * 24f - 6f);
+
+			if (BuilderToggleLoader.BuilderTogglePage != activeToggles / 12) {
+				spriteBatch.Draw(buttonTexture, buttonPosition + new Vector2(0, 12f), new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, (float)Math.PI / 2, new Vector2(buttonTexture.Width, buttonTexture.Height), 1f, SpriteEffects.None, 0f);
+
+				if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
+					hover = true;
+
+					player[myPlayer].mouseInterface = true;
+					text = "Next Page";
+					mouseText = true;
+
+					if (mouseLeft && mouseLeftRelease) {
+						SoundEngine.PlaySound(SoundID.MenuTick);
+						mouseLeftRelease = false;
+
+						if (BuilderToggleLoader.BuilderTogglePage < activeToggles / 12)
+							BuilderToggleLoader.BuilderTogglePage++;
+					}
+
+					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition + new Vector2(4, 12) - Vector2.One * 2f, null, OurFavoriteColor, (float)Math.PI / 2, new Vector2(buttonTexture.Width, buttonTexture.Height), 1f, SpriteEffects.None, 0f);
+				}
+			}
+
+			if (mouseText && hover) {
+				float colorByte = (float)mouseTextColor / 255f;
+				Color textColor = new Color(colorByte, colorByte, colorByte);
+
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(mouseX + 14, mouseY + 14), textColor, 0f, Vector2.Zero, Vector2.One);
+				mouseText = false;
+			}
+		}
+	}
+
+	private void DrawBuilderAccToggles_Inner(Vector2 start)
+	{
+		Player player = Main.player[myPlayer];
+		int[] builderAccStatus = player.builderAccStatus;
+		List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
+		bool shiftHotbarLock = activeToggles.Count / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles.Count % 12 >= 10;
+		Vector2 startPosition = start - new Vector2(0, shiftHotbarLock ? 42 : 21);
+		string text = "";
+
+		BuilderTogglePageHandler((int)startPosition.Y, activeToggles.Count, out bool moveDownForButton, out int startIndex, out int endIndex);
+		for (int i = startIndex; i < endIndex; i++) {
+			BuilderToggle builderToggle = activeToggles[i];
+
+			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
+			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+			Color color = builderToggle.DisplayColorTexture();
+
+			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
+			text = builderToggle.DisplayValue();
+			int numberOfStates = builderToggle.NumberOfStates;
+			int toggleType = builderToggle.Type;
+
+			/*
+			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
+			BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
+			*/
+
+			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
+			bool click = hover && mouseLeft && mouseLeftRelease;
+
+			if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
+				if (toggleType == BuilderToggle.BlockSwap.Type)
+					rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
+				else
+					rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
+
+				position += new Vector2(1, 0);
+			}
+			else
+				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
+
+			/*
+			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
+			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
+			*/
+
+			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+
+			if (hover) {
+				player.mouseInterface = true;
+				mouseText = true;
+
+				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
+					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
+					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
+				}
+				else if (toggleType == BuilderToggle.BlockSwap.Type)
+					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
+				else if (toggleType == BuilderToggle.TorchBiome.Type)
+					spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
+			}
+
+			if (click) {
+				builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
+				SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
+				mouseLeftRelease = false;
+			}
+
+
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+
+			if (mouseText && hover && HoverItem.type <= 0) {
+				float colorByte = (float)mouseTextColor / 255f;
+				Color textColor = new Color(colorByte, colorByte, colorByte);
+
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(mouseX + 14, mouseY + 14), textColor, 0f, Vector2.Zero, Vector2.One);
+				mouseText = false;
+			}
+		}
+
+		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
+	}
 
 	//Mirrors code used in UpdateTime
 	/// <summary>
@@ -207,14 +375,21 @@ public partial class Main
 		if (SocialAPI.Mode == SocialMode.Steam) {
 			vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 		}
-		else {
+		else if (InstallVerifier.DistributionPlatform == DistributionPlatform.GoG) {
+			vanillaContentFolder = Path.Combine(Path.GetDirectoryName(InstallVerifier.vanillaExePath), "Content");
+			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
+		}
+		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
+		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
+		// Also left as a generic fallback 
+		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
 			if (!Directory.Exists(vanillaContentFolder)) {
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
-			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 		}
+		
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
@@ -270,6 +445,8 @@ public partial class Main
 		return tcs.Task;
 	}
 
+	private static PosixSignalRegistration SIGINTHandler;
+	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
 		static void Handle(PosixSignalContext ctx) {
@@ -278,7 +455,59 @@ public partial class Main
 			Netplay.Disconnect = true;
 		}
 
-		PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
-		PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+		SIGINTHandler = PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
+		SIGTERMHandler = PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+	}
+
+	private static string newsText = "???";
+	private static string newsURL = null;
+	private static bool newsChecked = false;
+	private static bool newsIsNew = false;
+	private static void HandleNews(Color menuColor)
+	{
+		if (menuMode == 0) {
+			if (!newsChecked) {
+				newsText = Language.GetTextValue("tModLoader.LatestNewsChecking");
+				newsChecked = true;
+				// Download latest news, save to config.json.
+				// https://partner.steamgames.com/doc/webapi/ISteamNews
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+					if (!response.IsCompletedSuccessfully || response.Exception != null) {
+						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
+						return;
+					}
+					JObject o = JObject.Parse(response.Result);
+					newsText = (string)o["appnews"]["newsitems"][0]["title"]; // No way to access specific language results in API.
+					newsURL = (string)o["appnews"]["newsitems"][0]["url"];
+					int newsTimestamp = (int)o["appnews"]["newsitems"][0]["date"];
+					if (newsTimestamp != ModLoader.ModLoader.LatestNewsTimestamp) {
+						// Latest timestamp should usually be newer, unless a news entry is deleted for some reason?
+						newsIsNew = true;
+						ModLoader.ModLoader.LatestNewsTimestamp = newsTimestamp;
+						Main.SaveSettings();
+					}
+				});
+			}
+			else {
+				string latestNewsText = Language.GetTextValue("tModLoader.LatestNews", newsText);
+				var newsScale = 1.2f;
+				if (newsIsNew) {
+					menuColor = Main.DiscoColor;
+				}
+				var newsScales = new Vector2(newsScale);
+				var newsPosition = new Vector2(screenWidth - 10f, screenHeight - 38f);
+				var newsSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, latestNewsText, newsScales);
+				var newsRect = new Rectangle((int)(newsPosition.X - newsSize.X), (int)(newsPosition.Y - newsSize.Y), (int)newsSize.X, (int)newsSize.Y);
+				bool newsMouseOver = newsRect.Contains(mouseX, mouseY);
+				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
+
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && hasFocus && newsURL != null) {
+					SoundEngine.PlaySound(SoundID.MenuOpen);
+					Utils.OpenToURL(newsURL);
+					newsIsNew = false;
+				}
+			}
+		}
 	}
 }

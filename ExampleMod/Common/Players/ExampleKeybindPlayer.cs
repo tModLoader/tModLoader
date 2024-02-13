@@ -1,8 +1,8 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.GameInput;
-using Terraria.ModLoader;
 using ExampleMod.Common.Systems;
+using Terraria;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
 {

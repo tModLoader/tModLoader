@@ -1,7 +1,5 @@
-﻿using ExampleMod.Content.Buffs;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs
@@ -13,13 +11,6 @@ namespace ExampleMod.Common.GlobalNPCs
 
 		public override void ResetEffects(NPC npc) {
 			exampleJavelinDebuff = false;
-		}
-
-		public override void SetDefaults(NPC npc) {
-			// TODO: This doesn't work currently. tModLoader needs to make a fix to allow changing buffImmune
-
-			// We want our ExampleJavelin buff to follow the same immunities as BoneJavelin
-			npc.buffImmune[ModContent.BuffType<ExampleJavelinDebuff>()] = npc.buffImmune[BuffID.BoneJavelin];
 		}
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage) {

@@ -1,10 +1,12 @@
 using ExampleMod.Content.Biomes;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -20,7 +22,7 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				// Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
@@ -65,12 +67,14 @@ namespace ExampleMod.Content.NPCs
 			Rectangle hitbox = NPC.Hitbox;
 			foreach (Item item in Main.item) {
 				//Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
-				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() &&
-				    hitbox.Intersects(item.Hitbox)) {
+				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() &&	hitbox.Intersects(item.Hitbox)) {
 					item.active = false;
 					StolenItems += item.stack;
 
 					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item.whoAmI);
+
+					// Show emote when stealing an example item
+					EmoteBubble.NewBubble(ModContent.EmoteBubbleType<ExampleItemEmote>(), new WorldUIAnchor(NPC), 90);
 				}
 			}
 		}
@@ -98,9 +102,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-			if (spawnInfo.Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>()) // Can only spawn in the ExampleSurfaceBiome
-			    && !NPC.AnyNPCs(Type)) {
-				// Can only spawn if there are no other ExampleZombieThiefs
+			// Can only spawn in the ExampleSurfaceBiome and if there are no other ExampleZombieThiefs
+			if (spawnInfo.Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>()) && !NPC.AnyNPCs(Type)) {
 				return SpawnCondition.OverworldNightMonster.Chance * 0.1f; // Spawn with 1/10th the chance of a regular zombie.
 			}
 

@@ -1,12 +1,11 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Utilities;
-using Terraria.DataStructures;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Buffs;
+using Terraria;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -18,7 +17,7 @@ namespace ExampleMod.Content.NPCs
 
 			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
 
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() { // Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
@@ -125,7 +124,7 @@ namespace ExampleMod.Content.NPCs
 		public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
 			if (modifiers.DamageType.CountsAsClass(DamageClass.Magic)) {
 				// This example shows how PartyZombie reduces magic damage by 75%. We use FinalDamage here rather than SourceDamage since we are affecting how the npc reacts to the damage.
-				// Conceptually, the source dealing the damage isn't interpreted as stronger, but rather this NPC has a resistance to this damage source.
+				// Conceptually, the source dealing the damage isn't interpreted as weaker, but rather this NPC has a resistance to this damage source.
 				modifiers.FinalDamage *= 0.25f;
 			}
 		}

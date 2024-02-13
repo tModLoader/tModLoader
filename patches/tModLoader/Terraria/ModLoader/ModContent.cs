@@ -30,7 +30,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Manages content added by mods.
-/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
+/// Liaisons between mod content and Terraria's arrays and oversees the Loader classes.
 /// </summary>
 public static class ModContent
 {
@@ -43,7 +43,7 @@ public static class ModContent
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
 	public static IEnumerable<T> GetContent<T>() where T : ILoadable
-		=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
+		=> ContentCache.GetContentForAllMods<T>();
 
 	/// <summary> Attempts to find the template instance with the specified full name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
@@ -269,6 +269,11 @@ public static class ModContent
 	/// </summary>
 	public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
+	/// <summary>
+	/// Get the id (type) of a ModEmoteBubble by class. Assumes one instance per class.
+	/// </summary>
+	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
+
 	internal static void Load(CancellationToken token)
 	{
 		CacheVanillaState();
@@ -285,6 +290,8 @@ public static class ModContent
 			SystemLoader.OnModLoad(mod);
 			mod.loading = false;
 		});
+
+		ContentCache.contentLoadingFinished = true;
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -328,6 +335,7 @@ public static class ModContent
 		PylonLoader.FinishSetup();
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
+		EmoteBubbleLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
@@ -357,6 +365,7 @@ public static class ModContent
 		DamageClassLoader.RegisterDefaultClasses();
 		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
+		BuilderToggleLoader.RegisterDefaultToggles();
 	}
 
 	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction)
@@ -381,7 +390,7 @@ public static class ModContent
 
 	private static void SetupBestiary()
 	{
-		//Beastiary DB
+		//Bestiary DB
 		var bestiaryDatabase = new BestiaryDatabase();
 		new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 		Main.BestiaryDB = bestiaryDatabase;
@@ -444,7 +453,9 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	internal static void Unload()
 	{
+		MonoModHooks.Clear();
 		TypeCaching.Clear();
+		ContentCache.Unload();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();
@@ -464,10 +475,12 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		BuilderToggleLoader.Unload();
 		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
+		EmoteBubbleLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -533,6 +546,7 @@ public static class ModContent
 		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
+		EmoteBubbleLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {

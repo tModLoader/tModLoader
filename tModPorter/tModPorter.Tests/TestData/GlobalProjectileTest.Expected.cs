@@ -47,4 +47,5 @@ public class GlobalProjectileTest : GlobalProjectile
 	public override void ModifyHitPvp(Projectile projectile, Player target, ref int damage, ref bool crit)/* tModPorter Note: Removed. Use ModifyHitPlayer and check modifiers.PvP */ { }
 	public override void OnHitPvp(Projectile projectile, Player target, int damage, bool crit)/* tModPorter Note: Removed. Use OnHitPlayer and check info.PvP */ { }
 #endif
+	public override void OnKill(Projectile projectile, int timeLeft) { }
 }
