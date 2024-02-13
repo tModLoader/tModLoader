@@ -1,12 +1,12 @@
-﻿using Microsoft.Build.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Build.Framework;
 
-namespace tModPackager.ModFile;
+namespace tModLoader.BuildTasks.ModFile;
 
 public class BuildProperties
 {

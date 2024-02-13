@@ -32,7 +32,7 @@
 			<Visible>false</Visible>
 		</ModReference>
 	</ItemDefinitionGroup>
-	<UsingTask TaskName="GetTmlVersionSymbol" AssemblyFile="$(tMLLibraryPath)/tModPackager/1.0.0/tModPackager.dll" />
+	<UsingTask TaskName="GetTmlVersionSymbol" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" />
 	<Target Name="AddPreprocessorVersionSymbol" BeforeTargets="CoreCompile">
 		<GetTmlVersionSymbol TmlDllPath="$(tMLSteamPath)$(tMLPath)">
 			<Output TaskParameter="TmlVersionSymbol" PropertyName="TmlVersionSymbol" />
@@ -55,7 +55,7 @@
 		</ItemGroup>
 	</Target>
 
-	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModPackager/1.0.0/tModPackager.dll" />
+	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" />
 	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
 

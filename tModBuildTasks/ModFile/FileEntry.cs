@@ -1,4 +1,4 @@
-﻿namespace tModPackager.ModFile;
+﻿namespace tModLoader.BuildTasks.ModFile;
 
 public class FileEntry
 {

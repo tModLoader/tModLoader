@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Newtonsoft.Json;
-using tModPackager.ModFile;
+using tModLoader.BuildTasks.ModFile;
 
-namespace tModPackager.Tasks;
+namespace tModLoader.BuildTasks.Tasks;
 
 public class PackageModFile : TaskBase
 {

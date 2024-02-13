@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace tModPackager.ModFile;
+namespace tModLoader.BuildTasks.ModFile;
 
 public class ModReference
 {

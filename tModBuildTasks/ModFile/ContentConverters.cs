@@ -1,8 +1,8 @@
-﻿using SixLabors.ImageSharp;
+﻿using System.IO;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using System.IO;
 
-namespace tModPackager.ModFile;
+namespace tModLoader.BuildTasks.ModFile;
 
 public static class ContentConverters
 {

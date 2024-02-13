@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace tModPackager;
+namespace tModLoader.BuildTasks;
 
 public static class SavePathLocator
 {
