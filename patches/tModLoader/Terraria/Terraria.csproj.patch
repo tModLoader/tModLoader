@@ -96,7 +96,23 @@
  	</ItemGroup>
  
  	<!-- Import tasks -->
-@@ -104,9 +_,13 @@
+@@ -101,12 +_,29 @@
+ 		<WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
+ 	</Target>
+ 
++	<Target Name="CopyBuildTasksDepsToOutputDirectory" BeforeTargets="CopyToActualOutputDirectory" AfterTargets="Build">
++		<!-- This is a separate task so that the files are copied to the temporary output directory before SynchronizeDirectories runs below -->
++		<!-- As the tModLoader.BuildTasks directory doesn't normally exist, SynchronizeDirectories attempts to delete it -->
++		<!-- from the actual output path, but this can cause errors as MSBuild might have locked the BuildTasks dll files -->
++		
++		<!-- Copy the ImageSharp library from the .nuget folder to the tModPackager library folder in tModLoader/Libraries -->
++		<!-- Needed for the tModPackager to be able to convert images to .rawimg that can be packed into the .tmod file -->
++		<Copy SourceFiles="$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
++		<!-- Newtonsoft.Json is needed for enabling mods in tModPackager -->
++		<Copy SourceFiles="$(TargetDir)Libraries/newtonsoft.json/12.0.0.0/Newtonsoft.Json.dll" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
++		<Copy SourceFiles="$(BuildTasksAssemblyFile)" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="true" />
++	</Target>
++	
  	<!-- Installs the build's output into the relevant game folder. -->
  	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
  		<PropertyGroup>
@@ -111,7 +127,7 @@
  		<!-- Copy files systematically to output folder -->
  		<ItemGroup>
  			<BinFiles Include="$(TargetDir)**" />
-@@ -114,9 +_,17 @@
+@@ -114,6 +_,7 @@
  
  		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
  		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
@@ -119,13 +135,3 @@
  
  		<!-- Copy the Libraries folder, purging excessive files -->
  		<SynchronizeDirectories Source="$(TargetDir)Libraries" Destination="$(_ActualOutputDirectory)/Libraries" />
-+
-+		<!-- Copy the ImageSharp library from the .nuget folder to the tModPackager library folder in tModLoader/Libraries -->
-+		<!-- Needed for the tModPackager to be able to convert images to .rawimg that can be packed into the .tmod file -->
-+		<Copy SourceFiles="$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
-+		<!-- Newtonsoft.Json is needed for enabling mods in tModPackager -->
-+		<Copy SourceFiles="$(TargetDir)Libraries/newtonsoft.json/12.0.0.0/Newtonsoft.Json.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
-+		<Copy SourceFiles="$(BuildTasksAssemblyFile)" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="true" />
- 	</Target>
- 
- </Project>
