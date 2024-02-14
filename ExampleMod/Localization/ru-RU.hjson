@@ -1124,7 +1124,7 @@ Mods: {
 				// OffText: Example Off
 			}
 
-			// FreeBaitBuilderToggle.NameText: "Free Bait: "
+			FreeBaitBuilderToggle.NameText: "Бесплатная наживка: "
 		}
 
 		# This is the command names for mod emotes
