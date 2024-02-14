@@ -481,6 +481,16 @@
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
  	public static Item[] item = new Item[401];
+@@ -964,6 +_,9 @@
+ 	public static int[,] projectileIdentity = new int[256, 1001];
+ 	public static CombatText[] combatText = new CombatText[100];
+ 	public static PopupText[] popupText = new PopupText[20];
++	/// <summary>
++	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
++	/// </summary>
+ 	public static Chest[] chest = new Chest[8000];
+ 	public static Sign[] sign = new Sign[1000];
+ 	public static int[] itemFrame = new int[401];
 @@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
@@ -1077,8 +1087,8 @@
  				textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
-+				Console.WriteLine("m\t\tMods Menu");
-+				//Console.WriteLine("b\t\tMod Browser"); // Not functional in the 1.4 Steam Workshop Environment 
++				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
++				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
@@ -3703,11 +3713,12 @@
  				if (proj.type == 312) {
  					ulong seed3 = TileFrameSeed;
  					for (int num439 = 0; num439 < 4; num439++) {
-@@ -28416,6 +_,8 @@
+@@ -28416,6 +_,9 @@
  		if (type == 4442)
  			stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
  
 +		ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
++		ItemLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
 +
  		stringColor = TryApplyingPlayerStringColor(Main.player[proj.owner].stringColor, stringColor);
  		float gravDir = Main.player[proj.owner].gravDir;

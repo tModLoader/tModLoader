@@ -417,7 +417,7 @@ internal class UIModConfig : UIState
 
 		}
 		else {
-			throw new Exception($"There are no ModConfig for {mod.DisplayName}, how did this happen?");
+			throw new Exception($"There are no ModConfig for {mod.DisplayNameClean}, how did this happen?");
 		}
 	}
 

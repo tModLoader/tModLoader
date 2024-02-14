@@ -535,7 +535,7 @@
  	public int ammo = AmmoID.None;
 +
 +	/// <summary>
-+	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Wire.
++	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Sand Blocks.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool notAmmo;

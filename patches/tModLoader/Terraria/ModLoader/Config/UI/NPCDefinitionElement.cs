@@ -45,7 +45,7 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= NPCID.Count) {
-				modname = NPCLoader.GetNPC(option.Type).Mod.DisplayName; // or internal name?
+				modname = NPCLoader.GetNPC(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)

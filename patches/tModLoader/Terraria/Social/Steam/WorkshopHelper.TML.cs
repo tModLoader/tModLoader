@@ -185,7 +185,7 @@ public partial class WorkshopHelper
 		var values = new NameValueCollection
 		{
 			{ "displayname", bp.displayName },
-			{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
+			{ "displaynameclean", Utils.CleanChatTags(bp.displayName) },
 			{ "name", modFile.Name },
 			{ "version", $"{bp.version}" },
 			{ "author", bp.author },

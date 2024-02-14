@@ -43,8 +43,9 @@ internal class UILoadMods : UIProgress
 
 	private void SetProgressText(string text, string logText = null)
 	{
-		Logging.tML.Info(logText ?? text);
-		if (Main.dedServ) Console.WriteLine(text);
+		string cleanText = Utils.CleanChatTags(text); // text might have chat tags, most notably mod display names.
+		Logging.tML.Info(logText != null ? Utils.CleanChatTags(logText) : cleanText);
+		if (Main.dedServ) Console.WriteLine(cleanText);
 		else DisplayText = text;
 	}
 

@@ -1102,6 +1102,7 @@ Mods: {
 			PlayerHasLifeforceBuff: When the player has the Lifeforce buff
 			InExampleBiome: In the Example biome
 			NotSellingExampleItem: When not selling Example Item
+			DownedMinionBoss: After defeating {$NPCs.MinionBossBody.DisplayName}
 		}
 
 		DropConditions: {
