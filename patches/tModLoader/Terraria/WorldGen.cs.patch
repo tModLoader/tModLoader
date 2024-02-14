@@ -2971,25 +2971,23 @@
  			}
  
  			destroyObject = false;
-@@ -63711,6 +_,7 @@
- 
+@@ -63712,6 +_,7 @@
  	private static void GetSandfallProjData(int type, out int projType, out int dmg)
  	{
-+		/*
  		dmg = 10;
++		/*
  		switch (type) {
  			case 112:
-@@ -63753,6 +_,13 @@
+ 				projType = 56;
+@@ -63753,6 +_,11 @@
  			default:
  				projType = 31;
  				break;
 +		*/
-+
-+		projType = 0;
-+		dmg = 0;
-+		if (TileID.Sets.FallingBlockProjectileID[type] > -1) {
-+			projType = TileID.Sets.FallingBlockProjectileID[type];
-+			dmg = TileID.Sets.FallingBlockProjectileDamage[type];
++		projType = 31;
++		if (TileID.Sets.FallingBlockProjectile[type] is TileID.Sets.FallingBlockProjectileInfo data) {
++			projType = data.FallingProjectileType;
++			dmg = data.FallingProjectileDamage;
  		}
  	}
  
