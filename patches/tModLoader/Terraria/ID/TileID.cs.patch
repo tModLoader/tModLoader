@@ -65,7 +65,7 @@
  		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +		/// <summary>
 +		/// Prevents a tile immediately below a tile of this type from being mineable.
-+		/// <br/> Use <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/> or <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
++		/// <br/> Use <see cref="ModTile.CanKillTile(int, int, ref bool)"/> or <see cref="GlobalTile.CanKillTile(int, int, int, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
 +		/// <br/> To affect tile replace behavior in a similar manner, see <see cref="PreventsTileReplaceIfOnTopOfIt"/>
 +		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
 +		/// </summary>
