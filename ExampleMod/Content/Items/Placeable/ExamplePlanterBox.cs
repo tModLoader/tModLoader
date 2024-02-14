@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExamplePlanterBox : ModItem
 	{
 		public override void SetStaticDefaults() {
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+			Item.ResearchUnlockCount = 100;
 		}
 
 		public override void SetDefaults() {
