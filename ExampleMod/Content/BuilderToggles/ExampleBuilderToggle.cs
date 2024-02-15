@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -24,11 +25,12 @@ namespace ExampleMod.Content.BuilderToggles
 			return text + textMessages[CurrentState];
 		}
 
-		public override Color DisplayColorTexture() {
+		public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
 			Color[] colors = new[] { Color.Red, Color.Blue, Color.Green, Color.Yellow };
-
-			return colors[CurrentState];
+			color = colors[CurrentState];
+			return true;
 		}
+
 
 		// Right click to cycle through states backwards.
 		public override void OnRightClick() {
@@ -59,8 +61,9 @@ namespace ExampleMod.Content.BuilderToggles
 			return CurrentState == 0 ? OnText.Value : OffText.Value;
 		}
 
-		public override Color DisplayColorTexture() {
-			return CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+		public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+			color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+			return true;
 		}
 	}
 }

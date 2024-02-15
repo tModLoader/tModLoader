@@ -11,9 +11,9 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.BuilderToggles;
 
 // This example shows almost all BuilderToggle hooks.
-// More like a "button" than a "toggle", which left clicking allows you to select bait type,
-// while right clicking gives you free baits of the selected type.
-// Custom drawing is contained in this example to handle frame changes.
+// As it is just an example, it behaves more like a "button" than a "toggle".
+// Left clicking allows you to select bait type and right clicking gives you 10 free bait of the selected type.
+// Custom drawing is showcased in this example to handle frame changes.
 public class FreeBaitBuilderToggle : BuilderToggle
 {
 	public static LocalizedText NameText { get; private set; }
@@ -36,7 +36,7 @@ public class FreeBaitBuilderToggle : BuilderToggle
 
 	public override void OnRightClick() {
 		// Give the player free baits when right clicked.
-		SoundEngine.PlaySound(Main.rand.NextBool(2) ? SoundID.DrumCymbal1 : SoundID.DrumCymbal2);
+		SoundEngine.PlaySound(Main.rand.NextBool() ? SoundID.DrumCymbal1 : SoundID.DrumCymbal2);
 		int itemType = CurrentState switch {
 			0 => ItemID.ApprenticeBait,
 			1 => ItemID.JourneymanBait,
@@ -57,7 +57,8 @@ public class FreeBaitBuilderToggle : BuilderToggle
 	// Truffle Worm has a unique hover texture.
 	public override bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame,
 		ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		frame = texture.Frame(4, 2, CurrentState is 3 ? 1 : 0, 1);
+		int column = CurrentState == 3 ? 1 : 0; // The hover texture for TruffleWorm is unique
+		frame = texture.Frame(4, 2, column, 1);
 		return true;
 	}
 
@@ -66,12 +67,13 @@ public class FreeBaitBuilderToggle : BuilderToggle
 	}
 
 	public override string DisplayValue() {
-		return NameText.Value + CurrentState switch {
+		string itemName = CurrentState switch {
 			0 => Lang.GetItemNameValue(ItemID.ApprenticeBait),
 			1 => Lang.GetItemNameValue(ItemID.JourneymanBait),
 			2 => Lang.GetItemNameValue(ItemID.MasterBait),
 			3 => Lang.GetItemNameValue(ItemID.TruffleWorm),
 			_ => "Unknown (How did you get here?)"
 		};
+		return NameText.Format(itemName);
 	}
 }

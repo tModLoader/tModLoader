@@ -16,11 +16,8 @@ public abstract class VanillaBuilderToggle : BuilderToggle
 	public override int NumberOfStates => 2;
 	public override string DisplayValue() => "";
 
-	public override Color DisplayColorTexture() {
-		return CurrentState == 0 ? Color.White : new Color(127, 127, 127);
-	}
-
 	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
 		frame = Type < 10 ? new Rectangle(Type * 16, 16, 14, 14) : frame;
 		return true;
 	}
@@ -147,8 +144,10 @@ public abstract class WireVisibilityBuilderToggle : VanillaBuilderToggle
 		return $"{text}: {text2}";
 	}
 
-	public override Color DisplayColorTexture() {
-		Color color = default;
+	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects)
+	{
+		base.Draw(spriteBatch, ref texture, ref position, ref frame, ref color, ref scale, ref spriteEffects);
+		color = default;
 		switch (CurrentState) {
 			case 0:
 				color = Color.White;
@@ -157,14 +156,13 @@ public abstract class WireVisibilityBuilderToggle : VanillaBuilderToggle
 				color = new Color(127, 127, 127);
 				break;
 			case 2:
-				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.66f, 0.66f, 0.66f));
+				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.66f, 0.66f, 0.66f, 0.66f));
 				break;
 			case 3: //Should never reach here but vanilla has it
-				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.33f, 0.33f, 0.33f));
+				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.33f, 0.33f, 0.33f, 0.33f));
 				break;
 		}
-
-		return color;
+		return true;
 	}
 }
 
@@ -217,9 +215,8 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override Color DisplayColorTexture() => Color.White;
-
 	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		color = Color.White;
 		frame = texture.Frame(3, 1, CurrentState == 0 ? 0 : 1);
 		position += new Vector2(1, 0);
 		return true;
@@ -258,9 +255,8 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override Color DisplayColorTexture() => Color.White;
-
 	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		color = Color.White;
 		frame = texture.Frame(4, 1, CurrentState == 0 ? 1 : 0);
 		position += new Vector2(1, 0);
 		return true;

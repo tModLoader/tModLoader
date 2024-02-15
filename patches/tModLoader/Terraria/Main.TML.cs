@@ -266,7 +266,7 @@ public partial class Main
 
 			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
 			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-			Color color = builderToggle.DisplayColorTexture();
+			Color color = builderToggle.DisplayColorTexture_Obsolete();
 
 			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
 			text = builderToggle.DisplayValue();

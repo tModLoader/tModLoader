@@ -68,16 +68,19 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	/// This is the current state of this builder toggle. Every time the toggle is clicked, it will change.<para/>
 	/// The default state is 0. The state will be saved and loaded for the player to be consistent.
 	/// </summary>
-	public int CurrentState { 
-		get => Main.LocalPlayer.builderAccStatus[Type]; 
-		set => Main.LocalPlayer.builderAccStatus[Type] = value; 
+	public int CurrentState {
+		get => Main.LocalPlayer.builderAccStatus[Type];
+		set => Main.LocalPlayer.builderAccStatus[Type] = value;
 	}
 
 	/// <summary>
 	/// This is the overlay color that is drawn on top of the texture.
 	/// </summary>
 	/// <value>Default value is <see cref="Color.White"/></value>
+	[Obsolete("Use Draw instead", error: true)]
 	public virtual Color DisplayColorTexture() => Color.White;
+	[Obsolete]
+	internal Color DisplayColorTexture_Obsolete() => DisplayColorTexture();
 
 	/// <summary>
 	/// This is the value that will show up when hovering on the toggle icon.
@@ -128,15 +131,17 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	/// Called when the toggle is right clicked.<br/>
 	/// Use this if you want to implement special right click feature (such as cycling through states backwards).
 	/// </summary>
-	public virtual void OnRightClick() {}
+	public virtual void OnRightClick() { }
 
-	public sealed override void SetupContent() {
+	public sealed override void SetupContent()
+	{
 		ModContent.Request<Texture2D>(Texture);
 		ModContent.Request<Texture2D>(HoverTexture);
 		SetStaticDefaults();
 	}
 
-	protected override void Register() {
+	protected override void Register()
+	{
 		ModTypeLookup<BuilderToggle>.Register(this);
 		Type = BuilderToggleLoader.Add(this);
 	}
