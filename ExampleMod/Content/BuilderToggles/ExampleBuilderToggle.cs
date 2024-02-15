@@ -1,9 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content
+namespace ExampleMod.Content.BuilderToggles
 {
 	// The examples in this file don't actually affect anything, they just show typical approaches for the BuilderToggle half of the effect.
 	// A full example would have code doing something, such as drawing an overlay, after checking ModContent.GetInstance<YourBuilderToggle>().Active and ModContent.GetInstance<YourBuilderToggle>().CurrentState.
@@ -14,6 +18,7 @@ namespace ExampleMod.Content
 		public override bool Active() => Main.LocalPlayer.HeldItem.IsAir;
 
 		public override int NumberOfStates => 4;
+
 		public override string DisplayValue() {
 			string text = "Color: ";
 			string[] textMessages = new[] { "Red", "Blue", "Green", "Yellow" };
@@ -21,10 +26,21 @@ namespace ExampleMod.Content
 			return text + textMessages[CurrentState];
 		}
 
-		public override Color DisplayColorTexture() {
+		public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 			Color[] colors = new[] { Color.Red, Color.Blue, Color.Green, Color.Yellow };
+			drawParams.Color = colors[CurrentState];
+			return true;
+		}
 
-			return colors[CurrentState];
+
+		// Right click to cycle through states backwards.
+		public override void OnRightClick() {
+			CurrentState -= 1;
+			if (CurrentState < 0) {
+				CurrentState = NumberOfStates - 1;
+			}
+
+			SoundEngine.PlaySound(SoundID.Coins);
 		}
 	}
 
@@ -33,7 +49,7 @@ namespace ExampleMod.Content
 		public static LocalizedText OnText { get; private set; }
 		public static LocalizedText OffText { get; private set; }
 
-		public override string Texture => "ExampleMod/Content/ExampleBuilderToggle";
+		public override string Texture => "ExampleMod/Content/BuilderToggles/ExampleBuilderToggle";
 		public override bool Active() => true;
 		public override int NumberOfStates => 2;
 
@@ -46,8 +62,9 @@ namespace ExampleMod.Content
 			return CurrentState == 0 ? OnText.Value : OffText.Value;
 		}
 
-		public override Color DisplayColorTexture() {
-			return CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+		public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+			drawParams.Color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+			return true;
 		}
 	}
 }
