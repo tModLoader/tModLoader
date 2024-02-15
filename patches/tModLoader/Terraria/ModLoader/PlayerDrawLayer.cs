@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData.
+/// This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to drawInfo.DrawDataCache in the Draw method.
 /// </summary>
 [Autoload]
 public abstract partial class PlayerDrawLayer : ModType
