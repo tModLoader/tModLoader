@@ -11,7 +11,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.<para/>
-/// The <see cref="Active"/> property determines if the BuilderToggle should be shown to the user and is usually reliant on player-specific values. The <see cref="CurrentState"/> property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have <see cref="NumberOfStates"/> values.
+/// The <see cref="Active"/> method determines if the BuilderToggle should be shown to the user and is usually reliant on player-specific values. The <see cref="CurrentState"/> property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have <see cref="NumberOfStates"/> values.
 /// </summary>
 public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 {
