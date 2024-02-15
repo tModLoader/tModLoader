@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -16,9 +17,9 @@ public abstract class VanillaBuilderToggle : BuilderToggle
 	public override int NumberOfStates => 2;
 	public override string DisplayValue() => "";
 
-	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
-		frame = Type < 10 ? new Rectangle(Type * 16, 16, 14, 14) : frame;
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+		drawParams.Frame = Type < 10 ? new Rectangle(Type * 16, 16, 14, 14) : drawParams.Frame;
 		return true;
 	}
 }
@@ -144,22 +145,21 @@ public abstract class WireVisibilityBuilderToggle : VanillaBuilderToggle
 		return $"{text}: {text2}";
 	}
 
-	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects)
-	{
-		base.Draw(spriteBatch, ref texture, ref position, ref frame, ref color, ref scale, ref spriteEffects);
-		color = default;
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		base.Draw(spriteBatch, ref drawParams);
+		drawParams.Color = default;
 		switch (CurrentState) {
 			case 0:
-				color = Color.White;
+				drawParams.Color = Color.White;
 				break;
 			case 1:
-				color = new Color(127, 127, 127);
+				drawParams.Color = new Color(127, 127, 127);
 				break;
 			case 2:
-				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.66f, 0.66f, 0.66f, 0.66f));
+				drawParams.Color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.66f, 0.66f, 0.66f, 0.66f));
 				break;
 			case 3: //Should never reach here but vanilla has it
-				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.33f, 0.33f, 0.33f, 0.33f));
+				drawParams.Color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.33f, 0.33f, 0.33f, 0.33f));
 				break;
 		}
 		return true;
@@ -215,17 +215,17 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		color = Color.White;
-		frame = texture.Frame(3, 1, CurrentState == 0 ? 0 : 1);
-		position += new Vector2(1, 0);
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Color = Color.White;
+		drawParams.Frame = drawParams.Texture.Frame(3, 1, CurrentState == 0 ? 0 : 1);
+		drawParams.Position += new Vector2(1, 0);
 		return true;
 	}
 
-	public override bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		frame = texture.Frame(3, 1, 2);
-		position += new Vector2(1, 0);
-		scale = 0.9f;
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Frame = drawParams.Texture.Frame(3, 1, 2);
+		drawParams.Position += new Vector2(1, 0);
+		drawParams.Scale = 0.9f;
 		return true;
 	}
 
@@ -255,17 +255,17 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		color = Color.White;
-		frame = texture.Frame(4, 1, CurrentState == 0 ? 1 : 0);
-		position += new Vector2(1, 0);
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Color = Color.White;
+		drawParams.Frame = drawParams.Texture.Frame(4, 1, CurrentState == 0 ? 1 : 0);
+		drawParams.Position += new Vector2(1, 0);
 		return true;
 	}
 
-	public override bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		frame = texture.Frame(4, 1, CurrentState == 0 ? 3 : 2);
-		position += new Vector2(1, 0);
-		scale = 0.9f;
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Frame = drawParams.Texture.Frame(4, 1, CurrentState == 0 ? 3 : 2);
+		drawParams.Position += new Vector2(1, 0);
+		drawParams.Scale = 0.9f;
 		return true;
 	}
 

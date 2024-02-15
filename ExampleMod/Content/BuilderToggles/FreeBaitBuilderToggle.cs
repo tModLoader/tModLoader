@@ -49,16 +49,15 @@ public class FreeBaitBuilderToggle : BuilderToggle
 	}
 
 	// Use custom drawing to handle frame changes.
-	public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-		frame = texture.Frame(4, 2, CurrentState % 4);
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Frame = drawParams.Texture.Frame(4, 2, CurrentState % 4);
 		return true;
 	}
 
 	// Truffle Worm has a unique hover texture.
-	public override bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame,
-		ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		int column = CurrentState == 3 ? 1 : 0; // The hover texture for TruffleWorm is unique
-		frame = texture.Frame(4, 2, column, 1);
+		drawParams.Frame = drawParams.Texture.Frame(4, 2, column, 1);
 		return true;
 	}
 

@@ -292,8 +292,16 @@ public partial class Main
 			float scale = 1f;
 			SpriteEffects spriteEffects = SpriteEffects.None;
 
-			if (builderToggle.Draw(spriteBatch, ref texture, ref position, ref rectangle, ref color, ref scale, ref spriteEffects)) {
-				spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, scale, spriteEffects, 0f);
+			BuilderToggleDrawParams drawParams = new() {
+				Texture = texture,
+				Position = position,
+				Frame = rectangle,
+				Color = color,
+				Scale = scale,
+				SpriteEffects = spriteEffects
+			};
+			if (builderToggle.Draw(spriteBatch, ref drawParams)) {
+				spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
 			}
 
 			if (hover) {
@@ -305,8 +313,16 @@ public partial class Main
 				Color hoverColor = OurFavoriteColor;
 				float hoverScale = 1f;
 				SpriteEffects hoverSpriteEffects = SpriteEffects.None;
-				if (builderToggle.DrawHover(spriteBatch, ref iconHover, ref hoverDrawPosition, ref hoverRectangle, ref hoverColor, ref hoverScale, ref hoverSpriteEffects)) {
-					spriteBatch.Draw(iconHover, hoverDrawPosition, hoverRectangle, hoverColor, 0f, hoverRectangle.Size() / 2f, hoverScale, hoverSpriteEffects, 0f);
+				drawParams = new() {
+					Texture = iconHover,
+					Position = hoverDrawPosition,
+					Frame = hoverRectangle,
+					Color = hoverColor,
+					Scale = hoverScale,
+					SpriteEffects = hoverSpriteEffects
+				};
+				if (builderToggle.DrawHover(spriteBatch, ref drawParams)) {
+					spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
 				}
 			}
 

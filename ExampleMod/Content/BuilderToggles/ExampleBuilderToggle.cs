@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -25,9 +26,9 @@ namespace ExampleMod.Content.BuilderToggles
 			return text + textMessages[CurrentState];
 		}
 
-		public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
+		public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 			Color[] colors = new[] { Color.Red, Color.Blue, Color.Green, Color.Yellow };
-			color = colors[CurrentState];
+			drawParams.Color = colors[CurrentState];
 			return true;
 		}
 
@@ -61,8 +62,8 @@ namespace ExampleMod.Content.BuilderToggles
 			return CurrentState == 0 ? OnText.Value : OffText.Value;
 		}
 
-		public override bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) {
-			color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+		public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+			drawParams.Color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
 			return true;
 		}
 	}

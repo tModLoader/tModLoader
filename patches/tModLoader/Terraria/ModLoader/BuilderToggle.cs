@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Localization;
 
@@ -94,14 +95,9 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	/// Return false to stop vanilla drawing code from running. Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
-	/// <param name="texture">The icon texture</param>
-	/// <param name="position">The position</param>
-	/// <param name="frame">The frame rectangle (aka source rectangle)</param>
-	/// <param name="color">The color the icon is drawn in. Modifications in <see cref="DisplayColorTexture"/> is applied to this value</param>
-	/// <param name="scale">The scale of the icon</param>
-	/// <param name="spriteEffects">The spriteEffects</param>
+	/// <param name="drawParams">The draw parameters for the builder toggle icon</param>
 	/// <returns>Whether to run vanilla icon drawing code</returns>
-	public virtual bool Draw(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) => true;
+	public virtual bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) => true;
 
 	/// <summary>
 	/// This allows you to change basic drawing parameters or to override the vanillia drawing completely.<para/>
@@ -109,14 +105,9 @@ public abstract class BuilderToggle : ModTexturedType, ILocalizedModType
 	/// Return false to stop vanilla drawing code from running. Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
-	/// <param name="texture">The icon hover texture</param>
-	/// <param name="position">The position</param>
-	/// <param name="frame">The frame rectangle (aka source rectangle)</param>
-	/// <param name="color">The color the icon hover is drawn in</param>
-	/// <param name="scale">The scale of the icon hover</param>
-	/// <param name="spriteEffects">The spriteEffects</param>
+	/// <param name="drawParams">The draw parameters for the builder toggle hover icon</param>
 	/// <returns>Whether to run vanilla icon hover drawing code</returns>
-	public virtual bool DrawHover(SpriteBatch spriteBatch, ref Texture2D texture, ref Vector2 position, ref Rectangle frame, ref Color color, ref float scale, ref SpriteEffects spriteEffects) => true;
+	public virtual bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) => true;
 
 	/// <summary>
 	/// Called when the toggle is left clicked and before vanilla operation takes place.<para/>
