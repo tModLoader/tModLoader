@@ -219,7 +219,11 @@ public class PackageModFile : TaskBase
 			string? nugetPackageId = referencePath.GetMetadata("NuGetPackageId");
 			string? nugetPackageVersion = referencePath.GetMetadata("NuGetPackageVersion");
 
-			if (string.IsNullOrEmpty(nugetPackageId) || !nugetLookup.ContainsKey(nugetPackageId)) continue;
+			if (string.IsNullOrEmpty(nugetPackageId)) continue;
+			if (!nugetLookup.TryGetValue(nugetPackageId, out ITaskItem nugetItem)) continue;
+
+			// Copy Private metadata from the <PackageReference> to the item containing the reference path
+			referencePath.SetMetadata("Private", nugetItem.GetMetadata("Private"));
 
 			Log.LogMessage(MessageImportance.Normal, $"{nugetPackageId} - v{nugetPackageVersion} - Found at: {hintPath}");
 			nugetReferences.Add(referencePath);
