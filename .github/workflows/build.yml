@@ -342,7 +342,7 @@ jobs:
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
-          dotnet build ExampleMod/ExampleMod.csproj --nologo /p:Version="${{ steps.version.outputs.new_version }}"
+          dotnet build ExampleMod/ExampleMod.csproj --nologo -p:Version="${{ steps.version.outputs.new_version }}"
           echo ::endgroup::
           
           mkdir -p artifacts/Mods
