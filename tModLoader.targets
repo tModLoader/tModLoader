@@ -13,8 +13,8 @@
     <Reference Remove="$(tMLSteamPath)**/FNA.dll"/>
     <Reference Remove="$(tMLSteamPath)**/ReLogic.dll"/>
     <Reference Remove="$(tMLSteamPath)**/tModLoader.dll"/>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.Core.csproj" Private="false" />
-    <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/ReLogic/ReLogic.csproj" Private="false" />
-    <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/Terraria/Terraria.csproj" Private="false" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.Core.csproj" Private="true" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/ReLogic/ReLogic.csproj" Private="true" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/Terraria/Terraria.csproj" Private="true" />
   </ItemGroup>
 </Project>
