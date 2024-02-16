@@ -891,6 +891,16 @@ Mods: {
 				DisplayName: Example Statue
 				Tooltip: The power of examplium flows in this inanimate fish
 			}
+
+			ExampleGoldenKey: {
+				DisplayName: Example Golden Key
+				Tooltip: Use this key to open the Example Key Bag.
+			}
+
+			ExampleKeyBag: {
+				DisplayName: Example Key Bag
+				Tooltip: Open this with the Example Golden Key to get some goodies.
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
