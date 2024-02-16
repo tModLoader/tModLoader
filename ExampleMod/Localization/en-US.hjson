@@ -763,21 +763,6 @@ Mods: {
 					'''
 			}
 
-			ShimmerShowcaseCrimsonCorruption: {
-				DisplayName: Shimmer Showcase Crimson Corruption
-				Tooltip: ""
-			}
-
-			ShimmerShowcaseCustomShimmerResult: {
-				DisplayName: Shimmer Showcase Custom Shimmer Result
-				Tooltip: ""
-			}
-
-			ShimmerShowcaseConditions: {
-				Tooltip: ""
-				DisplayName: Shimmer Showcase Conditions
-			}
-
 			ExampleCustomSwingSword: {
 				DisplayName: Example Custom Swing Sword
 				Tooltip:
@@ -853,6 +838,21 @@ Mods: {
 				Tooltip: "{$ItemTooltip.Campfire}"
 			}
 
+			ItemShimmerShowcaseConditions: {
+				DisplayName: Item Shimmer Showcase: Conditions
+				Tooltip: Shimmer showcase for conditions on items
+			}
+
+			ItemShimmerShowcaseCustomShimmerResult: {
+				DisplayName: Item Shimmer Showcase: Custom Shimmer Results
+				Tooltip: Shimmer showcase for custom shimmer results on items
+			}
+
+			ItemShimmerShowcaseModShimmer: {
+				DisplayName: Item Shimmer Showcase: ModShimmer
+				Tooltip: Shimmer showcase for ModShimmer on items
+			}
+
 			ExampleExtraJumpAccessory: {
 				DisplayName: Example Extra Jump Accessory
 				Tooltip: Allows the user to perform an example mid-air extra jump
@@ -872,6 +872,10 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleComplexCustomShimmerableItem: {
+				DisplayName: Example Complex Custom Shimmerable Item
+				Tooltip: ""
+			}
 			ExampleLivingFire: {
 				DisplayName: Example Living Fire Block
 				Tooltip: ""
@@ -930,6 +934,7 @@ Mods: {
 			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			ExampleComplexCustomShimmerable.DisplayName: Example Complex Custom Shimmerable
 		}
 
 		Buffs: {

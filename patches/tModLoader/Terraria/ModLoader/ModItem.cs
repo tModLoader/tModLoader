@@ -1342,4 +1342,23 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
+
+	/// <summary>
+	/// Creates a <see cref="ShimmerTransformation{T}"/>&lt;<see cref="Terraria.Item"/>&gt; resulting this ModItem. This method only creates the
+	/// <see cref="ShimmerTransformation{T}"/>&lt;<see cref="Terraria.Item"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game.
+	/// <br/> Call this at the very beginning when creating a new <see cref="ShimmerTransformation{T}"/>&lt;<see cref="Terraria.Item"/>&gt;.
+	/// </summary>
+	public ShimmerTransformation<Item> CreateShimmerTransformation() => new(Item);
+
+	/// <summary>
+	/// Return false to prevent this Item from shimmering, shouldn't have side effects
+	/// </summary>
+	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Allows you to create effects when this Item shimmers
+	/// </summary>
+	public virtual void OnShimmer()
+	{
+	}
 }

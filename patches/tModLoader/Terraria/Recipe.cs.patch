@@ -60,7 +60,7 @@
 -	public bool anyFragment;
 +	internal bool anyFragment;
 -	public bool alchemy;
-+	internal bool alchemy;
++	//internal bool alchemy; TML: Recipe.alchemy is unused due to being replaced by consume item hooks
 -	public bool needSnowBiome;
 +	internal bool needSnowBiome;
 -	public bool needGraveyardBiome;
@@ -131,7 +131,7 @@
  			int num = acceptedGroups[i];
  			if (num == -1)
  				break;
-@@ -99,19 +_,15 @@
+@@ -99,19 +_,21 @@
  
  	public bool AcceptedByItemGroups(int invType, int reqType)
  	{
@@ -149,12 +149,18 @@
  		return false;
  	}
  
++	/// <summary>
++	/// Adds a custom shimmer result to the recipe, overrides actual recipe ingredients when decrafting
++	/// </summary>
++	/// <param name="itemType"> The item type. </param>
++	/// <param name="itemStack"> The stack size. </param>
++	/// <returns></returns>
 -	public Item AddCustomShimmerResult(int itemType, int itemStack = 1)
 +	public Recipe AddCustomShimmerResult(int itemType, int itemStack = 1)
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -120,9 +_,10 @@
+@@ -120,9 +_,14 @@
  		item.SetDefaults(itemType);
  		item.stack = itemStack;
  		customShimmerResults.Add(item);
@@ -162,11 +168,15 @@
 +		return this;
  	}
  
++	/// <inheritdoc cref="AddCustomShimmerResult(int, int)"/>
++	/// <param name="itemStack"> The stack size. </param>
++	public Recipe AddCustomShimmerResult<T>(int itemStack = 1) where T : ModItem
++		=> AddCustomShimmerResult(ModContent.ItemType<T>(), itemStack);
 +	/*
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -131,17 +_,23 @@
+@@ -131,18 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -194,14 +204,18 @@
 -
 +		foreach (Item item2 in requiredItem) {
  			int num = item2.stack;
++			/* TML: Recipe.alchemy is unused due to being replaced by consume item hooks
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
-@@ -158,25 +_,36 @@
+ 					int num2 = 0;
+@@ -157,26 +_,38 @@
+ 					num = 0;
  				}
  			}
- 
-+			RecipeLoader.ConsumeItem(this, item2.type, ref num);
++			*/
 +
++			RecipeLoader.ConsumeItem(this, item2.type, ref num);
+ 
  			if (num <= 0)
  				continue;
  
@@ -729,7 +743,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,77 @@
+@@ -15821,12 +_,80 @@
  
  	private static void AddRecipe()
  	{
@@ -742,9 +756,12 @@
  		numRecipes++;
 +		*/
 +
++
 +		//TML: The whole method is rewritten.
-+		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
++		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles) {
 +			currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
++			currentRecipe.AddShimmerConsumeItemCallback(DecraftConsumptionRules.Alchemy);
++		}
 +
 +		static void ReplaceCondition(ref bool field, Condition cond)
 +		{

@@ -9,7 +9,7 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria;
 
-public partial class NPC : IEntityWithGlobals<GlobalNPC>
+public partial class NPC : IEntityWithGlobals<GlobalNPC>, IModShimmerable
 {
 	internal readonly IEntitySource thisEntitySourceCache;
 
@@ -212,7 +212,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// The current change in velocity due to gravity applied every frame. <br/>
 	/// Multiply <see cref="GravityMultiplier"/> to modify this value
 	/// </summary>
+#pragma warning disable IDE1006 // Name is vanilla
 	public float gravity {
+#pragma warning restore IDE1006
 		get => vanillaGravity * GravityMultiplier.Value;
 		private set {
 			GravityMultiplier = MultipliableFloat.One;
@@ -234,7 +236,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// The current fall speed cap in velocity applied every frame. <br/>
 	/// Multiply <see cref="MaxFallSpeedMultiplier"/> to modify this value
 	/// </summary>
+#pragma warning disable IDE1006 // Name is vanilla
 	public float maxFallSpeed {
+#pragma warning restore IDE1006
 		get => vanillaMaxFallSpeed * MaxFallSpeedMultiplier.Value;
 		private set {
 			MaxFallSpeedMultiplier = MultipliableFloat.One;
@@ -272,6 +276,48 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// </summary>
 	public bool GravityIgnoresLiquid = false;
 
+	/// <summary> <inheritdoc/> <br/>
+	/// For this <see cref="NPC"/> override it checks for <see cref="NPCLoader.CanShimmer(NPC)"/>, not <see cref="PreventingChainedShimmers"/>, and for any of the following:
+	/// <list type="number">
+	/// <item/> <see cref="NPCID.Sets.ShimmerTownTransform"/>
+	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToNPC"/>
+	/// <item/> <see cref="NPCID.Sets.ShimmerTransformToItem"/>
+	/// <item/> not <see cref="NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue"/> while <see cref="SpawnedFromStatue"/>
+	/// <item/> <see cref="ShimmerTransformation{T}.AnyValidModShimmer"/>
+	/// </list>
+	/// </summary>
+	/// <inheritdoc/>
+	public bool CanShimmer()
+	{
+		int redirectedType = ShimmerTransformation<NPC>.GetRedirectedType(type);
+
+		return NPCLoader.CanShimmer(this) // ModNPC and GlobalNPC
+		&& (NPCID.Sets.ShimmerTownTransform[redirectedType] // valid shimmer types
+		|| NPCID.Sets.ShimmerTransformToNPC[redirectedType] >= 0
+		|| NPCID.Sets.ShimmerTransformToItem[redirectedType] >= 0
+		|| !NPCID.Sets.ShimmerIgnoreNPCSpawnedFromStatue[redirectedType] && SpawnedFromStatue // We're counting despawning in shimmer as shimmering
+		|| ShimmerTransformation<NPC>.AnyValidModShimmer(this));
+	}
+	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<NPC>.GetRedirectedType(type);
+	int IModShimmerable.Type => type;
+	public bool PreventingChainedShimmers { get; set; }
+	void IModShimmerable.ShimmerRemoveStacked(int amount)
+	{
+		noSpawnCycle = true;
+		active = false;
+		if (Main.netMode == NetmodeID.Server) {
+			netSkip = -1;
+			life = 0;
+			NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, whoAmI);
+		}
+	}
+
+	/// <summary> <inheritdoc/> <br/>
+	/// For this <see cref="NPC"/> override, calls <see cref="NPCLoader.OnShimmer(NPC)"/>
+	/// </summary>
+	public void OnShimmer() => NPCLoader.OnShimmer(this);
+	
 	/// <summary>
 	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
 	/// </summary>

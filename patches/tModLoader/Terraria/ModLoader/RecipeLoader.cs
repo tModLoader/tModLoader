@@ -205,4 +205,15 @@ public static class RecipeLoader
 	{
 		recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
 	}
+
+	/// <summary>
+	/// Allows to edit the amount of item the player recieves when this recipe is decrafted, applies to <see cref="Recipe.customShimmerResults"/> as well
+	/// </summary>
+	/// <param name="recipe">The recipe used for the craft.</param>
+	/// <param name="type">Type of the ingredient.</param>
+	/// <param name="amount">Modifiable amount of the item consumed.</param>
+	public static void ShimmerConsumeItem(Recipe recipe, int type, ref int amount)
+	{
+		recipe.ShimmerConsumeItemHooks?.Invoke(recipe, type, ref amount);
+	}
 }

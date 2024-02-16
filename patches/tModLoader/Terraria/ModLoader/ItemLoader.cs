@@ -2248,4 +2248,30 @@ public static class ItemLoader
 
 		return false;
 	}
+
+	private static HookList HookCanShimmer = AddHook<Func<Item, bool>>(g => g.CanShimmer);
+
+	public static bool CanShimmer(Item item)
+	{
+		if (item.ModItem?.CanShimmer() == false)
+			return false;
+
+		foreach (var g in HookCanShimmer.Enumerate(item)) {
+			if (!g.CanShimmer(item)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static HookList HookOnShimmer = AddHook<Action<Item>>(g => g.OnShimmer);
+
+	public static void OnShimmer(Item item)
+	{
+		item.ModItem?.OnShimmer();
+
+		foreach (var g in HookOnShimmer.Enumerate(item))
+			g.OnShimmer(item);
+	}
 }

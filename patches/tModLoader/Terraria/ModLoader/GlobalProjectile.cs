@@ -388,4 +388,10 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	{
 		return null;
 	}
+
+	/// <inheritdoc cref="ModProjectile.CanShimmer"/>
+	public virtual bool CanShimmer(Projectile projectile) => true;
+
+	/// <inheritdoc cref="ModProjectile.OnShimmer"/>
+	public virtual void OnShimmer(Projectile projectile) { }
 }

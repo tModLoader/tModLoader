@@ -417,4 +417,23 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 	{
 	}
+
+	/// <summary>
+	/// Creates a <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt; resulting this ModItem. This method only creates the
+	/// <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game.
+	/// <br/> Call this at the very beginning when creating a new <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.Projectile"/>&gt;.
+	/// </summary>
+	public ShimmerTransformation<Projectile> CreateShimmerTransformation() => new(Projectile);
+
+	/// <summary>
+	/// Return false to prevent this Projectile from shimmering, shouldn't have side effects
+	/// </summary>
+	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Allows you to create effects when this Projectile shimmers
+	/// </summary>
+	public virtual void OnShimmer()
+	{
+	}
 }

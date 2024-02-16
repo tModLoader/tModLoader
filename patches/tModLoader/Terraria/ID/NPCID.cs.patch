@@ -483,7 +483,7 @@
 +
 +		/// <summary>
 +		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it will turn into when submerged in shimmer.
-+		/// <br/> A value of<c>-1</c> means the given NPC won't transform.
++		/// <br/> A value of <c>-1</c> means the given NPC won't transform.
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// <br/> Also applies to transforming critter items (<c><see cref="Item.makeNPC"/> &gt; 0</c>) into NPC.
 +		/// </summary>

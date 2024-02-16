@@ -1140,4 +1140,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void NetReceive(Item item, BinaryReader reader)
 	{
 	}
+
+	/// <inheritdoc cref="ModItem.CanShimmer"/>
+	public virtual bool CanShimmer(Item item) => true;
+
+	/// <inheritdoc cref="ModItem.OnShimmer"/>
+	public virtual void OnShimmer(Item item) { }
 }

@@ -33,7 +33,7 @@ partial class Entity
 
 	public IEntitySource GetSource_Death(string? context = null)
 		=> new EntitySource_Death(this, context);
-	
+
 	// Etc
 
 	public IEntitySource GetSource_Misc(string context)

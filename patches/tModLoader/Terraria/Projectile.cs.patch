@@ -371,7 +371,7 @@
  			for (int j = 0; j < 200; j++) {
  				perIDStaticNPCImmunity[i][j] = 0u;
  			}
-@@ -232,8 +_,46 @@
+@@ -232,8 +_,48 @@
  		}
  	}
  
@@ -414,6 +414,8 @@
 +		WhipSettings = default;
 +		ContinuouslyUpdateDamageStats = false;
 +		nameOverride = null;
++		PreventingChainedShimmers = false;
++		shimmerTransformTime = 0f;
 +
  		ownerHitCheckDistance = 1000f;
  		counterweight = false;
@@ -1353,6 +1355,15 @@
  	public void Resize(int newWidth, int newHeight)
  	{
  		position = base.Center;
+@@ -15921,6 +_,8 @@
+ 
+ 	private void Shimmer()
+ 	{
++		ModdedProjectileShimmer();
++
+ 		if (hostile || (aiStyle == 99 && ai[0] == -1f) || (aiStyle == 15 && (ai[0] == 2f || ai[0] == 4f)))
+ 			return;
+ 
 @@ -16028,6 +_,11 @@
  
  	public void AI()

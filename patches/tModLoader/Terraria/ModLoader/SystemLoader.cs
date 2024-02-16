@@ -456,6 +456,32 @@ public static partial class SystemLoader
 		}
 	}
 
+	/// <inheritdoc cref="ModSystem.CanModShimmer{TShimmerable}(IShimmerTransformation{TShimmerable}, IModShimmerable)"/>
+	public static bool CanModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable) where TShimmerable : IModShimmerable
+	{
+		foreach (var system in HookCanShimmer.Enumerate()) {
+			if (!system.CanModShimmer(transformation, modShimmerable))
+				return false;
+		}
+		return true;
+	}
+
+	/// <inheritdoc cref="ModSystem.ModifyModShimmer{TShimmerable}(IShimmerTransformation{TShimmerable}, IModShimmerable)"/>
+	public static void ModifyModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable) where TShimmerable : IModShimmerable
+	{
+		foreach (var system in HookModifyShimmer.Enumerate()) {
+			system.ModifyModShimmer(transformation, modShimmerable);
+		}
+	}
+
+	/// <inheritdoc cref="ModSystem.OnModShimmer{TShimmerable}(IShimmerTransformation{TShimmerable}, IModShimmerable, IEnumerable{IModShimmerable})"/>
+	public static void OnModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable, IEnumerable<IModShimmerable> shimmerables) where TShimmerable : IModShimmerable
+	{
+		foreach (var system in HookOnShimmer.Enumerate()) {
+			system.OnModShimmer(transformation, modShimmerable, shimmerables);
+		}
+	}
+
 	public static void ModifyHardmodeTasks(List<GenPass> passes)
 	{
 		foreach (var system in HookModifyHardmodeTasks.Enumerate()) {

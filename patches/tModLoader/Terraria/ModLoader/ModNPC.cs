@@ -898,4 +898,23 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual void LoadData(TagCompound tag)
 	{
 	}
+
+	/// <summary>
+	/// Creates a <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.NPC"/>&gt; resulting this ModItem. This method only creates the
+	/// <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.NPC"/>&gt;, use <see cref="ShimmerTransformation{T}.Register()"/> to register it into the game.
+	/// <br/> Call this at the very beginning when creating a new <see cref="ShimmerTransformation"/>&lt;<see cref="Terraria.NPC"/>&gt;.
+	/// </summary>
+	public ShimmerTransformation<NPC> CreateShimmerTransformation() => new(NPC);
+
+	/// <summary>
+	/// Return false to prevent this NPC from shimmering, shouldn't have side effects
+	/// </summary>
+	public virtual bool CanShimmer() => true;
+
+	/// <summary>
+	/// Allows you to create effects when this NPC shimmers
+	/// </summary>
+	public virtual void OnShimmer()
+	{
+	}
 }

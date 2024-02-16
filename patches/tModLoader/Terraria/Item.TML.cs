@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria;
 
-public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
+public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>, IModShimmerable
 {
 	public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
@@ -295,4 +295,32 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 				attackSpeedOnlyAffectsWeaponAnimation = true;
 		}
 	}
+
+	Vector2 IModShimmerable.Velocity { get => velocity; set => velocity = value; }
+	int IModShimmerable.ShimmerRedirectedType => ShimmerTransformation<Item>.GetRedirectedType(type);
+	int IModShimmerable.Type => type;
+	int IModShimmerable.Stack => stack;
+	public bool PreventingChainedShimmers { get; set; }
+	void IModShimmerable.ShimmerRemoveStacked(int amount)
+	{
+		stack -= amount;
+		shimmerWet = wet = shimmered = true;
+		velocity *= 0.1f;
+
+		if (stack <= 0) {
+			active = false;
+			shimmerTime = 0f;
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, whoAmI, 1f);
+		}
+		else {
+			shimmerTime = 1f;
+		}
+	}
+
+	/// <summary> <inheritdoc/> <br/>
+	/// For this <see cref="Item"/> override, calls <see cref="ItemLoader.OnShimmer(Item)"/>
+	/// </summary>
+	public void OnShimmer() => ItemLoader.OnShimmer(this);
+	//public IEntitySource GetSource_ForShimmer() => GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.Shimmer));
 }

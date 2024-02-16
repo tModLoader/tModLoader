@@ -21,18 +21,28 @@ public partial class Recipe
 {
 	public static class ConsumptionRules
 	{
-		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
+		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile.
+		/// <br/> In vanilla, when an item is decrafted in shimmer, if it is one that gives this chance to not consume, it is applied to shimmer as well to prevent free items, this does mean that the player will lose items when decrafting items they made at a bottle
+		/// <br/> to prevent duplication glitches, use <see cref="DecraftConsumptionRules.Alchemy"/> as well
+		/// </summary>
 		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => {
 			if (!Main.LocalPlayer.alchemyTable) return;
 
-			int amountUsed = 0;
-
-			for (int i = 0; i < amount; i++) {
-				if (!Main.rand.NextBool(3))
-					amountUsed++;
+			for (int i = amount; i > 0; i--) {
+				if (Main.rand.NextBool(3))
+					amount--;
 			}
+		};
+	}
 
-			amount = amountUsed;
+	public static class DecraftConsumptionRules
+	{
+		/// <summary> Gives 1/3 chance for every result to not be spawned. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
+		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => {
+			for (int i = amount; i > 0; i--) {
+				if (Main.rand.NextBool(3))
+					amount--;
+			}
 		};
 	}
 
@@ -45,6 +55,7 @@ public partial class Recipe
 
 	internal OnCraftCallback OnCraftHooks { get; private set; }
 	internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
+	internal ConsumeItemCallback ShimmerConsumeItemHooks { get; private set; }
 
 	private void AddGroup(int id)
 	{
@@ -311,6 +322,16 @@ public partial class Recipe
 		return this;
 	}
 
+	/// <summary>
+	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
+	/// </summary>
+	public Recipe AddShimmerConsumeItemCallback(ConsumeItemCallback callback)
+	{
+		ShimmerConsumeItemHooks += callback;
+
+		return this;
+	}
+
 	#region Ordering
 
 	/// <summary>
@@ -406,13 +427,14 @@ public partial class Recipe
 		clone.anyPressurePlate = anyPressurePlate;
 		clone.anySand = anySand;
 		clone.anyFragment = anyFragment;
-		clone.alchemy = alchemy;
+		//clone.alchemy = alchemy; 	TML: Recipe.alchemy is unused due to being replaced by consume item hooks
 		clone.needSnowBiome = needSnowBiome;
 		clone.needGraveyardBiome = needGraveyardBiome;
 		clone.needEverythingSeed = needEverythingSeed;
 
 		clone.OnCraftHooks = OnCraftHooks;
 		clone.ConsumeItemHooks = ConsumeItemHooks;
+		clone.ShimmerConsumeItemHooks = ShimmerConsumeItemHooks;
 		foreach (Condition condition in Conditions) {
 			clone.AddCondition(condition);
 		}
@@ -423,8 +445,10 @@ public partial class Recipe
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
 		// it here to not have multiple duplicate hooks.
-		if (clone.requiredTile.Contains(TileID.Bottles))
+		if (clone.requiredTile.Contains(TileID.Bottles)) {
 			clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
+			clone.ShimmerConsumeItemHooks -= DecraftConsumptionRules.Alchemy;
+		}
 
 		return clone;
 	}
@@ -441,8 +465,10 @@ public partial class Recipe
 		if (RecipeIndex >= 0)
 			throw new RecipeException("There was an attempt to register an already registered recipe.");
 
-		if (requiredTile.Contains(TileID.Bottles))
+		if (requiredTile.Contains(TileID.Bottles)) {
 			AddConsumeItemCallback(ConsumptionRules.Alchemy);
+			AddShimmerConsumeItemCallback(DecraftConsumptionRules.Alchemy);
+		}
 
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;

@@ -33,7 +33,7 @@
 +		Shimmer => nameof(Shimmer),
 +		Digesting => nameof(Digesting),
 +		TorchGod => nameof(TorchGod),
-+		PlayerDeath => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_Death being added.
++		PlayerDeath => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'.", nameof(itemSourceId)), // Due to 'EntitySource_Death being added.
 +		_ => null,
 +	};
  }

@@ -850,6 +850,12 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
+	/// <inheritdoc cref="ModNPC.CanShimmer"/>
+	public virtual bool CanShimmer(NPC npc) => true;
+
+	/// <inheritdoc cref="ModNPC.OnShimmer"/>
+	public virtual void OnShimmer(NPC npc) { }
+	
 	/// <summary>
 	/// Allows you to change the emote that the NPC will pick
 	/// </summary>

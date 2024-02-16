@@ -408,4 +408,13 @@ public abstract partial class ModSystem : ModType
 	/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 	/// </summary>
 	public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
+
+	/// <inheritdoc cref="ShimmerTransformation.CanShimmerCallBack"/>
+	public virtual bool CanModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable) where TShimmerable : IModShimmerable => true;
+
+	/// <inheritdoc cref="ShimmerTransformation.ModifyShimmerCallBack"/>
+	public virtual void ModifyModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable modShimmerable) where TShimmerable : IModShimmerable { }
+
+	/// <inheritdoc cref="ShimmerTransformation.OnShimmerCallBack"/>
+	public virtual void OnModShimmer<TShimmerable>(IShimmerTransformation<TShimmerable> transformation, IModShimmerable source, IEnumerable<IModShimmerable> spawnedEntities) where TShimmerable : IModShimmerable { }
 }

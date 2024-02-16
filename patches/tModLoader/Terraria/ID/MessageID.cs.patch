@@ -419,3 +419,24 @@
  	public const byte InstancedItem = 90;
  	public const byte SyncEmoteBubble = 91;
  	public const byte SyncExtraValue = 92;
+@@ -155,7 +_,20 @@
+ 	public const byte SyncProjectileTrackers = 142;
+ 	public const byte CrystalInvasionRequestedToSkipWaitTime = 143;
+ 	public const byte RequestQuestEffect = 144;
++
++	/// <summary>
++	/// Identical to <see cref="SyncItem"/> except includes shimmer information
++	/// </summary>
+ 	public const byte SyncItemsWithShimmer = 145;
++
++	/// <summary>
++	/// <listheader> Contains 3 settings for number </listheader>
++	/// <list type="bullet">
++	/// <item/>0: Calls <see cref="Item.ShimmerEffect(Microsoft.Xna.Framework.Vector2)"/> where the vector is number2, number3 (Sound and dusts)
++	/// <item/>1: Calls <see cref="Player.AddCoinLuck(Microsoft.Xna.Framework.Vector2, int) "/> on the receiver's local player where the vector is number2, number3 and the integer is number4
++	/// <item/>2: Calls <see cref="NPC.SetNetShimmerEffect"/> where number is <see cref="Entity.whoAmI"/> for the npc
++	/// </list>
++	/// </summary>
+ 	public const byte ShimmerActions = 146;
+ 	public const byte SyncLoadout = 147;
+ 	public const byte SyncItemCannotBeTakenByEnemies = 148;

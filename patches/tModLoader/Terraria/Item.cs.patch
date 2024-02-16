@@ -1853,7 +1853,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,32 @@
+@@ -47318,14 +_,33 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1871,6 +1871,7 @@
 +		InterruptChannelOnHurt = false;
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
++		PreventingChainedShimmers = false;
 +		ChangePlayerDirectionOnShoot = true;
 +
  		sentry = false;
@@ -1930,7 +1931,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -47649,7 +_,18 @@
+@@ -47649,11 +_,38 @@
  		return true;
  	}
  
@@ -1948,7 +1949,27 @@
 +	/// <returns>The converted value.</returns>
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
++	/// <summary> <inheritdoc/> <br/>
++	/// For this <see cref="Item"/> override it checks for <see cref="ItemLoader.CanShimmer(Item)"/> and for any of the following:
++	/// <list type="number">
++	/// <item/> <see cref="ShimmerTransformation{Item}.AnyValidModShimmer"/>
++	/// <item/> (type == 1326 || type == 779 || type == 3031 || type == 5364) and NPC.downedMoonlord
++	/// <item/> (type == 4986 and !NPC.unlockedSlimeRainbowSpawn)
++	/// <item/> (type == 3461 || createTile == 139)
++	/// <item/> ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] is less than or equal to 0 and FindDecraftAmount() is less than or equal to 0 and ItemID.Sets.CoinLuckValue[type] is less than or equal to 0 and makeNPC is greater than 0
++	/// </list>
++	/// </summary>
++	/// <inheritdoc/>
  	public bool CanShimmer()
+ 	{
++		if (!ItemLoader.CanShimmer(this)) // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
++			return false;
++		if (ShimmerTransformation<Item>.AnyValidModShimmer(this))
++			return true;
++
+ 		int shimmerEquivalentType = GetShimmerEquivalentType();
+ 		if (ShimmerTransforms.IsItemTransformLocked(shimmerEquivalentType))
+ 			return false;
 @@ -47668,7 +_,7 @@
  		if (type == 3461 || createTile == 139)
  			flag = true;
@@ -1958,8 +1979,44 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -47723,7 +_,9 @@
+@@ -47682,7 +_,7 @@
+ 			if (!WorldGen.InWorld(num, num2) || Main.tile[num, num2] == null || Main.tile[num, num2].liquid <= 0 || !Main.tile[num, num2].shimmer())
+ 				return;
+ 
+-			if (playerIndexTheItemIsReservedFor == Main.myPlayer && Main.netMode != 1) {
++			if (playerIndexTheItemIsReservedFor == Main.myPlayer && Main.netMode != 1 && !PreventingChainedShimmers) {
+ 				shimmerTime += 0.01f;
+ 				if (shimmerTime > 0.9f) {
+ 					shimmerTime = 0.9f;
+@@ -47700,6 +_,8 @@
+ 			if (shimmerTime < 0f)
+ 				shimmerTime = 0f;
+ 		}
++		else
++			PreventingChainedShimmers = false;
+ 	}
+ 
+ 	private int FindDecraftAmount()
+@@ -47713,17 +_,27 @@
+ 
+ 	private int GetShimmerEquivalentType()
  	{
++		/*
+ 		if (ItemID.Sets.ShimmerCountsAsItem[type] != -1)
+ 			return ItemID.Sets.ShimmerCountsAsItem[type];
+ 
+ 		return type;
++		*/
++		return (this as IModShimmerable).ShimmerRedirectedType; // TML: #AdvancedShimmerTransformations, does ShimmerTransformation redirects first
+ 	}
+ 
+ 	private void GetShimmered()
+ 	{
++		if (ShimmerTransformation<Item>.TryModShimmer(this)) { // TML: #AdvancedShimmerTransformations, includes all logic.
++			OnShimmer(); // ModItem and GlobalItem
++			return;
++		}
++
  		int shimmerEquivalentType = GetShimmerEquivalentType();
  		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
 -		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
@@ -1987,6 +2044,31 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47869,12 +_,16 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++				/* TML: Recipe.alchemy is unused due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ShimmerConsumeItem(recipe, item2.type, ref num16);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+@@ -47930,6 +_,7 @@
+ 			makeNPC = -1;
+ 			active = false;
+ 		}
++		OnShimmer(); // TML: #AdvancedShimmerTransformations, ModItem and GlobalItem
+ 	}
+ 
+ 	public static void ShimmerEffect(Vector2 shimmerPositon)
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;

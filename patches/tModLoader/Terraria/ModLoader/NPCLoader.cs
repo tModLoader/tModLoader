@@ -1464,4 +1464,29 @@ public static class NPCLoader
 	}
 
 	internal static HookList HookSaveData = AddHook<Action<NPC, TagCompound>>(g => g.SaveData);
+
+	private static HookList HookCanShimmer = AddHook<Func<NPC, bool>>(g => g.CanShimmer);
+
+	public static bool CanShimmer(NPC npc)
+	{
+		if (npc.ModNPC?.CanShimmer() == false)
+			return false;
+
+		foreach (var g in HookCanShimmer.Enumerate(npc)) {
+			if (!g.CanShimmer(npc))
+					return false;
+		}
+
+		return true;
+	}
+
+	private static HookList HookOnShimmer = AddHook<Action<NPC>>(g => g.OnShimmer);
+
+	public static void OnShimmer(NPC npc)
+	{
+		npc.ModNPC?.OnShimmer();
+
+		foreach (var g in HookOnShimmer.Enumerate(npc))
+			g.OnShimmer(npc);
+	}
 }
