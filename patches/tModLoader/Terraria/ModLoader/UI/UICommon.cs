@@ -132,6 +132,11 @@ public static class UICommon
 	public static Asset<Texture2D> InfoDisplayPageArrowTexture { get; internal set; }
 	public static Asset<Texture2D> tModLoaderTitleLinkButtonsTexture { get; internal set; }
 	public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
+	public static Asset<Texture2D> ModSideBothIconTexture { get; internal set; }
+	public static Asset<Texture2D> ModSideClientIconTexture { get; internal set; }
+	public static Asset<Texture2D> ModSideServerIconTexture { get; internal set; }
+	public static Asset<Texture2D> ModSideNoSyncIconTexture { get; internal set; }
+	public static Asset<Texture2D> ModSideUnknownIconTexture { get; internal set; }
 
 	internal static void LoadTextures()
 	{
@@ -161,5 +166,11 @@ public static class UICommon
 		InfoDisplayPageArrowTexture = LoadEmbeddedTexture("UI.InfoDisplayPageArrow");
 		tModLoaderTitleLinkButtonsTexture = LoadEmbeddedTexture("UI.tModLoaderTitleLinkButtons");
 		CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
+
+		ModSideBothIconTexture = LoadEmbeddedTexture("UI.ModSideBothIcon");
+		ModSideClientIconTexture = LoadEmbeddedTexture("UI.ModSideClientIcon");
+		ModSideServerIconTexture = LoadEmbeddedTexture("UI.ModSideServerIcon");
+		ModSideNoSyncIconTexture = LoadEmbeddedTexture("UI.ModSideNoSyncIcon");
+		ModSideUnknownIconTexture = LoadEmbeddedTexture("UI.ModSideUnknownIcon");
 	}
 }

@@ -229,6 +229,9 @@ internal class UIModItem : UIPanel
 			Append(_keyImage);
 		}
 
+
+		float modSideIconXOffset = -22;
+
 		if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
 			BackgroundColor = Color.MediumPurple * 0.7f;
 			modFromLocalModFolder = true;
@@ -238,14 +241,28 @@ internal class UIModItem : UIPanel
 				Left = { Pixels = -22, Percent = 1f }
 			};
 			Append(steamIcon);
+
+			modSideIconXOffset -= 22;
 		}
+
+		var modSideIconTexture = _mod.properties.side switch {
+			ModSide.Both => UICommon.ModSideBothIconTexture,
+			ModSide.Client => UICommon.ModSideClientIconTexture,
+			ModSide.Server => UICommon.ModSideServerIconTexture,
+			ModSide.NoSync => UICommon.ModSideNoSyncIconTexture,
+			_ => UICommon.ModSideUnknownIconTexture
+		};
+		var modSideIcon = new UIImage(modSideIconTexture) {
+			Left = { Pixels = modSideIconXOffset, Percent = 1f }
+		};
+		Append(modSideIcon);
 
 		if (loadedMod != null) {
 			_loaded = true;
 			// TODO: refactor and add nicer icons (and maybe not iterate 6 times)
 			int[] values = { loadedMod.GetContent<ModItem>().Count(), loadedMod.GetContent<ModNPC>().Count(), loadedMod.GetContent<ModTile>().Count(), loadedMod.GetContent<ModWall>().Count(), loadedMod.GetContent<ModBuff>().Count(), loadedMod.GetContent<ModMount>().Count() };
 			string[] localizationKeys = { "ModsXItems", "ModsXNPCs", "ModsXTiles", "ModsXWalls", "ModsXBuffs", "ModsXMounts" };
-			int xOffset = -40;
+			int xOffset = -60;
 
 			for (int i = 0; i < values.Length; i++) {
 				if (values[i] > 0) {
