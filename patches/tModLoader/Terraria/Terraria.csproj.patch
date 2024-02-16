@@ -109,7 +109,7 @@
 +		<!-- Needed for the tModLoader.BuildTasks to be able to convert images to .rawimg that can be packed into the .tmod file -->
 +		<Copy SourceFiles="$(PkgSixLabors_ImageSharp)\lib\netstandard2.0\SixLabors.ImageSharp.dll" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
 +		<!-- Newtonsoft.Json is needed for enabling mods in tModLoader.BuildTasks -->
-+		<Copy SourceFiles="$(TargetDir)Libraries/newtonsoft.json/12.0.0.0/Newtonsoft.Json.dll" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
++		<Copy SourceFiles="$(TargetDir)Libraries/Newtonsoft.Json/12.0.0.0/Newtonsoft.Json.dll" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="True" />
 +		<Copy SourceFiles="$(BuildTasksAssemblyFile)" DestinationFolder="$(TargetDir)Libraries/tModLoader.BuildTasks/1.0.0/" SkipUnchangedFiles="true" />
 +	</Target>
 +	
