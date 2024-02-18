@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/UI/FancyErrorPrinter.cs
 +++ src/tModLoader/Terraria/UI/FancyErrorPrinter.cs
-@@ -5,6 +_,7 @@
+@@ -5,6 +_,8 @@
  using System.Windows.Forms;
  using ReLogic.Content;
  using ReLogic.OS;
 +using Terraria.ModLoader.Engine;
++using Terraria.ModLoader.Exceptions;
  
  namespace Terraria.UI;
  
@@ -18,6 +19,21 @@
  		}
  	}
  
+@@ -55,6 +_,14 @@
+ 		if (exception is DirectoryNotFoundException)
+ 			flag = true;
+ 
++		if (exception is CustomModDataException ex) {
++			StringBuilder stringBuilder = new StringBuilder();
++			stringBuilder.AppendLine($"Failed to save world because this mod is failing: {ex.modName}");
++			stringBuilder.AppendLine();
++			IncludeOriginalMessage(stringBuilder, ex);
++			ErrorReporting.MessageBoxShow(stringBuilder.ToString());
++		}
++
+ 		if (flag) {
+ 			StringBuilder stringBuilder = new StringBuilder();
+ 			stringBuilder.AppendLine("Failed to create the file: \"" + filePath.Replace("/", "\\") + "\"!");
 @@ -72,8 +_,7 @@
  			AppendSuggestions(stringBuilder, list);
  			stringBuilder.AppendLine();

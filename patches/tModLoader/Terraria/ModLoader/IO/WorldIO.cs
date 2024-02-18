@@ -493,17 +493,24 @@ internal static class WorldIO
 		var saveData = new TagCompound();
 
 		foreach (var system in SystemLoader.Systems) {
-			system.SaveWorldData(saveData);
+			try {
+				system.SaveWorldData(saveData);
 
-			if (saveData.Count == 0)
-				continue;
+				if (saveData.Count == 0)
+					continue;
 
-			list.Add(new TagCompound {
-				["mod"] = system.Mod.Name,
-				["name"] = system.Name,
-				["data"] = saveData
-			});
-			saveData = new TagCompound();
+				list.Add(new TagCompound {
+					["mod"] = system.Mod.Name,
+					["name"] = system.Name,
+					["data"] = saveData
+				});
+				saveData = new TagCompound();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod,
+					"Error in saving custom world data for " + system.Mod.Name, e);
+			}
+
 		}
 
 		return list;
