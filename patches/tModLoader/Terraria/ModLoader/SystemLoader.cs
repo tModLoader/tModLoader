@@ -7,6 +7,7 @@ using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Exceptions;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -114,21 +115,36 @@ public static partial class SystemLoader
 	public static void OnWorldLoad()
 	{
 		foreach (var system in HookOnWorldLoad.Enumerate()) {
-			system.OnWorldLoad();
+			try {
+				system.OnWorldLoad();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod, e.Message, e);
+			}
 		}
 	}
 
 	public static void OnWorldUnload()
 	{
 		foreach (var system in HookOnWorldUnload.Enumerate()) {
-			system.OnWorldUnload();
+			try {
+				system.OnWorldUnload();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod, e.Message, e);
+			}
 		}
 	}
 
 	public static void ClearWorld()
 	{
 		foreach (var system in HookClearWorld.Enumerate()) {
-			system.ClearWorld();
+			try {
+				system.ClearWorld();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod, e.Message, e);
+			}
 		}
 	}
 
