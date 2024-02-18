@@ -262,7 +262,7 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
-@@ -2624,30 +_,62 @@
+@@ -2624,30 +_,61 @@
  					worldBackup = false;
  
  				if (!Main.dedServ) {
@@ -271,10 +271,9 @@
 -					else
 -						Main.menuMode = 201;
 -
-+					CustomModDataException ex = WorldFile.LastThrownLoadException as CustomModDataException;
 +					// Is the loading error mod related?
-+					if (ex != null)
-+						Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.WorldIOException")}\n{ ex.modName}\n\n{ex.Message}\n{ex.StackTrace}", worldBackup ? 200 : 201);
++					if (WorldFile.LastThrownLoadException is CustomModDataException ex)
++						Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.WorldIOException")}\n{ex.modName}\n\n{ex.Message}\n{ex.StackTrace}", worldBackup ? 200 : 201);
 +					else {
 +						if (worldBackup)
 +							Main.menuMode = 200;
