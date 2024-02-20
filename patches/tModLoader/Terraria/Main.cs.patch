@@ -5315,7 +5315,7 @@
  				SoundEngine.PlaySound(10);
  				ClearPendingPlayerSelectCallbacks();
  				menuMode = 1;
-+				ShowModsNeedReloadMenuInsteadIfNeeded();
++				PrepareLoadedModsAndConfigsForSingleplayer();
  			}
  
  			num11++;

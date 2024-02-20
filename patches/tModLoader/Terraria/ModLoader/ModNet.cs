@@ -34,6 +34,7 @@ public static class ModNet
 		}
 
 		public bool Matches(TmodFile mod) => name == mod.Name && version == mod.Version && hash.SequenceEqual(mod.Hash);
+		public bool MatchesNameAndVersion(TmodFile mod) => name == mod.Name && version == mod.Version;
 		public override string ToString() => $"{name} v{version}[{string.Concat(hash[..4].Select(b => b.ToString("x2")))}]";
 	}
 
@@ -229,58 +230,20 @@ public static class ModNet
 
 			LocalMod matching = modFiles.FirstOrDefault(mod => header.Matches(mod.modFile));
 			if (matching != null) {
-				if(clientMod != null) {
-					// Mod is enabled, but wrong version enabled
-					if(clientMod.Version > header.version) {
-						// TODO: Localize these messages once finalized
-						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, $"[c/FFFACD:Switch] to v{header.version}\n(Temporarily downgrade from v{clientMod.Version})"));
-					}
-					else {
-						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, $"[c/FFFACD:Switch] to v{header.version}\n(Temporarily upgrade from v{clientMod.Version})"));
-					}
-				}
-				else {
+				MakeEnableOrVersionSwitchExplanationEntries(reloadRequiredExplanationEntries, header, clientMod, matching);
+				if (clientMod == null) {
 					toEnable.Add(matching.Name);
-					reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(3, header.name, matching, $"[c/98FB98:Enable]")); 
 				}
-
 				continue;
 			}
 
 			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
 				downloadQueue.Enqueue(header);
-				if (modFiles.FirstOrDefault(mod => mod.Name == header.name && mod.Version == header.version) is LocalMod localMod) {
-					// We have the correct mod and version, but hash is different.
-					// We could differentiate between a workshop mod being different and a local mod, which is likely because user is mod dev or playtester.
-					//if(localMod.location == ModLocation.Workshop)
-					//	reloadRequiredExplanationEntries.Add(new Reason(1, header.name, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n[c/ff0000:(Mod differs from local copy, it may have been edited!)]", localMod));
-					//else
-					reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localMod, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n(Mod file differs from local copy)"));
-				}
-				else {
-					LocalMod localModMatchingNameOnly = modFiles.Where(mod => mod.Name == header.name).OrderByDescending(mod => mod.Version).FirstOrDefault(); // Technically might show mod icon from .tmod file that won't be selected to load, but this is fine.
-					if (localModMatchingNameOnly == null) {
-						// We don't have the mod.
-						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, null, $"[c/00BFFF:Download] v{header.version} from server"));
-					}
-					else {
-						if (clientMod != null ) {
-							// We have the mod enabled, but not the correct version.
-							if (clientMod.Version > header.version)
-								reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server\n(Temporarily downgrade from v{clientMod.Version})"));
-							else
-								reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server\n(Upgrade from v{clientMod.Version})"));
-						}
-						else {
-							// We have the mod, but not the correct version.
-							reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server"));
-						}
-					}
-
-				}
+				MakeDownloadModExplanationEntries(modFiles, reloadRequiredExplanationEntries, header, clientMod);
 			}
-			else
+			else {
 				blockedList.Add(header);
+			}
 		}
 
 		Logging.tML.Debug($"Server mods:\n\t\t" + string.Join("\n\t\t", SyncModHeaders));
@@ -328,22 +291,13 @@ public static class ModNet
 			}
 		}
 
-		// If needsReload is still false, apply configs to real ModConfig instances and join server directly
-		if (!needsReload) {
-			foreach (NetConfig pendingConfig in pendingConfigs)
-				JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
-
-			foreach (NetConfig pendingConfig in pendingConfigs)
-				ConfigManager.GetConfig(pendingConfig).OnChanged();
-		}
-		else {
-			// Otherwise, show the ServerModsDifferMessage UI.
+		if (needsReload) {
+			// If needsReload, show the ServerModsDifferMessage UI.
 			string continueButtonText = downloadQueue.Count > 0 ? "Download and Continue" : "Reload and Continue";
 			Interface.serverModsDifferMessage.Show($"Due to the following mod version or config differences, mods will reload if you join this server. Press \"{continueButtonText}\" to join this server.",
-				0, // back to main menu
-				null,
-				continueButtonText,
-				() => {
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
 					foreach (var name in toDisable) {
 						ModLoader.DisableMod(name);
 					}
@@ -356,18 +310,75 @@ public static class ModNet
 					else
 						OnModsDownloaded(true);
 				},
-				"Back",
-				() => {
+				backButtonText: "Back",
+				backButtonAction: () => {
 					Netplay.Disconnect = true;
 				},
-				reloadRequiredExplanationEntries.OrderBy(x => x.typeOrder).ThenBy(x => x.mod).ToList()
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
 			);
 
 			// Do we need to worry about connection timeouts while the ServerModsDifferMessage window is open?
 			return false;
 		}
+		else {
+			// Otherwise, apply configs to real ModConfig instances and join server directly
+			foreach (NetConfig pendingConfig in pendingConfigs)
+				JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
 
-		return true;
+			foreach (NetConfig pendingConfig in pendingConfigs)
+				ConfigManager.GetConfig(pendingConfig).OnChanged();
+
+			return true;
+		}
+	}
+
+	private static void MakeEnableOrVersionSwitchExplanationEntries(List<ReloadRequiredExplanation> reloadRequiredExplanationEntries, ModHeader header, Mod clientMod, LocalMod matching)
+	{
+		if (clientMod != null) {
+			// Mod is enabled, but wrong version enabled
+			if (clientMod.Version > header.version) {
+				// TODO: Localize these messages once finalized
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, $"[c/FFFACD:Switch] to v{header.version}\n(Temporarily downgrade from v{clientMod.Version})"));
+			}
+			else {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, $"[c/FFFACD:Switch] to v{header.version}\n(Temporarily upgrade from v{clientMod.Version})"));
+			}
+		}
+		else {
+			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(3, header.name, matching, $"[c/98FB98:Enable]"));
+		}
+	}
+
+	private static void MakeDownloadModExplanationEntries(LocalMod[] modFiles, List<ReloadRequiredExplanation> reloadRequiredExplanationEntries, ModHeader header, Mod clientMod)
+	{
+		if (modFiles.FirstOrDefault(mod => header.MatchesNameAndVersion(mod.modFile)) is LocalMod localMod) {
+			// We have the correct mod and version, but hash is different.
+			// We could differentiate between a workshop mod being different and a local mod, which is likely because user is mod dev or playtester.
+			//if(localMod.location == ModLocation.Workshop)
+			//	reloadRequiredExplanationEntries.Add(new Reason(1, header.name, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n[c/ff0000:(Mod differs from local copy, it may have been edited!)]", localMod));
+			//else
+			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localMod, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n(Mod file differs from local copy)"));
+		}
+		else {
+			LocalMod localModMatchingNameOnly = modFiles.Where(mod => mod.Name == header.name).OrderByDescending(mod => mod.Version).FirstOrDefault(); // Technically might show mod icon from .tmod file that won't be selected to load, but this is fine.
+			if (localModMatchingNameOnly == null) {
+				// We don't have the mod.
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, null, $"[c/00BFFF:Download] v{header.version} from server"));
+			}
+			else {
+				if (clientMod != null) {
+					// We have the mod enabled, but not the correct version.
+					if (clientMod.Version > header.version)
+						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server\n(Temporarily downgrade from v{clientMod.Version})"));
+					else
+						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server\n(Upgrade from v{clientMod.Version})"));
+				}
+				else {
+					// We have the mod, but not the correct version.
+					reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, $"[c/00BFFF:Download] v{header.version} from server"));
+				}
+			}
+		}
 	}
 
 	private static void DownloadNextMod()

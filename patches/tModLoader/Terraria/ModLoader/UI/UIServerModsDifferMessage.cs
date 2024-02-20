@@ -2,6 +2,7 @@
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -180,7 +181,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 		_continueButtonAction = continueButtonAction;
 		_backText = backButtonText;
 		_backAction = backButtonAction;
-		this.reloadRequiredExplanationEntries = reloadRequiredExplanationEntries;
+		this.reloadRequiredExplanationEntries = reloadRequiredExplanationEntries?.OrderBy(x => x.typeOrder).ThenBy(x => x.mod).ToList();
 		Main.menuMode = Interface.serverModsDifferMessageID;
 		Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 	}

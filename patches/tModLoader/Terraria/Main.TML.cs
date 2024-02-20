@@ -450,7 +450,7 @@ public partial class Main
 		PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
 	}
 
-	private static void ShowModsNeedReloadMenuInsteadIfNeeded()
+	private static void PrepareLoadedModsAndConfigsForSingleplayer()
 	{
 		// If any loaded mod or config differs from normal, intercept SinglePlayer menu with a prompt
 		// TODO: Should this remember the mod loadout before joining server? Right now it only cares about version downgrades. MP mods will still load.
@@ -467,32 +467,35 @@ public partial class Main
 			}
 		}
 
-		if(ConfigManager.AnyModNeedsReloadCheckOnly(normalModsToLoad, reloadRequiredExplanationEntries)) {
-			// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
 			needsReload = true;
-		}
-		else if (!needsReload) {
-			// Otherwise, config changes take effect immediately and the player select menu will be shown
-			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
-			ConfigManager.OnChangedAll();
+			foreach (var mod in modsWithChangedConfigs) {
+				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, $"[c/DDA0DD:Config change]"));
+			}
 		}
 
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
 		if (needsReload) {
 			string continueButtonText = "Reload and Continue";
 			Interface.serverModsDifferMessage.Show($"Due to the following mod version or config differences still present from multiplayer, mods will reload if you enter single player. Press \"{continueButtonText}\" to enter single player.",
-				0, // back to main menu
-				null,
-				continueButtonText,
-				() => {
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
 					ModLoader.ModLoader.OnSuccessfulLoad += () => { Main.menuMode = 1; };
 					ModLoader.ModLoader.Reload();
 				},
-				"Back",
-				() => {
+				backButtonText: "Back",
+				backButtonAction: () => {
 					// Do nothing, logic will to back to main menu
 				},
-				reloadRequiredExplanationEntries.OrderBy(x => x.typeOrder).ThenBy(x => x.mod).ToList()
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
 			);
+		}
+		else {
+			// Otherwise, config changes take effect immediately and the player select menu will be shown
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
+			ConfigManager.OnChangedAll();
 		}
 	}
 }

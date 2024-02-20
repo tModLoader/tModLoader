@@ -263,22 +263,23 @@ public static class ConfigManager
 		return false;
 	}
 
-	internal static bool AnyModNeedsReloadCheckOnly(IEnumerable<LocalMod> normalModsToLoad, List<ReloadRequiredExplanation> reloadRequiredExplanationEntries)
+	internal static bool AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)
 	{
+		modsWithChangedConfigs = new List<Mod>();
 		bool result = false;
 		foreach (var mod in ModLoader.Mods) {
-			if (Configs.ContainsKey(mod)) {
-				var configs = Configs[mod];
-				var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
-				for (int i = 0; i < configs.Count; i++) {
-					var configClone = GeneratePopulatedClone(configs[i]);
-					Load(configClone); // Should load non-server config values from disk since ModNet.NetReloadActive should be false
-					if (loadTimeConfigs[i].NeedsReload(configClone)) {
-						result = true;
-						var normalMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
-						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, normalMod, $"[c/DDA0DD:Config change]"));
-						break;
-					}
+			if (!Configs.ContainsKey(mod)) {
+				continue;
+			}
+			var configs = Configs[mod];
+			var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
+			for (int i = 0; i < configs.Count; i++) {
+				var configClone = GeneratePopulatedClone(configs[i]);
+				Load(configClone); // Should load non-server config values from disk since ModNet.NetReloadActive should be false
+				if (loadTimeConfigs[i].NeedsReload(configClone)) {
+					result = true;
+					modsWithChangedConfigs.Add(mod);
+					break;
 				}
 			}
 		}
