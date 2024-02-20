@@ -12,6 +12,10 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI;
 
+/// <summary>
+/// <paramref name="typeOrder"/> dictates the order specific explanations are shown:
+/// <br/> 1: Download, 2: Switch Version, 3: Enable, 4: Disable, 5: Config Change
+/// </summary>
 internal record ReloadRequiredExplanation(int typeOrder, string mod, LocalMod localMod, string reason);
 
 internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
