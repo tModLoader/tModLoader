@@ -39,6 +39,10 @@ internal class UILoadMods : UIProgress
 		if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
 		Progress = 0;
 		SubProgressText = "";
+
+		if (Main.dedServ && ServerClientIPC.ClientPipe != null) {
+			ServerClientIPC.SendCurrentStage(stageText, modCount);
+		}
 	}
 
 	private void SetProgressText(string text, string logText = null)
@@ -55,6 +59,10 @@ internal class UILoadMods : UIProgress
 		var log = $"{modName} ({displayName}) v{version}";
 		SetProgressText(Language.GetTextValue(stageText, display), Language.GetTextValue(stageText, log));
 		Progress = i / (float)modCount;
+
+		if (Main.dedServ && ServerClientIPC.ClientPipe != null) {
+			ServerClientIPC.SendCurrentMod(i, displayName, version);
+		}
 	}
 
 	public void SetCurrentMod(int i, Mod mod) => SetCurrentMod(i, mod.Name, mod.DisplayName, mod.Version);

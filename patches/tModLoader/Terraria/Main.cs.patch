@@ -221,6 +221,16 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
+@@ -606,7 +_,8 @@
+ 	public static BasicDebugDrawer DebugDrawer;
+ 	public static SamplerState SamplerStateForCursor = SamplerState.LinearClamp;
+ 	public static GenerationProgress AutogenProgress = new GenerationProgress();
++	// TML: #HostPlayProgress: Turned to public for use with UIStartServer
+-	private static Process tServer;
++	public static Process tServer;
+ 	private static Stopwatch saveTime = new Stopwatch();
+ 	public static KeyboardState keyState;
+ 	public static KeyboardState oldKeyState;
 @@ -671,7 +_,15 @@
  	public static float rightWorld = 134400f;
  	public static float topWorld = 0f;
@@ -1048,7 +1058,7 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4157,17 +_,32 @@
+@@ -4157,17 +_,39 @@
  			}
  		}
  		else {
@@ -1059,6 +1069,13 @@
  		dedServ = true;
  		showSplash = false;
  		Initialize();
++
++		if (Program.LaunchParameters.ContainsKey("-serverclientipc")) {
++			var client = ServerClientIPC.InitClient();
++			Logging.tML.Debug("IPC Client Connecting...");
++			client.Connect();
++			Logging.tML.Debug("IPC Client Connected.");
++		}
 +
 +		bool reloadMods;
 +
@@ -5510,7 +5527,7 @@
  		if (menuMode == num)
  			GamepadMainMenuHandler.LastDrew = num;
  	}
-@@ -42624,7 +_,15 @@
+@@ -42624,7 +_,18 @@
  
  		text = ((!ActiveWorldFileData.IsCloudSave) ? (text + SanitizePathArgument("world", worldPathName)) : (text + SanitizePathArgument("cloudworld", worldPathName)));
  		text = text + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
@@ -5520,13 +5537,16 @@
 +		if (showServerConsole)
 +			text += " -showserverconsole";
 +
++		ServerClientIPC.InitServer();
++		text += " -serverclientipc";
++
  		tServer = new Process();
 +
 +		/*
  		if (Platform.IsLinux)
  			tServer.StartInfo.FileName = "TerrariaServer";
  		else if (Platform.IsOSX)
-@@ -42633,13 +_,22 @@
+@@ -42633,23 +_,37 @@
  			tServer.StartInfo.FileName = "TerrariaServer.exe";
  
  		tServer.StartInfo.Arguments = text;
@@ -5549,6 +5569,21 @@
  		if (SocialAPI.Network != null)
  			SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  		else
+ 			tServer.Start();
+ 
++		/*
+ 		Netplay.SetRemoteIP("127.0.0.1");
+ 		autoPass = true;
+ 		statusText = Lang.menu[8].Value;
+ 		Netplay.StartTcpClient();
+ 		menuMode = 10;
++		*/
++
++		menuMode = 888;
++		MenuUI.SetState(Interface.startServer);
+ 	}
+ 
+ 	private static void ExitServerPasswordMenu()
 @@ -42703,7 +_,22 @@
  
  	private static void DrawVersionNumber(Microsoft.Xna.Framework.Color menuColor, float upBump)

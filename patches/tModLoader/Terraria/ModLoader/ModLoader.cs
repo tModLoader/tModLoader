@@ -197,10 +197,16 @@ public static class ModLoader
 
 	internal static void Reload()
 	{
-		if (Main.dedServ)
+		if (Main.dedServ) {
 			Load();
-		else
+			if (ServerClientIPC.ClientPipe != null) {
+				ServerClientIPC.ShutdownClient();
+			}
+		}
+		else {
 			Main.menuMode = Interface.loadModsID;
+		}
+			
 	}
 
 	internal static bool Unload()
