@@ -1,8 +1,8 @@
-﻿using System;
-using ExampleMod.Content.Tiles;
+﻿using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -99,7 +99,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 						// Convert all walls to ExampleWall (or ExampleWallUnsafe for SpiderUnsafe)
 						if (wall != 0 && wall != ModContent.WallType<ExampleWallUnsafe>()) {
-							if(wall == WallID.SpiderUnsafe)
+							if (wall == WallID.SpiderUnsafe)
 								Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWallUnsafe>();
 							else
 								Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWall>();
@@ -114,11 +114,11 @@ namespace ExampleMod.Content.Items.Ammo
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						// If the tile is sand, convert to ExampleSand
-						// else if (TileID.Sets.Conversion.Sand[type]) {
-						// 	Main.tile[k, l].type = (ushort)TileType<ExampleSand>();
-						// 	WorldGen.SquareTileFrame(k, l);
-						// 	NetMessage.SendTileSquare(-1, k, l, 1);
-						// }
+						else if (TileID.Sets.Conversion.Sand[type]) {
+							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleSand>();
+							WorldGen.SquareTileFrame(k, l);
+							NetMessage.SendTileSquare(-1, k, l, 1);
+						}
 						// If the tile is a chair, convert to ExampleChair
 						else if (type == TileID.Chairs && Main.tile[k, l - 1].TileType == TileID.Chairs) {
 							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleChair>();

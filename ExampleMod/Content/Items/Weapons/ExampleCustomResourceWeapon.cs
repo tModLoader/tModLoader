@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using ExampleMod.Common.Players;
+﻿using ExampleMod.Common.Players;
 using ExampleMod.Content.Tiles.Furniture;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;

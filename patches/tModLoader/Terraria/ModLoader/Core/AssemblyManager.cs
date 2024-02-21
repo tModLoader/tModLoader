@@ -12,6 +12,7 @@ using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
 
 namespace Terraria.ModLoader.Core;
 
@@ -330,7 +331,7 @@ public static class AssemblyManager
 		}
 		catch (Exception e) {
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n" + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] is Type type ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -338,18 +339,27 @@ public static class AssemblyManager
 
 	private static bool IsLoadable(ModLoadContext mod, Type type)
 	{
-		foreach (var attr in type.GetCustomAttributesData()) {
-			if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
-				var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
-				if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
-					return false;
+		try {
+			foreach (var attr in type.GetCustomAttributesData()) {
+				if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
+					var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
+					if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
+						return false;
+				}
 			}
+
+			if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
+				return false;
+
+			if (type.DeclaringType != null && !IsLoadable(mod, type.DeclaringType))
+				return false;
+
+			return type.GetInterfaces().All(i => IsLoadable(mod, i));
 		}
-
-		if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
-			return false;
-
-		return type.GetInterfaces().All(i => IsLoadable(mod, i));
+		catch (FileNotFoundException e) {
+			e.Data["type"] = type;
+			throw;
+		}
 	}
 
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
@@ -360,8 +370,10 @@ public static class AssemblyManager
 		foreach (var assembly in assemblies) {
 			const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
 
+			bool ShouldJITRecursive(Type type) => filter.ShouldJIT(type) && (type.DeclaringType is null || ShouldJITRecursive(type.DeclaringType));
+
 			var methodsToJIT = GetLoadableTypes(assembly)
-				.Where(filter.ShouldJIT)
+				.Where(ShouldJITRecursive)
 				.SelectMany(type =>
 					type.GetMethods(ALL)
 						.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
@@ -393,10 +405,23 @@ public static class AssemblyManager
 				}
 			}
 		}
-		if (exceptions.Count > 0) {
-			var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
-			throw new Exceptions.JITException(message);
+
+		if (exceptions.IsEmpty)
+			return;
+
+		var message = "\n";
+		if (exceptions.Select(x => x.exception).OfType<FileNotFoundException>().FirstOrDefault() is Exception ex && Regex.Match(ex.Message, "'(\\w+), Version=") is { Success: true } m) {
+			var modName = m.Groups[1].Value;
+			message += $"If {modName} is an assembly from a weak-referenced mod consider adding a [JitWhenModsEnabled(\"ModName\")] attribute to the method, property, lambda or containing class.\n";
+
+			if (exceptions.Any(x => x.exception is FileNotFoundException && x.method.Name.Contains("<lambda>")))
+				message += "Make sure to apply the [JitWhenModsEnabled] attribute directly to the lambda or a containing class. Attributes on methods do not apply to lambdas inside them.\n";
+
+			message += "\n";
 		}
+
+		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
+		throw new Exceptions.JITException(message);
 	}
 
 	private static void ForceJITOnMethod(MethodBase method)

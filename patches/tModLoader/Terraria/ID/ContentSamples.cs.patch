@@ -28,7 +28,7 @@
 +					Group = GetItemGroup(item, out OrderInGroup);
 +				}
 +				catch (Exception e) {
-+					throw new Exception($"An exception occured while processing {(ItemLoader.IsModItem(item.type) ? item.ModItem.FullName : item.Name)}", e);
++					throw new Exception($"An exception occurred while processing {(ItemLoader.IsModItem(item.type) ? item.ModItem.FullName : item.Name)}", e);
 +				}
 +
 +				ItemLoader.ModifyResearchSorting(item, ref Group);

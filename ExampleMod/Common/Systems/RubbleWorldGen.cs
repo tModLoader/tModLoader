@@ -1,10 +1,6 @@
 ﻿using ExampleMod.Content.Tiles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.IO;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;

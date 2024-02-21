@@ -369,6 +369,7 @@ public abstract partial class ModSystem : ModType
 	/// A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. <para/>
 	/// For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. <para/>
 	/// To disable or hide generation passes, please use <see cref="GenPass.Disable"/> and defensive coding.
+	/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#determining-a-suitable-index">"Determining a suitable index" section of the World Generation wiki guide</see> for more information about how to properly use this for adding new world generation passes.
 	/// </summary>
 	public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) { }
 

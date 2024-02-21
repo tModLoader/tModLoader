@@ -64,7 +64,7 @@ internal class UIModItem : UIPanel
 		Height.Pixels = 90;
 		Width.Percent = 1f;
 		SetPadding(6f);
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(_mod.DisplayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
+		DisplayNameClean = _mod.DisplayNameClean;
 	}
 
 	public override void OnInitialize()
@@ -468,7 +468,7 @@ internal class UIModItem : UIPanel
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfigList.SelectedMod = ModLoader.GetMod(ModName);
+		Interface.modConfigList.ModToSelectOnOpen = ModLoader.GetMod(ModName);
 		Main.menuMode = Interface.modConfigListID;
 	}
 
@@ -581,6 +581,8 @@ internal class UIModItem : UIPanel
 				IsWrapped = true
 			};
 			_deleteModDialog.Append(_dialogText);
+
+			Interface.modsMenu.Recalculate();
 		}
 		else {
 			DeleteMod(evt, listeningElement);

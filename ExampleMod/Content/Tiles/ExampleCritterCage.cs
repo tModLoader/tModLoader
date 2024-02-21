@@ -54,6 +54,7 @@ namespace ExampleMod.Content.Tiles
 			CreateRecipe()
 				.AddIngredient(ItemID.Terrarium)
 				.AddIngredient(ModContent.ItemType<NPCs.ExampleCritterItem>())
+				.SortAfterFirstRecipesOf(ItemID.FrogCage) // places the recipe right after vanilla frog cage recipe.
 				.Register();
 		}
 	}

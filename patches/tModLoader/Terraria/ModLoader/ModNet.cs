@@ -447,7 +447,7 @@ public static class ModNet
 					mod.Close();
 
 				downloadingLength = reader.ReadInt64();
-				Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength}bytes");
+				Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength} bytes");
 				downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 				return;
 			}

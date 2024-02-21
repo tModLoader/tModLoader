@@ -37,6 +37,7 @@ public static class ModLoader
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
 	public static Version LastPreviewFreezeNotificationSeen;
+	public static int LatestNewsTimestamp; 
 
 	// Update this name if doing an upgrade 
 	public static bool BetaUpgradeWelcomed144;
@@ -348,6 +349,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
+		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 	}
 
 	internal static void LoadConfiguration()
@@ -375,6 +377,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(BetaUpgradeWelcomed144), ref BetaUpgradeWelcomed144);
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
+		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
 	}
 
 	internal static void MigrateSettings()

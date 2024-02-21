@@ -75,6 +75,12 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
+	
+	private string displayNameClean;
+	/// <summary>
+	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.
+	/// </summary>
+	public string DisplayNameClean => displayNameClean ??= Utils.CleanChatTags(DisplayName);
 
 	public AssetRepository Assets { get; private set; }
 
@@ -89,6 +95,10 @@ public partial class Mod
 	public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
+
+	public Mod() {
+		Content = new ContentCache(this);
+	}
 
 	internal void AutoloadConfig()
 	{
@@ -142,7 +152,7 @@ public partial class Mod
 			return false;
 
 		instance.Load(this);
-		content.Add(instance);
+		Content.Add(instance);
 		ContentInstance.Register(instance);
 		return true;
 	}
@@ -151,13 +161,13 @@ public partial class Mod
 	/// Returns all registered content instances that are added by this mod.
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
-	public IEnumerable<ILoadable> GetContent() => content;
+	public IEnumerable<ILoadable> GetContent() => Content.GetContent();
 
 	/// <summary>
 	/// Returns all registered content instances that derive from the provided type that are added by this mod.
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
-	public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
+	public IEnumerable<T> GetContent<T>() where T : ILoadable => Content.GetContent<T>();
 
 	/// <summary> Attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
@@ -168,11 +178,21 @@ public partial class Mod
 	public bool TryFind<T>(string name, out T value) where T : IModType => ModContent.TryFind(Name, name, out value);
 
 	/// <summary>
-	/// Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <see cref="Language.GetOrRegister(string, Func{string})"/> to retrieve a <see cref="LocalizedText"/> for custom localization keys. Custom localization keys need to be registered during the mod loading process to appear automtaically in the localization files.
+	/// Creates a localization key following the pattern of "Mods.{ModName}.{suffix}". Use this with <see cref="Language.GetOrRegister(string, Func{string})"/> to retrieve a <see cref="LocalizedText"/> for custom localization keys. Alternatively <see cref="GetLocalization(string, Func{string})"/> can be used directly instead. Custom localization keys need to be registered during the mod loading process to appear automatically in the localization files.
 	/// </summary>
 	/// <param name="suffix"></param>
 	/// <returns></returns>
 	public string GetLocalizationKey(string suffix) => $"Mods.{Name}.{suffix}";
+
+	/// <summary>
+	/// Returns a <see cref="LocalizedText"/> for this Mod with the provided <paramref name="suffix"/>. The suffix will be used to generate a key by providing it to <see cref="GetLocalizationKey(string)"/>.
+	/// <br/>If no existing localization exists for the key, it will be defined so it can be exported to a matching mod localization file.
+	/// </summary>
+	/// <param name="suffix"></param>
+	/// <param name="makeDefaultValue">A factory method for creating the default value, used to update localization files with missing entries</param>
+	/// <returns></returns>
+	public LocalizedText GetLocalization(string suffix, Func<string> makeDefaultValue = null) =>
+		Language.GetOrRegister(GetLocalizationKey(suffix), makeDefaultValue);
 
 	/// <summary>
 	/// Assigns a head texture to the given town NPC type.

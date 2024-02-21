@@ -107,7 +107,7 @@ public static class MonoModHooks
 
 		foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
 			if (assemblyDetours.TryGetValue(asm, out var list)) {
-				Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.DisplayName}");
+				Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.Name}");
 
 				foreach (var detour in list.detours)
 					if (detour.IsApplied)
@@ -118,7 +118,10 @@ public static class MonoModHooks
 						ilHook.Undo();
 			}
 		}
+	}
 
+	internal static void Clear()
+	{
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
 		_hookCache.Clear();
