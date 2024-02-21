@@ -200,10 +200,10 @@ public partial class WorkshopHelper
 		};
 
 		if (string.IsNullOrWhiteSpace(values["author"]))
-			throw new WebException($"You need to specify an author in build.txt");
+			throw new WebException($"You need to specify an author in build.txt or the mod's .csproj");
 
 		if (string.IsNullOrWhiteSpace(values["version"]))
-			throw new WebException($"You need to specify a version in build.txt");
+			throw new WebException($"You need to specify a version in build.txt or the mod's .csproj");
 
 		if (!Main.dedServ) {
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
@@ -232,7 +232,7 @@ public partial class WorkshopHelper
 					UsedTags = usedTags,
 					PreviewImagePath = iconPath
 				};
-				
+
 				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 			}
 			finally {
@@ -335,7 +335,7 @@ public partial class WorkshopHelper
 						ReleaseWorkshopQuery();
 					}
 				}
-				
+
 				return items;
 			}
 
@@ -434,7 +434,7 @@ public partial class WorkshopHelper
 
 					await Task.Delay(1, token);
 				}
-				
+
 				if (_primaryQueryResult != EResult.k_EResultOK) {
 					SteamedWraps.ReportCheckSteamLogs();
 					throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {_primaryQueryResult}");

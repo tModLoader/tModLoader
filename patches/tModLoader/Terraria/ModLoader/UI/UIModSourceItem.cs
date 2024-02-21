@@ -3,10 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -261,6 +264,86 @@ internal class UIModSourceItem : UIPanel
 				};
 
 				Append(portModButton);
+
+				contextButtonsLeft -= 26;
+			}
+
+			// Display "Upgrade build.txt" button if build.txt is present and csproj is valid
+			string buildTxtFile = Path.Combine(_mod, "build.txt");
+			if (!projNeedsUpdate && File.Exists(buildTxtFile)) {
+				var icon = UICommon.ButtonExclamationTexture;
+				var upgradeInfoButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeBuildTxt")) {
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+
+				upgradeInfoButton.OnLeftClick += (s, e) => {
+					string[] rawBuildTxt = File.ReadAllLines(buildTxtFile);
+
+					StringBuilder builder = new();
+
+
+					List<string> leftoverLines = new(rawBuildTxt.Length);
+					bool itemGroupStarted = false;
+					foreach (string line in rawBuildTxt) {
+						if (!line.Contains("dllReferences") && !line.Contains("modReferences") && !line.Contains("weakReferences")) {
+							leftoverLines.Add(line);
+							continue;
+						}
+
+						if (!itemGroupStarted) {
+							builder.AppendLine("  <ItemGroup>");
+							itemGroupStarted = true;
+						}
+
+						string[] parts = line.Split('=');
+						if (parts.Length != 2) continue;
+
+						string name = parts[0].Trim();
+						string value = parts[1].Trim();
+						string[] refs = value.Split(',');
+						foreach (string reference in refs) {
+							string[] refParts = reference.Split('@');
+							string refName = refParts[0].Trim();
+
+							builder.AppendLine(name switch {
+								"dllReferences" => $"    <Reference Include=\"{refName}\" />",
+								"modReferences" => $"    <ModReference Include=\"{refName}\" Weak=\"false\" />",
+								"weakReferences" => $"    <ModReference Include=\"{refName}\" Weak=\"true\" />",
+								_ => "",
+							});
+						}
+					}
+					if (itemGroupStarted)
+						builder.AppendLine("  </ItemGroup>");
+
+					builder.AppendLine("  <PropertyGroup>");
+					foreach (string line in leftoverLines) {
+						string[] parts = line.Split('=');
+						if (parts.Length != 2) continue;
+
+						string name = parts[0].Trim();
+						name = char.ToUpper(name[0]) + name[1..]; // To PascalCase
+						string value = parts[1].Trim();
+						builder.AppendLine($"    <{name}>{value}</{name}>");
+					}
+					builder.Append("  </PropertyGroup>");
+
+					string output = builder.ToString();
+
+					string csproj = File.ReadAllText(csprojFile);
+
+					const string target = "</PropertyGroup>";
+					int index = csproj.IndexOf(target, StringComparison.Ordinal);
+					csproj = csproj.Insert(index + target.Length + 1, output);
+
+					File.WriteAllText(csprojFile, csproj);
+					File.Delete(buildTxtFile);
+
+					upgradeInfoButton.Remove();
+				};
+
+				Append(upgradeInfoButton);
 
 				contextButtonsLeft -= 26;
 			}

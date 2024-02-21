@@ -11,7 +11,7 @@ internal class LocalMod
 	public DateTime lastModified;
 
 	public string Name => modFile.Name;
-	public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
+	public string DisplayName => string.IsNullOrEmpty(properties?.displayName) ? Name : properties.displayName;
 	public readonly string DisplayNameClean; // Suitable for console output, chat tags stripped away.
 	public Version tModLoaderVersion => properties.buildVersion;
 

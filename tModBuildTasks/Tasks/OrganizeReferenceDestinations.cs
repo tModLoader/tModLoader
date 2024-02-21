@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Build.Framework;
 
-namespace tModLoader.BuildTasks;
+namespace tModLoader.BuildTasks.Tasks;
 
 /// <summary>
 /// Organizes output copies of Project, NuGet, and directly referenced libraries under a single tidy folder.

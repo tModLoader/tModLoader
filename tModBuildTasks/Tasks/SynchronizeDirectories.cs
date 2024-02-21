@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 
-namespace tModLoader.BuildTasks;
+namespace tModLoader.BuildTasks.Tasks;
 
 /// <summary>
 /// Copies contents from one folder to another, additionally removing entries in the destination that aren't present in the source.

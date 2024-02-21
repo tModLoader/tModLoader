@@ -37,3 +37,4 @@ solutions/tModLoader v*
 solutions/Release/
 **/msbuild.binlog
 /steam_build
+/BuildTools/Build/
