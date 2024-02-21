@@ -263,6 +263,29 @@ public static class ConfigManager
 		return false;
 	}
 
+	internal static bool AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)
+	{
+		modsWithChangedConfigs = new List<Mod>();
+		bool result = false;
+		foreach (var mod in ModLoader.Mods) {
+			if (!Configs.ContainsKey(mod)) {
+				continue;
+			}
+			var configs = Configs[mod];
+			var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
+			for (int i = 0; i < configs.Count; i++) {
+				var configClone = GeneratePopulatedClone(configs[i]);
+				Load(configClone); // Should load non-server config values from disk since ModNet.NetReloadActive should be false
+				if (loadTimeConfigs[i].NeedsReload(configClone)) {
+					result = true;
+					modsWithChangedConfigs.Add(mod);
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
 	// GetConfig...returns the config instance
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)

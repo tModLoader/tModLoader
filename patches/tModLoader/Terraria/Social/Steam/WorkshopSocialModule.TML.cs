@@ -157,11 +157,11 @@ public partial class WorkshopSocialModule
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 			var mod = OpenModFile(tmod);
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor())
-				if (mod.properties.version >= new Version(buildData["version"]))
+				if (mod.Version >= new Version(buildData["version"]))
 					return false;
 
 			if (mod.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor())
-				buildData["versionsummary"] += $";{mod.tModLoaderVersion}:{mod.properties.version}";
+				buildData["versionsummary"] += $";{mod.tModLoaderVersion}:{mod.Version}";
 		}
 
 		return true;
@@ -177,7 +177,7 @@ public partial class WorkshopSocialModule
 	{
 		var sModFile = new TmodFile(path);
 		using (sModFile.Open())
-			return new LocalMod(sModFile);
+			return new LocalMod(ModLocation.Workshop, sModFile);
 	}
 
 	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
@@ -243,8 +243,8 @@ public partial class WorkshopSocialModule
 		LocalMod newMod = OpenModFile(newModPath);
 
 		var buildData = new NameValueCollection() {
-			["version"] = newMod.properties.version.ToString(),
-			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.properties.version}",
+			["version"] = newMod.Version.ToString(),
+			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.Version}",
 			["description"] = newMod.properties.description,
 			["homepage"] = newMod.properties.homepage
 		};
