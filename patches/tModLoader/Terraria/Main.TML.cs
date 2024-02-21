@@ -202,7 +202,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Previous Page";
+					text = Language.GetTextValue("tModLoader.PreviousInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -226,7 +226,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Next Page";
+					text = Language.GetTextValue("tModLoader.NextInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -266,7 +266,7 @@ public partial class Main
 
 			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
 			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-			Color color = builderToggle.DisplayColorTexture();
+			Color color = builderToggle.DisplayColorTexture_Obsolete();
 
 			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
 			text = builderToggle.DisplayValue();
@@ -279,44 +279,65 @@ public partial class Main
 			*/
 
 			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
-			bool click = hover && mouseLeft && mouseLeftRelease;
-
-			if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
-				if (toggleType == BuilderToggle.BlockSwap.Type)
-					rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
-				else
-					rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
-
-				position += new Vector2(1, 0);
-			}
-			else
-				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
+			bool leftClick = hover && mouseLeft && mouseLeftRelease;
+			bool rightClick = hover && mouseRight && mouseRightRelease;
 
 			/*
 			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
 			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
 			*/
 
-			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+			// Save the original position for hover texture drawing so it won't be confusing
+			Vector2 hoverDrawPosition = position;
+			float scale = 1f;
+			SpriteEffects spriteEffects = SpriteEffects.None;
+
+			BuilderToggleDrawParams drawParams = new() {
+				Texture = texture,
+				Position = position,
+				Frame = rectangle,
+				Color = color,
+				Scale = scale,
+				SpriteEffects = spriteEffects
+			};
+			if (builderToggle.Draw(spriteBatch, ref drawParams)) {
+				spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
+			}
 
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
 
-				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
-					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
-					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
+				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
+				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
+				Color hoverColor = OurFavoriteColor;
+				float hoverScale = 1f;
+				SpriteEffects hoverSpriteEffects = SpriteEffects.None;
+				drawParams = new() {
+					Texture = iconHover,
+					Position = hoverDrawPosition,
+					Frame = hoverRectangle,
+					Color = hoverColor,
+					Scale = hoverScale,
+					SpriteEffects = hoverSpriteEffects
+				};
+				if (builderToggle.DrawHover(spriteBatch, ref drawParams)) {
+					spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
 				}
-				else if (toggleType == BuilderToggle.BlockSwap.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
-				else if (toggleType == BuilderToggle.TorchBiome.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
 			}
 
-			if (click) {
-				builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
-				SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
+			if (leftClick) {
+				SoundStyle? sound = SoundID.MenuTick;
+				if (builderToggle.OnLeftClick(ref sound)) {
+					builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
+					SoundEngine.PlaySound(sound);
+				}
 				mouseLeftRelease = false;
+			}
+
+			if (rightClick) {
+				builderToggle.OnRightClick();
+				mouseRightRelease = false;
 			}
 
 

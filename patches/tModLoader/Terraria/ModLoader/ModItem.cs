@@ -1189,6 +1189,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// If this item is a fishing pole, allows you to modify the origin and color of its fishing line.
+	/// </summary>
+	/// <param name="bobber">The bobber projectile</param>
+	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
+	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+	public virtual void ModifyFishingLine(Projectile bobber, ref Vector2 lineOriginOffset, ref Color lineColor)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to determine how many of this item a player obtains when the player fishes this item.
 	/// </summary>
 	/// <param name="stack">The stack.</param>

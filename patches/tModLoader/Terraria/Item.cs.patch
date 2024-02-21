@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,242 @@
+@@ -121,49 +_,245 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -535,7 +535,7 @@
  	public int ammo = AmmoID.None;
 +
 +	/// <summary>
-+	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Wire.
++	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Sand Blocks.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool notAmmo;
@@ -552,6 +552,9 @@
 +	/// </summary>
  	public int lifeRegen;
  	public int manaIncrease;
++	/// <summary>
++	/// Indicates that an item in a shop can only be bought once, meaning it is an item that has been sold to the NPC shop by the player.
++	/// </summary>
  	public bool buyOnce;
 +
 +	/// <summary>

@@ -547,6 +547,7 @@ public static class ModContent
 		PlayerDrawLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
+		BuilderToggleLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {
