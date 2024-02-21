@@ -114,11 +114,11 @@ namespace ExampleMod.Content.Items.Ammo
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						// If the tile is sand, convert to ExampleSand
-						// else if (TileID.Sets.Conversion.Sand[type]) {
-						// 	Main.tile[k, l].type = (ushort)TileType<ExampleSand>();
-						// 	WorldGen.SquareTileFrame(k, l);
-						// 	NetMessage.SendTileSquare(-1, k, l, 1);
-						// }
+						else if (TileID.Sets.Conversion.Sand[type]) {
+							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleSand>();
+							WorldGen.SquareTileFrame(k, l);
+							NetMessage.SendTileSquare(-1, k, l, 1);
+						}
 						// If the tile is a chair, convert to ExampleChair
 						else if (type == TileID.Chairs && Main.tile[k, l - 1].TileType == TileID.Chairs) {
 							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleChair>();
