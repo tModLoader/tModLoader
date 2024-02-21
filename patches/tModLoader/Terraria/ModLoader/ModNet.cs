@@ -230,7 +230,7 @@ public static class ModNet
 
 			LocalMod matching = modFiles.FirstOrDefault(mod => header.Matches(mod.modFile));
 			if (matching != null) {
-				MakeEnableOrVersionSwitchExplanationEntries(reloadRequiredExplanationEntries, header, clientMod, matching);
+				reloadRequiredExplanationEntries.Add(MakeEnableOrVersionSwitchExplanation(header, clientMod, matching));
 				if (clientMod == null) {
 					toEnable.Add(matching.Name);
 				}
@@ -239,7 +239,7 @@ public static class ModNet
 
 			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
 				downloadQueue.Enqueue(header);
-				MakeDownloadModExplanationEntries(modFiles, reloadRequiredExplanationEntries, header, clientMod);
+				reloadRequiredExplanationEntries.Add(MakeDownloadModExplanation(modFiles, header, clientMod));
 			}
 			else {
 				blockedList.Add(header);
@@ -254,7 +254,7 @@ public static class ModNet
 		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
 		foreach (var name in toDisable) {
 			needsReload = true;
-			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(4, name, modFiles.Where(mod => mod.Name == name).OrderByDescending(mod => mod.Version).FirstOrDefault(),Language.GetTextValue("tModLoader.ReloadRequiredExplanationDisable", "FFA07A")));
+			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(4, name, modFiles.Where(mod => mod.Name == name).OrderByDescending(mod => mod.Version).FirstOrDefault(), Language.GetTextValue("tModLoader.ReloadRequiredExplanationDisable", "FFA07A")));
 		}
 
 		if (blockedList.Count > 0) {
@@ -272,22 +272,10 @@ public static class ModNet
 		}
 
 		// Even if needsReload, check configs anyway so user is more informed.
-		HashSet<string> modsWithConfigReload = new HashSet<string>();
-		foreach (NetConfig pendingConfig in pendingConfigs) {
-			if (modsWithConfigReload.Contains(pendingConfig.modname) || !ModLoader.HasMod(pendingConfig.modname))
-				continue;
-
-			ModConfig currentConfigClone = ConfigManager.GeneratePopulatedClone(ConfigManager.GetConfig(pendingConfig));
-			JsonConvert.PopulateObject(pendingConfig.json, currentConfigClone, ConfigManager.serializerSettingsCompact);
-			Mod mod = ModLoader.GetMod(pendingConfig.modname);
-			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(mod, pendingConfig.configname);
-
-			if (loadTimeConfig.NeedsReload(currentConfigClone)) {
-				needsReload = true;
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, modFiles.FirstOrDefault(mod => mod.Name == pendingConfig.modname), Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
-				modsWithConfigReload.Add(pendingConfig.configname);
-				// We could mention the specific config if useful: \"{loadTimeConfig.DisplayName}\" Config change");
-				Logging.tML.Debug($"{pendingConfig.modname}:{pendingConfig.configname} ({loadTimeConfig.DisplayName}) would require a mod reload to join this server");
+		if (AnyModNeedsReloadFromNetConfigsCheckOnly(out List<Mod> modsWithRequiredConfigReload)) {
+			needsReload = true;
+			foreach (var modWithChangedConfig in modsWithRequiredConfigReload) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, modWithChangedConfig.Name, modFiles.FirstOrDefault(mod => mod.Name == modWithChangedConfig.Name), Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
 			}
 		}
 
@@ -333,24 +321,24 @@ public static class ModNet
 		}
 	}
 
-	private static void MakeEnableOrVersionSwitchExplanationEntries(List<ReloadRequiredExplanation> reloadRequiredExplanationEntries, ModHeader header, Mod clientMod, LocalMod matching)
+	private static ReloadRequiredExplanation MakeEnableOrVersionSwitchExplanation(ModHeader header, Mod clientMod, LocalMod matching)
 	{
 		if (clientMod != null) {
 			// Mod is enabled, but wrong version enabled
 			if (clientMod.Version > header.version) {
 				// TODO: Localize these messages once finalized
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version)));
+				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
 			}
 			else {
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version)));
+				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
 			}
 		}
 		else {
-			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(3, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationEnable", "98FB98")));
+			return new ReloadRequiredExplanation(3, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationEnable", "98FB98"));
 		}
 	}
 
-	private static void MakeDownloadModExplanationEntries(LocalMod[] modFiles, List<ReloadRequiredExplanation> reloadRequiredExplanationEntries, ModHeader header, Mod clientMod)
+	private static ReloadRequiredExplanation MakeDownloadModExplanation(LocalMod[] modFiles, ModHeader header, Mod clientMod)
 	{
 		if (modFiles.FirstOrDefault(mod => header.MatchesNameAndVersion(mod.modFile)) is LocalMod localMod) {
 			// We have the correct mod and version, but hash is different.
@@ -358,28 +346,50 @@ public static class ModNet
 			//if(localMod.location == ModLocation.Workshop)
 			//	reloadRequiredExplanationEntries.Add(new Reason(1, header.name, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n[c/ff0000:(Mod differs from local copy, it may have been edited!)]", localMod));
 			//else
-			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadHashDiffers", "00BFFF", header.version, string.Concat(header.hash[..4].Select(b => b.ToString("x2"))))));
+			return new ReloadRequiredExplanation(1, header.name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadHashDiffers", "00BFFF", header.version, string.Concat(header.hash[..4].Select(b => b.ToString("x2")))));
 		}
 		else {
 			LocalMod localModMatchingNameOnly = modFiles.Where(mod => mod.Name == header.name).OrderByDescending(mod => mod.Version).FirstOrDefault(); // Technically might show mod icon from .tmod file that won't be selected to load, but this is fine.
 			if (localModMatchingNameOnly == null) {
 				// We don't have the mod.
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, null, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version)));
+				return new ReloadRequiredExplanation(1, header.name, null, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version));
 			}
 			else {
 				if (clientMod != null) {
 					// We have the mod enabled, but not the correct version.
 					if (clientMod.Version > header.version)
-						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version)));
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
 					else
-						reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly,Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version)));
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly,Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
 				}
 				else {
 					// We have the mod, but not the correct version.
-					reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version)));
+					return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version));
 				}
 			}
 		}
+	}
+
+	internal static bool AnyModNeedsReloadFromNetConfigsCheckOnly(out List<Mod> modsWithRequiredConfigReload)
+	{
+		modsWithRequiredConfigReload = new List<Mod>();
+		foreach (NetConfig pendingConfig in pendingConfigs) {
+			if (modsWithRequiredConfigReload.Any(x => x.Name == pendingConfig.modname) || !ModLoader.HasMod(pendingConfig.modname))
+				continue;
+
+			ModConfig currentConfigClone = ConfigManager.GeneratePopulatedClone(ConfigManager.GetConfig(pendingConfig));
+			JsonConvert.PopulateObject(pendingConfig.json, currentConfigClone, ConfigManager.serializerSettingsCompact);
+			Mod mod = ModLoader.GetMod(pendingConfig.modname);
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(mod, pendingConfig.configname);
+
+			if (loadTimeConfig.NeedsReload(currentConfigClone)) {
+				modsWithRequiredConfigReload.Add(mod);
+				// We could mention the specific config in UI if useful: \"{loadTimeConfig.DisplayName}\" Config change");
+				Logging.tML.Debug($"{pendingConfig.modname}:{pendingConfig.configname} ({loadTimeConfig.DisplayName}) would require a mod reload to join this server");
+			}
+		}
+
+		return modsWithRequiredConfigReload.Any();
 	}
 
 	private static void DownloadNextMod()
