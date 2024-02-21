@@ -9,10 +9,8 @@ namespace ExampleMod.Content.Items.Placeable
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 100;
 
-			// Set the SandgunAmmoToProjectile to your sandgun projectile
-			ItemID.Sets.SandgunAmmoToProjectile[Type] = ModContent.ProjectileType<Projectiles.ExampleSandBallGunProjectile>();
-			// This value can be different than your falling block's damage
-			ItemID.Sets.SandgunAmmoBonusDamage[Type] = 10;
+			// Set the SandgunAmmoToProjectile to your sandgun projectile with a bonus damage of 10
+			ItemID.Sets.SandgunAmmoProjectileData[Type] = new(ModContent.ProjectileType<Projectiles.ExampleSandBallGunProjectile>(), 10);
 		}
 
 		public override void SetDefaults() {

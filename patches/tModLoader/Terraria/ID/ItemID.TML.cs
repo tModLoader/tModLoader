@@ -6,16 +6,28 @@ partial class ItemID
 {
 	partial class Sets
 	{
-		/// <summary>
-		/// The projectile ID of a sandgun ammo item ID. Defaults to 42 (<see cref="ProjectileID.SandBallGun"/>), as this is the normal sandgun sand projectile.
-		/// This shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun.
-		/// </summary>
-		public static int[] SandgunAmmoToProjectile = Factory.CreateIntSet(42, EbonsandBlock, ProjectileID.EbonsandBallGun, PearlsandBlock, ProjectileID.PearlSandBallGun, CrimsandBlock, ProjectileID.CrimsandBallGun);
+		/// <summary>Used in <see cref="SandgunAmmoProjectileData"/>.</summary>
+		public class SandgunAmmoInfo
+		{
+			public SandgunAmmoInfo(int ProjectileType, int BonusDamage = 0)
+			{
+				this.ProjectileType = ProjectileType;
+				this.BonusDamage = BonusDamage;
+			}
 
+			public int ProjectileType { get; set; }
+			public int BonusDamage { get; set; }
+		}
 		/// <summary>
-		/// The damage a specific sandgun ammo should increase by. Defaults to 0.
+		/// The projectile type and associated bonus damage for the specified sandgun ammo item (an item with <c>Item.ammo = AmmoID.Sand;</c>).
+		/// <para/> If undefined, the projectile will default to 42 (<see cref = "ProjectileID.SandBallGun" />), as this is the normal sandgun sand projectile. The bonus damage will default to 0.
+		/// <para/> The projectile shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun.
 		/// </summary>
-		public static int[] SandgunAmmoBonusDamage = Factory.CreateIntSet(0, EbonsandBlock, 5, PearlsandBlock, 5, CrimsandBlock, 5);
+		public static SandgunAmmoInfo[] SandgunAmmoProjectileData = Factory.CreateCustomSet<SandgunAmmoInfo>(null,
+			EbonsandBlock, new SandgunAmmoInfo(ProjectileID.EbonsandBallGun, 5),
+			PearlsandBlock, new SandgunAmmoInfo(ProjectileID.PearlSandBallGun, 5),
+			CrimsandBlock, new SandgunAmmoInfo(ProjectileID.CrimsandBallGun, 5)
+		);
 
 		/// <summary>
 		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
