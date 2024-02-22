@@ -328,7 +328,7 @@ jobs:
           echo ::endgroup::
           
           echo Adding version info to ExampleMod
-          echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
+          echo -e "\nversion = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
           
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
