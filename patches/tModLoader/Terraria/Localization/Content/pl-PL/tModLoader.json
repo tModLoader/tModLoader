@@ -40,7 +40,7 @@
 		"LatestNewsChecking": "Sprawdzanie...",
 		"SteamFamilyShareWarning": "Wykryto, że korzystasz z udostępnionej kopii Terrarii przez funkcję Udostępnianie gier Steam.\nSteam nie wspiera tModLoadera w przypadku udostępniania gier Steam.\nZostała załadowana eksperymentalna wersja robocza tModLoadera dla funkcji Udostępnianie gier Steam.\nNastępujące funkcje nie są dostępne:\n - Nakładka Steam\n - Wieloosobowość Steam",
 		"WaitXSeconds": "Czekaj {0} {^0:sekundę;sekundy}...",
-	 "ViewInstructions": "Wyświetl instrukcje",
+		"ViewInstructions": "Wyświetl instrukcje",
 		"ModReadyFor144": "Ten mod został zaktualizowany do wersji 1.4.4",
 
 		// Mods Menu
@@ -153,7 +153,8 @@
 		"SteamPublishingLimit": "Błąd: Tylko posiadacze tModLoadera na Steamie mogą publikować do warsztatu gry.",
 		"NoWorkshopAccess": "Błąd: Nie można uzyskać dostępu do Warsztatu Steam",
 		"ModAlreadyUploaded": "Błąd: Mod już istnieje w Warsztacie!",
-		"ModVersionInfoUnchanged": "Błąd: Informacja o wersji moda musi zostać zwiększona przed aktualizacją.",
+		"ModVersionTooSmall": "Błąd: Informacja o wersji moda musi zostać zwiększona przed aktualizacją.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
+		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
 		"ConsultSteamLogs": "Więcej informacji można znaleźć w pliku Steam workshop_log.txt (Domyślna lokalizacja: {0}), aby uzyskać więcej informacji.",
 		"SteamRejectUpdate": "Element jest/był już zainstalowany: {0}. Jeśli próbujesz wykonać reinstalację, zamknij bieżącą instancję i uruchom ją ponownie.",
 		"BrowserRejectWarning": "Nie można pobrać Moda. Kliknij, żeby się dowedzieć więcej.",
@@ -619,7 +620,6 @@
 		"PreviousInfoAccPage": "Poprzednia strona",
 		"FirstInfoAccPage": "Przejdź do pierwszej strony",
 		"LastInfoAccPage": "Przejdź do ostatniej strony"
-
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Zwiększ obronę o {0}",
