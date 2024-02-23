@@ -1764,6 +1764,31 @@
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  			ai[1] = 0f;
+@@ -56364,6 +_,16 @@
+ 					int num1023 = (int)(position.Y + (float)(height / 2)) / 16;
+ 					int num1024 = 0;
+ 					int num1025 = 2;
++
++					if (ProjectileID.Sets.FallingBlockTileItem[type] is ProjectileID.Sets.FallingBlockTileItemInfo data) {
++						num1024 = data.TileType;
++						num1025 = data.ItemType;
++					}
++
++					if (type == 31 && ai[0] == 2f) // Antlion
++						num1025 = 0;
++
++					/*
+ 					if (type == 109) {
+ 						num1024 = 147;
+ 						num1025 = 0;
+@@ -56455,6 +_,7 @@
+ 						num1024 = 495;
+ 						num1025 = 4090;
+ 					}
++					*/
+ 
+ 					if (type == 109) {
+ 						int num1026 = Player.FindClosest(position, width, height);
 @@ -56584,15 +_,23 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;

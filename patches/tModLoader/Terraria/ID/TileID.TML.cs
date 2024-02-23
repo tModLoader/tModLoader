@@ -16,6 +16,36 @@ partial class TileID
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
+		/// <summary>Used in <see cref="FallingBlockProjectile"/>.</summary>
+		public class FallingBlockProjectileInfo
+		{
+			public FallingBlockProjectileInfo(int FallingProjectileType, int FallingProjectileDamage = 10)
+			{
+				this.FallingProjectileType = FallingProjectileType;
+				this.FallingProjectileDamage = FallingProjectileDamage;
+			}
+
+			public int FallingProjectileType { get; set; }
+			public int FallingProjectileDamage { get; set; }
+		}
+		/// <summary>
+		/// Maps tile type for <see cref="Falling"/> tiles to their corresponding falling block projectile and associated falling projectile damage. Falling coins use 0 damage while all other tiles use 10 damage.
+		/// </summary>
+		public static FallingBlockProjectileInfo[] FallingBlockProjectile = Factory.CreateCustomSet<FallingBlockProjectileInfo>(null,
+			Sand, new FallingBlockProjectileInfo(ProjectileID.SandBallFalling),
+			Ebonsand, new FallingBlockProjectileInfo(ProjectileID.EbonsandBallFalling),
+			TileID.Mud, new FallingBlockProjectileInfo(ProjectileID.MudBall),
+			Pearlsand, new FallingBlockProjectileInfo(ProjectileID.PearlSandBallFalling),
+			Silt, new FallingBlockProjectileInfo(ProjectileID.SiltBall),
+			Slush, new FallingBlockProjectileInfo(ProjectileID.SlushBall),
+			Crimsand, new FallingBlockProjectileInfo(ProjectileID.CrimsandBallFalling),
+			CopperCoinPile, new FallingBlockProjectileInfo(ProjectileID.CopperCoinsFalling, 0),
+			SilverCoinPile, new FallingBlockProjectileInfo(ProjectileID.SilverCoinsFalling, 0),
+			GoldCoinPile, new FallingBlockProjectileInfo(ProjectileID.GoldCoinsFalling, 0),
+			PlatinumCoinPile, new FallingBlockProjectileInfo(ProjectileID.PlatinumCoinsFalling, 0),
+			ShellPile, new FallingBlockProjectileInfo(ProjectileID.ShellPileFalling)
+		);
+
 		/// <summary>
 		/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
 		/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>

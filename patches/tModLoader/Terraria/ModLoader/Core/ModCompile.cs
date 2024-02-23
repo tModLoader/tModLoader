@@ -45,7 +45,7 @@ internal class ModCompile
 	{
 		public string path;
 
-		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties)
+		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(ModLocation.Local, modFile, properties)
 		{
 			this.path = path;
 		}
