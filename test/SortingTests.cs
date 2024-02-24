@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 			ModSide side = ModSide.Both, string version = null,
 			IEnumerable<string> refs = null, IEnumerable<string> weakRefs = null,
 			IEnumerable<string> sortAfter = null, IEnumerable<string> sortBefore = null) {
-			return new LocalMod(new TmodFile(null, name), new BuildProperties {
+			return new LocalMod(ModLocation.Local , new TmodFile(null, name), new BuildProperties {
 				side = side,
 				version = new Version(version ?? "1.0.0.0"),
 				modReferences = refs?.Select(BuildProperties.ModReference.Parse).ToArray() ?? new BuildProperties.ModReference[0],
@@ -126,7 +126,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureDependenciesExist(list2, false),
 				new[] {"A"},
-				"Missing mod: B required by A");
+				"Missing mod: B required by A 1.0.0.0 for tML 9999.0 from Local");
 
 			//test multi reference
 			var list3 = new List<LocalMod> {
@@ -144,7 +144,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureDependenciesExist(list4, false),
 				new[] {"B"},
-				"Missing mod: C required by B");
+				"Missing mod: C required by B 1.0.0.0 for tML 9999.0 from Local");
 
 			//test weak reference (missing)
 			var list5 = new List<LocalMod> {
@@ -154,7 +154,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureDependenciesExist(list5, true),
 				new[] {"A"},
-				"Missing mod: B required by A");
+				"Missing mod: B required by A 1.0.0.0 for tML 9999.0 from Local");
 
 			//test weak reference (found)
 			var list6 = new List<LocalMod> {
@@ -172,7 +172,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureDependenciesExist(list7, true),
 				new[] {"B"},
-				"Missing mod: C required by B");
+				"Missing mod: C required by B 1.0.0.0 for tML 9999.0 from Local");
 
 			//multi test case (missing)
 			var list8 = new List<LocalMod> {
@@ -186,15 +186,15 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureDependenciesExist(list8, false),
 				new[] {"A", "B"},
-				"Missing mod: X required by A\r\n" +
-				"Missing mod: Y required by B");
+				"Missing mod: X required by A 1.0.0.0 for tML 9999.0 from Local\r\n" +
+				"Missing mod: Y required by B 1.0.0.0 for tML 9999.0 from Local");
 			AssertModException(
 				() => ModOrganizer.EnsureDependenciesExist(list8, true),
 				new[] {"A", "B", "E", "F"},
-				"Missing mod: X required by A\r\n" +
-				"Missing mod: Y required by B\r\n" +
-				"Missing mod: Z required by E\r\n" +
-				"Missing mod: Z required by F");
+				"Missing mod: X required by A 1.0.0.0 for tML 9999.0 from Local\r\n" +
+				"Missing mod: Y required by B 1.0.0.0 for tML 9999.0 from Local\r\n" +
+				"Missing mod: Z required by E 1.0.0.0 for tML 9999.0 from Local\r\n" +
+				"Missing mod: Z required by F 1.0.0.0 for tML 9999.0 from Local");
 
 			//multi test case (found)
 			var list9 = new List<LocalMod> {
@@ -233,7 +233,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list3),
 				new[] { "A" },
-				"A requires B version 1.2 or greater but version 1.0.0.0 is installed");
+				"A 1.0.0.0 for tML 9999.0 from Local requires B version 1.2 or greater but version 1.0.0.0 is installed");
 
 			// test major version mismatch
 			var list3B = new List<LocalMod> {
@@ -243,7 +243,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list3B),
 				new[] { "A" },
-				"A targets B version 0.9 but you have a newer major version (1.0.0.0) which may not be compatible. A must be updated.");
+				"A 1.0.0.0 for tML 9999.0 from Local targets B version 0.9 but you have a newer major version (1.0.0.0) which may not be compatible. A 1.0.0.0 for tML 9999.0 from Local must be updated.");
 
 			//test one pass, two fail version check
 			var list4 = new List<LocalMod> {
@@ -255,8 +255,8 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list4),
 				new[] { "C", "D" },
-				"C requires A version 1.2 or greater but version 1.1 is installed\r\n" +
-				"D requires A version 1.1.0.1 or greater but version 1.1 is installed");
+				"C 1.0.0.0 for tML 9999.0 from Local requires A version 1.2 or greater but version 1.1 is installed\r\n" +
+				"D 1.0.0.0 for tML 9999.0 from Local requires A version 1.1.0.1 or greater but version 1.1 is installed");
 			
 			//test weak version check (missing)
 			var list5 = new List<LocalMod> {
@@ -273,7 +273,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list6),
 				new[] { "A" },
-				"A requires B version 1.1 or greater but version 1.0.0.0 is installed");
+				"A 1.0.0.0 for tML 9999.0 from Local requires B version 1.1 or greater but version 1.0.0.0 is installed");
 		}
 
 		[TestMethod]
@@ -306,7 +306,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => AssertSortSatisfied(list3),
 				new[] { "A", "B" },
-				"Dependency Cycle: A -> B -> A");
+				"Dependency Cycle: A 1.0.0.0 for tML 9999.0 from Local -> B 1.0.0.0 for tML 9999.0 from Local -> A 1.0.0.0 for tML 9999.0 from Local");
 
 			//complex unsatisfiable sort
 			var list4 = new List<LocalMod> {
@@ -323,8 +323,8 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => AssertSortSatisfied(list4),
 				new[] { "A", "B", "C", "G", "I" },
-				"Dependency Cycle: A -> C -> I -> G -> B -> A\r\n" +
-				"Dependency Cycle: C -> I -> G -> C");
+				"Dependency Cycle: A 1.0.0.0 for tML 9999.0 from Local -> C 1.0.0.0 for tML 9999.0 from Local -> I 1.0.0.0 for tML 9999.0 from Local -> G 1.0.0.0 for tML 9999.0 from Local -> B 1.0.0.0 for tML 9999.0 from Local -> A 1.0.0.0 for tML 9999.0 from Local\r\n" +
+				"Dependency Cycle: C 1.0.0.0 for tML 9999.0 from Local -> I 1.0.0.0 for tML 9999.0 from Local -> G 1.0.0.0 for tML 9999.0 from Local -> C 1.0.0.0 for tML 9999.0 from Local");
 		}
 
 		[TestMethod]
@@ -338,7 +338,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => AssertSortSatisfied(list),
 				new[] { "C" },
-				"C indirectly depends on A via C -> B -> A\r\n"+
+				"C 1.0.0.0 for tML 9999.0 from Local indirectly depends on A 1.0.0.0 for tML 9999.0 from Local via C 1.0.0.0 for tML 9999.0 from Local -> B 1.0.0.0 for tML 9999.0 from Local -> A 1.0.0.0 for tML 9999.0 from Local\r\n" +
 				"Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 			
 			//apply above advice
@@ -360,8 +360,8 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => AssertSortSatisfied(list3),
 				new[] { "E" },
-				"E indirectly depends on A via E -> D -> C -> A\r\n" +
-				"E indirectly depends on A via E -> D -> B -> A\r\n" +
+				"E 1.0.0.0 for tML 9999.0 from Local indirectly depends on A 1.0.0.0 for tML 9999.0 from Local via E 1.0.0.0 for tML 9999.0 from Local -> D 1.0.0.0 for tML 9999.0 from Local -> C 1.0.0.0 for tML 9999.0 from Local -> A 1.0.0.0 for tML 9999.0 from Local\r\n" +
+				"E 1.0.0.0 for tML 9999.0 from Local indirectly depends on A 1.0.0.0 for tML 9999.0 from Local via E 1.0.0.0 for tML 9999.0 from Local -> D 1.0.0.0 for tML 9999.0 from Local -> B 1.0.0.0 for tML 9999.0 from Local -> A 1.0.0.0 for tML 9999.0 from Local\r\n" +
 				"Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 
 			//diamond pattern (fixed)
