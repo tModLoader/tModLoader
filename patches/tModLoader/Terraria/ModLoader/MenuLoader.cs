@@ -73,7 +73,15 @@ public static class MenuLoader
 			Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 		}
 
-		switchToMenu = MenutML;
+		// We can skip searching for ModMenus when JourneysEnd Menu was last loaded menu
+		if (LastSelectedModMenu != MenuJourneysEnd.FullName)
+			switchToMenu = MenutML;
+		else {
+			switchToMenu = MenuJourneysEnd;
+			loading = false;
+			return;
+		}
+
 		if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
 			switchToMenu = value;
 
