@@ -209,8 +209,16 @@ internal static class PlayerIO
 		var saveData = new TagCompound();
 
 		foreach (var modPlayer in player.modPlayers) {
-			modPlayer.SaveData(saveData);
+			try {
+				modPlayer.SaveData(saveData);
+			}
+			catch {
+				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
+				Logging.tML.Error($"Encountered an error while saving custom player data because of an error in \"{modPlayer.Name}.SaveData\" from the \"{modPlayer.Mod.Name}\" mod. The data related to this class will not be saved.");
 
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 			if (saveData.Count == 0)
 				continue;
 

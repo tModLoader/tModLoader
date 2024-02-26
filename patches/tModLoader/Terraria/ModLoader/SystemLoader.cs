@@ -130,8 +130,8 @@ public static partial class SystemLoader
 			try {
 				system.OnWorldUnload();
 			}
-			catch (Exception e) {
-				throw new CustomModDataException(system.Mod, e.Message, e);
+			catch {
+				Logging.tML.Error($"Encountered an error while running the \"{system.Name}.OnWorldUnload\" method from the \"{system.Mod.Name}\" mod. The game, world, or mod might be in an unstable state.");
 			}
 		}
 	}

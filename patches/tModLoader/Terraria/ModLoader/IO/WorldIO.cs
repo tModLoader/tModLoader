@@ -495,22 +495,23 @@ internal static class WorldIO
 		foreach (var system in SystemLoader.Systems) {
 			try {
 				system.SaveWorldData(saveData);
+			}
+			catch {
+				Logging.tML.Error($"Encountered an error while saving custom world data because of an error in \"{system.Name}.SaveWorldData\" from the \"{system.Mod.Name}\" mod. The data related to this class will not be saved.");
 
-				if (saveData.Count == 0)
-					continue;
-
-				list.Add(new TagCompound {
-					["mod"] = system.Mod.Name,
-					["name"] = system.Name,
-					["data"] = saveData
-				});
 				saveData = new TagCompound();
-			}
-			catch (Exception e) {
-				throw new CustomModDataException(system.Mod,
-					"Error in saving custom world data for " + system.Mod.Name, e);
+				continue; // don't want to save half-broken data, that could compound errors.
 			}
 
+			if (saveData.Count == 0)
+				continue;
+
+			list.Add(new TagCompound {
+				["mod"] = system.Mod.Name,
+				["name"] = system.Name,
+				["data"] = saveData
+			});
+			saveData = new TagCompound();
 		}
 
 		return list;
