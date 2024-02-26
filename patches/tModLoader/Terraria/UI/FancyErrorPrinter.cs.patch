@@ -1,11 +1,10 @@
 --- src/TerrariaNetCore/Terraria/UI/FancyErrorPrinter.cs
 +++ src/tModLoader/Terraria/UI/FancyErrorPrinter.cs
-@@ -5,6 +_,8 @@
+@@ -5,6 +_,7 @@
  using System.Windows.Forms;
  using ReLogic.Content;
  using ReLogic.OS;
 +using Terraria.ModLoader.Engine;
-+using Terraria.ModLoader.Exceptions;
  
  namespace Terraria.UI;
  
