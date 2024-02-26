@@ -8,6 +8,7 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
@@ -81,7 +82,7 @@ public static class SteamedWraps
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 		if (!Main.dedServ && !TryInitViaGameServer())
-			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
+			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", Interface.loadModsID);
 	}
 
 	public static bool TryInitViaGameServer()
