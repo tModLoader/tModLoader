@@ -493,7 +493,15 @@ internal static class WorldIO
 		var saveData = new TagCompound();
 
 		foreach (var system in SystemLoader.Systems) {
-			system.SaveWorldData(saveData);
+			try {
+				system.SaveWorldData(saveData);
+			}
+			catch {
+				Logging.tML.Error($"Encountered an error while saving custom world data because of an error in \"{system.Name}.SaveWorldData\" from the \"{system.Mod.Name}\" mod. The data related to this class will not be saved.");
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 
 			if (saveData.Count == 0)
 				continue;
