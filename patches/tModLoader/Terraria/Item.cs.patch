@@ -1978,7 +1978,7 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
-@@ -47869,12 +_,17 @@
+@@ -47869,17 +_,22 @@
  
  				num15++;
  				int num16 = num13 * item2.stack;
@@ -1996,6 +1996,13 @@
  
  				while (num16 > 0) {
  					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
