@@ -370,7 +370,7 @@ internal class UIModSourceItem : UIPanel
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 			var modFile = new TmodFile(modPath);
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
-				localMod = new LocalMod(modFile);
+				localMod = new LocalMod(ModLocation.Local, modFile);
 
 			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
 			if (!File.Exists(icon))

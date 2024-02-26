@@ -56,6 +56,7 @@ internal static class Interface
 	internal const int createModID = 10025;
 	internal const int exitID = 10026;
 	internal const int modConfigListID = 10027;
+	internal const int serverModsDifferMessageID = 10028;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -73,6 +74,7 @@ internal static class Interface
 	internal static UIExtractMod extractMod = new UIExtractMod();
 	internal static UIModConfig modConfig = new UIModConfig();
 	internal static UIModConfigList modConfigList = new UIModConfigList();
+	internal static UIServerModsDifferMessage serverModsDifferMessage = new UIServerModsDifferMessage();
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
@@ -376,6 +378,10 @@ internal static class Interface
 		else if (Main.menuMode == modConfigListID)
 		{
 			Main.MenuUI.SetState(modConfigList);
+			Main.menuMode = 888;
+		}
+		else if (Main.menuMode == serverModsDifferMessageID) {
+			Main.MenuUI.SetState(serverModsDifferMessage);
 			Main.menuMode = 888;
 		}
 		else if (Main.menuMode == exitID) {

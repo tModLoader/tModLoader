@@ -19,6 +19,10 @@ using Terraria.Social;
 using Terraria.UI.Chat;
 using ReLogic.Content;
 using Terraria.UI.Gamepad;
+using System.Linq;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Config;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 
@@ -529,6 +533,55 @@ public partial class Main
 					newsIsNew = false;
 				}
 			}
+		}
+	}
+
+	private static void PrepareLoadedModsAndConfigsForSingleplayer()
+	{
+		// If any loaded mod or config differs from normal, intercept SinglePlayer menu with a prompt
+		// TODO: Should this remember the mod loadout before joining server? Right now it only cares about version downgrades. MP mods will still load.
+		bool needsReload = false;
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		var normalModsToLoad = ModOrganizer.RecheckVersionsToLoad();
+		foreach (var loadedMod in ModLoader.ModLoader.Mods) {
+			if (loadedMod is ModLoaderMod || loadedMod.File == null)
+				continue;
+			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
+			if (normalMod.modFile.path != loadedMod.File.path) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				needsReload = true;
+			}
+		}
+
+		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
+			needsReload = true;
+			foreach (var mod in modsWithChangedConfigs) {
+				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
+			}
+		}
+
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		if (needsReload) {
+			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
+			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
+					ModLoader.ModLoader.OnSuccessfulLoad += () => { Main.menuMode = 1; };
+					ModLoader.ModLoader.Reload();
+				},
+				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
+				backButtonAction: () => {
+					// Do nothing, logic will to back to main menu
+				},
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
+			);
+		}
+		else {
+			// Otherwise, config changes take effect immediately and the player select menu will be shown
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
+			ConfigManager.OnChangedAll();
 		}
 	}
 }

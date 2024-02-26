@@ -1119,6 +1119,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called whenever the player sells an item to an NPC.
+	/// <para/> Note that <paramref name="item"/> might be an item sold by the NPC, not an item to buy back. Check <see cref="Item.buyOnce"/> if relevant to your logic.
 	/// </summary>
 	/// <param name="vendor">The NPC vendor.</param>
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>

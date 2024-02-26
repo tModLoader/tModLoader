@@ -5321,6 +5321,27 @@
  			if (selectedMenu == 2 || flag5) {
  				flag5 = false;
  				SoundEngine.PlaySound(11);
++
++				if (WorldIO.customDataFail == null) {
++					menuMode = 0;
++				}
++				else {
++					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++					SoundEngine.PlaySound(SoundID.MenuOpen);
++					Utils.OpenFolder(Logging.LogDir);
++				}
++
+ 				menuMode = 0;
+ 				netMode = 0;
+ 			}
+@@ -40011,6 +_,7 @@
+ 				SoundEngine.PlaySound(10);
+ 				ClearPendingPlayerSelectCallbacks();
+ 				menuMode = 1;
++				PrepareLoadedModsAndConfigsForSingleplayer();
+ 			}
+ 
+ 			num11++;
 @@ -40029,7 +_,9 @@
  			}
  
