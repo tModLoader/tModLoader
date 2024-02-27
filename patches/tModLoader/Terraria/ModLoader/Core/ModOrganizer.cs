@@ -111,7 +111,7 @@ internal static class ModOrganizer
 				var m = list[i];
 				if (condition(m)) {
 					if (!quiet)
-						Logging.tML.Debug($"Skipped {m}. Reason: {reason}.");
+						Logging.tML.Debug($"Skipped {m.DetailedInfo}. Reason: {reason}.");
 
 					list.RemoveAt(i);
 				}
@@ -142,7 +142,7 @@ internal static class ModOrganizer
 		FilterOut(v => v != selected, "Logic Error, multiple versions remain. One was randomly selected");
 
 		if (!quiet)
-			Logging.tML.Debug($"Selected {selected}.");
+			Logging.tML.Debug($"Selected {selected.DetailedInfo}.");
 
 		return selected;
 	}
