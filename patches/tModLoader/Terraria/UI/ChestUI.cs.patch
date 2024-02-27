@@ -9,15 +9,6 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -77,7 +_,7 @@
- 		if (Main.editChest) {
- 			text = Main.npcChatText;
- 			Main.instance.textBlinkerCount++;
--			if (Main.instance.textBlinkerCount >= 20) {
-+			if (Main.instance.textBlinkerCount >= Chest.MaxNameLength) {
- 				if (Main.instance.textBlinkerState == 0)
- 					Main.instance.textBlinkerState = 1;
- 				else
 @@ -109,6 +_,8 @@
  					text = Lang.chestType2[tile.frameX / 36].Value;
  				else if (tile.type == 88)
