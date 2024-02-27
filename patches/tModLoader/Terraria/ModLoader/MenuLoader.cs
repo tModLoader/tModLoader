@@ -76,6 +76,8 @@ public static class MenuLoader
 		switchToMenu = MenutML;
 		if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
 			switchToMenu = value;
+		if (LastSelectedModMenu == MenuJourneysEnd.FullName)
+			switchToMenu = MenuJourneysEnd;
 
 		loading = false;
 	}

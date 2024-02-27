@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,242 @@
+@@ -121,49 +_,245 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -552,6 +552,9 @@
 +	/// </summary>
  	public int lifeRegen;
  	public int manaIncrease;
++	/// <summary>
++	/// Indicates that an item in a shop can only be bought once, meaning it is an item that has been sold to the NPC shop by the player.
++	/// </summary>
  	public bool buyOnce;
 +
 +	/// <summary>

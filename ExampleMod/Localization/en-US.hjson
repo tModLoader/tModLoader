@@ -891,6 +891,11 @@ Mods: {
 				DisplayName: Example Statue
 				Tooltip: The power of examplium flows in this inanimate fish
 			}
+
+			ExampleSandBlock: {
+				DisplayName: Example Sand Block
+				Tooltip: This is a modded sand block
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -930,6 +935,8 @@ Mods: {
 			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
+			ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
 		}
 
 		Buffs: {
@@ -1123,6 +1130,8 @@ Mods: {
 				OnText: Example On
 				OffText: Example Off
 			}
+
+			FreeBaitBuilderToggle.NameText: Free Bait: {0}
 		}
 
 		# This is the command names for mod emotes

@@ -44,7 +44,7 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= ProjectileID.Count) {
-				modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayName; // or internal name?
+				modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (!modname.Contains(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase))

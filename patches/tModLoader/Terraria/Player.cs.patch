@@ -7441,6 +7441,27 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
+@@ -41015,6 +_,7 @@
+ 			projToShoot = 117;
+ 
+ 		if (projToShoot == 42) {
++			/*
+ 			if (item.type == 370) {
+ 				projToShoot = 65;
+ 				Damage += 5;
+@@ -41027,6 +_,12 @@
+ 				projToShoot = 354;
+ 				Damage += 5;
+ 			}
++			*/
++
++			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
++				projToShoot = data.ProjectileType;
++				Damage += data.BonusDamage;
++			}
+ 		}
+ 
+ 		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
 @@ -41043,6 +_,9 @@
  			speed *= 1.1f;
  		}
@@ -8101,12 +8122,17 @@
  		catch {
  		}
  
-@@ -42322,8 +_,28 @@
+@@ -42322,8 +_,33 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
-+		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		try {
++			Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		}
++		catch (CustomModDataException) {
++			// Same exception should already be caught in LoadPlayerFromStream
++		}
  		return player;
 +	}
 +
