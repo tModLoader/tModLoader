@@ -5270,23 +5270,24 @@
  			}
  		}
  		else if (menuMode == 15) {
-@@ -39931,16 +_,27 @@
- 		else if (menuMode == 200) {
- 			num5 = 3;
- 			array9[0] = Lang.menu[9].Value;
-+
-+			if (WorldIO.customDataFail != null)
-+				array9[0] = $"{WorldIO.customDataFail.modName}: {array9[0]}";
-+
- 			array[0] = true;
- 			num2 -= 30;
- 			array4[1] = 70;
+@@ -39937,10 +_,28 @@
  			array4[2] = 50;
  			array9[1] = Lang.menu[10].Value;
  			array9[2] = Lang.menu[6].Value;
 +
-+			if (WorldIO.customDataFail != null)
-+				array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
++			// menuMode 200: Load failed!, Load Backup, Cancel, Open Logs
++			if (WorldIO.customDataFail != null) {
++				array9[0] = $"{WorldIO.customDataFail.modName}: {array9[0]}";
++
++				num5 = 4;
++				array4[3] = 50;
++				array9[3] = Language.GetTextValue("tModLoader.OpenLogs");
++			}
++			if (selectedMenu == 3) {
++				Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++				SoundEngine.PlaySound(SoundID.MenuOpen);
++				Utils.OpenFolder(Logging.LogDir);
++			}
 +
  			if (selectedMenu == 1) {
  				if (FileUtilities.Exists(worldPathName + ".bak", ActiveWorldFileData.IsCloudSave)) {
@@ -5298,60 +5299,28 @@
  					SoundEngine.PlaySound(10);
  					WorldGen.playWorld();
  					menuMode = 10;
-@@ -39955,13 +_,29 @@
- 			if (selectedMenu == 2 || flag5) {
- 				flag5 = false;
- 				SoundEngine.PlaySound(11);
-+
-+				/*
- 				menuMode = 0;
-+				*/
-+				if (WorldIO.customDataFail == null) {
-+					menuMode = 0;
-+				}
-+				else {
-+					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
-+					SoundEngine.PlaySound(SoundID.MenuOpen);
-+					Utils.OpenFolder(Logging.LogDir);
-+				}
-+
- 				netMode = 0;
- 			}
- 		}
- 		else if (menuMode == 201) {
- 			num5 = 3;
- 			array9[0] = Lang.menu[9].Value;
-+
-+			if (WorldIO.customDataFail != null)
-+				array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
-+
- 			array[0] = true;
- 			array[1] = true;
- 			num2 -= 30;
-@@ -39969,9 +_,23 @@
+@@ -39969,6 +_,21 @@
  			array4[2] = 50;
  			array9[1] = Lang.menu[11].Value;
  			array9[2] = Lang.menu[5].Value;
 +
-+			if (WorldIO.customDataFail != null)
-+				array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
++			// menuMode 201: Load failed!, No backup found, Back, Open Logs
++			if (WorldIO.customDataFail != null) {
++				array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
++
++				num5 = 4;
++				array4[3] = 50;
++				array9[3] = Language.GetTextValue("tModLoader.OpenLogs");
++			}
++			if (selectedMenu == 3) {
++				Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++				SoundEngine.PlaySound(SoundID.MenuOpen);
++				Utils.OpenFolder(Logging.LogDir);
++			}
 +
  			if (selectedMenu == 2 || flag5) {
  				flag5 = false;
  				SoundEngine.PlaySound(11);
-+
-+				if (WorldIO.customDataFail == null) {
-+					menuMode = 0;
-+				}
-+				else {
-+					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
-+					SoundEngine.PlaySound(SoundID.MenuOpen);
-+					Utils.OpenFolder(Logging.LogDir);
-+				}
-+
- 				menuMode = 0;
- 				netMode = 0;
- 			}
 @@ -40011,6 +_,7 @@
  				SoundEngine.PlaySound(10);
  				ClearPendingPlayerSelectCallbacks();

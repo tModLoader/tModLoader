@@ -134,7 +134,7 @@ partial class UICharacterListItem
 
 	private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		Logging.Terraria.Error(Language.GetTextValue("tModLoader.PlayerCustomDataFail"), _data.customDataFail.InnerException);
+		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.PlayerCustomDataFail") + "\n\n" + _data.customDataFail.InnerException, 888, Main._characterSelectMenu);
 	}
 
 	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
