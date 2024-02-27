@@ -142,7 +142,7 @@ internal static class ModOrganizer
 		FilterOut(v => v != selected, "Logic Error, multiple versions remain. One was randomly selected");
 
 		if (!quiet)
-			Logging.tML.Debug($"Selected {selected.DetailedInfo}."); //!!
+			Logging.tML.Debug($"Selected {selected.DetailedInfo}.");
 
 		return selected;
 	}
