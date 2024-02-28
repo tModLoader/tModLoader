@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using ReLogic.OS;
 using Steamworks;
 using System;
@@ -317,6 +318,10 @@ public static class SteamedWraps
 
 	public static void StopPlaytimeTracking()
 	{
+		// Check for https://github.com/tModLoader/tModLoader/issues/4085
+		if (Program.LaunchParameters.ContainsKey("-disableugcplaytime"))
+			return;
+
 		// Call the appropriate variant
 		if (SteamClient)
 			SteamUGC.StopPlaytimeTrackingForAllItems();
@@ -328,7 +333,8 @@ public static class SteamedWraps
 
 	public static void BeginPlaytimeTracking()
 	{
-		if (!SteamAvailable)
+		// Second check is for https://github.com/tModLoader/tModLoader/issues/4085
+		if (!SteamAvailable || Program.LaunchParameters.ContainsKey("-disableugcplaytime"))
 			return;
 
 		List<PublishedFileId_t> list = new List<PublishedFileId_t>();
