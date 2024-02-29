@@ -49,6 +49,8 @@ public partial class Main
 	/// </summary>
 	public static int worldEventUpdates;
 	private double _partialWorldEventUpdates = 0f;
+	/// <summary> Contains error messages from ModSystem.SaveWorldData from a previous world save retrieved from the .twld. </summary>
+	internal static string worldLoadModDataErrors;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 

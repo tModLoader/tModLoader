@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoMod.Core.Platforms;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
@@ -212,9 +214,24 @@ internal static class PlayerIO
 			try {
 				modPlayer.SaveData(saveData);
 			}
-			catch {
+			catch (Exception e) {
 				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
-				Logging.tML.Error($"Encountered an error while saving custom player data because of an error in \"{modPlayer.Name}.SaveData\" from the \"{modPlayer.Mod.Name}\" mod. The data related to this class will not be saved.");
+				string message = Language.GetTextValue("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name);
+				Logging.tML.Error(message);
+				if (Main.gameMenu && Main.menuMode == 10) {
+					// Save and Quit. Since this isn't on main thread, attempting Interface.errorMessage.Show behaves poorly because the menu will automatically change while the user is reading the message. For now don't do anything.
+					// If we had a toast notification system that ran on main menu, that could help.
+				}
+				else if(!Main.gameMenu) {
+					// In-game autosave
+					Main.NewText(message, Microsoft.Xna.Framework.Color.OrangeRed);
+				}
+
+				list.Add(new TagCompound {
+					["mod"] = modPlayer.Mod.Name,
+					["name"] = modPlayer.Name,
+					["error"] = e.ToString()
+				});
 
 				saveData = new TagCompound();
 				continue; // don't want to save half-broken data, that could compound errors.
@@ -238,6 +255,13 @@ internal static class PlayerIO
 		foreach (var tag in list) {
 			string modName = tag.GetString("mod");
 			string modPlayerName = tag.GetString("name");
+
+			if(tag.TryGet<string>("error", out string errorMessage)) {
+				if(player.saveErrorMessage == null)
+					player.saveErrorMessage = Language.GetTextValue("tModLoader.PlayerCustomDataSaveFail");
+				player.saveErrorMessage += "\n\n" + errorMessage;
+				continue;
+			}
 
 			if (ModContent.TryFind<ModPlayer>(modName, modPlayerName, out var modPlayerBase)) {
 				var modPlayer = player.GetModPlayer(modPlayerBase);

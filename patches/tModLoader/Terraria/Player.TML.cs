@@ -14,6 +14,7 @@ namespace Terraria;
 public partial class Player : IEntityWithInstances<ModPlayer>
 {
 	internal IList<string> usedMods;
+	internal string saveErrorMessage;
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 

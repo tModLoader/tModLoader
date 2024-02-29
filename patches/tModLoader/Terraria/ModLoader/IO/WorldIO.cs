@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using Terraria.DataStructures;
+using Terraria.Chat;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
-using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader.IO;
 
@@ -496,8 +496,25 @@ internal static class WorldIO
 			try {
 				system.SaveWorldData(saveData);
 			}
-			catch {
-				Logging.tML.Error($"Encountered an error while saving custom world data because of an error in \"{system.Name}.SaveWorldData\" from the \"{system.Mod.Name}\" mod. The data related to this class will not be saved.");
+			catch (Exception e) {
+				var message = NetworkText.FromKey("tModLoader.SaveWorldDataExceptionWarning", system.Name, system.Mod.Name);
+				Logging.tML.Error(message.ToString());
+
+				if (Main.gameMenu && Main.menuMode == 10) {
+					// Save and Quit. Since this isn't on main thread, attempting Interface.errorMessage.Show behaves poorly because the menu will automatically change while the user is reading the message. For now don't do anything.
+				}
+				else if (!Main.gameMenu) {
+					// In-game autosave
+					ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
+				}
+				if(Main.dedServ)
+					Console.WriteLine(message.ToString());
+
+				list.Add(new TagCompound {
+					["mod"] = system.Mod.Name,
+					["name"] = system.Name,
+					["error"] = e.ToString()
+				});
 
 				saveData = new TagCompound();
 				continue; // don't want to save half-broken data, that could compound errors.
@@ -519,8 +536,23 @@ internal static class WorldIO
 
 	internal static void LoadModData(IList<TagCompound> list)
 	{
+		Main.worldLoadModDataErrors = null;
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSystem system)) {
+				if (tag.TryGet<string>("error", out string errorMessage)) {
+					string message = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n" + errorMessage;
+
+					Logging.tML.Warn(message);
+
+					// TODO: Unable to NewText message here. All messages are cleared later when the world finishes loading.
+					Main.worldLoadModDataErrors = Main.worldLoadModDataErrors == null ? errorMessage : Main.worldLoadModDataErrors + "\n" + errorMessage;
+
+					if (Main.dedServ)
+						Console.WriteLine(message);
+
+					continue;
+				}
+
 				try {
 					system.LoadWorldData(tag.GetCompound("data"));
 				}
@@ -662,7 +694,25 @@ internal static class WorldIO
 
 		var saveData = new TagCompound();
 		foreach (var system in SystemLoader.Systems) {
-			system.SaveWorldHeader(saveData);
+			try {
+				system.SaveWorldHeader(saveData);
+			}
+			catch {
+				var message = NetworkText.FromKey("tModLoader.SaveWorldHeaderExceptionWarning", system.Name, system.Mod.Name);
+				Logging.tML.Error(message.ToString());
+
+				if (Main.gameMenu && Main.menuMode == 10) {
+					// Save and Quit. Since this isn't on main thread, attempting Interface.errorMessage.Show behaves poorly because the menu will automatically change while the user is reading the message. For now don't do anything.
+				}
+				else if (!Main.gameMenu) {
+					// In-game autosave
+					ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
+				}
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
+
 			if (saveData.Count == 0)
 				continue;
 

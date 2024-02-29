@@ -38,6 +38,19 @@ partial class UICharacterListItem
 
 			Append(errorButton);
 		}
+		if(data.Player.saveErrorMessage != null) {
+			var errorButton = new UIImageButton(_errorTexture) {
+				VAlign = 1f,
+				HAlign = 1f
+			};
+
+			errorButton.Left.Set(-46f, 0f);
+			errorButton.OnLeftClick += new MouseEvent(SaveErrorButtonClick);
+			errorButton.OnMouseOver += new MouseEvent(SaveErrorMouseOver);
+			errorButton.OnMouseOut += new MouseEvent(DeleteMouseOut);
+
+			Append(errorButton);
+		}
 
 		if (data.Player.usedMods != null) {
 			string[] currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
@@ -127,6 +140,11 @@ partial class UICharacterListItem
 		_deleteButtonLabel.SetText(_data.customDataFail.modName + " Error");
 	}
 
+	private void SaveErrorMouseOver(UIMouseEvent evt, UIElement listeningElement)
+	{
+		_deleteButtonLabel.SetText(Language.GetTextValue("tModLoader.ViewSaveErrorMessage"));
+	}
+
 	private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement)
 	{
 		_buttonLabel.SetText("Edit Player Config");
@@ -135,6 +153,11 @@ partial class UICharacterListItem
 	private void ErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.PlayerCustomDataFail") + "\n\n" + _data.customDataFail.InnerException, 888, Main._characterSelectMenu);
+	}
+
+	private void SaveErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
+	{
+		Interface.infoMessage.Show(_data.Player.saveErrorMessage, 888, Main._characterSelectMenu);
 	}
 
 	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
