@@ -830,6 +830,10 @@ public static class LocalizationLoader
 
 	private static void HandleFileChangedOrRenamed(string modName, string fileName)
 	{
+		// Ignore non-localization files
+		if (!TryGetCultureAndPrefixFromPath(fileName, out _, out _))
+			return;
+
 		watcherCooldown = defaultWatcherCooldown;
 		lock (pendingFiles) {
 			pendingFiles.Add((modName, fileName));
