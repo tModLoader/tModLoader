@@ -2441,7 +2441,8 @@ var hierarchy =
         [ "ItemDefinition", "class_item_definition.html", null ],
         [ "NPCDefinition", "class_n_p_c_definition.html", null ],
         [ "PrefixDefinition", "class_prefix_definition.html", null ],
-        [ "ProjectileDefinition", "class_projectile_definition.html", null ]
+        [ "ProjectileDefinition", "class_projectile_definition.html", null ],
+        [ "TileDefinition", "class_tile_definition.html", null ]
       ] ],
       [ "Item", "class_item.html", null ],
       [ "ModEntry", "class_mod_entry.html", [

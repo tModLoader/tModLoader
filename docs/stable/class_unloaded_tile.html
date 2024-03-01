@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -328,13 +328,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
  This is where you would set the properties of this tile/wall. Many properties are stored as arrays throughout <a class="el" href="namespace_terraria.html">Terraria</a>'s code. <br  />
  For example: </p><ul>
 <li>
-Main.tileSolid[Type] = true;  </li>
+<a class="el" href="class_main.html#a318715449b8dcab5d25000103d330491" title="If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on i...">Main.tileSolid</a>[Type] = true;  </li>
 <li>
-Main.tileSolidTop[Type] = true;  </li>
+<a class="el" href="class_main.html#abb9f20241fec0d772d4f6fcb72fea998" title="If true, this tile can be stood on despite not being tileSolid. The player can pass down through the ...">Main.tileSolidTop</a>[Type] = true;  </li>
 <li>
 Main.tileBrick[Type] = true;  </li>
 <li>
-Main.tileBlockLight[Type] = true;  </li>
+<a class="el" href="class_main.html#abe2ddd285204e43fe773b6df014ca8b7" title="If true, light is blocked by this tile and the light values will decrease as it passes through....">Main.tileBlockLight</a>[Type] = true;  </li>
 </ul>
  <a href="class_mod_block_type.html#ada91244ef4715c2a5816256e494f8f22">More...</a><br /></td></tr>
 <tr class="separator:ada91244ef4715c2a5816256e494f8f22 inherit pub_methods_class_mod_block_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -457,11 +457,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsDoor</b><code> [get
 <tr class="separator:a9e81b5f17fcccb2fb458c3c13f1656a1 inherit properties_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36cfe4b7996be9bf5d5fa83cd3fbfea2 inherit properties_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="a36cfe4b7996be9bf5d5fa83cd3fbfea2" name="a36cfe4b7996be9bf5d5fa83cd3fbfea2"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>MineResist</b> = 1f<code> [get, set]</code></td></tr>
-<tr class="memdesc:a36cfe4b7996be9bf5d5fa83cd3fbfea2 inherit properties_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. Defaults to 1f. <br /></td></tr>
+<tr class="memdesc:a36cfe4b7996be9bf5d5fa83cd3fbfea2 inherit properties_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. <br  />
+ Defaults to 1f. <br  />
+ For example a MineResist value of 2f, such as used by TileID.Pearlstone, would require roughly twice as many hits to mine. <br  />
+ To find an appropriate value, see the wiki. <br  />
+ Use <a class="el" href="class_mod_tile.html#ac2edba54b94a6177676a99d37f512f57" title="The minimum pickaxe power required for pickaxes to mine this block.   Defaults to 0....">MinPick</a> to adjust the minimum pickaxe power required to mine this tile. <br /></td></tr>
 <tr class="separator:a36cfe4b7996be9bf5d5fa83cd3fbfea2 inherit properties_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2edba54b94a6177676a99d37f512f57 inherit properties_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="ac2edba54b94a6177676a99d37f512f57" name="ac2edba54b94a6177676a99d37f512f57"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>MinPick</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:ac2edba54b94a6177676a99d37f512f57 inherit properties_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum pickaxe power required for pickaxes to mine this block. Defaults to 0. <br /></td></tr>
+<tr class="memdesc:ac2edba54b94a6177676a99d37f512f57 inherit properties_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum pickaxe power required for pickaxes to mine this block. <br  />
+ Defaults to 0. <br  />
+ For example a MinPick value of 50, such as what TileID.Meteorite uses, would require a pickaxe with at least 50% pickaxe power (<a class="el" href="class_item.html#a5aadced21b5c18e5ac4c99091145cd38" title="The Pickaxe power of this item. For example, Item.pick = 50; will appear as 50% Pickaxe Power in the ...">Item.pick</a>) to break. <br  />
+ To find an appropriate value, see the wiki. <br  />
+ Use <a class="el" href="class_mod_tile.html#a36cfe4b7996be9bf5d5fa83cd3fbfea2" title="A multiplier describing how much this block resists harvesting. Higher values will make it take longe...">MineResist</a> to adjust how long a tile takes to be mined.<br /></td></tr>
 <tr class="separator:ac2edba54b94a6177676a99d37f512f57 inherit properties_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_mod_block_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_block_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_block_type.html">ModBlockType</a></td></tr>
 <tr class="memitem:aa83de9a9f6db248a1d359918cf8a5b9a inherit properties_class_mod_block_type"><td class="memItemLeft" align="right" valign="top"><a id="aa83de9a9f6db248a1d359918cf8a5b9a" name="aa83de9a9f6db248a1d359918cf8a5b9a"></a>

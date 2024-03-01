@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -3540,6 +3540,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileBlendAll
 <tr class="separator:a56521948131b6aa6ea7f4e74996306fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe2ddd285204e43fe773b6df014ca8b7"><td class="memItemLeft" align="right" valign="top"><a id="abe2ddd285204e43fe773b6df014ca8b7" name="abe2ddd285204e43fe773b6df014ca8b7"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileBlockLight</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:abe2ddd285204e43fe773b6df014ca8b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, light is blocked by this tile and the light values will decrease as it passes through. Most <a class="el" href="class_main.html#a318715449b8dcab5d25000103d330491" title="If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on i...">Main.tileSolid</a> tiles will set this to true. TileID.Glass is an example of a tile that is solid but doesn't block light. <br /></td></tr>
 <tr class="separator:abe2ddd285204e43fe773b6df014ca8b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad422149713840dfc947d37a1c90160d0"><td class="memItemLeft" align="right" valign="top"><a id="ad422149713840dfc947d37a1c90160d0" name="ad422149713840dfc947d37a1c90160d0"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileBouncy</b> = new bool[TileID.Count]</td></tr>
@@ -3558,7 +3559,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCracked<
 <tr class="separator:ad1e23b904ae1a46d736a897834c69647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e567c0a497197b2f49f009f2ba01f05"><td class="memItemLeft" align="right" valign="top"><a id="a7e567c0a497197b2f49f009f2ba01f05" name="a7e567c0a497197b2f49f009f2ba01f05"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCut</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:a7e567c0a497197b2f49f009f2ba01f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Tiles of the indexed <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> Type will be destroyed by weapons and projectiles. <br /></td></tr>
+<tr class="memdesc:a7e567c0a497197b2f49f009f2ba01f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Tiles of the indexed <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> Type will be destroyed by weapons and projectiles. <a class="el" href="class_mod_projectile.html#a226e2bb6f33f637e6a9882bcc53d1a10" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">ModProjectile.CanCutTiles</a> can be used to customize if a projectile should destroy tiles with this property. <br /></td></tr>
 <tr class="separator:a7e567c0a497197b2f49f009f2ba01f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28f5cc4735664e5e5eb8ce37684e31db"><td class="memItemLeft" align="right" valign="top"><a id="a28f5cc4735664e5e5eb8ce37684e31db" name="a28f5cc4735664e5e5eb8ce37684e31db"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileDungeon</b> = new bool[TileID.Count]</td></tr>
@@ -3569,9 +3570,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFlame</b
 <tr class="separator:abb7f16a068878aa07bcfb222d9002bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a100bedd6671b6f033589ec96ba200db8"><td class="memItemLeft" align="right" valign="top"><a id="a100bedd6671b6f033589ec96ba200db8" name="a100bedd6671b6f033589ec96ba200db8"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrame</b> = new int[TileID.Count]</td></tr>
+<tr class="memdesc:a100bedd6671b6f033589ec96ba200db8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks the current animation frame for a specific tile type. This value is shared for all tiles of the type. The frame parameter in <a class="el" href="class_mod_tile.html#a887cfc832835808a504b7f539627a04f" title="Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has bee...">ModTile.AnimateTile(ref int, ref int)</a> is equivalent to this value. <a class="el" href="class_animation.html">Animation</a> variation for a specific tile can be done with <a class="el" href="class_mod_tile.html#a967ddb5e5295a387c7146f9a4f86f89c" title="Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and fr...">ModTile.AnimateIndividualTile(int, int, int, ref int, ref int)</a>. <br /></td></tr>
 <tr class="separator:a100bedd6671b6f033589ec96ba200db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f3d919e18f0c4f182b462a2c8092210"><td class="memItemLeft" align="right" valign="top"><a id="a1f3d919e18f0c4f182b462a2c8092210" name="a1f3d919e18f0c4f182b462a2c8092210"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrameCounter</b> = new int[TileID.Count]</td></tr>
+<tr class="memdesc:a1f3d919e18f0c4f182b462a2c8092210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to time how long the current animation frame for a specific tile type has been shown. This value is shared for all tiles of the type. The frameCounter parameter in <a class="el" href="class_mod_tile.html#a887cfc832835808a504b7f539627a04f" title="Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has bee...">ModTile.AnimateTile(ref int, ref int)</a> is equivalent to this value. <br /></td></tr>
 <tr class="separator:a1f3d919e18f0c4f182b462a2c8092210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae49a753c6a45feca9bacc58d520efc1a"><td class="memItemLeft" align="right" valign="top"><a id="ae49a753c6a45feca9bacc58d520efc1a" name="ae49a753c6a45feca9bacc58d520efc1a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileFrameImportant</b> = new bool[TileID.Count]</td></tr>
@@ -3625,6 +3628,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileMoss</b>
 <tr class="separator:a00e74c36d9e5ee81e1566b84d89274c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa39286967de374f049ed929672601ddb"><td class="memItemLeft" align="right" valign="top"><a id="aa39286967de374f049ed929672601ddb" name="aa39286967de374f049ed929672601ddb"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileNoAttach</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:aa39286967de374f049ed929672601ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange. <br /></td></tr>
 <tr class="separator:aa39286967de374f049ed929672601ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4ce9c64453c2e3607879d6dcd320799"><td class="memItemLeft" align="right" valign="top"><a id="aa4ce9c64453c2e3607879d6dcd320799" name="aa4ce9c64453c2e3607879d6dcd320799"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileNoFail</b> = new bool[TileID.Count]</td></tr>
@@ -3668,9 +3672,11 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>tilesLoaded</b
 <tr class="separator:aea91b1ead5b5a389796d29a799bf3404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a318715449b8dcab5d25000103d330491"><td class="memItemLeft" align="right" valign="top"><a id="a318715449b8dcab5d25000103d330491" name="a318715449b8dcab5d25000103d330491"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSolid</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:a318715449b8dcab5d25000103d330491"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this tile will be solid. Projectiles will collide with it and <a class="el" href="class_n_p_c.html">NPC</a> and Players can stand on it and collide with it. Typical terrain tiles such as TileID.Stone and TileID.Demonite set this. Other examples include TileID.ClosedDoor and TileID.Boulder The wikirefers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles. <br /></td></tr>
 <tr class="separator:a318715449b8dcab5d25000103d330491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb9f20241fec0d772d4f6fcb72fea998"><td class="memItemLeft" align="right" valign="top"><a id="abb9f20241fec0d772d4f6fcb72fea998" name="abb9f20241fec0d772d4f6fcb72fea998"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSolidTop</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:abb9f20241fec0d772d4f6fcb72fea998"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this tile can be stood on despite not being <a class="el" href="class_main.html#a318715449b8dcab5d25000103d330491" title="If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on i...">tileSolid</a>. The player can pass down through the tile by pressing down. TileID.Tables, TileID.Anvils, and TileID.Platforms are some example. <br /></td></tr>
 <tr class="separator:abb9f20241fec0d772d4f6fcb72fea998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150df780377d15cb6bbb579fa529a722"><td class="memItemLeft" align="right" valign="top"><a id="a150df780377d15cb6bbb579fa529a722" name="a150df780377d15cb6bbb579fa529a722"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileSpelunker</b> = new bool[TileID.Count]</td></tr>
@@ -3681,6 +3687,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileStone</b
 <tr class="separator:a9a8b201f7ad2abc9e6080216909b858f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a86804046801c50b3fa3efa42d5e260"><td class="memItemLeft" align="right" valign="top"><a id="a5a86804046801c50b3fa3efa42d5e260" name="a5a86804046801c50b3fa3efa42d5e260"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileTable</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:a5a86804046801c50b3fa3efa42d5e260"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this tile type will be considered a table for the purposes of tile placement. Tiles such as TileID.Tables and TileID.WorkBenches set this. Some tiles such as TileID.PiggyBank, TileID.Bowls, and TileID.Candles can only be placed on tiles designated as a Table. Note that a separate system is used for counting a tile as a table for housing purposes. Use <code>AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);</code> in a <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a> class to designate the tile as a table. <br /></td></tr>
 <tr class="separator:a5a86804046801c50b3fa3efa42d5e260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a224593043e88020b9290cc6065a8c1ba"><td class="memItemLeft" align="right" valign="top"><a id="a224593043e88020b9290cc6065a8c1ba" name="a224593043e88020b9290cc6065a8c1ba"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileWaterDeath</b> = new bool[TileID.Count]</td></tr>

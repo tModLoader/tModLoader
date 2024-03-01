@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -116,7 +116,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAll</b> (
 <tr class="separator:acd918f1462d0ff2147201871c46b2a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17b464f634ed32f77fbbbe7225b5406e"><td class="memItemLeft" align="right" valign="top"><a id="a17b464f634ed32f77fbbbe7225b5406e" name="a17b464f634ed32f77fbbbe7225b5406e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearSonarText</b> ()</td></tr>
-<tr class="memdesc:a17b464f634ed32f77fbbbe7225b5406e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> in Main.popupText at the index <a class="el" href="class_popup_text.html#aa3fcf5bcf09750fbc949b5e198e5122f" title="The index in Main.popupText of the last known sonar text.   Assign and clear using AssignAsSonarText(...">sonarText</a> if that text has <a class="el" href="class_popup_text.html#a6cbc0f0cc184c04a8563152a47518643" title="Marks this PopupText as this player&#39;s Sonar Potion text.">sonar</a> set to <code>true</code>. <br /></td></tr>
+<tr class="memdesc:a17b464f634ed32f77fbbbe7225b5406e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> in Main.popupText at the index <a class="el" href="class_popup_text.html#aa3fcf5bcf09750fbc949b5e198e5122f" title="The index in Main.popupText of the last known sonar text.   Assign and clear using AssignAsSonarText(...">sonarText</a> if that text has <a class="el" href="class_popup_text.html#a6cbc0f0cc184c04a8563152a47518643" title="Marks this PopupText as this player&#39;s Sonar Potion text.">sonar</a> set to <code>true</code>. Note that multiple fishing lures is a common feature of many popular mods, so this method won't clear all <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> in that situation because only 1 index is tracked. The <a class="el" href="class_projectile.html#a0d8c6c0caf918333ef24757dac3a1ee1" title="Acts like ai, but does not sync to the server. Many vanilla ProjAIStyleID use these slots for various...">Projectile.localAI</a>[2] of a bobber projectile is used to store the index of its sonar <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a>. That stored value is offset by +1. <br /></td></tr>
 <tr class="separator:a17b464f634ed32f77fbbbe7225b5406e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7035a385cd01045b33efebb06ece248c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_popup_text.html#a7035a385cd01045b33efebb06ece248c">NewText</a> (<a class="el" href="struct_advanced_popup_request.html">AdvancedPopupRequest</a> request, Vector2 <a class="el" href="class_popup_text.html#a92c515d76c829c0de164e1e4c92c752a">position</a>)</td></tr>
 <tr class="memdesc:a7035a385cd01045b33efebb06ece248c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> in Main.popupText at <em>position</em>  using the settings from <em>request</em> . <br  />
@@ -243,7 +243,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>numActive</b></
 <tr class="memitem:aa3fcf5bcf09750fbc949b5e198e5122f"><td class="memItemLeft" align="right" valign="top"><a id="aa3fcf5bcf09750fbc949b5e198e5122f" name="aa3fcf5bcf09750fbc949b5e198e5122f"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>sonarText</b> = -1</td></tr>
 <tr class="memdesc:aa3fcf5bcf09750fbc949b5e198e5122f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index in Main.popupText of the last known sonar text. <br  />
- Assign and clear using <a class="el" href="class_popup_text.html#aad37340d43b51600f7281433fe1db902" title="Marks the PopupText in Main.popupText at sonarTextIndex  as sonar text, assigning sonarText and setti...">AssignAsSonarText(int)</a> and <a class="el" href="class_popup_text.html#a17b464f634ed32f77fbbbe7225b5406e" title="Destroys the PopupText in Main.popupText at the index sonarText if that text has sonar set to true.">ClearSonarText</a>. <br /></td></tr>
+ Assign and clear using <a class="el" href="class_popup_text.html#aad37340d43b51600f7281433fe1db902" title="Marks the PopupText in Main.popupText at sonarTextIndex  as sonar text, assigning sonarText and setti...">AssignAsSonarText(int)</a> and <a class="el" href="class_popup_text.html#a17b464f634ed32f77fbbbe7225b5406e" title="Destroys the PopupText in Main.popupText at the index sonarText if that text has sonar set to true....">ClearSonarText</a>. <br /></td></tr>
 <tr class="separator:aa3fcf5bcf09750fbc949b5e198e5122f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -462,7 +462,7 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>TargetScale</
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">context</td><td>The PopupTextContext in which this <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> was created.</td></tr>
-    <tr><td class="paramname">newItem</td><td>The <a class="el" href="class_item.html">Item</a> to ceate the new text from.</td></tr>
+    <tr><td class="paramname">newItem</td><td>The <a class="el" href="class_item.html">Item</a> to create the new text from.</td></tr>
     <tr><td class="paramname">stack</td><td>The stack of <em>newItem</em> .</td></tr>
     <tr><td class="paramname">noStack</td><td>If <code>true</code>, always create a new <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> instead of modifying an existing one.</td></tr>
     <tr><td class="paramname">longText</td><td>If <code>true</code>, then this <a class="el" href="class_popup_text.html" title="Represents an in-world floating text object.">PopupText</a> will spawn with <code><a class="el" href="class_popup_text.html#a4838ca639ef46eb3b9fdd3a94359e1aa" title="The time in ticks this PopupText will remain for until it starts to disappear.">lifeTime</a> == 5 * 60</code>.</td></tr>

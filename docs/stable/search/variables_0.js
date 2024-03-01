@@ -37,7 +37,7 @@ var searchData=
   ['arcanumsubshot_34',['ArcanumSubShot',['../class_proj_a_i_style_i_d.html#a28e3f76a0b0efa7b4dc98a99201a0ee1',1,'ProjAIStyleID']]],
   ['armor_35',['armor',['../class_player.html#aa9e90c695978482773b3a294c7f6c814',1,'Player']]],
   ['armorlongcoat_36',['ArmorLongCoat',['../class_player_draw_layers.html#aba05dcf88674bf1e907d517f24d5ab5b',1,'PlayerDrawLayers']]],
-  ['armorpenetration_37',['ArmorPenetration',['../struct_n_p_c_1_1_hit_modifiers.html#a5cd98f3779db944a0599ac1ebbe8be4a',1,'NPC.HitModifiers.ArmorPenetration()'],['../struct_player_1_1_hurt_modifiers.html#a5cecfb1b3ecc71f5dc9e570c4b22e193',1,'Player.HurtModifiers.ArmorPenetration()']]],
+  ['armorpenetration_37',['ArmorPenetration',['../struct_player_1_1_hurt_modifiers.html#a5cecfb1b3ecc71f5dc9e570c4b22e193',1,'Player.HurtModifiers.ArmorPenetration()'],['../struct_n_p_c_1_1_hit_modifiers.html#a5cd98f3779db944a0599ac1ebbe8be4a',1,'NPC.HitModifiers.ArmorPenetration()']]],
   ['armorsetbonus_38',['ArmorSetBonus',['../class_game_tip_i_d.html#ad769b21f3d469105d22e705d8377dd81',1,'GameTipID']]],
   ['armoveritem_39',['ArmOverItem',['../class_player_draw_layers.html#ac7584a0c7e95bb19997d072ad8e02670',1,'PlayerDrawLayers']]],
   ['armsdealerneedsguntomovein_40',['ArmsDealerNeedsGunToMoveIn',['../class_game_tip_i_d.html#a0a12789f65f57045a20dc14d9c0b30ee',1,'GameTipID']]],
@@ -50,5 +50,6 @@ var searchData=
   ['attacktype_47',['AttackType',['../class_n_p_c_i_d_1_1_sets.html#a00330581d37514acedb24a24afda2a4f',1,'NPCID::Sets']]],
   ['autoreuse_48',['autoReuse',['../class_item.html#a376a17bbe7a00d603833cde54a63ae27',1,'Item']]],
   ['avoidedbymeteorlanding_49',['AvoidedByMeteorLanding',['../class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313',1,'TileID::Sets']]],
-  ['axe_50',['axe',['../class_item.html#aa545ee1e8c6f1df9008e3afde89c4aeb',1,'Item']]]
+  ['avoidedbynpcs_50',['AvoidedByNPCs',['../class_tile_i_d_1_1_sets.html#a3d93dd2054d05cd842021a54ddc54a8a',1,'TileID::Sets']]],
+  ['axe_51',['axe',['../class_item.html#aa545ee1e8c6f1df9008e3afde89c4aeb',1,'Item']]]
 ];

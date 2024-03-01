@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2023.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -103,6 +103,10 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableCrit</b> ()</td></tr>
 <tr class="memdesc:a2a299a33d0fbe711818cf22c6d561fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1" title="Applied to the final damage (after defense) result when the hit is a crit. Defaults to +1f additive (...">CritDamage</a> calculations, and clears <a class="el" href="struct_n_p_c_1_1_hit_info.html#ab9260c7cbef7fa28576ac191ece076ea" title="Whether or not the hit is a crit">HitInfo.Crit</a> flag from the resulting hit. <br /></td></tr>
 <tr class="separator:a2a299a33d0fbe711818cf22c6d561fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858f2d93f04a3283398db056231416ca"><td class="memItemLeft" align="right" valign="top"><a id="a858f2d93f04a3283398db056231416ca" name="a858f2d93f04a3283398db056231416ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisableKnockback</b> ()</td></tr>
+<tr class="memdesc:a858f2d93f04a3283398db056231416ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the hit to have no knockback, regardless of <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8" title="Used by NPC.onFire2 buff (additive) and NPC.knockBackResist (multiplicative)     Recommend using Glob...">Knockback</a> values. Set automatically for <a class="el" href="class_n_p_c.html">NPC</a> with <a class="el" href="class_n_p_c.html#a19671fea508f786929fb6b46b35d94cc" title="How much of the knockback it receives will actually apply. 1f: full knockback; 0f: no knockback....">NPC.knockBackResist</a> values of 0 for consistency. <br /></td></tr>
+<tr class="separator:a858f2d93f04a3283398db056231416ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88ea9471f38b097730f3ec4b6ebba560"><td class="memItemLeft" align="right" valign="top"><a id="a88ea9471f38b097730f3ec4b6ebba560" name="a88ea9471f38b097730f3ec4b6ebba560"></a>
 readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>GetDamage</b> (float baseDamage, bool crit, bool damageVariation=false, float luck=0f)</td></tr>
 <tr class="separator:a88ea9471f38b097730f3ec4b6ebba560"><td class="memSeparator" colspan="2">&#160;</td></tr>
