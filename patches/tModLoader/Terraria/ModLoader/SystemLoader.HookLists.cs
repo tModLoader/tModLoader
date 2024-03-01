@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -13,6 +11,7 @@ using Terraria.Map;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.WorldBuilding;
+using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.ModSystem>;
 
 #pragma warning disable IDE0044 // Add readonly modifier
 
@@ -20,25 +19,6 @@ namespace Terraria.ModLoader;
 
 partial class SystemLoader
 {
-	internal class HookList
-	{
-		public readonly MethodInfo method;
-		private ModSystem[] arr = Array.Empty<ModSystem>();
-
-		public HookList(MethodInfo method)
-		{
-			this.method = method;
-		}
-
-		// Sadly, returning ReadOnlySpan<T>.Enumerator from a GetEnumerator() method doesn't bring the same performance
-		public ReadOnlySpan<ModSystem> Enumerate() => arr;
-
-		public void Update(IEnumerable<ModSystem> systems)
-		{
-			arr = systems.WhereMethodIsOverridden(method).ToArray();
-		}
-	}
-
 	private static readonly List<HookList> hooks = new List<HookList>();
 
 	private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate
