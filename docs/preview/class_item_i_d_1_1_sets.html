@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,12 +85,19 @@ $(document).ready(function(){initNavTree('class_item_i_d_1_1_sets.html',''); ini
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_item_i_d_1_1_sets-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ItemID.Sets Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets_1_1_sandgun_ammo_info.html">SandgunAmmoInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in <a class="el" href="class_item_i_d_1_1_sets.html#acfbba5162d0f1bf8c9419d602b71e3ca" title="The projectile type and associated bonus damage for the specified sandgun ammo item (an item with Ite...">SandgunAmmoProjectileData</a>. <a href="class_item_i_d_1_1_sets_1_1_sandgun_ammo_info.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ac04dd5753c9e7add9f14569312cf39fe"><td class="memItemLeft" align="right" valign="top"><a id="ac04dd5753c9e7add9f14569312cf39fe" name="ac04dd5753c9e7add9f14569312cf39fe"></a>
@@ -425,6 +432,9 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 <tr class="memdesc:a5d22b90bb38304f28c7c571b3df882b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set for pre-hardmode boss bags, except it also contains the Queen Slime's Boss Bag. Affects the way dev armor drops function, making it only drop in special world seeds. <br  />
  Don't forget to use the <a class="el" href="class_item_i_d_1_1_sets.html#a7f65ada35f745d74d7e62e328d2bfc75" title="Set for all boss bags. Causes bags to drop dev armor and creates a glow around the item when dropped ...">BossBag</a> set in conjuction with this one.  <a href="class_item_i_d_1_1_sets.html#a5d22b90bb38304f28c7c571b3df882b1">More...</a><br /></td></tr>
 <tr class="separator:a5d22b90bb38304f28c7c571b3df882b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfbba5162d0f1bf8c9419d602b71e3ca"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_item_i_d_1_1_sets_1_1_sandgun_ammo_info.html">SandgunAmmoInfo</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#acfbba5162d0f1bf8c9419d602b71e3ca">SandgunAmmoProjectileData</a></td></tr>
+<tr class="memdesc:acfbba5162d0f1bf8c9419d602b71e3ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The projectile type and associated bonus damage for the specified sandgun ammo item (an item with <code><a class="el" href="class_item.html#addaf53abeefd8999bc77746befd84d8f" title="The Ammo ID this item belongs to. Weapons with useAmmo set to the same AmmoID will consume this item ...">Item.ammo</a> = <a class="el" href="class_ammo_i_d.html#a20ae918609752fbe60c7a815aa58accb" title="Items using this as Item.ammo can use ItemID.Sets.SandgunAmmoProjectileData to customize the projecti...">AmmoID.Sand</a>;</code>). If undefined, the projectile will default to 42 (ProjectileID.SandBallGun), as this is the normal sandgun sand projectile. The bonus damage will default to 0. The projectile shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun.  <a href="class_item_i_d_1_1_sets.html#acfbba5162d0f1bf8c9419d602b71e3ca">More...</a><br /></td></tr>
+<tr class="separator:acfbba5162d0f1bf8c9419d602b71e3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3bafb524ae086b100e220ec7cee2df7"><td class="memItemLeft" align="right" valign="top"><a id="ac3bafb524ae086b100e220ec7cee2df7" name="ac3bafb524ae086b100e220ec7cee2df7"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>ShimmerCountsAsItem</b> = Factory.CreateIntSet(-1, 5358, 5437, 5361, 5437, 5360, 5437, 5359, 5437, 5455, 5323)</td></tr>
 <tr class="memdesc:ac3bafb524ae086b100e220ec7cee2df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>!= -1</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will be treated as the retrieved item type when dropped into shimmer (Entity.shimmerWet). <br  />
@@ -1384,6 +1394,36 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 </div><!-- fragment -->
 <p>Set for pre-hardmode boss bags, except it also contains the Queen Slime's Boss Bag. Affects the way dev armor drops function, making it only drop in special world seeds. <br  />
  Don't forget to use the <a class="el" href="class_item_i_d_1_1_sets.html#a7f65ada35f745d74d7e62e328d2bfc75" title="Set for all boss bags. Causes bags to drop dev armor and creates a glow around the item when dropped ...">BossBag</a> set in conjuction with this one. </p>
+
+</div>
+</div>
+<a id="acfbba5162d0f1bf8c9419d602b71e3ca" name="acfbba5162d0f1bf8c9419d602b71e3ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfbba5162d0f1bf8c9419d602b71e3ca">&#9670;&nbsp;</a></span>SandgunAmmoProjectileData</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_item_i_d_1_1_sets_1_1_sandgun_ammo_info.html">SandgunAmmoInfo</a> [] ItemID.Sets.SandgunAmmoProjectileData</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateCustomSet&lt;SandgunAmmoInfo&gt;(<span class="keyword">null</span>,</div>
+<div class="line">            EbonsandBlock, <span class="keyword">new</span> SandgunAmmoInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.EbonsandBallGun, 5),</div>
+<div class="line">            PearlsandBlock, <span class="keyword">new</span> SandgunAmmoInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.PearlSandBallGun, 5),</div>
+<div class="line">            CrimsandBlock, <span class="keyword">new</span> SandgunAmmoInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.CrimsandBallGun, 5)</div>
+<div class="line">        )</div>
+<div class="ttc" id="aclass_projectile_i_d_html"><div class="ttname"><a href="class_projectile_i_d.html">ProjectileID</a></div><div class="ttdef"><b>Definition:</b> ProjectileID.cs:10</div></div>
+</div><!-- fragment -->
+<p>The projectile type and associated bonus damage for the specified sandgun ammo item (an item with <code><a class="el" href="class_item.html#addaf53abeefd8999bc77746befd84d8f" title="The Ammo ID this item belongs to. Weapons with useAmmo set to the same AmmoID will consume this item ...">Item.ammo</a> = <a class="el" href="class_ammo_i_d.html#a20ae918609752fbe60c7a815aa58accb" title="Items using this as Item.ammo can use ItemID.Sets.SandgunAmmoProjectileData to customize the projecti...">AmmoID.Sand</a>;</code>). If undefined, the projectile will default to 42 (ProjectileID.SandBallGun), as this is the normal sandgun sand projectile. The bonus damage will default to 0. The projectile shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun. </p>
 
 </div>
 </div>

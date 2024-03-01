@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -235,6 +235,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ContentAutoloadingEna
 string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayName</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:aef45efd720eec50524fba05d7466f5d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The display name of this mod in the Mods menu. <br /></td></tr>
 <tr class="separator:aef45efd720eec50524fba05d7466f5d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad4aae695df3aff639eb1a10e050440b"><td class="memItemLeft" align="right" valign="top"><a id="aad4aae695df3aff639eb1a10e050440b" name="aad4aae695df3aff639eb1a10e050440b"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayNameClean</b><code> [get]</code></td></tr>
+<tr class="memdesc:aad4aae695df3aff639eb1a10e050440b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name. <br /></td></tr>
+<tr class="separator:aad4aae695df3aff639eb1a10e050440b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e5eebd662fa5948f063d890e407724c"><td class="memItemLeft" align="right" valign="top"><a id="a1e5eebd662fa5948f063d890e407724c" name="a1e5eebd662fa5948f063d890e407724c"></a>
 virtual uint&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraPlayerBuffSlots</b><code> [get]</code></td></tr>
 <tr class="memdesc:a1e5eebd662fa5948f063d890e407724c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of extra buff slots this mod desires for Players. This value is checked after <a class="el" href="class_mod.html#ae174f640b4281fa62e475400aad4dad6" title="Override this method to run code after all content has been autoloaded. Here additional content can b...">Mod.Load</a> but before <a class="el" href="class_mod.html#afe714e608786744a898fed05debcd972" title="Allows you to load things in your mod after its content has been setup (arrays have been resized to f...">Mod.PostSetupContent</a>. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs. <br /></td></tr>

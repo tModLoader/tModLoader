@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -213,7 +213,7 @@ Can be called on both server and client, depending on who owns the projectile.  
 <tr class="memitem:ad94e9a25154e9eaf98dfc61e4053c468"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">SendExtraAI</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_bit_writer.html">BitWriter</a> bitWriter, BinaryWriter binaryWriter)</td></tr>
 <tr class="memdesc:ad94e9a25154e9eaf98dfc61e4053c468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this judiciously to avoid straining the network. <br  />
 Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity</a> can reduce how much data must be sent for how many projectiles. <br  />
-Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set manually to true in ModProjectile.AI once to make it sync its current ai[] array to the server an...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
+Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
 Can be called on both server and client, depending on who owns the projectile.  <a href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">More...</a><br /></td></tr>
 <tr class="separator:ad94e9a25154e9eaf98dfc61e4053c468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a868df7036d919181c61c707d7fa8ff3e"><td class="memItemLeft" align="right" valign="top"><a id="a868df7036d919181c61c707d7fa8ff3e" name="a868df7036d919181c61c707d7fa8ff3e"></a>
@@ -1502,7 +1502,7 @@ Can be called on both server and client, depending on who owns the projectile. <
 
 <p>Use this judiciously to avoid straining the network. <br  />
 Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity</a> can reduce how much data must be sent for how many projectiles. <br  />
-Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set manually to true in ModProjectile.AI once to make it sync its current ai[] array to the server an...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
+Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
 Can be called on both server and client, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

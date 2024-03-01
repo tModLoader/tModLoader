@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,6 +93,9 @@ $(document).ready(function(){initNavTree('class_leading_condition_rule.html','')
 </div><!--header-->
 <div class="contents">
 
+<p>A drop rule that doesn't drop any items by itself, rather it contains just a <a class="el" href="interface_i_item_drop_rule_condition.html">IItemDropRuleCondition</a>. Use Chains.OnSuccess(IItemDropRule, IItemDropRule, bool), OnFailedConditions, or OnFailedRoll to attach other item drop rules to this rule. This can be useful for avoiding code repetition while writing logical item drop code. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples.  
+ <a href="class_leading_condition_rule.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -131,7 +134,11 @@ Properties</h2></td></tr>
 <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule_chain_attempt.html">IItemDropRuleChainAttempt</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ChainedRules</b><code> [get]</code></td></tr>
 <tr class="separator:a207b92825d65e827e66ca977187d586a inherit properties_interface_i_item_drop_rule"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A drop rule that doesn't drop any items by itself, rather it contains just a <a class="el" href="interface_i_item_drop_rule_condition.html">IItemDropRuleCondition</a>. Use Chains.OnSuccess(IItemDropRule, IItemDropRule, bool), OnFailedConditions, or OnFailedRoll to attach other item drop rules to this rule. This can be useful for avoiding code repetition while writing logical item drop code. </p>
+<p >See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guide</p>
+<p >for more information and examples. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac2d20171a94becc7d5a2d2d600d8efa0" name="ac2d20171a94becc7d5a2d2d600d8efa0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac2d20171a94becc7d5a2d2d600d8efa0">&#9670;&nbsp;</a></span>CanDrop()</h2>
 

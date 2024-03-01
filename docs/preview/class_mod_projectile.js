@@ -19,7 +19,6 @@ var class_mod_projectile =
     [ "GrappleTargetPoint", "class_mod_projectile.html#add7720ca0957bbf64b46bcd4b85d2f5a", null ],
     [ "MinionContactDamage", "class_mod_projectile.html#a9eef794425555cac0923f6a5bde993d1", null ],
     [ "ModifyDamageHitbox", "class_mod_projectile.html#a35179410325aca3d1066c580bef14b73", null ],
-    [ "ModifyFishingLine", "class_mod_projectile.html#ad01bc2ad1152af50e0a6d07d8b8e4af8", null ],
     [ "ModifyHitNPC", "class_mod_projectile.html#a0240acbb5cefa33c5de34c04904e9fb1", null ],
     [ "ModifyHitPlayer", "class_mod_projectile.html#a07636759f66e88a6d4b8d832a5700a6a", null ],
     [ "NumGrappleHooks", "class_mod_projectile.html#a4a3d5cffc4eebfe0398e7dd29c4b3d54", null ],

@@ -55,6 +55,7 @@ var class_mod_item =
     [ "MagicPrefix", "class_mod_item.html#a5c190c8931d29c088a0ddadf7636c3e9", null ],
     [ "MeleeEffects", "class_mod_item.html#aad9f2562a67c4eb1b7b6a4ca7ac8fb0e", null ],
     [ "MeleePrefix", "class_mod_item.html#a9b1eec50a051b0a48bdd0d7bf0a33194", null ],
+    [ "ModifyFishingLine", "class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d", null ],
     [ "ModifyHitNPC", "class_mod_item.html#aa52336877bff4894a21dfae26f1c66b8", null ],
     [ "ModifyHitPvp", "class_mod_item.html#ae3f0486ddaaa842a100b47e25772f1b1", null ],
     [ "ModifyItemLoot", "class_mod_item.html#a7fda8018a29473337d1f66dbaafc6e10", null ],

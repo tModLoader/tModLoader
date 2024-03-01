@@ -25,7 +25,7 @@ var searchData=
   ['modifyfarfades_22',['ModifyFarFades',['../class_mod_surface_background_style.html#a68fb2a373add71fca58b01bdafc032fe',1,'ModSurfaceBackgroundStyle']]],
   ['modifyfarsurfacefades_23',['ModifyFarSurfaceFades',['../class_global_background_style.html#ab5b38851c67c5605350b09de84a34e45',1,'GlobalBackgroundStyle']]],
   ['modifyfishingattempt_24',['ModifyFishingAttempt',['../class_mod_player.html#a6f1888c345019158a7c25485b0208b26',1,'ModPlayer']]],
-  ['modifyfishingline_25',['ModifyFishingLine',['../class_mod_projectile.html#ad01bc2ad1152af50e0a6d07d8b8e4af8',1,'ModProjectile']]],
+  ['modifyfishingline_25',['ModifyFishingLine',['../class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d',1,'ModItem']]],
   ['modifygametipvisibility_26',['ModifyGameTipVisibility',['../class_mod_system.html#a84b01505699245fb95b9c0a0df5944fa',1,'ModSystem']]],
   ['modifygloballoot_27',['ModifyGlobalLoot',['../class_global_n_p_c.html#a909fdc092c79b35d98e516c97223f63a',1,'GlobalNPC']]],
   ['modifyhardmodetasks_28',['ModifyHardmodeTasks',['../class_mod_system.html#ab3224849ab5d16570434c13e66a4eb9e',1,'ModSystem']]],

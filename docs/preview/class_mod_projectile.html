@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -178,8 +178,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MinionContact
 <tr class="memitem:a35179410325aca3d1066c580bef14b73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a35179410325aca3d1066c580bef14b73">ModifyDamageHitbox</a> (ref Rectangle hitbox)</td></tr>
 <tr class="memdesc:a35179410325aca3d1066c580bef14b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by this projectile for damaging players and NPCs.  <a href="class_mod_projectile.html#a35179410325aca3d1066c580bef14b73">More...</a><br /></td></tr>
 <tr class="separator:a35179410325aca3d1066c580bef14b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#ad01bc2ad1152af50e0a6d07d8b8e4af8">ModifyFishingLine</a> (ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
-<tr class="memdesc:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this projectile is a bobber, allows you to modify the origin of the fishing line that's connecting to the fishing pole, as well as the fishing line's color.  <a href="class_mod_projectile.html#ad01bc2ad1152af50e0a6d07d8b8e4af8">More...</a><br /></td></tr>
+<tr class="memitem:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="memItemLeft" align="right" valign="top"><a id="ad01bc2ad1152af50e0a6d07d8b8e4af8" name="ad01bc2ad1152af50e0a6d07d8b8e4af8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyFishingLine</b> (ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
 <tr class="separator:ad01bc2ad1152af50e0a6d07d8b8e4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0240acbb5cefa33c5de34c04904e9fb1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a0240acbb5cefa33c5de34c04904e9fb1">ModifyHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="memdesc:a0240acbb5cefa33c5de34c04904e9fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_projectile.html#a0240acbb5cefa33c5de34c04904e9fb1">More...</a><br /></td></tr>
@@ -239,7 +239,7 @@ Can be called on both server and client, depending on who owns the projectile.  
 <tr class="separator:a6df7860f82a22578b166b03838fa487a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abed0119b6752f522f1ca54f3efd656f5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#abed0119b6752f522f1ca54f3efd656f5">SendExtraAI</a> (BinaryWriter writer)</td></tr>
 <tr class="memdesc:abed0119b6752f522f1ca54f3efd656f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you are storing AI information outside of the <a class="el" href="class_projectile.html#aece4c68ccff3998432020ffffb63cdfb" title="An array with 3 slots used for any sort of data storage, which is occasionally synced to the server....">Projectile.ai</a> array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_mod_projectile.html#a6df7860f82a22578b166b03838fa487a" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
-Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set manually to true in ModProjectile.AI once to make it sync its current ai[] array to the server an...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
+Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
 Can be called on both server and client, depending on who owns the projectile.  <a href="class_mod_projectile.html#abed0119b6752f522f1ca54f3efd656f5">More...</a><br /></td></tr>
 <tr class="separator:abed0119b6752f522f1ca54f3efd656f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1022001acebe0c11fc6941e35ba704ad"><td class="memItemLeft" align="right" valign="top"><a id="a1022001acebe0c11fc6941e35ba704ad" name="a1022001acebe0c11fc6941e35ba704ad"></a>
@@ -617,51 +617,6 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hitbox</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad01bc2ad1152af50e0a6d07d8b8e4af8" name="ad01bc2ad1152af50e0a6d07d8b8e4af8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad01bc2ad1152af50e0a6d07d8b8e4af8">&#9670;&nbsp;</a></span>ModifyFishingLine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModProjectile.ModifyFishingLine </td>
-          <td>(</td>
-          <td class="paramtype">ref Vector2&#160;</td>
-          <td class="paramname"><em>lineOriginOffset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref Color&#160;</td>
-          <td class="paramname"><em>lineColor</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If this projectile is a bobber, allows you to modify the origin of the fishing line that's connecting to the fishing pole, as well as the fishing line's color. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lineOriginOffset</td><td>The offset of the fishing line's origin from the player's center. </td></tr>
-    <tr><td class="paramname">lineColor</td><td>The fishing line's color, before being overridden by string color accessories. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1076,7 +1031,7 @@ Can be called on both server and client, depending on who owns the projectile. <
 </div><div class="memdoc">
 
 <p>If you are storing AI information outside of the <a class="el" href="class_projectile.html#aece4c68ccff3998432020ffffb63cdfb" title="An array with 3 slots used for any sort of data storage, which is occasionally synced to the server....">Projectile.ai</a> array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_mod_projectile.html#a6df7860f82a22578b166b03838fa487a" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
-Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set manually to true in ModProjectile.AI once to make it sync its current ai[] array to the server an...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
+Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
 Can be called on both server and client, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

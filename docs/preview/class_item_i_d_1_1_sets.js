@@ -1,5 +1,6 @@
 var class_item_i_d_1_1_sets =
 [
+    [ "SandgunAmmoInfo", "class_item_i_d_1_1_sets_1_1_sandgun_ammo_info.html", null ],
     [ "AlsoABuildingItem", "class_item_i_d_1_1_sets.html#ac04dd5753c9e7add9f14569312cf39fe", null ],
     [ "AnimatesAsSoul", "class_item_i_d_1_1_sets.html#add52a865f19f9be54ffba9d361be8ae3", null ],
     [ "BannerStrength", "class_item_i_d_1_1_sets.html#afa8fed54f442f6dc2d309dd7a90d4b69", null ],
@@ -68,6 +69,7 @@ var class_item_i_d_1_1_sets =
     [ "OreDropsFromSlime", "class_item_i_d_1_1_sets.html#a43be23e2badafc2d71fce3a2393625fc", null ],
     [ "OverflowProtectionTimeOffset", "class_item_i_d_1_1_sets.html#a6915023f572009c72d09f2fdf23768c8", null ],
     [ "PreHardmodeLikeBossBag", "class_item_i_d_1_1_sets.html#a5d22b90bb38304f28c7c571b3df882b1", null ],
+    [ "SandgunAmmoProjectileData", "class_item_i_d_1_1_sets.html#acfbba5162d0f1bf8c9419d602b71e3ca", null ],
     [ "ShimmerCountsAsItem", "class_item_i_d_1_1_sets.html#ac3bafb524ae086b100e220ec7cee2df7", null ],
     [ "ShimmerTransformToItem", "class_item_i_d_1_1_sets.html#af49a4b1e6e7fee25acd09fbbcf634e9a", null ],
     [ "SingleUseInGamepad", "class_item_i_d_1_1_sets.html#ab111ab8879eb80689cf2016a857df91f", null ],

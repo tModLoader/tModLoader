@@ -27,6 +27,7 @@ var class_mod =
     [ "Code", "class_mod.html#a35d8d5126d591d95110eaf26b2a21eb8", null ],
     [ "ContentAutoloadingEnabled", "class_mod.html#a5fd3e08f3ff975febcc71d8bab11e614", null ],
     [ "DisplayName", "class_mod.html#aef45efd720eec50524fba05d7466f5d7", null ],
+    [ "DisplayNameClean", "class_mod.html#aad4aae695df3aff639eb1a10e050440b", null ],
     [ "ExtraPlayerBuffSlots", "class_mod.html#a1e5eebd662fa5948f063d890e407724c", null ],
     [ "GoreAutoloadingEnabled", "class_mod.html#ab41198cdf95d58ca446d2ff9477f5f46", null ],
     [ "Logger", "class_mod.html#a36f6a48cdff60d11217fcd27f77a3e7b", null ],

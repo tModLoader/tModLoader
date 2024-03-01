@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -139,8 +139,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a00cc55a6ed08defa65593dbc7a42f415"><td class="memItemLeft" align="right" valign="top"><a id="a00cc55a6ed08defa65593dbc7a42f415" name="a00cc55a6ed08defa65593dbc7a42f415"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ActiveAndWalkableTile</b> (int i, int j)</td></tr>
 <tr class="separator:a00cc55a6ed08defa65593dbc7a42f415"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a4b53d8f88a0781d0592b72380642a3"><td class="memItemLeft" align="right" valign="top"><a id="a2a4b53d8f88a0781d0592b72380642a3" name="a2a4b53d8f88a0781d0592b72380642a3"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddBuriedChest</b> (int i, int j, int contain=0, bool notNearOtherChests=false, int Style=-1, bool trySlope=false, ushort chestTileType=0)</td></tr>
+<tr class="memitem:a2a4b53d8f88a0781d0592b72380642a3"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a2a4b53d8f88a0781d0592b72380642a3">AddBuriedChest</a> (int i, int j, int contain=0, bool notNearOtherChests=false, int Style=-1, bool trySlope=false, ushort chestTileType=0)</td></tr>
+<tr class="memdesc:a2a4b53d8f88a0781d0592b72380642a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to place a chest and fill it with typical loot according to the style (<em>Style</em> ) and depth. Without any parameters, a regular, gold, or locked shadow chest will be created, depending on the depth. You can pass in an item type (<em>contain</em> ) and the first item in the chest will be that item. Unlike <a class="el" href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799" title="Attempts to place a chest at the given tile coordinates. The coordinate provided (x ,...">PlaceChest(int, int, ushort, bool, int)</a>, the resulting chest will be placed with the bottom right corner at the given coordinates (<em>i</em> , <em>j</em> ). In addition, if the given <em>j</em>  coordinate isn't suitable, AddBuriedChest will search down from the given coordinate to find the first solid tile it encounters and attempt to place there. This method returns true if a chest was successfully placed, but be aware that the chest might not be exactly at the coordinates you provide. This makes further adjusting the chest contents directly difficult. A video guide can be found on the World Generation wiki page. It shows an example of running the method with the default parameters <code>WorldGen.AddBuriedChest(x, y);</code>. Notice how the chest style changes according to depth and how the chest is placed on the floor directly below the provided coordinates if possible.  <a href="class_world_gen.html#a2a4b53d8f88a0781d0592b72380642a3">More...</a><br /></td></tr>
 <tr class="separator:a2a4b53d8f88a0781d0592b72380642a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d6ed1f9c35257d85ae1ef1a8ace9928"><td class="memItemLeft" align="right" valign="top"><a id="a0d6ed1f9c35257d85ae1ef1a8ace9928" name="a0d6ed1f9c35257d85ae1ef1a8ace9928"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddBuriedChest</b> (Point point, int contain=0, bool notNearOtherChests=false, int Style=-1)</td></tr>
@@ -803,8 +803,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>InAPlaceWithWi
 <tr class="memitem:a1adc73c32e531500926fd1197f6a1369"><td class="memItemLeft" align="right" valign="top"><a id="a1adc73c32e531500926fd1197f6a1369" name="a1adc73c32e531500926fd1197f6a1369"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>InAPlaceWithWind</b> (Vector2 position, int width, int height)</td></tr>
 <tr class="separator:a1adc73c32e531500926fd1197f6a1369"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ee5c1aa704eb7690bc7fdd4a1147e66"><td class="memItemLeft" align="right" valign="top"><a id="a5ee5c1aa704eb7690bc7fdd4a1147e66" name="a5ee5c1aa704eb7690bc7fdd4a1147e66"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>InWorld</b> (int x, int y, int fluff=0)</td></tr>
+<tr class="memitem:a5ee5c1aa704eb7690bc7fdd4a1147e66"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a5ee5c1aa704eb7690bc7fdd4a1147e66">InWorld</a> (int x, int y, int fluff=0)</td></tr>
+<tr class="memdesc:a5ee5c1aa704eb7690bc7fdd4a1147e66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the provided tile coordinates are within the world bounds. When dealing with random coordinates combined with addition or subtraction, there is a chance you might construct coordinates outside the bounds of the world. This will crash world generation, so it is important that you check that the coordinates are suitable before attempting to do things at those coordinates. Use this method to check if the given coordinates fall inside the world. The fluff parameter further checks that the coordinates are at least that many tiles away from the edge, which is useful for world generation actions that could affect large areas of tiles.  <a href="class_world_gen.html#a5ee5c1aa704eb7690bc7fdd4a1147e66">More...</a><br /></td></tr>
 <tr class="separator:a5ee5c1aa704eb7690bc7fdd4a1147e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5abf3991e58f964882e36db49b7735b"><td class="memItemLeft" align="right" valign="top"><a id="ad5abf3991e58f964882e36db49b7735b" name="ad5abf3991e58f964882e36db49b7735b"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAContainer</b> (<a class="el" href="struct_tile.html">Tile</a> t)</td></tr>
@@ -998,8 +998,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OreHelper</b> 
 <tr class="memitem:a15bed0f0b4d921b156b0c3f75ac04dc0"><td class="memItemLeft" align="right" valign="top"><a id="a15bed0f0b4d921b156b0c3f75ac04dc0" name="a15bed0f0b4d921b156b0c3f75ac04dc0"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>OrePatch</b> (int X, int Y)</td></tr>
 <tr class="separator:a15bed0f0b4d921b156b0c3f75ac04dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac943af9cb0ceaf697cc1a6347e396c3"><td class="memItemLeft" align="right" valign="top"><a id="aac943af9cb0ceaf697cc1a6347e396c3" name="aac943af9cb0ceaf697cc1a6347e396c3"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OreRunner</b> (int i, int j, double strength, int steps, ushort type)</td></tr>
+<tr class="memitem:aac943af9cb0ceaf697cc1a6347e396c3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#aac943af9cb0ceaf697cc1a6347e396c3">OreRunner</a> (int i, int j, double strength, int steps, ushort type)</td></tr>
+<tr class="memdesc:aac943af9cb0ceaf697cc1a6347e396c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_world_gen.html#a05e507c099b90c1b023918b42e032909" title="Places small splotches of the specified tile starting at the designated coordinates....">TileRunner(int, int, double, int, int, bool, double, double, bool, bool, int)</a>, but without many of the options. OreRunner places small splotches of the specified tile (<em>type</em> ) starting at the coordinates (<em>i</em>  and <em>j</em>  in tile coordinates). OreRunner only replaces active tiles (<a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">Tile.HasTile</a>) that are either <a class="el" href="class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36" title="Tiles within this set are allowed to be replaced by generating ore.">TileID.Sets.CanBeClearedDuringOreRunner</a> or Main.tileMoss, making it suitable to be used even after FrameImportant tiles (<a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a>) exist in the world. If you have a tile that should be susceptible to being replaced when additional ores are spawned in the world, set <a class="el" href="class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36" title="Tiles within this set are allowed to be replaced by generating ore.">TileID.Sets.CanBeClearedDuringOreRunner</a> to true for that <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>. Vanilla code only uses this method when spawning hardmode ores. This method is suitable for use in-game and in multiplayer as it both frames and syncs tile changes.  <a href="class_world_gen.html#aac943af9cb0ceaf697cc1a6347e396c3">More...</a><br /></td></tr>
 <tr class="separator:aac943af9cb0ceaf697cc1a6347e396c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bcce1199ccac11bf0d11f5e7339ac2e"><td class="memItemLeft" align="right" valign="top"><a id="a0bcce1199ccac11bf0d11f5e7339ac2e" name="a0bcce1199ccac11bf0d11f5e7339ac2e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>outerTempled</b> (int x, int y)</td></tr>
@@ -1106,11 +1106,12 @@ static Point&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceCatTail<
 <tr class="memitem:af840fb7ec86d1b27d839e95b7feb0de2"><td class="memItemLeft" align="right" valign="top"><a id="af840fb7ec86d1b27d839e95b7feb0de2" name="af840fb7ec86d1b27d839e95b7feb0de2"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceChand</b> (int x, int y, ushort type, int style=0)</td></tr>
 <tr class="separator:af840fb7ec86d1b27d839e95b7feb0de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d28dc888a53a0f60ec528e09e31a799"><td class="memItemLeft" align="right" valign="top"><a id="a1d28dc888a53a0f60ec528e09e31a799" name="a1d28dc888a53a0f60ec528e09e31a799"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceChest</b> (int x, int y, ushort type=21, bool notNearOtherChests=false, int style=0)</td></tr>
+<tr class="memitem:a1d28dc888a53a0f60ec528e09e31a799"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799">PlaceChest</a> (int x, int y, ushort type=21, bool notNearOtherChests=false, int style=0)</td></tr>
+<tr class="memdesc:a1d28dc888a53a0f60ec528e09e31a799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to place a chest at the given tile coordinates. The coordinate provided (<em>x</em> , <em>y</em> ) will be the bottom left corner of the resulting chest, if the method succeeds. <em>type</em>  is the tile type to place, and <em>style</em>  is the tile style to place. For vanilla chests, you can count from zero starting from the left in the <code>Tiles_21.png</code> image after extracting the vanilla texturesto find the style you want to place. Another option is to follow the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> IDs wiki guideto find the style. <em>notNearOtherChests</em>  can be set to true to prevent the chest from placing if another chest exists within 25 tiles left or right and 8 tiles up or down. This method returns the chest index (the index within <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a>) of the chest that was successfully placed or -1 if placing the chest failed. <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> placement can fail for many reasons, such as if existing tiles block the space, or if there isn't 2 suitable solid tiles directly below the intended location. See the "Try Until Success" section of the World Generation wiki guidefor an approach to using this method. See the "Placing Items in Chests" section of the World Generation wiki guidefor info on placing items in the chest. The <a class="el" href="class_world_gen.html#a2a4b53d8f88a0781d0592b72380642a3" title="Attempts to place a chest and fill it with typical loot according to the style (Style ) and depth....">AddBuriedChest(int, int, int, bool, int, bool, ushort)</a> method places a chest and fills it with the default items for that chest.  <a href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799">More...</a><br /></td></tr>
 <tr class="separator:a1d28dc888a53a0f60ec528e09e31a799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14ccd1221b0945c0787f60dd45a7a51d"><td class="memItemLeft" align="right" valign="top"><a id="a14ccd1221b0945c0787f60dd45a7a51d" name="a14ccd1221b0945c0787f60dd45a7a51d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceChestDirect</b> (int x, int y, ushort type, int style, int id)</td></tr>
+<tr class="memdesc:a14ccd1221b0945c0787f60dd45a7a51d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for network syncing. Modders should use <a class="el" href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799" title="Attempts to place a chest at the given tile coordinates. The coordinate provided (x ,...">PlaceChest(int, int, ushort, bool, int)</a> if attempting to place a chest. <br /></td></tr>
 <tr class="separator:a14ccd1221b0945c0787f60dd45a7a51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8009715957f92a66e2d4696299a6ee53"><td class="memItemLeft" align="right" valign="top"><a id="a8009715957f92a66e2d4696299a6ee53" name="a8009715957f92a66e2d4696299a6ee53"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceDoor</b> (int i, int j, int type, int style=0)</td></tr>
@@ -1169,8 +1170,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceSandTrap<
 <tr class="memitem:a48be57c546fc6de509374b52915f894e"><td class="memItemLeft" align="right" valign="top"><a id="a48be57c546fc6de509374b52915f894e" name="a48be57c546fc6de509374b52915f894e"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceSign</b> (int x, int y, ushort type, int Style=0)</td></tr>
 <tr class="separator:a48be57c546fc6de509374b52915f894e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abed43f0e89493aa24da0ee4fc954a873"><td class="memItemLeft" align="right" valign="top"><a id="abed43f0e89493aa24da0ee4fc954a873" name="abed43f0e89493aa24da0ee4fc954a873"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceSmallPile</b> (int i, int j, int X, int Y, ushort type=185)</td></tr>
+<tr class="memitem:abed43f0e89493aa24da0ee4fc954a873"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#abed43f0e89493aa24da0ee4fc954a873">PlaceSmallPile</a> (int i, int j, int X, int Y, ushort type=185)</td></tr>
+<tr class="memdesc:abed43f0e89493aa24da0ee4fc954a873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Places TileID.SmallPiles tiles. This tile is special and doesn't follow the normal style rules and won't place with PlaceTile. i and j are the coordinates. X and Y are the count and row indexes of the specific tile in the texture file. Indexes count from left to right and start at 0. So for example the Sapphire Stash would have Y=1 (second row) and X=21 (22nd 2x1 tile).  <a href="class_world_gen.html#abed43f0e89493aa24da0ee4fc954a873">More...</a><br /></td></tr>
 <tr class="separator:abed43f0e89493aa24da0ee4fc954a873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b64293c7e94a5f52a4c9b0ffe346e65"><td class="memItemLeft" align="right" valign="top"><a id="a8b64293c7e94a5f52a4c9b0ffe346e65" name="a8b64293c7e94a5f52a4c9b0ffe346e65"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceStatueTrap</b> (int x, int y)</td></tr>
@@ -1181,8 +1182,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceSunflower
 <tr class="memitem:a206f218bb5748913482473aae9dcc4cd"><td class="memItemLeft" align="right" valign="top"><a id="a206f218bb5748913482473aae9dcc4cd" name="a206f218bb5748913482473aae9dcc4cd"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceTight</b> (int x, int y, bool spiders=false)</td></tr>
 <tr class="separator:a206f218bb5748913482473aae9dcc4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d89efc164bd01b5920d1f761df42565"><td class="memItemLeft" align="right" valign="top"><a id="a6d89efc164bd01b5920d1f761df42565" name="a6d89efc164bd01b5920d1f761df42565"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceTile</b> (int i, int j, int Type, bool mute=false, bool forced=false, int plr=-1, int style=0)</td></tr>
+<tr class="memitem:a6d89efc164bd01b5920d1f761df42565"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a6d89efc164bd01b5920d1f761df42565">PlaceTile</a> (int i, int j, int Type, bool mute=false, bool forced=false, int plr=-1, int style=0)</td></tr>
+<tr class="memdesc:a6d89efc164bd01b5920d1f761df42565"><td class="mdescLeft">&#160;</td><td class="mdescRight">PlaceTile is the main way to place individual tiles while obeying anchor considerations. Most of the other PlaceX methods in the <a class="el" href="class_world_gen.html">WorldGen</a> class are called by this method. i and j are the tile coordinates. These coordinates relate to the origin of the tile, not necessarily the top left corner of the tile. Read the Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> wiki guideto familiarize yourself with the concepts of Anchors and Origins. <em>mute</em>  indicates if a sound should be made, this only applies to in-game usage as sounds are all muted during world gen. <em>forced</em>  attempts to place the tile even if other tiles are already at the coordinates, but it is unreliable. <em>plr</em>  does nothing except affect bathtubs. <em>style</em>  refers to the style of the tile type provided. Styles are explained in the Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> guide. PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <code>if(Main.tile[x, y].type == TileID.Campfire)</code> PlaceTile doesn't expose everything. For example, attempting to place a tile with a specific style will be ignored by many of the underlying methods. Another issue is that it is impossible to place a tile that has left and right placement orientations facing right. In these situations, you might need to manually place each tile in the multitile or use PlaceObject(int, int, int, bool, int, int, int, int) instead. WorldGen.PlaceObject requires more input. For example, placing Coral with PlaceObject means you have to manually specify the style, as the random style (TileObjectData.RandomStyleRange) choosing is a feature of PlaceTile.  <a href="class_world_gen.html#a6d89efc164bd01b5920d1f761df42565">More...</a><br /></td></tr>
 <tr class="separator:a6d89efc164bd01b5920d1f761df42565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff1679cc8eb184f41fdc066490ecf28b"><td class="memItemLeft" align="right" valign="top"><a id="aff1679cc8eb184f41fdc066490ecf28b" name="aff1679cc8eb184f41fdc066490ecf28b"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>placeTrap</b> (int x2, int y2, int type=-1)</td></tr>
@@ -1310,8 +1311,8 @@ static Point&#160;</td><td class="memItemRight" valign="bottom"><b>RandomRectang
 <tr class="memitem:aabd6f3e3f291105d54c4dfc06bf0afbc"><td class="memItemLeft" align="right" valign="top"><a id="aabd6f3e3f291105d54c4dfc06bf0afbc" name="aabd6f3e3f291105d54c4dfc06bf0afbc"></a>
 static Point&#160;</td><td class="memItemRight" valign="bottom"><b>RandomWorldPoint</b> (int padding)</td></tr>
 <tr class="separator:aabd6f3e3f291105d54c4dfc06bf0afbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89f0e44198e319e4f3429bb6fd00f291"><td class="memItemLeft" align="right" valign="top"><a id="a89f0e44198e319e4f3429bb6fd00f291" name="a89f0e44198e319e4f3429bb6fd00f291"></a>
-static Point&#160;</td><td class="memItemRight" valign="bottom"><b>RandomWorldPoint</b> (int top=0, int right=0, int bottom=0, int left=0)</td></tr>
+<tr class="memitem:a89f0e44198e319e4f3429bb6fd00f291"><td class="memItemLeft" align="right" valign="top">static Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a89f0e44198e319e4f3429bb6fd00f291">RandomWorldPoint</a> (int top=0, int right=0, int bottom=0, int left=0)</td></tr>
+<tr class="memdesc:a89f0e44198e319e4f3429bb6fd00f291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random tile coordinate within the world bounds. The optional parameters define additional padding, avoiding the edges or defining a target area. <code>Point point = WorldGen.RandomWorldPoint((int)<a class="el" href="class_main.html#aa44e433e53a98400dacd5260313d7b2b" title="The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0&#39; on the Depth Me...">Main.worldSurface</a>, 40, 500, 60)</code> is equivalent to  <a href="class_world_gen.html#a89f0e44198e319e4f3429bb6fd00f291">More...</a><br /></td></tr>
 <tr class="separator:a89f0e44198e319e4f3429bb6fd00f291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab48eeaa8a2ead4bc55fef1e666fb06f9"><td class="memItemLeft" align="right" valign="top"><a id="ab48eeaa8a2ead4bc55fef1e666fb06f9" name="ab48eeaa8a2ead4bc55fef1e666fb06f9"></a>
 static <a class="el" href="struct_painting_entry.html">PaintingEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandPictureTile</b> ()</td></tr>
@@ -1481,6 +1482,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SolidTileNoAtt
 <tr class="memitem:ab53de2203cb6ad1d79f562a19b0b0581"><td class="memItemLeft" align="right" valign="top"><a id="ab53de2203cb6ad1d79f562a19b0b0581" name="ab53de2203cb6ad1d79f562a19b0b0581"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SonOfLakinater</b> (int i, int j, double strengthMultiplier=1.0)</td></tr>
 <tr class="separator:ab53de2203cb6ad1d79f562a19b0b0581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a425ef74faa8fdba9f59cea42072aeed3"><td class="memItemLeft" align="right" valign="top"><a id="a425ef74faa8fdba9f59cea42072aeed3" name="a425ef74faa8fdba9f59cea42072aeed3"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnFallingBlockProjectile</b> (int i, int j, <a class="el" href="struct_tile.html">Tile</a> tileCache, <a class="el" href="struct_tile.html">Tile</a> tileTopCache, <a class="el" href="struct_tile.html">Tile</a> tileBottomCache, int type)</td></tr>
+<tr class="separator:a425ef74faa8fdba9f59cea42072aeed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec2fcd806da8e42719df95a379aef67e"><td class="memItemLeft" align="right" valign="top"><a id="aec2fcd806da8e42719df95a379aef67e" name="aec2fcd806da8e42719df95a379aef67e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnPlanteraThorns</b> (Vector2 position)</td></tr>
 <tr class="separator:aec2fcd806da8e42719df95a379aef67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1585,6 +1589,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>TileMergeAttem
 <tr class="separator:a6bb874d2d62e6729ae92ab20a7458e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05e507c099b90c1b023918b42e032909"><td class="memItemLeft" align="right" valign="top"><a id="a05e507c099b90c1b023918b42e032909" name="a05e507c099b90c1b023918b42e032909"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TileRunner</b> (int i, int j, double strength, int steps, int type, bool addTile=false, double speedX=0.0, double speedY=0.0, bool noYChange=false, bool overRide=true, int ignoreTileType=-1)</td></tr>
+<tr class="memdesc:a05e507c099b90c1b023918b42e032909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Places small splotches of the specified tile starting at the designated coordinates. This should only be used early in world generation code. <a class="el" href="class_world_gen.html#aac943af9cb0ceaf697cc1a6347e396c3" title="Similar to TileRunner(int, int, double, int, int, bool, double, double, bool, bool,...">OreRunner(int, int, double, int, ushort)</a> is a safer version that can be used anytime without corrupting tiles. More detailed information and a video guide can be found on the World Generation wiki page<br /></td></tr>
 <tr class="separator:a05e507c099b90c1b023918b42e032909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a363637f9a22b1ab16bdb96d31724eb4d"><td class="memItemLeft" align="right" valign="top"><a id="a363637f9a22b1ab16bdb96d31724eb4d" name="a363637f9a22b1ab16bdb96d31724eb4d"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileType</b> (int x, int y)</td></tr>
@@ -2026,6 +2031,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>WorldSizeSmallY<
 Properties</h2></td></tr>
 <tr class="memitem:a34f743211761187fd9e9cc61f6efad13"><td class="memItemLeft" align="right" valign="top"><a id="a34f743211761187fd9e9cc61f6efad13" name="a34f743211761187fd9e9cc61f6efad13"></a>
 static <a class="el" href="class_unified_random.html">UnifiedRandom</a>&#160;</td><td class="memItemRight" valign="bottom"><b>genRand</b><code> [get]</code></td></tr>
+<tr class="memdesc:a34f743211761187fd9e9cc61f6efad13"><td class="mdescLeft">&#160;</td><td class="mdescRight">The random number generator for world generation. It is important to use this instead of Main.rand for all world generation randomness to make the world seed feature reliable. <br /></td></tr>
 <tr class="separator:a34f743211761187fd9e9cc61f6efad13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcbee9e08719657c92be7baa9423ea1c"><td class="memItemLeft" align="right" valign="top"><a id="adcbee9e08719657c92be7baa9423ea1c" name="adcbee9e08719657c92be7baa9423ea1c"></a>
 static double&#160;</td><td class="memItemRight" valign="bottom"><b>oceanLevel</b><code> [get]</code></td></tr>
@@ -2038,6 +2044,87 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
 <tr class="separator:ab6d97ae23d982bd3aedc9283a938a5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2a4b53d8f88a0781d0592b72380642a3" name="a2a4b53d8f88a0781d0592b72380642a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a4b53d8f88a0781d0592b72380642a3">&#9670;&nbsp;</a></span>AddBuriedChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool WorldGen.AddBuriedChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>contain</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>notNearOtherChests</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Style</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>trySlope</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ushort&#160;</td>
+          <td class="paramname"><em>chestTileType</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to place a chest and fill it with typical loot according to the style (<em>Style</em> ) and depth. Without any parameters, a regular, gold, or locked shadow chest will be created, depending on the depth. You can pass in an item type (<em>contain</em> ) and the first item in the chest will be that item. Unlike <a class="el" href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799" title="Attempts to place a chest at the given tile coordinates. The coordinate provided (x ,...">PlaceChest(int, int, ushort, bool, int)</a>, the resulting chest will be placed with the bottom right corner at the given coordinates (<em>i</em> , <em>j</em> ). In addition, if the given <em>j</em>  coordinate isn't suitable, AddBuriedChest will search down from the given coordinate to find the first solid tile it encounters and attempt to place there. This method returns true if a chest was successfully placed, but be aware that the chest might not be exactly at the coordinates you provide. This makes further adjusting the chest contents directly difficult. A video guide can be found on the World Generation wiki page. It shows an example of running the method with the default parameters <code>WorldGen.AddBuriedChest(x, y);</code>. Notice how the chest style changes according to depth and how the chest is placed on the floor directly below the provided coordinates if possible. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">contain</td><td></td></tr>
+    <tr><td class="paramname">notNearOtherChests</td><td></td></tr>
+    <tr><td class="paramname">Style</td><td></td></tr>
+    <tr><td class="paramname">trySlope</td><td></td></tr>
+    <tr><td class="paramname">chestTileType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a4c0e5140584ee1a66fa8e98e5fef5494" name="a4c0e5140584ee1a66fa8e98e5fef5494"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4c0e5140584ee1a66fa8e98e5fef5494">&#9670;&nbsp;</a></span>Convert()</h2>
 
@@ -2099,6 +2186,59 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a5ee5c1aa704eb7690bc7fdd4a1147e66" name="a5ee5c1aa704eb7690bc7fdd4a1147e66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee5c1aa704eb7690bc7fdd4a1147e66">&#9670;&nbsp;</a></span>InWorld()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool WorldGen.InWorld </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fluff</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the provided tile coordinates are within the world bounds. When dealing with random coordinates combined with addition or subtraction, there is a chance you might construct coordinates outside the bounds of the world. This will crash world generation, so it is important that you check that the coordinates are suitable before attempting to do things at those coordinates. Use this method to check if the given coordinates fall inside the world. The fluff parameter further checks that the coordinates are at least that many tiles away from the edge, which is useful for world generation actions that could affect large areas of tiles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramname">fluff</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2165,6 +2305,348 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aac943af9cb0ceaf697cc1a6347e396c3" name="aac943af9cb0ceaf697cc1a6347e396c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac943af9cb0ceaf697cc1a6347e396c3">&#9670;&nbsp;</a></span>OreRunner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WorldGen.OreRunner </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>strength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>steps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ushort&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Similar to <a class="el" href="class_world_gen.html#a05e507c099b90c1b023918b42e032909" title="Places small splotches of the specified tile starting at the designated coordinates....">TileRunner(int, int, double, int, int, bool, double, double, bool, bool, int)</a>, but without many of the options. OreRunner places small splotches of the specified tile (<em>type</em> ) starting at the coordinates (<em>i</em>  and <em>j</em>  in tile coordinates). OreRunner only replaces active tiles (<a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">Tile.HasTile</a>) that are either <a class="el" href="class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36" title="Tiles within this set are allowed to be replaced by generating ore.">TileID.Sets.CanBeClearedDuringOreRunner</a> or Main.tileMoss, making it suitable to be used even after FrameImportant tiles (<a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a>) exist in the world. If you have a tile that should be susceptible to being replaced when additional ores are spawned in the world, set <a class="el" href="class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36" title="Tiles within this set are allowed to be replaced by generating ore.">TileID.Sets.CanBeClearedDuringOreRunner</a> to true for that <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>. Vanilla code only uses this method when spawning hardmode ores. This method is suitable for use in-game and in multiplayer as it both frames and syncs tile changes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">strength</td><td></td></tr>
+    <tr><td class="paramname">steps</td><td></td></tr>
+    <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1d28dc888a53a0f60ec528e09e31a799" name="a1d28dc888a53a0f60ec528e09e31a799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d28dc888a53a0f60ec528e09e31a799">&#9670;&nbsp;</a></span>PlaceChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int WorldGen.PlaceChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ushort&#160;</td>
+          <td class="paramname"><em>type</em> = <code>21</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>notNearOtherChests</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>style</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to place a chest at the given tile coordinates. The coordinate provided (<em>x</em> , <em>y</em> ) will be the bottom left corner of the resulting chest, if the method succeeds. <em>type</em>  is the tile type to place, and <em>style</em>  is the tile style to place. For vanilla chests, you can count from zero starting from the left in the <code>Tiles_21.png</code> image after extracting the vanilla texturesto find the style you want to place. Another option is to follow the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> IDs wiki guideto find the style. <em>notNearOtherChests</em>  can be set to true to prevent the chest from placing if another chest exists within 25 tiles left or right and 8 tiles up or down. This method returns the chest index (the index within <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a>) of the chest that was successfully placed or -1 if placing the chest failed. <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> placement can fail for many reasons, such as if existing tiles block the space, or if there isn't 2 suitable solid tiles directly below the intended location. See the "Try Until Success" section of the World Generation wiki guidefor an approach to using this method. See the "Placing Items in Chests" section of the World Generation wiki guidefor info on placing items in the chest. The <a class="el" href="class_world_gen.html#a2a4b53d8f88a0781d0592b72380642a3" title="Attempts to place a chest and fill it with typical loot according to the style (Style ) and depth....">AddBuriedChest(int, int, int, bool, int, bool, ushort)</a> method places a chest and fills it with the default items for that chest. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">notNearOtherChests</td><td></td></tr>
+    <tr><td class="paramname">style</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="abed43f0e89493aa24da0ee4fc954a873" name="abed43f0e89493aa24da0ee4fc954a873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abed43f0e89493aa24da0ee4fc954a873">&#9670;&nbsp;</a></span>PlaceSmallPile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool WorldGen.PlaceSmallPile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ushort&#160;</td>
+          <td class="paramname"><em>type</em> = <code>185</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Places TileID.SmallPiles tiles. This tile is special and doesn't follow the normal style rules and won't place with PlaceTile. i and j are the coordinates. X and Y are the count and row indexes of the specific tile in the texture file. Indexes count from left to right and start at 0. So for example the Sapphire Stash would have Y=1 (second row) and X=21 (22nd 2x1 tile). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">X</td><td></td></tr>
+    <tr><td class="paramname">Y</td><td></td></tr>
+    <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a6d89efc164bd01b5920d1f761df42565" name="a6d89efc164bd01b5920d1f761df42565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d89efc164bd01b5920d1f761df42565">&#9670;&nbsp;</a></span>PlaceTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool WorldGen.PlaceTile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mute</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>forced</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>plr</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>style</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>PlaceTile is the main way to place individual tiles while obeying anchor considerations. Most of the other PlaceX methods in the <a class="el" href="class_world_gen.html">WorldGen</a> class are called by this method. i and j are the tile coordinates. These coordinates relate to the origin of the tile, not necessarily the top left corner of the tile. Read the Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> wiki guideto familiarize yourself with the concepts of Anchors and Origins. <em>mute</em>  indicates if a sound should be made, this only applies to in-game usage as sounds are all muted during world gen. <em>forced</em>  attempts to place the tile even if other tiles are already at the coordinates, but it is unreliable. <em>plr</em>  does nothing except affect bathtubs. <em>style</em>  refers to the style of the tile type provided. Styles are explained in the Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> guide. PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <code>if(Main.tile[x, y].type == TileID.Campfire)</code> PlaceTile doesn't expose everything. For example, attempting to place a tile with a specific style will be ignored by many of the underlying methods. Another issue is that it is impossible to place a tile that has left and right placement orientations facing right. In these situations, you might need to manually place each tile in the multitile or use PlaceObject(int, int, int, bool, int, int, int, int) instead. WorldGen.PlaceObject requires more input. For example, placing Coral with PlaceObject means you have to manually specify the style, as the random style (TileObjectData.RandomStyleRange) choosing is a feature of PlaceTile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td></td></tr>
+    <tr><td class="paramname">mute</td><td></td></tr>
+    <tr><td class="paramname">forced</td><td></td></tr>
+    <tr><td class="paramname">plr</td><td></td></tr>
+    <tr><td class="paramname">style</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a89f0e44198e319e4f3429bb6fd00f291" name="a89f0e44198e319e4f3429bb6fd00f291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f0e44198e319e4f3429bb6fd00f291">&#9670;&nbsp;</a></span>RandomWorldPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Point WorldGen.RandomWorldPoint </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>right</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>bottom</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>left</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generates a random tile coordinate within the world bounds. The optional parameters define additional padding, avoiding the edges or defining a target area. <code>Point point = WorldGen.RandomWorldPoint((int)<a class="el" href="class_main.html#aa44e433e53a98400dacd5260313d7b2b" title="The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0&#39; on the Depth Me...">Main.worldSurface</a>, 40, 500, 60)</code> is equivalent to </p>
+<p ><code>int x = WorldGen.genRand.Next(60, <a class="el" href="class_main.html#ad0252224ef1ac35bbfaa6bd36bb420e8" title="The width of the currently-loaded world in tiles.">Main.maxTilesX</a> - 40); int y = WorldGen.genRand.Next((int)<a class="el" href="class_main.html#aa44e433e53a98400dacd5260313d7b2b" title="The y-coordinate of the top of the dirt layer, in tile coordinates. Corresponds to 0&#39; on the Depth Me...">Main.worldSurface</a>, <a class="el" href="class_main.html#afea29b8cb8ad97463b70dd828e376d50" title="The height of the currently-loaded world in tiles.">Main.maxTilesY</a> - 500); </code> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">top</td><td></td></tr>
+    <tr><td class="paramname">right</td><td></td></tr>
+    <tr><td class="paramname">bottom</td><td></td></tr>
+    <tr><td class="paramname">left</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

@@ -31,7 +31,7 @@ var searchData=
   ['addablefloat_28',['AddableFloat',['../struct_addable_float.html',1,'']]],
   ['advancedpopuprequest_29',['AdvancedPopupRequest',['../struct_advanced_popup_request.html',1,'']]],
   ['aentitysource_5ftile_30',['AEntitySource_Tile',['../class_a_entity_source___tile.html',1,'']]],
-  ['after_31',['After',['../class_extra_jump_1_1_after.html',1,'ExtraJump']]],
+  ['after_31',['After',['../class_builder_toggle_1_1_after.html',1,'BuilderToggle.After'],['../class_extra_jump_1_1_after.html',1,'ExtraJump.After']]],
   ['afterparent_32',['AfterParent',['../class_player_draw_layer_1_1_after_parent.html',1,'PlayerDrawLayer']]],
   ['aggregateexception_33',['AggregateException',['../class_aggregate_exception.html',1,'']]],
   ['ahoverinteractionchecker_34',['AHoverInteractionChecker',['../class_a_hover_interaction_checker.html',1,'']]],

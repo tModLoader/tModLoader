@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('class_builder_toggle.html',''); initRe
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -93,24 +94,50 @@ $(document).ready(function(){initNavTree('class_builder_toggle.html',''); initRe
 </div><!--header-->
 <div class="contents">
 
-<p>Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> property determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values.  
+<p>Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> method determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values.  
  <a href="class_builder_toggle.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_textured_type.html">ModTexturedType</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
-
-<p>Inherited by <a class="el" href="class_vanilla_builder_toggle.html">VanillaBuilderToggle</a>.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle_1_1_after.html">After</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle_1_1_before.html">Before</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle_1_1_default.html">Default</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle_1_1_position.html">Position</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a59ce26770b50543820db8832883065a9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#a59ce26770b50543820db8832883065a9">Active</a> ()</td></tr>
-<tr class="memdesc:a59ce26770b50543820db8832883065a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this builder toggle should be active (displayed).This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>.  <a href="class_builder_toggle.html#a59ce26770b50543820db8832883065a9">More...</a><br /></td></tr>
+<tr class="memitem:a59ce26770b50543820db8832883065a9"><td class="memItemLeft" align="right" valign="top"><a id="a59ce26770b50543820db8832883065a9" name="a59ce26770b50543820db8832883065a9"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Active</b> ()</td></tr>
+<tr class="memdesc:a59ce26770b50543820db8832883065a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This dictates whether or not this builder toggle should be active (displayed).This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>. <br /></td></tr>
 <tr class="separator:a59ce26770b50543820db8832883065a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91163893b0d74991ebb3141e0a97250f"><td class="memItemLeft" align="right" valign="top">virtual Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#a91163893b0d74991ebb3141e0a97250f">DisplayColorTexture</a> ()</td></tr>
 <tr class="memdesc:a91163893b0d74991ebb3141e0a97250f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the overlay color that is drawn on top of the texture.  <a href="class_builder_toggle.html#a91163893b0d74991ebb3141e0a97250f">More...</a><br /></td></tr>
 <tr class="separator:a91163893b0d74991ebb3141e0a97250f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4ef27b4b875408f3c30f426634073a0"><td class="memItemLeft" align="right" valign="top">abstract string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#aa4ef27b4b875408f3c30f426634073a0">DisplayValue</a> ()</td></tr>
-<tr class="memdesc:aa4ef27b4b875408f3c30f426634073a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when hovering on the toggle icon. You can specify different values per each available CurrentState  <a href="class_builder_toggle.html#aa4ef27b4b875408f3c30f426634073a0">More...</a><br /></td></tr>
+<tr class="memitem:aa4ef27b4b875408f3c30f426634073a0"><td class="memItemLeft" align="right" valign="top"><a id="aa4ef27b4b875408f3c30f426634073a0" name="aa4ef27b4b875408f3c30f426634073a0"></a>
+abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayValue</b> ()</td></tr>
+<tr class="memdesc:aa4ef27b4b875408f3c30f426634073a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when hovering on the toggle icon. You can specify different values per each available CurrentState <br /></td></tr>
 <tr class="separator:aa4ef27b4b875408f3c30f426634073a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#aeb24c1d139d3c076f4f1c661815d0ccf">Draw</a> (SpriteBatch spriteBatch, ref <a class="el" href="struct_builder_toggle_draw_params.html">BuilderToggleDrawParams</a> drawParams)</td></tr>
+<tr class="memdesc:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon itself. See DrawHover if you want to modify icon hover drawing.Return false to stop vanilla drawing code from running. Returns true by default.  <a href="class_builder_toggle.html#aeb24c1d139d3c076f4f1c661815d0ccf">More...</a><br /></td></tr>
+<tr class="separator:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0975f255d774195888ad4664a6fc955f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#a0975f255d774195888ad4664a6fc955f">DrawHover</a> (SpriteBatch spriteBatch, ref <a class="el" href="struct_builder_toggle_draw_params.html">BuilderToggleDrawParams</a> drawParams)</td></tr>
+<tr class="memdesc:a0975f255d774195888ad4664a6fc955f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon hover. See Draw if you want to modify icon drawing.Return false to stop vanilla drawing code from running. Returns true by default.  <a href="class_builder_toggle.html#a0975f255d774195888ad4664a6fc955f">More...</a><br /></td></tr>
+<tr class="separator:a0975f255d774195888ad4664a6fc955f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e3cf046bd045f3317fbdc6385e405f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#af1e3cf046bd045f3317fbdc6385e405f">OnLeftClick</a> (ref <a class="el" href="struct_sound_style.html">SoundStyle</a>? sound)</td></tr>
+<tr class="memdesc:af1e3cf046bd045f3317fbdc6385e405f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the toggle is left clicked and before vanilla operation takes place.Return false to stop vanilla left click code (switching between states and playing sound) from running.<br  />
+ Returns true by default.  <a href="class_builder_toggle.html#af1e3cf046bd045f3317fbdc6385e405f">More...</a><br /></td></tr>
+<tr class="separator:af1e3cf046bd045f3317fbdc6385e405f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba2f7e9f36ec8e567f3c57780fd120f5"><td class="memItemLeft" align="right" valign="top"><a id="aba2f7e9f36ec8e567f3c57780fd120f5" name="aba2f7e9f36ec8e567f3c57780fd120f5"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnRightClick</b> ()</td></tr>
+<tr class="memdesc:aba2f7e9f36ec8e567f3c57780fd120f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the toggle is right clicked.<br  />
+ Use this if you want to implement special right click feature (such as cycling through states backwards). <br /></td></tr>
+<tr class="separator:aba2f7e9f36ec8e567f3c57780fd120f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48a5b061380036b211a8d143bddf360a"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#a48a5b061380036b211a8d143bddf360a">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a48a5b061380036b211a8d143bddf360a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_builder_toggle.html#a48a5b061380036b211a8d143bddf360a">More...</a><br /></td></tr>
 <tr class="separator:a48a5b061380036b211a8d143bddf360a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,7 +257,7 @@ static <a class="el" href="class_builder_toggle.html">BuilderToggle</a>&#160;</t
 static <a class="el" href="class_builder_toggle.html">BuilderToggle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BlueWireVisibility</b> = new <a class="el" href="class_blue_wire_visibility_builder_toggle.html">BlueWireVisibilityBuilderToggle</a>()<code> [get]</code></td></tr>
 <tr class="separator:a65b509d5cd708562d1c9501304781ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ad61d82fb8961718d4ed9cbd05d3929"><td class="memItemLeft" align="right" valign="top"><a id="a8ad61d82fb8961718d4ed9cbd05d3929" name="a8ad61d82fb8961718d4ed9cbd05d3929"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentState</b><code> [get]</code></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentState</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8ad61d82fb8961718d4ed9cbd05d3929"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the current state of this builder toggle. Every time the toggle is clicked, it will change.The default state is 0. The state will be saved and loaded for the player to be consistent. <br /></td></tr>
 <tr class="separator:a8ad61d82fb8961718d4ed9cbd05d3929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a498fd0440024da8aee95c5e6da76924f"><td class="memItemLeft" align="right" valign="top"><a id="a498fd0440024da8aee95c5e6da76924f" name="a498fd0440024da8aee95c5e6da76924f"></a>
@@ -250,6 +277,10 @@ virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>HoverTextur
 <tr class="memdesc:a025413f4634a1e9a2c7ecd93cc11f6ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the number of different functionalities your builder toggle will have.<br  />
  For a toggle that has an On and Off state, you'd need 2 states! <a href="class_builder_toggle.html#a025413f4634a1e9a2c7ecd93cc11f6ab">More...</a><br /></td></tr>
 <tr class="separator:a025413f4634a1e9a2c7ecd93cc11f6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc572585c9dd05fa410b8e2e68e3321d"><td class="memItemLeft" align="right" valign="top"><a id="acc572585c9dd05fa410b8e2e68e3321d" name="acc572585c9dd05fa410b8e2e68e3321d"></a>
+virtual <a class="el" href="class_builder_toggle_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OrderPosition</b> = new <a class="el" href="class_builder_toggle_1_1_default.html">Default</a>()<code> [get, set]</code></td></tr>
+<tr class="memdesc:acc572585c9dd05fa410b8e2e68e3321d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modify this if you want your builder toggle have custom ordering. You can specify which <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> to sort before/after <br /></td></tr>
+<tr class="separator:acc572585c9dd05fa410b8e2e68e3321d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a415b800ab17a3e514ead2a75576148d1"><td class="memItemLeft" align="right" valign="top"><a id="a415b800ab17a3e514ead2a75576148d1" name="a415b800ab17a3e514ead2a75576148d1"></a>
 static <a class="el" href="class_builder_toggle.html">BuilderToggle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RedWireVisibility</b> = new <a class="el" href="class_red_wire_visibility_builder_toggle.html">RedWireVisibilityBuilderToggle</a>()<code> [get]</code></td></tr>
 <tr class="separator:a415b800ab17a3e514ead2a75576148d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -339,37 +370,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.</p>
-<p >The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> property determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values. </p>
+<p >The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> method determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a59ce26770b50543820db8832883065a9" name="a59ce26770b50543820db8832883065a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59ce26770b50543820db8832883065a9">&#9670;&nbsp;</a></span>Active()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool BuilderToggle.Active </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>This dictates whether or not this builder toggle should be active (displayed).This is usually determined by player-specific values, typically set in <a class="el" href="class_mod_item.html#aa964705f9fb8a709a1525c29e0a75bfc" title="Allows you to make things happen when this item is in the player&#39;s inventory. This should NOT be used...">ModItem.UpdateInventory</a>. </p>
-
-<p>Reimplemented in <a class="el" href="class_ruler_line_builder_toggle.html#a339b300b83c990c23495aff8bf5365fb">RulerLineBuilderToggle</a>, <a class="el" href="class_ruler_grid_builder_toggle.html#a4f847f130ac43a720abfbda052c0c6e6">RulerGridBuilderToggle</a>, <a class="el" href="class_auto_actuate_builder_toggle.html#a6dee0b2debf1c3fe4a54bc5f0e92f642">AutoActuateBuilderToggle</a>, <a class="el" href="class_auto_paint_builder_toggle.html#aefd3733792c575f3c36de8a5eefb3377">AutoPaintBuilderToggle</a>, <a class="el" href="class_wire_visibility_builder_toggle.html#ab409b0a968f4ab7340ad4fafa4a8a9b1">WireVisibilityBuilderToggle</a>, <a class="el" href="class_block_swap_builder_toggle.html#ad74be531592d067ffc469996dc6c77fb">BlockSwapBuilderToggle</a>, and <a class="el" href="class_torch_biome_builder_toggle.html#a8d5c7dd9d0fba4b889d2671f30ba085a">TorchBiomeBuilderToggle</a>.</p>
-
-</div>
-</div>
 <a id="a91163893b0d74991ebb3141e0a97250f" name="a91163893b0d74991ebb3141e0a97250f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a91163893b0d74991ebb3141e0a97250f">&#9670;&nbsp;</a></span>DisplayColorTexture()</h2>
 
@@ -394,14 +396,12 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </div><div class="memdoc">
 
 <p>This is the overlay color that is drawn on top of the texture. </p>
-<p >Default value is Color.White</p>
-
-<p>Reimplemented in <a class="el" href="class_vanilla_builder_toggle.html#ac040bea2eb1e6a3002cf1def331c8535">VanillaBuilderToggle</a>, <a class="el" href="class_wire_visibility_builder_toggle.html#aeee0f4935ee5030488a86fe9e733d9c5">WireVisibilityBuilderToggle</a>, <a class="el" href="class_block_swap_builder_toggle.html#adb826a06cf2ae110475e583d7ad07bed">BlockSwapBuilderToggle</a>, and <a class="el" href="class_torch_biome_builder_toggle.html#a898c91b132267b71bfc6d0a8e5773ad4">TorchBiomeBuilderToggle</a>.</p>
+<p ><a class="el" href="class_builder_toggle_1_1_default.html">Default</a> value is Color.White</p>
 
 </div>
 </div>
-<a id="aa4ef27b4b875408f3c30f426634073a0" name="aa4ef27b4b875408f3c30f426634073a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4ef27b4b875408f3c30f426634073a0">&#9670;&nbsp;</a></span>DisplayValue()</h2>
+<a id="aeb24c1d139d3c076f4f1c661815d0ccf" name="aeb24c1d139d3c076f4f1c661815d0ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb24c1d139d3c076f4f1c661815d0ccf">&#9670;&nbsp;</a></span>Draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -410,22 +410,121 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract string BuilderToggle.DisplayValue </td>
+          <td class="memname">virtual bool BuilderToggle.Draw </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="struct_builder_toggle_draw_params.html">BuilderToggleDrawParams</a>&#160;</td>
+          <td class="paramname"><em>drawParams</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon itself. See DrawHover if you want to modify icon hover drawing.Return false to stop vanilla drawing code from running. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spriteBatch</td><td>The spritebatch to draw on</td></tr>
+    <tr><td class="paramname">drawParams</td><td>The draw parameters for the builder toggle icon</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether to run vanilla icon drawing code</dd></dl>
+
+</div>
+</div>
+<a id="a0975f255d774195888ad4664a6fc955f" name="a0975f255d774195888ad4664a6fc955f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0975f255d774195888ad4664a6fc955f">&#9670;&nbsp;</a></span>DrawHover()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool BuilderToggle.DrawHover </td>
+          <td>(</td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="struct_builder_toggle_draw_params.html">BuilderToggleDrawParams</a>&#160;</td>
+          <td class="paramname"><em>drawParams</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon hover. See Draw if you want to modify icon drawing.Return false to stop vanilla drawing code from running. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spriteBatch</td><td>The spritebatch to draw on</td></tr>
+    <tr><td class="paramname">drawParams</td><td>The draw parameters for the builder toggle hover icon</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether to run vanilla icon hover drawing code</dd></dl>
+
+</div>
+</div>
+<a id="af1e3cf046bd045f3317fbdc6385e405f" name="af1e3cf046bd045f3317fbdc6385e405f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e3cf046bd045f3317fbdc6385e405f">&#9670;&nbsp;</a></span>OnLeftClick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool BuilderToggle.OnLeftClick </td>
+          <td>(</td>
+          <td class="paramtype">ref <a class="el" href="struct_sound_style.html">SoundStyle</a>?&#160;</td>
+          <td class="paramname"><em>sound</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>This is the value that will show up when hovering on the toggle icon. You can specify different values per each available CurrentState </p>
-
-<p>Implemented in <a class="el" href="class_vanilla_builder_toggle.html#aef8733daa432b3b305d9f6686d74f8c8">VanillaBuilderToggle</a>, <a class="el" href="class_ruler_line_builder_toggle.html#af43951a953389357c939806d6ff66547">RulerLineBuilderToggle</a>, <a class="el" href="class_ruler_grid_builder_toggle.html#aded9a80ddf83819e432959717bb422fd">RulerGridBuilderToggle</a>, <a class="el" href="class_auto_actuate_builder_toggle.html#a1c220982ce5c7cec1f4ca835472f0e53">AutoActuateBuilderToggle</a>, <a class="el" href="class_auto_paint_builder_toggle.html#a39441e8b8a393b7c8e4dc0b83e51583d">AutoPaintBuilderToggle</a>, <a class="el" href="class_wire_visibility_builder_toggle.html#a6f40afb5cf6bc01b17b779b274e0d276">WireVisibilityBuilderToggle</a>, <a class="el" href="class_hide_all_wires_builder_toggle.html#ad883422cf58f38ab01c41f8f0b359914">HideAllWiresBuilderToggle</a>, <a class="el" href="class_block_swap_builder_toggle.html#ab468dbec09681265a0c631573ded4ba6">BlockSwapBuilderToggle</a>, and <a class="el" href="class_torch_biome_builder_toggle.html#a754a091b7c78f427439089bc467c57be">TorchBiomeBuilderToggle</a>.</p>
+<p>Called when the toggle is left clicked and before vanilla operation takes place.Return false to stop vanilla left click code (switching between states and playing sound) from running.<br  />
+ Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sound</td><td>The click sound that will be played. Return null to mute.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether to run vanilla click code</dd></dl>
 
 </div>
 </div>
@@ -536,7 +635,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 
 <p>This is the number of different functionalities your builder toggle will have.<br  />
  For a toggle that has an On and Off state, you'd need 2 states!</p>
-<p >Default value is 2</p>
+<p ><a class="el" href="class_builder_toggle_1_1_default.html">Default</a> value is 2</p>
 
 </div>
 </div>

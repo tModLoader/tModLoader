@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -323,6 +323,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MagicPrefix</
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MeleePrefix</b> ()</td></tr>
 <tr class="memdesc:a9b1eec50a051b0a48bdd0d7bf0a33194 inherit pub_methods_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not. Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix <br /></td></tr>
 <tr class="separator:a9b1eec50a051b0a48bdd0d7bf0a33194 inherit pub_methods_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2bbf852362fe7918ef0aac7b9cd4f0d inherit pub_methods_class_mod_item"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d">ModifyFishingLine</a> (<a class="el" href="class_projectile.html">Projectile</a> bobber, ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
+<tr class="memdesc:af2bbf852362fe7918ef0aac7b9cd4f0d inherit pub_methods_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this item is a fishing pole, allows you to modify the origin and color of its fishing line.  <a href="class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d">More...</a><br /></td></tr>
+<tr class="separator:af2bbf852362fe7918ef0aac7b9cd4f0d inherit pub_methods_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa52336877bff4894a21dfae26f1c66b8 inherit pub_methods_class_mod_item"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#aa52336877bff4894a21dfae26f1c66b8">ModifyHitNPC</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="memdesc:aa52336877bff4894a21dfae26f1c66b8 inherit pub_methods_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this melee weapon does to an <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
  This method is only called on the on the client of the player holding the weapon. <br  />

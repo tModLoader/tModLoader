@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -103,19 +103,179 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa9f661f33144556d51236459d8a0655e"><td class="memItemLeft" align="right" valign="top"><a id="aa9f661f33144556d51236459d8a0655e" name="aa9f661f33144556d51236459d8a0655e"></a>
-static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OnFailedConditions</b> (this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> rule, <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> ruleToChain, bool hideLootReport=false)</td></tr>
+<tr class="memitem:aa9f661f33144556d51236459d8a0655e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chains.html#aa9f661f33144556d51236459d8a0655e">OnFailedConditions</a> (this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> rule, <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> ruleToChain, bool hideLootReport=false)</td></tr>
+<tr class="memdesc:aa9f661f33144556d51236459d8a0655e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_chains.html">Chains</a> a rule to this rule. The chained rule will be evaluated if this rule doesn't meets all conditions. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples.  <a href="class_chains.html#aa9f661f33144556d51236459d8a0655e">More...</a><br /></td></tr>
 <tr class="separator:aa9f661f33144556d51236459d8a0655e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c05a75d9ebb76856431d33140cb4011"><td class="memItemLeft" align="right" valign="top"><a id="a8c05a75d9ebb76856431d33140cb4011" name="a8c05a75d9ebb76856431d33140cb4011"></a>
-static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OnFailedRoll</b> (this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> rule, <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> ruleToChain, bool hideLootReport=false)</td></tr>
+<tr class="memitem:a8c05a75d9ebb76856431d33140cb4011"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chains.html#a8c05a75d9ebb76856431d33140cb4011">OnFailedRoll</a> (this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> rule, <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> ruleToChain, bool hideLootReport=false)</td></tr>
+<tr class="memdesc:a8c05a75d9ebb76856431d33140cb4011"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_chains.html">Chains</a> a rule to this rule. The chained rule will be evaluated if this rule meets all conditions but fails a random chance. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples.  <a href="class_chains.html#a8c05a75d9ebb76856431d33140cb4011">More...</a><br /></td></tr>
 <tr class="separator:a8c05a75d9ebb76856431d33140cb4011"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a146f3cc62c7ddf3f8b32a10658b599c1"><td class="memItemLeft" align="right" valign="top"><a id="a146f3cc62c7ddf3f8b32a10658b599c1" name="a146f3cc62c7ddf3f8b32a10658b599c1"></a>
-static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OnSuccess</b> (this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> rule, <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> ruleToChain, bool hideLootReport=false)</td></tr>
+<tr class="memitem:a146f3cc62c7ddf3f8b32a10658b599c1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chains.html#a146f3cc62c7ddf3f8b32a10658b599c1">OnSuccess</a> (this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> rule, <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> ruleToChain, bool hideLootReport=false)</td></tr>
+<tr class="memdesc:a146f3cc62c7ddf3f8b32a10658b599c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_chains.html">Chains</a> a rule to this rule. The chained rule will be evaluated if this rule succeeds, meaning it met all conditions and passed a random chance, if any. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples.  <a href="class_chains.html#a146f3cc62c7ddf3f8b32a10658b599c1">More...</a><br /></td></tr>
 <tr class="separator:a146f3cc62c7ddf3f8b32a10658b599c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7085eccd89b4e70893f5bfe73c699ee4"><td class="memItemLeft" align="right" valign="top"><a id="a7085eccd89b4e70893f5bfe73c699ee4" name="a7085eccd89b4e70893f5bfe73c699ee4"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ReportDroprates</b> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule_chain_attempt.html">IItemDropRuleChainAttempt</a> &gt; ChainedRules, float personalDropRate, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="struct_drop_rate_info.html">DropRateInfo</a> &gt; drops, <a class="el" href="struct_drop_rate_info_chain_feed.html">DropRateInfoChainFeed</a> ratesInfo)</td></tr>
 <tr class="separator:a7085eccd89b4e70893f5bfe73c699ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa9f661f33144556d51236459d8a0655e" name="aa9f661f33144556d51236459d8a0655e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9f661f33144556d51236459d8a0655e">&#9670;&nbsp;</a></span>OnFailedConditions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> Chains.OnFailedConditions </td>
+          <td>(</td>
+          <td class="paramtype">this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td>
+          <td class="paramname"><em>ruleToChain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>hideLootReport</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="class_chains.html">Chains</a> a rule to this rule. The chained rule will be evaluated if this rule doesn't meets all conditions. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rule</td><td></td></tr>
+    <tr><td class="paramname">ruleToChain</td><td></td></tr>
+    <tr><td class="paramname">hideLootReport</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a8c05a75d9ebb76856431d33140cb4011" name="a8c05a75d9ebb76856431d33140cb4011"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c05a75d9ebb76856431d33140cb4011">&#9670;&nbsp;</a></span>OnFailedRoll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> Chains.OnFailedRoll </td>
+          <td>(</td>
+          <td class="paramtype">this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td>
+          <td class="paramname"><em>ruleToChain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>hideLootReport</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="class_chains.html">Chains</a> a rule to this rule. The chained rule will be evaluated if this rule meets all conditions but fails a random chance. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rule</td><td></td></tr>
+    <tr><td class="paramname">ruleToChain</td><td></td></tr>
+    <tr><td class="paramname">hideLootReport</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a146f3cc62c7ddf3f8b32a10658b599c1" name="a146f3cc62c7ddf3f8b32a10658b599c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a146f3cc62c7ddf3f8b32a10658b599c1">&#9670;&nbsp;</a></span>OnSuccess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> Chains.OnSuccess </td>
+          <td>(</td>
+          <td class="paramtype">this <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td>
+          <td class="paramname"><em>ruleToChain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>hideLootReport</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="class_chains.html">Chains</a> a rule to this rule. The chained rule will be evaluated if this rule succeeds, meaning it met all conditions and passed a random chance, if any. See the Chaining Rules section of the Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot Guidefor more information and examples. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rule</td><td></td></tr>
+    <tr><td class="paramname">ruleToChain</td><td></td></tr>
+    <tr><td class="paramname">hideLootReport</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -80,7 +80,7 @@ var searchData=
   ['portalhelper_77',['PortalHelper',['../class_portal_helper.html',1,'']]],
   ['posdata_78',['PosData',['../struct_pos_data.html',1,'']]],
   ['posdata_3c_20ushort_20_3e_79',['PosData&lt; ushort &gt;',['../struct_pos_data.html',1,'']]],
-  ['position_80',['Position',['../class_extra_jump_1_1_position.html',1,'ExtraJump.Position'],['../class_player_draw_layer_1_1_position.html',1,'PlayerDrawLayer.Position']]],
+  ['position_80',['Position',['../class_builder_toggle_1_1_position.html',1,'BuilderToggle.Position'],['../class_extra_jump_1_1_position.html',1,'ExtraJump.Position'],['../class_player_draw_layer_1_1_position.html',1,'PlayerDrawLayer.Position']]],
   ['potionofreturngatehelper_81',['PotionOfReturnGateHelper',['../struct_potion_of_return_gate_helper.html',1,'']]],
   ['potionofreturngateinteractionchecker_82',['PotionOfReturnGateInteractionChecker',['../class_potion_of_return_gate_interaction_checker.html',1,'']]],
   ['potionofreturnhelper_83',['PotionOfReturnHelper',['../class_potion_of_return_helper.html',1,'']]],

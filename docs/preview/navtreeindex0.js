@@ -105,6 +105,7 @@ var NAVTREEINDEX0 =
 "class_ambient_sky_draw_cache.html":[3,0,33],
 "class_ambient_wind_system.html":[3,0,34],
 "class_ammo_i_d.html":[3,0,35],
+"class_ammo_i_d.html#a20ae918609752fbe60c7a815aa58accb":[3,0,35,1],
 "class_ammo_i_d_1_1_sets.html":[3,0,35,0],
 "class_ammo_i_d_1_1_sets.html#a73bd056b114fdd98efd4adf68ab980a6":[3,0,35,0,3],
 "class_ammo_i_d_1_1_sets.html#aa460d6262ba47215727b76d32a116813":[3,0,35,0,0],
@@ -204,11 +205,7 @@ var NAVTREEINDEX0 =
 "class_async_provider_state_extensions.html":[3,0,56],
 "class_attribute.html":[3,0,57],
 "class_auto_actuate_builder_toggle.html":[3,0,58],
-"class_auto_actuate_builder_toggle.html#a1c220982ce5c7cec1f4ca835472f0e53":[3,0,58,1],
-"class_auto_actuate_builder_toggle.html#a6dee0b2debf1c3fe4a54bc5f0e92f642":[3,0,58,0],
 "class_auto_paint_builder_toggle.html":[3,0,63],
-"class_auto_paint_builder_toggle.html#a39441e8b8a393b7c8e4dc0b83e51583d":[3,0,63,1],
-"class_auto_paint_builder_toggle.html#aefd3733792c575f3c36de8a5eefb3377":[3,0,63,0],
 "class_autoload_attribute.html":[3,0,59],
 "class_autoload_boss_head.html":[3,0,60],
 "class_autoload_equip.html":[3,0,61],
@@ -249,5 +246,8 @@ var NAVTREEINDEX0 =
 "class_big_progress_bar_helper.html#a848a4001dc17bba1eb3ece1ff5037bee":[3,0,88,0],
 "class_big_progress_bar_system.html":[3,0,90],
 "class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,90,0],
-"class_binary_i_o.html":[3,0,91]
+"class_binary_i_o.html":[3,0,91],
+"class_biome_conversion_i_d.html":[3,0,93],
+"class_biome_loader.html":[3,0,94],
+"class_biome_preference_list_trait.html":[3,0,95]
 };

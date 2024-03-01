@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,6 +96,9 @@ $(document).ready(function(){initNavTree('class_tile_i_d_1_1_sets.html',''); ini
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets_1_1_conversion.html">Conversion</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html">FallingBlockProjectileInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in <a class="el" href="class_tile_i_d_1_1_sets.html#ad4d6d68fd58b984a99145d196d56f799" title="Maps tile type for Falling tiles to their corresponding falling block projectile and associated falli...">FallingBlockProjectile</a>. <a href="class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets_1_1_for_advanced_collision.html">ForAdvancedCollision</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,7 +340,11 @@ static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td 
 <tr class="separator:a65540e26deee676c3082e23cfea894c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0098d22c058970386f8ee18bc385df9b"><td class="memItemLeft" align="right" valign="top"><a id="a0098d22c058970386f8ee18bc385df9b" name="a0098d22c058970386f8ee18bc385df9b"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Falling</b> = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495)</td></tr>
+<tr class="memdesc:a0098d22c058970386f8ee18bc385df9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true for falling tiles, such as sand, coin piles, and shell pile. Affects block swapping falling tiles requiring 110% pickaxe power and causes blocks with this set to call WorldGen.SpawnFallingBlockProjectile, where <a class="el" href="class_tile_i_d_1_1_sets.html#ad4d6d68fd58b984a99145d196d56f799" title="Maps tile type for Falling tiles to their corresponding falling block projectile and associated falli...">FallingBlockProjectile</a> is used to spawn the falling block projectile. See the ExampleSand tileand corresponding projectiles for an example. <br /></td></tr>
 <tr class="separator:a0098d22c058970386f8ee18bc385df9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4d6d68fd58b984a99145d196d56f799"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html">FallingBlockProjectileInfo</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets.html#ad4d6d68fd58b984a99145d196d56f799">FallingBlockProjectile</a></td></tr>
+<tr class="memdesc:ad4d6d68fd58b984a99145d196d56f799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps tile type for <a class="el" href="class_tile_i_d_1_1_sets.html#a0098d22c058970386f8ee18bc385df9b" title="Set to true for falling tiles, such as sand, coin piles, and shell pile. Affects block swapping falli...">Falling</a> tiles to their corresponding falling block projectile and associated falling projectile damage. Falling coins use 0 damage while all other tiles use 10 damage.  <a href="class_tile_i_d_1_1_sets.html#ad4d6d68fd58b984a99145d196d56f799">More...</a><br /></td></tr>
+<tr class="separator:ad4d6d68fd58b984a99145d196d56f799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac81b7ab57e83d7a8cca7de5f1bfbaf3e"><td class="memItemLeft" align="right" valign="top"><a id="ac81b7ab57e83d7a8cca7de5f1bfbaf3e" name="ac81b7ab57e83d7a8cca7de5f1bfbaf3e"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ForcedDirtMerging</b> = Factory.CreateBoolSet(75, 76, 508, 507, 226, 409, 669, 670, 671, 672, 673, 674, 675, 676, 683, 684, 273, 274, 459, 458, 326, 327, 345, 328, 329, 192, 384, 284, 325, 272, 268, 262, 267, 265, 266, 264, 263, 261, 255, 260, 258, 259, 257, 256, 54, 357)</td></tr>
 <tr class="separator:ac81b7ab57e83d7a8cca7de5f1bfbaf3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -526,7 +533,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Platforms</b
 <tr class="memitem:a1dca1ebb1a02559d712fe70155ecf7d4"><td class="memItemLeft" align="right" valign="top"><a id="a1dca1ebb1a02559d712fe70155ecf7d4" name="a1dca1ebb1a02559d712fe70155ecf7d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventsTileRemovalIfOnTopOfIt</b> = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634)</td></tr>
 <tr class="memdesc:a1dca1ebb1a02559d712fe70155ecf7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevents a tile immediately below a tile of this type from being mineable. <br  />
- Use <a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a" title="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p...">ModTile.KillTile(int, int, ref bool, ref bool, ref bool)</a> or GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool) to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work. <br  />
+ Use <a class="el" href="class_mod_tile.html#aa30e725d1f6f14c2df4f763a8ef87667" title="Allows you to determine whether or not the tile at the given coordinates can be hit by anything....">ModTile.CanKillTile(int, int, ref bool)</a> or GlobalTile.CanKillTile(int, int, int, ref bool) to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work. <br  />
  To affect tile replace behavior in a similar manner, see <a class="el" href="class_tile_i_d_1_1_sets.html#a0ffb8223f3a721bbeaeee866d909e781" title="Prevents a tile immediately below a tile of this type from being replaceable via the block swap featu...">PreventsTileReplaceIfOnTopOfIt</a> <br  />
  Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack). <br /></td></tr>
 <tr class="separator:a1dca1ebb1a02559d712fe70155ecf7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -785,6 +792,46 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WallsMergeWi
 <div class="line">            <span class="keyword">true</span></div>
 <div class="line">        })</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ad4d6d68fd58b984a99145d196d56f799" name="ad4d6d68fd58b984a99145d196d56f799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4d6d68fd58b984a99145d196d56f799">&#9670;&nbsp;</a></span>FallingBlockProjectile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html">FallingBlockProjectileInfo</a> [] TileID.Sets.FallingBlockProjectile</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= Factory.CreateCustomSet&lt;FallingBlockProjectileInfo&gt;(<span class="keyword">null</span>,</div>
+<div class="line">            Sand, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.SandBallFalling),</div>
+<div class="line">            Ebonsand, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.EbonsandBallFalling),</div>
+<div class="line">            <a class="code hl_class" href="class_tile_i_d.html">TileID</a>.Mud, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.MudBall),</div>
+<div class="line">            Pearlsand, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.PearlSandBallFalling),</div>
+<div class="line">            Silt, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.SiltBall),</div>
+<div class="line">            Slush, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.SlushBall),</div>
+<div class="line">            Crimsand, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.CrimsandBallFalling),</div>
+<div class="line">            CopperCoinPile, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.CopperCoinsFalling, 0),</div>
+<div class="line">            SilverCoinPile, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.SilverCoinsFalling, 0),</div>
+<div class="line">            GoldCoinPile, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.GoldCoinsFalling, 0),</div>
+<div class="line">            PlatinumCoinPile, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.PlatinumCoinsFalling, 0),</div>
+<div class="line">            ShellPile, <span class="keyword">new</span> FallingBlockProjectileInfo(<a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.ShellPileFalling)</div>
+<div class="line">        )</div>
+<div class="ttc" id="aclass_projectile_i_d_html"><div class="ttname"><a href="class_projectile_i_d.html">ProjectileID</a></div><div class="ttdef"><b>Definition:</b> ProjectileID.cs:10</div></div>
+<div class="ttc" id="aclass_tile_i_d_html"><div class="ttname"><a href="class_tile_i_d.html">TileID</a></div><div class="ttdef"><b>Definition:</b> TileID.cs:8</div></div>
+</div><!-- fragment -->
+<p>Maps tile type for <a class="el" href="class_tile_i_d_1_1_sets.html#a0098d22c058970386f8ee18bc385df9b" title="Set to true for falling tiles, such as sand, coin piles, and shell pile. Affects block swapping falli...">Falling</a> tiles to their corresponding falling block projectile and associated falling projectile damage. Falling coins use 0 damage while all other tiles use 10 damage. </p>
+
 </div>
 </div>
 <a id="a0443f601f5a618ef0820bf82c0fd2d7d" name="a0443f601f5a618ef0820bf82c0fd2d7d"></a>

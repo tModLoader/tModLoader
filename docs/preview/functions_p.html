@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -112,8 +112,12 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>Pitch&#160;:&#160;<a class="el" href="struct_sound_style.html#a80d0ec72d506be9b268f13d87dac01d2">SoundStyle</a></li>
 <li>PitchVariance&#160;:&#160;<a class="el" href="struct_sound_style.html#a0505bc0358495ac3390eaad7966123a0">SoundStyle</a></li>
 <li>Place()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#ad72aefe362cd89908bc3a10a5eae6055">ModTileEntity</a></li>
+<li>PlaceChest()&#160;:&#160;<a class="el" href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799">WorldGen</a></li>
+<li>PlaceChestDirect()&#160;:&#160;<a class="el" href="class_world_gen.html#a14ccd1221b0945c0787f60dd45a7a51d">WorldGen</a></li>
 <li>PlaceInWorld()&#160;:&#160;<a class="el" href="class_global_block_type.html#a133d47c7ea88cf5e41d7b143a78ae175">GlobalBlockType</a>, <a class="el" href="class_mod_block_type.html#a3fa9b012ea8d39910e0fa6ec31f828e3">ModBlockType</a></li>
+<li>PlaceSmallPile()&#160;:&#160;<a class="el" href="class_world_gen.html#abed43f0e89493aa24da0ee4fc954a873">WorldGen</a></li>
 <li>placeStyle&#160;:&#160;<a class="el" href="class_item.html#ae34214b6739ef1f2b45f182d9b398dca">Item</a></li>
+<li>PlaceTile()&#160;:&#160;<a class="el" href="class_world_gen.html#a6d89efc164bd01b5920d1f761df42565">WorldGen</a></li>
 <li>Plantera&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#aac235cd98e5944d9d72cb1dc532ed966">NPCAIStyleID</a></li>
 <li>PlanteraBulb&#160;:&#160;<a class="el" href="class_dust_i_d.html#a38ed33cb1d72724477529d1f127986a7">DustID</a></li>
 <li>PlanteraHook&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#ab31d3d18f7ed91e358f40ffda51728a0">NPCAIStyleID</a></li>
@@ -138,7 +142,7 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>PortraitPositionXOverride&#160;:&#160;<a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#af0b33faedea8c33fee13c458daa839cb">NPCID.Sets.NPCBestiaryDrawModifiers</a></li>
 <li>PortraitPositionYOverride&#160;:&#160;<a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a7ff35be7d2fdfcf8ce1f0f4d06366b7e">NPCID.Sets.NPCBestiaryDrawModifiers</a></li>
 <li>PortraitScale&#160;:&#160;<a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ab37e0dec9a2bd97ee5f958acc3693a1d">NPCID.Sets.NPCBestiaryDrawModifiers</a></li>
-<li>Position&#160;:&#160;<a class="el" href="struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033">BuffDrawParams</a></li>
+<li>Position&#160;:&#160;<a class="el" href="struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033">BuffDrawParams</a>, <a class="el" href="struct_builder_toggle_draw_params.html#a1424fd8327ccdc2133e5fcd68298e0ee">BuilderToggleDrawParams</a></li>
 <li>position&#160;:&#160;<a class="el" href="class_dust.html#aaa7683b785f9d14fcc85ea086b9d428d">Dust</a>, <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">Entity</a></li>
 <li>Position&#160;:&#160;<a class="el" href="struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51c13a147aead481edca993a701ca0cc">NPCID.Sets.NPCBestiaryDrawModifiers</a></li>
 <li>position&#160;:&#160;<a class="el" href="class_popup_text.html#a92c515d76c829c0de164e1e4c92c752a">PopupText</a></li>
@@ -209,8 +213,8 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>PreDrawTooltip()&#160;:&#160;<a class="el" href="class_global_item.html#a62aa6c40f55ca8b50e74ea393586f47d">GlobalItem</a>, <a class="el" href="class_mod_item.html#a6b2a9022af802e7e85f3bd30bd6c464a">ModItem</a></li>
 <li>PreDrawTooltipLine()&#160;:&#160;<a class="el" href="class_global_item.html#afc5b11fc92dd6d85d9f89d14847289b8">GlobalItem</a>, <a class="el" href="class_mod_item.html#a75ef9172b2dc32e5c68a98384f04fd80">ModItem</a></li>
 <li>PreferredGolfBall()&#160;:&#160;<a class="el" href="class_accessory_slot_loader.html#a9e31bc6991996d609fb2efcd20f64134">AccessorySlotLoader</a></li>
-<li>Prefix()&#160;:&#160;<a class="el" href="class_item.html#a5466ddc57ac8392c1a071fcea14d8f28">Item</a></li>
 <li>prefix&#160;:&#160;<a class="el" href="class_item.html#ad19d05c738f67bd61c40e5b265d7f9a0">Item</a></li>
+<li>Prefix()&#160;:&#160;<a class="el" href="class_item.html#a5466ddc57ac8392c1a071fcea14d8f28">Item</a></li>
 <li>PrefixChance()&#160;:&#160;<a class="el" href="class_global_item.html#ac5b6b102d554b37880ab60cbb5dd6974">GlobalItem</a>, <a class="el" href="class_item_loader.html#ad71d4758dba162dbb8b9e92fa64cacba">ItemLoader</a>, <a class="el" href="class_mod_item.html#a3acd6ec62c798bd5c18683167119e7f7">ModItem</a></li>
 <li>PrefixDefinition()&#160;:&#160;<a class="el" href="class_prefix_definition.html#a8c45a227046fe75c0b8dd023f14a083b">PrefixDefinition</a></li>
 <li>PrefixType&lt; T &gt;()&#160;:&#160;<a class="el" href="class_mod_content.html#a0e17c9eeef92fd4aea38b37b1d5dd366">ModContent</a></li>

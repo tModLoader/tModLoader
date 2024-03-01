@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -414,8 +414,8 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if there exists a chest in Main.chest at the coordinates (<em>x</em> , <em>y</em> ), or if Main.chest contains no <code>null</code> elements. <br  />
- Otherwise, the index in Main.chest of the newly-created chest. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if there exists a chest in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> at the coordinates (<em>x</em> , <em>y</em> ), or if <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> contains no <code>null</code> elements. <br  />
+ Otherwise, the index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the newly-created chest. </dd></dl>
 
 </div>
 </div>
@@ -555,13 +555,13 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   <table class="params">
     <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
     <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
-    <tr><td class="paramname">id</td><td>The index in Main.chest that this chest should use. If <code><em>id</em>  != -1</code>, placement cannot fail.</td></tr>
+    <tr><td class="paramname">id</td><td>The index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> that this chest should use. If <code><em>id</em>  != -1</code>, placement cannot fail.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>-1</code> if <code><em>id</em>  == -1</code> and <a class="el" href="class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a" title="Determines if a new chest can exist at tile coordinates (x , y ).">FindEmptyChest(int, int, int, int, int, int)</a> returns <code>-1</code>. <br  />
- Otherwise, the index in Main.chest of the newly-created chest. </dd></dl>
-<p >It is recommended to use WorldGen.PlaceChest(int, int, ushort, bool, int) to place chests into the world. </p>
+ Otherwise, the index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the newly-created chest. </dd></dl>
+<p >It is recommended to use <a class="el" href="class_world_gen.html#a1d28dc888a53a0f60ec528e09e31a799" title="Attempts to place a chest at the given tile coordinates. The coordinate provided (x ,...">WorldGen.PlaceChest(int, int, ushort, bool, int)</a> to place chests into the world. </p>
 
 </div>
 </div>
@@ -657,7 +657,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   <table class="params">
     <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
     <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
-    <tr><td class="paramname">id</td><td>The index in Main.chest of the chest to destroy.</td></tr>
+    <tr><td class="paramname">id</td><td>The index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the chest to destroy.</td></tr>
   </table>
   </dd>
 </dl>
@@ -706,7 +706,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The index in Main.chest of the chest at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the chest at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
 <p >If you don't have the top-left corner of the chest tile, use <a class="el" href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27" title="Tries to find the Chest associated with the tile at (X , Y ) (tile coordinates).">FindChestByGuessing(int, int)</a>. </p>
 
 </div>
@@ -753,7 +753,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The index in Main.chest of the chest associated with the tile at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the chest associated with the tile at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
 <p >If you have the top-left corner of the chest tile, use <a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16" title="Tries to find a Chest located at (X , Y ) (tile coordinates).">FindChest(int, int)</a>. </p>
 
 </div>
@@ -828,8 +828,8 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if there exists a chest in Main.chest at the coordinates (<em>x</em> , <em>y</em> ), or if Main.chest contains no <code>null</code> elements. <br  />
- Otherwise, the index in Main.chest of the first <code>null</code> element. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>-1</code> if there exists a chest in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> at the coordinates (<em>x</em> , <em>y</em> ), or if <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> contains no <code>null</code> elements. <br  />
+ Otherwise, the index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the first <code>null</code> element. </dd></dl>
 
 </div>
 </div>
@@ -858,7 +858,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
 
 <p>Gets a list of currently-open chests in the world. <br  />
  Never called on NetmodeID.MultiplayerClient. </p>
-<dl class="section return"><dt>Returns</dt><dd>A List&lt;T&gt; containing the indices in Main.chest of all chests any active <a class="el" href="class_player.html">Player</a> has open.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A List&lt;T&gt; containing the indices in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of all chests any active <a class="el" href="class_player.html">Player</a> has open.</dd></dl>
 
 </div>
 </div>
@@ -1220,7 +1220,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
 <p>Gets the <a class="el" href="class_player.html">Player</a> currently using the given chest, if any. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td>The index of the chest in Main.chest to check.</td></tr>
+    <tr><td class="paramname">i</td><td>The index of the chest in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> to check.</td></tr>
   </table>
   </dd>
 </dl>
