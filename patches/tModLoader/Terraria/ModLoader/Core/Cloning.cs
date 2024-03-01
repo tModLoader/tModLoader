@@ -68,14 +68,14 @@ public static class Cloning
 	{
 		var info = new TypeCloningInfo {
 			type = type,
-			overridesClone = LoaderUtils.GetDerivedDefinition(type, cloneMethod).DeclaringType == type,
-			fieldsWhichMightNeedDeepCloning =
-					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
-					.ToArray()
+			overridesClone = LoaderUtils.GetDerivedDefinition(type, cloneMethod).DeclaringType == type
 		};
 
 		if (!info.overridesClone) {
+			info.fieldsWhichMightNeedDeepCloning =
+					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
+					.ToArray();
 			info.baseTypeInfo = GetOrComputeInfo(type.BaseType, cloneMethod);
 		}
 
