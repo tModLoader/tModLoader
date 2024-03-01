@@ -1,6 +1,6 @@
 namespace Terraria.ModLoader;
 
-public interface IEntityWithInstances<T> where T : IIndexed
+public interface IEntityWithInstances<T>
 {
 	RefReadOnlyArray<T> Instances { get; }
 }
