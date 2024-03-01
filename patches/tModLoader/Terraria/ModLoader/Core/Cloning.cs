@@ -52,6 +52,7 @@ public static class Cloning
 	private static Dictionary<Type, TypeCloningInfo> typeInfos = new();
 	private static ConditionalWeakTable<Type, object> immutableTypes = new();
 
+	public static bool IsCloneable<T>(T t, Expression<Func<T, Delegate>> cloneMethod) => IsCloneable<T, Delegate>(t, cloneMethod);
 	public static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate
 	{
 		var type = t.GetType();

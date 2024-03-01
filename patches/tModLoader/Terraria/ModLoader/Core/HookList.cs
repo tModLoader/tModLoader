@@ -43,6 +43,7 @@ public class HookList<T> where T : class, IIndexed
 		indices = defaultInstances.Select(g => (int)g.Index).ToArray();
 	}
 
+	public static HookList<T> Create(Expression<Func<T, Delegate>> expr) => Create<Delegate>(expr);
 	public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
 		=> new(expr.ToMethodInfo());
 }
