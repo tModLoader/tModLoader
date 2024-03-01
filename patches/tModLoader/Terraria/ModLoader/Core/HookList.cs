@@ -7,15 +7,19 @@ namespace Terraria.ModLoader.Core;
 
 public class HookList<T> where T : class
 {
-	public readonly MethodInfo method;
+	public LoaderUtils.MethodOverrideQuery<T> HookOverrideQuery { get; }
+	public MethodInfo Method => HookOverrideQuery.Method;
 
 	private int[] indices = Array.Empty<int>();
 	private T[] defaultInstances = Array.Empty<T>();
 
-	public HookList(MethodInfo method)
+	public HookList(LoaderUtils.MethodOverrideQuery<T> hook)
 	{
-		this.method = method;
+		HookOverrideQuery = hook;
 	}
+
+	[Obsolete("Use HookList.Create instead", error: true)]
+	public HookList(MethodInfo method) : this(method.ToBindingExpression<T>().ToOverrideQuery()) { }
 
 	public FilteredArrayEnumerator<T> Enumerate(T[] instances)
 		=> new(instances, indices);
@@ -43,7 +47,7 @@ public class HookList<T> where T : class
 		var inds = new List<int>();
 		for (int i = 0; i < allDefaultInstances.Count; i++) {
 			var inst = allDefaultInstances[i];
-			if (LoaderUtils.HasOverride(inst.GetType(), method)) {
+			if (HookOverrideQuery.HasOverride(inst)) {
 				list.Add(inst);
 				inds.Add(i);
 			}
@@ -65,5 +69,5 @@ public class HookList<T> where T : class
 
 	public static HookList<T> Create(Expression<Func<T, Delegate>> expr) => Create<Delegate>(expr);
 	public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
-		=> new(expr.ToMethodInfo());
+		=> new(expr.ToOverrideQuery());
 }

@@ -7,15 +7,20 @@ namespace Terraria.ModLoader.Core;
 
 public class GlobalHookList<TGlobal> where TGlobal : GlobalType<TGlobal>
 {
-	public readonly MethodInfo method;
+	public LoaderUtils.MethodOverrideQuery<TGlobal> HookOverrideQuery { get; }
+	public MethodInfo Method => HookOverrideQuery.Method;
+
 	private TGlobal[] hookGlobals;
 	private TGlobal[][] hookGlobalsByType;
 
-	public GlobalHookList(MethodInfo method)
+	public GlobalHookList(LoaderUtils.MethodOverrideQuery<TGlobal> hook)
 	{
-		this.method = method;
+		HookOverrideQuery = hook;
 		Update();
 	}
+
+	[Obsolete("Use HookList.Create instead", error: true)]
+	public GlobalHookList(MethodInfo method) : this(method.ToBindingExpression<TGlobal>().ToOverrideQuery()) { }
 
 	public ReadOnlySpan<TGlobal> Enumerate() => hookGlobals;
 	public ReadOnlySpan<TGlobal> Enumerate(int type) => ForType(type);
@@ -28,11 +33,11 @@ public class GlobalHookList<TGlobal> where TGlobal : GlobalType<TGlobal>
 
 	public void Update()
 	{
-		hookGlobals = GlobalList<TGlobal>.Globals.WhereMethodIsOverridden(method).ToArray();
+		hookGlobals = GlobalList<TGlobal>.Globals.Where(HookOverrideQuery.HasOverride).ToArray();
 		hookGlobalsByType = GlobalTypeLookups<TGlobal>.Initialized ? GlobalTypeLookups<TGlobal>.BuildPerTypeGlobalLists(hookGlobals) : null;
 	}
 
 	public static GlobalHookList<TGlobal> Create(Expression<Func<TGlobal, Delegate>> expr) => Create<Delegate>(expr);
 	public static GlobalHookList<TGlobal> Create<F>(Expression<Func<TGlobal, F>> expr) where F : Delegate
-		=> new(expr.ToMethodInfo());
+		=> new(expr.ToOverrideQuery());
 }
