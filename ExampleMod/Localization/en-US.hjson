@@ -892,6 +892,11 @@ Mods: {
 				Tooltip: The power of examplium flows in this inanimate fish
 			}
 
+			ExampleSandBlock: {
+				DisplayName: Example Sand Block
+				Tooltip: This is a modded sand block
+			}
+
 			ExampleRocket: {
 				DisplayName: Example Rocket
 				Tooltip: "{$ItemTooltip.RocketI}"
@@ -935,6 +940,8 @@ Mods: {
 			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
+			ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
 			ExampleGrenadeProjectile.DisplayName: Example Grenade Projectile
 			ExampleProximityMineProjectile.DisplayName: Example Proximity Mine Projectile
 			ExampleRocketProjectile.DisplayName: Example Rocket Projectile
