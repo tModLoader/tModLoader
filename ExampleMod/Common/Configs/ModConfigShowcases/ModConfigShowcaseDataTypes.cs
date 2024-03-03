@@ -47,6 +47,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public NPCDefinition npcDefinitionExample = new NPCDefinition(NPCID.Bunny);
 		public ProjectileDefinition projectileDefinitionExample = new ProjectileDefinition("ExampleMod", nameof(Content.Projectiles.ExampleHomingProjectile));
 		public BuffDefinition buffDefinitionExample = new BuffDefinition("ExampleMod", nameof(Content.Buffs.ExampleDefenseBuff));
+		public TileDefinition tileDefinitionExample = new TileDefinition("ExampleMod", nameof(Content.Tiles.ExampleBlock));
 
 		// Data Structures of reference types
 		public Dictionary<PrefixDefinition, float> prefixDefinitionDictionaryExample = new Dictionary<PrefixDefinition, float>() {

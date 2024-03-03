@@ -45,7 +45,7 @@ internal class ModCompile
 	{
 		public string path;
 
-		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties)
+		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(ModLocation.Local, modFile, properties)
 		{
 			this.path = path;
 		}
@@ -478,6 +478,18 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		code = peStream.ToArray();
 		pdb = pdbStream.ToArray();
 		return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
+	}
+
+	internal static void UpdateSubstitutedDescriptionValues(ref string description, string modVersion, string homepage)
+	{
+		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
+		// This allows us to use substitution keys such as {ModVersion}
+		description = Language.GetText(description).FormatWith(new {
+			ModVersion = modVersion,
+			ModHomepage = homepage,
+			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
+			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
+		});
 	}
 }
 #endif

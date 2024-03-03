@@ -43,7 +43,7 @@ public static class ModContent
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
 	public static IEnumerable<T> GetContent<T>() where T : ILoadable
-		=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
+		=> ContentCache.GetContentForAllMods<T>();
 
 	/// <summary> Attempts to find the template instance with the specified full name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
@@ -99,6 +99,7 @@ public static class ModContent
 
 	/// <summary>
 	/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
+	/// <para/> Modders may wish to use <c>Mod.Assets.Request</c> instead to access assets from within their mod and omit the mod name from the provided path if that is more convenient.
 	/// </summary>
 	/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
 	/// <param name="mode">The desired timing for when the asset actually loads. Use ImmediateLoad if you need correct dimensions immediately, such as with UI initialization</param>
@@ -291,6 +292,8 @@ public static class ModContent
 			mod.loading = false;
 		});
 
+		ContentCache.contentLoadingFinished = true;
+
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
 		RecipeGroupHelper.CreateRecipeGroupLookups();
@@ -453,6 +456,7 @@ public static class ModContent
 	{
 		MonoModHooks.Clear();
 		TypeCaching.Clear();
+		ContentCache.Unload();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();
@@ -544,6 +548,7 @@ public static class ModContent
 		PlayerDrawLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
+		BuilderToggleLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {

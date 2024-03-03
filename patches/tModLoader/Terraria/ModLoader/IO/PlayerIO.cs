@@ -87,22 +87,13 @@ internal static class PlayerIO
 		LoadHair(player, tag.GetString("hair"));
 	}
 
-	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
+	internal static byte[] ReadDataBytes(string path, bool isCloudSave)
 	{
 		path = Path.ChangeExtension(path, ".tplr");
-		tag = new TagCompound();
-
 		if (!FileUtilities.Exists(path, isCloudSave))
-			return false;
+			return null;
 
-		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
-		}
-
-		tag = TagIO.FromStream(buf.ToMemoryStream());
-		return true;
+		return FileUtilities.ReadAllBytes(path, isCloudSave);
 	}
 
 	public static List<TagCompound> SaveInventory(Item[] inv)
@@ -218,8 +209,16 @@ internal static class PlayerIO
 		var saveData = new TagCompound();
 
 		foreach (var modPlayer in player.modPlayers) {
-			modPlayer.SaveData(saveData);
+			try {
+				modPlayer.SaveData(saveData);
+			}
+			catch {
+				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
+				Logging.tML.Error($"Encountered an error while saving custom player data because of an error in \"{modPlayer.Name}.SaveData\" from the \"{modPlayer.Mod.Name}\" mod. The data related to this class will not be saved.");
 
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 			if (saveData.Count == 0)
 				continue;
 

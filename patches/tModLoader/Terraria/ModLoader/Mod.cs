@@ -75,7 +75,18 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
+	
+	private string displayNameClean;
+	/// <summary>
+	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.
+	/// </summary>
+	public string DisplayNameClean => displayNameClean ??= Utils.CleanChatTags(DisplayName);
 
+	/// <summary>
+	/// Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the <see cref="AssetRepository.Request{T}(string)"/> method to retrieve an Asset&lt;T&gt; instance:
+	/// <code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code>
+	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required. 
+	/// </summary>
 	public AssetRepository Assets { get; private set; }
 
 	public IContentSource RootContentSource { get; private set; }
@@ -89,6 +100,10 @@ public partial class Mod
 	public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
+
+	public Mod() {
+		Content = new ContentCache(this);
+	}
 
 	internal void AutoloadConfig()
 	{
@@ -142,7 +157,7 @@ public partial class Mod
 			return false;
 
 		instance.Load(this);
-		content.Add(instance);
+		Content.Add(instance);
 		ContentInstance.Register(instance);
 		return true;
 	}
@@ -151,13 +166,13 @@ public partial class Mod
 	/// Returns all registered content instances that are added by this mod.
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
-	public IEnumerable<ILoadable> GetContent() => content;
+	public IEnumerable<ILoadable> GetContent() => Content.GetContent();
 
 	/// <summary>
 	/// Returns all registered content instances that derive from the provided type that are added by this mod.
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
-	public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
+	public IEnumerable<T> GetContent<T>() where T : ILoadable => Content.GetContent<T>();
 
 	/// <summary> Attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>

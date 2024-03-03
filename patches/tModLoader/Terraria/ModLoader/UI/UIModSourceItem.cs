@@ -235,8 +235,8 @@ internal class UIModSourceItem : UIPanel
 			}
 
 
-			// Display Run tModPorter for Windows when .csproj is valid
-			if (Platform.IsWindows && !projNeedsUpdate) {
+			// Display Run tModPorter when .csproj is valid
+			if (!projNeedsUpdate) {
 				var pIcon = UICommon.ButtonExclamationTexture;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
@@ -249,7 +249,7 @@ internal class UIModSourceItem : UIPanel
 
 					string args = $"\"{csprojFile}\"";
 					var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", "tModPorter.bat");
+					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
 
 					var porterInfo = new ProcessStartInfo() {
 						FileName = porterPath,
@@ -370,7 +370,7 @@ internal class UIModSourceItem : UIPanel
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 			var modFile = new TmodFile(modPath);
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
-				localMod = new LocalMod(modFile);
+				localMod = new LocalMod(ModLocation.Local, modFile);
 
 			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
 			if (!File.Exists(icon))

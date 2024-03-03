@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -6,14 +7,16 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
 
 internal class UIModConfigList : UIState
 {
-	public Mod SelectedMod;
+	public Mod ModToSelectOnOpen;
 
+	private Mod selectedMod;
 	private UIElement uIElement;
 	private UIPanel uIPanel;
 	private UITextPanel<LocalizedText> backButton;
@@ -79,6 +82,7 @@ internal class UIModConfigList : UIState
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 1f,
+			ManualSortMethod = (list) => { }, // Elements added in order, no need to sort.
 		};
 		modListPanel.Append(modList);
 
@@ -88,6 +92,7 @@ internal class UIModConfigList : UIState
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 0f,
+			ManualSortMethod = (list) => { }, // Elements added in order, no need to sort.
 		};
 		configListPanel.Append(configList);
 
@@ -117,7 +122,6 @@ internal class UIModConfigList : UIState
 		}.WithFadedMouseOver();
 		backButton.OnLeftClick += (_, _) => {
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			SelectedMod = null;
 
 			if (Main.gameMenu)
 				Main.menuMode = Interface.modsMenuID;
@@ -132,16 +136,25 @@ internal class UIModConfigList : UIState
 	{
 		modList?.Clear();
 		configList?.Clear();
-		SelectedMod = null;
+		selectedMod = null;
+		ModToSelectOnOpen = null;
 	}
 
 	public override void OnActivate()
 	{
 		modList?.Clear();
 		configList?.Clear();
-		PopulateMods();
 
-		if (SelectedMod != null)
+		// Select the mod that we clicked on, otherwise don't select anything
+		selectedMod = null;
+		if (ModToSelectOnOpen != null) {
+			selectedMod = ModToSelectOnOpen;
+			ModToSelectOnOpen = null;
+		}
+
+		// Populate UI
+		PopulateMods();
+		if (selectedMod != null)
 			PopulateConfigs();
 	}
 
@@ -151,7 +164,7 @@ internal class UIModConfigList : UIState
 
 		// Have to sort by display name because normally mods are sorted by internal names
 		var mods = ModLoader.Mods.ToList();
-		mods.Sort((x, y) => x.DisplayName.CompareTo(y.DisplayName));
+		mods.Sort((x, y) => x.DisplayNameClean.CompareTo(y.DisplayNameClean));
 
 		foreach (var mod in mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
@@ -161,12 +174,12 @@ internal class UIModConfigList : UIState
 					ScalePanel = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
-					UseAltColors = () => SelectedMod != mod,
+					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-					SelectedMod = mod;
+					selectedMod = mod;
 					PopulateConfigs();
 				};
 
@@ -179,12 +192,12 @@ internal class UIModConfigList : UIState
 	{
 		configList?.Clear();
 
-		if (SelectedMod == null || !ConfigManager.Configs.TryGetValue(SelectedMod, out var configs))
+		if (selectedMod == null || !ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
 
 		// Have to sort by display name because normally configs are sorted by internal names
 		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
-		var sortedConfigs = configs.OrderBy(x => x.DisplayName.Value).ToList();
+		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
 			float indicatorOffset = 20;
@@ -199,7 +212,7 @@ internal class UIModConfigList : UIState
 			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-				Interface.modConfig.SetMod(SelectedMod, config);
+				Interface.modConfig.SetMod(selectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
 				else

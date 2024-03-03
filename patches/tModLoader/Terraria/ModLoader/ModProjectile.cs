@@ -31,7 +31,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary> Determines which type of vanilla projectile this ModProjectile will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 	public int AIType { get; set; }
 
-	/// <summary> Determines which (<see cref="ImmunityCooldownID"/>) to use when this projectile damages a player. Defaults to -1. </summary>
+	/// <summary> Determines which <see cref="ImmunityCooldownID"/> to use when this projectile damages a player. Defaults to -1 (<see cref="ImmunityCooldownID.General"/>). </summary>
 	public int CooldownSlot { get; set; } = -1;
 
 	/// <summary> How far to the right of its position this projectile should be drawn. Defaults to 0. </summary>
@@ -312,11 +312,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 		return null;
 	}
 
-	/// <summary>
-	/// If this projectile is a bobber, allows you to modify the origin of the fishing line that's connecting to the fishing pole, as well as the fishing line's color.
-	/// </summary>
-	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
-	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+	[Obsolete($"Moved to ModItem. Fishing line position and color are now set by the pole used.", error: true)]
 	public virtual void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor)
 	{
 	}
