@@ -896,6 +896,11 @@ Mods: {
 				DisplayName: Example Sand Block
 				Tooltip: This is a modded sand block
 			}
+
+			ExampleRocket: {
+				DisplayName: Example Rocket
+				Tooltip: "{$ItemTooltip.RocketI}"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -937,6 +942,10 @@ Mods: {
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
 			ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
 			ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
+			ExampleGrenadeProjectile.DisplayName: Example Grenade Projectile
+			ExampleProximityMineProjectile.DisplayName: Example Proximity Mine Projectile
+			ExampleRocketProjectile.DisplayName: Example Rocket Projectile
+			ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
 		}
 
 		Buffs: {
