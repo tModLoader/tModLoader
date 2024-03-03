@@ -60,7 +60,7 @@
  
  		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0" />
++		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0-daily.24.2.6.1" />
 +		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
 +		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
