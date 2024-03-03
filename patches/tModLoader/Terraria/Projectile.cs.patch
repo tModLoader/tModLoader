@@ -708,7 +708,7 @@
  		return num;
  	}
  
-@@ -9719,7 +_,14 @@
+@@ -9719,11 +_,18 @@
  
  	public void Damage()
  	{
@@ -723,6 +723,11 @@
  			return;
  
  		Rectangle rectangle = Damage_GetHitbox();
+-		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
++		if (friendly && Main.getGoodWorld && ProjectileID.Sets.Explosive[type] && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
+ 			BombsHurtPlayers(rectangle, Main.myPlayer);
+ 			return;
+ 		}
 @@ -9858,6 +_,14 @@
  					if (!((!Main.npc[i].dontTakeDamage || NPCID.Sets.ZappingJellyfish[Main.npc[i].type]) && flag5) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
  						continue;
@@ -892,6 +897,15 @@
  									if (type == 1002)
  										num19 /= 2;
  
+@@ -10323,7 +_,7 @@
+ 										else
+ 											direction = -1;
+ 									}
+-									else if (aiStyle == 16) {
++									else if (ProjectileID.Sets.Explosive[type]) {
+ 										if (timeLeft > 3)
+ 											timeLeft = 3;
+ 
 @@ -10455,9 +_,12 @@
  									}
  
@@ -1042,6 +1056,15 @@
  					if (aiStyle == 3) {
  						if (ai[0] == 0f) {
  							velocity.X = 0f - velocity.X;
+@@ -11075,7 +_,7 @@
+ 
+ 						ai[0] = 1f;
+ 					}
+-					else if (aiStyle == 16) {
++					else if (ProjectileID.Sets.Explosive[type]) {
+ 						if (timeLeft > 3)
+ 							timeLeft = 3;
+ 
 @@ -11103,11 +_,14 @@
  						timeLeft = 1;
  
@@ -1245,6 +1268,15 @@
  				if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
  					position += velocity;
  					velocity = Vector2.Zero;
+@@ -14452,7 +_,7 @@
+ 								}
+ 							}
+ 						}
+-						else if (aiStyle == 16) {
++						else if (ProjectileID.Sets.Explosive[type]) {
+ 							if (velocity.X != lastVelocity.X) {
+ 								velocity.X = lastVelocity.X * -0.4f;
+ 								if (type == 29)
 @@ -14602,6 +_,9 @@
  		if (aiStyle == 4 || aiStyle == 38 || aiStyle == 84 || aiStyle == 148 || (aiStyle == 7 && ai[0] == 2f) || ((type == 440 || type == 449 || type == 606) && ai[1] == 1f) || (aiStyle == 93 && ai[0] < 0f) || type == 540 || type == 756 || type == 818 || type == 856 || type == 961 || type == 933 || ProjectileID.Sets.IsAGolfBall[type])
  			return;
@@ -1353,6 +1385,24 @@
  	public void Resize(int newWidth, int newHeight)
  	{
  		position = base.Center;
+@@ -15936,7 +_,7 @@
+ 		else if (type == 819 || type == 117 || type == 474 || type == 225 || type == 103 || type == 2 || type == 82 || type == 120 || type == 172 || type == 41 || type == 91 || type == 278 || type == 5 || type == 639 || type == 631 || type == 495 || type == 4 || type == 282 || type == 1 || type == 81) {
+ 			velocity.Y -= 0.4f;
+ 		}
+-		else if (aiStyle == 1 || aiStyle == 16 || aiStyle == 40) {
++		else if (aiStyle == 1 || ProjectileID.Sets.Explosive[type] || aiStyle == 40) {
+ 			int num = (int)(base.Center.X / 16f);
+ 			int num2 = (int)(position.Y / 16f);
+ 			if (WorldGen.InWorld(num, num2) && Main.tile[num, num2] != null && Main.tile[num, num2].liquid == byte.MaxValue && Main.tile[num, num2].shimmer() && WorldGen.InWorld(num, num2 - 1) && Main.tile[num, num2 - 1] != null && Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 1].shimmer()) {
+@@ -16010,7 +_,7 @@
+ 				timeLeft -= 20;
+ 			}
+ 		}
+-		else if (aiStyle == 14 || aiStyle == 16) {
++		else if (aiStyle == 14 || ProjectileID.Sets.Explosive[type]) {
+ 			if (timeLeft > 3000)
+ 				timeLeft -= 60;
+ 
 @@ -16028,6 +_,11 @@
  
  	public void AI()
@@ -1729,7 +1779,7 @@
  	{
  		Vector2 spinningpoint = new Vector2(7f, 0f);
  		Vector2 vector = new Vector2(1f, 0.7f);
-@@ -49930,12 +_,17 @@
+@@ -49930,13 +_,18 @@
  		int num = timeLeft;
  		timeLeft = 0;
  		bool flag = true;
@@ -1740,14 +1790,16 @@
  		if (owner == Main.myPlayer && flag)
  			Main.player[owner].TryCancelChannel(this);
  
+-		if (Main.getGoodWorld && aiStyle == 16)
 +		if (!ProjectileLoader.PreKill(this, num)) {
 +			active = false;
 +			return;
 +		}
 +
- 		if (Main.getGoodWorld && aiStyle == 16)
++		if (Main.getGoodWorld && ProjectileID.Sets.Explosive[type])
  			TryGettingHitByOtherPlayersExplosives();
  
+ 		if (Main.netMode != 1 && Main.getGoodWorld) {
 @@ -50912,7 +_,14 @@
  
  		if (Main.myPlayer == owner && bobber) {

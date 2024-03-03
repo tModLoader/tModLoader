@@ -16,6 +16,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
+			ProjectileID.Sets.Explosive[Type] = true; 
 		}
 
 		public override void SetDefaults() {

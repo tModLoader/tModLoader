@@ -901,6 +901,11 @@ Mods: {
 				// DisplayName: Example Rocket
 				// Tooltip: "{$ItemTooltip.RocketI}"
 			}
+
+			ExampleRocketLauncher: {
+				// DisplayName: Example Rocket Launcher
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

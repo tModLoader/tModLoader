@@ -13,6 +13,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true; // Deals double damage on direct hits.
 			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
+			ProjectileID.Sets.Explosive[Type] = true;
 			// ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true; // This set makes it so the rocket doesn't deal damage to players. Be sure to remove the BombsHurtPlayers() part, too.
 		}
 		public override void SetDefaults() {
@@ -76,6 +77,7 @@ namespace ExampleMod.Content.Projectiles
 				Projectile.rotation = (float)Math.Atan2(Projectile.velocity.Y, Projectile.velocity.X) + MathHelper.PiOver2;
 			}
 
+			/*
 			// Explosives behave differently when touching Shimmer.
 			if (Projectile.shimmerWet) {
 				int projTileX = (int)(Projectile.Center.X / 16f);
@@ -102,6 +104,7 @@ namespace ExampleMod.Content.Projectiles
 					Projectile.wet = false;
 				}
 			}
+			*/
 		}
 
 		// When the rocket hits a tile, NPC, or player, get ready to explode.
@@ -112,21 +115,25 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			/*
 			if (Projectile.timeLeft > 3) {
 				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
 			}
 
 			// Set the direction of the projectile so the knockback is always in the correct direction.
 			Projectile.direction = (target.Center.X > Projectile.Center.X).ToDirectionInt();
+			*/
 		}
 
 		// This is only to make it so the rocket explodes when hitting a player in PVP. Otherwise the rocket will continue through the enemy player.
 		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) {
+			/*
 			if (modifiers.PvP && Projectile.timeLeft > 3) {
 				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
 			}
 			// Set the direction of the projectile so the knockback is always in the correct direction.
 			Projectile.direction = (target.Center.X > Projectile.Center.X).ToDirectionInt();
+			*/
 		}
 
 		/// <summary>
@@ -172,18 +179,22 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void OnKill(int timeLeft) {
+			/*
 			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
 			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer) {
 				PrepareBombToBlow();
 			}
+			*/
 
 			Rectangle blastRectangle = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
 			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
-			if (Projectile.friendly && Main.getGoodWorld && Main.netMode == NetmodeID.MultiplayerClient && Projectile.owner != Main.myPlayer && !Projectile.npcProj) {
+
+			/*if (Projectile.friendly && Main.getGoodWorld && Main.netMode == NetmodeID.MultiplayerClient && Projectile.owner != Main.myPlayer && !Projectile.npcProj) {
 				BombsHurtPlayers(blastRectangle, Main.myPlayer);
 			}
+			*/
 			// Damage the player who fired the rocket.
-			else if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
+			/*else*/ if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
 				BombsHurtPlayers(blastRectangle, Projectile.owner);
 				CutTiles(); // Destroy tall grass and flowers around the explosion.
 			}

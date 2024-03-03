@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.Projectiles;
+using ExampleMod.Content.Items.Weapons;
 
 namespace ExampleMod.Content.Items.Ammo
 {
@@ -13,6 +14,17 @@ namespace ExampleMod.Content.Items.Ammo
 
 		public override void SetStaticDefaults() {
 			AmmoID.Sets.IsSpecialist[Type] = true; // This item will benefit from the Shroomite Helmet.
+
+			// This is where we tell the game which projectile to spawn when using this rocket as ammo with certain launchers.
+			// This specific rocket ammo is like Rocket I's.
+			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.RocketLauncher].Add(Type, ModContent.ProjectileType<ExampleRocketProjectile>());
+			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.GrenadeLauncher].Add(Type, ModContent.ProjectileType<ExampleGrenadeProjectile>());
+			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.ProximityMineLauncher].Add(Type, ModContent.ProjectileType<ExampleProximityMineProjectile>());
+			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.SnowmanCannon].Add(Type, ModContent.ProjectileType<ExampleSnowmanRocketProjectile>());
+			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.Celeb2].Add(Type, ProjectileID.Celeb2Rocket); // We also need to say which type of Celebration Mk2 rockets to use.
+			// The Celebration and Electrosphere Launcher will always use their own projectiles no matter which rocket you use as ammo.
+
+			//AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ModContent.ItemType<ExampleRocketLauncher>()].Add(Type, ModContent.ProjectileType<ExampleRocketProjectile>());
 		}
 
 		public override void SetDefaults() {
@@ -28,6 +40,8 @@ namespace ExampleMod.Content.Items.Ammo
 			// Item.shoot = ProjectileID.None; // Unlike other ammo types, we do not set a projectile here for Rocket ammo.
 		}
 
+
+		/* COMMENTED OUT FOR NOW. WILL PROBABLY REMOVE LATER
 		// This is where we tell the game which projectile to spawn when using this rocket as ammo.
 		// This specific rocket ammo is like Rocket I's.
 		public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
@@ -58,6 +72,7 @@ namespace ExampleMod.Content.Items.Ammo
 				type = ModContent.ProjectileType<ExampleRocketProjectile>();
 			}
 		}
+		*/
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
