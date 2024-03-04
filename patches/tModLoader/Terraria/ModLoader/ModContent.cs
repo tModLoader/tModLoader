@@ -325,6 +325,7 @@ public static class ModContent
 			ModNet.AssignNetIDs();
 
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
+		Logging.SetModExceptionDiagnosticsUI(ModLoader.Mods);
 
 		Main.player[255] = new Player();
 
