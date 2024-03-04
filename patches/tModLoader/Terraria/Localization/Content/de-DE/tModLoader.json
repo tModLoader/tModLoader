@@ -154,7 +154,7 @@
 		"NoWorkshopAccess": "Fehler: Steam Workshop kann nicht erreicht werden",
 		"ModAlreadyUploaded": "Fehler: Mod existiert bereits im Workshop!",
 		"ModVersionTooSmall": "Fehler: Mod-Versionsinformation muss vor einer Aktualisierung erhöht werden.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
-		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
+		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than or equal to existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
 		"ConsultSteamLogs": "Siehe Steam workshop_log.txt (Standardspeicherort: {0}) für mehr Informationen.",
 		"SteamRejectUpdate": "Gegenstand ist/war bereits installiert: {0}. Wenn versucht wird eine Neuinstallation auszuführen, schließe die aktuelle Instanz und starte sie neu.",
 		"BrowserRejectWarning": "Kann nicht herunterladen werden. Klicke für Information.",
