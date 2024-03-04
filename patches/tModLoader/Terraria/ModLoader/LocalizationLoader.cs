@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -110,6 +111,15 @@ public static class LocalizationLoader
 		File.Move(langFile, $"{langFile}.legacy", true);
 	}
 
+	[Obsolete($"Use ${nameof(TryGetCultureAndPrefixFromPath)} instead.", error: true)]
+	public static (GameCulture culture, string prefix) GetCultureAndPrefixFromPath(string path)
+	{
+		if (TryGetCultureAndPrefixFromPath(path, out var culture, out string prefix))
+			return (culture, prefix);
+
+		return (GameCulture.DefaultCulture, string.Empty);
+	}
+
 	/// <summary>
 	/// Derives a culture and shared prefix from a localization file path. Prefix will be found after culture, either separated by an underscore or nested in the folder.
 	/// <br/> Some examples:<code>
@@ -120,13 +130,17 @@ public static class LocalizationLoader
 	/// </code>
 	/// </summary>
 	/// <param name="path"></param>
+	/// <param name="culture"></param>
+	/// <param name="prefix"></param>
 	/// <returns></returns>
-	public static (GameCulture culture, string prefix) GetCultureAndPrefixFromPath(string path)
+	#nullable enable
+	public static bool TryGetCultureAndPrefixFromPath(string path, [NotNullWhen(true)] out GameCulture? culture, [NotNullWhen(true)] out string? prefix)
+	#nullable disable
 	{
 		path = Path.ChangeExtension(path, null);
 
-		GameCulture culture = null;
-		string prefix = null;
+		culture = null;
+		prefix = null;
 
 		string[] splitByFolder = path.Split("/");
 		foreach (var pathPart in splitByFolder) {
@@ -140,13 +154,16 @@ public static class LocalizationLoader
 				}
 				if (parsedCulture == null && culture != null) {
 					prefix = string.Join("_", splitByUnderscore.Skip(underscoreSplitIndex)); // Some mod names have '_' in them
-					return (culture, prefix);
+					return true;
 				}
 			}
 		}
+
 		if (culture != null) {
-			return (culture, "");
+			prefix = string.Empty;
+			return true;
 		}
+
 		/*
 		string[] split = path.Split("/");
 		for (int index = split.Length - 1; index >= 0; index--) {
@@ -156,10 +173,8 @@ public static class LocalizationLoader
 				return culture;
 		}
 		*/
-		// TODO: Log message warning of localization file erroneously named
-		Logging.tML.Warn($"The localization file {path} doesn't match expected file naming patterns, it will load as English");
 
-		return (GameCulture.DefaultCulture, "");
+		return false;
 	}
 
 	private static List<(string key, string value)> LoadTranslations(Mod mod, GameCulture culture)
@@ -172,7 +187,9 @@ public static class LocalizationLoader
 			var flattened = new List<(string, string)>();
 
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-				(var fileCulture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
+				if (!TryGetCultureAndPrefixFromPath(translationFile.Name, out var fileCulture, out string prefix))
+					continue;
+
 				if (fileCulture != culture)
 					continue;
 
@@ -330,11 +347,13 @@ public static class LocalizationLoader
 		// TODO: This is getting the hjson from the .tmod, should they be coming from Mod Sources? Mod Sources is quicker for organization changes, but usually we rebuild for changes...
 		foreach (var inputMod in mods) {
 			foreach (var translationFile in inputMod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+				if (!TryGetCultureAndPrefixFromPath(translationFile.Name, out var culture, out string prefix))
+					continue;
+
 				using var stream = inputMod.File.GetStream(translationFile);
 				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 				string translationFileContents = streamReader.ReadToEnd();
-				(var culture, string prefix) = GetCultureAndPrefixFromPath(translationFile.Name);
 				string fixedFileName = translationFile.Name;
 				if (culture == GameCulture.DefaultCulture && !fixedFileName.Contains("en-US")) {
 					fixedFileName = Path.Combine(Path.GetDirectoryName(fixedFileName), "en-US.hjson").Replace("\\", "/");
@@ -467,8 +486,10 @@ public static class LocalizationLoader
 			string originalPath = Path.Combine(sourceFolder, name);
 			string newPath = originalPath + ".legacy";
 
-			if (File.Exists(originalPath)) // File might have already been deleted
+			if (File.Exists(originalPath)) { // File might have already been deleted
+				Logging.tML.Warn($"The .hjson file \"{originalPath}\" was detected as a localization file but doesn't match the filename of any of the English template files. The file will be renamed to \"{newPath}\" and its contents will not be loaded. You should update the English template files or move these localization entries to a correctly named file to allow them to load.");
 				File.Move(originalPath, newPath);
+			}
 		}
 
 		// Update LocalizationCounts and optionally TranslationsNeeded.txt
@@ -823,6 +844,10 @@ public static class LocalizationLoader
 
 	private static void HandleFileChangedOrRenamed(string modName, string fileName)
 	{
+		// Ignore non-localization files
+		if (!TryGetCultureAndPrefixFromPath(fileName, out _, out _))
+			return;
+
 		watcherCooldown = defaultWatcherCooldown;
 		lock (pendingFiles) {
 			pendingFiles.Add((modName, fileName));
