@@ -478,6 +478,20 @@ public static class LocalizationLoader
 			}
 		}
 
+		// Clean up orphaned language files, if any. This should remove any hjson not present in English, and any English files without "en-US"
+		var outputPathsForAllLangs = localizationFilesByCulture.Keys.SelectMany(culture => baseLocalizationFiles.Select(baseFile => GetPathForCulture(baseFile, culture))).ToHashSet();
+		var orphanedFiles = localizationFileContentsByPath.Keys.Except(outputPathsForAllLangs);
+
+		foreach (var name in orphanedFiles) {
+			string originalPath = Path.Combine(sourceFolder, name);
+			string newPath = originalPath + ".legacy";
+
+			if (File.Exists(originalPath)) { // File might have already been deleted
+				Logging.tML.Warn($"The .hjson file \"{originalPath}\" was detected as a localization file but doesn't match the filename of any of the English template files. The file will be renamed to \"{newPath}\" and its contents will not be loaded. You should update the English template files or move these localization entries to a correctly named file to allow them to load.");
+				File.Move(originalPath, newPath);
+			}
+		}
+
 		// Update LocalizationCounts and optionally TranslationsNeeded.txt
 		if (specificCulture == null) {
 			var localizationCounts = new Dictionary<GameCulture, int>();
