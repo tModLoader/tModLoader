@@ -19,6 +19,7 @@ namespace Terraria.ModLoader.IO;
 
 internal static class WorldIO
 {
+	/// <summary> Contains modded error messages from the world load attempt. </summary>
 	public static CustomModDataException customDataFail;
 
 	//add near end of Terraria.IO.WorldFile.saveWorld before releasing locks
@@ -28,8 +29,10 @@ internal static class WorldIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		var tag = new TagCompound {
-			["0header"] = SaveHeader(),
+		Main.ActiveWorldFileData.ModSaveErrors.Clear();
+		TagCompound header = SaveHeader();
+
+		var body = new TagCompound {
 			["chests"] = SaveChestInventory(),
 			["tiles"] = TileIO.SaveBasics(),
 			["containers"] = TileIO.SaveContainers(),
@@ -44,6 +47,16 @@ internal static class WorldIO
 			["modData"] = SaveModData(),
 			["alteredVanillaFields"] = SaveAlteredVanillaFields()
 		};
+
+		TagCompound saveModDataErrors = new TagCompound();
+		foreach (var error in Main.ActiveWorldFileData.ModSaveErrors) {
+			saveModDataErrors[error.Key] = error.Value;
+		}
+		header["saveModDataErrors"] = saveModDataErrors;
+		TagCompound tag = new TagCompound { ["0header"] = header };
+		foreach (var bodyTag in body) {
+			tag[bodyTag.Key] = bodyTag.Value;
+		}
 
 		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
@@ -89,6 +102,11 @@ internal static class WorldIO
 			throw;
 		}
 		LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
+
+		if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
+			string fullError = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n" + string.Join("\n", Main.ActiveWorldFileData.ModSaveErrors.Select(x => $"{x.Key}: {x.Value}"));
+			Utils.LogAndConsoleInfoMessage(fullError);
+		}
 	}
 
 	internal static List<TagCompound> SaveChestInventory()
@@ -498,23 +516,9 @@ internal static class WorldIO
 			}
 			catch (Exception e) {
 				var message = NetworkText.FromKey("tModLoader.SaveWorldDataExceptionWarning", system.Name, system.Mod.Name);
-				Logging.tML.Error(message.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
 
-				if (Main.gameMenu && Main.menuMode == 10) {
-					// Save and Quit. Since this isn't on main thread, attempting Interface.errorMessage.Show behaves poorly because the menu will automatically change while the user is reading the message. For now don't do anything.
-				}
-				else if (!Main.gameMenu) {
-					// In-game autosave
-					ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
-				}
-				if(Main.dedServ)
-					Console.WriteLine(message.ToString());
-
-				list.Add(new TagCompound {
-					["mod"] = system.Mod.Name,
-					["name"] = system.Name,
-					["error"] = e.ToString()
-				});
+				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldData"] = e.ToString();
 
 				saveData = new TagCompound();
 				continue; // don't want to save half-broken data, that could compound errors.
@@ -536,23 +540,8 @@ internal static class WorldIO
 
 	internal static void LoadModData(IList<TagCompound> list)
 	{
-		Main.worldLoadModDataErrors = null;
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSystem system)) {
-				if (tag.TryGet<string>("error", out string errorMessage)) {
-					string message = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n" + errorMessage;
-
-					Logging.tML.Warn(message);
-
-					// TODO: Unable to NewText message here. All messages are cleared later when the world finishes loading.
-					Main.worldLoadModDataErrors = Main.worldLoadModDataErrors == null ? errorMessage : Main.worldLoadModDataErrors + "\n" + errorMessage;
-
-					if (Main.dedServ)
-						Console.WriteLine(message);
-
-					continue;
-				}
-
 				try {
 					system.LoadWorldData(tag.GetCompound("data"));
 				}
@@ -697,17 +686,11 @@ internal static class WorldIO
 			try {
 				system.SaveWorldHeader(saveData);
 			}
-			catch {
+			catch (Exception e) {
 				var message = NetworkText.FromKey("tModLoader.SaveWorldHeaderExceptionWarning", system.Name, system.Mod.Name);
-				Logging.tML.Error(message.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
 
-				if (Main.gameMenu && Main.menuMode == 10) {
-					// Save and Quit. Since this isn't on main thread, attempting Interface.errorMessage.Show behaves poorly because the menu will automatically change while the user is reading the message. For now don't do anything.
-				}
-				else if (!Main.gameMenu) {
-					// In-game autosave
-					ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
-				}
+				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldHeader"] = e.ToString();
 
 				saveData = new TagCompound();
 				continue; // don't want to save half-broken data, that could compound errors.
@@ -769,6 +752,19 @@ internal static class WorldIO
 		LoadUsedModPack(data, tag.GetString("usedModPack"));
 		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
 			LoadGeneratedWithMods(data, tag.GetCompound("generatedWithMods"));
+		LoadErrors(data, tag.GetCompound("saveModDataErrors"));
+	}
+
+	private static void LoadErrors(WorldFileData data, TagCompound tagCompound)
+	{
+		foreach (var entry in tagCompound) {
+			string fullname = entry.Key;
+
+			if (ModContent.TryFind<ModSystem>(fullname, out var system)) // handle legacy renames
+				fullname = system.FullName;
+
+			data.ModSaveErrors[fullname] = (string)entry.Value;
+		}
 	}
 
 	private static void LoadModHeaders(WorldFileData data, TagCompound tag)

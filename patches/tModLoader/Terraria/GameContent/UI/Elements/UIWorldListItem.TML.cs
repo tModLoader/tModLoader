@@ -14,6 +14,7 @@ public partial class UIWorldListItem : AWorldListItem
 {
 	private ulong _fileSize;
 	private Asset<Texture2D> _configTexture;
+	UIText warningLabel; // top right label.
 
 	private void InitializeTmlFields(WorldFileData data)
 	{
@@ -40,6 +41,16 @@ public partial class UIWorldListItem : AWorldListItem
 		}
 		*/
 
+		warningLabel = new UIText("", 1f, false) {
+			VAlign = 0f,
+			HAlign = 1f
+		};
+
+		float topRightButtonsLeftPixels = 0f;
+		warningLabel.Top.Set(3f, 0f);
+
+		Append(warningLabel);
+
 		// TODO: Mostly duplicate code with UICharacterListItem, need to find good place for shared method
 		// TODO: Should we also show a separate button for mods that were present during worldgen but aren't enabled?
 		if (data.usedMods != null) {
@@ -49,22 +60,13 @@ public partial class UIWorldListItem : AWorldListItem
 			bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModLoader.Core.ModOrganizer.ModPackActive) != data.modPack;
 
 			if (checkModPack || missingMods.Count > 0 || newMods.Count > 0) {
-				UIText warningLabel = new UIText("", 1f, false) {
-					VAlign = 0f,
-					HAlign = 1f
-				};
-
-				warningLabel.Left.Set(-30f, 0f);
-				warningLabel.Top.Set(3f, 0f);
-
-				Append(warningLabel);
-
 				UIImageButton modListWarning = new UIImageButton(UICommon.ButtonErrorTexture) {
 					VAlign = 0f,
-					HAlign = 1f
+					HAlign = 1f,
+					Top = new StyleDimension(-2, 0),
+					Left = new StyleDimension(topRightButtonsLeftPixels, 0)
 				};
-
-				modListWarning.Top.Set(-2f, 0f);
+				topRightButtonsLeftPixels -= 24;
 
 				System.Text.StringBuilder fullSB = new System.Text.StringBuilder(Language.GetTextValue("tModLoader.ModsDifferentSinceLastPlay"));
 				System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
@@ -107,6 +109,29 @@ public partial class UIWorldListItem : AWorldListItem
 				Append(modListWarning);
 			}
 		}
+
+		if (data.ModSaveErrors.Any()) {
+			UIImageButton modSaveErrorWarning = new UIImageButton(UICommon.ButtonErrorTexture) {
+				VAlign = 0f,
+				HAlign = 1f,
+				Top = new StyleDimension(-2, 0),
+				Left = new StyleDimension(topRightButtonsLeftPixels, 0)
+			};
+			topRightButtonsLeftPixels -= 24;
+
+			string warning = "View save errors";
+			string fullError = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n\n";
+			fullError += string.Join("\n\n", data.ModSaveErrors.Select(x => $"{x.Key}:\n{x.Value}"));
+			modSaveErrorWarning.OnMouseOver += (a, b) => warningLabel.SetText(warning);
+			modSaveErrorWarning.OnMouseOut += (a, b) => warningLabel.SetText("");
+			modSaveErrorWarning.OnLeftClick += (a, b) => {
+				Interface.infoMessage.Show(fullError, 888, Main._worldSelectMenu);
+			};
+
+			Append(modSaveErrorWarning);
+		}
+
+		warningLabel.Left.Set(topRightButtonsLeftPixels - 6, 0f);
 	}
 
 	internal static Action PlayReload()

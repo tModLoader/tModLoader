@@ -8,6 +8,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -215,16 +216,8 @@ internal static class PlayerIO
 			}
 			catch (Exception e) {
 				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
-				string message = Language.GetTextValue("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name);
-				Logging.tML.Error(message);
-				if (Main.gameMenu && Main.menuMode == 10) {
-					// Save and Quit. Since this isn't on main thread, attempting Interface.errorMessage.Show behaves poorly because the menu will automatically change while the user is reading the message. For now don't do anything.
-					// If we had a toast notification system that ran on main menu, that could help.
-				}
-				else if(!Main.gameMenu) {
-					// In-game autosave
-					Main.NewText(message, Microsoft.Xna.Framework.Color.OrangeRed);
-				}
+				var message = NetworkText.FromKey("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name);
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: false);
 
 				list.Add(new TagCompound {
 					["mod"] = modPlayer.Mod.Name,
@@ -235,6 +228,7 @@ internal static class PlayerIO
 				saveData = new TagCompound();
 				continue; // don't want to save half-broken data, that could compound errors.
 			}
+
 			if (saveData.Count == 0)
 				continue;
 
@@ -255,10 +249,9 @@ internal static class PlayerIO
 			string modName = tag.GetString("mod");
 			string modPlayerName = tag.GetString("name");
 
-			if(tag.TryGet<string>("error", out string errorMessage)) {
-				if(player.saveErrorMessage == null)
-					player.saveErrorMessage = Language.GetTextValue("tModLoader.PlayerCustomDataSaveFail");
-				player.saveErrorMessage += "\n\n" + errorMessage;
+			if (tag.TryGet<string>("error", out string errorMessage)) {
+				player.saveErrorMessage ??= Language.GetTextValue("tModLoader.PlayerCustomDataSaveFail");
+				player.saveErrorMessage += "\n" + $"{modName}/{modPlayerName}.SaveData: " + errorMessage;
 				continue;
 			}
 

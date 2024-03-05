@@ -39,21 +39,6 @@
  		_buttonLabel = new UIText("");
  		_buttonLabel.VAlign = 1f;
  		_buttonLabel.Left.Set(num, 0f);
-@@ -111,7 +_,14 @@
- 		_deleteButtonLabel = new UIText("");
- 		_deleteButtonLabel.VAlign = 1f;
- 		_deleteButtonLabel.HAlign = 1f;
-+
-+		/*
- 		_deleteButtonLabel.Left.Set(-30f, 0f);
-+		*/
-+		_deleteButtonLabel.Left.Set(data.customDataFail == null ? -30f : -54f, 0f);
-+		if (data.Player.saveErrorMessage != null)
-+			_deleteButtonLabel.Left.Pixels = -76;
-+
- 		_deleteButtonLabel.Top.Set(-3f, 0f);
- 		Append(_deleteButtonLabel);
- 		uIImageButton.SetSnapPoint("Play", snapPointIndex);
 @@ -137,6 +_,9 @@
  	{
  		if (_data.IsCloudSave)
@@ -82,15 +67,6 @@
  
  		((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  		if (_data.IsCloudSave)
-@@ -216,6 +_,8 @@
- 
- 	private void PlayGame(UIMouseEvent evt, UIElement listeningElement)
- 	{
-+		if(Data.Player.saveErrorMessage != null)
-+			Logging.tML.Warn("Selected a player with detected save errors.");
- 		if (listeningElement == evt.Target && _data.Player.loadStatus == 0)
- 			Main.SelectPlayer(_data);
- 	}
 @@ -301,11 +_,11 @@
  		DrawPanel(spriteBatch, vector2, num2);
  		spriteBatch.Draw(TextureAssets.Heart.Value, vector2 + new Vector2(5f, 2f), Color.White);

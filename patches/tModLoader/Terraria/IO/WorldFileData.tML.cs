@@ -17,7 +17,7 @@ public partial class WorldFileData
 	/// </summary>
 	public bool TryGetModVersionGeneratedWith(string mod, out Version modVersion) => modVersionsDuringWorldGen.TryGetValue(mod, out modVersion);
 	/// <summary>
-	/// If <see langword="true"/>, the mods used to genereate this world have been saved and their version can be retrieved using <see cref="TryGetModVersionGeneratedWith(string, out Version)"/>.<para/>
+	/// If <see langword="true"/>, the mods used to generate this world have been saved and their version can be retrieved using <see cref="TryGetModVersionGeneratedWith(string, out Version)"/>.<para/>
 	/// If <see langword="false"/>, this world was generated before the feature tracking mods used to generate a world was added (v2023.8) and modders can't determine if a specific mod was enabled when the world was generated.
 	/// </summary>
 	public bool WorldGenModsRecorded => modVersionsDuringWorldGen != null;
@@ -26,4 +26,7 @@ public partial class WorldFileData
 
 	public bool TryGetHeaderData<T>(out TagCompound data) where T : ModSystem => TryGetHeaderData(ModContent.GetInstance<T>(), out data);
 	public bool TryGetHeaderData(ModSystem system, out TagCompound data) => ModHeaders.TryGetValue(system.FullName, out data);
+
+	/// <summary> Contains error messages from ModSystem.SaveWorldData from a previous world save retrieved from the .twld during load or the latest autosave. Will be shown in various places to warn the user. Maps ModSystem.FullName.MethodName to exception string</summary>
+	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();
 }

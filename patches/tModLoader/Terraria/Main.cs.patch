@@ -5350,6 +5350,17 @@
  			array9[num11] = Lang.menu[14].Value;
  			if (selectedMenu == num11) {
  				SoundEngine.PlaySound(10);
+@@ -40068,6 +_,10 @@
+ 				GameAskedToQuit = true;
+ 
+ 			num11++;
++
++			if (Interface.pendingMessages.Count > 0) {
++				Interface.errorMessage.Show(Interface.pendingMessages.Pop(), 0);
++			}
+ 		}
+ 		else if (menuMode == 1) {
+ 			OpenCharacterSelectUI();
 @@ -40676,6 +_,8 @@
  				num2 = 210;
  				num4 = 37;

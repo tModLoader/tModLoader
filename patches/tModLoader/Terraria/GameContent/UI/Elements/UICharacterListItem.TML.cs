@@ -15,6 +15,7 @@ partial class UICharacterListItem
 	private Asset<Texture2D> _errorTexture;
 	private Asset<Texture2D> _configTexture;
 	private ulong _fileSize;
+	UIText warningLabel; // top right label.
 
 	private void InitializeTmlFields(PlayerFileData data)
 	{
@@ -25,32 +26,14 @@ partial class UICharacterListItem
 
 	private void AddTmlElements(PlayerFileData data)
 	{
-		if (data.customDataFail != null) {
-			var errorButton = new UIImageButton(_errorTexture) {
-				VAlign = 1f,
-				HAlign = 1f
-			};
+		warningLabel = new UIText("", 1f, false) {
+			VAlign = 0f,
+			HAlign = 1f
+		};
+		float topRightButtonsLeftPixels = 0f;
+		warningLabel.Top.Set(3f, 0f);
 
-			errorButton.Left.Set(-24f, 0f);
-			errorButton.OnLeftClick += new MouseEvent(ErrorButtonClick);
-			errorButton.OnMouseOver += new MouseEvent(ErrorMouseOver);
-			errorButton.OnMouseOut += new MouseEvent(DeleteMouseOut);
-
-			Append(errorButton);
-		}
-		if(data.Player.saveErrorMessage != null) {
-			var errorButton = new UIImageButton(_errorTexture) {
-				VAlign = 1f,
-				HAlign = 1f
-			};
-
-			errorButton.Left.Set(-46f, 0f);
-			errorButton.OnLeftClick += new MouseEvent(SaveErrorButtonClick);
-			errorButton.OnMouseOver += new MouseEvent(SaveErrorMouseOver);
-			errorButton.OnMouseOut += new MouseEvent(DeleteMouseOut);
-
-			Append(errorButton);
-		}
+		Append(warningLabel);
 
 		if (data.Player.usedMods != null) {
 			string[] currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
@@ -59,22 +42,13 @@ partial class UICharacterListItem
 			bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModLoader.Core.ModOrganizer.ModPackActive) != data.Player.modPack;
 
 			if (checkModPack || missingMods.Count > 0 || newMods.Count > 0) {
-				UIText warningLabel = new UIText("", 1f, false) {
-					VAlign = 0f,
-					HAlign = 1f
-				};
-
-				warningLabel.Left.Set(-30f, 0f);
-				warningLabel.Top.Set(3f, 0f);
-
-				Append(warningLabel);
-
 				UIImageButton modListWarning = new UIImageButton(_errorTexture) {
 					VAlign = 0f,
-					HAlign = 1f
+					HAlign = 1f,
+					Top = new StyleDimension(-2, 0),
+					Left = new StyleDimension(topRightButtonsLeftPixels, 0)
 				};
-
-				modListWarning.Top.Set(-2f, 0f);
+				topRightButtonsLeftPixels -= 24;
 
 				System.Text.StringBuilder fullSB = new System.Text.StringBuilder(Language.GetTextValue("tModLoader.ModsDifferentSinceLastPlay"));
 				System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
@@ -117,6 +91,39 @@ partial class UICharacterListItem
 				Append(modListWarning);
 			}
 		}
+		if (data.customDataFail != null) {
+			var errorButton = new UIImageButton(_errorTexture) {
+				VAlign = 0f,
+				HAlign = 1f,
+				Top = new StyleDimension(-2, 0),
+				Left = new StyleDimension(topRightButtonsLeftPixels, 0)
+			};
+			topRightButtonsLeftPixels -= 24;
+
+			errorButton.OnLeftClick += new MouseEvent(ErrorButtonClick);
+			errorButton.OnMouseOver += new MouseEvent(ErrorMouseOver);
+			errorButton.OnMouseOut += (a, b) => warningLabel.SetText("");
+
+			Append(errorButton);
+		}
+		if (data.Player.saveErrorMessage != null) {
+			// TODO: Need unique icons
+			var errorButton = new UIImageButton(_errorTexture) {
+				VAlign = 0f,
+				HAlign = 1f,
+				Top = new StyleDimension(-2, 0),
+				Left = new StyleDimension(topRightButtonsLeftPixels, 0)
+			};
+			topRightButtonsLeftPixels -= 24;
+
+			errorButton.OnLeftClick += new MouseEvent(SaveErrorButtonClick);
+			errorButton.OnMouseOver += new MouseEvent(SaveErrorMouseOver);
+			errorButton.OnMouseOut += (a, b) => warningLabel.SetText("");
+
+			Append(errorButton);
+		}
+
+		warningLabel.Left.Set(topRightButtonsLeftPixels - 6, 0f);
 
 		/*
 		int buttonLabelLeft = 80;
@@ -137,12 +144,12 @@ partial class UICharacterListItem
 
 	private void ErrorMouseOver(UIMouseEvent evt, UIElement listeningElement)
 	{
-		_deleteButtonLabel.SetText(_data.customDataFail.modName + " Error");
+		warningLabel.SetText(_data.customDataFail.modName + " Error");
 	}
 
 	private void SaveErrorMouseOver(UIMouseEvent evt, UIElement listeningElement)
 	{
-		_deleteButtonLabel.SetText(Language.GetTextValue("tModLoader.ViewSaveErrorMessage"));
+		warningLabel.SetText(Language.GetTextValue("tModLoader.ViewSaveErrorMessage"));
 	}
 
 	private void ConfigMouseOver(UIMouseEvent evt, UIElement listeningElement)
