@@ -102,6 +102,7 @@ public static class LoaderUtils
 	public static bool HasOverride(Type t, MethodInfo baseMethod)
 		=> baseMethod.DeclaringType!.IsInterface ? t.IsAssignableTo(baseMethod.DeclaringType) : GetDerivedDefinition(t, baseMethod).DeclaringType != baseMethod.DeclaringType;
 
+	public static bool HasOverride<T>(T t, Expression<Func<T, Delegate>> expr) => HasOverride<T, Delegate>(t, expr);
 	public static bool HasOverride<T, F>(T t, Expression<Func<T, F>> expr) where F : Delegate
 		=> HasOverride(t!.GetType(), expr.ToMethodInfo());
 
@@ -113,6 +114,7 @@ public static class LoaderUtils
 		return providers.Where(p => HasOverride(p.GetType(), method));
 	}
 
+	public static IEnumerable<T> WhereMethodIsOverridden<T>(this IEnumerable<T> providers, Expression<Func<T, Delegate>> expr) => WhereMethodIsOverridden<T, Delegate>(providers, expr);
 	public static IEnumerable<T> WhereMethodIsOverridden<T, F>(this IEnumerable<T> providers, Expression<Func<T, F>> expr) where F : Delegate
 		=> WhereMethodIsOverridden(providers, expr.ToMethodInfo());
 

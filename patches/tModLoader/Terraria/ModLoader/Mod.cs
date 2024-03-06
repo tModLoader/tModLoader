@@ -54,7 +54,7 @@ public partial class Mod
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
+	/// Whether or not this mod will automatically add images in the "Gores" folder as gores to the game, along with any <see cref="ModGore"/> classes that share names with the images. This means you do not need to manually call <see cref="GoreLoader.AddGoreFromTexture{TGore}(Mod, string)"/>.
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
@@ -62,7 +62,7 @@ public partial class Mod
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.
+	/// Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <see cref="BackgroundTextureLoader.AddBackgroundTexture(Mod, string)"/>.
 	/// </summary>
 	public bool BackgroundAutoloadingEnabled { get; init; } = true;
 
@@ -82,6 +82,11 @@ public partial class Mod
 	/// </summary>
 	public string DisplayNameClean => displayNameClean ??= Utils.CleanChatTags(DisplayName);
 
+	/// <summary>
+	/// Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the <see cref="AssetRepository.Request{T}(string)"/> method to retrieve an Asset&lt;T&gt; instance:
+	/// <code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code>
+	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required. 
+	/// </summary>
 	public AssetRepository Assets { get; private set; }
 
 	public IContentSource RootContentSource { get; private set; }

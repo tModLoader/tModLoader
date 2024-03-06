@@ -669,6 +669,22 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2221,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if the world is a Master Mode world. Note that the <see cref="expertMode"/> will also be true. </summary>
+ 	public static bool masterMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
+@@ -2236,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds. </summary>
+ 	public static bool expertMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
 @@ -2268,8 +_,16 @@
  	[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
  	public static Matrix Transform => GameViewMatrix.TransformationMatrix;
@@ -693,7 +709,7 @@
 +	/// <summary>
 +	/// The y-coordinate of the top of the underworld, in tile coordinates.
 +	/// </summary>
-+	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworld"/> set to <see langword="true"/>.</remarks>
++	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworldHeight"/> set to <see langword="true"/>.</remarks>
  	public static int UnderworldLayer => maxTilesY - 200;
  
  	public static float WindForVisuals => windSpeedCurrent;
