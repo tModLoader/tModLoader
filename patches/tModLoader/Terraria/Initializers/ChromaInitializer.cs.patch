@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Initializers/ChromaInitializer.cs
++++ src/tModLoader/Terraria/Initializers/ChromaInitializer.cs
+@@ -761,7 +_,8 @@
+ 		RegisterShader("Death", new DeathShader(new Color(36, 0, 10), new Color(158, 28, 53)), CommonConditions.CriticalAlert.Death, ShaderLayer.CriticalAlert);
+ 	}
+ 
++	// public for testing, real implementation might need to do more journaling. 
+-	private static void RegisterShader(string name, ChromaShader shader, ChromaCondition condition, ShaderLayer layer)
++	public static void RegisterShader(string name, ChromaShader shader, ChromaCondition condition, ShaderLayer layer)
+ 	{
+ 		_engine.RegisterShader(shader, condition, layer);
+ 	}

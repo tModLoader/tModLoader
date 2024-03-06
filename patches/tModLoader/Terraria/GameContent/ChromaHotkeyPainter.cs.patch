@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ChromaHotkeyPainter.cs
++++ src/tModLoader/Terraria/GameContent/ChromaHotkeyPainter.cs
+@@ -61,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private class PaintKey
++	public class PaintKey
+ 	{
+ 		private string _triggerName;
+ 		private List<Keys> _xnaKeys;
+@@ -124,7 +_,7 @@
+ 		public List<Keys> GetXNAKeysInUse() => new List<Keys>(_xnaKeys);
+ 	}
+ 
+-	private static class PainterColors
++	public static class PainterColors
+ 	{
+ 		private const float HOTKEY_COLOR_MULTIPLIER = 1f;
+ 		public static readonly Color MovementKeys = Color.Gray * 1f;
+@@ -140,7 +_,7 @@
+ 		public static readonly Color DangerKeyBlocked = Color.Red * 1f;
+ 	}
+ 
+-	private readonly Dictionary<string, PaintKey> _keys = new Dictionary<string, PaintKey>();
++	public readonly Dictionary<string, PaintKey> _keys = new Dictionary<string, PaintKey>();
+ 	private readonly List<ReactiveRGBKey> _reactiveKeys = new List<ReactiveRGBKey>();
+ 	private List<Keys> _xnaKeysInUse = new List<Keys>();
+ 	private Player _player;

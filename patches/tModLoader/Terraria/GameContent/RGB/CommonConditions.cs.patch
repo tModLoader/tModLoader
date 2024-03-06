@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/RGB/CommonConditions.cs
++++ src/tModLoader/Terraria/GameContent/RGB/CommonConditions.cs
+@@ -11,7 +_,7 @@
+ 		protected Player CurrentPlayer => Main.player[Main.myPlayer];
+ 	}
+ 
+-	private class SimpleCondition : ConditionBase
++	public class SimpleCondition : ConditionBase
+ 	{
+ 		private Func<Player, bool> _condition;
+ 
