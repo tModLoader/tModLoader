@@ -18,7 +18,7 @@
  
  	public RazerDeviceGroup(VendorColorProfile colorProfiles)
  	{
-@@ -18,6 +_,19 @@
+@@ -18,6 +_,27 @@
  	{
  		if (_isInitialized)
  			return;
@@ -29,7 +29,15 @@
 +
 +		// Part of Razer Chroma SDK Windows x64 fix in NativeMethods.cs
 +		// Try to find dll in SafeDirectories
-+		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
++		try {
++			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
++				_initializationFailed = true;
++
++				return;
++			}
++		}
++		catch (Exception e) {
++			Console.WriteLine("Corsair RGB failed to uninitialize: " + e);
 +			_initializationFailed = true;
 +
 +			return;
