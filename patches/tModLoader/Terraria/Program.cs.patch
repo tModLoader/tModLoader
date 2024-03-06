@@ -1,14 +1,18 @@
 --- src/TerrariaNetCore/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
-@@ -2,6 +_,7 @@
+@@ -2,8 +_,11 @@
  using System.Collections.Generic;
  using System.Diagnostics;
  using System.IO;
++using System.IO.Pipes;
 +using System.Linq;
  using System.Reflection;
  using System.Runtime.CompilerServices;
++using System.Runtime.Loader;
  using System.Text;
-@@ -11,12 +_,16 @@
+ using System.Threading;
+ using System.Windows.Forms;
+@@ -11,12 +_,17 @@
  using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -18,6 +22,7 @@
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
++using static Terraria.MonoLaunch;
  
  namespace Terraria;
  
@@ -26,13 +31,41 @@
  {
  #if XNA
  	public static bool IsXna = true;
-@@ -35,6 +_,10 @@
+@@ -35,6 +_,38 @@
  	public static bool LoadedEverything;
  	public static IntPtr JitForcedMethodCache;
  
 +	// Added by TML.
 +	public static Thread MainThread { get; private set; }
 +	public static bool IsMainThread => Thread.CurrentThread == MainThread;
++
++	internal class ChildLoadContext : AssemblyLoadContext
++	{
++		public ChildLoadContext() : base(isCollectible: true) { }
++
++		protected override Assembly Load(AssemblyName assemblyName) {
++			return Default.LoadFromAssemblyName(assemblyName);
++		}
++
++		protected override IntPtr LoadUnmanagedDll(string unmanagedDllName) {
++			Console.WriteLine("Loading unmanaged DLL: " + unmanagedDllName);
++			return base.LoadUnmanagedDll(unmanagedDllName);
++		}
++	}
++
++	internal const string RestartChildALCMessage = "restart-child";
++
++	internal static ChildLoadContext ChildTMLContext {
++		get;
++		private set;
++	}
++
++	public static AnonymousPipeClientStream ChildALCPipe {
++		get;
++		private set;
++	}
++
++	private static AnonymousPipeServerStream parentALCPipe;
 +
  	public static float LoadedPercentage {
  		get {
@@ -92,19 +125,59 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,9 +_,15 @@
+@@ -147,9 +_,55 @@
  		}
  	}
  
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
- 	public static void LaunchGame(string[] args, bool monoArgs = false)
- 	{
++	public static void BeginLaunchGame(string[] args, bool monoArgs = false)
++	{
 +		// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
 +		MainThread = Thread.CurrentThread;
--		Thread.CurrentThread.Name = "Main Thread";
 +		MainThread.Name = "Main Thread";
 +
++		CreateNewChildALC(args, monoArgs);
++
++		// Parent ALC will just sit around and wait until its pipe receives data
++		StreamReader reader = new StreamReader(parentALCPipe);
++		while (true) {
++			string pipeData = reader.ReadLine()?.Trim() ?? "";
++
++			if (pipeData == RestartChildALCMessage) {
++				ChildTMLContext.Unload();
++
++				GC.Collect();
++				GC.WaitForPendingFinalizers();
++				GC.Collect();
++
++				reader.Dispose();
++				parentALCPipe.Dispose();
++
++				Console.Clear();
++				CreateNewChildALC(args, monoArgs);
++				reader = new StreamReader(parentALCPipe);
++			}
++		}
++	}
++
++	private static void CreateNewChildALC(string[] args, bool monoArgs)
++	{
++		ChildTMLContext = new ChildLoadContext();
++		parentALCPipe = new AnonymousPipeServerStream(PipeDirection.In, HandleInheritability.Inheritable);
++
++		Assembly childTMLAssembly = ChildTMLContext.LoadFromAssemblyPath(typeof(MonoLaunch).Assembly.Location);
++
++		Type childProgram = childTMLAssembly.GetType(typeof(Program).FullName ?? "")!;
++		childProgram.GetProperty(nameof(ChildALCPipe), BindingFlags.Public | BindingFlags.Static)!.SetMethod!.Invoke(null, new object?[] { new AnonymousPipeClientStream(PipeDirection.Out, parentALCPipe.GetClientHandleAsString()) });
++		childProgram.GetMethod(nameof(LaunchGame), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, new object?[] { args, monoArgs });
++	}
++
++	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
++	// Moving all calls to Main to LaunchGame_() mitigates this risk
+ 	public static void LaunchGame(string[] args, bool monoArgs = false)
+ 	{
+-		Thread.CurrentThread.Name = "Main Thread";
 +		/*
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);

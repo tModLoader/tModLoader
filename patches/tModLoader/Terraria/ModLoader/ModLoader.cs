@@ -2,6 +2,7 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -17,6 +18,7 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
+using System.Runtime.Loader;
 using Terraria.Social.Steam;
 using Terraria.ModLoader.Exceptions;
 
@@ -119,6 +121,20 @@ public static class ModLoader
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {
 			var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
+
+			// COREMOD TESTING
+			if (modsToLoad.Any(mod => mod.Name == "ExampleMod")) {
+				// Death to the child ALC!!!
+				StreamWriter writer = new StreamWriter(Program.ChildALCPipe);
+				writer.Write(Program.RestartChildALCMessage);
+				writer.Dispose();
+
+				Main.QueueMainThreadAction(() => Main.instance.QuitGame());
+				Thread.CurrentThread.IsBackground = true;
+				while (true) { }
+			}
+			//
+			
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
 			Mods = modInstances.ToArray();
