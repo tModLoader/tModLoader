@@ -7886,7 +7886,7 @@
  			throw;
  		}
  	}
-@@ -41979,11 +_,32 @@
+@@ -41979,11 +_,33 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
@@ -7902,6 +7902,7 @@
 +		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
 +		PlayerLoader.PostSavePlayer(player);
 +
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
 +		TagCompound tplrData = PlayerIO.SaveData(player);
 +
 +		SavePlayerFile_Write(playerFile, plrData, tplrData);

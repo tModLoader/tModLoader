@@ -515,7 +515,7 @@ internal static class WorldIO
 				system.SaveWorldData(saveData);
 			}
 			catch (Exception e) {
-				var message = NetworkText.FromKey("tModLoader.SaveWorldDataExceptionWarning", system.Name, system.Mod.Name);
+				var message = NetworkText.FromKey("tModLoader.SaveWorldDataExceptionWarning", system.Name, system.Mod.Name, "\n\n" + e.ToString());
 				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
 
 				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldData"] = e.ToString();

@@ -217,7 +217,7 @@ internal static class PlayerIO
 			}
 			catch (Exception e) {
 				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
-				var message = NetworkText.FromKey("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name);
+				var message = NetworkText.FromKey("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name, "\n\n" + e.ToString());
 				Utils.HandleSaveErrorMessageLogging(message, broadcast: false);
 
 				list.Add(new TagCompound {

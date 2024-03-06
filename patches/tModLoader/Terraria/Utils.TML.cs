@@ -242,7 +242,7 @@ partial class Utils
 		}
 		else if (!Main.gameMenu) {
 			// In-game autosave
-			if(broadcast)
+			if (broadcast)
 				ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
 			else
 				Main.NewText(message, Color.OrangeRed);

@@ -34,7 +34,7 @@ public class UnloadedPlayer : ModPlayer
 			string fullError = Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors).ToString();
 			Main.NewText(fullError, Microsoft.Xna.Framework.Color.OrangeRed);
 		}
-		if(Player.ModSaveErrors.Any()) {
+		if (Player.ModSaveErrors.Any()) {
 			// Main.NewText won't work in MP, DisplayMessageOnClient will cache the message if needed.
 			var message = Utils.CreateSaveErrorMessage("tModLoader.PlayerCustomDataSaveFail", Player.ModSaveErrors);
 			Chat.ChatHelper.DisplayMessageOnClient(message, Microsoft.Xna.Framework.Color.OrangeRed, Main.myPlayer);

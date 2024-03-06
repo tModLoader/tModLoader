@@ -207,7 +207,7 @@
  					NetMessage.TrySendData(129, whoAmI);
  					NetMessage.greetPlayer(whoAmI);
 +
-+					if(Main.ActiveWorldFileData.ModSaveErrors.Any()) {
++					if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
 +						ChatHelper.SendChatMessageToClient(Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors), Color.OrangeRed, whoAmI);
 +					}
  					if (Main.player[num92].unlockedBiomeTorches) {
