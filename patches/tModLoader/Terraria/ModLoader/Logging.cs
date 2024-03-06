@@ -55,6 +55,7 @@ public static partial class Logging
 		try {
 			InitLogPaths(logFile);
 			ConfigureAppenders(logFile);
+			ForceUpdateLogCreationDates();
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Failed to init logging", e);
@@ -120,7 +121,7 @@ public static partial class Logging
 			File = LogPath,
 			AppendToFile = false,
 			Encoding = encoding,
-			Layout = layout
+			Layout = layout,
 		};
 
 		fileAppender.ActivateOptions();
@@ -264,6 +265,17 @@ public static partial class Logging
 		}
 		catch (Exception e) {
 			tML.Error("Failed to dump env vars", e);
+		}
+	}
+
+	private static void ForceUpdateLogCreationDates()
+	{
+		// Force-update file creation date, because log4net does not do that.
+		if (File.Exists(LogPath)) {
+			using var _ = new QuietExceptionHandle();
+
+			try { File.SetCreationTime(LogPath, DateTime.Now); }
+			catch { }
 		}
 	}
 }
