@@ -417,7 +417,13 @@
 		"NewXMods": "{0} mods nuevos",
 		"NewModsListing": "Mods nuevos:\n{0}",
 		"PlayerCustomDataFail": "Se ha producido un problema al cargar los datos personalizados de un jugador",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "Se ha producido un problema al cargar un mundo",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "No queda almacenamiento disponible en Steam Cloud, no puede moverse a la nube",
 		"PlayerFromNewerTModMightNotWork": "Este jugador proviene de una versión más reciente de tModLoader, es posible que no funcione",
 		"WorldFromNewerTModMightNotWork": "Este mundo proviene de una versión más reciente de tModLoader, es posible que no funcione",
@@ -425,6 +431,7 @@
 		"WorldWithThisNameExistsWillBeOverwritten": "Ya existe un mundo con este nombre, será sobrescrito",
 		"ExistingPlayerPlayedMoreRecently": "El jugador existente se jugó por última vez más recientemente",
 		"ExistingWorldPlayedMoreRecently": "El mundo existente se jugó por última vez más recientemente",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "Compilar",

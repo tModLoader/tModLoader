@@ -417,7 +417,13 @@
 		"NewXMods": "{0} nowych modów",
 		"NewModsListing": "Nowe mody:\n{0}",
 		"PlayerCustomDataFail": "Wystąpił problem podczas ładowania niestandardowych danych dla gracza",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "Wystąpił problem podczas próby załadowania świata",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "Osiągnięto limit przestrzeni dyskowej w chmurze, nie można przenieść do chmury",
 		"PlayerFromNewerTModMightNotWork": "Ten gracz pochodzi z nowszej wersji tModLoadera, może nie działać poprawnie",
 		"WorldFromNewerTModMightNotWork": "Ta mapa świata pochodzi z nowszej wersji tModLoadera, może nie działać poprawnie",
@@ -425,6 +431,7 @@
 		"WorldWithThisNameExistsWillBeOverwritten": "Mapa świata o tej nazwie już istnieje, zostanie nadpisana",
 		"ExistingPlayerPlayedMoreRecently": "Istniejący gracz ostatnio grał częściej",
 		"ExistingWorldPlayedMoreRecently": "Istniejąca mapa świata ostatnio była uruchamiana częściej",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "Zbuduj",

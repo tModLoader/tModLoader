@@ -417,7 +417,13 @@
 		"NewXMods": "{0} neue Mods",
 		"NewModsListing": "Neue Mods:\n{0}",
 		"PlayerCustomDataFail": "Ein Problem ist beim Laden der benutzerdefinierten Daten eines Charakters aufgetreten",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "Ein Problem ist beim Laden einer Welt aufgetreten",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "Cloud-Speicherlimit erreicht, kann nicht in der Cloud gespeichert werden",
 		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
 		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
@@ -425,6 +431,7 @@
 		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
 		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
 		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "Erstellen",
