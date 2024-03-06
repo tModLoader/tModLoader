@@ -47,6 +47,8 @@ public static partial class Logging
 
 	internal static void Init(LogFile logFile)
 	{
+		LegacyCleanups();
+
 		if (Program.LaunchParameters.ContainsKey("-build"))
 			return;
 
@@ -281,6 +283,25 @@ public static partial class Logging
 
 			try { File.SetCreationTime(filePath, DateTime.Now); }
 			catch { }
+		}
+	}
+
+	private static readonly string[] autoRemovedFiles = {
+		"environment-",
+	};
+
+	// Removes files that shouldn't have ever existed.
+	private static void LegacyCleanups()
+	{
+		using var _ = new QuietExceptionHandle();
+
+		foreach (string filePath in autoRemovedFiles) {
+			string fullPath = Path.Combine(LogDir, filePath);
+
+			if (File.Exists(fullPath)) {
+				try { File.Delete(fullPath); }
+				catch { }
+			}
 		}
 	}
 }
