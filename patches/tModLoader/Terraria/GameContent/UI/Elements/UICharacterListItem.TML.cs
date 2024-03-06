@@ -106,7 +106,7 @@ partial class UICharacterListItem
 
 			Append(errorButton);
 		}
-		if (data.Player.saveErrorMessage != null) {
+		if (data.Player.ModSaveErrors.Any()) {
 			// TODO: Need unique icons
 			var errorButton = new UIImageButton(_errorTexture) {
 				VAlign = 0f,
@@ -164,7 +164,8 @@ partial class UICharacterListItem
 
 	private void SaveErrorButtonClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		Interface.infoMessage.Show(_data.Player.saveErrorMessage, 888, Main._characterSelectMenu);
+		string message = Utils.CreateSaveErrorMessage("tModLoader.PlayerCustomDataSaveFail", _data.Player.ModSaveErrors, doubleNewline: true).ToString();
+		Interface.infoMessage.Show(message, 888, Main._characterSelectMenu);
 	}
 
 	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)

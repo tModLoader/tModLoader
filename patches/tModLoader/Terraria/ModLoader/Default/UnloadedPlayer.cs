@@ -31,13 +31,14 @@ public class UnloadedPlayer : ModPlayer
 	public override void OnEnterWorld()
 	{
 		if (Main.netMode != 1 && Main.ActiveWorldFileData.ModSaveErrors.Any()) {
-			string fullError = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n" + string.Join("\n", Main.ActiveWorldFileData.ModSaveErrors.Select(x => $"{x.Key}: {x.Value}"));
+			string fullError = Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors).ToString();
 			Main.NewText(fullError, Microsoft.Xna.Framework.Color.OrangeRed);
 		}
-		if(Player.saveErrorMessage != null) {
+		if(Player.ModSaveErrors.Any()) {
 			// Main.NewText won't work in MP, DisplayMessageOnClient will cache the message if needed.
-			Chat.ChatHelper.DisplayMessageOnClient(NetworkText.FromLiteral(Player.saveErrorMessage), Microsoft.Xna.Framework.Color.OrangeRed, Main.myPlayer);
-			Logging.tML.Warn(Player.saveErrorMessage);
+			var message = Utils.CreateSaveErrorMessage("tModLoader.PlayerCustomDataSaveFail", Player.ModSaveErrors);
+			Chat.ChatHelper.DisplayMessageOnClient(message, Microsoft.Xna.Framework.Color.OrangeRed, Main.myPlayer);
+			Logging.tML.Warn(message);
 		}
 	}
 }

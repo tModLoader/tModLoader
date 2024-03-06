@@ -120,8 +120,7 @@ public partial class UIWorldListItem : AWorldListItem
 			topRightButtonsLeftPixels -= 24;
 
 			string warning = Language.GetTextValue("tModLoader.ViewSaveErrorMessage");
-			string fullError = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n\n";
-			fullError += string.Join("\n\n", data.ModSaveErrors.Select(x => $"{x.Key}:\n{x.Value}"));
+			string fullError = Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", data.ModSaveErrors, doubleNewline: true).ToString();
 			modSaveErrorWarning.OnMouseOver += (a, b) => warningLabel.SetText(warning);
 			modSaveErrorWarning.OnMouseOut += (a, b) => warningLabel.SetText("");
 			modSaveErrorWarning.OnLeftClick += (a, b) => {

@@ -27,6 +27,6 @@ public partial class WorldFileData
 	public bool TryGetHeaderData<T>(out TagCompound data) where T : ModSystem => TryGetHeaderData(ModContent.GetInstance<T>(), out data);
 	public bool TryGetHeaderData(ModSystem system, out TagCompound data) => ModHeaders.TryGetValue(system.FullName, out data);
 
-	/// <summary> Contains error messages from ModSystem.SaveWorldData from a previous world save retrieved from the .twld during load or the latest autosave. Will be shown in various places to warn the user. Maps ModSystem.FullName.MethodName to exception string</summary>
+	/// <summary> Contains error messages from ModSystem.SaveWorldData from a previous world save retrieved from the .twld during load or the latest autosave. Will be shown in various places to warn the user. Maps ModSystem.FullName.MethodName to exception string.</summary>
 	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();
 }

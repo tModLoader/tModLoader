@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoMod.Core.Platforms;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
@@ -250,8 +251,7 @@ internal static class PlayerIO
 			string modPlayerName = tag.GetString("name");
 
 			if (tag.TryGet<string>("error", out string errorMessage)) {
-				player.saveErrorMessage ??= Language.GetTextValue("tModLoader.PlayerCustomDataSaveFail");
-				player.saveErrorMessage += "\n" + $"{modName}/{modPlayerName}.SaveData: " + errorMessage;
+				player.ModSaveErrors[$"{modName}/{modPlayerName}.SaveData"] = errorMessage;
 				continue;
 			}
 

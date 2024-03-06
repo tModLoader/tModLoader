@@ -238,7 +238,7 @@ partial class Utils
 		Utils.LogAndConsoleInfoMessage(message.ToString());
 		if (Main.gameMenu && Main.menuMode == 10) {
 			// Save and Quit. Due to multithreading we need to queue up the message window instead of Interface.errorMessage.Show immediately.
-			Interface.pendingMessages.Push(message.ToString());
+			Interface.pendingErrorMessages.Push(message.ToString());
 		}
 		else if (!Main.gameMenu) {
 			// In-game autosave
@@ -247,5 +247,11 @@ partial class Utils
 			else
 				Main.NewText(message, Color.OrangeRed);
 		}
+	}
+
+	internal static NetworkText CreateSaveErrorMessage(string localizationKey, Dictionary<string, string> errors, bool doubleNewline = false)
+	{
+		string separator = doubleNewline ? "\n\n" : "\n";
+		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
 	}
 }

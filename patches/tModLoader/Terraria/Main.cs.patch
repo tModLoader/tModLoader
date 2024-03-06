@@ -5355,8 +5355,8 @@
  
  			num11++;
 +
-+			if (Interface.pendingMessages.Count > 0) {
-+				Interface.errorMessage.Show(Interface.pendingMessages.Pop(), 0);
++			if (Interface.pendingErrorMessages.Count > 0) {
++				Interface.errorMessage.Show(Interface.pendingErrorMessages.Pop(), 0);
 +			}
  		}
  		else if (menuMode == 1) {

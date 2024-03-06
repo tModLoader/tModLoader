@@ -104,7 +104,7 @@ internal static class WorldIO
 		LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
 
 		if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
-			string fullError = Language.GetTextValue("tModLoader.WorldCustomDataSaveFail") + "\n" + string.Join("\n", Main.ActiveWorldFileData.ModSaveErrors.Select(x => $"{x.Key}: {x.Value}"));
+			string fullError = Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors).ToString();
 			Utils.LogAndConsoleInfoMessage(fullError);
 		}
 	}
@@ -758,12 +758,7 @@ internal static class WorldIO
 	private static void LoadErrors(WorldFileData data, TagCompound tagCompound)
 	{
 		foreach (var entry in tagCompound) {
-			string fullname = entry.Key;
-
-			if (ModContent.TryFind<ModSystem>(fullname, out var system)) // handle legacy renames
-				fullname = system.FullName;
-
-			data.ModSaveErrors[fullname] = (string)entry.Value;
+			data.ModSaveErrors[entry.Key] = (string)entry.Value;
 		}
 	}
 
