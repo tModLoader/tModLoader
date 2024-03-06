@@ -55,7 +55,8 @@ public static partial class Logging
 		try {
 			InitLogPaths(logFile);
 			ConfigureAppenders(logFile);
-			ForceUpdateLogCreationDates();
+			// Force-update log4net file's creation date, because log4net does not do that.
+			TryUpdatingFileCreationDate(LogPath);
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Failed to init logging", e);
@@ -257,7 +258,11 @@ public static partial class Logging
 	{
 		try {
 			string fileName = $"environment-{Path.GetFileName(LogPath)}";
-			using var f = File.OpenWrite(Path.Combine(LogDir, fileName));
+			string filePath = Path.Combine(LogDir, fileName);
+
+			TryUpdatingFileCreationDate(filePath);
+
+			using var f = File.OpenWrite(filePath);
 			using var w = new StreamWriter(f);
 			foreach (var key in Environment.GetEnvironmentVariables().Keys) {
 				w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");
@@ -268,13 +273,12 @@ public static partial class Logging
 		}
 	}
 
-	private static void ForceUpdateLogCreationDates()
+	private static void TryUpdatingFileCreationDate(string filePath)
 	{
-		// Force-update file creation date, because log4net does not do that.
-		if (File.Exists(LogPath)) {
+		if (File.Exists(filePath)) {
 			using var _ = new QuietExceptionHandle();
 
-			try { File.SetCreationTime(LogPath, DateTime.Now); }
+			try { File.SetCreationTime(filePath, DateTime.Now); }
 			catch { }
 		}
 	}
