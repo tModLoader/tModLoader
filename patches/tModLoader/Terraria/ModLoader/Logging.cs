@@ -79,7 +79,8 @@ public static partial class Logging
 			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 		}
 
-		DumpEnvVars();
+		if (!Program.LaunchParameters.ContainsKey("-build"))
+			DumpEnvVars();
 
 		string stackLimit = Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize");
 
