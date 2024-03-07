@@ -67,6 +67,9 @@ public static partial class Logging
 
 	internal static void LogStartup(bool dedServ)
 	{
+		if (Program.LaunchParameters.ContainsKey("-build"))
+			return;
+
 		tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
@@ -81,8 +84,7 @@ public static partial class Logging
 			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 		}
 
-		if (!Program.LaunchParameters.ContainsKey("-build"))
-			DumpEnvVars();
+		DumpEnvVars();
 
 		string stackLimit = Environment.GetEnvironmentVariable("COMPlus_DefaultStackSize");
 
