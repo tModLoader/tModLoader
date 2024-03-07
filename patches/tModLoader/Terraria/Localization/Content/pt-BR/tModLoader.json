@@ -210,6 +210,7 @@
 		"LoadErrorDuplicateName": "Não é possível adicionar dois {0} com o mesmo nome: {1}. Talvez 2 classes compartilham um nome de classe, mas em namespaces diferentes durante o carregamento automático, ou você chamou manualmente AddContent com 2 {0} do mesmo nome.",
 
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nEstimativa mais próxima: (Há um erro de ortografia ou de posicionamento da pasta?)\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "Exceção Detectada Silenciosamente: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(veja {0} para o rastreamento completo)",
 		"ShopOverflow": "Não foi possível encaixar todos os itens na loja!",

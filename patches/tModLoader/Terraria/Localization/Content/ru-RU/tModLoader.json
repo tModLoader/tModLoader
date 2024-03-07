@@ -210,6 +210,7 @@
 		"LoadErrorDuplicateName": "Невозможно добавить два {0} с одинаковым названием: {1}. Возможно, оба класса имеют общее название, но находятся в разных пространствах имён при автозагрузке, либо вы вручную вызвали метод AddContent с одинаковыми названиями {0}, или, возможно, существует другой класс с таким же именем (legacyname), который используется.",
 
 		"LoadErrorResourceNotFoundPathHint": "Ожидаемый ресурс не был найден:\n    {0}\nБлижайшее предположение: (Есть ли там опечатка или ошибка в расположении папок?)\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "Бесшумно пойманное исключение: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(смотрите {0} для получения полной трассировки стека)",
 		"ShopOverflow": "Не все товары поместились в магазине!",

@@ -211,6 +211,7 @@
 		"LoadErrorDuplicateName": "无法添加两个具有相同名称{1}的{0}。也许有两个类名相同但在不同的命名空间的类自动加载, 或者你手动调用AddContent添加了两次同名的{0}。",
 
 		"LoadErrorResourceNotFoundPathHint": "未找到预期的资源:\n    {0}\n很可能：（是否拼写或文件夹放置错误？）\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "静默捕获异常: ",
 		"RuntimeErrorSeeLogsForFullTrace": "（请参阅 {0} 以获取完整调用堆栈）",
 		"ShopOverflow": "物品太多，塞不进商店里 :(",
