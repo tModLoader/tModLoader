@@ -6389,7 +6389,7 @@
  					Netplay.Clients[k].PendingTerminationApproved = true;
  				}
  			}
-@@ -53384,6 +_,19 @@
+@@ -53384,6 +_,22 @@
  		}
  	}
  
@@ -6402,7 +6402,10 @@
 +	}
 +
 +	/// <summary>
-+	/// Spawns chat text on the local client. Does nothing on the server. <br/>
++	/// Spawns chat text on the local client. Does nothing on the server. <para/>
++	/// To send chat text from the server, use one of the following:<br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.BroadcastChatMessage(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for all clients. <br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.SendChatMessageToClient(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for a specific client. <para/>
 +	/// For floating text, such as damage, see <see cref="CombatText"/> <br/>
 +	/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
 +	/// </summary>
