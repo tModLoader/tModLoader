@@ -1,6 +1,16 @@
 --- src/TerrariaNetCore/Terraria/ID/PlayerVariantID.cs
 +++ src/tModLoader/Terraria/ID/PlayerVariantID.cs
-@@ -5,8 +_,21 @@
+@@ -1,12 +_,31 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.PlayerVariant)]
++#endif
+ public static class PlayerVariantID
+ {
++#if !TMLCODEASSIST
  	public class Sets
  	{
  		public static SetFactory Factory = new SetFactory(Count);
@@ -33,3 +43,17 @@
  		public static int[] VariantOrderFemale = new int[6] {
  			4,
  			5,
+@@ -24,6 +_,7 @@
+ 			11
+ 		};
+ 	}
++#endif
+ 
+ 	public const int MaleStarter = 0;
+ 	public const int MaleSticker = 1;
+@@ -38,4 +_,5 @@
+ 	public const int MaleDisplayDoll = 10;
+ 	public const int FemaleDisplayDoll = 11;
+ 	public static readonly int Count = 12;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(PlayerVariantID), typeof(int)); // TML
+ }

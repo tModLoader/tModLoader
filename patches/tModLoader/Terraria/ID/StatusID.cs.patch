@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/ID/StatusID.cs
++++ src/tModLoader/Terraria/ID/StatusID.cs
+@@ -2,6 +_,9 @@
+ 
+ namespace Terraria.ID;
+ 
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Status)]
++#endif
+ public class StatusID
+ {
+ 	public const int Ok = 0;

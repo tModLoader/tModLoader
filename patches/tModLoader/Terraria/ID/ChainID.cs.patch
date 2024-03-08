@@ -1,0 +1,19 @@
+--- src/TerrariaNetCore/Terraria/ID/ChainID.cs
++++ src/tModLoader/Terraria/ID/ChainID.cs
+@@ -1,5 +_,10 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Chain)]
++#endif
+ public static class ChainID
+ {
+ 	public const short TendonHook = 0;
+@@ -20,4 +_,5 @@
+ 	public const short LunarStardustGlow = 15;
+ 	public const short StaticHook = 16;
+ 	public static readonly short Count = 17;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(ChainID), typeof(short)); // TML
+ }

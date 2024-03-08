@@ -1,16 +1,23 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -2,21 +_,57 @@
+@@ -1,22 +_,64 @@
+ using System.Collections.Generic;
++
++#if !TMLCODEASSIST
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
++#else
++using ReLogic.Reflection;
++#endif
  
  namespace Terraria.ID;
  
 -public class ItemID
 +public partial class ItemID
  {
++#if !TMLCODEASSIST
 +	/// <summary>
 +	/// Determines the strength an NPC's banner has on players' interactions with that NPC. Used in <see cref="Sets.BannerStrength"/>
 +	/// </summary>
@@ -719,7 +726,7 @@
  		public static short[] Workbenches = new short[44] {
  			36,
  			635,
-@@ -1038,7 +_,21 @@
+@@ -1038,9 +_,24 @@
  			5187,
  			5208
  		};
@@ -740,4 +747,7 @@
 +		/// </remarks>
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
  	}
++#endif
  
+ 	private static Dictionary<string, short> _legacyItemLookup;
+ 	public const short YellowPhasesaberOld = -24;

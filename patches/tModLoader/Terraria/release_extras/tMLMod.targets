@@ -4,6 +4,7 @@
 		<TerrariaSteamPath>$(MSBuildThisFileDirectory)</TerrariaSteamPath>
 		<tMLSteamPath>$(MSBuildThisFileDirectory)</tMLSteamPath>
 		<tMLLibraryPath>$(tMLSteamPath)Libraries</tMLLibraryPath>
+		<tMLAnalyzerPath>$(tMLSteamPath)Analyzers</tMLAnalyzerPath>
 		<tMLName>tModLoader</tMLName>
 		<tMLPath>$(tMLName).dll</tMLPath>
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
@@ -25,6 +26,15 @@
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
+
+		<PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Analyzer Include="$(tMLAnalyzerPath)/**/*.dll" />
+		<AdditionalFiles Include="$(tMLSteamPath)BannedSymbols.txt" />
 	</ItemGroup>
 	<Target Name="BuildMod" AfterTargets="Build">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>

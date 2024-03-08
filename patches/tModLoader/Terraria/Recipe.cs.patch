@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -1,13 +_,16 @@
+@@ -1,54 +_,75 @@
  using System;
  using System.Collections.Generic;
 +using System.Linq;
@@ -9,6 +9,7 @@
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
 +using Terraria.ModLoader.Utilities;
  
  namespace Terraria;
@@ -18,7 +19,8 @@
  {
  	private struct RequiredItemEntry
  	{
-@@ -15,40 +_,56 @@
++		[IDType(IDTypeAttribute.Item)]
+ 		public int itemIdOrRecipeGroup;
  		public int stack;
  	}
  
@@ -107,9 +109,12 @@
  			if (acceptedGroups[i] == -1) {
  				acceptedGroups[i] = id;
  				break;
-@@ -68,12 +_,8 @@
+@@ -66,14 +_,10 @@
+ 		}
+ 	}
  
- 	public bool ProcessGroupsForText(int type, out string theText)
+-	public bool ProcessGroupsForText(int type, out string theText)
++	public bool ProcessGroupsForText([IDType(IDTypeAttribute.Item)] int type, out string theText)
  	{
 -		for (int i = 0; i < maxRequirements; i++) {
 -			int num = acceptedGroups[i];
@@ -122,18 +127,24 @@
  				theText = RecipeGroup.recipeGroups[num].GetText();
  				return true;
  			}
-@@ -85,7 +_,7 @@
+@@ -83,9 +_,9 @@
+ 		return false;
+ 	}
  
- 	public bool AcceptsGroup(int groupId)
+-	public bool AcceptsGroup(int groupId)
++	public bool AcceptsGroup([IDType(IDTypeAttribute.RecipeGroup)] int groupId)
  	{
 -		for (int i = 0; i < maxRequirements; i++) {
 +		for (int i = 0; i < acceptedGroups.Count; i++) {
  			int num = acceptedGroups[i];
  			if (num == -1)
  				break;
-@@ -99,19 +_,15 @@
+@@ -97,21 +_,17 @@
+ 		return false;
+ 	}
  
- 	public bool AcceptedByItemGroups(int invType, int reqType)
+-	public bool AcceptedByItemGroups(int invType, int reqType)
++	public bool AcceptedByItemGroups([IDType(IDTypeAttribute.Item)] int invType, [IDType(IDTypeAttribute.Item)] int reqType)
  	{
 -		for (int i = 0; i < maxRequirements; i++) {
 -			int num = acceptedGroups[i];
@@ -150,7 +161,7 @@
  	}
  
 -	public Item AddCustomShimmerResult(int itemType, int itemStack = 1)
-+	public Recipe AddCustomShimmerResult(int itemType, int itemStack = 1)
++	public Recipe AddCustomShimmerResult([IDType(IDTypeAttribute.Item)] int itemType, int itemStack = 1)
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
@@ -290,7 +301,7 @@
 +				*/
 +			}
 +
-+			ModdedMaterials:
++		ModdedMaterials:
 +			foreach ((var items, var onConsumedCallback) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
 +				if (num <= 0)
 +					break;
@@ -312,6 +323,7 @@
  		FindRecipes();
  	}
  
+-	public bool useWood(int invType, int reqType)
 +	// Added by TML. Replaces multiple vanilla crafting code.
 +	private bool ConsumeForCraft(Item item, Item requiredItem, ref int stackRequired)
 +	{
@@ -331,8 +343,7 @@
 +		return true;
 +	}
 +
--	public bool useWood(int invType, int reqType)
-+	private bool useWood(int invType, int reqType)
++	private bool useWood([IDType(IDTypeAttribute.Item)] int invType, [IDType(IDTypeAttribute.Item)] int reqType)
  	{
  		if (!anyWood)
  			return false;
@@ -341,7 +352,7 @@
  	}
  
 -	public bool useIronBar(int invType, int reqType)
-+	private bool useIronBar(int invType, int reqType)
++	private bool useIronBar([IDType(IDTypeAttribute.Item)] int invType, [IDType(IDTypeAttribute.Item)] int reqType)
  	{
  		if (!anyIronBar)
  			return false;
@@ -350,7 +361,7 @@
  	}
  
 -	public bool useSand(int invType, int reqType)
-+	private bool useSand(int invType, int reqType)
++	private bool useSand([IDType(IDTypeAttribute.Item)] int invType, [IDType(IDTypeAttribute.Item)] int reqType)
  	{
  		if (reqType != 169 && reqType != 408 && reqType != 1246 && reqType != 370 && reqType != 3272 && reqType != 3338 && reqType != 3274 && reqType != 3275)
  			return false;
@@ -359,7 +370,7 @@
  	}
  
 -	public bool useFragment(int invType, int reqType)
-+	private bool useFragment(int invType, int reqType)
++	private bool useFragment([IDType(IDTypeAttribute.Item)] int invType, [IDType(IDTypeAttribute.Item)] int reqType)
  	{
  		if (reqType != 3458 && reqType != 3456 && reqType != 3457 && reqType != 3459)
  			return false;
@@ -368,7 +379,7 @@
  	}
  
 -	public bool usePressurePlate(int invType, int reqType)
-+	private bool usePressurePlate(int invType, int reqType)
++	private bool usePressurePlate([IDType(IDTypeAttribute.Item)] int invType, [IDType(IDTypeAttribute.Item)] int reqType)
  	{
  		if (!anyPressurePlate)
  			return false;
@@ -729,7 +740,7 @@
  	{
  		for (int i = 0; i < tileIDs.Length; i++) {
  			requiredTile[i] = tileIDs[i];
-@@ -15821,12 +_,77 @@
+@@ -15821,15 +_,80 @@
  
  	private static void AddRecipe()
  	{
@@ -807,4 +818,17 @@
 +		}
  	}
  
- 	public static int GetRequiredTileStyle(int tileID)
+-	public static int GetRequiredTileStyle(int tileID)
++	public static int GetRequiredTileStyle([IDType(IDTypeAttribute.Tile)] int tileID)
+ 	{
+ 		if (tileID == 26) {
+ 			if (!WorldGen.crimson)
+@@ -15841,7 +_,7 @@
+ 		return 0;
+ 	}
+ 
+-	public bool ContainsIngredient(int itemType)
++	public bool ContainsIngredient([IDType(IDTypeAttribute.Item)] int itemType)
+ 	{
+ 		RequiredItemEntry[] array = requiredItemQuickLookup;
+ 		for (int i = 0; i < array.Length; i++) {

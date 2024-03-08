@@ -1,7 +1,11 @@
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Tile)]
+#endif
 partial class TileID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
@@ -171,4 +175,5 @@ partial class TileID
 			RemixJungleBiome[type] = strength;
 		}
 	}
+#endif
 }

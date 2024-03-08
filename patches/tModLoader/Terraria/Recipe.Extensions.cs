@@ -1,5 +1,6 @@
 using System.Linq;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Annotations;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria;
@@ -7,7 +8,7 @@ namespace Terraria;
 public partial class Recipe
 {
 	#region HasX
-	public bool HasResult(int itemID) => createItem.type == itemID;
+	public bool HasResult([IDType(IDTypeAttribute.Item)] int itemID) => createItem.type == itemID;
 
 	public bool HasResult(Mod mod, string itemName)
 	{
@@ -23,7 +24,7 @@ public partial class Recipe
 
 	public bool HasResult<T>() where T : ModItem => HasResult(ModContent.ItemType<T>());
 
-	public bool HasIngredient(int itemID) => requiredItem.Any(item => item.type == itemID);
+	public bool HasIngredient([IDType(IDTypeAttribute.Item)] int itemID) => requiredItem.Any(item => item.type == itemID);
 
 	public bool HasIngredient(Mod mod, string itemName)
 	{
@@ -39,7 +40,7 @@ public partial class Recipe
 
 	public bool HasIngredient<T>() where T : ModItem => HasIngredient(ModContent.ItemType<T>());
 
-	public bool HasRecipeGroup(int id) => acceptedGroups.Contains(id);
+	public bool HasRecipeGroup([IDType(IDTypeAttribute.RecipeGroup)] int id) => acceptedGroups.Contains(id);
 
 	public bool HasRecipeGroup(string name)
 	{
@@ -52,7 +53,7 @@ public partial class Recipe
 
 	public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.RegisteredId);
 
-	public bool HasTile(int tileID) => requiredTile.Contains(tileID);
+	public bool HasTile([IDType(IDTypeAttribute.Tile)] int tileID) => requiredTile.Contains(tileID);
 
 	public bool HasTile(Mod mod, string tileName)
 	{
@@ -74,7 +75,7 @@ public partial class Recipe
 	#endregion
 
 	#region TryGetX
-	public bool TryGetResult(int itemID, out Item result)
+	public bool TryGetResult([IDType(IDTypeAttribute.Item)] int itemID, out Item result)
 	{
 		if (createItem.type == itemID) {
 			result = createItem;
@@ -99,7 +100,7 @@ public partial class Recipe
 
 	public bool TryGetResult<T>(out Item result) where T : ModItem => TryGetResult(ModContent.ItemType<T>(), out result);
 
-	public bool TryGetIngredient(int itemID, out Item ingredient)
+	public bool TryGetIngredient([IDType(IDTypeAttribute.Item)] int itemID, out Item ingredient)
 	{
 		foreach (Item item in requiredItem) {
 			if (item.type == itemID) {
@@ -130,11 +131,11 @@ public partial class Recipe
 	#region RemoveX
 	public bool RemoveIngredient(Item item) => requiredItem.Remove(item);
 
-	public bool RemoveIngredient(int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
+	public bool RemoveIngredient([IDType(IDTypeAttribute.Item)] int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
 
-	public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
+	public bool RemoveTile([IDType(IDTypeAttribute.Tile)] int tileID) => requiredTile.Remove(tileID);
 
-	public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
+	public bool RemoveRecipeGroup([IDType(IDTypeAttribute.RecipeGroup)] int groupID) => acceptedGroups.Remove(groupID);
 
 	public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
@@ -149,7 +150,7 @@ public partial class Recipe
 	#endregion
 
 	#region ReplaceX
-	public void ReplaceResult(int itemID, int stack = 1) => createItem = new Item(itemID) { stack = stack };
+	public void ReplaceResult([IDType(IDTypeAttribute.Item)] int itemID, int stack = 1) => createItem = new Item(itemID) { stack = stack };
 
 	public void ReplaceResult(Mod mod, string itemName, int stack = 1)
 	{

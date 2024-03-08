@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
 partial class ArmorIDs
 {
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Head)]
+#endif
 	partial class Head
 	{
+#if !TMLCODEASSIST
 		partial class Sets
 		{
 			// Created based on 'fullHair' definition in 'Player.GetHairSettings'.
@@ -52,10 +52,17 @@ partial class ArmorIDs
 			// Created based on 'PlayerDrawLayers.DrawPlayer_21_Head_TheFace'.
 			public static bool[] DrawHead = Factory.CreateBoolSet(true, 38, 135, 269);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Head, int>();
 	}
 
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Body)]
+#endif
 	partial class Body
 	{
+#if !TMLCODEASSIST
 		partial class Sets
 		{
 			// Created based on 'hidesTopSkin' definition in 'PlayerDrawSet.BoringSetup'.
@@ -95,10 +102,17 @@ partial class ArmorIDs
 			/// </remarks>
 			public static bool[] HidesArms = Factory.CreateBoolSet(83);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Body, int>();
 	}
 
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Legs)]
+#endif
 	partial class Legs
 	{
+#if !TMLCODEASSIST
 		partial class Sets
 		{
 			/// <summary>
@@ -128,10 +142,55 @@ partial class ArmorIDs
 			/// </remarks>
 			public static bool[] HidesBottomSkin = Factory.CreateBoolSet(20, 21);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Legs, int>();
 	}
 
+	/*
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_HandOn)]
+#endif
+	*/
+	partial class HandOn
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<HandOn, sbyte>();
+	}
+
+	/*
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_HandOff)]
+#endif
+	*/
+	partial class HandOff
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<HandOff, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Back)]
+#endif
+	partial class Back
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Back, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Front)]
+#endif
+	partial class Front
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Front, sbyte>();
+	}
+
+	/*
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Shoe)]
+#endif
+	*/
 	partial class Shoe
 	{
+#if !TMLCODEASSIST
 		partial class Sets
 		{
 			// Created based on 'PlayerDrawLayers.ShouldOverrideLegs_CheckShoes'.
@@ -141,5 +200,74 @@ partial class ArmorIDs
 			/// </summary>
 			public static bool[] OverridesLegs = Factory.CreateBoolSet(15);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Shoe, sbyte>();
+	}
+
+	/*
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Waist)]
+#endif
+	*/
+	partial class Waist
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Waist, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Wing)]
+#endif
+	partial class Wing
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Wing, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Shield)]
+#endif
+	partial class Shield
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Shield, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Neck)]
+#endif
+	partial class Neck
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Neck, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Face)]
+#endif
+	partial class Face
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Face, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Balloon)]
+#endif
+	partial class Balloon
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Balloon, sbyte>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_RocketBoots)]
+#endif
+	partial class RocketBoots
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<RocketBoots, int>();
+	}
+
+#if TMLCODEASSIST
+	[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Armor_Beard)]
+#endif
+	partial class Beard
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Beard, sbyte>();
 	}
 }

@@ -1,9 +1,10 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Annotations;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
@@ -17,7 +18,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	public ModItem ModItem { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalItem>.Type => type;
 	internal GlobalItem[] _globals;
 	public RefReadOnlyArray<GlobalItem> EntityGlobals => _globals;
@@ -43,7 +44,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
 		=> GlobalItem.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
@@ -203,7 +204,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <br/><br/>This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.
 	/// </summary>
 	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
-	public static int NewItem(IEntitySource source, Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+	public static int NewItem(IEntitySource source, Rectangle rectangle, [IDType(IDTypeAttribute.Item)] int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		=> NewItem(source, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 	/// <summary>
@@ -211,7 +212,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <br/><br/>This particular overload uses a Vector2 instead of X, Y, Width, and Height to determine the actual spawn position.
 	/// </summary>
 	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
-	public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+	public static int NewItem(IEntitySource source, Vector2 position, [IDType(IDTypeAttribute.Item)] int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 	/// <summary>

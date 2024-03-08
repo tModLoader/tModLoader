@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/ID/HousingCategoryID.cs
++++ src/tModLoader/Terraria/ID/HousingCategoryID.cs
+@@ -1,7 +_,13 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.HousingCategory)]
++#endif
+ public class HousingCategoryID
+ {
+ 	public const int CommonNPCs = 0;
+ 	public const int PetNPCs = 1;
++	public static readonly IdDictionary Search = IdDictionary.Create<HousingCategoryID, int>(); // TML
+ }

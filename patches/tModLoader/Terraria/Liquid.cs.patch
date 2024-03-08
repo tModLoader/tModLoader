@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/Liquid.cs
++++ src/tModLoader/Terraria/Liquid.cs
+@@ -3,6 +_,7 @@
+ using Terraria.GameContent.NetModules;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader.Annotations;
+ using Terraria.ObjectData;
+ using Terraria.WorldBuilding;
+ 
+@@ -958,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	public static void LiquidCheck(int x, int y, int thisLiquidType)
++	public static void LiquidCheck(int x, int y, [IDType(IDTypeAttribute.Liquid)] int thisLiquidType)
+ 	{
+ 		if (WorldGen.SolidTile(x, y))
+ 			return;
+@@ -1088,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public static void GetLiquidMergeTypes(int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool waterNearby, bool lavaNearby, bool honeyNearby, bool shimmerNearby)
++	public static void GetLiquidMergeTypes([IDType(IDTypeAttribute.Liquid)] int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool waterNearby, bool lavaNearby, bool honeyNearby, bool shimmerNearby)
+ 	{
+ 		liquidMergeTileType = 56;
+ 		liquidMergeType = thisLiquidType;

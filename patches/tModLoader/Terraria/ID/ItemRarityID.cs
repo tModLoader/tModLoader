@@ -3,6 +3,9 @@ using ReLogic.Reflection;
 namespace Terraria.ID;
 
 /// <summary>Enumerates the values used with Item.rare</summary>
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.ItemRarity)]
+#endif
 public static class ItemRarityID
 {
 	/// <summary>Minus thirteen (-13)<br/>Master: Fiery Red<br/>Flag: item.master</summary>

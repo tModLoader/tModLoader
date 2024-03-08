@@ -1,7 +1,11 @@
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Projectile)]
+#endif
 partial class ProjectileID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		/// <summary>
@@ -55,4 +59,5 @@ partial class ProjectileID
 			ShellPileFalling, new FallingBlockTileItemInfo(TileID.ShellPile, ItemID.ShellPileBlock)
 		);
 	}
+#endif
 }

@@ -1,9 +1,15 @@
+#if !TMLCODEASSIST
 using System.Collections.Generic;
+#endif
 
 namespace Terraria.ID;
 
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Item)]
+#endif
 partial class ItemID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		/// <summary>Used in <see cref="SandgunAmmoProjectileData"/>.</summary>
@@ -95,9 +101,9 @@ partial class ItemID
 		/// </summary>
 		/// <remarks>Coin luck application takes precedence over other actions related to shimmer.</remarks>
 		public static int[] CoinLuckValue = Factory.CreateIntSet(0,
-			CopperCoin,   1,
-			SilverCoin,	  100,
-			GoldCoin,	  10000,
+			CopperCoin, 1,
+			SilverCoin, 100,
+			GoldCoin, 10000,
 			PlatinumCoin, 1000000
 		);
 
@@ -144,9 +150,7 @@ partial class ItemID
 			{ PlatinumOre, (3, 13) },
 		};
 
-		/// <summary>
-		/// Set to <see langword="true"/> to make this Item set its mana cost to 0 whenever <see cref="Player.spaceGun"/> is set to <see langword="true"/>.
-		/// </summary>
 		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
 	}
+#endif
 }

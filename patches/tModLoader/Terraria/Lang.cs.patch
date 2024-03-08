@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
-@@ -8,6 +_,7 @@
+@@ -8,6 +_,8 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Annotations;
  using Terraria.UI;
  using Terraria.Utilities;
  
@@ -42,23 +43,29 @@
  
  	[Old("dialog is deprecated. Please use Language.GetText instead.")]
  	public static string dialog(int l, bool english = false) => Language.GetTextValueWith("LegacyDialog." + l, CreateDialogSubstitutionObject());
+-	public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
 +	/// <summary> Gets the display name of the provided npc type (<see cref="NPC.type"/>) as a string. </summary>
- 	public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
++	public static string GetNPCNameValue([IDType(IDTypeAttribute.NPC)] int netID) => GetNPCName(netID).Value;
  
+-	public static LocalizedText GetNPCName(int netID)
 +	/// <summary> Gets the display name of the provided npc type (<see cref="NPC.type"/>) as a <see cref="LocalizedText"/>. </summary>
- 	public static LocalizedText GetNPCName(int netID)
++	public static LocalizedText GetNPCName([IDType(IDTypeAttribute.NPC)] int netID)
  	{
 -		if (netID > 0 && netID < NPCID.Count)
 +		if (netID > 0 && netID < _npcNameCache.Length)
  			return _npcNameCache[netID];
  
  		if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -131,10 +_,14 @@
+@@ -129,28 +_,35 @@
+ 		return LocalizedText.Empty;
+ 	}
  
- 	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
+-	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
++	public static ItemTooltip GetTooltip([IDType(IDTypeAttribute.Item)] int itemId) => _itemTooltipCache[itemId];
  
+-	public static LocalizedText GetItemName(int id)
 +	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a <see cref="LocalizedText"/>. </summary>
- 	public static LocalizedText GetItemName(int id)
++	public static LocalizedText GetItemName([IDType(IDTypeAttribute.Item)] int id)
  	{
 +		// Check added by TML. FromNetId was always called in vanilla.
 +		if (id < 0)
@@ -70,9 +77,10 @@
  			return _itemNameCache[id];
  
  		return LocalizedText.Empty;
-@@ -142,14 +_,17 @@
+ 	}
  
- 	public static LocalizedText GetEmojiName(int id)
+-	public static LocalizedText GetEmojiName(int id)
++	public static LocalizedText GetEmojiName([IDType(IDTypeAttribute.Emote)] int id)
  	{
 -		if (id >= 0 && id < EmoteID.Count && _emojiNameCache[id] != null)
 +		if (id >= 0 && id < EmoteBubbleLoader.EmoteBubbleCount && _emojiNameCache[id] != null)
@@ -81,14 +89,18 @@
  		return LocalizedText.Empty;
  	}
  
+-	public static string GetItemNameValue(int id) => GetItemName(id).Value;
+-	public static string GetBuffName(int id) => _buffNameCache[id].Value;
+-	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
 +	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a string. </summary>
- 	public static string GetItemNameValue(int id) => GetItemName(id).Value;
++	public static string GetItemNameValue([IDType(IDTypeAttribute.Item)] int id) => GetItemName(id).Value;
 +	/// <summary> Gets the display name of the provided buff type (<see cref="BuffID"/>) as a string. </summary>
- 	public static string GetBuffName(int id) => _buffNameCache[id].Value;
++	public static string GetBuffName([IDType(IDTypeAttribute.Buff)] int id) => _buffNameCache[id].Value;
 +	/// <summary> Gets the description of the provided buff type (<see cref="BuffID"/>) as a string. </summary>
- 	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
++	public static string GetBuffDescription([IDType(IDTypeAttribute.Buff)] int id) => _buffDescriptionCache[id].Value;
  
  	public static string GetDryadWorldStatusDialog(out bool worldIsEntirelyPure)
+ 	{
 @@ -326,7 +_,20 @@
  		return npc.FullName;
  	}
@@ -110,7 +122,7 @@
  	public static LanguageSearchFilter CreateDialogFilter(string startsWith) => (string key, LocalizedText text) => key.StartsWith(startsWith);
  
  	public static string AnglerQuestChat(bool turnIn = false)
-@@ -339,9 +_,14 @@
+@@ -339,10 +_,15 @@
  			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
  		int id = (Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest]);
@@ -121,10 +133,12 @@
  		return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  	}
  
+-	public static LocalizedText GetProjectileName(int type)
 +	/// <summary> Gets the display name of the provided projectile type (<see cref="Projectile.type"/>) as a <see cref="LocalizedText"/>. </summary>
- 	public static LocalizedText GetProjectileName(int type)
++	public static LocalizedText GetProjectileName([IDType(IDTypeAttribute.Projectile)] int type)
  	{
  		if (type >= 0 && type < _projectileNameCache.Length && _projectileNameCache[type] != null)
+ 			return _projectileNameCache[type];
 @@ -484,7 +_,7 @@
  		if (Main.dedServ)
  			return;

@@ -1,12 +1,17 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemHoldStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemHoldStyleID.cs
-@@ -1,13 +_,49 @@
+@@ -1,13 +_,55 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 +/// <summary>
 +/// Assign <see cref="Item.holdStyle"/> to one of these to give your item an animation while not in use, but being held. The <see href="https://terraria.wiki.gg/wiki/Use_Style_IDs">Use Style IDs wiki page</see> has examples and animations of each of these hold styles, make sure to scroll down to the "Hold styles" section.
 +/// <br/> If none of these hold animations match what you want, consider using the <see cref="ModLoader.ModItem.HoldStyle(Player, Microsoft.Xna.Framework.Rectangle)"/> hook to implement a custom animation.
 +/// </summary>
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.ItemHoldStyle)]
++#endif
  public class ItemHoldStyleID
  {
 +	/// <summary>
@@ -49,4 +54,5 @@
 +	/// <br/> Used by Kwad Racer Drone
 +	/// </summary>
  	public const int HoldRadio = 7;
++	public static readonly IdDictionary Search = IdDictionary.Create<ItemHoldStyleID, int>();
  }

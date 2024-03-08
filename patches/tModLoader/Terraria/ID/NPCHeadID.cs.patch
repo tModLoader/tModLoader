@@ -1,12 +1,20 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCHeadID.cs
 +++ src/tModLoader/Terraria/ID/NPCHeadID.cs
-@@ -1,10 +_,20 @@
+@@ -1,12 +_,31 @@
++using ReLogic.Reflection;
++
++#if !TMLCODEASSIST
 +using Terraria.ModLoader;
++#endif
 +
  namespace Terraria.ID;
  
++#if TMLCODEASSIST
++[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.NPCHead)]
++#endif
  public class NPCHeadID
  {
++#if !TMLCODEASSIST
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
@@ -21,4 +29,13 @@
 +		/// </remarks>
  		public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21, 80);
  	}
++#endif
  
+ 	public const int HousingQuery = 0;
+ 	public const int Guide = 1;
+@@ -90,4 +_,5 @@
+ 	public const int TavernkeepShimmered = 79;
+ 	public const int TravelingMerchantShimmered = 80;
+ 	public static readonly int Count = 81;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(NPCHeadID), typeof(int)); // TML
+ }

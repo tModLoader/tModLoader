@@ -1,4 +1,8 @@
+using ReLogic.Reflection;
+
+#if !TMLCODEASSIST
 using Terraria.ModLoader;
+#endif
 
 namespace Terraria.ID;
 
@@ -6,8 +10,12 @@ namespace Terraria.ID;
 /// AmmoID entries represent ammo types. Ammo items that share the same AmmoID value assigned to <see cref="Item.ammo"/> can all be used as ammo for weapons using that same value for <see cref="Item.useAmmo"/>. AmmoID values are actually equivalent to the <see cref="ItemID"/> value of the iconic ammo item.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo">Basic Ammo Guide</see> teaches more about ammo.
 /// </summary>
+#if TMLCODEASSIST
+[tModCodeAssist.IDType.Sets.AssociatedName(ModLoader.Annotations.IDTypeAttribute.Ammo)]
+#endif
 partial class AmmoID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		public static SetFactory Factory = new(ItemLoader.ItemCount);
@@ -31,4 +39,7 @@ partial class AmmoID
 		/// </summary>
 		public static bool[] IsSpecialist = Factory.CreateBoolSet(false, Rocket, StyngerBolt, JackOLantern, NailFriendly, Coin, Flare, Dart, Snowball, Sand, FallenStar, Gel);
 	}
+#endif
+
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(AmmoID), typeof(int));
 }
