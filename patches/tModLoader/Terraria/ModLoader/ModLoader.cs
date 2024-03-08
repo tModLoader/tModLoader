@@ -116,6 +116,8 @@ public static class ModLoader
 
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {
+			var sw = Stopwatch.StartNew();
+
 			var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
@@ -124,6 +126,8 @@ public static class ModLoader
 				modsByName[mod.Name] = mod;
 
 			ModContent.Load(token);
+
+			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
