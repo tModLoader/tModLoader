@@ -380,6 +380,8 @@ public static class ModContent
 			token.ThrowIfCancellationRequested();
 			Interface.loadMods.SetCurrentMod(num++, mod);
 			try {
+				using var _ = new AssetWaitTracker(mod);
+
 				loadAction(mod);
 			}
 			catch (Exception e) {
@@ -604,5 +606,31 @@ public static class ModContent
 		foreach (var mod in ModLoader.Mods)
 			if (mod.Assets is AssetRepository assetRepo && !assetRepo.IsDisposed)
 				assetRepo.TransferCompletedAssets();
+	}
+
+	private class AssetWaitTracker : IDisposable
+	{
+		public static readonly TimeSpan MinReportThreshold = TimeSpan.FromMilliseconds(10);
+
+		private readonly Mod mod;
+		private TimeSpan total;
+
+		public AssetWaitTracker(Mod mod)
+		{
+			this.mod = mod;
+			AssetRepository.OnBlockingLoadCompleted += AddWaitTime;
+		}
+
+		private void AddWaitTime(TimeSpan t) => total += t;
+
+		public void Dispose()
+		{
+			AssetRepository.OnBlockingLoadCompleted -= AddWaitTime;
+			if (total > MinReportThreshold) {
+				Logging.tML.Warn(
+					$"{mod.Name} spent {(int)total.TotalMilliseconds}ms blocking on asset loading. " +
+					$"Avoid using {nameof(AssetRequestMode)}.{nameof(AssetRequestMode.ImmediateLoad)} during mod loading where possible");
+			}
+		}
 	}
 }
