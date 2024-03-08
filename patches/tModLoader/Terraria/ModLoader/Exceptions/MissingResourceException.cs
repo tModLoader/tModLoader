@@ -38,7 +38,12 @@ public class MissingResourceException : Exception
 		if (closestMatch != null && closestMatch != "") {
 			// TODO: UIMessageBox still doesn't display long sequences of colored text correct.
 			(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(assetPath, closestMatch);
-			return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", assetPath, closestMatch) + "\n" + a + "\n" + b + "\n";
+			string message = Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", assetPath, closestMatch) + "\n" + a + "\n" + b + "\n";
+			if (new System.Diagnostics.StackTrace().ToString().Contains("Terraria.ModLoader.EquipLoader.AddEquipTexture")) {
+				// Errors from Extra textures sometimes mislead modders, need to inform them.
+				message += $"\n{Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundEquipTextureHint")}\n";
+			}
+			return message;
 		}
 		return assetPath;
 	}

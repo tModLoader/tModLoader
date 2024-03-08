@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
+@@ -1,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics.PackedVector;
+ using Terraria.Audio;
 @@ -16,9 +_,13 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
@@ -194,6 +202,17 @@
  					if (Netplay.Connection.State == 3) {
  						Main.windSpeedCurrent = Main.windSpeedTarget;
  						Netplay.Connection.State = 4;
+@@ -810,6 +_,10 @@
+ 					NetMessage.TrySendData(74, whoAmI, -1, NetworkText.FromLiteral(Main.player[whoAmI].name), Main.anglerQuest);
+ 					NetMessage.TrySendData(129, whoAmI);
+ 					NetMessage.greetPlayer(whoAmI);
++
++					if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
++						ChatHelper.SendChatMessageToClient(Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors), Color.OrangeRed, whoAmI);
++					}
+ 					if (Main.player[num92].unlockedBiomeTorches) {
+ 						NPC nPC2 = new NPC();
+ 						nPC2.SetDefaults(664);
 @@ -921,8 +_,11 @@
  					Player player11 = Main.player[num139];
  					player11.statLife = reader.ReadInt16();

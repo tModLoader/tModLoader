@@ -572,6 +572,7 @@ public static class ProjectileLoader
 		}
 	}
 
+	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
 		if (projectile.ModProjectile == null)
@@ -583,8 +584,6 @@ public static class ProjectileLoader
 		projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
 
 		polePosX += lineOriginOffset.X * player.direction;
-		if (player.direction < 0)
-			polePosX -= 13f;
 		polePosY += lineOriginOffset.Y * player.gravDir;
 	}
 

@@ -1,9 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
-@@ -1,11 +_,18 @@
-+#if !TMLCODEASSIST
- using System.Collections.Generic;
-+#endif
+@@ -2,10 +_,14 @@
  
  namespace Terraria.ID;
  
@@ -11,7 +8,6 @@
 +public static partial class AmmoID
  {
 -	public class Sets
-+#if !TMLCODEASSIST
 +	public partial class Sets
  	{
 +		/// <summary>
@@ -21,11 +17,11 @@
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
  				759,
-@@ -94,6 +_,7 @@
- 			}
- 		};
- 	}
-+#endif
- 
- 	public static int None = 0;
- 	public static int Gel = 23;
+@@ -101,6 +_,7 @@
+ 	public static int Coin = 71;
+ 	public static int FallenStar = 75;
+ 	public static int Bullet = 97;
++	/// <summary> Items using this as <see cref="Item.ammo"/> can use <see cref="ItemID.Sets.SandgunAmmoProjectileData"/> to customize the projectile and bonus damage of this ammo. </summary>
+ 	public static int Sand = 169;
+ 	public static int Dart = 283;
+ 	public static int Rocket = 771;

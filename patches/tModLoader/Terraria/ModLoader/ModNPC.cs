@@ -140,7 +140,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 			NPCLoader.bannerToItem[Banner] = BannerItem;
 		}
 		else if (Banner != 0 || BannerItem != 0) {
-			Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.DisplayName, Name));
+			Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.Name, Name));
 		}
 
 		if (NPC.lifeMax > 32767 || NPC.boss) {

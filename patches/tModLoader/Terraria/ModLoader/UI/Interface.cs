@@ -56,6 +56,7 @@ internal static class Interface
 	internal const int createModID = 10025;
 	internal const int exitID = 10026;
 	internal const int modConfigListID = 10027;
+	internal const int serverModsDifferMessageID = 10028;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -73,9 +74,13 @@ internal static class Interface
 	internal static UIExtractMod extractMod = new UIExtractMod();
 	internal static UIModConfig modConfig = new UIModConfig();
 	internal static UIModConfigList modConfigList = new UIModConfigList();
+	internal static UIServerModsDifferMessage serverModsDifferMessage = new UIServerModsDifferMessage();
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+
+	/// <summary> Collection of error messages that will be shown one at a time once the main menu is reached. Useful for error messages during player and world saving happening on another thread. </summary>
+	internal static Stack<string> pendingErrorMessages = new Stack<string>();
 
 	// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 	//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
@@ -378,6 +383,10 @@ internal static class Interface
 			Main.MenuUI.SetState(modConfigList);
 			Main.menuMode = 888;
 		}
+		else if (Main.menuMode == serverModsDifferMessageID) {
+			Main.MenuUI.SetState(serverModsDifferMessage);
+			Main.menuMode = 888;
+		}
 		else if (Main.menuMode == exitID) {
 			Environment.Exit(0);
 		}
@@ -394,7 +403,7 @@ internal static class Interface
 			Console.WriteLine();
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			for (int k = 0; k < mods.Length; k++) {
-				Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
+				Console.Write((k + 1) + "\t\t" + mods[k].DisplayNameClean);
 				Console.WriteLine(" (" + (mods[k].Enabled ? "enabled" : "disabled") + ")");
 			}
 			if (mods.Length == 0) {
@@ -648,7 +657,7 @@ internal static class Interface
 			EnableDepsRecursive(dep, mods, missingRefs);
 			if (!dep.Enabled) {
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.WriteLine($"Automatically enabling {dep.DisplayNameClean} required by {mod.DisplayNameClean}");
 				Console.ResetColor();
 			}
 			dep.Enabled ^= true;

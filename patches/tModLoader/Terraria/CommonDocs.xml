@@ -5,4 +5,7 @@
         • <see cref="Terraria.CombatText"/> to display floating damage numbers in-game. Used for damage and healing numbers. <br/>
         • <see cref="Terraria.PopupText"/> to display non-overlapping floating in-game text. Used for reforge and item pickup messages. <br/>
     </VariousTextOptionsSummary>
+	<MusicAutoloadReminder>
+		Remember that unless you manually register music via <see cref="AddMusic(Mod, string)"/>, only files found in a folder or subfolder of a folder named "Music" will be autoloaded as music.
+	</MusicAutoloadReminder>
 </Common>

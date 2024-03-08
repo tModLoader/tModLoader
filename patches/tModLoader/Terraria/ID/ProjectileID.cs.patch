@@ -149,7 +149,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will not fall through platforms.
-+		/// <br/> only applies to projectiles using <see cref="ProjAIStyleID.FallingTile"/>.
++		/// <br/> Only applies to projectiles using <see cref="ProjAIStyleID.FallingTile"/>. Aside from dungeon debris, most FallingTile projectiles set this.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] FallingBlockDoesNotFallThroughPlatforms = Factory.CreateBoolSet(false, 71, 179, 40, 39, 17, 812, 411, 412, 413, 414, 31, 67, 56, 241, 42, 68, 65, 354);

@@ -49,6 +49,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short MagicMissile = 9;
 	/// <summary>
+	/// Falling tiles like Sand spawn falling tile projectiles with this aiStyle. Item drop and placed tile can customized using <see cref="ProjectileID.Sets.FallingBlockTileItem"/>.<para/>
 	/// Used by: <see cref="ProjectileID.DirtBall"/>, <see cref="ProjectileID.SandBallFalling"/>, <see cref="ProjectileID.MudBall"/>, <see cref="ProjectileID.AshBallFalling"/>, <see cref="ProjectileID.SandBallGun"/>, <see cref="ProjectileID.EbonsandBallFalling"/>, <see cref="ProjectileID.EbonsandBallGun"/>, <see cref="ProjectileID.PearlSandBallFalling"/>, <see cref="ProjectileID.PearlSandBallGun"/>, <see cref="ProjectileID.SiltBall"/>, <see cref="ProjectileID.SnowBallHostile"/>, <see cref="ProjectileID.SlushBall"/>, <see cref="ProjectileID.CrimsandBallFalling"/>, <see cref="ProjectileID.CrimsandBallGun"/>, <see cref="ProjectileID.CopperCoinsFalling"/>, <see cref="ProjectileID.SilverCoinsFalling"/>, <see cref="ProjectileID.GoldCoinsFalling"/>, <see cref="ProjectileID.PlatinumCoinsFalling"/>, <see cref="ProjectileID.BlueDungeonDebris"/>, <see cref="ProjectileID.GreenDungeonDebris"/>, <see cref="ProjectileID.PinkDungeonDebris"/>, <see cref="ProjectileID.ShellPileFalling"/>
 	/// </summary>
 	public const short FallingTile = 10;

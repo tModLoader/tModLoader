@@ -1,24 +1,28 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.OS;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
 using Terraria.Social;
 using Terraria.UI.Chat;
+using ReLogic.Content;
 using Terraria.UI.Gamepad;
+using System.Linq;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Config;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 
@@ -173,9 +177,8 @@ public partial class Main
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 		}
 	}
-
-	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex)
-	{
+	
+	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
 		startIndex = 0;
 		endIndex = activeToggles;
 		moveDownForButton = false;
@@ -203,7 +206,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Previous Page";
+					text = Language.GetTextValue("tModLoader.PreviousInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -227,7 +230,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Next Page";
+					text = Language.GetTextValue("tModLoader.NextInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -267,7 +270,7 @@ public partial class Main
 
 			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
 			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-			Color color = builderToggle.DisplayColorTexture();
+			Color color = builderToggle.DisplayColorTexture_Obsolete();
 
 			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
 			text = builderToggle.DisplayValue();
@@ -280,45 +283,67 @@ public partial class Main
 			*/
 
 			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
-			bool click = hover && mouseLeft && mouseLeftRelease;
-
-			if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
-				if (toggleType == BuilderToggle.BlockSwap.Type)
-					rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
-				else
-					rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
-
-				position += new Vector2(1, 0);
-			}
-			else
-				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
+			bool leftClick = hover && mouseLeft && mouseLeftRelease;
+			bool rightClick = hover && mouseRight && mouseRightRelease;
 
 			/*
 			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
 			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
 			*/
 
-			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+			// Save the original position for hover texture drawing so it won't be confusing
+			Vector2 hoverDrawPosition = position;
+			float scale = 1f;
+			SpriteEffects spriteEffects = SpriteEffects.None;
+
+			BuilderToggleDrawParams drawParams = new() {
+				Texture = texture,
+				Position = position,
+				Frame = rectangle,
+				Color = color,
+				Scale = scale,
+				SpriteEffects = spriteEffects
+			};
+			if (builderToggle.Draw(spriteBatch, ref drawParams)) {
+				spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
+			}
 
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
 
-				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
-					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
-					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
+				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
+				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
+				Color hoverColor = OurFavoriteColor;
+				float hoverScale = 1f;
+				SpriteEffects hoverSpriteEffects = SpriteEffects.None;
+				drawParams = new() {
+					Texture = iconHover,
+					Position = hoverDrawPosition,
+					Frame = hoverRectangle,
+					Color = hoverColor,
+					Scale = hoverScale,
+					SpriteEffects = hoverSpriteEffects
+				};
+				if (builderToggle.DrawHover(spriteBatch, ref drawParams)) {
+					spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
 				}
-				else if (toggleType == BuilderToggle.BlockSwap.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
-				else if (toggleType == BuilderToggle.TorchBiome.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
 			}
 
-			if (click) {
-				builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
-				SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
+			if (leftClick) {
+				SoundStyle? sound = SoundID.MenuTick;
+				if (builderToggle.OnLeftClick(ref sound)) {
+					builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
+					SoundEngine.PlaySound(sound);
+				}
 				mouseLeftRelease = false;
 			}
+
+			if (rightClick) {
+				builderToggle.OnRightClick();
+				mouseRightRelease = false;
+			}
+
 
 			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
 
@@ -407,7 +432,7 @@ public partial class Main
 
 		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
-
+	
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
 	{
 		List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
@@ -449,8 +474,7 @@ public partial class Main
 	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
-		static void Handle(PosixSignalContext ctx)
-		{
+		static void Handle(PosixSignalContext ctx) {
 			ctx.Cancel = true;
 			Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");
 			Netplay.Disconnect = true;
@@ -509,6 +533,55 @@ public partial class Main
 					newsIsNew = false;
 				}
 			}
+		}
+	}
+
+	private static void PrepareLoadedModsAndConfigsForSingleplayer()
+	{
+		// If any loaded mod or config differs from normal, intercept SinglePlayer menu with a prompt
+		// TODO: Should this remember the mod loadout before joining server? Right now it only cares about version downgrades. MP mods will still load.
+		bool needsReload = false;
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		var normalModsToLoad = ModOrganizer.RecheckVersionsToLoad();
+		foreach (var loadedMod in ModLoader.ModLoader.Mods) {
+			if (loadedMod is ModLoaderMod || loadedMod.File == null)
+				continue;
+			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
+			if (normalMod.modFile.path != loadedMod.File.path) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				needsReload = true;
+			}
+		}
+
+		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
+			needsReload = true;
+			foreach (var mod in modsWithChangedConfigs) {
+				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
+			}
+		}
+
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		if (needsReload) {
+			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
+			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
+					ModLoader.ModLoader.OnSuccessfulLoad += () => { Main.menuMode = 1; };
+					ModLoader.ModLoader.Reload();
+				},
+				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
+				backButtonAction: () => {
+					// Do nothing, logic will to back to main menu
+				},
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
+			);
+		}
+		else {
+			// Otherwise, config changes take effect immediately and the player select menu will be shown
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
+			ConfigManager.OnChangedAll();
 		}
 	}
 }
