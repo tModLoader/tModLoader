@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+		
+		<RootNamespace>tModCodeAssist</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\tModCodeAssist\tModCodeAssist.csproj" />
+		
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<Target Name="CopyDllToTmlLibs" AfterTargets="Build">
+		<ItemGroup>
+			<DllFile Include="bin/$(Configuration)/$(TargetFramework)/tModCodeAssist.CodeFixes.dll" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(DllFile)" DestinationFolder="../../src/tModLoader/Terraria/bin/$(Configuration)/net6.0/Libraries/tModCodeAssist/1.0.0/tModCodeAssist.CodeFixes.dll" />
+	</Target>
+
+</Project>
