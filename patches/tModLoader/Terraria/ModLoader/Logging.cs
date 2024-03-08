@@ -47,6 +47,8 @@ public static partial class Logging
 
 	internal static void Init(LogFile logFile)
 	{
+		LegacyCleanups();
+
 		if (Program.LaunchParameters.ContainsKey("-build"))
 			return;
 
@@ -55,6 +57,8 @@ public static partial class Logging
 		try {
 			InitLogPaths(logFile);
 			ConfigureAppenders(logFile);
+			// Force-update log4net file's creation date, because log4net does not do that.
+			TryUpdatingFileCreationDate(LogPath);
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Failed to init logging", e);
@@ -63,6 +67,9 @@ public static partial class Logging
 
 	internal static void LogStartup(bool dedServ)
 	{
+		if (Program.LaunchParameters.ContainsKey("-build"))
+			return;
+
 		tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
@@ -120,7 +127,7 @@ public static partial class Logging
 			File = LogPath,
 			AppendToFile = false,
 			Encoding = encoding,
-			Layout = layout
+			Layout = layout,
 		};
 
 		fileAppender.ActivateOptions();
@@ -256,7 +263,11 @@ public static partial class Logging
 	{
 		try {
 			string fileName = $"environment-{Path.GetFileName(LogPath)}";
-			using var f = File.OpenWrite(Path.Combine(LogDir, fileName));
+			string filePath = Path.Combine(LogDir, fileName);
+
+			TryUpdatingFileCreationDate(filePath);
+
+			using var f = File.OpenWrite(filePath);
 			using var w = new StreamWriter(f);
 			foreach (var key in Environment.GetEnvironmentVariables().Keys) {
 				w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");
@@ -264,6 +275,35 @@ public static partial class Logging
 		}
 		catch (Exception e) {
 			tML.Error("Failed to dump env vars", e);
+		}
+	}
+
+	private static void TryUpdatingFileCreationDate(string filePath)
+	{
+		if (File.Exists(filePath)) {
+			using var _ = new QuietExceptionHandle();
+
+			try { File.SetCreationTime(filePath, DateTime.Now); }
+			catch { }
+		}
+	}
+
+	private static readonly string[] autoRemovedFiles = {
+		"environment-",
+	};
+
+	// Removes files that shouldn't have ever existed.
+	private static void LegacyCleanups()
+	{
+		using var _ = new QuietExceptionHandle();
+
+		foreach (string filePath in autoRemovedFiles) {
+			string fullPath = Path.Combine(LogDir, filePath);
+
+			if (File.Exists(fullPath)) {
+				try { File.Delete(fullPath); }
+				catch { }
+			}
 		}
 	}
 }
