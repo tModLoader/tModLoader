@@ -99,6 +99,10 @@ public static class ModContent
 
 	/// <summary>
 	/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
+	/// <para/>
+	/// Modders may wish to use <c>Mod.Assets.Request</c> where the mod name prefix may be omitted for convenience.
+	/// <para/>
+	/// <inheritdoc cref="IAssetRepository.Request{T}(string, AssetRequestMode)"/>
 	/// </summary>
 	/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
 	/// <param name="mode">The desired timing for when the asset actually loads. Use ImmediateLoad if you need correct dimensions immediately, such as with UI initialization</param>

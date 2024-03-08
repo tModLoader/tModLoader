@@ -1,17 +1,33 @@
 --- src/TerrariaNetCore/ReLogic/Content/IAssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/IAssetRepository.cs
-@@ -1,5 +_,6 @@
+@@ -1,5 +_,7 @@
  using System;
  using System.Collections.Generic;
 +using System.IO;
++using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -16,7 +_,15 @@
+@@ -16,7 +_,30 @@
  
  	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
  
 +	//TML: Default request mode for mods changed to Async.
++
++	/// <summary>
++	/// <b><see cref="AssetRequestMode.AsyncLoad"/> is recommended to avoid blocking the main or mod loading threads.</b>
++	/// <para/>
++	/// Assets loaded via <see cref="AssetRequestMode.AsyncLoad"/> will only finish loading at the end of a frame, unless forced to finish immediately by a <see cref="AssetRequestMode.ImmediateLoad"/> or <see cref="Asset{T}.Wait"/> call.
++	/// <para/>
++	/// Any assets requested asynchronously during mod loading will be transferred at the end of <see cref="M:Terraria.ModLoader.Mod.PostSetupContent"/> and will remain fully loaded for the duration of the game.
++	/// <br/><see cref="Asset{T}.Wait"/> can be used to ensure an asynchronously loaded asset has finished loading before accessing <see cref="Asset{T}.Value"/>
++	/// <para/>
++	/// <seealso cref="Texture2D"/> assets have a default <see cref="Asset{T}.Value"/> containing a transparent 1x1 texture that can be used while the asset loads.
++	/// </summary>
++	/// <typeparam name="T"></typeparam>
++	/// <param name="assetName"></param>
++	/// <param name="mode"></param>
++	/// <returns></returns>
 -	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
 +	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
 +
