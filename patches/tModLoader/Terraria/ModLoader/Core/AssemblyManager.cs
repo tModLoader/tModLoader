@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Ionic.Zip;
 using MonoMod.RuntimeDetour;
 
@@ -365,49 +366,40 @@ public static class AssemblyManager
 		}
 	}
 
+	internal static Task JITModAsync(Mod mod, CancellationToken token) => JITAssembliesAsync(GetModAssemblies(mod.Name), mod.PreJITFilter, token);
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
 
 	public static void JITAssemblies(IEnumerable<Assembly> assemblies, PreJITFilter filter)
-	{
+		=> JITAssembliesAsync(assemblies, filter, CancellationToken.None).GetAwaiter().GetResult();
+
+	public static async Task JITAssembliesAsync(IEnumerable<Assembly> assemblies, PreJITFilter filter, CancellationToken token)
+{
+		const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+
+		bool ShouldJITRecursive(Type type) => filter.ShouldJIT(type) && (type.DeclaringType is null || ShouldJITRecursive(type.DeclaringType));
+
+		var methodsToJIT =
+			assemblies.SelectMany(GetLoadableTypes)
+			.Where(ShouldJITRecursive)
+			.SelectMany(type =>
+				type.GetMethods(ALL)
+					.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
+					.Concat<MethodBase>(type.GetConstructors(ALL))
+					.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
+					.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type)
+					.Where(filter.ShouldJIT)
+			)
+			.ToArray();
+
 		var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodBase method)>();
-		foreach (var assembly in assemblies) {
-			const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
-
-			bool ShouldJITRecursive(Type type) => filter.ShouldJIT(type) && (type.DeclaringType is null || ShouldJITRecursive(type.DeclaringType));
-
-			var methodsToJIT = GetLoadableTypes(assembly)
-				.Where(ShouldJITRecursive)
-				.SelectMany(type =>
-					type.GetMethods(ALL)
-						.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
-						.Concat<MethodBase>(type.GetConstructors(ALL))
-						.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-						.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type)
-						.Where(filter.ShouldJIT)
-				)
-				.ToArray();
-
-			if (Environment.ProcessorCount > 1) {
-				methodsToJIT.AsParallel().AsUnordered().ForAll(method => {
-					try {
-						ForceJITOnMethod(method);
-					}
-					catch (Exception e) {
-						exceptions.Enqueue((e, method));
-					}
-				});
+		await ForEachAsync(methodsToJIT, method => {
+			try {
+				ForceJITOnMethod(method);
 			}
-			else {
-				foreach (var method in methodsToJIT) {
-					try {
-						ForceJITOnMethod(method);
-					}
-					catch (Exception e) {
-						exceptions.Enqueue((e, method));
-					}
-				}
+			catch (Exception e) {
+				exceptions.Enqueue((e, method));
 			}
-		}
+		}, token).ConfigureAwait(false);
 
 		if (exceptions.IsEmpty)
 			return;
@@ -425,6 +417,28 @@ public static class AssemblyManager
 
 		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
 		throw new Exceptions.JITException(message);
+	}
+
+	private static async Task ForEachAsync<T>(IEnumerable<T> elements, Action<T> action, CancellationToken token)
+	{
+		// Quick and easy parallel work processor.
+		// Uses the ThreadPool instead of dedicated threads to reduce contention and improve cooperation with other parallel work such as asset loading.
+		// Avoids flooding the ThreadPool.
+		// No need to await each action because they don't throw
+		int concurrentQueueLimit = Environment.ProcessorCount * 2;
+		var queued = new List<Task>(concurrentQueueLimit);
+		foreach (var element in elements) {
+			token.ThrowIfCancellationRequested();
+			queued.Add(Task.Run(() => action(element)));
+
+			if (queued.Count >= concurrentQueueLimit) {
+				// Waiting on just the first 2 tasks provides a good balance between scheduling overhead and throughput
+				await Task.WhenAny(queued[0], queued[1]).ConfigureAwait(false);
+				queued.RemoveAll(t => t.IsCompleted);
+			}
+		}
+
+		await Task.WhenAll(queued).ConfigureAwait(false);
 	}
 
 	private static void ForceJITOnMethod(MethodBase method)
