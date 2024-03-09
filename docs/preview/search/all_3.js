@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['damage_0',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()']]],
-  ['damage_1',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()'],['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()']]],
+  ['damage_0',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()'],['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()']]],
+  ['damage_1',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()']]],
   ['damageclass_2',['DamageClass',['../class_damage_class.html',1,'']]],
   ['damageclassdata_3',['DamageClassData',['../class_damage_class_data.html',1,'']]],
   ['damageclassloader_4',['DamageClassLoader',['../class_damage_class_loader.html',1,'']]],
@@ -108,8 +108,8 @@ var searchData=
   ['deviceparam_105',['DeviceParam',['../class_device_param.html',1,'']]],
   ['difficultysliderpower_106',['DifficultySliderPower',['../class_creative_powers_1_1_difficulty_slider_power.html',1,'CreativePowers']]],
   ['digdeeperforunderworld_107',['DigDeeperForUnderworld',['../class_game_tip_i_d.html#aea07c4df0eb7339947948c76d7c0ea2b',1,'GameTipID']]],
-  ['direction_108',['Direction',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
-  ['direction_109',['direction',['../class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b',1,'Entity']]],
+  ['direction_108',['direction',['../class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b',1,'Entity']]],
+  ['direction_109',['Direction',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a1157bb63c84598316b2032d993c88bd7',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
   ['directionalinputsynccache_110',['DirectionalInputSyncCache',['../struct_player_1_1_directional_input_sync_cache.html',1,'Player']]],
   ['directionoffset_111',['DirectionOffset',['../struct_tile_resting_info.html#a39d423f6c3955e995a96f3c79a4f7059',1,'TileRestingInfo']]],
   ['disable_112',['Disable',['../struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd',1,'ExtraJumpState']]],

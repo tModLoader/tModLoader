@@ -155,7 +155,7 @@ var NAVTREEINDEX8 =
 "class_loader_utils.html#a3bc828ae6e8b5b2b0a20a0d64000a45f":[3,0,721,0],
 "class_lobby.html":[3,0,722],
 "class_localization_loader.html":[3,0,723],
-"class_localization_loader.html#a461148558fe543d4632ffa81a6f4ff61":[3,0,723,1],
+"class_localization_loader.html#a1605b6c569c1d06b7a0142e29f9de493":[3,0,723,1],
 "class_localization_loader_1_1_commented_wsc_json_object.html":[3,0,723,0],
 "class_localized_text.html":[3,0,724],
 "class_localized_text.html#a04e42d4ecba4a9f205cb72d26f23dd06":[3,0,724,5],

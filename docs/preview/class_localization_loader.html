@@ -114,19 +114,22 @@ Static Public Member Functions</h2></td></tr>
 static <a class="el" href="class_game_culture.html">GameCulture</a> string prefix&#160;</td><td class="memItemRight" valign="bottom"><b>GetCultureAndPrefixFromPath</b> (string path)</td></tr>
 <tr class="separator:a8dae1ba447ef74837242f7ba49caef2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ae55846cc45c0ae1240fd64d6f80de1"><td class="memItemLeft" align="right" valign="top"><a id="a3ae55846cc45c0ae1240fd64d6f80de1" name="a3ae55846cc45c0ae1240fd64d6f80de1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadModTranslations</b> (<a class="el" href="class_game_culture.html">GameCulture</a> <a class="el" href="class_localization_loader.html#a461148558fe543d4632ffa81a6f4ff61">culture</a>)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadModTranslations</b> (<a class="el" href="class_game_culture.html">GameCulture</a> culture)</td></tr>
 <tr class="separator:a3ae55846cc45c0ae1240fd64d6f80de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1605b6c569c1d06b7a0142e29f9de493"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localization_loader.html#a1605b6c569c1d06b7a0142e29f9de493">TryGetCultureAndPrefixFromPath</a> (string path, [NotNullWhen(true)] out <a class="el" href="class_game_culture.html">GameCulture</a>? culture, [NotNullWhen(true)] out string? prefix)</td></tr>
+<tr class="memdesc:a1605b6c569c1d06b7a0142e29f9de493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives a culture and shared prefix from a localization file path. Prefix will be found after culture, either separated by an underscore or nested in the folder. <br  />
+ Some examples:  <a href="class_localization_loader.html#a1605b6c569c1d06b7a0142e29f9de493">More...</a><br /></td></tr>
+<tr class="separator:a1605b6c569c1d06b7a0142e29f9de493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a461148558fe543d4632ffa81a6f4ff61"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_game_culture.html">GameCulture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_localization_loader.html#a461148558fe543d4632ffa81a6f4ff61">culture</a></td></tr>
-<tr class="memdesc:a461148558fe543d4632ffa81a6f4ff61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives a culture and shared prefix from a localization file path. Prefix will be found after culture, either separated by an underscore or nested in the folder. <br  />
- Some examples:  <a href="class_localization_loader.html#a461148558fe543d4632ffa81a6f4ff61">More...</a><br /></td></tr>
+<tr class="memitem:a461148558fe543d4632ffa81a6f4ff61"><td class="memItemLeft" align="right" valign="top"><a id="a461148558fe543d4632ffa81a6f4ff61" name="a461148558fe543d4632ffa81a6f4ff61"></a>
+static <a class="el" href="class_game_culture.html">GameCulture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>culture</b></td></tr>
 <tr class="separator:a461148558fe543d4632ffa81a6f4ff61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a461148558fe543d4632ffa81a6f4ff61" name="a461148558fe543d4632ffa81a6f4ff61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a461148558fe543d4632ffa81a6f4ff61">&#9670;&nbsp;</a></span>culture</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1605b6c569c1d06b7a0142e29f9de493" name="a1605b6c569c1d06b7a0142e29f9de493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1605b6c569c1d06b7a0142e29f9de493">&#9670;&nbsp;</a></span>TryGetCultureAndPrefixFromPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,7 +138,27 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_game_culture.html">GameCulture</a> LocalizationLoader.culture</td>
+          <td class="memname">static bool LocalizationLoader.TryGetCultureAndPrefixFromPath </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[NotNullWhen(true)] out <a class="el" href="class_game_culture.html">GameCulture</a>?&#160;</td>
+          <td class="paramname"><em>culture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[NotNullWhen(true)] out string?&#160;</td>
+          <td class="paramname"><em>prefix</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -151,6 +174,8 @@ Static Public Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td></td></tr>
+    <tr><td class="paramname">culture</td><td></td></tr>
+    <tr><td class="paramname">prefix</td><td></td></tr>
   </table>
   </dd>
 </dl>

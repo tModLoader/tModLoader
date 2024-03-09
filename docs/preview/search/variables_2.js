@@ -97,8 +97,8 @@ var searchData=
   ['createwall_94',['createWall',['../class_item.html#a0a41a85414ebd1f86d648bea819b48aa',1,'Item']]],
   ['creativeresearchitempersistentidoverride_95',['CreativeResearchItemPersistentIdOverride',['../class_content_samples.html#a02d880d240eb241e8f4f43151ae306d9',1,'ContentSamples']]],
   ['creeper_96',['Creeper',['../class_n_p_c_a_i_style_i_d.html#a3772347305ff4ccf0e07a796a022c11a',1,'NPCAIStyleID']]],
-  ['crit_97',['crit',['../class_item.html#a885130c63118f0397f3f5f1c61c7f068',1,'Item']]],
-  ['crit_98',['Crit',['../struct_n_p_c_1_1_hit_info.html#ab9260c7cbef7fa28576ac191ece076ea',1,'NPC::HitInfo']]],
+  ['crit_97',['Crit',['../struct_n_p_c_1_1_hit_info.html#ab9260c7cbef7fa28576ac191ece076ea',1,'NPC::HitInfo']]],
+  ['crit_98',['crit',['../class_item.html#a885130c63118f0397f3f5f1c61c7f068',1,'Item']]],
   ['critdamage_99',['CritDamage',['../struct_n_p_c_1_1_hit_modifiers.html#a4b6d8eafcc59dc863ad84197dfe410f1',1,'NPC::HitModifiers']]],
   ['crittersandmonsters_100',['CrittersAndMonsters',['../class_emote_i_d_1_1_category.html#ab01aa776dcb1b3aa7b5a8d35fd83266f',1,'EmoteID::Category']]],
   ['critterworm_101',['CritterWorm',['../class_n_p_c_a_i_style_i_d.html#a7b1ade18fca50758a9b3b7c703182d42',1,'NPCAIStyleID']]],
@@ -107,11 +107,10 @@ var searchData=
   ['crystalleafshot_104',['CrystalLeafShot',['../class_proj_a_i_style_i_d.html#aad5f0972a979e7543e9933dffc0c0eda',1,'ProjAIStyleID']]],
   ['crystalshard_105',['CrystalShard',['../class_proj_a_i_style_i_d.html#a03f07c7e9f5913ea4f894f716f9e0d84',1,'ProjAIStyleID']]],
   ['cultistisresistantto_106',['CultistIsResistantTo',['../class_projectile_i_d_1_1_sets.html#a2a1c5b6980f119d3166f62f417361383',1,'ProjectileID::Sets']]],
-  ['culture_107',['culture',['../class_localization_loader.html#a461148558fe543d4632ffa81a6f4ff61',1,'LocalizationLoader']]],
-  ['cursedflamewall_108',['CursedFlameWall',['../class_proj_a_i_style_i_d.html#a5fad6c0143970cc3b392b8d9033e27fc',1,'ProjAIStyleID']]],
-  ['cursedskull_109',['CursedSkull',['../class_n_p_c_a_i_style_i_d.html#ac454c4e06a1ca9fab31a4f6235bc08af',1,'NPCAIStyleID']]],
-  ['customdata_110',['customData',['../class_dust.html#a339a20abccf01b968f6ad40994e0fab3',1,'Dust']]],
-  ['customtexturepath_111',['CustomTexturePath',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a9ec84c3e6c2315ee515307a0385c4ba0',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
-  ['cyan_112',['Cyan',['../class_item_rarity_i_d.html#ae2a04a3733b7443b7fe1dd5a376d13c9',1,'ItemRarityID']]],
-  ['cyborgsellsrockets_113',['CyborgSellsRockets',['../class_game_tip_i_d.html#a2fdcb09f27089caab964bf6ea2d87af9',1,'GameTipID']]]
+  ['cursedflamewall_107',['CursedFlameWall',['../class_proj_a_i_style_i_d.html#a5fad6c0143970cc3b392b8d9033e27fc',1,'ProjAIStyleID']]],
+  ['cursedskull_108',['CursedSkull',['../class_n_p_c_a_i_style_i_d.html#ac454c4e06a1ca9fab31a4f6235bc08af',1,'NPCAIStyleID']]],
+  ['customdata_109',['customData',['../class_dust.html#a339a20abccf01b968f6ad40994e0fab3',1,'Dust']]],
+  ['customtexturepath_110',['CustomTexturePath',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a9ec84c3e6c2315ee515307a0385c4ba0',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
+  ['cyan_111',['Cyan',['../class_item_rarity_i_d.html#ae2a04a3733b7443b7fe1dd5a376d13c9',1,'ItemRarityID']]],
+  ['cyborgsellsrockets_112',['CyborgSellsRockets',['../class_game_tip_i_d.html#a2fdcb09f27089caab964bf6ea2d87af9',1,'GameTipID']]]
 ];
