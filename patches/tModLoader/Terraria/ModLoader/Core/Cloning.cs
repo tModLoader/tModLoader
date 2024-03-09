@@ -52,6 +52,7 @@ public static class Cloning
 	private static Dictionary<Type, TypeCloningInfo> typeInfos = new();
 	private static ConditionalWeakTable<Type, object> immutableTypes = new();
 
+	public static bool IsCloneable<T>(T t, Expression<Func<T, Delegate>> cloneMethod) => IsCloneable<T, Delegate>(t, cloneMethod);
 	public static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate
 	{
 		var type = t.GetType();
@@ -67,14 +68,14 @@ public static class Cloning
 	{
 		var info = new TypeCloningInfo {
 			type = type,
-			overridesClone = LoaderUtils.GetDerivedDefinition(type, cloneMethod).DeclaringType == type,
-			fieldsWhichMightNeedDeepCloning =
-					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
-					.ToArray()
+			overridesClone = LoaderUtils.GetDerivedDefinition(type, cloneMethod).DeclaringType == type
 		};
 
 		if (!info.overridesClone) {
+			info.fieldsWhichMightNeedDeepCloning =
+					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
+					.ToArray();
 			info.baseTypeInfo = GetOrComputeInfo(type.BaseType, cloneMethod);
 		}
 

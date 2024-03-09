@@ -669,6 +669,22 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2221,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if the world is a Master Mode world. Note that the <see cref="expertMode"/> will also be true. </summary>
+ 	public static bool masterMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
+@@ -2236,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds. </summary>
+ 	public static bool expertMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
 @@ -2268,8 +_,16 @@
  	[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
  	public static Matrix Transform => GameViewMatrix.TransformationMatrix;
@@ -693,7 +709,7 @@
 +	/// <summary>
 +	/// The y-coordinate of the top of the underworld, in tile coordinates.
 +	/// </summary>
-+	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworld"/> set to <see langword="true"/>.</remarks>
++	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworldHeight"/> set to <see langword="true"/>.</remarks>
  	public static int UnderworldLayer => maxTilesY - 200;
  
  	public static float WindForVisuals => windSpeedCurrent;
@@ -5270,23 +5286,24 @@
  			}
  		}
  		else if (menuMode == 15) {
-@@ -39931,16 +_,27 @@
- 		else if (menuMode == 200) {
- 			num5 = 3;
- 			array9[0] = Lang.menu[9].Value;
-+
-+			if (WorldIO.customDataFail != null)
-+				array9[0] = $"{WorldIO.customDataFail.modName}: {array9[0]}";
-+
- 			array[0] = true;
- 			num2 -= 30;
- 			array4[1] = 70;
+@@ -39937,10 +_,28 @@
  			array4[2] = 50;
  			array9[1] = Lang.menu[10].Value;
  			array9[2] = Lang.menu[6].Value;
 +
-+			if (WorldIO.customDataFail != null)
-+				array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
++			// menuMode 200: Load failed!, Load Backup, Cancel, Open Logs
++			if (WorldIO.customDataFail != null) {
++				array9[0] = $"{WorldIO.customDataFail.modName}: {array9[0]}";
++
++				num5 = 4;
++				array4[3] = 50;
++				array9[3] = Language.GetTextValue("tModLoader.OpenLogs");
++			}
++			if (selectedMenu == 3) {
++				Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++				SoundEngine.PlaySound(SoundID.MenuOpen);
++				Utils.OpenFolder(Logging.LogDir);
++			}
 +
  			if (selectedMenu == 1) {
  				if (FileUtilities.Exists(worldPathName + ".bak", ActiveWorldFileData.IsCloudSave)) {
@@ -5298,60 +5315,28 @@
  					SoundEngine.PlaySound(10);
  					WorldGen.playWorld();
  					menuMode = 10;
-@@ -39955,13 +_,29 @@
- 			if (selectedMenu == 2 || flag5) {
- 				flag5 = false;
- 				SoundEngine.PlaySound(11);
-+
-+				/*
- 				menuMode = 0;
-+				*/
-+				if (WorldIO.customDataFail == null) {
-+					menuMode = 0;
-+				}
-+				else {
-+					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
-+					SoundEngine.PlaySound(SoundID.MenuOpen);
-+					Utils.OpenFolder(Logging.LogDir);
-+				}
-+
- 				netMode = 0;
- 			}
- 		}
- 		else if (menuMode == 201) {
- 			num5 = 3;
- 			array9[0] = Lang.menu[9].Value;
-+
-+			if (WorldIO.customDataFail != null)
-+				array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
-+
- 			array[0] = true;
- 			array[1] = true;
- 			num2 -= 30;
-@@ -39969,9 +_,23 @@
+@@ -39969,6 +_,21 @@
  			array4[2] = 50;
  			array9[1] = Lang.menu[11].Value;
  			array9[2] = Lang.menu[5].Value;
 +
-+			if (WorldIO.customDataFail != null)
-+				array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
++			// menuMode 201: Load failed!, No backup found, Back, Open Logs
++			if (WorldIO.customDataFail != null) {
++				array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
++
++				num5 = 4;
++				array4[3] = 50;
++				array9[3] = Language.GetTextValue("tModLoader.OpenLogs");
++			}
++			if (selectedMenu == 3) {
++				Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++				SoundEngine.PlaySound(SoundID.MenuOpen);
++				Utils.OpenFolder(Logging.LogDir);
++			}
 +
  			if (selectedMenu == 2 || flag5) {
  				flag5 = false;
  				SoundEngine.PlaySound(11);
-+
-+				if (WorldIO.customDataFail == null) {
-+					menuMode = 0;
-+				}
-+				else {
-+					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
-+					SoundEngine.PlaySound(SoundID.MenuOpen);
-+					Utils.OpenFolder(Logging.LogDir);
-+				}
-+
- 				menuMode = 0;
- 				netMode = 0;
- 			}
 @@ -40011,6 +_,7 @@
  				SoundEngine.PlaySound(10);
  				ClearPendingPlayerSelectCallbacks();
@@ -5381,6 +5366,17 @@
  			array9[num11] = Lang.menu[14].Value;
  			if (selectedMenu == num11) {
  				SoundEngine.PlaySound(10);
+@@ -40068,6 +_,10 @@
+ 				GameAskedToQuit = true;
+ 
+ 			num11++;
++
++			if (Interface.pendingErrorMessages.Count > 0) {
++				Interface.errorMessage.Show(Interface.pendingErrorMessages.Pop(), 0);
++			}
+ 		}
+ 		else if (menuMode == 1) {
+ 			OpenCharacterSelectUI();
 @@ -40676,6 +_,8 @@
  				num2 = 210;
  				num4 = 37;
@@ -6393,7 +6389,7 @@
  					Netplay.Clients[k].PendingTerminationApproved = true;
  				}
  			}
-@@ -53384,6 +_,19 @@
+@@ -53384,6 +_,22 @@
  		}
  	}
  
@@ -6406,7 +6402,10 @@
 +	}
 +
 +	/// <summary>
-+	/// Spawns chat text on the local client. Does nothing on the server. <br/>
++	/// Spawns chat text on the local client. Does nothing on the server. <para/>
++	/// To send chat text from the server, use one of the following:<br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.BroadcastChatMessage(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for all clients. <br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.SendChatMessageToClient(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for a specific client. <para/>
 +	/// For floating text, such as damage, see <see cref="CombatText"/> <br/>
 +	/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
 +	/// </summary>

@@ -168,9 +168,9 @@ public partial class WorkshopSocialModule
 				}
 			}
 
-			// The mod also can't have a larger (or same) version than releases on future tModLoader versions
+			// The mod also can't have a larger version than releases on future tModLoader versions
 			if (mod.tModLoaderVersion.MajorMinor() > BuildInfo.tMLVersion.MajorMinor()) {
-				if (mod.Version <= buildVersion) {
+				if (mod.Version < buildVersion) {
 					failureMessage = Language.GetTextValue("tModLoader.ModVersionLargerThanFutureVersions", buildVersion, mod.Version, mod.tModLoaderVersion.MajorMinor());
 					return false;
 				}

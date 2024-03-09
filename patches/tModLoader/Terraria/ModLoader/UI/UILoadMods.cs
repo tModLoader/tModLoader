@@ -38,7 +38,6 @@ internal class UILoadMods : UIProgress
 		this.modCount = modCount;
 		if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
 		Progress = 0;
-		SubProgressText = "";
 	}
 
 	private void SetProgressText(string text, string logText = null)
@@ -47,6 +46,8 @@ internal class UILoadMods : UIProgress
 		Logging.tML.Info(logText != null ? Utils.CleanChatTags(logText) : cleanText);
 		if (Main.dedServ) Console.WriteLine(cleanText);
 		else DisplayText = text;
+
+		SubProgressText = "";
 	}
 
 	public void SetCurrentMod(int i, string modName, string displayName, Version version)

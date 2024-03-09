@@ -7886,7 +7886,7 @@
  			throw;
  		}
  	}
-@@ -41979,11 +_,32 @@
+@@ -41979,11 +_,33 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
@@ -7902,6 +7902,7 @@
 +		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
 +		PlayerLoader.PostSavePlayer(player);
 +
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
 +		TagCompound tplrData = PlayerIO.SaveData(player);
 +
 +		SavePlayerFile_Write(playerFile, plrData, tplrData);
@@ -8122,12 +8123,17 @@
  		catch {
  		}
  
-@@ -42322,8 +_,28 @@
+@@ -42322,8 +_,33 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
-+		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		try {
++			Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		}
++		catch (CustomModDataException) {
++			// Same exception should already be caught in LoadPlayerFromStream
++		}
  		return player;
 +	}
 +

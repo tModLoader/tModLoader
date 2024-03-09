@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using ReLogic.OS;
 using Steamworks;
 using System;
@@ -8,6 +9,7 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
@@ -81,7 +83,7 @@ public static class SteamedWraps
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 		if (!Main.dedServ && !TryInitViaGameServer())
-			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
+			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", Interface.loadModsID);
 	}
 
 	public static bool TryInitViaGameServer()
@@ -317,6 +319,10 @@ public static class SteamedWraps
 
 	public static void StopPlaytimeTracking()
 	{
+		// Check for https://github.com/tModLoader/tModLoader/issues/4085
+		if (Program.LaunchParameters.ContainsKey("-disableugcplaytime"))
+			return;
+
 		// Call the appropriate variant
 		if (SteamClient)
 			SteamUGC.StopPlaytimeTrackingForAllItems();
@@ -328,7 +334,8 @@ public static class SteamedWraps
 
 	public static void BeginPlaytimeTracking()
 	{
-		if (!SteamAvailable)
+		// Second check is for https://github.com/tModLoader/tModLoader/issues/4085
+		if (!SteamAvailable || Program.LaunchParameters.ContainsKey("-disableugcplaytime"))
 			return;
 
 		List<PublishedFileId_t> list = new List<PublishedFileId_t>();

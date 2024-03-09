@@ -18,6 +18,7 @@ using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
 using Terraria.Social.Steam;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader;
 
@@ -117,6 +118,8 @@ public static class ModLoader
 
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {
+			var sw = Stopwatch.StartNew();
+
 			var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
@@ -125,6 +128,8 @@ public static class ModLoader
 				modsByName[mod.Name] = mod;
 
 			ModContent.Load(token);
+
+			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
@@ -277,9 +282,12 @@ public static class ModLoader
 			}
 		}
 		else {
+			string HelpLink = e.HelpLink;
+			if(HelpLink == null && e is MultipleException multipleException)
+				HelpLink = multipleException.InnerExceptions.Where(x => x.HelpLink != null).Select(x => x.HelpLink).FirstOrDefault();
 			Interface.errorMessage.Show(msg,
 				gotoMenu: fatal ? -1 : Interface.reloadModsID,
-				webHelpURL: e.HelpLink,
+				webHelpURL: HelpLink,
 				continueIsRetry: continueIsRetry,
 				showSkip: !fatal);
 		}
