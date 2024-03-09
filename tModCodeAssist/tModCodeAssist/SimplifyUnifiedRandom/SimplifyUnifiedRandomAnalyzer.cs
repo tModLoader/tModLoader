@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -24,7 +23,7 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 		// Main.rand.Next(x) == 0 => Main.rand.NextBool(x)
 
 		context.RegisterCompilationStartAction(static ctx => {
-			var unifiedRandomTypeSymbol = ctx.Compilation.GetTypeByMetadataName("Terraria.Utilities.UnifiedRandom");
+			var unifiedRandomTypeSymbol = ctx.Compilation.GetTypeByMetadataName(UnifiedRandomMetadataName);
 			var nextMethodSymbol = unifiedRandomTypeSymbol?.GetMembers("Next").FirstOrDefault(MatchNextMethod);
 
 			// Checking for whether or not `unifiedRandomTypeSymbol` is null is redundant.
@@ -43,7 +42,7 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 				bool isRight = SymbolEqualityComparer.Default.Equals(rightMethodSymbol, nextMethodSymbol);
 
 				// One of operands must be `UnifiedRandom.Next(Int32)`, but never both of them.
-				// This operation can realistically be optimized to one xor.
+				// This check can realistically be optimized to one xor.
 				if (!((isLeft || isRight) && !SymbolEqualityComparer.Default.Equals(leftMethodSymbol, rightMethodSymbol)))
 					return;
 
@@ -55,7 +54,7 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 				// Store the other one.
 				var nonMethodOperand = isLeft ? op.RightOperand : op.LeftOperand;
 
-				if (nonMethodOperand is not (IInvocationOperation or ILiteralOperation))
+				if (nonMethodOperand is not (IInvocationOperation or IMemberReferenceOperation or { ConstantValue.HasValue: true }))
 					return;
 
 				var nextMethodOperandSyntax = nextMethodOperand.Syntax;

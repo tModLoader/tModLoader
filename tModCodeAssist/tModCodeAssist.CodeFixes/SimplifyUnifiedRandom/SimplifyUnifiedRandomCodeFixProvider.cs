@@ -39,7 +39,7 @@ public sealed class SimplifyUnifiedRandomCodeFixProvider() : AbstractCodeFixProv
 
 	private static async Task<Document> SimplifyAsync(Document document, BinaryExpressionSyntax operation, bool negate, CancellationToken cancellationToken)
 	{
-		var newRoot = await document.GetSyntaxRootAsync(cancellationToken);
+		var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 		var generator = SyntaxGenerator.GetGenerator(document.Project);
 
 		var oldInvocationExpression = (InvocationExpressionSyntax)operation.Left;
@@ -52,7 +52,7 @@ public sealed class SimplifyUnifiedRandomCodeFixProvider() : AbstractCodeFixProv
 		if (negate)
 			newOperation = generator.LogicalNotExpression(newOperation);
 
-		newRoot = newRoot.ReplaceNode(operation, newOperation);
+		var newRoot = oldRoot.ReplaceNode(operation, newOperation);
 
 		return document.WithSyntaxRoot(newRoot);
 	}

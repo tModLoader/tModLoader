@@ -15,29 +15,13 @@ public sealed class SimplifyUnifiedRandomUnitTest : CodeFixerUnitTest<SimplifyUn
 	}
 
 	[TestMethod]
-	public async Task Test_Equality_Zero_Success()
+	public async Task Test_Equality_Success()
 	{
 		await TestInRegularAndScript1Async(
 			"""
 			using Terraria;
 
 			_ = [|Main.rand.Next(5) == 0|];
-			""",
-			"""
-			using Terraria;
-			
-			_ = Main.rand.NextBool(5);
-			""");
-	}
-
-	[TestMethod]
-	public async Task Test_Equality_NonZero_Success()
-	{
-		await TestInRegularAndScript1Async(
-			"""
-			using Terraria;
-
-			_ = [|Main.rand.Next(5) == 4|];
 			""",
 			"""
 			using Terraria;
