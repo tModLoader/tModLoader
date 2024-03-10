@@ -135,7 +135,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	public virtual float UseSpeedMultiplier(Item item, Player player) => 1f;
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -146,7 +146,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
