@@ -109,7 +109,7 @@ public static partial class Program
 	/// maxVersionOfSource is used to determine if we even should port the files. Example: 1.4.3-Legacy has maxVersion of 2022.9
 	/// isAtomicLockable could be expressed as CopyToNewlyCreatedDestinationFolderViaTempFolder if that makes more sense to the reader.
 	/// </summary>
-	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable)
+	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable, DateTime migrationDay)
 	{
 		string newFolderPath = Path.Combine(superSavePath, destination);
 		string newFolderPathTemp = Path.Combine(superSavePath, destination + "-temp");
@@ -169,8 +169,28 @@ public static partial class Program
 				lastLaunchedTml = (string)lastLaunchedTmlObject;
 		}
 		catch (Exception e) {
-			e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
-			ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+			if (File.GetLastWriteTime(sourceFolderConfig) > migrationDay) {
+				// If the file was edited recently, we assume that an updated tModLoader edited it. This should ignore modifications made long ago by pre-migration logic tModLoader releases.
+				lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+			}
+			else {
+				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
+				ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+			}
+		}
+
+		if (string.IsNullOrEmpty(lastLaunchedTml)) {
+			// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
+			int result = ErrorReporting.ShowMessageBoxWithChoices(
+				title: "Failed to read config.json configuration file",
+				message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
+				buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+			);
+			if (result == 0)
+				lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+			if (result == 1)
+				lastLaunchedTml = "2022.09";
+			// If the user presses escape or presses cancel, lastLaunchedTml will still be NullOrEmpty.
 		}
 
 		if (string.IsNullOrEmpty(lastLaunchedTml)) {
@@ -226,13 +246,13 @@ public static partial class Program
 		PortCommonFilesToStagingBranches(savePath);
 
 		// Establishing 1.4.3-Legacy branch
-		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud);
+		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud, migrationDay: new DateTime(2023, 9, 1));
 		// Local: This is supposed to create a new 1.4.3 folder if it doesn't exist, and ignore it if it does. (already migrated)
 		// Steam: Move files if canary file doesn't exist.
 
 		// Moving files from 1.4.4-preview (beta) to 1.4.4-stable - August 1st 2023 steam release
 		if (BuildInfo.IsStable)
-			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false);
+			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false, migrationDay: new DateTime(2023, 9, 1));
 			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
 			// Steam: Move files if canary file doesn't exist.
 	}
