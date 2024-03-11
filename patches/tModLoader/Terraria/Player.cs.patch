@@ -1175,6 +1175,22 @@
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
+@@ -3186,13 +_,13 @@
+ 	public Item QuickMana_GetItemToUse()
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+-			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
++			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CanUseItem(this, inventory[i]))
+ 				return inventory[i];
+ 		}
+ 
+ 		if (useVoidBag()) {
+ 			for (int j = 0; j < 40; j++) {
+-				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
+ 					return bank4.item[j];
+ 			}
+ 		}
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
@@ -7086,8 +7102,8 @@
  		int num = item.healLife;
  		int healMana = item.healMana;
 +		*/
-+		int num = GetHealLife(item, true);
-+		int healMana = GetHealMana(item, true);
++		int num = item.healLife > 0 ? GetHealLife(item, true) : 0;
++		int healMana = item.healMana > 0 ? GetHealMana(item, true) : 0;
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
@@ -7886,7 +7902,7 @@
  			throw;
  		}
  	}
-@@ -41979,11 +_,32 @@
+@@ -41979,11 +_,33 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
@@ -7902,6 +7918,7 @@
 +		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
 +		PlayerLoader.PostSavePlayer(player);
 +
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
 +		TagCompound tplrData = PlayerIO.SaveData(player);
 +
 +		SavePlayerFile_Write(playerFile, plrData, tplrData);

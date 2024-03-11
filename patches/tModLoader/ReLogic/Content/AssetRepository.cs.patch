@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,64 +_,149 @@
+@@ -1,64 +_,152 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
++using System.Diagnostics;
 +using System.IO;
  using System.Linq;
 +using System.Runtime.CompilerServices;
@@ -84,6 +85,8 @@
 +		_assetTransferQueue.Enqueue(() => { action(); evt.Set(); });
 +		evt.WaitOne();
 +	}
++
++	public static event Action<TimeSpan> OnBlockingLoadCompleted;
 +
 +	protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 +	protected IContentSource[] _sources { get; private set; }
@@ -241,7 +244,7 @@
  		}
  	}
  
-@@ -99,81 +_,145 @@
+@@ -99,81 +_,149 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
@@ -390,6 +393,8 @@
 +		if (asset.State == AssetState.Loaded)
 +			return;
 +
++		var sw = Stopwatch.StartNew();
++		
 +		// Asset has been loaded asynchronously, and we need the result now.
 +		// This specific mix of async and synchronous loading, combined with the requirement to load some assets on the main thread is rife with deadlock potential
 +		// A careful understanding of the exact threading model and requirements is required, and there's no clean or best practice way to solve it
@@ -421,6 +426,8 @@
 +		loadTask.GetAwaiter().GetResult(); // throw any exceptions (and wait for completion if this is not the worker thread)
 +		if (asset.State != AssetState.Loaded)
 +			throw new Exception("How did you get here?");
++
++		OnBlockingLoadCompleted?.Invoke(sw.Elapsed);
 +	}
 +
 +	public Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class

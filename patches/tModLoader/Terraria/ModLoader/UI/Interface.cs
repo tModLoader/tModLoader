@@ -79,6 +79,9 @@ internal static class Interface
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
 
+	/// <summary> Collection of error messages that will be shown one at a time once the main menu is reached. Useful for error messages during player and world saving happening on another thread. </summary>
+	internal static Stack<string> pendingErrorMessages = new Stack<string>();
+
 	// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 	//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 	internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)

@@ -156,7 +156,7 @@
 		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop.\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser.\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods",
 		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		// "ModVersionTooSmall": "Error: Mod Version information must be incremented prior to updating.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
-		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
+		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than or equal to existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
 		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
 		// "SteamRejectUpdate": "Item is/was already installed: {0}. \nIf attempting to re-install, restart your game first because Steam is weird\nIf restarting your game does not work, apply the following steps:\n1) Open Steam Client\n2) Find the Mod on tModLoader Workshop\n3) Unsubscribe and Resubscribe on the actual Workshop.\nThese steps are required if Steam fails to handle unsubscribing you properly.",
 		// "BrowserRejectWarning": "Can't Download. Click For Info",
@@ -212,6 +212,7 @@
 		// "LoadErrorDuplicateName": "Cannot add two {0} with the same name: {1}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddContent with 2 {0} of the same name, or maybe there is a duplicate/already in use legacyname",
 
 		// "LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		// "RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		// "ShopOverflow": "Not all items could fit in the shop!",
@@ -419,7 +420,13 @@
 		// "NewXMods": "{0} new mods",
 		// "NewModsListing": "New mods:\n{0}",
 		// "PlayerCustomDataFail": "A problem was encountered when loading custom data for a player",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		// "PlayerLoadWorldFail": "A problem was encountered when trying to load a world",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		// "CloudWarning": "Cloud storage limit reached, unable to move to cloud",
 		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
 		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
@@ -427,6 +434,7 @@
 		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
 		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
 		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		// "MSBuild": "Build",
