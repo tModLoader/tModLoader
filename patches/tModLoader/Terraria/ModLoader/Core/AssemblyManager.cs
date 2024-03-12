@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
+using Ionic.Zip;
 
 namespace Terraria.ModLoader.Core;
 
@@ -188,6 +189,9 @@ public static class AssemblyManager
 
 		if (name == "FNA")
 			return typeof(Vector2).Assembly;
+
+		if (name is "Ionic.Zip" or "Ionic.Zip.Reduced" or "Ionic.Zip.CF")
+			return typeof(ZipFile).Assembly;
 
 		return null;
 	}
