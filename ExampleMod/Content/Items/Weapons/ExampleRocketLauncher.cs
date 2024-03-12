@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Items.Weapons
 				{ ItemID.HoneyRocket, ProjectileID.HoneyRocket }
 			});
 
-			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[Type].Add(ModContent.ItemType<ExampleRocket>(), ModContent.ProjectileType<ExampleRocketProjectile>());
+			//AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[Type].Add(ModContent.ItemType<ExampleRocket>(), ModContent.ProjectileType<ExampleRocketProjectile>());
 		}
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Shoot;

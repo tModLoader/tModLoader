@@ -724,7 +724,7 @@
  
  		Rectangle rectangle = Damage_GetHitbox();
 -		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
-+		if (friendly && Main.getGoodWorld && ProjectileID.Sets.Explosive[type] && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
++		if (friendly && Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
  			BombsHurtPlayers(rectangle, Main.myPlayer);
  			return;
  		}
@@ -902,7 +902,7 @@
  											direction = -1;
  									}
 -									else if (aiStyle == 16) {
-+									else if (ProjectileID.Sets.Explosive[type]) {
++									else if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
  										if (timeLeft > 3)
  											timeLeft = 3;
  
@@ -1061,7 +1061,7 @@
  						ai[0] = 1f;
  					}
 -					else if (aiStyle == 16) {
-+					else if (ProjectileID.Sets.Explosive[type]) {
++					else if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
  						if (timeLeft > 3)
  							timeLeft = 3;
  
@@ -1132,7 +1132,7 @@
  				StatusPlayer(myPlayer);
  
  			if (trap) {
-@@ -11307,6 +_,7 @@
+@@ -11307,12 +_,13 @@
  		if (type == 967)
  			result.Inflate(10, 10);
  
@@ -1140,6 +1140,13 @@
  		return result;
  	}
  
+ 	private void BombsHurtPlayers(Rectangle projRectangle, int j)
+ 	{
+-		if (aiStyle != 16 || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
++		if (!(aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
+ 			return;
+ 
+ 		Rectangle value = new Rectangle((int)Main.player[j].position.X, (int)Main.player[j].position.Y, Main.player[j].width, Main.player[j].height);
 @@ -11337,7 +_,8 @@
  
  		bool dodgeable = IsDamageDodgable();
@@ -1273,7 +1280,7 @@
  							}
  						}
 -						else if (aiStyle == 16) {
-+						else if (ProjectileID.Sets.Explosive[type]) {
++						else if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
  							if (velocity.X != lastVelocity.X) {
  								velocity.X = lastVelocity.X * -0.4f;
  								if (type == 29)
@@ -1390,7 +1397,7 @@
  			velocity.Y -= 0.4f;
  		}
 -		else if (aiStyle == 1 || aiStyle == 16 || aiStyle == 40) {
-+		else if (aiStyle == 1 || ProjectileID.Sets.Explosive[type] || aiStyle == 40) {
++		else if (aiStyle == 1 || (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || aiStyle == 40) {
  			int num = (int)(base.Center.X / 16f);
  			int num2 = (int)(position.Y / 16f);
  			if (WorldGen.InWorld(num, num2) && Main.tile[num, num2] != null && Main.tile[num, num2].liquid == byte.MaxValue && Main.tile[num, num2].shimmer() && WorldGen.InWorld(num, num2 - 1) && Main.tile[num, num2 - 1] != null && Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 1].shimmer()) {
@@ -1399,7 +1406,7 @@
  			}
  		}
 -		else if (aiStyle == 14 || aiStyle == 16) {
-+		else if (aiStyle == 14 || ProjectileID.Sets.Explosive[type]) {
++		else if (aiStyle == 14 || (aiStyle == 16 || ProjectileID.Sets.Explosive[type])) {
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
@@ -1796,7 +1803,7 @@
 +			return;
 +		}
 +
-+		if (Main.getGoodWorld && ProjectileID.Sets.Explosive[type])
++		if (Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]))
  			TryGettingHitByOtherPlayersExplosives();
  
  		if (Main.netMode != 1 && Main.getGoodWorld) {

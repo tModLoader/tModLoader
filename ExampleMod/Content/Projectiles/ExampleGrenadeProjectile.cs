@@ -12,6 +12,11 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
+
+			// This set handles some things for us already:
+			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
+			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+			ProjectileID.Sets.Explosive[Type] = true;
 		}
 		public override void SetDefaults() {
 			Projectile.width = 14;
@@ -31,9 +36,18 @@ namespace ExampleMod.Content.Projectiles
 			// AIType = ProjectileID.GrenadeI;
 		}
 		public override void AI() {
-			// If timeLeft is <= 3, then explode the rocket.
+			// If timeLeft is <= 3, then explode the grenade.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				PrepareBombToBlow();
+				Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the rocket explodes on slopes.
+				Projectile.alpha = 255; // Make the rocket invisible.
+
+				// Resize the hitbox of the projectile for the blast "radius".
+				// Rocket I: 128, Rocket III: 200, Mini Nuke Rocket: 250
+				// Measurements are in pixels, so 128 / 16 = 8 tiles.
+				Projectile.Resize(128, 128);
+				// Set the knockback of the blast.
+				// Rocket I: 8f, Rocket III: 10f, Mini Nuke Rocket: 12f
+				Projectile.knockBack = 8f;
 			}
 			else {
 				// Spawn a smoke dust.
@@ -57,33 +71,6 @@ namespace ExampleMod.Content.Projectiles
 
 			// Rotate the grenade in the direction it is moving.
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
-
-			// Explosives behave differently when touching Shimmer.
-			if (Projectile.shimmerWet) {
-				int projX = (int)(Projectile.Center.X / 16f);
-				int projY = (int)(Projectile.position.Y / 16f);
-				// If the projectile is inside of Shimmer:
-				if (WorldGen.InWorld(projX, projY) && Main.tile[projX, projY] != null &&
-						Main.tile[projX, projY].LiquidAmount == byte.MaxValue &&
-						Main.tile[projX, projY].LiquidType == LiquidID.Shimmer &&
-						WorldGen.InWorld(projX, projY - 1) && Main.tile[projX, projY - 1] != null &&
-						Main.tile[projX, projY - 1].LiquidAmount > 0 &&
-						Main.tile[projX, projY - 1].LiquidType == LiquidID.Shimmer) {
-					Projectile.Kill(); // Kill the projectile with no (player or enemy damaging) blast radius.
-				}
-				// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
-				else if (Projectile.velocity.Y > 0f) {
-					Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
-					Projectile.netUpdate = true; // Sync the change in multiplayer.
-					if (Projectile.timeLeft > 600) {
-						Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
-					}
-
-					Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
-					Projectile.shimmerWet = false;
-					Projectile.wet = false;
-				}
-			}
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity) {
@@ -102,80 +89,11 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Projectile.timeLeft > 3) {
-				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
-			}
-
-			// Set the direction of the projectile so the knockback is always in the correct direction.
-			Projectile.direction = (target.Center.X > Projectile.Center.X).ToDirectionInt();
-		}
-
-		// This is only to make it so the grenade explodes when hitting a player in PVP. Otherwise the grenade will continue through the enemy player.
-		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) {
-			if (modifiers.PvP && Projectile.timeLeft > 3) {
-				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
-			}
-			// Set the direction of the projectile so the knockback is always in the correct direction.
-			Projectile.direction = (target.Center.X > Projectile.Center.X).ToDirectionInt();
-		}
-
-		/// <summary>
-		/// This function will manually damage players if applicable.
-		/// </summary>
-		/// <param name="projRectangle">Position and hitbox of the projectile.</param>
-		/// <param name="playerIndex">The index of the player in Main.player[]</param>
-		private void BombsHurtPlayers(Rectangle projRectangle, int playerIndex) {
-			Player targetPlayer = Main.player[playerIndex];
-			// Check that the grenade should damage the player in the first place. If not, return.
-			if (Projectile.timeLeft > 1 || !targetPlayer.active || targetPlayer.dead || targetPlayer.immune) {
-				return;
-			}
-
-			// Check that the blast radius intersects the player's hitbox. If not, return.
-			Rectangle playerHitbox = new Rectangle((int)targetPlayer.position.X, (int)targetPlayer.position.Y, targetPlayer.width, targetPlayer.height);
-			if (!projRectangle.Intersects(playerHitbox)) {
-				return;
-			}
-
-			// Set the direction of the projectile so the knockback is always in the correct direction.
-			Projectile.direction = (targetPlayer.Center.X > Projectile.Center.X).ToDirectionInt();
-
-			int damageVariation = Main.DamageVar(Projectile.damage, 0f - targetPlayer.luck); // Get the damage variation (affected by luck).
-			PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(Projectile.owner, Projectile.whoAmI); // Get the death message.
-
-			// Apply damage to the player.
-			targetPlayer.Hurt(damageSource, damageVariation, Projectile.direction, pvp: true, quiet: false, -1, Projectile.IsDamageDodgable(), armorPenetration: Projectile.ArmorPenetration);
-		}
-
-		/// <summary> Resizes the projectile for the explosion blast radius. </summary>
-		private void PrepareBombToBlow() {
-			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the rocket explodes on slopes.
-			Projectile.alpha = 255; // Make the rocket invisible.
-
-			// Resize the hitbox of the projectile for the blast "radius".
-			// Rocket I: 128, Rocket III: 200, Mini Nuke Rocket: 250
-			// Measurements are in pixels, so 128 / 16 = 8 tiles.
-			Projectile.Resize(128, 128);
-			// Set the knockback of the blast.
-			// Rocket I: 8f, Rocket III: 10f, Mini Nuke Rocket: 12f
-			Projectile.knockBack = 8f;
-		}
-
 		public override void OnKill(int timeLeft) {
-			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
-			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer) {
-				PrepareBombToBlow();
-			}
 
-			Rectangle blastRectangle = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
-			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
-			if (Projectile.friendly && Main.getGoodWorld && Main.netMode == NetmodeID.MultiplayerClient && Projectile.owner != Main.myPlayer && !Projectile.npcProj) {
-				BombsHurtPlayers(blastRectangle, Main.myPlayer);
-			}
 			// Damage the player who fired the rocket.
-			else if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
-				BombsHurtPlayers(blastRectangle, Projectile.owner);
+			if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
+				Projectile.HurtPlayer(Projectile.Hitbox);
 				CutTiles(); // Destroy tall grass and flowers around the explosion.
 			}
 

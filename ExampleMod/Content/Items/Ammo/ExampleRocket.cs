@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.value = Item.buyPrice(copper: 50);
 			Item.consumable = true;
 			Item.ammo = AmmoID.Rocket; // Even though we set this as Rocket ammo, it won't work as you'd expect.
-			// Item.shoot = ProjectileID.None; // Unlike other ammo types, we do not set a projectile here for Rocket ammo.
+			Item.shoot = ModContent.ProjectileType<ExampleRocketProjectile>(); // Unlike other ammo types, we do not set a projectile here for Rocket ammo.
 		}
 
 

@@ -59,9 +59,16 @@ partial class ProjectileID
 		// That means this excludes some things like Fireworks and Celebration Mk2 rockets
 		/// <summary>
 		/// <br>Contains all of the projectiles that are classified as explosives.</br>
-		/// <br>Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player (so the explosive can detonate).</br>
+		/// <br>Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).</br>
 		/// <br>Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.</br>
 		/// </summary>
-		public static bool[] Explosive = Factory.CreateBoolSet(false, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives, GrenadeI, RocketI, ProximityMineI, GrenadeII, RocketII, ProximityMineII, GrenadeIII, RocketIII, ProximityMineIII, GrenadeIV, RocketIV, ProximityMineIV, Landmine, RocketSkeleton, RocketSnowmanI, RocketSnowmanII, RocketSnowmanIII, RocketSnowmanIV, StickyGrenade, StickyDynamite, BouncyBomb, BouncyGrenade, BombFish, PartyGirlGrenade, BouncyDynamite, DD2GoblinBomb, ScarabBomb, ClusterRocketI, ClusterGrenadeI, ClusterMineI, ClusterFragmentsI, ClusterRocketII, ClusterRocketII, ClusterMineII, ClusterFragmentsII, WetRocket, WetGrenade, WetMine, LavaRocket, LavaGrenade, LavaMine, HoneyRocket, HoneyGrenade, HoneyMine, MiniNukeRocketI, MiniNukeGrenadeI, MiniNukeMineI, MiniNukeRocketII, MiniNukeGrenadeII, MiniNukeMineII, DryRocket, DryGrenade, DryMine, ClusterSnowmanRocketI, ClusterSnowmanRocketII, WetSnowmanRocket, LavaSnowmanRocket, HoneySnowmanRocket, MiniNukeSnowmanRocketI, MiniNukeSnowmanRocketII, DrySnowmanRocket, ClusterSnowmanFragmentsI, ClusterSnowmanFragmentsII, WetBomb, LavaBomb, HoneyBomb, DryBomb, DirtBomb, DirtStickyBomb, SantankMountRocket, TNTBarrel);
+		public static bool[] Explosive = Factory.CreateBoolSet(false, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,
+			GrenadeI, RocketI, ProximityMineI, GrenadeII, RocketII, ProximityMineII, GrenadeIII, RocketIII, ProximityMineIII, GrenadeIV, RocketIV, ProximityMineIV,
+			Landmine, RocketSkeleton, RocketSnowmanI, RocketSnowmanII, RocketSnowmanIII, RocketSnowmanIV, StickyGrenade, StickyDynamite, BouncyBomb, BouncyGrenade,
+			BombFish, PartyGirlGrenade, BouncyDynamite, DD2GoblinBomb, ScarabBomb, ClusterRocketI, ClusterGrenadeI, ClusterMineI, ClusterFragmentsI, ClusterRocketII,
+			ClusterRocketII, ClusterMineII, ClusterFragmentsII, WetRocket, WetGrenade, WetMine, LavaRocket, LavaGrenade, LavaMine, HoneyRocket, HoneyGrenade, HoneyMine,
+			MiniNukeRocketI, MiniNukeGrenadeI, MiniNukeMineI, MiniNukeRocketII, MiniNukeGrenadeII, MiniNukeMineII, DryRocket, DryGrenade, DryMine, ClusterSnowmanRocketI,
+			ClusterSnowmanRocketII, WetSnowmanRocket, LavaSnowmanRocket, HoneySnowmanRocket, MiniNukeSnowmanRocketI, MiniNukeSnowmanRocketII, DrySnowmanRocket,
+			ClusterSnowmanFragmentsI, ClusterSnowmanFragmentsII, WetBomb, LavaBomb, HoneyBomb, DryBomb, DirtBomb, DirtStickyBomb, SantankMountRocket, TNTBarrel);
 	}
 }

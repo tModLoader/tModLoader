@@ -13,6 +13,11 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true; // Deals double damage on direct hits.
 			ProjectileID.Sets.CultistIsResistantTo[Type] = true; // The Lunatic Cultist is resistant to homing weapons.
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true; // This set makes it so the rocket doesn't deal damage to players.
+
+			// This set handles some things for us already:
+			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
+			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+			ProjectileID.Sets.Explosive[Type] = true;
 		}
 		public override void SetDefaults() {
 			Projectile.width = 14;
@@ -139,57 +144,12 @@ namespace ExampleMod.Content.Projectiles
 					Projectile.rotation = (float)Math.Atan2(Projectile.velocity.Y, Projectile.velocity.X) + MathHelper.PiOver2;
 				}
 			}
-
-			// Explosives behave differently when touching Shimmer.
-			if (Projectile.shimmerWet) {
-				int projX = (int)(Projectile.Center.X / 16f);
-				int projY = (int)(Projectile.position.Y / 16f);
-				// If the projectile is inside of Shimmer:
-				if (WorldGen.InWorld(projX, projY) && Main.tile[projX, projY] != null &&
-						Main.tile[projX, projY].LiquidAmount == byte.MaxValue &&
-						Main.tile[projX, projY].LiquidType == LiquidID.Shimmer &&
-						WorldGen.InWorld(projX, projY - 1) && Main.tile[projX, projY - 1] != null &&
-						Main.tile[projX, projY - 1].LiquidAmount > 0 &&
-						Main.tile[projX, projY - 1].LiquidType == LiquidID.Shimmer) {
-					Projectile.Kill(); // Kill the projectile with no (player or enemy damaging) blast radius.
-				}
-				// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
-				else if (Projectile.velocity.Y > 0f) {
-					Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
-					Projectile.netUpdate = true; // Sync the change in multiplayer.
-					if (Projectile.timeLeft > 600) {
-						Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
-					}
-
-					Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
-					Projectile.shimmerWet = false;
-					Projectile.wet = false;
-				}
-			}
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity) {
 			Projectile.velocity *= 0f; // Stop moving so the explosion is where the rocket was.
 			Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
 			return false; // Returning false is important here. Otherwise the projectile will die without being resized (no blast radius).
-		}
-
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Projectile.timeLeft > 3) {
-				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
-			}
-
-			// Set the direction of the projectile so the knockback is always in the correct direction.
-			Projectile.direction = (target.Center.X > Projectile.Center.X).ToDirectionInt();
-		}
-
-		// This is only to make it so the rocket explodes when hitting a player in PVP. Otherwise the rocket will continue through the enemy player.
-		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) {
-			if (modifiers.PvP && Projectile.timeLeft > 3) {
-				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
-			}
-			// Set the direction of the projectile so the knockback is always in the correct direction.
-			Projectile.direction = (target.Center.X > Projectile.Center.X).ToDirectionInt();
 		}
 
 		/// <summary> Resizes the projectile for the explosion blast radius. </summary>
