@@ -5869,7 +5869,7 @@
  		if (!pulley || pulleyDir != 2) {
  			direction = dir;
  		}
-@@ -32800,7 +_,17 @@
+@@ -32800,6 +_,20 @@
  				position.X = num;
  				direction = dir;
  			}
@@ -5877,16 +5877,19 @@
 +			else {
 +				return;
 +			}
- 		}
++		}
 +
 +		// Added by TML, forward port from 1.4.5
 +		compositeBackArm.rotation *= -1;
 +		compositeFrontArm.rotation *= -1;
 +		itemRotation *= -1;
 +		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
++		// Fix #4104, Unlike other useStyle, non-staff 5 adjusts itemLocation by the item draw width, this undoes that double application.
++		if (HeldItem.useStyle == 5 && HeldItem.type != 3779 && !Item.staff[HeldItem.type]) {
++			itemLocation.X -= Item.GetDrawHitbox(HeldItem.type, this).Width;
+ 		}
  	}
  
- 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
