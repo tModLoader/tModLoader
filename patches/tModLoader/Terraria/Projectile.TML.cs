@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.GameContent.Achievements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;

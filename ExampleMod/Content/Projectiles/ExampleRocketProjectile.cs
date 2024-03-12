@@ -158,10 +158,10 @@ namespace ExampleMod.Content.Projectiles
 			//if (Projectile.owner == Main.myPlayer) {
 			//	int blastRadius = 3; // Rocket IV: 5, Mini Nuke Rocket II: 7
 
-			//	int minTileX = (int)(Projectile.position.X / 16f - blastRadius);
-			//	int maxTileX = (int)(Projectile.position.X / 16f + blastRadius);
-			//	int minTileY = (int)(Projectile.position.Y / 16f - blastRadius);
-			//	int maxTileY = (int)(Projectile.position.Y / 16f + blastRadius);
+			//	int minTileX = (int)(Projectile.Center.X / 16f - blastRadius);
+			//	int maxTileX = (int)(Projectile.Center.X / 16f + blastRadius);
+			//	int minTileY = (int)(Projectile.Center.Y / 16f - blastRadius);
+			//	int maxTileY = (int)(Projectile.Center.Y / 16f + blastRadius);
 
 				// Make sure the tiles are inside the world.
 			// Utils.ClampWithinWorld(ref minTileX, ref maxTileX, ref minTileY, ref maxTileY);
