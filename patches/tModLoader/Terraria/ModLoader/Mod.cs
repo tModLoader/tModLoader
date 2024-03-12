@@ -54,7 +54,7 @@ public partial class Mod
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
+	/// Whether or not this mod will automatically add images in the "Gores" folder as gores to the game, along with any <see cref="ModGore"/> classes that share names with the images. This means you do not need to manually call <see cref="GoreLoader.AddGoreFromTexture{TGore}(Mod, string)"/>.
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
@@ -62,7 +62,7 @@ public partial class Mod
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
 	/// <summary>
-	/// Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.
+	/// Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <see cref="BackgroundTextureLoader.AddBackgroundTexture(Mod, string)"/>.
 	/// </summary>
 	public bool BackgroundAutoloadingEnabled { get; init; } = true;
 

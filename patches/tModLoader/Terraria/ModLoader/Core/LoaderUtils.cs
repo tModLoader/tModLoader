@@ -58,8 +58,13 @@ public static class LoaderUtils
 			}
 		}
 
+		RethrowAggregatedExceptions(exceptions);
+	}
+
+	public static void RethrowAggregatedExceptions(IReadOnlyCollection<Exception> exceptions)
+	{
 		if (exceptions.Count == 1)
-			ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
+			ExceptionDispatchInfo.Capture(exceptions.Single()).Throw();
 
 		if (exceptions.Count > 0)
 			throw new MultipleException(exceptions);

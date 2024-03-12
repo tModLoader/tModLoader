@@ -154,7 +154,7 @@
 		"NoWorkshopAccess": "Fehler: Steam Workshop kann nicht erreicht werden",
 		"ModAlreadyUploaded": "Fehler: Mod existiert bereits im Workshop!",
 		"ModVersionTooSmall": "Fehler: Mod-Versionsinformation muss vor einer Aktualisierung erhöht werden.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
-		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
+		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than or equal to existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
 		"ConsultSteamLogs": "Siehe Steam workshop_log.txt (Standardspeicherort: {0}) für mehr Informationen.",
 		"SteamRejectUpdate": "Gegenstand ist/war bereits installiert: {0}. Wenn versucht wird eine Neuinstallation auszuführen, schließe die aktuelle Instanz und starte sie neu.",
 		"BrowserRejectWarning": "Kann nicht herunterladen werden. Klicke für Information.",
@@ -210,6 +210,7 @@
 		"LoadErrorDuplicateName": "Kann nicht zwei {0} mit dem selben Namen hinzufügen: {1}. Vielleicht teilen sich zwei Klassen einen Klassennamen jedoch in anderen Namespaces beim automatischen Laden. Oder du hast manuell AddContent mit 2 {0} des selben Namens aufgerufen.",
 
 		"LoadErrorResourceNotFoundPathHint": "Erwartete Resource nicht gefunden:\n    {0}\nBeste Vermutung: (Gibt es einen Tippfehler oder Ordnerplatzierungsfehler?)\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "Ausnahme gefunden: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(siehe {0} für weitere Informationen)",
 		"ShopOverflow": "Nicht alle Gegenstände passen in den Shop!",
@@ -417,7 +418,13 @@
 		"NewXMods": "{0} neue Mods",
 		"NewModsListing": "Neue Mods:\n{0}",
 		"PlayerCustomDataFail": "Ein Problem ist beim Laden der benutzerdefinierten Daten eines Charakters aufgetreten",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "Ein Problem ist beim Laden einer Welt aufgetreten",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "Cloud-Speicherlimit erreicht, kann nicht in der Cloud gespeichert werden",
 		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
 		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
@@ -425,6 +432,7 @@
 		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
 		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
 		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "Erstellen",
