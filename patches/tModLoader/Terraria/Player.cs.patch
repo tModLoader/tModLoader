@@ -7059,7 +7059,7 @@
  						miscTimer++;
  						if (Main.rand.Next(5) == 0)
  							miscTimer++;
-@@ -38982,9 +_,10 @@
+@@ -38982,7 +_,7 @@
  		}
  		else if (sItem.holdStyle == 3 && !pulley) {
  			if (!Main.dedServ) {
@@ -7067,10 +7067,7 @@
 +				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
  				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
  				itemRotation = 0f;
-+				// TODO: why this? MagicalHarp
  			}
- 		}
- 		else if (sItem.holdStyle == 4) {
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
