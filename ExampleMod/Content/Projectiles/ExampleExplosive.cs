@@ -136,6 +136,12 @@ namespace ExampleMod.Content.Projectiles
 				CutTiles(); // Destroy tall grass and flowers around the explosion.
 			}
 
+			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
+			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer && Main.netMode == NetmodeID.MultiplayerClient && Projectile.friendly && !Projectile.npcProj) {
+				PrepareBombToBlow();
+				Projectile.HurtPlayer(Projectile.Hitbox);
+			}
+
 			// If we are the original projectile running on the owner, spawn the 5 child projectiles.
 			if (Projectile.owner == Main.myPlayer && Projectile.ai[1] == 0) {
 				for (int i = 0; i < 5; i++) {

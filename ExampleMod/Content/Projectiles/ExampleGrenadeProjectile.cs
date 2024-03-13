@@ -38,16 +38,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void AI() {
 			// If timeLeft is <= 3, then explode the grenade.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the rocket explodes on slopes.
-				Projectile.alpha = 255; // Make the rocket invisible.
-
-				// Resize the hitbox of the projectile for the blast "radius".
-				// Rocket I: 128, Rocket III: 200, Mini Nuke Rocket: 250
-				// Measurements are in pixels, so 128 / 16 = 8 tiles.
-				Projectile.Resize(128, 128);
-				// Set the knockback of the blast.
-				// Rocket I: 8f, Rocket III: 10f, Mini Nuke Rocket: 12f
-				Projectile.knockBack = 8f;
+				PrepareBombToBlow();
 			}
 			else {
 				// Spawn a smoke dust.
@@ -89,12 +80,31 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
+		private void PrepareBombToBlow() {
+			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the grenade explodes on slopes.
+			Projectile.alpha = 255; // Make the grenade invisible.
+
+			// Resize the hitbox of the projectile for the blast "radius".
+			// Rocket I: 128, Rocket III: 200, Mini Nuke Rocket: 250
+			// Measurements are in pixels, so 128 / 16 = 8 tiles.
+			Projectile.Resize(128, 128);
+			// Set the knockback of the blast.
+			// Rocket I: 8f, Rocket III: 10f, Mini Nuke Rocket: 12f
+			Projectile.knockBack = 8f;
+		}
+
 		public override void OnKill(int timeLeft) {
 
-			// Damage the player who fired the rocket.
+			// Damage the player who fired the grenade.
 			if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
 				Projectile.HurtPlayer(Projectile.Hitbox);
 				CutTiles(); // Destroy tall grass and flowers around the explosion.
+			}
+
+			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
+			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer && Main.netMode == NetmodeID.MultiplayerClient && Projectile.friendly && !Projectile.npcProj) {
+				PrepareBombToBlow();
+				Projectile.HurtPlayer(Projectile.Hitbox);
 			}
 
 			// Play an exploding sound.
