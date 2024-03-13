@@ -19,9 +19,9 @@ public sealed class SimplifyUnifiedRandomCodeFixProvider() : AbstractCodeFixProv
 		int spanStart = parameters.DiagnosticSpan.Start;
 
 		var operation = parameters.Root.FindToken(spanStart).Parent.FirstAncestorOrSelf<BinaryExpressionSyntax>();
-
 		Debug.Assert(operation != null);
 
+		bool isLeft = parameters.Diagnostic.Properties.ContainsKey(SimplifyUnifiedRandomAnalyzer.IsLeftParameter);
 		bool negate = parameters.Diagnostic.Properties.ContainsKey(SimplifyUnifiedRandomAnalyzer.NegateParameter);
 
 		string title = Resources.SimplifyUnifiedRandomTitle;
@@ -30,19 +30,19 @@ public sealed class SimplifyUnifiedRandomCodeFixProvider() : AbstractCodeFixProv
 		context.RegisterCodeFix(
 			CodeAction.Create(
 				title,
-				token => SimplifyAsync(context.Document, operation, negate, token),
+				token => SimplifyAsync(context.Document, operation, isLeft, negate, token),
 				titleKey),
 			parameters.Diagnostic);
 
 		return Task.CompletedTask;
 	}
 
-	private static async Task<Document> SimplifyAsync(Document document, BinaryExpressionSyntax operation, bool negate, CancellationToken cancellationToken)
+	private static async Task<Document> SimplifyAsync(Document document, BinaryExpressionSyntax operation, bool isLeft, bool negate, CancellationToken cancellationToken)
 	{
 		var oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 		var generator = SyntaxGenerator.GetGenerator(document.Project);
 
-		var oldInvocationExpression = (InvocationExpressionSyntax)operation.Left;
+		var oldInvocationExpression = (InvocationExpressionSyntax)(isLeft ? operation.Left : operation.Right);
 		var oldMemberAccessExpression = (MemberAccessExpressionSyntax)oldInvocationExpression.Expression;
 
 		// Replace `Next` with `NextBool` for the sake of simplicity of this code.

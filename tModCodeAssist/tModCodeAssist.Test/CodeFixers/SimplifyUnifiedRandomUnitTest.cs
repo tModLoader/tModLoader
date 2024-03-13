@@ -1,23 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using tModCodeAssist.SimplifyUnifiedRandom;
+using VerifyCS = tModCodeAssist.Test.Verifier.Analyzer<tModCodeAssist.SimplifyUnifiedRandom.SimplifyUnifiedRandomAnalyzer>.CodeFixer<tModCodeAssist.SimplifyUnifiedRandom.SimplifyUnifiedRandomCodeFixProvider>;
 
 namespace tModCodeAssist.Test.CodeFixers;
 
 [TestClass]
-public sealed class SimplifyUnifiedRandomUnitTest : CodeFixerUnitTest<SimplifyUnifiedRandomUnitTest.Test, SimplifyUnifiedRandomAnalyzer, SimplifyUnifiedRandomCodeFixProvider>
+public sealed class SimplifyUnifiedRandomUnitTest
 {
-	public sealed class Test : BaseTest
-	{
-		protected override DiagnosticDescriptor GetDefaultDiagnostic(DiagnosticAnalyzer[] analyzers) => SimplifyUnifiedRandomAnalyzer.Rule;
-	}
-
 	[TestMethod]
-	public async Task Test_Equality_Success()
+	public async Task Test_Equality()
 	{
-		await TestInRegularAndScript1Async(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 
@@ -31,9 +24,9 @@ public sealed class SimplifyUnifiedRandomUnitTest : CodeFixerUnitTest<SimplifyUn
 	}
 
 	[TestMethod]
-	public async Task Test_Inequality_Success()
+	public async Task Test_Inequality()
 	{
-		await TestInRegularAndScript1Async(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 
@@ -43,6 +36,22 @@ public sealed class SimplifyUnifiedRandomUnitTest : CodeFixerUnitTest<SimplifyUn
 			using Terraria;
 			
 			_ = !Main.rand.NextBool(5);
+			""");
+	}
+
+	[TestMethod]
+	public async Task Test_SwappedOperands()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+
+			_ = [|0 == Main.rand.Next(5)|];
+			""",
+			"""
+			using Terraria;
+			
+			_ = Main.rand.NextBool(5);
 			""");
 	}
 }

@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
+  <data name="ChangeMagicNumberToIDDescription" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="ChangeMagicNumberToIDMessageFormat" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
     <value>Simplify common Main.rand.Next usage pattern</value>
   </data>
-  <data name="MessageFormat" xml:space="preserve">
+  <data name="SimplifyUnifiedRandomMessageFormat" xml:space="preserve">
     <value>Simplify common Main.rand.Next usage pattern</value>
   </data>
-  <data name="Title" xml:space="preserve">
+  <data name="SimplifyUnifiedRandomTitle" xml:space="preserve">
     <value>Simplify common Main.rand.Next usage pattern</value>
   </data>
 </root>

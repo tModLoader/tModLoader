@@ -8,5 +8,7 @@ public static class Constants
 		public const string Usage = nameof(Usage);
 	}
 
+	public const string AssociatedIdTypeAttributeMetadataName = "Terraria.ModLoader.Annotations.AssociatedIdTypeAttribute";
+	public const string ObsoleteAttributeMetadataName = "System.ObsoleteAttribute";
 	public const string UnifiedRandomMetadataName = "Terraria.Utilities.UnifiedRandom";
 }

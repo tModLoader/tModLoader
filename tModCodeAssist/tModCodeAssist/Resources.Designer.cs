@@ -61,29 +61,56 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simplify common Main.rand.Next usage pattern.
+        ///   Looks up a localized string similar to Change.
         /// </summary>
-        internal static string Description {
+        internal static string ChangeMagicNumberToIDDescription {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("ChangeMagicNumberToIDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        internal static string ChangeMagicNumberToIDMessageFormat {
+            get {
+                return ResourceManager.GetString("ChangeMagicNumberToIDMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        internal static string ChangeMagicNumberToIDTitle {
+            get {
+                return ResourceManager.GetString("ChangeMagicNumberToIDTitle", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Simplify common Main.rand.Next usage pattern.
         /// </summary>
-        internal static string MessageFormat {
+        internal static string SimplifyUnifiedRandomDescription {
             get {
-                return ResourceManager.GetString("MessageFormat", resourceCulture);
+                return ResourceManager.GetString("SimplifyUnifiedRandomDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Simplify common Main.rand.Next usage pattern.
         /// </summary>
-        internal static string Title {
+        internal static string SimplifyUnifiedRandomMessageFormat {
             get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("SimplifyUnifiedRandomMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simplify common Main.rand.Next usage pattern.
+        /// </summary>
+        internal static string SimplifyUnifiedRandomTitle {
+            get {
+                return ResourceManager.GetString("SimplifyUnifiedRandomTitle", resourceCulture);
             }
         }
     }

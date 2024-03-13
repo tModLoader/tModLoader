@@ -11,18 +11,19 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 {
 	public const string Id = nameof(SimplifyUnifiedRandom);
 
+	public const string IsLeftParameter = "IsLeft";
 	public const string NegateParameter = "Negate";
 
-	private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.Title), Resources.ResourceManager, typeof(Resources));
-	private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.MessageFormat), Resources.ResourceManager, typeof(Resources));
-	private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.Description), Resources.ResourceManager, typeof(Resources));
+	private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.SimplifyUnifiedRandomTitle), Resources.ResourceManager, typeof(Resources));
+	private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.SimplifyUnifiedRandomMessageFormat), Resources.ResourceManager, typeof(Resources));
+	private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.SimplifyUnifiedRandomDescription), Resources.ResourceManager, typeof(Resources));
 	public static readonly DiagnosticDescriptor Rule = new(Id, Title, MessageFormat, Categories.Usage, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	protected override void InitializeWorker(AnalysisContext context)
+	protected override void InitializeWorker(AnalysisContext ctx)
 	{
 		// Main.rand.Next(x) == 0 => Main.rand.NextBool(x)
 
-		context.RegisterCompilationStartAction(static ctx => {
+		ctx.RegisterCompilationStartAction(static ctx => {
 			var unifiedRandomTypeSymbol = ctx.Compilation.GetTypeByMetadataName(UnifiedRandomMetadataName);
 			var nextMethodSymbol = unifiedRandomTypeSymbol?.GetMembers("Next").FirstOrDefault(MatchNextMethod);
 
@@ -63,8 +64,11 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 				// It's time to report!
 				var properties = new DiagnosticProperties();
 
+				if (isLeft)
+					properties.Add(IsLeftParameter);
+
 				if (isNegated)
-					properties.Add(NegateParameter, null);
+					properties.Add(NegateParameter);
 
 				ctx.ReportDiagnostic(Diagnostic.Create(Rule, op.Syntax.GetLocation(), properties));
 			}, OperationKind.Binary);
