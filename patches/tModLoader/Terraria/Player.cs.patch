@@ -7413,7 +7413,7 @@
  					item = inventory[k];
  					canShoot = true;
  					break;
-@@ -40981,10 +_,43 @@
+@@ -40981,19 +_,54 @@
  			}
  		}
  
@@ -7457,14 +7457,15 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
-@@ -40992,8 +_,8 @@
++		/*
+ 		else if (sItem.type == 1946)
  			projToShoot = 338 + item.type - 771;
  		else if (sItem.type == 3930)
  			projToShoot = 715 + item.type - AmmoID.Rocket;
 -		else if (sItem.useAmmo == AmmoID.Rocket)
-+		// else if (sItem.useAmmo == AmmoID.Rocket)
--			projToShoot += item.shoot;
-+		//	projToShoot += item.shoot;
++		 else if (sItem.useAmmo == AmmoID.Rocket)
+ 			projToShoot += item.shoot;
++		*/
  		else if (sItem.useAmmo == AmmoID.Solution)
  			projToShoot += item.shoot;
  		else if (item.shoot > 0)
