@@ -7041,6 +7041,15 @@
  		if (isPettingAnimal) {
  			int num = miscCounter % 14 / 7;
  			CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -38798,7 +_,7 @@
+ 				itemLocation.X = position.X + (float)width * 0.5f + 20f * (float)direction;
+ 			}
+ 			else if (sItem.type == 930) {
+-				itemLocation.X = position.X + (float)(width / 2) * 0.5f - 12f - (float)(2 * direction);
++				itemLocation.X = position.X + width * 0.5f - 2 * direction; // forward port from 1.4.5
+ 				float x = position.X + (float)(width / 2) + (float)(38 * direction);
+ 				if (direction == 1)
+ 					x -= 10f;
 @@ -38865,7 +_,7 @@
  					if (Main.tile[num5, num6] == null)
  						Main.tile[num5, num6] = new Tile();
@@ -7050,6 +7059,15 @@
  						miscTimer++;
  						if (Main.rand.Next(5) == 0)
  							miscTimer++;
+@@ -38982,7 +_,7 @@
+ 		}
+ 		else if (sItem.holdStyle == 3 && !pulley) {
+ 			if (!Main.dedServ) {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 				itemRotation = 0f;
+ 			}
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
@@ -7073,6 +7091,24 @@
 +	{
  		if (Main.dedServ)
  			return;
+ 
+@@ -39456,7 +_,7 @@
+ 			}
+ 			else if (sItem.type == 4262) {
+ 				itemRotation = 0f;
+-				itemLocation.X = base.Center.X + (float)(-heldItemFrame.Width) * 0.5f + (float)(direction * -6);
++				itemLocation.X = base.Center.X + (float)(direction * -6); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - 6f;
+ 				if (Main.rand.Next(20) == 0) {
+ 					int num21 = Main.rand.Next(570, 573);
+@@ -39482,7 +_,7 @@
+ 				itemLocation += (itemRotation.ToRotationVector2() * num22 * direction).Floor();
+ 			}
+ 			else {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 			}
  
 @@ -39713,7 +_,7 @@
  		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
