@@ -204,6 +204,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.
+	/// <para/> Note that this affects the order of the item in the listing, not which filters the item satisfies.
 	/// </summary>
 	/// <param name="item">The item being used</param>
 	/// <param name="itemGroup">The item group this item is being assigned to</param>

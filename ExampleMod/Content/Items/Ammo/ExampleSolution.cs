@@ -23,6 +23,10 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.rare = ItemRarityID.Orange;
 		}
 
+		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Solutions;
+		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
