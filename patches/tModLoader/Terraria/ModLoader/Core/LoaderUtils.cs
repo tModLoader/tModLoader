@@ -16,24 +16,67 @@ public static class LoaderUtils
 	public class MethodOverrideQuery<T>
 	{
 		public MethodInfo Method { get; }
-		public Func<T, Delegate> Binder { get; }
+		public Func<T, Delegate?> Binder { get; }
 
-		private MethodOverrideQuery(MethodInfo method, Func<T, Delegate> binder)
+		private MethodOverrideQuery(MethodInfo method, Func<T, Delegate?> binder)
 		{
 			Method = method;
 			Binder = binder;
 		}
 
-		public bool HasOverride(T t) => Binder(t).Method != Method;
+		public bool HasOverride(T t) => Binder(t) is { Method: var impl } && impl != Method;
 
 
 		private static readonly ConcurrentDictionary<MethodInfo, MethodOverrideQuery<T>> _cache = new();
+
+		/// <summary>
+		/// <inheritdoc cref="Create{F}(Expression{Func{T, F}})"/>
+		/// </summary>
 		public static MethodOverrideQuery<T> Create(Expression<Func<T, Delegate>> expr) => Create<Delegate>(expr);
 
+		/// <summary>
+		/// The <paramref name="expr"/> must take one of the following forms
+		/// <code>e => e.Method</code>
+		/// <code>e => (DelegateType)e.Method</code>
+		/// <code>e => (e(Interface)).Method</code>
+		/// </summary>
 		public static MethodOverrideQuery<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
 		{
 			var method = expr.ToMethodInfo();
-			return _cache.GetOrAdd(method, _ => new MethodOverrideQuery<T>(method, expr.Compile()));
+			return _cache.GetOrAdd(method, _ => new MethodOverrideQuery<T>(method, AddTypeCheckIfNecessary(expr).Compile()));
+		}
+
+		/// <summary>
+		/// Converts <code>e => (e(Interface)).Method</code> to <code>e => e is Interface ? (e(Interface)).Method : null</code>
+		/// </summary>
+		/// <returns>The expression with type check if an interface cast was present, otherwise the original expression</returns>
+		private static Expression<Func<T, F?>> AddTypeCheckIfNecessary<F>(Expression<Func<T, F>> expr)
+		{
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+			if (expr.Body is not UnaryExpression {
+				Operand: MethodCallExpression {
+					Arguments: var createDelegateArgs,
+					Object: ConstantExpression {
+						Value: MethodInfo
+					}
+				}
+			})
+				return expr;
+
+			if (createDelegateArgs.Count < 2 || createDelegateArgs[1] is not UnaryExpression {
+				NodeType: ExpressionType.Convert,
+				Type: var type,
+				Operand: var target
+			})
+				return expr;
+
+			return expr.Update(
+				Expression.Condition(
+					Expression.TypeIs(target, type),
+					expr.Body,
+					Expression.Constant(null, expr.Body.Type)),
+				expr.Parameters);
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 		}
 	}
 
@@ -100,6 +143,9 @@ public static class LoaderUtils
 		return methodInfo.DeclaringType != declaringType;
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="MethodOverrideQuery{T}.Create"/>
+	/// </summary>
 	public static MethodInfo ToMethodInfo<T, F>(this Expression<Func<T, F>> expr) where F : Delegate
 	{
 		MethodInfo? method;
@@ -151,6 +197,9 @@ public static class LoaderUtils
 		);
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="MethodOverrideQuery{T}.Create"/>
+	/// </summary>
 	public static MethodOverrideQuery<T> ToOverrideQuery<T, F>(this Expression<Func<T, F>> expr) where F : Delegate
 		=> MethodOverrideQuery<T>.Create(expr);
 

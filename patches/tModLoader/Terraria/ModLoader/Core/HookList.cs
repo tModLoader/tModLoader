@@ -67,7 +67,14 @@ public class HookList<T> where T : class
 		return true;
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="LoaderUtils.ToOverrideQuery"/>
+	/// </summary>
 	public static HookList<T> Create(Expression<Func<T, Delegate>> expr) => Create<Delegate>(expr);
+
+	/// <summary>
+	/// <inheritdoc cref="LoaderUtils.ToOverrideQuery"/>
+	/// </summary>
 	public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
 		=> new(expr.ToOverrideQuery());
 }

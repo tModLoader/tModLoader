@@ -37,7 +37,14 @@ public class GlobalHookList<TGlobal> where TGlobal : GlobalType<TGlobal>
 		hookGlobalsByType = GlobalTypeLookups<TGlobal>.Initialized ? GlobalTypeLookups<TGlobal>.BuildPerTypeGlobalLists(hookGlobals) : null;
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="LoaderUtils.ToOverrideQuery"/>
+	/// </summary>
 	public static GlobalHookList<TGlobal> Create(Expression<Func<TGlobal, Delegate>> expr) => Create<Delegate>(expr);
+
+	/// <summary>
+	/// <inheritdoc cref="LoaderUtils.ToOverrideQuery"/>
+	/// </summary>
 	public static GlobalHookList<TGlobal> Create<F>(Expression<Func<TGlobal, F>> expr) where F : Delegate
 		=> new(expr.ToOverrideQuery());
 }
