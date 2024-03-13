@@ -160,7 +160,7 @@ public static partial class Program
 		if (!File.Exists(sourceFolderConfig)) {
 			Logging.tML.Info($"No config.json found at {sourceFolderConfig}\nAssuming nothing to port");
 			return;
-		}	
+		}
 
 		string lastLaunchedTml = null;
 		try {
@@ -174,24 +174,16 @@ public static partial class Program
 				lastLaunchedTml = BuildInfo.tMLVersion.ToString();
 			}
 			else {
-				e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
-				ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+				PromptUserForNewestTMLVersionLaunched(ref lastLaunchedTml);
+
+				if (string.IsNullOrEmpty(lastLaunchedTml)) {
+					e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
+					ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+				}
 			}
 		}
 
-		if (string.IsNullOrEmpty(lastLaunchedTml)) {
-			// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
-			int result = ErrorReporting.ShowMessageBoxWithChoices(
-				title: "Failed to read config.json configuration file",
-				message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
-				buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
-			);
-			if (result == 0)
-				lastLaunchedTml = BuildInfo.tMLVersion.ToString();
-			if (result == 1)
-				lastLaunchedTml = "2022.09";
-			// If the user presses escape or presses cancel, lastLaunchedTml will still be NullOrEmpty.
-		}
+		PromptUserForNewestTMLVersionLaunched(ref lastLaunchedTml);
 
 		if (string.IsNullOrEmpty(lastLaunchedTml)) {
 			// It's unclear what we should do in this situation. Leave it up to the user.
@@ -237,6 +229,24 @@ public static partial class Program
 		}
 
 		Logging.tML.Info($"Porting {cloudName} finished");
+
+		static void PromptUserForNewestTMLVersionLaunched(ref string lastLaunchedTml)
+		{
+			if (string.IsNullOrEmpty(lastLaunchedTml)) {
+				// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
+				// We can't localized these the normal way because localization isn't loaded at this point.
+				int result = ErrorReporting.ShowMessageBoxWithChoices(
+					title: "Failed to read config.json configuration file",
+					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
+					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+				);
+				if (result == 0)
+					lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+				if (result == 1)
+					lastLaunchedTml = "2022.09";
+				// If the user presses escape or presses cancel, lastLaunchedTml will still be NullOrEmpty.
+			}
+		}
 	}
 
 	internal static void PortFilesMaster(string savePath, bool isCloud)
