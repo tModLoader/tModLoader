@@ -7462,8 +7462,7 @@
  			projToShoot = 338 + item.type - 771;
  		else if (sItem.type == 3930)
  			projToShoot = 715 + item.type - AmmoID.Rocket;
--		else if (sItem.useAmmo == AmmoID.Rocket)
-+		 else if (sItem.useAmmo == AmmoID.Rocket)
+ 		else if (sItem.useAmmo == AmmoID.Rocket)
  			projToShoot += item.shoot;
 +		*/
  		else if (sItem.useAmmo == AmmoID.Solution)
