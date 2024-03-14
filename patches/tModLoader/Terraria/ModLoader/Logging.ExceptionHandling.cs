@@ -54,6 +54,7 @@ public static partial class Logging
 		"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'", // Roslyn
 	};
 	private static readonly List<string> ignoreThrowingMethods = new() {
+		"MonoMod.Utils.Interop.Unix.DlError", // MonoMod trying to find the right version of libdl and falling back on DLLNotFoundException
 		"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
 		"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 		"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled

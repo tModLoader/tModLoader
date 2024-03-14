@@ -244,7 +244,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual float UseSpeedMultiplier(Player player) => 1f;
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -254,7 +254,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -307,6 +307,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.
+	/// <para/> Note that this affects the order of the item in the listing, not which filters the item satisfies.
 	/// </summary>
 	/// <param name="itemGroup">The item group this item is being assigned to</param>
 	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
@@ -1185,6 +1186,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="resultType">Type of the result.</param>
 	/// <param name="resultStack">The result stack.</param>
 	public virtual void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack)
+	{
+	}
+
+	/// <summary>
+	/// If this item is a fishing pole, allows you to modify the origin and color of its fishing line.
+	/// </summary>
+	/// <param name="bobber">The bobber projectile</param>
+	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
+	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+	public virtual void ModifyFishingLine(Projectile bobber, ref Vector2 lineOriginOffset, ref Color lineColor)
 	{
 	}
 

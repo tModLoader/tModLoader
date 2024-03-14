@@ -18,6 +18,7 @@ using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
 using Terraria.Social.Steam;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader;
 
@@ -37,6 +38,7 @@ public static class ModLoader
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
 	public static Version LastPreviewFreezeNotificationSeen;
+	public static int LatestNewsTimestamp; 
 
 	// Update this name if doing an upgrade 
 	public static bool BetaUpgradeWelcomed144;
@@ -90,7 +92,6 @@ public static class ModLoader
 		FileAssociationSupport.UpdateFileAssociation();
 		FolderShortcutSupport.UpdateFolderShortcuts();
 		MonoModHooks.Initialize();
-		ZipExtractFix.Init();
 		FNAFixes.Init();
 		LoaderManager.AutoLoad();
 	}
@@ -116,6 +117,8 @@ public static class ModLoader
 
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {
+			var sw = Stopwatch.StartNew();
+
 			var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
@@ -124,6 +127,8 @@ public static class ModLoader
 				modsByName[mod.Name] = mod;
 
 			ModContent.Load(token);
+
+			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
@@ -155,7 +160,7 @@ public static class ModLoader
 			if (responsibleMods.Count == 1) {
 				var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 				if (mod != null)
-					msg += $" v{mod.properties.version}";
+					msg += $" v{mod.Version}";
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				else if (mod != null)
@@ -287,9 +292,12 @@ public static class ModLoader
 			}
 		}
 		else {
+			string HelpLink = e.HelpLink;
+			if(HelpLink == null && e is MultipleException multipleException)
+				HelpLink = multipleException.InnerExceptions.Where(x => x.HelpLink != null).Select(x => x.HelpLink).FirstOrDefault();
 			Interface.errorMessage.Show(msg,
 				gotoMenu: fatal ? -1 : Interface.reloadModsID,
-				webHelpURL: e.HelpLink,
+				webHelpURL: HelpLink,
 				continueIsRetry: continueIsRetry,
 				showSkip: !fatal);
 		}
@@ -359,6 +367,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
+		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 	}
 
 	internal static void LoadConfiguration()
@@ -386,6 +395,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(BetaUpgradeWelcomed144), ref BetaUpgradeWelcomed144);
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
+		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
 	}
 
 	internal static void MigrateSettings()

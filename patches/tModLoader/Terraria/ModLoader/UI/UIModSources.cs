@@ -251,7 +251,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private bool ShowInfoMessages()
 	{
 		if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
-			ShowWelcomeMessage("tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+			ShowWelcomeMessage("tModLoader.MSFirstLaunchModderWelcomeMessage", "tModLoader.ViewOnGitHub", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers");
 			ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
 			Main.SaveSettings();
 			return true;
@@ -262,7 +262,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
 			}
 			else {
-				ShowWelcomeMessage("tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#developing-with-tmodloader", 888, PreviousUIState);
+				ShowWelcomeMessage("tModLoader.MSNetSDKNotFound", "tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-6-sdk", 888, PreviousUIState);
 			}
 
 			return true;
@@ -271,9 +271,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return false;
 	}
 
-	private void ShowWelcomeMessage(string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
+	private void ShowWelcomeMessage(string messageKey, string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
+		Interface.infoMessage.Show(Language.GetTextValue(messageKey), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
 	}
 
 	private static string GetCommandToFindPathOfExecutable()
@@ -315,6 +315,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			Logging.tML.Debug($"Found env var DOTNET_ROOT: {dotnetRoot}");
 			yield return $"{dotnetRoot}/dotnet";
 		}
+
+		// The Scripted install installs the SDK to "$HOME/.dotnet" by default on Linux/Mac but will not permanently change $PATH. (Many Linux distributions have package manager instructions, but not all, so some might use scripted install: "./dotnet-install.sh -channel 6.0".) https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
+		yield return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dotnet", "dotnet");
 
 		// general unix fallback
 		yield return "/usr/bin/dotnet";
@@ -377,9 +380,11 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
 		Task.Run(() => {
 			var modSources = ModCompile.FindModSources();
-			var modFiles = ModOrganizer.FindDevFolderMods();
+
+			var modFiles = ModOrganizer.FindAllMods();
 			foreach (string sourcePath in modSources) {
-				var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+				var modName = Path.GetFileName(sourcePath);
+				var builtMod = modFiles.Where(m => m.Name == modName).Where(m => m.location == ModLocation.Local).OrderByDescending(m => m.Version).FirstOrDefault();
 				_items.Add(new UIModSourceItem(sourcePath, builtMod));
 			}
 			_updateNeeded = true;

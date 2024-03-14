@@ -252,17 +252,21 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public override void OnActivate()
 	{
 		base.OnActivate();
-		Main.clrInput();
-		if (_firstLoad) {
-			SocialBackend.Initialize(); // Note this is currently synchronous
-			PopulateModBrowser();
+		try {
+			Main.clrInput();
+			if (_firstLoad) {
+				SocialBackend.Initialize(); // Note this is currently synchronous
+				PopulateModBrowser();
+			}
+
+			// Check for mods to update
+			// @NOTE: Now it's done only once on load
+			CheckIfAnyModUpdateIsAvailable();
+
+			DebounceTimer = null;
 		}
-
-		// Check for mods to update
-		// @NOTE: Now it's done only once on load
-		CheckIfAnyModUpdateIsAvailable();
-
-		DebounceTimer = null;
+		catch (Exception) {
+		}
 	}
 
 	private void CbLocalModsChanged(HashSet<string> modSlugs, bool isDeletion)

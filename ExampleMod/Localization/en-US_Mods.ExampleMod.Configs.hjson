@@ -183,6 +183,16 @@ ModConfigShowcaseDataTypes: {
 		Label: PrefixDefinition Dictionary Example
 		Tooltip: ""
 	}
+
+	buffDefinitionExample: {
+		Label: BuffDefinition Example
+		Tooltip: ""
+	}
+
+	tileDefinitionExample: {
+		Label: TileDefinition Example
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDefaultValues: {

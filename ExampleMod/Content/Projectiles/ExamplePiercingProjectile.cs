@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Projectiles
 	// NPC.immune is decremented towards 0 every update
 	// Melee items set NPC.immune to player.itemAnimation, which starts at item.useAnimation and decrements towards 0
 	// Projectiles, however, provide mechanisms for custom immunity.
-	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the npc's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
+	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the NPC's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
 	//	Ex: Wooden Arrow.
 	// 2. No code and penetrate > 1, penetrate == -1, or (appliesImmunityTimeOnSingleHits && penetrate == 1): npc.immune[owner] will be set to 10.
 	// 	The NPC will be hit if not immune and will become immune to all damage for 10 ticks
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.width = 12; // The width of projectile hitbox
 			Projectile.height = 12; // The height of projectile hitbox
 
-			// Ccopy the ai of any given projectile using AIType, since we want
+			// Copy the ai of any given projectile using AIType, since we want
 			// the projectile to essentially behave the same way as the vanilla projectile.
 			AIType = ProjectileID.Bullet;
 

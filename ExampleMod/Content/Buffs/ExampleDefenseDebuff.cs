@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Common.GlobalNPCs;
 using ExampleMod.Common.Players;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
@@ -23,7 +22,7 @@ namespace ExampleMod.Content.Buffs
 		}
 
 		public override void Update(NPC npc, ref int buffIndex) {
-			npc.GetGlobalNPC<DamageModificationGlobalNPC>().exampleDefenseDebuff = true; 
+			npc.GetGlobalNPC<DamageModificationGlobalNPC>().exampleDefenseDebuff = true;
 		}
 
 		public override void Update(Player player, ref int buffIndex) {

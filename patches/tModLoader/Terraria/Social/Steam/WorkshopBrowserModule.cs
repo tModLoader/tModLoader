@@ -74,7 +74,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	public bool DoesItemNeedUpdate(ModPubId_t modId, LocalMod installed, System.Version webVersion)
 	{
-		if (installed.properties.version < webVersion)
+		if (installed.Version < webVersion)
 			return true;
 
 		if (SteamedWraps.SteamAvailable && SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
@@ -98,54 +98,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 		uiProgress?.DownloadStarted(item.DisplayName);
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
-		SteamedWraps.Download(publishId, uiProgress, forceUpdate);
-
-		// Due to issues with Steam moving files from downloading folder to installed folder,
-		// there can be some latency in detecting it's installed. Fine tune if it's giving issues - Solxan
-		EnsureInstallationComplete(item);
-	}
-
-	public void EnsureInstallationComplete(ModDownloadItem item)
-	{
-		Logging.tML.Info("Validating Installation Has Completed: Step 1 / 2");
-		string workshopFolder = WorkshopHelper.GetWorkshopFolder(ModLoader.Engine.Steam.TMLAppID_t);
-		string itemFolder = Path.Combine(workshopFolder, "content", ModLoader.Engine.Steam.TMLAppID_t.ToString(), item.PublishId.m_ModPubId.ToString());
-
-		// Await for the directory to be made for a new install, and assume all the .tmods are in it once completed
-		for (int i = 0; i < 30; i++) {
-			Thread.Sleep(500);
-
-			if (Directory.Exists(itemFolder))
-				break;
-
-			Logging.tML.Info($"Workshop Folder Missing. Awaiting. Attempt {i} / 20");
-		}
-
-		if (!Directory.Exists(itemFolder))
-			throw new Exception($"Workshop Item {item.DisplayNameClean} Failed to Install during this play session!\n" +
-				$"Please restart the game to resolve.");
-
-		// If this is an update, we also need to check that the new .tmod matches the ModDownloadItem
-		Logging.tML.Info("Validating Installation Has Completed: Step 2 / 2");
-
-		// Cap at waiting for 10 seconds
-		for (int i = 0; i < 20; i++) {
-			Thread.Sleep(500);
-
-			//TODO: GetActivetmod... returns null if workshop folder is empty. Needs Handling added - Solxan
-			var fileName = ModOrganizer.GetActiveTmodInRepo(itemFolder);
-			if (string.IsNullOrEmpty(fileName))
-				continue;
-
-			var modFile = new TmodFile(fileName);
-
-			using (modFile.Open()) {
-				if (modFile.Version == item.Version)
-					return;
-			}
-
-			Logging.tML.Info($"Mod Update Not Received. Awaiting. Attempt {i} / 20");
-		}	
+		new SteamedWraps.ModDownloadInstance().Download(publishId, uiProgress, forceUpdate);
 	}
 
 	// More Info for Items /////////////////////////

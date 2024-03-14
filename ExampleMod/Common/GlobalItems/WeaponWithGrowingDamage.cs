@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using ExampleMod.Common.Configs;
+using ExampleMod.Content.NPCs;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using System.IO;
-using ExampleMod.Content.NPCs;
-using ExampleMod.Common.Configs;
 
 //Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
@@ -47,7 +47,7 @@ namespace ExampleMod.Common.GlobalItems
 			experience = 0;
 			GainExperience(item, reader.ReadInt32());
 		}
-		
+
 		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			OnHitNPCGeneral(player, target, hit, item);
 		}

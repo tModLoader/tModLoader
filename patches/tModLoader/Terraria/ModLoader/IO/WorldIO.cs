@@ -5,20 +5,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using Terraria.DataStructures;
+using Terraria.Chat;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
 using Terraria.Utilities;
-using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader.IO;
 
 internal static class WorldIO
 {
+	/// <summary> Contains modded error messages from the world load attempt. </summary>
 	public static CustomModDataException customDataFail;
 
 	//add near end of Terraria.IO.WorldFile.saveWorld before releasing locks
@@ -28,8 +29,10 @@ internal static class WorldIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		var tag = new TagCompound {
-			["0header"] = SaveHeader(),
+		Main.ActiveWorldFileData.ModSaveErrors.Clear();
+		TagCompound header = SaveHeader();
+
+		var body = new TagCompound {
 			["chests"] = SaveChestInventory(),
 			["tiles"] = TileIO.SaveBasics(),
 			["containers"] = TileIO.SaveContainers(),
@@ -44,6 +47,16 @@ internal static class WorldIO
 			["modData"] = SaveModData(),
 			["alteredVanillaFields"] = SaveAlteredVanillaFields()
 		};
+
+		TagCompound saveModDataErrors = new TagCompound();
+		foreach (var error in Main.ActiveWorldFileData.ModSaveErrors) {
+			saveModDataErrors[error.Key] = error.Value;
+		}
+		header["saveModDataErrors"] = saveModDataErrors;
+		TagCompound tag = new TagCompound { ["0header"] = header };
+		foreach (var bodyTag in body) {
+			tag[bodyTag.Key] = bodyTag.Value;
+		}
 
 		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
@@ -89,6 +102,11 @@ internal static class WorldIO
 			throw;
 		}
 		LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
+
+		if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
+			string fullError = Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors).ToString();
+			Utils.LogAndConsoleInfoMessage(fullError);
+		}
 	}
 
 	internal static List<TagCompound> SaveChestInventory()
@@ -493,7 +511,18 @@ internal static class WorldIO
 		var saveData = new TagCompound();
 
 		foreach (var system in SystemLoader.Systems) {
-			system.SaveWorldData(saveData);
+			try {
+				system.SaveWorldData(saveData);
+			}
+			catch (Exception e) {
+				var message = NetworkText.FromKey("tModLoader.SaveWorldDataExceptionWarning", system.Name, system.Mod.Name, "\n\n" + e.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
+
+				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldData"] = e.ToString();
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 
 			if (saveData.Count == 0)
 				continue;
@@ -654,7 +683,19 @@ internal static class WorldIO
 
 		var saveData = new TagCompound();
 		foreach (var system in SystemLoader.Systems) {
-			system.SaveWorldHeader(saveData);
+			try {
+				system.SaveWorldHeader(saveData);
+			}
+			catch (Exception e) {
+				var message = NetworkText.FromKey("tModLoader.SaveWorldHeaderExceptionWarning", system.Name, system.Mod.Name);
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
+
+				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldHeader"] = e.ToString();
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
+
 			if (saveData.Count == 0)
 				continue;
 
@@ -711,6 +752,14 @@ internal static class WorldIO
 		LoadUsedModPack(data, tag.GetString("usedModPack"));
 		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
 			LoadGeneratedWithMods(data, tag.GetCompound("generatedWithMods"));
+		LoadErrors(data, tag.GetCompound("saveModDataErrors"));
+	}
+
+	private static void LoadErrors(WorldFileData data, TagCompound tagCompound)
+	{
+		foreach (var entry in tagCompound) {
+			data.ModSaveErrors[entry.Key] = (string)entry.Value;
+		}
 	}
 
 	private static void LoadModHeaders(WorldFileData data, TagCompound tag)
@@ -750,7 +799,8 @@ internal static class WorldIO
 	{
 		data.modVersionsDuringWorldGen = new Dictionary<string, Version>();
 		foreach (var item in tag) {
-			data.modVersionsDuringWorldGen[item.Key] = tag.Get<Version>(item.Key);
+			// We can't use tag.Get<Version>(item.Key); because sometimes world headers are loaded before mods and custom serializers are loaded, such as with the -world server command line parameter.
+			data.modVersionsDuringWorldGen[item.Key] = new Version((string)item.Value);
 		}
 	}
 

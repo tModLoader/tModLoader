@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// This field tracks how many of the example fruit have been consumed
 			player.GetModPlayer<ExampleStatIncreasePlayer>().exampleLifeFruits++;
-			
+
 			return true;
 		}
 

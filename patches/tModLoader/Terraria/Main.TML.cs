@@ -19,6 +19,12 @@ using Terraria.Social;
 using Terraria.UI.Chat;
 using ReLogic.Content;
 using Terraria.UI.Gamepad;
+using System.Linq;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Config;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria;
 
@@ -45,6 +51,8 @@ public partial class Main
 	private double _partialWorldEventUpdates = 0f;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
+
+	private static readonly HttpClient client = new HttpClient();
 
 	/// <summary>
 	/// A color that cycles through the colors like Rainbow Brick does.
@@ -198,7 +206,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Previous Page";
+					text = Language.GetTextValue("tModLoader.PreviousInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -222,7 +230,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Next Page";
+					text = Language.GetTextValue("tModLoader.NextInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -262,7 +270,7 @@ public partial class Main
 
 			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
 			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-			Color color = builderToggle.DisplayColorTexture();
+			Color color = builderToggle.DisplayColorTexture_Obsolete();
 
 			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
 			text = builderToggle.DisplayValue();
@@ -275,44 +283,65 @@ public partial class Main
 			*/
 
 			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
-			bool click = hover && mouseLeft && mouseLeftRelease;
-
-			if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
-				if (toggleType == BuilderToggle.BlockSwap.Type)
-					rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
-				else
-					rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
-
-				position += new Vector2(1, 0);
-			}
-			else
-				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
+			bool leftClick = hover && mouseLeft && mouseLeftRelease;
+			bool rightClick = hover && mouseRight && mouseRightRelease;
 
 			/*
 			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
 			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
 			*/
 
-			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+			// Save the original position for hover texture drawing so it won't be confusing
+			Vector2 hoverDrawPosition = position;
+			float scale = 1f;
+			SpriteEffects spriteEffects = SpriteEffects.None;
+
+			BuilderToggleDrawParams drawParams = new() {
+				Texture = texture,
+				Position = position,
+				Frame = rectangle,
+				Color = color,
+				Scale = scale,
+				SpriteEffects = spriteEffects
+			};
+			if (builderToggle.Draw(spriteBatch, ref drawParams)) {
+				spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
+			}
 
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
 
-				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
-					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
-					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
+				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
+				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
+				Color hoverColor = OurFavoriteColor;
+				float hoverScale = 1f;
+				SpriteEffects hoverSpriteEffects = SpriteEffects.None;
+				drawParams = new() {
+					Texture = iconHover,
+					Position = hoverDrawPosition,
+					Frame = hoverRectangle,
+					Color = hoverColor,
+					Scale = hoverScale,
+					SpriteEffects = hoverSpriteEffects
+				};
+				if (builderToggle.DrawHover(spriteBatch, ref drawParams)) {
+					spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
 				}
-				else if (toggleType == BuilderToggle.BlockSwap.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
-				else if (toggleType == BuilderToggle.TorchBiome.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
 			}
 
-			if (click) {
-				builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
-				SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
+			if (leftClick) {
+				SoundStyle? sound = SoundID.MenuTick;
+				if (builderToggle.OnLeftClick(ref sound)) {
+					builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
+					SoundEngine.PlaySound(sound);
+				}
 				mouseLeftRelease = false;
+			}
+
+			if (rightClick) {
+				builderToggle.OnRightClick();
+				mouseRightRelease = false;
 			}
 
 
@@ -371,14 +400,21 @@ public partial class Main
 		if (SocialAPI.Mode == SocialMode.Steam) {
 			vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 		}
-		else {
+		else if (InstallVerifier.DistributionPlatform == DistributionPlatform.GoG) {
+			vanillaContentFolder = Path.Combine(Path.GetDirectoryName(InstallVerifier.vanillaExePath), "Content");
+			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
+		}
+		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
+		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
+		// Also left as a generic fallback 
+		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
 			if (!Directory.Exists(vanillaContentFolder)) {
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
-			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 		}
+		
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
@@ -434,6 +470,8 @@ public partial class Main
 		return tcs.Task;
 	}
 
+	private static PosixSignalRegistration SIGINTHandler;
+	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
 		static void Handle(PosixSignalContext ctx) {
@@ -442,7 +480,108 @@ public partial class Main
 			Netplay.Disconnect = true;
 		}
 
-		PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
-		PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+		SIGINTHandler = PosixSignalRegistration.Create(PosixSignal.SIGINT, Handle);
+		SIGTERMHandler = PosixSignalRegistration.Create(PosixSignal.SIGTERM, Handle);
+	}
+
+	private static string newsText = "???";
+	private static string newsURL = null;
+	private static bool newsChecked = false;
+	private static bool newsIsNew = false;
+	private static void HandleNews(Color menuColor)
+	{
+		if (menuMode == 0) {
+			if (!newsChecked) {
+				newsText = Language.GetTextValue("tModLoader.LatestNewsChecking");
+				newsChecked = true;
+				// Download latest news, save to config.json.
+				// https://partner.steamgames.com/doc/webapi/ISteamNews
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+					if (!response.IsCompletedSuccessfully || response.Exception != null) {
+						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
+						return;
+					}
+					JObject o = JObject.Parse(response.Result);
+					newsText = (string)o["appnews"]["newsitems"][0]["title"]; // No way to access specific language results in API.
+					newsURL = (string)o["appnews"]["newsitems"][0]["url"];
+					int newsTimestamp = (int)o["appnews"]["newsitems"][0]["date"];
+					if (newsTimestamp != ModLoader.ModLoader.LatestNewsTimestamp) {
+						// Latest timestamp should usually be newer, unless a news entry is deleted for some reason?
+						newsIsNew = true;
+						ModLoader.ModLoader.LatestNewsTimestamp = newsTimestamp;
+						Main.SaveSettings();
+					}
+				});
+			}
+			else {
+				string latestNewsText = Language.GetTextValue("tModLoader.LatestNews", newsText);
+				var newsScale = 1.2f;
+				if (newsIsNew) {
+					menuColor = Main.DiscoColor;
+				}
+				var newsScales = new Vector2(newsScale);
+				var newsPosition = new Vector2(screenWidth - 10f, screenHeight - 38f);
+				var newsSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, latestNewsText, newsScales);
+				var newsRect = new Rectangle((int)(newsPosition.X - newsSize.X), (int)(newsPosition.Y - newsSize.Y), (int)newsSize.X, (int)newsSize.Y);
+				bool newsMouseOver = newsRect.Contains(mouseX, mouseY);
+				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
+
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && hasFocus && newsURL != null) {
+					SoundEngine.PlaySound(SoundID.MenuOpen);
+					Utils.OpenToURL(newsURL);
+					newsIsNew = false;
+				}
+			}
+		}
+	}
+
+	private static void PrepareLoadedModsAndConfigsForSingleplayer()
+	{
+		// If any loaded mod or config differs from normal, intercept SinglePlayer menu with a prompt
+		// TODO: Should this remember the mod loadout before joining server? Right now it only cares about version downgrades. MP mods will still load.
+		bool needsReload = false;
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		var normalModsToLoad = ModOrganizer.RecheckVersionsToLoad();
+		foreach (var loadedMod in ModLoader.ModLoader.Mods) {
+			if (loadedMod is ModLoaderMod || loadedMod.File == null)
+				continue;
+			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
+			if (normalMod.modFile.path != loadedMod.File.path) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				needsReload = true;
+			}
+		}
+
+		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
+			needsReload = true;
+			foreach (var mod in modsWithChangedConfigs) {
+				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
+			}
+		}
+
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		if (needsReload) {
+			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
+			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
+					ModLoader.ModLoader.OnSuccessfulLoad += () => { Main.menuMode = 1; };
+					ModLoader.ModLoader.Reload();
+				},
+				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
+				backButtonAction: () => {
+					// Do nothing, logic will to back to main menu
+				},
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
+			);
+		}
+		else {
+			// Otherwise, config changes take effect immediately and the player select menu will be shown
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
+			ConfigManager.OnChangedAll();
+		}
 	}
 }

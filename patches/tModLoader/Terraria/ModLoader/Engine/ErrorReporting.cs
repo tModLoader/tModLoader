@@ -46,6 +46,12 @@ internal class ErrorReporting
 
 	public static void FatalExit(string message, Exception e)
 	{
+		try {
+			if (SDL2.SDL.SDL_GetError() is string error && !string.IsNullOrWhiteSpace(error))
+				message += "\n\nSDL Error: " + error;
+		}
+		catch { }
+
 		if (e.HelpLink != null) {
 			try {
 				Utils.OpenToURL(e.HelpLink);
@@ -83,5 +89,38 @@ internal class ErrorReporting
 		message += "\n\n" + e;
 
 		FatalExit(message);
+	}
+
+	/// <summary>
+	/// Shows an OS-provided modal message box displaying a message and a number of buttons and returns the button index of the user-selected option. The first option will be mapped to return key and the last option to escape key. The options are displayed from right to left in order.
+	/// </summary>
+	/// <returns></returns>
+	internal static int ShowMessageBoxWithChoices(string title, string message, string[] buttonLabels)
+	{
+		SDL2.SDL.SDL_MessageBoxButtonData[] buttons = new SDL2.SDL.SDL_MessageBoxButtonData[buttonLabels.Length];
+		for (int i = 0; i < buttonLabels.Length; i++) {
+			buttons[i] = new SDL2.SDL.SDL_MessageBoxButtonData() { flags = 0, buttonid = i, text = buttonLabels[i] };
+			if (i == 0)
+				buttons[i].flags = SDL2.SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
+			else if (i == buttonLabels.Length - 1)
+				buttons[i].flags = SDL2.SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
+		}
+		SDL2.SDL.SDL_MessageBoxData messageBoxData = new SDL2.SDL.SDL_MessageBoxData() {
+			flags = SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_INFORMATION,
+			window = IntPtr.Zero,
+			title = title,
+			message = message,
+			numbuttons = buttons.Length,
+			buttons = buttons,
+			colorScheme = null
+		};
+		int buttonID;
+		if (SDL2.SDL.SDL_ShowMessageBox(ref messageBoxData, out buttonID) < 0) {
+			Logging.tML.Info("ShowMessageBoxWithChoices: Error displaying message box");
+		}
+		if (buttonID == -1) {
+			Logging.tML.Info("ShowMessageBoxWithChoices: No selection");
+		}
+		return buttonID;
 	}
 }

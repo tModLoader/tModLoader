@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Items.Weapons
 {
 	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
-	// This is great if you want to make melee weapons with complex swing behaviour
+	// This is great if you want to make melee weapons with complex swing behavior
 	public class ExampleCustomSwingSword : ModItem
 	{
 		public int attackType = 0; // keeps track of which attack it is

@@ -83,7 +83,8 @@ namespace ExampleMod.Content.Items.Accessories
 					Dust dust = Dust.NewDustPerfect(center + new Vector2(amplitudeX, amplitudeY), DustID.BlueFlare, -player.velocity * 0.5f, Scale: 1f);
 					dust.noGravity = true;
 				}
-			} else if (jumps == 2) {
+			}
+			else if (jumps == 2) {
 				const int numDusts = 30;
 				for (int i = 0; i < numDusts; i++) {
 					(float sin, float cos) = MathF.SinCos(MathHelper.ToRadians(i * 360 / numDusts));
@@ -94,7 +95,8 @@ namespace ExampleMod.Content.Items.Accessories
 					Dust dust = Dust.NewDustPerfect(center + new Vector2(amplitudeX, amplitudeY), DustID.BlueFlare, -player.velocity * 0.35f, Scale: 1f);
 					dust.noGravity = true;
 				}
-			} else {
+			}
+			else {
 				const int numDusts = 24;
 				for (int i = 0; i < numDusts; i++) {
 					(float sin, float cos) = MathF.SinCos(MathHelper.ToRadians(i * 360 / numDusts));
@@ -128,7 +130,8 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 	}
 
-	public class MultipleUseExtraJumpPlayer : ModPlayer {
+	public class MultipleUseExtraJumpPlayer : ModPlayer
+	{
 		public int jumpsRemaining;
 	}
 }
