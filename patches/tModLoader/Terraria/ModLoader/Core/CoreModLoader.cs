@@ -53,6 +53,10 @@ internal static class CoreModLoader
 	{
 		_childALC = new ChildLoadContext();
 
+		#if NETCORE
+		_childALC.ResolvingUnmanagedDll += MonoLaunch.ResolveNativeLibrary;
+		#endif
+
 		// TODO: Actually load transformers
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
 		ModLoader.ClearMods();
