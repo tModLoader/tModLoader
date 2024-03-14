@@ -91,7 +91,6 @@ public static class ModLoader
 		FileAssociationSupport.UpdateFileAssociation();
 		FolderShortcutSupport.UpdateFolderShortcuts();
 		MonoModHooks.Initialize();
-		ZipExtractFix.Init();
 		FNAFixes.Init();
 		LoaderManager.AutoLoad();
 	}

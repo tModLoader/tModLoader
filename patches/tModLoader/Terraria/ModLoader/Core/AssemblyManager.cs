@@ -13,6 +13,8 @@ using System.Runtime.CompilerServices;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
+using Ionic.Zip;
+using MonoMod.RuntimeDetour;
 
 namespace Terraria.ModLoader.Core;
 
@@ -101,6 +103,9 @@ public static class AssemblyManager
 
 		protected override Assembly Load(AssemblyName assemblyName)
 		{
+			if (AssemblyRedirects.GetAssembly(assemblyName.Name) is Assembly redirected)
+				return redirected;
+
 			if (assemblies.TryGetValue(assemblyName.Name, out var asm))
 				return asm;
 
@@ -140,6 +145,30 @@ public static class AssemblyManager
 		}
 	}
 
+	private static class AssemblyRedirects
+	{
+		private static Dictionary<string, Assembly> _redirects = new() {
+			["tModLoader"] = Assembly.GetExecutingAssembly(), // Unsure if still needed, but lets us ignore versioning when mods resolve
+			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versioning when mods resolve
+			["Ionic.Zip.Reduced"] = typeof(ZipFile).Assembly, // Assembly name changed to DotNetZip
+		};
+
+		private static Hook _hook = new Hook(
+			typeof(AssemblyLoadContext).GetMethod("ValidateAssemblyNameWithSimpleName", BindingFlags.Static | BindingFlags.NonPublic),
+			hook_ValidateAssemblyNameWithSimpleName);
+
+		private delegate Assembly orig_ValidateAssemblyNameWithSimpleName(Assembly assembly, string? requestedSimpleName);
+		private static Assembly hook_ValidateAssemblyNameWithSimpleName(orig_ValidateAssemblyNameWithSimpleName orig, Assembly assembly, string? requestedSimpleName)
+		{
+			if (_redirects.TryGetValue(requestedSimpleName, out var redirect) && assembly == redirect)
+				return assembly;
+
+			return orig(assembly, requestedSimpleName);
+		}
+
+		public static Assembly GetAssembly(string name) => _redirects.TryGetValue(name, out var asm) ? asm : null;
+	}
+
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	internal static void Unload() {
 		foreach (var alc in loadedModContexts.Values) {
@@ -167,30 +196,6 @@ public static class AssemblyManager
 	private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
 
 	//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
-
-	private static bool assemblyResolverAdded;
-	private static void AddAssemblyResolver()
-	{
-		if (assemblyResolverAdded)
-			return;
-		assemblyResolverAdded = true;
-
-		AppDomain.CurrentDomain.AssemblyResolve += TmlCustomResolver;
-	}
-
-	private static Assembly TmlCustomResolver(object sender, ResolveEventArgs args)
-	{
-		//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
-		// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan
-		var name = new AssemblyName(args.Name).Name;
-		if (name.Contains("tModLoader") || name == "Terraria")
-			return Assembly.GetExecutingAssembly();
-
-		if (name == "FNA")
-			return typeof(Vector2).Assembly;
-
-		return null;
-	}
 
 	private static Mod Instantiate(ModLoadContext mod)
 	{
@@ -236,8 +241,6 @@ public static class AssemblyManager
 
 	internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad, CancellationToken token)
 	{
-		AddAssemblyResolver();
-
 		var modList = modsToLoad.Select(m => new ModLoadContext(m)).ToList();
 		foreach (var mod in modList)
 			loadedModContexts.Add(mod.Name, mod);
