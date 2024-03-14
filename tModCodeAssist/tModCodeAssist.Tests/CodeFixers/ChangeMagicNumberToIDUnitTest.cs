@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using VerifyCS = tModCodeAssist.Test.Verifier.Analyzer<tModCodeAssist.ChangeMagicNumberToID.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.ChangeMagicNumberToID.ChangeMagicNumberToIDCodeFixProvider>;
+using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.ChangeMagicNumberToID.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.ChangeMagicNumberToID.ChangeMagicNumberToIDCodeFixProvider>;
 
-namespace tModCodeAssist.Test.CodeFixers;
+namespace tModCodeAssist.Tests.CodeFixers;
 
 [TestClass]
 public sealed class ChangeMagicNumberToIDUnitTest

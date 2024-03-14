@@ -41,11 +41,19 @@
  	<!-- References -->
  	<ItemGroup>
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
-@@ -36,7 +_,9 @@
+@@ -36,7 +_,17 @@
  			<Link>Libraries/ReLogic/ReLogic.dll</Link>
  			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
  		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
++                      PrivateAssets="all"
++                      ReferenceOutputAssembly="false"
++                      OutputItemType="Analyzer" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj"
++                      PrivateAssets="all"
++                      ReferenceOutputAssembly="false"
++                      OutputItemType="Analyzer" />
  
 +		<Reference Include="Ionic.Zip.Reduced" />
  		<Reference Include="CsvHelper" />

@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace tModCodeAssist.Test;
+namespace tModCodeAssist.Tests;
 
 internal static class CSharpVerifierHelper
 {

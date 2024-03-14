@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VerifyCS = tModCodeAssist.Test.Verifier.Analyzer<tModCodeAssist.SimplifyUnifiedRandom.SimplifyUnifiedRandomAnalyzer>.CodeFixer<tModCodeAssist.SimplifyUnifiedRandom.SimplifyUnifiedRandomCodeFixProvider>;
+using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.SimplifyUnifiedRandom.SimplifyUnifiedRandomAnalyzer>.CodeFixer<tModCodeAssist.SimplifyUnifiedRandom.SimplifyUnifiedRandomCodeFixProvider>;
 
-namespace tModCodeAssist.Test.CodeFixers;
+namespace tModCodeAssist.Tests.CodeFixers;
 
 [TestClass]
 public sealed class SimplifyUnifiedRandomUnitTest

@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace tModCodeAssist.Test;
+namespace tModCodeAssist.Tests;
 
 public static partial class Verifier
 {

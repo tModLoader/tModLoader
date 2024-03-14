@@ -4,7 +4,9 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
-		
+
+		<tMLSourcePath>..\..\src\tModLoader</tMLSourcePath>
+    
 		<RootNamespace>tModCodeAssist</RootNamespace>
 	</PropertyGroup>
 
@@ -29,12 +31,12 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
-	<Target Name="CopyDllToTmlLibs" AfterTargets="Build">
+	<Target Name="CopyNecessaryInfoToTml" AfterTargets="Build" >
 		<ItemGroup>
 			<DllFile Include="bin/$(Configuration)/$(TargetFramework)/tModCodeAssist.CodeFixes.dll" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(DllFile)" DestinationFolder="../../src/tModLoader/Terraria/bin/$(Configuration)/net6.0/Libraries/tModCodeAssist/1.0.0/tModCodeAssist.CodeFixes.dll" />
+		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)/Terraria/bin/$(Configuration)/net6.0/Libraries/tModCodeAssist/1.0.0" />
 	</Target>
 
 </Project>

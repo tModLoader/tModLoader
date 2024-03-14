@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.CodeAnalysis;
 
-namespace tModCodeAssist.Test;
+namespace tModCodeAssist.Tests;
 
 public static class MetadataReferences
 {

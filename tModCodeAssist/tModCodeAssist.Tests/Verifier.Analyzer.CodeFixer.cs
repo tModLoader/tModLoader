@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.Text;
 
-namespace tModCodeAssist.Test;
+namespace tModCodeAssist.Tests;
 
 partial class Verifier
 {

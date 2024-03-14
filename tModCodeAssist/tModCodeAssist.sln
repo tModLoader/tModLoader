@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist", "tModCodeAssist\tModCodeAssist.csproj", "{DFEF10D8-C458-44D4-8BBB-623A516EE362}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModCodeAssist", "tModCodeAssist\tModCodeAssist.csproj", "{DFEF10D8-C458-44D4-8BBB-623A516EE362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist.CodeFixes", "tModCodeAssist.CodeFixes\tModCodeAssist.CodeFixes.csproj", "{894B3F00-E69A-4759-8B52-8F6D1B029280}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModCodeAssist.CodeFixes", "tModCodeAssist.CodeFixes\tModCodeAssist.CodeFixes.csproj", "{894B3F00-E69A-4759-8B52-8F6D1B029280}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist.Test", "tModCodeAssist.Test\tModCodeAssist.Test.csproj", "{DD140308-6439-41AF-8B66-37731F68B945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModCodeAssist.Tests", "tModCodeAssist.Tests\tModCodeAssist.Tests.csproj", "{DD140308-6439-41AF-8B66-37731F68B945}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,7 +4,6 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
-    <DefineConstants>TMLCODEASSIST</DefineConstants>
     
     <tMLSourcePath>..\..\src\tModLoader</tMLSourcePath>
     
@@ -23,11 +22,11 @@
 		</PackageReference>
 	</ItemGroup>
   
-  <ItemGroup>
-    <Compile Include="$(tMLSourcePath)\Terraria\ModLoader\Annotations\AssociatedIdTypeAttribute.cs" Link="ChangeMagicNumberToID\Data\tML\AssociatedIdTypeAttribute.cs" />
+	<ItemGroup>
+		<Compile Include="$(tMLSourcePath)\Terraria\ModLoader\Annotations\AssociatedIdTypeAttribute.cs" Link="ChangeMagicNumberToID\Data\tML\AssociatedIdTypeAttribute.cs" />
     
-    <None Include="$(tMLSourcePath)\Terraria\Item.TML.cs" Link="ChangeMagicNumberToID\Data\tML\Item.TML.cs" />
-  </ItemGroup>
+		<None Include="$(tMLSourcePath)\Terraria\Item.TML.cs" Link="ChangeMagicNumberToID\Data\tML\Item.TML.cs" />
+	</ItemGroup>
   
 	<ItemGroup>
 		<Compile Update="Resources.Designer.cs">
@@ -42,19 +41,14 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
-  <Target Name="CopyMagicNumberDataToTmlLibs" AfterTargets="Build">
-    <ItemGroup>
-      <DllFile Include="ChangeMagicNumberToID\Data\ChangeMagicNumberToID-*.json" />
-    </ItemGroup>
-
-    <Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0\Data\" />
-  </Target>
-  
-	<Target Name="CopyDllToTmlLibs" AfterTargets="Build">
+	<Target Name="CopyNecessaryInfoToTml" AfterTargets="Build" >
 		<ItemGroup>
 			<DllFile Include="bin\$(Configuration)\$(TargetFramework)\tModCodeAssist.dll" />
+
+			<DataFile Include="ChangeMagicNumberToID\Data\ChangeMagicNumberToID-*.json" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0\tModCodeAssist.dll" />
+		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0" />
+		<Copy SourceFiles="@(DataFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0\Data" />
 	</Target>
 </Project>
