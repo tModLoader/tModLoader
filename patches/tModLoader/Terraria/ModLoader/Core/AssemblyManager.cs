@@ -149,7 +149,7 @@ public static class AssemblyManager
 	{
 		private static Dictionary<string, Assembly> _redirects = new() {
 			["tModLoader"] = Assembly.GetExecutingAssembly(), // Unsure if still needed, but lets us ignore versioning when mods resolve
-			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versionining when mods resolve
+			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versioning when mods resolve
 			["Ionic.Zip.Reduced"] = typeof(ZipFile).Assembly, // Assembly name changed to DotNetZip
 		};
 
@@ -160,8 +160,7 @@ public static class AssemblyManager
 		private delegate Assembly orig_ValidateAssemblyNameWithSimpleName(Assembly assembly, string? requestedSimpleName);
 		private static Assembly hook_ValidateAssemblyNameWithSimpleName(orig_ValidateAssemblyNameWithSimpleName orig, Assembly assembly, string? requestedSimpleName)
 		{
-			var name = assembly.GetName().Name;
-			if (_redirects.TryGetValue(name, out var redirect) && assembly == redirect)
+			if (_redirects.TryGetValue(requestedSimpleName, out var redirect) && assembly == redirect)
 				return assembly;
 
 			return orig(assembly, requestedSimpleName);
