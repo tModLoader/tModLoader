@@ -1365,6 +1365,15 @@
  		if (aiStyle == 1) {
  			AI_001();
  		}
+@@ -17311,7 +_,7 @@
+ 							continue;
+ 
+ 						Tile tile = Main.tile[num96, num97];
+-						if (tile.type >= 0 && tile.type < TileID.Count && TileID.Sets.CommonSapling[tile.type]) {
++						if (tile.type >= 0 && tile.type < TileLoader.TileCount && TileID.Sets.CommonSapling[tile.type]) {
+ 							if (Main.remixWorld && num97 >= (int)Main.worldSurface - 1 && num97 < Main.maxTilesY - 20)
+ 								WorldGen.AttemptToGrowTreeFromSapling(num96, num97, underground: false);
+ 
 @@ -24171,7 +_,7 @@
  					int num799 = (int)base.Center.Y / 16;
  					for (int num800 = num798 - num797; num800 <= num798 + num797; num800++) {

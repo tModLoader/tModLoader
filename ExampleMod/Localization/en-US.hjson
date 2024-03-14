@@ -1146,7 +1146,16 @@ Mods: {
 			ExampleTravellingMerchantEmote.Command: extravelingmerchant
 			MinionBossEmote.Command: exminionboss
 		}
-
+		
+		CustomTrees: {
+			ExampleCustomTree: {
+				TileMapName: Example Tree
+				SaplingMapName: Example Sapling
+				AcornDisplayName: Example Acorn
+				AcornTooltip: Example Acorn Tooltip
+			}
+		}
+		
 		NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 	}
 }

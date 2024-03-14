@@ -486,6 +486,7 @@ public static class ModContent
 		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
+		CustomTreeLoader.Unload();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
 

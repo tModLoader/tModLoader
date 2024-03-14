@@ -62,6 +62,15 @@
  							flag = false;
  					}
  				}
+@@ -1636,7 +_,7 @@
+ 
+ 	private static void Step_Acorns(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
+ 	{
+-		if (providedInfo.item.type != 27 || focusedX != -1 || focusedY != -1 || providedInfo.reachableStartY <= 20)
++		if (providedInfo.item.type != 27 && !CustomTreeLoader.TryGetByAcorn(providedInfo.item.type, out _) || focusedX != -1 || focusedY != -1 || providedInfo.reachableStartY <= 20)
+ 			return;
+ 
+ 		_targets.Clear();
 @@ -1654,11 +_,13 @@
  				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]) || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
  					continue;
@@ -77,7 +86,7 @@
  					case 2:
  					case 23:
  					case 53:
-@@ -1673,19 +_,30 @@
+@@ -1673,19 +_,37 @@
  					case 633:
  					case 661:
  					case 662:
@@ -88,7 +97,9 @@
  				}
 +
 +				if (!tileTypeValid)
-+					tileTypeValid = TileLoader.CanGrowModTree(tile3.type) || TileLoader.CanGrowModPalmTree(tile3.type);
++					tileTypeValid = TileLoader.CanGrowModTree(tile3.type)
++						|| TileLoader.CanGrowModPalmTree(tile3.type)
++						|| CustomTreeLoader.CanGrowAcorn(providedInfo.item.type, tile3.type);
 +
 +				if (tileTypeValid && tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
 +					_targets.Add(new Tuple<int, int>(i, j));
@@ -103,6 +114,11 @@
  				Tile tile10 = Main.tile[_targets[k].Item1 + l, _targets[k].Item2 + 1];
  				if (tile10.active()) {
 +					if (TileLoader.CanGrowModTree(tile10.type) || TileLoader.CanGrowModPalmTree(tile10.type)) {
++						flag = true;
++						continue;
++					}
++
++					if (CustomTreeLoader.CanGrowAcorn(providedInfo.item.type, tile10.type)) {
 +						flag = true;
 +						continue;
 +					}

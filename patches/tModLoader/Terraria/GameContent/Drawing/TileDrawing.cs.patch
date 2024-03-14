@@ -184,7 +184,7 @@
 +					tileStyle = sandType + 1;
 +					break;
 +				}
-+					
++
 +				if (tile.frameX == 204 || tile.frameX == 202) {
 +					var asset = PlantLoader.GetCactusFruitTexture(sandType);
 +					if (asset != null)
@@ -259,6 +259,17 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
+@@ -2900,6 +_,10 @@
+ 
+ 	private void CacheSpecialDraws_Part1(int tileX, int tileY, int tileType, int drawDataTileFrameX, int drawDataTileFrameY, bool skipDraw)
+ 	{
++		if (CustomTreeLoader.TryGetByTile((ushort)tileType, out _)) {
++			AddSpecialPoint(tileX, tileY, TileCounterType.Tree);
++		}
++
+ 		if (tileType == 395) {
+ 			Point point = new Point(tileX, tileY);
+ 			if (drawDataTileFrameX % 36 != 0)
 @@ -3112,7 +_,8 @@
  		}
  	}
@@ -510,6 +521,56 @@
  		}
  	}
  
+@@ -6003,6 +_,7 @@
+ 			short frameX = tile.frameX;
+ 			short frameY = tile.frameY;
+ 			bool flag = tile.wall > 0;
++			int textureStyle = 0;
+ 			WorldGen.GetTreeFoliageDataMethod getTreeFoliageDataMethod = null;
+ 			try {
+ 				bool flag2 = false;
+@@ -6030,6 +_,14 @@
+ 						flag2 = true;
+ 						getTreeFoliageDataMethod = WorldGen.GetAshTreeFoliageData;
+ 						break;
++
++					default:
++						if (CustomTreeLoader.TryGetByTile(type, out ModCustomTree tree)) {
++							flag2 = true;
++							getTreeFoliageDataMethod = CustomTreeLoader.GetTreeFoliageData;
++							textureStyle = tree.GetStyle(x, y);
++						}
++						break;
+ 				}
+ 
+ 				if (flag2 && frameY >= 198 && frameX >= 22) {
+@@ -6062,7 +_,7 @@
+ 							}
+ 
+ 							byte tileColor3 = tile.color();
+-							Texture2D treeTopTexture = GetTreeTopTexture(treeStyle3, 0, tileColor3);
++							Texture2D treeTopTexture = GetTreeTopTexture(treeStyle3, textureStyle, tileColor3);
+ 							Vector2 vector = (vector = new Vector2(x * 16 - (int)unscaledPosition.X + 8, y * 16 - (int)unscaledPosition.Y + 16) + zero);
+ 							float num15 = 0f;
+ 							if (!flag)
+@@ -6108,7 +_,7 @@
+ 							}
+ 
+ 							byte tileColor2 = tile.color();
+-							Texture2D treeBranchTexture2 = GetTreeBranchTexture(treeStyle2, 0, tileColor2);
++							Texture2D treeBranchTexture2 = GetTreeBranchTexture(treeStyle2, textureStyle, tileColor2);
+ 							Vector2 position2 = new Vector2(x * 16, y * 16) - unscaledPosition.Floor() + zero + new Vector2(16f, 12f);
+ 							float num12 = 0f;
+ 							if (!flag)
+@@ -6156,7 +_,7 @@
+ 							}
+ 
+ 							byte tileColor = tile.color();
+-							Texture2D treeBranchTexture = GetTreeBranchTexture(treeStyle, 0, tileColor);
++							Texture2D treeBranchTexture = GetTreeBranchTexture(treeStyle, textureStyle, tileColor);
+ 							Vector2 position = new Vector2(x * 16, y * 16) - unscaledPosition.Floor() + zero + new Vector2(0f, 18f);
+ 							float num8 = 0f;
+ 							if (!flag)
 @@ -6209,6 +_,26 @@
  						num20 = 2;
  					}
@@ -537,7 +598,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6234,8 +_,13 @@
+@@ -6234,17 +_,32 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -547,12 +608,18 @@
 +				treeTextureIndex = 0;
 +
  			texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
-+		}
-+			
  
++			if (CustomTreeLoader.TryGetByTreeStyle(treeTextureIndex, out ModCustomTree tree))
++			{
++				ReLogic.Content.Asset<Texture2D> asset = tree.GetFoliageTextureCached(treeTextureStyle, false);
++				if (asset.IsLoaded)
++					texture2D = asset.Value;
++			}
++		}
++
  		return texture2D;
  	}
-@@ -6243,8 +_,12 @@
+ 
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
