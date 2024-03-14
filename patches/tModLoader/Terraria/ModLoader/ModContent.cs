@@ -71,7 +71,8 @@ public static class ModContent
 	}
 
 	/// <summary>
-	/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
+	/// Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-<see cref="Asset{T}"/> files. The <paramref name="name"/> should be in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the mod does not exist. Returns null if the file does not exist.
+	/// <para/> A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <c>string pointsFileContents = Encoding.UTF8.GetString(ModContent.GetFileBytes("MyMod/data/points.txt"));</c>
 	/// </summary>
 	/// <exception cref="MissingResourceException"></exception>
 	public static byte[] GetFileBytes(string name)
@@ -85,7 +86,7 @@ public static class ModContent
 	}
 
 	/// <summary>
-	/// Returns whether or not a file with the specified name exists.
+	/// Returns whether or not a file with the specified name exists. Note that this includes file extension, the folder path, and must start with the mod name at the start of the path: "ModFolder/OtherFolders/FileNameWithExtension"
 	/// </summary>
 	public static bool FileExists(string name)
 	{

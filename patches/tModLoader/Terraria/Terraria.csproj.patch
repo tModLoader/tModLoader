@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,23 +_,34 @@
+@@ -11,45 +_,65 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -41,23 +41,24 @@
  	<!-- References -->
  	<ItemGroup>
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
-@@ -36,7 +_,9 @@
- 			<Link>Libraries/ReLogic/ReLogic.dll</Link>
- 			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
- 		</EmbeddedResource>
+ 		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
+-		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
+-			<Link>Libraries/ReLogic/ReLogic.dll</Link>
+-			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
+-		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
  
-+		<Reference Include="Ionic.Zip.Reduced" />
  		<Reference Include="CsvHelper" />
- 		<Reference Include="Ionic.Zip.CF" />
+-		<Reference Include="Ionic.Zip.CF" />
  		<Reference Include="MP3Sharp" />
-@@ -44,12 +_,24 @@
+ 		<Reference Include="Newtonsoft.Json" />
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
 +		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
  
++		<PackageReference Include="DotNetZip" Version="1.16.0" />
  		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.4.5" />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0" />
