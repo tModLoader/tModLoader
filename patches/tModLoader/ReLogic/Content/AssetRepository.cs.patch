@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,64 +_,150 @@
+@@ -1,64 +_,149 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
@@ -59,8 +59,7 @@
 +	public static void SetMainThread()
 +	{
 +		if (_mainThread != null)
-+			_mainThread = _mainThread;
-+			//throw new InvalidOperationException("Main thread already set");
++			throw new InvalidOperationException("Main thread already set");
 +
 +		_mainThread = Thread.CurrentThread;
 +	}

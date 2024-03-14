@@ -5159,15 +5159,6 @@
  	}
  
  	private static void GetBuilderAccsCountToShow(Player plr, out int blockReplaceIcons, out int torchGodIcons, out int totalDrawnIcons)
-@@ -39068,7 +_,7 @@
- 		Utils.DrawBorderString(spriteBatch, text, r3.Right() + Vector2.UnitX * num * -22f, Microsoft.Xna.Framework.Color.White * invasionProgressAlpha, num * 0.9f, 1f, 0.4f);
- 	}
- 
--	protected void QuitGame()
-+	public void QuitGame()
- 	{
- 		SaveSettings();
- 		if (!dedServ)
 @@ -39089,6 +_,11 @@
  	private static void TryDisposingEverything()
  	{

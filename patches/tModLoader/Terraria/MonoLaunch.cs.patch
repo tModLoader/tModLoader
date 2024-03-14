@@ -28,7 +28,7 @@
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,7 +_,36 @@
+@@ -34,6 +_,35 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -61,11 +61,9 @@
 +	// A split to avoid adding indentation.
 +	private static void Main_End(string[] args)
 +	{
--		Program.LaunchGame(args, monoArgs: true);
-+		Program.BeginLaunchGame(args, monoArgs: true);
+ 		Program.LaunchGame(args, monoArgs: true);
  	}
  
- #if NETCORE
 @@ -57,17 +_,17 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
