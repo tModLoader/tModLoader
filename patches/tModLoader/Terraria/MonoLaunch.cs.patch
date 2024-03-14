@@ -1,18 +1,24 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,10 @@
+@@ -6,7 +_,11 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
 +using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria;
  
-@@ -16,7 +_,16 @@
+@@ -14,11 +_,69 @@
+ {
+ 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
++	private static bool hasSetNativeLibraryPath;
++
++	// Main will only ever be run on the first ALC (on first launch), and the child ALC will get started with the BeginEntrySequence method (see below)
  	private static void Main(string[] args)
  	{
 +		// Launch tModPorter instead if it needed.
@@ -21,17 +27,26 @@
 +			return;
 +		}
 +
++		DoNativeLibraryInit();
++
++		if (!CoreModLoader.FindCoremods(args, out Mod[] coreMods)) {
++			// If no coremods are found, just launch tML normally.
++			BeginEntrySequence(args);
++			return;
++		}
++
++		CoreModLoader.LaunchALCWithCoremods(args, coreMods);
++	}
++
++	internal static void BeginEntrySequence(string[] args)
++	{
 +		Thread.CurrentThread.Name = "Entry Thread";
 +
- #if NETCORE
-+		NativeLibraries.SetNativeLibraryPath(NativesDir);
- 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
- #else
- 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,6 +_,35 @@
- #endif
- 
- 		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
++		if (!hasSetNativeLibraryPath) {
++			DoNativeLibraryInit();
++		}
++
++		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +
 +		if (File.Exists("cli-argsConfig.txt"))
 +			args = args.Concat(File.ReadAllLines("cli-argsConfig.txt").SelectMany(a => a.Split(" ", 2))).ToArray();
@@ -58,6 +73,27 @@
 +		}
 +	}
 +
++	private static void DoNativeLibraryInit()
++	{
+-#if NETCORE
++		#if NETCORE
++		NativeLibraries.SetNativeLibraryPath(NativesDir);
+ 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
+-#else
++		#else
+ 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
+ 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
+ 			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
+@@ -31,9 +_,13 @@
+ 				return Assembly.Load(array);
+ 			}
+ 		};
+-#endif
++		#endif
++		hasSetNativeLibraryPath = true;
++	}
+ 
+-		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +	// A split to avoid adding indentation.
 +	private static void Main_End(string[] args)
 +	{

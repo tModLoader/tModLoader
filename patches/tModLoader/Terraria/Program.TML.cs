@@ -49,6 +49,8 @@ public static partial class Program
 	public const string Legacy143Folder = "tModLoader-1.4.3";
 	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
 
+	private static bool hasPreLaunched;
+
 	private static void PortOldSaveDirectories(string savePath)
 	{
 		// PortOldSaveDirectories should only run once no matter which branch is run first.

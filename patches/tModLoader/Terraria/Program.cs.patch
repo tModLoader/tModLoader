@@ -92,10 +92,22 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,9 +_,15 @@
+@@ -147,9 +_,27 @@
  		}
  	}
  
++	public static void PreLaunchGame(string[] args, bool monoArgs, out bool isServer)
++	{
++		if (hasPreLaunched) {
++			isServer = Main.dedServ;
++			return;
++		}
++
++		ProcessLaunchArgs(args, monoArgs, out isServer);
++		StartupSequenceTml(isServer);
++		hasPreLaunched = true;
++	}
++
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
  	public static void LaunchGame(string[] args, bool monoArgs = false)
@@ -109,15 +121,13 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,28 @@
+@@ -164,6 +_,26 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
 +		*/
 +
-+		ProcessLaunchArgs(args, monoArgs, out bool isServer);
-+
-+		StartupSequenceTml(isServer);
++		PreLaunchGame(args, monoArgs, out bool isServer);
 +		
 +		LaunchGame_(isServer);
 +	}
