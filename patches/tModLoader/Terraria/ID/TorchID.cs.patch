@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/TorchID.cs
 +++ src/tModLoader/Terraria/ID/TorchID.cs
-@@ -1,10 +_,13 @@
--using System.Runtime.InteropServices;
+@@ -1,10 +_,14 @@
 +#if !TMLCODEASSIST
+ using System.Runtime.InteropServices;
  using Microsoft.Xna.Framework;
 +#endif
 +using ReLogic.Reflection;
