@@ -312,8 +312,6 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 #pragma warning disable RS1012 // Start action has no registered actions
 	private static DataEntries ReadDataEntries(Searches searches, CompilationStartAnalysisContext ctx)
 	{
-		var compilation = ctx.Compilation;
-
 		var data = new Dictionary<string, ImmutableArray<RawDataEntry>>();
 
 		var options = new JsonSerializerOptions { ReadCommentHandling = JsonCommentHandling.Skip };
@@ -321,30 +319,17 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		foreach (var additionalFile in ctx.Options.AdditionalFiles) {
 			ctx.CancellationToken.ThrowIfCancellationRequested();
 
-			string analyzerName = nameof(ChangeMagicNumberToID);
-			string fileName = Path.GetFileNameWithoutExtension(additionalFile.Path);
-			string extension = Path.GetExtension(additionalFile.Path);
-
-			if (fileName is null)
-				continue;
-
-			if (!fileName.StartsWith(analyzerName, StringComparison.Ordinal) || extension is not ".json")
-				continue;
-
-			int indexOfSeparator = fileName.LastIndexOf('-');
-			if (indexOfSeparator is -1)
+			if (!MatchesDataFileNameFormat(additionalFile.Path, out string associatedIdClassType))
 				continue;
 
 			string srcText = additionalFile.GetText(ctx.CancellationToken)?.ToString();
 			if (srcText is null)
 				continue;
 
-			string associatedIdClassType = fileName[(indexOfSeparator + 1)..];
-
 			var dataEntries = JsonSerializer.Deserialize<RawDataEntry[]>(srcText, options);
 
 			if (data.TryGetValue(associatedIdClassType, out var existingEntries)) {
-				existingEntries = existingEntries.Concat(dataEntries).ToImmutableArray();
+				data[associatedIdClassType] = existingEntries.Concat(dataEntries).ToImmutableArray();
 			}
 			else {
 				data[associatedIdClassType] = dataEntries.ToImmutableArray();
@@ -352,5 +337,26 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		}
 
 		return new DataEntries(searches, data);
+	}
+
+	private static bool MatchesDataFileNameFormat(string path, out string associatedIdClassType)
+	{
+		string fileName = Path.GetFileNameWithoutExtension(path);
+		string extension = Path.GetExtension(path);
+
+		associatedIdClassType = null;
+
+		if (fileName is null)
+			return false;
+
+		if (!fileName.StartsWith("ChangeMagicNumberToID", StringComparison.Ordinal) || extension is not ".json")
+			return false;
+
+		int indexOfSeparator = fileName.LastIndexOf('-');
+		if (indexOfSeparator is -1)
+			return false;
+
+		associatedIdClassType = fileName[(indexOfSeparator + 1)..];
+		return true;
 	}
 }

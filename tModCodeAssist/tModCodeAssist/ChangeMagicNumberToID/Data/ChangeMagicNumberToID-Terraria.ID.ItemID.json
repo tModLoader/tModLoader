@@ -83,5 +83,18 @@
 				"ParameterName": "Type"
 			}
 		}
+	},
+	{
+		"MetadataName": "Terraria.Recipe",
+		"Members": {
+			"Create(Int32, Int32)": {
+				"Target": "Parameter",
+				"ParameterName": "result"
+			},
+			"AddIngredient(Int32, Int32)": {
+				"Target": "Parameter",
+				"ParameterName": "itemID"
+			}
+		}
 	}
 ]

@@ -1,0 +1,11 @@
+﻿[
+	{
+		"MetadataName": "Terraria.Recipe",
+		"Members": {
+			"AddRecipeGroup(Int32, Int32)": {
+				"Target": "Parameter",
+				"ParameterName": "recipeGroupId"
+			}
+		}
+	}
+]

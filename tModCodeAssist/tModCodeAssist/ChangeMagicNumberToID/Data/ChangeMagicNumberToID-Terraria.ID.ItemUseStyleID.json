@@ -1,0 +1,8 @@
+﻿[
+	{
+		"MetadataName": "Terraria.Item",
+		"Members": {
+			"useStyle": { "Target": "Field" }
+		}
+	}
+]

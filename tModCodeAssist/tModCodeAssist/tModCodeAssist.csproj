@@ -27,10 +27,6 @@
 	<ItemGroup>
 		<Compile Include="$(tMLSourcePath)\ReLogic\Reflection\IdDictionary.cs" Link="ChangeMagicNumberToID\Data\tML\IdDictionary.cs" />
 		<Compile Include="$(tMLSourcePath)\Terraria\Utilities\OldAttribute.cs" Link="ChangeMagicNumberToID\Data\tML\OldAttribute.cs" />
-		
-		<Compile Include="$(tMLSourcePath)\Terraria\ModLoader\Annotations\AssociatedIdTypeAttribute.cs" Link="ChangeMagicNumberToID\Data\tML\AssociatedIdTypeAttribute.cs" />
-		
-		<None Include="$(tMLSourcePath)\Terraria\Item.TML.cs" Link="ChangeMagicNumberToID\Data\tML\Item.TML.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

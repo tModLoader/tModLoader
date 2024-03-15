@@ -1,0 +1,17 @@
+﻿[
+	{
+		"MetadataName": "Terraria.Item",
+		"Members": {
+			"createTile": { "Target": "Field" }
+		}
+	},
+	{
+		"MetadataName": "Terraria.Recipe",
+		"Members": {
+			"AddTile(Int32)": {
+				"Target": "Parameter",
+				"ParameterName": "tileID"
+			}
+		}
+	}
+]

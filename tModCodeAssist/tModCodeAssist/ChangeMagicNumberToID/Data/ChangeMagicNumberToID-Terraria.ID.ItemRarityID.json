@@ -1,0 +1,8 @@
+﻿[
+	{
+		"MetadataName": "Terraria.Item",
+		"Members": {
+			"rare": { "Target": "Field" }
+		}
+	}
+]
