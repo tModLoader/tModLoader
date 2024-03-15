@@ -275,7 +275,8 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		}
 
 		string formattedNamesForCodeFixer = string.Join(",", names);
-		string readableNamesForUser = string.Join(", or ", names.Select(x => $"{idClassMetadataName}.{x}"));
+		string formattedIdClassMetadataName = idClassMetadataName.Replace('+', '.');
+		string readableNamesForUser = string.Join(", or ", names.Select(x => $"{formattedIdClassMetadataName}.{x}"));
 
 		var properties = new DiagnosticProperties();
 
@@ -286,7 +287,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			Rule,
 			operation.Syntax.GetLocation(),
 			properties,
-			[ id, idClassMetadataName, readableNamesForUser ]
+			[ id, readableNamesForUser ]
 			));
 	}
 

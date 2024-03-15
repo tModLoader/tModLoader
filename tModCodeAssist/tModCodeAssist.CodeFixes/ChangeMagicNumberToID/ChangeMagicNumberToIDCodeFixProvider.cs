@@ -1,5 +1,7 @@
-﻿using System.Composition;
+﻿using System.Collections.Immutable;
+using System.Composition;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -22,19 +24,42 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 		Debug.Assert(operation != null);
 
 		string idClass = parameters.Diagnostic.Properties[ChangeMagicNumberToIDAnalyzer.IdClassParameter];
+		string readableIdClass = idClass.Replace('+', '.'); // Needed for nested types
 		string[] names = parameters.Diagnostic.Properties[ChangeMagicNumberToIDAnalyzer.NamesParameter].Split(',');
 
-		string title = Resources.ChangeMagicNumberToIDTitle;
-		const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
+		if (names.Length == 1) {
+			string title = Resources.ChangeMagicNumberToIDTitle;
+			const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
 
-		foreach (string name in names) {
-			string copy = name;
+			string name = names[0];
 
 			context.RegisterCodeFix(
 				CodeAction.Create(
-					string.Format(title, idClass, copy),
-					token => SimplifyAsync(context.Document, operation, idClass, copy, token),
+					string.Format(title, readableIdClass, name),
+					token => SimplifyAsync(context.Document, operation, idClass, name, token),
 					titleKey),
+				parameters.Diagnostic);
+		}
+		else {
+			string title = Resources.ChangeMagicNumberToIDTitleMultiple;
+
+			var codeActions = names.Select(x => {
+				string title = Resources.ChangeMagicNumberToIDTitle;
+				const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
+
+				string name = x;
+
+				return CodeAction.Create(
+					string.Format(title, readableIdClass, name),
+					token => SimplifyAsync(context.Document, operation, idClass, name, token),
+					titleKey);
+			}).ToImmutableArray();
+
+			context.RegisterCodeFix(
+				CodeAction.Create(
+					title,
+					codeActions,
+					isInlinable: false),
 				parameters.Diagnostic);
 		}
 

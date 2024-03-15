@@ -70,6 +70,15 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change magic number.
+        /// </summary>
+        internal static string ChangeMagicNumberToIDTitleMultiple {
+            get {
+                return ResourceManager.GetString("ChangeMagicNumberToIDTitleMultiple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simplify common Main.rand.Next usage pattern.
         /// </summary>
         internal static string SimplifyUnifiedRandomTitle {

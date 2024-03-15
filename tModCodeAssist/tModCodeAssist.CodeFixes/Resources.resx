@@ -121,6 +121,10 @@
     <value>Change magic number to {0}.{1}</value>
     <comment>`{0}` is ID class, `{1}` is ID name</comment>
   </data>
+  <data name="ChangeMagicNumberToIDTitleMultiple" xml:space="preserve">
+    <value>Change magic number</value>
+    <comment>Used when there's multiple ID names for one magic number</comment>
+  </data>
   <data name="SimplifyUnifiedRandomTitle" xml:space="preserve">
     <value>Simplify common Main.rand.Next usage pattern</value>
   </data>
