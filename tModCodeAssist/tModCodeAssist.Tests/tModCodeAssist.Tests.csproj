@@ -12,7 +12,7 @@
 		<NoWarn>MSB3270;MSB3277;$(NoWarn)</NoWarn>
 	</PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\tModCodeAssist\tModCodeAssist.csproj" />
 		<ProjectReference Include="..\tModCodeAssist.CodeFixes\tModCodeAssist.CodeFixes.csproj" />
 		

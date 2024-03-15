@@ -70,7 +70,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number {0} should be changed to {1}.{2} for readability.
+        ///   Looks up a localized string similar to The number {0} should be changed to {1} for readability.
         /// </summary>
         internal static string ChangeMagicNumberToIDMessageFormat {
             get {
