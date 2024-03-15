@@ -1,9 +1,9 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.ChangeMagicNumberToID.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.ChangeMagicNumberToID.ChangeMagicNumberToIDCodeFixProvider>;
 
 namespace tModCodeAssist.Tests.CodeFixers;
@@ -30,24 +30,6 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	public void Cleanup()
 	{
 		additionalFiles.Clear();
-	}
-
-	[TestMethod]
-	public async Task Test_Parameter()
-	{
-		await VerifyCS.Run(
-			"""
-			using Terraria;
-
-			_ = new Item([|1|]);
-			""",
-			"""
-			using Terraria;
-			using Terraria.ID;
-			
-			_ = new Item(ItemID.IronPickaxe);
-			""")
-			.WithAdditionalFiles(additionalFiles);
 	}
 
 	[TestMethod]
@@ -106,6 +88,51 @@ public sealed class ChangeMagicNumberToIDUnitTest
 				case ItemID.IronPickaxe:
 					break;
 			}
+			""")
+			.WithAdditionalFiles(additionalFiles);
+	}
+
+	[TestMethod]
+	public async Task Test_Parameter()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+
+			_ = new Item([|1|]);
+			""",
+			"""
+			using Terraria;
+			using Terraria.ID;
+			
+			_ = new Item(ItemID.IronPickaxe);
+			""")
+			.WithAdditionalFiles(additionalFiles);
+	}
+
+	[TestMethod]
+	public async Task Test_Return()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Terraria.ID;
+			using Terraria.ModLoader.Annotations;
+
+			_ = Foo() == [|1|];
+
+			[return: AssociatedIdTypeAttribute(typeof(ItemID))]
+			int Foo() => ItemID.None;
+			""",
+			"""
+			using Terraria;
+			using Terraria.ID;
+			using Terraria.ModLoader.Annotations;
+			
+			_ = Foo() == ItemID.IronPickaxe;
+
+			[return: AssociatedIdTypeAttribute(typeof(ItemID))]
+			int Foo() => ItemID.None;
 			""")
 			.WithAdditionalFiles(additionalFiles);
 	}

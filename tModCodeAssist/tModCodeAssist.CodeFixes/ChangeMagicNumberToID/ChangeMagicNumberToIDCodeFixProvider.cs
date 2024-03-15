@@ -22,17 +22,21 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 		Debug.Assert(operation != null);
 
 		string idClass = parameters.Diagnostic.Properties[ChangeMagicNumberToIDAnalyzer.IdClassParameter];
-		string name = parameters.Diagnostic.Properties[ChangeMagicNumberToIDAnalyzer.NameParameter];
+		string[] names = parameters.Diagnostic.Properties[ChangeMagicNumberToIDAnalyzer.NamesParameter].Split(',');
 
 		string title = Resources.ChangeMagicNumberToIDTitle;
 		const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
 
-		context.RegisterCodeFix(
-			CodeAction.Create(
-				title,
-				token => SimplifyAsync(context.Document, operation, idClass, name, token),
-				titleKey),
-			parameters.Diagnostic);
+		foreach (string name in names) {
+			string copy = name;
+
+			context.RegisterCodeFix(
+				CodeAction.Create(
+					string.Format(title, idClass, copy),
+					token => SimplifyAsync(context.Document, operation, idClass, copy, token),
+					titleKey),
+				parameters.Diagnostic);
+		}
 
 		return Task.CompletedTask;
 	}

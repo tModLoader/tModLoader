@@ -118,13 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChangeMagicNumberToIDDescription" xml:space="preserve">
-    <value>Change</value>
+    <value>Changes magic numbers into appropriate ID values</value>
   </data>
   <data name="ChangeMagicNumberToIDMessageFormat" xml:space="preserve">
-    <value>Change</value>
+    <value>The number {0} should be changed to {1}.{2} for readability</value>
+    <comment>`{0}` is a literal number, `{1}` is ID class, `{2}` is ID name</comment>
   </data>
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
-    <value>Change</value>
+    <value>Change magic numbers into appropriate ID values</value>
   </data>
   <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
     <value>Simplify common Main.rand.Next usage pattern</value>

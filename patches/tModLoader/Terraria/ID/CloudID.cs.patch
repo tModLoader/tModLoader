@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/CloudID.cs
++++ src/tModLoader/Terraria/ID/CloudID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public static class CloudID
+@@ -44,4 +_,5 @@
+ 	public const int Rare_DontStarveMaxwell = 39;
+ 	public const int Rare_DontStarveCharlie = 40;
+ 	public static readonly int Count = 41;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(CloudID), typeof(int)); // TML
+ }

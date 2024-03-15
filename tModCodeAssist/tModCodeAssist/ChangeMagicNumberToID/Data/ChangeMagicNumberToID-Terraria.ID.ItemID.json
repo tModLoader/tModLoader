@@ -4,7 +4,7 @@
 		"Members": {
 			"type": { "Target": "Field" },
 
-			".ctor(int, int, int)": {
+			".ctor(Int32, Int32, Int32)": {
 				"Target": "Parameter",
 				"ParameterName": "setDefaultsToType"
 			},
@@ -24,7 +24,7 @@
 				"ParameterName": "t"
 			},
 
-			"BannerToItem": { "Target": "Return" },
+			"BannerToItem": { "Target": "ReturnValue" },
 
 			"SetDefaults1": {
 				"Target": "Parameter",

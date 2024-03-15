@@ -1,9 +1,12 @@
+#if !TMLCODEASSIST
 using Terraria.ModLoader;
+#endif
 
 namespace Terraria.ID;
 
 public partial class NPCID
 {
+#if !TMLCODEASSIST
 	public static partial class Sets
 	{
 		public partial struct NPCBestiaryDrawModifiers
@@ -158,4 +161,5 @@ public partial class NPCID
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
 	}
+#endif
 }

@@ -1,11 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,84 +_,369 @@
- using Terraria.Utilities;
-+using System;
-+using System.Collections.Generic;
-+using System.Reflection;
-+using System.Linq;
+@@ -2,83 +_,364 @@
  
  namespace Terraria.ID;
  

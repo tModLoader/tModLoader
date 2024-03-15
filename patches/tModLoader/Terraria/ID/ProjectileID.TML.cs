@@ -2,6 +2,7 @@ namespace Terraria.ID;
 
 partial class ProjectileID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		/// <summary>
@@ -55,4 +56,5 @@ partial class ProjectileID
 			ShellPileFalling, new FallingBlockTileItemInfo(TileID.ShellPile, ItemID.ShellPileBlock)
 		);
 	}
+#endif
 }

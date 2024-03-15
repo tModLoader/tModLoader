@@ -61,7 +61,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
+        ///   Looks up a localized string similar to Changes magic numbers into appropriate ID values.
         /// </summary>
         internal static string ChangeMagicNumberToIDDescription {
             get {
@@ -70,7 +70,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
+        ///   Looks up a localized string similar to The number {0} should be changed to {1}.{2} for readability.
         /// </summary>
         internal static string ChangeMagicNumberToIDMessageFormat {
             get {
@@ -79,7 +79,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
+        ///   Looks up a localized string similar to Change magic numbers into appropriate ID values.
         /// </summary>
         internal static string ChangeMagicNumberToIDTitle {
             get {

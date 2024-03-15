@@ -1,7 +1,7 @@
-﻿using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 
 namespace tModCodeAssist.Tests;

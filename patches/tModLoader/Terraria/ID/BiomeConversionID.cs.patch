@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/BiomeConversionID.cs
++++ src/tModLoader/Terraria/ID/BiomeConversionID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public static class BiomeConversionID
+@@ -10,4 +_,5 @@
+ 	public const int Sand = 5;
+ 	public const int Snow = 6;
+ 	public const int Dirt = 7;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(BiomeConversionID), typeof(int)); // TML
+ }

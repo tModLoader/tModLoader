@@ -1,4 +1,7 @@
+using ReLogic.Reflection;
+#if !TMLCODEASSIST
 using Terraria.ModLoader;
+#endif
 
 namespace Terraria.ID;
 
@@ -8,6 +11,7 @@ namespace Terraria.ID;
 /// </summary>
 partial class AmmoID
 {
+#if !TMLCODEASSIST
 	partial class Sets
 	{
 		public static SetFactory Factory = new(ItemLoader.ItemCount);
@@ -31,4 +35,7 @@ partial class AmmoID
 		/// </summary>
 		public static bool[] IsSpecialist = Factory.CreateBoolSet(false, Rocket, StyngerBolt, JackOLantern, NailFriendly, Coin, Flare, Dart, Snowball, Sand, FallenStar, Gel);
 	}
+#endif
+
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(AmmoID), typeof(int));
 }

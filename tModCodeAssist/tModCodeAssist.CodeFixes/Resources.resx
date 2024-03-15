@@ -118,9 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
-    <value>Change</value>
+    <value>Change magic number to {0}.{1}</value>
+    <comment>`{0}` is ID class, `{1}` is ID name</comment>
   </data>
   <data name="SimplifyUnifiedRandomTitle" xml:space="preserve">
-    <value>Simplify</value>
+    <value>Simplify common Main.rand.Next usage pattern</value>
   </data>
 </root>

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
+using ReLogic.Reflection;
 using static tModCodeAssist.Constants;
 
 namespace tModCodeAssist.ChangeMagicNumberToID;
@@ -17,7 +19,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	public const string Id = nameof(ChangeMagicNumberToID);
 
 	public const string IdClassParameter = "IdClass";
-	public const string NameParameter = "Name";
+	public const string NamesParameter = "Names";
 
 	private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.ChangeMagicNumberToIDTitle), Resources.ResourceManager, typeof(Resources));
 	private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.ChangeMagicNumberToIDMessageFormat), Resources.ResourceManager, typeof(Resources));
@@ -26,11 +28,38 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
-		ctx.RegisterCompilationStartAction(static ctx => {
-			var dataEntries = ReadDataEntries(ctx);
-			
+		var searches = new Searches();
+
+		ctx.RegisterCompilationStartAction(ctx => {
+			var dataEntries = ReadDataEntries(searches, ctx);
+
 			var compilation = ctx.Compilation;
 			var attributeSymbol = compilation.GetTypeByMetadataName(AssociatedIdTypeAttributeMetadataName);
+
+			/*
+				item.type = 1;
+
+						=>
+
+				item.type = ItemID.IronPickaxe;
+			 */
+			ctx.RegisterOperationAction(ctx => {
+				var op = (IAssignmentOperation)ctx.Operation;
+
+				var left = op.Target;
+				var right = op.Value;
+
+				if (!right.ConstantValue.HasValue)
+					return;
+
+				if (!IsValidOperationType(left, out var target))
+					return;
+
+				if (!HasAssociatedIdType(target, out string idClassMetadataName, out var search))
+					return;
+
+				TryReport(ctx.ReportDiagnostic, right, idClassMetadataName, search);
+			}, OperationKind.SimpleAssignment);
 
 			/*
 				item.type == 1
@@ -101,75 +130,169 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 				}
 			}, OperationKind.Switch);
 
+			/*
+				Foo(1);
+
+						=>
+
+				Foo(ItemID.IronPickaxe);
+			 */
+			ctx.RegisterOperationAction(ctx => {
+				var op = ctx.Operation;
+
+				if (op is not IObjectCreationOperation && !IsValidOperationType(op))
+					return;
+
+				var args = (op as IObjectCreationOperation)?.Arguments
+					?? (op as IInvocationOperation)?.Arguments;
+
+				foreach (var arg in args) {
+					if (!arg.Value.ConstantValue.HasValue)
+						continue;
+
+					if (!HasAssociatedIdType(arg.Parameter, out string idClassMetadataName, out var search))
+						continue;
+
+					TryReport(ctx.ReportDiagnostic, arg.Value, idClassMetadataName, search);
+				}
+			}, OperationKind.ObjectCreation, OperationKind.Invocation);
+
 			bool HasAssociatedIdType(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
 			{
 				idClassMetadataName = null;
 				search = null;
 
-				foreach (var attributeData in symbol.GetAttributes()) {
-					if (!SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass, attributeSymbol))
-						continue;
+				string containigTypeMetadataName = ToMetadataName(symbol.ContainingType.OriginalDefinition);
+				string formattedName;
 
-					var idTypeSymbol = (ISymbol)attributeData.ConstructorArguments[0].Value;
+				if (symbol is IParameterSymbol parameterSymbol) {
+					var methodSymbol = (IMethodSymbol)parameterSymbol.ContainingSymbol;
 
-					string metadataName = idTypeSymbol.ToDisplayString(
-						SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)
-					);
+					formattedName = DataEntries.FormatName(containigTypeMetadataName, FormatMethodNameWithArguments(methodSymbol), symbol.Name);
 
-					if (!dataEntries.TryGetValue(metadataName, out var innerEntries))
-						continue;
+					// If no entry with specific overload exists, then format to the one without overload.
+					if (!dataEntries.ContainsKey(formattedName))
+						formattedName = DataEntries.FormatName(containigTypeMetadataName, methodSymbol.Name, symbol.Name);
 
-					idClassMetadataName = metadataName;
-					search = innerEntries.FirstOrDefault()?.Search;
+					// TODO: Use custom SymbolDisplayFormat instead of... this.
+					static string FormatMethodNameWithArguments(IMethodSymbol methodSymbol)
+					{
+						var sb = new StringBuilder(16);
 
-					return search != null;
-				}
+						sb.Append(methodSymbol.MetadataName);
 
-				{
-					string metadataName = symbol.ContainingType.OriginalDefinition.ToDisplayString(
-						SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)
-					);
+						sb.Append('(');
 
-					foreach (var dataEntry in dataEntries) {
-						foreach (var innerEntry in dataEntry.Value) {
-							if (innerEntry.MetadataName != metadataName)
-								continue;
+						for (int i = 0, c = methodSymbol.Parameters.Length; i < c; i++) {
+							var param = methodSymbol.Parameters[i];
 
-							if (!innerEntry.Members.ContainsKey(symbol.Name))
-								continue;
+							sb.Append(param.RefKind switch {
+								RefKind.Ref => "ref ",
+								RefKind.Out => "out ",
+								RefKind.In => "in ",
+								_ => string.Empty
+							});
 
-							idClassMetadataName = innerEntry.IdClassName;
-							search = innerEntry.Search;
-							return true;
+							sb.Append(param.Type.MetadataName);
+
+							if (i != c - 1) {
+								sb.Append(", ");
+							}
 						}
+
+						sb.Append(')');
+
+						return sb.ToString();
 					}
 				}
+				else {
+					formattedName = DataEntries.FormatName(containigTypeMetadataName, symbol.Name);
+				}
 
-				return false;
+				return LookGeneric(symbol, out idClassMetadataName, out search)
+					|| LookIntoAttributes(symbol, out idClassMetadataName, out search);
+
+				bool LookGeneric(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
+				{
+					idClassMetadataName = null;
+					search = null;
+
+					if (dataEntries.TryGetValue(formattedName, out var memberInfo)) {
+						if (symbol is IMethodSymbol && !memberInfo.Target.HasFlag(AttributeTargets.ReturnValue))
+							return false;
+
+						idClassMetadataName = memberInfo.IdClassMetadataName;
+						search = memberInfo.Search;
+						return true;
+					}
+
+					return false;
+				}
+
+				bool LookIntoAttributes(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
+				{
+					idClassMetadataName = null;
+					search = null;
+
+					var attributes = symbol is IMethodSymbol methodSymbol ? methodSymbol.GetReturnTypeAttributes() : symbol.GetAttributes();
+
+					foreach (var attributeData in attributes) {
+						if (!SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass, attributeSymbol))
+							continue;
+
+						var idTypeSymbol = (ISymbol)attributeData.ConstructorArguments[0].Value;
+						string idTypeMetadataName = ToMetadataName(idTypeSymbol);
+
+						if (!searches.TryGetByMetadataName(idTypeMetadataName, out search))
+							continue;
+
+						idClassMetadataName = idTypeMetadataName;
+						return true;
+					}
+
+					return false;
+				}
+
+				static string ToMetadataName(ISymbol symbol)
+				{
+					return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+				}
 			}
 		});
 	}
 
 	private static void TryReport(Action<Diagnostic> report, IOperation operation, string idClassMetadataName, IdDictionary search)
 	{
-		string name = search.GetName(Convert.ToInt64(operation.ConstantValue.Value));
+		int id = Convert.ToInt32(operation.ConstantValue.Value);
+
+		if (!search.TryGetNames(id, out var names))
+			return;
+
 		foreach (var child in operation.ChildOperations) {
-			if (child is IMemberReferenceOperation { Member.Name: var memberName } && name == memberName) {
+			if (child is IMemberReferenceOperation { Member.Name: var memberName } && names.Contains(memberName)) {
 				return;
 			}
 		}
 
+		string formattedNamesForCodeFixer = string.Join(",", names);
+		string readableNamesForUser = string.Join(", or ", names.Select(x => $"{idClassMetadataName}.{x}"));
+
 		var properties = new DiagnosticProperties();
 
 		properties.Add(IdClassParameter, idClassMetadataName);
-		properties.Add(NameParameter, name);
+		properties.Add(NamesParameter, formattedNamesForCodeFixer);
 
-		report(Diagnostic.Create(Rule, operation.Syntax.GetLocation(), properties));
+		report(Diagnostic.Create(
+			Rule,
+			operation.Syntax.GetLocation(),
+			properties,
+			[ id, idClassMetadataName, readableNamesForUser ]
+			));
 	}
 
 	private static bool IsValidOperationType(IOperation operation)
 	{
-		return operation is IInvocationOperation or IMemberReferenceOperation;
+		return operation is IInvocationOperation or IMemberReferenceOperation or IParameterReferenceOperation;
 	}
 
 	private static bool IsValidOperationType(IOperation operation, out ISymbol target)
@@ -177,19 +300,20 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		target = null;
 
 		if (IsValidOperationType(operation)) {
-			target = (operation as IInvocationOperation)?.TargetMethod ?? ((IMemberReferenceOperation)operation).Member;
+			target = (operation as IInvocationOperation)?.TargetMethod
+				?? (operation as IMemberReferenceOperation)?.Member
+				?? (operation as IParameterReferenceOperation)?.Parameter;
 		}
 
 		return target != null;
 	}
 
 #pragma warning disable RS1012 // Start action has no registered actions
-	private static Dictionary<string, ImmutableArray<DataEntry>> ReadDataEntries(CompilationStartAnalysisContext ctx)
+	private static DataEntries ReadDataEntries(Searches searches, CompilationStartAnalysisContext ctx)
 	{
 		var compilation = ctx.Compilation;
 
-		var data = new Dictionary<string, ImmutableArray<DataEntry>>();
-		var cacheSearch = new Dictionary<string, IdDictionary>();
+		var data = new Dictionary<string, ImmutableArray<RawDataEntry>>();
 
 		var options = new JsonSerializerOptions { ReadCommentHandling = JsonCommentHandling.Skip };
 
@@ -200,38 +324,32 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			string fileName = Path.GetFileNameWithoutExtension(additionalFile.Path);
 			string extension = Path.GetExtension(additionalFile.Path);
 
-			if (fileName is null || !fileName.StartsWith($"{analyzerName}", StringComparison.Ordinal) || extension is not ".json")
+			if (fileName is null)
+				continue;
+
+			if (!fileName.StartsWith(analyzerName, StringComparison.Ordinal) || extension is not ".json")
+				continue;
+
+			int indexOfSeparator = fileName.LastIndexOf('-');
+			if (indexOfSeparator is -1)
 				continue;
 
 			string srcText = additionalFile.GetText(ctx.CancellationToken)?.ToString();
 			if (srcText is null)
 				continue;
 
-			string associatedIdClassType = fileName[(fileName.LastIndexOf('-') + 1)..];
+			string associatedIdClassType = fileName[(indexOfSeparator + 1)..];
 
-			var dataEntries = JsonSerializer.Deserialize<DataEntry[]>(srcText, options);
-			foreach (var dataEntry in dataEntries) {
-				dataEntry.IdClassName = associatedIdClassType;
+			var dataEntries = JsonSerializer.Deserialize<RawDataEntry[]>(srcText, options);
 
-				if (cacheSearch.TryGetValue(dataEntry.IdClassName, out var search)) {
-					dataEntry.Search = search;
-				}
-				else {
-					dataEntry.Initialize(compilation, ctx.CancellationToken);
-
-					cacheSearch[dataEntry.IdClassName] = dataEntry.Search;
-				}
-			}
-
-			// Merge if have to.
-			if (data.TryGetValue(associatedIdClassType, out var value)) {
-				data[associatedIdClassType] = value.Concat(dataEntries).ToImmutableArray();
+			if (data.TryGetValue(associatedIdClassType, out var existingEntries)) {
+				existingEntries = existingEntries.Concat(dataEntries).ToImmutableArray();
 			}
 			else {
 				data[associatedIdClassType] = dataEntries.ToImmutableArray();
 			}
 		}
 
-		return data;
+		return new DataEntries(searches, data);
 	}
 }

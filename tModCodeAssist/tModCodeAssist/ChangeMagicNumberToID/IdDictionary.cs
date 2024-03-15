@@ -1,68 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
-using Microsoft.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
 
-namespace tModCodeAssist.ChangeMagicNumberToID;
+namespace ReLogic.Reflection;
 
 public sealed class IdDictionary
 {
-	private readonly Dictionary<string, long> _nameToId = [];
-	private readonly Dictionary<long, string> _idToName = [];
+	private readonly Dictionary<int, List<string>> _idToNames = [];
+	public readonly int Count;
 
-	public int Count { get; private set; }
-
-	public IEnumerable<string> Names => _nameToId.Keys;
-
-	public bool TryGetName(long id, out string name) => _idToName.TryGetValue(id, out name);
-	public bool TryGetId(string name, out long id) => _nameToId.TryGetValue(name, out id);
-	public bool ContainsName(string name) => _nameToId.ContainsKey(name);
-	public bool ContainsId(long id) => _idToName.ContainsKey(id);
-	public string GetName(long id) => _idToName[id];
-	public long GetId(string name) => _nameToId[name];
-
-	public void Add(string name, long id)
+	private IdDictionary(int count)
 	{
-		_idToName.Add(id, name);
-		_nameToId.Add(name, id);
+		Count = count;
 	}
 
-	public static IdDictionary Create(INamedTypeSymbol obsoleteAttributeSymbol, INamedTypeSymbol symbol, CancellationToken cancellationToken = default)
+	public bool TryGetNames(int id, out List<string> names) => _idToNames.TryGetValue(id, out names);
+
+	public static IdDictionary Create(Type idClass, Type idType)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-
-		var search = new IdDictionary();
-		int manualCount = 0;
-
-		foreach (var member in symbol.GetMembers()) {
-			// Skip non constants
-			if (member is not IFieldSymbol { HasConstantValue: true } field)
-				continue;
-
-			// Skip non integers
-			if (field.Type.SpecialType is not (>= SpecialType.System_SByte and <= SpecialType.System_UInt64))
-				continue;
-
-			// Skip if field is marked as `Obsolete`
-			foreach (var attributeData in member.GetAttributes()) {
-				if (SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass, obsoleteAttributeSymbol)) {
-					continue;
-				}
-			}
-
-			long constValue = Convert.ToInt64(field.ConstantValue);
-
-			if (!search._nameToId.ContainsKey(member.Name)) {
-				search._nameToId.Add(member.Name, constValue);
-				search._idToName.Add(constValue, member.Name);
-			}
-
-			manualCount++;
+		int num = int.MaxValue;
+		FieldInfo fieldInfo = idClass.GetField("Count");
+		if (fieldInfo != null) {
+			num = Convert.ToInt32(fieldInfo.GetValue(null));
+			if (num == 0)
+				throw new Exception("IdDictionary cannot be created before Count field is initialized. Move to bottom of static class");
 		}
 
-		search.Count = manualCount;
+		IdDictionary dictionary = new IdDictionary(num);
+		(from f in idClass.GetFields(BindingFlags.Static | BindingFlags.Public)
+		 where f.FieldType == idType
+		 where f.GetCustomAttribute<ObsoleteAttribute>() == null
+		 select f).ToList().ForEach(delegate (FieldInfo field) {
+			 int num2 = Convert.ToInt32(field.GetValue(null));
+			 if (num2 < dictionary.Count) {
+				 if (dictionary._idToNames.TryGetValue(num2, out var names))
+					 names.Add(field.Name);
+				 else
+					 dictionary._idToNames[num2] = [field.Name];
+			 }
+		 });
 
-		return search;
+		return dictionary;
 	}
+
+	public static IdDictionary Create<IdClass, IdType>() => Create(typeof(IdClass), typeof(IdType));
 }

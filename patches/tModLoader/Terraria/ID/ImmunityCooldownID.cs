@@ -1,4 +1,4 @@
-using System;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
@@ -30,4 +30,5 @@ public static class ImmunityCooldownID
 	/// Damage from lava
 	/// </summary>
 	public const int Lava = 4;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(ImmunityCooldownID), typeof(int)); // TML
 }

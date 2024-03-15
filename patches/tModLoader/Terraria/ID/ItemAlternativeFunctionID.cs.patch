@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/ItemAlternativeFunctionID.cs
++++ src/tModLoader/Terraria/ID/ItemAlternativeFunctionID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public static class ItemAlternativeFunctionID
+@@ -5,4 +_,5 @@
+ 	public const int None = 0;
+ 	public const int ShouldBeActivated = 1;
+ 	public const int ActivatedAndUsed = 2;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(ItemAlternativeFunctionID), typeof(int)); // TML
+ }

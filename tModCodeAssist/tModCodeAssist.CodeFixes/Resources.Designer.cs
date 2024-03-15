@@ -61,7 +61,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
+        ///   Looks up a localized string similar to Change magic number to {0}.{1}.
         /// </summary>
         internal static string ChangeMagicNumberToIDTitle {
             get {
@@ -70,7 +70,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simplify.
+        ///   Looks up a localized string similar to Simplify common Main.rand.Next usage pattern.
         /// </summary>
         internal static string SimplifyUnifiedRandomTitle {
             get {

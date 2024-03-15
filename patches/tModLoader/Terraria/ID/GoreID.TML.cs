@@ -1,7 +1,10 @@
+using ReLogic.Reflection;
+
 namespace Terraria.ID;
 
 public static partial class GoreID
 {
+#if !TMLCODEASSIST
 	public static partial class Sets
 	{
 		// TML: Definition from 'Main.DrawGore()' and 'Main.DrawGoreBehind()'.
@@ -18,4 +21,7 @@ public static partial class GoreID
 		/// </summary>
 		public static bool[] PaintedFallingLeaf = Factory.CreateBoolSet(910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121, 1248, 1249, 1250, 1251, 1252, 1253, 1254, 1255, 1257, 1278);
 	}
+#endif
+
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(GoreID), typeof(int));
 }
