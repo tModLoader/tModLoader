@@ -1,5 +1,14 @@
 var NAVTREEINDEX22 =
 {
+"struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033":[3,0,116,2],
+"struct_buff_draw_params.html#a23153311248df2a8b45a30c7b13b80b5":[3,0,116,1],
+"struct_buff_draw_params.html#a43659c7022826121c3e60b4a8110b267":[3,0,116,3],
+"struct_buff_draw_params.html#a8a31fa564f587ad7df1bb7d1466188c5":[3,0,116,5],
+"struct_buff_draw_params.html#a94dc35a5f9b9e8add7539b27946b26a6":[3,0,116,4],
+"struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4":[3,0,116,0],
+"struct_builder_toggle_draw_params.html":[3,0,121],
+"struct_builder_toggle_draw_params.html#a1424fd8327ccdc2133e5fcd68298e0ee":[3,0,121,2],
+"struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e":[3,0,121,4],
 "struct_builder_toggle_draw_params.html#a9437176221beacbf2fd489f66796f124":[3,0,121,0],
 "struct_builder_toggle_draw_params.html#aa830bd933d6c442cdf0aae65ca2d9a7d":[3,0,121,1],
 "struct_builder_toggle_draw_params.html#abc549fd199b8a167a83f6ad379b4ab04":[3,0,121,5],
@@ -240,14 +249,5 @@ var NAVTREEINDEX22 =
 "struct_pos_data.html#a944d81baa10077208a21e6e2bb4b612c":[3,0,1000,8],
 "struct_pos_data.html#ab9a1efd082ec2fb25609e06677347e19":[3,0,1000,9],
 "struct_pos_data.html#ac88465266a438788d12582053b9f9932":[3,0,1000,2],
-"struct_pos_data.html#af0fa98792a2c9d5135f0ce01b983b8de":[3,0,1000,4],
-"struct_potion_of_return_gate_helper.html":[3,0,1001],
-"struct_projectile_1_1_hallow_boss_pellet_storm_info.html":[3,0,1019,0],
-"struct_query_parameters.html":[3,0,1032],
-"struct_rainbow_rod_drawer.html":[3,0,1035],
-"struct_ref_read_only_array.html":[3,0,1054],
-"struct_resource_draw_settings.html":[3,0,1063],
-"struct_resource_overlay_draw_context.html":[3,0,1065],
-"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1065,5],
-"struct_resource_overlay_draw_context.html#a46493f40a782e875eefb93bb0a4c6221":[3,0,1065,3]
+"struct_pos_data.html#af0fa98792a2c9d5135f0ce01b983b8de":[3,0,1000,4]
 };

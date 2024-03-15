@@ -2056,6 +2056,7 @@ var hierarchy =
     [ "MessageDispatcherClient", "class_message_dispatcher_client.html", null ],
     [ "MessageDispatcherServer", "class_message_dispatcher_server.html", null ],
     [ "MessageID", "class_message_i_d.html", null ],
+    [ "LoaderUtils.MethodOverrideQuery< T >", "class_loader_utils_1_1_method_override_query.html", null ],
     [ "MethodSequenceListItem", "class_method_sequence_list_item.html", null ],
     [ "DelegateMethods.Minecart", "class_delegate_methods_1_1_minecart.html", null ],
     [ "Minecart", "class_minecart.html", null ],

@@ -87,7 +87,7 @@ $(document).ready(function(){initNavTree('class_hook_list.html',''); initResizab
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_hook_list-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">HookList&lt; T &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -95,6 +95,9 @@ $(document).ready(function(){initNavTree('class_hook_list.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a877e543bc9700fd693dad1ce40d043c7"><td class="memItemLeft" align="right" valign="top"><a id="a877e543bc9700fd693dad1ce40d043c7" name="a877e543bc9700fd693dad1ce40d043c7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>HookList</b> (<a class="el" href="class_loader_utils_1_1_method_override_query.html">LoaderUtils.MethodOverrideQuery</a>&lt; T &gt; hook)</td></tr>
+<tr class="separator:a877e543bc9700fd693dad1ce40d043c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a832ee218c42bf552e9b2c0c1e85f3175"><td class="memItemLeft" align="right" valign="top"><a id="a832ee218c42bf552e9b2c0c1e85f3175" name="a832ee218c42bf552e9b2c0c1e85f3175"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>HookList</b> (MethodInfo method)</td></tr>
 <tr class="separator:a832ee218c42bf552e9b2c0c1e85f3175"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,14 +122,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (IReadOnly
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa47cf689285451fba7a32575d2fe8754"><td class="memItemLeft" align="right" valign="top"><a id="aa47cf689285451fba7a32575d2fe8754" name="aa47cf689285451fba7a32575d2fe8754"></a>
+static <a class="el" href="class_hook_list.html">HookList</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (Expression&lt; Func&lt; T, Delegate &gt; &gt; expr)</td></tr>
+<tr class="separator:aa47cf689285451fba7a32575d2fe8754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156e1866bf3335262b3bc5efccbc28e8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_hook_list.html">HookList</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hook_list.html#a156e1866bf3335262b3bc5efccbc28e8">Create&lt; F &gt;</a> (Expression&lt; Func&lt; T, F &gt; &gt; expr)</td></tr>
 <tr class="separator:a156e1866bf3335262b3bc5efccbc28e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:afd2dd22dbeba2953d84a8388d0f807d4"><td class="memItemLeft" align="right" valign="top"><a id="afd2dd22dbeba2953d84a8388d0f807d4" name="afd2dd22dbeba2953d84a8388d0f807d4"></a>
-readonly MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><b>method</b></td></tr>
-<tr class="separator:afd2dd22dbeba2953d84a8388d0f807d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a0dbfaa20ee85ba3c3a76851819c17960"><td class="memItemLeft" align="right" valign="top"><a id="a0dbfaa20ee85ba3c3a76851819c17960" name="a0dbfaa20ee85ba3c3a76851819c17960"></a>
+<a class="el" href="class_loader_utils_1_1_method_override_query.html">LoaderUtils.MethodOverrideQuery</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>HookOverrideQuery</b><code> [get]</code></td></tr>
+<tr class="separator:a0dbfaa20ee85ba3c3a76851819c17960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a755360b14f90a2a8c1beda881bd3dbc5"><td class="memItemLeft" align="right" valign="top"><a id="a755360b14f90a2a8c1beda881bd3dbc5" name="a755360b14f90a2a8c1beda881bd3dbc5"></a>
+MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><b>Method</b><code> [get]</code></td></tr>
+<tr class="separator:a755360b14f90a2a8c1beda881bd3dbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a156e1866bf3335262b3bc5efccbc28e8" name="a156e1866bf3335262b3bc5efccbc28e8"></a>
@@ -139,7 +148,7 @@ readonly MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><b>method
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="class_hook_list.html">HookList</a>&lt; T &gt; <a class="el" href="class_hook_list.html">HookList</a>&lt; T &gt;.Create&lt; F &gt; </td>
+          <td class="memname">static <a class="el" href="class_hook_list.html">HookList</a>&lt; T &gt; <a class="el" href="class_hook_list.html">HookList</a>&lt; T &gt;.<a class="el" href="class_hook_list.html#aa47cf689285451fba7a32575d2fe8754">Create</a>&lt; F &gt; </td>
           <td>(</td>
           <td class="paramtype">Expression&lt; Func&lt; T, F &gt; &gt;&#160;</td>
           <td class="paramname"><em>expr</em></td><td>)</td>
@@ -152,12 +161,14 @@ readonly MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><b>method
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p></p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Delegate</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>new</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToMethodInfo()</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToOverrideQuery()</em></td><td>&#160;</td></tr>
 </table>
 </dd>
 </dl>

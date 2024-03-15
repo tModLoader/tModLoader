@@ -85,12 +85,18 @@ $(document).ready(function(){initNavTree('class_loader_utils.html',''); initResi
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_loader_utils-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LoaderUtils Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils_1_1_method_override_query.html">MethodOverrideQuery</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac9736e56a5e5789469b276e0866d992a"><td class="memItemLeft" align="right" valign="top"><a id="ac9736e56a5e5789469b276e0866d992a" name="ac9736e56a5e5789469b276e0866d992a"></a>
@@ -105,6 +111,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasMethod</b> 
 <tr class="memitem:a10472f9df65cdd93d133e9e410503ca4"><td class="memItemLeft" align="right" valign="top"><a id="a10472f9df65cdd93d133e9e410503ca4" name="a10472f9df65cdd93d133e9e410503ca4"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOverride</b> (Type t, MethodInfo baseMethod)</td></tr>
 <tr class="separator:a10472f9df65cdd93d133e9e410503ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add7621efa7d5fb72bd6a255b7aa69721"><td class="memItemLeft" align="right" valign="top"><a id="add7621efa7d5fb72bd6a255b7aa69721" name="add7621efa7d5fb72bd6a255b7aa69721"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasOverride&lt; T &gt;</b> (T t, Expression&lt; Func&lt; T, Delegate &gt; &gt; expr)</td></tr>
+<tr class="separator:add7621efa7d5fb72bd6a255b7aa69721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace6986c1a469ecd194597869a9fab2db"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#ace6986c1a469ecd194597869a9fab2db">HasOverride&lt; T, F &gt;</a> (T t, Expression&lt; Func&lt; T, F &gt; &gt; expr)</td></tr>
 <tr class="separator:ace6986c1a469ecd194597869a9fab2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6909d20264b61adc6f88ae5a62dfe9bc"><td class="memItemLeft" align="right" valign="top"><a id="a6909d20264b61adc6f88ae5a62dfe9bc" name="a6909d20264b61adc6f88ae5a62dfe9bc"></a>
@@ -116,6 +125,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetStaticMem
 <tr class="separator:a3bc828ae6e8b5b2b0a20a0d64000a45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a052e7c78b2f3a5e73bed49fa98371a06"><td class="memItemLeft" align="right" valign="top">static MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#a052e7c78b2f3a5e73bed49fa98371a06">ToMethodInfo&lt; T, F &gt;</a> (this Expression&lt; Func&lt; T, F &gt; &gt; expr)</td></tr>
 <tr class="separator:a052e7c78b2f3a5e73bed49fa98371a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51d35e379be511e47388b9b772f365cd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_loader_utils_1_1_method_override_query.html">MethodOverrideQuery</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_loader_utils.html#a51d35e379be511e47388b9b772f365cd">ToOverrideQuery&lt; T, F &gt;</a> (this Expression&lt; Func&lt; T, F &gt; &gt; expr)</td></tr>
+<tr class="separator:a51d35e379be511e47388b9b772f365cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e5571fc2f8d8bc370e4bcd33d2f409b"><td class="memItemLeft" align="right" valign="top"><a id="a1e5571fc2f8d8bc370e4bcd33d2f409b" name="a1e5571fc2f8d8bc370e4bcd33d2f409b"></a>
+static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WhereMethodIsOverridden&lt; T &gt;</b> (this <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt; providers, Expression&lt; Func&lt; T, Delegate &gt; &gt; expr)</td></tr>
+<tr class="separator:a1e5571fc2f8d8bc370e4bcd33d2f409b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2e22aa755a6b93d866356cdb494e282"><td class="memItemLeft" align="right" valign="top"><a id="aa2e22aa755a6b93d866356cdb494e282" name="aa2e22aa755a6b93d866356cdb494e282"></a>
 static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WhereMethodIsOverridden&lt; T &gt;</b> (this <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt; providers, MethodInfo method)</td></tr>
 <tr class="separator:aa2e22aa755a6b93d866356cdb494e282"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,10 +174,9 @@ static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Delegate</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToOverrideQuery()</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>HasOverride</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>t</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>GetType()</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToMethodInfo()</em></td><td>&#160;</td></tr>
 </table>
 </dd>
 </dl>
@@ -194,10 +207,51 @@ static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p></p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Delegate</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
+<a id="a51d35e379be511e47388b9b772f365cd" name="a51d35e379be511e47388b9b772f365cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51d35e379be511e47388b9b772f365cd">&#9670;&nbsp;</a></span>ToOverrideQuery&lt; T, F &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_loader_utils_1_1_method_override_query.html">MethodOverrideQuery</a>&lt; T &gt; LoaderUtils.ToOverrideQuery&lt; T, F &gt; </td>
+          <td>(</td>
+          <td class="paramtype">this Expression&lt; Func&lt; T, F &gt; &gt;&#160;</td>
+          <td class="paramname"><em>expr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p></p>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Delegate</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>MethodOverrideQuery&lt;T&gt;</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Create</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr</em></td><td>&#160;</td></tr>
 </table>
 </dd>
 </dl>
@@ -242,9 +296,9 @@ static <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; T &gt;&#
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>Delegate</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>WhereMethodIsOverridden</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>providers</em></td><td>&#160;</td></tr>
-<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToMethodInfo()</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>providers.Where</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>expr.ToOverrideQuery()</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>F</em></td><td>&#160;:</td><td valign="top"><em>HasOverride</em></td><td>&#160;</td></tr>
 </table>
 </dd>
 </dl>

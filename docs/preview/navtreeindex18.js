@@ -1,5 +1,14 @@
 var NAVTREEINDEX18 =
 {
+"class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f":[3,0,1044,24],
+"class_recipe.html#ae836542e8c39a03f778756c0cf830639":[3,0,1044,1],
+"class_recipe.html#ae9bf3267c476541e9827aab485a3e244":[3,0,1044,29],
+"class_recipe.html#aedf9ea2f13f33b108ffed82f17f6b514":[3,0,1044,18],
+"class_recipe.html#af2b5191e77403201f15b3cf9bd7a9623":[3,0,1044,13],
+"class_recipe.html#afb01ae9f6e1291665e441763d92a8640":[3,0,1044,9],
+"class_recipe_1_1_consumption_rules.html":[3,0,1044,0],
+"class_recipe_1_1_consumption_rules.html#aa41abac62905fc8fdc98b6c82a41ec0e":[3,0,1044,0,0],
+"class_recipe_exception.html":[3,0,1045],
 "class_recipe_group.html":[3,0,1046],
 "class_recipe_group_i_d.html":[3,0,1047],
 "class_recipe_item_creation_context.html":[3,0,1048],
@@ -240,14 +249,5 @@ var NAVTREEINDEX18 =
 "class_tag_serializer.html#a5f5b3ae8ee7386883a6c6e9224a71510":[3,0,1195,1],
 "class_tally_counter_info_display.html":[3,0,1196],
 "class_tally_counter_info_display.html#a760d62fe493673620e4b0e0aeac90a06":[3,0,1196,0],
-"class_tcp_address.html":[3,0,1197],
-"class_tcp_socket.html":[3,0,1198],
-"class_team_armor_shader_data.html":[3,0,1199],
-"class_teleport_helpers.html":[3,0,1205],
-"class_teleport_pylons_map_layer.html":[3,0,1207],
-"class_teleport_pylons_system.html":[3,0,1208],
-"class_teleportation_style_i_d.html":[3,0,1204],
-"class_temple_shader.html":[3,0,1211],
-"class_terrain_pass.html":[3,0,1212],
-"class_test_high_f_p_s_issues.html":[3,0,1213]
+"class_tcp_address.html":[3,0,1197]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"class_global_type.html":[3,0,465],
+"class_global_type.html#a0240fc42f87dcf06829f05808a29dcbf":[3,0,465,7],
 "class_global_type.html#a21d3de0bd6abe886adc6b4253f93ef14":[3,0,465,10],
 "class_global_type.html#a271c6018622a55db24bf270e604d4edb":[3,0,465,4],
 "class_global_type.html#a2e23130d01cf1716f18fee6129499bd2":[3,0,465,2],
@@ -72,6 +74,8 @@ var NAVTREEINDEX6 =
 "class_hive_biome.html":[3,0,500],
 "class_honey_patch_biome.html":[3,0,501],
 "class_hook_list.html":[3,0,502],
+"class_hook_list.html#a156e1866bf3335262b3bc5efccbc28e8":[3,0,502,1],
+"class_hook_list.html#aa47cf689285451fba7a32575d2fe8754":[3,0,502,0],
 "class_horizontal_bars_player_resources_display_set.html":[3,0,503],
 "class_house_builder.html":[3,0,504],
 "class_house_builder_context.html":[3,0,505],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "class_item.html#ab0656ddd68272719de52a79cdc422da6":[3,0,623,101],
 "class_item.html#ab442988b55e45d07c89dfe6296ed5590":[3,0,623,96],
 "class_item.html#ab4d669e2ba5c01caa33d56350b6d6634":[3,0,623,24],
-"class_item.html#ab6ac0751a342aa03245cbecca460edf0":[3,0,623,107],
-"class_item.html#ab6ad106e2e9f78bab8eced2288dc676c":[3,0,623,138],
-"class_item.html#ab6e880491db6e30a6dce29b4589bf65a":[3,0,623,83],
-"class_item.html#ab7fcb405aa707d7031409bb397b39738":[3,0,623,163],
-"class_item.html#ab92e6881109a4113cf257f0b677491bd":[3,0,623,72]
+"class_item.html#ab6ac0751a342aa03245cbecca460edf0":[3,0,623,107]
 };

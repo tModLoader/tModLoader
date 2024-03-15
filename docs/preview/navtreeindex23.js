@@ -1,5 +1,14 @@
 var NAVTREEINDEX23 =
 {
+"struct_potion_of_return_gate_helper.html":[3,0,1001],
+"struct_projectile_1_1_hallow_boss_pellet_storm_info.html":[3,0,1019,0],
+"struct_query_parameters.html":[3,0,1032],
+"struct_rainbow_rod_drawer.html":[3,0,1035],
+"struct_ref_read_only_array.html":[3,0,1054],
+"struct_resource_draw_settings.html":[3,0,1063],
+"struct_resource_overlay_draw_context.html":[3,0,1065],
+"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1065,5],
+"struct_resource_overlay_draw_context.html#a46493f40a782e875eefb93bb0a4c6221":[3,0,1065,3],
 "struct_resource_overlay_draw_context.html#ab6569d2846bd21cae368ad0a675329b6":[3,0,1065,4],
 "struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34":[3,0,1065,0],
 "struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651":[3,0,1065,1],
