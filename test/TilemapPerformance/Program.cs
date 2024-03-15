@@ -150,6 +150,7 @@ TimeSpan DrawWorld()
 	InitAssets(TextureAssets.Flames);
 	InitAssets(TextureAssets.GlowMask);
 	InitAssets(TextureAssets.Liquid);
+	InitAssets(TextureAssets.LiquidSlope);
 	TextureAssets.WallOutline = Asset<Texture2D>.Empty;
 	TextureAssets.ShroomCap = Asset<Texture2D>.Empty;
 	TextureAssets.SunAltar = Asset<Texture2D>.Empty;
