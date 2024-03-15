@@ -25,6 +25,8 @@ using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
 using System.Reflection;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Terraria.ModLoader;
 
@@ -279,13 +281,21 @@ public static class ModContent
 	/// </summary>
 	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
 
+	private record struct ScopedCleanup(Action Dispose) : IDisposable
+	{
+		void IDisposable.Dispose() => Dispose();
+	}
+
 	internal static void Load(CancellationToken token)
 	{
+		using var parallelCts = new CancellationTokenSource();
+		using var cancelOnExit = new ScopedCleanup(parallelCts.Cancel);
+		var jitTask = JITModsAsync(parallelCts.Token);
+
 		CacheVanillaState();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
-			if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 			ContentInstance.Register(mod);
 			mod.loading = true;
 			mod.AutoloadConfig();
@@ -297,6 +307,8 @@ public static class ModContent
 		});
 
 		ContentCache.contentLoadingFinished = true;
+
+		jitTask.GetAwaiter().GetResult();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -362,6 +374,16 @@ public static class ModContent
 		BossBarLoader.GotoSavedStyle();
 
 		ModOrganizer.SaveLastLaunchedMods();
+	}
+
+	private static async Task JITModsAsync(CancellationToken token)
+	{
+		var sw = Stopwatch.StartNew();
+		foreach (var mod in ModLoader.Mods)
+			if (mod.Code != Assembly.GetExecutingAssembly())
+				await AssemblyManager.JITModAsync(mod, token).ConfigureAwait(false);
+
+		Logging.tML.Info($"JITModsAsync completed in {sw.ElapsedMilliseconds}ms");
 	}
 
 	private static void CacheVanillaState()
