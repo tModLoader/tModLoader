@@ -37,7 +37,7 @@
 			<DllFile Include="$(OutDir)\tModCodeAssist.CodeFixes.dll" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)/Terraria/bin/$(Configuration)/net6.0/Libraries/tModCodeAssist/1.0.0" />
+		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist/1.0.0" />
 	</Target>
 
 </Project>

@@ -144,9 +144,11 @@
 
 	<Target Name="CopyNecessaryInfoToTml" AfterTargets="Build">
 		<ItemGroup>
+			<DllFile Include="$(OutDir)\tModCodeAssist.dll" />
 			<DataFile Include="ChangeMagicNumberToID\Data\ChangeMagicNumberToID-*.json" />
 		</ItemGroup>
 		
+		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0" />
 		<Copy SourceFiles="@(DataFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0\Data" />
 	</Target>
 </Project>
