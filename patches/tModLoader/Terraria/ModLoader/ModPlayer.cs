@@ -558,7 +558,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual float UseSpeedMultiplier(Item item) => 1f;
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -568,7 +568,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
