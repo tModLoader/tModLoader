@@ -2884,8 +2884,12 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,51 @@
- 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
+@@ -16533,39 +_,54 @@
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num7);
+ 				}
+ 				else {
+-					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
++					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", player[myPlayer].GetHealLife(item));
  				}
  
 +				toolTipNames[numLines] = "HealLife";
@@ -2893,7 +2897,8 @@
  			}
  
  			if (item.healMana > 0) {
- 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
+-				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", player[myPlayer].GetHealMana(item));
 +				toolTipNames[numLines] = "HealMana";
  				numLines++;
  			}

@@ -255,20 +255,26 @@ public partial class Mod
 	public List<string> GetFileNames() => File?.GetFileNames();
 
 	/// <summary>
-	/// Retrieve contents of files within the tmod file
+	/// Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-<see cref="Asset{T}"/> files. The <paramref name="name"/> should be in the format of "Folders/FileNameWithExtension" starting from your mod's source code folder. Returns null if the file does not exist within the mod.
+	/// <para/> A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <c>string pointsFileContents = Encoding.UTF8.GetString(Mod.GetFileBytes("data/points.txt"));</c>
 	/// </summary>
 	/// <param name="name">The name.</param>
 	/// <returns></returns>
 	public byte[] GetFileBytes(string name) => File?.GetBytes(name);
 
 	/// <summary>
-	/// Retrieve contents of files within the tmod file
+	/// Retrieve contents of files within the .tmod file.
 	/// </summary>
 	/// <param name="name">The name.</param>
 	/// <param name="newFileStream"></param>
 	/// <returns></returns>
 	public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
+	/// <summary>
+	/// Returns whether or not a file with the specified name exists. Note that this includes file extension and the folder path: "Folders/FileNameWithExtension"
+	/// </summary>
+	/// <param name="name"></param>
+	/// <returns></returns>
 	public bool FileExists(string name) => File != null && File.HasFile(name);
 
 	public bool HasAsset(string assetName) => RootContentSource.HasAsset(assetName);
