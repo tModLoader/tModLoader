@@ -6,3 +6,4 @@ hideResources = false
 includeSource = true
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, Old\*
 version = 9999.0
+coreMod = true
