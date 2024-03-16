@@ -36,6 +36,7 @@ internal class UIModItem : UIPanel
 	private UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
+	private UIImage _coreModIcon;
 	private UIImage _deleteModButton;
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
 	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
@@ -194,6 +195,16 @@ internal class UIModItem : UIPanel
 			};
 			left2ndLine += 28;
 			Append(_translationModIcon);
+		}
+
+		if (_mod.properties.coreMod) {
+			var icon = UICommon.ButtonCoreModTexture;
+			_coreModIcon = new UIImage(icon) {
+				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
+				Top = { Pixels = 42.5f }
+			};
+			left2ndLine += 28;
+			Append(_coreModIcon);
 		}
 
 		/*
@@ -385,6 +396,9 @@ internal class UIModItem : UIPanel
 		else if (_translationModIcon?.IsMouseHovering == true) {
 			string refs = string.Join(", ", _mod.properties.RefNames(true)); // Translation mods can be strong or weak references.
 			_tooltip = Language.GetTextValue("tModLoader.TranslationModTooltip", refs);
+		}
+		else if (_coreModIcon?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.CoreModTooltip");
 		}
 	}
 
