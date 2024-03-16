@@ -109,7 +109,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,28 @@
+@@ -164,6 +_,34 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -118,6 +118,12 @@
 +		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
++
++		if (CoreModLoader.FindCoreMods(args, out List<Mod> mods)) {
++			Logging.tML.Info("Found coremods, starting child ALC...");
++			CoreModLoader.StartChildAlc(isServer, mods);
++			return;
++		}
 +		
 +		LaunchGame_(isServer);
 +	}
