@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,6 +24,15 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.ChangeMagicNumberToIDMessageFormat), Resources.ResourceManager, typeof(Resources));
 	private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.ChangeMagicNumberToIDDescription), Resources.ResourceManager, typeof(Resources));
 	public static readonly DiagnosticDescriptor Rule = new(Id, Title, MessageFormat, Categories.Maintenance, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+
+	private static readonly JsonSerializerOptions DeserializerOptions = new JsonSerializerOptions {
+		ReadCommentHandling = JsonCommentHandling.Skip,
+		AllowTrailingCommas = true,
+	};
+
+	private static readonly SourceTextValueProvider<RawDataEntry[]> DeserializationProvider = new(sourceText => {
+		return JsonSerializer.Deserialize<RawDataEntry[]>(sourceText.ToString(), DeserializerOptions);
+	});
 
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
@@ -312,9 +320,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 #pragma warning disable RS1012 // Start action has no registered actions
 	private static DataEntries ReadDataEntries(Searches searches, CompilationStartAnalysisContext ctx)
 	{
-		var data = new Dictionary<string, ImmutableArray<RawDataEntry>>();
-
-		var options = new JsonSerializerOptions { ReadCommentHandling = JsonCommentHandling.Skip };
+		var data = new Dictionary<string, DataEntries.MemberInfo>(127);
 
 		foreach (var additionalFile in ctx.Options.AdditionalFiles) {
 			ctx.CancellationToken.ThrowIfCancellationRequested();
@@ -322,21 +328,29 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (!MatchesDataFileNameFormat(additionalFile.Path, out string associatedIdClassType))
 				continue;
 
-			string srcText = additionalFile.GetText(ctx.CancellationToken)?.ToString();
-			if (srcText is null)
+			if (!searches.TryGetByMetadataName(associatedIdClassType, out var search))
 				continue;
 
-			var dataEntries = JsonSerializer.Deserialize<RawDataEntry[]>(srcText, options);
+			var additionalFileText = additionalFile.GetText(ctx.CancellationToken);
+			if (additionalFileText == null)
+				continue;
 
-			if (data.TryGetValue(associatedIdClassType, out var existingEntries)) {
-				data[associatedIdClassType] = existingEntries.Concat(dataEntries).ToImmutableArray();
-			}
-			else {
-				data[associatedIdClassType] = dataEntries.ToImmutableArray();
+			if (!ctx.TryGetValue(additionalFileText, DeserializationProvider, out var dataEntries))
+				continue;
+
+			foreach (var dataEntry in dataEntries) {
+				foreach (var member in dataEntry.Members) {
+					string key = DataEntries.FormatName(dataEntry.MetadataName, member.Key, member.Value.ParameterName);
+
+					if (data.ContainsKey(key))
+						continue;
+
+					data.Add(key, new(member.Value, associatedIdClassType, search));
+				}
 			}
 		}
 
-		return new DataEntries(searches, data);
+		return new DataEntries(data);
 	}
 
 	private static bool MatchesDataFileNameFormat(string path, out string associatedIdClassType)
