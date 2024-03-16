@@ -120,9 +120,9 @@
 +
 +		StartupSequenceTml(isServer);
 +
-+		if (CoreModLoader.FindCoremods(args, out Mod[] coreMods)) {
++		if (CoreModLoader.FindCoreMods(args, out Mod[] coreMods)) {
 +			Logging.tML.InfoFormat("Coremods found, initiating child tML startup...");
-+			CoreModLoader.LaunchALCWithCoremods(isServer, coreMods);
++			CoreModLoader.LaunchALCWithCoreMods(isServer, coreMods);
 +			return;
 +		}
 +
