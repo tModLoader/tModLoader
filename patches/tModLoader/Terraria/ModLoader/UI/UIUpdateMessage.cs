@@ -7,6 +7,7 @@ using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.Social;
@@ -112,7 +113,7 @@ internal class UIUpdateMessage : UIState
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		string installDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+		string installDirectory = Path.GetDirectoryName(CoreModLoader.VirtualLocation);
 		string zipFileName = Path.GetFileName(new Uri(_autoUpdateUrl).LocalPath);
 		string zipFilePath = Path.Combine(installDirectory, zipFileName);
 
@@ -153,7 +154,7 @@ internal class UIUpdateMessage : UIState
 
 				File.Delete(zipFilePath);
 
-				string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+				string executableName = Path.GetFileName(CoreModLoader.VirtualLocation);
 
 				Logging.tML.Info($"Renaming Terraria.exe -> {executableName}");
 				File.Move(Path.Combine(extractDir, "Terraria.exe"), Path.Combine(extractDir, executableName));

@@ -119,7 +119,7 @@
 +
 +		StartupSequenceTml(isServer);
 +
-+		if (CoreModLoader.FindCoreMods(args, out List<Mod> mods)) {
++		if (!args.Contains("-build") && CoreModLoader.FindCoreMods(args, out List<Mod> mods)) {
 +			Logging.tML.Info("Found coremods, starting child ALC...");
 +			CoreModLoader.StartChildAlc(isServer, mods);
 +			return;

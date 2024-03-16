@@ -42,7 +42,7 @@ public static partial class Logging
 	public static ILog PublicLogger { get; } = LogManager.GetLogger("PublicLogger");
 
 	internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
-	internal static ILog tML { get; } = LogManager.GetLogger("tML");
+	internal static ILog tML { get; } = LogManager.GetLogger(CoreModLoader.CoreModChild ? "tML Child" : "tML");
 	internal static ILog FNA { get; } = LogManager.GetLogger("FNA");
 
 	internal static void Init(LogFile logFile)
@@ -74,7 +74,7 @@ public static partial class Logging
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
 		tML.InfoFormat("FrameworkDescription: {0}", RuntimeInformation.FrameworkDescription);
-		tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
+		tML.InfoFormat("Executable: {0}", CoreModLoader.VirtualLocation);
 		tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 
 		string args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1));
