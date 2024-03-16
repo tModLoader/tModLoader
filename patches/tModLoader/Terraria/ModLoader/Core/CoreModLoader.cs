@@ -29,12 +29,12 @@ internal static class CoreModLoader
 
 		LocalMod[] availableMods = ModOrganizer.FindMods(true);
 		try {
-			List<LocalMod> loadableMods = ModOrganizer.SelectAndSortMods(availableMods, CancellationToken.None, true);
-			List<Mod> modInstances = AssemblyManager.InstantiateMods(loadableMods, CancellationToken.None);
+			List<LocalMod> loadableCoreMods = ModOrganizer.SelectAndSortMods(availableMods, CancellationToken.None, true).Where(mod => mod.properties.hasCoreModTransformers).ToList();
+			if (loadableCoreMods.Count <= 0) {
+				return false;
+			}
 
-			// COREMOD TESTING, ExampleMod will just be hardcoded check until transformers and actual coremod functionality is added
-			coreMods = modInstances.Where(mod => mod.Name == "ExampleMod").ToArray();
-			//
+			coreMods = AssemblyManager.InstantiateMods(loadableCoreMods, CancellationToken.None).ToArray();
 			return true;
 		}
 		catch {
