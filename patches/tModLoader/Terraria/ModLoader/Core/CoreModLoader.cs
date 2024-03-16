@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,23 +7,23 @@ using System.Runtime.Loader;
 using System.Threading;
 using log4net;
 using Mono.Cecil;
-using Mono.Cecil.Cil;
-using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader.Core;
 internal static class CoreModLoader
 {
 
+	private static Dictionary<string, Assembly> _transformedAssemblies = new();
+
 	private static ChildLoadContext _childALC;
 
-	internal class ChildLoadContext : AssemblyLoadContext
+	private class ChildLoadContext : AssemblyLoadContext
 	{
 		public ChildLoadContext() : base(isCollectible: true) { }
 
-		protected override Assembly Load(AssemblyName assemblyName) {
-			return Default.LoadFromAssemblyName(assemblyName);
+		protected override Assembly Load(AssemblyName assemblyName)
+		{
+			return _transformedAssemblies.TryGetValue(assemblyName.Name!, out Assembly transformedAssembly) ? transformedAssembly : Default.LoadFromAssemblyName(assemblyName);
 		}
-
 	}
 
 	internal static bool FindCoreMods(string[] programArgs, out Mod[] coreMods)
@@ -57,18 +56,14 @@ internal static class CoreModLoader
 
 		Logging.tML.InfoFormat("Applying CoreMod transformers...");
 
-		Assembly transformedChildtML = ApplyTransformers(typeof(CoreModLoader).Assembly.Location, coreMods);
-		_childALC.ResolvingUnmanagedDll += MonoLaunch.ResolveNativeLibrary;
+		AddTransformedAssemblies(GetAllDependentAssemblyLocations(), coreMods);
 
-		Logging.tML.InfoFormat("Success! Transformed tML Child Assembly Created.");
+		Assembly transformedChildtML = _transformedAssemblies[typeof(CoreModLoader).Assembly.GetName().Name!];
+		Logging.tML.InfoFormat("Success! Transformed Assemblies created.");
 
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
-
-		// Trigger Natives Resolving method
-		Type childNativeLibrariesType = transformedChildtML.GetType(typeof(NativeLibraries).FullName!)!;
-		childNativeLibrariesType.GetMethod(nameof(NativeLibraries.SetNativeLibraryPath), BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, new object[] { MonoLaunch.NativesDir });
 
 		// Set Launch Params, Save Paths, Main Thread, tML Directory
 		Type childProgramType = transformedChildtML.GetType(typeof(Program).FullName!)!;
@@ -87,26 +82,57 @@ internal static class CoreModLoader
 		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, new object?[] { isServer });
 	}
 
-	private static Assembly ApplyTransformers(string assemblyLocation, Mod[] coreMods)
+	private static List<string> GetAllDependentAssemblyLocations()
+	{
+		string tmlAssemblyLocation = typeof(CoreModLoader).Assembly.Location;
+		string libsDir = Path.Combine(Path.GetDirectoryName(tmlAssemblyLocation)!, "Libraries");
+
+		// Load all dependent dlls, returning FNA & ReLogic dlls
+		// TODO: Do we allow more dlls for CoreMod transformation?
+		return new List<string>() { tmlAssemblyLocation }.Concat(Directory.EnumerateFiles(libsDir, "*.dll", SearchOption.AllDirectories).Where(path =>
+		{
+			string fileName = Path.GetFileName(path);
+
+			return fileName is "ReLogic.dll" or "FNA.dll";
+			/*
+			 return !(path.EndsWith(".resources.dll")
+			            || path.Contains(@"\Native\")
+			            || path.Contains("\\runtime")
+					    || fileName.StartsWith("system.", true, null)
+			            || fileName.StartsWith("basic.", true, null)
+			            || fileName.StartsWith("microsoft.", true, null)
+			    );
+			 */
+		})).ToList();
+	}
+
+	private static void AddTransformedAssemblies(List<string> assemblyLocations, Mod[] coreMods)
 	{
 		// TODO: Allow transformation of other mod assemblies
-		using AssemblyDefinition childAssemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation);
-		childAssemblyDefinition.Name.Name += " (Transformed)";
-
 		foreach (Mod coreMod in coreMods) {
-			AssemblyManager.GetLoadableTypes(coreMod.Code)
-			               .Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
-			               .Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
-			               .Where(t => t.BaseType is { } baseType && baseType == typeof(ModuleTransformer))
-			               .OrderBy(t => t.FullName, StringComparer.InvariantCulture)
-			               .Select(t => (ModuleTransformer)Activator.CreateInstance(t, true))
-			               .ToList().ForEach(transformer => transformer.Transform(childAssemblyDefinition.MainModule));
+			List<ModuleTransformer> transformers =
+				AssemblyManager.GetLoadableTypes(coreMod.Code)
+				               .Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+				               .Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
+				               .Where(t => t.BaseType is { } baseType && baseType == typeof(ModuleTransformer))
+				               .OrderBy(t => t.FullName, StringComparer.InvariantCulture)
+				               .Select(t => (ModuleTransformer)Activator.CreateInstance(t, true))
+				               .ToList();
+
+			foreach (string assemblyLocation in assemblyLocations) {
+				using AssemblyDefinition assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation);
+
+				// Apply transformers
+				transformers.ForEach(transformer => transformer.Transform(assemblyDefinition.MainModule));
+
+				// Write to stream, which is then loaded to actual assembly. Skips the intermediary step of writing to a file instead, then immediately loading said file
+				using MemoryStream assemblyStream = new MemoryStream();
+				assemblyDefinition.Write(assemblyStream);
+
+				assemblyStream.Position = 0;
+				Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream);
+				_transformedAssemblies[transformedAssembly.GetName().Name!] = transformedAssembly;
+			}
 		}
-
-		using MemoryStream assemblyStream = new MemoryStream();
-		childAssemblyDefinition.Write(assemblyStream);
-
-		assemblyStream.Position = 0;
-		return _childALC.LoadFromStream(assemblyStream);
 	}
 }
