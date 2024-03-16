@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
+using log4net;
 
 namespace Terraria.ModLoader.Core;
 internal static class CoreModLoader
@@ -18,18 +19,12 @@ internal static class CoreModLoader
 		protected override Assembly Load(AssemblyName assemblyName) {
 			return Default.LoadFromAssemblyName(assemblyName);
 		}
-
-		protected override IntPtr LoadUnmanagedDll(string unmanagedDllName) {
-			Console.WriteLine("Loading unmanaged DLL: " + unmanagedDllName);
-			return base.LoadUnmanagedDll(unmanagedDllName);
-		}
 	}
 
 	internal static bool FindCoremods(string[] programArgs, out Mod[] coreMods)
 	{
 		coreMods = Array.Empty<Mod>();
 		// Don't need to do a full initialization since we're looking for just coremod transformers
-		Program.PreLaunchGame(programArgs, true, out _);
 		ModLoader.MinimalEngineInit();
 
 		LocalMod[] availableMods = ModOrganizer.FindMods(true);
@@ -49,13 +44,9 @@ internal static class CoreModLoader
 		return false;
 	}
 
-	internal static void LaunchALCWithCoremods(string[] programArgs, Mod[] coreMods)
+	internal static void LaunchALCWithCoremods(bool isServer, Mod[] coreMods)
 	{
 		_childALC = new ChildLoadContext();
-
-		#if NETCORE
-		_childALC.ResolvingUnmanagedDll += MonoLaunch.ResolveNativeLibrary;
-		#endif
 
 		// TODO: Actually load transformers
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
@@ -64,7 +55,19 @@ internal static class CoreModLoader
 
 		Assembly childTMLAssembly = _childALC.LoadFromAssemblyPath(typeof(CoreModLoader).Assembly.Location);
 
-		Type childMonoLaunch = childTMLAssembly.GetType(typeof(MonoLaunch).FullName ?? "")!;
-		childMonoLaunch.GetMethod(nameof(MonoLaunch.BeginEntrySequence), BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, new object?[] { programArgs });
+		// Set Launch Params, Save Paths, and Main Thread
+		Type childProgramType = childTMLAssembly.GetType(typeof(Program).FullName!)!;
+		childProgramType.GetField(nameof(Program.LaunchParameters), BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.LaunchParameters);
+		childProgramType.GetField(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePath);
+		childProgramType.GetProperty(nameof(Program.SavePathShared), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePathShared);
+		childProgramType.GetProperty(nameof(Program.MainThread), BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.MainThread);
+
+		// Set logging of child to be "tML_Child" for clarity's sake
+		Type childLoggingType = childTMLAssembly.GetType(typeof(Logging).FullName!)!;
+		childLoggingType.GetProperty(nameof(Logging.tML), BindingFlags.NonPublic | BindingFlags.Static)!.SetValue(null, LogManager.GetLogger("tML_CHILD"));
+
+		// Launch child ALC
+		Logging.tML.InfoFormat("Launching Child tML...");
+		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, new object?[] { isServer });
 	}
 }

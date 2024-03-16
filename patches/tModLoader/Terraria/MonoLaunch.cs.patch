@@ -12,52 +12,33 @@
  
  namespace Terraria;
  
-@@ -14,11 +_,19 @@
- {
- 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+@@ -16,9 +_,18 @@
  
-+
-+	// Main will only ever be run on the first ALC (on first launch), and the child ALC will get started with the BeginEntrySequence method (see below)
  	private static void Main(string[] args)
  	{
--#if NETCORE
--		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
--#else
 +		// Launch tModPorter instead if it needed.
 +		if (Array.IndexOf(args, "-tModPorter") is int i && i >= 0) {
 +			tModPorter.Program.Main(args.Skip(i + 1).ToArray()).GetAwaiter().GetResult();
 +			return;
 +		}
 +
++		Thread.CurrentThread.Name = "Entry Thread";
++
+-#if NETCORE
 +		#if NETCORE
 +		NativeLibraries.SetNativeLibraryPath(NativesDir);
+ 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
+-#else
 +		#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -31,9 +_,55 @@
+@@ -31,9 +_,38 @@
  				return Assembly.Load(array);
  			}
  		};
 -#endif
 +		#endif
-+
-+		if (!CoreModLoader.FindCoremods(args, out Mod[] coreMods)) {
-+			#if NETCORE
-+			AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
-+			#endif
-+
-+			// If no coremods are found, just launch tML normally.
-+			BeginEntrySequence(args);
-+			return;
-+		}
-+
-+		CoreModLoader.LaunchALCWithCoremods(args, coreMods);
-+	}
-+
-+	internal static void BeginEntrySequence(string[] args)
-+	{
-+		Thread.CurrentThread.Name = "Entry Thread";
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +
@@ -92,15 +73,7 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -50,24 +_,24 @@
- 
- 	// Note: AssemblyLoadContext.Default.ResolvingUnmanagedDll is only called if the dll is not found on PATH
- 	// In a production environment, you need to prepend to PATH prioritise your shipped libraries, making this logging mostly useless.
--	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
-+	internal static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
- 	{
- 		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario.
- 		lock (resolverLock) {
+@@ -57,17 +_,17 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
