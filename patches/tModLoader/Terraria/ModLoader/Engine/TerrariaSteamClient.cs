@@ -45,7 +45,7 @@ internal class TerrariaSteamClient
 		}
 
 		serverPipe = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-		var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+		var tMLName = Path.GetFileName(Program.tMLAssemblyLocation);
 		var proc = new Process() {
 			StartInfo = {
 				FileName = Environment.ProcessPath,

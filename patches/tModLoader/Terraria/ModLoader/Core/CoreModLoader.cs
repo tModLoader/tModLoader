@@ -61,12 +61,13 @@ internal static class CoreModLoader
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
 
-		// Set Launch Params, Save Paths, and Main Thread
+		// Set Launch Params, Save Paths, Main Thread, tML Directory
 		Type childProgramType = transformedChildtML.GetType("Terraria.Program")!;
 		childProgramType.GetField("LaunchParameters", BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.LaunchParameters);
 		childProgramType.GetField("SavePath", BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePath);
 		childProgramType.GetProperty("SavePathShared", BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePathShared);
 		childProgramType.GetProperty("MainThread", BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.MainThread);
+		childProgramType.GetProperty("tMLDirectory", BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.tMLAssemblyLocation);
 
 		// Set logging of child to be "tML_Child" for clarity's sake
 		Type childLoggingType = transformedChildtML.GetType("Terraria.ModLoader.Logging")!;
@@ -94,7 +95,6 @@ internal static class CoreModLoader
 		}
 
 		using MemoryStream assemblyStream = new MemoryStream();
-		using MemoryStream assemblySymbolStream = new MemoryStream();
 		childAssemblyDefinition.Write(assemblyStream);
 
 		assemblyStream.Position = 0;

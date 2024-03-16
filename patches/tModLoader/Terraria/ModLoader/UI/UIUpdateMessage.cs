@@ -112,7 +112,7 @@ internal class UIUpdateMessage : UIState
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		string installDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+		string installDirectory = Path.GetDirectoryName(Program.tMLAssemblyLocation);
 		string zipFileName = Path.GetFileName(new Uri(_autoUpdateUrl).LocalPath);
 		string zipFilePath = Path.Combine(installDirectory, zipFileName);
 
@@ -153,7 +153,7 @@ internal class UIUpdateMessage : UIState
 
 				File.Delete(zipFilePath);
 
-				string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+				string executableName = Path.GetFileName(Program.tMLAssemblyLocation);
 
 				Logging.tML.Info($"Renaming Terraria.exe -> {executableName}");
 				File.Move(Path.Combine(extractDir, "Terraria.exe"), Path.Combine(extractDir, executableName));
