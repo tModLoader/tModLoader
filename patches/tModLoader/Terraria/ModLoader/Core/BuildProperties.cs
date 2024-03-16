@@ -67,6 +67,7 @@ internal class BuildProperties
 	internal ModSide side;
 	internal bool playableOnPreview = true;
 	internal bool translationMod = false;
+	internal bool coreMod = false;
 
 	public IEnumerable<ModReference> Refs(bool includeWeak) =>
 		includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -150,6 +151,9 @@ internal class BuildProperties
 					break;
 				case "translationMod":
 					properties.translationMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+					break;
+				case "coreMod":
+					properties.coreMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
 				case "hideCode":
 					properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
@@ -236,6 +240,9 @@ internal class BuildProperties
 				if (translationMod) {
 					writer.Write("translationMod");
 				}
+				if (coreMod) {
+					writer.Write("coreMod");
+				}
 				if (!hideCode) {
 					writer.Write("!hideCode");
 				}
@@ -315,6 +322,9 @@ internal class BuildProperties
 				}
 				if (tag == "translationMod") {
 					properties.translationMod = true;
+				}
+				if (tag == "coreMod") {
+					properties.coreMod = true;
 				}
 				if (tag == "!hideCode") {
 					properties.hideCode = false;
