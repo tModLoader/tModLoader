@@ -55,11 +55,9 @@ internal static class CoreModLoader
 		_childALC = new ChildLoadContext();
 
 		Logging.tML.InfoFormat("Applying CoreMod transformers...");
-
 		AddTransformedAssemblies(GetAllDependentAssemblyLocations(), coreMods);
-
-		Assembly transformedChildtML = _transformedAssemblies[typeof(CoreModLoader).Assembly.GetName().Name!];
 		Logging.tML.InfoFormat("Success! Transformed Assemblies created.");
+		Assembly transformedChildtML = _transformedAssemblies[typeof(CoreModLoader).Assembly.GetName().Name!];
 
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
 		ModLoader.ClearMods();
