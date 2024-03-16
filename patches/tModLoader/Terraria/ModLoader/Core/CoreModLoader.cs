@@ -9,6 +9,7 @@ using System.Threading;
 using log4net;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Terraria.ModLoader.Engine;
 
 namespace Terraria.ModLoader.Core;
 internal static class CoreModLoader
@@ -23,6 +24,7 @@ internal static class CoreModLoader
 		protected override Assembly Load(AssemblyName assemblyName) {
 			return Default.LoadFromAssemblyName(assemblyName);
 		}
+
 	}
 
 	internal static bool FindCoreMods(string[] programArgs, out Mod[] coreMods)
@@ -54,28 +56,35 @@ internal static class CoreModLoader
 		_childALC = new ChildLoadContext();
 
 		Logging.tML.InfoFormat("Applying CoreMod transformers...");
+
 		Assembly transformedChildtML = ApplyTransformers(typeof(CoreModLoader).Assembly.Location, coreMods);
+		_childALC.ResolvingUnmanagedDll += MonoLaunch.ResolveNativeLibrary;
+
 		Logging.tML.InfoFormat("Success! Transformed tML Child Assembly Created.");
 
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
 
+		// Trigger Natives Resolving method
+		Type childNativeLibrariesType = transformedChildtML.GetType(typeof(NativeLibraries).FullName!)!;
+		childNativeLibrariesType.GetMethod(nameof(NativeLibraries.SetNativeLibraryPath), BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, new object[] { MonoLaunch.NativesDir });
+
 		// Set Launch Params, Save Paths, Main Thread, tML Directory
-		Type childProgramType = transformedChildtML.GetType("Terraria.Program")!;
-		childProgramType.GetField("LaunchParameters", BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.LaunchParameters);
-		childProgramType.GetField("SavePath", BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePath);
-		childProgramType.GetProperty("SavePathShared", BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePathShared);
-		childProgramType.GetProperty("MainThread", BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.MainThread);
-		childProgramType.GetProperty("tMLDirectory", BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.tMLAssemblyLocation);
+		Type childProgramType = transformedChildtML.GetType(typeof(Program).FullName!)!;
+		childProgramType.GetField(nameof(Program.LaunchParameters), BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.LaunchParameters);
+		childProgramType.GetField(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePath);
+		childProgramType.GetProperty(nameof(Program.SavePathShared), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePathShared);
+		childProgramType.GetProperty(nameof(Program.MainThread), BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.MainThread);
+		childProgramType.GetProperty(nameof(Program.tMLAssemblyLocation), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.tMLAssemblyLocation);
 
 		// Set logging of child to be "tML_Child" for clarity's sake
-		Type childLoggingType = transformedChildtML.GetType("Terraria.ModLoader.Logging")!;
-		childLoggingType.GetProperty("tML", BindingFlags.NonPublic | BindingFlags.Static)!.SetValue(null, LogManager.GetLogger("tML_CHILD"));
+		Type childLoggingType = transformedChildtML.GetType(typeof(Logging).FullName!)!;
+		childLoggingType.GetProperty(nameof(Logging.tML), BindingFlags.NonPublic | BindingFlags.Static)!.SetValue(null, LogManager.GetLogger("tML_CHILD"));
 
 		// Launch child ALC
 		Logging.tML.InfoFormat("Launching Transformed Child tML...");
-		childProgramType.GetMethod("LaunchGame_", BindingFlags.Public | BindingFlags.Static)!.Invoke(null, new object?[] { isServer });
+		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, new object?[] { isServer });
 	}
 
 	private static Assembly ApplyTransformers(string assemblyLocation, Mod[] coreMods)
