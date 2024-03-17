@@ -81,11 +81,9 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			}
 
 			// Enumerate
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				var npc = Main.npc[i];
-
-				// Ignore this npc if it's not active, or if it's friendly.
-				if (!npc.active || npc.friendly) {
+			foreach (var npc in Main.activeNpcs) {
+				// Ignore this npc if it's friendly.
+				if (npc.friendly) {
 					continue;
 				}
 

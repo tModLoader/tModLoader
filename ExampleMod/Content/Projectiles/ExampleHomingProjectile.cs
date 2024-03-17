@@ -53,9 +53,8 @@ namespace ExampleMod.Content.Projectiles
 			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-			// Loop through all NPCs(max always 200)
-			for (int k = 0; k < Main.maxNPCs; k++) {
-				NPC target = Main.npc[k];
+			// Loop through all NPCs
+			foreach (var target in Main.activeNpcs) {
 				// Check if NPC able to be targeted. It means that NPC is
 				// 1. active (alive)
 				// 2. chaseable (e.g. not a cultist archer)

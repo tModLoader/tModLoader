@@ -251,19 +251,15 @@ namespace ExampleMod.NPCs
 
 					// Ensure that all of the segments could spawn.  If they could not, despawn the worm entirely
 					int count = 0;
-					for (int i = 0; i < Main.maxNPCs; i++) {
-						NPC n = Main.npc[i];
-
-						if (n.active && (n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI)
+					foreach (var n in Main.activeNpcs) {
+						if ((n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI)
 							count++;
 					}
 
 					if (count != randomWormLength) {
 						// Unable to spawn all of the segments... kill the worm
-						for (int i = 0; i < Main.maxNPCs; i++) {
-							NPC n = Main.npc[i];
-
-							if (n.active && (n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI) {
+						foreach (var n in Main.activeNpcs) {
+							if ((n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI) {
 								n.active = false;
 								n.netUpdate = true;
 							}
@@ -326,14 +322,12 @@ namespace ExampleMod.NPCs
 
 				bool tooFar = true;
 
-				for (int i = 0; i < Main.maxPlayers; i++) {
+				foreach (var player in Main.activePlayers) {
 					Rectangle areaCheck;
-
-					Player player = Main.player[i];
 
 					if (ForcedTargetPosition is Vector2 target)
 						areaCheck = new Rectangle((int)target.X - maxDistance, (int)target.Y - maxDistance, maxDistance * 2, maxDistance * 2);
-					else if (player.active && !player.dead && !player.ghost)
+					else if (!player.dead && !player.ghost)
 						areaCheck = new Rectangle((int)player.position.X - maxDistance, (int)player.position.Y - maxDistance, maxDistance * 2, maxDistance * 2);
 					else
 						continue;  // Not a valid player

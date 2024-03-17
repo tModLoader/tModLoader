@@ -58,8 +58,8 @@ namespace ExampleMod.Content.Items.Tools
 		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook.
 		public override bool? CanUseGrapple(Player player) {
 			int hooksOut = 0;
-			for (int l = 0; l < 1000; l++) {
-				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == Projectile.type) {
+			foreach (var projectile in Main.activeProjectiles) {
+				if (projectile.owner == Main.myPlayer && projectile.type == Projectile.type) {
 					hooksOut++;
 				}
 			}
@@ -74,15 +74,15 @@ namespace ExampleMod.Content.Items.Tools
 		//	int hooksOut = 0;
 		//	int oldestHookIndex = -1;
 		//	int oldestHookTimeLeft = 100000;
-		//	for (int i = 0; i < 1000; i++)
+		//	foreach (var projectile in Main.activeProjectiles)
 		//	{
-		//		if (Main.projectile[i].active && Main.projectile[i].owner == projectile.whoAmI && Main.projectile[i].type == projectile.type)
+		//		if (projectile.owner == projectile.whoAmI && projectile.type == projectile.type)
 		//		{
 		//			hooksOut++;
-		//			if (Main.projectile[i].timeLeft < oldestHookTimeLeft)
+		//			if (projectile.timeLeft < oldestHookTimeLeft)
 		//			{
 		//				oldestHookIndex = i;
-		//				oldestHookTimeLeft = Main.projectile[i].timeLeft;
+		//				oldestHookTimeLeft = projectile.timeLeft;
 		//			}
 		//		}
 		//	}

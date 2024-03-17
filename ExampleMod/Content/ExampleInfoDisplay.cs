@@ -29,8 +29,7 @@ namespace ExampleMod.Content
 			// Counting how many minions we have
 			// This is the value that will show up when viewing this display in normal play, right next to the icon
 			int minionCount = 0;
-			for (int i = 0; i < Main.maxProjectiles; i++) {
-				Projectile proj = Main.projectile[i];
+			foreach (var proj in Main.activeProjectiles) {
 				if (proj.active && proj.minion && proj.owner == Main.myPlayer) {
 					minionCount++;
 				}
