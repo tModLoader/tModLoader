@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader;
 
-// Do not touch without benchamrking.
+// Do not touch without benchmarking.
 
 public ref struct ActiveEntityIterator<T> where T : Entity
 {
