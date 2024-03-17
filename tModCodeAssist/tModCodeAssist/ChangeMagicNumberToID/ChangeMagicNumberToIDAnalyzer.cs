@@ -37,7 +37,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
 		var searches = new Searches();
-
+		
 		ctx.RegisterCompilationStartAction(ctx => {
 			var dataEntries = ReadDataEntries(searches, ctx);
 
@@ -335,11 +335,15 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (additionalFileText == null)
 				continue;
 
+			ctx.CancellationToken.ThrowIfCancellationRequested();
+
 			if (!ctx.TryGetValue(additionalFileText, DeserializationProvider, out var dataEntries))
 				continue;
 
 			foreach (var dataEntry in dataEntries) {
 				foreach (var member in dataEntry.Members) {
+					ctx.CancellationToken.ThrowIfCancellationRequested();
+
 					string key = DataEntries.FormatName(dataEntry.MetadataName, member.Key, member.Value.ParameterName);
 
 					if (data.ContainsKey(key))

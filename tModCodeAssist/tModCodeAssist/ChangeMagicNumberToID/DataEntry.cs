@@ -8,7 +8,7 @@ using ReLogic.Reflection;
 
 namespace tModCodeAssist.ChangeMagicNumberToID;
 
-public sealed class DataEntries(Dictionary<string, DataEntries.MemberInfo> memberByItsFullyQualifiedName)
+public readonly struct DataEntries(Dictionary<string, DataEntries.MemberInfo> memberByItsFullyQualifiedName)
 {
 	public readonly struct MemberInfo(RawDataEntry.MemberInfo rawMemberInfo, string idClassMetadataName, IdDictionary search)
 	{
