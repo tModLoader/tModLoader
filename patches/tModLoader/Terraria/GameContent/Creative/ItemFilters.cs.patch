@@ -42,6 +42,35 @@
  					return true;
  			}
  
+@@ -107,6 +_,7 @@
+ 
+ 	public class Tools : IItemEntryFilter, IEntryFilter<Item>
+ 	{
++		/* Handled with ItemID.Sets.ToolsFilter automatically
+ 		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
+ 			509,
+ 			850,
+@@ -162,7 +_,7 @@
+ 			4711,
+ 			4049,
+ 			114
+-		};
++		};*/
+ 
+ 		public bool FitsFilter(Item entry)
+ 		{
+@@ -181,7 +_,11 @@
+ 			if (entry.tileWand != -1)
+ 				return true;
+ 
++			/* See the above comment
+ 			if (_itemIdsThatAreAccepted.Contains(entry.type))
++				return true;*/
++
++			if (ItemID.Sets.ToolsFilter[entry.type])
+ 				return true;
+ 
+ 			return false;
 @@ -354,7 +_,7 @@
  
  		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst)
