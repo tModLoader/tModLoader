@@ -25,8 +25,9 @@
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
-		<Reference Remove="$(tMLLibraryPath)/tModLoader.Analyzers/**/*.dll" />
-		<Analyzer Include="$(tMLLibraryPath)/tModLoader.Analyzers/**/*.dll" />
+		<Reference Remove="$(tMLLibraryPath)/tModCodeAssist/**/*.dll" />
+		<Analyzer Include="$(tMLLibraryPath)/tModCodeAssist/**/*.dll" />
+		<AdditionalFiles Include="$(tMLLibraryPath)/tModCodeAssist/1.0.0/Data/ChangeMagicNumberToID.Data.json" Visible="false" />
 	</ItemGroup>
 	<Target Name="BuildMod" AfterTargets="Build">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>

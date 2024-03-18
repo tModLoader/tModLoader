@@ -1,13 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -3,6 +_,7 @@
- 	<Import Project="../Configuration.targets" />
- 	<Import Project="../../WorkspaceInfo.targets" />
- 	<Import Project="../../../tModBuildTasks/BuildTasks.targets" />
-+  <Import Project="../../../tModAnalyzers/tModLoader.Analyzers.targets" />
- 
- 	<!-- General -->
- 	<PropertyGroup>
 @@ -11,45 +_,73 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
@@ -117,7 +109,7 @@
 +		<!-- Exclude tModPorter's metadata. -->
 +		<Delete Files="$(TargetDir)\tModPorter.runtimeconfig.json" />
 +		<Delete Files="$(TargetDir)\tModPorter.deps.json" />
-+    
++		
  		<!-- Copy files systematically to output folder -->
  		<ItemGroup>
  			<BinFiles Include="$(TargetDir)**" />
