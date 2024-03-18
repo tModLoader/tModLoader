@@ -4,6 +4,7 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -24,6 +25,15 @@ namespace ExampleMod.Content.NPCs
 	public class ExampleBoneMerchant : ModNPC
 	{
 		private static Profiles.StackedNPCProfile NPCProfile;
+		private static Asset<Texture2D> shimmerGun;
+
+		public override void Load() {
+			shimmerGun = ModContent.Request<Texture2D>(Texture + "_Shimmer_Gun");
+		}
+
+		public override void Unload() {
+			shimmerGun = null;
+		}
 
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
@@ -226,7 +236,7 @@ namespace ExampleMod.Content.NPCs
 			}
 			else {
 				// This texture isn't actually an existing item, but can still be used.
-				item = ModContent.Request<Texture2D>(Texture + "_Shimmer_Gun").Value;
+				item = shimmerGun.Value;
 				itemFrame = item.Frame();
 				horizontalHoldoutOffset = -2;
 			}

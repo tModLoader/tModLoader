@@ -8,6 +8,10 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExamplePalmTree : ModPalmTree
 	{
+		private Asset<Texture2D> texture;
+		private Asset<Texture2D> oasisTopsTexture;
+		private Asset<Texture2D> topsTexture;
+
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
 		//TODO: This needs some explanations
 		public override TreePaintingSettings TreeShaderSettings => new TreePaintingSettings {
@@ -26,7 +30,7 @@ namespace ExampleMod.Content.Tiles
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
 		// The first row will be the Ocean textures, the second row will be Oasis Textures.
 		public override Asset<Texture2D> GetTexture() {
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
+			return texture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
 		}
 
 		public override int SaplingGrowthType(ref int style) {
@@ -36,12 +40,12 @@ namespace ExampleMod.Content.Tiles
 
 		public override Asset<Texture2D> GetOasisTopTextures() {
 			// Palm Trees come in an Oasis variant. The Top Textures for it:
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
+			return oasisTopsTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
 		}
 
 		public override Asset<Texture2D> GetTopTextures() {
 			// Palm Trees come in a Beach variant. The Top Textures for it:
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
+			return topsTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
 		}
 
 		public override int DropWood() {

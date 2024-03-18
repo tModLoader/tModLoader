@@ -10,6 +10,10 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleTree : ModTree
 	{
+		private Asset<Texture2D> texture;
+		private Asset<Texture2D> branchesTexture;
+		private Asset<Texture2D> topsTexture;
+
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
 		// TODO: This needs some explanations
 		public override TreePaintingSettings TreeShaderSettings => new TreePaintingSettings {
@@ -27,7 +31,7 @@ namespace ExampleMod.Content.Tiles
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
 		public override Asset<Texture2D> GetTexture() {
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
+			return texture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
 		}
 
 		public override int SaplingGrowthType(ref int style) {
@@ -41,12 +45,12 @@ namespace ExampleMod.Content.Tiles
 
 		// Branch Textures
 		public override Asset<Texture2D> GetBranchTextures() {
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
+			return branchesTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
 		}
 
 		// Top Textures
 		public override Asset<Texture2D> GetTopTextures() {
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
+			return topsTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
 		}
 
 		public override int DropWood() {

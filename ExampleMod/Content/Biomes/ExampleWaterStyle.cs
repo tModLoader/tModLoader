@@ -35,8 +35,9 @@ namespace ExampleMod.Content.Biomes
 			return (byte)Main.rand.Next(3);
 		}
 
+		private Asset<Texture2D> rainTexture;
 		public override Asset<Texture2D> GetRainTexture() {
-			return ModContent.Request<Texture2D>("ExampleMod/Content/Biomes/ExampleRain");
+			return rainTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Biomes/ExampleRain");
 		}
 	}
 }
