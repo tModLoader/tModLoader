@@ -1,3 +1,5 @@
+using ReLogic.Reflection;
+
 namespace Terraria.ID;
 
 public static partial class DustID
@@ -270,4 +272,5 @@ public static partial class DustID
 	/// Lingers and scales with gravity enabled
 	/// </summary>
 	public const short LastPrism = 267;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(DustID), typeof(short));
 }
