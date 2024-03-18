@@ -603,9 +603,26 @@ public static class ModContent
 
 	internal static void TransferCompletedAssets()
 	{
-		foreach (var mod in ModLoader.Mods)
+		if (!ModLoader.isLoading) {
+			DoTransferCompletedAssets();
+			return;
+		}
+
+		// During mod loading, spin wait for assets to transfer. Note that SpinWait.SpinUntil uses a low resolution timer (~15ms on windows) so it may spin for up to that long.
+		// If any assets are queued we will continue to spend main thread time to transfer assets. We accept some frame stutter to hopefully sync up with repeated ImmediateLoad calls and get better throughput
+		var sw = Stopwatch.StartNew();
+		while (sw.ElapsedMilliseconds < 15 && SpinWait.SpinUntil(DoTransferCompletedAssets, millisecondsTimeout: 1)) { }
+	}
+
+	private static bool DoTransferCompletedAssets()
+	{
+		bool transferredAnything = false;
+		foreach (var mod in ModLoader.Mods) {
 			if (mod.Assets is AssetRepository assetRepo && !assetRepo.IsDisposed)
-				assetRepo.TransferCompletedAssets();
+				transferredAnything |= assetRepo.TransferCompletedAssets();
+		}
+
+		return false;
 	}
 
 	private class AssetWaitTracker : IDisposable
