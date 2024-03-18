@@ -1,4 +1,4 @@
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 using Terraria.ModLoader;
 #endif
 
@@ -6,7 +6,7 @@ namespace Terraria.ID;
 
 public partial class NPCID
 {
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	public static partial class Sets
 	{
 		public partial struct NPCBestiaryDrawModifiers

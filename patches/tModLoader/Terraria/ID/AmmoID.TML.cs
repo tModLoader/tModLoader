@@ -1,5 +1,5 @@
 using ReLogic.Reflection;
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 using Terraria.ModLoader;
 #endif
 
@@ -11,7 +11,7 @@ namespace Terraria.ID;
 /// </summary>
 partial class AmmoID
 {
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	partial class Sets
 	{
 		public static SetFactory Factory = new(ItemLoader.ItemCount);

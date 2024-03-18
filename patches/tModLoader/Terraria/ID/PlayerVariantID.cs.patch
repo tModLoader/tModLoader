@@ -7,7 +7,7 @@
  
  public static class PlayerVariantID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  	public class Sets
  	{
  		public static SetFactory Factory = new SetFactory(Count);

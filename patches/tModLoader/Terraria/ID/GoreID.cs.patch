@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/GoreID.cs
 +++ src/tModLoader/Terraria/ID/GoreID.cs
 @@ -1,14 +_,44 @@
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +using Terraria.ModLoader;
 +#endif
 +
@@ -10,7 +10,7 @@
 -public static class GoreID
 +public static partial class GoreID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{

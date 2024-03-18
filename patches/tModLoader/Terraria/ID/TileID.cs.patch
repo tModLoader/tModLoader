@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
 @@ -1,11 +_,17 @@
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using System.Collections.Generic;
 +#endif
  using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +using Terraria.ModLoader;
 +#endif
  
@@ -14,7 +14,7 @@
 -public class TileID
 +public partial class TileID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{

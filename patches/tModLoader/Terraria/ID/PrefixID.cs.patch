@@ -2,7 +2,7 @@
 +++ src/tModLoader/Terraria/ID/PrefixID.cs
 @@ -1,12 +_,24 @@
 +using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +using Terraria.ModLoader;
 +#endif
 +
@@ -10,7 +10,7 @@
  
  public class PrefixID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);

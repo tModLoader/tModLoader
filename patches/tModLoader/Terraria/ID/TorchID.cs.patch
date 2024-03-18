@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/TorchID.cs
 +++ src/tModLoader/Terraria/ID/TorchID.cs
 @@ -1,10 +_,14 @@
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using System.Runtime.InteropServices;
  using Microsoft.Xna.Framework;
 +#endif
@@ -11,7 +11,7 @@
  
  public static class TorchID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  	private interface ITorchLightProvider
  	{
  		void GetRGB(out float r, out float g, out float b);
@@ -29,7 +29,7 @@
  	public static readonly short Count = 24;
 +	public static readonly IdDictionary Search = IdDictionary.Create(typeof(TorchID), typeof(short)); // TML
  
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  	public static void Initialize()
  	{
  		ITorchLightProvider[] array = new ITorchLightProvider[Count];

@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
 @@ -1,25 +_,85 @@
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using Microsoft.Xna.Framework;
 +#endif
  using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  using Terraria.WorldBuilding;
@@ -16,7 +16,7 @@
 -public class ProjectileID
 +public partial class ProjectileID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{

@@ -6,7 +6,7 @@ partial class ArmorIDs
 {
 	partial class Head
 	{
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 		partial class Sets
 		{
 			// Created based on 'fullHair' definition in 'Player.GetHairSettings'.
@@ -56,7 +56,7 @@ partial class ArmorIDs
 
 	partial class Body
 	{
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 		partial class Sets
 		{
 			// Created based on 'hidesTopSkin' definition in 'PlayerDrawSet.BoringSetup'.
@@ -103,7 +103,7 @@ partial class ArmorIDs
 
 	partial class Legs
 	{
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 		partial class Sets
 		{
 			/// <summary>
@@ -160,7 +160,7 @@ partial class ArmorIDs
 
 	partial class Shoe
 	{
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 		partial class Sets
 		{
 			// Created based on 'PlayerDrawLayers.ShouldOverrideLegs_CheckShoes'.

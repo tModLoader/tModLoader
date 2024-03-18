@@ -2,7 +2,7 @@
 +++ src/tModLoader/Terraria/ID/BuffID.cs
 @@ -1,25 +_,89 @@
  using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +using Terraria.ModLoader;
 +#endif
  
@@ -12,7 +12,7 @@
 +public partial class BuffID
  {
 -	public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +	public partial class Sets
  	{
 +		/// <summary>

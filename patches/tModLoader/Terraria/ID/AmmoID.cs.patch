@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
 @@ -1,11 +_,18 @@
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using System.Collections.Generic;
 +#endif
  
@@ -11,7 +11,7 @@
 +public static partial class AmmoID
  {
 -	public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +	public partial class Sets
  	{
 +		/// <summary>

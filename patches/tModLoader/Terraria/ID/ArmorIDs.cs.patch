@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
 @@ -1,20 +_,49 @@
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using System.Collections.Generic;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
@@ -16,7 +16,7 @@
 +	public partial class Head
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -62,7 +62,7 @@
 +	public partial class Body
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 +			/// <summary>
@@ -184,7 +184,7 @@
 +	public partial class Legs
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -213,7 +213,7 @@
 +	public partial class HandOn
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -243,7 +243,7 @@
 +	public partial class HandOff
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -264,7 +264,7 @@
 +	public partial class Back
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -294,7 +294,7 @@
 +	public partial class Front
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -321,7 +321,7 @@
 +	public partial class Shoe
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -345,7 +345,7 @@
 +	public partial class Waist
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -375,7 +375,7 @@
 +	public partial class Wing
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 +			/// <summary>
@@ -414,7 +414,7 @@
 +	public partial class Face
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -470,7 +470,7 @@
 +	public partial class Balloon
  	{
 -		public class Sets
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
@@ -509,7 +509,7 @@
 -	public class Beard
 +	public partial class Beard
  	{
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  		public class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);

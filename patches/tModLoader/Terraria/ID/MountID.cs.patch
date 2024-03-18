@@ -2,7 +2,7 @@
 +++ src/tModLoader/Terraria/ID/MountID.cs
 @@ -1,13 +_,32 @@
 +using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +using Terraria.ModLoader;
 +#endif
 +
@@ -10,7 +10,7 @@
  
  public static class MountID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);

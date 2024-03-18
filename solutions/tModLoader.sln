@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoaderTests", "..\test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.BuildTasks", "..\tModBuildTasks\tModLoader.BuildTasks.csproj", "{3032A76C-7FC4-4E28-BB62-A8E632FCE79D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModCodeAssist", "..\tModCodeAssist\tModCodeAssist\tModCodeAssist.csproj", "{CE103AA8-1B7E-41D3-92B1-0A600B3685BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.Analyzers", "..\tModAnalyzers\tModLoader.Analyzers\tModLoader.Analyzers.csproj", "{CE103AA8-1B7E-41D3-92B1-0A600B3685BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModCodeAssist.CodeFixes", "..\tModCodeAssist\tModCodeAssist.CodeFixes\tModCodeAssist.CodeFixes.csproj", "{9351C9BA-E787-48A9-A2BD-CA5B9410B3C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.Analyzers.CodeFixes", "..\tModAnalyzers\tModLoader.Analyzers.CodeFixes\tModLoader.Analyzers.CodeFixes.csproj", "{9351C9BA-E787-48A9-A2BD-CA5B9410B3C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModCodeAssist.Tests", "..\tModCodeAssist\tModCodeAssist.Tests\tModCodeAssist.Tests.csproj", "{3F080A62-987E-471D-8096-781F525F253E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.Analyzers.Tests", "..\tModAnalyzers\tModLoader.Analyzers.Tests\tModLoader.Analyzers.Tests.csproj", "{3F080A62-987E-471D-8096-781F525F253E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

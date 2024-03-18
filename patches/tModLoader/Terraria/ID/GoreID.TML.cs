@@ -4,7 +4,7 @@ namespace Terraria.ID;
 
 public static partial class GoreID
 {
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	public static partial class Sets
 	{
 		// TML: Definition from 'Main.DrawGore()' and 'Main.DrawGoreBehind()'.

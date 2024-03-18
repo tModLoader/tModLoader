@@ -1,4 +1,4 @@
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 using System.Collections.Generic;
 #endif
 
@@ -6,7 +6,7 @@ namespace Terraria.ID;
 
 partial class ItemID
 {
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	partial class Sets
 	{
 		/// <summary>Used in <see cref="SandgunAmmoProjectileData"/>.</summary>

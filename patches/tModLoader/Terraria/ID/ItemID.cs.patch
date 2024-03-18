@@ -2,11 +2,11 @@
 +++ src/tModLoader/Terraria/ID/ItemID.cs
 @@ -1,22 +_,63 @@
  using System.Collections.Generic;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using Microsoft.Xna.Framework;
 +#endif
  using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
 +#endif
@@ -16,7 +16,7 @@
 -public class ItemID
 +public partial class ItemID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +	/// <summary>
 +	/// Determines the strength an NPC's banner has on players' interactions with that NPC. Used in <see cref="Sets.BannerStrength"/>
 +	/// </summary>

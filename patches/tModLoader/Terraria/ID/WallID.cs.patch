@@ -2,7 +2,7 @@
 +++ src/tModLoader/Terraria/ID/WallID.cs
 @@ -1,7 +_,13 @@
 +using ReLogic.Reflection;
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
 +using Terraria.ModLoader;
 +#endif
 +
@@ -10,7 +10,7 @@
  
  public class WallID
  {
-+#if !TMLCODEASSIST
++#if !TMLANALYZER
  	public static class Sets
  	{
  		public static class Conversion

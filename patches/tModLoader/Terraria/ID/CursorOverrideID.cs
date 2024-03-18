@@ -1,5 +1,5 @@
 using ReLogic.Reflection;
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 using Terraria.GameInput;
 #endif
 

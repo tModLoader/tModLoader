@@ -2,7 +2,7 @@ namespace Terraria.ID;
 
 partial class TileID
 {
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	partial class Sets
 	{
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);

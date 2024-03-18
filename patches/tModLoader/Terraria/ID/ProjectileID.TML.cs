@@ -2,7 +2,7 @@ namespace Terraria.ID;
 
 partial class ProjectileID
 {
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	partial class Sets
 	{
 		/// <summary>

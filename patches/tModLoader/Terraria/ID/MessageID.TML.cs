@@ -33,7 +33,7 @@ partial class MessageID
 
 	public static readonly IdDictionary Search = IdDictionary.Create<MessageID, byte>();
 
-#if !TMLCODEASSIST
+#if !TMLANALYZER
 	public static string GetName(int id) => Search.TryGetName(id, out string name) ? name : "Unknown";
 #endif
 }
