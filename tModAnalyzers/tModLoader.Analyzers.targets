@@ -1,5 +1,5 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="CopyAnalyzersToLibrariesFolder" BeforeTargets="Build">
+  <Target Name="CopyAnalyzersToLibrariesFolder" AfterTargets="Build">
     <ItemGroup>
       <DllFiles Include="tModLoader.Analyzers\bin\tModLoader.Analyzers.dll" />
       <DllFiles Include="tModLoader.Analyzers.CodeFixes\bin\tModLoader.Analyzers.CodeFixes.dll" />

@@ -4,7 +4,7 @@
  	<Import Project="../Configuration.targets" />
  	<Import Project="../../WorkspaceInfo.targets" />
  	<Import Project="../../../tModBuildTasks/BuildTasks.targets" />
-+	<Import Project="../../../tModAnalyzers/tModLoader.Analyzers.targets" />
++  <Import Project="../../../tModAnalyzers/tModLoader.Analyzers.targets" />
  
  	<!-- General -->
  	<PropertyGroup>
