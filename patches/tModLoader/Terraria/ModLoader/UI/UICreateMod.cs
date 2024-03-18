@@ -263,9 +263,6 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
-  </ItemGroup>
 </Project>";
 	}
 

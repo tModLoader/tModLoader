@@ -47,6 +47,7 @@ public static class Searches
 			[typeof(GoreID).FullName] = GoreID.Search,
 			[typeof(HousingCategoryID).FullName] = HousingCategoryID.Search,
 			[typeof(ImmunityCooldownID).FullName] = ImmunityCooldownID.Search,
+			[typeof(InvasionID).FullName] = InvasionID.Search,
 			[typeof(ItemAlternativeFunctionID).FullName] = ItemAlternativeFunctionID.Search,
 			[typeof(ItemHoldStyleID).FullName] = ItemHoldStyleID.Search,
 			[typeof(ItemID).FullName] = ItemID.Search,

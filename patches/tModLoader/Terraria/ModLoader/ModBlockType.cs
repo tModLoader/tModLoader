@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Annotations;
 
 namespace Terraria.ModLoader;
 
@@ -20,9 +21,11 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	public SoundStyle? HitSound { get; set; } = SoundID.Dig;
 
 	/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
+	[AssociatedIdType(typeof(DustID))]
 	public int DustType { get; set; }
 
 	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
+	[AssociatedIdType(typeof(TileID))] 
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
 	public abstract string LocalizationCategory { get; }

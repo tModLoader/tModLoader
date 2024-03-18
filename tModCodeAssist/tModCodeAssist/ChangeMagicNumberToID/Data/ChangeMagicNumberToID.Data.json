@@ -17,30 +17,64 @@
 	{
 		"IdClass": "Terraria.ID.AnimationID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Animation",
+				"Members": {
+					"NewTemporaryAnimation": { // Int32, Int16, Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "type"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.NetMessage",
+				"Members": {
+					"SendTemporaryAnimation": { // Int32, Int32, Int32, Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "animationType"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Head",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadArmorHead": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Body",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadArmorBody": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Legs",
 		"Data": [
-		]
-	},
-	{
-		"IdClass": "Terraria.ID.ArmorIDs+HandOff",
-		"Data": [
 			{
-				"MetadataName": "Terraria.Player",
+				"MetadataName": "Terraria.Main",
 				"Members": {
-					"handoff": { "Target": "Field" }
+					"LoadArmorLegs": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
 				}
 			}
 		]
@@ -48,6 +82,15 @@
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+HandOn",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccHandsOn": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			},
 			{
 				"MetadataName": "Terraria.Player",
 				"Members": {
@@ -57,48 +100,149 @@
 		]
 	},
 	{
+		"IdClass": "Terraria.ID.ArmorIDs+HandOff",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccHandsOff": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Player",
+				"Members": {
+					"handoff": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
 		"IdClass": "Terraria.ID.ArmorIDs+Back",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccBack": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Front",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccFront": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Shoe",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccShoes": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Waist",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccWaist": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Wing",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadWings": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Shield",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccShield": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Neck",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccNeck": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Face",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccFace": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Balloon",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccBalloon": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
@@ -109,6 +253,15 @@
 	{
 		"IdClass": "Terraria.ID.ArmorIDs+Beard",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadAccBeard": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
@@ -119,6 +272,49 @@
 	{
 		"IdClass": "Terraria.ID.BuffID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Lang",
+				"Members": {
+					"GetBuffName": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "id"
+					},
+					"GetBuffDescription": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "id"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"GetBuffTooltip": { // Terraria.Player, Int32
+						"Target": "Parameter",
+						"ParameterName": "buffType"
+					},
+					"TryRemovingBuff_CheckBuffHideMisc": { // Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "buffID"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Mount",
+				"Members": {
+					"BuffType": { "Target": "Property" },
+					"CheckBuff": {
+						"Target": "Parameter",
+						"ParameterName": "buffID"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Mount+MountData",
+				"Members": {
+					"buff": { "Target": "Field" },
+					"extraBuff": { "Target": "Field" }
+				}
+			}
 		]
 	},
 	{
@@ -129,6 +325,12 @@
 	{
 		"IdClass": "Terraria.ID.CloudID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Cloud",
+				"Members": {
+					"type": { "Target": "Field" }
+				}
+			}
 		]
 	},
 	{
@@ -147,24 +349,19 @@
 			{
 				"MetadataName": "Terraria.Dust",
 				"Members": {
-					"NewDust": {
+					"NewDust": { // Any overload
 						"Target": "Parameter",
 						"ParameterName": "Type"
 					},
-					"NewDustDirect": {
+					"NewDustDirect": { // Any overload
 						"Target": "Parameter",
 						"ParameterName": "Type"
 					},
-					"NewDustPerfect": {
+					"NewDustPerfect": { // Any overload
 						"Target": "Parameter",
 						"ParameterName": "Type"
-					}
-				}
-			},
-			{
-				"MetadataName": "Terraria.ModLoader.ModBlockType",
-				"Members": {
-					"DustType": { "Target": "Property" }
+					},
+					"type": { "Target": "Field" }
 				}
 			}
 		]
@@ -172,6 +369,15 @@
 	{
 		"IdClass": "Terraria.GameContent.UI.EmoteID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Lang",
+				"Members": {
+					"GetEmojiName": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "id"
+					}
+				}
+			}
 		]
 	},
 	{
@@ -202,6 +408,33 @@
 	{
 		"IdClass": "Terraria.ID.GoreID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Gore",
+				"Members": {
+					"NewGore": { // Any overload
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"NewGoreDirect": { // Any overload
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"NewGorePerfect": { // Any overload
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"type": { "Target": "Field" }
+				}
+			},
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadGore": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
@@ -212,6 +445,25 @@
 	{
 		"IdClass": "Terraria.ID.ImmunityCooldownID",
 		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.InvasionID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"CanStartInvasion": { // Int32, Boolean
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"StartInvasion": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"invasionType": { "Target": "Field" }
+				}
+			}
 		]
 	},
 	{
@@ -230,99 +482,147 @@
 			{
 				"MetadataName": "Terraria.Item",
 				"Members": {
-					"type": { "Target": "Field" },
-
 					".ctor(Int32, Int32, Int32)": {
 						"Target": "Parameter",
 						"ParameterName": "setDefaultsToType"
 					},
-
-					"StartCachingType": {
-						"Target": "Parameter",
-						"ParameterName": "t"
-					},
-
-					"DropCache": {
-						"Target": "Parameter",
-						"ParameterName": "t"
-					},
-
-					"netDefaults": {
-						"Target": "Parameter",
-						"ParameterName": "t"
-					},
-
 					"BannerToItem": { "Target": "ReturnValue" },
-
-					"SetDefaults1": {
-						"Target": "Parameter",
-						"ParameterName": "type"
-					},
-
-					"SetDefaults2": {
-						"Target": "Parameter",
-						"ParameterName": "type"
-					},
-
-					"SetDefaults3": {
-						"Target": "Parameter",
-						"ParameterName": "type"
-					},
-
-					"SetDefaults4": {
-						"Target": "Parameter",
-						"ParameterName": "type"
-					},
-
-					"SetDefaults5": {
-						"Target": "Parameter",
-						"ParameterName": "type"
-					},
-
 					"ChangeItemType": {
 						"Target": "Parameter",
 						"ParameterName": "to"
 					},
-
-					// Any overload
-					"SetDefaults": {
+					"DropCache": {
 						"Target": "Parameter",
-						"ParameterName": "Type"
+						"ParameterName": "t"
 					},
-
-					"TypeToClone": {
-						"Target": "Parameter",
-						"ParameterName": "TypeToClone"
-					},
-
-					"ResetStats": {
-						"Target": "Parameter",
-						"ParameterName": "Type"
-					},
-
 					"MechSpawn": {
 						"Target": "Parameter",
 						"ParameterName": "type"
 					},
-
-					// Any overload
-					"NewItem": {
+					"NewItem": { // Any overload
 						"Target": "Parameter",
 						"ParameterName": "Type"
+					},
+					"ResetStats": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"SetDefaults": { // Any overload
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"SetDefaults1": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"SetDefaults2": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"SetDefaults3": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"SetDefaults4": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"SetDefaults5": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+					"TypeToClone": {
+						"Target": "Parameter",
+						"ParameterName": "TypeToClone"
+					},
+					"StartCachingType": {
+						"Target": "Parameter",
+						"ParameterName": "t"
+					},
+					"netDefaults": {
+						"Target": "Parameter",
+						"ParameterName": "t"
+					},
+					"type": { "Target": "Field" }
+				}
+			},
+			{
+				"MetadataName": "Terraria.Lang",
+				"Members": {
+					"GetItemName": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "id"
+					},
+					"GetItemNameValue": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "id"
+					},
+					"GetTooltip": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "itemId"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"DrawPlayerItemPos": { // Single, Int32
+						"Target": "Parameter",
+						"ParameterName": "itemtype"
+					},
+					"GetItemDrawFrame": {
+						"Target": "Parameter",
+						"ParameterName": "item"
+					},
+					"LoadItem": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					},
+					"LoadItemFlames": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					},
+					"RegisterItemAnimation": { // Int32, Terraria.DataStructures.DrawAnimation
+						"Target": "Parameter",
+						"ParameterName": "index"
 					}
 				}
 			},
 			{
 				"MetadataName": "Terraria.Recipe",
 				"Members": {
-					"Create(Int32, Int32)": {
+					"AcceptedByItemGroups": { // Int32, Int32
 						"Target": "Parameter",
-						"ParameterName": "result"
+						"ParameterName": "invType"
 					},
-					"AddIngredient(Int32, Int32)": {
+					"AddCustomShimmerResult": { // Int32, Int32
 						"Target": "Parameter",
-						"ParameterName": "itemID"
+						"ParameterName": "itemType"
+					},
+					"ContainsIngredient": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "itemType"
+					},
+					"ProcessGroupsForText": { // Int32, out String
+						"Target": "Parameter",
+						"ParameterName": "type"
 					}
+				}
+			},
+			{
+				// A hack for duplicate members.
+				"MetadataName": "Terraria.Recipe",
+				"Members": {
+					"AcceptedByItemGroups": { // Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "reqType"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.RecipeGroup",
+				"Members": {
+					"IconicItemId": { "Target": "Field" }
 				}
 			}
 		]
@@ -357,16 +657,61 @@
 	{
 		"IdClass": "Terraria.ID.LiquidID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Liquid",
+				"Members": {
+					"GetLiquidMergeTypes": { // Int32, out Int32, out Int32, Boolean, Boolean, Boolean, Boolean
+						"Target": "Parameter",
+						"ParameterName": "thisLiquidType"
+					},
+					"LiquidCheck": { // Int32, Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "thisLiquidType"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.MessageID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.NetMessage",
+				"Members": {
+					"SendData": { // Int32, Int32, Int32, Terraria.Localization.NetworkText, Int32, Single, Single, Single, Int32, Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "msgType"
+					},
+					"TrySendData": { // Int32, Int32, Int32, Terraria.Localization.NetworkText, Int32, Single, Single, Single, Int32, Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "msgType"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.MountID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Mount",
+				"Members": {
+					"CanMount": { // Int32, Terraria.Player
+						"Target": "Parameter",
+						"ParameterName": "m"
+					},
+					"GetHeightBoost": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "MountType"
+					},
+					"SetMount": { // Int32, Terraria.Player, Boolean
+						"Target": "Parameter",
+						"ParameterName": "m"
+					},
+					"Type": { "Target": "Property" },
+					"_type": { "Target": "Field" }
+				}
+			}
 		]
 	},
 	{
@@ -402,6 +747,36 @@
 				"MetadataName": "Terraria.NPC",
 				"Members": {
 					"type": { "Target": "Field" }
+				}
+			},
+			{
+				"MetadataName": "Terraria.Lang",
+				"Members": {
+					"GetNPCName": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "netID"
+					},
+					"GetNPCNameValue": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "netID"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"IsNPCActiveAndOneOfTypes": { // Int32, Int32[]
+						"Target": "Parameter",
+						"ParameterName": "types"
+					},
+					"LoadNPC": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					},
+					"SetMouseNPC": { // Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "type"
+					}
 				}
 			}
 		]
@@ -446,11 +821,28 @@
 				}
 			},
 			{
+				"MetadataName": "Terraria.Lang",
+				"Members": {
+					"GetProjectileName(Int32)": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					}
+				}
+			},
+			{
 				"MetadataName": "Terraria.Main",
 				"Members": {
-					"NewProjectile": {
+					"LoadProjectile": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					},
+					"NewProjectile": { // Any overload
 						"Target": "Parameter",
 						"ParameterName": "Type"
+					},
+					"PlayInteractiveProjectileOpenCloseSound": { // Int32, Boolean
+						"Target": "Parameter",
+						"ParameterName": "projType"
 					}
 				}
 			}
@@ -462,9 +854,9 @@
 			{
 				"MetadataName": "Terraria.Recipe",
 				"Members": {
-					"AddRecipeGroup(Int32, Int32)": {
+					"AcceptsGroup": { // Int32
 						"Target": "Parameter",
-						"ParameterName": "recipeGroupId"
+						"ParameterName": "groupId"
 					}
 				}
 			}
@@ -489,17 +881,41 @@
 		"IdClass": "Terraria.ID.TileID",
 		"Data": [
 			{
+				"MetadataName": "Terraria.Collision",
+				"Members": {
+					"CanTileHurt": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Collision+HurtTile",
+				"Members": {
+					"type": { "Target": "Field" }
+				}
+			},
+			{
 				"MetadataName": "Terraria.Item",
 				"Members": {
 					"createTile": { "Target": "Field" }
 				}
 			},
 			{
-				"MetadataName": "Terraria.Recipe",
+				"MetadataName": "Terraria.Main",
 				"Members": {
-					"AddTile(Int32)": {
+					"LoadTiles": { // Int32
 						"Target": "Parameter",
-						"ParameterName": "tileID"
+						"ParameterName": "i"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.NetMessage",
+				"Members": {
+					"SendTemporaryAnimation": { // Int32, Int32, Int32, Int32, Int32
+						"Target": "Parameter",
+						"ParameterName": "tileType"
 					}
 				}
 			}
@@ -513,11 +929,29 @@
 	{
 		"IdClass": "Terraria.ID.WallID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"LoadWall": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "i"
+					}
+				}
+			}
 		]
 	},
 	{
 		"IdClass": "Terraria.ID.WaterStyleID",
 		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"IsLiquidStyleWater": { // Int32
+						"Target": "Parameter",
+						"ParameterName": "liquidStyle"
+					}
+				}
+			}
 		]
 	}
 ]

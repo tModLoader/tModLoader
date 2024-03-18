@@ -8,6 +8,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Annotations;
 
 namespace Terraria;
 
@@ -119,7 +120,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return result != null;
 	}
 
-	public void DropFromItem(int itemType)
+	public void DropFromItem([AssociatedIdType(typeof(ItemID))] int itemType)
 	{
 		DropAttemptInfo info = new() {
 			player = this,
@@ -172,7 +173,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		=> Main.item[QuickSpawnItem(source, type, stack)];
 
 	/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
-	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
+	public bool HasBuff([AssociatedIdType(typeof(BuffID))] int type) => FindBuffIndex(type) != -1;
 
 	/// <inheritdoc cref="HasBuff(int)" />
 	public bool HasBuff<T>() where T : ModBuff

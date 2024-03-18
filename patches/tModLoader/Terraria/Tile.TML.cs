@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Terraria.ID;
+using Terraria.ModLoader.Annotations;
 
 #pragma warning disable IDE0060 // Remove unused parameter
 
@@ -29,12 +30,14 @@ public readonly partial struct Tile
 	/// This value is only valid if <see cref="HasTile"/> is true.<br/>
 	/// Legacy/vanilla equivalent is <see cref="type"/>.
 	/// </summary>
+	[AssociatedIdType(typeof(TileID))]
 	public ref ushort TileType => ref Get<TileTypeData>().Type;
 	/// <summary>
 	/// The <see cref="WallID"/> of the wall at this position.<br/>
 	/// A value of 0 indicates no wall.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wall"/>.
 	/// </summary>
+	[AssociatedIdType(typeof(WallID))]
 	public ref ushort WallType => ref Get<WallTypeData>().Type;
 
 	/// <summary>

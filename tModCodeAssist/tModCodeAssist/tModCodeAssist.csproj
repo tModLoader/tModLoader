@@ -49,8 +49,6 @@
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\TileEntityID.cs" />
 		<!-- All IDs are literally just -1. -->
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\CustomCurrencyID.cs" />
-		<!-- Why there constants with same values -->
-		<Compile Remove="$(tMLSourcePath)\Terraria\ID\InvasionID.cs" />
 		<!-- Excluded cause the only thing this has is Count field. -->
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\HairID.cs" />
 		<!-- Is it really necessary? -->
@@ -79,7 +77,7 @@
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\CloudID.cs" Link="ChangeMagicNumberToID\Data\tML\CloudID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\CursorOverrideID.cs" Link="ChangeMagicNumberToID\Data\tML\CursorOverrideID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\DashID.cs" Link="ChangeMagicNumberToID\Data\tML\DashID.cs" />
-    <Compile Update="$(tMLSourcePath)\Terraria\ID\DustID.cs" Link="ChangeMagicNumberToID\Data\tML\DustID.cs" />
+		<Compile Update="$(tMLSourcePath)\Terraria\ID\DustID.cs" Link="ChangeMagicNumberToID\Data\tML\DustID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\DustID.TML.cs" Link="ChangeMagicNumberToID\Data\tML\DustID.TML.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\ExtrasID.cs" Link="ChangeMagicNumberToID\Data\tML\ExtrasID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\GameEventClearedID.cs" Link="ChangeMagicNumberToID\Data\tML\GameEventClearedID.cs" />
@@ -89,6 +87,7 @@
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\GoreID.TML.cs" Link="ChangeMagicNumberToID\Data\tML\GoreID.TML.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\HousingCategoryID.cs" Link="ChangeMagicNumberToID\Data\tML\HousingCategoryID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\ImmunityCooldownID.cs" Link="ChangeMagicNumberToID\Data\tML\ImmunityCooldownID.cs" />
+    <Compile Update="$(tMLSourcePath)\Terraria\ID\InvasionID.cs" Link="ChangeMagicNumberToID\Data\tML\InvasionID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\ItemAlternativeFunctionID.cs" Link="ChangeMagicNumberToID\Data\tML\ItemAlternativeFunctionID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\ItemHoldStyleID.cs" Link="ChangeMagicNumberToID\Data\tML\ItemHoldStyleID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\ItemID.cs" Link="ChangeMagicNumberToID\Data\tML\ItemID.cs" />

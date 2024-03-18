@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Annotations;
 using Terraria.ModLoader.Core;
 
 namespace Terraria;
@@ -276,7 +277,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
 	/// </summary>
 	/// <param name="buffType"></param>
-	public void BecomeImmuneTo(int buffType)
+	public void BecomeImmuneTo([AssociatedIdType(typeof(BuffID))] int buffType)
 	{
 		buffImmune[buffType] = true; 
 
@@ -289,6 +290,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		}
 	}
 
+	/// <summary>
 	/// Clears all buffs on this NPC that the NPC is currently immune (<see cref="buffImmune"/>) to. The buff types and times will then be synced to clients. Use after manually changing <see cref="buffImmune"/> or using <see cref="BecomeImmuneTo(int)"/>.<br/><br/>
 	/// <paramref name="anyBuffsCleared"/> will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br/><br/>
 	/// This should not be called on multiplayer clients.
