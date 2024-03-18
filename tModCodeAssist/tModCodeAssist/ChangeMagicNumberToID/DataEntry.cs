@@ -10,7 +10,7 @@ namespace tModCodeAssist.ChangeMagicNumberToID;
 
 public readonly struct DataEntries(Dictionary<string, DataEntries.MemberInfo> memberByItsFullyQualifiedName)
 {
-	public readonly struct MemberInfo(RawDataEntry.MemberInfo rawMemberInfo, string idClassMetadataName, IdDictionary search)
+	public readonly struct MemberInfo(RawData.MemberInfo rawMemberInfo, string idClassMetadataName, IdDictionary search)
 	{
 		public AttributeTargets Target { get; } = rawMemberInfo.Target;
 		public string? ParameterName { get; } = rawMemberInfo.ParameterName;
@@ -22,12 +22,14 @@ public readonly struct DataEntries(Dictionary<string, DataEntries.MemberInfo> me
 
 	public bool ContainsKey(string formattedName)
 	{
-		return MemberByItsFullyQualifiedName.ContainsKey(formattedName);
+		return MemberByItsFullyQualifiedName?.ContainsKey(formattedName) ?? false;
 	}
 
 	public bool TryGetValue(string formattedName, [NotNullWhen(true)] out MemberInfo memberInfo)
 	{
-		return MemberByItsFullyQualifiedName.TryGetValue(formattedName, out memberInfo);
+		memberInfo = default;
+
+		return MemberByItsFullyQualifiedName?.TryGetValue(formattedName, out memberInfo) ?? false;
 	}
 
 	public static string FormatName(string containingClassName, string memberName, string? parameterName = null)
@@ -39,8 +41,14 @@ public readonly struct DataEntries(Dictionary<string, DataEntries.MemberInfo> me
 	}
 }
 
-public sealed record class RawDataEntry
+public sealed record class RawData
 {
+	public sealed record class Entry
+	{
+		public string MetadataName { get; set; } = null!;
+		public Dictionary<string, MemberInfo> Members { get; set; } = null!;
+	}
+
 	public record class MemberInfo
 	{
 		[JsonConverter(typeof(JsonStringEnumConverter))]
@@ -49,6 +57,6 @@ public sealed record class RawDataEntry
 		public string? ParameterName { get; set; }
 	}
 
-	public string MetadataName { get; set; } = null!;
-	public Dictionary<string, MemberInfo> Members { get; set; } = null!;
+	public string IdClass { get; set; } = null!;
+	public List<Entry> Data { get; set; } = null!;
 }

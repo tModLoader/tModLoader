@@ -1,8 +1,0 @@
-﻿[
-	{
-		"MetadataName": "Terraria.Player",
-		"Members": {
-			"handoff": { "Target": "Field" }
-		}
-	}
-]

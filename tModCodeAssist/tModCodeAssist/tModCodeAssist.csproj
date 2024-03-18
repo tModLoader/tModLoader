@@ -49,8 +49,6 @@
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\TileEntityID.cs" />
 		<!-- All IDs are literally just -1. -->
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\CustomCurrencyID.cs" />
-		<!-- Dusts are excluded for now, because of how weird their IDs are. -->
-		<Compile Remove="$(tMLSourcePath)\Terraria\ID\DustID*.cs" />
 		<!-- Why there constants with same values -->
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\InvasionID.cs" />
 		<!-- Excluded cause the only thing this has is Count field. -->
@@ -66,7 +64,7 @@
 		<!-- Literally just one ID. -->
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\TreeTopID.cs" />
 	</ItemGroup>
-
+  
 	<ItemGroup>
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\AchievementHelperID.cs" Link="ChangeMagicNumberToID\Data\tML\AchievementHelperID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\AmmoID.cs" Link="ChangeMagicNumberToID\Data\tML\AmmoID.cs" />
@@ -81,6 +79,8 @@
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\CloudID.cs" Link="ChangeMagicNumberToID\Data\tML\CloudID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\CursorOverrideID.cs" Link="ChangeMagicNumberToID\Data\tML\CursorOverrideID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\DashID.cs" Link="ChangeMagicNumberToID\Data\tML\DashID.cs" />
+    <Compile Update="$(tMLSourcePath)\Terraria\ID\DustID.cs" Link="ChangeMagicNumberToID\Data\tML\DustID.cs" />
+		<Compile Update="$(tMLSourcePath)\Terraria\ID\DustID.TML.cs" Link="ChangeMagicNumberToID\Data\tML\DustID.TML.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\ExtrasID.cs" Link="ChangeMagicNumberToID\Data\tML\ExtrasID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\GameEventClearedID.cs" Link="ChangeMagicNumberToID\Data\tML\GameEventClearedID.cs" />
 		<Compile Update="$(tMLSourcePath)\Terraria\ID\GameModeID.cs" Link="ChangeMagicNumberToID\Data\tML\GameModeID.cs" />
@@ -141,7 +141,7 @@
 	<Target Name="CopyNecessaryInfoToTml" AfterTargets="Build">
 		<ItemGroup>
 			<DllFile Include="$(OutDir)\tModCodeAssist.dll" />
-			<DataFile Include="ChangeMagicNumberToID\Data\ChangeMagicNumberToID-*.json" />
+			<DataFile Include="ChangeMagicNumberToID\Data\ChangeMagicNumberToID.Data.json" />
 		</ItemGroup>
 		
 		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0" />

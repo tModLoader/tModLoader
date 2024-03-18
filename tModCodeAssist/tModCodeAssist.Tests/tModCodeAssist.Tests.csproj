@@ -3,7 +3,7 @@
 	<Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -16,16 +16,13 @@
 		<ProjectReference Include="..\tModCodeAssist\tModCodeAssist.csproj" />
 		<ProjectReference Include="..\tModCodeAssist.CodeFixes\tModCodeAssist.CodeFixes.csproj" />
 		
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
-		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.3.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.9.2" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.MSTest" Version="1.1.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.MSTest" Version="1.1.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.MSTest" Version="1.1.1" />
-		<PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Analyzer.Testing.MSTest" Version="1.1.1" />
-		<PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeFix.Testing.MSTest" Version="1.1.1" />
-		<PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeRefactoring.Testing.MSTest" Version="1.1.1" />
 	</ItemGroup>
 	
 </Project>

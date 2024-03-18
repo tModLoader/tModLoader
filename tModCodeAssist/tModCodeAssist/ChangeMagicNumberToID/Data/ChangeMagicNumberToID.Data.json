@@ -1,0 +1,523 @@
+﻿[
+	{
+		"IdClass": "Terraria.ID.AchievementHelperID+Events",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.AchievementHelperID+Special",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.AmmoID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.AnimationID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Head",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Body",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Legs",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+HandOff",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Player",
+				"Members": {
+					"handoff": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+HandOn",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Player",
+				"Members": {
+					"handon": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Back",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Front",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Shoe",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Waist",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Wing",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Shield",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Neck",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Face",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Balloon",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+RocketBoots",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ArmorIDs+Beard",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.BiomeConversionID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.BuffID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ChainID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.CloudID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.CursorOverrideID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.DashID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.DustID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Dust",
+				"Members": {
+					"NewDust": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"NewDustDirect": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+					"NewDustPerfect": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.ModLoader.ModBlockType",
+				"Members": {
+					"DustType": { "Target": "Property" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.GameContent.UI.EmoteID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.GameContent.UI.EmoteID+Category",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ExtrasID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.GameEventClearedID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.GameModeID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.GlowMaskID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.GoreID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.HousingCategoryID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ImmunityCooldownID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ItemAlternativeFunctionID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ItemHoldStyleID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ItemID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Item",
+				"Members": {
+					"type": { "Target": "Field" },
+
+					".ctor(Int32, Int32, Int32)": {
+						"Target": "Parameter",
+						"ParameterName": "setDefaultsToType"
+					},
+
+					"StartCachingType": {
+						"Target": "Parameter",
+						"ParameterName": "t"
+					},
+
+					"DropCache": {
+						"Target": "Parameter",
+						"ParameterName": "t"
+					},
+
+					"netDefaults": {
+						"Target": "Parameter",
+						"ParameterName": "t"
+					},
+
+					"BannerToItem": { "Target": "ReturnValue" },
+
+					"SetDefaults1": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+
+					"SetDefaults2": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+
+					"SetDefaults3": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+
+					"SetDefaults4": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+
+					"SetDefaults5": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+
+					"ChangeItemType": {
+						"Target": "Parameter",
+						"ParameterName": "to"
+					},
+
+					// Any overload
+					"SetDefaults": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+
+					"TypeToClone": {
+						"Target": "Parameter",
+						"ParameterName": "TypeToClone"
+					},
+
+					"ResetStats": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					},
+
+					"MechSpawn": {
+						"Target": "Parameter",
+						"ParameterName": "type"
+					},
+
+					// Any overload
+					"NewItem": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					}
+				}
+			},
+			{
+				"MetadataName": "Terraria.Recipe",
+				"Members": {
+					"Create(Int32, Int32)": {
+						"Target": "Parameter",
+						"ParameterName": "result"
+					},
+					"AddIngredient(Int32, Int32)": {
+						"Target": "Parameter",
+						"ParameterName": "itemID"
+					}
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ItemRarityID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Item",
+				"Members": {
+					"rare": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ItemUseStyleID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Item",
+				"Members": {
+					"useStyle": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.LangID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.LiquidID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.MessageID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.MountID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.MusicID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.NetmodeID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"netMode": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.NPCAIStyleID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.NPCHeadID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.NPCID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.NPC",
+				"Members": {
+					"type": { "Target": "Field" }
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.PaintCoatingID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.PlayerDifficultyID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.PlayerTextureID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.PlayerVariantID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.PrefixID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ProjAIStyleID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.ProjectileID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Item",
+				"Members": {
+					"shoot": { "Target": "Field" }
+				}
+			},
+			{
+				"MetadataName": "Terraria.Main",
+				"Members": {
+					"NewProjectile": {
+						"Target": "Parameter",
+						"ParameterName": "Type"
+					}
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.RecipeGroupID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Recipe",
+				"Members": {
+					"AddRecipeGroup(Int32, Int32)": {
+						"Target": "Parameter",
+						"ParameterName": "recipeGroupId"
+					}
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.StatusID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.SurfaceBackgroundID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.TeleportationStyleID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.TileID",
+		"Data": [
+			{
+				"MetadataName": "Terraria.Item",
+				"Members": {
+					"createTile": { "Target": "Field" }
+				}
+			},
+			{
+				"MetadataName": "Terraria.Recipe",
+				"Members": {
+					"AddTile(Int32)": {
+						"Target": "Parameter",
+						"ParameterName": "tileID"
+					}
+				}
+			}
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.TorchID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.WallID",
+		"Data": [
+		]
+	},
+	{
+		"IdClass": "Terraria.ID.WaterStyleID",
+		"Data": [
+		]
+	}
+]

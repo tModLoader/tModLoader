@@ -14,7 +14,7 @@ partial class Verifier
 		{
 			public Test(string testCode, IEnumerable<DiagnosticResult> expected) : base()
 			{
-				ReferenceAssemblies = ReferenceAssemblies.Net.Net60;
+				ReferenceAssemblies = MetadataReferences.Net80;
 
 				TestCode = testCode.ReplaceLineEndings();
 

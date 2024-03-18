@@ -5,11 +5,11 @@ using Terraria.ID;
 
 namespace tModCodeAssist.ChangeMagicNumberToID;
 
-public sealed class Searches
+public static class Searches
 {
-	private readonly Dictionary<string, IdDictionary> dictByMetadataName;
+	private static readonly Dictionary<string, IdDictionary> dictByMetadataName;
 
-	public Searches()
+	static Searches()
 	{
 		dictByMetadataName = new Dictionary<string, IdDictionary> {
 			[typeof(AchievementHelperID.Events).FullName] = AchievementHelperID.Events.Search,
@@ -37,6 +37,7 @@ public sealed class Searches
 			[typeof(CloudID).FullName] = CloudID.Search,
 			[typeof(CursorOverrideID).FullName] = CursorOverrideID.Search,
 			[typeof(DashID).FullName] = DashID.Search,
+			[typeof(DustID).FullName] = DustID.Search,
 			[typeof(EmoteID).FullName] = EmoteID.Search,
 			[typeof(EmoteID.Category).FullName] = EmoteID.Category.Search,
 			[typeof(ExtrasID).FullName] = ExtrasID.Search,
@@ -78,7 +79,7 @@ public sealed class Searches
 		};
 	}
 
-	public bool TryGetByMetadataName(string metadataName, out IdDictionary search)
+	public static bool TryGetByMetadataName(string metadataName, out IdDictionary search)
 	{
 		return dictByMetadataName.TryGetValue(metadataName, out search);
 	}

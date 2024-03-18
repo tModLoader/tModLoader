@@ -30,16 +30,34 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		AllowTrailingCommas = true,
 	};
 
-	private static readonly SourceTextValueProvider<RawDataEntry[]> DeserializationProvider = new(sourceText => {
-		return JsonSerializer.Deserialize<RawDataEntry[]>(sourceText.ToString(), DeserializerOptions);
+	private static readonly SourceTextValueProvider<DataEntries> DeserializationProvider = new(sourceText => {
+		var rawDatas = JsonSerializer.Deserialize<RawData[]>(sourceText.ToString(), DeserializerOptions);
+		var data = new Dictionary<string, DataEntries.MemberInfo>();
+
+		foreach (var rawData in rawDatas) {
+			string associatedIdClass = rawData.IdClass;
+
+			if (!Searches.TryGetByMetadataName(associatedIdClass, out var search))
+				continue;
+
+			foreach (var rawDataEntry in rawData.Data) {
+				string metadataName = rawDataEntry.MetadataName;
+
+				foreach (var rawMember in rawDataEntry.Members) {
+					string formattedName = DataEntries.FormatName(metadataName, rawMember.Key, rawMember.Value.ParameterName);
+
+					data[formattedName] = new DataEntries.MemberInfo(rawMember.Value, associatedIdClass, search);
+				}
+			}
+		}
+
+		return new DataEntries(data);
 	});
 
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
-		var searches = new Searches();
-		
 		ctx.RegisterCompilationStartAction(ctx => {
-			var dataEntries = ReadDataEntries(searches, ctx);
+			var dataEntries = ReadDataEntries(ctx);
 
 			var compilation = ctx.Compilation;
 			var attributeSymbol = compilation.GetTypeByMetadataName(AssociatedIdTypeAttributeMetadataName);
@@ -251,7 +269,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 						var idTypeSymbol = (ISymbol)attributeData.ConstructorArguments[0].Value;
 						string idTypeMetadataName = ToMetadataName(idTypeSymbol);
 
-						if (!searches.TryGetByMetadataName(idTypeMetadataName, out search))
+						if (!Searches.TryGetByMetadataName(idTypeMetadataName, out search))
 							continue;
 
 						idClassMetadataName = idTypeMetadataName;
@@ -318,17 +336,15 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	}
 
 #pragma warning disable RS1012 // Start action has no registered actions
-	private static DataEntries ReadDataEntries(Searches searches, CompilationStartAnalysisContext ctx)
+	private static DataEntries ReadDataEntries(CompilationStartAnalysisContext ctx)
 	{
-		var data = new Dictionary<string, DataEntries.MemberInfo>(127);
-
 		foreach (var additionalFile in ctx.Options.AdditionalFiles) {
 			ctx.CancellationToken.ThrowIfCancellationRequested();
 
-			if (!MatchesDataFileNameFormat(additionalFile.Path, out string associatedIdClassType))
-				continue;
+			string name = Path.GetFileNameWithoutExtension(additionalFile.Path);
+			string extension = Path.GetExtension(additionalFile.Path);
 
-			if (!searches.TryGetByMetadataName(associatedIdClassType, out var search))
+			if (name is not "ChangeMagicNumberToID.Data" || extension is not ".json")
 				continue;
 
 			var additionalFileText = additionalFile.GetText(ctx.CancellationToken);
@@ -340,41 +356,9 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (!ctx.TryGetValue(additionalFileText, DeserializationProvider, out var dataEntries))
 				continue;
 
-			foreach (var dataEntry in dataEntries) {
-				foreach (var member in dataEntry.Members) {
-					ctx.CancellationToken.ThrowIfCancellationRequested();
-
-					string key = DataEntries.FormatName(dataEntry.MetadataName, member.Key, member.Value.ParameterName);
-
-					if (data.ContainsKey(key))
-						continue;
-
-					data.Add(key, new(member.Value, associatedIdClassType, search));
-				}
-			}
+			return dataEntries;
 		}
 
-		return new DataEntries(data);
-	}
-
-	private static bool MatchesDataFileNameFormat(string path, out string associatedIdClassType)
-	{
-		string fileName = Path.GetFileNameWithoutExtension(path);
-		string extension = Path.GetExtension(path);
-
-		associatedIdClassType = null;
-
-		if (fileName is null)
-			return false;
-
-		if (!fileName.StartsWith("ChangeMagicNumberToID", StringComparison.Ordinal) || extension is not ".json")
-			return false;
-
-		int indexOfSeparator = fileName.LastIndexOf('-');
-		if (indexOfSeparator is -1)
-			return false;
-
-		associatedIdClassType = fileName[(indexOfSeparator + 1)..];
-		return true;
+		return default;
 	}
 }
