@@ -1,17 +1,45 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Shaders/ScreenShaderData.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/ScreenShaderData.cs
-@@ -103,6 +_,14 @@
- 		return this;
+@@ -1,3 +_,4 @@
++using System;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+@@ -29,15 +_,21 @@
+ 	public float CombinedOpacity => _uOpacity * _globalOpacity;
+ 
+ 	public ScreenShaderData(string passName)
+-		: base(Main.ScreenShaderRef, passName)
++		: this(Main.ScreenShaderRef, passName)
+ 	{
  	}
  
++	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad")]
+ 	public ScreenShaderData(Ref<Effect> shader, string passName)
+ 		: base(shader, passName)
+ 	{
+ 	}
+ 
++	public ScreenShaderData(Asset<Effect> shader, string passName)
++		: base(shader, passName)
++	{
++	}
++
+ 	public virtual void Update(GameTime gameTime)
+ 	{
+ 	}
+@@ -100,6 +_,14 @@
+ 	public ScreenShaderData UseProgress(float progress)
+ 	{
+ 		_uProgress = progress;
++		return this;
++	}
++
 +	public ScreenShaderData UseImage(Asset<Texture2D> image, int index = 0, SamplerState samplerState = null)
 +	{
 +		_samplerStates[index] = samplerState;
 +		_uAssetImages[index] = image;
 +		_uCustomImages[index] = null;
-+		return this;
-+	}
-+
- 	public ScreenShaderData UseImage(Texture2D image, int index = 0, SamplerState samplerState = null)
- 	{
- 		_samplerStates[index] = samplerState;
+ 		return this;
+ 	}
+ 

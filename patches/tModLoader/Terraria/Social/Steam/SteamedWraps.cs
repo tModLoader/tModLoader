@@ -52,6 +52,7 @@ public static class SteamedWraps
 			workshopLogLoc = "/home/user/.local/share/Steam/logs/workshop_log.txt";
 
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
+		Utils.LogAndConsoleInfoMessage("See https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#mod-browser for even more suggestions.");
 	}
 
 	public static void QueueForceValidateSteamInstall()
@@ -594,6 +595,7 @@ public static class SteamedWraps
 
 			if (_downloadCallback != EResult.k_EResultOK) {
 				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
+				ReportCheckSteamLogs();
 				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
 			}
 		}

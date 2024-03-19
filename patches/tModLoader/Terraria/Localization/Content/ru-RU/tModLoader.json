@@ -210,6 +210,7 @@
 		"LoadErrorDuplicateName": "Невозможно добавить два {0} с одинаковым названием: {1}. Возможно, оба класса имеют общее название, но находятся в разных пространствах имён при автозагрузке, либо вы вручную вызвали метод AddContent с одинаковыми названиями {0}, или, возможно, существует другой класс с таким же именем (legacyname), который используется.",
 
 		"LoadErrorResourceNotFoundPathHint": "Ожидаемый ресурс не был найден:\n    {0}\nБлижайшее предположение: (Есть ли там опечатка или ошибка в расположении папок?)\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "Бесшумно пойманное исключение: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(смотрите {0} для получения полной трассировки стека)",
 		"ShopOverflow": "Не все товары поместились в магазине!",
@@ -417,7 +418,13 @@
 		"NewXMods": "{0} {^0:новый;новых} {^0:мод;мода;модов}",
 		"NewModsListing": "Новые моды в сборке:\n{0}",
 		"PlayerCustomDataFail": "Произошла ошибка во время загрузки модовых данных персонажа",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "Произошла ошибка во время загрузки мира",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "Объём облачного хранилища исчерпан, перемещение данных в облако невозможно",
 		"PlayerFromNewerTModMightNotWork": "Этот персонаж использует более новую версию tModLoader, поэтому он может не работать",
 		"WorldFromNewerTModMightNotWork": "Этот мир создан в более новой версии tModLoader, поэтому он может не работать",
@@ -425,6 +432,7 @@
 		"WorldWithThisNameExistsWillBeOverwritten": "Мир с таким именем уже существует и будет перезаписан",
 		"ExistingPlayerPlayedMoreRecently": "Существующий персонаж в последний раз играл совсем недавно",
 		"ExistingWorldPlayedMoreRecently": "В существующий мир в последний раз играли совсем недавно",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "Скомпилировать",

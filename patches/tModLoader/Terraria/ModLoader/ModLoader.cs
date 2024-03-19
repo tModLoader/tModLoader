@@ -68,7 +68,7 @@ public static class ModLoader
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
-	private static bool isLoading;
+	internal static bool isLoading;
 	private static bool minimallyInitialized;
 
 	public static Mod[] Mods { get; private set; } = new Mod[0];
@@ -98,7 +98,6 @@ public static class ModLoader
 		FileAssociationSupport.UpdateFileAssociation();
 		FolderShortcutSupport.UpdateFolderShortcuts();
 		MonoModHooks.Initialize();
-		ZipExtractFix.Init();
 		minimallyInitialized = true;
 	}
 
@@ -132,6 +131,8 @@ public static class ModLoader
 
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {
+			var sw = Stopwatch.StartNew();
+
 			var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
@@ -140,6 +141,8 @@ public static class ModLoader
 				modsByName[mod.Name] = mod;
 
 			ModContent.Load(token);
+
+			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
@@ -423,11 +426,7 @@ public static class ModLoader
 	/// </summary>
 	internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
 	{
-		list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
-	}
-
-	internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
-	{
-		return providers.WhereMethodIsOverridden(expr).ToArray();
+		var query = expr.ToOverrideQuery();
+		list = providers.Where(query.HasOverride).Select(t => (F)query.Binder(t)).ToArray();
 	}
 }

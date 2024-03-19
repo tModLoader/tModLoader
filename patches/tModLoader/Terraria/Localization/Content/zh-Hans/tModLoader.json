@@ -211,6 +211,7 @@
 		"LoadErrorDuplicateName": "无法添加两个具有相同名称{1}的{0}。也许有两个类名相同但在不同的命名空间的类自动加载, 或者你手动调用AddContent添加了两次同名的{0}。",
 
 		"LoadErrorResourceNotFoundPathHint": "未找到预期的资源:\n    {0}\n很可能：（是否拼写或文件夹放置错误？）\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "静默捕获异常: ",
 		"RuntimeErrorSeeLogsForFullTrace": "（请参阅 {0} 以获取完整调用堆栈）",
 		"ShopOverflow": "物品太多，塞不进商店里 :(",
@@ -418,7 +419,13 @@
 		"NewXMods": "新增{0}个模组",
 		"NewModsListing": "新增模组:\n{0}",
 		"PlayerCustomDataFail": "加载人物自定义数据时遇到问题",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "云存档剩余空间不足, 无法保存至云端",
 		"PlayerFromNewerTModMightNotWork": "该人物来自较新的tModLoader，可能无法正常运作",
 		"WorldFromNewerTModMightNotWork": "该世界来自较新的tModLoader，可能无法正常运作",
@@ -426,6 +433,7 @@
 		"WorldWithThisNameExistsWillBeOverwritten": "已存在使用此名称的世界，现存人物将被覆盖",
 		"ExistingPlayerPlayedMoreRecently": "此人物最近游玩",
 		"ExistingWorldPlayedMoreRecently": "此世界最近游玩",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "生成",

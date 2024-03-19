@@ -2884,8 +2884,12 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,51 @@
- 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
+@@ -16533,39 +_,54 @@
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num7);
+ 				}
+ 				else {
+-					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
++					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", player[myPlayer].GetHealLife(item));
  				}
  
 +				toolTipNames[numLines] = "HealLife";
@@ -2893,7 +2897,8 @@
  			}
  
  			if (item.healMana > 0) {
- 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
+-				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", player[myPlayer].GetHealMana(item));
 +				toolTipNames[numLines] = "HealMana";
  				numLines++;
  			}
@@ -5366,6 +5371,17 @@
  			array9[num11] = Lang.menu[14].Value;
  			if (selectedMenu == num11) {
  				SoundEngine.PlaySound(10);
+@@ -40068,6 +_,10 @@
+ 				GameAskedToQuit = true;
+ 
+ 			num11++;
++
++			if (Interface.pendingErrorMessages.Count > 0) {
++				Interface.errorMessage.Show(Interface.pendingErrorMessages.Pop(), 0);
++			}
+ 		}
+ 		else if (menuMode == 1) {
+ 			OpenCharacterSelectUI();
 @@ -40676,6 +_,8 @@
  				num2 = 210;
  				num4 = 37;
@@ -6378,7 +6394,7 @@
  					Netplay.Clients[k].PendingTerminationApproved = true;
  				}
  			}
-@@ -53384,6 +_,19 @@
+@@ -53384,6 +_,22 @@
  		}
  	}
  
@@ -6391,7 +6407,10 @@
 +	}
 +
 +	/// <summary>
-+	/// Spawns chat text on the local client. Does nothing on the server. <br/>
++	/// Spawns chat text on the local client. Does nothing on the server. <para/>
++	/// To send chat text from the server, use one of the following:<br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.BroadcastChatMessage(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for all clients. <br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.SendChatMessageToClient(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for a specific client. <para/>
 +	/// For floating text, such as damage, see <see cref="CombatText"/> <br/>
 +	/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
 +	/// </summary>
