@@ -281,7 +281,7 @@
 		"ReloadRequiredDownloadAndContinue": "Download and Continue",
 		"ReloadRequiredReloadAndContinue": "Reload and Continue",
 		"ReloadRequiredServerJoinMessage": "The following changes to your enabled mods will be automatically applied if you join this server. Press \"{0}\" to reload mods and join this server.",
-		"ReloadRequiredSinglePlayerMessage": "The following changes to your enabled mods are still present from multiplayer. Press \"{0}\" to reload mods and enter single player.",
+		"ReloadRequiredSinglePlayerMessage": "The following changes to your enabled mods will be automatically applied if you enter single player. Press \"{0}\" to reload mods and enter single player.",
 		"ReloadRequiredExplanationDownload": "[c/{0}:Download] v{1} from server",
 		"ReloadRequiredExplanationDownloadDowngradeTemporary": "[c/{0}:Download] v{1} from server\n(Temporarily downgrade from v{2})",
 		"ReloadRequiredExplanationDownloadDowngrade": "[c/{0}:Download] v{1} from server\n(Downgrade from v{2})",
