@@ -282,6 +282,7 @@
 		"ReloadRequiredServerJoinMessage": "В связи с различиями в версиях или конфигурациях модов, при присоединении к данному серверу моды будут перезагружены. Нажмите \"{0}\", чтобы подключиться к серверу.",
 		"ReloadRequiredSinglePlayerMessage": "В связи с различиями в версиях или конфигурациях модов, оставшихся после игры в мультиплеере, при переходе в режим одиночной игры моды будут перезагружены. Нажмите \"{0}\", чтобы войти в режим одиночной игры.",
 		"ReloadRequiredExplanationDownload": "[c/{0}:Скачать] версию {1} с сервера",
+		// "ReloadRequiredExplanationDownloadDowngradeTemporary": "[c/{0}:Download] v{1} from server\n(Temporarily downgrade from v{2})",
 		"ReloadRequiredExplanationDownloadDowngrade": "[c/{0}:Скачать] версию {1} с сервера\n(Временное понижение версии с {2})",
 		"ReloadRequiredExplanationDownloadUpgrade": "[c/{0}:Скачать] версию {1} с сервера\n(Обновление с версии {2})",
 		"ReloadRequiredExplanationDownloadHashDiffers": "[c/{0}:Скачать] версию {1} ({2}) с сервера\n(Файл мода не соответствует локальной копии)",
@@ -291,6 +292,7 @@
 		"ReloadRequiredExplanationEnable": "[c/{0}:Включить]",
 		"ReloadRequiredExplanationDisable": "[c/{0}:Отключить]",
 		"ReloadRequiredExplanationConfigChanged": "[c/{0}:Изменить конфигурацию]",
+		// "ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Restore config]",
 
 		// UIAsyncList
 		"ALLoading": "Загрузка...",
