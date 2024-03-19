@@ -296,7 +296,7 @@
  		public static FlowerPacketInfo[] flowerPacketInfo = Factory.CreateCustomSet<FlowerPacketInfo>(null, new object[18] {
  			(short)4041,
  			new FlowerPacketInfo {
-@@ -303,18 +_,97 @@
+@@ -303,18 +_,91 @@
  				}
  			}
  		});
@@ -333,12 +333,6 @@
 +		/// This set does <strong>not</strong> make items disappear from the inventory when picked up. Use <see cref="ModItem.OnPickup(Player)"/> or <see cref="GlobalItem.OnPickup(Item, Player)"/> for that.
 +		/// </remarks>
  		public static bool[] IsAPickup = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455);
-+
-+		/// <summary> Indicates that an item is to be filtered under the "Tools" filter in Journey Mode's duplication menu.
-+		/// <br/> Useful for manually setting an item to be filtered under the "Tools" filter, if your item does not meet the automatic criteria for the "Tools" filter.
-+		/// <br/> See (<see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/>) to check if your item meets the automatic criteria.
-+		/// </summary>
-+		public static bool[] ToolsFilter = Factory.CreateBoolSet(509, 850, 851, 3612, 3625, 3611, 510, 849, 3620, 1071, 1543, 1072, 1544, 1100, 1545, 50, 3199, 3124, 5358, 5359, 5360, 5361, 5437, 1326, 5335, 3384, 4263, 4819, 4262, 946, 4707, 205, 206, 207, 1128, 3031, 4820, 5302, 5364, 4460, 4608, 4872, 3032, 5303, 5304, 1991, 4821, 3183, 779, 5134, 1299, 4711, 4049, 114);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a drill.

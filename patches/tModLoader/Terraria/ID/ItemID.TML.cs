@@ -45,6 +45,67 @@ partial class ItemID
 			SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag, DeerclopsBossBag
 		);
 
+		/// <summary> Indicates that an item is to be filtered under the "Tools" filter in Journey Mode's duplication menu.
+		/// <br/> Useful for manually setting an item to be filtered under the "Tools" filter, if your item does not meet the automatic criteria for the "Tools" filter.
+		/// <br/> See (<see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/>) to check if your item meets the automatic criteria.
+		/// </summary>
+		public static bool[] ToolsFilter = Factory.CreateBoolSet(
+			509,
+			850,
+			851,
+			3612,
+			3625,
+			3611,
+			510,
+			849,
+			3620,
+			1071,
+			1543,
+			1072,
+			1544,
+			1100,
+			1545,
+			50,
+			3199,
+			3124,
+			5358,
+			5359,
+			5360,
+			5361,
+			5437,
+			1326,
+			5335,
+			3384,
+			4263,
+			4819,
+			4262,
+			946,
+			4707,
+			205,
+			206,
+			207,
+			1128,
+			3031,
+			4820,
+			5302,
+			5364,
+			4460,
+			4608,
+			4872,
+			3032,
+			5303,
+			5304,
+			1991,
+			4821,
+			3183,
+			779,
+			5134,
+			1299,
+			4711,
+			4049,
+			114
+		);
+
 		/// <summary>
 		/// Set for catching tools (bug net-type items which can catch critters).<br></br>
 		/// If you want your catching tool to be able to catch the Underworld's lava critters, don't forget to use the <see cref="LavaproofCatchingTool"/> set in conjunction with this one.
