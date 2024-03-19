@@ -14,11 +14,9 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-    <ProjectReference Include="..\tModLoader.Analyzers.SourceGenerator\tModLoader.Analyzers.SourceGenerator.csproj"
-                      OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\tModLoader.Analyzers.SourceGenerator\tModLoader.Analyzers.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
 		<PackageReference Include="System.Text.Json" Version="7.0.3" />
@@ -30,7 +28,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-    <AdditionalFiles Include="ChangeMagicNumberToID\BuiltinData.toml" />
+		<AdditionalFiles Include="ChangeMagicNumberToID\BuiltinData.toml" />
     
 		<Compile Include="$(tMLSourcePath)\ReLogic\Reflection\IdDictionary.cs" Link="ChangeMagicNumberToID\Data\tML\IdDictionary.cs" />
 		<Compile Include="$(tMLSourcePath)\Terraria\Utilities\OldAttribute.cs" Link="ChangeMagicNumberToID\Data\tML\OldAttribute.cs" />
@@ -143,12 +141,4 @@
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
-
-	<Target Name="CopyNecessaryInfoToTml" AfterTargets="Build">
-		<ItemGroup>
-			<DllFile Include="$(OutDir)\tModLoader.Analyzers.dll" />
-		</ItemGroup>
-		
-		<Copy SourceFiles="@(DllFile)" DestinationFolder="$(tMLSourcePath)\Terraria\bin\$(Configuration)\net6.0\Libraries\tModCodeAssist\1.0.0" />
-	</Target>
 </Project>
