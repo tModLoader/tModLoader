@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tomlyn;
+using Tomlyn.Syntax;
 using VerifyCS = tModLoader.Analyzers.Tests.Verifier.Analyzer<tModLoader.Analyzers.ChangeMagicNumberToID.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModLoader.Analyzers.ChangeMagicNumberToID.ChangeMagicNumberToIDCodeFixProvider>;
 
 namespace tModLoader.Analyzers.Tests.CodeFixers;
@@ -11,28 +15,6 @@ namespace tModLoader.Analyzers.Tests.CodeFixers;
 [TestClass]
 public sealed class ChangeMagicNumberToIDUnitTest
 {
-	private readonly List<(string fileName, SourceText content)> additionalFiles = [];
-
-	[TestInitialize]
-	public void Initialize()
-	{
-		const string subfolder = "ChangeMagicNumberToID.Data";
-		const string name = "ChangeMagicNumberToID.Data.json";
-
-		using (var stream = typeof(AbstractDiagnosticAnalyzer).Assembly.GetManifestResourceStream($"tModLoader.Analyzers.{subfolder}.{name}"))
-		using (var reader = new StreamReader(stream)) {
-			string content = reader.ReadToEnd();
-
-			additionalFiles.Add((name, SourceText.From(content, Encoding.UTF8)));
-		}
-	}
-
-	[TestCleanup]
-	public void Cleanup()
-	{
-		additionalFiles.Clear();
-	}
-
 	[TestMethod]
 	public async Task Test_Assignment()
 	{
@@ -47,8 +29,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria.ID;
 			
 			new Item().type = ItemID.IronPickaxe;
-			""")
-			.WithAdditionalFiles(additionalFiles);
+			""");
 	}
 
 	[TestMethod]
@@ -65,8 +46,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria.ID;
 			
 			_ = new Item().type == ItemID.IronPickaxe;
-			""")
-			.WithAdditionalFiles(additionalFiles);
+			""");
 	}
 
 	[TestMethod]
@@ -89,8 +69,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 				case ItemID.IronPickaxe:
 					break;
 			}
-			""")
-			.WithAdditionalFiles(additionalFiles);
+			""");
 	}
 
 	[TestMethod]
@@ -107,8 +86,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria.ID;
 			
 			_ = new Item(ItemID.IronPickaxe);
-			""")
-			.WithAdditionalFiles(additionalFiles);
+			""");
 	}
 
 	[TestMethod]
@@ -134,7 +112,6 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			[return: AssociatedIdTypeAttribute(typeof(ItemID))]
 			int Foo() => ItemID.None;
-			""")
-			.WithAdditionalFiles(additionalFiles);
+			""");
 	}
 }

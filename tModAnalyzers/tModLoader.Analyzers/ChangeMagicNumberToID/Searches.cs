@@ -15,6 +15,7 @@ public static class Searches
 			[typeof(AchievementHelperID.Events).FullName] = AchievementHelperID.Events.Search,
 			[typeof(AchievementHelperID.Special).FullName] = AchievementHelperID.Special.Search,
 			[typeof(AmmoID).FullName] = AmmoID.Search,
+			[typeof(AnimationID).FullName] = AnimationID.Search,
 			[typeof(ArmorIDs.Head).FullName] = ArmorIDs.Head.Search,
 			[typeof(ArmorIDs.Body).FullName] = ArmorIDs.Body.Search,
 			[typeof(ArmorIDs.Legs).FullName] = ArmorIDs.Legs.Search,

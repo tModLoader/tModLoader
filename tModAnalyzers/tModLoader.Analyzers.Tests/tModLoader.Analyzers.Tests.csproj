@@ -15,6 +15,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\tModLoader.Analyzers\tModLoader.Analyzers.csproj" />
 		<ProjectReference Include="..\tModLoader.Analyzers.CodeFixes\tModLoader.Analyzers.CodeFixes.csproj" />
+    <PackageReference Include="Tomlyn" Version="0.17.0" />
 		
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />

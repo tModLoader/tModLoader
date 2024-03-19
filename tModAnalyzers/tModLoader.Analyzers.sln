@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.Analyzers", "tMo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.Analyzers.CodeFixes", "tModLoader.Analyzers.CodeFixes\tModLoader.Analyzers.CodeFixes.csproj", "{894B3F00-E69A-4759-8B52-8F6D1B029280}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.Analyzers.SourceGenerator", "tModLoader.Analyzers.SourceGenerator\tModLoader.Analyzers.SourceGenerator.csproj", "{B1DD1C54-9A97-4ADA-88BD-21ED1C55AF36}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModLoader.Analyzers.Tests", "tModLoader.Analyzers.Tests\tModLoader.Analyzers.Tests.csproj", "{DD140308-6439-41AF-8B66-37731F68B945}"
 EndProject
 Global
@@ -23,6 +25,10 @@ Global
 		{894B3F00-E69A-4759-8B52-8F6D1B029280}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{894B3F00-E69A-4759-8B52-8F6D1B029280}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{894B3F00-E69A-4759-8B52-8F6D1B029280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1DD1C54-9A97-4ADA-88BD-21ED1C55AF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DD1C54-9A97-4ADA-88BD-21ED1C55AF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DD1C54-9A97-4ADA-88BD-21ED1C55AF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1DD1C54-9A97-4ADA-88BD-21ED1C55AF36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD140308-6439-41AF-8B66-37731F68B945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD140308-6439-41AF-8B66-37731F68B945}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD140308-6439-41AF-8B66-37731F68B945}.Release|Any CPU.ActiveCfg = Release|Any CPU

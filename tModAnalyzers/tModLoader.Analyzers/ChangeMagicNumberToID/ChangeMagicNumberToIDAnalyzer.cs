@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -25,40 +21,9 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.ChangeMagicNumberToIDDescription), Resources.ResourceManager, typeof(Resources));
 	public static readonly DiagnosticDescriptor Rule = new(Id, Title, MessageFormat, Categories.Maintenance, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	private static readonly JsonSerializerOptions DeserializerOptions = new JsonSerializerOptions {
-		ReadCommentHandling = JsonCommentHandling.Skip,
-		AllowTrailingCommas = true,
-	};
-
-	private static readonly SourceTextValueProvider<DataEntries> DeserializationProvider = new(sourceText => {
-		var rawDatas = JsonSerializer.Deserialize<RawData[]>(sourceText.ToString(), DeserializerOptions);
-		var data = new Dictionary<string, DataEntries.MemberInfo>();
-
-		foreach (var rawData in rawDatas) {
-			string associatedIdClass = rawData.IdClass;
-
-			if (!Searches.TryGetByMetadataName(associatedIdClass, out var search))
-				continue;
-
-			foreach (var rawDataEntry in rawData.Data) {
-				string metadataName = rawDataEntry.MetadataName;
-
-				foreach (var rawMember in rawDataEntry.Members) {
-					string formattedName = DataEntries.FormatName(metadataName, rawMember.Key, rawMember.Value.ParameterName);
-
-					data[formattedName] = new DataEntries.MemberInfo(rawMember.Value, associatedIdClass, search);
-				}
-			}
-		}
-
-		return new DataEntries(data);
-	});
-
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
 		ctx.RegisterCompilationStartAction(ctx => {
-			var dataEntries = ReadDataEntries(ctx);
-
 			var compilation = ctx.Compilation;
 			var attributeSymbol = compilation.GetTypeByMetadataName(AssociatedIdTypeAttributeMetadataName);
 
@@ -189,50 +154,19 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 				search = null;
 
 				string containigTypeMetadataName = ToMetadataName(symbol.ContainingType.OriginalDefinition);
-				string formattedName;
+				BuiltinData.Key formattedName;
 
 				if (symbol is IParameterSymbol parameterSymbol) {
 					var methodSymbol = (IMethodSymbol)parameterSymbol.ContainingSymbol;
 
-					formattedName = DataEntries.FormatName(containigTypeMetadataName, FormatMethodNameWithArguments(methodSymbol), symbol.Name);
+					formattedName = new BuiltinData.Key(containigTypeMetadataName, methodSymbol.MetadataName, symbol.Name);
 
-					// If no entry with specific overload exists, then format to the one without overload.
-					if (!dataEntries.ContainsKey(formattedName))
-						formattedName = DataEntries.FormatName(containigTypeMetadataName, methodSymbol.Name, symbol.Name);
-
-					// TODO: Use custom SymbolDisplayFormat instead of... this.
-					static string FormatMethodNameWithArguments(IMethodSymbol methodSymbol)
-					{
-						var sb = new StringBuilder(16);
-
-						sb.Append(methodSymbol.MetadataName);
-
-						sb.Append('(');
-
-						for (int i = 0, c = methodSymbol.Parameters.Length; i < c; i++) {
-							var param = methodSymbol.Parameters[i];
-
-							sb.Append(param.RefKind switch {
-								RefKind.Ref => "ref ",
-								RefKind.Out => "out ",
-								RefKind.In => "in ",
-								_ => string.Empty
-							});
-
-							sb.Append(param.Type.MetadataName);
-
-							if (i != c - 1) {
-								sb.Append(", ");
-							}
-						}
-
-						sb.Append(')');
-
-						return sb.ToString();
-					}
+					// If no entry with parameter name exists, then format to the one without overload.
+					if (!BuiltinData.ContainsKey(formattedName))
+						formattedName = new BuiltinData.Key(containigTypeMetadataName, methodSymbol.Name, parameterSymbol.Ordinal);
 				}
 				else {
-					formattedName = DataEntries.FormatName(containigTypeMetadataName, symbol.Name);
+					formattedName = new BuiltinData.Key(containigTypeMetadataName, symbol.Name);
 				}
 
 				return LookGeneric(symbol, out idClassMetadataName, out search)
@@ -243,10 +177,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 					idClassMetadataName = null;
 					search = null;
 
-					if (dataEntries.TryGetValue(formattedName, out var memberInfo)) {
-						if (symbol is IMethodSymbol && !memberInfo.Target.HasFlag(AttributeTargets.ReturnValue))
-							return false;
-
+					if (BuiltinData.TryGetValue(formattedName, out var memberInfo)) {
 						idClassMetadataName = memberInfo.IdClassMetadataName;
 						search = memberInfo.Search;
 						return true;
@@ -333,32 +264,5 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		}
 
 		return target != null;
-	}
-
-#pragma warning disable RS1012 // Start action has no registered actions
-	private static DataEntries ReadDataEntries(CompilationStartAnalysisContext ctx)
-	{
-		foreach (var additionalFile in ctx.Options.AdditionalFiles) {
-			ctx.CancellationToken.ThrowIfCancellationRequested();
-
-			string name = Path.GetFileNameWithoutExtension(additionalFile.Path);
-			string extension = Path.GetExtension(additionalFile.Path);
-
-			if (name is not "ChangeMagicNumberToID.Data" || extension is not ".json")
-				continue;
-
-			var additionalFileText = additionalFile.GetText(ctx.CancellationToken);
-			if (additionalFileText == null)
-				continue;
-
-			ctx.CancellationToken.ThrowIfCancellationRequested();
-
-			if (!ctx.TryGetValue(additionalFileText, DeserializationProvider, out var dataEntries))
-				continue;
-
-			return dataEntries;
-		}
-
-		return default;
 	}
 }

@@ -1,0 +1,103 @@
+﻿[Terraria.Animation]
+# Parameters
+NewTemporaryAnimation.type = "AnimationID"
+
+[Terraria.Cloud]
+# Fields
+type = "CloudID"
+
+[Terraria.Collision]
+# Parameters
+CanTileHurt.type = "TileID"
+
+['Terraria.Collision+HurtTile']
+# Fields
+type = "TileID"
+
+[Terraria.Condition]
+# Parameters
+PlayerCarriesItem.itemId = "ItemID"
+NpcIsPresent.npcId = "NPCID"
+
+[Terraria.Dust]
+# Fields
+type = "DustID"
+
+# Parameters
+NewDust.Type = "DustID"
+NewDustDirect.Type = "DustID"
+NewDustPerfect.Type = "DustID"
+
+[Terraria.Gore]
+# Fields
+type = "GoreID"
+
+# Parameters
+NewGore.Type = "GoreID"
+NewGoreDirect.Type = "GoreID"
+NewGorePerfect.Type = "GoreID"
+
+[Terraria.Item]
+# Fields
+type = "ItemID"
+rare = "ItemRarityID"
+
+createTile = "TileID"
+createWall = "WallID"
+
+prefix = "PrefixID"
+buffType = "BuffID"
+useStyle = "ItemUseStyleID"
+holdStyle = "ItemHoldStyleID"
+shoot = "ProjectileID"
+
+# Parameters
+'.ctor'.0 = "ItemID"
+NewItem.Type = "ItemID"
+
+[Terraria.Lang]
+# Parameters
+GetEmojiName.0 = "EmoteID"
+
+[Terraria.Liquid]
+# Parameters
+GetLiquidMergeTypes.thisLiquidType = "LiquidID"
+LiquidCheck.thisLiquidType = "LiquidID"
+
+[Terraria.Main]
+# Fields
+netMode = "NetmodeID"
+
+# Parameters
+GetBuffTooltip.1 = "BuffID"
+TryRemovingBuff_CheckBuffHideMisc.buffID = "BuffID"
+
+# Parameters - Texture Loading
+LoadArmorHead.0 = "ArmorIDs+Head"
+LoadArmorBody.0 = "ArmorIDs+Body"
+LoadArmorLegs.0 = "ArmorIDs+Legs"
+LoadAccHandsOn.0 = "ArmorIDs+HandOn"
+LoadAccHandsOff.0 = "ArmorIDs+HandOff"
+LoadAccBack.0 = "ArmorIDs+Back"
+LoadAccFront.0 = "ArmorIDs+Front"
+LoadAccShoes.0 = "ArmorIDs+Shoe"
+LoadAccWaist.0 = "ArmorIDs+Waist"
+LoadAccWings.0 = "ArmorIDs+Wing"
+LoadAccShield.0 = "ArmorIDs+Shield"
+LoadAccNeck.0 = "ArmorIDs+Neck"
+LoadAccFace.0 = "ArmorIDs+Face"
+LoadAccBalloon.0 = "ArmorIDs+Balloon"
+LoadAccBeard.0 = "ArmorIDs+Beard"
+
+[Terraria.Mount]
+
+[Terraria.Mount.MountData]
+
+[Terraria.NetMessage]
+# Parameters
+SendTemporaryAnimation.animationType = "AnimationID"
+
+[Terraria.Player]
+# Fields - Slots
+handon = "ArmorIDs+HandOn"
+handoff = "ArmorIDs+HandOff"
