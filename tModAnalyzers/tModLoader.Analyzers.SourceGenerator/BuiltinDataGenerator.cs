@@ -162,22 +162,22 @@ public sealed class BuiltinDataGenerator : IIncrementalGenerator
 		memberName = default;
 		parameter = default;
 
+		if (syntax.DotKeys.ChildrenCount == 1) {
+			string parameterPotentialName = ((BareKeySyntax)syntax.DotKeys.GetChild(0).Key).Key.Text;
+
+			if (int.TryParse(parameterPotentialName, out int parameterIndex)) {
+				parameter = new(true, default, parameterIndex);
+			}
+			else {
+				parameter = new(true, parameterPotentialName, default);
+			}
+		}
+
 		if (syntax is { Key: BareKeySyntax bareKeySyntax }) {
 			memberName = bareKeySyntax.Key.Text;
 			return;
 		}
 		else if (syntax is { Key: StringValueSyntax stringValueSyntax }) {
-			if (syntax.DotKeys.ChildrenCount == 1) {
-				string parameterPotentialName = ((BareKeySyntax)syntax.DotKeys.GetChild(0).Key).Key.Text;
-
-				if (int.TryParse(parameterPotentialName, out int parameterIndex)) {
-					parameter = new(true, default, parameterIndex);
-				}
-				else {
-					parameter = new(true, parameterPotentialName, default);
-				}
-			}
-
 			memberName = stringValueSyntax.Value;
 			return;
 		}
