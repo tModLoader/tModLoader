@@ -1,3 +1,5 @@
+//#define LOAD_UNTRANSFORMED_ASSEMBLIES_TO_KEEP_DEBUGGER_HAPPY_TEMPORARILY
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +10,7 @@ using System.Runtime.Loader;
 using System.Threading;
 using log4net;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using MonoMod.RuntimeDetour;
 
 namespace Terraria.ModLoader.Core;
@@ -126,17 +129,33 @@ internal static class CoreModLoader
 				               .ToList();
 
 			foreach (string assemblyLocation in assemblyLocations) {
-				using AssemblyDefinition assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation);
+				bool hasSymbols = File.Exists(Path.ChangeExtension(assemblyLocation, ".pdb"));
+				using AssemblyDefinition assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters {  ReadSymbols = hasSymbols });
+
+				// May or may not be required. Haven't got line numbers in stack traces or VS debugging to work yet -- CB
+				assemblyDefinition.MainModule.Mvid = Guid.NewGuid();
 
 				// Apply transformers
 				transformers.ForEach(transformer => transformer.Transform(assemblyDefinition.MainModule));
 
 				// Write to stream, which is then loaded to actual assembly. Skips the intermediary step of writing to a file instead, then immediately loading said file
 				using MemoryStream assemblyStream = new MemoryStream();
-				assemblyDefinition.Write(assemblyStream);
+				using MemoryStream symbolStream = new MemoryStream();
+				assemblyDefinition.Write(assemblyStream, new WriterParameters { WriteSymbols = hasSymbols, SymbolStream = symbolStream, SymbolWriterProvider = new PortablePdbWriterProvider() });
 
 				assemblyStream.Position = 0;
-				Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream);
+				symbolStream.Position = 0;
+#if LOAD_UNTRANSFORMED_ASSEMBLIES_TO_KEEP_DEBUGGER_HAPPY_TEMPORARILY
+				assemblyStream.SetLength(0);
+				symbolStream.SetLength(0);
+				assemblyStream.Write(File.ReadAllBytes(assemblyLocation));
+				if (hasSymbols)
+					symbolStream.Write(File.ReadAllBytes(Path.ChangeExtension(assemblyLocation, ".pdb")));
+				assemblyStream.Position = 0;
+				symbolStream.Position = 0;
+#endif
+
+				Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream, symbolStream);
 				_transformedAssemblies[transformedAssembly.GetName().Name!] = transformedAssembly;
 
 				transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
