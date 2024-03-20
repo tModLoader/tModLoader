@@ -11,6 +11,8 @@ using Mono.Cecil;
 namespace Terraria.ModLoader.Core;
 internal static class CoreModLoader
 {
+	// The same dictioanry is shared into the child ALC's instance of this field
+	internal static Dictionary<Assembly, byte[]> transformedAssemblyBytes = new();
 
 	private static Dictionary<string, Assembly> _transformedAssemblies = new();
 
@@ -62,6 +64,8 @@ internal static class CoreModLoader
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
+
+		transformedChildtML.GetType(typeof(CoreModLoader).FullName).GetField(nameof(CoreModLoader.transformedAssemblyBytes), BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, transformedAssemblyBytes);
 
 		// Set Launch Params, Save Paths, Main Thread, tML Directory
 		Type childProgramType = transformedChildtML.GetType(typeof(Program).FullName!)!;
@@ -130,6 +134,8 @@ internal static class CoreModLoader
 				assemblyStream.Position = 0;
 				Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream);
 				_transformedAssemblies[transformedAssembly.GetName().Name!] = transformedAssembly;
+
+				transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
 			}
 		}
 	}
