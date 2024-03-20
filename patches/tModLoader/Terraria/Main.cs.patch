@@ -470,7 +470,7 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,7 +_,10 @@
+@@ -952,26 +_,36 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -478,20 +478,40 @@
  	public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
 +	*/
 +	public static Tilemap tile = new((ushort)maxTilesX, (ushort)maxTilesY);
- 	public static Dust[] dust = new Dust[6001];
- 	public static Star[] star = new Star[400];
- 	public static Item[] item = new Item[401];
-@@ -964,6 +_,9 @@
- 	public static int[,] projectileIdentity = new int[256, 1001];
- 	public static CombatText[] combatText = new CombatText[100];
- 	public static PopupText[] popupText = new PopupText[20];
+-	public static Dust[] dust = new Dust[6001];
++	public static readonly Dust[] dust = new Dust[6001];
+-	public static Star[] star = new Star[400];
++	public static readonly Star[] star = new Star[400];
+-	public static Item[] item = new Item[401];
++	public static readonly Item[] item = new Item[401];
+-	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
++	public static readonly int[] timeItemSlotCannotBeReusedFor = new int[401];
+-	public static NPC[] npc = new NPC[201];
++	public static readonly NPC[] npc = new NPC[201];
+-	public static Gore[] gore = new Gore[601];
++	public static readonly Gore[] gore = new Gore[601];
+-	public static Rain[] rain = new Rain[maxRain + 1];
++	public static readonly Rain[] rain = new Rain[maxRain + 1];
+-	public static Projectile[] projectile = new Projectile[1001];
++	public static readonly Projectile[] projectile = new Projectile[1001];
+-	public static int[,] projectileIdentity = new int[256, 1001];
++	public static readonly int[,] projectileIdentity = new int[256, 1001];
+-	public static CombatText[] combatText = new CombatText[100];
++	public static readonly CombatText[] combatText = new CombatText[100];
+-	public static PopupText[] popupText = new PopupText[20];
++	public static readonly PopupText[] popupText = new PopupText[20];
 +	/// <summary>
 +	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
 +	/// </summary>
- 	public static Chest[] chest = new Chest[8000];
- 	public static Sign[] sign = new Sign[1000];
- 	public static int[] itemFrame = new int[401];
-@@ -972,6 +_,10 @@
+-	public static Chest[] chest = new Chest[8000];
++	public static readonly Chest[] chest = new Chest[8000];
+-	public static Sign[] sign = new Sign[1000];
++	public static readonly Sign[] sign = new Sign[1000];
+-	public static int[] itemFrame = new int[401];
++	public static readonly int[] itemFrame = new int[401];
+-	public static int[] itemFrameCounter = new int[401];
++	public static readonly int[] itemFrameCounter = new int[401];
+ 	public static DrawAnimation[] itemAnimations = new DrawAnimation[ItemID.Count];
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
  	public static List<int> itemAnimationsRegistered = new List<int>();
@@ -513,7 +533,7 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
-@@ -1026,6 +_,11 @@
+@@ -1026,9 +_,14 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
  	public static int focusRecipe;
@@ -523,8 +543,13 @@
 +	/// <br/> If this is <c>255</c>, this client is the server.
 +	/// </summary>
  	public static int myPlayer;
- 	public static Player[] player = new Player[256];
- 	public static Player[] playerVisualClone = new Player[256];
+-	public static Player[] player = new Player[256];
++	public static readonly Player[] player = new Player[256];
+-	public static Player[] playerVisualClone = new Player[256];
++	public static readonly Player[] playerVisualClone = new Player[256];
+ 	public static bool[] countsAsHostForGameplay = new bool[256];
+ 	public static int spawnTileX;
+ 	public static int spawnTileY;
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
