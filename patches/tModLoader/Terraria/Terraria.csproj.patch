@@ -21,7 +21,7 @@
 -		<AssemblyName Condition="$(Configuration.Contains('Debug'))">$(AssemblyName)Debug</AssemblyName>
 -		<AssemblyName Condition="!$(Configuration.Contains('Debug'))">$(AssemblyName)Release</AssemblyName>
  		<OutputName>$(AssemblyName)</OutputName>
-+    <LangVersion>11.0</LangVersion>
++		<LangVersion>11.0</LangVersion>
  	</PropertyGroup>
  
  	<!-- Build Configuration -->
