@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -91,7 +91,7 @@ internal static class CoreModLoader
 		{
 			string fileName = Path.GetFileName(path);
 
-			return fileName is "ReLogic.dll" or "FNA.dll";
+			return fileName is "ReLogic.dll" or "FNA.dll" or "TerrariaHooks.dll";
 			/*
 			 return !(path.EndsWith(".resources.dll")
 			            || path.Contains(@"\Native\")
