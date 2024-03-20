@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using System.Runtime.Loader;
 using System.Threading;
 using log4net;
 using Mono.Cecil;
+using MonoMod.RuntimeDetour;
 
 namespace Terraria.ModLoader.Core;
 internal static class CoreModLoader
@@ -54,6 +56,8 @@ internal static class CoreModLoader
 
 	internal static void LaunchALCWithCoreMods(bool isServer, Mod[] coreMods)
 	{
+		ForceTypeConvertersToLookupConvertersInTheSameAssembly();
+
 		_childALC = new ChildLoadContext();
 
 		Logging.tML.InfoFormat("Applying CoreMod transformers...");
@@ -138,5 +142,22 @@ internal static class CoreModLoader
 				transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
 			}
 		}
+	}
+
+	private static Hook _typeConverterAttrHook;
+	private static void ForceTypeConvertersToLookupConvertersInTheSameAssembly()
+	{
+		// Fixes issue where the TypeConverter on classes like FNA's Color [TypeConverter(typeof(ColorConverter))] is loaded from the root ALC and is thus incompatible with the type containing the attribute
+		//
+		// TypeConverterAttribute only stores the AssemblyQualifiedName of the converter type
+		// This name is then resolved via Type.GetType which resolves the assembly in the root ALC
+		// If we instead use the FullName of the type, System.ComponentModel has a fallback resolver using the assembly the attribute is defined on (which is what we want)
+		//
+		// See https://github.com/dotnet/runtime/blob/main/src/libraries/System.ComponentModel.TypeConverter/src/System/ComponentModel/ReflectTypeDescriptionProvider.ReflectedTypeData.cs#L507
+
+		_typeConverterAttrHook = new Hook(typeof(TypeConverterAttribute).GetConstructor(new Type[] { typeof(Type) }),
+			new Action<Action<TypeConverterAttribute, Type>, TypeConverterAttribute, Type>((orig, target, type) => {
+				typeof(TypeConverterAttribute).GetConstructor(new Type[] { typeof(string) }).Invoke(target, new object[] { type.FullName });
+			}));
 	}
 }
