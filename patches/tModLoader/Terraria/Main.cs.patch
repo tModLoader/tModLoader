@@ -329,7 +329,14 @@
  	public static int[] projFrames = new int[ProjectileID.Count];
  	public static bool[] projPet = new bool[ProjectileID.Count];
  	public static float demonTorch = 1f;
-@@ -807,8 +_,15 @@
+@@ -801,14 +_,21 @@
+ 	public static bool windPhysics = false;
+ 	public static float windPhysicsStrength = 0.1f;
+ 	public static bool SettingsEnabled_TilesSwayInWind = true;
+-	public static Cloud[] cloud = new Cloud[200];
++	public static readonly Cloud[] cloud = new Cloud[200];
+ 	public static bool resetClouds = true;
+ 	public static float SmoothedMushroomLightInfluence;
  	public static int fadeCounter;
  	public static float invAlpha = 1f;
  	public static float invDir = 1f;
