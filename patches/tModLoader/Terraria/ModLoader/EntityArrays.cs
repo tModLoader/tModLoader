@@ -1,14 +1,14 @@
-using System;
-using System.Runtime.CompilerServices;
+﻿using System;
 
 namespace Terraria.ModLoader;
 
-public static class EntityArrays<T> where T : Entity
+internal static class EntityArrays<T> where T : Entity
 {
 	public static T[] Array { get; }
 	public static int Max { get; }
-	
-	static EntityArrays() {
+
+	static EntityArrays()
+	{
 		if (typeof(T) == typeof(NPC)) {
 			Array = (T[])(object)Main.npc;
 			Max = Main.maxNPCs;

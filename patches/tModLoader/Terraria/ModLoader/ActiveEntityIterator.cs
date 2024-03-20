@@ -1,42 +1,40 @@
+using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader;
 
-// Do not touch without benchmarking.
-
-public ref struct ActiveEntityIterator<T> where T : Entity
+public readonly ref struct ActiveEntityIterator<T> where T : Entity
 {
-	private ref T entity;
-	private ref T dummy;
+	private readonly Span<T> span;
 
-	public ActiveEntityIterator() {
-		Reset();
-	}
-
-	public T Current { get; private set; }
-
-	public void Reset()
+	public ActiveEntityIterator() : this(EntityArrays<T>.Array.AsSpan(0, EntityArrays<T>.Max))
 	{
-		entity = ref MemoryMarshal.GetArrayDataReference(EntityArrays<T>.Array);
-		dummy = ref Unsafe.Add(ref entity, EntityArrays<T>.Max);
 	}
 
-	public bool MoveNext() {
-		while (Unsafe.IsAddressLessThan(ref entity, ref dummy)) {
-			var currentEntity = entity;
-			entity = ref Unsafe.Add(ref entity, 1);
-			
-			if (currentEntity.active) {
-				Current = currentEntity;
-				return true;
-			}
-		}
-		
-		return false;
+	public ActiveEntityIterator(Span<T> span)
+	{
+		this.span = span;
 	}
-	
-	public ActiveEntityIterator<T> GetEnumerator() {
-		return this;
+
+	public readonly Enumerator GetEnumerator()
+	{
+		return new(span.GetEnumerator());
+	}
+
+	public ref struct Enumerator(Span<T>.Enumerator enumerator)
+	{
+		private Span<T>.Enumerator enumerator = enumerator;
+
+		public readonly T Current => enumerator.Current;
+
+		public bool MoveNext()
+		{
+			do {
+				if (!enumerator.MoveNext())
+					return false;
+			} while (!enumerator.Current.active);
+
+			return true;
+		}
 	}
 }
