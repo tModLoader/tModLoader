@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34607.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityIteratorsPerformance", "EntityIteratorsPerformance.csproj", "{BE3486C2-99B8-4665-988A-99F15DB338F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE3486C2-99B8-4665-988A-99F15DB338F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE3486C2-99B8-4665-988A-99F15DB338F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE3486C2-99B8-4665-988A-99F15DB338F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE3486C2-99B8-4665-988A-99F15DB338F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B75F2BBE-3C55-4329-A822-A973A1DC6EF4}
+	EndGlobalSection
+EndGlobal
