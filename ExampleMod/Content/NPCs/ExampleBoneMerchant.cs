@@ -31,10 +31,6 @@ namespace ExampleMod.Content.NPCs
 			shimmerGun = ModContent.Request<Texture2D>(Texture + "_Shimmer_Gun");
 		}
 
-		public override void Unload() {
-			shimmerGun = null;
-		}
-
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 

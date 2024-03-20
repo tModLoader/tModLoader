@@ -69,7 +69,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("ItemName.Torch"));
 
 			// Assets
-			flameTexture = Mod.Assets.Request<Texture2D>("Content/Tiles/ExampleTorch_Flame");
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
 		}
 
 		public override void MouseOver(int i, int j) {

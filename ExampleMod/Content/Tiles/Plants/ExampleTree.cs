@@ -27,11 +27,14 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			// Makes Example Tree grow on ExampleBlock
 			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleBlock>() };
+			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
+			branchesTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
+			topsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
 		}
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
 		public override Asset<Texture2D> GetTexture() {
-			return texture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
+			return texture;
 		}
 
 		public override int SaplingGrowthType(ref int style) {
@@ -44,14 +47,10 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// Branch Textures
-		public override Asset<Texture2D> GetBranchTextures() {
-			return branchesTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
-		}
+		public override Asset<Texture2D> GetBranchTextures() => branchesTexture;
 
 		// Top Textures
-		public override Asset<Texture2D> GetTopTextures() {
-			return topsTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
-		}
+		public override Asset<Texture2D> GetTopTextures() => topsTexture;
 
 		public override int DropWood() {
 			return ModContent.ItemType<ExampleDye>();

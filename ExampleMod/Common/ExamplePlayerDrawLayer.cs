@@ -1,17 +1,15 @@
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common
 {
 	public class ExamplePlayerDrawLayer : PlayerDrawLayer
 	{
-		private Asset<Texture2D> exampleItemTexture;
-
 		// Returning true in this property makes this layer appear on the minimap player head icon.
 		public override bool IsHeadLayer => true;
 
@@ -32,8 +30,7 @@ namespace ExampleMod.Common
 
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			// The following code draws ExampleItem's texture behind the player's head.
-
-			exampleItemTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Items/ExampleItem");
+			var exampleItemTexture = TextureAssets.Item[ModContent.ItemType<ExampleItem>()];
 
 			var position = drawInfo.Center + new Vector2(0f, -20f) - Main.screenPosition;
 			position = new Vector2((int)position.X, (int)position.Y); // You'll sometimes want to do this, to avoid quivering.

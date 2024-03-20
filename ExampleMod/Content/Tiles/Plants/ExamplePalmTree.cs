@@ -25,28 +25,25 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			// Makes Example Palm Tree grow on Gold Ore
 			GrowsOnTileId = new int[1] { TileID.Gold };
+			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
+			oasisTopsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
+			topsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
 		}
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
 		// The first row will be the Ocean textures, the second row will be Oasis Textures.
-		public override Asset<Texture2D> GetTexture() {
-			return texture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
-		}
+		public override Asset<Texture2D> GetTexture() => texture;
 
 		public override int SaplingGrowthType(ref int style) {
 			style = 1;
 			return ModContent.TileType<Plants.ExampleSapling>();
 		}
 
-		public override Asset<Texture2D> GetOasisTopTextures() {
-			// Palm Trees come in an Oasis variant. The Top Textures for it:
-			return oasisTopsTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
-		}
+		// Palm Trees come in an Oasis variant. The Top Textures for it:
+		public override Asset<Texture2D> GetOasisTopTextures() => oasisTopsTexture;
 
-		public override Asset<Texture2D> GetTopTextures() {
-			// Palm Trees come in a Beach variant. The Top Textures for it:
-			return topsTexture ??= ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
-		}
+		// Palm Trees come in a Beach variant. The Top Textures for it:
+		public override Asset<Texture2D> GetTopTextures() => topsTexture;
 
 		public override int DropWood() {
 			return ModContent.ItemType<Items.Placeable.ExampleOre>();

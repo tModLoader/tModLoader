@@ -103,8 +103,6 @@ public static class ModContent
 	/// <summary>
 	/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
 	/// <para/>
-	/// Can be safely called on the server despite the server not loading assets, so there is no need to add checks for <see cref="Main.dedServ"/>.
-	/// <para/>
 	/// Modders may wish to use <c>Mod.Assets.Request</c> where the mod name prefix may be omitted for convenience.
 	/// <para/>
 	/// <inheritdoc cref="IAssetRepository.Request{T}(string, AssetRequestMode)"/>

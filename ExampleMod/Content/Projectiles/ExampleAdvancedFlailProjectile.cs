@@ -47,11 +47,6 @@ namespace ExampleMod.Content.Projectiles
 			chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath);
 		}
 
-		public override void Unload() {
-			chainTexture = null;
-			chainTextureExtra = null;
-		}
-
 		public override void SetStaticDefaults() {
 			// These lines facilitate the trail drawing
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
