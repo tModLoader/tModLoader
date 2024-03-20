@@ -52,7 +52,7 @@ public sealed class BuiltinDataGenerator : IIncrementalGenerator
 			.Where(static value => value is not null);
 
 		ctx.RegisterSourceOutput(files, static (ctx, source) => {
-			ctx.AddSource(source.Name, SourceText.From(GenerateSource(source), Encoding.UTF8));
+			ctx.AddSource($"{source.Name}.g.cs", SourceText.From(GenerateSource(source), Encoding.UTF8));
 		});
 
 		static string GenerateSource(DataModel source)

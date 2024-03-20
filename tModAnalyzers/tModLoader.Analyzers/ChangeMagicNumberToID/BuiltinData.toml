@@ -54,9 +54,32 @@ shoot = "ProjectileID"
 # Parameters
 '.ctor'.0 = "ItemID"
 NewItem.Type = "ItemID"
+ChangeItemType.to = "ItemID"
+StartCachingType.t = "ItemID"
+DropCache.t = "ItemID"
+MechSpawn.type = "ItemID"
+ResetStats.Type = "ItemID"
+SetDefaults.Type = "ItemID"
+SetDefaults1.Type = "ItemID"
+SetDefaults2.Type = "ItemID"
+SetDefaults3.Type = "ItemID"
+SetDefaults4.Type = "ItemID"
+SetDefaults5.Type = "ItemID"
+netDefaults.t = "ItemID"
+
+# Return Values
+BannerToItem = "ItemID"
 
 [Terraria.Lang]
 # Parameters
+GetItemName.0 = "ItemID"
+GetItemNameValue.0 = "ItemID"
+GetTooltip.0 = "ItemID"
+GetNPCName.0 = "NPCID"
+GetNPCNameValue.0 = "NPCID"
+GetProjectileName.0 = "ProjectileID"
+GetBuffName.0 = "BuffID"
+GetBuffDescription.0 = "BuffID"
 GetEmojiName.0 = "EmoteID"
 
 [Terraria.Liquid]
@@ -67,37 +90,79 @@ LiquidCheck.thisLiquidType = "LiquidID"
 [Terraria.Main]
 # Fields
 netMode = "NetmodeID"
+invasionType = "InvasionID"
 
 # Parameters
 GetBuffTooltip.1 = "BuffID"
 TryRemovingBuff_CheckBuffHideMisc.buffID = "BuffID"
 
+CanStartInvasion.0 = "InvasionID"
+StartInvasion.0 = "InvasionID"
+
+IsNPCActiveAndOneOfTypes.types = "NPCID"
+SetMouseNPC.type = "NPCID"
+
+IsLiquidStyleWater.0 = "LiquidID"
+
 # Parameters - Texture Loading
-LoadArmorHead.0 = "ArmorIDs+Head"
-LoadArmorBody.0 = "ArmorIDs+Body"
-LoadArmorLegs.0 = "ArmorIDs+Legs"
-LoadAccHandsOn.0 = "ArmorIDs+HandOn"
-LoadAccHandsOff.0 = "ArmorIDs+HandOff"
-LoadAccBack.0 = "ArmorIDs+Back"
-LoadAccFront.0 = "ArmorIDs+Front"
-LoadAccShoes.0 = "ArmorIDs+Shoe"
-LoadAccWaist.0 = "ArmorIDs+Waist"
-LoadAccWings.0 = "ArmorIDs+Wing"
-LoadAccShield.0 = "ArmorIDs+Shield"
-LoadAccNeck.0 = "ArmorIDs+Neck"
-LoadAccFace.0 = "ArmorIDs+Face"
-LoadAccBalloon.0 = "ArmorIDs+Balloon"
-LoadAccBeard.0 = "ArmorIDs+Beard"
+LoadItem.0 = "ItemID"
+LoadItemFlames.0 = "ItemID"
+LoadNPC.0 = "NPCID"
+LoadProjectile.0 = "ProjectileID"
+LoadTiles.0 = "TileID"
+LoadWall.0 = "WallID"
+LoadArmorHead.0 = "ArmorIDs.Head"
+LoadArmorBody.0 = "ArmorIDs.Body"
+LoadArmorLegs.0 = "ArmorIDs.Legs"
+LoadAccHandsOn.0 = "ArmorIDs.HandOn"
+LoadAccHandsOff.0 = "ArmorIDs.HandOff"
+LoadAccBack.0 = "ArmorIDs.Back"
+LoadAccFront.0 = "ArmorIDs.Front"
+LoadAccShoes.0 = "ArmorIDs.Shoe"
+LoadAccWaist.0 = "ArmorIDs.Waist"
+LoadAccWings.0 = "ArmorIDs.Wing"
+LoadAccShield.0 = "ArmorIDs.Shield"
+LoadAccNeck.0 = "ArmorIDs.Neck"
+LoadAccFace.0 = "ArmorIDs.Face"
+LoadAccBalloon.0 = "ArmorIDs.Balloon"
+LoadAccBeard.0 = "ArmorIDs.Beard"
+
+# Parameters - Drawing
+DrawPlayerItemPos.itemtype = "ItemID"
+RegisterItemAnimation.0 = "ItemID"
 
 [Terraria.Mount]
+# Fields
+_type = "MountID"
 
-[Terraria.Mount.MountData]
+# Properties
+BuffType = "BuffID"
+Type = "MountID"
+
+# Parameters
+CheckBuff.buffID = "BuffID"
+CanMount.m = "MountID"
+GetHeightBoost.0 = "MountID"
+SetMount.m = "MountID"
+
+['Terraria.Mount+MountData']
+# Fields
+buff = "BuffID"
+extraBuff = "BuffID"
 
 [Terraria.NetMessage]
 # Parameters
+SendData.msgType = "MessageID"
+TrySendData.msgType = "MessageID"
 SendTemporaryAnimation.animationType = "AnimationID"
+SendTemporaryAnimation.tileType = "TileID"
 
 [Terraria.Player]
 # Fields - Slots
-handon = "ArmorIDs+HandOn"
-handoff = "ArmorIDs+HandOff"
+handon = "ArmorIDs.HandOn"
+handoff = "ArmorIDs.HandOff"
+
+[Terraria.Projectile]
+# Parameters
+NewProjectile.Type = "ProjectileID"
+PlayInteractiveProjectileOpenCloseSound.projType = "ProjectileID"

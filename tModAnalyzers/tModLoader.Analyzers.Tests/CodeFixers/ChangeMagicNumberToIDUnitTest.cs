@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Text;
+﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tomlyn;
-using Tomlyn.Syntax;
 using VerifyCS = tModLoader.Analyzers.Tests.Verifier.Analyzer<tModLoader.Analyzers.ChangeMagicNumberToID.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModLoader.Analyzers.ChangeMagicNumberToID.ChangeMagicNumberToIDCodeFixProvider>;
 
 namespace tModLoader.Analyzers.Tests.CodeFixers;

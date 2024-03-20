@@ -20,7 +20,7 @@ public sealed class IndentedStringBuilder : IndentedTextWriter
 		public void Dispose()
 		{
 			writer.Indent--;
-			writer.Write('}');
+			writer.WriteLine('}');
 		}
 	}
 
