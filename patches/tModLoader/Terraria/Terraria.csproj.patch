@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,45 +_,73 @@
+@@ -11,45 +_,74 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -21,6 +21,7 @@
 -		<AssemblyName Condition="$(Configuration.Contains('Debug'))">$(AssemblyName)Debug</AssemblyName>
 -		<AssemblyName Condition="!$(Configuration.Contains('Debug'))">$(AssemblyName)Release</AssemblyName>
  		<OutputName>$(AssemblyName)</OutputName>
++    <LangVersion>11.0</LangVersion>
  	</PropertyGroup>
  
  	<!-- Build Configuration -->

@@ -69,7 +69,7 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="itemID">The item identifier.</param>
 	/// <param name="stack">The stack.</param>
-	public Recipe AddIngredient([AssociatedIdType(typeof(ItemID))] int itemID, int stack = 1)
+	public Recipe AddIngredient([IDType<ItemID>] int itemID, int stack = 1)
 	{
 		requiredItem.Add(new Item(itemID) { stack = stack });
 
@@ -137,7 +137,7 @@ public partial class Recipe
 	/// <param name="recipeGroupId">The RecipeGroupID.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
-	public Recipe AddRecipeGroup([AssociatedIdType(typeof(RecipeGroupID))] int recipeGroupId, int stack = 1)
+	public Recipe AddRecipeGroup([IDType<RecipeGroupID>] int recipeGroupId, int stack = 1)
 	{
 		if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 			throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
@@ -168,7 +168,7 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="tileID">The tile identifier.</param>
 	/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
-	public Recipe AddTile([AssociatedIdType(typeof(TileID))] int tileID)
+	public Recipe AddTile([IDType<TileID>] int tileID)
 	{
 		if (tileID < 0 || tileID >= TileLoader.TileCount)
 			throw new RecipeException($"No tile has ID '{tileID}'.");
@@ -474,7 +474,7 @@ public partial class Recipe
 	/// <param name="result">What item will be given when the craft has been completed</param>
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <exception cref="RecipeException">A Recipe can only be created inside recipe related methods</exception>
-	public static Recipe Create([AssociatedIdType(typeof(ItemID))] int result, int amount = 1)
+	public static Recipe Create([IDType<ItemID>] int result, int amount = 1)
 	{
 		if (!RecipeLoader.setupRecipes)
 			throw new RecipeException("A Recipe can only be created inside recipe related methods");

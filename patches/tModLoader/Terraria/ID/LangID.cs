@@ -2,7 +2,7 @@ using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
-public static class LangID
+public class LangID
 {
 	public const int English = 1;
 	public const int German = 2;

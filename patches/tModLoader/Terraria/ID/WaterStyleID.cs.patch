@@ -1,11 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/WaterStyleID.cs
 +++ src/tModLoader/Terraria/ID/WaterStyleID.cs
-@@ -1,3 +_,5 @@
+@@ -1,6 +_,8 @@
 +using ReLogic.Reflection;
 +
  namespace Terraria.ID;
  
- public static class WaterStyleID
+-public static class WaterStyleID
++public class WaterStyleID
+ {
+ 	public const int Purity = 0;
+ 	public const int Lava = 1;
 @@ -16,4 +_,5 @@
  	public const int Honey = 11;
  	public const int UndergroundDesert = 12;

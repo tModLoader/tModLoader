@@ -30,15 +30,14 @@
 	<ItemGroup>
 		<AdditionalFiles Include="ChangeMagicNumberToID\BuiltinData.toml" />
     
-		<Compile Include="$(tMLSourcePath)\ReLogic\Reflection\IdDictionary.cs" Link="ChangeMagicNumberToID\Data\tML\IdDictionary.cs" />
 		<Compile Include="$(tMLSourcePath)\Terraria\Utilities\OldAttribute.cs" Link="ChangeMagicNumberToID\Data\tML\OldAttribute.cs" />
+		<Compile Include="$(tMLSourcePath)\Terraria\ModLoader\Annotations\IDTypeAttribute.cs" Link="ChangeMagicNumberToID\Data\IDTypeAttribute.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Include="$(tMLSourcePath)\Terraria\ID\*.cs" />
 		<Compile Include="$(tMLSourcePath)\Terraria\GameContent\UI\EmoteID.cs" Link="ChangeMagicNumberToID\Data\tML\EmoteID.cs" />
 		<Compile Include="$(tMLSourcePath)\Terraria\GameContent\UI\EmoteID.TML.cs" Link="ChangeMagicNumberToID\Data\tML\EmoteID.TML.cs" />
-		<Compile Remove="$(tMLSourcePath)\ReLogic\Reflection\IdDictionary.cs" />
 		<Compile Remove="$(tMLSourcePath)\Terraria\ID\SetFactory.cs" />
 
 		<!-- Those are enums. -->

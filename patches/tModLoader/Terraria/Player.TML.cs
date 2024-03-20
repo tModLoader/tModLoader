@@ -120,7 +120,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return result != null;
 	}
 
-	public void DropFromItem([AssociatedIdType(typeof(ItemID))] int itemType)
+	public void DropFromItem([IDType<ItemID>] int itemType)
 	{
 		DropAttemptInfo info = new() {
 			player = this,
@@ -173,7 +173,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		=> Main.item[QuickSpawnItem(source, type, stack)];
 
 	/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
-	public bool HasBuff([AssociatedIdType(typeof(BuffID))] int type) => FindBuffIndex(type) != -1;
+	public bool HasBuff([IDType<BuffID>] int type) => FindBuffIndex(type) != -1;
 
 	/// <inheritdoc cref="HasBuff(int)" />
 	public bool HasBuff<T>() where T : ModBuff

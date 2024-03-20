@@ -277,7 +277,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// Adjusts <see cref="buffImmune"/> to make this NPC immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <see cref="BuffID.Sets.GrantImmunityWith"/>). This method can be followed by <see cref="ClearImmuneToBuffs(out bool)"/> if the NPC should clear any buff it currently has that it is now immune to.
 	/// </summary>
 	/// <param name="buffType"></param>
-	public void BecomeImmuneTo([AssociatedIdType(typeof(BuffID))] int buffType)
+	public void BecomeImmuneTo([IDType<BuffID>] int buffType)
 	{
 		buffImmune[buffType] = true; 
 

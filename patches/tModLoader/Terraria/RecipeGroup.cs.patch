@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
+@@ -1,5 +_,7 @@
+ using System;
+ using System.Collections.Generic;
++using Terraria.ID;
++using Terraria.ModLoader.Annotations;
+ 
+ namespace Terraria;
+ 
 @@ -13,6 +_,8 @@
  	public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
  	public static int nextRecipeGroupIndex;
@@ -26,7 +34,7 @@
  	}
 +
 +	// Added by TML.
-+	public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
++	public bool ContainsItem([IDType<ItemID>] int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
  
  	public int CountUsableItems(Dictionary<int, int> itemStacksAvailable)
  	{

@@ -5,7 +5,8 @@
 +
  namespace Terraria.ID;
  
- public static class PlayerVariantID
+-public static class PlayerVariantID
++public class PlayerVariantID
  {
 +#if !TMLANALYZER
  	public class Sets

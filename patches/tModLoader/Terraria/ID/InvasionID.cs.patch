@@ -1,11 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/InvasionID.cs
 +++ src/tModLoader/Terraria/ID/InvasionID.cs
-@@ -1,3 +_,5 @@
+@@ -1,6 +_,8 @@
 +using ReLogic.Reflection;
 +
  namespace Terraria.ID;
  
- public static class InvasionID
+-public static class InvasionID
++public class InvasionID
+ {
+ 	public const short CachedInvasions = 3;
+ 	public const short CachedFrostMoon = 1;
 @@ -12,4 +_,5 @@
  	public const short PirateInvasion = 3;
  	public const short MartianMadness = 4;

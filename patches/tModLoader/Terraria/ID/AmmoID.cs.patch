@@ -8,7 +8,7 @@
  namespace Terraria.ID;
  
 -public static class AmmoID
-+public static partial class AmmoID
++public partial class AmmoID
  {
 -	public class Sets
 +#if !TMLANALYZER

@@ -8,7 +8,7 @@
  namespace Terraria.ID;
  
 -public static class GoreID
-+public static partial class GoreID
++public partial class GoreID
  {
 +#if !TMLANALYZER
 -	public static class Sets

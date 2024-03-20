@@ -1,11 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/CloudID.cs
 +++ src/tModLoader/Terraria/ID/CloudID.cs
-@@ -1,3 +_,5 @@
+@@ -1,6 +_,8 @@
 +using ReLogic.Reflection;
 +
  namespace Terraria.ID;
  
- public static class CloudID
+-public static class CloudID
++public class CloudID
+ {
+ 	public const int Regular1 = 0;
+ 	public const int Regular2 = 1;
 @@ -44,4 +_,5 @@
  	public const int Rare_DontStarveMaxwell = 39;
  	public const int Rare_DontStarveCharlie = 40;

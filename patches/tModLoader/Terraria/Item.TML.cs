@@ -198,6 +198,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		internal void Dispose() => newItemDisabled = false;
 	}
 
+	// No need to put IDType attribute on `Type`.
 	/// <summary>
 	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 	/// <br/><br/>This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.
@@ -206,6 +207,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public static int NewItem(IEntitySource source, Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 		=> NewItem(source, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
+	// No need to put IDType attribute on `Type`.
 	/// <summary>
 	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 	/// <br/><br/>This particular overload uses a Vector2 instead of X, Y, Width, and Height to determine the actual spawn position.

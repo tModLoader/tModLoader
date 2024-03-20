@@ -30,14 +30,14 @@ public readonly partial struct Tile
 	/// This value is only valid if <see cref="HasTile"/> is true.<br/>
 	/// Legacy/vanilla equivalent is <see cref="type"/>.
 	/// </summary>
-	[AssociatedIdType(typeof(TileID))]
+	[IDType<TileID>]
 	public ref ushort TileType => ref Get<TileTypeData>().Type;
 	/// <summary>
 	/// The <see cref="WallID"/> of the wall at this position.<br/>
 	/// A value of 0 indicates no wall.<br/>
 	/// Legacy/vanilla equivalent is <see cref="wall"/>.
 	/// </summary>
-	[AssociatedIdType(typeof(WallID))]
+	[IDType<WallID>]
 	public ref ushort WallType => ref Get<WallTypeData>().Type;
 
 	/// <summary>

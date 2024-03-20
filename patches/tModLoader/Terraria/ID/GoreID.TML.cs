@@ -2,7 +2,7 @@ using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
-public static partial class GoreID
+partial class GoreID
 {
 #if !TMLANALYZER
 	public static partial class Sets

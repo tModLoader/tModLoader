@@ -1,11 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/PlayerTextureID.cs
 +++ src/tModLoader/Terraria/ID/PlayerTextureID.cs
-@@ -1,3 +_,5 @@
+@@ -1,6 +_,8 @@
 +using ReLogic.Reflection;
 +
  namespace Terraria.ID;
  
- public static class PlayerTextureID
+-public static class PlayerTextureID
++public class PlayerTextureID
+ {
+ 	public const int Head = 0;
+ 	public const int EyeWhites = 1;
 @@ -19,4 +_,5 @@
  	public const int Extra = 14;
  	public const int EyeBlink = 15;

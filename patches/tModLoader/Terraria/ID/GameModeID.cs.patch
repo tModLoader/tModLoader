@@ -6,7 +6,7 @@
  namespace Terraria.ID;
  
 -internal class GameModeID
-+public static class GameModeID
++public class GameModeID
  {
  	public const short Normal = 0;
  	public const short Expert = 1;

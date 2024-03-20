@@ -22,12 +22,12 @@ public partial class Player
 	public IEntitySource GetSource_OnHurt(PlayerDeathReason damageSource, string? context = null)
 		=> GetSource_OnHurt(whoAmI == Main.myPlayer && damageSource.TryGetCausingEntity(out var attacker) ? attacker : null, context);
 
-	public IEntitySource GetSource_OpenItem([AssociatedIdType(typeof(ItemID))] int itemType, string? context = null)
+	public IEntitySource GetSource_OpenItem([IDType<ItemID>] int itemType, string? context = null)
 		=> new EntitySource_ItemOpen(this, itemType, context);
 
 	public IEntitySource GetSource_ItemUse(Item item, string? context = null)
 		=> new EntitySource_ItemUse(this, item, context);
 
-	public IEntitySource GetSource_ItemUse_WithPotentialAmmo(Item item, [AssociatedIdType(typeof(ItemID))] int ammoItemId, string? context = null)
+	public IEntitySource GetSource_ItemUse_WithPotentialAmmo(Item item, [IDType<ItemID>] int ammoItemId, string? context = null)
 		=> new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId, context);
 }

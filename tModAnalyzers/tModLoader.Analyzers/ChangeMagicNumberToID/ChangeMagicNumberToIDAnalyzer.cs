@@ -25,7 +25,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	{
 		ctx.RegisterCompilationStartAction(ctx => {
 			var compilation = ctx.Compilation;
-			var attributeSymbol = compilation.GetTypeByMetadataName(AssociatedIdTypeAttributeMetadataName);
+			var attributeSymbol = compilation.GetTypeByMetadataName(IDTypeAttribute1MetadataName);
 
 			/*
 				item.type = 1;
@@ -197,7 +197,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 						if (!SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass, attributeSymbol))
 							continue;
 
-						var idTypeSymbol = (ISymbol)attributeData.ConstructorArguments[0].Value;
+						var idTypeSymbol = attributeData.AttributeClass.TypeArguments[0];
 						string idTypeMetadataName = ToMetadataName(idTypeSymbol);
 
 						if (!Searches.TryGetByMetadataName(idTypeMetadataName, out search))
