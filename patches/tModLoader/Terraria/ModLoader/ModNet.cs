@@ -326,11 +326,10 @@ public static class ModNet
 		if (clientMod != null) {
 			// Mod is enabled, but wrong version enabled
 			if (clientMod.Version > header.version) {
-				// TODO: Localize these messages once finalized
 				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
 			}
 			else {
-				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
+				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionUpgrade", "FFFACD", header.version, clientMod.Version)); // double check logic.
 			}
 		}
 		else {
@@ -357,10 +356,19 @@ public static class ModNet
 			else {
 				if (clientMod != null) {
 					// We have the mod enabled, but not the correct version.
-					if (clientMod.Version > header.version)
-						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
-					else
-						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly,Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
+					if (clientMod.Version > header.version) {
+						bool downgradeIsTemporary = true;
+						// This downgrade might result in single player downgrading too if no workshop mod exists.
+						if (!modFiles.Where(mod => mod.Name == header.name && mod.location == ModLocation.Workshop).Any())
+							downgradeIsTemporary = false;
+
+						// If workshop mod exists but local mod is loaded: The local mod will downgrade, the lower version will load temporarily, but the user will be permanently downgraded to the workshop version. That's a bit confusing to communicate and extremely rare, and would only happen with mod devs, not worth worrying about.
+
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue(downgradeIsTemporary ? "tModLoader.ReloadRequiredExplanationDownloadDowngradeTemporary" : "tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
+					}
+					else {
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
+					}
 				}
 				else {
 					// We have the mod, but not the correct version.

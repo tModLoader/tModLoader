@@ -68,7 +68,7 @@ public static class ModLoader
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
-	private static bool isLoading;
+	internal static bool isLoading;
 
 	public static Mod[] Mods { get; private set; } = new Mod[0];
 
@@ -407,11 +407,7 @@ public static class ModLoader
 	/// </summary>
 	internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
 	{
-		list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
-	}
-
-	internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
-	{
-		return providers.WhereMethodIsOverridden(expr).ToArray();
+		var query = expr.ToOverrideQuery();
+		list = providers.Where(query.HasOverride).Select(t => (F)query.Binder(t)).ToArray();
 	}
 }
