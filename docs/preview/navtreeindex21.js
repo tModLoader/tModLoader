@@ -1,5 +1,10 @@
 var NAVTREEINDEX21 =
 {
+"functions_func.html":[3,3,1,0],
+"functions_func.html":[3,3,1],
+"functions_func_b.html":[3,3,1,1],
+"functions_func_c.html":[3,3,1,2],
+"functions_func_d.html":[3,3,1,3],
 "functions_func_e.html":[3,3,1,4],
 "functions_func_f.html":[3,3,1,5],
 "functions_func_g.html":[3,3,1,6],
@@ -244,10 +249,5 @@ var NAVTREEINDEX21 =
 "struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592":[3,0,110,2],
 "struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,110,1],
 "struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea":[3,0,110,11],
-"struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,110,7],
-"struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422":[3,0,110,4],
-"struct_boss_bar_draw_params.html#ad93c078b16e1f6f208430d05992d0036":[3,0,110,3],
-"struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7":[3,0,110,8],
-"struct_boss_bar_draw_params.html#af6e55f0ca5c415156d451126bbd0cf62":[3,0,110,6],
-"struct_buff_draw_params.html":[3,0,116]
+"struct_boss_bar_draw_params.html#ab61ccbe6395fd392e32cba9b4ac64486":[3,0,110,7]
 };

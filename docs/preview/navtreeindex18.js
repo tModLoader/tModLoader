@@ -1,5 +1,10 @@
 var NAVTREEINDEX18 =
 {
+"class_recipe.html#ab6306a38f7fdb58f08a141f27143c773":[3,0,1044,30],
+"class_recipe.html#abbe1f5833386ce49fa78a4bc8d8ce23a":[3,0,1044,7],
+"class_recipe.html#aca15dbdbe8d4a62c21673c369c0f908c":[3,0,1044,2],
+"class_recipe.html#acb360c39e9af45ebccfb2ded5795eaa0":[3,0,1044,15],
+"class_recipe.html#ad2a91457644909e8e77df62463615dad":[3,0,1044,28],
 "class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f":[3,0,1044,24],
 "class_recipe.html#ae836542e8c39a03f778756c0cf830639":[3,0,1044,1],
 "class_recipe.html#ae9bf3267c476541e9827aab485a3e244":[3,0,1044,29],
@@ -244,10 +249,5 @@ var NAVTREEINDEX18 =
 "class_tag_compound.html":[3,0,1191],
 "class_tag_i_o.html":[3,0,1192],
 "class_tag_printer.html":[3,0,1193],
-"class_tag_serializer.html":[3,0,1195],
-"class_tag_serializer.html#a38658fafb986bb6dcdbd8e6ac6224076":[3,0,1195,0],
-"class_tag_serializer.html#a5f5b3ae8ee7386883a6c6e9224a71510":[3,0,1195,1],
-"class_tally_counter_info_display.html":[3,0,1196],
-"class_tally_counter_info_display.html#a760d62fe493673620e4b0e0aeac90a06":[3,0,1196,0],
-"class_tcp_address.html":[3,0,1197]
+"class_tag_serializer.html":[3,0,1195]
 };

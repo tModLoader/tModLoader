@@ -1,5 +1,10 @@
 var NAVTREEINDEX23 =
 {
+"struct_pos_data.html#a7c60ea2da5d803f3c2574f5e65cd66e2":[3,0,1000,7],
+"struct_pos_data.html#a944d81baa10077208a21e6e2bb4b612c":[3,0,1000,8],
+"struct_pos_data.html#ab9a1efd082ec2fb25609e06677347e19":[3,0,1000,9],
+"struct_pos_data.html#ac88465266a438788d12582053b9f9932":[3,0,1000,2],
+"struct_pos_data.html#af0fa98792a2c9d5135f0ce01b983b8de":[3,0,1000,4],
 "struct_potion_of_return_gate_helper.html":[3,0,1001],
 "struct_projectile_1_1_hallow_boss_pellet_storm_info.html":[3,0,1019,0],
 "struct_query_parameters.html":[3,0,1032],

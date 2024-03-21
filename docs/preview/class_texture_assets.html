@@ -91,6 +91,9 @@ $(document).ready(function(){initNavTree('class_texture_assets.html',''); initRe
   <div class="headertitle"><div class="title">TextureAssets Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains the Texture2D assets used by the game, each stored as an <code>Asset&lt;Texture2D&gt;</code>. Note that the vanilla entries in <a class="el" href="class_item.html">Item</a>, Npc, <a class="el" href="class_projectile.html">Projectile</a>, <a class="el" href="class_gore.html">Gore</a>, Wall, <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a>, ItemFlame, Background, and all of the player equipment and hair related fields are not necessarily loaded. Use the <a class="el" href="class_main.html#a977a3c4c4f1f7e8e47307624db4da6ce" title="Loads the item texture if needed. All modded item textures are already loaded during mod loading so t...">Main.LoadItem(int)</a> or similar methods before attempting to use those texture assets. Modded content in these arrays are always preloaded during mod loading. For example, the following code could be used to access the Acorn item texture asset.  
+ <a href="class_texture_assets.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -946,7 +949,14 @@ static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="botto
 static Asset&lt; Texture2D &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><b>XmasTree</b> = new Asset&lt;Texture2D&gt;[5]</td></tr>
 <tr class="separator:a12125e16aa50b557e556d81b3b9c5549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Contains the Texture2D assets used by the game, each stored as an <code>Asset&lt;Texture2D&gt;</code>. </p>
+<p >Note that the vanilla entries in <a class="el" href="class_item.html">Item</a>, Npc, <a class="el" href="class_projectile.html">Projectile</a>, <a class="el" href="class_gore.html">Gore</a>, Wall, <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a>, ItemFlame, Background, and all of the player equipment and hair related fields are not necessarily loaded. Use the <a class="el" href="class_main.html#a977a3c4c4f1f7e8e47307624db4da6ce" title="Loads the item texture if needed. All modded item textures are already loaded during mod loading so t...">Main.LoadItem(int)</a> or similar methods before attempting to use those texture assets. Modded content in these arrays are always preloaded during mod loading. </p>
+<p >For example, the following code could be used to access the Acorn item texture asset. </p>
+<p ><code> Main.instance.LoadItem(ItemID.Acorn); var acornTexture = TextureAssets.Item[ItemID.Acorn]; </code> </p>
+<p >See the Asset wiki page</p>
+<p >for more information. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

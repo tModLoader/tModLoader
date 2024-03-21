@@ -1,5 +1,10 @@
 var NAVTREEINDEX22 =
 {
+"struct_boss_bar_draw_params.html#ac128743982d6471604c9cb8abeb43422":[3,0,110,4],
+"struct_boss_bar_draw_params.html#ad93c078b16e1f6f208430d05992d0036":[3,0,110,3],
+"struct_boss_bar_draw_params.html#aeea500f2540a9f7a029d11256707aed7":[3,0,110,8],
+"struct_boss_bar_draw_params.html#af6e55f0ca5c415156d451126bbd0cf62":[3,0,110,6],
+"struct_buff_draw_params.html":[3,0,116],
 "struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033":[3,0,116,2],
 "struct_buff_draw_params.html#a23153311248df2a8b45a30c7b13b80b5":[3,0,116,1],
 "struct_buff_draw_params.html#a43659c7022826121c3e60b4a8110b267":[3,0,116,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX22 =
 "struct_pos_data.html":[3,0,1000],
 "struct_pos_data.html#a58c38d14108bcbf91268d44842764cf9":[3,0,1000,3],
 "struct_pos_data.html#a5e9dfe0549b4bacd8945d601b76616b3":[3,0,1000,6],
-"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc":[3,0,1000,5],
-"struct_pos_data.html#a7c60ea2da5d803f3c2574f5e65cd66e2":[3,0,1000,7],
-"struct_pos_data.html#a944d81baa10077208a21e6e2bb4b612c":[3,0,1000,8],
-"struct_pos_data.html#ab9a1efd082ec2fb25609e06677347e19":[3,0,1000,9],
-"struct_pos_data.html#ac88465266a438788d12582053b9f9932":[3,0,1000,2],
-"struct_pos_data.html#af0fa98792a2c9d5135f0ce01b983b8de":[3,0,1000,4]
+"struct_pos_data.html#a747df1aeae4c0dde06e9b7ae448535dc":[3,0,1000,5]
 };
