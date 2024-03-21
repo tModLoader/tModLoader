@@ -557,7 +557,7 @@ public partial class Main
 			needsReload = true;
 			foreach (var mod in modsWithChangedConfigs) {
 				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChangedRestore", "DDA0DD")));
 			}
 		}
 

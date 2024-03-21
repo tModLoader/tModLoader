@@ -68,7 +68,7 @@ public static class ModLoader
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
-	private static bool isLoading;
+	internal static bool isLoading;
 
 	public static Mod[] Mods { get; private set; } = new Mod[0];
 

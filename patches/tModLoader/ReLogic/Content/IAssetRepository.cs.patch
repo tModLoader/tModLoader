@@ -32,11 +32,13 @@
 +	/// <returns></returns>
 -	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
 +	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
-+
+ 
+-	void TransferCompletedAssets();
 +	// Added by TML.
 +	Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
- 
- 	void TransferCompletedAssets();
++
++	// Return type changed to bool to indicate if any assets were transferred
++	bool TransferCompletedAssets();
 +
 +	// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
 +	internal Asset<T> Request<T>(string assetName) where T : class
